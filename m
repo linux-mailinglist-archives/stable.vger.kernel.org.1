@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7133679B9B7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F7F79C0DD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343797AbjIKVMg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:12:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
+        id S244208AbjIKVSo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238553AbjIKN7L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:11 -0400
+        with ESMTP id S239845AbjIKOaP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5C1CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A24C433C9;
-        Mon, 11 Sep 2023 13:59:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1F0F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FDEC433C7;
+        Mon, 11 Sep 2023 14:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440746;
-        bh=JpXQBTZvPQxNAzDPJUr3JDjy0cI2dr7HLblazUYQKZQ=;
+        s=korg; t=1694442611;
+        bh=wcrOCfrsrK9m4f2/f5g5SOAOs7GVgWjAg0CJuP4eTsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HW5tz8q3mHNfOcAGOwYZv5femQxZmcVCM7gidAAmegRJzaONEeyPTkAYgObCWpOca
-         djDaDscAwjzqpeab6m7q2yoOtDXOuuGqMt7kD++X+m43rgxH8cgpSVMH2OI7Ax/6QY
-         rwj3N44lZb6++e7r+bGbs/B58c2DDAw0JBjoFsUo=
+        b=zZF3fTvKohxUCA/5jdGtJdAutZp9RIhXBwVgoEkdL6VHgP2N4U9rPmNOEk3A4pIfI
+         hBRcY6VASk0Y9XLWjkf3AF4U71WqBKtcnIrvuXVDNizaR6VdnY+0YoBXS58CYnbhl0
+         lt9H3YLdZUtlL7A1txQFXDGinEC+DHsy874wV1Og=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Yan Zhai <yan@cloudflare.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Shih-Yi Chen <shihyic@nvidia.com>,
+        Liming Sung <limings@nvidia.com>,
+        David Thompson <davthompson@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 144/739] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
-Date:   Mon, 11 Sep 2023 15:39:03 +0200
-Message-ID: <20230911134655.140516930@linuxfoundation.org>
+Subject: [PATCH 6.4 085/737] platform/mellanox: Fix mlxbf-tmfifo not handling all virtio CONSOLE notifications
+Date:   Mon, 11 Sep 2023 15:39:04 +0200
+Message-ID: <20230911134652.880186142@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Shih-Yi Chen <shihyic@nvidia.com>
 
-[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
+[ Upstream commit 0848cab765c634597636810bf76d0934003cce28 ]
 
-LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
-such that any positive return value from a xmit hook could cause
-unexpected continue behavior, despite that related skb may have been
-freed. This could be error-prone for future xmit hook ops. One of the
-possible errors is to return statuses of dst_output directly.
+rshim console does not show all entries of dmesg.
 
-To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
-distinguish from dst_output statuses and check the continue
-condition explicitly.
+Fixed by setting MLXBF_TM_TX_LWM_IRQ for every CONSOLE notification.
 
-Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
+Signed-off-by: Shih-Yi Chen <shihyic@nvidia.com>
+Reviewed-by: Liming Sung <limings@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20230821150627.26075-1-shihyic@nvidia.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/lwtunnel.h | 5 ++++-
- net/ipv4/ip_output.c   | 2 +-
- net/ipv6/ip6_output.c  | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index 6f15e6fa154e6..53bd2d02a4f0d 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -16,9 +16,12 @@
- #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
- #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
- 
-+/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
-+ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
-+ */
- enum {
- 	LWTUNNEL_XMIT_DONE,
--	LWTUNNEL_XMIT_CONTINUE,
-+	LWTUNNEL_XMIT_CONTINUE = 0x100,
- };
- 
- 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 6ba1a0fafbaab..a6e4c82615d7e 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -216,7 +216,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 1e8c90e976080..016b0a513259f 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -113,7 +113,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index a79318e90a139..b600b77d91ef2 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -887,6 +887,7 @@ static bool mlxbf_tmfifo_virtio_notify(struct virtqueue *vq)
+ 			tm_vdev = fifo->vdev[VIRTIO_ID_CONSOLE];
+ 			mlxbf_tmfifo_console_output(tm_vdev, vring);
+ 			spin_unlock_irqrestore(&fifo->spin_lock[0], flags);
++			set_bit(MLXBF_TM_TX_LWM_IRQ, &fifo->pend_events);
+ 		} else if (test_and_set_bit(MLXBF_TM_TX_LWM_IRQ,
+ 					    &fifo->pend_events)) {
+ 			return true;
 -- 
 2.40.1
 
