@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62ED379BDEF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F81679B9D4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379376AbjIKWnp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45858 "EHLO
+        id S237398AbjIKUxO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238716AbjIKOD2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:28 -0400
+        with ESMTP id S240073AbjIKOfr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130B9CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1E7C433C9;
-        Mon, 11 Sep 2023 14:03:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F0ECF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACBDC433C7;
+        Mon, 11 Sep 2023 14:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441003;
-        bh=HeszEDWz4YVma/400r1EiiSigMPCOFzOWDor/Zq0h6M=;
+        s=korg; t=1694442942;
+        bh=9tj/vUqEtAm76syuOqIVBwByBrikyt8t0Cn1/fhURHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iycescCCsRs510BvsF9jMtazkTljvdHaGk5tGS1EKansg1U5ff/tjyVDl+JA59fzN
-         Ft7YSTQ0b0xq/KmpAGqX/f96CjmFwcrxRcELhWZcICvAGOg2j8nQaefbygrdx/XHRR
-         gzJALaxZQut9mi7EW462YZOfoyJenRGPYcjvG0x8=
+        b=ktAftgySALxoBvkrq7yLpjnjymhuK3OcvWPoqERxvuoXKXvssnd9SDP/2UqrHs5X1
+         lnjGwJCM2hGBLmFM+ZCzQjjTWRs0uwhBsYA6ssMyfUks6Vki9SFg2QwDZY/pTFtvSj
+         xJ8OlbDrwPn1E79+JwFBTcDnbj9q5MsxohAJPzVo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 262/739] blk-flush: fix rq->flush.seq for post-flush requests
+Subject: [PATCH 6.4 202/737] Bluetooth: Fix potential use-after-free when clear keys
 Date:   Mon, 11 Sep 2023 15:41:01 +0200
-Message-ID: <20230911134658.461209605@linuxfoundation.org>
+Message-ID: <20230911134656.240787728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Min Li <lm0963hack@gmail.com>
 
-[ Upstream commit 28b241237470981a96fbd82077c8044466b61e5f ]
+[ Upstream commit 3673952cf0c6cf81b06c66a0b788abeeb02ff3ae ]
 
-If the policy == (REQ_FSEQ_DATA | REQ_FSEQ_POSTFLUSH), it means that the
-data sequence and post-flush sequence need to be done for this request.
+Similar to commit c5d2b6fa26b5 ("Bluetooth: Fix use-after-free in
+hci_remove_ltk/hci_remove_irk"). We can not access k after kfree_rcu()
+call.
 
-The rq->flush.seq should record what sequences have been done (or don't
-need to be done). So in this case, pre-flush doesn't need to be done,
-we should init rq->flush.seq to REQ_FSEQ_PREFLUSH not REQ_FSEQ_POSTFLUSH.
-
-Fixes: 615939a2ae73 ("blk-mq: defer to the normal submission path for post-flush requests")
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230717040058.3993930-3-chengming.zhou@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: d7d41682efc2 ("Bluetooth: Fix Suspicious RCU usage warnings")
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-flush.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/block/blk-flush.c b/block/blk-flush.c
-index 8220517c2d67d..fdc489e0ea162 100644
---- a/block/blk-flush.c
-+++ b/block/blk-flush.c
-@@ -443,7 +443,7 @@ bool blk_insert_flush(struct request *rq)
- 		 * the post flush, and then just pass the command on.
- 		 */
- 		blk_rq_init_flush(rq);
--		rq->flush.seq |= REQ_FSEQ_POSTFLUSH;
-+		rq->flush.seq |= REQ_FSEQ_PREFLUSH;
- 		spin_lock_irq(&fq->mq_flush_lock);
- 		list_move_tail(&rq->flush.list, &fq->flush_data_in_flight);
- 		spin_unlock_irq(&fq->mq_flush_lock);
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 1ec83985f1ab0..793b66da22653 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1074,9 +1074,9 @@ void hci_uuids_clear(struct hci_dev *hdev)
+ 
+ void hci_link_keys_clear(struct hci_dev *hdev)
+ {
+-	struct link_key *key;
++	struct link_key *key, *tmp;
+ 
+-	list_for_each_entry(key, &hdev->link_keys, list) {
++	list_for_each_entry_safe(key, tmp, &hdev->link_keys, list) {
+ 		list_del_rcu(&key->list);
+ 		kfree_rcu(key, rcu);
+ 	}
+@@ -1084,9 +1084,9 @@ void hci_link_keys_clear(struct hci_dev *hdev)
+ 
+ void hci_smp_ltks_clear(struct hci_dev *hdev)
+ {
+-	struct smp_ltk *k;
++	struct smp_ltk *k, *tmp;
+ 
+-	list_for_each_entry(k, &hdev->long_term_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
+ 		list_del_rcu(&k->list);
+ 		kfree_rcu(k, rcu);
+ 	}
+@@ -1094,9 +1094,9 @@ void hci_smp_ltks_clear(struct hci_dev *hdev)
+ 
+ void hci_smp_irks_clear(struct hci_dev *hdev)
+ {
+-	struct smp_irk *k;
++	struct smp_irk *k, *tmp;
+ 
+-	list_for_each_entry(k, &hdev->identity_resolving_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
+ 		list_del_rcu(&k->list);
+ 		kfree_rcu(k, rcu);
+ 	}
+@@ -1104,9 +1104,9 @@ void hci_smp_irks_clear(struct hci_dev *hdev)
+ 
+ void hci_blocked_keys_clear(struct hci_dev *hdev)
+ {
+-	struct blocked_key *b;
++	struct blocked_key *b, *tmp;
+ 
+-	list_for_each_entry(b, &hdev->blocked_keys, list) {
++	list_for_each_entry_safe(b, tmp, &hdev->blocked_keys, list) {
+ 		list_del_rcu(&b->list);
+ 		kfree_rcu(b, rcu);
+ 	}
 -- 
 2.40.1
 
