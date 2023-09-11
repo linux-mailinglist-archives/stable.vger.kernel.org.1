@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B77D79BCE3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7FD079BF45
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236031AbjIKUzL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55886 "EHLO
+        id S242027AbjIKVa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239223AbjIKOOx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:53 -0400
+        with ESMTP id S240555AbjIKOrJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507FADE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990D0C433C7;
-        Mon, 11 Sep 2023 14:14:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6353B125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2F1C433C8;
+        Mon, 11 Sep 2023 14:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441689;
-        bh=Yc4zZ7U4vBKz/jJt696bwR+3I6OP2zHBP4mV8arN3u8=;
+        s=korg; t=1694443625;
+        bh=I4mGcdF+k4T75ScZ9WYfWhu5zqw477iBlyeVqWSmOVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wx3tysS3z97DGrIjsflM7W+X+jQsdFEAQ/99w+0PkcnNFhUGouSHUBMnKit/dxk6K
-         Haotd7729C6SlDAEmPhrtk7dSBtnpkiu0rDLFi0BFiNIpbghfmpraQ6HAZoG9wbLeR
-         SU42POR+oJW4DMQmvCr2Iti3i8SYOSNHd04pR7K8=
+        b=J0QPaGC90ULr8VqWFZXBtsCCMKfytAgjqmTrYdHlrxBR9tneeGCaEg6AsdeQ955eI
+         T8+5mOFLPG03LLfuL0hShhtL8crUQ0VIKJu0zWLQXE++RESD3iGCp/i06HngAqRfbn
+         c9m0dSyukJCs6QWpDxOnzu6bRGO26BlKfJ2YdCLc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev, Imran Shaik <quic_imrashai@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 502/739] driver core: test_async: fix an error code
-Date:   Mon, 11 Sep 2023 15:45:01 +0200
-Message-ID: <20230911134705.157034840@linuxfoundation.org>
+Subject: [PATCH 6.4 443/737] clk: qcom: gcc-qdu1000: Register gcc_gpll1_out_even clock
+Date:   Mon, 11 Sep 2023 15:45:02 +0200
+Message-ID: <20230911134702.971837545@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,39 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Imran Shaik <quic_imrashai@quicinc.com>
 
-[ Upstream commit 22d2381bbd70a5853c2ee77522f4965139672db9 ]
+[ Upstream commit 06d71fa10f2e507444c6759328a6c19d38eab788 ]
 
-The test_platform_device_register_node() function should return error
-pointers instead of NULL.  That is what the callers are expecting.
+gcc_gpll1_out_even clock is referenced as a parent, but not registered
+with the clock framework. Hence add support to register the same.
 
-Fixes: 57ea974fb871 ("driver core: Rewrite test_async_driver_probe to cover serialization and NUMA affinity")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/1e11ed19-e1f6-43d8-b352-474134b7c008@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c9efb0bc040 ("clk: qcom: Add QDU1000 and QRU1000 GCC support")
+Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230803105741.2292309-5-quic_imrashai@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/test/test_async_driver_probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-qdu1000.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/test/test_async_driver_probe.c b/drivers/base/test/test_async_driver_probe.c
-index 929410d0dd6fe..3465800baa6c8 100644
---- a/drivers/base/test/test_async_driver_probe.c
-+++ b/drivers/base/test/test_async_driver_probe.c
-@@ -84,7 +84,7 @@ test_platform_device_register_node(char *name, int id, int nid)
+diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
+index 8df7b79839680..626c5afed7806 100644
+--- a/drivers/clk/qcom/gcc-qdu1000.c
++++ b/drivers/clk/qcom/gcc-qdu1000.c
+@@ -2521,6 +2521,7 @@ static struct clk_regmap *gcc_qdu1000_clocks[] = {
+ 	[GCC_AGGRE_NOC_ECPRI_GSI_CLK] = &gcc_aggre_noc_ecpri_gsi_clk.clkr,
+ 	[GCC_PCIE_0_PHY_AUX_CLK_SRC] = &gcc_pcie_0_phy_aux_clk_src.clkr,
+ 	[GCC_PCIE_0_PIPE_CLK_SRC] = &gcc_pcie_0_pipe_clk_src.clkr,
++	[GCC_GPLL1_OUT_EVEN] = &gcc_gpll1_out_even.clkr,
+ };
  
- 	pdev = platform_device_alloc(name, id);
- 	if (!pdev)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	if (nid != NUMA_NO_NODE)
- 		set_dev_node(&pdev->dev, nid);
+ static const struct qcom_reset_map gcc_qdu1000_resets[] = {
 -- 
 2.40.1
 
