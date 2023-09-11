@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5660279B311
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E75F79B095
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240764AbjIKV6r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
+        id S1357987AbjIKWHJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240270AbjIKOkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:17 -0400
+        with ESMTP id S238869AbjIKOGx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D89EF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4033C433C7;
-        Mon, 11 Sep 2023 14:40:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E59CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D5AC433C8;
+        Mon, 11 Sep 2023 14:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443212;
-        bh=YA8hM1jR1VjQqkVeE3nGAqqKa+0C6yAo57b2e8Brxa0=;
+        s=korg; t=1694441208;
+        bh=zrBDYdO/6kyML09neElMp5WiecKii5AbFg9BrJquGi0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ts/PRlusBLLpl2SPyLEv9P4RwuF/ziwL77DOJDZ3JrTluBeakwRxSC8odMrpqdMLG
-         kzXMPR2CahNOs6Yjg5EC1CEzVSRhxC3wApk262IxfXy/Ozwh6FOEZp/QfkMBYp4hvX
-         VEOc9F2wND+px5eM5ftMhVFiNUnTb3az81f8LsGc=
+        b=uZXbRjQLIpseAqr4Dj583FDkUP4g6Y2D9v3Yfnp60w8Y9xt3Rd/ZHIvlse3NYJyiB
+         /9yZrtqO5Hjt2SV4Z/coqEPtk+7fJzC//FYrwxtTUeJiTsVkIdhMlDPftBhQQDEdIm
+         AxqMLwBg3+Uqe7bGmphv25YW+Dj8+IyeYu2G+lqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 271/737] quota: factor out dquot_write_dquot()
-Date:   Mon, 11 Sep 2023 15:42:10 +0200
-Message-ID: <20230911134658.147100257@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Jinyoung Choi <j-young.choi@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 332/739] bio-integrity: create multi-page bvecs in bio_integrity_add_page()
+Date:   Mon, 11 Sep 2023 15:42:11 +0200
+Message-ID: <20230911134700.366193903@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,96 +51,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Jinyoung Choi <j-young.choi@samsung.com>
 
-[ Upstream commit 024128477809f8073d870307c8157b8826ebfd08 ]
+[ Upstream commit 0ece1d649b6dd615925a72bc1824d6b9fa5b998a ]
 
-Refactor out dquot_write_dquot() to reduce duplicate code.
+In general, the bvec data structure consists of one for physically
+continuous pages. But, in the bvec configuration for bip, physically
+continuous integrity pages are composed of each bvec.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230630110822.3881712-2-libaokun1@huawei.com>
-Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
+Allow bio_integrity_add_page() to create multi-page bvecs, just like
+the bio payloads. This simplifies adding larger payloads, and fixes
+support for non-tiny workloads with nvme, which stopped using
+scatterlist for metadata a while ago.
+
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+
+Fixes: 783b94bd9250 ("nvme-pci: do not build a scatterlist to map metadata")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jinyoung Choi <j-young.choi@samsung.com>
+Tested-by: "Martin K. Petersen" <martin.petersen@oracle.com>
+Reviewed-by: "Martin K. Petersen" <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20230803025202epcms2p82f57cbfe32195da38c776377b55aed59@epcms2p8
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 39 ++++++++++++++++-----------------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
+ block/bio-integrity.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index e3e4f40476579..108ba9f1e4208 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -628,6 +628,18 @@ int dquot_scan_active(struct super_block *sb,
- }
- EXPORT_SYMBOL(dquot_scan_active);
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 4533eb4916610..6f81c10757fb9 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -123,17 +123,34 @@ void bio_integrity_free(struct bio *bio)
+ int bio_integrity_add_page(struct bio *bio, struct page *page,
+ 			   unsigned int len, unsigned int offset)
+ {
++	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
+ 	struct bio_integrity_payload *bip = bio_integrity(bio);
  
-+static inline int dquot_write_dquot(struct dquot *dquot)
-+{
-+	int ret = dquot->dq_sb->dq_op->write_dquot(dquot);
-+	if (ret < 0) {
-+		quota_error(dquot->dq_sb, "Can't write quota structure "
-+			    "(error %d). Quota may get out of sync!", ret);
-+		/* Clear dirty bit anyway to avoid infinite loop. */
-+		clear_dquot_dirty(dquot);
-+	}
-+	return ret;
-+}
+-	if (bip->bip_vcnt >= bip->bip_max_vcnt) {
+-		printk(KERN_ERR "%s: bip_vec full\n", __func__);
++	if (((bip->bip_iter.bi_size + len) >> SECTOR_SHIFT) >
++	    queue_max_hw_sectors(q))
+ 		return 0;
+-	}
+ 
+-	if (bip->bip_vcnt &&
+-	    bvec_gap_to_prev(&bdev_get_queue(bio->bi_bdev)->limits,
+-			     &bip->bip_vec[bip->bip_vcnt - 1], offset))
+-		return 0;
++	if (bip->bip_vcnt > 0) {
++		struct bio_vec *bv = &bip->bip_vec[bip->bip_vcnt - 1];
++		bool same_page = false;
 +
- /* Write all dquot structures to quota files */
- int dquot_writeback_dquots(struct super_block *sb, int type)
- {
-@@ -658,16 +670,9 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			 * use count */
- 			dqgrab(dquot);
- 			spin_unlock(&dq_list_lock);
--			err = sb->dq_op->write_dquot(dquot);
--			if (err) {
--				/*
--				 * Clear dirty bit anyway to avoid infinite
--				 * loop here.
--				 */
--				clear_dquot_dirty(dquot);
--				if (!ret)
--					ret = err;
--			}
-+			err = dquot_write_dquot(dquot);
-+			if (err && !ret)
-+				ret = err;
- 			dqput(dquot);
- 			spin_lock(&dq_list_lock);
- 		}
-@@ -765,8 +770,6 @@ static struct shrinker dqcache_shrinker = {
-  */
- void dqput(struct dquot *dquot)
- {
--	int ret;
--
- 	if (!dquot)
- 		return;
- #ifdef CONFIG_QUOTA_DEBUG
-@@ -794,17 +797,7 @@ void dqput(struct dquot *dquot)
- 	if (dquot_dirty(dquot)) {
- 		spin_unlock(&dq_list_lock);
- 		/* Commit dquot before releasing */
--		ret = dquot->dq_sb->dq_op->write_dquot(dquot);
--		if (ret < 0) {
--			quota_error(dquot->dq_sb, "Can't write quota structure"
--				    " (error %d). Quota may get out of sync!",
--				    ret);
--			/*
--			 * We clear dirty bit anyway, so that we avoid
--			 * infinite loop here
--			 */
--			clear_dquot_dirty(dquot);
--		}
-+		dquot_write_dquot(dquot);
- 		goto we_slept;
- 	}
- 	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
++		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
++					   &same_page)) {
++			bip->bip_iter.bi_size += len;
++			return len;
++		}
++
++		if (bip->bip_vcnt >=
++		    min(bip->bip_max_vcnt, queue_max_integrity_segments(q)))
++			return 0;
++
++		/*
++		 * If the queue doesn't support SG gaps and adding this segment
++		 * would create a gap, disallow it.
++		 */
++		if (bvec_gap_to_prev(&q->limits, bv, offset))
++			return 0;
++	}
+ 
+ 	bvec_set_page(&bip->bip_vec[bip->bip_vcnt], page, len, offset);
+ 	bip->bip_vcnt++;
 -- 
 2.40.1
 
