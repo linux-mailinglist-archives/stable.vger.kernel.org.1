@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B733079BE30
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9101879BC29
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350859AbjIKVlw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
+        id S1379536AbjIKWol (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242037AbjIKPVB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:01 -0400
+        with ESMTP id S240767AbjIKOxP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72968FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6AFC433C7;
-        Mon, 11 Sep 2023 15:20:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AE0118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC94C433C8;
+        Mon, 11 Sep 2023 14:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445657;
-        bh=u/bJbbkFkfgLrw1UII8oEb18YWnGW5UfRm+8hl2O/OI=;
+        s=korg; t=1694443990;
+        bh=nuKnp3XMouWCOLXG/1fm5e0L62d02s8Rqgj1VlMKj18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kmeTjRGM6akPKPreBPsIfppfkz80eakgc4V2fM1fDHHQVLVRzBPiovEmJJgWKWR3M
-         w/cF09HCKxlDM246t2TvSRPc+SmSA+W0Okhex4wUVRjePbFpnszlivxNBCc3oCe90H
-         nMA2mf1seShIpX0VuxIBXeCNR1q6qqWdjO2l134I=
+        b=Q10kklsT17ouDaRRED5slPE/PGSA8BrJW6ab1Ijz326ozKQ/J2Sq3xkESJZYS2FM5
+         QJoVVg/URSScwGYFDaKn4ukHDtBXeQVP4L4qTs1HAQZ/Wu/42NSErwU9L7xQe9+ky9
+         oLbPP1KPBidcbWD0WP7qMc7iPeqv3hbPlQzVeUzA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 397/600] drivers: usb: smsusb: fix error handling code in smsusb_init_device
+Subject: [PATCH 6.4 571/737] media: ov2680: Fix ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY not working
 Date:   Mon, 11 Sep 2023 15:47:10 +0200
-Message-ID: <20230911134645.393955872@linuxfoundation.org>
+Message-ID: <20230911134706.490396575@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +53,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b9c7141f384097fa4fa67d2f72e5731d628aef7c ]
+[ Upstream commit c0e97a4b4f20639f74cd5809b42ba6cbf9736a7d ]
 
-The previous commit 4b208f8b561f ("[media] siano: register media controller
-earlier")moves siano_media_device_register before smscore_register_device,
-and adds corresponding error handling code if smscore_register_device
-fails. However, it misses the following error handling code of
-smsusb_init_device.
+ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY was getting
+the try_fmt v4l2_mbus_framefmt struct from the passed in sd_state
+and then storing the contents of that into the return by reference
+format->format struct.
 
-Fix this by moving error handling code at the end of smsusb_init_device
-and adding a goto statement in the following error handling parts.
+While the right thing to do would be filling format->format based on
+the just looked up mode and then store the results of that in
+sd_state->pads[0].try_fmt .
 
-Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Before the previous change introducing ov2680_fill_format() this
+resulted in ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY always
+returning the zero-ed out sd_state->pads[0].try_fmt in format->format
+breaking callers using this.
+
+After the introduction of ov2680_fill_format() which at least
+initializes sd_state->pads[0].try_fmt properly, format->format
+is now always being filled with the default 800x600 mode set by
+ov2680_init_cfg() independent of the actual requested mode.
+
+Move the filling of format->format with ov2680_fill_format() to
+before the if (which == V4L2_SUBDEV_FORMAT_TRY) and then store
+the filled in format->format in sd_state->pads[0].try_fmt to
+fix this.
+
+Note this removes the fmt local variable because IMHO having a local
+variable which points to a sub-struct of one of the function arguments
+just leads to confusion when reading the code.
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/siano/smsusb.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/media/i2c/ov2680.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
-index 640737d3b8aeb..8a39cac76c585 100644
---- a/drivers/media/usb/siano/smsusb.c
-+++ b/drivers/media/usb/siano/smsusb.c
-@@ -455,12 +455,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_register_device(&params, &dev->coredev, 0, mdev);
- 	if (rc < 0) {
- 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
--		smsusb_term_device(intf);
--#ifdef CONFIG_MEDIA_CONTROLLER_DVB
--		media_device_unregister(mdev);
--#endif
--		kfree(mdev);
--		return rc;
-+		goto err_unregister_device;
- 	}
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 6e0e8d21d189f..a24344ef9852c 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -603,7 +603,6 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 			  struct v4l2_subdev_format *format)
+ {
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+-	struct v4l2_mbus_framefmt *fmt = &format->format;
+ 	struct v4l2_mbus_framefmt *try_fmt;
+ 	const struct ov2680_mode_info *mode;
+ 	int ret = 0;
+@@ -612,14 +611,18 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		return -EINVAL;
  
- 	smscore_set_board_id(dev->coredev, board_id);
-@@ -477,8 +472,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smsusb_start_streaming(dev);
- 	if (rc < 0) {
- 		pr_err("smsusb_start_streaming(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
+ 	mode = v4l2_find_nearest_size(ov2680_mode_data,
+-				      ARRAY_SIZE(ov2680_mode_data), width,
+-				      height, fmt->width, fmt->height);
++				      ARRAY_SIZE(ov2680_mode_data),
++				      width, height,
++				      format->format.width,
++				      format->format.height);
+ 	if (!mode)
+ 		return -EINVAL;
  
- 	dev->state = SMSUSB_ACTIVE;
-@@ -486,13 +480,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_start_device(dev->coredev);
- 	if (rc < 0) {
- 		pr_err("smscore_start_device(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	pr_debug("device 0x%p created\n", dev);
- 
- 	return rc;
++	ov2680_fill_format(sensor, &format->format, mode->width, mode->height);
 +
-+err_unregister_device:
-+	smsusb_term_device(intf);
-+#ifdef CONFIG_MEDIA_CONTROLLER_DVB
-+	media_device_unregister(mdev);
-+#endif
-+	kfree(mdev);
-+	return rc;
- }
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+ 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
+-		format->format = *try_fmt;
++		*try_fmt = format->format;
+ 		return 0;
+ 	}
  
- static int smsusb_probe(struct usb_interface *intf,
+@@ -630,8 +633,6 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		goto unlock;
+ 	}
+ 
+-	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
+-
+ 	sensor->current_mode = mode;
+ 	sensor->fmt = format->format;
+ 	sensor->mode_pending_changes = true;
 -- 
 2.40.1
 
