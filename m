@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA4879BAD1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F9FF79BF49
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359543AbjIKWRi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59502 "EHLO
+        id S242388AbjIKU54 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:57:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241292AbjIKPF5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:57 -0400
+        with ESMTP id S238880AbjIKOHK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87ACF1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADDAC433C8;
-        Mon, 11 Sep 2023 15:05:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F83CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7A1C433C7;
+        Mon, 11 Sep 2023 14:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444752;
-        bh=zLYoMdwExIzjF44ly5Ga5eyTEPyuvws7G4YZwsESzaY=;
+        s=korg; t=1694441226;
+        bh=lF/NazABTk6h5wktyneg8+VhxzPi3Oa3WdUUuWnpMqQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1lNR1YgeugL4pcLwG7dwSd+DTjnb0p7SUjLzFNR+Jd/E00RgHrbImirRIyCn1iIKX
-         pXUl/KgUdC2XqeD/9mygiO//k3UEPytgz8jhK/4CJzGt5yQ1tVWaXcR05sRepeA321
-         5IfIAIqZU2drXpCtQ2qRhsJRQvV0AkNQp4qHFa8M=
+        b=Gwt5zU4hndK8o0Xg/ak58g2/gnMuBvw89saY96+uGS4iyhCmtHffHcjOrvFiCFMvv
+         IcAIqkD/cPbeiyTgmxO8vN8A8g7Bs6vt06ntGW+gRvpVsTkou2hxUmnwco/5jzr6sD
+         8yVt+Th4mgwNv35i7bsbQIBlu/qRsFd3fMCqVaJM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/600] fs: Fix error checking for d_hash_and_lookup()
-Date:   Mon, 11 Sep 2023 15:42:16 +0200
-Message-ID: <20230911134636.642156612@linuxfoundation.org>
+Subject: [PATCH 6.5 338/739] drm/mediatek: Add cnt checking for coverity issue
+Date:   Mon, 11 Sep 2023 15:42:17 +0200
+Message-ID: <20230911134700.544644172@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Ming <machel@vivo.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 0d5a4f8f775ff990142cdc810a84eae078589d27 ]
+[ Upstream commit d761b9450e31e5abd212f0085d424ed32760de5a ]
 
-The d_hash_and_lookup() function returns error pointers or NULL.
-Most incorrect error checks were fixed, but the one in int path_pts()
-was forgotten.
+CERT-C Characters and Strings (CERT STR31-C)
+all_drm_priv[cnt] evaluates to an address that could be at negative
+offset of an array.
 
-Fixes: eedf265aa003 ("devpts: Make each mount of devpts an independent filesystem.")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Message-Id: <20230713120555.7025-1-machel@vivo.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+In mtk_drm_get_all_drm_priv():
+Guarantee that storage for strings has sufficient space for character
+data and the null terminator.
+
+So change cnt to unsigned int and check its max value.
+
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230714094908.13087-3-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/namei.c b/fs/namei.c
-index 5b3865ad9d052..4248647f1ab24 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -2859,7 +2859,7 @@ int path_pts(struct path *path)
- 	dput(path->dentry);
- 	path->dentry = parent;
- 	child = d_hash_and_lookup(parent, &this);
--	if (!child)
-+	if (IS_ERR_OR_NULL(child))
- 		return -ENOENT;
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 6dcb4ba2466c0..fc217e0acd45d 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -354,7 +354,7 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
+ 	const struct of_device_id *of_id;
+ 	struct device_node *node;
+ 	struct device *drm_dev;
+-	int cnt = 0;
++	unsigned int cnt = 0;
+ 	int i, j;
  
- 	path->dentry = child;
+ 	for_each_child_of_node(phandle->parent, node) {
+@@ -375,6 +375,9 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
+ 		all_drm_priv[cnt] = dev_get_drvdata(drm_dev);
+ 		if (all_drm_priv[cnt] && all_drm_priv[cnt]->mtk_drm_bound)
+ 			cnt++;
++
++		if (cnt == MAX_CRTC)
++			break;
+ 	}
+ 
+ 	if (drm_priv->data->mmsys_dev_num == cnt) {
 -- 
 2.40.1
 
