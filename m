@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9FF579ACFA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F173F79B03D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235963AbjIKUyC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
+        id S244386AbjIKVIO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238434AbjIKN4d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:33 -0400
+        with ESMTP id S239794AbjIKO2z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F2810E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231B5C433C8;
-        Mon, 11 Sep 2023 13:56:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C381F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62501C433C8;
+        Mon, 11 Sep 2023 14:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440587;
-        bh=ALPYHYN2XnfJO0yTHn8jw+/OrHPq0Arna6GTmDfyzqc=;
+        s=korg; t=1694442530;
+        bh=sGJz9kwHEOTPPnt5sj64k99d2Ycuy77Yr4nKzK8UJkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N1T7HDEPur12NhxfE6pf435wzKUypiiqYsqUIAOEwNOeXtBcMODa70dnlyjnjGL/z
-         l8H66DHzZ+27cfP+rM1fm42osp/OZfz1EEAv+7QMaOGOy1PH2hwg24OJGU8yZ9K3WZ
-         4azZwSlZNcArswWCQa7SUG9XjWlx/ctG8zebqp6E=
+        b=U8fLqdifND+nyoAFwL6YUpInKWAwWxSHP1Z9btgfnPOatM/1/f2rn5RQgb3OxKG9S
+         PiYSClUgr5lbL8D2l/XbGUjVkWnM63qYeO+L93RKNIyhmxxFw8CxhmFQVIL78toqLq
+         L1cOKLcAcHt2IpPZyPWqaOmIFasnOaNVP2k8U8sg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Isaacs <mail@jdisaacs.com>,
-        "Ethan D. Twardy" <ethan.twardy@gmail.com>,
-        Tiago Lam <tiagolam@gmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 115/739] kbuild: rust_is_available: fix confusion when a version appears in the path
-Date:   Mon, 11 Sep 2023 15:38:34 +0200
-Message-ID: <20230911134654.309555828@linuxfoundation.org>
+Subject: [PATCH 6.4 056/737] powerpc/powermac: Use early_* IO variants in via_calibrate_decr()
+Date:   Mon, 11 Sep 2023 15:38:35 +0200
+Message-ID: <20230911134652.051314768@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,61 +51,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 9eb7e20e0c5cd069457845f965b3e8a7d736ecb7 ]
+[ Upstream commit 86582e6189dd8f9f52c25d46c70fe5d111da6345 ]
 
-`bindgen`'s output for `libclang`'s version check contains paths, which
-in turn may contain strings that look like version numbers [1][2]:
+On a powermac platform, via the call path:
 
-    .../6.1.0-dev/.../rust_is_available_bindgen_libclang.h:2:9: warning: clang version 11.1.0  [-W#pragma-messages], err: false
+  start_kernel()
+    time_init()
+      ppc_md.calibrate_decr() (pmac_calibrate_decr)
+        via_calibrate_decr()
 
-which the script will pick up as the version instead of the latter.
+ioremap() and iounmap() are called. The unmap can enable interrupts
+unexpectedly (cond_resched() in vunmap_pmd_range()), which causes a
+warning later in the boot sequence in start_kernel().
 
-It is also the case that versions may appear after the actual version
-(e.g. distribution's version text), which was the reason behind `head` [3]:
+Use the early_* variants of these IO functions to prevent this.
 
-    .../rust-is-available-bindgen-libclang.h:2:9: warning: clang version 13.0.0 (Fedora 13.0.0-3.fc35) [-W#pragma-messages], err: false
+The issue is pre-existing, but is surfaced by commit 721255b9826b
+("genirq: Use a maple tree for interrupt descriptor management").
 
-Thus instead ask for a match after the `clang version` string.
-
-Reported-by: Jordan Isaacs <mail@jdisaacs.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/942 [1]
-Reported-by: "Ethan D. Twardy" <ethan.twardy@gmail.com>
-Closes: https://lore.kernel.org/rust-for-linux/20230528131802.6390-2-ethan.twardy@gmail.com/ [2]
-Reported-by: Tiago Lam <tiagolam@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/pull/789 [3]
-Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Ethan Twardy <ethan.twardy@gmail.com>
-Tested-by: Ethan Twardy <ethan.twardy@gmail.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230616001631.463536-8-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230706010816.72682-1-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/powerpc/platforms/powermac/time.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index c965895d80b97..7a925d2b20fc7 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -112,9 +112,7 @@ fi
- # of the `libclang` found by the Rust bindings generator is suitable.
- bindgen_libclang_version=$( \
- 	echo "$bindgen_libclang_output" \
--		| grep -F 'clang version ' \
--		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
--		| head -n 1 \
-+		| sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- )
- bindgen_libclang_min_version=$($min_tool_version llvm)
- bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
+diff --git a/arch/powerpc/platforms/powermac/time.c b/arch/powerpc/platforms/powermac/time.c
+index 4c5790aff1b54..8633891b7aa58 100644
+--- a/arch/powerpc/platforms/powermac/time.c
++++ b/arch/powerpc/platforms/powermac/time.c
+@@ -26,8 +26,8 @@
+ #include <linux/rtc.h>
+ #include <linux/of_address.h>
+ 
++#include <asm/early_ioremap.h>
+ #include <asm/sections.h>
+-#include <asm/io.h>
+ #include <asm/machdep.h>
+ #include <asm/time.h>
+ #include <asm/nvram.h>
+@@ -182,7 +182,7 @@ static int __init via_calibrate_decr(void)
+ 		return 0;
+ 	}
+ 	of_node_put(vias);
+-	via = ioremap(rsrc.start, resource_size(&rsrc));
++	via = early_ioremap(rsrc.start, resource_size(&rsrc));
+ 	if (via == NULL) {
+ 		printk(KERN_ERR "Failed to map VIA for timer calibration !\n");
+ 		return 0;
+@@ -207,7 +207,7 @@ static int __init via_calibrate_decr(void)
+ 
+ 	ppc_tb_freq = (dstart - dend) * 100 / 6;
+ 
+-	iounmap(via);
++	early_iounmap((void *)via, resource_size(&rsrc));
+ 
+ 	return 1;
+ }
 -- 
 2.40.1
 
