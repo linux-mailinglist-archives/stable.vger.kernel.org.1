@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA3479ACDB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E1D879B2C9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343690AbjIKVMR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:12:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
+        id S239006AbjIKVTQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241729AbjIKPNJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:09 -0400
+        with ESMTP id S239190AbjIKOOI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9D512E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50211C433C8;
-        Mon, 11 Sep 2023 15:13:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2827FDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6DFC433C8;
+        Mon, 11 Sep 2023 14:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445184;
-        bh=XJOg9qLDxuWy8C+iM6mar4kVfF/bxdqJiElkbULgKDw=;
+        s=korg; t=1694441643;
+        bh=M3XDf7p4LeQg7KX9DFPSCunF9mJYG3AdNu2ua8On/vk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kj8HALq1gBpFEeK0KcsNOW8h6g2x5iRAnBULOyHOPZVCDytaFoqMSpQDLwRlVBRqz
-         KPhIzrPD+Of0JU8wI7FDmzFWbMTwtiyjBITuz61Ssh3B+zx9VCkY+e/XmZKy32zZmo
-         MyBJjf2uDTGgNAeDC8XCQtPDaJjrE5mTbZvP5LA4=
+        b=E5Jhtx2LgvTV8NefiLBU4fO+lzS19mWz2IlpobaLvKlfU7cr2TzxpZzXqr5qisPit
+         KYCMuTeMkLjB0m6ZNgh/i4W42kuqVqHnboUC3ExYE9HfrXD/MXkz9iwUkTCGNQ7ips
+         hSX8QOkgG2Zc0jEcb3FnxiBHMtVjLMD9qQqxXW9c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/600] drm/amdgpu: avoid integer overflow warning in amdgpu_device_resize_fb_bar()
-Date:   Mon, 11 Sep 2023 15:44:43 +0200
-Message-ID: <20230911134640.978261232@linuxfoundation.org>
+Subject: [PATCH 6.5 485/739] scsi: be2iscsi: Add length check when parsing nlattrs
+Date:   Mon, 11 Sep 2023 15:44:44 +0200
+Message-ID: <20230911134704.684341737@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,50 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 822130b5e8834ab30ad410cf19a582e5014b9a85 ]
+[ Upstream commit ee0268f230f66cb472df3424f380ea668da2749a ]
 
-On 32-bit architectures comparing a resource against a value larger than
-U32_MAX can cause a warning:
+beiscsi_iface_set_param() parses nlattr with nla_for_each_attr and assumes
+every attributes can be viewed as struct iscsi_iface_param_info.
 
-drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1344:18: error: result of comparison of constant 4294967296 with expression of type 'resource_size_t' (aka 'unsigned int') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-                    res->start > 0x100000000ull)
-                    ~~~~~~~~~~ ^ ~~~~~~~~~~~~~~
+This is not true because there is no any nla_policy to validate the
+attributes passed from the upper function iscsi_set_iface_params().
 
-As gcc does not warn about this in dead code, add an IS_ENABLED() check at
-the start of the function. This will always return success but not actually resize
-the BAR on 32-bit architectures without high memory, which is exactly what
-we want here, as the driver can fall back to bank switching the VRAM
-access.
+Add the nla_len check before accessing the nlattr data and return EINVAL if
+the length check fails.
 
-Fixes: 31b8adab3247 ("drm/amdgpu: require a root bus window above 4GB for BAR resize")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0e43895ec1f4 ("[SCSI] be2iscsi: adding functionality to change network settings using iscsiadm")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230723075938.3713864-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/be2iscsi/be_iscsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index e6427a00cf6d6..9aac9e755609d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1212,6 +1212,9 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
- 	u16 cmd;
- 	int r;
+diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
+index 8aeaddc93b167..8d374ae863ba2 100644
+--- a/drivers/scsi/be2iscsi/be_iscsi.c
++++ b/drivers/scsi/be2iscsi/be_iscsi.c
+@@ -450,6 +450,10 @@ int beiscsi_iface_set_param(struct Scsi_Host *shost,
+ 	}
  
-+	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
-+		return 0;
+ 	nla_for_each_attr(attrib, data, dt_len, rm_len) {
++		/* ignore nla_type as it is never used */
++		if (nla_len(attrib) < sizeof(*iface_param))
++			return -EINVAL;
 +
- 	/* Bypass for VF */
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+ 		iface_param = nla_data(attrib);
+ 
+ 		if (iface_param->param_type != ISCSI_NET_PARAM)
 -- 
 2.40.1
 
