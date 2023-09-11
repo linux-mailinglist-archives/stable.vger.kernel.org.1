@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9F379B030
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4667579B2BB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242986AbjIKU6x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42150 "EHLO
+        id S236735AbjIKWWI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240478AbjIKOpW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:22 -0400
+        with ESMTP id S239207AbjIKOOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D6512A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26110C433C7;
-        Mon, 11 Sep 2023 14:45:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E050CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654A4C433C7;
+        Mon, 11 Sep 2023 14:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443517;
-        bh=q54EWbuEkYU4PZuimbHxXBrEdjOxJotKA9Ln3b2Iocc=;
+        s=korg; t=1694441666;
+        bh=vggEKoSu+wCo3xzjwC54SL8nRQNY2OZV+CCim3qGJWU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=swsUN2qUXhh1tgw2jdaZaLVY4M+4e/XuC3tkQl2dhEKsVJ/0E/ZCd1u4Bygse/Xur
-         TOPCXio6/lun5UYZBTJkz7S77/QyuiDRpYAMsQRwCD+SXjvT00krgUqN19Ew9qovK8
-         4rlJKZ/l7X4jHQgtYr09EogIlCm5VHeZsb5ny12s=
+        b=fyjR/+CZ6WIrhDqC3AaZrhByoysQEN/wTqhMvMjrhQSlXgauU3F92V8jlch2/6wfz
+         DLrPYJwwEq/6s5q/3aODH5zl4tRNcWTlkxvSOn0rcxP/1vlVP3upOY4/XPosTsNsU0
+         ziTj9l3CiGhSjJY+LBMTD3MFFHhBTi66onlmekMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Su Hui <suhui@nfschina.com>, Takashi Iwai <tiwai@suse.de>,
+        Michael Tretter <m.tretter@pengutronix.de>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 406/737] ALSA: ac97: Fix possible error value of *rac97
-Date:   Mon, 11 Sep 2023 15:44:25 +0200
-Message-ID: <20230911134701.966919458@linuxfoundation.org>
+Subject: [PATCH 6.5 467/739] media: verisilicon: Fix TRY_FMT on encoder OUTPUT
+Date:   Mon, 11 Sep 2023 15:44:26 +0200
+Message-ID: <20230911134704.191840942@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit 67de40c9df94037769967ba28c7d951afb45b7fb ]
+[ Upstream commit b3b4c9d3cb3bf8725a3ded26f7042b1a37f25333 ]
 
-Before committing 79597c8bf64c, *rac97 always be NULL if there is
-an error. When error happens, make sure *rac97 is NULL is safer.
+Commit f100ce3bbd6a ("media: verisilicon: Fix crash when probing
+encoder") removed vpu_fmt from hantro_try_fmt(), since it was
+initialized from vpu_dst_fmt, which may not be initialized, when TRY_FMT
+is called. It was replaced by fmt, which is found using the pixelformat.
 
-For examble, in snd_vortex_mixer():
-	err = snd_ac97_mixer(pbus, &ac97, &vortex->codec);
-	vortex->isquad = ((vortex->codec == NULL) ?
-		0 : (vortex->codec->ext_id&0x80));
-If error happened but vortex->codec isn't NULL, this may cause some
-problems.
+For the encoder, this changed the fmt to contain the raw format instead
+of the coded format. The format constraints as of fmt->frmsize are only
+valid for the coded format and are 0 for the raw formats. Therefore, the
+size of a encoder OUTPUT device is constrained to 0 and the
+v4l2-compliance tests for G_FMT, TRY_FMT, and SET_FMT fail.
 
-Move the judgement order to be clearer and better.
+Bring back vpu_fmt to use the coded format on an encoder OUTPUT device,
+but initialize it using the currently set pixelformat on dst_fmt, which
+is the coded format on an encoder.
 
-Fixes: 79597c8bf64c ("ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20230823025212.1000961-1-suhui@nfschina.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f100ce3bbd6a ("media: verisilicon: Fix crash when probing encoder")
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/ac97/ac97_codec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/platform/verisilicon/hantro_v4l2.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
-index 80a65b8ad7b9b..25f93e56cfc7a 100644
---- a/sound/pci/ac97/ac97_codec.c
-+++ b/sound/pci/ac97/ac97_codec.c
-@@ -2069,10 +2069,9 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
- 		.dev_disconnect =	snd_ac97_dev_disconnect,
- 	};
+diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
+index e871c078dd59e..b3ae037a50f61 100644
+--- a/drivers/media/platform/verisilicon/hantro_v4l2.c
++++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
+@@ -297,6 +297,7 @@ static int hantro_try_fmt(const struct hantro_ctx *ctx,
+ 			  enum v4l2_buf_type type)
+ {
+ 	const struct hantro_fmt *fmt;
++	const struct hantro_fmt *vpu_fmt;
+ 	bool capture = V4L2_TYPE_IS_CAPTURE(type);
+ 	bool coded;
  
--	if (!rac97)
--		return -EINVAL;
--	if (snd_BUG_ON(!bus || !template))
-+	if (snd_BUG_ON(!bus || !template || !rac97))
- 		return -EINVAL;
-+	*rac97 = NULL;
- 	if (snd_BUG_ON(template->num >= 4))
- 		return -EINVAL;
- 	if (bus->codec[template->num])
+@@ -316,19 +317,23 @@ static int hantro_try_fmt(const struct hantro_ctx *ctx,
+ 
+ 	if (coded) {
+ 		pix_mp->num_planes = 1;
+-	} else if (!ctx->is_encoder) {
++		vpu_fmt = fmt;
++	} else if (ctx->is_encoder) {
++		vpu_fmt = hantro_find_format(ctx, ctx->dst_fmt.pixelformat);
++	} else {
+ 		/*
+ 		 * Width/height on the CAPTURE end of a decoder are ignored and
+ 		 * replaced by the OUTPUT ones.
+ 		 */
+ 		pix_mp->width = ctx->src_fmt.width;
+ 		pix_mp->height = ctx->src_fmt.height;
++		vpu_fmt = fmt;
+ 	}
+ 
+ 	pix_mp->field = V4L2_FIELD_NONE;
+ 
+ 	v4l2_apply_frmsize_constraints(&pix_mp->width, &pix_mp->height,
+-				       &fmt->frmsize);
++				       &vpu_fmt->frmsize);
+ 
+ 	if (!coded) {
+ 		/* Fill remaining fields */
 -- 
 2.40.1
 
