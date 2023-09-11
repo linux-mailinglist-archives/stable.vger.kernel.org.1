@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C9779B2C8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7C579B369
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239789AbjIKVEZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52162 "EHLO
+        id S1353675AbjIKVsC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241517AbjIKPK2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:28 -0400
+        with ESMTP id S240418AbjIKOnt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 454BAFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3A3C433C7;
-        Mon, 11 Sep 2023 15:10:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81EACF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2C1C433C8;
+        Mon, 11 Sep 2023 14:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445023;
-        bh=6weEiBFK299dyJxFHnRPUpyzJSqD9zQnIuBYark7yKA=;
+        s=korg; t=1694443424;
+        bh=z2XbQlF/z9YqeDR/0MsNi0kmmrJO4pYMvR4V5NOVfeM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MeWBwEpxiVcOnugtoKCn6X+EEEakKL/b4Mheg6UQWU8r4h16XtzbddwJ1HmN2GugO
-         WSoKOhaFkFLNdz4/hlCZfq0EDLPSs7ypo7OzgHXZ2jjnekkT/FRzo6zLs6sC7GFUQ8
-         QFMMeILiqleZFoEkoacxZzCT6EaNQGA2wGHuMIXU=
+        b=l/j/ojj2q4uoFvX3MWs+O+6QC9U05uKC00pS1WcbWtd7TAvaOXs0JF+QDYlMINMqN
+         h1c6XJ+COnE20JEp7iDyik0t44csCE6A8XD4mcby1geIdWYpjrFHI/WyfoN5Ru3cH9
+         mPN5AXbSHW5mm4T/4VnPI9XB+P4LbEZbmW9HoXMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Siddaraju DH <siddaraju.dh@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 6.1 199/600] ice: avoid executing commands on other ports when driving sync
+        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
+        Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 373/737] bus: ti-sysc: Fix build warning for 64-bit build
 Date:   Mon, 11 Sep 2023 15:43:52 +0200
-Message-ID: <20230911134639.490384360@linuxfoundation.org>
+Message-ID: <20230911134700.971280081@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,205 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 0aacec49c29e7c5b1487e859b0c0a42388c34092 ]
+[ Upstream commit e1e1e9bb9d943ec690670a609a5f660ca10eaf85 ]
 
-The ice hardware has a synchronization mechanism used to drive the
-simultaneous application of commands on both PHY ports and the source timer
-in the MAC.
+Fix "warning: cast from pointer to integer of different size" on 64-bit
+builds.
 
-When issuing a sync via ice_ptp_exec_tmr_cmd(), the hardware will
-simultaneously apply the commands programmed for the main timer and each
-PHY port. Neither the main timer command register, nor the PHY port command
-registers auto clear on command execution.
+Note that this is a cosmetic fix at this point as the driver is not yet
+used for 64-bit systems.
 
-During the execution of a timer command intended for a single port on E822
-devices, such as those used to configure a PHY during link up, the driver
-is not correctly clearing the previous commands.
-
-This results in unintentionally executing the last programmed command on
-the main timer and other PHY ports whenever performing reconfiguration on
-E822 ports after link up. This results in unintended side effects on other
-timers, depending on what command was previously programmed.
-
-To fix this, the driver must ensure that the main timer and all other PHY
-ports are properly initialized to perform no action.
-
-The enumeration for timer commands does not include an enumeration value
-for doing nothing. Introduce ICE_PTP_NOP for this purpose. When writing a
-timer command to hardware, leave the command bits set to zero which
-indicates that no operation should be performed on that port.
-
-Modify ice_ptp_one_port_cmd() to always initialize all ports. For all ports
-other than the one being configured, write their timer command register to
-ICE_PTP_NOP. This ensures that no side effect happens on the timer command.
-
-To fix this for the PHY ports, modify ice_ptp_one_port_cmd() to always
-initialize all other ports to ICE_PTP_NOP. This ensures that no side
-effects happen on the other ports.
-
-Call ice_ptp_src_cmd() with a command value if ICE_PTP_NOP in
-ice_sync_phy_timer_e822() and ice_start_phy_timer_e822().
-
-With both of these changes, the driver should no longer execute a stale
-command on the main timer or another PHY port when reconfiguring one of the
-PHY ports after link up.
-
-Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
-Signed-off-by: Siddaraju DH <siddaraju.dh@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 55 +++++++++++++++++++--
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  3 +-
- 2 files changed, 52 insertions(+), 6 deletions(-)
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 772b1f566d6ed..813acd6a4b469 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -131,6 +131,8 @@ static void ice_ptp_src_cmd(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
- 	case READ_TIME:
- 		cmd_val |= GLTSYN_CMD_READ_TIME;
- 		break;
-+	case ICE_PTP_NOP:
-+		break;
- 	}
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 4cb23b9e06ea4..dbc37b3b84a8d 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -3106,7 +3106,7 @@ static int sysc_init_static_data(struct sysc *ddata)
  
- 	wr32(hw, GLTSYN_CMD, cmd_val);
-@@ -1200,18 +1202,18 @@ ice_ptp_read_port_capture(struct ice_hw *hw, u8 port, u64 *tx_ts, u64 *rx_ts)
- }
+ 	match = soc_device_match(sysc_soc_match);
+ 	if (match && match->data)
+-		sysc_soc->soc = (int)match->data;
++		sysc_soc->soc = (enum sysc_soc)match->data;
  
- /**
-- * ice_ptp_one_port_cmd - Prepare a single PHY port for a timer command
-+ * ice_ptp_write_port_cmd_e822 - Prepare a single PHY port for a timer command
-  * @hw: pointer to HW struct
-  * @port: Port to which cmd has to be sent
-  * @cmd: Command to be sent to the port
-  *
-  * Prepare the requested port for an upcoming timer sync command.
-  *
-- * Note there is no equivalent of this operation on E810, as that device
-- * always handles all external PHYs internally.
-+ * Do not use this function directly. If you want to configure exactly one
-+ * port, use ice_ptp_one_port_cmd() instead.
-  */
- static int
--ice_ptp_one_port_cmd(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
-+ice_ptp_write_port_cmd_e822(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
- {
- 	u32 cmd_val, val;
- 	u8 tmr_idx;
-@@ -1235,6 +1237,8 @@ ice_ptp_one_port_cmd(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
- 	case ADJ_TIME_AT_TIME:
- 		cmd_val |= PHY_CMD_ADJ_TIME_AT_TIME;
- 		break;
-+	case ICE_PTP_NOP:
-+		break;
- 	}
- 
- 	/* Tx case */
-@@ -1280,6 +1284,39 @@ ice_ptp_one_port_cmd(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
- 	return 0;
- }
- 
-+/**
-+ * ice_ptp_one_port_cmd - Prepare one port for a timer command
-+ * @hw: pointer to the HW struct
-+ * @configured_port: the port to configure with configured_cmd
-+ * @configured_cmd: timer command to prepare on the configured_port
-+ *
-+ * Prepare the configured_port for the configured_cmd, and prepare all other
-+ * ports for ICE_PTP_NOP. This causes the configured_port to execute the
-+ * desired command while all other ports perform no operation.
-+ */
-+static int
-+ice_ptp_one_port_cmd(struct ice_hw *hw, u8 configured_port,
-+		     enum ice_ptp_tmr_cmd configured_cmd)
-+{
-+	u8 port;
-+
-+	for (port = 0; port < ICE_NUM_EXTERNAL_PORTS; port++) {
-+		enum ice_ptp_tmr_cmd cmd;
-+		int err;
-+
-+		if (port == configured_port)
-+			cmd = configured_cmd;
-+		else
-+			cmd = ICE_PTP_NOP;
-+
-+		err = ice_ptp_write_port_cmd_e822(hw, port, cmd);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_ptp_port_cmd_e822 - Prepare all ports for a timer command
-  * @hw: pointer to the HW struct
-@@ -1296,7 +1333,7 @@ ice_ptp_port_cmd_e822(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
- 	for (port = 0; port < ICE_NUM_EXTERNAL_PORTS; port++) {
- 		int err;
- 
--		err = ice_ptp_one_port_cmd(hw, port, cmd);
-+		err = ice_ptp_write_port_cmd_e822(hw, port, cmd);
- 		if (err)
- 			return err;
- 	}
-@@ -2245,6 +2282,9 @@ static int ice_sync_phy_timer_e822(struct ice_hw *hw, u8 port)
- 	if (err)
- 		goto err_unlock;
- 
-+	/* Do not perform any action on the main timer */
-+	ice_ptp_src_cmd(hw, ICE_PTP_NOP);
-+
- 	/* Issue the sync to activate the time adjustment */
- 	ice_ptp_exec_tmr_cmd(hw);
- 
-@@ -2371,6 +2411,9 @@ ice_start_phy_timer_e822(struct ice_hw *hw, u8 port, bool bypass)
- 	if (err)
- 		return err;
- 
-+	/* Do not perform any action on the main timer */
-+	ice_ptp_src_cmd(hw, ICE_PTP_NOP);
-+
- 	ice_ptp_exec_tmr_cmd(hw);
- 
- 	err = ice_read_phy_reg_e822(hw, port, P_REG_PS, &val);
-@@ -2914,6 +2957,8 @@ static int ice_ptp_port_cmd_e810(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
- 	case ADJ_TIME_AT_TIME:
- 		cmd_val = GLTSYN_CMD_ADJ_INIT_TIME;
- 		break;
-+	case ICE_PTP_NOP:
-+		return 0;
- 	}
- 
- 	/* Read, modify, write */
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index 2bda64c76abc3..071f545aa85e8 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -9,7 +9,8 @@ enum ice_ptp_tmr_cmd {
- 	INIT_INCVAL,
- 	ADJ_TIME,
- 	ADJ_TIME_AT_TIME,
--	READ_TIME
-+	READ_TIME,
-+	ICE_PTP_NOP,
- };
- 
- enum ice_ptp_serdes {
+ 	/*
+ 	 * Check and warn about possible old incomplete dtb. We now want to see
 -- 
 2.40.1
 
