@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E3479BAB3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C28D79BCC7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358391AbjIKWIr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
+        id S1350332AbjIKVhD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241698AbjIKPMS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:18 -0400
+        with ESMTP id S240496AbjIKOpl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CCA2FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5336DC433C8;
-        Mon, 11 Sep 2023 15:12:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A358CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D680AC433C7;
+        Mon, 11 Sep 2023 14:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445133;
-        bh=6kYQyLvlOn9AazoFmfmJflotJn3RXqJFleqyPAdU9gk=;
+        s=korg; t=1694443537;
+        bh=CiI9TDewDjXMQ4njX4E9k++SCJ+WNde0c9EHxM50NRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1svxmceYdyeFa34vzsFbXfRMXUpHrF/47qLy1sQCRz1QPbrOk3XBKT7CmNiaE69gn
-         ef/KcoXfKJuRtVfAr/hP4oF48wrn5b92KlbekmkHrbM8CX3eGBGjLvrSOUsfFj7DfY
-         Ua5iI02t07eo1YQBf5YQT3IxIoDtVTiCc4gd6QJ0=
+        b=a/pUt5QByxoPdY8ylqXI6+Aiy0/KoX3aFXtUw9XzA/+tHcba5h77C8yHPM69wPhHL
+         vNRiTUcb+IY1er+qLnLcJrYTbesqNMnfqe40fnplBGNi4ntInzWlKIig4RMn07k3Wt
+         7da5SmXDmAWcy8CVvf0T7l4N4ydIgBNs2mMsnYpc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/600] arm64: dts: qcom: pmr735b: fix thermal zone name
+Subject: [PATCH 6.4 412/737] dt-bindings: clock: qcom,gcc-sc8280xp: Add missing GDSCs
 Date:   Mon, 11 Sep 2023 15:44:31 +0200
-Message-ID: <20230911134640.627969166@linuxfoundation.org>
+Message-ID: <20230911134702.127768894@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 99f8cf491d546cd668236f573c7d846d3e94f2d6 ]
+[ Upstream commit 9eba4db02a88e7a810aabd70f7a6960f184f391f ]
 
-The name of the thermal zone in pmr735b.dtsi (pmr735a-thermal) conflicts
-with the thermal zone in pmr735a.dtsi. Rename the thermal zone according
-to the chip name.
+There are 10 more GDSCs that we've not been caring about, and by extension
+(and perhaps even more importantly), not putting to sleep. Add them.
 
-Fixes: 6f3426b3dea4 ("arm64: dts: qcom: pmr735b: add temp sensor and thermal zone config")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230707123027.1510723-5-dmitry.baryshkov@linaro.org
+Fixes: a66a82f2a55e ("dt-bindings: clock: Add Qualcomm SC8280XP GCC bindings")
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-2-562c1428c10d@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/pmr735b.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/dt-bindings/clock/qcom,gcc-sc8280xp.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmr735b.dtsi b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
-index ec24c4478005a..f7473e2473224 100644
---- a/arch/arm64/boot/dts/qcom/pmr735b.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
-@@ -8,7 +8,7 @@
+diff --git a/include/dt-bindings/clock/qcom,gcc-sc8280xp.h b/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
+index 721105ea4fad8..8454915917849 100644
+--- a/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
+@@ -494,5 +494,15 @@
+ #define USB30_SEC_GDSC					11
+ #define EMAC_0_GDSC					12
+ #define EMAC_1_GDSC					13
++#define USB4_1_GDSC					14
++#define USB4_GDSC					15
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		16
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		17
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC		18
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC		19
++#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			20
++#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			21
++#define HLOS1_VOTE_TURING_MMU_TBU2_GDSC			22
++#define HLOS1_VOTE_TURING_MMU_TBU3_GDSC			23
  
- / {
- 	thermal-zones {
--		pmr735a_thermal: pmr735a-thermal {
-+		pmr735b_thermal: pmr735b-thermal {
- 			polling-delay-passive = <100>;
- 			polling-delay = <0>;
- 			thermal-sensors = <&pmr735b_temp_alarm>;
+ #endif
 -- 
 2.40.1
 
