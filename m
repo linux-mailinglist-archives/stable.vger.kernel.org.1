@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8901979B890
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59FC779BFF7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376518AbjIKWTw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38588 "EHLO
+        id S1357516AbjIKWnY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238976AbjIKOIp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:45 -0400
+        with ESMTP id S240240AbjIKOjm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64FEBE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34CAC433C8;
-        Mon, 11 Sep 2023 14:08:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB01F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C11BC433CB;
+        Mon, 11 Sep 2023 14:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441320;
-        bh=Uy33v24bNUOH46rNx6UVgra+nJMBZXSJBs1yhNl5dgk=;
+        s=korg; t=1694443178;
+        bh=CB8LldSsHZ1PLIK/830o+Nk5YBsUWixFvyyFRZQGM+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C01H9EzRPRORHq6WKUxKSKz/jRTPQ3MXO1RLd729cVW3ioRyeSap/qOlRKCskT0/s
-         n5YitSMYJWbMn0YvUqbrldnLAm0ykpopFhW3zGa9jDTL5FT5zVIlYVgdgoJM1ZmWs/
-         aDE9YnsKi6KkMyFDkBCZp/sAQdyHq8+GsbZGF4l8=
+        b=qcITX7kw7YCYt+Qmh9pXu3lGFZyQjwh0c6KFgPqEaqCVV736J6ntcwGc3Nq4htVbB
+         8+HNrDV1BD6l5Z64vSlelcrOnUvEJMVb9qaQ8CxLWeF1n89AtTMbPUN4yTGu4Cedj8
+         l5dXJ72Rwuo9IJiYI5TJAEyqLEl+m9R5PkOYXtRs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 345/739] arm64: dts: qcom: apq8016-sbc: Rename ov5640 enable-gpios to powerdown-gpios
-Date:   Mon, 11 Sep 2023 15:42:24 +0200
-Message-ID: <20230911134700.750242543@linuxfoundation.org>
+Subject: [PATCH 6.4 286/737] arm64: dts: qcom: sm8250-edo: Add GPIO line names for PMIC GPIOs
+Date:   Mon, 11 Sep 2023 15:42:25 +0200
+Message-ID: <20230911134658.554742395@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +50,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 4facccb44a82129195878750eed8f9890091c1b8 ]
+[ Upstream commit 6b8a63350752c6a5e4b54f2de6174084652cd3cd ]
 
-There are two control lines controlled by GPIO going into ov5640
+Sony ever so graciously provides GPIO line names in their downstream
+kernel (though sometimes they are not 100% accurate and you can judge
+that by simply looking at them and with what drivers they are used).
 
-- Reset
-- Powerdown
+Add these to the PDX203&206 DTSIs to better document the hardware.
 
-The driver and yaml expect "reset-gpios" and "powerdown-gpios" there has
-never been an "enable-gpios".
+Diff between 203 and 206:
+pm8009_gpios
+<                         "CAM_PWR_LD_EN",
+>                         "NC",
 
-Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811234738.2859417-6-bryan.odonoghue@linaro.org
+pm8150_gpios
+<                         "NC",
+>                         "G_ASSIST_N",
+<                         "WLC_EN_N", /* GPIO_10 */
+>                         "NC", /* GPIO_10 */
+Which is due to 5 II having an additional Google Assistant hardware
+button and 1 II having a wireless charger & different camera wiring
+to accommodate the additional 3D iToF sensor.
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230614-topic-edo_pinsgpiopmic-v2-2-6f90bba54c53@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../qcom/sm8250-sony-xperia-edo-pdx203.dts    | 50 +++++++++++++++++++
+ .../qcom/sm8250-sony-xperia-edo-pdx206.dts    | 50 +++++++++++++++++++
+ 2 files changed, 100 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index 1a71dfe75a921..5ee098c12801c 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -278,7 +278,7 @@ camera_rear@3b {
- 		compatible = "ovti,ov5640";
- 		reg = <0x3b>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
+index 84104d2b20101..62590c6bd3067 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
+@@ -15,6 +15,56 @@ / {
  
--		enable-gpios = <&tlmm 34 GPIO_ACTIVE_HIGH>;
-+		powerdown-gpios = <&tlmm 34 GPIO_ACTIVE_HIGH>;
- 		reset-gpios = <&tlmm 35 GPIO_ACTIVE_LOW>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&camera_rear_default>;
+ /delete-node/ &vreg_l7f_1p8;
+ 
++&pm8009_gpios {
++	gpio-line-names = "NC", /* GPIO_1 */
++			  "CAM_PWR_LD_EN",
++			  "WIDEC_PWR_EN",
++			  "NC";
++};
++
++&pm8150_gpios {
++	gpio-line-names = "VOL_DOWN_N", /* GPIO_1 */
++			  "OPTION_2",
++			  "NC",
++			  "PM_SLP_CLK_IN",
++			  "OPTION_1",
++			  "NC",
++			  "NC",
++			  "SP_ARI_PWR_ALARM",
++			  "NC",
++			  "NC"; /* GPIO_10 */
++};
++
++&pm8150b_gpios {
++	gpio-line-names = "SNAPSHOT_N", /* GPIO_1 */
++			  "FOCUS_N",
++			  "NC",
++			  "NC",
++			  "RF_LCD_ID_EN",
++			  "NC",
++			  "NC",
++			  "LCD_ID",
++			  "NC",
++			  "WLC_EN_N", /* GPIO_10 */
++			  "NC",
++			  "RF_ID";
++};
++
++&pm8150l_gpios {
++	gpio-line-names = "NC", /* GPIO_1 */
++			  "PM3003A_EN",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "AUX2_THERM",
++			  "BB_HP_EN",
++			  "FP_LDO_EN",
++			  "PMX_RESET_N",
++			  "AUX3_THERM", /* GPIO_10 */
++			  "DTV_PWR_EN",
++			  "PM3003A_MODE";
++};
++
+ &tlmm {
+ 	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
+ 			  "MDM2AP_ERR_FATAL",
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
+index fae6568cb79e4..ea4571bf4fbf0 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
+@@ -30,6 +30,56 @@ g-assist-key {
+ 	};
+ };
+ 
++&pm8009_gpios {
++	gpio-line-names = "NC", /* GPIO_1 */
++			  "NC",
++			  "WIDEC_PWR_EN",
++			  "NC";
++};
++
++&pm8150_gpios {
++	gpio-line-names = "VOL_DOWN_N", /* GPIO_1 */
++			  "OPTION_2",
++			  "NC",
++			  "PM_SLP_CLK_IN",
++			  "OPTION_1",
++			  "G_ASSIST_N",
++			  "NC",
++			  "SP_ARI_PWR_ALARM",
++			  "NC",
++			  "NC"; /* GPIO_10 */
++};
++
++&pm8150b_gpios {
++	gpio-line-names = "SNAPSHOT_N", /* GPIO_1 */
++			  "FOCUS_N",
++			  "NC",
++			  "NC",
++			  "RF_LCD_ID_EN",
++			  "NC",
++			  "NC",
++			  "LCD_ID",
++			  "NC",
++			  "NC", /* GPIO_10 */
++			  "NC",
++			  "RF_ID";
++};
++
++&pm8150l_gpios {
++	gpio-line-names = "NC", /* GPIO_1 */
++			  "PM3003A_EN",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "AUX2_THERM",
++			  "BB_HP_EN",
++			  "FP_LDO_EN",
++			  "PMX_RESET_N",
++			  "NC", /* GPIO_10 */
++			  "NC",
++			  "PM3003A_MODE";
++};
++
+ &tlmm {
+ 	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
+ 			  "MDM2AP_ERR_FATAL",
 -- 
 2.40.1
 
