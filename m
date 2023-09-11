@@ -2,40 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6BB379BE71
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BFD479B75D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237124AbjIKVKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
+        id S235575AbjIKV41 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240821AbjIKOyt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:49 -0400
+        with ESMTP id S242106AbjIKPWc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74CDA118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD446C433C7;
-        Mon, 11 Sep 2023 14:54:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A491FF9;
+        Mon, 11 Sep 2023 08:22:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB3CC433C7;
+        Mon, 11 Sep 2023 15:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444084;
-        bh=mEsXe9iUMEnxk6btcEEIdp4P4hWM3jz1vBuauQvKm60=;
+        s=korg; t=1694445747;
+        bh=jWil5r8hC2kk7Ipb61J0HtRkHziZU/KAFAnX2L+MWaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kytDjDhzGT3Dvt56hawGpROk+8myo/ly/ljuF6Mzns5jleQtB+wmZ7EGYj+Vz4c6V
-         idBqBZID6LQu6r2uyfENNeyzuezs/bVcl+3UEFPR+Fcnv2cidiydHn58ItNQcehnqu
-         i50GzJRiyoIGinDznOUJrgj/nSX5fTJ630JnHQaA=
+        b=yOJZMYCzs5VkKoLAfN9yLLh8qWbtcNQWX8z36tOXhEHUe+J3EttbC8l//4eYWfbV+
+         GWKoMaqVTvjfIp68Q4TgAg2TC1GDfN2xl1qCwq8npwLxf+6PT7T+wQB5DSKsVqTXWv
+         h0O8Z4JwQfwqWpyy3PsyzD8D0C0ZwZH33+SN7V8g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 604/737] mtd: rawnand: brcmnand: Fix mtd oobsize
-Date:   Mon, 11 Sep 2023 15:47:43 +0200
-Message-ID: <20230911134707.408187773@linuxfoundation.org>
+Subject: [PATCH 6.1 431/600] scsi: qedf: Do not touch __user pointer in qedf_dbg_debug_cmd_read() directly
+Date:   Mon, 11 Sep 2023 15:47:44 +0200
+Message-ID: <20230911134646.382475283@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,64 +59,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit 60177390fa061c62d156f4a546e3efd90df3c183 ]
+[ Upstream commit 31b5991a9a91ba97237ac9da509d78eec453ff72 ]
 
-brcmnand controller can only access the flash spare area up to certain
-bytes based on the ECC level. It can be less than the actual flash spare
-area size. For example, for many NAND chip supporting ECC BCH-8, it has
-226 bytes spare area. But controller can only uses 218 bytes. So brcmand
-driver overrides the mtd oobsize with the controller's accessible spare
-area size. When the nand base driver utilizes the nand_device object, it
-resets the oobsize back to the actual flash spare aprea size from
-nand_memory_organization structure and controller may not able to access
-all the oob area as mtd advises.
+The qedf_dbg_debug_cmd_read() function invokes sprintf() directly on a
+__user pointer, which may crash the kernel.
 
-This change fixes the issue by overriding the oobsize in the
-nand_memory_organization structure to the controller's accessible spare
-area size.
+Avoid doing that by using a small on-stack buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
 
-Fixes: a7ab085d7c16 ("mtd: rawnand: Initialize the nand_device object")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-6-william.zhang@broadcom.com
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-3-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 2e9c2e2d9c9f7..d8418d7fcc372 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2612,6 +2612,8 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
- 	struct nand_chip *chip = &host->chip;
- 	const struct nand_ecc_props *requirements =
- 		nanddev_get_ecc_requirements(&chip->base);
-+	struct nand_memory_organization *memorg =
-+		nanddev_get_memorg(&chip->base);
- 	struct brcmnand_controller *ctrl = host->ctrl;
- 	struct brcmnand_cfg *cfg = &host->hwcfg;
- 	char msg[128];
-@@ -2633,10 +2635,11 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
- 	if (cfg->spare_area_size > ctrl->max_oob)
- 		cfg->spare_area_size = ctrl->max_oob;
- 	/*
--	 * Set oobsize to be consistent with controller's spare_area_size, as
--	 * the rest is inaccessible.
-+	 * Set mtd and memorg oobsize to be consistent with controller's
-+	 * spare_area_size, as the rest is inaccessible.
- 	 */
- 	mtd->oobsize = cfg->spare_area_size * (mtd->writesize >> FC_SHIFT);
-+	memorg->oobsize = mtd->oobsize;
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 3eb4334ac6a32..1c5716540e465 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -138,15 +138,14 @@ qedf_dbg_debug_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 			loff_t *ppos)
+ {
+ 	int cnt;
++	char cbuf[32];
+ 	struct qedf_dbg_ctx *qedf_dbg =
+ 				(struct qedf_dbg_ctx *)filp->private_data;
  
- 	cfg->device_size = mtd->size;
- 	cfg->block_size = mtd->erasesize;
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "debug mask=0x%x\n", qedf_debug);
+-	cnt = sprintf(buffer, "debug mask = 0x%x\n", qedf_debug);
++	cnt = scnprintf(cbuf, sizeof(cbuf), "debug mask = 0x%x\n", qedf_debug);
+ 
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
+ }
+ 
+ static ssize_t
 -- 
 2.40.1
 
