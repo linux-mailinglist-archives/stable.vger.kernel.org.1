@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB4179B0C3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6312179AE9B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377638AbjIKW1x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52550 "EHLO
+        id S242774AbjIKU63 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241160AbjIKPDK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:10 -0400
+        with ESMTP id S240098AbjIKOgd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC9D125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4176C433C9;
-        Mon, 11 Sep 2023 15:03:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0CA193
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7171DC433C8;
+        Mon, 11 Sep 2023 14:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444586;
-        bh=elLNUwjREYYp/M+VP5PnvczTCi6XSff6Yj/Lz+QmaWI=;
+        s=korg; t=1694442988;
+        bh=fpm18cpZfeLTXV1L9we3to4L7LSyk8rUpGtfxDdtyzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DSqwarDHu75wpncqYX7RoJ47bA9bf+MLwT5GFizNtZvFMQtoZWOYjEspTSw4pnDdF
-         PyBjToiAsDQvYXeuu5UZc9EhN5r9StxEIqP2E+raYweb3yBMDxXS6yewfnqYBhMLN8
-         PW+CDOajTAY+EKCKuMJc3fjMZdRMZjCZtTiReXBE=
+        b=dUaaGDMtxcvlb0UeqCmYYdPF1nUaKL4dLmYw1D9QLdjmgXV0H+ApYEYHn21eS9MLG
+         mD3AIG2K/AN1kGhk1xaPNQEdYk8A71n8HPAOtp0CcFm+nOePSypIcFPbE5+Phx6quK
+         4dkYcAhkdMcoCQEhn/rNXRM2V3iwJSGHKzuHyA4M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jussi Laako <jussi@sonarnerd.net>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/600] ALSA: usb-audio: Update for native DSD support quirks
-Date:   Mon, 11 Sep 2023 15:41:17 +0200
-Message-ID: <20230911134634.897040848@linuxfoundation.org>
+        patches@lists.linux.dev, Jordan Griege <jgriege@cloudflare.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Stanislav Fomichev <sdf@google.com>,
+        Yan Zhai <yan@cloudflare.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 219/737] lwt: Fix return values of BPF xmit ops
+Date:   Mon, 11 Sep 2023 15:41:18 +0200
+Message-ID: <20230911134656.705689637@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,138 +53,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jussi Laako <jussi@sonarnerd.net>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit f7fea075edfa085c25eb34c44ceacf3602537f98 ]
+[ Upstream commit 29b22badb7a84b783e3a4fffca16f7768fb31205 ]
 
-Maintenance patch for native DSD support.
+BPF encap ops can return different types of positive values, such like
+NET_RX_DROP, NET_XMIT_CN, NETDEV_TX_BUSY, and so on, from function
+skb_do_redirect and bpf_lwt_xmit_reroute. At the xmit hook, such return
+values would be treated implicitly as LWTUNNEL_XMIT_CONTINUE in
+ip(6)_finish_output2. When this happens, skbs that have been freed would
+continue to the neighbor subsystem, causing use-after-free bug and
+kernel crashes.
 
-Remove incorrect T+A device quirks. Move set of device quirks to vendor
-quirks. Add set of missing device and vendor quirks.
+To fix the incorrect behavior, skb_do_redirect return values can be
+simply discarded, the same as tc-egress behavior. On the other hand,
+bpf_lwt_xmit_reroute returns useful errors to local senders, e.g. PMTU
+information. Thus convert its return values to avoid the conflict with
+LWTUNNEL_XMIT_CONTINUE.
 
-Signed-off-by: Jussi Laako <jussi@sonarnerd.net>
-Link: https://lore.kernel.org/r/20230726165645.404311-1-jussi@sonarnerd.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
+Reported-by: Jordan Griege <jgriege@cloudflare.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Suggested-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/0d2b878186cfe215fec6b45769c1cd0591d3628d.1692326837.git.yan@cloudflare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ net/core/lwt_bpf.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index d4a7ffef82194..4667d543f7481 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1874,8 +1874,10 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
+index 8b6b5e72b2179..4a0797f0a154b 100644
+--- a/net/core/lwt_bpf.c
++++ b/net/core/lwt_bpf.c
+@@ -60,9 +60,8 @@ static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_prog *lwt,
+ 			ret = BPF_OK;
+ 		} else {
+ 			skb_reset_mac_header(skb);
+-			ret = skb_do_redirect(skb);
+-			if (ret == 0)
+-				ret = BPF_REDIRECT;
++			skb_do_redirect(skb);
++			ret = BPF_REDIRECT;
+ 		}
+ 		break;
  
- 	/* XMOS based USB DACs */
- 	switch (chip->usb_id) {
--	case USB_ID(0x1511, 0x0037): /* AURALiC VEGA */
--	case USB_ID(0x21ed, 0xd75a): /* Accuphase DAC-60 option card */
-+	case USB_ID(0x139f, 0x5504): /* Nagra DAC */
-+	case USB_ID(0x20b1, 0x3089): /* Mola-Mola DAC */
-+	case USB_ID(0x2522, 0x0007): /* LH Labs Geek Out 1V5 */
-+	case USB_ID(0x2522, 0x0009): /* LH Labs Geek Pulse X Inifinity 2V0 */
- 	case USB_ID(0x2522, 0x0012): /* LH Labs VI DAC Infinity */
- 	case USB_ID(0x2772, 0x0230): /* Pro-Ject Pre Box S2 Digital */
- 		if (fp->altsetting == 2)
-@@ -1885,14 +1887,18 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
- 	case USB_ID(0x0d8c, 0x0316): /* Hegel HD12 DSD */
- 	case USB_ID(0x10cb, 0x0103): /* The Bit Opus #3; with fp->dsd_raw */
- 	case USB_ID(0x16d0, 0x06b2): /* NuPrime DAC-10 */
--	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
-+	case USB_ID(0x16d0, 0x06b4): /* NuPrime Audio HD-AVP/AVA */
- 	case USB_ID(0x16d0, 0x0733): /* Furutech ADL Stratos */
-+	case USB_ID(0x16d0, 0x09d8): /* NuPrime IDA-8 */
- 	case USB_ID(0x16d0, 0x09db): /* NuPrime Audio DAC-9 */
-+	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
- 	case USB_ID(0x1db5, 0x0003): /* Bryston BDA3 */
-+	case USB_ID(0x20a0, 0x4143): /* WaveIO USB Audio 2.0 */
- 	case USB_ID(0x22e1, 0xca01): /* HDTA Serenade DSD */
- 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
- 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
- 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
-+	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
- 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
- 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
- 	case USB_ID(0x6b42, 0x0042): /* MSB Technology */
-@@ -1902,9 +1908,6 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+@@ -255,7 +254,7 @@ static int bpf_lwt_xmit_reroute(struct sk_buff *skb)
  
- 	/* Amanero Combo384 USB based DACs with native DSD support */
- 	case USB_ID(0x16d0, 0x071a):  /* Amanero - Combo384 */
--	case USB_ID(0x2ab6, 0x0004):  /* T+A DAC8DSD-V2.0, MP1000E-V2.0, MP2000R-V2.0, MP2500R-V2.0, MP3100HV-V2.0 */
--	case USB_ID(0x2ab6, 0x0005):  /* T+A USB HD Audio 1 */
--	case USB_ID(0x2ab6, 0x0006):  /* T+A USB HD Audio 2 */
- 		if (fp->altsetting == 2) {
- 			switch (le16_to_cpu(chip->dev->descriptor.bcdDevice)) {
- 			case 0x199:
-@@ -2049,6 +2052,9 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_IFACE_DELAY),
- 	DEVICE_FLG(0x0644, 0x805f, /* TEAC Model 12 */
- 		   QUIRK_FLAG_FORCE_IFACE_RESET),
-+	DEVICE_FLG(0x0644, 0x806b, /* TEAC UD-701 */
-+		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY |
-+		   QUIRK_FLAG_IFACE_DELAY),
- 	DEVICE_FLG(0x06f8, 0xb000, /* Hercules DJ Console (Windows Edition) */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x06f8, 0xd002, /* Hercules DJ Console (Macintosh Edition) */
-@@ -2087,6 +2093,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x154e, 0x3006, /* Marantz SA-14S1 */
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
-+	DEVICE_FLG(0x154e, 0x300b, /* Marantz SA-KI RUBY / SA-12 */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x154e, 0x500e, /* Denon DN-X1600 */
- 		   QUIRK_FLAG_IGNORE_CLOCK_SOURCE),
- 	DEVICE_FLG(0x1686, 0x00dd, /* Zoom R16/24 */
-@@ -2131,6 +2139,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x21b4, 0x0230, /* Ayre QB-9 Twenty */
-+		   QUIRK_FLAG_DSD_RAW),
-+	DEVICE_FLG(0x21b4, 0x0232, /* Ayre QX-5 Twenty */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x2522, 0x0007, /* LH Labs Geek Out HD Audio 1V5 */
- 		   QUIRK_FLAG_SET_IFACE_FIRST),
- 	DEVICE_FLG(0x2708, 0x0002, /* Audient iD14 */
-@@ -2173,12 +2185,18 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_VALIDATE_RATES),
- 	VENDOR_FLG(0x1235, /* Focusrite Novation */
- 		   QUIRK_FLAG_VALIDATE_RATES),
-+	VENDOR_FLG(0x1511, /* AURALiC */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x152a, /* Thesycon devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x18d1, /* iBasso devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x1de7, /* Phoenix Audio */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	VENDOR_FLG(0x20b1, /* XMOS based devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x21ed, /* Accuphase Laboratory */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x22d9, /* Oppo */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x23ba, /* Playback Design */
-@@ -2194,10 +2212,14 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x2ab6, /* T+A devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x2d87, /* Cayin device */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3336, /* HEM devices */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3353, /* Khadas devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x35f4, /* MSB Technology */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3842, /* EVGA */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0xc502, /* HiBy devices */
+ 	err = dst_output(dev_net(skb_dst(skb)->dev), skb->sk, skb);
+ 	if (unlikely(err))
+-		return err;
++		return net_xmit_errno(err);
+ 
+ 	/* ip[6]_finish_output2 understand LWTUNNEL_XMIT_DONE */
+ 	return LWTUNNEL_XMIT_DONE;
 -- 
 2.40.1
 
