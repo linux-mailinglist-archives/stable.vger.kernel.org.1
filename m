@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFC4379BCBB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45F9E79BC63
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377823AbjIKW2t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:28:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59496 "EHLO
+        id S231685AbjIKUur (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240315AbjIKOlS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:18 -0400
+        with ESMTP id S241404AbjIKPHy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CDCC123
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86920C433C7;
-        Mon, 11 Sep 2023 14:41:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E39DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6045C433CA;
+        Mon, 11 Sep 2023 15:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443273;
-        bh=wqRevlL1TunWb3hxt+3VpLah62AW3sA3p+MZY5U02uk=;
+        s=korg; t=1694444870;
+        bh=7CyeIJq9a94SVp/rE3FrHt9gzqPjpQL/OKfz0YtskxM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vasLO5EhzNDhybHBpsH/nRv2ouWL+6QNVo/mvvoRjU4MWD0in4+EIX1Tnuf5OtVG5
-         awo/rO9OhzGvChaePLXnjutDYrYJ4OHWr1gVJ6VCPVbrSyLEYXy/TmzE20nKiUWFnb
-         zKCL1/+FlpEY6Lzl753R3IQYG1tXr+U+7kG/qi8I=
+        b=X+YdGU0P82SYWPjcxl3qjEoDPALGnlD74yjvDrkeVNwYct+ksl8isgEeQn7Z2U4rL
+         lAD50vNOb4onWolFTQkhCoD76uch8F7MvmFjjkfBFzYeIj1IXm5vwklMOfB/haFRKd
+         +QIJgble4N2NacZ6bLCFdmQbqZFFw/cxjaHVIiOU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 319/737] arm64: tegra: Fix HSUART for Smaug
+Subject: [PATCH 6.1 145/600] tcp: tcp_enter_quickack_mode() should be static
 Date:   Mon, 11 Sep 2023 15:42:58 +0200
-Message-ID: <20230911134659.469984327@linuxfoundation.org>
+Message-ID: <20230911134637.887791526@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 590bfe51838f6345a6a3288507661dc9b7208464 ]
+[ Upstream commit 03b123debcbc8db987bda17ed8412cc011064c22 ]
 
-After commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
-reset-names") was applied, the HSUART failed to probe and the following
-error is seen:
+After commit d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP"),
+tcp_enter_quickack_mode() is only used from net/ipv4/tcp_input.c.
 
- serial-tegra 70006300.serial: Couldn't get the reset
- serial-tegra: probe of 70006300.serial failed with error -2
-
-Commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
-reset-names") is correct because the "reset-names" property is not
-needed for 8250 UARTs. However, the "reset-names" is required for the
-HSUART and should have been populated as part of commit a63c0cd83720c
-("arm64: dts: tegra: smaug: Add Bluetooth node") that enabled the HSUART
-for the Pixel C. Fix this by populating the "reset-names" property for
-the HSUART on the Pixel C.
-
-Fixes: a63c0cd83720 ("arm64: dts: tegra: smaug: Add Bluetooth node")
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20230718162049.1444938-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra210-smaug.dts | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/tcp.h    | 1 -
+ net/ipv4/tcp_input.c | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts b/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-index d7d7c63e62e25..79d294c2ee199 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-@@ -1312,6 +1312,7 @@ serial@70006000 {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index e9c8f88f47696..5fd69f2342a44 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -355,7 +355,6 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, int size, gfp_t gfp,
+ 				     bool force_schedule);
  
- 	uartd: serial@70006300 {
- 		compatible = "nvidia,tegra30-hsuart";
-+		reset-names = "serial";
- 		status = "okay";
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks);
+ static inline void tcp_dec_quickack_mode(struct sock *sk,
+ 					 const unsigned int pkts)
+ {
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index e2d3ea2e34561..c697836f2b5b4 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -287,7 +287,7 @@ static void tcp_incr_quickack(struct sock *sk, unsigned int max_quickacks)
+ 		icsk->icsk_ack.quick = quickacks;
+ }
  
- 		bluetooth {
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
++static void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+@@ -295,7 +295,6 @@ void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ 	inet_csk_exit_pingpong_mode(sk);
+ 	icsk->icsk_ack.ato = TCP_ATO_MIN;
+ }
+-EXPORT_SYMBOL(tcp_enter_quickack_mode);
+ 
+ /* Send ACKs quickly, if "quick" count is not exhausted
+  * and the session is not interactive.
 -- 
 2.40.1
 
