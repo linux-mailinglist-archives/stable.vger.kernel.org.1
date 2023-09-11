@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18B9E79AF3E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE4479B267
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239734AbjIKUzX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57682 "EHLO
+        id S1349046AbjIKVcS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238631AbjIKOBJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:09 -0400
+        with ESMTP id S238633AbjIKOBO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249C6CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A3FC433C8;
-        Mon, 11 Sep 2023 14:01:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA293CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE48DC433C8;
+        Mon, 11 Sep 2023 14:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440864;
-        bh=jJCv02sNVCt/9ArzvY/YTXuWEa9ev0kncF/B05AcF7Y=;
+        s=korg; t=1694440870;
+        bh=Ra5u6NcpkBJnnbQaJ4oLMSQVXAIrdGIe6Fg+vWSU9Js=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tXpKNQePvAhh53XuGXqQwGG4ITO5R0ioVfc1pz29yMqdQxNrbBWG5/VOOvkRHro1l
-         JJ93MqmykkG76+fWOC1RqP1hyWAlDDgO6ziR1+r5ZlFvwP8hV7lxCH1anfJDv8aI3G
-         Ly244LDcmm3Nx7iV3ScmGQOyNElahw9AzAqmSvpE=
+        b=pxmt3aFTBFc+4Tw4TaeRowuoutJBYL2yZNVYfpU9Ky4B8zgii2P/M3TsMrhZ9Sxxx
+         YLFtOO99RhOSkSQ9t2N3r0fOkk52TzUFcxyLimmIwGu6WFhP0X9nsaMKGViMcZYVzY
+         K/0FQB0qQlbEFkEejIiiTh0QMlEWYX3npKbHXS80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Degdag Mohamed <degdagmohamed@gmail.com>,
+        patches@lists.linux.dev,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 213/739] arm64: dts: qcom: sm8150: use proper DSI PHY compatible
-Date:   Mon, 11 Sep 2023 15:40:12 +0200
-Message-ID: <20230911134657.141488453@linuxfoundation.org>
+Subject: [PATCH 6.5 214/739] arm64: dts: qcom: sm6350: Fix ZAP region
+Date:   Mon, 11 Sep 2023 15:40:13 +0200
+Message-ID: <20230911134657.168443842@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -57,49 +57,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-[ Upstream commit 3091e5820a367f3368132f57e0a9ba6d545da15d ]
+[ Upstream commit 44bcded2be4fe9b9d0b6e48075c9947b75c0af63 ]
 
-The DSI PHY on the Qualcomm SM8150 platform requires platform-specific
-handling. Use the proper SoC-specific compatible string for the DSI
-PHYs.
+The previous ZAP region definition was wrong. Fix it.
+Note this is not a device-specific fixup, but a fixup to the generic
+PIL load address.
 
-Reported-by: Degdag Mohamed <degdagmohamed@gmail.com>
-Fixes: 2ef3bb17c45c ("arm64: dts: qcom: sm8150: Add DISPCC node")
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230612031623.3620155-1-dmitry.baryshkov@linaro.org
+Fixes: 5f82b9cda61e ("arm64: dts: qcom: Add SM6350 device tree")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Reviewed-by: Luca Weiss <luca.weiss@fairphone.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230315-topic-lagoon_gpu-v2-6-afcdfb18bb13@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index b46e55bb8bdec..0cd580920a92b 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -3840,7 +3840,7 @@ opp-358000000 {
- 			};
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 30e77010aed57..7cafb32fbb941 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -633,11 +633,6 @@ pil_ipa_gsi_mem: memory@8b710000 {
+ 			no-map;
+ 		};
  
- 			mdss_dsi0_phy: phy@ae94400 {
--				compatible = "qcom,dsi-phy-7nm";
-+				compatible = "qcom,dsi-phy-7nm-8150";
- 				reg = <0 0x0ae94400 0 0x200>,
- 				      <0 0x0ae94600 0 0x280>,
- 				      <0 0x0ae94900 0 0x260>;
-@@ -3914,7 +3914,7 @@ mdss_dsi1_out: endpoint {
- 			};
+-		pil_gpu_mem: memory@8b715400 {
+-			reg = <0 0x8b715400 0 0x2000>;
+-			no-map;
+-		};
+-
+ 		pil_modem_mem: memory@8b800000 {
+ 			reg = <0 0x8b800000 0 0xf800000>;
+ 			no-map;
+@@ -658,6 +653,11 @@ removed_region: memory@c0000000 {
+ 			no-map;
+ 		};
  
- 			mdss_dsi1_phy: phy@ae96400 {
--				compatible = "qcom,dsi-phy-7nm";
-+				compatible = "qcom,dsi-phy-7nm-8150";
- 				reg = <0 0x0ae96400 0 0x200>,
- 				      <0 0x0ae96600 0 0x280>,
- 				      <0 0x0ae96900 0 0x260>;
++		pil_gpu_mem: memory@f0d00000 {
++			reg = <0 0xf0d00000 0 0x1000>;
++			no-map;
++		};
++
+ 		debug_region: memory@ffb00000 {
+ 			reg = <0 0xffb00000 0 0xc0000>;
+ 			no-map;
 -- 
 2.40.1
 
