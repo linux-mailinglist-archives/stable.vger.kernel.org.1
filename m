@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D613379BEB9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E16BB79BAF0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238421AbjIKWJE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41710 "EHLO
+        id S1378866AbjIKWhm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240834AbjIKOzO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:14 -0400
+        with ESMTP id S239481AbjIKOVt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04649118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16648C433C7;
-        Mon, 11 Sep 2023 14:55:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF52EDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFF2C433C7;
+        Mon, 11 Sep 2023 14:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444109;
-        bh=baFUIrtFDxVZ3j2me8VQ5NunKMY7je2KhFuqJtSGU+s=;
+        s=korg; t=1694442104;
+        bh=alv9pXKHkadZbXb9Ev0JpZm2ku/B35WJ/qnAVzxFvSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xbXRBLyogFab7FNDAlLDBBt8xtKAF7f7T/I+dfCB456mcHnICDMY+EsUOUFW7QUmM
-         zwT3sY8ct05tHUzHwIwpok6zcl9pNKVAwDNokcOxpQFxrRX6h0glmz8CG8BUBG3CWy
-         WMEcupm/5a+RbPVdvTYN52oElHcZrtE6eNbq/EGo=
+        b=j+2oTDGMDLjuq3ke6xjLJ6Yu8MD80QC6MttBDLA0pC/bt080ThEX3EUrntvQvgaS1
+         nKKqfP2or0prA2t0EsbvBVvDArNyBvPp8Cy0bMIGNsemHB6Ay0ckeYdFgnGi/FOjyx
+         69i5/rYb6Dr/ADXlGVi5K9zE+ZVayTa9Wh+Mq/z0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 587/737] interconnect: qcom: bcm-voter: Improve enable_mask handling
-Date:   Mon, 11 Sep 2023 15:47:26 +0200
-Message-ID: <20230911134706.922834823@linuxfoundation.org>
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+        Zhen Lei <thunder.leizhen@huaweicloud.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Zqiang <qiang.zhang1211@gmail.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 648/739] mm/vmalloc: add a safer version of find_vm_area() for debug
+Date:   Mon, 11 Sep 2023 15:47:27 +0200
+Message-ID: <20230911134709.205569262@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Joel Fernandes (Google) <joel@joelfernandes.org>
 
-[ Upstream commit a1f4170dec440f023601d57e49227b784074d218 ]
+commit 0818e739b5c061b0251c30152380600fb9b84c0c upstream.
 
-We don't need all the complex arithmetic for BCMs utilizing enable_mask,
-as all we need to do is to determine whether there's any user (or
-keepalive) asking for it to be on.
+It is unsafe to dump vmalloc area information when trying to do so from
+some contexts.  Add a safer trylock version of the same function to do a
+best-effort VMA finding and use it from vmalloc_dump_obj().
 
-Separate the logic for such BCMs for a small speed boost.
-
-Suggested-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-icc_fix_1he-v2-1-0620af8ac133@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Stable-dep-of: 1a70ca71547b ("interconnect: qcom: bcm-voter: Use enable_maks for keepalive voting")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[applied test robot feedback on unused function fix.]
+[applied Uladzislau feedback on locking.]
+Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernandes.org
+Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/bcm-voter.c | 43 ++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ mm/vmalloc.c |   26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/bcm-voter.c b/drivers/interconnect/qcom/bcm-voter.c
-index d5f2a6b5376bd..d857eb8838b95 100644
---- a/drivers/interconnect/qcom/bcm-voter.c
-+++ b/drivers/interconnect/qcom/bcm-voter.c
-@@ -58,6 +58,36 @@ static u64 bcm_div(u64 num, u32 base)
- 	return num;
- }
- 
-+/* BCMs with enable_mask use one-hot-encoding for on/off signaling */
-+static void bcm_aggregate_mask(struct qcom_icc_bcm *bcm)
-+{
-+	struct qcom_icc_node *node;
-+	int bucket, i;
-+
-+	for (bucket = 0; bucket < QCOM_ICC_NUM_BUCKETS; bucket++) {
-+		bcm->vote_x[bucket] = 0;
-+		bcm->vote_y[bucket] = 0;
-+
-+		for (i = 0; i < bcm->num_nodes; i++) {
-+			node = bcm->nodes[i];
-+
-+			/* If any vote in this bucket exists, keep the BCM enabled */
-+			if (node->sum_avg[bucket] || node->max_peak[bucket]) {
-+				bcm->vote_x[bucket] = 0;
-+				bcm->vote_y[bucket] = bcm->enable_mask;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (bcm->keepalive) {
-+		bcm->vote_x[QCOM_ICC_BUCKET_AMC] = 1;
-+		bcm->vote_x[QCOM_ICC_BUCKET_WAKE] = 1;
-+		bcm->vote_y[QCOM_ICC_BUCKET_AMC] = 1;
-+		bcm->vote_y[QCOM_ICC_BUCKET_WAKE] = 1;
-+	}
-+}
-+
- static void bcm_aggregate(struct qcom_icc_bcm *bcm)
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4278,14 +4278,32 @@ void pcpu_free_vm_areas(struct vm_struct
+ #ifdef CONFIG_PRINTK
+ bool vmalloc_dump_obj(void *object)
  {
- 	struct qcom_icc_node *node;
-@@ -83,11 +113,6 @@ static void bcm_aggregate(struct qcom_icc_bcm *bcm)
- 
- 		temp = agg_peak[bucket] * bcm->vote_scale;
- 		bcm->vote_y[bucket] = bcm_div(temp, bcm->aux_data.unit);
--
--		if (bcm->enable_mask && (bcm->vote_x[bucket] || bcm->vote_y[bucket])) {
--			bcm->vote_x[bucket] = 0;
--			bcm->vote_y[bucket] = bcm->enable_mask;
--		}
- 	}
- 
- 	if (bcm->keepalive && bcm->vote_x[QCOM_ICC_BUCKET_AMC] == 0 &&
-@@ -260,8 +285,12 @@ int qcom_icc_bcm_voter_commit(struct bcm_voter *voter)
- 		return 0;
- 
- 	mutex_lock(&voter->lock);
--	list_for_each_entry(bcm, &voter->commit_list, list)
--		bcm_aggregate(bcm);
-+	list_for_each_entry(bcm, &voter->commit_list, list) {
-+		if (bcm->enable_mask)
-+			bcm_aggregate_mask(bcm);
-+		else
-+			bcm_aggregate(bcm);
+-	struct vm_struct *vm;
+ 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
++	const void *caller;
++	struct vm_struct *vm;
++	struct vmap_area *va;
++	unsigned long addr;
++	unsigned int nr_pages;
++
++	if (!spin_trylock(&vmap_area_lock))
++		return false;
++	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
++	if (!va) {
++		spin_unlock(&vmap_area_lock);
++		return false;
 +	}
  
- 	/*
- 	 * Pre sort the BCMs based on VCD for ease of generating a command list
--- 
-2.40.1
-
+-	vm = find_vm_area(objp);
+-	if (!vm)
++	vm = va->vm;
++	if (!vm) {
++		spin_unlock(&vmap_area_lock);
+ 		return false;
++	}
++	addr = (unsigned long)vm->addr;
++	caller = vm->caller;
++	nr_pages = vm->nr_pages;
++	spin_unlock(&vmap_area_lock);
+ 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+-		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
++		nr_pages, addr, caller);
+ 	return true;
+ }
+ #endif
 
 
