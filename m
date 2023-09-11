@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8741D79B798
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD25C79B8E4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242312AbjIKVtu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56142 "EHLO
+        id S1359292AbjIKWQK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238341AbjIKNyN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:13 -0400
+        with ESMTP id S239726AbjIKO1P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2E9FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:54:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D9BC433C7;
-        Mon, 11 Sep 2023 13:54:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C60F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34834C433C8;
+        Mon, 11 Sep 2023 14:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440447;
-        bh=Jp0uUzgioDIQmyNfubPjS6X4ZijuL9wzjxf8vi+NrYQ=;
+        s=korg; t=1694442430;
+        bh=+Qbd7SPQ/jskfX8ZaCR0G9HsNL0EOFWPfJir/qXdYG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G8ihi5nvXf+zALNKNQbE1AEM47p1vdjI7Cu2n1wR/wf78rUY+wvaV7pw2yUzywpZc
-         EKcDJzu5/ikum3kQCSvR2/3npV9k4lbafzQICN69m9k9ZX389FhSAouAkvjhFDnVod
-         UMbppX9n37TAFFaUYptDhfRkrxUzcTJTVzErV43U=
+        b=M31Solj7ZOjZFlUTo+37fz9QVYW5CB+bwRMlNH+5iTuSKOviBy13N6nc1k3fYUbYr
+         lEQWJAFh6hlruF4iU2hw6QpnW5JZFNm/qvcce0t1IZgVW+Enx/wsJOght7XDo9fv5t
+         S+5q9cBXtqyCiFvCVIovlsvdPAXmd+608cTO6zV4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Alexander Lobakin <alobakin@pm.me>,
-        Quentin Monnet <quentin@isovalent.com>,
+        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 065/739] bpftool: use a local copy of perf_event to fix accessing :: Bpf_cookie
-Date:   Mon, 11 Sep 2023 15:37:44 +0200
-Message-ID: <20230911134652.923487573@linuxfoundation.org>
+Subject: [PATCH 6.4 006/737] media: imx-jpeg: Support to assign slot for encoder/decoder
+Date:   Mon, 11 Sep 2023 15:37:45 +0200
+Message-ID: <20230911134650.487479348@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +51,365 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <alobakin@pm.me>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit 4cbeeb0dc02f8ac7b975b2ab0080ace53d43d62a ]
+[ Upstream commit 53ebeea50599c1ed05277d7a57e331a34e6d6a82 ]
 
-When CONFIG_PERF_EVENTS is not set, struct perf_event remains empty.
-However, the structure is being used by bpftool indirectly via BTF.
-This leads to:
+imx jpeg encoder and decoder support 4 slots each,
+aim to support some virtualization scenarios.
 
-skeleton/pid_iter.bpf.c:49:30: error: no member named 'bpf_cookie' in 'struct perf_event'
-        return BPF_CORE_READ(event, bpf_cookie);
-               ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+driver should only enable one slot one time.
 
-...
+but due to some hardware issue,
+only slot 0 can be enabled in imx8q platform,
+and they may be fixed in imx9 platform.
 
-skeleton/pid_iter.bpf.c:49:9: error: returning 'void' from a function with incompatible result type '__u64' (aka 'unsigned long long')
-        return BPF_CORE_READ(event, bpf_cookie);
-               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Tools and samples can't use any CONFIG_ definitions, so the fields
-used there should always be present.
-Define struct perf_event___local with the `preserve_access_index`
-attribute inside the pid_iter BPF prog to allow compiling on any
-configs. CO-RE will substitute it with the real struct perf_event
-accesses later on.
-
-Fixes: cbdaf71f7e65 ("bpftool: Add bpf_cookie to link output")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Alexander Lobakin <alobakin@pm.me>
-Signed-off-by: Quentin Monnet <quentin@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230707095425.168126-2-quentin@isovalent.com
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/skeleton/pid_iter.bpf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |   1 -
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 135 +++++++++---------
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |   5 +-
+ 3 files changed, 68 insertions(+), 73 deletions(-)
 
-diff --git a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-index eb05ea53afb12..e2af8e5fb29ec 100644
---- a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-+++ b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-@@ -15,6 +15,10 @@ enum bpf_obj_type {
- 	BPF_OBJ_BTF,
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
+index ed15ea348f97b..a2b4fb9e29e7d 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
+@@ -58,7 +58,6 @@
+ #define CAST_OFBSIZE_LO			CAST_STATUS18
+ #define CAST_OFBSIZE_HI			CAST_STATUS19
+ 
+-#define MXC_MAX_SLOTS	1 /* TODO use all 4 slots*/
+ /* JPEG-Decoder Wrapper Slot Registers 0..3 */
+ #define SLOT_BASE			0x10000
+ #define SLOT_STATUS			0x0
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index c0e49be42450a..9512c0a619667 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -745,87 +745,77 @@ static void notify_src_chg(struct mxc_jpeg_ctx *ctx)
+ 	v4l2_event_queue_fh(&ctx->fh, &ev);
+ }
+ 
+-static int mxc_get_free_slot(struct mxc_jpeg_slot_data slot_data[], int n)
++static int mxc_get_free_slot(struct mxc_jpeg_slot_data *slot_data)
+ {
+-	int free_slot = 0;
+-
+-	while (slot_data[free_slot].used && free_slot < n)
+-		free_slot++;
+-
+-	return free_slot; /* >=n when there are no more free slots */
++	if (!slot_data->used)
++		return slot_data->slot;
++	return -1;
+ }
+ 
+-static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg,
+-				     unsigned int slot)
++static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
+ {
+ 	struct mxc_jpeg_desc *desc;
+ 	struct mxc_jpeg_desc *cfg_desc;
+ 	void *cfg_stm;
+ 
+-	if (jpeg->slot_data[slot].desc)
++	if (jpeg->slot_data.desc)
+ 		goto skip_alloc; /* already allocated, reuse it */
+ 
+ 	/* allocate descriptor for decoding/encoding phase */
+ 	desc = dma_alloc_coherent(jpeg->dev,
+ 				  sizeof(struct mxc_jpeg_desc),
+-				  &jpeg->slot_data[slot].desc_handle,
++				  &jpeg->slot_data.desc_handle,
+ 				  GFP_ATOMIC);
+ 	if (!desc)
+ 		goto err;
+-	jpeg->slot_data[slot].desc = desc;
++	jpeg->slot_data.desc = desc;
+ 
+ 	/* allocate descriptor for configuration phase (encoder only) */
+ 	cfg_desc = dma_alloc_coherent(jpeg->dev,
+ 				      sizeof(struct mxc_jpeg_desc),
+-				      &jpeg->slot_data[slot].cfg_desc_handle,
++				      &jpeg->slot_data.cfg_desc_handle,
+ 				      GFP_ATOMIC);
+ 	if (!cfg_desc)
+ 		goto err;
+-	jpeg->slot_data[slot].cfg_desc = cfg_desc;
++	jpeg->slot_data.cfg_desc = cfg_desc;
+ 
+ 	/* allocate configuration stream */
+ 	cfg_stm = dma_alloc_coherent(jpeg->dev,
+ 				     MXC_JPEG_MAX_CFG_STREAM,
+-				     &jpeg->slot_data[slot].cfg_stream_handle,
++				     &jpeg->slot_data.cfg_stream_handle,
+ 				     GFP_ATOMIC);
+ 	if (!cfg_stm)
+ 		goto err;
+-	jpeg->slot_data[slot].cfg_stream_vaddr = cfg_stm;
++	jpeg->slot_data.cfg_stream_vaddr = cfg_stm;
+ 
+ skip_alloc:
+-	jpeg->slot_data[slot].used = true;
++	jpeg->slot_data.used = true;
+ 
+ 	return true;
+ err:
+-	dev_err(jpeg->dev, "Could not allocate descriptors for slot %d", slot);
++	dev_err(jpeg->dev, "Could not allocate descriptors for slot %d", jpeg->slot_data.slot);
+ 
+ 	return false;
+ }
+ 
+-static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg,
+-				    unsigned int slot)
++static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
+ {
+-	if (slot >= MXC_MAX_SLOTS) {
+-		dev_err(jpeg->dev, "Invalid slot %d, nothing to free.", slot);
+-		return;
+-	}
+-
+ 	/* free descriptor for decoding/encoding phase */
+ 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+-			  jpeg->slot_data[slot].desc,
+-			  jpeg->slot_data[slot].desc_handle);
++			  jpeg->slot_data.desc,
++			  jpeg->slot_data.desc_handle);
+ 
+ 	/* free descriptor for encoder configuration phase / decoder DHT */
+ 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+-			  jpeg->slot_data[slot].cfg_desc,
+-			  jpeg->slot_data[slot].cfg_desc_handle);
++			  jpeg->slot_data.cfg_desc,
++			  jpeg->slot_data.cfg_desc_handle);
+ 
+ 	/* free configuration stream */
+ 	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
+-			  jpeg->slot_data[slot].cfg_stream_vaddr,
+-			  jpeg->slot_data[slot].cfg_stream_handle);
++			  jpeg->slot_data.cfg_stream_vaddr,
++			  jpeg->slot_data.cfg_stream_handle);
+ 
+-	jpeg->slot_data[slot].used = false;
++	jpeg->slot_data.used = false;
+ }
+ 
+ static void mxc_jpeg_check_and_set_last_buffer(struct mxc_jpeg_ctx *ctx,
+@@ -855,7 +845,7 @@ static void mxc_jpeg_job_finish(struct mxc_jpeg_ctx *ctx, enum vb2_buffer_state
+ 	v4l2_m2m_buf_done(dst_buf, state);
+ 
+ 	mxc_jpeg_disable_irq(reg, ctx->slot);
+-	ctx->mxc_jpeg->slot_data[ctx->slot].used = false;
++	jpeg->slot_data.used = false;
+ 	if (reset)
+ 		mxc_jpeg_sw_reset(reg);
+ }
+@@ -919,7 +909,7 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
+ 		goto job_unlock;
+ 	}
+ 
+-	if (!jpeg->slot_data[slot].used)
++	if (!jpeg->slot_data.used)
+ 		goto job_unlock;
+ 
+ 	dec_ret = readl(reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS));
+@@ -1179,13 +1169,13 @@ static void mxc_jpeg_config_dec_desc(struct vb2_buffer *out_buf,
+ 	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
+ 	void __iomem *reg = jpeg->base_reg;
+ 	unsigned int slot = ctx->slot;
+-	struct mxc_jpeg_desc *desc = jpeg->slot_data[slot].desc;
+-	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data[slot].cfg_desc;
+-	dma_addr_t desc_handle = jpeg->slot_data[slot].desc_handle;
+-	dma_addr_t cfg_desc_handle = jpeg->slot_data[slot].cfg_desc_handle;
+-	dma_addr_t cfg_stream_handle = jpeg->slot_data[slot].cfg_stream_handle;
+-	unsigned int *cfg_size = &jpeg->slot_data[slot].cfg_stream_size;
+-	void *cfg_stream_vaddr = jpeg->slot_data[slot].cfg_stream_vaddr;
++	struct mxc_jpeg_desc *desc = jpeg->slot_data.desc;
++	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data.cfg_desc;
++	dma_addr_t desc_handle = jpeg->slot_data.desc_handle;
++	dma_addr_t cfg_desc_handle = jpeg->slot_data.cfg_desc_handle;
++	dma_addr_t cfg_stream_handle = jpeg->slot_data.cfg_stream_handle;
++	unsigned int *cfg_size = &jpeg->slot_data.cfg_stream_size;
++	void *cfg_stream_vaddr = jpeg->slot_data.cfg_stream_vaddr;
+ 	struct mxc_jpeg_src_buf *jpeg_src_buf;
+ 
+ 	jpeg_src_buf = vb2_to_mxc_buf(src_buf);
+@@ -1245,18 +1235,18 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
+ 	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
+ 	void __iomem *reg = jpeg->base_reg;
+ 	unsigned int slot = ctx->slot;
+-	struct mxc_jpeg_desc *desc = jpeg->slot_data[slot].desc;
+-	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data[slot].cfg_desc;
+-	dma_addr_t desc_handle = jpeg->slot_data[slot].desc_handle;
+-	dma_addr_t cfg_desc_handle = jpeg->slot_data[slot].cfg_desc_handle;
+-	void *cfg_stream_vaddr = jpeg->slot_data[slot].cfg_stream_vaddr;
++	struct mxc_jpeg_desc *desc = jpeg->slot_data.desc;
++	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data.cfg_desc;
++	dma_addr_t desc_handle = jpeg->slot_data.desc_handle;
++	dma_addr_t cfg_desc_handle = jpeg->slot_data.cfg_desc_handle;
++	void *cfg_stream_vaddr = jpeg->slot_data.cfg_stream_vaddr;
+ 	struct mxc_jpeg_q_data *q_data;
+ 	enum mxc_jpeg_image_format img_fmt;
+ 	int w, h;
+ 
+ 	q_data = mxc_jpeg_get_q_data(ctx, src_buf->vb2_queue->type);
+ 
+-	jpeg->slot_data[slot].cfg_stream_size =
++	jpeg->slot_data.cfg_stream_size =
+ 			mxc_jpeg_setup_cfg_stream(cfg_stream_vaddr,
+ 						  q_data->fmt->fourcc,
+ 						  q_data->crop.width,
+@@ -1265,7 +1255,7 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
+ 	/* chain the config descriptor with the encoding descriptor */
+ 	cfg_desc->next_descpt_ptr = desc_handle | MXC_NXT_DESCPT_EN;
+ 
+-	cfg_desc->buf_base0 = jpeg->slot_data[slot].cfg_stream_handle;
++	cfg_desc->buf_base0 = jpeg->slot_data.cfg_stream_handle;
+ 	cfg_desc->buf_base1 = 0;
+ 	cfg_desc->line_pitch = 0;
+ 	cfg_desc->stm_bufbase = 0; /* no output expected */
+@@ -1408,7 +1398,7 @@ static void mxc_jpeg_device_run_timeout(struct work_struct *work)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ctx->mxc_jpeg->hw_lock, flags);
+-	if (ctx->slot < MXC_MAX_SLOTS && ctx->mxc_jpeg->slot_data[ctx->slot].used) {
++	if (ctx->mxc_jpeg->slot_data.used) {
+ 		dev_warn(jpeg->dev, "%s timeout, cancel it\n",
+ 			 ctx->mxc_jpeg->mode == MXC_JPEG_DECODE ? "decode" : "encode");
+ 		mxc_jpeg_job_finish(ctx, VB2_BUF_STATE_ERROR, true);
+@@ -1476,12 +1466,12 @@ static void mxc_jpeg_device_run(void *priv)
+ 	mxc_jpeg_enable(reg);
+ 	mxc_jpeg_set_l_endian(reg, 1);
+ 
+-	ctx->slot = mxc_get_free_slot(jpeg->slot_data, MXC_MAX_SLOTS);
+-	if (ctx->slot >= MXC_MAX_SLOTS) {
++	ctx->slot = mxc_get_free_slot(&jpeg->slot_data);
++	if (ctx->slot < 0) {
+ 		dev_err(dev, "No more free slots\n");
+ 		goto end;
+ 	}
+-	if (!mxc_jpeg_alloc_slot_data(jpeg, ctx->slot)) {
++	if (!mxc_jpeg_alloc_slot_data(jpeg)) {
+ 		dev_err(dev, "Cannot allocate slot data\n");
+ 		goto end;
+ 	}
+@@ -2101,7 +2091,7 @@ static int mxc_jpeg_open(struct file *file)
+ 	}
+ 	ctx->fh.ctrl_handler = &ctx->ctrl_handler;
+ 	mxc_jpeg_set_default_params(ctx);
+-	ctx->slot = MXC_MAX_SLOTS; /* slot not allocated yet */
++	ctx->slot = -1; /* slot not allocated yet */
+ 	INIT_DELAYED_WORK(&ctx->task_timer, mxc_jpeg_device_run_timeout);
+ 
+ 	if (mxc_jpeg->mode == MXC_JPEG_DECODE)
+@@ -2677,6 +2667,11 @@ static int mxc_jpeg_attach_pm_domains(struct mxc_jpeg_dev *jpeg)
+ 		dev_err(dev, "No power domains defined for jpeg node\n");
+ 		return jpeg->num_domains;
+ 	}
++	if (jpeg->num_domains == 1) {
++		/* genpd_dev_pm_attach() attach automatically if power domains count is 1 */
++		jpeg->num_domains = 0;
++		return 0;
++	}
+ 
+ 	jpeg->pd_dev = devm_kmalloc_array(dev, jpeg->num_domains,
+ 					  sizeof(*jpeg->pd_dev), GFP_KERNEL);
+@@ -2718,7 +2713,6 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
+ 	int ret;
+ 	int mode;
+ 	const struct of_device_id *of_id;
+-	unsigned int slot;
+ 
+ 	of_id = of_match_node(mxc_jpeg_match, dev->of_node);
+ 	if (!of_id)
+@@ -2742,19 +2736,22 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
+ 	if (IS_ERR(jpeg->base_reg))
+ 		return PTR_ERR(jpeg->base_reg);
+ 
+-	for (slot = 0; slot < MXC_MAX_SLOTS; slot++) {
+-		dec_irq = platform_get_irq(pdev, slot);
+-		if (dec_irq < 0) {
+-			ret = dec_irq;
+-			goto err_irq;
+-		}
+-		ret = devm_request_irq(&pdev->dev, dec_irq, mxc_jpeg_dec_irq,
+-				       0, pdev->name, jpeg);
+-		if (ret) {
+-			dev_err(&pdev->dev, "Failed to request irq %d (%d)\n",
+-				dec_irq, ret);
+-			goto err_irq;
+-		}
++	ret = of_property_read_u32_index(pdev->dev.of_node, "slot", 0, &jpeg->slot_data.slot);
++	if (ret)
++		jpeg->slot_data.slot = 0;
++	dev_info(&pdev->dev, "choose slot %d\n", jpeg->slot_data.slot);
++	dec_irq = platform_get_irq(pdev, 0);
++	if (dec_irq < 0) {
++		dev_err(&pdev->dev, "Failed to get irq %d\n", dec_irq);
++		ret = dec_irq;
++		goto err_irq;
++	}
++	ret = devm_request_irq(&pdev->dev, dec_irq, mxc_jpeg_dec_irq,
++			       0, pdev->name, jpeg);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to request irq %d (%d)\n",
++			dec_irq, ret);
++		goto err_irq;
+ 	}
+ 
+ 	jpeg->pdev = pdev;
+@@ -2914,11 +2911,9 @@ static const struct dev_pm_ops	mxc_jpeg_pm_ops = {
+ 
+ static void mxc_jpeg_remove(struct platform_device *pdev)
+ {
+-	unsigned int slot;
+ 	struct mxc_jpeg_dev *jpeg = platform_get_drvdata(pdev);
+ 
+-	for (slot = 0; slot < MXC_MAX_SLOTS; slot++)
+-		mxc_jpeg_free_slot_data(jpeg, slot);
++	mxc_jpeg_free_slot_data(jpeg);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	video_unregister_device(jpeg->dec_vdev);
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+index 87157db780826..d80e94cc9d992 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+@@ -97,7 +97,7 @@ struct mxc_jpeg_ctx {
+ 	struct mxc_jpeg_q_data		cap_q;
+ 	struct v4l2_fh			fh;
+ 	enum mxc_jpeg_enc_state		enc_state;
+-	unsigned int			slot;
++	int				slot;
+ 	unsigned int			source_change;
+ 	bool				header_parsed;
+ 	struct v4l2_ctrl_handler	ctrl_handler;
+@@ -106,6 +106,7 @@ struct mxc_jpeg_ctx {
  };
  
-+struct perf_event___local {
-+	u64 bpf_cookie;
-+} __attribute__((preserve_access_index));
-+
- extern const void bpf_link_fops __ksym;
- extern const void bpf_map_fops __ksym;
- extern const void bpf_prog_fops __ksym;
-@@ -41,8 +45,8 @@ static __always_inline __u32 get_obj_id(void *ent, enum bpf_obj_type type)
- /* could be used only with BPF_LINK_TYPE_PERF_EVENT links */
- static __u64 get_bpf_cookie(struct bpf_link *link)
- {
-+	struct perf_event___local *event;
- 	struct bpf_perf_link *perf_link;
--	struct perf_event *event;
- 
- 	perf_link = container_of(link, struct bpf_perf_link, link);
- 	event = BPF_CORE_READ(perf_link, perf_file, private_data);
+ struct mxc_jpeg_slot_data {
++	int slot;
+ 	bool used;
+ 	struct mxc_jpeg_desc *desc; // enc/dec descriptor
+ 	struct mxc_jpeg_desc *cfg_desc; // configuration descriptor
+@@ -128,7 +129,7 @@ struct mxc_jpeg_dev {
+ 	struct v4l2_device		v4l2_dev;
+ 	struct v4l2_m2m_dev		*m2m_dev;
+ 	struct video_device		*dec_vdev;
+-	struct mxc_jpeg_slot_data	slot_data[MXC_MAX_SLOTS];
++	struct mxc_jpeg_slot_data	slot_data;
+ 	int				num_domains;
+ 	struct device			**pd_dev;
+ 	struct device_link		**pd_link;
 -- 
 2.40.1
 
