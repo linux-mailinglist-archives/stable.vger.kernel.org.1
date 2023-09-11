@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C27A979B146
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EAE279B412
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230496AbjIKUxb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:53:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51570 "EHLO
+        id S239234AbjIKWJR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242333AbjIKP2F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:05 -0400
+        with ESMTP id S242335AbjIKP2M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B73E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DBFC433C8;
-        Mon, 11 Sep 2023 15:28:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABACAF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3819C433C7;
+        Mon, 11 Sep 2023 15:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446081;
-        bh=+z5PYyhH9oTjyJNITYybeFkHTAEagxFpW6638dp4q/0=;
+        s=korg; t=1694446087;
+        bh=vcMmCl7H8BO9ips9rgO+T9++nr61DQAFR1ZqzUrIVso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oJqip+U38Qs5+4f1Nf6px6j6KlWr/iBgLRibL6kWL42uECZVhWOktQCm2cYidrw6N
-         FaOABDroQHEuTpqnh0jViJnApnVP+FS+RulsBe5rzV0s4sTaSGwNU6v5739KU2ueQA
-         mdDT9s+MjDMKl/itF5U0Nwdv+AtTC8E5UewTitKg=
+        b=EF9map52eKgoQGmSgb8Tm2/+G4OR6d6f1xW2MoivUoMvR++xIiQqiG8/bdzzNmFGh
+         P5H8ju+CbzSgcpmYC/8BrYqgoTyuhjj7kq3WAreUWqTjDlLdtoBHrzGidSstnadWCT
+         wirFyMpY3kMK98rCRYz5jCyioL6WhsVdkKlGtR2U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 546/600] ALSA: hda/cirrus: Fix broken audio on hardware with two CS42L42 codecs.
-Date:   Mon, 11 Sep 2023 15:49:39 +0200
-Message-ID: <20230911134649.737871765@linuxfoundation.org>
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 548/600] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
+Date:   Mon, 11 Sep 2023 15:49:41 +0200
+Message-ID: <20230911134649.795897048@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -54,47 +54,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit 99bf5b0baac941176a6a3d5cef7705b29808de34 upstream.
+commit d74e481609808330b4625b3691cf01e1f56e255e upstream.
 
-Recently in v6.3-rc1 there was a change affecting behaviour of hrtimers
-(commit 0c52310f260014d95c1310364379772cb74cf82d) and causing
-few issues on platforms with two CS42L42 codecs. Canonical/Dell
-has reported an issue with Vostro-3910.
-We need to increase this value by 15ms.
+The startup procedure shouldn't be started with interrupts masked, as that
+may entail silent failures.
 
-Link: https://bugs.launchpad.net/somerville/+bug/2031060
-Fixes: 9fb9fa18fb50 ("ALSA: hda/cirrus: Add extra 10 ms delay to allow PLL settle and lock.")
-Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230904160033.908135-1-vitalyr@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Kick off initialization only after the interrupts are unmasked.
+
+Cc: stable@vger.kernel.org # v4.12+
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_cs8409.c |    2 +-
- sound/pci/hda/patch_cs8409.h |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_cs8409.c
-+++ b/sound/pci/hda/patch_cs8409.c
-@@ -888,7 +888,7 @@ static void cs42l42_resume(struct sub_co
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_
+ 	void __iomem *wrapper_base = hdev->core->wrapper_base;
+ 	int ret = 0;
  
- 	/* Initialize CS42L42 companion codec */
- 	cs8409_i2c_bulk_write(cs42l42, cs42l42->init_seq, cs42l42->init_seq_num);
--	usleep_range(30000, 35000);
-+	msleep(CS42L42_INIT_TIMEOUT_MS);
+-	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	if (IS_V6(hdev->core)) {
+ 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
+ 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
+@@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_
+ 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+ 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
  
- 	/* Clear interrupts, by reading interrupt status registers */
- 	cs8409_i2c_bulk_read(cs42l42, irq_regs, ARRAY_SIZE(irq_regs));
---- a/sound/pci/hda/patch_cs8409.h
-+++ b/sound/pci/hda/patch_cs8409.h
-@@ -229,6 +229,7 @@ enum cs8409_coefficient_index_registers
- #define CS42L42_I2C_SLEEP_US			(2000)
- #define CS42L42_PDN_TIMEOUT_US			(250000)
- #define CS42L42_PDN_SLEEP_US			(2000)
-+#define CS42L42_INIT_TIMEOUT_MS			(45)
- #define CS42L42_FULL_SCALE_VOL_MASK		(2)
- #define CS42L42_FULL_SCALE_VOL_0DB		(1)
- #define CS42L42_FULL_SCALE_VOL_MINUS6DB		(0)
++	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	while (!ctrl_status && count < max_tries) {
+ 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
+ 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
 
 
