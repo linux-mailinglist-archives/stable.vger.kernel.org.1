@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8939179BE01
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBBF379B725
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238756AbjIKWpf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42528 "EHLO
+        id S243080AbjIKU7E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239343AbjIKOS1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:27 -0400
+        with ESMTP id S240739AbjIKOw2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91852DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35E8C433C8;
-        Mon, 11 Sep 2023 14:18:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C24118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102CEC433C8;
+        Mon, 11 Sep 2023 14:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441903;
-        bh=uXBtynDVwS2TC+z/p5LGGKxpUJMF8/uBxlC7bX/XkA4=;
+        s=korg; t=1694443943;
+        bh=XBsidfZzR5PVv40H6gBk8xj0NAEsMkacrX4XxO/LnJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O1pMCfbp2Tutm3mt/UOqhDPFj5MHLIrljK/Al69SjJM+i/6GftvICXWbI37pbk6Er
-         u6hZ6RtHW2ToklRQ9kyYuaCAR3n9vcFLyNPCiWhONNLbb6cb6V6Tz9hm+fkVFhIZ6S
-         YfZ4YXHgPzVjl7kPJuE2IfGe3YHtKqsV60hEFX7k=
+        b=PiiFEUH55sTxrkBExi+JSdlpwmeFjiGchbgc+00+MLu9nqIzwaArpGfUwp05kul3p
+         CGeW4fDv9oGlYnTk8uAAFSW+pNzX62R7pq9lGqudMSxFXEy/G8FwXWHxySwZPwx1Qm
+         PQM4FLYCQmBsBSfw87byUYq+yeitCH5CQvp4TR8E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 576/739] amba: bus: fix refcount leak
+Subject: [PATCH 6.4 516/737] iio: accel: adxl313: Fix adxl313_i2c_id[] table
 Date:   Mon, 11 Sep 2023 15:46:15 +0200
-Message-ID: <20230911134707.194926194@linuxfoundation.org>
+Message-ID: <20230911134704.968596919@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit e312cbdc11305568554a9e18a2ea5c2492c183f3 ]
+[ Upstream commit f636554c4cd1c644109cc525900a056495b86cc9 ]
 
-commit 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-increases the refcount of of_node, but not releases it in
-amba_device_release, so there is refcount leak. By using of_node_put
-to avoid refcount leak.
+The .driver_data in adxl313_i2c_id[] for adxl312 and adxl314 is
+wrong. Fix this issue by adding corresponding adxl31x_chip_info
+data.
 
-Fixes: 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230821023928.3324283-1-peng.fan@oss.nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jonathan Cameron <jic23@kernel.org>
+Closes: https://lore.kernel.org/all/20230722172832.04ad7738@jic23-huawei
+Fixes: a7a1c60bc4c9 ("drivers: iio: accel: adxl312 and adxl314 support")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230725171624.331283-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/amba/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/accel/adxl313_i2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index ce88af9eb562f..09e72967b8abf 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -528,6 +528,7 @@ static void amba_device_release(struct device *dev)
- {
- 	struct amba_device *d = to_amba_device(dev);
+diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
+index 99cc7fc294882..68785bd3ef2f0 100644
+--- a/drivers/iio/accel/adxl313_i2c.c
++++ b/drivers/iio/accel/adxl313_i2c.c
+@@ -40,8 +40,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
  
-+	of_node_put(d->dev.of_node);
- 	if (d->res.parent)
- 		release_resource(&d->res);
- 	mutex_destroy(&d->periphid_lock);
+ static const struct i2c_device_id adxl313_i2c_id[] = {
+ 	{ .name = "adxl312", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
+-	{ .name = "adxl313", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
+-	{ .name = "adxl314", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
++	{ .name = "adxl313", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL313] },
++	{ .name = "adxl314", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL314] },
+ 	{ }
+ };
+ 
 -- 
 2.40.1
 
