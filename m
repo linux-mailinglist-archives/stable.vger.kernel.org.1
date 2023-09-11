@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19DE779B459
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D9A379B574
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357960AbjIKWHC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49436 "EHLO
+        id S239409AbjIKUy4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238608AbjIKOAk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:40 -0400
+        with ESMTP id S239963AbjIKOcj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B34CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AAFC433C7;
-        Mon, 11 Sep 2023 14:00:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A28A8F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:32:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9C7C433C8;
+        Mon, 11 Sep 2023 14:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440836;
-        bh=Jxm1Yf44UozXoVwzyRo9u8tElS6hL5jNJGrfRr6zlIM=;
+        s=korg; t=1694442755;
+        bh=3tHcRpK6sGazcrjnZK7+25pnEtTWNbsajOdkbCRaejI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nY3m7PmXwJJGk6ckMUM3+xkf0YFrUJsFkCLaYFz2vQnNidi1Tf0IdxYSSDg+SVDdt
-         8owGP93qJUdABOzbcNTMHNtdStXTgrg/rMVnBOshC0l0mtfrqhlmcUjPrwkRvXt6hm
-         t0makJVg4bwB93Bw8oMXG/60HNV3eK79egEmPu1o=
+        b=VX8+UFTd4QMxrbSAWgGs0TxeeE+x/oZyQo3MJ1IQbfP4PH3xZKeid3E17raDOFoZs
+         TgeAqXq1VxlscnqmD7oIstb3REgBXEG6kJ9x958oJQgS2RXAbwvwpAWH6tXDo6ymFd
+         TPEQyxbu7FhCGvGQEpYI1tkCP3HQgegQk2io1Tt0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Brett Creeley <brett.creeley@amd.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Mikel Rychliski <mikel@mikelr.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 195/739] pds_core: no health reporter in VF
-Date:   Mon, 11 Sep 2023 15:39:54 +0200
-Message-ID: <20230911134656.636488858@linuxfoundation.org>
+Subject: [PATCH 6.4 136/737] x86/efistub: Fix PCI ROM preservation in mixed mode
+Date:   Mon, 11 Sep 2023 15:39:55 +0200
+Message-ID: <20230911134654.301931447@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Mikel Rychliski <mikel@mikelr.com>
 
-[ Upstream commit e48b894a1db7f6ce66bff0402ab21ff9f0e56034 ]
+[ Upstream commit 8b94da92559f7e403dc7ab81937cc50f949ee2fd ]
 
-Make sure the health reporter is set up before we use it in
-our devlink health updates, especially since the VF doesn't
-set up the health reporter.
+preserve_pci_rom_image() was accessing the romsize field in
+efi_pci_io_protocol_t directly instead of using the efi_table_attr()
+helper. This prevents the ROM image from being saved correctly during a
+mixed mode boot.
 
-Fixes: 25b450c05a49 ("pds_core: add devlink health facilities")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230824161754.34264-3-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2c3625cb9fa2 ("efi/x86: Fold __setup_efi_pci32() and __setup_efi_pci64() into one function")
+Signed-off-by: Mikel Rychliski <mikel@mikelr.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index f2c79456d7452..383e3311a52c2 100644
---- a/drivers/net/ethernet/amd/pds_core/core.c
-+++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -524,7 +524,8 @@ static void pdsc_fw_down(struct pdsc *pdsc)
- 	}
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index a0bfd31358ba9..9ae0d6d0c285f 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -61,7 +61,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 	rom->data.type	= SETUP_PCI;
+ 	rom->data.len	= size - sizeof(struct setup_data);
+ 	rom->data.next	= 0;
+-	rom->pcilen	= pci->romsize;
++	rom->pcilen	= romsize;
+ 	*__rom = rom;
  
- 	/* Notify clients of fw_down */
--	devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
-+	if (pdsc->fw_reporter)
-+		devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
- 	pdsc_notify(PDS_EVENT_RESET, &reset_event);
- 
- 	pdsc_stop(pdsc);
-@@ -554,8 +555,9 @@ static void pdsc_fw_up(struct pdsc *pdsc)
- 
- 	/* Notify clients of fw_up */
- 	pdsc->fw_recoveries++;
--	devlink_health_reporter_state_update(pdsc->fw_reporter,
--					     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
-+	if (pdsc->fw_reporter)
-+		devlink_health_reporter_state_update(pdsc->fw_reporter,
-+						     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
- 	pdsc_notify(PDS_EVENT_RESET, &reset_event);
- 
- 	return;
+ 	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
 -- 
 2.40.1
 
