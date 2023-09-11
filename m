@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0B579BF89
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C68A679B912
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345726AbjIKVWA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51348 "EHLO
+        id S1377563AbjIKW1L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240042AbjIKOeu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:50 -0400
+        with ESMTP id S238635AbjIKOBS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE9FE4D
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8662C433C8;
-        Mon, 11 Sep 2023 14:34:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6959CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7464C433C7;
+        Mon, 11 Sep 2023 14:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442886;
-        bh=QTbAQoQ4NlXJVx8w4qQSvRKXRBZVVHK1aavT6fj4R8I=;
+        s=korg; t=1694440873;
+        bh=ghQw8FrcA4Bv1qQuro2XOdUDcEHCmXcLE00yvIkb3VI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l6L3aejpeDTx5nz5UU/OckGadZMJmdWZEsntlYPcFoV3eFDushjPo8Y7A45PLZwSA
-         UnmbAo5HrrAMfUr7Lxh0h6P208V418yhZwnVujWEn3uISt0U+JjXmh0HGkCZNKzQXN
-         770C/S537JiVW/jeCh3BJmo59F8vqvLNqCnFyNc4=
+        b=JOPocNBAE1bJvcc7EM6TduDYuwYoY3Gsb+t/2fyshq7aUt4jfPtB1F/0TLCdK19LI
+         E4rSLzO/huZULtQ1AddBI9q2P9hIhazZXHocly+KFCXQ+Dg0ojwqNswjGqo+u8Wfhl
+         n16U89I/O4hhiX8kgoa57O0sOrQLCFysERQjWIFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 155/737] regmap: maple: Use alloc_flags for memory allocations
+Subject: [PATCH 6.5 215/739] Revert "arm64: dts: qcom: msm8996: rename labels for HDMI nodes"
 Date:   Mon, 11 Sep 2023 15:40:14 +0200
-Message-ID: <20230911134654.817502190@linuxfoundation.org>
+Message-ID: <20230911134657.195244757@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,136 +51,242 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b0393e1fe40e962574613a5cdc4a470d6c1de023 ]
+[ Upstream commit 2b812caf5f64df959555e48dfc7bf8f061d9fe8f ]
 
-REGCACHE_MAPLE needs to allocate memory for regmap operations.
-This results in lockdep splats if used with fast_io since fast_io uses
-spinlocks for locking.
+The commit f43b6dc7d56e ("arm64: dts: qcom: msm8996: rename labels for
+HDMI nodes") is broken, it changes all the HDMI node names,
+compatible strings instead of changing just node aliases. Revert the
+commit in order to land a proper clean version.
 
-BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
-in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 167, name: kunit_try_catch
-preempt_count: 1, expected: 0
-1 lock held by kunit_try_catch/167:
- #0: 838e9c10 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
-irq event stamp: 146
-hardirqs last  enabled at (145): [<8078bfa8>] crng_make_state+0x1a0/0x294
-hardirqs last disabled at (146): [<80c5f62c>] _raw_spin_lock_irqsave+0x7c/0x80
-softirqs last  enabled at (0): [<80110cc4>] copy_process+0x810/0x216c
-softirqs last disabled at (0): [<00000000>] 0x0
-CPU: 0 PID: 167 Comm: kunit_try_catch Tainted: G                 N 6.5.0-rc1-00028-gc4be22597a36-dirty #6
-Hardware name: Generic DT based system
- unwind_backtrace from show_stack+0x18/0x1c
- show_stack from dump_stack_lvl+0x38/0x5c
- dump_stack_lvl from __might_resched+0x188/0x2d0
- __might_resched from __kmem_cache_alloc_node+0x1f4/0x258
- __kmem_cache_alloc_node from __kmalloc+0x48/0x170
- __kmalloc from regcache_maple_write+0x194/0x248
- regcache_maple_write from _regmap_write+0x88/0x140
- _regmap_write from regmap_write+0x44/0x68
- regmap_write from basic_read_write+0x8c/0x27c
- basic_read_write from kunit_generic_run_threadfn_adapter+0x1c/0x28
- kunit_generic_run_threadfn_adapter from kthread+0xf8/0x120
- kthread from ret_from_fork+0x14/0x3c
-Exception stack(0x881a5fb0 to 0x881a5ff8)
-5fa0:                                     00000000 00000000 00000000 00000000
-5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-
-Use map->alloc_flags instead of GFP_KERNEL for memory allocations to fix
-the problem.
-
-Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230720172021.2617326-1-linux@roeck-us.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: f43b6dc7d56e ("arm64: dts: qcom: msm8996: rename labels for HDMI nodes")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230615083422.350297-2-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regcache-maple.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dts  | 50 ++++++++++----------
+ arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts |  6 +--
+ arch/arm64/boot/dts/qcom/msm8996-mtp.dts     |  4 +-
+ arch/arm64/boot/dts/qcom/msm8996.dtsi        | 16 +++----
+ 4 files changed, 38 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index 14f6f49af097c..08316d578be23 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -74,7 +74,7 @@ static int regcache_maple_write(struct regmap *map, unsigned int reg,
- 	rcu_read_unlock();
+diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+index 537547b97459b..b599909c44639 100644
+--- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
++++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+@@ -208,6 +208,25 @@ &gpu {
+ 	status = "okay";
+ };
  
- 	entry = kmalloc((last - index + 1) * sizeof(unsigned long),
--			GFP_KERNEL);
-+			map->alloc_flags);
- 	if (!entry)
- 		return -ENOMEM;
++&hdmi {
++	status = "okay";
++
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&hdmi_hpd_active &hdmi_ddc_active>;
++	pinctrl-1 = <&hdmi_hpd_suspend &hdmi_ddc_suspend>;
++
++	core-vdda-supply = <&vreg_l12a_1p8>;
++	core-vcc-supply = <&vreg_s4a_1p8>;
++};
++
++&hdmi_phy {
++	status = "okay";
++
++	vddio-supply = <&vreg_l12a_1p8>;
++	vcca-supply = <&vreg_l28a_0p925>;
++	#phy-cells = <0>;
++};
++
+ &hsusb_phy1 {
+ 	status = "okay";
  
-@@ -92,7 +92,7 @@ static int regcache_maple_write(struct regmap *map, unsigned int reg,
- 	mas_lock(&mas);
+@@ -232,25 +251,6 @@ &mdss {
+ 	status = "okay";
+ };
  
- 	mas_set_range(&mas, index, last);
--	ret = mas_store_gfp(&mas, entry, GFP_KERNEL);
-+	ret = mas_store_gfp(&mas, entry, map->alloc_flags);
+-&mdss_hdmi {
+-	status = "okay";
+-
+-	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&mdss_hdmi_hpd_active &mdss_hdmi_ddc_active>;
+-	pinctrl-1 = <&mdss_hdmi_hpd_suspend &mdss_hdmi_ddc_suspend>;
+-
+-	core-vdda-supply = <&vreg_l12a_1p8>;
+-	core-vcc-supply = <&vreg_s4a_1p8>;
+-};
+-
+-&mdss_hdmi_phy {
+-	status = "okay";
+-
+-	vddio-supply = <&vreg_l12a_1p8>;
+-	vcca-supply = <&vreg_l28a_0p925>;
+-	#phy-cells = <0>;
+-};
+-
+ &mmcc {
+ 	vdd-gfx-supply = <&vdd_gfx>;
+ };
+@@ -433,28 +433,28 @@ sdc2_cd_off: sdc2-cd-off-state {
+ 		drive-strength = <2>;
+ 	};
  
- 	mas_unlock(&mas);
+-	mdss_hdmi_hpd_active: mdss_hdmi-hpd-active-state {
++	hdmi_hpd_active: hdmi-hpd-active-state {
+ 		pins = "gpio34";
+ 		function = "hdmi_hot";
+ 		bias-pull-down;
+ 		drive-strength = <16>;
+ 	};
  
-@@ -134,7 +134,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+-	mdss_hdmi_hpd_suspend: mdss_hdmi-hpd-suspend-state {
++	hdmi_hpd_suspend: hdmi-hpd-suspend-state {
+ 		pins = "gpio34";
+ 		function = "hdmi_hot";
+ 		bias-pull-down;
+ 		drive-strength = <2>;
+ 	};
  
- 			lower = kmemdup(entry, ((min - mas.index) *
- 						sizeof(unsigned long)),
--					GFP_KERNEL);
-+					map->alloc_flags);
- 			if (!lower) {
- 				ret = -ENOMEM;
- 				goto out_unlocked;
-@@ -148,7 +148,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
- 			upper = kmemdup(&entry[max + 1],
- 					((mas.last - max) *
- 					 sizeof(unsigned long)),
--					GFP_KERNEL);
-+					map->alloc_flags);
- 			if (!upper) {
- 				ret = -ENOMEM;
- 				goto out_unlocked;
-@@ -162,7 +162,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
- 		/* Insert new nodes with the saved data */
- 		if (lower) {
- 			mas_set_range(&mas, lower_index, lower_last);
--			ret = mas_store_gfp(&mas, lower, GFP_KERNEL);
-+			ret = mas_store_gfp(&mas, lower, map->alloc_flags);
- 			if (ret != 0)
- 				goto out;
- 			lower = NULL;
-@@ -170,7 +170,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+-	mdss_hdmi_ddc_active: mdss_hdmi-ddc-active-state {
++	hdmi_ddc_active: hdmi-ddc-active-state {
+ 		pins = "gpio32", "gpio33";
+ 		function = "hdmi_ddc";
+ 		drive-strength = <2>;
+ 		bias-pull-up;
+ 	};
  
- 		if (upper) {
- 			mas_set_range(&mas, upper_index, upper_last);
--			ret = mas_store_gfp(&mas, upper, GFP_KERNEL);
-+			ret = mas_store_gfp(&mas, upper, map->alloc_flags);
- 			if (ret != 0)
- 				goto out;
- 			upper = NULL;
-@@ -250,7 +250,7 @@ static int regcache_maple_insert_block(struct regmap *map, int first,
- 	unsigned long *entry;
- 	int i, ret;
+-	mdss_hdmi_ddc_suspend: mdss_hdmi-ddc-suspend-state {
++	hdmi_ddc_suspend: hdmi-ddc-suspend-state {
+ 		pins = "gpio32", "gpio33";
+ 		function = "hdmi_ddc";
+ 		drive-strength = <2>;
+@@ -1043,7 +1043,7 @@ cpu {
+ 		};
+ 	};
  
--	entry = kcalloc(last - first + 1, sizeof(unsigned long), GFP_KERNEL);
-+	entry = kcalloc(last - first + 1, sizeof(unsigned long), map->alloc_flags);
- 	if (!entry)
- 		return -ENOMEM;
+-	mdss_hdmi-dai-link {
++	hdmi-dai-link {
+ 		link-name = "HDMI";
+ 		cpu {
+ 			sound-dai = <&q6afedai HDMI_RX>;
+@@ -1054,7 +1054,7 @@ platform {
+ 		};
  
-@@ -261,7 +261,7 @@ static int regcache_maple_insert_block(struct regmap *map, int first,
+ 		codec {
+-			sound-dai = <&mdss_hdmi 0>;
++			sound-dai = <&hdmi 0>;
+ 		};
+ 	};
  
- 	mas_set_range(&mas, map->reg_defaults[first].reg,
- 		      map->reg_defaults[last].reg);
--	ret = mas_store_gfp(&mas, entry, GFP_KERNEL);
-+	ret = mas_store_gfp(&mas, entry, map->alloc_flags);
+diff --git a/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts b/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
+index ac6471d1db1f7..ed2e2f6c6775a 100644
+--- a/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
++++ b/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
+@@ -92,15 +92,15 @@ &gpu {
+ 	status = "okay";
+ };
  
- 	mas_unlock(&mas);
+-&mdss {
++&hdmi {
+ 	status = "okay";
+ };
  
+-&mdss_hdmi {
++&hdmi_phy {
+ 	status = "okay";
+ };
+ 
+-&mdss_hdmi_phy {
++&mdss {
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-mtp.dts b/arch/arm64/boot/dts/qcom/msm8996-mtp.dts
+index 495d45a16e63a..596ad4c896f55 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-mtp.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-mtp.dts
+@@ -24,10 +24,10 @@ &blsp2_uart2 {
+ 	status = "okay";
+ };
+ 
+-&mdss_hdmi {
++&hdmi {
+ 	status = "okay";
+ };
+ 
+-&mdss_hdmi_phy {
++&hdmi_phy {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index 0cb2d4f08c3a1..3855366ca89fd 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -895,7 +895,7 @@ mmcc: clock-controller@8c0000 {
+ 				 <&mdss_dsi0_phy 0>,
+ 				 <&mdss_dsi1_phy 1>,
+ 				 <&mdss_dsi1_phy 0>,
+-				 <&mdss_hdmi_phy>;
++				 <&hdmi_phy>;
+ 			clock-names = "xo",
+ 				      "gpll0",
+ 				      "gcc_mmss_noc_cfg_ahb_clk",
+@@ -980,7 +980,7 @@ ports {
+ 					port@0 {
+ 						reg = <0>;
+ 						mdp5_intf3_out: endpoint {
+-							remote-endpoint = <&mdss_hdmi_in>;
++							remote-endpoint = <&hdmi_in>;
+ 						};
+ 					};
+ 
+@@ -1136,8 +1136,8 @@ mdss_dsi1_phy: phy@996400 {
+ 				status = "disabled";
+ 			};
+ 
+-			mdss_hdmi: mdss_hdmi-tx@9a0000 {
+-				compatible = "qcom,mdss_hdmi-tx-8996";
++			hdmi: hdmi-tx@9a0000 {
++				compatible = "qcom,hdmi-tx-8996";
+ 				reg =	<0x009a0000 0x50c>,
+ 					<0x00070000 0x6158>,
+ 					<0x009e0000 0xfff>;
+@@ -1160,7 +1160,7 @@ mdss_hdmi: mdss_hdmi-tx@9a0000 {
+ 					"alt_iface",
+ 					"extp";
+ 
+-				phys = <&mdss_hdmi_phy>;
++				phys = <&hdmi_phy>;
+ 				#sound-dai-cells = <1>;
+ 
+ 				status = "disabled";
+@@ -1171,16 +1171,16 @@ ports {
+ 
+ 					port@0 {
+ 						reg = <0>;
+-						mdss_hdmi_in: endpoint {
++						hdmi_in: endpoint {
+ 							remote-endpoint = <&mdp5_intf3_out>;
+ 						};
+ 					};
+ 				};
+ 			};
+ 
+-			mdss_hdmi_phy: phy@9a0600 {
++			hdmi_phy: phy@9a0600 {
+ 				#phy-cells = <0>;
+-				compatible = "qcom,mdss_hdmi-phy-8996";
++				compatible = "qcom,hdmi-phy-8996";
+ 				reg = <0x009a0600 0x1c4>,
+ 				      <0x009a0a00 0x124>,
+ 				      <0x009a0c00 0x124>,
 -- 
 2.40.1
 
