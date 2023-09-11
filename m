@@ -2,114 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B13C479BC20
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 694A279BC04
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233593AbjIKVDi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57016 "EHLO
+        id S1358379AbjIKWIo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236207AbjIKJ5T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:57:19 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7AFE67;
-        Mon, 11 Sep 2023 02:57:14 -0700 (PDT)
-Received: from [192.168.239.158] (unknown [182.191.140.203])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 2133966072F4;
-        Mon, 11 Sep 2023 10:57:08 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1694426233;
-        bh=0N+FDH5z9szp/PjtzByqIq81sfNr/YB7TLbioWmeuX8=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=RV6bxxbUrVnYcz+Wdo5hmrV+Guw7rVAMzIq3kHY10hoH9LoCTK0SrfTxbrn1D5XOi
-         rOYQhLx68y9YmiI4qrmQmn3ueZvSrWFHSYH5g8atBGg7CRLEHpS3HS/gW1Hq0aVt3B
-         X3a9y2p0BwKys6fvGNUXZJn/gFb1bdJjk+SjyHknp+swm0raZc0GbnNz/4GnHV6kcv
-         H41/JREAMO9vwK1lrJL+/3EXsSxn37e/SLaRBfe0aRQCBl5vBdZjOQUV+fAwfj8t3Y
-         tq1t/CjxD/W6NPPaSmSmGKVZnpFghDcgkvHdnwaAybPXv1RLI5scBUCMgawDqvEifQ
-         +Lq1vcPdKgWxw==
-Message-ID: <4af6a370-6d31-4413-b78e-e693be5f01a9@collabora.com>
-Date:   Mon, 11 Sep 2023 14:57:02 +0500
+        with ESMTP id S236225AbjIKKAI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 06:00:08 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 465E4E67;
+        Mon, 11 Sep 2023 03:00:02 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 161041C0004; Mon, 11 Sep 2023 12:00:01 +0200 (CEST)
+Date:   Mon, 11 Sep 2023 12:00:00 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Xiaolei Wang <xiaolei.wang@windriver.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        pawell@cadence.com, linux-usb@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.15 10/19] usb: cdns3: Put the cdns set active
+ part outside the spin lock
+Message-ID: <ZP7lIKUzD68XA91j@duo.ucw.cz>
+References: <20230909003903.3580394-1-sashal@kernel.org>
+ <20230909003903.3580394-10-sashal@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        kernel@collabora.com, stable@vger.kernel.org,
-        syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] ext4: don't remove already removed extent
-Content-Language: en-US
-To:     Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Allison Henderson <achender@linux.vnet.ibm.com>
-References: <20230911094038.3602508-1-usama.anjum@collabora.com>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20230911094038.3602508-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="wqD7Cph2pbmvmiU2"
+Content-Disposition: inline
+In-Reply-To: <20230909003903.3580394-10-sashal@kernel.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Apologies for sending multiple copies of same email. There was some issue
-on my side.
 
-On 9/11/23 2:40 PM, Muhammad Usama Anjum wrote:
-> Syzbot has hit the following bug on current and all older kernels:
-> BUG: KASAN: out-of-bounds in ext4_ext_rm_leaf fs/ext4/extents.c:2736 [inline]
-> BUG: KASAN: out-of-bounds in ext4_ext_remove_space+0x2482/0x4d90 fs/ext4/extents.c:2958
-> Read of size 18446744073709551508 at addr ffff888073aea078 by task syz-executor420/6443
-> 
-> On investigation, I've found that eh->eh_entries is zero, ex is
-> referring to last entry and EXT_LAST_EXTENT(eh) is referring to first.
-> Hence EXT_LAST_EXTENT(eh) - ex becomes negative and causes the wrong
-> buffer read.
-> 
-> element: FFFF8882F8F0D06C       <----- ex
-> element: FFFF8882F8F0D060
-> element: FFFF8882F8F0D054
-> element: FFFF8882F8F0D048
-> element: FFFF8882F8F0D03C
-> element: FFFF8882F8F0D030
-> element: FFFF8882F8F0D024
-> element: FFFF8882F8F0D018
-> element: FFFF8882F8F0D00C	<------  EXT_FIRST_EXTENT(eh)
-> header:  FFFF8882F8F0D000	<------  EXT_LAST_EXTENT(eh) and eh
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com
-> Closes: https://groups.google.com/g/syzkaller-bugs/c/G6zS-LKgDW0/m/63MgF6V7BAAJ
-> Fixes: d583fb87a3ff ("ext4: punch out extents")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
-> This patch is only fixing the local issue. There may be bigger bug. Why
-> is ex set to last entry if the eh->eh_entries is 0. If any ext4
-> developer want to look at the bug, please don't hesitate.
-> ---
->  fs/ext4/extents.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-> index e4115d338f101..7b7779b4cb87f 100644
-> --- a/fs/ext4/extents.c
-> +++ b/fs/ext4/extents.c
-> @@ -2726,7 +2726,7 @@ ext4_ext_rm_leaf(handle_t *handle, struct inode *inode,
->  		 * If the extent was completely released,
->  		 * we need to remove it from the leaf
->  		 */
-> -		if (num == 0) {
-> +		if (num == 0 && eh->eh_entries) {
->  			if (end != EXT_MAX_BLOCKS - 1) {
->  				/*
->  				 * For hole punching, we need to scoot all the
+--wqD7Cph2pbmvmiU2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-BR,
-Muhammad Usama Anjum
+Hi!
+
+> From: Xiaolei Wang <xiaolei.wang@windriver.com>
+>=20
+> [ Upstream commit 2319b9c87fe243327285f2fefd7374ffd75a65fc ]
+>=20
+> The device may be scheduled during the resume process,
+> so this cannot appear in atomic operations. Since
+> pm_runtime_set_active will resume suppliers, put set
+> active outside the spin lock, which is only used to
+> protect the struct cdns data structure, otherwise the
+> kernel will report the following warning:
+
+There's something wrong with this patch: cdns_set_active returns
+either void or int depending on config. That can't be intentional.
+
+Best regards,
+								Pavel
+
+> +++ b/drivers/usb/cdns3/core.c
+> @@ -556,15 +555,23 @@ int cdns_resume(struct cdns *cdns, u8 set_active)
+=2E..
+> +
+> +void cdns_set_active(struct cdns *cdns, u8 set_active)
+> +{
+> +	struct device *dev =3D cdns->dev;
+> +
+>  	if (set_active) {
+>  		pm_runtime_disable(dev);
+>  		pm_runtime_set_active(dev);
+>  		pm_runtime_enable(dev);
+>  	}
+> =20
+> -	return 0;
+> +	return;
+>  }
+
+> +++ b/drivers/usb/cdns3/core.h
+> @@ -125,10 +125,13 @@ int cdns_init(struct cdns *cdns);
+>  int cdns_remove(struct cdns *cdns);
+> =20
+>  #ifdef CONFIG_PM_SLEEP
+=2E..
+>  int cdns_suspend(struct cdns *cdns);
+> +void cdns_set_active(struct cdns *cdns, u8 set_active);
+>  #else /* CONFIG_PM_SLEEP */
+=2E..
+> +static inline int cdns_set_active(struct cdns *cdns, u8 set_active)
+>  { return 0; }
+>  static inline int cdns_suspend(struct cdns *cdns)
+>  { return 0; }
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--wqD7Cph2pbmvmiU2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7lIAAKCRAw5/Bqldv6
+8uyWAJ40lI1lM3v257gQVvAQHRibAqeWkQCfQU6EJSPUflkZaJ2qX4r5mj5pKx0=
+=R7Gr
+-----END PGP SIGNATURE-----
+
+--wqD7Cph2pbmvmiU2--
