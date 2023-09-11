@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9347879BB85
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A396579BE08
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238568AbjIKWAd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56516 "EHLO
+        id S1355220AbjIKV5a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239188AbjIKOOE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:04 -0400
+        with ESMTP id S241809AbjIKPPG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FCDDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4C3C433C8;
-        Mon, 11 Sep 2023 14:13:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 024C4FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E04C433C8;
+        Mon, 11 Sep 2023 15:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441638;
-        bh=oHgh/0XUN/20v/kalgHlYYuXGgqen1UglCYEnMoN2lA=;
+        s=korg; t=1694445299;
+        bh=mSNN1+3qw8Zjk3bbLxkGaVFxsbTwlcSYeyDomyaI1y8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S4lkZOzH1j4jLXc5Z+5mfLwPvH0qDXwx2YYbURhpKUgWCCbupOpVV8rq+Kd4EYMB9
-         4nGMvktxcqPq7tkvdh0UNAPJvMFjlXHy2zEl1JCesn9IAiidC4GOyGWjHNJ5L/ixnx
-         PHkxVu6GH6RHQHrRahzNfhoLvUivb5KaXzxBPNwM=
+        b=XGhdFu2Rn1QuRPI9SKx/5nJmDhQ5bdzu3Sv+HHxQsAFuVi2zLebgxeji5RICkE4RH
+         CoYt12HjiUWCzzuoVhGTrpFZa86a9AB+wivwlNPjcEryC5FGozfc6VNzli3bTKXV+8
+         v0KWWRBXtNbyrTYGoBmR6biTnPn3NsE937ZJXL7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 483/739] scsi: iscsi: Add length check for nlattr payload
+        patches@lists.linux.dev, Francesco Dolcini <francesco@dolcini.it>,
+        Wadim Egorov <w.egorov@phytec.de>, Nishanth Menon <nm@ti.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH 6.1 249/600] firmware: ti_sci: Use system_state to determine polling
 Date:   Mon, 11 Sep 2023 15:44:42 +0200
-Message-ID: <20230911134704.631216532@linuxfoundation.org>
+Message-ID: <20230911134640.944704617@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,308 +51,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 971dfcb74a800047952f5288512b9c7ddedb050a ]
+[ Upstream commit 9225bcdedf16297a346082e7d23b0e8434aa98ed ]
 
-The current NETLINK_ISCSI netlink parsing loop checks every nlmsg to make
-sure the length is bigger than sizeof(struct iscsi_uevent) and then calls
-iscsi_if_recv_msg().
+Commit b9e8a7d950ff ("firmware: ti_sci: Switch transport to polled
+mode during system suspend") aims to resolve issues with tisci
+operations during system suspend operation. However, the system may
+enter a no_irq stage in various other usage modes, including power-off
+and restart. To determine if polling mode is appropriate, use the
+system_state instead.
 
-  nlh = nlmsg_hdr(skb);
-  if (nlh->nlmsg_len < sizeof(*nlh) + sizeof(*ev) ||
-    skb->len < nlh->nlmsg_len) {
-    break;
-  }
-  ...
-  err = iscsi_if_recv_msg(skb, nlh, &group);
+While at this, drop the unused is_suspending state variable and
+related helpers.
 
-Hence, in iscsi_if_recv_msg() the nlmsg_data can be safely converted to
-iscsi_uevent as the length is already checked.
-
-However, in other cases the length of nlattr payload is not checked before
-the payload is converted to other data structures. One example is
-iscsi_set_path() which converts the payload to type iscsi_path without any
-checks:
-
-  params = (struct iscsi_path *)((char *)ev + sizeof(*ev));
-
-Whereas iscsi_if_transport_conn() correctly checks the pdu_len:
-
-  pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
-  if ((ev->u.send_pdu.hdr_size > pdu_len) ..
-    err = -EINVAL;
-
-To sum up, some code paths called in iscsi_if_recv_msg() do not check the
-length of the data (see below picture) and directly convert the data to
-another data structure. This could result in an out-of-bound reads and heap
-dirty data leakage.
-
-             _________  nlmsg_len(nlh) _______________
-            /                                         \
-+----------+--------------+---------------------------+
-| nlmsghdr | iscsi_uevent |          data              |
-+----------+--------------+---------------------------+
-                          \                          /
-                         iscsi_uevent->u.set_param.len
-
-Fix the issue by adding the length check before accessing it. To clean up
-the code, an additional parameter named rlen is added. The rlen is
-calculated at the beginning of iscsi_if_recv_msg() which avoids duplicated
-calculation.
-
-Fixes: ac20c7bf070d ("[SCSI] iscsi_transport: Added Ping support")
-Fixes: 43514774ff40 ("[SCSI] iscsi class: Add new NETLINK_ISCSI messages for cnic/bnx2i driver.")
-Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
-Fixes: 01cb225dad8d ("[SCSI] iscsi: add target discvery event to transport class")
-Fixes: 264faaaa1254 ("[SCSI] iscsi: add transport end point callbacks")
-Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230725024529.428311-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: b9e8a7d950ff ("firmware: ti_sci: Switch transport to polled mode during system suspend")
+Reported-by: Francesco Dolcini <francesco@dolcini.it>
+Reported-by: Wadim Egorov <w.egorov@phytec.de>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # Toradex Verdin AM62
+Link: https://lore.kernel.org/r/20230620130329.4120443-1-nm@ti.com
+Closes: https://lore.kernel.org/all/ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com/
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 72 +++++++++++++++++------------
- 1 file changed, 43 insertions(+), 29 deletions(-)
+ drivers/firmware/ti_sci.c | 36 ++----------------------------------
+ 1 file changed, 2 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index e527ece12453a..62b24f1c0232f 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3014,14 +3014,15 @@ iscsi_if_destroy_conn(struct iscsi_transport *transport, struct iscsi_uevent *ev
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index 6281e7153b475..4c550cfbc086c 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -97,7 +97,6 @@ struct ti_sci_desc {
+  * @node:	list head
+  * @host_id:	Host ID
+  * @users:	Number of users of this instance
+- * @is_suspending: Flag set to indicate in suspend path.
+  */
+ struct ti_sci_info {
+ 	struct device *dev;
+@@ -116,7 +115,6 @@ struct ti_sci_info {
+ 	u8 host_id;
+ 	/* protected by ti_sci_list_mutex */
+ 	int users;
+-	bool is_suspending;
+ };
+ 
+ #define cl_to_ti_sci_info(c)	container_of(c, struct ti_sci_info, cl)
+@@ -418,14 +416,14 @@ static inline int ti_sci_do_xfer(struct ti_sci_info *info,
+ 
+ 	ret = 0;
+ 
+-	if (!info->is_suspending) {
++	if (system_state <= SYSTEM_RUNNING) {
+ 		/* And we wait for the response. */
+ 		timeout = msecs_to_jiffies(info->desc->max_rx_timeout_ms);
+ 		if (!wait_for_completion_timeout(&xfer->done, timeout))
+ 			ret = -ETIMEDOUT;
+ 	} else {
+ 		/*
+-		 * If we are suspending, we cannot use wait_for_completion_timeout
++		 * If we are !running, we cannot use wait_for_completion_timeout
+ 		 * during noirq phase, so we must manually poll the completion.
+ 		 */
+ 		ret = read_poll_timeout_atomic(try_wait_for_completion, done_state,
+@@ -3282,35 +3280,6 @@ static int tisci_reboot_handler(struct notifier_block *nb, unsigned long mode,
+ 	return NOTIFY_BAD;
  }
  
- static int
--iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
-+iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
- {
- 	char *data = (char*)ev + sizeof(*ev);
- 	struct iscsi_cls_conn *conn;
- 	struct iscsi_cls_session *session;
- 	int err = 0, value = 0, state;
- 
--	if (ev->u.set_param.len > PAGE_SIZE)
-+	if (ev->u.set_param.len > rlen ||
-+	    ev->u.set_param.len > PAGE_SIZE)
- 		return -EINVAL;
- 
- 	session = iscsi_session_lookup(ev->u.set_param.sid);
-@@ -3118,7 +3119,7 @@ static int iscsi_if_ep_disconnect(struct iscsi_transport *transport,
- 
- static int
- iscsi_if_transport_ep(struct iscsi_transport *transport,
--		      struct iscsi_uevent *ev, int msg_type)
-+		      struct iscsi_uevent *ev, int msg_type, u32 rlen)
- {
- 	struct iscsi_endpoint *ep;
- 	int rc = 0;
-@@ -3126,7 +3127,10 @@ iscsi_if_transport_ep(struct iscsi_transport *transport,
- 	switch (msg_type) {
- 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT_THROUGH_HOST:
- 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT:
--		rc = iscsi_if_ep_connect(transport, ev, msg_type);
-+		if (rlen < sizeof(struct sockaddr))
-+			rc = -EINVAL;
-+		else
-+			rc = iscsi_if_ep_connect(transport, ev, msg_type);
- 		break;
- 	case ISCSI_UEVENT_TRANSPORT_EP_POLL:
- 		if (!transport->ep_poll)
-@@ -3150,12 +3154,15 @@ iscsi_if_transport_ep(struct iscsi_transport *transport,
- 
- static int
- iscsi_tgt_dscvr(struct iscsi_transport *transport,
--		struct iscsi_uevent *ev)
-+		struct iscsi_uevent *ev, u32 rlen)
- {
- 	struct Scsi_Host *shost;
- 	struct sockaddr *dst_addr;
- 	int err;
- 
-+	if (rlen < sizeof(*dst_addr))
-+		return -EINVAL;
-+
- 	if (!transport->tgt_dscvr)
- 		return -EINVAL;
- 
-@@ -3176,7 +3183,7 @@ iscsi_tgt_dscvr(struct iscsi_transport *transport,
- 
- static int
- iscsi_set_host_param(struct iscsi_transport *transport,
--		     struct iscsi_uevent *ev)
-+		     struct iscsi_uevent *ev, u32 rlen)
- {
- 	char *data = (char*)ev + sizeof(*ev);
- 	struct Scsi_Host *shost;
-@@ -3185,7 +3192,8 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 	if (!transport->set_host_param)
- 		return -ENOSYS;
- 
--	if (ev->u.set_host_param.len > PAGE_SIZE)
-+	if (ev->u.set_host_param.len > rlen ||
-+	    ev->u.set_host_param.len > PAGE_SIZE)
- 		return -EINVAL;
- 
- 	shost = scsi_host_lookup(ev->u.set_host_param.host_no);
-@@ -3202,12 +3210,15 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- }
- 
- static int
--iscsi_set_path(struct iscsi_transport *transport, struct iscsi_uevent *ev)
-+iscsi_set_path(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
- {
- 	struct Scsi_Host *shost;
- 	struct iscsi_path *params;
- 	int err;
- 
-+	if (rlen < sizeof(*params))
-+		return -EINVAL;
-+
- 	if (!transport->set_path)
- 		return -ENOSYS;
- 
-@@ -3267,12 +3278,15 @@ iscsi_set_iface_params(struct iscsi_transport *transport,
- }
- 
- static int
--iscsi_send_ping(struct iscsi_transport *transport, struct iscsi_uevent *ev)
-+iscsi_send_ping(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
- {
- 	struct Scsi_Host *shost;
- 	struct sockaddr *dst_addr;
- 	int err;
- 
-+	if (rlen < sizeof(*dst_addr))
-+		return -EINVAL;
-+
- 	if (!transport->send_ping)
- 		return -ENOSYS;
- 
-@@ -3770,13 +3784,12 @@ iscsi_get_host_stats(struct iscsi_transport *transport, struct nlmsghdr *nlh)
- }
- 
- static int iscsi_if_transport_conn(struct iscsi_transport *transport,
--				   struct nlmsghdr *nlh)
-+				   struct nlmsghdr *nlh, u32 pdu_len)
- {
- 	struct iscsi_uevent *ev = nlmsg_data(nlh);
- 	struct iscsi_cls_session *session;
- 	struct iscsi_cls_conn *conn = NULL;
- 	struct iscsi_endpoint *ep;
--	uint32_t pdu_len;
- 	int err = 0;
- 
- 	switch (nlh->nlmsg_type) {
-@@ -3861,8 +3874,6 @@ static int iscsi_if_transport_conn(struct iscsi_transport *transport,
- 
- 		break;
- 	case ISCSI_UEVENT_SEND_PDU:
--		pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
+-static void ti_sci_set_is_suspending(struct ti_sci_info *info, bool is_suspending)
+-{
+-	info->is_suspending = is_suspending;
+-}
 -
- 		if ((ev->u.send_pdu.hdr_size > pdu_len) ||
- 		    (ev->u.send_pdu.data_size > (pdu_len - ev->u.send_pdu.hdr_size))) {
- 			err = -EINVAL;
-@@ -3892,6 +3903,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 	struct iscsi_internal *priv;
- 	struct iscsi_cls_session *session;
- 	struct iscsi_endpoint *ep = NULL;
-+	u32 rlen;
- 
- 	if (!netlink_capable(skb, CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -3911,6 +3923,13 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 
- 	portid = NETLINK_CB(skb).portid;
- 
-+	/*
-+	 * Even though the remaining payload may not be regarded as nlattr,
-+	 * (like address or something else), calculate the remaining length
-+	 * here to ease following length checks.
-+	 */
-+	rlen = nlmsg_attrlen(nlh, sizeof(*ev));
-+
- 	switch (nlh->nlmsg_type) {
- 	case ISCSI_UEVENT_CREATE_SESSION:
- 		err = iscsi_if_create_session(priv, ep, ev,
-@@ -3967,7 +3986,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 			err = -EINVAL;
- 		break;
- 	case ISCSI_UEVENT_SET_PARAM:
--		err = iscsi_if_set_param(transport, ev);
-+		err = iscsi_if_set_param(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_CREATE_CONN:
- 	case ISCSI_UEVENT_DESTROY_CONN:
-@@ -3975,7 +3994,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 	case ISCSI_UEVENT_START_CONN:
- 	case ISCSI_UEVENT_BIND_CONN:
- 	case ISCSI_UEVENT_SEND_PDU:
--		err = iscsi_if_transport_conn(transport, nlh);
-+		err = iscsi_if_transport_conn(transport, nlh, rlen);
- 		break;
- 	case ISCSI_UEVENT_GET_STATS:
- 		err = iscsi_if_get_stats(transport, nlh);
-@@ -3984,23 +4003,22 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 	case ISCSI_UEVENT_TRANSPORT_EP_POLL:
- 	case ISCSI_UEVENT_TRANSPORT_EP_DISCONNECT:
- 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT_THROUGH_HOST:
--		err = iscsi_if_transport_ep(transport, ev, nlh->nlmsg_type);
-+		err = iscsi_if_transport_ep(transport, ev, nlh->nlmsg_type, rlen);
- 		break;
- 	case ISCSI_UEVENT_TGT_DSCVR:
--		err = iscsi_tgt_dscvr(transport, ev);
-+		err = iscsi_tgt_dscvr(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_SET_HOST_PARAM:
--		err = iscsi_set_host_param(transport, ev);
-+		err = iscsi_set_host_param(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_PATH_UPDATE:
--		err = iscsi_set_path(transport, ev);
-+		err = iscsi_set_path(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_SET_IFACE_PARAMS:
--		err = iscsi_set_iface_params(transport, ev,
--					     nlmsg_attrlen(nlh, sizeof(*ev)));
-+		err = iscsi_set_iface_params(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_PING:
--		err = iscsi_send_ping(transport, ev);
-+		err = iscsi_send_ping(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_GET_CHAP:
- 		err = iscsi_get_chap(transport, nlh);
-@@ -4009,13 +4027,10 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 		err = iscsi_delete_chap(transport, ev);
- 		break;
- 	case ISCSI_UEVENT_SET_FLASHNODE_PARAMS:
--		err = iscsi_set_flashnode_param(transport, ev,
--						nlmsg_attrlen(nlh,
--							      sizeof(*ev)));
-+		err = iscsi_set_flashnode_param(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_NEW_FLASHNODE:
--		err = iscsi_new_flashnode(transport, ev,
--					  nlmsg_attrlen(nlh, sizeof(*ev)));
-+		err = iscsi_new_flashnode(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_DEL_FLASHNODE:
- 		err = iscsi_del_flashnode(transport, ev);
-@@ -4030,8 +4045,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 		err = iscsi_logout_flashnode_sid(transport, ev);
- 		break;
- 	case ISCSI_UEVENT_SET_CHAP:
--		err = iscsi_set_chap(transport, ev,
--				     nlmsg_attrlen(nlh, sizeof(*ev)));
-+		err = iscsi_set_chap(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_GET_HOST_STATS:
- 		err = iscsi_get_host_stats(transport, nlh);
+-static int ti_sci_suspend(struct device *dev)
+-{
+-	struct ti_sci_info *info = dev_get_drvdata(dev);
+-	/*
+-	 * We must switch operation to polled mode now as drivers and the genpd
+-	 * layer may make late TI SCI calls to change clock and device states
+-	 * from the noirq phase of suspend.
+-	 */
+-	ti_sci_set_is_suspending(info, true);
+-
+-	return 0;
+-}
+-
+-static int ti_sci_resume(struct device *dev)
+-{
+-	struct ti_sci_info *info = dev_get_drvdata(dev);
+-
+-	ti_sci_set_is_suspending(info, false);
+-
+-	return 0;
+-}
+-
+-static DEFINE_SIMPLE_DEV_PM_OPS(ti_sci_pm_ops, ti_sci_suspend, ti_sci_resume);
+-
+ /* Description for K2G */
+ static const struct ti_sci_desc ti_sci_pmmc_k2g_desc = {
+ 	.default_host_id = 2,
+@@ -3519,7 +3488,6 @@ static struct platform_driver ti_sci_driver = {
+ 	.driver = {
+ 		   .name = "ti-sci",
+ 		   .of_match_table = of_match_ptr(ti_sci_of_match),
+-		   .pm = &ti_sci_pm_ops,
+ 	},
+ };
+ module_platform_driver(ti_sci_driver);
 -- 
 2.40.1
 
