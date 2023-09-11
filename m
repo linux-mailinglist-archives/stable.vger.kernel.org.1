@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE72279B90F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B57779BC6D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344474AbjIKVOH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43692 "EHLO
+        id S1377920AbjIKW31 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242290AbjIKP1D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:03 -0400
+        with ESMTP id S242291AbjIKP1G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C6FBE4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:26:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DDEC433C7;
-        Mon, 11 Sep 2023 15:26:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00DA9E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425B3C433C9;
+        Mon, 11 Sep 2023 15:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446018;
-        bh=rAcUfWGD4BReb+OLJE5309r+1jQBqrmEVRN84+FL2tI=;
+        s=korg; t=1694446021;
+        bh=jJVcHnN4YrU+Lvobqx3lPKrv7UOEV4oj2YeILZVnqzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mo65bfs2vbdJUTQ7Qv2TVwdDa0E+W1cHaYq/oz0JXtJhPS6E6cZ6nvK+P9xd84ay9
-         7EcFFmkV/JjAvXwN+2Swh3/6auswPm2GhUx7gC/ncrIHwEHKMPKtveZayV/A0rbRJP
-         Uh3gimEq6nS/UgPQeIpWdrqL3GPo/nEtBic3F5I0=
+        b=vegzcsy8hZ+1sCw5YbcgSInISzlSGk90hANFG0GhGM/z3uprSUAC+fg8ekJhR8OnJ
+         vg9/LqpNGaMvCqRINWefRtl/s/J4DnqTojvtatBCZrVxJezftIbY4e3xPHDkkXUrhh
+         Kr698X5TwSVg+3AFkucdTeG8CVlO04250f80ZuYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
         Logan Gunthorpe <logang@deltatee.com>,
         Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.1 554/600] ntb: Drop packets when qp link is down
-Date:   Mon, 11 Sep 2023 15:49:47 +0200
-Message-ID: <20230911134649.971471786@linuxfoundation.org>
+Subject: [PATCH 6.1 555/600] ntb: Clean up tx tail index on link down
+Date:   Mon, 11 Sep 2023 15:49:48 +0200
+Message-ID: <20230911134650.000134211@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -56,14 +56,13 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Dave Jiang <dave.jiang@intel.com>
 
-commit f195a1a6fe416882984f8bd6c61afc1383171860 upstream.
+commit cc79bd2738c2d40aba58b2be6ce47dc0e471df0e upstream.
 
-Currently when the transport receive packets after netdev has closed the
-transport returns error and triggers tx errors to be incremented and
-carrier to be stopped. There is no reason to return error if the device is
-already closed. Drop the packet and return 0.
+The tx tail index is not reset when the link goes down. This causes the
+tail index to go out of sync when the link goes down and comes back up.
+Refactor the ntb_qp_link_down_reset() and reset the tail index as well.
 
-Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
+Fixes: 2849b5d70641 ("NTB: Reset transport QP link stats on down")
 Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
 Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
 Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
@@ -71,25 +70,42 @@ Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/ntb_transport.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/ntb/ntb_transport.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 --- a/drivers/ntb/ntb_transport.c
 +++ b/drivers/ntb/ntb_transport.c
-@@ -2276,9 +2276,13 @@ int ntb_transport_tx_enqueue(struct ntb_
- 	struct ntb_queue_entry *entry;
- 	int rc;
+@@ -909,7 +909,7 @@ static int ntb_set_mw(struct ntb_transpo
+ 	return 0;
+ }
  
--	if (!qp || !qp->link_is_up || !len)
-+	if (!qp || !len)
- 		return -EINVAL;
+-static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
+ {
+ 	qp->link_is_up = false;
+ 	qp->active = false;
+@@ -932,6 +932,13 @@ static void ntb_qp_link_down_reset(struc
+ 	qp->tx_async = 0;
+ }
  
-+	/* If the qp link is down already, just ignore. */
-+	if (!qp->link_is_up)
-+		return 0;
++static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++{
++	ntb_qp_link_context_reset(qp);
++	if (qp->remote_rx_info)
++		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
++}
 +
- 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
- 	if (!entry) {
- 		qp->tx_err_no_buf++;
+ static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
+ {
+ 	struct ntb_transport_ctx *nt = qp->transport;
+@@ -1174,7 +1181,7 @@ static int ntb_transport_init_queue(stru
+ 	qp->ndev = nt->ndev;
+ 	qp->client_ready = false;
+ 	qp->event_handler = NULL;
+-	ntb_qp_link_down_reset(qp);
++	ntb_qp_link_context_reset(qp);
+ 
+ 	if (mw_num < qp_count % mw_count)
+ 		num_qps_mw = qp_count / mw_count + 1;
 
 
