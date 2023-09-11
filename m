@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5385879AE7F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C40A679AD1C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241492AbjIKVkA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38844 "EHLO
+        id S1343500AbjIKVLf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241509AbjIKPKU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:20 -0400
+        with ESMTP id S239136AbjIKOMw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F06C8FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C01DC433C8;
-        Mon, 11 Sep 2023 15:10:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95CF4CE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE03CC433C8;
+        Mon, 11 Sep 2023 14:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445015;
-        bh=YzUHiHx3PKexEoBvdiVgtNQW0jsPPrpHe7jkrLm/xFE=;
+        s=korg; t=1694441567;
+        bh=K5yGtOWGn9pAuEhbthS3oiOC7BAtigJxhJ4Qb/SJaqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cn6f+n6pyosdZrcXyVZydy85cZN/gFs619qCPBqPRYjANvRJKCsH0JwHbnw+eaX1i
-         FNCnhwJqyyheH7EFFpi8Ia7CxmVavx8QyKEpF8KhHaWxANZnueXF8Ig8+LDBMVgb/b
-         e3hYPKKVDUnecww91HgO3RSQCbWgnlBOb+fNRPU8=
+        b=Qun36LQZnGsq6DaKUSmUp+gRGPjeLGJCcLXVJqBc8/wq3OW1JiBcB9ttYr5N6kCCq
+         7fRMC/QHXM1DxQkaD0vhHx329a+pxOZDuq/xefRW6OiszBEiTk1NRUUjzJHCePUapi
+         DuSU9zULFN7k/LX9ZwGS73n5pYK0AVqPYNDuj/Wk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/600] Bluetooth: btusb: Do not call kfree_skb() under spin_lock_irqsave()
-Date:   Mon, 11 Sep 2023 15:43:49 +0200
-Message-ID: <20230911134639.404732650@linuxfoundation.org>
+Subject: [PATCH 6.5 431/739] NFSv4.2: Fix READ_PLUS size calculations
+Date:   Mon, 11 Sep 2023 15:43:50 +0200
+Message-ID: <20230911134703.214106167@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +50,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit 2a05334d7f91ff189692089c05fc48cc1d8204de ]
+[ Upstream commit 8d18f6c5bb864d97a730f471c56cdecf313efe64 ]
 
-It is not allowed to call kfree_skb() from hardware interrupt
-context or with hardware interrupts being disabled.
-So replace kfree_skb() with dev_kfree_skb_irq() under
-spin_lock_irqsave(). Compile tested only.
+I bump the decode_read_plus_maxsz to account for hole segments, but I
+need to subtract out this increase when calling
+rpc_prepare_reply_pages() so the common case of single data segment
+replies can be directly placed into the xdr pages without needing to be
+shifted around.
 
-Fixes: baac6276c0a9 ("Bluetooth: btusb: handle mSBC audio over USB Endpoints")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d3b00a802c845 ("NFS: Replace the READ_PLUS decoding code")
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs42xdr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d6f405763c56f..f2062c2a28da8 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -1984,7 +1984,7 @@ static int btusb_switch_alt_setting(struct hci_dev *hdev, int new_alts)
- 		 * alternate setting.
- 		 */
- 		spin_lock_irqsave(&data->rxlock, flags);
--		kfree_skb(data->sco_skb);
-+		dev_kfree_skb_irq(data->sco_skb);
- 		data->sco_skb = NULL;
- 		spin_unlock_irqrestore(&data->rxlock, flags);
+diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
+index d0919c5bf61c7..78193f04d8928 100644
+--- a/fs/nfs/nfs42xdr.c
++++ b/fs/nfs/nfs42xdr.c
+@@ -54,10 +54,16 @@
+ 					(1 /* data_content4 */ + \
+ 					 2 /* data_info4.di_offset */ + \
+ 					 1 /* data_info4.di_length */)
++#define NFS42_READ_PLUS_HOLE_SEGMENT_SIZE \
++					(1 /* data_content4 */ + \
++					 2 /* data_info4.di_offset */ + \
++					 2 /* data_info4.di_length */)
++#define READ_PLUS_SEGMENT_SIZE_DIFF	(NFS42_READ_PLUS_HOLE_SEGMENT_SIZE - \
++					 NFS42_READ_PLUS_DATA_SEGMENT_SIZE)
+ #define decode_read_plus_maxsz		(op_decode_hdr_maxsz + \
+ 					 1 /* rpr_eof */ + \
+ 					 1 /* rpr_contents count */ + \
+-					 NFS42_READ_PLUS_DATA_SEGMENT_SIZE)
++					 NFS42_READ_PLUS_HOLE_SEGMENT_SIZE)
+ #define encode_seek_maxsz		(op_encode_hdr_maxsz + \
+ 					 encode_stateid_maxsz + \
+ 					 2 /* offset */ + \
+@@ -617,8 +623,8 @@ static void nfs4_xdr_enc_read_plus(struct rpc_rqst *req,
+ 	encode_putfh(xdr, args->fh, &hdr);
+ 	encode_read_plus(xdr, args, &hdr);
+ 
+-	rpc_prepare_reply_pages(req, args->pages, args->pgbase,
+-				args->count, hdr.replen);
++	rpc_prepare_reply_pages(req, args->pages, args->pgbase, args->count,
++				hdr.replen - READ_PLUS_SEGMENT_SIZE_DIFF);
+ 	encode_nops(&hdr);
+ }
  
 -- 
 2.40.1
