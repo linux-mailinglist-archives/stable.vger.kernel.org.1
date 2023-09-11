@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 987FD79B868
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 012D779BF08
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233761AbjIKUuo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51626 "EHLO
+        id S241584AbjIKVK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:10:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241023AbjIKPAC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:00:02 -0400
+        with ESMTP id S242329AbjIKP14 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50F01B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1A6C433C7;
-        Mon, 11 Sep 2023 14:59:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8153E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C508C433C9;
+        Mon, 11 Sep 2023 15:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444397;
-        bh=M0IzKqGfp+HghHYJQ997TxJCRNkiAi5a9urHKdJI6/c=;
+        s=korg; t=1694446072;
+        bh=3qHW9Z7P//enYTqQoEu+Jx8ZwR2CYis/p6tLa9p+6VU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bjoWrMQeHMjMS4Zp+rSxiCZprxna2B0BSTHFlJsn+BXirC3Aqi7Bbe+dkXos0Qm6E
-         shqwE5ek8uebPyi/q6One0/gVHpl3/79L8ovxo4wfInvopT9T07ekvt2kkJmihluLw
-         3qGGfHxH9swyjxRAotJ9eR4ST8bc6nNONgtiD7gU=
+        b=NkpLeXvasBK76mLgVSo+jzQpQNBJOJMiLvWtCfpC3R9IcaHwGmOz++0dUvtJj5igH
+         U19vJS2N60apuYKdtg1Yr6s1Zq8PRdqMJjCm5LcKLrjp02OMhbpeIw7Y4Hnqa0/cUJ
+         TmNNeb7KsKQ/PNGXnDIv1wfeqr3zsQI0Ge2jjc7Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, RD Babiera <rdbabiera@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.4 716/737] usb: typec: bus: verify partner exists in typec_altmode_attention
-Date:   Mon, 11 Sep 2023 15:49:35 +0200
-Message-ID: <20230911134710.517766909@linuxfoundation.org>
+        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
+        Hongchen Zhang <zhanghongchen@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 543/600] LoongArch: mm: Add p?d_leaf() definitions
+Date:   Mon, 11 Sep 2023 15:49:36 +0200
+Message-ID: <20230911134649.648747560@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,87 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
 
-commit f23643306430f86e2f413ee2b986e0773e79da31 upstream.
+commit 303be4b33562a5b689261ced1616bf16ad49efa7 upstream.
 
-Some usb hubs will negotiate DisplayPort Alt mode with the device
-but will then negotiate a data role swap after entering the alt
-mode. The data role swap causes the device to unregister all alt
-modes, however the usb hub will still send Attention messages
-even after failing to reregister the Alt Mode. type_altmode_attention
-currently does not verify whether or not a device's altmode partner
-exists, which results in a NULL pointer error when dereferencing
-the typec_altmode and typec_altmode_ops belonging to the altmode
-partner.
+When I do LTP test, LTP test case ksm06 caused panic at
+	break_ksm_pmd_entry
+	  -> pmd_leaf (Huge page table but False)
+	  -> pte_present (panic)
 
-Verify the presence of a device's altmode partner before sending
-the Attention message to the Alt Mode driver.
+The reason is pmd_leaf() is not defined, So like commit 501b81046701
+("mips: mm: add p?d_leaf() definitions") add p?d_leaf() definition for
+LoongArch.
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Fixes: 09cfefb7fa70 ("LoongArch: Add memory management")
 Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230814180559.923475-1-rdbabiera@google.com
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/bus.c           |   12 ++++++++++--
- drivers/usb/typec/tcpm/tcpm.c     |    3 ++-
- include/linux/usb/typec_altmode.h |    2 +-
- 3 files changed, 13 insertions(+), 4 deletions(-)
+ arch/loongarch/include/asm/pgtable.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
-  *
-  * Notifies the partner of @adev about Attention command.
-  */
--void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-+int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
- {
--	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-+	struct altmode *partner = to_altmode(adev)->partner;
-+	struct typec_altmode *pdev;
-+
-+	if (!partner)
-+		return -ENODEV;
-+
-+	pdev = &partner->adev;
- 
- 	if (pdev->ops && pdev->ops->attention)
- 		pdev->ops->attention(pdev, vdo);
-+
-+	return 0;
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -560,6 +560,9 @@ static inline long pmd_protnone(pmd_t pm
  }
- EXPORT_SYMBOL_GPL(typec_altmode_attention);
+ #endif /* CONFIG_NUMA_BALANCING */
  
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1877,7 +1877,8 @@ static void tcpm_handle_vdm_request(stru
- 			}
- 			break;
- 		case ADEV_ATTENTION:
--			typec_altmode_attention(adev, p[1]);
-+			if (typec_altmode_attention(adev, p[1]))
-+				tcpm_log(port, "typec_altmode_attention no port partner altmode");
- 			break;
- 		}
- 	}
---- a/include/linux/usb/typec_altmode.h
-+++ b/include/linux/usb/typec_altmode.h
-@@ -67,7 +67,7 @@ struct typec_altmode_ops {
- 
- int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
- int typec_altmode_exit(struct typec_altmode *altmode);
--void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-+int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
- int typec_altmode_vdm(struct typec_altmode *altmode,
- 		      const u32 header, const u32 *vdo, int count);
- int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
++#define pmd_leaf(pmd)		((pmd_val(pmd) & _PAGE_HUGE) != 0)
++#define pud_leaf(pud)		((pud_val(pud) & _PAGE_HUGE) != 0)
++
+ /*
+  * We provide our own get_unmapped area to cope with the virtual aliasing
+  * constraints placed on us by the cache architecture.
 
 
