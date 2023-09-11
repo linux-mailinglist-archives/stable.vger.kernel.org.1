@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E12079B533
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8926A79AE14
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344675AbjIKVTB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
+        id S233716AbjIKVFQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242311AbjIKP12 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:28 -0400
+        with ESMTP id S242316AbjIKP1e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4103CE4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B0EC433C8;
-        Mon, 11 Sep 2023 15:27:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C746DE4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEBDC433C7;
+        Mon, 11 Sep 2023 15:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446043;
-        bh=fRgyktZ/+SUlJj2Sk2XII7uAnvBmrSzqqzv31vKDBcM=;
+        s=korg; t=1694446049;
+        bh=gxq7+uWBpa4xtzOuuDkytMHayWfC34c55v5CxK6AVn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hVfwF8gzc0V/LZ9zYJYI31SZA13wwm/JZ7SDbTzIKyL4bqX3/yUqFO+NAf8bx1+4j
-         BbbOFECv+vhBXvI5RE3bQZX6aDQwM6QBOXI7VNlmMyOU8UvWUkfOj/NWyIMAKyd0dV
-         E+5mVWNkcrel9oMH0t0AvuBI3hkHH3d9KcmsRVtQ=
+        b=uJqHeQnd9+vxlt6Atsyt4gJyjxNZ+r/+kVZ/MbxTxOef85Cn9jf3LdBmd3zbDuQcK
+         zScth9Y2jHLRe8y3v5sV0n9fZRNzZ11n2BGRqZWB6VuEt6LROif5x1z0JrSfFoJAx+
+         Soe9AOtbl4e6JZ08Q86kWePmg6XOQaXckg5mCeJ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yonghong Song <yonghong.song@linux.dev>,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Yafang Shao <laoar.shao@gmail.com>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.1 562/600] bpf: Fix issue in verifying allow_ptr_leaks
-Date:   Mon, 11 Sep 2023 15:49:55 +0200
-Message-ID: <20230911134650.200439213@linuxfoundation.org>
+        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 564/600] dccp: Fix out of bounds access in DCCP error handler
+Date:   Mon, 11 Sep 2023 15:49:57 +0200
+Message-ID: <20230911134650.259094298@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -56,90 +54,84 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
+commit 977ad86c2a1bcaf58f01ab98df5cc145083c489c upstream.
 
-After we converted the capabilities of our networking-bpf program from
-cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
-failed to start. Because it failed the bpf verifier, and the error log
-is "R3 pointer comparison prohibited".
+There was a previous attempt to fix an out-of-bounds access in the DCCP
+error handlers, but that fix assumed that the error handlers only want
+to access the first 8 bytes of the DCCP header. Actually, they also look
+at the DCCP sequence number, which is stored beyond 8 bytes, so an
+explicit pskb_may_pull() is required.
 
-A simple reproducer as follows,
-
-SEC("cls-ingress")
-int ingress(struct __sk_buff *skb)
-{
-	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
-
-	if ((long)(iph + 1) > (long)skb->data_end)
-		return TC_ACT_STOLEN;
-	return TC_ACT_OK;
-}
-
-Per discussion with Yonghong and Alexei [1], comparison of two packet
-pointers is not a pointer leak. This patch fixes it.
-
-Our local kernel is 6.1.y and we expect this fix to be backported to
-6.1.y, so stable is CCed.
-
-[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
-
-Suggested-by: Yonghong Song <yonghong.song@linux.dev>
-Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Fixes: 6706a97fec96 ("dccp: fix out of bound access in dccp_v4_err()")
+Fixes: 1aa9d1a0e7ee ("ipv6: dccp: fix out of bound access in dccp_v6_err()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230823020703.3790-2-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ net/dccp/ipv4.c |   13 +++++++++----
+ net/dccp/ipv6.c |   15 ++++++++++-----
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10401,6 +10401,12 @@ static int check_cond_jmp_op(struct bpf_
- 		return -EINVAL;
- 	}
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -255,12 +255,17 @@ static int dccp_v4_err(struct sk_buff *s
+ 	int err;
+ 	struct net *net = dev_net(skb->dev);
  
-+	/* check src2 operand */
-+	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
-+	if (err)
-+		return err;
-+
-+	dst_reg = &regs[insn->dst_reg];
- 	if (BPF_SRC(insn->code) == BPF_X) {
- 		if (insn->imm != 0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -10412,12 +10418,13 @@ static int check_cond_jmp_op(struct bpf_
- 		if (err)
- 			return err;
+-	/* Only need dccph_dport & dccph_sport which are the first
+-	 * 4 bytes in dccp header.
++	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
++	 * which is in byte 7 of the dccp header.
+ 	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
++	 *
++	 * Later on, we want to access the sequence number fields, which are
++	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+ 	 */
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
++	dh = (struct dccp_hdr *)(skb->data + offset);
++	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++		return -EINVAL;
++	iph = (struct iphdr *)skb->data;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
  
--		if (is_pointer_value(env, insn->src_reg)) {
-+		src_reg = &regs[insn->src_reg];
-+		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
-+		    is_pointer_value(env, insn->src_reg)) {
- 			verbose(env, "R%d pointer comparison prohibited\n",
- 				insn->src_reg);
- 			return -EACCES;
- 		}
--		src_reg = &regs[insn->src_reg];
- 	} else {
- 		if (insn->src_reg != BPF_REG_0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -10425,12 +10432,6 @@ static int check_cond_jmp_op(struct bpf_
- 		}
- 	}
+ 	sk = __inet_lookup_established(net, &dccp_hashinfo,
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -74,7 +74,7 @@ static inline __u64 dccp_v6_init_sequenc
+ static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 			u8 type, u8 code, int offset, __be32 info)
+ {
+-	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
++	const struct ipv6hdr *hdr;
+ 	const struct dccp_hdr *dh;
+ 	struct dccp_sock *dp;
+ 	struct ipv6_pinfo *np;
+@@ -83,12 +83,17 @@ static int dccp_v6_err(struct sk_buff *s
+ 	__u64 seq;
+ 	struct net *net = dev_net(skb->dev);
  
--	/* check src2 operand */
--	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
--	if (err)
--		return err;
--
--	dst_reg = &regs[insn->dst_reg];
- 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
+-	/* Only need dccph_dport & dccph_sport which are the first
+-	 * 4 bytes in dccp header.
++	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
++	 * which is in byte 7 of the dccp header.
+ 	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
++	 *
++	 * Later on, we want to access the sequence number fields, which are
++	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+ 	 */
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
++	dh = (struct dccp_hdr *)(skb->data + offset);
++	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++		return -EINVAL;
++	hdr = (const struct ipv6hdr *)skb->data;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
  
- 	if (BPF_SRC(insn->code) == BPF_K) {
+ 	sk = __inet6_lookup_established(net, &dccp_hashinfo,
 
 
