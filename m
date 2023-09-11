@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38EE779B7FF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C42479B610
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379556AbjIKWor (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39066 "EHLO
+        id S1379559AbjIKWos (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240762AbjIKOxJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:09 -0400
+        with ESMTP id S242035AbjIKPU7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE79118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AAEC433C8;
-        Mon, 11 Sep 2023 14:53:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A886BFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC796C433C7;
+        Mon, 11 Sep 2023 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443984;
-        bh=KrezZs9VOK9uFjK3ZolD8+aJRRU5phehfvePcuWpQOY=;
+        s=korg; t=1694445654;
+        bh=Iqh2ZANoxnmnvA2lU52eVnaXBIKSLKwwkJw2GWXcjuw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eQx8ZLC+E9e7binhVlImzViSdgFBnQnAeQ5dzltFKTKMq3lYXHc3LVR0A8zwV04O6
-         eio3m32MJ+f1XUvn7Lb4+YCCDaUuV75M+kBnWRhTrk4WC2Qx6M25i3rETbEVczZZXh
-         sNQDXZfvCKMpe/9S847C6r+x2FOgkqi7fCRtdPxA=
+        b=OTi4CpqY608GTZQlKpEIrfhOmvOQHaHHkJmG0B80kUD0H95gWNxVWthXCbUYQUVZu
+         6GMbBA5B85XsOqa5M90DvEJ5yY393uA3410fEkSYIr1a5DYQTvgTcmpJ+6HuGeLmmn
+         m+scMSA9X6xiTZxFDUROpdqmSXoFqdwXzCRLCtds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 569/737] media: ov2680: Dont take the lock for try_fmt calls
-Date:   Mon, 11 Sep 2023 15:47:08 +0200
-Message-ID: <20230911134706.437674877@linuxfoundation.org>
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 396/600] iommu: rockchip: Fix directory table address encoding
+Date:   Mon, 11 Sep 2023 15:47:09 +0200
+Message-ID: <20230911134645.365293921@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,68 +50,157 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit e521b9cc1a49de677f4fc65909ce4877fbf7b113 ]
+[ Upstream commit 6df63b7ebdaf5fcd75dceedf6967d0761e56eca1 ]
 
-On ov2680_set_fmt() calls with format->which == V4L2_SUBDEV_FORMAT_TRY,
-ov2680_set_fmt() does not talk to the sensor.
+The physical address to the directory table is currently encoded using
+the following bit layout for IOMMU v2.
 
-So in this case there is no need to lock the sensor->lock mutex or
-to check that the sensor is streaming.
+ 31:12 - Address bit 31:0
+ 11: 4 - Address bit 39:32
 
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+This is also the bit layout used by the vendor kernel.
+
+However, testing has shown that addresses to the directory/page tables
+and memory pages are all encoded using the same bit layout.
+
+IOMMU v1:
+ 31:12 - Address bit 31:0
+
+IOMMU v2:
+ 31:12 - Address bit 31:0
+ 11: 8 - Address bit 35:32
+  7: 4 - Address bit 39:36
+
+Change to use the mk_dtentries ops to encode the directory table address
+correctly. The value written to DTE_ADDR may include the valid bit set,
+a bit that is ignored and DTE_ADDR reg read it back as 0.
+
+This also update the bit layout comment for the page address and the
+number of nybbles that are read back for DTE_ADDR comment.
+
+These changes render the dte_addr_phys and dma_addr_dte ops unused and
+is removed.
+
+Fixes: 227014b33f62 ("iommu: rockchip: Add internal ops to handle variants")
+Fixes: c55356c534aa ("iommu: rockchip: Add support for iommu v2")
+Fixes: c987b65a574f ("iommu/rockchip: Fix physical address decoding")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20230617182540.3091374-2-jonas@kwiboo.se
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/iommu/rockchip-iommu.c | 43 ++++------------------------------
+ 1 file changed, 5 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index de11a5fb03659..4f7ff23ef8973 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -595,24 +595,22 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- 	if (format->pad != 0)
- 		return -EINVAL;
+diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
+index f7e9b56be174f..43bb577a26e59 100644
+--- a/drivers/iommu/rockchip-iommu.c
++++ b/drivers/iommu/rockchip-iommu.c
+@@ -98,8 +98,6 @@ struct rk_iommu_ops {
+ 	phys_addr_t (*pt_address)(u32 dte);
+ 	u32 (*mk_dtentries)(dma_addr_t pt_dma);
+ 	u32 (*mk_ptentries)(phys_addr_t page, int prot);
+-	phys_addr_t (*dte_addr_phys)(u32 addr);
+-	u32 (*dma_addr_dte)(dma_addr_t dt_dma);
+ 	u64 dma_bit_mask;
+ };
  
--	mutex_lock(&sensor->lock);
--
--	if (sensor->is_streaming) {
--		ret = -EBUSY;
--		goto unlock;
--	}
--
- 	mode = v4l2_find_nearest_size(ov2680_mode_data,
- 				      ARRAY_SIZE(ov2680_mode_data), width,
- 				      height, fmt->width, fmt->height);
--	if (!mode) {
--		ret = -EINVAL;
--		goto unlock;
--	}
-+	if (!mode)
-+		return -EINVAL;
+@@ -277,8 +275,8 @@ static u32 rk_mk_pte(phys_addr_t page, int prot)
+ /*
+  * In v2:
+  * 31:12 - Page address bit 31:0
+- *  11:9 - Page address bit 34:32
+- *   8:4 - Page address bit 39:35
++ * 11: 8 - Page address bit 35:32
++ *  7: 4 - Page address bit 39:36
+  *     3 - Security
+  *     2 - Writable
+  *     1 - Readable
+@@ -505,7 +503,7 @@ static int rk_iommu_force_reset(struct rk_iommu *iommu)
  
- 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
- 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
- 		format->format = *try_fmt;
-+		return 0;
-+	}
-+
-+	mutex_lock(&sensor->lock);
-+
-+	if (sensor->is_streaming) {
-+		ret = -EBUSY;
- 		goto unlock;
+ 	/*
+ 	 * Check if register DTE_ADDR is working by writing DTE_ADDR_DUMMY
+-	 * and verifying that upper 5 nybbles are read back.
++	 * and verifying that upper 5 (v1) or 7 (v2) nybbles are read back.
+ 	 */
+ 	for (i = 0; i < iommu->num_mmu; i++) {
+ 		dte_addr = rk_ops->pt_address(DTE_ADDR_DUMMY);
+@@ -530,33 +528,6 @@ static int rk_iommu_force_reset(struct rk_iommu *iommu)
+ 	return 0;
+ }
+ 
+-static inline phys_addr_t rk_dte_addr_phys(u32 addr)
+-{
+-	return (phys_addr_t)addr;
+-}
+-
+-static inline u32 rk_dma_addr_dte(dma_addr_t dt_dma)
+-{
+-	return dt_dma;
+-}
+-
+-#define DT_HI_MASK GENMASK_ULL(39, 32)
+-#define DTE_BASE_HI_MASK GENMASK(11, 4)
+-#define DT_SHIFT   28
+-
+-static inline phys_addr_t rk_dte_addr_phys_v2(u32 addr)
+-{
+-	u64 addr64 = addr;
+-	return (phys_addr_t)(addr64 & RK_DTE_PT_ADDRESS_MASK) |
+-	       ((addr64 & DTE_BASE_HI_MASK) << DT_SHIFT);
+-}
+-
+-static inline u32 rk_dma_addr_dte_v2(dma_addr_t dt_dma)
+-{
+-	return (dt_dma & RK_DTE_PT_ADDRESS_MASK) |
+-	       ((dt_dma & DT_HI_MASK) >> DT_SHIFT);
+-}
+-
+ static void log_iova(struct rk_iommu *iommu, int index, dma_addr_t iova)
+ {
+ 	void __iomem *base = iommu->bases[index];
+@@ -576,7 +547,7 @@ static void log_iova(struct rk_iommu *iommu, int index, dma_addr_t iova)
+ 	page_offset = rk_iova_page_offset(iova);
+ 
+ 	mmu_dte_addr = rk_iommu_read(base, RK_MMU_DTE_ADDR);
+-	mmu_dte_addr_phys = rk_ops->dte_addr_phys(mmu_dte_addr);
++	mmu_dte_addr_phys = rk_ops->pt_address(mmu_dte_addr);
+ 
+ 	dte_addr_phys = mmu_dte_addr_phys + (4 * dte_index);
+ 	dte_addr = phys_to_virt(dte_addr_phys);
+@@ -966,7 +937,7 @@ static int rk_iommu_enable(struct rk_iommu *iommu)
+ 
+ 	for (i = 0; i < iommu->num_mmu; i++) {
+ 		rk_iommu_write(iommu->bases[i], RK_MMU_DTE_ADDR,
+-			       rk_ops->dma_addr_dte(rk_domain->dt_dma));
++			       rk_ops->mk_dtentries(rk_domain->dt_dma));
+ 		rk_iommu_base_command(iommu->bases[i], RK_MMU_CMD_ZAP_CACHE);
+ 		rk_iommu_write(iommu->bases[i], RK_MMU_INT_MASK, RK_MMU_IRQ_MASK);
  	}
+@@ -1373,8 +1344,6 @@ static struct rk_iommu_ops iommu_data_ops_v1 = {
+ 	.pt_address = &rk_dte_pt_address,
+ 	.mk_dtentries = &rk_mk_dte,
+ 	.mk_ptentries = &rk_mk_pte,
+-	.dte_addr_phys = &rk_dte_addr_phys,
+-	.dma_addr_dte = &rk_dma_addr_dte,
+ 	.dma_bit_mask = DMA_BIT_MASK(32),
+ };
+ 
+@@ -1382,8 +1351,6 @@ static struct rk_iommu_ops iommu_data_ops_v2 = {
+ 	.pt_address = &rk_dte_pt_address_v2,
+ 	.mk_dtentries = &rk_mk_dte_v2,
+ 	.mk_ptentries = &rk_mk_pte_v2,
+-	.dte_addr_phys = &rk_dte_addr_phys_v2,
+-	.dma_addr_dte = &rk_dma_addr_dte_v2,
+ 	.dma_bit_mask = DMA_BIT_MASK(40),
+ };
  
 -- 
 2.40.1
