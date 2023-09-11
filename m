@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D49B79AEA8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC4B79AF7E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355326AbjIKV5v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
+        id S1343574AbjIKVLy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:11:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240760AbjIKOxD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:03 -0400
+        with ESMTP id S241946AbjIKPSp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7DA118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675AFC433C8;
-        Mon, 11 Sep 2023 14:52:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217A5FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684D6C433C7;
+        Mon, 11 Sep 2023 15:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443978;
-        bh=R3BZ+UoYH4N+bjLj8oCNP44X2z4G+d+52AxFMb3bjGc=;
+        s=korg; t=1694445519;
+        bh=V5/pCae+Ce1e5ZNFGYddUVQZCnI8gjbYb0q6YZ+qwSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JIWv5dkB2Bz4m20S4woBC2Oq0jplpsgv/CC7D0jbLzBHKDXrPj6ogoezScxkggU+Z
-         tCopMAo6mmqMte0QYUJl5w0BmTOh2Vw6NIG6YwYPmAX4mxmgZsFr2APzXxwXzhLU6+
-         TYFHzkj8nFMSgsmIsol1j8MzHnUF9f58H1PagcVc=
+        b=kUH/SRT7IFPfTuLi3RSC/+0WAyiDBCn6NrDDxlmC13j1dguyRsg+SKpwwdTJkRbYX
+         d/7hjWCf9iGU8AISLkdtD6n7mCGeQiFUObJwdyiQHXv5JZEOWlksG2XXMGp1e0FXHF
+         LaaPLhwGtRqkoMmiJu6sW32nBhCk5k5tky3/WSgU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Russell Currey <ruscur@russell.cc>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 550/737] media: cec: core: add adap_unconfigured() callback
-Date:   Mon, 11 Sep 2023 15:46:49 +0200
-Message-ID: <20230911134705.921180189@linuxfoundation.org>
+Subject: [PATCH 6.1 377/600] powerpc/pseries: Rework lppaca_shared_proc() to avoid DEBUG_PREEMPT
+Date:   Mon, 11 Sep 2023 15:46:50 +0200
+Message-ID: <20230911134644.802888309@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,83 +50,162 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Russell Currey <ruscur@russell.cc>
 
-[ Upstream commit 948a77aaecf202f722cf2264025f9987e5bd5c26 ]
+[ Upstream commit eac030b22ea12cdfcbb2e941c21c03964403c63f ]
 
-The adap_configured() callback was called with the adap->lock mutex
-held if the 'configured' argument was false, and without the adap->lock
-mutex held if that argument was true.
+lppaca_shared_proc() takes a pointer to the lppaca which is typically
+accessed through get_lppaca().  With DEBUG_PREEMPT enabled, this leads
+to checking if preemption is enabled, for example:
 
-That was very confusing, and so split this up in a adap_unconfigured()
-callback and a high-level configured() callback.
+  BUG: using smp_processor_id() in preemptible [00000000] code: grep/10693
+  caller is lparcfg_data+0x408/0x19a0
+  CPU: 4 PID: 10693 Comm: grep Not tainted 6.5.0-rc3 #2
+  Call Trace:
+    dump_stack_lvl+0x154/0x200 (unreliable)
+    check_preemption_disabled+0x214/0x220
+    lparcfg_data+0x408/0x19a0
+    ...
 
-This also makes it easier to understand when the mutex is held: all
-low-level adap_* callbacks are called with the mutex held. All other
-callbacks are called without that mutex held.
+This isn't actually a problem however, as it does not matter which
+lppaca is accessed, the shared proc state will be the same.
+vcpudispatch_stats_procfs_init() already works around this by disabling
+preemption, but the lparcfg code does not, erroring any time
+/proc/powerpc/lparcfg is accessed with DEBUG_PREEMPT enabled.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: f1b57164305d ("media: cec: add optional adap_configured callback")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Instead of disabling preemption on the caller side, rework
+lppaca_shared_proc() to not take a pointer and instead directly access
+the lppaca, bypassing any potential preemption checks.
+
+Fixes: f13c13a00512 ("powerpc: Stop using non-architected shared_proc field in lppaca")
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+[mpe: Rework to avoid needing a definition in paca.h and lppaca.h]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230823055317.751786-4-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 4 ++--
- include/media/cec.h               | 5 +++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/lppaca.h        | 11 +++++++++--
+ arch/powerpc/platforms/pseries/lpar.c    | 10 +---------
+ arch/powerpc/platforms/pseries/lparcfg.c |  4 ++--
+ arch/powerpc/platforms/pseries/setup.c   |  2 +-
+ drivers/cpuidle/cpuidle-pseries.c        |  8 +-------
+ 5 files changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index a9b73fb33888d..09ca83c233299 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -1348,7 +1348,7 @@ static void cec_adap_unconfigure(struct cec_adapter *adap)
- 	cec_flush(adap);
- 	wake_up_interruptible(&adap->kthread_waitq);
- 	cec_post_state_event(adap);
--	call_void_op(adap, adap_configured, false);
-+	call_void_op(adap, adap_unconfigured);
- }
+diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
+index fe278172e9d42..ee1488d38fdc1 100644
+--- a/arch/powerpc/include/asm/lppaca.h
++++ b/arch/powerpc/include/asm/lppaca.h
+@@ -45,6 +45,7 @@
+ #include <asm/types.h>
+ #include <asm/mmu.h>
+ #include <asm/firmware.h>
++#include <asm/paca.h>
  
  /*
-@@ -1539,7 +1539,7 @@ static int cec_config_thread_func(void *arg)
- 	adap->kthread_config = NULL;
- 	complete(&adap->config_completion);
- 	mutex_unlock(&adap->lock);
--	call_void_op(adap, adap_configured, true);
-+	call_void_op(adap, configured);
- 	return 0;
+  * The lppaca is the "virtual processor area" registered with the hypervisor,
+@@ -127,14 +128,20 @@ struct lppaca {
+  */
+ #define LPPACA_OLD_SHARED_PROC		2
  
- unconfigure:
-diff --git a/include/media/cec.h b/include/media/cec.h
-index 6556cc161dc0a..9c007f83569aa 100644
---- a/include/media/cec.h
-+++ b/include/media/cec.h
-@@ -113,12 +113,12 @@ struct cec_fh {
- #define CEC_FREE_TIME_TO_USEC(ft)		((ft) * 2400)
+-static inline bool lppaca_shared_proc(struct lppaca *l)
++#ifdef CONFIG_PPC_PSERIES
++/*
++ * All CPUs should have the same shared proc value, so directly access the PACA
++ * to avoid false positives from DEBUG_PREEMPT.
++ */
++static inline bool lppaca_shared_proc(void)
+ {
++	struct lppaca *l = local_paca->lppaca_ptr;
++
+ 	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
+ 		return false;
+ 	return !!(l->__old_status & LPPACA_OLD_SHARED_PROC);
+ }
  
- struct cec_adap_ops {
--	/* Low-level callbacks */
-+	/* Low-level callbacks, called with adap->lock held */
- 	int (*adap_enable)(struct cec_adapter *adap, bool enable);
- 	int (*adap_monitor_all_enable)(struct cec_adapter *adap, bool enable);
- 	int (*adap_monitor_pin_enable)(struct cec_adapter *adap, bool enable);
- 	int (*adap_log_addr)(struct cec_adapter *adap, u8 logical_addr);
--	void (*adap_configured)(struct cec_adapter *adap, bool configured);
-+	void (*adap_unconfigured)(struct cec_adapter *adap);
- 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
- 			     u32 signal_free_time, struct cec_msg *msg);
- 	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
-@@ -131,6 +131,7 @@ struct cec_adap_ops {
- 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
+-#ifdef CONFIG_PPC_PSERIES
+ #define get_lppaca()	(get_paca()->lppaca_ptr)
+ #endif
  
- 	/* High-level CEC message callback, called without adap->lock held */
-+	void (*configured)(struct cec_adapter *adap);
- 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
- };
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 97ef6499e5019..2c2812a87d470 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -638,16 +638,8 @@ static const struct proc_ops vcpudispatch_stats_freq_proc_ops = {
  
+ static int __init vcpudispatch_stats_procfs_init(void)
+ {
+-	/*
+-	 * Avoid smp_processor_id while preemptible. All CPUs should have
+-	 * the same value for lppaca_shared_proc.
+-	 */
+-	preempt_disable();
+-	if (!lppaca_shared_proc(get_lppaca())) {
+-		preempt_enable();
++	if (!lppaca_shared_proc())
+ 		return 0;
+-	}
+-	preempt_enable();
+ 
+ 	if (!proc_create("powerpc/vcpudispatch_stats", 0600, NULL,
+ 					&vcpudispatch_stats_proc_ops))
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index 63fd925ccbb83..ca10a3682c46e 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -205,7 +205,7 @@ static void parse_ppp_data(struct seq_file *m)
+ 	           ppp_data.active_system_procs);
+ 
+ 	/* pool related entries are appropriate for shared configs */
+-	if (lppaca_shared_proc(get_lppaca())) {
++	if (lppaca_shared_proc()) {
+ 		unsigned long pool_idle_time, pool_procs;
+ 
+ 		seq_printf(m, "pool=%d\n", ppp_data.pool_num);
+@@ -616,7 +616,7 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
+ 		   partition_potential_processors);
+ 
+ 	seq_printf(m, "shared_processor_mode=%d\n",
+-		   lppaca_shared_proc(get_lppaca()));
++		   lppaca_shared_proc());
+ 
+ #ifdef CONFIG_PPC_64S_HASH_MMU
+ 	if (!radix_enabled())
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 8ef3270515a9b..a0701dbdb1348 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -846,7 +846,7 @@ static void __init pSeries_setup_arch(void)
+ 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
+ 		vpa_init(boot_cpuid);
+ 
+-		if (lppaca_shared_proc(get_lppaca())) {
++		if (lppaca_shared_proc()) {
+ 			static_branch_enable(&shared_processor);
+ 			pv_spinlocks_init();
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+index 7e7ab5597d7ac..0590001db6532 100644
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -410,13 +410,7 @@ static int __init pseries_idle_probe(void)
+ 		return -ENODEV;
+ 
+ 	if (firmware_has_feature(FW_FEATURE_SPLPAR)) {
+-		/*
+-		 * Use local_paca instead of get_lppaca() since
+-		 * preemption is not disabled, and it is not required in
+-		 * fact, since lppaca_ptr does not need to be the value
+-		 * associated to the current CPU, it can be from any CPU.
+-		 */
+-		if (lppaca_shared_proc(local_paca->lppaca_ptr)) {
++		if (lppaca_shared_proc()) {
+ 			cpuidle_state_table = shared_states;
+ 			max_idle_state = ARRAY_SIZE(shared_states);
+ 		} else {
 -- 
 2.40.1
 
