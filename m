@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D1B79AE70
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A5F79B42D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239934AbjIKV1o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56392 "EHLO
+        id S236787AbjIKVSW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241458AbjIKPJY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:24 -0400
+        with ESMTP id S239054AbjIKOKj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7570FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7F2C433C8;
-        Mon, 11 Sep 2023 15:09:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6677CCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF0DC433C9;
+        Mon, 11 Sep 2023 14:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444959;
-        bh=PLD8dB/JyHTzh3VCFDpXVYw/loEl941DCU7KC1D5NQw=;
+        s=korg; t=1694441434;
+        bh=q2S1W3duGUjLhfWCnDpRSXX6j4E/AlYPBe8Jhdsx4/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lww2/CzVmUtBiRSKBZUlxY1b6yxtGQgwAqgNXIK4IuBwf3wu9sJuXQH0JPVuWq98s
-         7lG1dsPk16/fGK9d82r5sCua7eh7f91ES+2mgvu/3ydcyeYxIoE7HwKckVPqtSYNXv
-         6csYMGD/teL8LB/wJLynPo1D3HG2lZbiN8U9rqho=
+        b=o4Z+h4lch0vTRRvN+PWz1W6sDZhlCpegT3409FvQzpRCrRIEQfOYpLF+oy/NgjdIB
+         l+LzD8T8lv/7qraEv8INSH0BqVOAR0q8npRYdj8OsDSTvBU+DK5oAyuVl9P47tNqhO
+         4t4xAxTQOdLakXV90qGnvZKJoe7TnLCQ1N1PFNbs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+        Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/600] net-memcg: Fix scope of sockmem pressure indicators
+Subject: [PATCH 6.5 412/739] clk: imx: pllv4: Fix SPLL2 MULT range
 Date:   Mon, 11 Sep 2023 15:43:31 +0200
-Message-ID: <20230911134638.855441118@linuxfoundation.org>
+Message-ID: <20230911134702.687186717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,88 +51,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Wu <wuyun.abel@bytedance.com>
+From: Ye Li <ye.li@nxp.com>
 
-[ Upstream commit ac8a52962164a50e693fa021d3564d7745b83a7f ]
+[ Upstream commit 3f0cdb945471f1abd1cf4d172190e9c489c5052a ]
 
-Now there are two indicators of socket memory pressure sit inside
-struct mem_cgroup, socket_pressure and tcpmem_pressure, indicating
-memory reclaim pressure in memcg->memory and ->tcpmem respectively.
+The SPLL2 on iMX8ULP is different with other frac PLLs, it can
+support VCO from 650Mhz to 1Ghz. According to RM, the MULT is
+using a range from 27 to 54, not some fixed values. If using
+current PLL implementation, some clock rate can't be supported.
 
-When in legacy mode (cgroupv1), the socket memory is charged into
-->tcpmem which is independent of ->memory, so socket_pressure has
-nothing to do with socket's pressure at all. Things could be worse
-by taking socket_pressure into consideration in legacy mode, as a
-pressure in ->memory can lead to premature reclamation/throttling
-in socket.
+Fix the issue by adding new type for the SPLL2 and use MULT range
+to replace MULT table
 
-While for the default mode (cgroupv2), the socket memory is charged
-into ->memory, and ->tcpmem/->tcpmem_pressure are simply not used.
-
-So {socket,tcpmem}_pressure are only used in default/legacy mode
-respectively for indicating socket memory pressure. This patch fixes
-the pieces of code that make mixed use of both.
-
-Fixes: 8e8ae645249b ("mm: memcontrol: hook up vmpressure to socket pressure")
-Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5f0601c47c33 ("clk: imx: Update the pllv4 to support imx8ulp")
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Ye Li <ye.li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230625123340.4067536-1-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/memcontrol.h | 9 +++++++--
- mm/vmpressure.c            | 8 ++++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-pllv4.c | 46 +++++++++++++++++++++++++++++--------
+ drivers/clk/imx/clk.h       |  1 +
+ 2 files changed, 37 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index e039763029563..099521835cd14 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -283,6 +283,11 @@ struct mem_cgroup {
- 	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
- 	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
+diff --git a/drivers/clk/imx/clk-pllv4.c b/drivers/clk/imx/clk-pllv4.c
+index 6e7e34571fc8d..9b136c951762c 100644
+--- a/drivers/clk/imx/clk-pllv4.c
++++ b/drivers/clk/imx/clk-pllv4.c
+@@ -44,11 +44,15 @@ struct clk_pllv4 {
+ 	u32		cfg_offset;
+ 	u32		num_offset;
+ 	u32		denom_offset;
++	bool		use_mult_range;
+ };
  
-+	/*
-+	 * Hint of reclaim pressure for socket memroy management. Note
-+	 * that this indicator should NOT be used in legacy cgroup mode
-+	 * where socket memory is accounted/charged separately.
-+	 */
- 	unsigned long		socket_pressure;
+ /* Valid PLL MULT Table */
+ static const int pllv4_mult_table[] = {33, 27, 22, 20, 17, 16};
  
- 	/* Legacy tcp memory accounting */
-@@ -1704,8 +1709,8 @@ void mem_cgroup_sk_alloc(struct sock *sk);
- void mem_cgroup_sk_free(struct sock *sk);
- static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
- {
--	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && memcg->tcpmem_pressure)
--		return true;
-+	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-+		return !!memcg->tcpmem_pressure;
- 	do {
- 		if (time_before(jiffies, READ_ONCE(memcg->socket_pressure)))
- 			return true;
-diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index b52644771cc43..22c6689d93027 100644
---- a/mm/vmpressure.c
-+++ b/mm/vmpressure.c
-@@ -244,6 +244,14 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, bool tree,
- 	if (mem_cgroup_disabled())
- 		return;
- 
-+	/*
-+	 * The in-kernel users only care about the reclaim efficiency
-+	 * for this @memcg rather than the whole subtree, and there
-+	 * isn't and won't be any in-kernel user in a legacy cgroup.
-+	 */
-+	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
-+		return;
++/* Valid PLL MULT range, (max, min) */
++static const int pllv4_mult_range[] = {54, 27};
 +
- 	vmpr = memcg_to_vmpressure(memcg);
+ #define to_clk_pllv4(__hw) container_of(__hw, struct clk_pllv4, hw)
  
- 	/*
+ #define LOCK_TIMEOUT_US		USEC_PER_MSEC
+@@ -94,17 +98,30 @@ static unsigned long clk_pllv4_recalc_rate(struct clk_hw *hw,
+ static long clk_pllv4_round_rate(struct clk_hw *hw, unsigned long rate,
+ 				 unsigned long *prate)
+ {
++	struct clk_pllv4 *pll = to_clk_pllv4(hw);
+ 	unsigned long parent_rate = *prate;
+ 	unsigned long round_rate, i;
+ 	u32 mfn, mfd = DEFAULT_MFD;
+ 	bool found = false;
+ 	u64 temp64;
+-
+-	for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
+-		round_rate = parent_rate * pllv4_mult_table[i];
+-		if (rate >= round_rate) {
++	u32 mult;
++
++	if (pll->use_mult_range) {
++		temp64 = (u64)rate;
++		do_div(temp64, parent_rate);
++		mult = temp64;
++		if (mult >= pllv4_mult_range[1] &&
++		    mult <= pllv4_mult_range[0]) {
++			round_rate = parent_rate * mult;
+ 			found = true;
+-			break;
++		}
++	} else {
++		for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
++			round_rate = parent_rate * pllv4_mult_table[i];
++			if (rate >= round_rate) {
++				found = true;
++				break;
++			}
+ 		}
+ 	}
+ 
+@@ -138,14 +155,20 @@ static long clk_pllv4_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	return round_rate + (u32)temp64;
+ }
+ 
+-static bool clk_pllv4_is_valid_mult(unsigned int mult)
++static bool clk_pllv4_is_valid_mult(struct clk_pllv4 *pll, unsigned int mult)
+ {
+ 	int i;
+ 
+ 	/* check if mult is in valid MULT table */
+-	for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
+-		if (pllv4_mult_table[i] == mult)
++	if (pll->use_mult_range) {
++		if (mult >= pllv4_mult_range[1] &&
++		    mult <= pllv4_mult_range[0])
+ 			return true;
++	} else {
++		for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
++			if (pllv4_mult_table[i] == mult)
++				return true;
++		}
+ 	}
+ 
+ 	return false;
+@@ -160,7 +183,7 @@ static int clk_pllv4_set_rate(struct clk_hw *hw, unsigned long rate,
+ 
+ 	mult = rate / parent_rate;
+ 
+-	if (!clk_pllv4_is_valid_mult(mult))
++	if (!clk_pllv4_is_valid_mult(pll, mult))
+ 		return -EINVAL;
+ 
+ 	if (parent_rate <= MAX_MFD)
+@@ -227,10 +250,13 @@ struct clk_hw *imx_clk_hw_pllv4(enum imx_pllv4_type type, const char *name,
+ 
+ 	pll->base = base;
+ 
+-	if (type == IMX_PLLV4_IMX8ULP) {
++	if (type == IMX_PLLV4_IMX8ULP ||
++	    type == IMX_PLLV4_IMX8ULP_1GHZ) {
+ 		pll->cfg_offset = IMX8ULP_PLL_CFG_OFFSET;
+ 		pll->num_offset = IMX8ULP_PLL_NUM_OFFSET;
+ 		pll->denom_offset = IMX8ULP_PLL_DENOM_OFFSET;
++		if (type == IMX_PLLV4_IMX8ULP_1GHZ)
++			pll->use_mult_range = true;
+ 	} else {
+ 		pll->cfg_offset = PLL_CFG_OFFSET;
+ 		pll->num_offset = PLL_NUM_OFFSET;
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index af19d9f6aed09..adb7ad649a0d2 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -45,6 +45,7 @@ enum imx_pll14xx_type {
+ enum imx_pllv4_type {
+ 	IMX_PLLV4_IMX7ULP,
+ 	IMX_PLLV4_IMX8ULP,
++	IMX_PLLV4_IMX8ULP_1GHZ,
+ };
+ 
+ enum imx_pfdv2_type {
 -- 
 2.40.1
 
