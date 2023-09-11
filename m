@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A63F579B0D1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31DB379B013
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353607AbjIKVrv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34002 "EHLO
+        id S1352609AbjIKVtK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241661AbjIKPLQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:16 -0400
+        with ESMTP id S241662AbjIKPLU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826D5FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF36DC433C7;
-        Mon, 11 Sep 2023 15:11:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50283FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C4EC433C8;
+        Mon, 11 Sep 2023 15:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445072;
-        bh=XEWv4onmotavj0FMK6tLiyjy+NcOjmNs7Jw0bgY3IoM=;
+        s=korg; t=1694445075;
+        bh=aq3R/anmz1mo7cG/7mawEwk3Hf7qPT+6lB5P+KMSPUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pAI58VIWyJFyqGYv3HQPRiMm58k5kU0XRAFp1YZWHWjthGIZMgWK9/SI6ftU3aQHg
-         2XRJFP8lQGWEdwLGjTrl5IxGzINEeGqOw/FgWWvZeptZOZAIy5H7ZTgCVOfXeBTjuV
-         lshoPxJonDJwpMxh+ZxKbW5sE94JFR+hWll5hAxU=
+        b=ZMxpLgJs7WN0Y6CjGkwrOD8flrtdctpdjAyM4tnVh3kslndg7Qtq8WrIw7Dlpia3s
+         qEiydoR9dcGDQVKGKmZlPUdgXzbrcfybKVGEILHxOIu9jU1cNl7KJDofdepsEYCThr
+         ni6X82F9SHG2RjNt6kGX2stUyaEgYGydnlmQ8OkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Wesley Chalmers <Wesley.Chalmers@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Sui Jingfeng <suijingfeng@loongson.cn>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 218/600] drm/amd/display: Do not set drr on pipe commit
-Date:   Mon, 11 Sep 2023 15:44:11 +0200
-Message-ID: <20230911134640.050115823@linuxfoundation.org>
+Subject: [PATCH 6.1 219/600] drm/hyperv: Fix a compilation issue because of not including screen_info.h
+Date:   Mon, 11 Sep 2023 15:44:12 +0200
+Message-ID: <20230911134640.080937556@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -57,71 +55,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Wesley Chalmers <Wesley.Chalmers@amd.com>
+From: Sui Jingfeng <suijingfeng@loongson.cn>
 
-[ Upstream commit e101bf95ea87ccc03ac2f48dfc0757c6364ff3c7 ]
+[ Upstream commit 8d1077cf2e43b15fefd76ebec2b71541eb27ef2c ]
 
-[WHY]
-Writing to DRR registers such as OTG_V_TOTAL_MIN on the same frame as a
-pipe commit can cause underflow.
+Fixes the following build errors on arm64:
 
-[HOW]
-Move DMUB p-state delegate into optimze_bandwidth; enabling FAMS sets
-optimized_required.
+drivers/video/fbdev/hyperv_fb.c: In function 'hvfb_getmem':
+>> drivers/video/fbdev/hyperv_fb.c:1033:24: error: 'screen_info' undeclared (first use in this function)
+    1033 |                 base = screen_info.lfb_base;
+         |                        ^~~~~~~~~~~
+drivers/video/fbdev/hyperv_fb.c:1033:24: note: each undeclared identifier is reported only once for each function it appears in
 
-This change expects that Freesync requests are blocked when
-optimized_required is true.
+>> drivers/gpu/drm/hyperv/hyperv_drm_drv.c:75:54: error: 'screen_info' undeclared (first use in this function)
+      75 |         drm_aperture_remove_conflicting_framebuffers(screen_info.lfb_base,
+	 |                                                      ^~~~~~~~~~~
+drivers/gpu/drm/hyperv/hyperv_drm_drv.c:75:54: note: each undeclared identifier is reported only once for each function it appears in
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Wesley Chalmers <Wesley.Chalmers@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307090823.nxnT8Kk5-lkp@intel.com/
+Fixes: 81d2393485f0 ("fbdev/hyperv-fb: Do not set struct fb_info.apertures")
+Fixes: 8b0d13545b09 ("efi: Do not include <linux/screen_info.h> from EFI header")
+Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230709100514.703759-1-suijingfeng@loongson.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 6 ++++++
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 7 +++++++
- 2 files changed, 13 insertions(+)
+ drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index 4ef632864948e..21fae818ca28f 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -2032,6 +2032,12 @@ void dcn20_optimize_bandwidth(
- 	if (hubbub->funcs->program_compbuf_size)
- 		hubbub->funcs->program_compbuf_size(hubbub, context->bw_ctx.bw.dcn.compbuf_size_kb, true);
+diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+index 29ee0814bccc8..68050409dd26c 100644
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+@@ -7,6 +7,7 @@
+ #include <linux/hyperv.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/screen_info.h>
  
-+	if (context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching) {
-+		dc_dmub_srv_p_state_delegate(dc,
-+			true, context);
-+		context->bw_ctx.bw.dcn.clk.p_state_change_support = true;
-+	}
-+
- 	dc->clk_mgr->funcs->update_clocks(
- 			dc->clk_mgr,
- 			context,
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index a1b312483d7f1..c97d3e81a83d2 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -987,11 +987,18 @@ void dcn30_set_disp_pattern_generator(const struct dc *dc,
- void dcn30_prepare_bandwidth(struct dc *dc,
-  	struct dc_state *context)
- {
-+	if (context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching) {
-+		dc->optimized_required = true;
-+		context->bw_ctx.bw.dcn.clk.p_state_change_support = false;
-+	}
-+
- 	if (dc->clk_mgr->dc_mode_softmax_enabled)
- 		if (dc->clk_mgr->clks.dramclk_khz <= dc->clk_mgr->bw_params->dc_mode_softmax_memclk * 1000 &&
- 				context->bw_ctx.bw.dcn.clk.dramclk_khz > dc->clk_mgr->bw_params->dc_mode_softmax_memclk * 1000)
- 			dc->clk_mgr->funcs->set_max_memclk(dc->clk_mgr, dc->clk_mgr->bw_params->clk_table.entries[dc->clk_mgr->bw_params->clk_table.num_entries - 1].memclk_mhz);
- 
- 	dcn20_prepare_bandwidth(dc, context);
-+
-+	dc_dmub_srv_p_state_delegate(dc, false, context);
- }
- 
+ #include <drm/drm_aperture.h>
+ #include <drm/drm_atomic_helper.h>
 -- 
 2.40.1
 
