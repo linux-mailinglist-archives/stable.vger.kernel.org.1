@@ -2,47 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3947279BD39
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19AE779B9E3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344333AbjIKVNx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57844 "EHLO
+        id S1377862AbjIKW26 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242071AbjIKPVf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:35 -0400
+        with ESMTP id S240888AbjIKO4f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65AE2BE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B88C433C9;
-        Mon, 11 Sep 2023 15:21:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88305DC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1A4C433C7;
+        Mon, 11 Sep 2023 14:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445691;
-        bh=VdCOEZVsrUEH8b48GhUb+mKrAddOcLNQeYTcyJMUb18=;
+        s=korg; t=1694444189;
+        bh=O4nPICxaS8ZYv2aCT9jCuMXy+5IWhe/C7MI2aDf7bu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wMVW+FURmrtRDGTaRnErB8BiJ+JH9SM3kwiFcfKmfeqlAgXS0ehjWVe2IiSnQy4DS
-         yjcdSb+PtidUKlomnvAg4zG/LjFH3HAqX0/mEIsmUz2rSaSp25DriFkVXeE96uM/jn
-         N2rs2+EybYYu5YrSCO++o7dx3AjACtelT5nC8NV0=
+        b=Iv0t16aVAyGYXGfsugcMX0AFcLiL5A0v8zZDbMpZ7aaChDxzbRQB84xykPpX6aXUq
+         U0sLcD6zb+jxW5hAhdFIxlDg2dqgmnAcW2I/R54E92/efoZpTcz/pPz5NylLbqdrFA
+         ahc+Z0oDBJ6n6fs+8zhczIctCWhcJbisKC3K54eY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zenghui Yu <yuzenghui@huawei.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>,
+        patches@lists.linux.dev,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 438/600] driver core: Call dma_cleanup() on the test_remove path
-Date:   Mon, 11 Sep 2023 15:47:51 +0200
-Message-ID: <20230911134646.580663727@linuxfoundation.org>
+Subject: [PATCH 6.4 613/737] thermal/drivers/mediatek/lvts_thermal: Use offset threshold for IRQ
+Date:   Mon, 11 Sep 2023 15:47:52 +0200
+Message-ID: <20230911134707.654912306@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,47 +56,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit f429378a9bf84d79a7e2cae05d2e3384cf7d68ba ]
+[ Upstream commit f79e996c7ed27bb196facbcd1c69ee33631d7051 ]
 
-When test_remove is enabled really_probe() does not properly pair
-dma_configure() with dma_remove(), it will end up calling dma_configure()
-twice. This corrupts the owner_cnt and renders the group unusable with
-VFIO/etc.
+There are two kinds of temperature monitoring interrupts available:
+* High Offset, Low Offset
+* Hot, Hot to normal, Cold
 
-Add the missing cleanup before going back to re_probe.
+The code currently uses the hot/h2n/cold interrupts, however in a way
+that doesn't work: the cold threshold is left uninitialized, which
+prevents the other thresholds from ever triggering, and the h2n
+interrupt is used as the lower threshold, which prevents the hot
+interrupt from triggering again after the thresholds are updated by the
+thermal framework, since a hot interrupt can only trigger again after
+the hot to normal interrupt has been triggered.
 
-Fixes: 25f3bcfc54bc ("driver core: Add dma_cleanup callback in bus_type")
-Reported-by: Zenghui Yu <yuzenghui@huawei.com>
-Tested-by: Zenghui Yu <yuzenghui@huawei.com>
-Closes: https://lore.kernel.org/all/6472f254-c3c4-8610-4a37-8d9dfdd54ce8@huawei.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/0-v2-4deed94e283e+40948-really_probe_dma_cleanup_jgg@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But better yet than addressing those issues, is to use the high/low
+offset interrupts instead. This way only two thresholds need to be
+managed, which have a simpler state machine, making them a better match
+to the thermal framework's high and low thresholds.
+
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230706153823.201943-4-nfraprado@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/dd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thermal/mediatek/lvts_thermal.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 97ab1468a8760..380a53b6aee81 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -674,6 +674,8 @@ static int really_probe(struct device *dev, struct device_driver *drv)
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 64748153d181e..80abd10596d85 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -296,9 +296,9 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ 	u32 raw_high = lvts_temp_to_raw(high);
  
- 		device_remove(dev);
- 		driver_sysfs_remove(dev);
-+		if (dev->bus && dev->bus->dma_cleanup)
-+			dev->bus->dma_cleanup(dev);
- 		device_unbind_cleanup(dev);
+ 	/*
+-	 * Hot to normal temperature threshold
++	 * Low offset temperature threshold
+ 	 *
+-	 * LVTS_H2NTHRE
++	 * LVTS_OFFSETL
+ 	 *
+ 	 * Bits:
+ 	 *
+@@ -307,13 +307,13 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ 	if (low != -INT_MAX) {
+ 		pr_debug("%s: Setting low limit temperature interrupt: %d\n",
+ 			 thermal_zone_device_type(tz), low);
+-		writel(raw_low, LVTS_H2NTHRE(base));
++		writel(raw_low, LVTS_OFFSETL(base));
+ 	}
  
- 		goto re_probe;
+ 	/*
+-	 * Hot temperature threshold
++	 * High offset temperature threshold
+ 	 *
+-	 * LVTS_HTHRE
++	 * LVTS_OFFSETH
+ 	 *
+ 	 * Bits:
+ 	 *
+@@ -321,7 +321,7 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ 	 */
+ 	pr_debug("%s: Setting high limit temperature interrupt: %d\n",
+ 		 thermal_zone_device_type(tz), high);
+-	writel(raw_high, LVTS_HTHRE(base));
++	writel(raw_high, LVTS_OFFSETH(base));
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
