@@ -2,49 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0CA79B936
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA7C979BD25
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235659AbjIKVVD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45260 "EHLO
+        id S1358274AbjIKWI1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240852AbjIKOzk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:40 -0400
+        with ESMTP id S239542AbjIKOX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C8EC118;
-        Mon, 11 Sep 2023 07:55:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A737EC433C8;
-        Mon, 11 Sep 2023 14:55:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B2DDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF24C433C8;
+        Mon, 11 Sep 2023 14:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444135;
-        bh=Bxd4iBadiCksPMtXCU+Z466w/fNZ8R/SB/l+zVj+DaQ=;
+        s=korg; t=1694442204;
+        bh=cYm9R16jtFPnX4GGTPSNkZSKZ+SSZ4T647+hMMZuPtA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gnQ03gXiFomF/RbiXOR7zVIxOqgs4tjnfkNro1/3UKpTB52OuURRPnPCulR5OGE7J
-         0faMK97fDUxbYVn6L/9CK9uiWLX0j9CA7R4spWhO8MTmIivaRCsHxsW1OX5aSQZ1N+
-         GeUDFELmUUMcsIW5M02dDY0qTj5GgIvJOnhAx+Io=
+        b=swjXqpgf0WC3hdgIy99vFA6gjudsTU3fOoVBerBI2c4FfhDDjqqa7SGHtjleeORxq
+         PtcaGmy9TrWGmPOJPhThp7BVma16Py01G600JUlY6Pprq4ZegbJLJMUpF6IUP+iYYA
+         IcjNXkWBLMRDioIyy4fPPmIRRwoTMoi0xBWe2rjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Tejun Heo <tj@kernel.org>,
-        Takashi Iwai <tiwai@suse.de>, Jaroslav Kysela <perex@perex.cz>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        linux-kbuild@vger.kernel.org, alsa-devel@alsa-project.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 623/737] um: Fix hostaudio build errors
+        patches@lists.linux.dev, Ranjan Kumar <ranjan.kumar@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 683/739] scsi: mpt3sas: Perform additional retries if doorbell read returns 0
 Date:   Mon, 11 Sep 2023 15:48:02 +0200
-Message-ID: <20230911134707.934739546@linuxfoundation.org>
+Message-ID: <20230911134710.174901676@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,152 +49,186 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit db4bfcba7bb8d10f00bba2a3da6b9a9c2a1d7b71 ]
+commit 4ca10f3e31745d35249a727ecd108eb58f0a8c5e upstream.
 
-Use "select" to ensure that the required kconfig symbols are set
-as expected.
-Drop HOSTAUDIO since it is now equivalent to UML_SOUND.
+The driver retries certain register reads 3 times if the returned value is
+0. This was done because the controller could return 0 for certain
+registers if other registers were being accessed concurrently by the BMC.
 
-Set CONFIG_SOUND=m in ARCH=um defconfig files to maintain the
-status quo of the default configs.
+In certain systems with increased BMC interactions, the register values
+returned can be 0 for longer than 3 retries. Change the retry count from 3
+to 30 for the affected registers to prevent problems with out-of-band
+management.
 
-Allow SOUND with UML regardless of HAS_IOMEM. Otherwise there is a
-kconfig warning for unmet dependencies. (This was not an issue when
-SOUND was defined in arch/um/drivers/Kconfig. I have done 50 randconfig
-builds and didn't find any issues.)
-
-This fixes build errors when CONFIG_SOUND is not set:
-
-ld: arch/um/drivers/hostaudio_kern.o: in function `hostaudio_cleanup_module':
-hostaudio_kern.c:(.exit.text+0xa): undefined reference to `unregister_sound_mixer'
-ld: hostaudio_kern.c:(.exit.text+0x15): undefined reference to `unregister_sound_dsp'
-ld: arch/um/drivers/hostaudio_kern.o: in function `hostaudio_init_module':
-hostaudio_kern.c:(.init.text+0x19): undefined reference to `register_sound_dsp'
-ld: hostaudio_kern.c:(.init.text+0x31): undefined reference to `register_sound_mixer'
-ld: hostaudio_kern.c:(.init.text+0x49): undefined reference to `unregister_sound_dsp'
-
-and this kconfig warning:
-WARNING: unmet direct dependencies detected for SOUND
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: d886e87cb82b ("sound: make OSS sound core optional")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202307141416.vxuRVpFv-lkp@intel.com
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: linux-kbuild@vger.kernel.org
-Cc: alsa-devel@alsa-project.org
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b899202901a8 ("scsi: mpt3sas: Add separate function for aero doorbell reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/configs/i386_defconfig   |  1 +
- arch/um/configs/x86_64_defconfig |  1 +
- arch/um/drivers/Kconfig          | 16 +++-------------
- arch/um/drivers/Makefile         |  2 +-
- sound/Kconfig                    |  2 +-
- 5 files changed, 7 insertions(+), 15 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c |   46 +++++++++++++++++++++++++-----------
+ drivers/scsi/mpt3sas/mpt3sas_base.h |    1 
+ 2 files changed, 34 insertions(+), 13 deletions(-)
 
-diff --git a/arch/um/configs/i386_defconfig b/arch/um/configs/i386_defconfig
-index c0162286d68b7..c33a6880a437a 100644
---- a/arch/um/configs/i386_defconfig
-+++ b/arch/um/configs/i386_defconfig
-@@ -35,6 +35,7 @@ CONFIG_TTY_CHAN=y
- CONFIG_XTERM_CHAN=y
- CONFIG_CON_CHAN="pts"
- CONFIG_SSL_CHAN="pts"
-+CONFIG_SOUND=m
- CONFIG_UML_SOUND=m
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
-diff --git a/arch/um/configs/x86_64_defconfig b/arch/um/configs/x86_64_defconfig
-index bec6e5d956873..df29f282b6ac2 100644
---- a/arch/um/configs/x86_64_defconfig
-+++ b/arch/um/configs/x86_64_defconfig
-@@ -33,6 +33,7 @@ CONFIG_TTY_CHAN=y
- CONFIG_XTERM_CHAN=y
- CONFIG_CON_CHAN="pts"
- CONFIG_SSL_CHAN="pts"
-+CONFIG_SOUND=m
- CONFIG_UML_SOUND=m
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
-diff --git a/arch/um/drivers/Kconfig b/arch/um/drivers/Kconfig
-index 36911b1fddcf0..b94b2618e7d84 100644
---- a/arch/um/drivers/Kconfig
-+++ b/arch/um/drivers/Kconfig
-@@ -111,24 +111,14 @@ config SSL_CHAN
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -138,6 +138,9 @@ _base_get_ioc_facts(struct MPT3SAS_ADAPT
+ static void
+ _base_clear_outstanding_commands(struct MPT3SAS_ADAPTER *ioc);
  
- config UML_SOUND
- 	tristate "Sound support"
-+	depends on SOUND
-+	select SOUND_OSS_CORE
- 	help
- 	  This option enables UML sound support.  If enabled, it will pull in
--	  soundcore and the UML hostaudio relay, which acts as a intermediary
-+	  the UML hostaudio relay, which acts as a intermediary
- 	  between the host's dsp and mixer devices and the UML sound system.
- 	  It is safe to say 'Y' here.
++static u32
++_base_readl_ext_retry(const volatile void __iomem *addr);
++
+ /**
+  * mpt3sas_base_check_cmd_timeout - Function
+  *		to check timeout and command termination due
+@@ -213,6 +216,20 @@ _base_readl_aero(const volatile void __i
+ 	return ret_val;
+ }
  
--config SOUND
--	tristate
--	default UML_SOUND
--
--config SOUND_OSS_CORE
--	bool
--	default UML_SOUND
--
--config HOSTAUDIO
--	tristate
--	default UML_SOUND
--
- endmenu
++static u32
++_base_readl_ext_retry(const volatile void __iomem *addr)
++{
++	u32 i, ret_val;
++
++	for (i = 0 ; i < 30 ; i++) {
++		ret_val = readl(addr);
++		if (ret_val == 0)
++			continue;
++	}
++
++	return ret_val;
++}
++
+ static inline u32
+ _base_readl(const volatile void __iomem *addr)
+ {
+@@ -940,7 +957,7 @@ mpt3sas_halt_firmware(struct MPT3SAS_ADA
  
- menu "UML Network Devices"
-diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
-index a461a950f0518..0e6af81096fd5 100644
---- a/arch/um/drivers/Makefile
-+++ b/arch/um/drivers/Makefile
-@@ -54,7 +54,7 @@ obj-$(CONFIG_UML_NET) += net.o
- obj-$(CONFIG_MCONSOLE) += mconsole.o
- obj-$(CONFIG_MMAPPER) += mmapper_kern.o 
- obj-$(CONFIG_BLK_DEV_UBD) += ubd.o 
--obj-$(CONFIG_HOSTAUDIO) += hostaudio.o
-+obj-$(CONFIG_UML_SOUND) += hostaudio.o
- obj-$(CONFIG_NULL_CHAN) += null.o 
- obj-$(CONFIG_PORT_CHAN) += port.o
- obj-$(CONFIG_PTY_CHAN) += pty.o
-diff --git a/sound/Kconfig b/sound/Kconfig
-index 0ddfb717b81dc..466e848689bd1 100644
---- a/sound/Kconfig
-+++ b/sound/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SOUND
- 	tristate "Sound card support"
--	depends on HAS_IOMEM
-+	depends on HAS_IOMEM || UML
- 	help
- 	  If you have a sound card in your computer, i.e. if it can say more
- 	  than an occasional beep, say Y.
--- 
-2.40.1
-
+ 	dump_stack();
+ 
+-	doorbell = ioc->base_readl(&ioc->chip->Doorbell);
++	doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 	if ((doorbell & MPI2_IOC_STATE_MASK) == MPI2_IOC_STATE_FAULT) {
+ 		mpt3sas_print_fault_code(ioc, doorbell &
+ 		    MPI2_DOORBELL_DATA_MASK);
+@@ -6686,7 +6703,7 @@ mpt3sas_base_get_iocstate(struct MPT3SAS
+ {
+ 	u32 s, sc;
+ 
+-	s = ioc->base_readl(&ioc->chip->Doorbell);
++	s = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 	sc = s & MPI2_IOC_STATE_MASK;
+ 	return cooked ? sc : s;
+ }
+@@ -6831,7 +6848,7 @@ _base_wait_for_doorbell_ack(struct MPT3S
+ 					   __func__, count, timeout));
+ 			return 0;
+ 		} else if (int_status & MPI2_HIS_IOC2SYS_DB_STATUS) {
+-			doorbell = ioc->base_readl(&ioc->chip->Doorbell);
++			doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 			if ((doorbell & MPI2_IOC_STATE_MASK) ==
+ 			    MPI2_IOC_STATE_FAULT) {
+ 				mpt3sas_print_fault_code(ioc, doorbell);
+@@ -6871,7 +6888,7 @@ _base_wait_for_doorbell_not_used(struct
+ 	count = 0;
+ 	cntdn = 1000 * timeout;
+ 	do {
+-		doorbell_reg = ioc->base_readl(&ioc->chip->Doorbell);
++		doorbell_reg = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 		if (!(doorbell_reg & MPI2_DOORBELL_USED)) {
+ 			dhsprintk(ioc,
+ 				  ioc_info(ioc, "%s: successful count(%d), timeout(%d)\n",
+@@ -7019,7 +7036,7 @@ _base_handshake_req_reply_wait(struct MP
+ 	__le32 *mfp;
+ 
+ 	/* make sure doorbell is not in use */
+-	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
++	if ((ioc->base_readl_ext_retry(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
+ 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
+ 		return -EFAULT;
+ 	}
+@@ -7068,7 +7085,7 @@ _base_handshake_req_reply_wait(struct MP
+ 	}
+ 
+ 	/* read the first two 16-bits, it gives the total length of the reply */
+-	reply[0] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
++	reply[0] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
+ 	    & MPI2_DOORBELL_DATA_MASK);
+ 	writel(0, &ioc->chip->HostInterruptStatus);
+ 	if ((_base_wait_for_doorbell_int(ioc, 5))) {
+@@ -7076,7 +7093,7 @@ _base_handshake_req_reply_wait(struct MP
+ 			__LINE__);
+ 		return -EFAULT;
+ 	}
+-	reply[1] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
++	reply[1] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
+ 	    & MPI2_DOORBELL_DATA_MASK);
+ 	writel(0, &ioc->chip->HostInterruptStatus);
+ 
+@@ -7087,10 +7104,10 @@ _base_handshake_req_reply_wait(struct MP
+ 			return -EFAULT;
+ 		}
+ 		if (i >=  reply_bytes/2) /* overflow case */
+-			ioc->base_readl(&ioc->chip->Doorbell);
++			ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 		else
+ 			reply[i] = le16_to_cpu(
+-			    ioc->base_readl(&ioc->chip->Doorbell)
++			    ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
+ 			    & MPI2_DOORBELL_DATA_MASK);
+ 		writel(0, &ioc->chip->HostInterruptStatus);
+ 	}
+@@ -7949,7 +7966,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER
+ 			goto out;
+ 		}
+ 
+-		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
++		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
+ 		drsprintk(ioc,
+ 			  ioc_info(ioc, "wrote magic sequence: count(%d), host_diagnostic(0x%08x)\n",
+ 				   count, host_diagnostic));
+@@ -7969,7 +7986,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER
+ 	for (count = 0; count < (300000000 /
+ 		MPI2_HARD_RESET_PCIE_SECOND_READ_DELAY_MICRO_SEC); count++) {
+ 
+-		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
++		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
+ 
+ 		if (host_diagnostic == 0xFFFFFFFF) {
+ 			ioc_info(ioc,
+@@ -8359,10 +8376,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
+ 	ioc->rdpq_array_enable_assigned = 0;
+ 	ioc->use_32bit_dma = false;
+ 	ioc->dma_mask = 64;
+-	if (ioc->is_aero_ioc)
++	if (ioc->is_aero_ioc) {
+ 		ioc->base_readl = &_base_readl_aero;
+-	else
++		ioc->base_readl_ext_retry = &_base_readl_ext_retry;
++	} else {
+ 		ioc->base_readl = &_base_readl;
++		ioc->base_readl_ext_retry = &_base_readl;
++	}
+ 	r = mpt3sas_base_map_resources(ioc);
+ 	if (r)
+ 		goto out_free_resources;
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.h
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
+@@ -1618,6 +1618,7 @@ struct MPT3SAS_ADAPTER {
+ 	u8		diag_trigger_active;
+ 	u8		atomic_desc_capable;
+ 	BASE_READ_REG	base_readl;
++	BASE_READ_REG	base_readl_ext_retry;
+ 	struct SL_WH_MASTER_TRIGGER_T diag_trigger_master;
+ 	struct SL_WH_EVENT_TRIGGERS_T diag_trigger_event;
+ 	struct SL_WH_SCSI_TRIGGERS_T diag_trigger_scsi;
 
 
