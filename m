@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EADB479C0E5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70B8279BBE6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240227AbjIKV45 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
+        id S1355207AbjIKV53 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240181AbjIKOik (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:40 -0400
+        with ESMTP id S241342AbjIKPG6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526EECF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B80C433C7;
-        Mon, 11 Sep 2023 14:38:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DD4CCD
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2DEC433C8;
+        Mon, 11 Sep 2023 15:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443114;
-        bh=hY3WG94tWaF6YwoziJw0I/DbzFHeZsaS66mIND79Pfs=;
+        s=korg; t=1694444813;
+        bh=/gHGPAdiOJ2SKoiM8eWEFVkAJqTxWZ2Wj6eJYee0aGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sRPfRUiyqotDPnB0VbC7I6s6OLjhjMwj8Isa0V4LMYWBg8YRs9xpmB6E24mE1EYl5
-         /m6ax6gmv8bySFqQZeT6vB/cOIsXUsH2nQE8Q0lCp9YotqBq7hSFjZ07nAsmLO455R
-         1atuNOlwneypIuAdHvPo+/1Lb2IAoLzzmdm7J2So=
+        b=w3ldfQU+7M5DXWNhf9oJTgjx8fUS0UQ4yzjVMjUEqnTWBD/t9uDXbezVy1pJNEl1U
+         WwVBwx0nbzicACGXYNPxVFaNkQ4xyF2CVkfNE3Yq6HTh/SLwdaWfLwvviBNteMpN+N
+         NITlaOjBd5ZMQztagAcTKhkHbdaLsVxulz5ZlNI8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Brett Creeley <brett.creeley@amd.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 262/737] pds_core: no health reporter in VF
+        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 088/600] Input: i8042 - add quirk for TUXEDO Gemini 17 Gen1/Clevo PD70PN
 Date:   Mon, 11 Sep 2023 15:42:01 +0200
-Message-ID: <20230911134657.907688666@linuxfoundation.org>
+Message-ID: <20230911134636.208670478@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit e48b894a1db7f6ce66bff0402ab21ff9f0e56034 ]
+commit eb09074bdb05ffd6bfe77f8b4a41b76ef78c997b upstream.
 
-Make sure the health reporter is set up before we use it in
-our devlink health updates, especially since the VF doesn't
-set up the health reporter.
+The touchpad of this device is both connected via PS/2 and i2c. This causes
+strange behavior when both driver fight for control. The easy fix is to
+prevent the PS/2 driver from accessing the mouse port as the full feature
+set of the touchpad is only supported in the i2c interface anyway.
 
-Fixes: 25b450c05a49 ("pds_core: add devlink health facilities")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230824161754.34264-3-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The strange behavior in this case is, that when an external screen is
+connected and the notebook is closed, the pointer on the external screen is
+moving to the lower right corner. When the notebook is opened again, this
+movement stops, but the touchpad clicks are unresponsive afterwards until
+reboot.
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230607173331.851192-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index 483a070d96fa9..2a315f2da37d7 100644
---- a/drivers/net/ethernet/amd/pds_core/core.c
-+++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -524,7 +524,8 @@ static void pdsc_fw_down(struct pdsc *pdsc)
- 	}
- 
- 	/* Notify clients of fw_down */
--	devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
-+	if (pdsc->fw_reporter)
-+		devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
- 	pdsc_notify(PDS_EVENT_RESET, &reset_event);
- 
- 	pdsc_stop(pdsc);
-@@ -554,8 +555,9 @@ static void pdsc_fw_up(struct pdsc *pdsc)
- 
- 	/* Notify clients of fw_up */
- 	pdsc->fw_recoveries++;
--	devlink_health_reporter_state_update(pdsc->fw_reporter,
--					     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
-+	if (pdsc->fw_reporter)
-+		devlink_health_reporter_state_update(pdsc->fw_reporter,
-+						     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
- 	pdsc_notify(PDS_EVENT_RESET, &reset_event);
- 
- 	return;
--- 
-2.40.1
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1281,6 +1281,13 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PD5x_7xPNP_PNR_PNN_PNT"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
 
 
