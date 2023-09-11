@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9475779AFEF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D256E79B35A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237825AbjIKVGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38074 "EHLO
+        id S242519AbjIKVUA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239077AbjIKOLJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:09 -0400
+        with ESMTP id S241491AbjIKPJy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 962B4CA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0DBC433C7;
-        Mon, 11 Sep 2023 14:11:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06AFFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1706AC433C8;
+        Mon, 11 Sep 2023 15:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441465;
-        bh=U/26fRIAn6hxdwgYkKUrLFpEbgR0H4rNqyNJQRPRCGE=;
+        s=korg; t=1694444990;
+        bh=idEk75f73pL6HW/vYTyaS0nIUyqdyteKkjtVp9ZerQ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=htg+XIv1/yYQS5dE0phW1qcU+kcn0K+gAZhZhPE5RcYe/Gu+WZPdjBtFqrWZnrM0A
-         FdGqd2zvsbUbDfMkBX2C7TnTNecPJw+Y1ZIGuRK/Pt4LRMvwYmkogxhvuod3J0gaKH
-         xT3Sm4Y6mlgiTqM1UKF9MjYUSdbZA8fsBebUuTYs=
+        b=XuPRzt6WkSCRkKaadsLNC+zWDv2UObGfUTDWlJNtH9+2dQE/kuM6FFEK6ETxq7Lwf
+         vZBga3TKEnXUqNoViLDQv8kvcMcq0bwI0873mftJVvi09tKXICsmR+sZVgxNyi5grU
+         1Kp34KBhY9Y5uyfUe0z6KOmYfFByH33gLT/cMQjg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Golle <daniel@makrotopia.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 422/739] pinctrl: mediatek: fix pull_type data for MT7981
+Subject: [PATCH 6.1 188/600] ARM: dts: Add .dts files missing from the build
 Date:   Mon, 11 Sep 2023 15:43:41 +0200
-Message-ID: <20230911134702.961867074@linuxfoundation.org>
+Message-ID: <20230911134639.172520692@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,88 +49,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 8f6f16fe1553ce63edfb98a39ef9d4754a0c39bf ]
+[ Upstream commit 86684c2481b6e6a46c2282acee13554e34e66071 ]
 
-MediaTek has released pull_type data for MT7981 in their SDK.
-Use it and set functions to configure pin bias.
+Comparing .dts files to built .dtb files yielded a few .dts files which
+are never built. Add them to the build.
 
-Fixes: 6c83b2d94fcc ("pinctrl: add mt7981 pinctrl driver")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/7bcc8ead25dbfabc7f5a85d066224a926fbb4941.1692327317.git.daniel@makrotopia.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: 92632115fb57 ("samples/bpf: fix bio latency check with tracepoint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mt7981.c | 44 +++++++----------------
- 1 file changed, 13 insertions(+), 31 deletions(-)
+ arch/arm/boot/dts/Makefile | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7981.c b/drivers/pinctrl/mediatek/pinctrl-mt7981.c
-index 18abc57800111..0fd2c0c451f95 100644
---- a/drivers/pinctrl/mediatek/pinctrl-mt7981.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mt7981.c
-@@ -457,37 +457,15 @@ static const unsigned int mt7981_pull_type[] = {
- 	MTK_PULL_PUPD_R1R0_TYPE,/*34*/ MTK_PULL_PUPD_R1R0_TYPE,/*35*/
- 	MTK_PULL_PUPD_R1R0_TYPE,/*36*/ MTK_PULL_PUPD_R1R0_TYPE,/*37*/
- 	MTK_PULL_PUPD_R1R0_TYPE,/*38*/ MTK_PULL_PUPD_R1R0_TYPE,/*39*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*40*/ MTK_PULL_PUPD_R1R0_TYPE,/*41*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*42*/ MTK_PULL_PUPD_R1R0_TYPE,/*43*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*44*/ MTK_PULL_PUPD_R1R0_TYPE,/*45*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*46*/ MTK_PULL_PUPD_R1R0_TYPE,/*47*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*48*/ MTK_PULL_PUPD_R1R0_TYPE,/*49*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*50*/ MTK_PULL_PUPD_R1R0_TYPE,/*51*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*52*/ MTK_PULL_PUPD_R1R0_TYPE,/*53*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*54*/ MTK_PULL_PUPD_R1R0_TYPE,/*55*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*56*/ MTK_PULL_PUPD_R1R0_TYPE,/*57*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*58*/ MTK_PULL_PUPD_R1R0_TYPE,/*59*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*60*/ MTK_PULL_PUPD_R1R0_TYPE,/*61*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*62*/ MTK_PULL_PUPD_R1R0_TYPE,/*63*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*64*/ MTK_PULL_PUPD_R1R0_TYPE,/*65*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*66*/ MTK_PULL_PUPD_R1R0_TYPE,/*67*/
--	MTK_PULL_PUPD_R1R0_TYPE,/*68*/ MTK_PULL_PU_PD_TYPE,/*69*/
--	MTK_PULL_PU_PD_TYPE,/*70*/ MTK_PULL_PU_PD_TYPE,/*71*/
--	MTK_PULL_PU_PD_TYPE,/*72*/ MTK_PULL_PU_PD_TYPE,/*73*/
--	MTK_PULL_PU_PD_TYPE,/*74*/ MTK_PULL_PU_PD_TYPE,/*75*/
--	MTK_PULL_PU_PD_TYPE,/*76*/ MTK_PULL_PU_PD_TYPE,/*77*/
--	MTK_PULL_PU_PD_TYPE,/*78*/ MTK_PULL_PU_PD_TYPE,/*79*/
--	MTK_PULL_PU_PD_TYPE,/*80*/ MTK_PULL_PU_PD_TYPE,/*81*/
--	MTK_PULL_PU_PD_TYPE,/*82*/ MTK_PULL_PU_PD_TYPE,/*83*/
--	MTK_PULL_PU_PD_TYPE,/*84*/ MTK_PULL_PU_PD_TYPE,/*85*/
--	MTK_PULL_PU_PD_TYPE,/*86*/ MTK_PULL_PU_PD_TYPE,/*87*/
--	MTK_PULL_PU_PD_TYPE,/*88*/ MTK_PULL_PU_PD_TYPE,/*89*/
--	MTK_PULL_PU_PD_TYPE,/*90*/ MTK_PULL_PU_PD_TYPE,/*91*/
--	MTK_PULL_PU_PD_TYPE,/*92*/ MTK_PULL_PU_PD_TYPE,/*93*/
--	MTK_PULL_PU_PD_TYPE,/*94*/ MTK_PULL_PU_PD_TYPE,/*95*/
--	MTK_PULL_PU_PD_TYPE,/*96*/ MTK_PULL_PU_PD_TYPE,/*97*/
--	MTK_PULL_PU_PD_TYPE,/*98*/ MTK_PULL_PU_PD_TYPE,/*99*/
--	MTK_PULL_PU_PD_TYPE,/*100*/
-+	MTK_PULL_PU_PD_TYPE,/*40*/ MTK_PULL_PU_PD_TYPE,/*41*/
-+	MTK_PULL_PU_PD_TYPE,/*42*/ MTK_PULL_PU_PD_TYPE,/*43*/
-+	MTK_PULL_PU_PD_TYPE,/*44*/ MTK_PULL_PU_PD_TYPE,/*45*/
-+	MTK_PULL_PU_PD_TYPE,/*46*/ MTK_PULL_PU_PD_TYPE,/*47*/
-+	MTK_PULL_PU_PD_TYPE,/*48*/ MTK_PULL_PU_PD_TYPE,/*49*/
-+	MTK_PULL_PU_PD_TYPE,/*50*/ MTK_PULL_PU_PD_TYPE,/*51*/
-+	MTK_PULL_PU_PD_TYPE,/*52*/ MTK_PULL_PU_PD_TYPE,/*53*/
-+	MTK_PULL_PU_PD_TYPE,/*54*/ MTK_PULL_PU_PD_TYPE,/*55*/
-+	MTK_PULL_PU_PD_TYPE,/*56*/
- };
- 
- static const struct mtk_pin_reg_calc mt7981_reg_cals[] = {
-@@ -1014,6 +992,10 @@ static struct mtk_pin_soc mt7981_data = {
- 	.ies_present = false,
- 	.base_names = mt7981_pinctrl_register_base_names,
- 	.nbase_names = ARRAY_SIZE(mt7981_pinctrl_register_base_names),
-+	.bias_disable_set = mtk_pinconf_bias_disable_set,
-+	.bias_disable_get = mtk_pinconf_bias_disable_get,
-+	.bias_set = mtk_pinconf_bias_set,
-+	.bias_get = mtk_pinconf_bias_get,
- 	.pull_type = mt7981_pull_type,
- 	.bias_set_combo = mtk_pinconf_bias_set_combo,
- 	.bias_get_combo = mtk_pinconf_bias_get_combo,
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index 6aa7dc4db2fc8..df6d905eeb877 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -331,6 +331,7 @@ dtb-$(CONFIG_MACH_KIRKWOOD) += \
+ 	kirkwood-iconnect.dtb \
+ 	kirkwood-iomega_ix2_200.dtb \
+ 	kirkwood-is2.dtb \
++	kirkwood-km_fixedeth.dtb \
+ 	kirkwood-km_kirkwood.dtb \
+ 	kirkwood-l-50.dtb \
+ 	kirkwood-laplug.dtb \
+@@ -861,7 +862,10 @@ dtb-$(CONFIG_ARCH_OMAP3) += \
+ 	am3517-craneboard.dtb \
+ 	am3517-evm.dtb \
+ 	am3517_mt_ventoux.dtb \
++	logicpd-torpedo-35xx-devkit.dtb \
+ 	logicpd-torpedo-37xx-devkit.dtb \
++	logicpd-torpedo-37xx-devkit-28.dtb \
++	logicpd-som-lv-35xx-devkit.dtb \
+ 	logicpd-som-lv-37xx-devkit.dtb \
+ 	omap3430-sdp.dtb \
+ 	omap3-beagle.dtb \
+@@ -1527,6 +1531,8 @@ dtb-$(CONFIG_MACH_ARMADA_38X) += \
+ 	armada-388-helios4.dtb \
+ 	armada-388-rd.dtb
+ dtb-$(CONFIG_MACH_ARMADA_39X) += \
++	armada-390-db.dtb \
++	armada-395-gp.dtb \
+ 	armada-398-db.dtb
+ dtb-$(CONFIG_MACH_ARMADA_XP) += \
+ 	armada-xp-axpwifiap.dtb \
+@@ -1556,6 +1562,7 @@ dtb-$(CONFIG_MACH_DOVE) += \
+ dtb-$(CONFIG_ARCH_MEDIATEK) += \
+ 	mt2701-evb.dtb \
+ 	mt6580-evbp1.dtb \
++	mt6582-prestigio-pmt5008-3g.dtb \
+ 	mt6589-aquaris5.dtb \
+ 	mt6589-fairphone-fp1.dtb \
+ 	mt6592-evb.dtb \
+@@ -1608,6 +1615,7 @@ dtb-$(CONFIG_ARCH_ASPEED) += \
+ 	aspeed-bmc-intel-s2600wf.dtb \
+ 	aspeed-bmc-inspur-fp5280g2.dtb \
+ 	aspeed-bmc-inspur-nf5280m6.dtb \
++	aspeed-bmc-inspur-on5263m5.dtb \
+ 	aspeed-bmc-lenovo-hr630.dtb \
+ 	aspeed-bmc-lenovo-hr855xg2.dtb \
+ 	aspeed-bmc-microsoft-olympus.dtb \
 -- 
 2.40.1
 
