@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54ED379B174
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B3F79B4F6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238799AbjIKWpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56480 "EHLO
+        id S1349105AbjIKVcg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241866AbjIKPQh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:37 -0400
+        with ESMTP id S240600AbjIKOs0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99223120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2959C433C8;
-        Mon, 11 Sep 2023 15:16:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDFCF106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B43C433C7;
+        Mon, 11 Sep 2023 14:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445393;
-        bh=Ua7GQ6ACgOz+ZbsUaxr+UFjQFVq6rnlnWLi22Uq7Cds=;
+        s=korg; t=1694443701;
+        bh=iI652H1WuiBaJC/lHrxSgqs4nS3eZ+iIxnWIPUwl9EI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QhPccov9p+NvgRpE/tYFTU5ZK9HawOxUJyQYCJxQ1YqAp+uYKe4/lbqgt8c7Cea+P
-         LpL2VVLK3Og/THX59/U7GrcJyrvhAFaWnAXTb0JMHL3kG33tNFl3N5h8OhKwkqx9Yb
-         WIIS8S+mk635Ox5/91UOHcczreFNoC6Ik+Bvkg6k=
+        b=XhCCn4HvZ+AvW2NYDMloHWL5gXGArlWEXHDwSed02lxe+ZqvzmwMvNSM2TKv5ugz3
+         8ocouBbbabf2tRDexlI75IwftHWSpkcSe9bITuL2U9L6bc5IphorGl6XuGfKynaxRG
+         Y+sDX31Ah0RKLQ+gjd+6gsk4qIbL6jojPsSq+gpE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Yang Wang <kevinyang.wang@amd.com>,
-        Kenneth Feng <kenneth.feng@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 297/600] drm/amd/pm: fix variable dereferenced issue in amdgpu_device_attr_create()
+Subject: [PATCH 6.4 471/737] ext4: fix unttached inode after power cut with orphan file feature enabled
 Date:   Mon, 11 Sep 2023 15:45:30 +0200
-Message-ID: <20230911134642.373705894@linuxfoundation.org>
+Message-ID: <20230911134703.744530278@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +50,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 25e6373a5b8efc623443f2699d2b929bf3067d76 ]
+[ Upstream commit 1524773425ae8113b0b782886366e68656b34e53 ]
 
-- fix variable ('attr') dereferenced issue.
-- using condition check instead of BUG_ON().
+Running generic/475(filesystem consistent tests after power cut) could
+easily trigger unattached inode error while doing fsck:
+  Unattached zero-length inode 39405.  Clear? no
 
-Fixes: 4e01847c38f7 ("drm/amdgpu: optimize amdgpu device attribute code")
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  Unattached inode 39405
+  Connect to /lost+found? no
+
+Above inconsistence is caused by following process:
+       P1                       P2
+ext4_create
+ inode = ext4_new_inode_start_handle  // itable records nlink=1
+ ext4_add_nondir
+   err = ext4_add_entry  // ENOSPC
+    ext4_append
+     ext4_bread
+      ext4_getblk
+       ext4_map_blocks // returns ENOSPC
+   drop_nlink(inode) // won't be updated into disk inode
+   ext4_orphan_add(handle, inode)
+    ext4_orphan_file_add
+ ext4_journal_stop(handle)
+		      jbd2_journal_commit_transaction // commit success
+              >> power cut <<
+ext4_fill_super
+ ext4_load_and_init_journal   // itable records nlink=1
+ ext4_orphan_cleanup
+  ext4_process_orphan
+   if (inode->i_nlink)        // true, inode won't be deleted
+
+Then, allocated inode will be reserved on disk and corresponds to no
+dentries, so e2fsck reports 'unattached inode' problem.
+
+The problem won't happen if orphan file feature is disabled, because
+ext4_orphan_add() will update disk inode in orphan list mode. There
+are several places not updating disk inode while putting inode into
+orphan area, such as ext4_add_nondir(), ext4_symlink() and whiteout
+in ext4_rename(). Fix it by updating inode into disk in all error
+branches of these places.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217605
+Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230628132011.650383-1-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/ext4/namei.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-index 7d613118cb713..8472013ff38a2 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -2072,15 +2072,19 @@ static int amdgpu_device_attr_create(struct amdgpu_device *adev,
- 				     uint32_t mask, struct list_head *attr_list)
- {
- 	int ret = 0;
--	struct device_attribute *dev_attr = &attr->dev_attr;
--	const char *name = dev_attr->attr.name;
- 	enum amdgpu_device_attr_states attr_states = ATTR_STATE_SUPPORTED;
- 	struct amdgpu_device_attr_entry *attr_entry;
-+	struct device_attribute *dev_attr;
-+	const char *name;
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 0caf6c730ce34..6bcc3770ee19f 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2799,6 +2799,7 @@ static int ext4_add_nondir(handle_t *handle,
+ 		return err;
+ 	}
+ 	drop_nlink(inode);
++	ext4_mark_inode_dirty(handle, inode);
+ 	ext4_orphan_add(handle, inode);
+ 	unlock_new_inode(inode);
+ 	return err;
+@@ -3436,6 +3437,7 @@ static int ext4_symlink(struct mnt_idmap *idmap, struct inode *dir,
  
- 	int (*attr_update)(struct amdgpu_device *adev, struct amdgpu_device_attr *attr,
- 			   uint32_t mask, enum amdgpu_device_attr_states *states) = default_attr_update;
- 
--	BUG_ON(!attr);
-+	if (!attr)
-+		return -EINVAL;
-+
-+	dev_attr = &attr->dev_attr;
-+	name = dev_attr->attr.name;
- 
- 	attr_update = attr->attr_update ? attr->attr_update : default_attr_update;
- 
+ err_drop_inode:
+ 	clear_nlink(inode);
++	ext4_mark_inode_dirty(handle, inode);
+ 	ext4_orphan_add(handle, inode);
+ 	unlock_new_inode(inode);
+ 	if (handle)
+@@ -4021,6 +4023,7 @@ static int ext4_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 			ext4_resetent(handle, &old,
+ 				      old.inode->i_ino, old_file_type);
+ 			drop_nlink(whiteout);
++			ext4_mark_inode_dirty(handle, whiteout);
+ 			ext4_orphan_add(handle, whiteout);
+ 		}
+ 		unlock_new_inode(whiteout);
 -- 
 2.40.1
 
