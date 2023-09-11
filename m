@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D8B79BC72
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33E4479B892
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237546AbjIKUvh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
+        id S1358266AbjIKWI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242345AbjIKP20 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:26 -0400
+        with ESMTP id S242348AbjIKP2e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BB7E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8779C433C8;
-        Mon, 11 Sep 2023 15:28:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 533A0E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC86C433C7;
+        Mon, 11 Sep 2023 15:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446101;
-        bh=FpejaTLy78aODszg6BvpUXPUN9+J2r5M0lG+tl/BxuA=;
+        s=korg; t=1694446110;
+        bh=4oDi4L2faiwN2ffQ5oiq1xAKbHJRerZAEh/m96tJxgc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0NExOGtF6YMZNS5FU5/wfRsZhTyP7BogJP2qqNWMawBHI2PYQv68uKl8SyZxAj1kM
-         1Cd6SWUxev25xCle8PK6vuuZx07TYhxN91KeQ79kBxQWVy+RSxRbo+nq3eCzHl7O0T
-         5sqjnDsdihGPlZg9dX6xh5kFI+KNV519QAs1IWNU=
+        b=PfUEbIcVFkFi1sQY1CMOo7tqsLqD6D1+WoSZ/QrCTAW0J9f8+FY8qAo5GB5AOEqfW
+         Ahlw/RtAd8dSyNT7Rovx9RSPVhTXLy7JPeM4saNwQlXmjtSbqZ5BkCkN4N9BlSTVsw
+         b/iAZpy104WgtbI0vQ/7xZ+pQdqZIF71RT+N7JHU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.1 583/600] USB: core: Unite old scheme and new scheme descriptor reads
-Date:   Mon, 11 Sep 2023 15:50:16 +0200
-Message-ID: <20230911134650.830526521@linuxfoundation.org>
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 586/600] USB: core: Fix oversight in SuperSpeed initialization
+Date:   Mon, 11 Sep 2023 15:50:19 +0200
+Message-ID: <20230911134650.921317879@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -55,326 +55,98 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 85d07c55621676d47d873d2749b88f783cd4d5a1 upstream.
+commit 59cf445754566984fd55af19ba7146c76e6627bc upstream.
 
-In preparation for reworking the usb_get_device_descriptor() routine,
-it is desirable to unite the two different code paths responsible for
-initially determining endpoint 0's maximum packet size in a newly
-discovered USB device.  Making this determination presents a
-chicken-and-egg sort of problem, in that the only way to learn the
-maxpacket value is to get it from the device descriptor retrieved from
-the device, but communicating with the device to retrieve a descriptor
-requires us to know beforehand the ep0 maxpacket size.
+Commit 85d07c556216 ("USB: core: Unite old scheme and new scheme
+descriptor reads") altered the way USB devices are enumerated
+following detection, and in the process it messed up the
+initialization of SuperSpeed (or faster) devices:
 
-In practice this problem is solved in two different ways, referred to
-in hub.c as the "old scheme" and the "new scheme".  The old scheme
-(which is the approach recommended by the USB-2 spec) involves asking
-the device to send just the first eight bytes of its device
-descriptor.  Such a transfer uses packets containing no more than
-eight bytes each, and every USB device must have an ep0 maxpacket size
->= 8, so this should succeed.  Since the bMaxPacketSize0 field of the
-device descriptor lies within the first eight bytes, this is all we
-need.
+[   31.650759] usb 2-1: new SuperSpeed Plus Gen 2x1 USB device number 2 using xhci_hcd
+[   31.663107] usb 2-1: device descriptor read/8, error -71
+[   31.952697] usb 2-1: new SuperSpeed Plus Gen 2x1 USB device number 3 using xhci_hcd
+[   31.965122] usb 2-1: device descriptor read/8, error -71
+[   32.080991] usb usb2-port1: attempt power cycle
+...
 
-The new scheme is an imitation of the technique used in an early
-Windows USB implementation, giving it the happy advantage of working
-with a wide variety of devices (some of them at the time would not
-work with the old scheme, although that's probably less true now).  It
-involves making an initial guess of the ep0 maxpacket size, asking the
-device to send up to 64 bytes worth of its device descriptor (which is
-only 18 bytes long), and then resetting the device to clear any error
-condition that might have resulted from the guess being wrong.  The
-initial guess is determined by the connection speed; it should be
-correct in all cases other than full speed, for which the allowed
-values are 8, 16, 32, and 64 (in this case the initial guess is 64).
+The problem was caused by the commit forgetting that in SuperSpeed or
+faster devices, the device descriptor uses a logarithmic encoding of
+the bMaxPacketSize0 value.  (For some reason I thought the 255 case in
+the switch statement was meant for these devices, but it isn't -- it
+was meant for Wireless USB and is no longer needed.)
 
-The reason for this patch is that the old- and new-scheme parts of
-hub_port_init() use different code paths, one involving
-usb_get_device_descriptor() and one not, for their initial reads of
-the device descriptor.  Since these reads have essentially the same
-purpose and are made under essentially the same circumstances, this is
-illogical.  It makes more sense to have both of them use a common
-subroutine.
+We can fix the oversight by testing for buf->bMaxPacketSize0 = 9
+(meaning 512, the actual maxpacket size for ep0 on all SuperSpeed
+devices) and straightening out the logic that checks and adjusts our
+initial guesses of the maxpacket value.
 
-This subroutine does basically what the new scheme's code did, because
-that approach is more general than the one used by the old scheme.  It
-only needs to know how many bytes to transfer and whether or not it is
-being called for the first iteration of a retry loop (in case of
-certain time-out errors).  There are two main differences from the
-former code:
-
-	We initialize the bDescriptorType field of the transfer buffer
-	to 0 before performing the transfer, to avoid possibly
-	accessing an uninitialized value afterward.
-
-	We read the device descriptor into a temporary buffer rather
-	than storing it directly into udev->descriptor, which the old
-	scheme implementation used to do.
-
-Since the whole point of this first read of the device descriptor is
-to determine the bMaxPacketSize0 value, that is what the new routine
-returns (or an error code).  The value is stored in a local variable
-rather than in udev->descriptor.  As a side effect, this necessitates
-moving a section of code that checks the bcdUSB field for SuperSpeed
-devices until after the full device descriptor has been retrieved.
-
+Reported-and-tested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Closes: https://lore.kernel.org/linux-usb/20230810002257.nadxmfmrobkaxgnz@synopsys.com/
 Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/495cb5d4-f956-4f4a-a875-1e67e9489510@rowland.harvard.edu
+Fixes: 85d07c556216 ("USB: core: Unite old scheme and new scheme descriptor reads")
+Link: https://lore.kernel.org/r/8809e6c5-59d5-4d2d-ac8f-6d106658ad73@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |  173 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 94 insertions(+), 79 deletions(-)
+ drivers/usb/core/hub.c |   36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -4661,6 +4661,67 @@ static int hub_enable_device(struct usb_
- 	return hcd->driver->enable_device(hcd, udev);
- }
- 
-+/*
-+ * Get the bMaxPacketSize0 value during initialization by reading the
-+ * device's device descriptor.  Since we don't already know this value,
-+ * the transfer is unsafe and it ignores I/O errors, only testing for
-+ * reasonable received values.
-+ *
-+ * For "old scheme" initialization, size will be 8 so we read just the
-+ * start of the device descriptor, which should work okay regardless of
-+ * the actual bMaxPacketSize0 value.  For "new scheme" initialization,
-+ * size will be 64 (and buf will point to a sufficiently large buffer),
-+ * which might not be kosher according to the USB spec but it's what
-+ * Windows does and what many devices expect.
-+ *
-+ * Returns: bMaxPacketSize0 or a negative error code.
-+ */
-+static int get_bMaxPacketSize0(struct usb_device *udev,
-+		struct usb_device_descriptor *buf, int size, bool first_time)
-+{
-+	int i, rc;
-+
-+	/*
-+	 * Retry on all errors; some devices are flakey.
-+	 * 255 is for WUSB devices, we actually need to use
-+	 * 512 (WUSB1.0[4.8.1]).
-+	 */
-+	for (i = 0; i < GET_MAXPACKET0_TRIES; ++i) {
-+		/* Start with invalid values in case the transfer fails */
-+		buf->bDescriptorType = buf->bMaxPacketSize0 = 0;
-+		rc = usb_control_msg(udev, usb_rcvaddr0pipe(),
-+				USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
-+				USB_DT_DEVICE << 8, 0,
-+				buf, size,
-+				initial_descriptor_timeout);
-+		switch (buf->bMaxPacketSize0) {
-+		case 8: case 16: case 32: case 64: case 255:
-+			if (buf->bDescriptorType == USB_DT_DEVICE) {
-+				rc = buf->bMaxPacketSize0;
-+				break;
-+			}
-+			fallthrough;
-+		default:
-+			if (rc >= 0)
-+				rc = -EPROTO;
-+			break;
-+		}
-+
-+		/*
-+		 * Some devices time out if they are powered on
-+		 * when already connected. They need a second
-+		 * reset, so return early. But only on the first
-+		 * attempt, lest we get into a time-out/reset loop.
-+		 */
-+		if (rc > 0 || (rc == -ETIMEDOUT && first_time &&
-+				udev->speed > USB_SPEED_FULL))
-+			break;
-+	}
-+	return rc;
-+}
-+
-+#define GET_DESCRIPTOR_BUFSIZE	64
-+
- /* Reset device, (re)assign address, get device descriptor.
-  * Device connection must be stable, no more debouncing needed.
-  * Returns device in USB_STATE_ADDRESS, except on error.
-@@ -4685,6 +4746,12 @@ hub_port_init(struct usb_hub *hub, struc
- 	int			devnum = udev->devnum;
- 	const char		*driver_name;
- 	bool			do_new_scheme;
-+	int			maxp0;
-+	struct usb_device_descriptor	*buf;
-+
-+	buf = kmalloc(GET_DESCRIPTOR_BUFSIZE, GFP_NOIO);
-+	if (!buf)
-+		return -ENOMEM;
- 
- 	/* root hub ports have a slightly longer reset period
- 	 * (from USB 2.0 spec, section 7.1.7.5)
-@@ -4799,9 +4866,6 @@ hub_port_init(struct usb_hub *hub, struc
- 
- 	for (retries = 0; retries < GET_DESCRIPTOR_TRIES; (++retries, msleep(100))) {
- 		if (do_new_scheme) {
--			struct usb_device_descriptor *buf;
--			int r = 0;
--
- 			retval = hub_enable_device(udev);
- 			if (retval < 0) {
- 				dev_err(&udev->dev,
-@@ -4810,52 +4874,8 @@ hub_port_init(struct usb_hub *hub, struc
- 				goto fail;
- 			}
- 
--#define GET_DESCRIPTOR_BUFSIZE	64
--			buf = kmalloc(GET_DESCRIPTOR_BUFSIZE, GFP_NOIO);
--			if (!buf) {
--				retval = -ENOMEM;
--				continue;
--			}
--
--			/* Retry on all errors; some devices are flakey.
--			 * 255 is for WUSB devices, we actually need to use
--			 * 512 (WUSB1.0[4.8.1]).
--			 */
--			for (operations = 0; operations < GET_MAXPACKET0_TRIES;
--					++operations) {
--				buf->bMaxPacketSize0 = 0;
--				r = usb_control_msg(udev, usb_rcvaddr0pipe(),
--					USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
--					USB_DT_DEVICE << 8, 0,
--					buf, GET_DESCRIPTOR_BUFSIZE,
--					initial_descriptor_timeout);
--				switch (buf->bMaxPacketSize0) {
--				case 8: case 16: case 32: case 64: case 255:
--					if (buf->bDescriptorType ==
--							USB_DT_DEVICE) {
--						r = 0;
--						break;
--					}
--					fallthrough;
--				default:
--					if (r == 0)
--						r = -EPROTO;
--					break;
--				}
--				/*
--				 * Some devices time out if they are powered on
--				 * when already connected. They need a second
--				 * reset. But only on the first attempt,
--				 * lest we get into a time out/reset loop
--				 */
--				if (r == 0 || (r == -ETIMEDOUT &&
--						retries == 0 &&
--						udev->speed > USB_SPEED_FULL))
--					break;
--			}
--			udev->descriptor.bMaxPacketSize0 =
--					buf->bMaxPacketSize0;
--			kfree(buf);
-+			maxp0 = get_bMaxPacketSize0(udev, buf,
-+					GET_DESCRIPTOR_BUFSIZE, retries == 0);
- 
- 			retval = hub_port_reset(hub, port1, udev, delay, false);
- 			if (retval < 0)		/* error or disconnect */
-@@ -4866,14 +4886,13 @@ hub_port_init(struct usb_hub *hub, struc
- 				retval = -ENODEV;
- 				goto fail;
- 			}
--			if (r) {
--				if (r != -ENODEV)
-+			if (maxp0 < 0) {
-+				if (maxp0 != -ENODEV)
- 					dev_err(&udev->dev, "device descriptor read/64, error %d\n",
--							r);
--				retval = -EMSGSIZE;
-+							maxp0);
-+				retval = maxp0;
- 				continue;
- 			}
--#undef GET_DESCRIPTOR_BUFSIZE
- 		}
- 
- 		/*
-@@ -4919,19 +4938,17 @@ hub_port_init(struct usb_hub *hub, struc
+@@ -4700,7 +4700,7 @@ static int get_bMaxPacketSize0(struct us
+ 				buf, size,
+ 				initial_descriptor_timeout);
+ 		switch (buf->bMaxPacketSize0) {
+-		case 8: case 16: case 32: case 64: case 255:
++		case 8: case 16: case 32: case 64: case 9:
+ 			if (buf->bDescriptorType == USB_DT_DEVICE) {
+ 				rc = buf->bMaxPacketSize0;
  				break;
- 		}
- 
--		retval = usb_get_device_descriptor(udev, 8);
--		if (retval < 8) {
-+		/* !do_new_scheme || wusb */
-+		maxp0 = get_bMaxPacketSize0(udev, buf, 8, retries == 0);
-+		if (maxp0 < 0) {
-+			retval = maxp0;
- 			if (retval != -ENODEV)
- 				dev_err(&udev->dev,
- 					"device descriptor read/8, error %d\n",
- 					retval);
--			if (retval >= 0)
--				retval = -EMSGSIZE;
- 		} else {
- 			u32 delay;
- 
--			retval = 0;
--
- 			delay = udev->parent->hub_delay;
- 			udev->hub_delay = min_t(u32, delay,
- 						USB_TP_TRANSMISSION_DELAY_MAX);
-@@ -4948,27 +4965,10 @@ hub_port_init(struct usb_hub *hub, struc
+@@ -4994,23 +4994,35 @@ hub_port_init(struct usb_hub *hub, struc
  	if (retval)
  		goto fail;
  
--	/*
--	 * Some superspeed devices have finished the link training process
--	 * and attached to a superspeed hub port, but the device descriptor
--	 * got from those devices show they aren't superspeed devices. Warm
--	 * reset the port attached by the devices can fix them.
--	 */
--	if ((udev->speed >= USB_SPEED_SUPER) &&
--			(le16_to_cpu(udev->descriptor.bcdUSB) < 0x0300)) {
--		dev_err(&udev->dev, "got a wrong device descriptor, "
--				"warm reset device\n");
--		hub_port_reset(hub, port1, udev,
--				HUB_BH_RESET_TIME, true);
--		retval = -EINVAL;
--		goto fail;
--	}
--
--	if (udev->descriptor.bMaxPacketSize0 == 0xff ||
--			udev->speed >= USB_SPEED_SUPER)
-+	if (maxp0 == 0xff || udev->speed >= USB_SPEED_SUPER)
- 		i = 512;
- 	else
--		i = udev->descriptor.bMaxPacketSize0;
-+		i = maxp0;
- 	if (usb_endpoint_maxp(&udev->ep0.desc) != i) {
- 		if (udev->speed == USB_SPEED_LOW ||
- 				!(i == 8 || i == 16 || i == 32 || i == 64)) {
-@@ -4994,6 +4994,20 @@ hub_port_init(struct usb_hub *hub, struc
- 		goto fail;
- 	}
- 
+-	if (maxp0 == 0xff || udev->speed >= USB_SPEED_SUPER)
+-		i = 512;
+-	else
+-		i = maxp0;
+-	if (usb_endpoint_maxp(&udev->ep0.desc) != i) {
+-		if (udev->speed == USB_SPEED_LOW ||
+-				!(i == 8 || i == 16 || i == 32 || i == 64)) {
+-			dev_err(&udev->dev, "Invalid ep0 maxpacket: %d\n", i);
+-			retval = -EMSGSIZE;
+-			goto fail;
+-		}
 +	/*
-+	 * Some superspeed devices have finished the link training process
-+	 * and attached to a superspeed hub port, but the device descriptor
-+	 * got from those devices show they aren't superspeed devices. Warm
-+	 * reset the port attached by the devices can fix them.
++	 * Check the ep0 maxpacket guess and correct it if necessary.
++	 * maxp0 is the value stored in the device descriptor;
++	 * i is the value it encodes (logarithmic for SuperSpeed or greater).
 +	 */
-+	if ((udev->speed >= USB_SPEED_SUPER) &&
-+			(le16_to_cpu(udev->descriptor.bcdUSB) < 0x0300)) {
-+		dev_err(&udev->dev, "got a wrong device descriptor, warm reset device\n");
-+		hub_port_reset(hub, port1, udev, HUB_BH_RESET_TIME, true);
-+		retval = -EINVAL;
-+		goto fail;
++	i = maxp0;
++	if (udev->speed >= USB_SPEED_SUPER) {
++		if (maxp0 <= 16)
++			i = 1 << maxp0;
++		else
++			i = 0;		/* Invalid */
 +	}
-+
- 	usb_detect_quirks(udev);
- 
- 	if (udev->wusb == 0 && le16_to_cpu(udev->descriptor.bcdUSB) >= 0x0201) {
-@@ -5016,6 +5030,7 @@ fail:
- 		hub_port_disable(hub, port1, 0);
- 		update_devnum(udev, devnum);	/* for disconnect processing */
++	if (usb_endpoint_maxp(&udev->ep0.desc) == i) {
++		;	/* Initial ep0 maxpacket guess is right */
++	} else if ((udev->speed == USB_SPEED_FULL ||
++				udev->speed == USB_SPEED_HIGH) &&
++			(i == 8 || i == 16 || i == 32 || i == 64)) {
++		/* Initial guess is wrong; use the descriptor's value */
+ 		if (udev->speed == USB_SPEED_FULL)
+ 			dev_dbg(&udev->dev, "ep0 maxpacket = %d\n", i);
+ 		else
+ 			dev_warn(&udev->dev, "Using ep0 maxpacket: %d\n", i);
+ 		udev->ep0.desc.wMaxPacketSize = cpu_to_le16(i);
+ 		usb_ep0_reinit(udev);
++	} else {
++		/* Initial guess is wrong and descriptor's value is invalid */
++		dev_err(&udev->dev, "Invalid ep0 maxpacket: %d\n", maxp0);
++		retval = -EMSGSIZE;
++		goto fail;
  	}
-+	kfree(buf);
- 	return retval;
- }
  
+ 	descr = usb_get_device_descriptor(udev);
 
 
