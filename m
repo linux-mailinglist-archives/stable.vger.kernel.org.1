@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B60C179C06A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F135079BC24
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245049AbjIKVIn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34976 "EHLO
+        id S1358203AbjIKWIL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242013AbjIKPUb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:31 -0400
+        with ESMTP id S239486AbjIKOVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DF3EFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B689AC433C8;
-        Mon, 11 Sep 2023 15:20:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA95DDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDA5C433C8;
+        Mon, 11 Sep 2023 14:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445626;
-        bh=wRvv98vXV0Y4B9AQS0UpenXUX6DaFaG1cBUZ2OI4Cik=;
+        s=korg; t=1694442107;
+        bh=imaKPJQO5/J4reW2CGAVltD3XLwVzM9mOk8s/bFsPXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PW9iNezi5q17bhB03AffhF+gFr7XhqLlYkSJx0IEfYJW9g+G2CKRvUWtuactIqofO
-         T1BZK/spKqgABztvdyy/CKRUPiARGSgpg/n0ImG+YXJ8Ywcxs1LS3fDa5wxNDJHmQ5
-         MG/TITTrSiIKwqaOGTCXgQxCPeQ+RSzeGTk60Jy4=
+        b=demS73melVbi30LJWE48XmiDYhQSGQXXmimruCmgL5/tIL5HAA+A/5Pney4A6s+lf
+         1a5pxlUFOJBVyw14ES2Pk/sth5I3OJFQVg/mi6JkuYavggUF0cHgsU+VWdbxAVCW+/
+         VZUEdzrIFHkYVWf7qLrqppdCoo7sL4OTk/c3y95o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Irui Wang <irui.wang@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 414/600] media: mediatek: vcodec: Return NULL if no vdec_fb is found
-Date:   Mon, 11 Sep 2023 15:47:27 +0200
-Message-ID: <20230911134645.892875510@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Yu Liao <liaoyu15@huawei.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH 6.5 649/739] cpu/hotplug: Prevent self deadlock on CPU hot-unplug
+Date:   Mon, 11 Sep 2023 15:47:28 +0200
+Message-ID: <20230911134709.232054777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +52,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Irui Wang <irui.wang@mediatek.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit dfa2d6e07432270330ae191f50a0e70636a4cd2b ]
+commit 2b8272ff4a70b866106ae13c36be7ecbef5d5da2 upstream.
 
-"fb_use_list" is used to store used or referenced frame buffers for
-vp9 stateful decoder. "NULL" should be returned when getting target
-frame buffer failed from "fb_use_list", not a random unexpected one.
+Xiongfeng reported and debugged a self deadlock of the task which initiates
+and controls a CPU hot-unplug operation vs. the CFS bandwidth timer.
 
-Fixes: f77e89854b3e ("[media] vcodec: mediatek: Add Mediatek VP9 Video Decoder Driver")
-Signed-off-by: Irui Wang <irui.wang@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    CPU1      			                 	 CPU2
+
+T1 sets cfs_quota
+   starts hrtimer cfs_bandwidth 'period_timer'
+T1 is migrated to CPU2
+						T1 initiates offlining of CPU1
+Hotplug operation starts
+  ...
+'period_timer' expires and is re-enqueued on CPU1
+  ...
+take_cpu_down()
+  CPU1 shuts down and does not handle timers
+  anymore. They have to be migrated in the
+  post dead hotplug steps by the control task.
+
+						T1 runs the post dead offline operation
+					      	T1 is scheduled out
+						T1 waits for 'period_timer' to expire
+
+T1 waits there forever if it is scheduled out before it can execute the hrtimer
+offline callback hrtimers_dead_cpu().
+
+Cure this by delegating the hotplug control operation to a worker thread on
+an online CPU. This takes the initiating user space task, which might be
+affected by the bandwidth timer, completely out of the picture.
+
+Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Yu Liao <liaoyu15@huawei.com>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com
+Link: https://lore.kernel.org/r/87h6oqdq0i.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_if.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/cpu.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_if.c b/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_if.c
-index 70b8383f7c8ec..a27a109d8d144 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_if.c
-@@ -226,10 +226,11 @@ static struct vdec_fb *vp9_rm_from_fb_use_list(struct vdec_vp9_inst
- 		if (fb->base_y.va == addr) {
- 			list_move_tail(&node->list,
- 				       &inst->available_fb_node_list);
--			break;
-+			return fb;
- 		}
- 	}
--	return fb;
-+
-+	return NULL;
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1467,8 +1467,22 @@ out:
+ 	return ret;
  }
  
- static void vp9_add_to_fb_free_list(struct vdec_vp9_inst *inst,
--- 
-2.40.1
-
++struct cpu_down_work {
++	unsigned int		cpu;
++	enum cpuhp_state	target;
++};
++
++static long __cpu_down_maps_locked(void *arg)
++{
++	struct cpu_down_work *work = arg;
++
++	return _cpu_down(work->cpu, 0, work->target);
++}
++
+ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+ {
++	struct cpu_down_work work = { .cpu = cpu, .target = target, };
++
+ 	/*
+ 	 * If the platform does not support hotplug, report it explicitly to
+ 	 * differentiate it from a transient offlining failure.
+@@ -1477,7 +1491,15 @@ static int cpu_down_maps_locked(unsigned
+ 		return -EOPNOTSUPP;
+ 	if (cpu_hotplug_disabled)
+ 		return -EBUSY;
+-	return _cpu_down(cpu, 0, target);
++
++	/*
++	 * Ensure that the control task does not run on the to be offlined
++	 * CPU to prevent a deadlock against cfs_b->period_timer.
++	 */
++	cpu = cpumask_any_but(cpu_online_mask, cpu);
++	if (cpu >= nr_cpu_ids)
++		return -EBUSY;
++	return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
+ }
+ 
+ static int cpu_down(unsigned int cpu, enum cpuhp_state target)
 
 
