@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8174F79AD25
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB5B79B487
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344029AbjIKVNG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55884 "EHLO
+        id S237101AbjIKUvW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239383AbjIKOTZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:25 -0400
+        with ESMTP id S240710AbjIKOvh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8B80DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D282C433C7;
-        Mon, 11 Sep 2023 14:19:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C8CE118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE20C433C9;
+        Mon, 11 Sep 2023 14:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441960;
-        bh=Q4uMQJBdTUf+HwpH4UcWUYR+inaw8I3xx5X1CZ5ZTdY=;
+        s=korg; t=1694443892;
+        bh=R0fB4VDqhwvCcxCr4SEGbbBQKUALlXKURUuBTZZG+lc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ISfPqNMowx0YqsvYaiu6Bq2dRNIcISVjkycQFatWag0yduYMzeqKefU5KGz+vqnK0
-         HsvDZ9K3vL8MR5zzC4uwCNxHXEVOmW3XPcagqay8j8Jrx61Yz4iUrHTY+HhhMvTUwl
-         tk+E9nLS07PgpekICPJo8Xptr+fFtdMGkCdeya5M=
+        b=FO9T8gb3f+O7WnXdyyi/0GJ6XdXps/gvu6zrlTGUbzafnpAT0OF+FmC1rPP2pQMxJ
+         CtIS522hzS4/iMeaFiHLjOXRM0yVwakVvGiqa2TjoLHcZ5kCgV3dQgHdwSm1RXlGml
+         HaDMQxBufYFAr1P4d2+gwyREP7kkex6RzpdgCi4M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 597/739] phy/rockchip: inno-hdmi: use correct vco_div_5 macro on rk3328
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 537/737] iommu: Remove kernel-doc warnings
 Date:   Mon, 11 Sep 2023 15:46:36 +0200
-Message-ID: <20230911134707.776863391@linuxfoundation.org>
+Message-ID: <20230911134705.565872079@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-[ Upstream commit 644c06dfbd0da713f772abf0a8f8581ac78e6264 ]
+[ Upstream commit 6b7867b5b8a6b14c487bf04a693ab424c7a8718d ]
 
-inno_hdmi_phy_rk3328_clk_set_rate() is using the RK3228 macro
-when configuring vco_div_5 on RK3328.
+Remove kernel-doc warnings:
 
-Fix this by using correct vco_div_5 macro for RK3328.
+drivers/iommu/iommu.c:3261: warning: Function parameter or member 'group'
+not described in 'iommu_group_release_dma_owner'
+drivers/iommu/iommu.c:3261: warning: Excess function parameter 'dev'
+description in 'iommu_group_release_dma_owner'
+drivers/iommu/iommu.c:3275: warning: Function parameter or member 'dev'
+not described in 'iommu_device_release_dma_owner'
+drivers/iommu/iommu.c:3275: warning: Excess function parameter 'group'
+description in 'iommu_device_release_dma_owner'
 
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-2-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Fixes: 89395ccedbc1 ("iommu: Add device-centric DMA ownership interfaces")
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20230731112758.214775-1-wangzhu9@huawei.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 4 ++--
+ drivers/iommu/iommu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index 1e1563f5fffc4..f348e5347d817 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -790,8 +790,8 @@ static int inno_hdmi_phy_rk3328_clk_set_rate(struct clk_hw *hw,
- 			 RK3328_PRE_PLL_POWER_DOWN);
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index f1dcfa3f1a1b4..88e7154f846d3 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -3196,7 +3196,7 @@ static void __iommu_release_dma_ownership(struct iommu_group *group)
  
- 	/* Configure pre-pll */
--	inno_update_bits(inno, 0xa0, RK3228_PCLK_VCO_DIV_5_MASK,
--			 RK3228_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
-+	inno_update_bits(inno, 0xa0, RK3328_PCLK_VCO_DIV_5_MASK,
-+			 RK3328_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
- 	inno_write(inno, 0xa1, RK3328_PRE_PLL_PRE_DIV(cfg->prediv));
+ /**
+  * iommu_group_release_dma_owner() - Release DMA ownership of a group
+- * @dev: The device
++ * @group: The group
+  *
+  * Release the DMA ownership claimed by iommu_group_claim_dma_owner().
+  */
+@@ -3210,7 +3210,7 @@ EXPORT_SYMBOL_GPL(iommu_group_release_dma_owner);
  
- 	val = RK3328_SPREAD_SPECTRUM_MOD_DISABLE;
+ /**
+  * iommu_device_release_dma_owner() - Release DMA ownership of a device
+- * @group: The device.
++ * @dev: The device.
+  *
+  * Release the DMA ownership claimed by iommu_device_claim_dma_owner().
+  */
 -- 
 2.40.1
 
