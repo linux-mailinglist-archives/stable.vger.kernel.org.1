@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1D879B3BE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA4C179B395
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237312AbjIKV2B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
+        id S1350399AbjIKVh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241533AbjIKPKh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:37 -0400
+        with ESMTP id S239161AbjIKONU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88820E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DF3C433C7;
-        Mon, 11 Sep 2023 15:10:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E8E4DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E45C433C8;
+        Mon, 11 Sep 2023 14:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445032;
-        bh=q0aJlNgAcq7xHP872McqgivXmJgEwpzWXwBrUv6ZfRk=;
+        s=korg; t=1694441595;
+        bh=AbwiWjaYMsJfe0YQua/ztPzpdSU4H0GAbpUqpa21mlE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y/AwG+Lp/UbeyGNb9lKu3C2Vg3qjwByCCrPjyBS18SIma+ziCr8kOfwM8fGeDpjIU
-         7ZQRUg+xEAER9ZZJmdiqurewirJKBp/Bg7UiHybtin/40ZLAsZWFYl84gUCmT+7Qna
-         gwVuFH40bFGzI3Dya123tyouVIKHVzaiga+AkvIg=
+        b=kFt+nnJE6XwT8FuSm8XY/VjKfNEPkCB/qv7jjHTZz+aUS5GbouaiiELPstTj2Srwq
+         DZRQoyvqw+lCEF+ebnsmqZ1RfBS0Mzyj7Ky/pno/fEqXYtDXCimkmRflKXK7RbUT4O
+         zbyz/u1+XXXVfS8UFZaKrbLQN/ASFQFcbJQKbocM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/600] mlxsw: i2c: Limit single transaction buffer size
-Date:   Mon, 11 Sep 2023 15:43:55 +0200
-Message-ID: <20230911134639.581203717@linuxfoundation.org>
+Subject: [PATCH 6.5 437/739] powerpc/pseries: Fix hcall tracepoints with JUMP_LABEL=n
+Date:   Mon, 11 Sep 2023 15:43:56 +0200
+Message-ID: <20230911134703.376877620@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
+[ Upstream commit 750bd41aeaeb1f0e0128aa4f8fcd6dd759713641 ]
 
-Maximum size of buffer is obtained from underlying I2C adapter and in
-case adapter allows I2C transaction buffer size greater than 100 bytes,
-transaction will fail due to firmware limitation.
+With JUMP_LABEL=n, hcall_tracepoint_refcount's address is being tested
+instead of its value. This results in the tracing slowpath always being
+taken unnecessarily.
 
-As a result driver will fail initialization.
-
-Limit the maximum size of transaction buffer by 100 bytes to fit to
-firmware.
-
-Remove unnecessary calculation:
-max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
-This condition can not happened.
-
-Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9a10ccb29c0a2 ("powerpc/pseries: move hcall_tracepoint_refcount out of .toc")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230509091600.70994-1-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/hvCall.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-index 26e05f129e35a..3beefc167da91 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-@@ -48,6 +48,7 @@
- #define MLXSW_I2C_MBOX_SIZE_BITS	12
- #define MLXSW_I2C_ADDR_BUF_SIZE		4
- #define MLXSW_I2C_BLK_DEF		32
-+#define MLXSW_I2C_BLK_MAX		100
- #define MLXSW_I2C_RETRY			5
- #define MLXSW_I2C_TIMEOUT_MSECS		5000
- #define MLXSW_I2C_MAX_DATA_SIZE		256
-@@ -653,7 +654,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client,
- 			return -EOPNOTSUPP;
- 		}
- 
--		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
-+		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
- 					      min_t(u16, quirks->max_read_len,
- 						    quirks->max_write_len));
- 	} else {
+diff --git a/arch/powerpc/platforms/pseries/hvCall.S b/arch/powerpc/platforms/pseries/hvCall.S
+index 35254ac7af5ee..ca0674b0b683e 100644
+--- a/arch/powerpc/platforms/pseries/hvCall.S
++++ b/arch/powerpc/platforms/pseries/hvCall.S
+@@ -91,6 +91,7 @@ BEGIN_FTR_SECTION;						\
+ 	b	1f;						\
+ END_FTR_SECTION(0, 1);						\
+ 	LOAD_REG_ADDR(r12, hcall_tracepoint_refcount) ;		\
++	ld	r12,0(r12);					\
+ 	std	r12,32(r1);					\
+ 	cmpdi	r12,0;						\
+ 	bne-	LABEL;						\
 -- 
 2.40.1
 
