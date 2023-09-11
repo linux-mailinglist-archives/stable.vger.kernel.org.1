@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B52F79BFBE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F274A79B9EB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348936AbjIKVbs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42620 "EHLO
+        id S236482AbjIKWKA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239301AbjIKORH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:07 -0400
+        with ESMTP id S240672AbjIKOug (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:50:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C452BDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170B9C433C8;
-        Mon, 11 Sep 2023 14:17:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE8A106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:50:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD72AC433C8;
+        Mon, 11 Sep 2023 14:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441822;
-        bh=U7IFqnIx6NroFEzTnYVVd5axkV5U5AqWSUERyXBdQD8=;
+        s=korg; t=1694443832;
+        bh=PSIjA8qXUnbtXkfscTGbVvTIWWIdmphAaBZDxVHeXbE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ca2z5ok7JvJtr/FJx3B55NxIJoWQU1K5XYDEykq1AJJo7OZTKUKMKQbAuuoykmrFn
-         zDNKCDPzM4DA/TjGul4KMyauQG7/gz/JCqprh0VK7FJ7IlnAy8OF0FCDyfXxyaEMrx
-         M3BHQ8UZkKUCtZaMrUKnJmXZBlrncKkBWp4whkBc=
+        b=gCV2FXpnQCOgoYQfUTBVUQR8dz6/vEuTlmwfAv3J84HQhmUnZEbNZTbN3xyO6V/Y8
+         oMbd/DThIrgv4yrCGQ3Lal/Qfyo3hZ651UzlqOXxyzwU2d+f8gfkZNbXCFA/39jIGs
+         yB63zT5ZfTR5enAjHmRlJFnjdTuTXiDkbQEYDiPg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 548/739] media: ov2680: Fix regulators being left enabled on ov2680_power_on() errors
-Date:   Mon, 11 Sep 2023 15:45:47 +0200
-Message-ID: <20230911134706.400381836@linuxfoundation.org>
+Subject: [PATCH 6.4 490/737] media: cx24120: Add retval check for cx24120_message_send()
+Date:   Mon, 11 Sep 2023 15:45:49 +0200
+Message-ID: <20230911134704.264008388@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,65 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 84b4bd7e0d98166aa32fd470e672721190492eae ]
+[ Upstream commit 96002c0ac824e1773d3f706b1f92e2a9f2988047 ]
 
-When the ov2680_power_on() "sensor soft reset failed" path is hit during
-probe() the WARN() about putting an enabled regulator at
-drivers/regulator/core.c:2398 triggers 3 times (once for each regulator),
-filling dmesg with backtraces.
+If cx24120_message_send() returns error, we should keep local struct
+unchanged.
 
-Fix this by properly disabling the regulators on ov2680_power_on() errors.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 5afc9a25be8d ("[media] Add support for TechniSat Skystar S2")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/dvb-frontends/cx24120.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 7fc4b39ebb371..55fc56ffad31c 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -475,7 +475,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
- 		ret = ov2680_write_reg(sensor, OV2680_REG_SOFT_RESET, 0x01);
- 		if (ret != 0) {
- 			dev_err(dev, "sensor soft reset failed\n");
--			return ret;
-+			goto err_disable_regulators;
- 		}
- 		usleep_range(1000, 2000);
- 	} else {
-@@ -485,7 +485,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+diff --git a/drivers/media/dvb-frontends/cx24120.c b/drivers/media/dvb-frontends/cx24120.c
+index d8acd582c7111..0f778660c72b8 100644
+--- a/drivers/media/dvb-frontends/cx24120.c
++++ b/drivers/media/dvb-frontends/cx24120.c
+@@ -973,7 +973,9 @@ static void cx24120_set_clock_ratios(struct dvb_frontend *fe)
+ 	cmd.arg[8] = (clock_ratios_table[idx].rate >> 8) & 0xff;
+ 	cmd.arg[9] = (clock_ratios_table[idx].rate >> 0) & 0xff;
  
- 	ret = clk_prepare_enable(sensor->xvclk);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulators;
+-	cx24120_message_send(state, &cmd);
++	ret = cx24120_message_send(state, &cmd);
++	if (ret != 0)
++		return;
  
- 	sensor->is_enabled = true;
- 
-@@ -495,6 +495,10 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
- 	ov2680_stream_disable(sensor);
- 
- 	return 0;
-+
-+err_disable_regulators:
-+	regulator_bulk_disable(OV2680_NUM_SUPPLIES, sensor->supplies);
-+	return ret;
- }
- 
- static int ov2680_s_power(struct v4l2_subdev *sd, int on)
+ 	/* Calculate ber window rates for stat work */
+ 	cx24120_calculate_ber_window(state, clock_ratios_table[idx].rate);
 -- 
 2.40.1
 
