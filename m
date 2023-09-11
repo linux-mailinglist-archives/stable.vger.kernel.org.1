@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90DE379AC94
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9DA579B3BB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241659AbjIKU5Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45426 "EHLO
+        id S243152AbjIKVSd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241309AbjIKPGW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:22 -0400
+        with ESMTP id S238978AbjIKOIr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1D4FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CE9C433C8;
-        Mon, 11 Sep 2023 15:06:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4965CCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F993C433C8;
+        Mon, 11 Sep 2023 14:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444777;
-        bh=HjEoMxfcPUrIQAsurL38wf9OCmfrWSkQP7Ay/X/2yWk=;
+        s=korg; t=1694441322;
+        bh=CUNP1aNxlLHA8H8MCkRFcG3ULhdJuipOA7w3xkGqJVc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e4tZWMcrLiRabe6A9l6k8VQ+G9yGVfVOG3AHN8sZpTacASu8GABeW8bTZOYopXkV1
-         /cci7YaKsHiATyB42M77H/f5DBALyrHmjk6rtgcztN+EcVxBI0CY2CWKi6upi99K0d
-         6sLopSstMr6UM+FNv1eSatqJFXWXd25dIF80+h8U=
+        b=WjNP42cNSo8xOfulSr21H7dzypVRZ4UNSn+zl5P6Y6sYI6zVtKWQqQNLxGaYRY/Sa
+         VX9RUoVAMgpWbASC2HycHn/06+5fgYoNaoSCo2HkNF3lQE6M9vekz4jfye05kKXt6S
+         ZUJzjp+aLKJzxnRwCFI0p4wFEK29z5JhP3Lar+10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/600] OPP: Fix passing 0 to PTR_ERR in _opp_attach_genpd()
-Date:   Mon, 11 Sep 2023 15:42:24 +0200
-Message-ID: <20230911134636.876686741@linuxfoundation.org>
+Subject: [PATCH 6.5 346/739] arm64: dts: qcom: msm8998: Drop bus clock reference from MMSS SMMU
+Date:   Mon, 11 Sep 2023 15:42:25 +0200
+Message-ID: <20230911134700.779556207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d920920f85a82c1c806a4143871a0e8f534732f2 ]
+[ Upstream commit a3ce236364b82688ca4c7605f63c4efd68e9589c ]
 
-If dev_pm_domain_attach_by_name() returns NULL, then 0 will be passed to
-PTR_ERR() as reported by the smatch warning below:
+The MMSS SMMU has been abusingly consuming the exposed RPM interconnect
+clock. Drop it.
 
-drivers/opp/core.c:2456 _opp_attach_genpd() warn: passing zero to 'PTR_ERR'
-
-Fix it by checking for the non-NULL virt_dev pointer before passing it to
-PTR_ERR. Otherwise return -ENODEV.
-
-Fixes: 4ea9496cbc95 ("opp: Fix error check in dev_pm_opp_attach_genpd()")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 05ce21b54423 ("arm64: dts: qcom: msm8998: Configure the multimedia subsystem iommu")
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-1-ba1b1fd9ee75@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index d707214069ca9..f0d70ecc0271b 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2372,7 +2372,7 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index d5cb244d00d0e..2c3e595091fbc 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2737,10 +2737,10 @@ mmss_smmu: iommu@cd00000 {
  
- 		virt_dev = dev_pm_domain_attach_by_name(dev, *name);
- 		if (IS_ERR_OR_NULL(virt_dev)) {
--			ret = PTR_ERR(virt_dev) ? : -ENODEV;
-+			ret = virt_dev ? PTR_ERR(virt_dev) : -ENODEV;
- 			dev_err(dev, "Couldn't attach to pm_domain: %d\n", ret);
- 			goto err;
- 		}
+ 			clocks = <&mmcc MNOC_AHB_CLK>,
+ 				 <&mmcc BIMC_SMMU_AHB_CLK>,
+-				 <&rpmcc RPM_SMD_MMAXI_CLK>,
+ 				 <&mmcc BIMC_SMMU_AXI_CLK>;
+-			clock-names = "iface-mm", "iface-smmu",
+-				      "bus-mm", "bus-smmu";
++			clock-names = "iface-mm",
++				      "iface-smmu",
++				      "bus-smmu";
+ 
+ 			#global-interrupts = <0>;
+ 			interrupts =
 -- 
 2.40.1
 
