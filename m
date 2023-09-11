@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E5879AFED
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F3879B283
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345447AbjIKVUf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
+        id S1359503AbjIKWnf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241294AbjIKPGD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:03 -0400
+        with ESMTP id S238881AbjIKOHO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00BA1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DF2C433C9;
-        Mon, 11 Sep 2023 15:05:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D3BCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74832C433C8;
+        Mon, 11 Sep 2023 14:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444758;
-        bh=pbxvJWBxEDHzdcQwTYA5JxWqxaqbbFK0coFQJaikw2U=;
+        s=korg; t=1694441228;
+        bh=8iTo8M93VZleBiF01WeGTWA+RPlhGansgKop+5GFRCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BEDhcH9oHwlQbHQqr+Ba5hjPUfrxpaHHpfR6LUWfr2KCQLPyvu+jxZ1XFkg+XLFxf
-         MiRohGRrYtFmGXI5Lbom0CXrywEQZP4PVNd6LWclYCfdTo96eG7qwRXVtSW3ihcd5q
-         Prjj8WXD4xGrxjCF6+hVAqqzXQsvFqt+7sezgvV0=
+        b=DuLClhIZJc3s6RjdS/4WhkWvv7F7MF6zzP2cDKGalF5uYSRA4J8GS69jwrMs8wdN+
+         3Svt9fGsq9tjKTBxEzGku11300B6qzlRPssWiffIMhu24S+pVueiTYlAwMgNKCJqDU
+         9LEd3F3owoyYHCN0LYiw0Hqp3MD/QORHRAYw0MnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
-        Seth Jenkins <sethjenkins@google.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/600] tmpfs: verify {g,u}id mount options correctly
+Subject: [PATCH 6.5 339/739] arm64: dts: imx8mp-debix: remove unused fec pinctrl node
 Date:   Mon, 11 Sep 2023 15:42:18 +0200
-Message-ID: <20230911134636.699047519@linuxfoundation.org>
+Message-ID: <20230911134700.573140293@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,100 +51,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 0200679fc7953177941e41c2a4241d0b6c2c5de8 ]
+[ Upstream commit 574e4099d787c2eb41a43f14c453e422515bf658 ]
 
-A while ago we received the following report:
+The SoM A uses the EQOS ethernet interface and not the FEC, so drop the
+interface pinctrl node from the device tree.
 
-"The other outstanding issue I noticed comes from the fact that
-fsconfig syscalls may occur in a different userns than that which
-called fsopen. That means that resolving the uid/gid via
-current_user_ns() can save a kuid that isn't mapped in the associated
-namespace when the filesystem is finally mounted. This means that it
-is possible for an unprivileged user to create files owned by any
-group in a tmpfs mount (since we can set the SUID bit on the tmpfs
-directory), or a tmpfs that is owned by any user, including the root
-group/user."
-
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, tmpfs has been doing the correct thing.
-But since tmpfs is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock to avoid such bugs as above.
-
-The new mount api's cross-namespace delegation abilities are already
-widely used. After having talked to a bunch of userspace this is the
-most faithful solution with minimal regression risks. I know of one
-users - systemd - that makes use of the new mount api in this way and
-they don't set unresolable {g,u}ids. So the regression risk is minimal.
-
-Link: https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com
-Fixes: f32356261d44 ("vfs: Convert ramfs, shmem, tmpfs, devtmpfs, rootfs to use the new mount API")
-Reviewed-by: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-Reported-by: Seth Jenkins <sethjenkins@google.com>
-Message-Id: <20230801-vfs-fs_context-uidgid-v1-1-daf46a050bbf@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: c86d350aae68 ("arm64: dts: Add device tree for the Debix Model A Board")
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ .../dts/freescale/imx8mp-debix-model-a.dts    | 22 -------------------
+ 1 file changed, 22 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 10365ced5b1fc..806741bbe4a68 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3485,6 +3485,8 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
- 	unsigned long long size;
- 	char *rest;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+index b4409349eb3f6..1004ab0abb131 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+@@ -355,28 +355,6 @@ MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18				0x19
+ 		>;
+ 	};
  
- 	opt = fs_parse(fc, shmem_fs_parameters, param, &result);
- 	if (opt < 0)
-@@ -3520,14 +3522,32 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
- 		ctx->mode = result.uint_32 & 07777;
- 		break;
- 	case Opt_uid:
--		ctx->uid = make_kuid(current_user_ns(), result.uint_32);
--		if (!uid_valid(ctx->uid))
-+		kuid = make_kuid(current_user_ns(), result.uint_32);
-+		if (!uid_valid(kuid))
- 			goto bad_value;
-+
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fc->user_ns, kuid))
-+			goto bad_value;
-+
-+		ctx->uid = kuid;
- 		break;
- 	case Opt_gid:
--		ctx->gid = make_kgid(current_user_ns(), result.uint_32);
--		if (!gid_valid(ctx->gid))
-+		kgid = make_kgid(current_user_ns(), result.uint_32);
-+		if (!gid_valid(kgid))
- 			goto bad_value;
-+
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fc->user_ns, kgid))
-+			goto bad_value;
-+
-+		ctx->gid = kgid;
- 		break;
- 	case Opt_huge:
- 		ctx->huge = result.uint_32;
+-	pinctrl_fec: fecgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC				0x3
+-			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO				0x3
+-			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0				0x91
+-			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1				0x91
+-			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2				0x91
+-			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3				0x91
+-			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC				0x91
+-			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL			0x91
+-			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL			0x1f
+-			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC				0x1f
+-			MX8MP_IOMUXC_SAI1_RXD1__ENET1_1588_EVENT1_OUT			0x1f
+-			MX8MP_IOMUXC_SAI1_RXD0__ENET1_1588_EVENT1_IN			0x1f
+-			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19				0x19
+-		>;
+-	};
+-
+ 	pinctrl_gpio_led: gpioledgrp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16				0x19
 -- 
 2.40.1
 
