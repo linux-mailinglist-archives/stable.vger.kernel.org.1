@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5992679AECB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F8C979AC8D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349245AbjIKVc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45942 "EHLO
+        id S238148AbjIKUxm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240113AbjIKOg4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:56 -0400
+        with ESMTP id S241249AbjIKPE6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3332CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278F6C433CA;
-        Mon, 11 Sep 2023 14:36:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 446D9125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89888C433C7;
+        Mon, 11 Sep 2023 15:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443011;
-        bh=QpMOGEi8NmhqVMc14QXwJ2GvycgvKbAka5PydQ8j3qc=;
+        s=korg; t=1694444693;
+        bh=O5zAikEQcQ1NkjwgrZazX1j16W067dHGT1Gty9APZbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LA2AnbzOHYAxuqN+YR9eQFz8rTcle4ZRtB2AJakfYfYSv0mA8A3/03efMMe/dodGc
-         t6cHivl6bKjvAIAjVv73ITMM2RdxvPxaLtvVSe+arPSogMKKc6CkoMq0XBvCUvDPWO
-         T+k56SsW5s6iTaxfDPslhF1qKI/1tEIDRxJyjSFY=
+        b=QJgueh/k2ITwhA+5C8ifMvSVAVuKXve5nnfUXo4jCU4Y3eACCE5xW4gLXweNqzq7E
+         HxgU9edy4EmS6iXWKvECAivzu7B5j4YfLVZJYrFxumnNc5fQVHwPS6oq78kbLPUDKd
+         e4+8KEP7yhQdv7rThxlDWcpVKcVWrfD4hNMIu/9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 226/737] wifi: mwifiex: Fix missed return in oob checks failed path
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/600] net: annotate data-races around sk->sk_{rcv|snd}timeo
 Date:   Mon, 11 Sep 2023 15:41:25 +0200
-Message-ID: <20230911134656.893632327@linuxfoundation.org>
+Message-ID: <20230911134635.150238965@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +50,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Polaris Pi <pinkperfect2021@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2785851c627f2db05f9271f7f63661b5dbd95c4c ]
+[ Upstream commit 285975dd674258ccb33e77a1803e8f2015e67105 ]
 
-Add missed return in mwifiex_uap_queue_bridged_pkt() and
-mwifiex_process_rx_packet().
+sk_getsockopt() runs without locks, we must add annotations
+to sk->sk_rcvtimeo and sk->sk_sndtimeo.
 
-Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-Reported-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230810083911.3725248-1-pinkperfect2021@gmail.com
+In the future we might allow fetching these fields before
+we lock the socket in TCP fast path.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c   | 1 +
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 1 +
- 2 files changed, 2 insertions(+)
+ net/core/sock.c     | 24 ++++++++++++++----------
+ net/sched/em_meta.c |  4 ++--
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index f2899d53a43f9..65420ad674167 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -92,6 +92,7 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 			    skb->len, rx_pkt_off);
- 		priv->stats.rx_dropped++;
- 		dev_kfree_skb_any(skb);
-+		return -1;
- 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 509773919d302..8b91d9f911336 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -425,6 +425,7 @@ static int sock_set_timeout(long *timeo_p, sockptr_t optval, int optlen,
+ {
+ 	struct __kernel_sock_timeval tv;
+ 	int err = sock_copy_user_timeval(&tv, optval, optlen, old_timeval);
++	long val;
  
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index 04ff051f5d186..c1b8d41dd7536 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -110,6 +110,7 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
- 			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
- 		priv->stats.rx_dropped++;
- 		dev_kfree_skb_any(skb);
-+		return;
- 	}
+ 	if (err)
+ 		return err;
+@@ -435,7 +436,7 @@ static int sock_set_timeout(long *timeo_p, sockptr_t optval, int optlen,
+ 	if (tv.tv_sec < 0) {
+ 		static int warned __read_mostly;
  
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+-		*timeo_p = 0;
++		WRITE_ONCE(*timeo_p, 0);
+ 		if (warned < 10 && net_ratelimit()) {
+ 			warned++;
+ 			pr_info("%s: `%s' (pid %d) tries to set negative timeout\n",
+@@ -443,11 +444,12 @@ static int sock_set_timeout(long *timeo_p, sockptr_t optval, int optlen,
+ 		}
+ 		return 0;
+ 	}
+-	*timeo_p = MAX_SCHEDULE_TIMEOUT;
+-	if (tv.tv_sec == 0 && tv.tv_usec == 0)
+-		return 0;
+-	if (tv.tv_sec < (MAX_SCHEDULE_TIMEOUT / HZ - 1))
+-		*timeo_p = tv.tv_sec * HZ + DIV_ROUND_UP((unsigned long)tv.tv_usec, USEC_PER_SEC / HZ);
++	val = MAX_SCHEDULE_TIMEOUT;
++	if ((tv.tv_sec || tv.tv_usec) &&
++	    (tv.tv_sec < (MAX_SCHEDULE_TIMEOUT / HZ - 1)))
++		val = tv.tv_sec * HZ + DIV_ROUND_UP((unsigned long)tv.tv_usec,
++						    USEC_PER_SEC / HZ);
++	WRITE_ONCE(*timeo_p, val);
+ 	return 0;
+ }
+ 
+@@ -809,9 +811,9 @@ void sock_set_sndtimeo(struct sock *sk, s64 secs)
+ {
+ 	lock_sock(sk);
+ 	if (secs && secs < MAX_SCHEDULE_TIMEOUT / HZ - 1)
+-		sk->sk_sndtimeo = secs * HZ;
++		WRITE_ONCE(sk->sk_sndtimeo, secs * HZ);
+ 	else
+-		sk->sk_sndtimeo = MAX_SCHEDULE_TIMEOUT;
++		WRITE_ONCE(sk->sk_sndtimeo, MAX_SCHEDULE_TIMEOUT);
+ 	release_sock(sk);
+ }
+ EXPORT_SYMBOL(sock_set_sndtimeo);
+@@ -1708,12 +1710,14 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 
+ 	case SO_RCVTIMEO_OLD:
+ 	case SO_RCVTIMEO_NEW:
+-		lv = sock_get_timeout(sk->sk_rcvtimeo, &v, SO_RCVTIMEO_OLD == optname);
++		lv = sock_get_timeout(READ_ONCE(sk->sk_rcvtimeo), &v,
++				      SO_RCVTIMEO_OLD == optname);
+ 		break;
+ 
+ 	case SO_SNDTIMEO_OLD:
+ 	case SO_SNDTIMEO_NEW:
+-		lv = sock_get_timeout(sk->sk_sndtimeo, &v, SO_SNDTIMEO_OLD == optname);
++		lv = sock_get_timeout(READ_ONCE(sk->sk_sndtimeo), &v,
++				      SO_SNDTIMEO_OLD == optname);
+ 		break;
+ 
+ 	case SO_RCVLOWAT:
+diff --git a/net/sched/em_meta.c b/net/sched/em_meta.c
+index 49bae3d5006b0..b1f1b49d35edf 100644
+--- a/net/sched/em_meta.c
++++ b/net/sched/em_meta.c
+@@ -568,7 +568,7 @@ META_COLLECTOR(int_sk_rcvtimeo)
+ 		*err = -1;
+ 		return;
+ 	}
+-	dst->value = sk->sk_rcvtimeo / HZ;
++	dst->value = READ_ONCE(sk->sk_rcvtimeo) / HZ;
+ }
+ 
+ META_COLLECTOR(int_sk_sndtimeo)
+@@ -579,7 +579,7 @@ META_COLLECTOR(int_sk_sndtimeo)
+ 		*err = -1;
+ 		return;
+ 	}
+-	dst->value = sk->sk_sndtimeo / HZ;
++	dst->value = READ_ONCE(sk->sk_sndtimeo) / HZ;
+ }
+ 
+ META_COLLECTOR(int_sk_sendmsg_off)
 -- 
 2.40.1
 
