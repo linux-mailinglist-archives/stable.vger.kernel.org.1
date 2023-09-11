@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83BD879B3C3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDB5779B00D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241262AbjIKVHD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39058 "EHLO
+        id S1344078AbjIKVNP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238306AbjIKNxo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:44 -0400
+        with ESMTP id S238289AbjIKNxY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E393CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B56C433C7;
-        Mon, 11 Sep 2023 13:53:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B474CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAFFC433C7;
+        Mon, 11 Sep 2023 13:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440419;
-        bh=WDCmjdq37sYOXg9Sf1BXi57Wj3kEgHl15mTI9pjXnhs=;
+        s=korg; t=1694440399;
+        bh=TRkChM4GBJS8MNRVFJx9+wk9vQV6ADJLp9ngS6KSwoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ksdWJ5rqxbvTaUtV1CRl58xVhzh6/k1MtLMcvjulumpw3vBMjCpMYmWTOAw+IemL+
-         t/y8Y0az2C/tEdbupkRFgoFYprB3A14wS79IcNxLrHtgSW9o2fWFAGZCUcyVFAtbgY
-         UgeEoMU9HsCWqyw9SLDHQoBjpXAyAGZ3VYGIIsEY=
+        b=BorzZCn9U872pb3yBqDnkwIVRNIrPUZbQifLkLmxgd8A75nTKd9WBEl/Pxp1eZs4o
+         Ecv/6hDDCpUC/HHFgyUxVgrGKo01ZRw4RYJ1Gc6JIcyFZxTquGHgcLNiVtVbeMaQpx
+         ebs1bs/sJUXl4cOcp/lRUcQfFCoO2kAx4/AIHns4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
-        Seth Jenkins <sethjenkins@google.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 018/739] tmpfs: verify {g,u}id mount options correctly
-Date:   Mon, 11 Sep 2023 15:36:57 +0200
-Message-ID: <20230911134651.546426576@linuxfoundation.org>
+Subject: [PATCH 6.5 021/739] ARM: ptrace: Restore syscall restart tracing
+Date:   Mon, 11 Sep 2023 15:37:00 +0200
+Message-ID: <20230911134651.636583372@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -56,96 +59,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 0200679fc7953177941e41c2a4241d0b6c2c5de8 ]
+[ Upstream commit cf007647475b5090819c5fe8da771073145c7334 ]
 
-A while ago we received the following report:
+Since commit 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store
+thread_info->abi_syscall"), the seccomp selftests "syscall_restart" has
+been broken. This was caused by the restart syscall not being stored to
+"abi_syscall" during restart setup before branching to the "local_restart"
+label. Tracers would see the wrong syscall, and scno would get overwritten
+while returning from the TIF_WORK path. Add the missing store.
 
-"The other outstanding issue I noticed comes from the fact that
-fsconfig syscalls may occur in a different userns than that which
-called fsopen. That means that resolving the uid/gid via
-current_user_ns() can save a kuid that isn't mapped in the associated
-namespace when the filesystem is finally mounted. This means that it
-is possible for an unprivileged user to create files owned by any
-group in a tmpfs mount (since we can set the SUID bit on the tmpfs
-directory), or a tmpfs that is owned by any user, including the root
-group/user."
-
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, tmpfs has been doing the correct thing.
-But since tmpfs is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock to avoid such bugs as above.
-
-The new mount api's cross-namespace delegation abilities are already
-widely used. After having talked to a bunch of userspace this is the
-most faithful solution with minimal regression risks. I know of one
-users - systemd - that makes use of the new mount api in this way and
-they don't set unresolable {g,u}ids. So the regression risk is minimal.
-
-Link: https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com
-Fixes: f32356261d44 ("vfs: Convert ramfs, shmem, tmpfs, devtmpfs, rootfs to use the new mount API")
-Reviewed-by: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-Reported-by: Seth Jenkins <sethjenkins@google.com>
-Message-Id: <20230801-vfs-fs_context-uidgid-v1-1-daf46a050bbf@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Fixes: 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store thread_info->abi_syscall")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230810195422.2304827-1-keescook@chromium.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ arch/arm/kernel/entry-common.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index d963c747dabca..79a998b38ac85 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3641,6 +3641,8 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
- 	unsigned long long size;
- 	char *rest;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
- 
- 	opt = fs_parse(fc, shmem_fs_parameters, param, &result);
- 	if (opt < 0)
-@@ -3676,14 +3678,32 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
- 		ctx->mode = result.uint_32 & 07777;
- 		break;
- 	case Opt_uid:
--		ctx->uid = make_kuid(current_user_ns(), result.uint_32);
--		if (!uid_valid(ctx->uid))
-+		kuid = make_kuid(current_user_ns(), result.uint_32);
-+		if (!uid_valid(kuid))
- 			goto bad_value;
-+
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fc->user_ns, kuid))
-+			goto bad_value;
-+
-+		ctx->uid = kuid;
- 		break;
- 	case Opt_gid:
--		ctx->gid = make_kgid(current_user_ns(), result.uint_32);
--		if (!gid_valid(ctx->gid))
-+		kgid = make_kgid(current_user_ns(), result.uint_32);
-+		if (!gid_valid(kgid))
- 			goto bad_value;
-+
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fc->user_ns, kgid))
-+			goto bad_value;
-+
-+		ctx->gid = kgid;
- 		break;
- 	case Opt_huge:
- 		ctx->huge = result.uint_32;
+diff --git a/arch/arm/kernel/entry-common.S b/arch/arm/kernel/entry-common.S
+index bcc4c9ec3aa4e..5c31e9de7a602 100644
+--- a/arch/arm/kernel/entry-common.S
++++ b/arch/arm/kernel/entry-common.S
+@@ -90,6 +90,7 @@ slow_work_pending:
+ 	cmp	r0, #0
+ 	beq	no_work_pending
+ 	movlt	scno, #(__NR_restart_syscall - __NR_SYSCALL_BASE)
++	str	scno, [tsk, #TI_ABI_SYSCALL]	@ make sure tracers see update
+ 	ldmia	sp, {r0 - r6}			@ have to reload r0 - r6
+ 	b	local_restart			@ ... and off we go
+ ENDPROC(ret_fast_syscall)
 -- 
 2.40.1
 
