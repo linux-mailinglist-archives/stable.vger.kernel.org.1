@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84FA279BD64
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDA8179B99B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344462AbjIKVOG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53150 "EHLO
+        id S1355343AbjIKV5y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242111AbjIKPWh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:37 -0400
+        with ESMTP id S240806AbjIKOy0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32525F9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1CBC433C7;
-        Mon, 11 Sep 2023 15:22:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 052CAE4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B790C433C8;
+        Mon, 11 Sep 2023 14:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445752;
-        bh=/7o+vlA40CKDONAJ+uYfmMmBfcqqaRxxE7KslqHa5XQ=;
+        s=korg; t=1694444061;
+        bh=L6nGixMAZAmG9xVd3i/Iex+5o0S1eSb/QdQsNKnOcqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aJgPJHnDxmGRF3ceedYEKfN3vP42B45tiVV+wicNZPmJxfcb3LTe2fajepNOXNQ1F
-         eR48SwnUBo7oW+77n6Nc2BYfLe9EGxoYzY4PqBrcp+dcg9FdWksW0nnGVZFsBc0s8p
-         kx5bvAigky1omwKh2JfQZFi/JiHbQKFXiwDG0HK4=
+        b=liM9eBkQt1f5ejO+1bawJfWoliBA9aBwZ8qOeED9/4fYuFv2aXDbwcMbzB6hpO3Xt
+         YDoWRZmSpsr4udgP5qOTG+VhBA5EEYWZewqlg8XHmBFX/0mb6rflyQTdX8t75fxqdL
+         fqjpmd9wPuJX4K+HViNYLlI3sYfCILdb1xdDtM4E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com,
+        Maxime Ripard <mripard@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 423/600] scsi: qla4xxx: Add length check when parsing nlattrs
+Subject: [PATCH 6.4 597/737] HID: uclogic: Correct devm device reference for hidinput input_dev name
 Date:   Mon, 11 Sep 2023 15:47:36 +0200
-Message-ID: <20230911134646.150655166@linuxfoundation.org>
+Message-ID: <20230911134707.215685491@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +54,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 
-[ Upstream commit 47cd3770e31df942e2bb925a9a855c79ed0662eb ]
+[ Upstream commit dd613a4e45f8d35f49a63a2064e5308fa5619e29 ]
 
-There are three places that qla4xxx parses nlattrs:
+Reference the HID device rather than the input device for the devm
+allocation of the input_dev name. Referencing the input_dev would lead to a
+use-after-free when the input_dev was unregistered and subsequently fires a
+uevent that depends on the name. At the point of firing the uevent, the
+name would be freed by devres management.
 
- - qla4xxx_set_chap_entry()
+Use devm_kasprintf to simplify the logic for allocating memory and
+formatting the input_dev name string.
 
- - qla4xxx_iface_set_param()
-
- - qla4xxx_sysfs_ddb_set_param()
-
-and each of them directly converts the nlattr to specific pointer of
-structure without length checking. This could be dangerous as those
-attributes are not validated and a malformed nlattr (e.g., length 0) could
-result in an OOB read that leaks heap dirty data.
-
-Add the nla_len check before accessing the nlattr data and return EINVAL if
-the length check fails.
-
-Fixes: 26ffd7b45fe9 ("[SCSI] qla4xxx: Add support to set CHAP entries")
-Fixes: 1e9e2be3ee03 ("[SCSI] qla4xxx: Add flash node mgmt support")
-Fixes: 00c31889f751 ("[SCSI] qla4xxx: fix data alignment and use nl helpers")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230723080053.3714534-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/
+Reported-by: Maxime Ripard <mripard@kernel.org>
+Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
+Fixes: cce2dbdf258e ("HID: uclogic: name the input nodes based on their tool")
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230824061308.222021-2-sergeantsagara@protonmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/hid/hid-uclogic-core.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index 9e849f6b0d0f7..3f2f9734ee42e 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -968,6 +968,11 @@ static int qla4xxx_set_chap_entry(struct Scsi_Host *shost, void *data, int len)
- 	memset(&chap_rec, 0, sizeof(chap_rec));
+diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
+index f67835f9ed4cc..ad74cbc9a0aa5 100644
+--- a/drivers/hid/hid-uclogic-core.c
++++ b/drivers/hid/hid-uclogic-core.c
+@@ -85,10 +85,8 @@ static int uclogic_input_configured(struct hid_device *hdev,
+ {
+ 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
+ 	struct uclogic_params *params = &drvdata->params;
+-	char *name;
+ 	const char *suffix = NULL;
+ 	struct hid_field *field;
+-	size_t len;
+ 	size_t i;
+ 	const struct uclogic_params_frame *frame;
  
- 	nla_for_each_attr(attr, data, len, rem) {
-+		if (nla_len(attr) < sizeof(*param_info)) {
-+			rc = -EINVAL;
-+			goto exit_set_chap;
-+		}
-+
- 		param_info = nla_data(attr);
- 
- 		switch (param_info->param) {
-@@ -2750,6 +2755,11 @@ qla4xxx_iface_set_param(struct Scsi_Host *shost, void *data, uint32_t len)
+@@ -146,14 +144,9 @@ static int uclogic_input_configured(struct hid_device *hdev,
+ 		}
  	}
  
- 	nla_for_each_attr(attr, data, len, rem) {
-+		if (nla_len(attr) < sizeof(*iface_param)) {
-+			rval = -EINVAL;
-+			goto exit_init_fw_cb;
-+		}
-+
- 		iface_param = nla_data(attr);
+-	if (suffix) {
+-		len = strlen(hdev->name) + 2 + strlen(suffix);
+-		name = devm_kzalloc(&hi->input->dev, len, GFP_KERNEL);
+-		if (name) {
+-			snprintf(name, len, "%s %s", hdev->name, suffix);
+-			hi->input->name = name;
+-		}
+-	}
++	if (suffix)
++		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
++						 "%s %s", hdev->name, suffix);
  
- 		if (iface_param->param_type == ISCSI_NET_PARAM) {
-@@ -8104,6 +8114,11 @@ qla4xxx_sysfs_ddb_set_param(struct iscsi_bus_flash_session *fnode_sess,
- 
- 	memset((void *)&chap_tbl, 0, sizeof(chap_tbl));
- 	nla_for_each_attr(attr, data, len, rem) {
-+		if (nla_len(attr) < sizeof(*fnode_param)) {
-+			rc = -EINVAL;
-+			goto exit_set_param;
-+		}
-+
- 		fnode_param = nla_data(attr);
- 
- 		switch (fnode_param->param) {
+ 	return 0;
+ }
 -- 
 2.40.1
 
