@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E33379BBCA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3078D79BCB9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240569AbjIKWe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58278 "EHLO
+        id S238122AbjIKVEA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240278AbjIKOk1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:27 -0400
+        with ESMTP id S238875AbjIKOHB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5D3CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CF3C433CA;
-        Mon, 11 Sep 2023 14:40:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BE7CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39C9C433C8;
+        Mon, 11 Sep 2023 14:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443223;
-        bh=bk/n1is+SsXooN1p/kF91Czhezvgg802uZL7cpoI3AA=;
+        s=korg; t=1694441217;
+        bh=hDcrtlQayZWfhmGGckXrMRdiguSDkVN229akvTcOzZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I9f8jHenlJqHwuAJdPff4whFWly9PIElvhclODTWaNqxUbVvFZWqIw7dJUFrf9G1z
-         uDgGEGEC0eGPXBEmhRPcZ48By7fEK/ujlEdWZDc8OXZbQwhdNfD1RL/H/lM5SXdx07
-         W4zVYr4tmUDL6xqW6qwo3jcCoSd2X4aj7nk1safM=
+        b=c6E0qDDjCKXdac3+2qlXminp0lZbYciksFRwjq8di86yKeLa1LepnmCgc5JknhsCg
+         956r6Jr1OubEtiHwsLO5OSc/Cvds1FxhIp+TArBN8ZF/uTfzyZ4GL4ZAwCoJAPVz7+
+         zochsk39gQlET5KWhmeyZWtpMhFzWjALsP5T9KNE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Wesley Chalmers <Wesley.Chalmers@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Apelete Seketeli <aseketeli@baylibre.com>,
+        Esteban Blanc <eblanc@baylibre.com>,
+        Jai Luthra <j-luthra@ti.com>, Nishanth Menon <nm@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 275/737] drm/amd/display: Do not set drr on pipe commit
+Subject: [PATCH 6.5 335/739] arm64: dts: ti: k3-j784s4: Fix interrupt ranges for wkup & main gpio
 Date:   Mon, 11 Sep 2023 15:42:14 +0200
-Message-ID: <20230911134658.257359075@linuxfoundation.org>
+Message-ID: <20230911134700.453660788@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Chalmers <Wesley.Chalmers@amd.com>
+From: Apelete Seketeli <aseketeli@baylibre.com>
 
-[ Upstream commit e101bf95ea87ccc03ac2f48dfc0757c6364ff3c7 ]
+[ Upstream commit 05a1f130101e7a49ff1e8734939facd43596ea26 ]
 
-[WHY]
-Writing to DRR registers such as OTG_V_TOTAL_MIN on the same frame as a
-pipe commit can cause underflow.
+This patch fixes the interrupt range for wakeup and main domain gpio
+interrupt routers. They were wrongly subtracted by 32 instead of
+following what is defined in the interrupt map in the TRM (Table 9-35).
 
-[HOW]
-Move DMUB p-state delegate into optimze_bandwidth; enabling FAMS sets
-optimized_required.
-
-This change expects that Freesync requests are blocked when
-optimized_required is true.
-
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Wesley Chalmers <Wesley.Chalmers@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link:  http://www.ti.com/lit/pdf/spruj52
+Fixes: 4664ebd8346a ("arm64: dts: ti: Add initial support for J784S4 SoC")
+Signed-off-by: Apelete Seketeli <aseketeli@baylibre.com>
+Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20230810-tps6594-v6-4-2b2e2399e2ef@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 6 ++++++
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 7 +++++++
- 2 files changed, 13 insertions(+)
+ arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi       | 2 +-
+ arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index a621b6a27c1fc..1ed30eba152e1 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -2124,6 +2124,12 @@ void dcn20_optimize_bandwidth(
- 	if (hubbub->funcs->program_compbuf_size)
- 		hubbub->funcs->program_compbuf_size(hubbub, context->bw_ctx.bw.dcn.compbuf_size_kb, true);
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
+index 2ea0adae6832f..76e610d8782b5 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
+@@ -60,7 +60,7 @@ main_gpio_intr: interrupt-controller@a00000 {
+ 		#interrupt-cells = <1>;
+ 		ti,sci = <&sms>;
+ 		ti,sci-dev-id = <10>;
+-		ti,interrupt-ranges = <8 360 56>;
++		ti,interrupt-ranges = <8 392 56>;
+ 	};
  
-+	if (context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching) {
-+		dc_dmub_srv_p_state_delegate(dc,
-+			true, context);
-+		context->bw_ctx.bw.dcn.clk.p_state_change_support = true;
-+	}
-+
- 	dc->clk_mgr->funcs->update_clocks(
- 			dc->clk_mgr,
- 			context,
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index 32121db2851e6..f923224e85fc6 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -985,11 +985,18 @@ void dcn30_set_disp_pattern_generator(const struct dc *dc,
- void dcn30_prepare_bandwidth(struct dc *dc,
- 			     struct dc_state *context)
- {
-+	if (context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching) {
-+		dc->optimized_required = true;
-+		context->bw_ctx.bw.dcn.clk.p_state_change_support = false;
-+	}
-+
- 	if (dc->clk_mgr->dc_mode_softmax_enabled)
- 		if (dc->clk_mgr->clks.dramclk_khz <= dc->clk_mgr->bw_params->dc_mode_softmax_memclk * 1000 &&
- 				context->bw_ctx.bw.dcn.clk.dramclk_khz > dc->clk_mgr->bw_params->dc_mode_softmax_memclk * 1000)
- 			dc->clk_mgr->funcs->set_max_memclk(dc->clk_mgr, dc->clk_mgr->bw_params->clk_table.entries[dc->clk_mgr->bw_params->clk_table.num_entries - 1].memclk_mhz);
+ 	main_pmx0: pinctrl@11c000 {
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
+index 657fb1d72512c..62a0f172fb2d4 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
+@@ -107,7 +107,7 @@ wkup_gpio_intr: interrupt-controller@42200000 {
+ 		#interrupt-cells = <1>;
+ 		ti,sci = <&sms>;
+ 		ti,sci-dev-id = <177>;
+-		ti,interrupt-ranges = <16 928 16>;
++		ti,interrupt-ranges = <16 960 16>;
+ 	};
  
- 	dcn20_prepare_bandwidth(dc, context);
-+
-+	dc_dmub_srv_p_state_delegate(dc, false, context);
- }
- 
+ 	/* MCU_TIMERIO pad input CTRLMMR_MCU_TIMER*_CTRL registers */
 -- 
 2.40.1
 
