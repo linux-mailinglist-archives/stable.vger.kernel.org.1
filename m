@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBAA879B689
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 024FC79BC89
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230221AbjIKWtr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
+        id S241381AbjIKV3q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241988AbjIKPT7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:59 -0400
+        with ESMTP id S239525AbjIKOXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3C5FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0223FC433C8;
-        Mon, 11 Sep 2023 15:19:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6B7DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1075C433C7;
+        Mon, 11 Sep 2023 14:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445592;
-        bh=QdJQL/9DPFT/h3TPHn2ZE3IiDh/BU23BNvrrpnjomYM=;
+        s=korg; t=1694442181;
+        bh=9Jz+6T1Hw8pETNs2dNALOUyItSK5H5Kw0WgCYzMfXZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=alr128qZZmpQRZ24hAE9PvFi+X5VaWLKXfJROpoOpB3zzCJ7VifOPFjmAGlzHqgjt
-         dh26m35GbQfaT9p4fBm9YQYXEiaEGMNo5SrNZElQgXFSG9k1TTXpRA7dDV5Si+o3EN
-         aj9lH98aXtlZSWHRAjMnX1KXmCeoGHtMj4zQfhk8=
+        b=HjRpuavysfTEhIeZsODMQRLfd4j3x+O+3vgWr0ZUO4YDTPJw7ajyRF8T1DRBmqno3
+         hdkuKS/0fS+ww1TV431vtg5hXKoX7Pspv+Sr+ZVkxfpI5AeYVBvlICxB/YJxjhreY5
+         vROVyDfwH7e+5RcSP85mFL4Bg7PXTiBTuZ8fiS9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Xiang Chen <chenxiang66@hisilicon.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 403/600] scsi: hisi_sas: Fix normally completed I/O analysed as failed
+        patches@lists.linux.dev, Serguei Ivantsov <manowar@gsc-game.com>,
+        =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= 
+        <christoph.boehmwalder@linbit.com>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 637/739] drbd: swap bvec_set_page len and offset
 Date:   Mon, 11 Sep 2023 15:47:16 +0200
-Message-ID: <20230911134645.572179375@linuxfoundation.org>
+Message-ID: <20230911134708.886626982@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,94 +51,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
 
-[ Upstream commit f5393a5602cacfda2014e0ff8220e5a7564e7cd1 ]
+commit 4b9c2edaf7282d60e069551b4b28abc2932cd3e3 upstream.
 
-The PIO read command has no response frame and the struct iu[1024] won't be
-filled. I/Os which are normally completed will be treated as failed in
-sas_ata_task_done() when iu contains abnormal dirty data.
+bvec_set_page has the following signature:
 
-Consequently ending_fis should not be filled by iu when the response frame
-hasn't been written to memory.
+static inline void bvec_set_page(struct bio_vec *bv, struct page *page,
+		unsigned int len, unsigned int offset)
 
-Fixes: d380f55503ed ("scsi: hisi_sas: Don't bother clearing status buffer IU in task prep")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1689045300-44318-2-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the usage in DRBD swaps the len and offset parameters. This
+leads to a bvec with length=0 instead of the intended length=4096, which
+causes sock_sendmsg to return -EIO.
+
+This leaves DRBD unable to transmit any pages and thus completely
+broken.
+
+Swapping the parameters fixes the regression.
+
+Fixes: eeac7405c735 ("drbd: Use sendmsg(MSG_SPLICE_PAGES) rather than sendpage()")
+Reported-by: Serguei Ivantsov <manowar@gsc-game.com>
+Link: https://lore.kernel.org/regressions/CAKH+VT3YLmAn0Y8=q37UTDShqxDLsqPcQ4hBMzY7HPn7zNx+RQ@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Link: https://lore.kernel.org/r/20230906133034.948817-1-christoph.boehmwalder@linbit.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 11 +++++++++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c |  6 ++++--
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/block/drbd/drbd_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index 02575d81afca2..50697672146ad 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -2026,6 +2026,11 @@ static void slot_err_v2_hw(struct hisi_hba *hisi_hba,
- 	u16 dma_tx_err_type = le16_to_cpu(err_record->dma_tx_err_type);
- 	u16 sipc_rx_err_type = le16_to_cpu(err_record->sipc_rx_err_type);
- 	u32 dma_rx_err_type = le32_to_cpu(err_record->dma_rx_err_type);
-+	struct hisi_sas_complete_v2_hdr *complete_queue =
-+			hisi_hba->complete_hdr[slot->cmplt_queue];
-+	struct hisi_sas_complete_v2_hdr *complete_hdr =
-+			&complete_queue[slot->cmplt_queue_slot];
-+	u32 dw0 = le32_to_cpu(complete_hdr->dw0);
- 	int error = -1;
+diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
+index 79ab532aabaf..6bc86106c7b2 100644
+--- a/drivers/block/drbd/drbd_main.c
++++ b/drivers/block/drbd/drbd_main.c
+@@ -1557,7 +1557,7 @@ static int _drbd_send_page(struct drbd_peer_device *peer_device, struct page *pa
+ 	do {
+ 		int sent;
  
- 	if (err_phase == 1) {
-@@ -2310,7 +2315,8 @@ static void slot_err_v2_hw(struct hisi_hba *hisi_hba,
- 			break;
- 		}
- 		}
--		hisi_sas_sata_done(task, slot);
-+		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
-+			hisi_sas_sata_done(task, slot);
- 	}
- 		break;
- 	default:
-@@ -2443,7 +2449,8 @@ static void slot_complete_v2_hw(struct hisi_hba *hisi_hba,
- 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
- 	{
- 		ts->stat = SAS_SAM_STAT_GOOD;
--		hisi_sas_sata_done(task, slot);
-+		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
-+			hisi_sas_sata_done(task, slot);
- 		break;
- 	}
- 	default:
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 8544c1554f5ff..c0e74d768716d 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2203,7 +2203,8 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
- 			ts->stat = SAS_OPEN_REJECT;
- 			ts->open_rej_reason = SAS_OREJ_RSVD_RETRY;
- 		}
--		hisi_sas_sata_done(task, slot);
-+		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
-+			hisi_sas_sata_done(task, slot);
- 		break;
- 	case SAS_PROTOCOL_SMP:
- 		ts->stat = SAS_SAM_STAT_CHECK_CONDITION;
-@@ -2330,7 +2331,8 @@ static void slot_complete_v3_hw(struct hisi_hba *hisi_hba,
- 	case SAS_PROTOCOL_STP:
- 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
- 		ts->stat = SAS_SAM_STAT_GOOD;
--		hisi_sas_sata_done(task, slot);
-+		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
-+			hisi_sas_sata_done(task, slot);
- 		break;
- 	default:
- 		ts->stat = SAS_SAM_STAT_CHECK_CONDITION;
+-		bvec_set_page(&bvec, page, offset, len);
++		bvec_set_page(&bvec, page, len, offset);
+ 		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, len);
+ 
+ 		sent = sock_sendmsg(socket, &msg);
 -- 
-2.40.1
+2.42.0
 
 
 
