@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2D5479ADF4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C6FB79B559
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355266AbjIKV5l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34592 "EHLO
+        id S237687AbjIKWWv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242120AbjIKPW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:57 -0400
+        with ESMTP id S239659AbjIKOZo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 650E5F9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE62AC433C7;
-        Mon, 11 Sep 2023 15:22:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377EFDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFA3C433C8;
+        Mon, 11 Sep 2023 14:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445773;
-        bh=3OUhzP6HH27NhyFh0TqQNokSnLDJ13Kndmiab1AsEMA=;
+        s=korg; t=1694442339;
+        bh=61D1kthUek0IR9XnPkew+uROd+QNdjlkoqdNRbO3uS8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vzKwybwJDJT1vI4hpI0Zxf6CZBwl5cLeT+wROiFPgqyjuM2dvQLpxSgyZT8dgef1B
-         Hi1F6KpAQBRYa8o9OXAe07o2wNADjp0h3AI+ou7HfTc0hjThWmqk8DEIXW7yGd6vsy
-         jE2dPnDtgTgIdWzhRxgEbIXnPuQ8+1tQllMrUq38=
+        b=KgDwPqilJn3nCqwuVbCDWXEPt9FKdfMapKNARR6idGjtTy/HPJBCVTRHHvFXZBN47
+         iNqg0//7DVHKVKGQ9KqA7G8uX1j2mJcmL/UPQZt9CSrllIWrXRqLpA2OU1Z+iW4zY3
+         HxGg0jwU+6oVV34m+CkWSyCdlFHVzD1ylKBam86w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 467/600] media: ov2680: Fix vflip / hflip set functions
-Date:   Mon, 11 Sep 2023 15:48:20 +0200
-Message-ID: <20230911134647.434817747@linuxfoundation.org>
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 702/739] r8169: fix ASPM-related issues on a number of systems with NIC version from RTL8168h
+Date:   Mon, 11 Sep 2023 15:48:21 +0200
+Message-ID: <20230911134710.696285694@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,122 +49,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit d5d08ad330c9ccebc5e066fda815423a290f48b0 ]
+commit 90ca51e8c654699b672ba61aeaa418dfb3252e5e upstream.
 
-ov2680_vflip_disable() / ov2680_hflip_disable() pass BIT(0) instead of
-0 as value to ov2680_mod_reg().
+This effectively reverts 4b5f82f6aaef. On a number of systems ASPM L1
+causes tx timeouts with RTL8168h, see referenced bug report.
 
-While fixing this also:
-
-1. Stop having separate enable/disable functions for hflip / vflip
-2. Move the is_streaming check, which is unique to hflip / vflip
-   into the ov2680_set_?flip() functions.
-
-for a nice code cleanup.
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4b5f82f6aaef ("r8169: enable ASPM L1/L1.1 from RTL8168h")
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217814
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2680.c | 50 +++++++++-----------------------------
- 1 file changed, 12 insertions(+), 38 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 7d072448c8530..c999a898dfe77 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -328,23 +328,15 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
- }
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5239,13 +5239,9 @@ static int rtl_init_one(struct pci_dev *
  
--static int ov2680_vflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_vflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -352,23 +344,15 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
- 	return 0;
- }
- 
--static int ov2680_hflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_hflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -722,19 +706,9 @@ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
- 	case V4L2_CID_EXPOSURE:
- 		return ov2680_exposure_set(sensor, ctrl->val);
- 	case V4L2_CID_VFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_vflip_enable(sensor);
--		else
--			return ov2680_vflip_disable(sensor);
-+		return ov2680_set_vflip(sensor, ctrl->val);
- 	case V4L2_CID_HFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_hflip_enable(sensor);
--		else
--			return ov2680_hflip_disable(sensor);
-+		return ov2680_set_hflip(sensor, ctrl->val);
- 	case V4L2_CID_TEST_PATTERN:
- 		return ov2680_test_pattern_set(sensor, ctrl->val);
- 	default:
--- 
-2.40.1
-
+ 	/* Disable ASPM L1 as that cause random device stop working
+ 	 * problems as well as full system hangs for some PCIe devices users.
+-	 * Chips from RTL8168h partially have issues with L1.2, but seem
+-	 * to work fine with L1 and L1.1.
+ 	 */
+ 	if (rtl_aspm_is_safe(tp))
+ 		rc = 0;
+-	else if (tp->mac_version >= RTL_GIGA_MAC_VER_46)
+-		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
+ 	else
+ 		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
+ 	tp->aspm_manageable = !rc;
 
 
