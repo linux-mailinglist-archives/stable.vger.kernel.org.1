@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6ED279B03A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF56E79B30C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242973AbjIKU6w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
+        id S1379406AbjIKWn6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238906AbjIKOHm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:42 -0400
+        with ESMTP id S241322AbjIKPGh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83196E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8FEC433C8;
-        Mon, 11 Sep 2023 14:07:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB549FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA60C433C8;
+        Mon, 11 Sep 2023 15:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441257;
-        bh=Hx6eyoBYnb+pnGzYPtggFA0mLHPBX3H3UkMymILi7t4=;
+        s=korg; t=1694444791;
+        bh=0M3DeVVC5f1vcGCNMhrRxvVYnZk2wO7crc23QTzDPtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YanaccKYaPOAulhXKkCDpO0SsDzdAgwPuBGRPPDrCzT1egk/xVOg1aJfpzcrWE17R
-         jBqFkhdcbhcQkPFbP2TF4OT7FAtFFQtfV2sGBUAuOyOm+oBUw2+3VuP6Lce0mZPFnZ
-         VRB/djMOwIEv6uPLNa1d2T0TJeGhAG0HEuA17m4w=
+        b=XaDex9mm9/Wp295T3RTXXrt9GTw5PuMcSLTzG4UQlqwggSiaFPCXUg5bPkBOT4Gwd
+         XityDAhLZwfQhTVgme5miDfqNvxIYEc9SJXFJ9CA8XcrY6wcf/WljrWVqrUAwbjtr/
+         c1N0NWYhYb0nmSF/gHjEj104WG8mZF0GvfvjEA0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 350/739] arm64: dts: qcom: sc8280xp-x13s: Unreserve NC pins
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 116/600] arm64/ptrace: Clean up error handling path in sve_set_common()
 Date:   Mon, 11 Sep 2023 15:42:29 +0200
-Message-ID: <20230911134700.896062096@linuxfoundation.org>
+Message-ID: <20230911134637.032027786@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 7868ed0144b33903e16a50485775f669c109e41a ]
+[ Upstream commit 5f69ca4229c7d8e23f238174827ee7aa49b0bcb2 ]
 
-Pins 83-86 and 158-160 are NC, so there's no point in keeping them
-reserved. Take care of that.
+All error handling paths go to 'out', except this one. Be consistent and
+also branch to 'out' here.
 
-Fixes: 32c231385ed4 ("arm64: dts: qcom: sc8280xp: add Lenovo Thinkpad X13s devicetree")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230803-topic-x13s_pin-v1-1-fae792274e89@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/aa61301ed2dfd079b74b37f7fede5f179ac3087a.1689616473.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/ptrace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 7cc3028440b64..059dfccdfe7c2 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -1246,7 +1246,7 @@ hastings_reg_en: hastings-reg-en-state {
- };
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index f606c942f514e..e1f6366b7ccdf 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -896,7 +896,8 @@ static int sve_set_common(struct task_struct *target,
+ 			break;
+ 		default:
+ 			WARN_ON_ONCE(1);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out;
+ 		}
  
- &tlmm {
--	gpio-reserved-ranges = <70 2>, <74 6>, <83 4>, <125 2>, <128 2>, <154 7>;
-+	gpio-reserved-ranges = <70 2>, <74 6>, <125 2>, <128 2>, <154 4>;
- 
- 	bt_default: bt-default-state {
- 		hstp-bt-en-pins {
+ 		/*
 -- 
 2.40.1
 
