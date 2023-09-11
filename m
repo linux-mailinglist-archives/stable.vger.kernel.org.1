@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F9A79BAE4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E814979B962
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235381AbjIKUut (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43420 "EHLO
+        id S1359781AbjIKWSm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242149AbjIKPXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:35 -0400
+        with ESMTP id S239626AbjIKOYx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CFBDB
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA10C433C7;
-        Mon, 11 Sep 2023 15:23:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F132ADE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419F0C433C8;
+        Mon, 11 Sep 2023 14:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445810;
-        bh=R2MB9A2/bukCMFq/BJHCejmdBRFvtpTqDdMrxg047+Q=;
+        s=korg; t=1694442288;
+        bh=Q1ulY7JFjFIQiTUYgFgtdEJuHKzMnu5myjTqtY3NYMM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=az3EiA/rSJlTjCBQl3bw6WZcED5dKo+961PTMvsnlctB5Ptjt31r718ss3qQaES/w
-         BZne4/xO18g54CPlLkFQVBz4RlicUiSbjjcEPTQgympMTnaM1v4lMiIVZIexezaSNI
-         RPYycakLV+DwtJ/EyLTkL/ObdIYm00wJmJxCS7MA=
+        b=VzvB5Xg923J0dD6o9fUytSPUU+38VG7QBMrIZDtCHaV688o3p/9m49/uDaRlVJnNQ
+         KNbak284Wmnu9fa130ziTVo32BNzUyF30KQb6SXeQVqu8BvsqEwsOq4OO/+xFuHqIJ
+         9VzoKGBf7IxC1iJ4AtKNtjW67X5QbHg4xY2nrlCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junhao He <hejunhao3@huawei.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 479/600] coresight: trbe: Fix TRBE potential sleep in atomic context
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Christian Brauner <brauner@kernel.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        David Hildenbrand <david@redhat.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.5 713/739] iov_iter: Fix iov_iter_extract_pages() with zero-sized entries
 Date:   Mon, 11 Sep 2023 15:48:32 +0200
-Message-ID: <20230911134647.781069920@linuxfoundation.org>
+Message-ID: <20230911134710.994442678@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,124 +55,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit c0a232f1e19e378c5c4e5973a996392942c80090 ]
+commit f741bd7178c95abd7aeac5a9d933ee542f9a5509 upstream.
 
-smp_call_function_single() will allocate an IPI interrupt vector to
-the target processor and send a function call request to the interrupt
-vector. After the target processor receives the IPI interrupt, it will
-execute arm_trbe_remove_coresight_cpu() call request in the interrupt
-handler.
+iov_iter_extract_pages() doesn't correctly handle skipping over initial
+zero-length entries in ITER_KVEC and ITER_BVEC-type iterators.
 
-According to the device_unregister() stack information, if other process
-is useing the device, the down_write() may sleep, and trigger deadlocks
-or unexpected errors.
+The problem is that it accidentally reduces maxsize to 0 when it
+skipping and thus runs to the end of the array and returns 0.
 
-  arm_trbe_remove_coresight_cpu
-    coresight_unregister
-      device_unregister
-        device_del
-          kobject_del
-            __kobject_del
-              sysfs_remove_dir
-                kernfs_remove
-                  down_write ---------> it may sleep
+Fix this by sticking the calculated size-to-copy in a new variable
+rather than back in maxsize.
 
-Add a helper arm_trbe_disable_cpu() to disable TRBE precpu irq and reset
-per TRBE.
-Simply call arm_trbe_remove_coresight_cpu() directly without useing the
-smp_call_function_single(), which is the same as registering the TRBE
-coresight device.
-
-Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Link: https://lore.kernel.org/r/20230814093813.19152-2-hejunhao3@huawei.com
-[ Remove duplicate cpumask checks during removal ]
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-[ v3 - Remove the operation of assigning NULL to cpudata->drvdata ]
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20230818084052.10116-1-hejunhao3@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7d58fe731028 ("iov_iter: Add a function to extract a page list from an iterator")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 32 +++++++++++---------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ lib/iov_iter.c |   30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 1fc4fd79a1c69..925f6c9cecff4 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -1223,6 +1223,16 @@ static void arm_trbe_enable_cpu(void *info)
- 	enable_percpu_irq(drvdata->irq, IRQ_TYPE_NONE);
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1640,14 +1640,14 @@ static ssize_t iov_iter_extract_bvec_pag
+ 					   size_t *offset0)
+ {
+ 	struct page **p, *page;
+-	size_t skip = i->iov_offset, offset;
++	size_t skip = i->iov_offset, offset, size;
+ 	int k;
+ 
+ 	for (;;) {
+ 		if (i->nr_segs == 0)
+ 			return 0;
+-		maxsize = min(maxsize, i->bvec->bv_len - skip);
+-		if (maxsize)
++		size = min(maxsize, i->bvec->bv_len - skip);
++		if (size)
+ 			break;
+ 		i->iov_offset = 0;
+ 		i->nr_segs--;
+@@ -1660,16 +1660,16 @@ static ssize_t iov_iter_extract_bvec_pag
+ 	offset = skip % PAGE_SIZE;
+ 	*offset0 = offset;
+ 
+-	maxpages = want_pages_array(pages, maxsize, offset, maxpages);
++	maxpages = want_pages_array(pages, size, offset, maxpages);
+ 	if (!maxpages)
+ 		return -ENOMEM;
+ 	p = *pages;
+ 	for (k = 0; k < maxpages; k++)
+ 		p[k] = page + k;
+ 
+-	maxsize = min_t(size_t, maxsize, maxpages * PAGE_SIZE - offset);
+-	iov_iter_advance(i, maxsize);
+-	return maxsize;
++	size = min_t(size_t, size, maxpages * PAGE_SIZE - offset);
++	iov_iter_advance(i, size);
++	return size;
  }
  
-+static void arm_trbe_disable_cpu(void *info)
-+{
-+	struct trbe_drvdata *drvdata = info;
-+	struct trbe_cpudata *cpudata = this_cpu_ptr(drvdata->cpudata);
-+
-+	disable_percpu_irq(drvdata->irq);
-+	trbe_reset_local(cpudata);
-+}
-+
-+
- static void arm_trbe_register_coresight_cpu(struct trbe_drvdata *drvdata, int cpu)
+ /*
+@@ -1684,14 +1684,14 @@ static ssize_t iov_iter_extract_kvec_pag
  {
- 	struct trbe_cpudata *cpudata = per_cpu_ptr(drvdata->cpudata, cpu);
-@@ -1324,18 +1334,12 @@ static void arm_trbe_probe_cpu(void *info)
- 	cpumask_clear_cpu(cpu, &drvdata->supported_cpus);
- }
+ 	struct page **p, *page;
+ 	const void *kaddr;
+-	size_t skip = i->iov_offset, offset, len;
++	size_t skip = i->iov_offset, offset, len, size;
+ 	int k;
  
--static void arm_trbe_remove_coresight_cpu(void *info)
-+static void arm_trbe_remove_coresight_cpu(struct trbe_drvdata *drvdata, int cpu)
- {
--	int cpu = smp_processor_id();
--	struct trbe_drvdata *drvdata = info;
--	struct trbe_cpudata *cpudata = per_cpu_ptr(drvdata->cpudata, cpu);
- 	struct coresight_device *trbe_csdev = coresight_get_percpu_sink(cpu);
+ 	for (;;) {
+ 		if (i->nr_segs == 0)
+ 			return 0;
+-		maxsize = min(maxsize, i->kvec->iov_len - skip);
+-		if (maxsize)
++		size = min(maxsize, i->kvec->iov_len - skip);
++		if (size)
+ 			break;
+ 		i->iov_offset = 0;
+ 		i->nr_segs--;
+@@ -1703,13 +1703,13 @@ static ssize_t iov_iter_extract_kvec_pag
+ 	offset = (unsigned long)kaddr & ~PAGE_MASK;
+ 	*offset0 = offset;
  
--	disable_percpu_irq(drvdata->irq);
--	trbe_reset_local(cpudata);
- 	if (trbe_csdev) {
- 		coresight_unregister(trbe_csdev);
--		cpudata->drvdata = NULL;
- 		coresight_set_percpu_sink(cpu, NULL);
+-	maxpages = want_pages_array(pages, maxsize, offset, maxpages);
++	maxpages = want_pages_array(pages, size, offset, maxpages);
+ 	if (!maxpages)
+ 		return -ENOMEM;
+ 	p = *pages;
+ 
+ 	kaddr -= offset;
+-	len = offset + maxsize;
++	len = offset + size;
+ 	for (k = 0; k < maxpages; k++) {
+ 		size_t seg = min_t(size_t, len, PAGE_SIZE);
+ 
+@@ -1723,9 +1723,9 @@ static ssize_t iov_iter_extract_kvec_pag
+ 		kaddr += PAGE_SIZE;
  	}
- }
-@@ -1364,8 +1368,10 @@ static int arm_trbe_remove_coresight(struct trbe_drvdata *drvdata)
- {
- 	int cpu;
  
--	for_each_cpu(cpu, &drvdata->supported_cpus)
--		smp_call_function_single(cpu, arm_trbe_remove_coresight_cpu, drvdata, 1);
-+	for_each_cpu(cpu, &drvdata->supported_cpus) {
-+		smp_call_function_single(cpu, arm_trbe_disable_cpu, drvdata, 1);
-+		arm_trbe_remove_coresight_cpu(drvdata, cpu);
-+	}
- 	free_percpu(drvdata->cpudata);
- 	return 0;
- }
-@@ -1404,12 +1410,8 @@ static int arm_trbe_cpu_teardown(unsigned int cpu, struct hlist_node *node)
- {
- 	struct trbe_drvdata *drvdata = hlist_entry_safe(node, struct trbe_drvdata, hotplug_node);
- 
--	if (cpumask_test_cpu(cpu, &drvdata->supported_cpus)) {
--		struct trbe_cpudata *cpudata = per_cpu_ptr(drvdata->cpudata, cpu);
--
--		disable_percpu_irq(drvdata->irq);
--		trbe_reset_local(cpudata);
--	}
-+	if (cpumask_test_cpu(cpu, &drvdata->supported_cpus))
-+		arm_trbe_disable_cpu(drvdata);
- 	return 0;
+-	maxsize = min_t(size_t, maxsize, maxpages * PAGE_SIZE - offset);
+-	iov_iter_advance(i, maxsize);
+-	return maxsize;
++	size = min_t(size_t, size, maxpages * PAGE_SIZE - offset);
++	iov_iter_advance(i, size);
++	return size;
  }
  
--- 
-2.40.1
-
+ /*
 
 
