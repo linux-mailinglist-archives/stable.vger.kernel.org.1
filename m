@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C5179B8B5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0AD79BC78
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242464AbjIKVVM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37362 "EHLO
+        id S1379588AbjIKWpA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238805AbjIKOFX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:23 -0400
+        with ESMTP id S240194AbjIKOiz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D211CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2ACC433C7;
-        Mon, 11 Sep 2023 14:05:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A2CF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48706C433C7;
+        Mon, 11 Sep 2023 14:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441117;
-        bh=UVZPdC9KeBGteeBasYVfxFsgVk4zeIKED3LgvAe1r/E=;
+        s=korg; t=1694443130;
+        bh=DErktK/nd46k9tlm7fS/96JBxq47Y5WPswWK8uZ2MlQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GATf7NNiEE5yN/T+1eBBsucwSnnFZhIHxOpjnWL0LLq/zSN+xtIeztG4A+cmV62/a
-         oT1BPcGwIvLLVpAdMzXNXqu2UMBCxRGGXLWwoO7+U5tWFYPylXFNjtXVxBpzs5Mf39
-         KC7pd0ACeL2WuOi4Jrfs957Ub/jfolYVcOdpLJvI=
+        b=gSs3xCfyMLur8aQKhvk5YWx3JqjudyiREKykQZzqmo5Bg6GqsPfsWmgXOBwhlgj7+
+         ETnwoDv9Rf0/1cmA4TwsIf9bSWovrsguYP6U8x52R9SSTrGIxiTGABbHeYGQsdwIe4
+         /2ye1HDau4M1sUDb2cOGC3ExuRh2ZS8tyB7er42U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan Marek <jonathan@marek.ca>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.5 301/739] drm/msm/dpu: increase memtype count to 16 for sm8550
+        patches@lists.linux.dev, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 241/737] Bluetooth: ISO: Notify user space about failed bis connections
 Date:   Mon, 11 Sep 2023 15:41:40 +0200
-Message-ID: <20230911134659.534608612@linuxfoundation.org>
+Message-ID: <20230911134657.337858361@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,315 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-[ Upstream commit 42d0d253ed03b961c325ff756eec0480cb4adc6b ]
+[ Upstream commit f777d88278170410b06a1f6633f3b9375a4ddd6b ]
 
-sm8550 has 16 vbif clients.
+Some use cases require the user to be informed if BIG synchronization
+fails. This commit makes it so that even if the BIG sync established
+event arrives with error status, a new hconn is added for each BIS,
+and the iso layer is notified about the failed connections.
 
-This fixes the extra 2 clients (DMA4/DMA5) not having their memtype
-initialized. This fixes DMA4/DMA5 planes not displaying correctly.
+Unsuccesful bis connections will be marked using the
+HCI_CONN_BIG_SYNC_FAILED flag. From the iso layer, the POLLERR event
+is triggered on the newly allocated bis sockets, before adding them
+to the accept list of the parent socket.
 
-Fixes: efcd0107727c ("drm/msm/dpu: add support for SM8550")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Patchwork: https://patchwork.freedesktop.org/patch/550968/
-Link: https://lore.kernel.org/r/20230802134900.30435-1-jonathan@marek.ca
-[DB: fixed the Fixes tag]
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>From user space, a new fd for each failed bis connection will be
+obtained by calling accept. The user should check for the POLLERR
+event on the new socket, to determine if the connection was successful
+or not.
+
+The HCI_CONN_BIG_SYNC flag has been added to mark whether the BIG sync
+has been successfully established. This flag is checked at bis cleanup,
+so the HCI LE BIG Terminate Sync command is only issued if needed.
+
+The BT_SK_BIG_SYNC flag indicates if BIG create sync has been called
+for a listening socket, to avoid issuing the command everytime a BIGInfo
+advertising report is received.
+
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 94d9ba9f9888 ("Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../msm/disp/dpu1/catalog/dpu_9_0_sm8550.h    |  4 ++--
- .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 20 +++++++++++++++++++
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci_core.h | 25 ++++++++++++++++++++
+ net/bluetooth/hci_conn.c         | 37 +++++++++++------------------
+ net/bluetooth/hci_event.c        | 21 +++++++++++++----
+ net/bluetooth/hci_sync.c         |  8 +++++++
+ net/bluetooth/iso.c              | 40 +++++++++++++++++++++++---------
+ 5 files changed, 93 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
-index f17b9a7fee851..89a2ac1e840d5 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
-@@ -245,8 +245,8 @@ const struct dpu_mdss_cfg dpu_sm8550_cfg = {
- 	.merge_3d = sm8550_merge_3d,
- 	.intf_count = ARRAY_SIZE(sm8550_intf),
- 	.intf = sm8550_intf,
--	.vbif_count = ARRAY_SIZE(sdm845_vbif),
--	.vbif = sdm845_vbif,
-+	.vbif_count = ARRAY_SIZE(sm8550_vbif),
-+	.vbif = sm8550_vbif,
- 	.perf = &sm8550_perf_data,
- 	.mdss_irqs = BIT(MDP_SSPP_TOP0_INTR) | \
- 		     BIT(MDP_SSPP_TOP0_INTR2) | \
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-index 0de507d4d7b7a..8b17a4a9b438c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-@@ -663,6 +663,26 @@ static const struct dpu_vbif_cfg sdm845_vbif[] = {
- 	},
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index e4c1e503415b6..a4b3a95e531a4 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -978,6 +978,8 @@ enum {
+ 	HCI_CONN_PER_ADV,
+ 	HCI_CONN_BIG_CREATED,
+ 	HCI_CONN_CREATE_CIS,
++	HCI_CONN_BIG_SYNC,
++	HCI_CONN_BIG_SYNC_FAILED,
  };
  
-+static const struct dpu_vbif_cfg sm8550_vbif[] = {
-+	{
-+	.name = "vbif_rt", .id = VBIF_RT,
-+	.base = 0, .len = 0x1040,
-+	.features = BIT(DPU_VBIF_QOS_REMAP),
-+	.xin_halt_timeout = 0x4000,
-+	.qos_rp_remap_size = 0x40,
-+	.qos_rt_tbl = {
-+		.npriority_lvl = ARRAY_SIZE(sdm845_rt_pri_lvl),
-+		.priority_lvl = sdm845_rt_pri_lvl,
-+		},
-+	.qos_nrt_tbl = {
-+		.npriority_lvl = ARRAY_SIZE(sdm845_nrt_pri_lvl),
-+		.priority_lvl = sdm845_nrt_pri_lvl,
-+		},
-+	.memtype_count = 16,
-+	.memtype = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-+	},
+ static inline bool hci_conn_ssp_enabled(struct hci_conn *conn)
+@@ -1289,6 +1291,29 @@ static inline struct hci_conn *hci_conn_hash_lookup_big(struct hci_dev *hdev,
+ 	return NULL;
+ }
+ 
++static inline struct hci_conn *hci_conn_hash_lookup_big_any_dst(struct hci_dev *hdev,
++							__u8 handle)
++{
++	struct hci_conn_hash *h = &hdev->conn_hash;
++	struct hci_conn  *c;
++
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(c, &h->list, list) {
++		if (c->type != ISO_LINK)
++			continue;
++
++		if (handle == c->iso_qos.bcast.big) {
++			rcu_read_unlock();
++			return c;
++		}
++	}
++
++	rcu_read_unlock();
++
++	return NULL;
++}
++
+ static inline struct hci_conn *hci_conn_hash_lookup_state(struct hci_dev *hdev,
+ 							__u8 type, __u16 state)
+ {
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index f05b99437e280..4f31340c2c932 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -734,6 +734,7 @@ struct iso_list_data {
+ 	};
+ 	int count;
+ 	bool big_term;
++	bool big_sync_term;
+ };
+ 
+ static void bis_list(struct hci_conn *conn, void *data)
+@@ -751,17 +752,6 @@ static void bis_list(struct hci_conn *conn, void *data)
+ 	d->count++;
+ }
+ 
+-static void find_bis(struct hci_conn *conn, void *data)
+-{
+-	struct iso_list_data *d = data;
+-
+-	/* Ignore unicast */
+-	if (bacmp(&conn->dst, BDADDR_ANY))
+-		return;
+-
+-	d->count++;
+-}
+-
+ static int terminate_big_sync(struct hci_dev *hdev, void *data)
+ {
+ 	struct iso_list_data *d = data;
+@@ -814,31 +804,26 @@ static int big_terminate_sync(struct hci_dev *hdev, void *data)
+ 	bt_dev_dbg(hdev, "big 0x%2.2x sync_handle 0x%4.4x", d->big,
+ 		   d->sync_handle);
+ 
+-	/* Check if ISO connection is a BIS and terminate BIG if there are
+-	 * no other connections using it.
+-	 */
+-	hci_conn_hash_list_state(hdev, find_bis, ISO_LINK, BT_CONNECTED, d);
+-	if (d->count)
+-		return 0;
+-
+-	hci_le_big_terminate_sync(hdev, d->big);
++	if (d->big_sync_term)
++		hci_le_big_terminate_sync(hdev, d->big);
+ 
+ 	return hci_le_pa_terminate_sync(hdev, d->sync_handle);
+ }
+ 
+-static int hci_le_big_terminate(struct hci_dev *hdev, u8 big, u16 sync_handle)
++static int hci_le_big_terminate(struct hci_dev *hdev, u8 big, struct hci_conn *conn)
+ {
+ 	struct iso_list_data *d;
+ 	int ret;
+ 
+-	bt_dev_dbg(hdev, "big 0x%2.2x sync_handle 0x%4.4x", big, sync_handle);
++	bt_dev_dbg(hdev, "big 0x%2.2x sync_handle 0x%4.4x", big, conn->sync_handle);
+ 
+ 	d = kzalloc(sizeof(*d), GFP_KERNEL);
+ 	if (!d)
+ 		return -ENOMEM;
+ 
+ 	d->big = big;
+-	d->sync_handle = sync_handle;
++	d->sync_handle = conn->sync_handle;
++	d->big_sync_term = test_and_clear_bit(HCI_CONN_BIG_SYNC, &conn->flags);
+ 
+ 	ret = hci_cmd_sync_queue(hdev, big_terminate_sync, d,
+ 				 terminate_big_destroy);
+@@ -876,8 +861,14 @@ static void bis_cleanup(struct hci_conn *conn)
+ 
+ 		hci_le_terminate_big(hdev, conn);
+ 	} else {
++		bis = hci_conn_hash_lookup_big_any_dst(hdev,
++						       conn->iso_qos.bcast.big);
++
++		if (bis)
++			return;
++
+ 		hci_le_big_terminate(hdev, conn->iso_qos.bcast.big,
+-				     conn->sync_handle);
++				     conn);
+ 	}
+ }
+ 
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 866d2cd43bf78..5f4af2cfd21d8 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -7034,9 +7034,6 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
+ 				flex_array_size(ev, bis, ev->num_bis)))
+ 		return;
+ 
+-	if (ev->status)
+-		return;
+-
+ 	hci_dev_lock(hdev);
+ 
+ 	for (i = 0; i < ev->num_bis; i++) {
+@@ -7060,9 +7057,25 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
+ 		bis->iso_qos.bcast.in.latency = le16_to_cpu(ev->interval) * 125 / 100;
+ 		bis->iso_qos.bcast.in.sdu = le16_to_cpu(ev->max_pdu);
+ 
+-		hci_iso_setup_path(bis);
++		if (!ev->status) {
++			set_bit(HCI_CONN_BIG_SYNC, &bis->flags);
++			hci_iso_setup_path(bis);
++		}
+ 	}
+ 
++	/* In case BIG sync failed, notify each failed connection to
++	 * the user after all hci connections have been added
++	 */
++	if (ev->status)
++		for (i = 0; i < ev->num_bis; i++) {
++			u16 handle = le16_to_cpu(ev->bis[i]);
++
++			bis = hci_conn_hash_lookup_handle(hdev, handle);
++
++			set_bit(HCI_CONN_BIG_SYNC_FAILED, &bis->flags);
++			hci_connect_cfm(bis, ev->status);
++		}
++
+ 	hci_dev_unlock(hdev);
+ }
+ 
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index e3b7f21046dbc..ae5d5193d9ba7 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5358,6 +5358,14 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
+ 		return err;
+ 	case BT_CONNECT2:
+ 		return hci_reject_conn_sync(hdev, conn, reason);
++	case BT_OPEN:
++		/* Cleanup bises that failed to be established */
++		if (test_and_clear_bit(HCI_CONN_BIG_SYNC_FAILED, &conn->flags)) {
++			hci_dev_lock(hdev);
++			hci_conn_failed(conn, reason);
++			hci_dev_unlock(hdev);
++		}
++		break;
+ 	default:
+ 		conn->state = BT_CLOSED;
+ 		break;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 00e93ae6373da..4f2443e1aab3c 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -48,6 +48,11 @@ static void iso_sock_kill(struct sock *sk);
+ #define EIR_SERVICE_DATA_LENGTH 4
+ #define BASE_MAX_LENGTH (HCI_MAX_PER_AD_LENGTH - EIR_SERVICE_DATA_LENGTH)
+ 
++/* iso_pinfo flags values */
++enum {
++	BT_SK_BIG_SYNC,
 +};
 +
- /*************************************************************
-  * PERF data config
-  *************************************************************/
+ struct iso_pinfo {
+ 	struct bt_sock		bt;
+ 	bdaddr_t		src;
+@@ -58,7 +63,7 @@ struct iso_pinfo {
+ 	__u8			bc_num_bis;
+ 	__u8			bc_bis[ISO_MAX_NUM_BIS];
+ 	__u16			sync_handle;
+-	__u32			flags;
++	unsigned long		flags;
+ 	struct bt_iso_qos	qos;
+ 	bool			qos_user_set;
+ 	__u8			base_len;
+@@ -1583,6 +1588,12 @@ static void iso_conn_ready(struct iso_conn *conn)
+ 		hci_conn_hold(hcon);
+ 		iso_chan_add(conn, sk, parent);
+ 
++		if (ev && ((struct hci_evt_le_big_sync_estabilished *)ev)->status) {
++			/* Trigger error signal on child socket */
++			sk->sk_err = ECONNREFUSED;
++			sk->sk_error_report(sk);
++		}
++
+ 		if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
+ 			sk->sk_state = BT_CONNECT2;
+ 		else
+@@ -1651,15 +1662,17 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 			if (ev2->num_bis < iso_pi(sk)->bc_num_bis)
+ 				iso_pi(sk)->bc_num_bis = ev2->num_bis;
+ 
+-			err = hci_le_big_create_sync(hdev,
+-						     &iso_pi(sk)->qos,
+-						     iso_pi(sk)->sync_handle,
+-						     iso_pi(sk)->bc_num_bis,
+-						     iso_pi(sk)->bc_bis);
+-			if (err) {
+-				bt_dev_err(hdev, "hci_le_big_create_sync: %d",
+-					   err);
+-				sk = NULL;
++			if (!test_and_set_bit(BT_SK_BIG_SYNC, &iso_pi(sk)->flags)) {
++				err = hci_le_big_create_sync(hdev,
++							     &iso_pi(sk)->qos,
++							     iso_pi(sk)->sync_handle,
++							     iso_pi(sk)->bc_num_bis,
++							     iso_pi(sk)->bc_bis);
++				if (err) {
++					bt_dev_err(hdev, "hci_le_big_create_sync: %d",
++						   err);
++					sk = NULL;
++				}
+ 			}
+ 		}
+ 	} else {
+@@ -1702,7 +1715,12 @@ static void iso_connect_cfm(struct hci_conn *hcon, __u8 status)
+ 
+ 	BT_DBG("hcon %p bdaddr %pMR status %d", hcon, &hcon->dst, status);
+ 
+-	if (!status) {
++	/* Similar to the success case, if HCI_CONN_BIG_SYNC_FAILED is set,
++	 * queue the failed bis connection into the accept queue of the
++	 * listening socket and wake up userspace, to inform the user about
++	 * the BIG sync failed event.
++	 */
++	if (!status || test_bit(HCI_CONN_BIG_SYNC_FAILED, &hcon->flags)) {
+ 		struct iso_conn *conn;
+ 
+ 		conn = iso_conn_add(hcon);
 -- 
 2.40.1
 
