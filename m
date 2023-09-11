@@ -2,45 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 854A079ADF9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7288D79AD6A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230465AbjIKUwC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
+        id S242216AbjIKU5p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:57:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238823AbjIKOFp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:45 -0400
+        with ESMTP id S240155AbjIKOiB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E6FCF0;
-        Mon, 11 Sep 2023 07:05:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBC3C433C8;
-        Mon, 11 Sep 2023 14:05:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F8AF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5D3C433C7;
+        Mon, 11 Sep 2023 14:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441140;
-        bh=1jnFHpGHBBkyLPMeQDjn1SZEtbvQs6xIw4C/GV4kXj4=;
+        s=korg; t=1694443077;
+        bh=BTi/iqeSX0gYQabtMy5EyjRsxohbZKsQYKMViLeIkxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BE7Mcp0Jx3EvniXDOuJ+BQBhVLEuiD9FpCgyi6K5GSrq5c4VCJI5vkDbrdy6PmNG+
-         XBblv0lTU7NYsdhqaM6vEnJRpIG2pRgmLJWDLaeK9CjyNWv+3EWTY8Np+pfVJRM3lo
-         Fz7fcbE1oGfFYRPagl6EEAyUwSddu2GKMNkDIRW8=
+        b=mzq64POC9ZImQGZN84d24kvakYi5B9a6DH8yu6u53ctqJqWab11317VMkiblrF++c
+         jrLDbQCh4b9fpUd+q4vqy8oEfw3ZsW7BIa8QQ44rpgPTYIj5RZornXxJaz0rifwPLe
+         1pDxtLNQxpv20/LiOA0A/AFwpcMuHcqf/BHBVEtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        dorum@noisolation.com, Daniel Vetter <daniel.vetter@intel.com>,
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 309/739] drm/msm/mdp5: Dont leak some plane state
-Date:   Mon, 11 Sep 2023 15:41:48 +0200
-Message-ID: <20230911134659.750192459@linuxfoundation.org>
+Subject: [PATCH 6.4 250/737] net: arcnet: Do not call kfree_skb() under local_irq_disable()
+Date:   Mon, 11 Sep 2023 15:41:49 +0200
+Message-ID: <20230911134657.580860184@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,57 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit fd0ad3b2365c1c58aa5a761c18efc4817193beb6 ]
+[ Upstream commit 786c96e92fb9e854cb8b0cb7399bb2fb28e15c4b ]
 
-Apparently no one noticed that mdp5 plane states leak like a sieve
-ever since we introduced plane_state->commit refcount a few years ago
-in 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too
-early by tracking commits, v3.")
+It is not allowed to call kfree_skb() from hardware interrupt
+context or with hardware interrupts being disabled.
+So replace kfree_skb() with dev_kfree_skb_irq() under
+local_irq_disable(). Compile tested only.
 
-Fix it by using the right helpers.
-
-Fixes: 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too early by tracking commits, v3.")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org
-Cc: freedreno@lists.freedesktop.org
-Reported-and-tested-by: dorum@noisolation.com
-Cc: dorum@noisolation.com
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/551236/
-Link: https://lore.kernel.org/r/20230803204521.928582-1-daniel.vetter@ffwll.ch
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 05fcd31cc472 ("arcnet: add err_skb package for package status feedback")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/arcnet/arcnet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-index bd2c4ac456017..0d5ff03cb0910 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-@@ -130,8 +130,7 @@ static void mdp5_plane_destroy_state(struct drm_plane *plane,
- {
- 	struct mdp5_plane_state *pstate = to_mdp5_plane_state(state);
+diff --git a/drivers/net/arcnet/arcnet.c b/drivers/net/arcnet/arcnet.c
+index 1bad1866ae462..a48220f91a2df 100644
+--- a/drivers/net/arcnet/arcnet.c
++++ b/drivers/net/arcnet/arcnet.c
+@@ -468,7 +468,7 @@ static void arcnet_reply_tasklet(struct tasklet_struct *t)
  
--	if (state->fb)
--		drm_framebuffer_put(state->fb);
-+	__drm_atomic_helper_plane_destroy_state(state);
+ 	ret = sock_queue_err_skb(sk, ackskb);
+ 	if (ret)
+-		kfree_skb(ackskb);
++		dev_kfree_skb_irq(ackskb);
  
- 	kfree(pstate);
- }
+ 	local_irq_enable();
+ };
 -- 
 2.40.1
 
