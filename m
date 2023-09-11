@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7209279AEA3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8059E79B0DB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232287AbjIKWvM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42776 "EHLO
+        id S245479AbjIKVK7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238730AbjIKODv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:51 -0400
+        with ESMTP id S240136AbjIKOhd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB8E1E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EEDC433C7;
-        Mon, 11 Sep 2023 14:03:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB830F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F77CC433C8;
+        Mon, 11 Sep 2023 14:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441026;
-        bh=e8mLIzMnTle7lTOGr0CL6ohfNp0H7BWP+MQZA9UwGaU=;
+        s=korg; t=1694443048;
+        bh=giysoLaF5LxqrR/pFKBXSdqNwbBm/CQeeYYpCZSOV/s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oS1+Jefave+6yP6LA01oFAbJZp4bBOcTiQCCCrwzGwSKoUuK4RBbh8J+A7E6kW+Wh
-         U9qo49ON/Nr3X/BrGJvocIs8yCdFnsAUvxGpF2T15gKjhvzsF1V9pkSEAPpPDTVk/W
-         Ii/KojLDD6DmvWLMNvwZW2ffPoby0Fmwla9Si4jY=
+        b=IpbnEwC4zoYU7q47YTqrdGnZOq8kmLtxQFJIr+MKEUb0TXThOcddQ3CsIXXCm3Udr
+         bXf+POA9tRoQK9c6cBLvhOcPV09ZnjtdWpgMQu+g7HL1Xi2+I+WFs41s+x/kCFj5nq
+         lCPFk3Ch91d46zyYlfJXjrR6Fi8WAddXoi8epBD0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Alexander Danilenko <al.b.danilenko@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 270/739] arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC
+Subject: [PATCH 6.4 210/737] spi: tegra114: Remove unnecessary NULL-pointer checks
 Date:   Mon, 11 Sep 2023 15:41:09 +0200
-Message-ID: <20230911134658.671581366@linuxfoundation.org>
+Message-ID: <20230911134656.459110109@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Alexander Danilenko <al.b.danilenko@gmail.com>
 
-[ Upstream commit 4b6ea15c0a1122422b44bf6c47a3c22fc8d46777 ]
+[ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
 
-GCC and it's GDSCs are under the RPMh CX power domain. So let's add the
-missing RPMh power domain to the GCC node.
+cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
+so there is no sense in checking them for NULL.
 
-Fixes: 6d4cf750d03a ("arm64: dts: sdm845: Add minimal dts/dtsi files for sdm845 SoC and MTP")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Co-developed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230720054100.9940-4-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Signed-off-by: Alexander Danilenko <al.b.danilenko@gmail.com>
+Link: https://lore.kernel.org/r/20230815092058.4083-1-al.b.danilenko@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-tegra114.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 02a6ea0b8b2c9..9ed74bf72d05a 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -1207,6 +1207,7 @@ gcc: clock-controller@100000 {
- 			#clock-cells = <1>;
- 			#reset-cells = <1>;
- 			#power-domain-cells = <1>;
-+			power-domains = <&rpmhpd SDM845_CX>;
- 		};
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 488df681eaefc..2226d77a5d20a 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -723,27 +723,23 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
+ 	struct spi_delay *setup = &spi->cs_setup;
+ 	struct spi_delay *hold = &spi->cs_hold;
+ 	struct spi_delay *inactive = &spi->cs_inactive;
+-	u8 setup_dly, hold_dly, inactive_dly;
++	u8 setup_dly, hold_dly;
+ 	u32 setup_hold;
+ 	u32 spi_cs_timing;
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
  
- 		qfprom@784000 {
+-	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
+-	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
+-	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
++	if (setup->unit != SPI_DELAY_UNIT_SCK ||
++	    hold->unit != SPI_DELAY_UNIT_SCK ||
++	    inactive->unit != SPI_DELAY_UNIT_SCK) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
+ 		return -EINVAL;
+ 	}
+ 
+-	setup_dly = setup ? setup->value : 0;
+-	hold_dly = hold ? hold->value : 0;
+-	inactive_dly = inactive ? inactive->value : 0;
+-
+-	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
+-	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
++	setup_dly = min_t(u8, setup->value, MAX_SETUP_HOLD_CYCLES);
++	hold_dly = min_t(u8, hold->value, MAX_SETUP_HOLD_CYCLES);
+ 	if (setup_dly && hold_dly) {
+ 		setup_hold = SPI_SETUP_HOLD(setup_dly - 1, hold_dly - 1);
+ 		spi_cs_timing = SPI_CS_SETUP_HOLD(tspi->spi_cs_timing1,
+@@ -755,7 +751,7 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
+ 		}
+ 	}
+ 
+-	inactive_cycles = min_t(u8, inactive_dly, MAX_INACTIVE_CYCLES);
++	inactive_cycles = min_t(u8, inactive->value, MAX_INACTIVE_CYCLES);
+ 	if (inactive_cycles)
+ 		inactive_cycles--;
+ 	cs_state = inactive_cycles ? 0 : 1;
 -- 
 2.40.1
 
