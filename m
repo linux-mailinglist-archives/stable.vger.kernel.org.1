@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A060779BC7C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD5C79B811
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237767AbjIKUvo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47906 "EHLO
+        id S241527AbjIKVRe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240922AbjIKO5V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:21 -0400
+        with ESMTP id S242122AbjIKPXA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E079E4D
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A673BC433C9;
-        Mon, 11 Sep 2023 14:57:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B196F9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E263C433C8;
+        Mon, 11 Sep 2023 15:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444237;
-        bh=mFMSycq9IJytNpYNtyEGbV4HumCD/fxmfGoTJ2sWbjI=;
+        s=korg; t=1694445776;
+        bh=ti/3zXdMQN9Ci2fBxN/7Ad5WI2F/jhsjq57DHQbyeqE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ebwIRkzEvUrkvYC/mzE/LS27hm1H/4Zf4bFYgUWsF0DCJLNx43ayIv4Nx+B3DWz+g
-         bsVOHbECbYofOVi/29W8+gX/aOl0qtXKGfpTqL81U0xAZhGEI1n4264bffLY4ndA4P
-         wUyrf3gJVoYoDbZWhWVgufQbj4PUoZWi2YlOqsQU=
+        b=UwO9aFIShzeWHJUKynCmX9STzWAVGo21KbkcULOVl/4cYyO/MpGgKEz7yh4e3daWD
+         vFkTS6h4o+Hgt0puTWGdwFQpG7KvEbyc2NDeSpFYNDbUB3NAkfoHtLbktfBUm0NyIt
+         RDxywNvTQFXIdI9e7NxXzqZ5uXXpf56HXK1woyvM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
-        Radoslaw Tyl <radoslawx.tyl@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 6.4 641/737] igb: set max size RX buffer when store bad packet is enabled
-Date:   Mon, 11 Sep 2023 15:48:20 +0200
-Message-ID: <20230911134708.435025709@linuxfoundation.org>
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 468/600] media: ov2680: Remove VIDEO_V4L2_SUBDEV_API ifdef-s
+Date:   Mon, 11 Sep 2023 15:48:21 +0200
+Message-ID: <20230911134647.463093252@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radoslaw Tyl <radoslawx.tyl@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit bb5ed01cd2428cd25b1c88a3a9cba87055eb289f upstream.
+[ Upstream commit 49c282d5a8c5f4d1d9088622bec792294c716010 ]
 
-Increase the RX buffer size to 3K when the SBP bit is on. The size of
-the RX buffer determines the number of pages allocated which may not
-be sufficient for receive frames larger than the set MTU size.
+VIDEO_V4L2_SUBDEV_API is now automatically selected in Kconfig
+for all sensor drivers. Remove the ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+checks.
 
-Cc: stable@vger.kernel.org
-Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
-Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
-Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is a preparation patch for fixing ov2680_set_fmt()
+which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
+the passed in v4l2_mbus_framefmt struct.
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ov2680.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -4812,6 +4812,10 @@ void igb_configure_rx_ring(struct igb_ad
- static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
- 				  struct igb_ring *rx_ring)
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index c999a898dfe77..de11a5fb03659 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -562,7 +562,6 @@ static int ov2680_get_fmt(struct v4l2_subdev *sd,
  {
-+#if (PAGE_SIZE < 8192)
-+	struct e1000_hw *hw = &adapter->hw;
-+#endif
-+
- 	/* set build_skb and buffer size flags */
- 	clear_ring_build_skb_enabled(rx_ring);
- 	clear_ring_uses_large_buffer(rx_ring);
-@@ -4822,10 +4826,9 @@ static void igb_set_rx_buffer_len(struct
- 	set_ring_build_skb_enabled(rx_ring);
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+ 	struct v4l2_mbus_framefmt *fmt = NULL;
+-	int ret = 0;
  
- #if (PAGE_SIZE < 8192)
--	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
--		return;
--
--	set_ring_uses_large_buffer(rx_ring);
-+	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
-+	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
-+		set_ring_uses_large_buffer(rx_ring);
- #endif
+ 	if (format->pad != 0)
+ 		return -EINVAL;
+@@ -570,22 +569,17 @@ static int ov2680_get_fmt(struct v4l2_subdev *sd,
+ 	mutex_lock(&sensor->lock);
+ 
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 		fmt = v4l2_subdev_get_try_format(&sensor->sd, sd_state,
+ 						 format->pad);
+-#else
+-		ret = -EINVAL;
+-#endif
+ 	} else {
+ 		fmt = &sensor->fmt;
+ 	}
+ 
+-	if (fmt)
+-		format->format = *fmt;
++	format->format = *fmt;
+ 
+ 	mutex_unlock(&sensor->lock);
+ 
+-	return ret;
++	return 0;
  }
  
+ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+@@ -594,9 +588,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ {
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+ 	struct v4l2_mbus_framefmt *fmt = &format->format;
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 	struct v4l2_mbus_framefmt *try_fmt;
+-#endif
+ 	const struct ov2680_mode_info *mode;
+ 	int ret = 0;
+ 
+@@ -619,10 +611,8 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 	}
+ 
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
+ 		format->format = *try_fmt;
+-#endif
+ 		goto unlock;
+ 	}
+ 
+@@ -780,9 +770,7 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
+ 	v4l2_i2c_subdev_init(&sensor->sd, sensor->i2c_client,
+ 			     &ov2680_subdev_ops);
+ 
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 	sensor->sd.flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
+-#endif
+ 	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
+ 	sensor->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
+ 
+-- 
+2.40.1
+
 
 
