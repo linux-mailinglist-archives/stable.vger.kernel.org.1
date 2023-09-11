@@ -2,42 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ADE979BF11
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACD079B5F2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbjIKUui (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49818 "EHLO
+        id S238955AbjIKVhW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239907AbjIKObP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:15 -0400
+        with ESMTP id S238510AbjIKN6M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A207BF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC908C433C8;
-        Mon, 11 Sep 2023 14:31:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9272CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D56C433CA;
+        Mon, 11 Sep 2023 13:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442670;
-        bh=tb2j1k7zerH0AWen6UDR+cygguifIjYF+V1o7XAqtTI=;
+        s=korg; t=1694440687;
+        bh=dNznVvXsnHJ4j3+N71QtfTo0eW7MOg+YTRF0cACyvXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nzzhjheF7QtNBGumRZMpxOIbEo27/WohIMFHVVUBnr4AE0iBuXeZyBfrTIE7S35Es
-         vLLIu1quzjNttY/A9gEtv3F46TJXkXS2t8VSKWf9dBbyOQdfkNYQ/Y2/ZgQ40gvUaI
-         +GW3EthXcsNEDyU88Hpu2Mr6tz6fEE+a061hS53E=
+        b=nYwrV2umzyJSh6VJka8KXEMYHhauFRovMsiE19p0JBWzow6nM0npOT5ztNbMprrYn
+         xMNU2X5cDvMNQZw9FoukgDiNFNev+RBC4EyktCf0KVN9sJSU3Pkrj5mC9IMogXy1nz
+         ZDQ5WnmtIXh/G6j/dr30ZPgcjpAI9MZRDqAAOVU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li RongQing <lirongqing@baidu.com>,
-        Yong He <zhuangel570@gmail.com>,
-        Robert Hoo <robert.hoo.linux@gmail.com>,
-        Kai Huang <kai.huang@intel.com>,
-        Luiz Capitulino <luizcap@amazon.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.4 089/737] KVM: x86/mmu: Add "never" option to allow sticky disabling of nx_huge_pages
-Date:   Mon, 11 Sep 2023 15:39:08 +0200
-Message-ID: <20230911134652.987795475@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
+        Pankaj Raghav <p.raghav@samsung.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chinwen Chang <chinwen.chang@mediatek.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Qun-Wei Lin <qun-wei.lin@mediatek.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 150/739] scripts/gdb: fix lx-lsmod show the wrong size
+Date:   Mon, 11 Sep 2023 15:39:09 +0200
+Message-ID: <20230911134655.316645506@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,136 +60,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
 
-commit 0b210faf337314e4bc88e796218bc70c72a51209 upstream.
+[ Upstream commit fb40b0537342e1acd5c2daf2ff6780c1d0d2883c ]
 
-Add a "never" option to the nx_huge_pages module param to allow userspace
-to do a one-way hard disabling of the mitigation, and don't create the
-per-VM recovery threads when the mitigation is hard disabled.  Letting
-userspace pinky swear that userspace doesn't want to enable NX mitigation
-(without reloading KVM) allows certain use cases to avoid the latency
-problems associated with spawning a kthread for each VM.
+'lsmod' shows total core layout size, so we need to sum up all the
+sections in core layout in gdb scripts.
 
-E.g. in FaaS use cases, the guest kernel is trusted and the host may
-create 100+ VMs per logical CPU, which can result in 100ms+ latencies when
-a burst of VMs is created.
+/ # lsmod
+kasan_test 200704 0 - Live 0xffff80007f640000
 
-Reported-by: Li RongQing <lirongqing@baidu.com>
-Closes: https://lore.kernel.org/all/1679555884-32544-1-git-send-email-lirongqing@baidu.com
-Cc: Yong He <zhuangel570@gmail.com>
-Cc: Robert Hoo <robert.hoo.linux@gmail.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Robert Hoo <robert.hoo.linux@gmail.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
-Reviewed-by: Li RongQing <lirongqing@baidu.com>
-Link: https://lore.kernel.org/r/20230602005859.784190-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before patch:
+(gdb) lx-lsmod
+Address            Module                  Size  Used by
+0xffff80007f640000 kasan_test             36864  0
+
+After patch:
+(gdb) lx-lsmod
+Address            Module                  Size  Used by
+0xffff80007f640000 kasan_test            200704  0
+
+Link: https://lkml.kernel.org/r/20230710092852.31049-1-Kuan-Ying.Lee@mediatek.com
+Fixes: b4aff7513df3 ("scripts/gdb: use mem instead of core_layout to get the module address")
+Signed-off-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
+Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   41 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 5 deletions(-)
+ scripts/gdb/linux/constants.py.in |  3 +++
+ scripts/gdb/linux/modules.py      | 12 +++++++++---
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -58,6 +58,8 @@
+diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
+index 50a92c4e9984e..fab74ca9df6fc 100644
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -64,6 +64,9 @@ LX_GDBPARSED(IRQ_HIDDEN)
  
- extern bool itlb_multihit_kvm_mitigation;
+ /* linux/module.h */
+ LX_GDBPARSED(MOD_TEXT)
++LX_GDBPARSED(MOD_DATA)
++LX_GDBPARSED(MOD_RODATA)
++LX_GDBPARSED(MOD_RO_AFTER_INIT)
  
-+static bool nx_hugepage_mitigation_hard_disabled;
+ /* linux/mount.h */
+ LX_VALUE(MNT_NOSUID)
+diff --git a/scripts/gdb/linux/modules.py b/scripts/gdb/linux/modules.py
+index 261f28640f4cd..f76a43bfa15fc 100644
+--- a/scripts/gdb/linux/modules.py
++++ b/scripts/gdb/linux/modules.py
+@@ -73,11 +73,17 @@ class LxLsmod(gdb.Command):
+                 "        " if utils.get_long_type().sizeof == 8 else ""))
+ 
+         for module in module_list():
+-            layout = module['mem'][constants.LX_MOD_TEXT]
++            text = module['mem'][constants.LX_MOD_TEXT]
++            text_addr = str(text['base']).split()[0]
++            total_size = 0
 +
- int __read_mostly nx_huge_pages = -1;
- static uint __read_mostly nx_huge_pages_recovery_period_ms;
- #ifdef CONFIG_PREEMPT_RT
-@@ -67,12 +69,13 @@ static uint __read_mostly nx_huge_pages_
- static uint __read_mostly nx_huge_pages_recovery_ratio = 60;
- #endif
- 
-+static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp);
- static int set_nx_huge_pages(const char *val, const struct kernel_param *kp);
- static int set_nx_huge_pages_recovery_param(const char *val, const struct kernel_param *kp);
- 
- static const struct kernel_param_ops nx_huge_pages_ops = {
- 	.set = set_nx_huge_pages,
--	.get = param_get_bool,
-+	.get = get_nx_huge_pages,
- };
- 
- static const struct kernel_param_ops nx_huge_pages_recovery_param_ops = {
-@@ -6844,6 +6847,14 @@ static void mmu_destroy_caches(void)
- 	kmem_cache_destroy(mmu_page_header_cache);
- }
- 
-+static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
-+{
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return sprintf(buffer, "never\n");
++            for i in range(constants.LX_MOD_TEXT, constants.LX_MOD_RO_AFTER_INIT + 1):
++                total_size += module['mem'][i]['size']
 +
-+	return param_get_bool(buffer, kp);
-+}
-+
- static bool get_nx_auto_mode(void)
- {
- 	/* Return true when CPU has the bug, and mitigations are ON */
-@@ -6860,15 +6871,29 @@ static int set_nx_huge_pages(const char
- 	bool old_val = nx_huge_pages;
- 	bool new_val;
+             gdb.write("{address} {name:<19} {size:>8}  {ref}".format(
+-                address=str(layout['base']).split()[0],
++                address=text_addr,
+                 name=module['name'].string(),
+-                size=str(layout['size']),
++                size=str(total_size),
+                 ref=str(module['refcnt']['counter'] - 1)))
  
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return -EPERM;
-+
- 	/* In "auto" mode deploy workaround only if CPU has the bug. */
--	if (sysfs_streq(val, "off"))
-+	if (sysfs_streq(val, "off")) {
- 		new_val = 0;
--	else if (sysfs_streq(val, "force"))
-+	} else if (sysfs_streq(val, "force")) {
- 		new_val = 1;
--	else if (sysfs_streq(val, "auto"))
-+	} else if (sysfs_streq(val, "auto")) {
- 		new_val = get_nx_auto_mode();
--	else if (kstrtobool(val, &new_val) < 0)
-+	} else if (sysfs_streq(val, "never")) {
-+		new_val = 0;
-+
-+		mutex_lock(&kvm_lock);
-+		if (!list_empty(&vm_list)) {
-+			mutex_unlock(&kvm_lock);
-+			return -EBUSY;
-+		}
-+		nx_hugepage_mitigation_hard_disabled = true;
-+		mutex_unlock(&kvm_lock);
-+	} else if (kstrtobool(val, &new_val) < 0) {
- 		return -EINVAL;
-+	}
- 
- 	__set_nx_huge_pages(new_val);
- 
-@@ -7006,6 +7031,9 @@ static int set_nx_huge_pages_recovery_pa
- 	uint old_period, new_period;
- 	int err;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return -EPERM;
-+
- 	was_recovery_enabled = calc_nx_huge_pages_recovery_period(&old_period);
- 
- 	err = param_set_uint(val, kp);
-@@ -7164,6 +7192,9 @@ int kvm_mmu_post_init_vm(struct kvm *kvm
- {
- 	int err;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return 0;
-+
- 	err = kvm_vm_create_worker_thread(kvm, kvm_nx_huge_page_recovery_worker, 0,
- 					  "kvm-nx-lpage-recovery",
- 					  &kvm->arch.nx_huge_page_recovery_thread);
+             t = self._module_use_type.get_type().pointer()
+-- 
+2.40.1
+
 
 
