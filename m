@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69E1C79ACE7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CD279B4F0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377946AbjIKW3f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:29:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49790 "EHLO
+        id S1344864AbjIKVO4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239661AbjIKOZu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:50 -0400
+        with ESMTP id S242126AbjIKPXJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F22DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A984C433C8;
-        Mon, 11 Sep 2023 14:25:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B80120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32679C433C7;
+        Mon, 11 Sep 2023 15:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442345;
-        bh=++vdt+m33Gxc3ZyS9rc60BgjJauZUdOSOlVkeUGYvyU=;
+        s=korg; t=1694445784;
+        bh=1r9KtgJdsnllXB11O9E/voh0o+1m0RGy/0UmEsVIVg0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qs1juWDxpJZF2sz6kyslLAUCG6mZPyZHV0JHU2IeH3tpqo1a4nC3ObVrejO4V8lMj
-         BC6ARCZ3/lS+4M8fYDqfDoGRPPhVfFVC7RyO8Qm0IYV6NqFXE/KN2CJY1HQVPiKMAD
-         ED7dMgp4w3/kknQwauhgSYUieii/nJJ5Xw8QDg2c=
+        b=uu2dRXfOHt41y/KuCyscmwKGkbUV27ohU8kyu2Tf+KeUInWERMQKR4Tu9qHlAud07
+         pEfAKCsTJyeGxp29ctYN655WmECuZCD4q5NP3O0HUMFJlZe7wY4+3wei34yyxo48kW
+         CsbCZ1KK12Cvz+7KOYSxYeOye7DvqogU9byhcGY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Siwar Zitouni <siwar.zitouni@6wind.com>,
-        Guillaume Nault <gnault@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 704/739] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
-Date:   Mon, 11 Sep 2023 15:48:23 +0200
-Message-ID: <20230911134710.750195024@linuxfoundation.org>
+        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 471/600] media: ov2680: Fix ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY not working
+Date:   Mon, 11 Sep 2023 15:48:24 +0200
+Message-ID: <20230911134647.549062501@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +53,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit a4f39c9f14a634e4cd35fcd338c239d11fcc73fc upstream.
+[ Upstream commit c0e97a4b4f20639f74cd5809b42ba6cbf9736a7d ]
 
-The goal is to support a bpf_redirect() from an ethernet device (ingress)
-to a ppp device (egress).
-The l2 header is added automatically by the ppp driver, thus the ethernet
-header should be removed.
+ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY was getting
+the try_fmt v4l2_mbus_framefmt struct from the passed in sd_state
+and then storing the contents of that into the return by reference
+format->format struct.
 
-CC: stable@vger.kernel.org
-Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While the right thing to do would be filling format->format based on
+the just looked up mode and then store the results of that in
+sd_state->pads[0].try_fmt .
+
+Before the previous change introducing ov2680_fill_format() this
+resulted in ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY always
+returning the zero-ed out sd_state->pads[0].try_fmt in format->format
+breaking callers using this.
+
+After the introduction of ov2680_fill_format() which at least
+initializes sd_state->pads[0].try_fmt properly, format->format
+is now always being filled with the default 800x600 mode set by
+ov2680_init_cfg() independent of the actual requested mode.
+
+Move the filling of format->format with ov2680_fill_format() to
+before the if (which == V4L2_SUBDEV_FORMAT_TRY) and then store
+the filled in format->format in sd_state->pads[0].try_fmt to
+fix this.
+
+Note this removes the fmt local variable because IMHO having a local
+variable which points to a sub-struct of one of the function arguments
+just leads to confusion when reading the code.
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_arp.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/i2c/ov2680.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/include/linux/if_arp.h
-+++ b/include/linux/if_arp.h
-@@ -53,6 +53,10 @@ static inline bool dev_is_mac_header_xmi
- 	case ARPHRD_NONE:
- 	case ARPHRD_RAWIP:
- 	case ARPHRD_PIMREG:
-+	/* PPP adds its l2 header automatically in ppp_start_xmit().
-+	 * This makes it look like an l3 device to __bpf_redirect() and tcf_mirred_init().
-+	 */
-+	case ARPHRD_PPP:
- 		return false;
- 	default:
- 		return true;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 6e0e8d21d189f..a24344ef9852c 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -603,7 +603,6 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 			  struct v4l2_subdev_format *format)
+ {
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+-	struct v4l2_mbus_framefmt *fmt = &format->format;
+ 	struct v4l2_mbus_framefmt *try_fmt;
+ 	const struct ov2680_mode_info *mode;
+ 	int ret = 0;
+@@ -612,14 +611,18 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		return -EINVAL;
+ 
+ 	mode = v4l2_find_nearest_size(ov2680_mode_data,
+-				      ARRAY_SIZE(ov2680_mode_data), width,
+-				      height, fmt->width, fmt->height);
++				      ARRAY_SIZE(ov2680_mode_data),
++				      width, height,
++				      format->format.width,
++				      format->format.height);
+ 	if (!mode)
+ 		return -EINVAL;
+ 
++	ov2680_fill_format(sensor, &format->format, mode->width, mode->height);
++
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+ 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
+-		format->format = *try_fmt;
++		*try_fmt = format->format;
+ 		return 0;
+ 	}
+ 
+@@ -630,8 +633,6 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		goto unlock;
+ 	}
+ 
+-	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
+-
+ 	sensor->current_mode = mode;
+ 	sensor->fmt = format->format;
+ 	sensor->mode_pending_changes = true;
+-- 
+2.40.1
+
 
 
