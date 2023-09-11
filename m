@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4AA179BDC3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0D2D79BA62
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351516AbjIKVnS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:43:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46660 "EHLO
+        id S1354255AbjIKVxP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239351AbjIKOSj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:39 -0400
+        with ESMTP id S241844AbjIKPQH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A138DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D21EC433C7;
-        Mon, 11 Sep 2023 14:18:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84122FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1226C433C7;
+        Mon, 11 Sep 2023 15:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441914;
-        bh=jltHfP2ZgMuN5mzA4Rxh9j6RyRWvtKpqOWxE6svlMTY=;
+        s=korg; t=1694445362;
+        bh=f0lllBbjC7+5PS24b37/XcP83NQatNtyqN9t0N7dtyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eqFnGxvUhLsA8gx9iwISQ7UZgbxtHftl8bSez48ed4VwkTqAh2vLPvkmiThnotU4g
-         H962fqgwlpwQZFH8Tv1y9XYCcJ7Ybbr3Zf6SleXO1G/VLoSuFPWWfbCtVft8yV9HR0
-         XYOXLN57+xrkhVwJc/1brsb+IMXac9rR6VwWL1to=
+        b=dZnl/+hn3AQx08U1C/Z4UZKvftKEdTc3ex7vaPRJ6xbB7ps/kidqUVQAA0xmDHaYe
+         Ae4h56HXcKNgk0W5U83ouD8lfoR8WZ0sV00IH2XoI73ksoHyF0q11CcZrGSrxblXjA
+         /wpZwphZWJoLevesxnXuvTJZbr/bKNOxby2QdoaA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 553/739] f2fs: check zone type before sending async reset zone command
-Date:   Mon, 11 Sep 2023 15:45:52 +0200
-Message-ID: <20230911134706.534388822@linuxfoundation.org>
+Subject: [PATCH 6.1 320/600] md/raid0: Fix performance regression for large sequential writes
+Date:   Mon, 11 Sep 2023 15:45:53 +0200
+Message-ID: <20230911134643.134047873@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,121 +50,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 3cb88bc15937990177df1f7eac6f22ebbed19312 ]
+[ Upstream commit 319ff40a542736d67e5bce18635de35d0e7a0bff ]
 
-The commit 25f9080576b9 ("f2fs: add async reset zone command support")
-introduced "async reset zone commands" by calling
-__submit_zone_reset_cmd() in async discard operations. However,
-__submit_zone_reset_cmd() is called regardless of zone type of discard
-target zone. When devices have conventional zones, zone reset commands
-are sent to the conventional zones and cause I/O errors.
+Commit f00d7c85be9e ("md/raid0: fix up bio splitting.") among other
+things changed how bio that needs to be split is submitted. Before this
+commit, we have split the bio, mapped and submitted each part. After
+this commit, we map only the first part of the split bio and submit the
+second part unmapped. Due to bio sorting in __submit_bio_noacct() this
+results in the following request ordering:
 
-Avoid the I/O errors by checking that the discard target zone type is
-sequential write required. If not, handle the discard operation in same
-manner as non-zoned, regular block devices. For that purpose, add a new
-helper function f2fs_bdev_index() which gets index of the zone reset
-target device.
+  9,0   18     1181     0.525037895 15995  Q  WS 1479315464 + 63392
 
-Fixes: 25f9080576b9 ("f2fs: add async reset zone command support")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+  Split off chunk-sized (1024 sectors) request:
+
+  9,0   18     1182     0.629019647 15995  X  WS 1479315464 / 1479316488
+
+  Request is unaligned to the chunk so it's split in
+  raid0_make_request().  This is the first part mapped and punted to
+  bio_list:
+
+  8,0   18     7053     0.629020455 15995  A  WS 739921928 + 1016 <- (9,0) 1479315464
+
+  Now raid0_make_request() returns, second part is postponed on
+  bio_list. __submit_bio_noacct() resorts the bio_list, mapped request
+  is submitted to the underlying device:
+
+  8,0   18     7054     0.629022782 15995  G  WS 739921928 + 1016
+
+  Now we take another request from the bio_list which is the remainder
+  of the original huge request. Split off another chunk-sized bit from
+  it and the situation repeats:
+
+  9,0   18     1183     0.629024499 15995  X  WS 1479316488 / 1479317512
+  8,16  18     6998     0.629025110 15995  A  WS 739921928 + 1016 <- (9,0) 1479316488
+  8,16  18     6999     0.629026728 15995  G  WS 739921928 + 1016
+  ...
+  9,0   18     1184     0.629032940 15995  X  WS 1479317512 / 1479318536 [libnetacq-write]
+  8,0   18     7059     0.629033294 15995  A  WS 739922952 + 1016 <- (9,0) 1479317512
+  8,0   18     7060     0.629033902 15995  G  WS 739922952 + 1016
+  ...
+
+  This repeats until we consume the whole original huge request. Now we
+  finally get to processing the second parts of the split off requests
+  (in reverse order):
+
+  8,16  18     7181     0.629161384 15995  A  WS 739952640 + 8 <- (9,0) 1479377920
+  8,0   18     7239     0.629162140 15995  A  WS 739952640 + 8 <- (9,0) 1479376896
+  8,16  18     7186     0.629163881 15995  A  WS 739951616 + 8 <- (9,0) 1479375872
+  8,0   18     7242     0.629164421 15995  A  WS 739951616 + 8 <- (9,0) 1479374848
+  ...
+
+I guess it is obvious that this IO pattern is extremely inefficient way
+to perform sequential IO. It also makes bio_list to grow to rather long
+lengths.
+
+Change raid0_make_request() to map both parts of the split bio. Since we
+know we are provided with at most chunk-sized bios, we will always need
+to split the incoming bio at most once.
+
+Fixes: f00d7c85be9e ("md/raid0: fix up bio splitting.")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230814092720.3931-2-jack@suse.cz
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h    | 16 ++++++++++++++++
- fs/f2fs/segment.c | 39 ++++++++++++++++++++++++++++-----------
- 2 files changed, 44 insertions(+), 11 deletions(-)
+ drivers/md/raid0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index d372bedb0fe4e..a52830927cb49 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4423,6 +4423,22 @@ static inline bool f2fs_blkz_is_seq(struct f2fs_sb_info *sbi, int devi,
- }
- #endif
- 
-+static inline int f2fs_bdev_index(struct f2fs_sb_info *sbi,
-+				  struct block_device *bdev)
-+{
-+	int i;
-+
-+	if (!f2fs_is_multi_device(sbi))
-+		return 0;
-+
-+	for (i = 0; i < sbi->s_ndevs; i++)
-+		if (FDEV(i).bdev == bdev)
-+			return i;
-+
-+	WARN_ON(1);
-+	return -1;
-+}
-+
- static inline bool f2fs_hw_should_discard(struct f2fs_sb_info *sbi)
- {
- 	return f2fs_sb_has_blkzoned(sbi);
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index cbb4bd95ea198..b127c3d96dbb0 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -1258,8 +1258,16 @@ static int __submit_discard_cmd(struct f2fs_sb_info *sbi,
- 
- #ifdef CONFIG_BLK_DEV_ZONED
- 	if (f2fs_sb_has_blkzoned(sbi) && bdev_is_zoned(bdev)) {
--		__submit_zone_reset_cmd(sbi, dc, flag, wait_list, issued);
--		return 0;
-+		int devi = f2fs_bdev_index(sbi, bdev);
-+
-+		if (devi < 0)
-+			return -EINVAL;
-+
-+		if (f2fs_blkz_is_seq(sbi, devi, dc->di.start)) {
-+			__submit_zone_reset_cmd(sbi, dc, flag,
-+						wait_list, issued);
-+			return 0;
-+		}
+diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
+index d3c55f2e9b185..595856948dff8 100644
+--- a/drivers/md/raid0.c
++++ b/drivers/md/raid0.c
+@@ -626,7 +626,7 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
+ 		struct bio *split = bio_split(bio, sectors, GFP_NOIO,
+ 					      &mddev->bio_set);
+ 		bio_chain(split, bio);
+-		submit_bio_noacct(bio);
++		raid0_map_submit_bio(mddev, bio);
+ 		bio = split;
  	}
- #endif
  
-@@ -1785,15 +1793,24 @@ static void f2fs_wait_discard_bio(struct f2fs_sb_info *sbi, block_t blkaddr)
- 	dc = __lookup_discard_cmd(sbi, blkaddr);
- #ifdef CONFIG_BLK_DEV_ZONED
- 	if (dc && f2fs_sb_has_blkzoned(sbi) && bdev_is_zoned(dc->bdev)) {
--		/* force submit zone reset */
--		if (dc->state == D_PREP)
--			__submit_zone_reset_cmd(sbi, dc, REQ_SYNC,
--						&dcc->wait_list, NULL);
--		dc->ref++;
--		mutex_unlock(&dcc->cmd_lock);
--		/* wait zone reset */
--		__wait_one_discard_bio(sbi, dc);
--		return;
-+		int devi = f2fs_bdev_index(sbi, dc->bdev);
-+
-+		if (devi < 0) {
-+			mutex_unlock(&dcc->cmd_lock);
-+			return;
-+		}
-+
-+		if (f2fs_blkz_is_seq(sbi, devi, dc->di.start)) {
-+			/* force submit zone reset */
-+			if (dc->state == D_PREP)
-+				__submit_zone_reset_cmd(sbi, dc, REQ_SYNC,
-+							&dcc->wait_list, NULL);
-+			dc->ref++;
-+			mutex_unlock(&dcc->cmd_lock);
-+			/* wait zone reset */
-+			__wait_one_discard_bio(sbi, dc);
-+			return;
-+		}
- 	}
- #endif
- 	if (dc) {
 -- 
 2.40.1
 
