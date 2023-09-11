@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3408D79B986
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDAE979BB86
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357914AbjIKWGx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:06:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
+        id S239147AbjIKVtE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239327AbjIKORx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:53 -0400
+        with ESMTP id S241922AbjIKPR5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42543DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EECC433C8;
-        Mon, 11 Sep 2023 14:17:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C92AFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC972C433C7;
+        Mon, 11 Sep 2023 15:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441868;
-        bh=2ygl7oXEb6RAByZR6F1Ar0dIi5Z7Ze0rBqxNN3DZnP0=;
+        s=korg; t=1694445472;
+        bh=If0/0pQryKAEgFwbOpl1CoOnatuNtoO0T/1v4c42oCw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jYI1m79blvoiT0OOLMo1Gqtr66Cp8AKOGvfALU5FUoPTu7eqvGUB5znRQuGVnJkND
-         /5PAao1E5Q4LeRShwemo39bwrXY65I7qQiFQojVMU8TyKMBwt05FDoQ+pB2xE9RQsZ
-         ZfYz4AMPIRszcGhukrekeIk7DssJQRgJEyxggWpQ=
+        b=h5+E5d8yCfO2gpzMhUIQE+4ahmFxpflKzxXpLpgzBtBbudEyGU9N0N5XhUHM1deAF
+         /3ZJU5wheeZtOdoO4hq2BPWJDN6nqk3UjxET8vtj54yE16kSK09qw9Z8B3pO8SFUnd
+         SYrk146reJEZL964INW6ECfv1PUhdGZq/yA0ylC0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 565/739] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
-Date:   Mon, 11 Sep 2023 15:46:04 +0200
-Message-ID: <20230911134706.858812979@linuxfoundation.org>
+Subject: [PATCH 6.1 332/600] dt-bindings: clock: qcom,gcc-sc8280xp: Add missing GDSCs
+Date:   Mon, 11 Sep 2023 15:46:05 +0200
+Message-ID: <20230911134643.488772312@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
+[ Upstream commit 9eba4db02a88e7a810aabd70f7a6960f184f391f ]
 
-Change scsi_host_lookup() hostnum argument type from unsigned short to
-unsigned int to match the type used everywhere else.
+There are 10 more GDSCs that we've not been caring about, and by extension
+(and perhaps even more importantly), not putting to sleep. Add them.
 
-Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: a66a82f2a55e ("dt-bindings: clock: Add Qualcomm SC8280XP GCC bindings")
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-2-562c1428c10d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hosts.c     | 4 ++--
- include/scsi/scsi_host.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/dt-bindings/clock/qcom,gcc-sc8280xp.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index 198edf03f9297..d7f51b84f3c78 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -537,7 +537,7 @@ EXPORT_SYMBOL(scsi_host_alloc);
- static int __scsi_host_match(struct device *dev, const void *data)
- {
- 	struct Scsi_Host *p;
--	const unsigned short *hostnum = data;
-+	const unsigned int *hostnum = data;
+diff --git a/include/dt-bindings/clock/qcom,gcc-sc8280xp.h b/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
+index 721105ea4fad8..8454915917849 100644
+--- a/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
+@@ -494,5 +494,15 @@
+ #define USB30_SEC_GDSC					11
+ #define EMAC_0_GDSC					12
+ #define EMAC_1_GDSC					13
++#define USB4_1_GDSC					14
++#define USB4_GDSC					15
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		16
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		17
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC		18
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC		19
++#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			20
++#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			21
++#define HLOS1_VOTE_TURING_MMU_TBU2_GDSC			22
++#define HLOS1_VOTE_TURING_MMU_TBU3_GDSC			23
  
- 	p = class_to_shost(dev);
- 	return p->host_no == *hostnum;
-@@ -554,7 +554,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
-  *	that scsi_host_get() took. The put_device() below dropped
-  *	the reference from class_find_device().
-  **/
--struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
-+struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
- {
- 	struct device *cdev;
- 	struct Scsi_Host *shost = NULL;
-diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
-index 70b7475dcf56b..a2b8d30c4c803 100644
---- a/include/scsi/scsi_host.h
-+++ b/include/scsi/scsi_host.h
-@@ -769,7 +769,7 @@ extern void scsi_remove_host(struct Scsi_Host *);
- extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
- extern int scsi_host_busy(struct Scsi_Host *shost);
- extern void scsi_host_put(struct Scsi_Host *t);
--extern struct Scsi_Host *scsi_host_lookup(unsigned short);
-+extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
- extern const char *scsi_host_state_name(enum scsi_host_state);
- extern void scsi_host_complete_all_commands(struct Scsi_Host *shost,
- 					    enum scsi_host_status status);
+ #endif
 -- 
 2.40.1
 
