@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A1279AE17
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7753F79B064
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242014AbjIKVh0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41600 "EHLO
+        id S1343916AbjIKVMx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240177AbjIKOic (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:32 -0400
+        with ESMTP id S241335AbjIKPGw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCCAF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46ECC433C8;
-        Mon, 11 Sep 2023 14:38:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A375DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2DDC433C9;
+        Mon, 11 Sep 2023 15:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443108;
-        bh=Xueu/T6V67071SQ3WnktVoyqweCYP+o+Sh3A+o0oijU=;
+        s=korg; t=1694444808;
+        bh=0LYzBCfEye/XxUC7RtZZ0Pq+GbtIn3ByPFFdetpVKuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wukZkJryy03lcE5LVyg3pvGskry2kF31ai38dNx4U9EWb8g8avqrFryKKJfcTm2KW
-         qji+jn744sVPQyzWnsnJyb9ReaVRoCuDUiBhYrltX8krAUJc51bEGD9a/OC2TUgseq
-         kX0DiEUWL05TXEbpNXql6EssylfBrzoJrbh1ezeg=
+        b=RB5bhnYMWYDF5vlw/Kd4iG2kJLSYBYdgIyek4Cf3MehH39PrqMnAdTwgjnqMrQjhf
+         +izH1wqCYltbGLYlAf17gSBPScbOMsfrZJtOO2Nsz390bmYUaZBKpm0DrBxtcwXD4l
+         RdXmW6/eWf+D37g+mLvrgAyCB3sKFoQyqYRxBKl4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Budimir Markovic <markovicbudimir@gmail.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 260/737] net/sched: sch_hfsc: Ensure inner classes have fsc curve
+        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 086/600] udf: Check consistency of Space Bitmap Descriptor
 Date:   Mon, 11 Sep 2023 15:41:59 +0200
-Message-ID: <20230911134657.849347919@linuxfoundation.org>
+Message-ID: <20230911134636.151330657@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +49,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Budimir Markovic <markovicbudimir@gmail.com>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-[ Upstream commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f ]
+commit 1e0d4adf17e7ef03281d7b16555e7c1508c8ed2d upstream.
 
-HFSC assumes that inner classes have an fsc curve, but it is currently
-possible for classes without an fsc curve to become parents. This leads
-to bugs including a use-after-free.
+Bits, which are related to Bitmap Descriptor logical blocks,
+are not reset when buffer headers are allocated for them. As the
+result, these logical blocks can be treated as free and
+be used for other blocks.This can cause usage of one buffer header
+for several types of data. UDF issues WARNING in this situation:
 
-Don't allow non-root classes without HFSC_FSC to become parents.
+WARNING: CPU: 0 PID: 2703 at fs/udf/inode.c:2014
+  __udf_add_aext+0x685/0x7d0 fs/udf/inode.c:2014
+
+RIP: 0010:__udf_add_aext+0x685/0x7d0 fs/udf/inode.c:2014
+Call Trace:
+ udf_setup_indirect_aext+0x573/0x880 fs/udf/inode.c:1980
+ udf_add_aext+0x208/0x2e0 fs/udf/inode.c:2067
+ udf_insert_aext fs/udf/inode.c:2233 [inline]
+ udf_update_extents fs/udf/inode.c:1181 [inline]
+ inode_getblk+0x1981/0x3b70 fs/udf/inode.c:885
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+[JK: Somewhat cleaned up the boundary checks]
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230824084905.422-1-markovicbudimir@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/udf/balloc.c |   31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 70b0c5873d326..61d52594ff6d8 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1012,6 +1012,10 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 		if (parent == NULL)
- 			return -ENOENT;
- 	}
-+	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
-+		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
-+		return -EINVAL;
-+	}
+--- a/fs/udf/balloc.c
++++ b/fs/udf/balloc.c
+@@ -36,18 +36,41 @@ static int read_block_bitmap(struct supe
+ 			     unsigned long bitmap_nr)
+ {
+ 	struct buffer_head *bh = NULL;
+-	int retval = 0;
++	int i;
++	int max_bits, off, count;
+ 	struct kernel_lb_addr loc;
  
- 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
- 		return -EINVAL;
--- 
-2.40.1
-
+ 	loc.logicalBlockNum = bitmap->s_extPosition;
+ 	loc.partitionReferenceNum = UDF_SB(sb)->s_partition;
+ 
+ 	bh = udf_tread(sb, udf_get_lb_pblock(sb, &loc, block));
++	bitmap->s_block_bitmap[bitmap_nr] = bh;
+ 	if (!bh)
+-		retval = -EIO;
++		return -EIO;
+ 
+-	bitmap->s_block_bitmap[bitmap_nr] = bh;
+-	return retval;
++	/* Check consistency of Space Bitmap buffer. */
++	max_bits = sb->s_blocksize * 8;
++	if (!bitmap_nr) {
++		off = sizeof(struct spaceBitmapDesc) << 3;
++		count = min(max_bits - off, bitmap->s_nr_groups);
++	} else {
++		/*
++		 * Rough check if bitmap number is too big to have any bitmap
++		 * blocks reserved.
++		 */
++		if (bitmap_nr >
++		    (bitmap->s_nr_groups >> (sb->s_blocksize_bits + 3)) + 2)
++			return 0;
++		off = 0;
++		count = bitmap->s_nr_groups - bitmap_nr * max_bits +
++				(sizeof(struct spaceBitmapDesc) << 3);
++		count = min(count, max_bits);
++	}
++
++	for (i = 0; i < count; i++)
++		if (udf_test_bit(i + off, bh->b_data))
++			return -EFSCORRUPTED;
++	return 0;
+ }
+ 
+ static int __load_block_bitmap(struct super_block *sb,
 
 
