@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AFA79BB2A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7191E79BE73
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244190AbjIKV3M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34886 "EHLO
+        id S239042AbjIKVaA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239655AbjIKOZg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:36 -0400
+        with ESMTP id S240949AbjIKO5r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE879DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE99C433C7;
-        Mon, 11 Sep 2023 14:25:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 892C61B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D364AC433C9;
+        Mon, 11 Sep 2023 14:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442331;
-        bh=GQS+OrgjP/ZfJNMjtCeHhUdk5Melgb+1OVuHAhU/Stc=;
+        s=korg; t=1694444262;
+        bh=S3KcD8JFwM5EvTgvpNBXOgs3Cjrqk0MNBvv/bk1jXvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1fv9we5aL3i6sF6db/IxyMgrSphhfHBHpFUQNEr+vorV5cs28ZhJOhHsgyBbgEi9A
-         PvS+Hm9ni5hVc0P53BX7fjHXTYdVxCnIwR1PADKp8L5wTp/3gSshtl6bbMNfq80qgg
-         HROThhgTwEzQqncq8CNtbPLxsJNP5XNSYuYYAbKU=
+        b=zB0++nr8MjeJ/AK3924Bi8jJqVfQbtc5IudIEjF4ftax5HDYedOpci5RZY7IpNJ+/
+         sDiC8iWBLdwMfic4hqmScyrZD2mfeESVVYtovU7OKkx4KEp/5qPcuSBUAv90gmGZhH
+         PdTLuR7HFMX+yMnOnqJgL+W06z1/bJZxW8QmJ15o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.5 726/739] x86/build: Fix linker fill bytes quirk/incompatibility for ld.lld
-Date:   Mon, 11 Sep 2023 15:48:45 +0200
-Message-ID: <20230911134711.351686864@linuxfoundation.org>
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 6.4 667/737] xtensa: PMU: fix base address for the newer hardware
+Date:   Mon, 11 Sep 2023 15:48:46 +0200
+Message-ID: <20230911134709.174849788@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +48,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-commit 65e710899fd19f435f40268f3a92dfaa11f14470 upstream.
+commit 687eb3c42f4ad81e7c947c50e2d865f692064291 upstream.
 
-With ":text =0xcccc", ld.lld fills unused text area with 0xcccc0000.
-Example objdump -D output:
+With introduction of ERI access control in RG.0 base address of the PMU
+unit registers has changed. Add support for the new PMU configuration.
 
-	ffffffff82b04203:       00 00                   add    %al,(%rax)
-	ffffffff82b04205:       cc                      int3
-	ffffffff82b04206:       cc                      int3
-	ffffffff82b04207:       00 00                   add    %al,(%rax)
-	ffffffff82b04209:       cc                      int3
-	ffffffff82b0420a:       cc                      int3
-
-Replace it with ":text =0xcccccccc", so we get the following instead:
-
-	ffffffff82b04203:       cc                      int3
-	ffffffff82b04204:       cc                      int3
-	ffffffff82b04205:       cc                      int3
-	ffffffff82b04206:       cc                      int3
-	ffffffff82b04207:       cc                      int3
-	ffffffff82b04208:       cc                      int3
-
-gcc/ld doesn't seem to have the same issue. The generated code stays the
-same for gcc/ld.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Fixes: 7705dc855797 ("x86/vmlinux: Use INT3 instead of NOP for linker fill bytes")
-Link: https://lore.kernel.org/r/20230906175215.2236033-1-song@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/vmlinux.lds.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/xtensa/include/asm/core.h  |    9 +++++++++
+ arch/xtensa/kernel/perf_event.c |   17 +++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -156,7 +156,7 @@ SECTIONS
- 		ALIGN_ENTRY_TEXT_END
- 		*(.gnu.warning)
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -44,4 +44,13 @@
+ #define XTENSA_STACK_ALIGNMENT	16
+ #endif
  
--	} :text =0xcccc
-+	} :text = 0xcccccccc
++#ifndef XCHAL_HW_MIN_VERSION
++#if defined(XCHAL_HW_MIN_VERSION_MAJOR) && defined(XCHAL_HW_MIN_VERSION_MINOR)
++#define XCHAL_HW_MIN_VERSION (XCHAL_HW_MIN_VERSION_MAJOR * 100 + \
++			      XCHAL_HW_MIN_VERSION_MINOR)
++#else
++#define XCHAL_HW_MIN_VERSION 0
++#endif
++#endif
++
+ #endif
+--- a/arch/xtensa/kernel/perf_event.c
++++ b/arch/xtensa/kernel/perf_event.c
+@@ -13,17 +13,26 @@
+ #include <linux/perf_event.h>
+ #include <linux/platform_device.h>
  
- 	/* End of text section, which should occupy whole number of pages */
- 	_etext = .;
++#include <asm/core.h>
+ #include <asm/processor.h>
+ #include <asm/stacktrace.h>
+ 
++#define XTENSA_HWVERSION_RG_2015_0	260000
++
++#if XCHAL_HW_MIN_VERSION >= XTENSA_HWVERSION_RG_2015_0
++#define XTENSA_PMU_ERI_BASE		0x00101000
++#else
++#define XTENSA_PMU_ERI_BASE		0x00001000
++#endif
++
+ /* Global control/status for all perf counters */
+-#define XTENSA_PMU_PMG			0x1000
++#define XTENSA_PMU_PMG			XTENSA_PMU_ERI_BASE
+ /* Perf counter values */
+-#define XTENSA_PMU_PM(i)		(0x1080 + (i) * 4)
++#define XTENSA_PMU_PM(i)		(XTENSA_PMU_ERI_BASE + 0x80 + (i) * 4)
+ /* Perf counter control registers */
+-#define XTENSA_PMU_PMCTRL(i)		(0x1100 + (i) * 4)
++#define XTENSA_PMU_PMCTRL(i)		(XTENSA_PMU_ERI_BASE + 0x100 + (i) * 4)
+ /* Perf counter status registers */
+-#define XTENSA_PMU_PMSTAT(i)		(0x1180 + (i) * 4)
++#define XTENSA_PMU_PMSTAT(i)		(XTENSA_PMU_ERI_BASE + 0x180 + (i) * 4)
+ 
+ #define XTENSA_PMU_PMG_PMEN		0x1
+ 
 
 
