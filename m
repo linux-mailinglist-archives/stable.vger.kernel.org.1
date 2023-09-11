@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6521479B91D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A66079BDD7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357971AbjIKWHG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43320 "EHLO
+        id S240071AbjIKU4C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240149AbjIKOhw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:52 -0400
+        with ESMTP id S241204AbjIKPEL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79DCF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEE6C433CA;
-        Mon, 11 Sep 2023 14:37:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA8D1125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F55EC433C7;
+        Mon, 11 Sep 2023 15:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443068;
-        bh=MDLZHXcLO/4SpTPqy+WOE15aFXNokNw1+BCbL4rBYZw=;
+        s=korg; t=1694444646;
+        bh=RkPyhsgsbZVriQzdlb0b7BHmNPO0ZY2/zxB4KhvRaxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XOUSuZsiPvcUpSfBBCmpree6S9tk1ektPLTLyy/Kyu0pfGYCMUir3Oji03XTkLZAI
-         rdN+NRwJFnMQ/P9DvdVEnX4kujTj/O+LgBHDgKJ4vqmMF0FrZGwgcugctTREtSFka/
-         R+mkQqZ4mgao+nbg4RvlEdadc9olh+nQ1iKyyvZ4=
+        b=1QDYRIksJxob7p26Bu2i+OWmjn1wZxlVd7GAJDeIuSSzS0OYXqcrzvOJtQrS/RZVm
+         4Kc9G0IDjlsReCl8Hw6y8VCsZ3BMiWdUztOf0fEt+Dfu06uw+Sy7KcA+GCkhkGWCLb
+         ReSaT9f5zPywGDSzFIKo8XPdNH66a7nTfKMTJ91k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 239/737] wifi: mwifiex: avoid possible NULL skb pointer dereference
-Date:   Mon, 11 Sep 2023 15:41:38 +0200
-Message-ID: <20230911134657.284459635@linuxfoundation.org>
+        patches@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
+        kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 066/600] cifs: fix sockaddr comparison in iface_cmp
+Date:   Mon, 11 Sep 2023 15:41:39 +0200
+Message-ID: <20230911134635.571072239@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +52,200 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
+[ Upstream commit 2991b77409891e14a10b96899755c004b0c07edb ]
 
-In 'mwifiex_handle_uap_rx_forward()', always check the value
-returned by 'skb_copy()' to avoid potential NULL pointer
-dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
-original skb in case of copying failure.
+iface_cmp used to simply do a memcmp of the two
+provided struct sockaddrs. The comparison needs to do more
+based on the address family. Similar logic was already
+present in cifs_match_ipaddr. Doing something similar now.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsglob.h  | 37 -----------------------------
+ fs/smb/client/cifsproto.h |  1 +
+ fs/smb/client/connect.c   | 50 +++++++++++++++++++++++++++++++++++++++
+ fs/smb/client/smb2ops.c   | 37 +++++++++++++++++++++++++++++
+ 4 files changed, 88 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index c1b8d41dd7536..b8b9a0fcb19cd 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -253,7 +253,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index a37afbb7e399f..4a092cc5a3936 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -970,43 +970,6 @@ release_iface(struct kref *ref)
+ 	kfree(iface);
+ }
  
- 	if (is_multicast_ether_addr(ra)) {
- 		skb_uap = skb_copy(skb, GFP_ATOMIC);
--		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		if (likely(skb_uap)) {
-+			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		} else {
-+			mwifiex_dbg(adapter, ERROR,
-+				    "failed to copy skb for uAP\n");
-+			priv->stats.rx_dropped++;
-+			dev_kfree_skb_any(skb);
+-/*
+- * compare two interfaces a and b
+- * return 0 if everything matches.
+- * return 1 if a has higher link speed, or rdma capable, or rss capable
+- * return -1 otherwise.
+- */
+-static inline int
+-iface_cmp(struct cifs_server_iface *a, struct cifs_server_iface *b)
+-{
+-	int cmp_ret = 0;
+-
+-	WARN_ON(!a || !b);
+-	if (a->speed == b->speed) {
+-		if (a->rdma_capable == b->rdma_capable) {
+-			if (a->rss_capable == b->rss_capable) {
+-				cmp_ret = memcmp(&a->sockaddr, &b->sockaddr,
+-						 sizeof(a->sockaddr));
+-				if (!cmp_ret)
+-					return 0;
+-				else if (cmp_ret > 0)
+-					return 1;
+-				else
+-					return -1;
+-			} else if (a->rss_capable > b->rss_capable)
+-				return 1;
+-			else
+-				return -1;
+-		} else if (a->rdma_capable > b->rdma_capable)
+-			return 1;
+-		else
+-			return -1;
+-	} else if (a->speed > b->speed)
+-		return 1;
+-	else
+-		return -1;
+-}
+-
+ struct cifs_chan {
+ 	unsigned int in_reconnect : 1; /* if session setup in progress for this channel */
+ 	struct TCP_Server_Info *server;
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 98513f5af3f96..a914b88ca51a1 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -85,6 +85,7 @@ extern int cifs_handle_standard(struct TCP_Server_Info *server,
+ 				struct mid_q_entry *mid);
+ extern int smb3_parse_devname(const char *devname, struct smb3_fs_context *ctx);
+ extern int smb3_parse_opt(const char *options, const char *key, char **val);
++extern int cifs_ipaddr_cmp(struct sockaddr *srcaddr, struct sockaddr *rhs);
+ extern bool cifs_match_ipaddr(struct sockaddr *srcaddr, struct sockaddr *rhs);
+ extern int cifs_discard_remaining_data(struct TCP_Server_Info *server);
+ extern int cifs_call_async(struct TCP_Server_Info *server,
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index cbe08948baf4a..9cd282960c0bb 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1343,6 +1343,56 @@ cifs_demultiplex_thread(void *p)
+ 	module_put_and_kthread_exit(0);
+ }
+ 
++int
++cifs_ipaddr_cmp(struct sockaddr *srcaddr, struct sockaddr *rhs)
++{
++	struct sockaddr_in *saddr4 = (struct sockaddr_in *)srcaddr;
++	struct sockaddr_in *vaddr4 = (struct sockaddr_in *)rhs;
++	struct sockaddr_in6 *saddr6 = (struct sockaddr_in6 *)srcaddr;
++	struct sockaddr_in6 *vaddr6 = (struct sockaddr_in6 *)rhs;
++
++	switch (srcaddr->sa_family) {
++	case AF_UNSPEC:
++		switch (rhs->sa_family) {
++		case AF_UNSPEC:
++			return 0;
++		case AF_INET:
++		case AF_INET6:
++			return 1;
++		default:
 +			return -1;
 +		}
- 	} else {
- 		if (mwifiex_get_sta_entry(priv, ra)) {
- 			/* Requeue Intra-BSS packet */
++	case AF_INET: {
++		switch (rhs->sa_family) {
++		case AF_UNSPEC:
++			return -1;
++		case AF_INET:
++			return memcmp(saddr4, vaddr4,
++				      sizeof(struct sockaddr_in));
++		case AF_INET6:
++			return 1;
++		default:
++			return -1;
++		}
++	}
++	case AF_INET6: {
++		switch (rhs->sa_family) {
++		case AF_UNSPEC:
++		case AF_INET:
++			return -1;
++		case AF_INET6:
++			return memcmp(saddr6,
++				      vaddr6,
++				      sizeof(struct sockaddr_in6));
++		default:
++			return -1;
++		}
++	}
++	default:
++		return -1; /* don't expect to be here */
++	}
++}
++
+ /*
+  * Returns true if srcaddr isn't specified and rhs isn't specified, or
+  * if srcaddr is specified and matches the IP address of the rhs argument
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index e6a191a7499e8..bcd4c3a507601 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -511,6 +511,43 @@ smb3_negotiate_rsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
+ 	return rsize;
+ }
+ 
++/*
++ * compare two interfaces a and b
++ * return 0 if everything matches.
++ * return 1 if a is rdma capable, or rss capable, or has higher link speed
++ * return -1 otherwise.
++ */
++static int
++iface_cmp(struct cifs_server_iface *a, struct cifs_server_iface *b)
++{
++	int cmp_ret = 0;
++
++	WARN_ON(!a || !b);
++	if (a->rdma_capable == b->rdma_capable) {
++		if (a->rss_capable == b->rss_capable) {
++			if (a->speed == b->speed) {
++				cmp_ret = cifs_ipaddr_cmp((struct sockaddr *) &a->sockaddr,
++							  (struct sockaddr *) &b->sockaddr);
++				if (!cmp_ret)
++					return 0;
++				else if (cmp_ret > 0)
++					return 1;
++				else
++					return -1;
++			} else if (a->speed > b->speed)
++				return 1;
++			else
++				return -1;
++		} else if (a->rss_capable > b->rss_capable)
++			return 1;
++		else
++			return -1;
++	} else if (a->rdma_capable > b->rdma_capable)
++		return 1;
++	else
++		return -1;
++}
++
+ static int
+ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
+ 			size_t buf_len, struct cifs_ses *ses, bool in_mount)
 -- 
 2.40.1
 
