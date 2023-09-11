@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3673579AD24
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34EC779B3B9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242272AbjIKVHX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46148 "EHLO
+        id S1358006AbjIKWHR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239748AbjIKO1w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:52 -0400
+        with ESMTP id S238404AbjIKNzn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11249F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A42CC433C8;
-        Mon, 11 Sep 2023 14:27:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0E31FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E72C433C8;
+        Mon, 11 Sep 2023 13:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442467;
-        bh=Lp/VKQAj3gLyBKmDgGgoljehNbQ7uqcUX1oqFeG1r7E=;
+        s=korg; t=1694440537;
+        bh=EtCQ270Lx5fX9Ipapv/hb5GV7tKpAX8wtyiye1V0xsM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pU+n3AGpzup5fWeuOx+p7oUg8w7LJ2RgM6t65VHjcPS1J9uCABSouDkQ4jD2oERQH
-         PZtqrpTckT+SQJnR6HjpPfZHfG1DL1knqkRTdr136HBDJJtp4akUyjZwniP+RLghIr
-         6L35a9twX6D6c3mmIXxUOJyBg7pguuL5FaOaU2Po=
+        b=JmGfu4vkrCVDjbYy5l4fnw8ttuhBbf+hnj5NFU6YiJ/EKaVqNzXcvun8hsIbxQr6r
+         wGFHi0qH238HjP+LEh9q+i3npik2zla3cgKXngxE+P7s/b8Fy3mdJo8HBiZMl81ceQ
+         lUlqjGT1ervRuI+uKFuY9apXv51vmc1MbLHulDcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kristian Angelov <kristiana2000@abv.bg>,
-        "Luke D. Jones" <luke@ljones.dev>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 036/737] platform/x86: asus-wmi: Fix setting RGB mode on some TUF laptops
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 096/739] wifi: mt76: testmode: add nla_policy for MT76_TM_ATTR_TX_LENGTH
 Date:   Mon, 11 Sep 2023 15:38:15 +0200
-Message-ID: <20230911134651.425179508@linuxfoundation.org>
+Message-ID: <20230911134653.784519155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kristian Angelov <kristiana2000@abv.bg>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 6a758a3e831ce1a84c9c209ac6dc755f4c8ce77a ]
+[ Upstream commit 74f12d511625e603fac8c0c2b6872e687e56dd61 ]
 
-This patch fixes setting the cmd values to 0xb3 and 0xb4.
-This is necessary on some TUF laptops in order to set the RGB mode.
+It seems that the nla_policy in mt76_tm_policy is missed for attribute
+MT76_TM_ATTR_TX_LENGTH. This patch adds the correct description to make
+sure the
 
-Closes: https://lore.kernel.org/platform-driver-x86/443078148.491022.1677576298133@nm83.abv.bg
-Signed-off-by: Kristian Angelov <kristiana2000@abv.bg>
-Reviewed-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/ZLlS7o6UdTUBkyqa@wyvern.localdomain
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+  u32 val = nla_get_u32(tb[MT76_TM_ATTR_TX_LENGTH]);
+
+in function mt76_testmode_cmd() is safe and will not result in
+out-of-attribute read.
+
+Fixes: f0efa8621550 ("mt76: add API for testmode support")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/testmode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 1038dfdcdd325..8bef66a2f0ce7 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -738,13 +738,23 @@ static ssize_t kbd_rgb_mode_store(struct device *dev,
- 				 struct device_attribute *attr,
- 				 const char *buf, size_t count)
- {
--	u32 cmd, mode, r, g,  b,  speed;
-+	u32 cmd, mode, r, g, b, speed;
- 	int err;
- 
- 	if (sscanf(buf, "%d %d %d %d %d %d", &cmd, &mode, &r, &g, &b, &speed) != 6)
- 		return -EINVAL;
- 
--	cmd = !!cmd;
-+	/* B3 is set and B4 is save to BIOS */
-+	switch (cmd) {
-+	case 0:
-+		cmd = 0xb3;
-+		break;
-+	case 1:
-+		cmd = 0xb4;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
- 
- 	/* These are the known usable modes across all TUF/ROG */
- 	if (mode >= 12 || mode == 9)
+diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
+index 0accc71a91c9a..4644dace9bb34 100644
+--- a/drivers/net/wireless/mediatek/mt76/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/testmode.c
+@@ -8,6 +8,7 @@ const struct nla_policy mt76_tm_policy[NUM_MT76_TM_ATTRS] = {
+ 	[MT76_TM_ATTR_RESET] = { .type = NLA_FLAG },
+ 	[MT76_TM_ATTR_STATE] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_COUNT] = { .type = NLA_U32 },
++	[MT76_TM_ATTR_TX_LENGTH] = { .type = NLA_U32 },
+ 	[MT76_TM_ATTR_TX_RATE_MODE] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_RATE_NSS] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_RATE_IDX] = { .type = NLA_U8 },
 -- 
 2.40.1
 
