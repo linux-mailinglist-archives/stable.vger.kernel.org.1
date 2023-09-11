@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF3B479C08E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29AC279B6B6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358130AbjIKWHw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54314 "EHLO
+        id S1359560AbjIKWRp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:17:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240121AbjIKOhF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:05 -0400
+        with ESMTP id S241254AbjIKPFJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62B18F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B37C433C7;
-        Mon, 11 Sep 2023 14:36:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F28B1B9;
+        Mon, 11 Sep 2023 08:05:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57F0C433C8;
+        Mon, 11 Sep 2023 15:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443020;
-        bh=tM/VbfWaSJjGqJVAE2a9DhmSMTw089Dje6K0HT+g01s=;
+        s=korg; t=1694444705;
+        bh=Eke6vzY+4rv3Xy5ZQ8sgEBGPJaRRvS9QwFVpXs9ynYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x+WX+DdSr88UN1ams4d1Xc9/Sd+N1z35LdFifmpUsJd22yx5nkWBHHG5ecpVQkS3r
-         X42GxT66LY8P5DiRpE29l2dotR+CsuqMbcuqhQISCg4Rq5RiBpZu+psuBa2s+sQFVR
-         UJLZ4nWdhORDiayYYGmK1Bpi8n7R4tDCqB6YAG0Q=
+        b=mR1j40N6Mo/GBUimiWdSGuTRNfX86PhlDozup+mk7Y0A2Yn6Mnb6N0jVvXLHuuIOs
+         qjBChOPcqdJjyQitFKq3pQTfGhs1KS/xnada9elSfQazJqs5Ro3+WPgcnEkUraGY8D
+         9aLQdRb2h9IiM1q0UeNCqkpV6LcFDE/2zP9kOAlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 229/737] ARM: dts: Add .dts files missing from the build
-Date:   Mon, 11 Sep 2023 15:41:28 +0200
-Message-ID: <20230911134656.974169448@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Baoquan He <bhe@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+        dmaengine@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/600] idmaengine: make FSL_EDMA and INTEL_IDMA64 depends on HAS_IOMEM
+Date:   Mon, 11 Sep 2023 15:41:29 +0200
+Message-ID: <20230911134635.279688322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,72 +50,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 86684c2481b6e6a46c2282acee13554e34e66071 ]
+[ Upstream commit b1e213a9e31c20206f111ec664afcf31cbfe0dbb ]
 
-Comparing .dts files to built .dtb files yielded a few .dts files which
-are never built. Add them to the build.
+On s390 systems (aka mainframes), it has classic channel devices for
+networking and permanent storage that are currently even more common
+than PCI devices. Hence it could have a fully functional s390 kernel
+with CONFIG_PCI=n, then the relevant iomem mapping functions
+[including ioremap(), devm_ioremap(), etc.] are not available.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 92632115fb57 ("samples/bpf: fix bio latency check with tracepoint")
+Here let FSL_EDMA and INTEL_IDMA64 depend on HAS_IOMEM so that it
+won't be built to cause below compiling error if PCI is unset.
+
+--------
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/dma/fsl-edma.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/dma/idma64.ko] undefined!
+--------
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306211329.ticOJCSv-lkp@intel.com/
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: dmaengine@vger.kernel.org
+Link: https://lore.kernel.org/r/20230707135852.24292-2-bhe@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/Makefile | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/dma/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 59829fc903152..3cf1bf724e8ed 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -335,6 +335,7 @@ dtb-$(CONFIG_MACH_KIRKWOOD) += \
- 	kirkwood-iconnect.dtb \
- 	kirkwood-iomega_ix2_200.dtb \
- 	kirkwood-is2.dtb \
-+	kirkwood-km_fixedeth.dtb \
- 	kirkwood-km_kirkwood.dtb \
- 	kirkwood-l-50.dtb \
- 	kirkwood-laplug.dtb \
-@@ -880,7 +881,10 @@ dtb-$(CONFIG_ARCH_OMAP3) += \
- 	am3517-craneboard.dtb \
- 	am3517-evm.dtb \
- 	am3517_mt_ventoux.dtb \
-+	logicpd-torpedo-35xx-devkit.dtb \
- 	logicpd-torpedo-37xx-devkit.dtb \
-+	logicpd-torpedo-37xx-devkit-28.dtb \
-+	logicpd-som-lv-35xx-devkit.dtb \
- 	logicpd-som-lv-37xx-devkit.dtb \
- 	omap3430-sdp.dtb \
- 	omap3-beagle.dtb \
-@@ -1561,6 +1565,8 @@ dtb-$(CONFIG_MACH_ARMADA_38X) += \
- 	armada-388-helios4.dtb \
- 	armada-388-rd.dtb
- dtb-$(CONFIG_MACH_ARMADA_39X) += \
-+	armada-390-db.dtb \
-+	armada-395-gp.dtb \
- 	armada-398-db.dtb
- dtb-$(CONFIG_MACH_ARMADA_XP) += \
- 	armada-xp-axpwifiap.dtb \
-@@ -1590,6 +1596,7 @@ dtb-$(CONFIG_MACH_DOVE) += \
- dtb-$(CONFIG_ARCH_MEDIATEK) += \
- 	mt2701-evb.dtb \
- 	mt6580-evbp1.dtb \
-+	mt6582-prestigio-pmt5008-3g.dtb \
- 	mt6589-aquaris5.dtb \
- 	mt6589-fairphone-fp1.dtb \
- 	mt6592-evb.dtb \
-@@ -1645,6 +1652,7 @@ dtb-$(CONFIG_ARCH_ASPEED) += \
- 	aspeed-bmc-intel-s2600wf.dtb \
- 	aspeed-bmc-inspur-fp5280g2.dtb \
- 	aspeed-bmc-inspur-nf5280m6.dtb \
-+	aspeed-bmc-inspur-on5263m5.dtb \
- 	aspeed-bmc-lenovo-hr630.dtb \
- 	aspeed-bmc-lenovo-hr855xg2.dtb \
- 	aspeed-bmc-microsoft-olympus.dtb \
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+index b64ae02c26f8c..81de833ccd041 100644
+--- a/drivers/dma/Kconfig
++++ b/drivers/dma/Kconfig
+@@ -210,6 +210,7 @@ config FSL_DMA
+ config FSL_EDMA
+ 	tristate "Freescale eDMA engine support"
+ 	depends on OF
++	depends on HAS_IOMEM
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
+@@ -279,6 +280,7 @@ config IMX_SDMA
+ 
+ config INTEL_IDMA64
+ 	tristate "Intel integrated DMA 64-bit support"
++	depends on HAS_IOMEM
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
 -- 
 2.40.1
 
