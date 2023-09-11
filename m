@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 495E379AD77
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF65079B1F3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348916AbjIKVbn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48028 "EHLO
+        id S239778AbjIKVaw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241418AbjIKPIL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:11 -0400
+        with ESMTP id S238947AbjIKOII (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C867FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCE0C433C7;
-        Mon, 11 Sep 2023 15:08:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94757CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A102C433C8;
+        Mon, 11 Sep 2023 14:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444887;
-        bh=1/BGC3fzy5QMs9ZMNP0G4fCVxzZ5egtEATH38cCiP4Y=;
+        s=korg; t=1694441283;
+        bh=Go7U/GeEHbpTRkOtrPuk/+4F1qDWNRBalBtO/VcpENY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=elqjmeRBlKe3LEs1BB0pkcHIozjcTm6GPXrOtKpylhAp4dJbXQJlCpdPE/6puY2P+
-         YfZ8ZHsVA6/ZGSn65kUUF/Ai/JOTl//M27qlonuGHGR9udmA7mc2PEeBOeFPfLQQQU
-         gvl20DeqFI3KhjBdH8o4vodRNLfNlMBZuN+WkULk=
+        b=sscNi6m4fhtM23iiYZxuVcOqEPFAOpeBz5MZIskLzZgYpRkNRVYCwQ27elx5clc72
+         63ZU7suw2sW2iSuNVujutepJg1dZECbly85t/bubdsSXNr4WprGlJxarQ3WEjGnEmY
+         Gbk7dp9uZMO1pFvaTeRjNFbY6xt1sQoUsdrCQcrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Xueshi Hu <xueshi.hu@smartx.com>, Song Liu <song@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/600] s390/pkey: fix/harmonize internal keyblob headers
-Date:   Mon, 11 Sep 2023 15:42:37 +0200
-Message-ID: <20230911134637.275553262@linuxfoundation.org>
+Subject: [PATCH 6.5 359/739] md/raid1: hold the barrier until handle_read_error() finishes
+Date:   Mon, 11 Sep 2023 15:42:38 +0200
+Message-ID: <20230911134701.168164940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,91 +50,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Xueshi Hu <xueshi.hu@smartx.com>
 
-[ Upstream commit 37a08f010b7c423b5e4c9ed3b187d21166553007 ]
+[ Upstream commit c069da449a13669ffa754fd971747e7e17e7d691 ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES as a supplement to
-PKEY_TYPE_EP11. All pkeys have an internal header/payload structure,
-which is opaque to the userspace. The header structures for
-PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES are nearly identical and there
-is no reason, why different structures are used. In preparation to fix
-the keyversion handling in the broken PKEY IOCTLs, the same header
-structure is used for PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES. This
-reduces the number of different code paths and increases the
-readability.
+handle_read_error() will call allow_barrier() to match the former barrier
+raising. However, it should put the allow_barrier() at the end to avoid a
+concurrent raid reshape.
 
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 689389a06ce7 ("md/raid1: simplify handle_read_error().")
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xueshi Hu <xueshi.hu@smartx.com>
+Link: https://lore.kernel.org/r/20230814135356.1113639-4-xueshi.hu@smartx.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/pkey_api.c        | 2 +-
- drivers/s390/crypto/zcrypt_ep11misc.c | 4 ++--
- drivers/s390/crypto/zcrypt_ep11misc.h | 9 +--------
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/md/raid1.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index a8def50c149bd..e650df3fe7ccb 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -747,7 +747,7 @@ static int pkey_verifykey2(const u8 *key, size_t keylen,
- 		if (ktype)
- 			*ktype = PKEY_TYPE_EP11;
- 		if (ksize)
--			*ksize = kb->head.keybitlen;
-+			*ksize = kb->head.bitlen;
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index f6a33c7824a70..733518a37516b 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -2498,6 +2498,7 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
+ 	struct mddev *mddev = conf->mddev;
+ 	struct bio *bio;
+ 	struct md_rdev *rdev;
++	sector_t sector;
  
- 		rc = ep11_findcard2(&_apqns, &_nr_apqns, *cardnr, *domain,
- 				    ZCRYPT_CEX7, EP11_API_V, kb->wkvp);
-diff --git a/drivers/s390/crypto/zcrypt_ep11misc.c b/drivers/s390/crypto/zcrypt_ep11misc.c
-index b1c29017be5bc..497de7faa2fc5 100644
---- a/drivers/s390/crypto/zcrypt_ep11misc.c
-+++ b/drivers/s390/crypto/zcrypt_ep11misc.c
-@@ -787,7 +787,7 @@ int ep11_genaeskey(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
- 	kb->head.type = TOKTYPE_NON_CCA;
- 	kb->head.len = rep_pl->data_len;
- 	kb->head.version = TOKVER_EP11_AES;
--	kb->head.keybitlen = keybitsize;
-+	kb->head.bitlen = keybitsize;
+ 	clear_bit(R1BIO_ReadError, &r1_bio->state);
+ 	/* we got a read error. Maybe the drive is bad.  Maybe just
+@@ -2527,12 +2528,13 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
+ 	}
  
- out:
- 	kfree(req);
-@@ -1055,7 +1055,7 @@ static int ep11_unwrapkey(u16 card, u16 domain,
- 	kb->head.type = TOKTYPE_NON_CCA;
- 	kb->head.len = rep_pl->data_len;
- 	kb->head.version = TOKVER_EP11_AES;
--	kb->head.keybitlen = keybitsize;
-+	kb->head.bitlen = keybitsize;
+ 	rdev_dec_pending(rdev, conf->mddev);
+-	allow_barrier(conf, r1_bio->sector);
++	sector = r1_bio->sector;
+ 	bio = r1_bio->master_bio;
  
- out:
- 	kfree(req);
-diff --git a/drivers/s390/crypto/zcrypt_ep11misc.h b/drivers/s390/crypto/zcrypt_ep11misc.h
-index 07445041869fe..912b3918c10a1 100644
---- a/drivers/s390/crypto/zcrypt_ep11misc.h
-+++ b/drivers/s390/crypto/zcrypt_ep11misc.h
-@@ -29,14 +29,7 @@ struct ep11keyblob {
- 	union {
- 		u8 session[32];
- 		/* only used for PKEY_TYPE_EP11: */
--		struct {
--			u8  type;      /* 0x00 (TOKTYPE_NON_CCA) */
--			u8  res0;      /* unused */
--			u16 len;       /* total length in bytes of this blob */
--			u8  version;   /* 0x03 (TOKVER_EP11_AES) */
--			u8  res1;      /* unused */
--			u16 keybitlen; /* clear key bit len, 0 for unknown */
--		} head;
-+		struct ep11kblob_header head;
- 	};
- 	u8  wkvp[16];  /* wrapping key verification pattern */
- 	u64 attr;      /* boolean key attributes */
+ 	/* Reuse the old r1_bio so that the IO_BLOCKED settings are preserved */
+ 	r1_bio->state = 0;
+ 	raid1_read_request(mddev, bio, r1_bio->sectors, r1_bio);
++	allow_barrier(conf, sector);
+ }
+ 
+ static void raid1d(struct md_thread *thread)
 -- 
 2.40.1
 
