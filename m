@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 467D779B0C8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9637879B4BA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239599AbjIKUzO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42570 "EHLO
+        id S244942AbjIKVIb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239686AbjIKO0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:19 -0400
+        with ESMTP id S242184AbjIKPY3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6FBDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866FAC433C8;
-        Mon, 11 Sep 2023 14:26:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADE3D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF9AC433C9;
+        Mon, 11 Sep 2023 15:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442373;
-        bh=n2HhWCeDIZuQasx8dXMEvXZZforiPUgEGvbYxwy3AzA=;
+        s=korg; t=1694445864;
+        bh=CSXpfohoS/xwbyH/oG2Lhh0aIidP5YclDJcxKCWShYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p1QmK6LPUHg1ht4RVcnpNQN0iCye5JEW7KRYyUv+E991NoMrNdD2sHQFvLqFc92Ol
-         99Gtvn8/p8chvG4H4HlpDr6Jcfdn/ZMTcCGjScU1wmBDeW+x8hFPQ0A3bP/obbCj8W
-         eFluOjxFHHrbylteFldBBQdccuxTH/hhz54JVSNA=
+        b=RRz3llodhmmP1Z4TgcnuYvqHeefOe7WI4OacbSaGvNG0EdoHwGmhGszjvRwpwOaTa
+         GFxTsyJbyLZVlNPjifCZm+UY8IHlWWKUcMAoA0LKg1KdrxmtYW4w4DrzJHl5Iw6KUZ
+         YZ5C3bM2pEAhmGYytXtwsL7tWF/v1zyK9BWqCfrk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>,
-        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 732/739] serial: sc16is7xx: fix regression with GPIO configuration
-Date:   Mon, 11 Sep 2023 15:48:51 +0200
-Message-ID: <20230911134711.508791399@linuxfoundation.org>
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 499/600] tracing: Fix race issue between cpu buffer write and swap
+Date:   Mon, 11 Sep 2023 15:48:52 +0200
+Message-ID: <20230911134648.357406503@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,289 +51,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 0499942928341d572a42199580433c2b0725211e ]
+[ Upstream commit 3163f635b20e9e1fb4659e74f47918c9dddfe64e ]
 
-Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-changed the function of the GPIOs pins to act as modem control
-lines without any possibility of selecting GPIO function.
+Warning happened in rb_end_commit() at code:
+	if (RB_WARN_ON(cpu_buffer, !local_read(&cpu_buffer->committing)))
 
-As a consequence, applications that depends on GPIO lines configured
-by default as GPIO pins no longer work as expected.
+  WARNING: CPU: 0 PID: 139 at kernel/trace/ring_buffer.c:3142
+	rb_commit+0x402/0x4a0
+  Call Trace:
+   ring_buffer_unlock_commit+0x42/0x250
+   trace_buffer_unlock_commit_regs+0x3b/0x250
+   trace_event_buffer_commit+0xe5/0x440
+   trace_event_buffer_reserve+0x11c/0x150
+   trace_event_raw_event_sched_switch+0x23c/0x2c0
+   __traceiter_sched_switch+0x59/0x80
+   __schedule+0x72b/0x1580
+   schedule+0x92/0x120
+   worker_thread+0xa0/0x6f0
 
-Also, the change to select modem control lines function was done only
-for channel A of dual UART variants (752/762). This was not documented
-in the log message.
+It is because the race between writing event into cpu buffer and swapping
+cpu buffer through file per_cpu/cpu0/snapshot:
 
-Allow to specify GPIO or modem control line function in the device
-tree, and for each of the ports (A or B).
+  Write on CPU 0             Swap buffer by per_cpu/cpu0/snapshot on CPU 1
+  --------                   --------
+                             tracing_snapshot_write()
+                               [...]
 
-Do so by using the new device-tree property named
-"nxp,modem-control-line-ports" (property added in separate patch).
+  ring_buffer_lock_reserve()
+    cpu_buffer = buffer->buffers[cpu]; // 1. Suppose find 'cpu_buffer_a';
+    [...]
+    rb_reserve_next_event()
+      [...]
 
-When registering GPIO chip controller, mask-out GPIO pins declared as
-modem control lines according to this new DT property.
+                               ring_buffer_swap_cpu()
+                                 if (local_read(&cpu_buffer_a->committing))
+                                     goto out_dec;
+                                 if (local_read(&cpu_buffer_b->committing))
+                                     goto out_dec;
+                                 buffer_a->buffers[cpu] = cpu_buffer_b;
+                                 buffer_b->buffers[cpu] = cpu_buffer_a;
+                                 // 2. cpu_buffer has swapped here.
 
-Fixes: 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-Fixes: 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230807214556.540627-5-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+      rb_start_commit(cpu_buffer);
+      if (unlikely(READ_ONCE(cpu_buffer->buffer)
+          != buffer)) { // 3. This check passed due to 'cpu_buffer->buffer'
+        [...]           //    has not changed here.
+        return NULL;
+      }
+                                 cpu_buffer_b->buffer = buffer_a;
+                                 cpu_buffer_a->buffer = buffer_b;
+                                 [...]
+
+      // 4. Reserve event from 'cpu_buffer_a'.
+
+  ring_buffer_unlock_commit()
+    [...]
+    cpu_buffer = buffer->buffers[cpu]; // 5. Now find 'cpu_buffer_b' !!!
+    rb_commit(cpu_buffer)
+      rb_end_commit()  // 6. WARN for the wrong 'committing' state !!!
+
+Based on above analysis, we can easily reproduce by following testcase:
+  ``` bash
+  #!/bin/bash
+
+  dmesg -n 7
+  sysctl -w kernel.panic_on_warn=1
+  TR=/sys/kernel/tracing
+  echo 7 > ${TR}/buffer_size_kb
+  echo "sched:sched_switch" > ${TR}/set_event
+  while [ true ]; do
+          echo 1 > ${TR}/per_cpu/cpu0/snapshot
+  done &
+  while [ true ]; do
+          echo 1 > ${TR}/per_cpu/cpu0/snapshot
+  done &
+  while [ true ]; do
+          echo 1 > ${TR}/per_cpu/cpu0/snapshot
+  done &
+  ```
+
+To fix it, IIUC, we can use smp_call_function_single() to do the swap on
+the target cpu where the buffer is located, so that above race would be
+avoided.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230831132739.4070878-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Fixes: f1affcaaa861 ("tracing: Add snapshot in the per_cpu trace directories")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 143 +++++++++++++++++++++++++--------
- 1 file changed, 108 insertions(+), 35 deletions(-)
+ kernel/trace/trace.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index f714ba3abc980..289ca7d4e5669 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -236,7 +236,8 @@
- 
- /* IOControl register bits (Only 750/760) */
- #define SC16IS7XX_IOCONTROL_LATCH_BIT	(1 << 0) /* Enable input latching */
--#define SC16IS7XX_IOCONTROL_MODEM_BIT	(1 << 1) /* Enable GPIO[7:4] as modem pins */
-+#define SC16IS7XX_IOCONTROL_MODEM_A_BIT	(1 << 1) /* Enable GPIO[7:4] as modem A pins */
-+#define SC16IS7XX_IOCONTROL_MODEM_B_BIT	(1 << 2) /* Enable GPIO[3:0] as modem B pins */
- #define SC16IS7XX_IOCONTROL_SRESET_BIT	(1 << 3) /* Software Reset */
- 
- /* EFCR register bits */
-@@ -301,12 +302,12 @@
- /* Misc definitions */
- #define SC16IS7XX_FIFO_SIZE		(64)
- #define SC16IS7XX_REG_SHIFT		2
-+#define SC16IS7XX_GPIOS_PER_BANK	4
- 
- struct sc16is7xx_devtype {
- 	char	name[10];
- 	int	nr_gpio;
- 	int	nr_uart;
--	int	has_mctrl;
- };
- 
- #define SC16IS7XX_RECONF_MD		(1 << 0)
-@@ -336,7 +337,9 @@ struct sc16is7xx_port {
- 	struct clk			*clk;
- #ifdef CONFIG_GPIOLIB
- 	struct gpio_chip		gpio;
-+	unsigned long			gpio_valid_mask;
- #endif
-+	u8				mctrl_mask;
- 	unsigned char			buf[SC16IS7XX_FIFO_SIZE];
- 	struct kthread_worker		kworker;
- 	struct task_struct		*kworker_task;
-@@ -447,35 +450,30 @@ static const struct sc16is7xx_devtype sc16is74x_devtype = {
- 	.name		= "SC16IS74X",
- 	.nr_gpio	= 0,
- 	.nr_uart	= 1,
--	.has_mctrl	= 0,
- };
- 
- static const struct sc16is7xx_devtype sc16is750_devtype = {
- 	.name		= "SC16IS750",
--	.nr_gpio	= 4,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 1,
--	.has_mctrl	= 1,
- };
- 
- static const struct sc16is7xx_devtype sc16is752_devtype = {
- 	.name		= "SC16IS752",
--	.nr_gpio	= 0,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 2,
--	.has_mctrl	= 1,
- };
- 
- static const struct sc16is7xx_devtype sc16is760_devtype = {
- 	.name		= "SC16IS760",
--	.nr_gpio	= 4,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 1,
--	.has_mctrl	= 1,
- };
- 
- static const struct sc16is7xx_devtype sc16is762_devtype = {
- 	.name		= "SC16IS762",
--	.nr_gpio	= 0,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 2,
--	.has_mctrl	= 1,
- };
- 
- static bool sc16is7xx_regmap_volatile(struct device *dev, unsigned int reg)
-@@ -1357,8 +1355,98 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
- 
- 	return 0;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index e581253ecc535..5d0465ae7be8c 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7516,6 +7516,11 @@ static int tracing_snapshot_open(struct inode *inode, struct file *file)
+ 	return ret;
  }
-+
-+static int sc16is7xx_gpio_init_valid_mask(struct gpio_chip *chip,
-+					  unsigned long *valid_mask,
-+					  unsigned int ngpios)
+ 
++static void tracing_swap_cpu_buffer(void *tr)
 +{
-+	struct sc16is7xx_port *s = gpiochip_get_data(chip);
-+
-+	*valid_mask = s->gpio_valid_mask;
-+
-+	return 0;
++	update_max_tr_single((struct trace_array *)tr, current, smp_processor_id());
 +}
 +
-+static int sc16is7xx_setup_gpio_chip(struct sc16is7xx_port *s)
-+{
-+	struct device *dev = s->p[0].port.dev;
-+
-+	if (!s->devtype->nr_gpio)
-+		return 0;
-+
-+	switch (s->mctrl_mask) {
-+	case 0:
-+		s->gpio_valid_mask = GENMASK(7, 0);
-+		break;
-+	case SC16IS7XX_IOCONTROL_MODEM_A_BIT:
-+		s->gpio_valid_mask = GENMASK(3, 0);
-+		break;
-+	case SC16IS7XX_IOCONTROL_MODEM_B_BIT:
-+		s->gpio_valid_mask = GENMASK(7, 4);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	if (s->gpio_valid_mask == 0)
-+		return 0;
-+
-+	s->gpio.owner		 = THIS_MODULE;
-+	s->gpio.parent		 = dev;
-+	s->gpio.label		 = dev_name(dev);
-+	s->gpio.init_valid_mask	 = sc16is7xx_gpio_init_valid_mask;
-+	s->gpio.direction_input	 = sc16is7xx_gpio_direction_input;
-+	s->gpio.get		 = sc16is7xx_gpio_get;
-+	s->gpio.direction_output = sc16is7xx_gpio_direction_output;
-+	s->gpio.set		 = sc16is7xx_gpio_set;
-+	s->gpio.base		 = -1;
-+	s->gpio.ngpio		 = s->devtype->nr_gpio;
-+	s->gpio.can_sleep	 = 1;
-+
-+	return gpiochip_add_data(&s->gpio, s);
-+}
- #endif
- 
-+/*
-+ * Configure ports designated to operate as modem control lines.
-+ */
-+static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
-+{
-+	int i;
-+	int ret;
-+	int count;
-+	u32 mctrl_port[2];
-+	struct device *dev = s->p[0].port.dev;
-+
-+	count = device_property_count_u32(dev, "nxp,modem-control-line-ports");
-+	if (count < 0 || count > ARRAY_SIZE(mctrl_port))
-+		return 0;
-+
-+	ret = device_property_read_u32_array(dev, "nxp,modem-control-line-ports",
-+					     mctrl_port, count);
-+	if (ret)
-+		return ret;
-+
-+	s->mctrl_mask = 0;
-+
-+	for (i = 0; i < count; i++) {
-+		/* Use GPIO lines as modem control lines */
-+		if (mctrl_port[i] == 0)
-+			s->mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_A_BIT;
-+		else if (mctrl_port[i] == 1)
-+			s->mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_B_BIT;
-+	}
-+
-+	if (s->mctrl_mask)
-+		regmap_update_bits(
-+			s->regmap,
-+			SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
-+			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
-+			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
-+
-+	return 0;
-+}
-+
- static const struct serial_rs485 sc16is7xx_rs485_supported = {
- 	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND,
- 	.delay_rts_before_send = 1,
-@@ -1471,12 +1559,6 @@ static int sc16is7xx_probe(struct device *dev,
- 				     SC16IS7XX_EFCR_RXDISABLE_BIT |
- 				     SC16IS7XX_EFCR_TXDISABLE_BIT);
- 
--		/* Use GPIO lines as modem status registers */
--		if (devtype->has_mctrl)
--			sc16is7xx_port_write(&s->p[i].port,
--					     SC16IS7XX_IOCONTROL_REG,
--					     SC16IS7XX_IOCONTROL_MODEM_BIT);
--
- 		/* Initialize kthread work structs */
- 		kthread_init_work(&s->p[i].tx_work, sc16is7xx_tx_proc);
- 		kthread_init_work(&s->p[i].reg_work, sc16is7xx_reg_proc);
-@@ -1514,23 +1596,14 @@ static int sc16is7xx_probe(struct device *dev,
- 				s->p[u].irda_mode = true;
- 	}
- 
-+	ret = sc16is7xx_setup_mctrl_ports(s);
-+	if (ret)
-+		goto out_ports;
-+
- #ifdef CONFIG_GPIOLIB
--	if (devtype->nr_gpio) {
--		/* Setup GPIO cotroller */
--		s->gpio.owner		 = THIS_MODULE;
--		s->gpio.parent		 = dev;
--		s->gpio.label		 = dev_name(dev);
--		s->gpio.direction_input	 = sc16is7xx_gpio_direction_input;
--		s->gpio.get		 = sc16is7xx_gpio_get;
--		s->gpio.direction_output = sc16is7xx_gpio_direction_output;
--		s->gpio.set		 = sc16is7xx_gpio_set;
--		s->gpio.base		 = -1;
--		s->gpio.ngpio		 = devtype->nr_gpio;
--		s->gpio.can_sleep	 = 1;
--		ret = gpiochip_add_data(&s->gpio, s);
--		if (ret)
--			goto out_ports;
--	}
-+	ret = sc16is7xx_setup_gpio_chip(s);
-+	if (ret)
-+		goto out_ports;
- #endif
- 
- 	/*
-@@ -1553,7 +1626,7 @@ static int sc16is7xx_probe(struct device *dev,
- 		return 0;
- 
- #ifdef CONFIG_GPIOLIB
--	if (devtype->nr_gpio)
-+	if (s->gpio_valid_mask)
- 		gpiochip_remove(&s->gpio);
- #endif
- 
-@@ -1577,7 +1650,7 @@ static void sc16is7xx_remove(struct device *dev)
- 	int i;
- 
- #ifdef CONFIG_GPIOLIB
--	if (s->devtype->nr_gpio)
-+	if (s->gpio_valid_mask)
- 		gpiochip_remove(&s->gpio);
- #endif
- 
+ static ssize_t
+ tracing_snapshot_write(struct file *filp, const char __user *ubuf, size_t cnt,
+ 		       loff_t *ppos)
+@@ -7574,13 +7579,15 @@ tracing_snapshot_write(struct file *filp, const char __user *ubuf, size_t cnt,
+ 			ret = tracing_alloc_snapshot_instance(tr);
+ 		if (ret < 0)
+ 			break;
+-		local_irq_disable();
+ 		/* Now, we're going to swap */
+-		if (iter->cpu_file == RING_BUFFER_ALL_CPUS)
++		if (iter->cpu_file == RING_BUFFER_ALL_CPUS) {
++			local_irq_disable();
+ 			update_max_tr(tr, current, smp_processor_id(), NULL);
+-		else
+-			update_max_tr_single(tr, current, iter->cpu_file);
+-		local_irq_enable();
++			local_irq_enable();
++		} else {
++			smp_call_function_single(iter->cpu_file, tracing_swap_cpu_buffer,
++						 (void *)tr, 1);
++		}
+ 		break;
+ 	default:
+ 		if (tr->allocated_snapshot) {
 -- 
 2.40.1
 
