@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D52979BD9F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EC6779BF72
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345751AbjIKVWI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44330 "EHLO
+        id S243136AbjIKU7J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239781AbjIKO2d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:33 -0400
+        with ESMTP id S238422AbjIKN4Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 588F5F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0966C433C8;
-        Mon, 11 Sep 2023 14:28:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DCE110E
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0D9C433CD;
+        Mon, 11 Sep 2023 13:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442508;
-        bh=j58lyBJushbWTmyjqH9m3+186XAsAvMZWsHWVfVWjeE=;
+        s=korg; t=1694440570;
+        bh=d7gHxjsj1c8DPKBTzSonpFqZQfhxI83XeVK1cm99acg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D/1ExaKjJKkZhHvy0LNKor4hiHFU4wlfUJ+IkWZRJDBMIsvYapTf1zG4s4qmS3G43
-         5nCPEsm9zCIYhOLGhjm9FKgqCHukkluhnj+v3J1H/c4iJ0KvrYXTlN5eJgeDpqOxXl
-         1S6nx7QGIo+dYOP4strh0bsU/CYwF5DJkJnTYecs=
+        b=MYin2MOFO0wwFGVR71TvJQPPrIVMd2TxGoQYoaqrx/NFVlgWQABd2bPwJWcxHTS/V
+         EFq46ydrU5Tys/yTky1y7UmXM8IzhS/rn3WOyQyNA+17lbNzK5Lhy7oMwHZ8mYa+tm
+         GTWgjv4U/pGQae5oMHz8SUQu886/av8nx030oolk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 022/737] s390/dasd: use correct number of retries for ERP requests
+        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 082/739] wifi: mt76: mt7915: rework tx packets counting when WED is active
 Date:   Mon, 11 Sep 2023 15:38:01 +0200
-Message-ID: <20230911134650.972571058@linuxfoundation.org>
+Message-ID: <20230911134653.402984466@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +50,219 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit acea28a6b74f458defda7417d2217b051ba7d444 ]
+[ Upstream commit 161a7528e4074d104305fc109c16134b4990070e ]
 
-If a DASD request fails an error recovery procedure (ERP) request might
-be built as a copy of the original request to do error recovery.
+PPDU TxS can only report MPDU count whereas mac80211 requires MSDU scale
+(NL80211_STA_INFO_TX_PACKETS), so switch to get MSDU counts from WA
+statistic.
 
-The ERP request gets a number of retries assigned.
-This number is always 256 no matter what other value might have been set
-for the original request. This is not what is expected when a user
-specifies a certain amount of retries for the device via sysfs.
+Note that mt7915 WA firmware only counts tx_packet for WED path, so driver
+needs to take care of host path additionally.
 
-Correctly use the number of retries of the original request for ERP
-requests.
-
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230721193647.3889634-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 43eaa3689507 ("wifi: mt76: add PPDU based TxS support for WED device")
+Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd_3990_erp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  2 +-
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |  9 ++-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  6 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 74 +++++++++++++++++--
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
+ 6 files changed, 79 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/s390/block/dasd_3990_erp.c b/drivers/s390/block/dasd_3990_erp.c
-index f0f210627cadf..89957bb7244d2 100644
---- a/drivers/s390/block/dasd_3990_erp.c
-+++ b/drivers/s390/block/dasd_3990_erp.c
-@@ -2441,7 +2441,7 @@ static struct dasd_ccw_req *dasd_3990_erp_add_erp(struct dasd_ccw_req *cqr)
- 	erp->block    = cqr->block;
- 	erp->magic    = cqr->magic;
- 	erp->expires  = cqr->expires;
--	erp->retries  = 256;
-+	erp->retries  = device->default_retries;
- 	erp->buildclk = get_tod_clock();
- 	erp->status = DASD_CQR_FILLED;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 6b07b8fafec2f..0e9f4197213a3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -277,7 +277,7 @@ struct mt76_sta_stats {
+ 	u64 tx_mcs[16];		/* mcs idx */
+ 	u64 tx_bytes;
+ 	/* WED TX */
+-	u32 tx_packets;
++	u32 tx_packets;		/* unit: MSDU */
+ 	u32 tx_retries;
+ 	u32 tx_failed;
+ 	/* WED RX */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index be4d63db5f64a..49b2b1f3ffa87 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -524,7 +524,9 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
  
+ 		/* counting non-offloading skbs */
+ 		wcid->stats.tx_bytes += skb->len;
+-		wcid->stats.tx_packets++;
++		/* mt7915 WA only counts WED path */
++		if (is_mt7915(dev) && mtk_wed_device_active(&dev->mmio.wed))
++			wcid->stats.tx_packets++;
+ 	}
+ 
+ 	val = FIELD_PREP(MT_TXD0_TX_BYTES, skb->len + sz_txd) |
+@@ -609,12 +611,11 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 	txs = le32_to_cpu(txs_data[0]);
+ 
+ 	/* PPDU based reporting */
+-	if (FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
++	if (mtk_wed_device_active(&dev->mmio.wed) &&
++	    FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
+ 		stats->tx_bytes +=
+ 			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
+ 			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE);
+-		stats->tx_packets +=
+-			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_CNT);
+ 		stats->tx_failed +=
+ 			le32_get_bits(txs_data[6], MT_TXS6_MPDU_FAIL_CNT);
+ 		stats->tx_retries +=
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index ca1ce97a6d2fd..7a52b68491b6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -998,6 +998,7 @@ enum {
+ 	MCU_EXT_EVENT_ASSERT_DUMP = 0x23,
+ 	MCU_EXT_EVENT_RDD_REPORT = 0x3a,
+ 	MCU_EXT_EVENT_CSA_NOTIFY = 0x4f,
++	MCU_EXT_EVENT_WA_TX_STAT = 0x74,
+ 	MCU_EXT_EVENT_BCC_NOTIFY = 0x75,
+ 	MCU_EXT_EVENT_MURU_CTRL = 0x9f,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 1b361199c0616..2da57357c4174 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1042,8 +1042,10 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
+ 		sinfo->tx_bytes = msta->wcid.stats.tx_bytes;
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES64);
+ 
+-		sinfo->tx_packets = msta->wcid.stats.tx_packets;
+-		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
++		if (!mt7915_mcu_wed_wa_tx_stats(phy->dev, msta->wcid.idx)) {
++			sinfo->tx_packets = msta->wcid.stats.tx_packets;
++			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
++		}
+ 
+ 		sinfo->tx_failed = msta->wcid.stats.tx_failed;
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 088a065e37d5d..8da9c87e98042 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -164,7 +164,9 @@ mt7915_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 	}
+ 
+ 	rxd = (struct mt76_connac2_mcu_rxd *)skb->data;
+-	if (seq != rxd->seq)
++	if (seq != rxd->seq &&
++	    !(rxd->eid == MCU_CMD_EXT_CID &&
++	      rxd->ext_eid == MCU_EXT_EVENT_WA_TX_STAT))
+ 		return -EAGAIN;
+ 
+ 	if (cmd == MCU_CMD(PATCH_SEM_CONTROL)) {
+@@ -395,12 +397,14 @@ void mt7915_mcu_rx_event(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	struct mt76_connac2_mcu_rxd *rxd;
+ 
+ 	rxd = (struct mt76_connac2_mcu_rxd *)skb->data;
+-	if (rxd->ext_eid == MCU_EXT_EVENT_THERMAL_PROTECT ||
+-	    rxd->ext_eid == MCU_EXT_EVENT_FW_LOG_2_HOST ||
+-	    rxd->ext_eid == MCU_EXT_EVENT_ASSERT_DUMP ||
+-	    rxd->ext_eid == MCU_EXT_EVENT_PS_SYNC ||
+-	    rxd->ext_eid == MCU_EXT_EVENT_BCC_NOTIFY ||
+-	    !rxd->seq)
++	if ((rxd->ext_eid == MCU_EXT_EVENT_THERMAL_PROTECT ||
++	     rxd->ext_eid == MCU_EXT_EVENT_FW_LOG_2_HOST ||
++	     rxd->ext_eid == MCU_EXT_EVENT_ASSERT_DUMP ||
++	     rxd->ext_eid == MCU_EXT_EVENT_PS_SYNC ||
++	     rxd->ext_eid == MCU_EXT_EVENT_BCC_NOTIFY ||
++	     !rxd->seq) &&
++	     !(rxd->eid == MCU_CMD_EXT_CID &&
++	       rxd->ext_eid == MCU_EXT_EVENT_WA_TX_STAT))
+ 		mt7915_mcu_rx_unsolicited_event(dev, skb);
+ 	else
+ 		mt76_mcu_rx_event(&dev->mt76, skb);
+@@ -3733,6 +3737,62 @@ int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
+ 				 &req, sizeof(req), true);
+ }
+ 
++int mt7915_mcu_wed_wa_tx_stats(struct mt7915_dev *dev, u16 wlan_idx)
++{
++	struct {
++		__le32 cmd;
++		__le32 num;
++		__le32 __rsv;
++		__le16 wlan_idx;
++	} req = {
++		.cmd = cpu_to_le32(0x15),
++		.num = cpu_to_le32(1),
++		.wlan_idx = cpu_to_le16(wlan_idx),
++	};
++	struct mt7915_mcu_wa_tx_stat {
++		__le16 wlan_idx;
++		u8 __rsv[2];
++
++		/* tx_bytes is deprecated since WA byte counter uses u32,
++		 * which easily leads to overflow.
++		 */
++		__le32 tx_bytes;
++		__le32 tx_packets;
++	} *res;
++	struct mt76_wcid *wcid;
++	struct sk_buff *skb;
++	int ret;
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_WA_PARAM_CMD(QUERY),
++					&req, sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	if (!is_mt7915(&dev->mt76))
++		skb_pull(skb, 4);
++
++	res = (struct mt7915_mcu_wa_tx_stat *)skb->data;
++
++	if (le16_to_cpu(res->wlan_idx) != wlan_idx) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	rcu_read_lock();
++
++	wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
++	if (wcid)
++		wcid->stats.tx_packets += le32_to_cpu(res->tx_packets);
++	else
++		ret = -EINVAL;
++
++	rcu_read_unlock();
++out:
++	dev_kfree_skb(skb);
++
++	return ret;
++}
++
+ int mt7915_mcu_rf_regval(struct mt7915_dev *dev, u32 regidx, u32 *val, bool set)
+ {
+ 	struct {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index b3ead35307406..3053f4abf7dbe 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -539,6 +539,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7915_mcu_rdd_background_enable(struct mt7915_phy *phy,
+ 				     struct cfg80211_chan_def *chandef);
++int mt7915_mcu_wed_wa_tx_stats(struct mt7915_dev *dev, u16 wcid);
+ int mt7915_mcu_rf_regval(struct mt7915_dev *dev, u32 regidx, u32 *val, bool set);
+ int mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3);
+ int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
 -- 
 2.40.1
 
