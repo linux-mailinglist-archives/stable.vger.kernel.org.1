@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27B6179B9B3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45FCA79B8F2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237578AbjIKVD6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:03:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
+        id S243010AbjIKU65 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241348AbjIKPHD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:03 -0400
+        with ESMTP id S240185AbjIKOio (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EA0CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8AAC433C8;
-        Mon, 11 Sep 2023 15:06:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6752F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D5DC433C8;
+        Mon, 11 Sep 2023 14:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444819;
-        bh=bPHvTui2hCQALH1L5NIsw/zRaWovT5y39lqwc8AGHyM=;
+        s=korg; t=1694443119;
+        bh=0wUp5NXJg/U5Tqf1sqPElWqWo2bGZifKvuwE9KXna7U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fcn/GjR3OGh10kuVj7KwXGE26tpKUvV/rgpZhEz2b5aUo7gnpyBVQkQsrCrZDZpPW
-         R6cOKugjwEolInvdhR5itzlXrOXMfFeTaXoUgJ/flJIOhWffEiVw+A96JDMXd/6bba
-         FmFoOFYmv0s3FPBBnUPfAz/3CLemJ6gjWLAWaqPw=
+        b=1u7AQmIhO3MJf6XBLOy2LXTuy7iWFLDs1Nrt7GTB4iVYhKlXbVjEeV3iVU8OVK2BY
+         /Gc2bzDORYVvAK3JMsC8zdAfx4hbvRIT6CEiDBB2IBntrTTQYSk/6DR9qkLxnJlKjs
+         AEhJ+cpQN/Hcdca4uMKLwxnSn1yaENsix7LtQv/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 090/600] Revert "net: macsec: preserve ingress frame ordering"
+        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
+        Brett Creeley <brett.creeley@amd.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 264/737] pds_core: check for work queue before use
 Date:   Mon, 11 Sep 2023 15:42:03 +0200
-Message-ID: <20230911134636.266650766@linuxfoundation.org>
+Message-ID: <20230911134657.961329804@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit d3287e4038ca4f81e02067ab72d087af7224c68b upstream.
+[ Upstream commit 969cfd4c8ca50c32901342cdd3d677c3ffe61371 ]
 
-This reverts commit ab046a5d4be4c90a3952a0eae75617b49c0cb01b.
+Add a check that the wq exists before queuing up work for a
+failed devcmd, as the PF is responsible for health and the VF
+doesn't have a wq.
 
-It was trying to work around an issue at the crypto layer by excluding
-ASYNC implementations of gcm(aes), because a bug in the AESNI version
-caused reordering when some requests bypassed the cryptd queue while
-older requests were still pending on the queue.
-
-This was fixed by commit 38b2f68b4264 ("crypto: aesni - Fix cryptd
-reordering problem on gcm"), which pre-dates ab046a5d4be4.
-
-Herbert Xu confirmed that all ASYNC implementations are expected to
-maintain the ordering of completions wrt requests, so we can use them
-in MACsec.
-
-On my test machine, this restores the performance of a single netperf
-instance, from 1.4Gbps to 4.4Gbps.
-
-Link: https://lore.kernel.org/netdev/9328d206c5d9f9239cae27e62e74de40b258471d.1692279161.git.sd@queasysnail.net/T/
-Link: https://lore.kernel.org/netdev/1b0cec71-d084-8153-2ba4-72ce71abeb65@byu.edu/
-Link: https://lore.kernel.org/netdev/d335ddaa-18dc-f9f0-17ee-9783d3b2ca29@mailbox.tu-dresden.de/
-Fixes: ab046a5d4be4 ("net: macsec: preserve ingress frame ordering")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/11c952469d114db6fb29242e1d9545e61f52f512.1693757159.git.sd@queasysnail.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2dbb0904310 ("pds_core: health timer and workqueue")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230824161754.34264-5-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/amd/pds_core/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -1331,8 +1331,7 @@ static struct crypto_aead *macsec_alloc_
- 	struct crypto_aead *tfm;
- 	int ret;
+diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+index debe5216fe29e..524f422ee7ace 100644
+--- a/drivers/net/ethernet/amd/pds_core/dev.c
++++ b/drivers/net/ethernet/amd/pds_core/dev.c
+@@ -183,7 +183,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+ 	err = pdsc_devcmd_wait(pdsc, max_seconds);
+ 	memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
  
--	/* Pick a sync gcm(aes) cipher to ensure order is preserved. */
--	tfm = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
-+	tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
+-	if (err == -ENXIO || err == -ETIMEDOUT)
++	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
+ 		queue_work(pdsc->wq, &pdsc->health_work);
  
- 	if (IS_ERR(tfm))
- 		return tfm;
+ 	return err;
+-- 
+2.40.1
+
 
 
