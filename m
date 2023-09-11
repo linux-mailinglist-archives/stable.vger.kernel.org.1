@@ -2,45 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A16DF79B60A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E510279BA09
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348566AbjIKV12 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53146 "EHLO
+        id S238628AbjIKUyK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242107AbjIKPWe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:34 -0400
+        with ESMTP id S242062AbjIKPVV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CBBF9;
-        Mon, 11 Sep 2023 08:22:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EFBC433C8;
-        Mon, 11 Sep 2023 15:22:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B813BE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D55C433C8;
+        Mon, 11 Sep 2023 15:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445750;
-        bh=sL69OBpTRTAubfuzQKYPpDkZuN7GcMWhkTTKiS48Vp4=;
+        s=korg; t=1694445677;
+        bh=I+NJ1yJs0CSDthBnGibfwYBqlGeVpAR7SlHg8Q41nD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NBEd71BR7Ayfc0k8SumllCohlpoXAsNQqyXRsnfXXa889bcptz0JK2MxIjbRqvD6S
-         Dw9EvqISrGrqQk4Ku2sfFDjlJG8DTbu08NME06lToJBsj4sUKG1nyPHJR/DkB7UDxM
-         RH2CABgPQUCIPoak0jM2wIwazwqmVK6aj9CWN0zo=
+        b=0OQ9xwLuJln9MvhpTtOnDOTXh3kCoXkCOXv4Ng7dsclq3nzRlHPq4o92k1d8un8Ru
+         YnC81fEHc/L4B3l7xCE32UrUW9KFArVrj0B4kZoDM+KBuqxCsREo9/oKq1Pw8CCzpA
+         hrEaZpzpctIPMUsFc+9ryTtyMWoUUFBgJwgKoddU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Rob Evers <revers@redhat.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Jozef Bacik <jobacik@redhat.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Oleksandr Natalenko <oleksandr@redhat.com>,
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 432/600] scsi: qedf: Do not touch __user pointer in qedf_dbg_fp_int_cmd_read() directly
-Date:   Mon, 11 Sep 2023 15:47:45 +0200
-Message-ID: <20230911134646.410413081@linuxfoundation.org>
+Subject: [PATCH 6.1 433/600] RDMA/irdma: Replace one-element array with flexible-array member
+Date:   Mon, 11 Sep 2023 15:47:46 +0200
+Message-ID: <20230911134646.439005932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -63,109 +55,72 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@redhat.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 25dbc20deab5165f847b4eb42f376f725a986ee8 ]
+[ Upstream commit 38313c6d2a02c28162e06753b01bd885caf9386d ]
 
-The qedf_dbg_fp_int_cmd_read() function invokes sprintf() directly on a
-__user pointer, which may crash the kernel.
+One-element and zero-length arrays are deprecated. So, replace
+one-element array in struct irdma_qvlist_info with flexible-array
+member.
 
-Avoid doing that by vmalloc()'ating a buffer for scnprintf() and then
-calling simple_read_from_buffer() which does a proper copy_to_user() call.
+A patch for this was sent a while ago[1]. However, it seems that, at
+the time, the changes were partially folded[2][3], and the actual
+flexible-array transformation was omitted. This patch fixes that.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
-Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Rob Evers <revers@redhat.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Cc: Jozef Bacik <jobacik@redhat.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: GR-QLogic-Storage-Upstream@marvell.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-4-oleksandr@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The only binary difference seen before/after changes is shown below:
+
+|  drivers/infiniband/hw/irdma/hw.o
+| @@ -868,7 +868,7 @@
+| drivers/infiniband/hw/irdma/hw.c:484 (discriminator 2)
+|	size += struct_size(iw_qvlist, qv_info, rf->msix_count);
+|      55b:      imul   $0x45c,%rdi,%rdi
+|-     562:      add    $0x10,%rdi
+|+     562:      add    $0x4,%rdi
+
+which is, of course, expected as it reflects the mistake made
+while folding the patch I've mentioned above.
+
+Worth mentioning is the fact that with this change we save 12 bytes
+of memory, as can be inferred from the diff snapshot above. Notice
+that:
+
+$ pahole -C rdma_qv_info idrivers/infiniband/hw/irdma/hw.o
+struct irdma_qv_info {
+	u32                        v_idx;                /*     0     4 */
+	u16                        ceq_idx;              /*     4     2 */
+	u16                        aeq_idx;              /*     6     2 */
+	u8                         itr_idx;              /*     8     1 */
+
+	/* size: 12, cachelines: 1, members: 4 */
+	/* padding: 3 */
+	/* last cacheline: 12 bytes */
+};
+
+Link: https://lore.kernel.org/linux-hardening/20210525230038.GA175516@embeddedor/ [1]
+Link: https://lore.kernel.org/linux-hardening/bf46b428deef4e9e89b0ea1704b1f0e5@intel.com/ [2]
+Link: https://lore.kernel.org/linux-rdma/20210520143809.819-1-shiraz.saleem@intel.com/T/#u [3]
+Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZMpsQrZadBaJGkt4@work
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_dbg.h     |  2 ++
- drivers/scsi/qedf/qedf_debugfs.c | 21 +++++++++++++++------
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/irdma/main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_dbg.h b/drivers/scsi/qedf/qedf_dbg.h
-index f4d81127239eb..5ec2b817c694a 100644
---- a/drivers/scsi/qedf/qedf_dbg.h
-+++ b/drivers/scsi/qedf/qedf_dbg.h
-@@ -59,6 +59,8 @@ extern uint qedf_debug;
- #define QEDF_LOG_NOTICE	0x40000000	/* Notice logs */
- #define QEDF_LOG_WARN		0x80000000	/* Warning logs */
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index e64205839d039..9cbe64311f985 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -236,7 +236,7 @@ struct irdma_qv_info {
  
-+#define QEDF_DEBUGFS_LOG_LEN (2 * PAGE_SIZE)
-+
- /* Debug context structure */
- struct qedf_dbg_ctx {
- 	unsigned int host_no;
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 1c5716540e465..451fd236bfd05 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -8,6 +8,7 @@
- #include <linux/uaccess.h>
- #include <linux/debugfs.h>
- #include <linux/module.h>
-+#include <linux/vmalloc.h>
+ struct irdma_qvlist_info {
+ 	u32 num_vectors;
+-	struct irdma_qv_info qv_info[1];
++	struct irdma_qv_info qv_info[];
+ };
  
- #include "qedf.h"
- #include "qedf_dbg.h"
-@@ -98,7 +99,9 @@ static ssize_t
- qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 			 loff_t *ppos)
- {
-+	ssize_t ret;
- 	size_t cnt = 0;
-+	char *cbuf;
- 	int id;
- 	struct qedf_fastpath *fp = NULL;
- 	struct qedf_dbg_ctx *qedf_dbg =
-@@ -108,19 +111,25 @@ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
- 
--	cnt = sprintf(buffer, "\nFastpath I/O completions\n\n");
-+	cbuf = vmalloc(QEDF_DEBUGFS_LOG_LEN);
-+	if (!cbuf)
-+		return 0;
-+
-+	cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt, "\nFastpath I/O completions\n\n");
- 
- 	for (id = 0; id < qedf->num_queues; id++) {
- 		fp = &(qedf->fp_array[id]);
- 		if (fp->sb_id == QEDF_SB_ID_NULL)
- 			continue;
--		cnt += sprintf((buffer + cnt), "#%d: %lu\n", id,
--			       fp->completions);
-+		cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt,
-+				 "#%d: %lu\n", id, fp->completions);
- 	}
- 
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	ret = simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
-+
-+	vfree(cbuf);
-+
-+	return ret;
- }
- 
- static ssize_t
+ struct irdma_gen_ops {
 -- 
 2.40.1
 
