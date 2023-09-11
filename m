@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F297079ACD1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC7C479AEE3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359563AbjIKWRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51550 "EHLO
+        id S241452AbjIKVHI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241541AbjIKPKj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:39 -0400
+        with ESMTP id S240357AbjIKOmV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600FCFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B49C433CD;
-        Mon, 11 Sep 2023 15:10:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 384D312A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDCBC433C7;
+        Mon, 11 Sep 2023 14:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445035;
-        bh=lZU8xHzZNTfrrTJoi/4ytrfDcBjS1awDvYcqJ1/reHo=;
+        s=korg; t=1694443335;
+        bh=D8KFVGZcwSfXzYNdykWXK8QKfEC3VEpbaEQq8nyJCaE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bsqRLAEiHs5f99IGrPXE/6fB8ZmlXev1s1idvms/Y2hOSMck5CAlOiaNc+eCwyOgp
-         m43wfwOGNCcx4LGRwaddTyH2FlN0OB3OFvHB8z8LSNYP7nteGzgWITxMEru7/DM6/Y
-         rQpW5CpZrosXINk+zceDHcRa4pbdq+Fvz1mgVvek=
+        b=QeGAjaAICMCGy2XfKfs+veiGvyMmHSsjfpbOI3Em74vKEhkeFdZIDK1o2cxdxu6ZR
+         mS0jjeRId31kgEv7V5hgyrnwVYOalIaoYaIo8pgZoQmQmp/lTcsVbHCgvJrJ+JmxYz
+         2/hCsAUMkedHYqv+YFftc1if41u2tBSVr0YhVA9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/600] crypto: stm32 - Properly handle pm_runtime_get failing
-Date:   Mon, 11 Sep 2023 15:43:20 +0200
-Message-ID: <20230911134638.537838865@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 342/737] md/md-bitmap: hold reconfig_mutex in backlog_store()
+Date:   Mon, 11 Sep 2023 15:43:21 +0200
+Message-ID: <20230911134700.081804227@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,60 +49,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit aec48805163338f8413118796c1dd035661b9140 ]
+[ Upstream commit 44abfa6a95df425c0660d56043020b67e6d93ab8 ]
 
-If pm_runtime_get() (disguised as pm_runtime_resume_and_get()) fails, this
-means the clk wasn't prepared and enabled. Returning early in this case
-however is wrong as then the following resource frees are skipped and this
-is never catched up. So do all the cleanups but clk_disable_unprepare().
+Several reasons why 'reconfig_mutex' should be held:
 
-Also don't emit a warning, as stm32_hash_runtime_resume() already emitted
-one.
+1) rdev_for_each() is not safe to be called without the lock, because
+   rdev can be removed concurrently.
+2) mddev_destroy_serial_pool() and mddev_create_serial_pool() should not
+   be called concurrently.
+3) mddev_suspend() from mddev_destroy/create_serial_pool() should be
+   protected by the lock.
 
-Note that the return value of stm32_hash_remove() is mostly ignored by
-the device core. The only effect of returning zero instead of an error
-value is to suppress another warning in platform_remove(). So return 0
-even if pm_runtime_resume_and_get() failed.
-
-Fixes: 8b4d566de6a5 ("crypto: stm32/hash - Add power management support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 10c92fca636e ("md-bitmap: create and destroy wb_info_pool with the change of backlog")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230706083727.608914-3-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/stm32/stm32-hash.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/md/md-bitmap.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/crypto/stm32/stm32-hash.c b/drivers/crypto/stm32/stm32-hash.c
-index d33006d43f761..e3f765434d64e 100644
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -1566,9 +1566,7 @@ static int stm32_hash_remove(struct platform_device *pdev)
- 	if (!hdev)
- 		return -ENODEV;
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 4934d8f0cf11a..ba6b4819d37e4 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2504,6 +2504,10 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 	if (backlog > COUNTER_MAX)
+ 		return -EINVAL;
  
--	ret = pm_runtime_resume_and_get(hdev->dev);
--	if (ret < 0)
--		return ret;
-+	ret = pm_runtime_get_sync(hdev->dev);
++	rv = mddev_lock(mddev);
++	if (rv)
++		return rv;
++
+ 	/*
+ 	 * Without write mostly device, it doesn't make sense to set
+ 	 * backlog for max_write_behind.
+@@ -2517,6 +2521,7 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 	if (!has_write_mostly) {
+ 		pr_warn_ratelimited("%s: can't set backlog, no write mostly device available\n",
+ 				    mdname(mddev));
++		mddev_unlock(mddev);
+ 		return -EINVAL;
+ 	}
  
- 	stm32_hash_unregister_algs(hdev);
- 
-@@ -1584,7 +1582,8 @@ static int stm32_hash_remove(struct platform_device *pdev)
- 	pm_runtime_disable(hdev->dev);
- 	pm_runtime_put_noidle(hdev->dev);
- 
--	clk_disable_unprepare(hdev->clk);
-+	if (ret >= 0)
-+		clk_disable_unprepare(hdev->clk);
- 
- 	return 0;
+@@ -2532,6 +2537,8 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 	}
+ 	if (old_mwb != backlog)
+ 		md_bitmap_update_sb(mddev->bitmap);
++
++	mddev_unlock(mddev);
+ 	return len;
  }
+ 
 -- 
 2.40.1
 
