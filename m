@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D5879B934
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24A079BC97
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239922AbjIKVsb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58010 "EHLO
+        id S238366AbjIKVED (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240044AbjIKOey (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:54 -0400
+        with ESMTP id S238611AbjIKOAt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F58BF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4893C433C7;
-        Mon, 11 Sep 2023 14:34:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77F0CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A884C433C7;
+        Mon, 11 Sep 2023 14:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442889;
-        bh=oCVP9VSGguqHVs5So0qrQ6T/LdNHDhq060/XPHt0JUY=;
+        s=korg; t=1694440844;
+        bh=ByhcGAxSNDXezvGkt/qNC5t3Hc032JRUSz4BkPy69t4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UiXj9DEt1G4nOl4kgeP7Gmpv6NcJ/2ySxwfYCr4oM/tFFV2pyr3OlxXith6KSAYY0
-         S9ABHwyiM/tJfmWae0ZhoRTM2aIvzBL+CJfGGn/Cx2JCyBZK6DDpqakp/HKs9HBQol
-         iuhPssdTxzCvaTnFqgCOF6AfX3ubQEtnYHM9sS8M=
+        b=0Ai82kFsiao4bpNPZhCSjeJqY630AzxIRrEt4VOeFWIjXI2N3cO9ntDQu8KIp0DZV
+         p4txz5hKHJbv0ftPwWvOxsUavhgDoVrtI9SMHSlRLQyyxWjgTaZ6bBmnqwk095Vth+
+         d55Bhe+N2gm2NjK0emIexSprfI1Uq6lCNEn3aNyc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 146/737] libbpf: Fix realloc API handling in zero-sized edge cases
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 206/739] quota: add new helper dquot_active()
 Date:   Mon, 11 Sep 2023 15:40:05 +0200
-Message-ID: <20230911134654.571552357@linuxfoundation.org>
+Message-ID: <20230911134656.933353905@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,100 +49,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 8a0260dbf6553c969248b6530cafadac46562f47 ]
+[ Upstream commit 33bcfafc48cb186bc4bbcea247feaa396594229e ]
 
-realloc() and reallocarray() can either return NULL or a special
-non-NULL pointer, if their size argument is zero. This requires a bit
-more care to handle NULL-as-valid-result situation differently from
-NULL-as-error case. This has caused real issues before ([0]), and just
-recently bit again in production when performing bpf_program__attach_usdt().
+Add new helper function dquot_active() to make the code more concise.
 
-This patch fixes 4 places that do or potentially could suffer from this
-mishandling of NULL, including the reported USDT-related one.
-
-There are many other places where realloc()/reallocarray() is used and
-NULL is always treated as an error value, but all those have guarantees
-that their size is always non-zero, so those spot don't need any extra
-handling.
-
-  [0] d08ab82f59d5 ("libbpf: Fix double-free when linker processes empty sections")
-
-Fixes: 999783c8bbda ("libbpf: Wire up spec management and other arch-independent USDT logic")
-Fixes: b63b3c490eee ("libbpf: Add bpf_program__set_insns function")
-Fixes: 697f104db8a6 ("libbpf: Support custom SEC() handlers")
-Fixes: b12688267280 ("libbpf: Change the order of data and text relocations.")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230711024150.1566433-1-andrii@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230630110822.3881712-4-libaokun1@huawei.com>
+Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 15 ++++++++++++---
- tools/lib/bpf/usdt.c   |  5 ++++-
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ fs/quota/dquot.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 57c040a9c3705..2a4dbe7d9b3d4 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -6136,7 +6136,11 @@ static int append_subprog_relos(struct bpf_program *main_prog, struct bpf_progra
- 	if (main_prog == subprog)
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index a08698d9859a8..88aa747f48008 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -336,6 +336,11 @@ static void wait_on_dquot(struct dquot *dquot)
+ 	mutex_unlock(&dquot->dq_lock);
+ }
+ 
++static inline int dquot_active(struct dquot *dquot)
++{
++	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
++}
++
+ static inline int dquot_dirty(struct dquot *dquot)
+ {
+ 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
+@@ -351,14 +356,14 @@ int dquot_mark_dquot_dirty(struct dquot *dquot)
+ {
+ 	int ret = 1;
+ 
+-	if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
++	if (!dquot_active(dquot))
  		return 0;
- 	relos = libbpf_reallocarray(main_prog->reloc_desc, new_cnt, sizeof(*relos));
--	if (!relos)
-+	/* if new count is zero, reallocarray can return a valid NULL result;
-+	 * in this case the previous pointer will be freed, so we *have to*
-+	 * reassign old pointer to the new value (even if it's NULL)
-+	 */
-+	if (!relos && new_cnt)
- 		return -ENOMEM;
- 	if (subprog->nr_reloc)
- 		memcpy(relos + main_prog->nr_reloc, subprog->reloc_desc,
-@@ -8504,7 +8508,8 @@ int bpf_program__set_insns(struct bpf_program *prog,
- 		return -EBUSY;
  
- 	insns = libbpf_reallocarray(prog->insns, new_insn_cnt, sizeof(*insns));
--	if (!insns) {
-+	/* NULL is a valid return from reallocarray if the new count is zero */
-+	if (!insns && new_insn_cnt) {
- 		pr_warn("prog '%s': failed to realloc prog code\n", prog->name);
- 		return -ENOMEM;
- 	}
-@@ -8813,7 +8818,11 @@ int libbpf_unregister_prog_handler(int handler_id)
+ 	if (sb_dqopt(dquot->dq_sb)->flags & DQUOT_NOLIST_DIRTY)
+ 		return test_and_set_bit(DQ_MOD_B, &dquot->dq_flags);
  
- 	/* try to shrink the array, but it's ok if we couldn't */
- 	sec_defs = libbpf_reallocarray(custom_sec_defs, custom_sec_def_cnt, sizeof(*sec_defs));
--	if (sec_defs)
-+	/* if new count is zero, reallocarray can return a valid NULL result;
-+	 * in this case the previous pointer will be freed, so we *have to*
-+	 * reassign old pointer to the new value (even if it's NULL)
-+	 */
-+	if (sec_defs || custom_sec_def_cnt == 0)
- 		custom_sec_defs = sec_defs;
+ 	/* If quota is dirty already, we don't have to acquire dq_list_lock */
+-	if (test_bit(DQ_MOD_B, &dquot->dq_flags))
++	if (dquot_dirty(dquot))
+ 		return 1;
  
- 	return 0;
-diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
-index 086eef355ab3d..1af77f9935833 100644
---- a/tools/lib/bpf/usdt.c
-+++ b/tools/lib/bpf/usdt.c
-@@ -852,8 +852,11 @@ static int bpf_link_usdt_detach(struct bpf_link *link)
- 		 * system is so exhausted on memory, it's the least of user's
- 		 * concerns, probably.
- 		 * So just do our best here to return those IDs to usdt_manager.
-+		 * Another edge case when we can legitimately get NULL is when
-+		 * new_cnt is zero, which can happen in some edge cases, so we
-+		 * need to be careful about that.
+ 	spin_lock(&dq_list_lock);
+@@ -440,7 +445,7 @@ int dquot_acquire(struct dquot *dquot)
+ 	smp_mb__before_atomic();
+ 	set_bit(DQ_READ_B, &dquot->dq_flags);
+ 	/* Instantiate dquot if needed */
+-	if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags) && !dquot->dq_off) {
++	if (!dquot_active(dquot) && !dquot->dq_off) {
+ 		ret = dqopt->ops[dquot->dq_id.type]->commit_dqblk(dquot);
+ 		/* Write the info if needed */
+ 		if (info_dirty(&dqopt->info[dquot->dq_id.type])) {
+@@ -482,7 +487,7 @@ int dquot_commit(struct dquot *dquot)
+ 		goto out_lock;
+ 	/* Inactive dquot can be only if there was error during read/init
+ 	 * => we have better not writing it */
+-	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
++	if (dquot_active(dquot))
+ 		ret = dqopt->ops[dquot->dq_id.type]->commit_dqblk(dquot);
+ 	else
+ 		ret = -EIO;
+@@ -597,7 +602,7 @@ int dquot_scan_active(struct super_block *sb,
+ 
+ 	spin_lock(&dq_list_lock);
+ 	list_for_each_entry(dquot, &inuse_list, dq_inuse) {
+-		if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
++		if (!dquot_active(dquot))
+ 			continue;
+ 		if (dquot->dq_sb != sb)
+ 			continue;
+@@ -612,7 +617,7 @@ int dquot_scan_active(struct super_block *sb,
+ 		 * outstanding call and recheck the DQ_ACTIVE_B after that.
  		 */
--		if (new_free_ids) {
-+		if (new_free_ids || new_cnt == 0) {
- 			memcpy(new_free_ids + man->free_spec_cnt, usdt_link->spec_ids,
- 			       usdt_link->spec_cnt * sizeof(*usdt_link->spec_ids));
- 			man->free_spec_ids = new_free_ids;
+ 		wait_on_dquot(dquot);
+-		if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
++		if (dquot_active(dquot)) {
+ 			ret = fn(dquot, priv);
+ 			if (ret < 0)
+ 				goto out;
+@@ -663,7 +668,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			dquot = list_first_entry(&dirty, struct dquot,
+ 						 dq_dirty);
+ 
+-			WARN_ON(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
++			WARN_ON(!dquot_active(dquot));
+ 
+ 			/* Now we have active dquot from which someone is
+  			 * holding reference so we can safely just increase
+@@ -800,7 +805,7 @@ void dqput(struct dquot *dquot)
+ 		dquot_write_dquot(dquot);
+ 		goto we_slept;
+ 	}
+-	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
++	if (dquot_active(dquot)) {
+ 		spin_unlock(&dq_list_lock);
+ 		dquot->dq_sb->dq_op->release_dquot(dquot);
+ 		goto we_slept;
+@@ -901,7 +906,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 	 * already finished or it will be canceled due to dq_count > 1 test */
+ 	wait_on_dquot(dquot);
+ 	/* Read the dquot / allocate space in quota file */
+-	if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
++	if (!dquot_active(dquot)) {
+ 		int err;
+ 
+ 		err = sb->dq_op->acquire_dquot(dquot);
 -- 
 2.40.1
 
