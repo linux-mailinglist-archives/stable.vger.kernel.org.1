@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D5A79AE08
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC8179B1B8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239285AbjIKWjE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39508 "EHLO
+        id S1358017AbjIKWHY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240061AbjIKOfT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:19 -0400
+        with ESMTP id S241165AbjIKPDT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F173F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0441C433C8;
-        Mon, 11 Sep 2023 14:35:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFAF2125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A53C433C8;
+        Mon, 11 Sep 2023 15:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442914;
-        bh=aE7fASXhDPDw/UVu0VYlqZvqkDFY7GvtKUsvOeqnwB8=;
+        s=korg; t=1694444594;
+        bh=XcNJ1AjaLVccpHTVNTIL1c/wz719v0WGrsWqEEKVoa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=to03pe4c32yQGfsvVdyBjoL7jGyf1MK77/giUvz2m0SJf640WjaFzB08rCeQX3IZX
-         ZcLYt2iulDoY6VoM5Cdyw08kU23IDZYeA1NIPE9OI3SqBFWOXUe8wBqT84Hd+fqoAZ
-         n3ptaS4qku0xZVBUv0ZFNEWW8Y1bW0bomwFzCM4A=
+        b=dPFF4xw0u69A8kVefBhfzY/ca692W8O9bzljgwL9k+p34VT1RHGPxd5KwZovaeTxn
+         PzuzgAU6kaHFI+mn4gRjYYUco0T+IQl6I7mN2xnIg8/3KLbXhW0QnLLgyhzkfdUkC2
+         goiDhFjXZv0R0VBSPCW/GPLoY2CvzNhfhnF5NWFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        syzbot+d769eed29cc42d75e2a3@syzkaller.appspotmail.com,
-        syzbot+610ec0671f51e838436e@syzkaller.appspotmail.com,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Dmytro Maluka <dmy@semihalf.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 193/737] crypto: api - Use work queue in crypto_destroy_instance
-Date:   Mon, 11 Sep 2023 15:40:52 +0200
-Message-ID: <20230911134655.984733737@linuxfoundation.org>
+Subject: [PATCH 6.1 020/600] ASoC: da7219: Flush pending AAD IRQ when suspending
+Date:   Mon, 11 Sep 2023 15:40:53 +0200
+Message-ID: <20230911134634.211050892@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,97 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Dmytro Maluka <dmy@semihalf.com>
 
-[ Upstream commit 9ae4577bc077a7e32c3c7d442c95bc76865c0f17 ]
+[ Upstream commit 91e292917dad64ab8d1d5ca2ab3069ad9dac6f72 ]
 
-The function crypto_drop_spawn expects to be called in process
-context.  However, when an instance is unregistered while it still
-has active users, the last user may cause the instance to be freed
-in atomic context.
+da7219_aad_suspend() disables jack detection, which should prevent
+generating new interrupts by DA7219 while suspended. However, there is a
+theoretical possibility that there is a pending interrupt generated just
+before suspending DA7219 and not handled yet, so the IRQ handler may
+still run after DA7219 is suspended. To prevent that, wait until the
+pending IRQ handling is done.
 
-Fix this by delaying the freeing to a work queue.
+This patch arose as an attempt to fix the following I2C failure
+occurring sometimes during system suspend or resume:
 
-Fixes: 6bfd48096ff8 ("[CRYPTO] api: Added spawns")
-Reported-by: Florent Revest <revest@chromium.org>
-Reported-by: syzbot+d769eed29cc42d75e2a3@syzkaller.appspotmail.com
-Reported-by: syzbot+610ec0671f51e838436e@syzkaller.appspotmail.com
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Tested-by: Florent Revest <revest@chromium.org>
-Acked-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[  355.876211] i2c_designware i2c_designware.3: Transfer while suspended
+[  355.876245] WARNING: CPU: 2 PID: 3576 at drivers/i2c/busses/i2c-designware-master.c:570 i2c_dw_xfer+0x411/0x440
+...
+[  355.876462] Call Trace:
+[  355.876468]  <TASK>
+[  355.876475]  ? update_load_avg+0x1b3/0x615
+[  355.876484]  __i2c_transfer+0x101/0x1d8
+[  355.876494]  i2c_transfer+0x74/0x10d
+[  355.876504]  regmap_i2c_read+0x6a/0x9c
+[  355.876513]  _regmap_raw_read+0x179/0x223
+[  355.876521]  regmap_raw_read+0x1e1/0x28e
+[  355.876527]  regmap_bulk_read+0x17d/0x1ba
+[  355.876532]  ? __wake_up+0xed/0x1bb
+[  355.876542]  da7219_aad_irq_thread+0x54/0x2c9 [snd_soc_da7219 5fb8ebb2179cf2fea29af090f3145d68ed8e2184]
+[  355.876556]  irq_thread+0x13c/0x231
+[  355.876563]  ? irq_forced_thread_fn+0x5f/0x5f
+[  355.876570]  ? irq_thread_fn+0x4d/0x4d
+[  355.876576]  kthread+0x13a/0x152
+[  355.876581]  ? synchronize_irq+0xc3/0xc3
+[  355.876587]  ? kthread_blkcg+0x31/0x31
+[  355.876592]  ret_from_fork+0x1f/0x30
+[  355.876601]  </TASK>
+
+which indicates that the AAD IRQ handler is unexpectedly running when
+DA7219 is suspended, and as a result, is trying to read data from DA7219
+over I2C and is hitting the I2C driver "Transfer while suspended"
+failure.
+
+However, with this patch the above failure is still reproducible. So
+this patch does not fix any real observed issue so far, but at least is
+useful for confirming that the above issue is not caused by a pending
+IRQ but rather looks like a DA7219 hardware issue with an IRQ
+unexpectedly generated after jack detection is already disabled.
+
+Signed-off-by: Dmytro Maluka <dmy@semihalf.com>
+Link: https://lore.kernel.org/r/20230717193737.161784-2-dmy@semihalf.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c         | 16 ++++++++++++++--
- include/crypto/algapi.h |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ sound/soc/codecs/da7219-aad.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index 5e7cd603d489c..4fe95c4480473 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -17,6 +17,7 @@
- #include <linux/rtnetlink.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/workqueue.h>
- 
- #include "internal.h"
- 
-@@ -74,15 +75,26 @@ static void crypto_free_instance(struct crypto_instance *inst)
- 	inst->alg.cra_type->free(inst);
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index bba73c44c219f..49b1622e7bada 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -863,6 +863,8 @@ void da7219_aad_suspend(struct snd_soc_component *component)
+ 			}
+ 		}
+ 	}
++
++	synchronize_irq(da7219_aad->irq);
  }
  
--static void crypto_destroy_instance(struct crypto_alg *alg)
-+static void crypto_destroy_instance_workfn(struct work_struct *w)
- {
--	struct crypto_instance *inst = (void *)alg;
-+	struct crypto_instance *inst = container_of(w, struct crypto_instance,
-+						    free_work);
- 	struct crypto_template *tmpl = inst->tmpl;
- 
- 	crypto_free_instance(inst);
- 	crypto_tmpl_put(tmpl);
- }
- 
-+static void crypto_destroy_instance(struct crypto_alg *alg)
-+{
-+	struct crypto_instance *inst = container_of(alg,
-+						    struct crypto_instance,
-+						    alg);
-+
-+	INIT_WORK(&inst->free_work, crypto_destroy_instance_workfn);
-+	schedule_work(&inst->free_work);
-+}
-+
- /*
-  * This function adds a spawn to the list secondary_spawns which
-  * will be used at the end of crypto_remove_spawns to unregister
-diff --git a/include/crypto/algapi.h b/include/crypto/algapi.h
-index 016d5a302b84a..bd3a99b0106bf 100644
---- a/include/crypto/algapi.h
-+++ b/include/crypto/algapi.h
-@@ -12,6 +12,7 @@
- #include <linux/cache.h>
- #include <linux/crypto.h>
- #include <linux/types.h>
-+#include <linux/workqueue.h>
- 
- /*
-  * Maximum values for blocksize and alignmask, used to allocate
-@@ -83,6 +84,8 @@ struct crypto_instance {
- 		struct crypto_spawn *spawns;
- 	};
- 
-+	struct work_struct free_work;
-+
- 	void *__ctx[] CRYPTO_MINALIGN_ATTR;
- };
- 
+ void da7219_aad_resume(struct snd_soc_component *component)
 -- 
 2.40.1
 
