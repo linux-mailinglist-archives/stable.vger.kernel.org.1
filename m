@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1564179B73D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7420379BDB2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237934AbjIKWGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39054 "EHLO
+        id S240661AbjIKWW3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240761AbjIKOxG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:06 -0400
+        with ESMTP id S242032AbjIKPUx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C51118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DE0C433C9;
-        Mon, 11 Sep 2023 14:53:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A269FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFAAC433C8;
+        Mon, 11 Sep 2023 15:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443981;
-        bh=qEQH+UPNVa98BrLnjNqrVhoXNY+tcmdM8lEHEzlxous=;
+        s=korg; t=1694445648;
+        bh=fPe+phdJM330acCkBPrAwBN9GxOEDQdGuOFdQLeVDcw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rAwXCd3IVYhtdpZO1Iw6sXtMF328uAURuncFO1868j8rOT+SywiMKJoiQNwfadNL9
-         o0lVSfufaJ9TXanHsqPt/rd8+37mB9AjSpIGM+fZGWma0wcYdeG9r3GrbUmRJxoRJ5
-         yjyo0twiryM7KE0ZnlrNY8aPklasg3TRMfSS9180=
+        b=ZcukMdzW3mrD9u7Y3MU+C1RJ6WSj/gTJeBA3eop/z/ACZiB4AhxGxcKlw0P6C3+Sa
+         i2PUr58mUMKqAb8qgWAWDkbkW5O73pZ3oHbUJuuUJGjkiHIHwybLyKL2a0Fzs+Jr6C
+         /O3Lt1D5mL/VDLHxOmUIRKKGS34BDiIyvXWeqYhQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 568/737] media: ov2680: Remove VIDEO_V4L2_SUBDEV_API ifdef-s
-Date:   Mon, 11 Sep 2023 15:47:07 +0200
-Message-ID: <20230911134706.411323922@linuxfoundation.org>
+        Daniel Marcovitch <dmarcovitch@nvidia.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 395/600] iommu/amd/iommu_v2: Fix pasid_state refcount dec hit 0 warning on pasid unbind
+Date:   Mon, 11 Sep 2023 15:47:08 +0200
+Message-ID: <20230911134645.337274873@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,100 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Daniel Marcovitch <dmarcovitch@nvidia.com>
 
-[ Upstream commit 49c282d5a8c5f4d1d9088622bec792294c716010 ]
+[ Upstream commit 534103bcd52ca9c1fecbc70e717b4a538dc4ded8 ]
 
-VIDEO_V4L2_SUBDEV_API is now automatically selected in Kconfig
-for all sensor drivers. Remove the ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
-checks.
+When unbinding pasid - a race condition exists vs outstanding page faults.
 
-This is a preparation patch for fixing ov2680_set_fmt()
-which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
-the passed in v4l2_mbus_framefmt struct.
+To prevent this, the pasid_state object contains a refcount.
+    * set to 1 on pasid bind
+    * incremented on each ppr notification start
+    * decremented on each ppr notification done
+    * decremented on pasid unbind
 
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Since refcount_dec assumes that refcount will never reach 0:
+  the current implementation causes the following to be invoked on
+  pasid unbind:
+        REFCOUNT_WARN("decrement hit 0; leaking memory")
+
+Fix this issue by changing refcount_dec to refcount_dec_and_test
+to explicitly handle refcount=1.
+
+Fixes: 8bc54824da4e ("iommu/amd: Convert from atomic_t to refcount_t on pasid_state->count")
+Signed-off-by: Daniel Marcovitch <dmarcovitch@nvidia.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20230609105146.7773-2-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ drivers/iommu/amd/iommu_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index c999a898dfe77..de11a5fb03659 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -562,7 +562,6 @@ static int ov2680_get_fmt(struct v4l2_subdev *sd,
+diff --git a/drivers/iommu/amd/iommu_v2.c b/drivers/iommu/amd/iommu_v2.c
+index 75355ddca6575..4caa023048a08 100644
+--- a/drivers/iommu/amd/iommu_v2.c
++++ b/drivers/iommu/amd/iommu_v2.c
+@@ -262,8 +262,8 @@ static void put_pasid_state(struct pasid_state *pasid_state)
+ 
+ static void put_pasid_state_wait(struct pasid_state *pasid_state)
  {
- 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
- 	struct v4l2_mbus_framefmt *fmt = NULL;
--	int ret = 0;
- 
- 	if (format->pad != 0)
- 		return -EINVAL;
-@@ -570,22 +569,17 @@ static int ov2680_get_fmt(struct v4l2_subdev *sd,
- 	mutex_lock(&sensor->lock);
- 
- 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
--#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
- 		fmt = v4l2_subdev_get_try_format(&sensor->sd, sd_state,
- 						 format->pad);
--#else
--		ret = -EINVAL;
--#endif
- 	} else {
- 		fmt = &sensor->fmt;
- 	}
- 
--	if (fmt)
--		format->format = *fmt;
-+	format->format = *fmt;
- 
- 	mutex_unlock(&sensor->lock);
- 
--	return ret;
-+	return 0;
+-	refcount_dec(&pasid_state->count);
+-	wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
++	if (!refcount_dec_and_test(&pasid_state->count))
++		wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
+ 	free_pasid_state(pasid_state);
  }
- 
- static int ov2680_set_fmt(struct v4l2_subdev *sd,
-@@ -594,9 +588,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- {
- 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
- 	struct v4l2_mbus_framefmt *fmt = &format->format;
--#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
- 	struct v4l2_mbus_framefmt *try_fmt;
--#endif
- 	const struct ov2680_mode_info *mode;
- 	int ret = 0;
- 
-@@ -619,10 +611,8 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- 	}
- 
- 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
--#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
- 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
- 		format->format = *try_fmt;
--#endif
- 		goto unlock;
- 	}
- 
-@@ -780,9 +770,7 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
- 	v4l2_i2c_subdev_init(&sensor->sd, sensor->i2c_client,
- 			     &ov2680_subdev_ops);
- 
--#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
- 	sensor->sd.flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
--#endif
- 	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
- 	sensor->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
  
 -- 
 2.40.1
