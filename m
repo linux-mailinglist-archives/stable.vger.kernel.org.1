@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F235C79C0C9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EEB879BAA7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358296AbjIKWIb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42460 "EHLO
+        id S239973AbjIKV3c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239708AbjIKO0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:55 -0400
+        with ESMTP id S239709AbjIKO06 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5EBF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E637C433C7;
-        Mon, 11 Sep 2023 14:26:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5CFEF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23054C433C8;
+        Mon, 11 Sep 2023 14:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442410;
-        bh=zqXd3//TyburWEKRlW+HSX2ZqZlV3lY5d+4KSJ5A3/s=;
+        s=korg; t=1694442413;
+        bh=A6hRF1hKYpmYX/XA+WklDT5WJ1ihei0aCma6IT1oiHg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GIgMj8C1to/kGHR3/SvpbRHXaVGDu81mPddP4DQVkhrNKrTfOMMREJkZzzRDczAqf
-         +yDdCE/E9ghcokdL9osRS5lEopxxOzasGea1lNKQc0s9K5XeD40/Fdpudi2e41kMat
-         QmOejW4/JQFbs9W9xFz2cAcqE6EoIxufiSbPpPYA=
+        b=ncUcRDumXc2Qfq2IWkgHpVse5SkCwqPBfasT6BffixQRVp3HZ9CYCSLDd9Aq2OumF
+         4CL2r28Dfd4keBnHwoGFrFLV5yYZ/bt8Q3c/8P+64UqXMDbIm6zaX6ClwH2D65a47C
+         AIpXCCMgO4Jy/ZvayFFr1b+UG2WxSJQ7aps7JnUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmytro Maluka <dmy@semihalf.com>,
+        patches@lists.linux.dev,
+        Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 016/737] ASoC: da7219: Check for failure reading AAD IRQ events
-Date:   Mon, 11 Sep 2023 15:37:55 +0200
-Message-ID: <20230911134650.789862425@linuxfoundation.org>
+Subject: [PATCH 6.4 017/737] ASoC: nau8821: Add DMI quirk mechanism for active-high jack-detect
+Date:   Mon, 11 Sep 2023 15:37:56 +0200
+Message-ID: <20230911134650.820950024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,49 +55,97 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmytro Maluka <dmy@semihalf.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit f0691dc16206f21b13c464434366e2cd632b8ed7 ]
+[ Upstream commit 1bc40efdaf4a0ccfdb10a1c8e4b458f4764e8e5f ]
 
-When handling an AAD interrupt, if IRQ events read failed (for example,
-due to i2c "Transfer while suspended" failure, i.e. when attempting to
-read it while DA7219 is suspended, which may happen due to a spurious
-AAD interrupt), the events array contains garbage uninitialized values.
-So instead of trying to interprete those values and doing any actions
-based on them (potentially resulting in misbehavior, e.g. reporting
-bogus events), refuse to handle the interrupt.
+Add a quirk mechanism to allow specifying that active-high jack-detection
+should be used on platforms where this info is not available in devicetree.
 
-Signed-off-by: Dmytro Maluka <dmy@semihalf.com>
-Link: https://lore.kernel.org/r/20230717193737.161784-3-dmy@semihalf.com
+And add an entry for the Positivo CW14Q01P-V2 to the DMI table, so that
+jack-detection will work properly on this laptop.
+
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Link: https://lore.kernel.org/r/20230719200241.4865-1-edson.drosdeck@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ sound/soc/codecs/nau8821.c | 41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index 07c5d9d354b6d..70c175744772c 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -361,11 +361,15 @@ static irqreturn_t da7219_aad_irq_thread(int irq, void *data)
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	u8 events[DA7219_AAD_IRQ_REG_MAX];
- 	u8 statusa;
--	int i, report = 0, mask = 0;
-+	int i, ret, report = 0, mask = 0;
+diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
+index fee970427a243..42de7588fdb68 100644
+--- a/sound/soc/codecs/nau8821.c
++++ b/sound/soc/codecs/nau8821.c
+@@ -10,6 +10,7 @@
+ #include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+@@ -25,6 +26,13 @@
+ #include <sound/tlv.h>
+ #include "nau8821.h"
  
- 	/* Read current IRQ events */
--	regmap_bulk_read(da7219->regmap, DA7219_ACCDET_IRQ_EVENT_A,
--			 events, DA7219_AAD_IRQ_REG_MAX);
-+	ret = regmap_bulk_read(da7219->regmap, DA7219_ACCDET_IRQ_EVENT_A,
-+			       events, DA7219_AAD_IRQ_REG_MAX);
-+	if (ret) {
-+		dev_warn_ratelimited(component->dev, "Failed to read IRQ events: %d\n", ret);
-+		return IRQ_NONE;
++#define NAU8821_JD_ACTIVE_HIGH			BIT(0)
++
++static int nau8821_quirk;
++static int quirk_override = -1;
++module_param_named(quirk, quirk_override, uint, 0444);
++MODULE_PARM_DESC(quirk, "Board-specific quirk override");
++
+ #define NAU_FREF_MAX 13500000
+ #define NAU_FVCO_MAX 100000000
+ #define NAU_FVCO_MIN 90000000
+@@ -1792,6 +1800,33 @@ static int nau8821_setup_irq(struct nau8821 *nau8821)
+ 	return 0;
+ }
+ 
++/* Please keep this list alphabetically sorted */
++static const struct dmi_system_id nau8821_quirk_table[] = {
++	{
++		/* Positivo CW14Q01P-V2 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_BOARD_NAME, "CW14Q01P-V2"),
++		},
++		.driver_data = (void *)(NAU8821_JD_ACTIVE_HIGH),
++	},
++	{}
++};
++
++static void nau8821_check_quirks(void)
++{
++	const struct dmi_system_id *dmi_id;
++
++	if (quirk_override != -1) {
++		nau8821_quirk = quirk_override;
++		return;
 +	}
++
++	dmi_id = dmi_first_match(nau8821_quirk_table);
++	if (dmi_id)
++		nau8821_quirk = (unsigned long)dmi_id->driver_data;
++}
++
+ static int nau8821_i2c_probe(struct i2c_client *i2c)
+ {
+ 	struct device *dev = &i2c->dev;
+@@ -1812,6 +1847,12 @@ static int nau8821_i2c_probe(struct i2c_client *i2c)
  
- 	if (!events[DA7219_AAD_IRQ_REG_A] && !events[DA7219_AAD_IRQ_REG_B])
- 		return IRQ_NONE;
+ 	nau8821->dev = dev;
+ 	nau8821->irq = i2c->irq;
++
++	nau8821_check_quirks();
++
++	if (nau8821_quirk & NAU8821_JD_ACTIVE_HIGH)
++		nau8821->jkdet_polarity = 0;
++
+ 	nau8821_print_device_properties(nau8821);
+ 
+ 	nau8821_reset_chip(nau8821->regmap);
 -- 
 2.40.1
 
