@@ -2,37 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F9479B023
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57DDA79AE54
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242674AbjIKVHh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56062 "EHLO
+        id S1348964AbjIKVb6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238504AbjIKN6G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:06 -0400
+        with ESMTP id S239874AbjIKOao (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283BCCD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9E9C433C7;
-        Mon, 11 Sep 2023 13:58:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FCDDE4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45FAC433C7;
+        Mon, 11 Sep 2023 14:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440681;
-        bh=Nnym5H83ZwhR/gp6MoJ1gM6NzZyhoja+6TWcmIvhEyo=;
+        s=korg; t=1694442639;
+        bh=rd1bWokMPBOvmS2kyH+FHN3d+qK3DrGGEcr+rglJadE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bdlT09yphSNOyp7k12t+c+/5d1QxZx8xwWHRuUofBh+cy0Pi+weKCDqsX36wgCa+R
-         5hIVva42QMXxWM4SvOOIZdQrC7r0FhTUaUj+A14yWetq8M+kMY9nSfPsVqt6L8eH9r
-         KNp3lIXGuUaVS6AEy6EBzEiOqPcK2aCEMFV6tDBk=
+        b=yVNdIqyDjmEYLOUGxppfgJwIZ79z1uRv7b5qDmG0vPCjCLxwCwCtAofJnKMXT4y1S
+         JzYqU9C51cCGwzKv2itYYWabSDL4bNWVQgsg5KkzkGShqveMKzIoPvj8fa66ZfGTgS
+         KcupPOJOCjOANRxISMm4Biw7FTIWtiCBUROf/lA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.5 148/739] USB: core: Change usb_get_device_descriptor() API
+        patches@lists.linux.dev, Todd Brandt <todd.e.brandt@intel.com>,
+        Patrick Steinhardt <ps@pks.im>,
+        Raymond Jay Golo <rjgolo@gmail.com>,
+        Ronan Pigott <ronan@rjp.ie>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: [PATCH 6.4 088/737] tpm: Enable hwrng only for Pluton on AMD CPUs
 Date:   Mon, 11 Sep 2023 15:39:07 +0200
-Message-ID: <20230911134655.257382233@linuxfoundation.org>
+Message-ID: <20230911134652.961214749@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,246 +54,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit de28e469da75359a2bb8cd8778b78aa64b1be1f4 upstream.
+commit 8f7f35e5aa6f2182eabcfa3abef4d898a48e9aa8 upstream.
 
-The usb_get_device_descriptor() routine reads the device descriptor
-from the udev device and stores it directly in udev->descriptor.  This
-interface is error prone, because the USB subsystem expects in-memory
-copies of a device's descriptors to be immutable once the device has
-been initialized.
+The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+reported systems the TPM doesn't reply at bootup and returns back the
+command code. This makes the TPM fail probe on Lenovo Legion Y540 laptop.
 
-The interface is changed so that the device descriptor is left in a
-kmalloc-ed buffer, not copied into the usb_device structure.  A
-pointer to the buffer is returned to the caller, who is then
-responsible for kfree-ing it.  The corresponding changes needed in the
-various callers are fairly small.
+Since only Microsoft Pluton is the only known combination of AMD CPU and
+fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
+aware of this, print also info message to the klog.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/d0111bb6-56c1-4f90-adf2-6cfe152f6561@rowland.harvard.edu
+Cc: stable@vger.kernel.org
+Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
+Reported-by: Patrick Steinhardt <ps@pks.im>
+Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+Reported-by: Ronan Pigott <ronan@rjp.ie>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hcd.c     |   10 +++++++---
- drivers/usb/core/hub.c     |   44 +++++++++++++++++++++++---------------------
- drivers/usb/core/message.c |   29 ++++++++++++-----------------
- drivers/usb/core/usb.h     |    4 ++--
- 4 files changed, 44 insertions(+), 43 deletions(-)
+ drivers/char/tpm/tpm_crb.c |   33 ++++++++-------------------------
+ 1 file changed, 8 insertions(+), 25 deletions(-)
 
---- a/drivers/usb/core/hcd.c
-+++ b/drivers/usb/core/hcd.c
-@@ -983,6 +983,7 @@ static int register_root_hub(struct usb_
- {
- 	struct device *parent_dev = hcd->self.controller;
- 	struct usb_device *usb_dev = hcd->self.root_hub;
-+	struct usb_device_descriptor *descr;
- 	const int devnum = 1;
- 	int retval;
- 
-@@ -994,13 +995,16 @@ static int register_root_hub(struct usb_
- 	mutex_lock(&usb_bus_idr_lock);
- 
- 	usb_dev->ep0.desc.wMaxPacketSize = cpu_to_le16(64);
--	retval = usb_get_device_descriptor(usb_dev, USB_DT_DEVICE_SIZE);
--	if (retval != sizeof usb_dev->descriptor) {
-+	descr = usb_get_device_descriptor(usb_dev);
-+	if (IS_ERR(descr)) {
-+		retval = PTR_ERR(descr);
- 		mutex_unlock(&usb_bus_idr_lock);
- 		dev_dbg (parent_dev, "can't read %s device descriptor %d\n",
- 				dev_name(&usb_dev->dev), retval);
--		return (retval < 0) ? retval : -EMSGSIZE;
-+		return retval;
- 	}
-+	usb_dev->descriptor = *descr;
-+	kfree(descr);
- 
- 	if (le16_to_cpu(usb_dev->descriptor.bcdUSB) >= 0x0201) {
- 		retval = usb_get_bos_descriptor(usb_dev);
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2671,12 +2671,17 @@ int usb_authorize_device(struct usb_devi
- 	}
- 
- 	if (usb_dev->wusb) {
--		result = usb_get_device_descriptor(usb_dev, sizeof(usb_dev->descriptor));
--		if (result < 0) {
-+		struct usb_device_descriptor *descr;
-+
-+		descr = usb_get_device_descriptor(usb_dev);
-+		if (IS_ERR(descr)) {
-+			result = PTR_ERR(descr);
- 			dev_err(&usb_dev->dev, "can't re-read device descriptor for "
- 				"authorization: %d\n", result);
- 			goto error_device_descriptor;
- 		}
-+		usb_dev->descriptor = *descr;
-+		kfree(descr);
- 	}
- 
- 	usb_dev->authorized = 1;
-@@ -4804,7 +4809,7 @@ hub_port_init(struct usb_hub *hub, struc
- 	const char		*driver_name;
- 	bool			do_new_scheme;
- 	int			maxp0;
--	struct usb_device_descriptor	*buf;
-+	struct usb_device_descriptor	*buf, *descr;
- 
- 	buf = kmalloc(GET_DESCRIPTOR_BUFSIZE, GFP_NOIO);
- 	if (!buf)
-@@ -5046,15 +5051,16 @@ hub_port_init(struct usb_hub *hub, struc
- 		usb_ep0_reinit(udev);
- 	}
- 
--	retval = usb_get_device_descriptor(udev, USB_DT_DEVICE_SIZE);
--	if (retval < (signed)sizeof(udev->descriptor)) {
-+	descr = usb_get_device_descriptor(udev);
-+	if (IS_ERR(descr)) {
-+		retval = PTR_ERR(descr);
- 		if (retval != -ENODEV)
- 			dev_err(&udev->dev, "device descriptor read/all, error %d\n",
- 					retval);
--		if (retval >= 0)
--			retval = -ENOMSG;
- 		goto fail;
- 	}
-+	udev->descriptor = *descr;
-+	kfree(descr);
- 
- 	/*
- 	 * Some superspeed devices have finished the link training process
-@@ -5173,7 +5179,7 @@ hub_power_remaining(struct usb_hub *hub)
- 
- 
- static int descriptors_changed(struct usb_device *udev,
--		struct usb_device_descriptor *old_device_descriptor,
-+		struct usb_device_descriptor *new_device_descriptor,
- 		struct usb_host_bos *old_bos)
- {
- 	int		changed = 0;
-@@ -5184,8 +5190,8 @@ static int descriptors_changed(struct us
- 	int		length;
- 	char		*buf;
- 
--	if (memcmp(&udev->descriptor, old_device_descriptor,
--			sizeof(*old_device_descriptor)) != 0)
-+	if (memcmp(&udev->descriptor, new_device_descriptor,
-+			sizeof(*new_device_descriptor)) != 0)
- 		return 1;
- 
- 	if ((old_bos && !udev->bos) || (!old_bos && udev->bos))
-@@ -5510,9 +5516,8 @@ static void hub_port_connect_change(stru
- {
- 	struct usb_port *port_dev = hub->ports[port1 - 1];
- 	struct usb_device *udev = port_dev->child;
--	struct usb_device_descriptor descriptor;
-+	struct usb_device_descriptor *descr;
- 	int status = -ENODEV;
--	int retval;
- 
- 	dev_dbg(&port_dev->dev, "status %04x, change %04x, %s\n", portstatus,
- 			portchange, portspeed(hub, portstatus));
-@@ -5539,23 +5544,20 @@ static void hub_port_connect_change(stru
- 			 * changed device descriptors before resuscitating the
- 			 * device.
- 			 */
--			descriptor = udev->descriptor;
--			retval = usb_get_device_descriptor(udev,
--					sizeof(udev->descriptor));
--			if (retval < 0) {
-+			descr = usb_get_device_descriptor(udev);
-+			if (IS_ERR(descr)) {
- 				dev_dbg(&udev->dev,
--						"can't read device descriptor %d\n",
--						retval);
-+						"can't read device descriptor %ld\n",
-+						PTR_ERR(descr));
- 			} else {
--				if (descriptors_changed(udev, &descriptor,
-+				if (descriptors_changed(udev, descr,
- 						udev->bos)) {
- 					dev_dbg(&udev->dev,
- 							"device descriptor has changed\n");
--					/* for disconnect() calls */
--					udev->descriptor = descriptor;
- 				} else {
- 					status = 0; /* Nothing to do */
- 				}
-+				kfree(descr);
- 			}
- #ifdef CONFIG_PM
- 		} else if (udev->state == USB_STATE_SUSPENDED &&
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -1040,40 +1040,35 @@ char *usb_cache_string(struct usb_device
- EXPORT_SYMBOL_GPL(usb_cache_string);
- 
- /*
-- * usb_get_device_descriptor - (re)reads the device descriptor (usbcore)
-- * @dev: the device whose device descriptor is being updated
-- * @size: how much of the descriptor to read
-+ * usb_get_device_descriptor - read the device descriptor
-+ * @udev: the device whose device descriptor should be read
-  *
-  * Context: task context, might sleep.
-  *
-- * Updates the copy of the device descriptor stored in the device structure,
-- * which dedicates space for this purpose.
-- *
-  * Not exported, only for use by the core.  If drivers really want to read
-  * the device descriptor directly, they can call usb_get_descriptor() with
-  * type = USB_DT_DEVICE and index = 0.
-  *
-- * This call is synchronous, and may not be used in an interrupt context.
-- *
-- * Return: The number of bytes received on success, or else the status code
-- * returned by the underlying usb_control_msg() call.
-+ * Returns: a pointer to a dynamically allocated usb_device_descriptor
-+ * structure (which the caller must deallocate), or an ERR_PTR value.
-  */
--int usb_get_device_descriptor(struct usb_device *dev, unsigned int size)
-+struct usb_device_descriptor *usb_get_device_descriptor(struct usb_device *udev)
- {
- 	struct usb_device_descriptor *desc;
- 	int ret;
- 
--	if (size > sizeof(*desc))
--		return -EINVAL;
- 	desc = kmalloc(sizeof(*desc), GFP_NOIO);
- 	if (!desc)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
-+
-+	ret = usb_get_descriptor(udev, USB_DT_DEVICE, 0, desc, sizeof(*desc));
-+	if (ret == sizeof(*desc))
-+		return desc;
- 
--	ret = usb_get_descriptor(dev, USB_DT_DEVICE, 0, desc, size);
- 	if (ret >= 0)
--		memcpy(&dev->descriptor, desc, size);
-+		ret = -EMSGSIZE;
- 	kfree(desc);
--	return ret;
-+	return ERR_PTR(ret);
+--- a/drivers/char/tpm/tpm_crb.c
++++ b/drivers/char/tpm/tpm_crb.c
+@@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_
+ 	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
  }
  
- /*
---- a/drivers/usb/core/usb.h
-+++ b/drivers/usb/core/usb.h
-@@ -43,8 +43,8 @@ extern bool usb_endpoint_is_ignored(stru
- 		struct usb_endpoint_descriptor *epd);
- extern int usb_remove_device(struct usb_device *udev);
+-static int crb_check_flags(struct tpm_chip *chip)
+-{
+-	u32 val;
+-	int ret;
+-
+-	ret = crb_request_locality(chip, 0);
+-	if (ret)
+-		return ret;
+-
+-	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
+-	if (ret)
+-		goto release;
+-
+-	if (val == 0x414D4400U /* AMD */)
+-		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
+-
+-release:
+-	crb_relinquish_locality(chip, 0);
+-
+-	return ret;
+-}
+-
+ static const struct tpm_class_ops tpm_crb = {
+ 	.flags = TPM_OPS_AUTO_STARTUP,
+ 	.status = crb_status,
+@@ -826,9 +804,14 @@ static int crb_acpi_add(struct acpi_devi
+ 	if (rc)
+ 		goto out;
  
--extern int usb_get_device_descriptor(struct usb_device *dev,
--		unsigned int size);
-+extern struct usb_device_descriptor *usb_get_device_descriptor(
-+		struct usb_device *udev);
- extern int usb_set_isoch_delay(struct usb_device *dev);
- extern int usb_get_bos_descriptor(struct usb_device *dev);
- extern void usb_release_bos_descriptor(struct usb_device *dev);
+-	rc = crb_check_flags(chip);
+-	if (rc)
+-		goto out;
++#ifdef CONFIG_X86
++	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
++	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
++	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
++		dev_info(dev, "Disabling hwrng\n");
++		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
++	}
++#endif /* CONFIG_X86 */
+ 
+ 	rc = tpm_chip_register(chip);
+ 
 
 
