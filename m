@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 346F479AE60
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65D4379AE5B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353821AbjIKVuq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45232 "EHLO
+        id S242684AbjIKWYC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240553AbjIKOrG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:06 -0400
+        with ESMTP id S239224AbjIKOO4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97ADA125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECE6C433C9;
-        Mon, 11 Sep 2023 14:47:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15F87CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF48C433C7;
+        Mon, 11 Sep 2023 14:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443622;
-        bh=X2HFYFZBr6hfqjYuk6ZkDGk54TTCmhJNMtBKulp82DA=;
+        s=korg; t=1694441691;
+        bh=2pjyc9r4e7zVlzES5WcgdzjphlCkTcDEaCafjg9WXEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LBuBQNbUMxRh5lqbLQdZEvut5RNVlf4VeP5OlEEy53q/n9izpf+xdFhUfDIbhqo4G
-         gN+MBZSemqoAb7zJELVZFbphQ/+B4CCwmSafJGJjrZuOhg/jVlklb9IFbAa4BXVorZ
-         KXprPRMMIPmxfOL4QRCyQYbrO/FrYX6iJQFKMfVQ=
+        b=XcjSmhV7YcgKAyVq4K2th3ZmqWXhdVwx+wOUEW9xT65v0yblXlkQ742ZKIxEGbvta
+         OdMA4YKlEW+MMCE/X6715D8MmB1oLx9gi3Yuavw+Fh0DtGIY7UCY1ExMrYyUvwQtq4
+         p2LsvKGIxS1hiLttZWHMim7BBUu0Wzyd7h9NzyzM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Imran Shaik <quic_imrashai@quicinc.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Zenghui Yu <yuzenghui@huawei.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 442/737] dt-bindings: clock: Update GCC clocks for QDU1000 and QRU1000 SoCs
-Date:   Mon, 11 Sep 2023 15:45:01 +0200
-Message-ID: <20230911134702.944900721@linuxfoundation.org>
+Subject: [PATCH 6.5 503/739] driver core: Call dma_cleanup() on the test_remove path
+Date:   Mon, 11 Sep 2023 15:45:02 +0200
+Message-ID: <20230911134705.184090874@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,64 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imran Shaik <quic_imrashai@quicinc.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit df873243b2398a082d34a006bebe0e0ed7538f5c ]
+[ Upstream commit f429378a9bf84d79a7e2cae05d2e3384cf7d68ba ]
 
-Add support for GCC_GPLL1_OUT_EVEN and GCC_DDRSS_ECPRI_GSI_CLK clock
-bindings for QDU1000 and QRU1000 SoCs. While at it, update the
-maintainers list.
+When test_remove is enabled really_probe() does not properly pair
+dma_configure() with dma_remove(), it will end up calling dma_configure()
+twice. This corrupts the owner_cnt and renders the group unusable with
+VFIO/etc.
 
-Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230803105741.2292309-2-quic_imrashai@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 06d71fa10f2e ("clk: qcom: gcc-qdu1000: Register gcc_gpll1_out_even clock")
+Add the missing cleanup before going back to re_probe.
+
+Fixes: 25f3bcfc54bc ("driver core: Add dma_cleanup callback in bus_type")
+Reported-by: Zenghui Yu <yuzenghui@huawei.com>
+Tested-by: Zenghui Yu <yuzenghui@huawei.com>
+Closes: https://lore.kernel.org/all/6472f254-c3c4-8610-4a37-8d9dfdd54ce8@huawei.com/
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/0-v2-4deed94e283e+40948-really_probe_dma_cleanup_jgg@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml | 3 ++-
- include/dt-bindings/clock/qcom,qdu1000-gcc.h                  | 4 +++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/base/dd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml
-index 767a9d03aa327..d712b1a87e25f 100644
---- a/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml
-+++ b/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml
-@@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: Qualcomm Global Clock & Reset Controller for QDU1000 and QRU1000
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 878aa7646b37e..a528cec24264a 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -693,6 +693,8 @@ static int really_probe(struct device *dev, struct device_driver *drv)
  
- maintainers:
--  - Melody Olvera <quic_molvera@quicinc.com>
-+  - Taniya Das <quic_tdas@quicinc.com>
-+  - Imran Shaik <quic_imrashai@quicinc.com>
+ 		device_remove(dev);
+ 		driver_sysfs_remove(dev);
++		if (dev->bus && dev->bus->dma_cleanup)
++			dev->bus->dma_cleanup(dev);
+ 		device_unbind_cleanup(dev);
  
- description: |
-   Qualcomm global clock control module which supports the clocks, resets and
-diff --git a/include/dt-bindings/clock/qcom,qdu1000-gcc.h b/include/dt-bindings/clock/qcom,qdu1000-gcc.h
-index ddbc6b825e80c..2fd36cbfddbb2 100644
---- a/include/dt-bindings/clock/qcom,qdu1000-gcc.h
-+++ b/include/dt-bindings/clock/qcom,qdu1000-gcc.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
- /*
-- * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef _DT_BINDINGS_CLK_QCOM_GCC_QDU1000_H
-@@ -138,6 +138,8 @@
- #define GCC_AGGRE_NOC_ECPRI_GSI_CLK			128
- #define GCC_PCIE_0_PIPE_CLK_SRC				129
- #define GCC_PCIE_0_PHY_AUX_CLK_SRC			130
-+#define GCC_GPLL1_OUT_EVEN				131
-+#define GCC_DDRSS_ECPRI_GSI_CLK				132
- 
- /* GCC resets */
- #define GCC_ECPRI_CC_BCR				0
+ 		goto re_probe;
 -- 
 2.40.1
 
