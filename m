@@ -2,37 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C1E979BF63
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB4379B973
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243067AbjIKU7C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
+        id S1359785AbjIKWSn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242358AbjIKP2v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:51 -0400
+        with ESMTP id S242367AbjIKP3C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 310E5E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722ADC433C9;
-        Mon, 11 Sep 2023 15:28:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A868BE4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2CFC433CD;
+        Mon, 11 Sep 2023 15:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446126;
-        bh=25GGYIv3aBG3y5EjHVi/8NPPEtPbCz0DL/JtPjzpMV8=;
+        s=korg; t=1694446138;
+        bh=gdWuEBppFnj1VvHN2G5dDwTSmLyGQ1r0GbUinLcwlHw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dhh9UEVc7JFwfu71pUviT+xu3mjHfCg8f7g7mJaugEb7CR+eBj5Pp6OYCOY0gKICN
-         /BQYTvYXVbbq/Gnp/rFw/Khz3Ly3f1xeU74a/1qzOdpwxBoI4NJSmh1Bc8dRLRqRAg
-         HP+p4JcCn2F/d6Ya9B9Wdhl1NTKbBVy9snteGdeQ=
+        b=m+LRg7MIVJxS8ZQYux6TgwasFXLW5j6ivWT65A2ubr7OtkjO2wWU+qqT37HEypf9o
+         q+324CNqKGCCeGcLB5FXqHSsc/rcePTBBHa9H3iRJFL6mrE+fqgnG5zpNBYbyPoX5U
+         LsNvyKmu7UNI20/OZijMdndVopyJ9zxdUCLS6iKo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Lau <martin.lau@linux.dev>,
-        Lorenz Bauer <lmb@isovalent.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH 6.1 591/600] net: remove duplicate INDIRECT_CALLABLE_DECLARE of udp[6]_ehashfn
-Date:   Mon, 11 Sep 2023 15:50:24 +0200
-Message-ID: <20230911134651.083112308@linuxfoundation.org>
+        patches@lists.linux.dev, Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.1 595/600] NFSv4.2: Fix a potential double free with READ_PLUS
+Date:   Mon, 11 Sep 2023 15:50:28 +0200
+Message-ID: <20230911134651.219445619@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -55,46 +52,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Lorenz Bauer <lmb@isovalent.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-commit 74bdfab4fd7c641e55f7fe9d1be9687eeb01df67 upstream.
+commit 43439d858bbae244a510de47f9a55f667ca4ed52 upstream.
 
-There are already INDIRECT_CALLABLE_DECLARE in the hashtable
-headers, no need to declare them again.
+kfree()-ing the scratch page isn't enough, we also need to set the pointer
+back to NULL to avoid a double-free in the case of a resend.
 
-Fixes: 0f495f761722 ("net: remove duplicate reuseport_lookup functions")
-Suggested-by: Martin Lau <martin.lau@linux.dev>
-Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230731-indir-call-v1-1-4cd0aeaee64f@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: fbd2a05f29a9 (NFSv4.2: Rework scratch handling for READ_PLUS)
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_hashtables.c  |    2 --
- net/ipv6/inet6_hashtables.c |    2 --
- 2 files changed, 4 deletions(-)
+ fs/nfs/nfs4proc.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -333,8 +333,6 @@ static inline int compute_score(struct s
- 	return score;
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5444,10 +5444,18 @@ static bool nfs4_read_plus_not_supported
+ 	return false;
  }
  
--INDIRECT_CALLABLE_DECLARE(inet_ehashfn_t udp_ehashfn);
--
- struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
- 				   struct sk_buff *skb, int doff,
- 				   __be32 saddr, __be16 sport,
---- a/net/ipv6/inet6_hashtables.c
-+++ b/net/ipv6/inet6_hashtables.c
-@@ -112,8 +112,6 @@ static inline int compute_score(struct s
- 	return score;
- }
- 
--INDIRECT_CALLABLE_DECLARE(inet6_ehashfn_t udp6_ehashfn);
--
- struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
- 				    struct sk_buff *skb, int doff,
- 				    const struct in6_addr *saddr,
+-static int nfs4_read_done(struct rpc_task *task, struct nfs_pgio_header *hdr)
++static inline void nfs4_read_plus_scratch_free(struct nfs_pgio_header *hdr)
+ {
+-	if (hdr->res.scratch)
++	if (hdr->res.scratch) {
+ 		kfree(hdr->res.scratch);
++		hdr->res.scratch = NULL;
++	}
++}
++
++static int nfs4_read_done(struct rpc_task *task, struct nfs_pgio_header *hdr)
++{
++	nfs4_read_plus_scratch_free(hdr);
++
+ 	if (!nfs4_sequence_done(task, &hdr->res.seq_res))
+ 		return -EAGAIN;
+ 	if (nfs4_read_stateid_changed(task, &hdr->args))
 
 
