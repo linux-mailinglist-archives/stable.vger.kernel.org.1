@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0718F79B5D9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B7D79AE56
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238875AbjIKVGf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
+        id S1379472AbjIKWoW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239698AbjIKO0h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:37 -0400
+        with ESMTP id S238361AbjIKNye (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE78CCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DA8C433C9;
-        Mon, 11 Sep 2023 14:26:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232BCFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:54:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FE7C433C8;
+        Mon, 11 Sep 2023 13:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442393;
-        bh=sNqsJWHwYZbIQqeabJa8QNGGCKUbqeMN3F31TD8w430=;
+        s=korg; t=1694440469;
+        bh=AKsZOj9sqWZiB+o0OSfdOYCpVJsBDwYYiNoBRI9R3Zg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m2eDrRBQsSp+mFWcTz1MYhOj0xkLKm1NEZMIwHJtmR9laHPbTzzPsnu0l+QIS4s/O
-         8J44rjMq14LhbcDl/A6XXZV2AzujY6wp8od3Fb0oh96/Pkpqe2xj/tqqwsDhYxm4b3
-         hieM7tLunyhCFgslCphNKOVpY4xTGKvx/TIu35zU=
+        b=mfCLqlLJfmJ4fo6qHsUg/mpn01J+cB318uqTr+5car4qz/aGciMvO9J8FdWx+VDrs
+         nOG+ta7oBfoPXANN+0O63Ugx44px9tgUqEehGESws8hfwp/hZKS+pAjBZarHXSSPBw
+         WFsYa56Rw5MtmTmRE5N/DE87Lc0Rr5bIzfFZ8tsQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Horman <simon.horman@corigine.com>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Eric Van Hensbergen <ericvh@kernel.org>,
+        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 010/737] 9p: virtio: make sure offs is initialized in zc_request
-Date:   Mon, 11 Sep 2023 15:37:49 +0200
-Message-ID: <20230911134650.609078636@linuxfoundation.org>
+Subject: [PATCH 6.5 072/739] bpf: Fix an error in verifying a field in a union
+Date:   Mon, 11 Sep 2023 15:37:51 +0200
+Message-ID: <20230911134653.131298454@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit 4a73edab69d3a6623f03817fe950a2d9585f80e4 ]
+[ Upstream commit 33937607efa050d9e237e0c4ac4ada02d961c466 ]
 
-Similarly to the previous patch: offs can be used in handle_rerrors
-without initializing on small payloads; in this case handle_rerrors will
-not use it because of the size check, but it doesn't hurt to make sure
-it is zero to please scan-build.
+We are utilizing BPF LSM to monitor BPF operations within our container
+environment. When we add support for raw_tracepoint, it hits below
+error.
 
-This fixes the following warning:
-net/9p/trans_virtio.c:539:3: warning: 3rd function call argument is an uninitialized value [core.CallAndMessage]
-                handle_rerror(req, in_hdr_len, offs, in_pages);
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; (const void *)attr->raw_tracepoint.name);
+27: (79) r3 = *(u64 *)(r2 +0)
+access beyond the end of member map_type (mend:4) in struct (anon) with off 0 size 8
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+It can be reproduced with below BPF prog.
+
+SEC("lsm/bpf")
+int BPF_PROG(bpf_audit, int cmd, union bpf_attr *attr, unsigned int size)
+{
+	switch (cmd) {
+	case BPF_RAW_TRACEPOINT_OPEN:
+		bpf_printk("raw_tracepoint is %s", attr->raw_tracepoint.name);
+		break;
+	default:
+		break;
+	}
+	return 0;
+}
+
+The reason is that when accessing a field in a union, such as bpf_attr,
+if the field is located within a nested struct that is not the first
+member of the union, it can result in incorrect field verification.
+
+  union bpf_attr {
+      struct {
+          __u32 map_type; <<<< Actually it will find that field.
+          __u32 key_size;
+          __u32 value_size;
+         ...
+      };
+      ...
+      struct {
+          __u64 name;    <<<< We want to verify this field.
+          __u32 prog_fd;
+      } raw_tracepoint;
+  };
+
+Considering the potential deep nesting levels, finding a perfect
+solution to address this issue has proven challenging. Therefore, I
+propose a solution where we simply skip the verification process if the
+field in question is located within a union.
+
+Fixes: 7e3617a72df3 ("bpf: Add array support to btf_struct_access")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20230713025642.27477-4-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_virtio.c | 2 +-
+ kernel/bpf/btf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
-index 2c9495ccda6ba..f3f6782894239 100644
---- a/net/9p/trans_virtio.c
-+++ b/net/9p/trans_virtio.c
-@@ -428,7 +428,7 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
- 	struct page **in_pages = NULL, **out_pages = NULL;
- 	struct virtio_chan *chan = client->trans;
- 	struct scatterlist *sgs[4];
--	size_t offs;
-+	size_t offs = 0;
- 	int need_drop = 0;
- 	int kicked = 0;
- 
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 7ed82a8d117b7..4b38c97990872 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6366,7 +6366,7 @@ static int btf_struct_walk(struct bpf_verifier_log *log, const struct btf *btf,
+ 		 * that also allows using an array of int as a scratch
+ 		 * space. e.g. skb->cb[].
+ 		 */
+-		if (off + size > mtrue_end) {
++		if (off + size > mtrue_end && !(*flag & PTR_UNTRUSTED)) {
+ 			bpf_log(log,
+ 				"access beyond the end of member %s (mend:%u) in struct %s with off %u size %u\n",
+ 				mname, mtrue_end, tname, off, size);
 -- 
 2.40.1
 
