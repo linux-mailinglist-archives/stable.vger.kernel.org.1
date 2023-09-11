@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E42A79B21A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F2B79B4D8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343774AbjIKVMd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44070 "EHLO
+        id S1379391AbjIKWnx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242375AbjIKP3S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:18 -0400
+        with ESMTP id S242377AbjIKP3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A52FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC0DC433CA;
-        Mon, 11 Sep 2023 15:29:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFC7E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DDFC433C9;
+        Mon, 11 Sep 2023 15:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446153;
-        bh=BYBoTa/NVobh/y2awNs+dMx0y92LO6Yloj+/x318meg=;
+        s=korg; t=1694446158;
+        bh=NqgXe3JzTOZf3oco7kemUKIOGUy36und71TXzUHpda0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HasEYLQBAS/aaiWB3HgyXuLVhCPqljn2CRGUcRRk+vxgZjLCPcb2pESAEhgw90uBu
-         F2kKeZFbf1qt/XvHP72K1Xv2ZhhT72VyoFqKUwicOxQMEqpJEnRv8BiUsVjMoYOZOI
-         XxHr6CcDAZwLGU43jLQo/k+zppY6cWEUddkgdvDg=
+        b=V+rCxnihy6Z9a3IRjfn4Ba7pVj2PwctbGCAteLp9RGKOWMGYwfbi9SBIj3aW5btcb
+         JckQ75OBVTKgTHKuMRs0Rf83qD7QzT5IOZvkgTPLRViXdBUvPUexE4Upc74auCUBUM
+         5WD7DIy3PSQBNGubQcjPOxL15lhrN2fHyl91FMzI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        D Scott Phillips <scott@os.amperecomputing.com>,
-        James Morse <james.morse@arm.com>,
-        Mihai Carabas <mihai.carabas@oracle.com>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 574/600] arm64: sdei: abort running SDEI handlers during crash
-Date:   Mon, 11 Sep 2023 15:50:07 +0200
-Message-ID: <20230911134650.559685924@linuxfoundation.org>
+        patches@lists.linux.dev, Sven Schnelle <svens@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.1 576/600] s390/ipl: add missing secure/has_secure file to ipl type unknown
+Date:   Mon, 11 Sep 2023 15:50:09 +0200
+Message-ID: <20230911134650.620392113@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -56,183 +53,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: D Scott Phillips <scott@os.amperecomputing.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 5cd474e57368f0957c343bb21e309cf82826b1ef upstream.
+commit ea5717cb13468323a7c3dd394748301802991f39 upstream.
 
-Interrupts are blocked in SDEI context, per the SDEI spec: "The client
-interrupts cannot preempt the event handler." If we crashed in the SDEI
-handler-running context (as with ACPI's AGDI) then we need to clean up the
-SDEI state before proceeding to the crash kernel so that the crash kernel
-can have working interrupts.
+OS installers are relying on /sys/firmware/ipl/has_secure to be
+present on machines supporting secure boot. This file is present
+for all IPL types, but not the unknown type, which prevents a secure
+installation when an LPAR is booted in HMC via FTP(s), because
+this is an unknown IPL type in linux. While at it, also add the secure
+file.
 
-Track the active SDEI handler per-cpu so that we can COMPLETE_AND_RESUME
-the handler, discarding the interrupted context.
-
-Fixes: f5df26961853 ("arm64: kernel: Add arch-specific SDEI entry code and CPU masking")
-Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
+Fixes: c9896acc7851 ("s390/ipl: Provide has_secure sysfs attribute")
 Cc: stable@vger.kernel.org
-Reviewed-by: James Morse <james.morse@arm.com>
-Tested-by: Mihai Carabas <mihai.carabas@oracle.com>
-Link: https://lore.kernel.org/r/20230627002939.2758-1-scott@os.amperecomputing.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/sdei.h |    6 ++++++
- arch/arm64/kernel/entry.S     |   27 +++++++++++++++++++++++++--
- arch/arm64/kernel/sdei.c      |    3 +++
- arch/arm64/kernel/smp.c       |    8 ++++----
- drivers/firmware/arm_sdei.c   |   19 +++++++++++++++++++
- include/linux/arm_sdei.h      |    2 ++
- 6 files changed, 59 insertions(+), 6 deletions(-)
+ arch/s390/kernel/ipl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/include/asm/sdei.h
-+++ b/arch/arm64/include/asm/sdei.h
-@@ -17,6 +17,9 @@
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -503,6 +503,8 @@ static struct attribute_group ipl_ccw_at
  
- #include <asm/virt.h>
- 
-+DECLARE_PER_CPU(struct sdei_registered_event *, sdei_active_normal_event);
-+DECLARE_PER_CPU(struct sdei_registered_event *, sdei_active_critical_event);
-+
- extern unsigned long sdei_exit_mode;
- 
- /* Software Delegated Exception entry point from firmware*/
-@@ -29,6 +32,9 @@ asmlinkage void __sdei_asm_entry_trampol
- 						   unsigned long pc,
- 						   unsigned long pstate);
- 
-+/* Abort a running handler. Context is discarded. */
-+void __sdei_handler_abort(void);
-+
- /*
-  * The above entry point does the minimum to call C code. This function does
-  * anything else, before calling the driver.
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -993,9 +993,13 @@ SYM_CODE_START(__sdei_asm_handler)
- 
- 	mov	x19, x1
- 
--#if defined(CONFIG_VMAP_STACK) || defined(CONFIG_SHADOW_CALL_STACK)
-+	/* Store the registered-event for crash_smp_send_stop() */
- 	ldrb	w4, [x19, #SDEI_EVENT_PRIORITY]
--#endif
-+	cbnz	w4, 1f
-+	adr_this_cpu dst=x5, sym=sdei_active_normal_event, tmp=x6
-+	b	2f
-+1:	adr_this_cpu dst=x5, sym=sdei_active_critical_event, tmp=x6
-+2:	str	x19, [x5]
- 
- #ifdef CONFIG_VMAP_STACK
- 	/*
-@@ -1062,6 +1066,14 @@ SYM_CODE_START(__sdei_asm_handler)
- 
- 	ldr_l	x2, sdei_exit_mode
- 
-+	/* Clear the registered-event seen by crash_smp_send_stop() */
-+	ldrb	w3, [x4, #SDEI_EVENT_PRIORITY]
-+	cbnz	w3, 1f
-+	adr_this_cpu dst=x5, sym=sdei_active_normal_event, tmp=x6
-+	b	2f
-+1:	adr_this_cpu dst=x5, sym=sdei_active_critical_event, tmp=x6
-+2:	str	xzr, [x5]
-+
- alternative_if_not ARM64_UNMAP_KERNEL_AT_EL0
- 	sdei_handler_exit exit_mode=x2
- alternative_else_nop_endif
-@@ -1072,4 +1084,15 @@ alternative_else_nop_endif
- #endif
- SYM_CODE_END(__sdei_asm_handler)
- NOKPROBE(__sdei_asm_handler)
-+
-+SYM_CODE_START(__sdei_handler_abort)
-+	mov_q	x0, SDEI_1_0_FN_SDEI_EVENT_COMPLETE_AND_RESUME
-+	adr	x1, 1f
-+	ldr_l	x2, sdei_exit_mode
-+	sdei_handler_exit exit_mode=x2
-+	// exit the handler and jump to the next instruction.
-+	// Exit will stomp x0-x17, PSTATE, ELR_ELx, and SPSR_ELx.
-+1:	ret
-+SYM_CODE_END(__sdei_handler_abort)
-+NOKPROBE(__sdei_handler_abort)
- #endif /* CONFIG_ARM_SDE_INTERFACE */
---- a/arch/arm64/kernel/sdei.c
-+++ b/arch/arm64/kernel/sdei.c
-@@ -47,6 +47,9 @@ DEFINE_PER_CPU(unsigned long *, sdei_sha
- DEFINE_PER_CPU(unsigned long *, sdei_shadow_call_stack_critical_ptr);
- #endif
- 
-+DEFINE_PER_CPU(struct sdei_registered_event *, sdei_active_normal_event);
-+DEFINE_PER_CPU(struct sdei_registered_event *, sdei_active_critical_event);
-+
- static void _free_sdei_stack(unsigned long * __percpu *ptr, int cpu)
- {
- 	unsigned long *p;
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -1047,10 +1047,8 @@ void crash_smp_send_stop(void)
- 	 * If this cpu is the only one alive at this point in time, online or
- 	 * not, there are no stop messages to be sent around, so just back out.
- 	 */
--	if (num_other_online_cpus() == 0) {
--		sdei_mask_local_cpu();
--		return;
--	}
-+	if (num_other_online_cpus() == 0)
-+		goto skip_ipi;
- 
- 	cpumask_copy(&mask, cpu_online_mask);
- 	cpumask_clear_cpu(smp_processor_id(), &mask);
-@@ -1069,7 +1067,9 @@ void crash_smp_send_stop(void)
- 		pr_warn("SMP: failed to stop secondary CPUs %*pbl\n",
- 			cpumask_pr_args(&mask));
- 
-+skip_ipi:
- 	sdei_mask_local_cpu();
-+	sdei_handler_abort();
- }
- 
- bool smp_crash_stop_failed(void)
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -1095,3 +1095,22 @@ int sdei_event_handler(struct pt_regs *r
- 	return err;
- }
- NOKPROBE_SYMBOL(sdei_event_handler);
-+
-+void sdei_handler_abort(void)
-+{
-+	/*
-+	 * If the crash happened in an SDEI event handler then we need to
-+	 * finish the handler with the firmware so that we can have working
-+	 * interrupts in the crash kernel.
-+	 */
-+	if (__this_cpu_read(sdei_active_critical_event)) {
-+	        pr_warn("still in SDEI critical event context, attempting to finish handler.\n");
-+	        __sdei_handler_abort();
-+	        __this_cpu_write(sdei_active_critical_event, NULL);
-+	}
-+	if (__this_cpu_read(sdei_active_normal_event)) {
-+	        pr_warn("still in SDEI normal event context, attempting to finish handler.\n");
-+	        __sdei_handler_abort();
-+	        __this_cpu_write(sdei_active_normal_event, NULL);
-+	}
-+}
---- a/include/linux/arm_sdei.h
-+++ b/include/linux/arm_sdei.h
-@@ -47,10 +47,12 @@ int sdei_unregister_ghes(struct ghes *gh
- int sdei_mask_local_cpu(void);
- int sdei_unmask_local_cpu(void);
- void __init sdei_init(void);
-+void sdei_handler_abort(void);
- #else
- static inline int sdei_mask_local_cpu(void) { return 0; }
- static inline int sdei_unmask_local_cpu(void) { return 0; }
- static inline void sdei_init(void) { }
-+static inline void sdei_handler_abort(void) { }
- #endif /* CONFIG_ARM_SDE_INTERFACE */
- 
+ static struct attribute *ipl_unknown_attrs[] = {
+ 	&sys_ipl_type_attr.attr,
++	&sys_ipl_secure_attr.attr,
++	&sys_ipl_has_secure_attr.attr,
+ 	NULL,
+ };
  
 
 
