@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6C379BAEB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B9979C0DF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240727AbjIKWqU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:46:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
+        id S230016AbjIKWrD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:47:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238215AbjIKNvc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:51:32 -0400
+        with ESMTP id S238234AbjIKNv6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:51:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE78FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:51:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA94C433C8;
-        Mon, 11 Sep 2023 13:51:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E3EDFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:51:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3905C433C7;
+        Mon, 11 Sep 2023 13:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440288;
-        bh=twQAd1X5gu6nYc/u9rxH7DxtpMUqYki2AuBfzGLDJLo=;
+        s=korg; t=1694440314;
+        bh=JGa2s9BA82mfzcZQIx+gT7WCX9Hd9i48Mb9GGu3W414=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PaB3IEwwOfSs5gj7iODKTWR20Nh8E7l+N9YY3HgMSzOYQwrzlQwqjGzU5sgq/b6za
-         RNFWhOeufRAYK+EuSi1EcgofEvYehPNaYbtYIoOEEFyR/i6RQjoNNRJK2NXPjIsI8x
-         L7AU4wUi7gV5oy495ztpSf8KynRIPiVbjVrkrXTo=
+        b=DxH6vjGDnCafB1PP5YPaH9c1uqRj0B82RgYhj2wGg6UyJUso0HSn84LKNE/Utcjip
+         /1K6lP6ZDu7ZPpC0Rzex3vDMtNZ2Wu+cFzkjnqkeN2daOGjFCgS2xlzPnfTYyFy0Mp
+         rbMqQ/dyJjJOhtzkYwVFzPH1Ddn9AZK4tY/us938=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Michael Larabel <Michael@MichaelLarabel.com>
-Subject: [PATCH 6.5 001/739] drm/amd/display: ensure async flips are only accepted for fast updates
-Date:   Mon, 11 Sep 2023 15:36:40 +0200
-Message-ID: <20230911134650.979430061@linuxfoundation.org>
+        patches@lists.linux.dev, Yang Jie <yang.jie@linux.intel.com>,
+        Doug Smythies <dsmythies@telus.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.5 002/739] cpufreq: intel_pstate: set stale CPU frequency to minimum
+Date:   Mon, 11 Sep 2023 15:36:41 +0200
+Message-ID: <20230911134651.010670934@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -55,101 +54,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Doug Smythies <dsmythies@telus.net>
 
-commit a7c0cad0dc060bb77e9c9d235d68441b0fc69507 upstream.
+commit d51847acb018d83186e4af67bc93f9a00a8644f7 upstream.
 
-We should be checking to see if async flips are supported in
-amdgpu_dm_atomic_check() (i.e. not dm_crtc_helper_atomic_check()). Also,
-async flipping isn't supported if a plane's framebuffer changes memory
-domains during an atomic commit. So, move the check from
-dm_crtc_helper_atomic_check() to amdgpu_dm_atomic_check() and check if
-the memory domain has changed in amdgpu_dm_atomic_check().
+The intel_pstate CPU frequency scaling driver does not
+use policy->cur and it is 0.
+When the CPU frequency is outdated arch_freq_get_on_cpu()
+will default to the nominal clock frequency when its call to
+cpufreq_quick_getpolicy_cur returns the never updated 0.
+Thus, the listed frequency might be outside of currently
+set limits. Some users are complaining about the high
+reported frequency, albeit stale, when their system is
+idle and/or it is above the reduced maximum they have set.
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2733
-Fixes: c1e18c44dc7f ("drm/amd/display: only accept async flips for fast updates")
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Reported-by: Michael Larabel <Michael@MichaelLarabel.com>
+This patch will maintain policy_cur for the intel_pstate
+driver at the current minimum CPU frequency.
+
+Reported-by: Yang Jie <yang.jie@linux.intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217597
+Signed-off-by: Doug Smythies <dsmythies@telus.net>
+[ rjw: White space damage fixes and comment adjustment ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Keyon Jie <yang.jie@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      |   24 ++++++++++++++---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |   12 --------
- 2 files changed, 21 insertions(+), 15 deletions(-)
+ drivers/cpufreq/intel_pstate.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8074,10 +8074,12 @@ static void amdgpu_dm_commit_planes(stru
- 		 * fast updates.
- 		 */
- 		if (crtc->state->async_flip &&
--		    acrtc_state->update_type != UPDATE_TYPE_FAST)
-+		    (acrtc_state->update_type != UPDATE_TYPE_FAST ||
-+		     get_mem_type(old_plane_state->fb) != get_mem_type(fb)))
- 			drm_warn_once(state->dev,
- 				      "[PLANE:%d:%s] async flip with non-fast update\n",
- 				      plane->base.id, plane->name);
-+
- 		bundle->flip_addrs[planes_count].flip_immediate =
- 			crtc->state->async_flip &&
- 			acrtc_state->update_type == UPDATE_TYPE_FAST &&
-@@ -10040,6 +10042,11 @@ static int amdgpu_dm_atomic_check(struct
- 
- 	/* Remove exiting planes if they are modified */
- 	for_each_oldnew_plane_in_state_reverse(state, plane, old_plane_state, new_plane_state, i) {
-+		if (old_plane_state->fb && new_plane_state->fb &&
-+		    get_mem_type(old_plane_state->fb) !=
-+		    get_mem_type(new_plane_state->fb))
-+			lock_and_validation_needed = true;
-+
- 		ret = dm_update_plane_state(dc, state, plane,
- 					    old_plane_state,
- 					    new_plane_state,
-@@ -10287,9 +10294,20 @@ static int amdgpu_dm_atomic_check(struct
- 		struct dm_crtc_state *dm_new_crtc_state =
- 			to_dm_crtc_state(new_crtc_state);
- 
-+		/*
-+		 * Only allow async flips for fast updates that don't change
-+		 * the FB pitch, the DCC state, rotation, etc.
-+		 */
-+		if (new_crtc_state->async_flip && lock_and_validation_needed) {
-+			drm_dbg_atomic(crtc->dev,
-+				       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
-+				       crtc->base.id, crtc->name);
-+			ret = -EINVAL;
-+			goto fail;
-+		}
-+
- 		dm_new_crtc_state->update_type = lock_and_validation_needed ?
--							 UPDATE_TYPE_FULL :
--							 UPDATE_TYPE_FAST;
-+			UPDATE_TYPE_FULL : UPDATE_TYPE_FAST;
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2609,6 +2609,11 @@ static int intel_pstate_set_policy(struc
+ 			intel_pstate_clear_update_util_hook(policy->cpu);
+ 		intel_pstate_hwp_set(policy->cpu);
  	}
++	/*
++	 * policy->cur is never updated with the intel_pstate driver, but it
++	 * is used as a stale frequency value. So, keep it within limits.
++	 */
++	policy->cur = policy->min;
  
- 	/* Must be success */
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -398,18 +398,6 @@ static int dm_crtc_helper_atomic_check(s
- 		return -EINVAL;
- 	}
+ 	mutex_unlock(&intel_pstate_limits_lock);
  
--	/*
--	 * Only allow async flips for fast updates that don't change the FB
--	 * pitch, the DCC state, rotation, etc.
--	 */
--	if (crtc_state->async_flip &&
--	    dm_crtc_state->update_type != UPDATE_TYPE_FAST) {
--		drm_dbg_atomic(crtc->dev,
--			       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
--			       crtc->base.id, crtc->name);
--		return -EINVAL;
--	}
--
- 	/* In some use cases, like reset, no stream is attached */
- 	if (!dm_crtc_state->stream)
- 		return 0;
 
 
