@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B603779B6C3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4482279B812
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348191AbjIKV2q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57366 "EHLO
+        id S1353646AbjIKVr4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241287AbjIKPFt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:49 -0400
+        with ESMTP id S238892AbjIKOH1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A817A1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFD0C433C8;
-        Mon, 11 Sep 2023 15:05:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61844CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E695C433CD;
+        Mon, 11 Sep 2023 14:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444744;
-        bh=xGRt0e2RR2Yz/tR741zIsj7rZtS0cDr6Aw+SG1lNNeU=;
+        s=korg; t=1694441243;
+        bh=2PaOZub06fCjM0V1L/ZEBFXPlzaaQK9jyeXeXejdyeQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nRvMYuuXw56wIqJ+bnX0gHqAxEKMyVw8rMrL13SDnjx7vBPud8EaXuSnIiNo1ZcOz
-         9L6AF5q9bmP5re4DzMw1JHshz38+zR6/r1DLvql5mjhAPKslCY8YjYjuE0GwsRZxwj
-         5SVKodPI0HQcDbjRWO9ro+Vbc+US74bb295aPMFo=
+        b=pTMUfpLNMtm56Au4gOVUmlnRYvUYiziyhCJC/9sDJQEO82lBuw8V7Ox0GsErU6G4m
+         e0gaAWm5/9RsDobG45KpWJaiWm7hkD4KRlkHr9GtHsHVcLP2AL10khJHgvB7dqkYmz
+         6D3IRwpyiSNr/SmLtBbA6ZFlevMn6+R9DKem2+18=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li RongQing <lirongqing@baidu.com>,
-        Yong He <zhuangel570@gmail.com>,
-        Robert Hoo <robert.hoo.linux@gmail.com>,
-        Kai Huang <kai.huang@intel.com>,
-        Luiz Capitulino <luizcap@amazon.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 083/600] KVM: x86/mmu: Add "never" option to allow sticky disabling of nx_huge_pages
-Date:   Mon, 11 Sep 2023 15:41:56 +0200
-Message-ID: <20230911134636.064666037@linuxfoundation.org>
+        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Clark <robdclark@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 318/739] drm/msm/a2xx: Call adreno_gpu_init() earlier
+Date:   Mon, 11 Sep 2023 15:41:57 +0200
+Message-ID: <20230911134659.989574610@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,139 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 0b210faf337314e4bc88e796218bc70c72a51209 upstream.
+[ Upstream commit db07ce5da8b26bfeaf437a676ae49bd3bb1eace6 ]
 
-Add a "never" option to the nx_huge_pages module param to allow userspace
-to do a one-way hard disabling of the mitigation, and don't create the
-per-VM recovery threads when the mitigation is hard disabled.  Letting
-userspace pinky swear that userspace doesn't want to enable NX mitigation
-(without reloading KVM) allows certain use cases to avoid the latency
-problems associated with spawning a kthread for each VM.
+The adreno_is_a20x() and adreno_is_a225() functions rely on the
+GPU revision, but such information is retrieved inside adreno_gpu_init(),
+which is called afterwards.
 
-E.g. in FaaS use cases, the guest kernel is trusted and the host may
-create 100+ VMs per logical CPU, which can result in 100ms+ latencies when
-a burst of VMs is created.
+Fix this problem by caling adreno_gpu_init() earlier, so that
+the GPU information revision is available when adreno_is_a20x()
+and adreno_is_a225() run.
 
-Reported-by: Li RongQing <lirongqing@baidu.com>
-Closes: https://lore.kernel.org/all/1679555884-32544-1-git-send-email-lirongqing@baidu.com
-Cc: Yong He <zhuangel570@gmail.com>
-Cc: Robert Hoo <robert.hoo.linux@gmail.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Robert Hoo <robert.hoo.linux@gmail.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
-Reviewed-by: Li RongQing <lirongqing@baidu.com>
-Link: https://lore.kernel.org/r/20230602005859.784190-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Resolved a small conflict in arch/x86/kvm/mmu/mmu.c::kvm_mmu_post_init_vm()
-  which is due kvm_nx_lpage_recovery_worker() being renamed in upstream
-  commit 55c510e26ab6181c132327a8b90c864e6193ce27 ]
-Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested on a imx53-qsb board.
+
+Fixes: 21af872cd8c6 ("drm/msm/adreno: add a2xx")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/543456/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   41 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -56,6 +56,8 @@
+diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+index c67089a7ebc10..ad4570d60abf2 100644
+--- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+@@ -540,6 +540,10 @@ struct msm_gpu *a2xx_gpu_init(struct drm_device *dev)
+ 	gpu->perfcntrs = perfcntrs;
+ 	gpu->num_perfcntrs = ARRAY_SIZE(perfcntrs);
  
- extern bool itlb_multihit_kvm_mitigation;
- 
-+static bool nx_hugepage_mitigation_hard_disabled;
++	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 1);
++	if (ret)
++		goto fail;
 +
- int __read_mostly nx_huge_pages = -1;
- static uint __read_mostly nx_huge_pages_recovery_period_ms;
- #ifdef CONFIG_PREEMPT_RT
-@@ -65,12 +67,13 @@ static uint __read_mostly nx_huge_pages_
- static uint __read_mostly nx_huge_pages_recovery_ratio = 60;
- #endif
+ 	if (adreno_is_a20x(adreno_gpu))
+ 		adreno_gpu->registers = a200_registers;
+ 	else if (adreno_is_a225(adreno_gpu))
+@@ -547,10 +551,6 @@ struct msm_gpu *a2xx_gpu_init(struct drm_device *dev)
+ 	else
+ 		adreno_gpu->registers = a220_registers;
  
-+static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp);
- static int set_nx_huge_pages(const char *val, const struct kernel_param *kp);
- static int set_nx_huge_pages_recovery_param(const char *val, const struct kernel_param *kp);
- 
- static const struct kernel_param_ops nx_huge_pages_ops = {
- 	.set = set_nx_huge_pages,
--	.get = param_get_bool,
-+	.get = get_nx_huge_pages,
- };
- 
- static const struct kernel_param_ops nx_huge_pages_recovery_param_ops = {
-@@ -6645,6 +6648,14 @@ static void mmu_destroy_caches(void)
- 	kmem_cache_destroy(mmu_page_header_cache);
- }
- 
-+static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
-+{
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return sprintf(buffer, "never\n");
-+
-+	return param_get_bool(buffer, kp);
-+}
-+
- static bool get_nx_auto_mode(void)
- {
- 	/* Return true when CPU has the bug, and mitigations are ON */
-@@ -6661,15 +6672,29 @@ static int set_nx_huge_pages(const char
- 	bool old_val = nx_huge_pages;
- 	bool new_val;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return -EPERM;
-+
- 	/* In "auto" mode deploy workaround only if CPU has the bug. */
--	if (sysfs_streq(val, "off"))
-+	if (sysfs_streq(val, "off")) {
- 		new_val = 0;
--	else if (sysfs_streq(val, "force"))
-+	} else if (sysfs_streq(val, "force")) {
- 		new_val = 1;
--	else if (sysfs_streq(val, "auto"))
-+	} else if (sysfs_streq(val, "auto")) {
- 		new_val = get_nx_auto_mode();
--	else if (kstrtobool(val, &new_val) < 0)
-+	} else if (sysfs_streq(val, "never")) {
-+		new_val = 0;
-+
-+		mutex_lock(&kvm_lock);
-+		if (!list_empty(&vm_list)) {
-+			mutex_unlock(&kvm_lock);
-+			return -EBUSY;
-+		}
-+		nx_hugepage_mitigation_hard_disabled = true;
-+		mutex_unlock(&kvm_lock);
-+	} else if (kstrtobool(val, &new_val) < 0) {
- 		return -EINVAL;
-+	}
- 
- 	__set_nx_huge_pages(new_val);
- 
-@@ -6800,6 +6825,9 @@ static int set_nx_huge_pages_recovery_pa
- 	uint old_period, new_period;
- 	int err;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return -EPERM;
-+
- 	was_recovery_enabled = calc_nx_huge_pages_recovery_period(&old_period);
- 
- 	err = param_set_uint(val, kp);
-@@ -6923,6 +6951,9 @@ int kvm_mmu_post_init_vm(struct kvm *kvm
- {
- 	int err;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return 0;
-+
- 	err = kvm_vm_create_worker_thread(kvm, kvm_nx_lpage_recovery_worker, 0,
- 					  "kvm-nx-lpage-recovery",
- 					  &kvm->arch.nx_lpage_recovery_thread);
+-	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 1);
+-	if (ret)
+-		goto fail;
+-
+ 	if (!gpu->aspace) {
+ 		dev_err(dev->dev, "No memory protection without MMU\n");
+ 		if (!allow_vram_carveout) {
+-- 
+2.40.1
+
 
 
