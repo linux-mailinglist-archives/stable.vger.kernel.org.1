@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0CBF79BCD1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F8979BA7B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235269AbjIKWuf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48394 "EHLO
+        id S245009AbjIKVIi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239742AbjIKO1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:43 -0400
+        with ESMTP id S238399AbjIKNzd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8075F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA2EC433C8;
-        Mon, 11 Sep 2023 14:27:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52966FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83316C433C9;
+        Mon, 11 Sep 2023 13:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442459;
-        bh=HxgRzgRiRj9BE+z63TWcEk2I9BFPA3HnJt9iqBbtgVs=;
+        s=korg; t=1694440528;
+        bh=QdTTsCpbUDHZKlTybf1sGhdV4EPNceZyKFPr3K5i5V0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZSsj8oW9BBGEr/X1mpsyXzPyqafvuK8mjWMPVTPmkdrQdG+SZBC7h7we0XoddNwss
-         0E+DoAZHFTNNRPopM/FTOKA53TbulgBtbSLMi9ms4Ud85OQiCEowqC9y1hzfywx56C
-         l10K/oN+lxNEwWNTX2+cpdIfM4Ms0ivNdTynlM/s=
+        b=ZyFasSDtqzPGeeZJVRfssWIVIgWkwqiYGQ8s1LDhpuYL8S5fJRLosmajzD/wRuyXU
+         qdjDtIfxSp9toihZ1vnOo4pDaVBNXWkDq7u97/EY/7h7Nn45Pdv0HTl2GZb4IJsck9
+         AgesDpukoE6WrPofW9P/22pfpQZ8Qyb8pZDiuOfc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Mikityanskiy <maxtram95@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 033/737] platform/x86: intel: hid: Always call BTNL ACPI method
-Date:   Mon, 11 Sep 2023 15:38:12 +0200
-Message-ID: <20230911134651.330993881@linuxfoundation.org>
+Subject: [PATCH 6.5 094/739] wifi: mt76: mt7915: fix capabilities in non-AP mode
+Date:   Mon, 11 Sep 2023 15:38:13 +0200
+Message-ID: <20230911134653.728593404@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,75 +49,206 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit e3ab18de2b09361d6f0e4aafb9cfd6d002ce43a1 ]
+[ Upstream commit 02a894046d5ab7d0010f39ea54fde7e167919d04 ]
 
-On a HP Elite Dragonfly G2 the 0xcc and 0xcd events for SW_TABLET_MODE
-are only send after the BTNL ACPI method has been called.
+Capabilities in vif->bss_conf are only initialized in AP mode.
+For other modes, they should be enabled by default, in order to avoid a
+mismatch.
 
-Likely more devices need this, so make the BTNL ACPI method unconditional
-instead of only doing it on devices with a 5 button array.
-
-Note this also makes the intel_button_array_enable() call in probe()
-unconditional, that function does its own priv->array check. This makes
-the intel_button_array_enable() call in probe() consistent with the calls
-done on suspend/resume which also rely on the priv->array check inside
-the function.
-
-Reported-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/20230712175023.31651-1-maxtram95@gmail.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230715181516.5173-1-hdegoede@redhat.com
+Fixes: 885f7af7e544 ("wifi: mt76: mt7915: remove mt7915_mcu_beacon_check_caps()")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 21 +++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 27 ++++++++++---------
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    | 14 ++++++++++
+ 3 files changed, 50 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 5632bd3c534a3..641f2797406e1 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -620,7 +620,7 @@ static bool button_array_present(struct platform_device *device)
- static int intel_hid_probe(struct platform_device *device)
- {
- 	acpi_handle handle = ACPI_HANDLE(&device->dev);
--	unsigned long long mode;
-+	unsigned long long mode, dummy;
- 	struct intel_hid_priv *priv;
- 	acpi_status status;
- 	int err;
-@@ -692,18 +692,15 @@ static int intel_hid_probe(struct platform_device *device)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 13d429bd44e28..ed345a0b931e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -269,6 +269,7 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
+ 	vif->offload_flags |= IEEE80211_OFFLOAD_ENCAP_4ADDR;
+ 
+ 	mt7915_init_bitrate_mask(vif);
++	memset(&mvif->cap, -1, sizeof(mvif->cap));
+ 
+ 	mt7915_mcu_add_bss_info(phy, vif, true);
+ 	mt7915_mcu_add_sta(dev, vif, NULL, true);
+@@ -657,6 +658,24 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
++static void
++mt7915_vif_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif)
++{
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct mt7915_vif_cap *vc = &mvif->cap;
++
++	vc->ht_ldpc = vif->bss_conf.ht_ldpc;
++	vc->vht_ldpc = vif->bss_conf.vht_ldpc;
++	vc->vht_su_ebfer = vif->bss_conf.vht_su_beamformer;
++	vc->vht_su_ebfee = vif->bss_conf.vht_su_beamformee;
++	vc->vht_mu_ebfer = vif->bss_conf.vht_mu_beamformer;
++	vc->vht_mu_ebfee = vif->bss_conf.vht_mu_beamformee;
++	vc->he_ldpc = vif->bss_conf.he_ldpc;
++	vc->he_su_ebfer = vif->bss_conf.he_su_beamformer;
++	vc->he_su_ebfee = vif->bss_conf.he_su_beamformee;
++	vc->he_mu_ebfer = vif->bss_conf.he_mu_beamformer;
++}
++
+ static int
+ mt7915_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		struct ieee80211_bss_conf *link_conf)
+@@ -667,6 +686,8 @@ mt7915_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 
+ 	mutex_lock(&dev->mt76.mutex);
+ 
++	mt7915_vif_check_caps(phy, vif);
++
+ 	err = mt7915_mcu_add_bss_info(phy, vif, true);
  	if (err)
- 		goto err_remove_notify;
+ 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 8da9c87e98042..a325066bf57e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -710,6 +710,7 @@ static void
+ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 		      struct ieee80211_vif *vif)
+ {
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct ieee80211_he_cap_elem *elem = &sta->deflink.he_cap.he_cap_elem;
+ 	struct ieee80211_he_mcs_nss_supp mcs_map;
+ 	struct sta_rec_he *he;
+@@ -743,7 +744,7 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_RU_MAPPING_IN_5G))
+ 		cap |= STA_REC_HE_CAP_BW20_RU242_SUPPORT;
  
--	if (priv->array) {
--		unsigned long long dummy;
-+	intel_button_array_enable(&device->dev, true);
+-	if (vif->bss_conf.he_ldpc &&
++	if (mvif->cap.he_ldpc &&
+ 	    (elem->phy_cap_info[1] &
+ 	     IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+ 		cap |= STA_REC_HE_CAP_LDPC;
+@@ -852,6 +853,7 @@ static void
+ mt7915_mcu_sta_muru_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
+ 			struct ieee80211_sta *sta, struct ieee80211_vif *vif)
+ {
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct ieee80211_he_cap_elem *elem = &sta->deflink.he_cap.he_cap_elem;
+ 	struct sta_rec_muru *muru;
+ 	struct tlv *tlv;
+@@ -864,9 +866,9 @@ mt7915_mcu_sta_muru_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
  
--		intel_button_array_enable(&device->dev, true);
--
--		/* Call button load method to enable HID power button */
--		if (!intel_hid_evaluate_method(handle, INTEL_HID_DSM_BTNL_FN,
--					       &dummy)) {
--			dev_warn(&device->dev,
--				 "failed to enable HID power button\n");
--		}
--	}
-+	/*
-+	 * Call button load method to enable HID power button
-+	 * Always do this since it activates events on some devices without
-+	 * a button array too.
-+	 */
-+	if (!intel_hid_evaluate_method(handle, INTEL_HID_DSM_BTNL_FN, &dummy))
-+		dev_warn(&device->dev, "failed to enable HID power button\n");
+ 	muru = (struct sta_rec_muru *)tlv;
  
- 	device_init_wakeup(&device->dev, true);
- 	/*
+-	muru->cfg.mimo_dl_en = vif->bss_conf.he_mu_beamformer ||
+-			       vif->bss_conf.vht_mu_beamformer ||
+-			       vif->bss_conf.vht_mu_beamformee;
++	muru->cfg.mimo_dl_en = mvif->cap.he_mu_ebfer ||
++			       mvif->cap.vht_mu_ebfer ||
++			       mvif->cap.vht_mu_ebfee;
+ 	if (!is_mt7915(&dev->mt76))
+ 		muru->cfg.mimo_ul_en = true;
+ 	muru->cfg.ofdma_dl_en = true;
+@@ -999,8 +1001,8 @@ mt7915_mcu_sta_wtbl_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
+ 	mt76_connac_mcu_wtbl_hdr_trans_tlv(skb, vif, wcid, tlv, wtbl_hdr);
+ 	if (sta)
+ 		mt76_connac_mcu_wtbl_ht_tlv(&dev->mt76, skb, sta, tlv,
+-					    wtbl_hdr, vif->bss_conf.ht_ldpc,
+-					    vif->bss_conf.vht_ldpc);
++					    wtbl_hdr, mvif->cap.ht_ldpc,
++					    mvif->cap.vht_ldpc);
+ 
+ 	return 0;
+ }
+@@ -1009,6 +1011,7 @@ static inline bool
+ mt7915_is_ebf_supported(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			struct ieee80211_sta *sta, bool bfee)
+ {
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
+ 
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
+@@ -1022,10 +1025,10 @@ mt7915_is_ebf_supported(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		struct ieee80211_he_cap_elem *pe = &sta->deflink.he_cap.he_cap_elem;
+ 
+ 		if (bfee)
+-			return vif->bss_conf.he_su_beamformee &&
++			return mvif->cap.he_su_ebfee &&
+ 			       HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]);
+ 		else
+-			return vif->bss_conf.he_su_beamformer &&
++			return mvif->cap.he_su_ebfer &&
+ 			       HE_PHY(CAP4_SU_BEAMFORMEE, pe->phy_cap_info[4]);
+ 	}
+ 
+@@ -1033,10 +1036,10 @@ mt7915_is_ebf_supported(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		u32 cap = sta->deflink.vht_cap.cap;
+ 
+ 		if (bfee)
+-			return vif->bss_conf.vht_su_beamformee &&
++			return mvif->cap.vht_su_ebfee &&
+ 			       (cap & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE);
+ 		else
+-			return vif->bss_conf.vht_su_beamformer &&
++			return mvif->cap.vht_su_ebfer &&
+ 			       (cap & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE);
+ 	}
+ 
+@@ -1531,7 +1534,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_TX_STBC;
+ 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			cap |= STA_CAP_RX_STBC;
+-		if (vif->bss_conf.ht_ldpc &&
++		if (mvif->cap.ht_ldpc &&
+ 		    (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING))
+ 			cap |= STA_CAP_LDPC;
+ 
+@@ -1557,7 +1560,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_VHT_TX_STBC;
+ 		if (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
+ 			cap |= STA_CAP_VHT_RX_STBC;
+-		if (vif->bss_conf.vht_ldpc &&
++		if (mvif->cap.vht_ldpc &&
+ 		    (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
+ 			cap |= STA_CAP_VHT_LDPC;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 3053f4abf7dbe..0f76733c9c1ac 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -147,9 +147,23 @@ struct mt7915_sta {
+ 	} twt;
+ };
+ 
++struct mt7915_vif_cap {
++	bool ht_ldpc:1;
++	bool vht_ldpc:1;
++	bool he_ldpc:1;
++	bool vht_su_ebfer:1;
++	bool vht_su_ebfee:1;
++	bool vht_mu_ebfer:1;
++	bool vht_mu_ebfee:1;
++	bool he_su_ebfer:1;
++	bool he_su_ebfee:1;
++	bool he_mu_ebfer:1;
++};
++
+ struct mt7915_vif {
+ 	struct mt76_vif mt76; /* must be first */
+ 
++	struct mt7915_vif_cap cap;
+ 	struct mt7915_sta sta;
+ 	struct mt7915_phy *phy;
+ 
 -- 
 2.40.1
 
