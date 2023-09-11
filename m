@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB02C79AE71
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 999E779B302
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349093AbjIKVcc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45828 "EHLO
+        id S1344838AbjIKVOw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239844AbjIKOaN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:13 -0400
+        with ESMTP id S238498AbjIKN55 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48F6F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0845AC433C9;
-        Mon, 11 Sep 2023 14:30:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A948DCE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F414FC433C8;
+        Mon, 11 Sep 2023 13:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442608;
-        bh=wI2A9hEMkZFGLNQ8jzAK78bMqyqkgvzwP7dnZ/D17G4=;
+        s=korg; t=1694440673;
+        bh=DhQ7sFXnj8HZVE8h7XRgvNvAWtDTiXKpmia+Yxs2W0c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ehvlpitWi+V/G8hy25hKuPKQGi5rk/x11so7AYjhwqCKSKUXMqFTAnBuuBS5aiP5W
-         7HDCSa0FEPHfqueZxzDRJxCqfvDXYh46BIkHNAdX5puGAmoopVsVy42WTXh8JTMkmV
-         Pzw93eLqm+edtAEY4SU8nOFr3BtKCrzlzc2FJHNI=
+        b=Z+9rLuLhMkFkvkv8fANBrvPHz81q54rIIkXzhPvLJ/Uql626tisPFJJsycgRrrhvP
+         5IdTJes67oYl65D2uQCBzSnLq16GB9ALf1G1M9Oz3mMG9wE9+Pna4dNIUxQ5cvnL5z
+         hElJuBvDrUGyDV/VPAwZ+HOiRrkGVVZEj1pxpNZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 084/737] tracing: Introduce pipe_cpumask to avoid race on trace_pipes
-Date:   Mon, 11 Sep 2023 15:39:03 +0200
-Message-ID: <20230911134652.853708631@linuxfoundation.org>
+        patches@lists.linux.dev, RD Babiera <rdbabiera@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.5 145/739] usb: typec: tcpm: set initial svdm version based on pd revision
+Date:   Mon, 11 Sep 2023 15:39:04 +0200
+Message-ID: <20230911134655.169626243@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,215 +49,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit c2489bb7e6be2e8cdced12c16c42fa128403ac03 ]
+commit c97cd0b4b54eb42aed7f6c3c295a2d137f6d2416 upstream.
 
-There is race issue when concurrently splice_read main trace_pipe and
-per_cpu trace_pipes which will result in data read out being different
-from what actually writen.
+When sending Discover Identity messages to a Port Partner that uses Power
+Delivery v2 and SVDM v1, we currently send PD v2 messages with SVDM v2.0,
+expecting the port partner to respond with its highest supported SVDM
+version as stated in Section 6.4.4.2.3 in the Power Delivery v3
+specification. However, sending SVDM v2 to some Power Delivery v2 port
+partners results in a NAK whereas sending SVDM v1 does not.
 
-As suggested by Steven:
-  > I believe we should add a ref count to trace_pipe and the per_cpu
-  > trace_pipes, where if they are opened, nothing else can read it.
-  >
-  > Opening trace_pipe locks all per_cpu ref counts, if any of them are
-  > open, then the trace_pipe open will fail (and releases any ref counts
-  > it had taken).
-  >
-  > Opening a per_cpu trace_pipe will up the ref count for just that
-  > CPU buffer. This will allow multiple tasks to read different per_cpu
-  > trace_pipe files, but will prevent the main trace_pipe file from
-  > being opened.
+NAK messages can be handled by the initiator (PD v3 section 6.4.4.2.5.1),
+and one solution could be to resend Discover Identity on a lower SVDM
+version if possible. But, Section 6.4.4.3 of PD v2 states that "A NAK
+response Should be taken as an indication not to retry that particular
+Command."
 
-But because we only need to know whether per_cpu trace_pipe is open or
-not, using a cpumask instead of using ref count may be easier.
+Instead, we can set the SVDM version to the maximum one supported by the
+negotiated PD revision. When operating in PD v2, this obeys Section
+6.4.4.2.3, which states the SVDM field "Shall be set to zero to indicate
+Version 1.0." In PD v3, the SVDM field "Shall be set to 01b to indicate
+Version 2.0."
 
-After this patch, users will find that:
- - Main trace_pipe can be opened by only one user, and if it is
-   opened, all per_cpu trace_pipes cannot be opened;
- - Per_cpu trace_pipes can be opened by multiple users, but each per_cpu
-   trace_pipe can only be opened by one user. And if one of them is
-   opened, main trace_pipe cannot be opened.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230818022645.1948314-1-zhengyejian1@huawei.com
-
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c34e85fa69b9 ("usb: typec: tcpm: Send DISCOVER_IDENTITY from dedicated work")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230731165926.1815338-1-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 55 ++++++++++++++++++++++++++++++++++++++------
- kernel/trace/trace.h |  2 ++
- 2 files changed, 50 insertions(+), 7 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |   35 +++++++++++++++++++++++++++++++----
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index f4855be6ac2b5..9614248b98f1a 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6690,10 +6690,36 @@ tracing_max_lat_write(struct file *filp, const char __user *ubuf,
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3935,6 +3935,29 @@ static enum typec_cc_status tcpm_pwr_opm
+ 	}
+ }
  
- #endif
- 
-+static int open_pipe_on_cpu(struct trace_array *tr, int cpu)
++static void tcpm_set_initial_svdm_version(struct tcpm_port *port)
 +{
-+	if (cpu == RING_BUFFER_ALL_CPUS) {
-+		if (cpumask_empty(tr->pipe_cpumask)) {
-+			cpumask_setall(tr->pipe_cpumask);
-+			return 0;
-+		}
-+	} else if (!cpumask_test_cpu(cpu, tr->pipe_cpumask)) {
-+		cpumask_set_cpu(cpu, tr->pipe_cpumask);
-+		return 0;
-+	}
-+	return -EBUSY;
-+}
-+
-+static void close_pipe_on_cpu(struct trace_array *tr, int cpu)
-+{
-+	if (cpu == RING_BUFFER_ALL_CPUS) {
-+		WARN_ON(!cpumask_full(tr->pipe_cpumask));
-+		cpumask_clear(tr->pipe_cpumask);
-+	} else {
-+		WARN_ON(!cpumask_test_cpu(cpu, tr->pipe_cpumask));
-+		cpumask_clear_cpu(cpu, tr->pipe_cpumask);
++	switch (port->negotiated_rev) {
++	case PD_REV30:
++		break;
++	/*
++	 * 6.4.4.2.3 Structured VDM Version
++	 * 2.0 states "At this time, there is only one version (1.0) defined.
++	 * This field Shall be set to zero to indicate Version 1.0."
++	 * 3.0 states "This field Shall be set to 01b to indicate Version 2.0."
++	 * To ensure that we follow the Power Delivery revision we are currently
++	 * operating on, downgrade the SVDM version to the highest one supported
++	 * by the Power Delivery revision.
++	 */
++	case PD_REV20:
++		typec_partner_set_svdm_version(port->partner, SVDM_VER_1_0);
++		break;
++	default:
++		typec_partner_set_svdm_version(port->partner, SVDM_VER_1_0);
++		break;
 +	}
 +}
 +
- static int tracing_open_pipe(struct inode *inode, struct file *filp)
+ static void run_state_machine(struct tcpm_port *port)
  {
- 	struct trace_array *tr = inode->i_private;
- 	struct trace_iterator *iter;
-+	int cpu;
  	int ret;
+@@ -4172,10 +4195,12 @@ static void run_state_machine(struct tcp
+ 		 * For now, this driver only supports SOP for DISCOVER_IDENTITY, thus using
+ 		 * port->explicit_contract to decide whether to send the command.
+ 		 */
+-		if (port->explicit_contract)
++		if (port->explicit_contract) {
++			tcpm_set_initial_svdm_version(port);
+ 			mod_send_discover_delayed_work(port, 0);
+-		else
++		} else {
+ 			port->send_discover = false;
++		}
  
- 	ret = tracing_check_open_get_tr(tr);
-@@ -6701,13 +6727,16 @@ static int tracing_open_pipe(struct inode *inode, struct file *filp)
- 		return ret;
+ 		/*
+ 		 * 6.3.5
+@@ -4462,10 +4487,12 @@ static void run_state_machine(struct tcp
+ 		 * For now, this driver only supports SOP for DISCOVER_IDENTITY, thus using
+ 		 * port->explicit_contract.
+ 		 */
+-		if (port->explicit_contract)
++		if (port->explicit_contract) {
++			tcpm_set_initial_svdm_version(port);
+ 			mod_send_discover_delayed_work(port, 0);
+-		else
++		} else {
+ 			port->send_discover = false;
++		}
  
- 	mutex_lock(&trace_types_lock);
-+	cpu = tracing_get_cpu(inode);
-+	ret = open_pipe_on_cpu(tr, cpu);
-+	if (ret)
-+		goto fail_pipe_on_cpu;
- 
- 	/* create a buffer to store the information to pass to userspace */
- 	iter = kzalloc(sizeof(*iter), GFP_KERNEL);
- 	if (!iter) {
- 		ret = -ENOMEM;
--		__trace_array_put(tr);
--		goto out;
-+		goto fail_alloc_iter;
- 	}
- 
- 	trace_seq_init(&iter->seq);
-@@ -6730,7 +6759,7 @@ static int tracing_open_pipe(struct inode *inode, struct file *filp)
- 
- 	iter->tr = tr;
- 	iter->array_buffer = &tr->array_buffer;
--	iter->cpu_file = tracing_get_cpu(inode);
-+	iter->cpu_file = cpu;
- 	mutex_init(&iter->mutex);
- 	filp->private_data = iter;
- 
-@@ -6740,12 +6769,15 @@ static int tracing_open_pipe(struct inode *inode, struct file *filp)
- 	nonseekable_open(inode, filp);
- 
- 	tr->trace_ref++;
--out:
-+
- 	mutex_unlock(&trace_types_lock);
- 	return ret;
- 
- fail:
- 	kfree(iter);
-+fail_alloc_iter:
-+	close_pipe_on_cpu(tr, cpu);
-+fail_pipe_on_cpu:
- 	__trace_array_put(tr);
- 	mutex_unlock(&trace_types_lock);
- 	return ret;
-@@ -6762,7 +6794,7 @@ static int tracing_release_pipe(struct inode *inode, struct file *file)
- 
- 	if (iter->trace->pipe_close)
- 		iter->trace->pipe_close(iter);
--
-+	close_pipe_on_cpu(tr, iter->cpu_file);
- 	mutex_unlock(&trace_types_lock);
- 
- 	free_cpumask_var(iter->started);
-@@ -9426,6 +9458,9 @@ static struct trace_array *trace_array_create(const char *name)
- 	if (!alloc_cpumask_var(&tr->tracing_cpumask, GFP_KERNEL))
- 		goto out_free_tr;
- 
-+	if (!alloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
-+		goto out_free_tr;
-+
- 	tr->trace_flags = global_trace.trace_flags & ~ZEROED_TRACE_FLAGS;
- 
- 	cpumask_copy(tr->tracing_cpumask, cpu_all_mask);
-@@ -9467,6 +9502,7 @@ static struct trace_array *trace_array_create(const char *name)
-  out_free_tr:
- 	ftrace_free_ftrace_ops(tr);
- 	free_trace_buffers(tr);
-+	free_cpumask_var(tr->pipe_cpumask);
- 	free_cpumask_var(tr->tracing_cpumask);
- 	kfree(tr->name);
- 	kfree(tr);
-@@ -9569,6 +9605,7 @@ static int __remove_instance(struct trace_array *tr)
- 	}
- 	kfree(tr->topts);
- 
-+	free_cpumask_var(tr->pipe_cpumask);
- 	free_cpumask_var(tr->tracing_cpumask);
- 	kfree(tr->name);
- 	kfree(tr);
-@@ -10366,12 +10403,14 @@ __init static int tracer_alloc_buffers(void)
- 	if (trace_create_savedcmd() < 0)
- 		goto out_free_temp_buffer;
- 
-+	if (!alloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
-+		goto out_free_savedcmd;
-+
- 	/* TODO: make the number of buffers hot pluggable with CPUS */
- 	if (allocate_trace_buffers(&global_trace, ring_buf_size) < 0) {
- 		MEM_FAIL(1, "tracer: failed to allocate ring buffer!\n");
--		goto out_free_savedcmd;
-+		goto out_free_pipe_cpumask;
- 	}
--
- 	if (global_trace.buffer_disabled)
- 		tracing_off();
- 
-@@ -10424,6 +10463,8 @@ __init static int tracer_alloc_buffers(void)
- 
- 	return 0;
- 
-+out_free_pipe_cpumask:
-+	free_cpumask_var(global_trace.pipe_cpumask);
- out_free_savedcmd:
- 	free_saved_cmdlines_buffer(savedcmd);
- out_free_temp_buffer:
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 2daeac8e690a6..b577f65a63f11 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -366,6 +366,8 @@ struct trace_array {
- 	struct list_head	events;
- 	struct trace_event_file *trace_marker_file;
- 	cpumask_var_t		tracing_cpumask; /* only trace on set CPUs */
-+	/* one per_cpu trace_pipe can be opened by only one user */
-+	cpumask_var_t		pipe_cpumask;
- 	int			ref;
- 	int			trace_ref;
- #ifdef CONFIG_FUNCTION_TRACER
--- 
-2.40.1
-
+ 		power_supply_changed(port->psy);
+ 		break;
 
 
