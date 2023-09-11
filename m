@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2493679AD56
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2364979B019
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348615AbjIKV27 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52024 "EHLO
+        id S237776AbjIKVQl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240683AbjIKOvF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:05 -0400
+        with ESMTP id S241912AbjIKPRm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76CFC106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0C1C433C8;
-        Mon, 11 Sep 2023 14:51:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2CBFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79226C433CA;
+        Mon, 11 Sep 2023 15:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443861;
-        bh=tCOc+fC+3XhhUtxg5IDNLL33nnYkq7ZyZjW6aRakGPU=;
+        s=korg; t=1694445457;
+        bh=kQreUvqQZ6l+/VniXKlEOKXR6w1DOq0XN9CBtnYtQn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UxpJtExd/k/CWPMrgNNcFW/OShwS8L0YRIE9kEL+37n71zvQ+OPgEQd/LgsOZNVQV
-         kcHZEdTCvxttzhNlSTAnvOp9S+owlpAxbB/LYLuA9vW3Gi6zrxBnxFVNkaYikGlXuW
-         0nG39XRFMvURzKq4qDiLVioVxOZ0F0PEB/Y4+Nk8=
+        b=CgWkC3l2exg466hoYryix7dj1x5+WpAQL7Bvw4aF9wjQ+1TxdsiqjoSQmZ3CKFxoJ
+         kW4e5L9KQfsjbKvPRVcCjJ95SeLUllaE6AyNS3OoFXo9KXd99rQdDEA3J335M3V3C6
+         57JfRZbAqP/THHky6cQspsJyeib0jiVJhLixR64M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 527/737] RDMA/irdma: Replace one-element array with flexible-array member
-Date:   Mon, 11 Sep 2023 15:46:26 +0200
-Message-ID: <20230911134705.296161661@linuxfoundation.org>
+Subject: [PATCH 6.1 354/600] PCI: pciehp: Use RMW accessors for changing LNKCTL
+Date:   Mon, 11 Sep 2023 15:46:27 +0200
+Message-ID: <20230911134644.129429663@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,76 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 38313c6d2a02c28162e06753b01bd885caf9386d ]
+[ Upstream commit 5f75f96c61039151c193775d776fde42477eace1 ]
 
-One-element and zero-length arrays are deprecated. So, replace
-one-element array in struct irdma_qvlist_info with flexible-array
-member.
+As hotplug is not the only driver touching LNKCTL, use the RMW capability
+accessor which handles concurrent changes correctly.
 
-A patch for this was sent a while ago[1]. However, it seems that, at
-the time, the changes were partially folded[2][3], and the actual
-flexible-array transformation was omitted. This patch fixes that.
-
-The only binary difference seen before/after changes is shown below:
-
-|  drivers/infiniband/hw/irdma/hw.o
-| @@ -868,7 +868,7 @@
-| drivers/infiniband/hw/irdma/hw.c:484 (discriminator 2)
-|	size += struct_size(iw_qvlist, qv_info, rf->msix_count);
-|      55b:      imul   $0x45c,%rdi,%rdi
-|-     562:      add    $0x10,%rdi
-|+     562:      add    $0x4,%rdi
-
-which is, of course, expected as it reflects the mistake made
-while folding the patch I've mentioned above.
-
-Worth mentioning is the fact that with this change we save 12 bytes
-of memory, as can be inferred from the diff snapshot above. Notice
-that:
-
-$ pahole -C rdma_qv_info idrivers/infiniband/hw/irdma/hw.o
-struct irdma_qv_info {
-	u32                        v_idx;                /*     0     4 */
-	u16                        ceq_idx;              /*     4     2 */
-	u16                        aeq_idx;              /*     6     2 */
-	u8                         itr_idx;              /*     8     1 */
-
-	/* size: 12, cachelines: 1, members: 4 */
-	/* padding: 3 */
-	/* last cacheline: 12 bytes */
-};
-
-Link: https://lore.kernel.org/linux-hardening/20210525230038.GA175516@embeddedor/ [1]
-Link: https://lore.kernel.org/linux-hardening/bf46b428deef4e9e89b0ea1704b1f0e5@intel.com/ [2]
-Link: https://lore.kernel.org/linux-rdma/20210520143809.819-1-shiraz.saleem@intel.com/T/#u [3]
-Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/ZMpsQrZadBaJGkt4@work
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 7f822999e12a ("PCI: pciehp: Add Disable/enable link functions")
+Link: https://lore.kernel.org/r/20230717120503.15276-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/main.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
-index 2323962cdeacb..de2f4c0514118 100644
---- a/drivers/infiniband/hw/irdma/main.h
-+++ b/drivers/infiniband/hw/irdma/main.h
-@@ -239,7 +239,7 @@ struct irdma_qv_info {
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index 112c8f401ac4e..358f077284cbe 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -332,17 +332,11 @@ int pciehp_check_link_status(struct controller *ctrl)
+ static int __pciehp_link_set(struct controller *ctrl, bool enable)
+ {
+ 	struct pci_dev *pdev = ctrl_dev(ctrl);
+-	u16 lnk_ctrl;
  
- struct irdma_qvlist_info {
- 	u32 num_vectors;
--	struct irdma_qv_info qv_info[1];
-+	struct irdma_qv_info qv_info[];
- };
+-	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &lnk_ctrl);
++	pcie_capability_clear_and_set_word(pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_LD,
++					   enable ? 0 : PCI_EXP_LNKCTL_LD);
  
- struct irdma_gen_ops {
+-	if (enable)
+-		lnk_ctrl &= ~PCI_EXP_LNKCTL_LD;
+-	else
+-		lnk_ctrl |= PCI_EXP_LNKCTL_LD;
+-
+-	pcie_capability_write_word(pdev, PCI_EXP_LNKCTL, lnk_ctrl);
+-	ctrl_dbg(ctrl, "%s: lnk_ctrl = %x\n", __func__, lnk_ctrl);
+ 	return 0;
+ }
+ 
 -- 
 2.40.1
 
