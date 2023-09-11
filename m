@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA3C179BB80
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC4879BBB5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245623AbjIKVLM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:11:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55038 "EHLO
+        id S236333AbjIKVus (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241443AbjIKPIu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:50 -0400
+        with ESMTP id S240330AbjIKOlk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE77FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9362C433C8;
-        Mon, 11 Sep 2023 15:08:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BABD412A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A48EC433C8;
+        Mon, 11 Sep 2023 14:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444926;
-        bh=DZ/Dd3srd0wRNzvLTG6LrWf3rpmmH+umQQ5pVsreoso=;
+        s=korg; t=1694443296;
+        bh=71kWOVC4xLJqtXfKH0wEqudEENFy5ICF0Nbk+GBmEAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0eo4JH3M0eMpTqrEGNQsgrNJmRXpwOCDROI1Eanks5K55qwljF/UKpsypNrKJHS50
-         WfTMWUEeLbWjnGXNhSoALsNmMfj22XKtXnFkssJpmOFygoQP+HZsH58inZfbKTSmk4
-         60aDUKT7tsuWwrLYM00FKjHbP8Wa1aICiFjCvUzQ=
+        b=MVByiv3YiVISHMzj5OSST2XsKRQxpKepkwRjo/A6B0iTA3KwWO+hwXirv1G8Y9sxm
+         N1rmfFNyVrZHTRhEIsSI04+suhwDuLcPf7YlFcOrTCyx7m7INyjhjxOf1gePgtku1K
+         iBboXJeDtgQI9ObbioKkKW5LWHZCuZuus1MMRlOc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/600] s390/pkey: fix PKEY_TYPE_EP11_AES handling for sysfs attributes
+Subject: [PATCH 6.4 300/737] arm64: dts: qcom: sm8250: Mark PCIe hosts as DMA coherent
 Date:   Mon, 11 Sep 2023 15:42:39 +0200
-Message-ID: <20230911134637.335245023@linuxfoundation.org>
+Message-ID: <20230911134658.934789602@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit b9352e4b9b9eff949bcc6907b8569b3a1d992f1e ]
+[ Upstream commit 339d38a436f30d0f874815eafc7de2257346bf26 ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced a new PKEY_TYPE_EP11_AES securekey type as
-a supplement to the existing PKEY_TYPE_EP11 (which won't work in
-environments with session-bound keys). The pkey EP11 securekey
-attributes use PKEY_TYPE_EP11_AES (instead of PKEY_TYPE_EP11)
-keyblobs, to make the generated keyblobs usable also in environments,
-where session-bound keys are required.
+The PCIe hosts on SM8250 are cache-coherent. Mark them as such.
 
-There should be no negative impacts to userspace because the internal
-structure of the keyblobs is opaque. The increased size of the
-generated keyblobs is reflected by the changed size of the attributes.
-
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230704-topic-8250_pcie_dmac-v1-1-799603a980b0@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/uapi/asm/pkey.h | 2 +-
- drivers/s390/crypto/pkey_api.c    | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/include/uapi/asm/pkey.h b/arch/s390/include/uapi/asm/pkey.h
-index 924b876f992c1..29c6fd369761e 100644
---- a/arch/s390/include/uapi/asm/pkey.h
-+++ b/arch/s390/include/uapi/asm/pkey.h
-@@ -26,7 +26,7 @@
- #define MAXCLRKEYSIZE	32	   /* a clear key value may be up to 32 bytes */
- #define MAXAESCIPHERKEYSIZE 136  /* our aes cipher keys have always 136 bytes */
- #define MINEP11AESKEYBLOBSIZE 256  /* min EP11 AES key blob size  */
--#define MAXEP11AESKEYBLOBSIZE 320  /* max EP11 AES key blob size */
-+#define MAXEP11AESKEYBLOBSIZE 336  /* max EP11 AES key blob size */
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 4b0835109b01e..29f0b0381b278 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -1905,6 +1905,7 @@ pcie0: pci@1c00000 {
  
- /* Minimum size of a key blob */
- #define MINKEYBLOBSIZE	SECKEYBLOBSIZE
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index 79568da580c67..2b92ec20ed68e 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -1947,7 +1947,7 @@ static struct attribute_group ccacipher_attr_group = {
-  * (i.e. off != 0 or count < key blob size) -EINVAL is returned.
-  * This function and the sysfs attributes using it provide EP11 key blobs
-  * padded to the upper limit of MAXEP11AESKEYBLOBSIZE which is currently
-- * 320 bytes.
-+ * 336 bytes.
-  */
- static ssize_t pkey_ep11_aes_attr_read(enum pkey_key_size keybits,
- 				       bool is_xts, char *buf, loff_t off,
-@@ -1976,7 +1976,7 @@ static ssize_t pkey_ep11_aes_attr_read(enum pkey_key_size keybits,
- 		card = apqns[i] >> 16;
- 		dom = apqns[i] & 0xFFFF;
- 		rc = ep11_genaeskey(card, dom, keybits, 0, buf, &keysize,
--				    PKEY_TYPE_EP11);
-+				    PKEY_TYPE_EP11_AES);
- 		if (rc == 0)
- 			break;
- 	}
-@@ -1987,7 +1987,7 @@ static ssize_t pkey_ep11_aes_attr_read(enum pkey_key_size keybits,
- 		keysize = MAXEP11AESKEYBLOBSIZE;
- 		buf += MAXEP11AESKEYBLOBSIZE;
- 		rc = ep11_genaeskey(card, dom, keybits, 0, buf, &keysize,
--				    PKEY_TYPE_EP11);
-+				    PKEY_TYPE_EP11_AES);
- 		if (rc == 0)
- 			return 2 * MAXEP11AESKEYBLOBSIZE;
- 	}
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie0_default_state>;
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
+@@ -2011,6 +2012,7 @@ pcie1: pci@1c08000 {
+ 
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie1_default_state>;
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
+@@ -2119,6 +2121,7 @@ pcie2: pci@1c10000 {
+ 
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie2_default_state>;
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
 -- 
 2.40.1
 
