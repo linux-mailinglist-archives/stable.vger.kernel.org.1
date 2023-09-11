@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD92179AC88
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3021479AE68
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237232AbjIKUvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35390 "EHLO
+        id S1348532AbjIKV1O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240088AbjIKOgV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:21 -0400
+        with ESMTP id S241132AbjIKPCh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB450F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B18C433C7;
-        Mon, 11 Sep 2023 14:36:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B7F125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E70C433C8;
+        Mon, 11 Sep 2023 15:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442977;
-        bh=fqGR8d0iW3E4EAuVBMINA3mxo88L/gRoZIgkheAZLyc=;
+        s=korg; t=1694444552;
+        bh=qSDxznCYNkIyyLxbPhILPCIoKVkIbVGArjbNuDV27ow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ts6r+RZ311BUYLlgVAyrZ6Wyy6tmIVV1o25zER2hBfLSe0ZEw94qDrsO57tAFm8jF
-         6g3FWEapgHo2bDNSlcUocRqAnmArh/2gyoa/OV5zgSfLHWvYapHB+Pk7hmqQtLiIOC
-         5rWzBudmQp5tuPf01L63TgogAwL11X7ajscuHYv4=
+        b=R0NPyK6md5N3mkttvIz2edPM0CbUtAGWHbY1gFkYAU0leJZ6Kcdy2UpeHyLySdSrB
+         iWnk8vf/LwaAmf1HbtLDza+WBoeeGAWS5VgMLb2r8Nmeo9QgefTTzQIqYtpSFq6xyb
+         IM0OQ9SdRwOaUZqPF71vFjGXKD9BipgZ1DkCzExU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Menglong Dong <imagedong@tencent.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 207/737] net: tcp: fix unexcepted socket die when snd_wnd is 0
+Subject: [PATCH 6.1 033/600] ALSA: usb-audio: Add quirk for Microsoft Modern Wireless Headset
 Date:   Mon, 11 Sep 2023 15:41:06 +0200
-Message-ID: <20230911134656.377704269@linuxfoundation.org>
+Message-ID: <20230911134634.582694418@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,85 +49,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <imagedong@tencent.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e89688e3e97868451a5d05b38a9d2633d6785cd4 ]
+[ Upstream commit 3da435063777f8d861ba5a165344e3f75f839357 ]
 
-In tcp_retransmit_timer(), a window shrunk connection will be regarded
-as timeout if 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX'. This is not
-right all the time.
+Microsoft Modern Wireless Headset (appearing on the host as "Microsoft
+USB Link") has a playback and a capture mixer volume/switch, but they
+are fairly broken.  The descriptor reports wrong dB ranges for
+playback, and the capture volume/switch don't influence on the actual
+recording at all.  Moreover, there seem instabilities in the
+connection, and at best, we should disable the runtime PM.
 
-The retransmits will become zero-window probes in tcp_retransmit_timer()
-if the 'snd_wnd==0'. Therefore, the icsk->icsk_rto will come up to
-TCP_RTO_MAX sooner or later.
+So this ended up with a quirk entry for:
+- Correct the playback dB range;
+  I picked up some reasonable values but it's a guess work
+- Disable the capture mixer;
+  it's completely useless and confuses PA/PW
+- Suppress get-sample-rate, apply the delay for message handling,
+  and suppress the auto-suspend
 
-However, the timer can be delayed and be triggered after 122877ms, not
-TCP_RTO_MAX, as I tested.
+The behavior of the wheel control on the headset is somehow flaky,
+too, but it's an issue of HID.
 
-Therefore, 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX' is always true
-once the RTO come up to TCP_RTO_MAX, and the socket will die.
-
-Fix this by replacing the 'tcp_jiffies32' with '(u32)icsk->icsk_timeout',
-which is exact the timestamp of the timeout.
-
-However, "tp->rcv_tstamp" can restart from idle, then tp->rcv_tstamp
-could already be a long time (minutes or hours) in the past even on the
-first RTO. So we double check the timeout with the duration of the
-retransmission.
-
-Meanwhile, making "2 * TCP_RTO_MAX" as the timeout to avoid the socket
-dying too soon.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/netdev/CADxym3YyMiO+zMD4zj03YPM3FBi-1LHi6gSD2XT8pyAMM096pg@mail.gmail.com/
-Signed-off-by: Menglong Dong <imagedong@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1207129
+Link: https://lore.kernel.org/r/20230725092057.15115-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ sound/usb/mixer_maps.c | 14 ++++++++++++++
+ sound/usb/quirks.c     |  3 +++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index 366c3c25ebe20..db90bd2d4ed66 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -441,6 +441,22 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
- 			  req->timeout << req->num_timeout, TCP_RTO_MAX);
- }
+diff --git a/sound/usb/mixer_maps.c b/sound/usb/mixer_maps.c
+index f4bd1e8ae4b6c..23260aa1919d3 100644
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -374,6 +374,15 @@ static const struct usbmix_name_map corsair_virtuoso_map[] = {
+ 	{ 0 }
+ };
  
-+static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
-+				     const struct sk_buff *skb)
-+{
-+	const struct tcp_sock *tp = tcp_sk(sk);
-+	const int timeout = TCP_RTO_MAX * 2;
-+	u32 rcv_delta, rtx_delta;
++/* Microsoft USB Link headset */
++/* a guess work: raw playback volume values are from 2 to 129 */
++static const struct usbmix_dB_map ms_usb_link_dB = { -3225, 0, true };
++static const struct usbmix_name_map ms_usb_link_map[] = {
++	{ 9, NULL, .dB = &ms_usb_link_dB },
++	{ 10, NULL }, /* Headset Capture volume; seems non-working, disabled */
++	{ 0 }   /* terminator */
++};
 +
-+	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
-+	if (rcv_delta <= timeout)
-+		return false;
-+
-+	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
-+			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
-+
-+	return rtx_delta > timeout;
-+}
+ /* ASUS ROG Zenith II with Realtek ALC1220-VB */
+ static const struct usbmix_name_map asus_zenith_ii_map[] = {
+ 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
+@@ -668,6 +677,11 @@ static const struct usbmix_ctl_map usbmix_ctl_maps[] = {
+ 		.id = USB_ID(0x1395, 0x0025),
+ 		.map = sennheiser_pc8_map,
+ 	},
++	{
++		/* Microsoft USB Link headset */
++		.id = USB_ID(0x045e, 0x083c),
++		.map = ms_usb_link_map,
++	},
+ 	{ 0 } /* terminator */
+ };
  
- /**
-  *  tcp_retransmit_timer() - The TCP retransmit timeout handler
-@@ -506,7 +522,7 @@ void tcp_retransmit_timer(struct sock *sk)
- 					    tp->snd_una, tp->snd_nxt);
- 		}
- #endif
--		if (tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX) {
-+		if (tcp_rtx_probe0_timed_out(sk, skb)) {
- 			tcp_write_err(sk);
- 			goto out;
- 		}
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 6cf55b7f7a041..d4a7ffef82194 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2011,6 +2011,9 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x045e, 0x083c, /* MS USB Link headset */
++		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_CTL_MSG_DELAY |
++		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
+ 	DEVICE_FLG(0x046d, 0x084c, /* Logitech ConferenceCam Connect */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x046d, 0x0991, /* Logitech QuickCam Pro */
 -- 
 2.40.1
 
