@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C45E79AF5B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C67179B040
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239055AbjIKWBP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        id S234408AbjIKVKO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:10:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240510AbjIKOqT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:19 -0400
+        with ESMTP id S241668AbjIKPL1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F88612A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4FEC433C8;
-        Mon, 11 Sep 2023 14:46:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9811FFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE91FC433C8;
+        Mon, 11 Sep 2023 15:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443573;
-        bh=g22OAn+ql8mxmnpiIOGO5Ob8QCgJ0sBLD87gxH8vq48=;
+        s=korg; t=1694445083;
+        bh=yH3VuDdcE7DokcMql4R35ErDujeGowxxLcP0Ug4OOS4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TVsCFT82tm06I6FK6wUSqFt5qO9VupeEt+p3iJanaaaITmKLL1MIPbXOCRqPgpsag
-         XIbgJHBe8O2DvD/KonVu3ETNnUVG2Gy4o2105t5//aGpAWmfAnoB5xEg0fklZvUuF1
-         Xo81x9RU5kBgrMf2baG5B7yudN9dGVMmTgV1uvLo=
+        b=qvj0wIRCXX6RBvchtcN3hVnLBZAIKESCDSDUV/dLzqnBDV/opBVgmGEp2xOtz4zLI
+         axC55IRk2ziBqj/B7vHlNZGpJJCW3uQZIDQCNPn/aVH55zP3v4FsYxYm1WPqvAdyeh
+         M0uQafamfCdQoKo3PvgJmA/Mb4U2VRSd4e8iQIwU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Vlad Karpovich <vkarpovi@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 396/737] firmware: cs_dsp: Fix new control name check
+Subject: [PATCH 6.1 222/600] soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
 Date:   Mon, 11 Sep 2023 15:44:15 +0200
-Message-ID: <20230911134701.660045953@linuxfoundation.org>
+Message-ID: <20230911134640.171605560@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +53,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Karpovich <vkarpovi@opensource.cirrus.com>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit 7ac1102b227b36550452b663fd39ab1c09378a95 ]
+[ Upstream commit a7b484b1c9332a1ee12e8799d62a11ee3f8e0801 ]
 
-Before adding a new FW control, its name is checked against
-existing controls list. But the string length in strncmp used
-to compare controls names is taken from the list, so if beginnings
-of the controls are matching,  then the new control is not created.
-For example, if CAL_R control already exists, CAL_R_SELECTED
-is not created.
-The fix is to compare string lengths as well.
+Since we're using these two macros to read a value from a register, we
+need to use the FIELD_GET instead of the FIELD_PREP macro, otherwise
+we're getting wrong values.
 
-Fixes: 6477960755fb ("ASoC: wm_adsp: Move check for control existence")
-Signed-off-by: Vlad Karpovich <vkarpovi@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230815172908.3454056-1-vkarpovi@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+So instead of:
+
+  [    3.111779] ocmem fdd00000.sram: 2 ports, 1 regions, 512 macros, not interleaved
+
+we now get the correct value of:
+
+  [    3.129672] ocmem fdd00000.sram: 2 ports, 1 regions, 2 macros, not interleaved
+
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20230506-msm8226-ocmem-v3-1-79da95a2581f@z3ntu.xyz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/ocmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index ec056f6f40ce8..cc3a28f386a77 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -978,7 +978,8 @@ static int cs_dsp_create_control(struct cs_dsp *dsp,
- 		    ctl->alg_region.alg == alg_region->alg &&
- 		    ctl->alg_region.type == alg_region->type) {
- 			if ((!subname && !ctl->subname) ||
--			    (subname && !strncmp(ctl->subname, subname, ctl->subname_len))) {
-+			    (subname && (ctl->subname_len == subname_len) &&
-+			     !strncmp(ctl->subname, subname, ctl->subname_len))) {
- 				if (!ctl->enabled)
- 					ctl->enabled = 1;
- 				return 0;
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index 7197d9fe0946a..27c668eac9647 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -80,8 +80,8 @@ struct ocmem {
+ #define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
+ #define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
+ 
+-#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
+-#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
++#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_GET(0x0000000f, (val))
++#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_GET(0x00003f00, (val))
+ 
+ #define OCMEM_HW_PROFILE_LAST_REGN_HALFSIZE	0x00010000
+ #define OCMEM_HW_PROFILE_INTERLEAVING		0x00020000
 -- 
 2.40.1
 
