@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2939D79B92D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB61279BEC2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345486AbjIKVU4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
+        id S242319AbjIKWYB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240774AbjIKOx3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:29 -0400
+        with ESMTP id S241986AbjIKPTz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F416F118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E75DC433C7;
-        Mon, 11 Sep 2023 14:53:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097A5FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3559AC433CD;
+        Mon, 11 Sep 2023 15:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444004;
-        bh=rfMiuZx2ORAiiXxIXbIi+5kBj7sgkYIfHb41+OR2lTU=;
+        s=korg; t=1694445589;
+        bh=lE/Z8szWwnvmmEpjil8VmyOA0C0m9AxcSBZRtkXGGhM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=elK1dP+C6oipXF2Xz1De1eRwkQLL3QAyWUjPZOLztpzRk8bEUdd8CrbvZDuKrf0+c
-         U5e+ARkkwZe3ux8UpHb2suJ22Xzq3cysOHcAF/utnqZLvsUaHphuorGBVD3XcLs05x
-         E89OZaRs1n4cdCuJdCiw0V4AnNzpUR31hi5S7Sgs=
+        b=KFPlZGqohJDIOIL8J3+d1UOSVcvfkQeMYBf/3g+/558Gol78gPOisR3uUIadtklzR
+         6+LxXj0P1TENDpoHpLdRJUgZD8K4EnOtp8p7o2BZ2D+IOs+WfbPJh7S68ifWp3STj6
+         9OqPhNq84wHUO2D0cU3apnCtT2usmBngHR3vv78Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunhai Guo <guochunhai@vivo.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Xingui Yang <yangxingui@huawei.com>,
+        Xiang Chen <chenxiang66@hisilicon.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 576/737] f2fs: Only lfs mode is allowed with zoned block device feature
+Subject: [PATCH 6.1 402/600] scsi: hisi_sas: Fix warnings detected by sparse
 Date:   Mon, 11 Sep 2023 15:47:15 +0200
-Message-ID: <20230911134706.623916253@linuxfoundation.org>
+Message-ID: <20230911134645.542159385@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunhai Guo <guochunhai@vivo.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 2bd4df8fcbc72f58ce3c62ed021ab291ca42de0b ]
+[ Upstream commit c0328cc595124579328462fc45d7a29a084cf357 ]
 
-Now f2fs support four block allocation modes: lfs, adaptive,
-fragment:segment, fragment:block. Only lfs mode is allowed with zoned block
-device feature.
+This patch fixes the following warning:
 
-Fixes: 6691d940b0e0 ("f2fs: introduce fragment allocation mode mount option")
-Signed-off-by: Chunhai Guo <guochunhai@vivo.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+drivers/scsi/hisi_sas/hisi_sas_v3_hw.c:2168:43: sparse: sparse: restricted __le32 degrades to integer
+
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304161254.NztCVZIO-lkp@intel.com/
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1684118481-95908-4-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: f5393a5602ca ("scsi: hisi_sas: Fix normally completed I/O analysed as failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 3d91b5313947f..72b7ea71f55df 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -860,11 +860,6 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 			if (!name)
- 				return -ENOMEM;
- 			if (!strcmp(name, "adaptive")) {
--				if (f2fs_sb_has_blkzoned(sbi)) {
--					f2fs_warn(sbi, "adaptive mode is not allowed with zoned block device feature");
--					kfree(name);
--					return -EINVAL;
--				}
- 				F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
- 			} else if (!strcmp(name, "lfs")) {
- 				F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
-@@ -1329,6 +1324,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 			F2FS_OPTION(sbi).discard_unit =
- 					DISCARD_UNIT_SECTION;
- 		}
-+
-+		if (F2FS_OPTION(sbi).fs_mode != FS_MODE_LFS) {
-+			f2fs_info(sbi, "Only lfs mode is allowed with zoned block device feature");
-+			return -EINVAL;
-+		}
- #else
- 		f2fs_err(sbi, "Zoned block device support is not enabled");
- 		return -EINVAL;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index e8a3511040af2..8544c1554f5ff 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -2163,6 +2163,7 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 	u32 trans_tx_fail_type = le32_to_cpu(record->trans_tx_fail_type);
+ 	u16 sipc_rx_err_type = le16_to_cpu(record->sipc_rx_err_type);
+ 	u32 dw3 = le32_to_cpu(complete_hdr->dw3);
++	u32 dw0 = le32_to_cpu(complete_hdr->dw0);
+ 
+ 	switch (task->task_proto) {
+ 	case SAS_PROTOCOL_SSP:
+@@ -2172,8 +2173,8 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 			 * but I/O information has been written to the host memory, we examine
+ 			 * response IU.
+ 			 */
+-			if (!(complete_hdr->dw0 & CMPLT_HDR_RSPNS_GOOD_MSK) &&
+-				(complete_hdr->dw0 & CMPLT_HDR_RSPNS_XFRD_MSK))
++			if (!(dw0 & CMPLT_HDR_RSPNS_GOOD_MSK) &&
++			    (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK))
+ 				return false;
+ 
+ 			ts->residual = trans_tx_fail_type;
+@@ -2189,7 +2190,7 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 	case SAS_PROTOCOL_SATA:
+ 	case SAS_PROTOCOL_STP:
+ 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
+-		if ((complete_hdr->dw0 & CMPLT_HDR_RSPNS_XFRD_MSK) &&
++		if ((dw0 & CMPLT_HDR_RSPNS_XFRD_MSK) &&
+ 		    (sipc_rx_err_type & RX_FIS_STATUS_ERR_MSK)) {
+ 			ts->stat = SAS_PROTO_RESPONSE;
+ 		} else if (dma_rx_err_type & RX_DATA_LEN_UNDERFLOW_MSK) {
 -- 
 2.40.1
 
