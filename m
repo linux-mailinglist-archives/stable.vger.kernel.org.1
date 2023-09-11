@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B28D979B918
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6854079B691
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378876AbjIKWhr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53312 "EHLO
+        id S1348895AbjIKVbf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239793AbjIKO2w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:52 -0400
+        with ESMTP id S238441AbjIKN4m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A4CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18F1C433C8;
-        Mon, 11 Sep 2023 14:28:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB1B10E
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAB7C433C7;
+        Mon, 11 Sep 2023 13:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442528;
-        bh=P9A5ZPQZIEMvdalrDAPqYvT10XdOJtKBWcA7+fJFKzI=;
+        s=korg; t=1694440596;
+        bh=dMIZLTJyK87oImMFx1W8W1yqQPtMSLp3n6TBRiYE9JA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tDNFKJv86XiOeRSpXTIIXPlQoBEWrs2vgm4zuVHy9aZWc3DFdWva5Rr/7Ih39LVl3
-         UaajIJN0D1Uv+VPdfYeCRzVivpM9iuCE6UtQI+ARxEyY5bMPSfmORGejr6pUK1/XAs
-         KJYe1hPWXbSFoMHKYjAKTTh2pbc2lnDhELkK4EGg=
+        b=BriwkJmxHTErEXP1rBYlJdhl8Lx0/Tl39zhLyeDd0AXY6AvNfOANprxZbadPFrdfW
+         mVoXHgHjakO+C0LR4cUwknWAAn//xnuiAM4YFrecWdLF1eOkupvRP4+iztHLQbeStE
+         gbiAONJ3IeRsNJ1QRVzDym6nj10miw4aSn+wC0P4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 055/737] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
-Date:   Mon, 11 Sep 2023 15:38:34 +0200
-Message-ID: <20230911134652.020995979@linuxfoundation.org>
+        patches@lists.linux.dev, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 118/739] Bluetooth: ISO: Add support for connecting multiple BISes
+Date:   Mon, 11 Sep 2023 15:38:37 +0200
+Message-ID: <20230911134654.391816370@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +50,591 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
+[ Upstream commit a0bfde167b506423111ddb8cd71930497a40fc54 ]
 
-Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
-a backtrace caused by the following field-spanning warning:
+It is required for some configurations to have multiple BISes as part
+of the same BIG.
 
-memcpy: detected field-spanning write (size 120) of single field
-  "&params_le->channel_list[0]" at
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
+Similar to the flow implemented for unicast, DEFER_SETUP will also be
+used to bind multiple BISes for the same BIG, before starting Periodic
+Advertising and creating the BIG.
 
-The driver still works after this warning. The warning was introduced by the
-new field-spanning write checks which were enabled recently.
+The user will have to open a new socket for each BIS. By setting the
+BT_DEFER_SETUP socket option and calling connect, a new connection
+will be added for the BIG and advertising handle set by the socket
+QoS parameters. Since all BISes will be bound for the same BIG and
+advertising handle, the socket QoS options and base parameters should
+match for all connections.
 
-Fix this by replacing the channel_list[1] declaration at the end of
-the struct with a flexible array declaration.
+By calling connect on a socket that does not have the BT_DEFER_SETUP
+option set, periodic advertising will be started and the BIG will
+be created, with a BIS for each previously bound connection. Since
+a BIG cannot be reconfigured with additional BISes after creation,
+no more connections can be bound for the BIG after the start periodic
+advertising and create BIG commands have been queued.
 
-Most users of struct brcmf_scan_params_le calculate the size to alloc
-using the size of the non flex-array part of the struct + needed extra
-space, so they do not care about sizeof(struct brcmf_scan_params_le).
+The bis_cleanup function has also been updated, so that the advertising
+set and the BIG will not be terminated unless there are no more
+bound or connected BISes.
 
-brcmf_notify_escan_complete() however uses the struct on the stack,
-expecting there to be room for at least 1 entry in the channel-list
-to store the special -1 abort channel-id.
+The HCI_CONN_BIG_CREATED connection flag has been added to indicate
+that the BIG has been successfully created. This flag is checked at
+bis_cleanup, so that the BIG is only terminated if the
+HCI_LE_Create_BIG_Complete has been received.
 
-To make this work use an anonymous union with a padding member
-added + the actual channel_list flexible array.
+This implementation has been tested on hardware, using the "isotest"
+tool with an additional command line option, to specify the number of
+BISes to create as part of the desired BIG:
 
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Franky Lin <franky.lin@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
+    tools/isotest -i hci0 -s 00:00:00:00:00:00 -N 2 -G 1 -T 1
+
+The btmon log shows that a BIG containing 2 BISes has been created:
+
+< HCI Command: LE Create Broadcast Isochronous Group (0x08|0x0068) plen 31
+        Handle: 0x01
+        Advertising Handle: 0x01
+        Number of BIS: 2
+        SDU Interval: 10000 us (0x002710)
+        Maximum SDU size: 40
+        Maximum Latency: 10 ms (0x000a)
+        RTN: 0x02
+        PHY: LE 2M (0x02)
+        Packing: Sequential (0x00)
+        Framing: Unframed (0x00)
+        Encryption: 0x00
+        Broadcast Code: 00000000000000000000000000000000
+
+> HCI Event: Command Status (0x0f) plen 4
+      LE Create Broadcast Isochronous Group (0x08|0x0068) ncmd 1
+        Status: Success (0x00)
+
+> HCI Event: LE Meta Event (0x3e) plen 23
+      LE Broadcast Isochronous Group Complete (0x1b)
+        Status: Success (0x00)
+        Handle: 0x01
+        BIG Synchronization Delay: 1974 us (0x0007b6)
+        Transport Latency: 1974 us (0x0007b6)
+        PHY: LE 2M (0x02)
+        NSE: 3
+        BN: 1
+        PTO: 1
+        IRC: 3
+        Maximum PDU: 40
+        ISO Interval: 10.00 msec (0x0008)
+        Connection Handle #0: 10
+        Connection Handle #1: 11
+
+< HCI Command: LE Setup Isochronous Data Path (0x08|0x006e) plen 13
+        Handle: 10
+        Data Path Direction: Input (Host to Controller) (0x00)
+        Data Path: HCI (0x00)
+        Coding Format: Transparent (0x03)
+        Company Codec ID: Ericsson Technology Licensing (0)
+        Vendor Codec ID: 0
+        Controller Delay: 0 us (0x000000)
+        Codec Configuration Length: 0
+        Codec Configuration:
+
+> HCI Event: Command Complete (0x0e) plen 6
+      LE Setup Isochronous Data Path (0x08|0x006e) ncmd 1
+        Status: Success (0x00)
+        Handle: 10
+
+< HCI Command: LE Setup Isochronous Data Path (0x08|0x006e) plen 13
+        Handle: 11
+        Data Path Direction: Input (Host to Controller) (0x00)
+        Data Path: HCI (0x00)
+        Coding Format: Transparent (0x03)
+        Company Codec ID: Ericsson Technology Licensing (0)
+        Vendor Codec ID: 0
+        Controller Delay: 0 us (0x000000)
+        Codec Configuration Length: 0
+        Codec Configuration:
+
+> HCI Event: Command Complete (0x0e) plen 6
+      LE Setup Isochronous Data Path (0x08|0x006e) ncmd 1
+        Status: Success (0x00)
+        Handle: 11
+
+< ISO Data TX: Handle 10 flags 0x02 dlen 44
+
+< ISO Data TX: Handle 11 flags 0x02 dlen 44
+
+> HCI Event: Number of Completed Packets (0x13) plen 5
+        Num handles: 1
+        Handle: 10
+        Count: 1
+
+> HCI Event: Number of Completed Packets (0x13) plen 5
+        Num handles: 1
+        Handle: 11
+        Count: 1
+
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 7f74563e6140 ("Bluetooth: ISO: do not emit new LE Create CIS if previous is pending")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h |  30 ++++++
+ net/bluetooth/hci_conn.c         | 152 +++++++++++++++++++++----------
+ net/bluetooth/hci_event.c        |  52 +++++++----
+ net/bluetooth/iso.c              |  28 ++++--
+ 4 files changed, 189 insertions(+), 73 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index 792adaf880b44..bece26741d3a3 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -398,7 +398,12 @@ struct brcmf_scan_params_le {
- 				 * fixed parameter portion is assumed, otherwise
- 				 * ssid in the fixed portion is ignored
- 				 */
--	__le16 channel_list[1];	/* list of chanspecs */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack brcmf_scan_params_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index e01d52cb668c0..42ba062ef23af 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -974,6 +974,7 @@ enum {
+ 	HCI_CONN_SCANNING,
+ 	HCI_CONN_AUTH_FAILURE,
+ 	HCI_CONN_PER_ADV,
++	HCI_CONN_BIG_CREATED,
  };
  
- struct brcmf_scan_params_v2_le {
+ static inline bool hci_conn_ssp_enabled(struct hci_conn *conn)
+@@ -1115,6 +1116,32 @@ static inline struct hci_conn *hci_conn_hash_lookup_bis(struct hci_dev *hdev,
+ 	return NULL;
+ }
+ 
++static inline struct hci_conn *
++hci_conn_hash_lookup_per_adv_bis(struct hci_dev *hdev,
++				 bdaddr_t *ba,
++				 __u8 big, __u8 bis)
++{
++	struct hci_conn_hash *h = &hdev->conn_hash;
++	struct hci_conn  *c;
++
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(c, &h->list, list) {
++		if (bacmp(&c->dst, ba) || c->type != ISO_LINK ||
++			!test_bit(HCI_CONN_PER_ADV, &c->flags))
++			continue;
++
++		if (c->iso_qos.bcast.big == big &&
++		    c->iso_qos.bcast.bis == bis) {
++			rcu_read_unlock();
++			return c;
++		}
++	}
++	rcu_read_unlock();
++
++	return NULL;
++}
++
+ static inline struct hci_conn *hci_conn_hash_lookup_handle(struct hci_dev *hdev,
+ 								__u16 handle)
+ {
+@@ -1351,6 +1378,9 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
+ 				 __u16 setting, struct bt_codec *codec);
+ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
+ 			      __u8 dst_type, struct bt_iso_qos *qos);
++struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
++			      struct bt_iso_qos *qos,
++			      __u8 base_len, __u8 *base);
+ struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
+ 				 __u8 dst_type, struct bt_iso_qos *qos);
+ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 76222565e2df0..13c266dbee671 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -792,6 +792,7 @@ struct iso_list_data {
+ 	};
+ 	int count;
+ 	struct iso_cig_params pdu;
++	bool big_term;
+ };
+ 
+ static void bis_list(struct hci_conn *conn, void *data)
+@@ -828,11 +829,8 @@ static int terminate_big_sync(struct hci_dev *hdev, void *data)
+ 
+ 	hci_remove_ext_adv_instance_sync(hdev, d->bis, NULL);
+ 
+-	/* Check if ISO connection is a BIS and terminate BIG if there are
+-	 * no other connections using it.
+-	 */
+-	hci_conn_hash_list_state(hdev, find_bis, ISO_LINK, BT_CONNECTED, d);
+-	if (d->count)
++	/* Only terminate BIG if it has been created */
++	if (!d->big_term)
+ 		return 0;
+ 
+ 	return hci_le_terminate_big_sync(hdev, d->big,
+@@ -844,19 +842,21 @@ static void terminate_big_destroy(struct hci_dev *hdev, void *data, int err)
+ 	kfree(data);
+ }
+ 
+-static int hci_le_terminate_big(struct hci_dev *hdev, u8 big, u8 bis)
++static int hci_le_terminate_big(struct hci_dev *hdev, struct hci_conn *conn)
+ {
+ 	struct iso_list_data *d;
+ 	int ret;
+ 
+-	bt_dev_dbg(hdev, "big 0x%2.2x bis 0x%2.2x", big, bis);
++	bt_dev_dbg(hdev, "big 0x%2.2x bis 0x%2.2x", conn->iso_qos.bcast.big,
++		   conn->iso_qos.bcast.bis);
+ 
+ 	d = kzalloc(sizeof(*d), GFP_KERNEL);
+ 	if (!d)
+ 		return -ENOMEM;
+ 
+-	d->big = big;
+-	d->bis = bis;
++	d->big = conn->iso_qos.bcast.big;
++	d->bis = conn->iso_qos.bcast.bis;
++	d->big_term = test_and_clear_bit(HCI_CONN_BIG_CREATED, &conn->flags);
+ 
+ 	ret = hci_cmd_sync_queue(hdev, terminate_big_sync, d,
+ 				 terminate_big_destroy);
+@@ -916,6 +916,7 @@ static int hci_le_big_terminate(struct hci_dev *hdev, u8 big, u16 sync_handle)
+ static void bis_cleanup(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
++	struct hci_conn *bis;
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+@@ -923,8 +924,16 @@ static void bis_cleanup(struct hci_conn *conn)
+ 		if (!test_and_clear_bit(HCI_CONN_PER_ADV, &conn->flags))
+ 			return;
+ 
+-		hci_le_terminate_big(hdev, conn->iso_qos.bcast.big,
+-				     conn->iso_qos.bcast.bis);
++		/* Check if ISO connection is a BIS and terminate advertising
++		 * set and BIG if there are no other connections using it.
++		 */
++		bis = hci_conn_hash_lookup_bis(hdev, BDADDR_ANY,
++					       conn->iso_qos.bcast.big,
++					       conn->iso_qos.bcast.bis);
++		if (bis)
++			return;
++
++		hci_le_terminate_big(hdev, conn);
+ 	} else {
+ 		hci_le_big_terminate(hdev, conn->iso_qos.bcast.big,
+ 				     conn->sync_handle);
+@@ -1495,10 +1504,10 @@ static int qos_set_bis(struct hci_dev *hdev, struct bt_iso_qos *qos)
+ 
+ /* This function requires the caller holds hdev->lock */
+ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
+-				    struct bt_iso_qos *qos)
++				    struct bt_iso_qos *qos, __u8 base_len,
++				    __u8 *base)
+ {
+ 	struct hci_conn *conn;
+-	struct iso_list_data data;
+ 	int err;
+ 
+ 	/* Let's make sure that le is enabled.*/
+@@ -1516,24 +1525,27 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 	if (err)
+ 		return ERR_PTR(err);
+ 
+-	data.big = qos->bcast.big;
+-	data.bis = qos->bcast.bis;
+-	data.count = 0;
+-
+-	/* Check if there is already a matching BIG/BIS */
+-	hci_conn_hash_list_state(hdev, bis_list, ISO_LINK, BT_BOUND, &data);
+-	if (data.count)
++	/* Check if the LE Create BIG command has already been sent */
++	conn = hci_conn_hash_lookup_per_adv_bis(hdev, dst, qos->bcast.big,
++						qos->bcast.big);
++	if (conn)
+ 		return ERR_PTR(-EADDRINUSE);
+ 
+-	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->bcast.big, qos->bcast.bis);
+-	if (conn)
++	/* Check BIS settings against other bound BISes, since all
++	 * BISes in a BIG must have the same value for all parameters
++	 */
++	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->bcast.big,
++					qos->bcast.bis);
++
++	if (conn && (memcmp(qos, &conn->iso_qos, sizeof(*qos)) ||
++		     base_len != conn->le_per_adv_data_len ||
++		     memcmp(conn->le_per_adv_data, base, base_len)))
+ 		return ERR_PTR(-EADDRINUSE);
+ 
+ 	conn = hci_conn_add(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
+ 	if (!conn)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	set_bit(HCI_CONN_PER_ADV, &conn->flags);
+ 	conn->state = BT_CONNECT;
+ 
+ 	hci_conn_hold(conn);
+@@ -1747,12 +1759,21 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 	struct hci_cp_le_create_big cp;
++	struct iso_list_data data;
+ 
+ 	memset(&cp, 0, sizeof(cp));
+ 
++	data.big = qos->bcast.big;
++	data.bis = qos->bcast.bis;
++	data.count = 0;
++
++	/* Create a BIS for each bound connection */
++	hci_conn_hash_list_state(hdev, bis_list, ISO_LINK,
++				 BT_BOUND, &data);
++
+ 	cp.handle = qos->bcast.big;
+ 	cp.adv_handle = qos->bcast.bis;
+-	cp.num_bis  = 0x01;
++	cp.num_bis  = data.count;
+ 	hci_cpu_to_le24(qos->bcast.out.interval, cp.bis.sdu_interval);
+ 	cp.bis.sdu = cpu_to_le16(qos->bcast.out.sdu);
+ 	cp.bis.latency =  cpu_to_le16(qos->bcast.out.latency);
+@@ -2051,16 +2072,6 @@ static void hci_iso_qos_setup(struct hci_dev *hdev, struct hci_conn *conn,
+ 		qos->latency = conn->le_conn_latency;
+ }
+ 
+-static void hci_bind_bis(struct hci_conn *conn,
+-			 struct bt_iso_qos *qos)
+-{
+-	/* Update LINK PHYs according to QoS preference */
+-	conn->le_tx_phy = qos->bcast.out.phy;
+-	conn->le_tx_phy = qos->bcast.out.phy;
+-	conn->iso_qos = *qos;
+-	conn->state = BT_BOUND;
+-}
+-
+ static int create_big_sync(struct hci_dev *hdev, void *data)
+ {
+ 	struct hci_conn *conn = data;
+@@ -2183,27 +2194,80 @@ static void create_big_complete(struct hci_dev *hdev, void *data, int err)
+ 	}
+ }
+ 
+-struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
+-				 __u8 dst_type, struct bt_iso_qos *qos,
+-				 __u8 base_len, __u8 *base)
++struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
++			      struct bt_iso_qos *qos,
++			      __u8 base_len, __u8 *base)
+ {
+ 	struct hci_conn *conn;
+-	int err;
++	__u8 eir[HCI_MAX_PER_AD_LENGTH];
++
++	if (base_len && base)
++		base_len = eir_append_service_data(eir, 0,  0x1851,
++						   base, base_len);
+ 
+ 	/* We need hci_conn object using the BDADDR_ANY as dst */
+-	conn = hci_add_bis(hdev, dst, qos);
++	conn = hci_add_bis(hdev, dst, qos, base_len, eir);
+ 	if (IS_ERR(conn))
+ 		return conn;
+ 
+-	hci_bind_bis(conn, qos);
++	/* Update LINK PHYs according to QoS preference */
++	conn->le_tx_phy = qos->bcast.out.phy;
++	conn->le_tx_phy = qos->bcast.out.phy;
+ 
+ 	/* Add Basic Announcement into Peridic Adv Data if BASE is set */
+ 	if (base_len && base) {
+-		base_len = eir_append_service_data(conn->le_per_adv_data, 0,
+-						   0x1851, base, base_len);
++		memcpy(conn->le_per_adv_data,  eir, sizeof(eir));
+ 		conn->le_per_adv_data_len = base_len;
+ 	}
+ 
++	hci_iso_qos_setup(hdev, conn, &qos->bcast.out,
++			  conn->le_tx_phy ? conn->le_tx_phy :
++			  hdev->le_tx_def_phys);
++
++	conn->iso_qos = *qos;
++	conn->state = BT_BOUND;
++
++	return conn;
++}
++
++static void bis_mark_per_adv(struct hci_conn *conn, void *data)
++{
++	struct iso_list_data *d = data;
++
++	/* Skip if not broadcast/ANY address */
++	if (bacmp(&conn->dst, BDADDR_ANY))
++		return;
++
++	if (d->big != conn->iso_qos.bcast.big ||
++	    d->bis == BT_ISO_QOS_BIS_UNSET ||
++	    d->bis != conn->iso_qos.bcast.bis)
++		return;
++
++	set_bit(HCI_CONN_PER_ADV, &conn->flags);
++}
++
++struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
++				 __u8 dst_type, struct bt_iso_qos *qos,
++				 __u8 base_len, __u8 *base)
++{
++	struct hci_conn *conn;
++	int err;
++	struct iso_list_data data;
++
++	conn = hci_bind_bis(hdev, dst, qos, base_len, base);
++	if (IS_ERR(conn))
++		return conn;
++
++	data.big = qos->bcast.big;
++	data.bis = qos->bcast.bis;
++
++	/* Set HCI_CONN_PER_ADV for all bound connections, to mark that
++	 * the start periodic advertising and create BIG commands have
++	 * been queued
++	 */
++	hci_conn_hash_list_state(hdev, bis_mark_per_adv, ISO_LINK,
++				 BT_BOUND, &data);
++
+ 	/* Queue start periodic advertising and create BIG */
+ 	err = hci_cmd_sync_queue(hdev, create_big_sync, conn,
+ 				 create_big_complete);
+@@ -2212,10 +2276,6 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 		return ERR_PTR(err);
+ 	}
+ 
+-	hci_iso_qos_setup(hdev, conn, &qos->bcast.out,
+-			  conn->le_tx_phy ? conn->le_tx_phy :
+-			  hdev->le_tx_def_phys);
+-
+ 	return conn;
+ }
+ 
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 31ca320ce38d3..86a7e4b3b98da 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6936,6 +6936,7 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
+ {
+ 	struct hci_evt_le_create_big_complete *ev = data;
+ 	struct hci_conn *conn;
++	__u8 bis_idx = 0;
+ 
+ 	BT_DBG("%s status 0x%2.2x", hdev->name, ev->status);
+ 
+@@ -6944,33 +6945,44 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
+ 		return;
+ 
+ 	hci_dev_lock(hdev);
++	rcu_read_lock();
+ 
+-	conn = hci_conn_hash_lookup_big(hdev, ev->handle);
+-	if (!conn)
+-		goto unlock;
++	/* Connect all BISes that are bound to the BIG */
++	list_for_each_entry_rcu(conn, &hdev->conn_hash.list, list) {
++		if (bacmp(&conn->dst, BDADDR_ANY) ||
++		    conn->type != ISO_LINK ||
++		    conn->iso_qos.bcast.big != ev->handle)
++			continue;
+ 
+-	if (conn->type != ISO_LINK) {
+-		bt_dev_err(hdev,
+-			   "Invalid connection link type handle 0x%2.2x",
+-			   ev->handle);
+-		goto unlock;
+-	}
++		conn->handle = __le16_to_cpu(ev->bis_handle[bis_idx++]);
+ 
+-	if (ev->num_bis)
+-		conn->handle = __le16_to_cpu(ev->bis_handle[0]);
++		if (!ev->status) {
++			conn->state = BT_CONNECTED;
++			set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
++			rcu_read_unlock();
++			hci_debugfs_create_conn(conn);
++			hci_conn_add_sysfs(conn);
++			hci_iso_setup_path(conn);
++			rcu_read_lock();
++			continue;
++		}
+ 
+-	if (!ev->status) {
+-		conn->state = BT_CONNECTED;
+-		hci_debugfs_create_conn(conn);
+-		hci_conn_add_sysfs(conn);
+-		hci_iso_setup_path(conn);
+-		goto unlock;
++		hci_connect_cfm(conn, ev->status);
++		rcu_read_unlock();
++		hci_conn_del(conn);
++		rcu_read_lock();
+ 	}
+ 
+-	hci_connect_cfm(conn, ev->status);
+-	hci_conn_del(conn);
++	if (!ev->status && !bis_idx)
++		/* If no BISes have been connected for the BIG,
++		 * terminate. This is in case all bound connections
++		 * have been closed before the BIG creation
++		 * has completed.
++		 */
++		hci_le_terminate_big_sync(hdev, ev->handle,
++					  HCI_ERROR_LOCAL_HOST_TERM);
+ 
+-unlock:
++	rcu_read_unlock();
+ 	hci_dev_unlock(hdev);
+ }
+ 
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 505d622472688..5808d57c1d7ba 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -287,13 +287,24 @@ static int iso_connect_bis(struct sock *sk)
+ 		goto unlock;
+ 	}
+ 
+-	hcon = hci_connect_bis(hdev, &iso_pi(sk)->dst,
+-			       le_addr_type(iso_pi(sk)->dst_type),
+-			       &iso_pi(sk)->qos, iso_pi(sk)->base_len,
+-			       iso_pi(sk)->base);
+-	if (IS_ERR(hcon)) {
+-		err = PTR_ERR(hcon);
+-		goto unlock;
++	/* Just bind if DEFER_SETUP has been set */
++	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
++		hcon = hci_bind_bis(hdev, &iso_pi(sk)->dst,
++				    &iso_pi(sk)->qos, iso_pi(sk)->base_len,
++				    iso_pi(sk)->base);
++		if (IS_ERR(hcon)) {
++			err = PTR_ERR(hcon);
++			goto unlock;
++		}
++	} else {
++		hcon = hci_connect_bis(hdev, &iso_pi(sk)->dst,
++				       le_addr_type(iso_pi(sk)->dst_type),
++				       &iso_pi(sk)->qos, iso_pi(sk)->base_len,
++				       iso_pi(sk)->base);
++		if (IS_ERR(hcon)) {
++			err = PTR_ERR(hcon);
++			goto unlock;
++		}
+ 	}
+ 
+ 	conn = iso_conn_add(hcon);
+@@ -317,6 +328,9 @@ static int iso_connect_bis(struct sock *sk)
+ 	if (hcon->state == BT_CONNECTED) {
+ 		iso_sock_clear_timer(sk);
+ 		sk->sk_state = BT_CONNECTED;
++	} else if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
++		iso_sock_clear_timer(sk);
++		sk->sk_state = BT_CONNECT;
+ 	} else {
+ 		sk->sk_state = BT_CONNECT;
+ 		iso_sock_set_timer(sk, sk->sk_sndtimeo);
 -- 
 2.40.1
 
