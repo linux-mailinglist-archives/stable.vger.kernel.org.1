@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B4379BF70
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302E079B6F3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348645AbjIKV3W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:29:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58584 "EHLO
+        id S1358220AbjIKWIQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239306AbjIKORN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:13 -0400
+        with ESMTP id S241797AbjIKPOr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD1EE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2917C433C8;
-        Mon, 11 Sep 2023 14:17:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5960EFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0785C433CA;
+        Mon, 11 Sep 2023 15:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441828;
-        bh=jeX/K2vzdWxPxw72RVdrOEUoYjgA1q058TH5/3O/pQc=;
+        s=korg; t=1694445283;
+        bh=i4j6f1xaMXy4i4Pdci6UVcZS7WhrKAdqO00Jn8vd2uM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q/rXASeZgZQBKRr9Wr2A8IF8oJ97YIt0oW0Tki6AiirJ+e6//0InADbo7xpDurtSG
-         UV99X8PycZc1jyVKKgmYPSfVwiuOj76H3px9U8fcQ8SUJl7Gynn0pPAl/e47JMwF0Y
-         LOPf56MdCW5iSYMclGsvzivoVdZhRWIRMrsr1uzM=
+        b=cSUut/NeeoPAnd0Y5XyuDyzWZ/w3KRkhbzRmHqq1KvhJjtFWnq6sN98hq4itICHJM
+         tuCjxSz04JcVc9KAkSf/u/h+o4UMOcCXzidl4ype4vm8Y08hkIjKUtCbF4/mXF5epX
+         JEZjPSLJClDMwhM4i+KoHIhJvPX1BU09ukZH0AZA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 524/739] media: cec: core: add adap_nb_transmit_canceled() callback
+Subject: [PATCH 6.1 290/600] ima: Remove deprecated IMA_TRUSTED_KEYRING Kconfig
 Date:   Mon, 11 Sep 2023 15:45:23 +0200
-Message-ID: <20230911134705.748082320@linuxfoundation.org>
+Message-ID: <20230911134642.168426895@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,83 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Nayna Jain <nayna@linux.ibm.com>
 
-[ Upstream commit da53c36ddd3f118a525a04faa8c47ca471e6c467 ]
+[ Upstream commit 5087fd9e80e539d2163accd045b73da64de7de95 ]
 
-A potential deadlock was found by Zheng Zhang with a local syzkaller
-instance.
+Time to remove "IMA_TRUSTED_KEYRING".
 
-The problem is that when a non-blocking CEC transmit is canceled by calling
-cec_data_cancel, that in turn can call the high-level received() driver
-callback, which can call cec_transmit_msg() to transmit a new message.
-
-The cec_data_cancel() function is called with the adap->lock mutex held,
-and cec_transmit_msg() tries to take that same lock.
-
-The root cause is that the received() callback can either be used to pass
-on a received message (and then adap->lock is not held), or to report a
-canceled transmit (and then adap->lock is held).
-
-This is confusing, so create a new low-level adap_nb_transmit_canceled
-callback that reports back that a non-blocking transmit was canceled.
-
-And the received() callback is only called when a message is received,
-as was the case before commit f9d0ecbf56f4 ("media: cec: correctly pass
-on reply results") complicated matters.
-
-Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: f9d0ecbf56f4 ("media: cec: correctly pass on reply results")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: f4dc37785e9b ("integrity: define '.evm' as a builtin 'trusted' keyring") # v4.5+
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 4 ++--
- include/media/cec.h               | 6 ++++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ security/integrity/ima/Kconfig | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 241b1621b197c..a9b73fb33888d 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -385,8 +385,8 @@ static void cec_data_cancel(struct cec_data *data, u8 tx_status, u8 rx_status)
- 	cec_queue_msg_monitor(adap, &data->msg, 1);
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 60a511c6b583e..c17660bf5f347 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -248,18 +248,6 @@ config IMA_APPRAISE_MODSIG
+ 	   The modsig keyword can be used in the IMA policy to allow a hook
+ 	   to accept such signatures.
  
- 	if (!data->blocking && data->msg.sequence)
--		/* Allow drivers to process the message first */
--		call_op(adap, received, &data->msg);
-+		/* Allow drivers to react to a canceled transmit */
-+		call_void_op(adap, adap_nb_transmit_canceled, &data->msg);
- 
- 	cec_data_completed(data);
- }
-diff --git a/include/media/cec.h b/include/media/cec.h
-index abee41ae02d0e..6556cc161dc0a 100644
---- a/include/media/cec.h
-+++ b/include/media/cec.h
-@@ -121,14 +121,16 @@ struct cec_adap_ops {
- 	void (*adap_configured)(struct cec_adapter *adap, bool configured);
- 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
- 			     u32 signal_free_time, struct cec_msg *msg);
-+	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
-+					  const struct cec_msg *msg);
- 	void (*adap_status)(struct cec_adapter *adap, struct seq_file *file);
- 	void (*adap_free)(struct cec_adapter *adap);
- 
--	/* Error injection callbacks */
-+	/* Error injection callbacks, called without adap->lock held */
- 	int (*error_inj_show)(struct cec_adapter *adap, struct seq_file *sf);
- 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
- 
--	/* High-level CEC message callback */
-+	/* High-level CEC message callback, called without adap->lock held */
- 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
- };
- 
+-config IMA_TRUSTED_KEYRING
+-	bool "Require all keys on the .ima keyring be signed (deprecated)"
+-	depends on IMA_APPRAISE && SYSTEM_TRUSTED_KEYRING
+-	depends on INTEGRITY_ASYMMETRIC_KEYS
+-	select INTEGRITY_TRUSTED_KEYRING
+-	default y
+-	help
+-	   This option requires that all keys added to the .ima
+-	   keyring be signed by a key on the system trusted keyring.
+-
+-	   This option is deprecated in favor of INTEGRITY_TRUSTED_KEYRING
+-
+ config IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
+ 	bool "Permit keys validly signed by a built-in or secondary CA cert (EXPERIMENTAL)"
+ 	depends on SYSTEM_TRUSTED_KEYRING
 -- 
 2.40.1
 
