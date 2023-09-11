@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E50279B98A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 501A379C0D4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355192AbjIKV50 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37750 "EHLO
+        id S1378571AbjIKWfi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241710AbjIKPMf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:35 -0400
+        with ESMTP id S239176AbjIKONq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 412CCFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6281EC433C8;
-        Mon, 11 Sep 2023 15:12:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC2EDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F890C433C8;
+        Mon, 11 Sep 2023 14:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445150;
-        bh=8sPsib578Z0Rs3q7niwY9b8QkTnDh5SUmulmYUXCmWQ=;
+        s=korg; t=1694441621;
+        bh=UfgcpOqVv9npvDzEkORKlMCgLllIuq4053v20k6oSqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=18KyfHwfktwCTp6fisHh688y6qPTZU6aSdDyC9fjEuza0DoNKrgIa/naVSYfaGNnS
-         CZ8if1uKOw+woXGrXkK2WmnoNuCPV9pNSViX5bP/4B+UX1xlc9+uZF6/ik/QffSMkD
-         8l3AXpCX48jhqrpoUrNcV6wfZ+owwMNUDn7eW1Ck=
+        b=tIpcukW/kI4UByXY8RN4HmCs9yMWc1i+BCsJwP0l0KZ0nBqU1f1BOnzPQTvhFXG7V
+         perf2oHXLZurUq5+yYicvuuEANOqqmA8e0RrCholl/QtTLUCzrgA34IoH1xgYyTsWE
+         QvwfNhODBbkzSjxZ/6UEfbnmNyz1WIaKo83dzH3U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/600] ARM: dts: stm32: Add missing detach mailbox for emtrion emSBC-Argon
+Subject: [PATCH 6.5 478/739] media: mediatek: vcodec: fix potential double free
 Date:   Mon, 11 Sep 2023 15:44:37 +0200
-Message-ID: <20230911134640.800399991@linuxfoundation.org>
+Message-ID: <20230911134704.493778637@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 0ee0ef38aa9f75f21b51f729dd42b2e932515188 ]
+[ Upstream commit be40f524b6edac4fb9a98ef79620fd9b9497a998 ]
 
-Add missing "detach" mailbox to this board to permit the CPU to inform
-the remote processor on a detach. This signal allows the remote processor
-firmware to stop IPC communication and to reinitialize the resources for
-a re-attach.
+The "lat_buf->private_data" needs to be set to NULL to prevent a
+double free.  How this would happen is if vdec_msg_queue_init() failed
+twice in a row and on the second time it failed earlier than on the
+first time.
 
-Without this mailbox, detach is not possible and kernel log contains the
-following warning to, so make sure all the STM32MP15xx platform DTs are
-in sync regarding the mailboxes to fix the detach issue and the warning:
-"
-stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
-"
+The vdec_msg_queue_init() function has a loop which does:
+	for (i = 0; i < NUM_BUFFER_COUNT; i++) {
 
-Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Each iteration initializes one element in the msg_queue->lat_buf[] array
+and then the clean up function vdec_msg_queue_deinit() frees each
+element of the msg_queue->lat_buf[] array.  This clean up code relies
+on the assumption that every element is either initialized or zeroed.
+Leaving a freed pointer which is non-zero breaks the assumption.
+
+Fixes: b199fe46f35c ("media: mtk-vcodec: Add msg queue feature for lat and core architecture")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi b/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi
-index 94e38141af672..fd89542c69c93 100644
---- a/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi
-+++ b/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi
-@@ -368,8 +368,8 @@ &iwdg2 {
- &m4_rproc {
- 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
- 			<&vdev0vring1>, <&vdev0buffer>;
--	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
--	mbox-names = "vq0", "vq1", "shutdown";
-+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
-+	mbox-names = "vq0", "vq1", "shutdown", "detach";
- 	interrupt-parent = <&exti>;
- 	interrupts = <68 1>;
- 	interrupt-names = "wdg";
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index 04e6dc6cfa1de..f2d21b5bc5c3a 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -231,6 +231,7 @@ void vdec_msg_queue_deinit(struct vdec_msg_queue *msg_queue,
+ 			mtk_vcodec_mem_free(ctx, mem);
+ 
+ 		kfree(lat_buf->private_data);
++		lat_buf->private_data = NULL;
+ 	}
+ 
+ 	if (msg_queue->wdma_addr.size)
 -- 
 2.40.1
 
