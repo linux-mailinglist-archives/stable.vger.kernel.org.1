@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0881279B35D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE0D79ADC8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240929AbjIKWnK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41740 "EHLO
+        id S236111AbjIKUzb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:55:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242148AbjIKPXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:31 -0400
+        with ESMTP id S240904AbjIKO5B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC1CBD8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420DAC433C7;
-        Mon, 11 Sep 2023 15:23:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEDFAE4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E39C433C8;
+        Mon, 11 Sep 2023 14:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445807;
-        bh=LL26BHxHyi3FvNhECXm+5VuN0wgFl5l8eT1YcyH5iCg=;
+        s=korg; t=1694444217;
+        bh=5R5H/cdUfqwLtkA+nYlPg7qETGvNI2o/6kh3yPE5Hfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W21EPRjEkBc3WW3ujpZ8ivyNvA4VT5gpn7fuwY9PtL0e7bxGpmZbP4yNirXPBxmWH
-         ruHYGGNxoSHNDNPE+Di1NmGEMg8PKtwfTFBKtN95zsaMAW/khpvzW85uW6B8D01IyR
-         sU5AkytRClKdAwdli6kzndkG2tAcDqdGWEuggnT4=
+        b=PHA//1Zv/RxrP4H2VqqK0PLQpFM8pXL+li3H9n2HP4VYynKzRhsWnS/x70NE9pUpP
+         4UOGXucKOa78ALAJKjxXH0XMsTQlt4HdsPeu45hdxPpfJvXVB9RWmqn74MGSaj6FJ8
+         T6e+8zeAVhTTpiuWlSosfXfbk3Ltj85TKoNS0DTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lu Jialin <lujialin4@huawei.com>,
-        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 478/600] cgroup:namespace: Remove unused cgroup_namespaces_init()
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.4 652/737] media: i2c: Add a camera sensor top level menu
 Date:   Mon, 11 Sep 2023 15:48:31 +0200
-Message-ID: <20230911134647.752004297@linuxfoundation.org>
+Message-ID: <20230911134708.742588169@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +51,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Jialin <lujialin4@huawei.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 82b90b6c5b38e457c7081d50dff11ecbafc1e61a ]
+commit 7d3c7d2a2914e10bec3b9cdacdadb8e1f65f715a upstream.
 
-cgroup_namspace_init() just return 0. Therefore, there is no need to
-call it during start_kernel. Just remove it.
+Select V4L2_FWNODE and VIDEO_V4L2_SUBDEV_API for all sensor drivers. This
+also adds the options to drivers that don't specifically need them, these
+are still seldom used drivers using old APIs. The upside is that these
+should now all compile --- many drivers have had missing dependencies.
 
-Fixes: a79a908fd2b0 ("cgroup: introduce cgroup namespaces")
-Signed-off-by: Lu Jialin <lujialin4@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The "menu" is replaced by selectable "menuconfig" to select the needed
+V4L2_FWNODE and VIDEO_V4L2_SUBDEV_API options.
+
+Also select MEDIA_CONTROLLER which VIDEO_V4L2_SUBDEV_API effectively
+depends on, and add the I2C dependency to the menu.
+
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: stable@vger.kernel.org # for >= 6.1
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/namespace.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/media/i2c/Kconfig |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/cgroup/namespace.c b/kernel/cgroup/namespace.c
-index 0d5c29879a50b..144a464e45c66 100644
---- a/kernel/cgroup/namespace.c
-+++ b/kernel/cgroup/namespace.c
-@@ -149,9 +149,3 @@ const struct proc_ns_operations cgroupns_operations = {
- 	.install	= cgroupns_install,
- 	.owner		= cgroupns_owner,
- };
--
--static __init int cgroup_namespaces_init(void)
--{
--	return 0;
--}
--subsys_initcall(cgroup_namespaces_init);
--- 
-2.40.1
-
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -25,8 +25,15 @@ config VIDEO_IR_I2C
+ # V4L2 I2C drivers that are related with Camera support
+ #
+ 
+-menu "Camera sensor devices"
+-	visible if MEDIA_CAMERA_SUPPORT
++menuconfig VIDEO_CAMERA_SENSOR
++	bool "Camera sensor devices"
++	depends on MEDIA_CAMERA_SUPPORT && I2C
++	select MEDIA_CONTROLLER
++	select V4L2_FWNODE
++	select VIDEO_V4L2_SUBDEV_API
++	default y
++
++if VIDEO_CAMERA_SENSOR
+ 
+ config VIDEO_APTINA_PLL
+ 	tristate
+@@ -797,7 +804,7 @@ config VIDEO_ST_VGXY61
+ source "drivers/media/i2c/ccs/Kconfig"
+ source "drivers/media/i2c/et8ek8/Kconfig"
+ 
+-endmenu
++endif
+ 
+ menu "Lens drivers"
+ 	visible if MEDIA_CAMERA_SUPPORT
 
 
