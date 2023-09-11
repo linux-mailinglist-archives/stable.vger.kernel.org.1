@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A932879B38E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E8379B225
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379381AbjIKWnt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58186 "EHLO
+        id S238984AbjIKVRz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239615AbjIKOYm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:42 -0400
+        with ESMTP id S240900AbjIKO44 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AECEDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE40C433C7;
-        Mon, 11 Sep 2023 14:24:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B76E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79958C433C7;
+        Mon, 11 Sep 2023 14:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442277;
-        bh=WX0MHsCwvTojTgKubD8jUhF3HHKi9n22FSL3p8S6BJM=;
+        s=korg; t=1694444211;
+        bh=NZ2Q8mM3YAU1LJlR00s9CZOFudyae+fYgslcLaIYKRI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I91iKVw5z1D4OsMzaAyGiHSNsqjDh+aVKTNVQizsXkpI72dtUheHEBalN6j3O2cZ3
-         f/RK7/nShlWrgeIV+0snrxaD5aPAQTA6UC/wMPw/MubmY+6tXyj7gBxA3ZKoikMNTo
-         KNkvVVDKoC3Csrq51wkPoam+0BPE/b/H4aRuRXc8=
+        b=rugdxxOgmmeBcWtT0YeajoglvQxD5xTaKIotC1O3vA0kFNcwjZfBrAlJW+mI9At2n
+         EJ+2FbrDmke4A/kgjQwWnY7f7JvRdTNvH59NDa1prBgS1efS2sqllbmuFuRYy+Sctg
+         m/lK46umUa/ZD0fP9r4dtlw5UAcOdTX8aZmzse3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.5 709/739] mmc: renesas_sdhi: register irqs before registering controller
-Date:   Mon, 11 Sep 2023 15:48:28 +0200
-Message-ID: <20230911134710.886462878@linuxfoundation.org>
+        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Yu Liao <liaoyu15@huawei.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH 6.4 650/737] cpu/hotplug: Prevent self deadlock on CPU hot-unplug
+Date:   Mon, 11 Sep 2023 15:48:29 +0200
+Message-ID: <20230911134708.687312635@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +52,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 74f45de394d979cc7770271f92fafa53e1ed3119 upstream.
+commit 2b8272ff4a70b866106ae13c36be7ecbef5d5da2 upstream.
 
-IRQs should be ready to serve when we call mmc_add_host() via
-tmio_mmc_host_probe(). To achieve that, ensure that all irqs are masked
-before registering the handlers.
+Xiongfeng reported and debugged a self deadlock of the task which initiates
+and controls a CPU hot-unplug operation vs. the CFS bandwidth timer.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+    CPU1      			                 	 CPU2
+
+T1 sets cfs_quota
+   starts hrtimer cfs_bandwidth 'period_timer'
+T1 is migrated to CPU2
+						T1 initiates offlining of CPU1
+Hotplug operation starts
+  ...
+'period_timer' expires and is re-enqueued on CPU1
+  ...
+take_cpu_down()
+  CPU1 shuts down and does not handle timers
+  anymore. They have to be migrated in the
+  post dead hotplug steps by the control task.
+
+						T1 runs the post dead offline operation
+					      	T1 is scheduled out
+						T1 waits for 'period_timer' to expire
+
+T1 waits there forever if it is scheduled out before it can execute the hrtimer
+offline callback hrtimers_dead_cpu().
+
+Cure this by delegating the hotplug control operation to a worker thread on
+an online CPU. This takes the initiating user space task, which might be
+affected by the bandwidth timer, completely out of the picture.
+
+Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Yu Liao <liaoyu15@huawei.com>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230712140011.18602-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/lkml/8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com
+Link: https://lore.kernel.org/r/87h6oqdq0i.ffs@tglx
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ kernel/cpu.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -1006,6 +1006,8 @@ int renesas_sdhi_probe(struct platform_d
- 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
- 		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
- 		host->reset = renesas_sdhi_reset;
-+	} else {
-+		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
- 	}
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1215,8 +1215,22 @@ out:
+ 	return ret;
+ }
  
- 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
-@@ -1100,9 +1102,7 @@ int renesas_sdhi_probe(struct platform_d
- 		host->ops.hs400_complete = renesas_sdhi_hs400_complete;
- 	}
- 
--	ret = tmio_mmc_host_probe(host);
--	if (ret < 0)
--		goto edisclk;
-+	sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, host->sdcard_irq_mask_all);
- 
- 	num_irqs = platform_irq_count(pdev);
- 	if (num_irqs < 0) {
-@@ -1129,6 +1129,10 @@ int renesas_sdhi_probe(struct platform_d
- 			goto eirq;
- 	}
- 
-+	ret = tmio_mmc_host_probe(host);
-+	if (ret < 0)
-+		goto edisclk;
++struct cpu_down_work {
++	unsigned int		cpu;
++	enum cpuhp_state	target;
++};
 +
- 	dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
- 		 mmc_hostname(host->mmc), &res->start, host->mmc->f_max / 1000000);
++static long __cpu_down_maps_locked(void *arg)
++{
++	struct cpu_down_work *work = arg;
++
++	return _cpu_down(work->cpu, 0, work->target);
++}
++
+ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+ {
++	struct cpu_down_work work = { .cpu = cpu, .target = target, };
++
+ 	/*
+ 	 * If the platform does not support hotplug, report it explicitly to
+ 	 * differentiate it from a transient offlining failure.
+@@ -1225,7 +1239,15 @@ static int cpu_down_maps_locked(unsigned
+ 		return -EOPNOTSUPP;
+ 	if (cpu_hotplug_disabled)
+ 		return -EBUSY;
+-	return _cpu_down(cpu, 0, target);
++
++	/*
++	 * Ensure that the control task does not run on the to be offlined
++	 * CPU to prevent a deadlock against cfs_b->period_timer.
++	 */
++	cpu = cpumask_any_but(cpu_online_mask, cpu);
++	if (cpu >= nr_cpu_ids)
++		return -EBUSY;
++	return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
+ }
  
+ static int cpu_down(unsigned int cpu, enum cpuhp_state target)
 
 
