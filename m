@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2028079ACB9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B598079B30F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350452AbjIKVig (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57002 "EHLO
+        id S1344100AbjIKVNS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242114AbjIKPWp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:45 -0400
+        with ESMTP id S239636AbjIKOZB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91136F9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A17C433C7;
-        Mon, 11 Sep 2023 15:22:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A16ADE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58D9C433C8;
+        Mon, 11 Sep 2023 14:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445761;
-        bh=EQ7t9iH4xOJDPnsNVMYJYOWM869aCDZq0BUXWrzttB8=;
+        s=korg; t=1694442297;
+        bh=7arcCSyzYzrkuJbRBoioCwEiy+Wzj9F1je0RwZ2mCvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TzvYF1zldPCim8V79nAgke93LsDQ7FgXMrKN8/H2TNdW0IPnVNZX798T0KO6KT1SL
-         8mSo3dIfB/CK7Oj8TPG61xXfH/w84EHrl5t3/IjMwOqWEpkyWekaBP9hEs5ecGpb0h
-         BbYiCiIyUeBIpatQaES2StRdbkAbumBzxHR151bA=
+        b=KxGFgvjleFJLU8jjn+rLEc4ts80BV+6Z/13biWh9JHVQCLtvTRnbsgDtjxIPufkVg
+         SNHxTlJ4HtgQItGWhLK8/SA0nauWEI0quBaXtuc3iRGhceJ1gEQM/lBs96gTZoIzjM
+         p2TY+f69cKcrvEOaAkZTtsoLltks9qKDW4viYyJU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        Marek Vasut <marex@denx.de>, Jai Luthra <j-luthra@ti.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 463/600] media: ov5640: Fix initial RESETB state and annotate timings
-Date:   Mon, 11 Sep 2023 15:48:16 +0200
-Message-ID: <20230911134647.320355119@linuxfoundation.org>
+        patches@lists.linux.dev, Yonghong Song <yonghong.song@linux.dev>,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Yafang Shao <laoar.shao@gmail.com>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.5 698/739] bpf: Fix issue in verifying allow_ptr_leaks
+Date:   Mon, 11 Sep 2023 15:48:17 +0200
+Message-ID: <20230911134710.590538494@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +52,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit a210df337c5f5c2cd82f36c9dbb154ec63365c80 ]
+commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
 
-The initial state of RESETB input signal of OV5640 should be
-asserted, i.e. the sensor should be in reset. This is not the
-case, make it so.
+After we converted the capabilities of our networking-bpf program from
+cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
+failed to start. Because it failed the bpf verifier, and the error log
+is "R3 pointer comparison prohibited".
 
-Since the subsequent assertion of RESETB signal is no longer
-necessary and the timing of the power sequencing could be
-slightly adjusted, add annotations to the delays which match
-OV5640 datasheet rev. 2.03, both:
-  figure 2-3 power up timing with internal DVDD
-  figure 2-4 power up timing with external DVDD source
+A simple reproducer as follows,
 
-The 5..10ms delay between PWDN assertion and RESETB assertion
-is not even documented in the power sequencing diagram, and
-with this reset fix, it is no longer even necessary.
+SEC("cls-ingress")
+int ingress(struct __sk_buff *skb)
+{
+	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
 
-Fixes: 19a81c1426c1 ("[media] add Omnivision OV5640 sensor driver")
-Reported-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Tested-by: Jai Luthra <j-luthra@ti.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	if ((long)(iph + 1) > (long)skb->data_end)
+		return TC_ACT_STOLEN;
+	return TC_ACT_OK;
+}
+
+Per discussion with Yonghong and Alexei [1], comparison of two packet
+pointers is not a pointer leak. This patch fixes it.
+
+Our local kernel is 6.1.y and we expect this fix to be backported to
+6.1.y, so stable is CCed.
+
+[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
+
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230823020703.3790-2-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov5640.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ kernel/bpf/verifier.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
-index f76bcb395cffa..2ee832426736d 100644
---- a/drivers/media/i2c/ov5640.c
-+++ b/drivers/media/i2c/ov5640.c
-@@ -2441,16 +2441,13 @@ static void ov5640_power(struct ov5640_dev *sensor, bool enable)
- static void ov5640_powerup_sequence(struct ov5640_dev *sensor)
- {
- 	if (sensor->pwdn_gpio) {
--		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
- 
- 		/* camera power cycle */
- 		ov5640_power(sensor, false);
--		usleep_range(5000, 10000);
-+		usleep_range(5000, 10000);	/* t2 */
- 		ov5640_power(sensor, true);
--		usleep_range(5000, 10000);
--
--		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
--		usleep_range(1000, 2000);
-+		usleep_range(1000, 2000);	/* t3 */
- 
- 		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
- 	} else {
-@@ -2458,7 +2455,7 @@ static void ov5640_powerup_sequence(struct ov5640_dev *sensor)
- 		ov5640_write_reg(sensor, OV5640_REG_SYS_CTRL0,
- 				 OV5640_REG_SYS_CTRL0_SW_RST);
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -13816,6 +13816,12 @@ static int check_cond_jmp_op(struct bpf_
+ 		return -EINVAL;
  	}
--	usleep_range(20000, 25000);
-+	usleep_range(20000, 25000);	/* t4 */
  
- 	/*
- 	 * software standby: allows registers programming;
--- 
-2.40.1
-
++	/* check src2 operand */
++	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
++	if (err)
++		return err;
++
++	dst_reg = &regs[insn->dst_reg];
+ 	if (BPF_SRC(insn->code) == BPF_X) {
+ 		if (insn->imm != 0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -13827,12 +13833,13 @@ static int check_cond_jmp_op(struct bpf_
+ 		if (err)
+ 			return err;
+ 
+-		if (is_pointer_value(env, insn->src_reg)) {
++		src_reg = &regs[insn->src_reg];
++		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
++		    is_pointer_value(env, insn->src_reg)) {
+ 			verbose(env, "R%d pointer comparison prohibited\n",
+ 				insn->src_reg);
+ 			return -EACCES;
+ 		}
+-		src_reg = &regs[insn->src_reg];
+ 	} else {
+ 		if (insn->src_reg != BPF_REG_0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -13840,12 +13847,6 @@ static int check_cond_jmp_op(struct bpf_
+ 		}
+ 	}
+ 
+-	/* check src2 operand */
+-	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
+-	if (err)
+-		return err;
+-
+-	dst_reg = &regs[insn->dst_reg];
+ 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
+ 
+ 	if (BPF_SRC(insn->code) == BPF_K) {
 
 
