@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 871F179B95B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC6879BE6B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344724AbjIKVOn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51840 "EHLO
+        id S239243AbjIKWm4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:42:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240064AbjIKOfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:25 -0400
+        with ESMTP id S241168AbjIKPD1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3B1F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0276C433C8;
-        Mon, 11 Sep 2023 14:35:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7171D125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77ECC433C7;
+        Mon, 11 Sep 2023 15:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442920;
-        bh=HlEPI3lRsyWoPnYFcPVmcHSwZdxryMythn/8ZOvd9gc=;
+        s=korg; t=1694444603;
+        bh=DK/pQR97SGhRxaTy7fBp9qoD4klTSsPiRSTHssXPD20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rIwuTdKiJZYBF71wATV2C9yV+RdJtCXGA4ut7yYztTUlJaEA3WdqL7C9gJjjMoJ3O
-         UlHzovn+ZULIfqZswHraFvLfcrlV8d2Ixiyf6afLU5rSoZjhsMXGQ0lNbrx+dmEXjQ
-         6Kzg9k/rYGiEifAtQmyKiLSfiRGMeYe73heq3IXw=
+        b=14YnVZdNIlJ1Bs6In2DY68vEXorfefGAtFe2Vo5j2gydwsKwlMDTOWLbs0ZE4J/a0
+         VPNFuH5q9G2BodroKGW4Y8Ov67frR8cNAOFORC9TCWiv7V9AMlk28XKq4uPmsre651
+         hT++8F1a6iy9qlj0t973XL0ZjAKW/hPPtgMiC1Ug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev,
+        Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 195/737] Bluetooth: ISO: Add support for connecting multiple BISes
-Date:   Mon, 11 Sep 2023 15:40:54 +0200
-Message-ID: <20230911134656.049072942@linuxfoundation.org>
+Subject: [PATCH 6.1 022/600] ASoC: nau8821: Add DMI quirk mechanism for active-high jack-detect
+Date:   Mon, 11 Sep 2023 15:40:55 +0200
+Message-ID: <20230911134634.268471301@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,591 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit a0bfde167b506423111ddb8cd71930497a40fc54 ]
+[ Upstream commit 1bc40efdaf4a0ccfdb10a1c8e4b458f4764e8e5f ]
 
-It is required for some configurations to have multiple BISes as part
-of the same BIG.
+Add a quirk mechanism to allow specifying that active-high jack-detection
+should be used on platforms where this info is not available in devicetree.
 
-Similar to the flow implemented for unicast, DEFER_SETUP will also be
-used to bind multiple BISes for the same BIG, before starting Periodic
-Advertising and creating the BIG.
+And add an entry for the Positivo CW14Q01P-V2 to the DMI table, so that
+jack-detection will work properly on this laptop.
 
-The user will have to open a new socket for each BIS. By setting the
-BT_DEFER_SETUP socket option and calling connect, a new connection
-will be added for the BIG and advertising handle set by the socket
-QoS parameters. Since all BISes will be bound for the same BIG and
-advertising handle, the socket QoS options and base parameters should
-match for all connections.
-
-By calling connect on a socket that does not have the BT_DEFER_SETUP
-option set, periodic advertising will be started and the BIG will
-be created, with a BIS for each previously bound connection. Since
-a BIG cannot be reconfigured with additional BISes after creation,
-no more connections can be bound for the BIG after the start periodic
-advertising and create BIG commands have been queued.
-
-The bis_cleanup function has also been updated, so that the advertising
-set and the BIG will not be terminated unless there are no more
-bound or connected BISes.
-
-The HCI_CONN_BIG_CREATED connection flag has been added to indicate
-that the BIG has been successfully created. This flag is checked at
-bis_cleanup, so that the BIG is only terminated if the
-HCI_LE_Create_BIG_Complete has been received.
-
-This implementation has been tested on hardware, using the "isotest"
-tool with an additional command line option, to specify the number of
-BISes to create as part of the desired BIG:
-
-    tools/isotest -i hci0 -s 00:00:00:00:00:00 -N 2 -G 1 -T 1
-
-The btmon log shows that a BIG containing 2 BISes has been created:
-
-< HCI Command: LE Create Broadcast Isochronous Group (0x08|0x0068) plen 31
-        Handle: 0x01
-        Advertising Handle: 0x01
-        Number of BIS: 2
-        SDU Interval: 10000 us (0x002710)
-        Maximum SDU size: 40
-        Maximum Latency: 10 ms (0x000a)
-        RTN: 0x02
-        PHY: LE 2M (0x02)
-        Packing: Sequential (0x00)
-        Framing: Unframed (0x00)
-        Encryption: 0x00
-        Broadcast Code: 00000000000000000000000000000000
-
-> HCI Event: Command Status (0x0f) plen 4
-      LE Create Broadcast Isochronous Group (0x08|0x0068) ncmd 1
-        Status: Success (0x00)
-
-> HCI Event: LE Meta Event (0x3e) plen 23
-      LE Broadcast Isochronous Group Complete (0x1b)
-        Status: Success (0x00)
-        Handle: 0x01
-        BIG Synchronization Delay: 1974 us (0x0007b6)
-        Transport Latency: 1974 us (0x0007b6)
-        PHY: LE 2M (0x02)
-        NSE: 3
-        BN: 1
-        PTO: 1
-        IRC: 3
-        Maximum PDU: 40
-        ISO Interval: 10.00 msec (0x0008)
-        Connection Handle #0: 10
-        Connection Handle #1: 11
-
-< HCI Command: LE Setup Isochronous Data Path (0x08|0x006e) plen 13
-        Handle: 10
-        Data Path Direction: Input (Host to Controller) (0x00)
-        Data Path: HCI (0x00)
-        Coding Format: Transparent (0x03)
-        Company Codec ID: Ericsson Technology Licensing (0)
-        Vendor Codec ID: 0
-        Controller Delay: 0 us (0x000000)
-        Codec Configuration Length: 0
-        Codec Configuration:
-
-> HCI Event: Command Complete (0x0e) plen 6
-      LE Setup Isochronous Data Path (0x08|0x006e) ncmd 1
-        Status: Success (0x00)
-        Handle: 10
-
-< HCI Command: LE Setup Isochronous Data Path (0x08|0x006e) plen 13
-        Handle: 11
-        Data Path Direction: Input (Host to Controller) (0x00)
-        Data Path: HCI (0x00)
-        Coding Format: Transparent (0x03)
-        Company Codec ID: Ericsson Technology Licensing (0)
-        Vendor Codec ID: 0
-        Controller Delay: 0 us (0x000000)
-        Codec Configuration Length: 0
-        Codec Configuration:
-
-> HCI Event: Command Complete (0x0e) plen 6
-      LE Setup Isochronous Data Path (0x08|0x006e) ncmd 1
-        Status: Success (0x00)
-        Handle: 11
-
-< ISO Data TX: Handle 10 flags 0x02 dlen 44
-
-< ISO Data TX: Handle 11 flags 0x02 dlen 44
-
-> HCI Event: Number of Completed Packets (0x13) plen 5
-        Num handles: 1
-        Handle: 10
-        Count: 1
-
-> HCI Event: Number of Completed Packets (0x13) plen 5
-        Num handles: 1
-        Handle: 11
-        Count: 1
-
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 7f74563e6140 ("Bluetooth: ISO: do not emit new LE Create CIS if previous is pending")
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Link: https://lore.kernel.org/r/20230719200241.4865-1-edson.drosdeck@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |  30 ++++++
- net/bluetooth/hci_conn.c         | 152 +++++++++++++++++++++----------
- net/bluetooth/hci_event.c        |  52 +++++++----
- net/bluetooth/iso.c              |  28 ++++--
- 4 files changed, 189 insertions(+), 73 deletions(-)
+ sound/soc/codecs/nau8821.c | 41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 870b6d3c5146b..c45c40c7c3b80 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -976,6 +976,7 @@ enum {
- 	HCI_CONN_SCANNING,
- 	HCI_CONN_AUTH_FAILURE,
- 	HCI_CONN_PER_ADV,
-+	HCI_CONN_BIG_CREATED,
- };
+diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
+index 4a72b94e84104..efd92656a060d 100644
+--- a/sound/soc/codecs/nau8821.c
++++ b/sound/soc/codecs/nau8821.c
+@@ -10,6 +10,7 @@
+ #include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+@@ -25,6 +26,13 @@
+ #include <sound/tlv.h>
+ #include "nau8821.h"
  
- static inline bool hci_conn_ssp_enabled(struct hci_conn *conn)
-@@ -1117,6 +1118,32 @@ static inline struct hci_conn *hci_conn_hash_lookup_bis(struct hci_dev *hdev,
- 	return NULL;
++#define NAU8821_JD_ACTIVE_HIGH			BIT(0)
++
++static int nau8821_quirk;
++static int quirk_override = -1;
++module_param_named(quirk, quirk_override, uint, 0444);
++MODULE_PARM_DESC(quirk, "Board-specific quirk override");
++
+ #define NAU_FREF_MAX 13500000
+ #define NAU_FVCO_MAX 100000000
+ #define NAU_FVCO_MIN 90000000
+@@ -1696,6 +1704,33 @@ static int nau8821_setup_irq(struct nau8821 *nau8821)
+ 	return 0;
  }
  
-+static inline struct hci_conn *
-+hci_conn_hash_lookup_per_adv_bis(struct hci_dev *hdev,
-+				 bdaddr_t *ba,
-+				 __u8 big, __u8 bis)
++/* Please keep this list alphabetically sorted */
++static const struct dmi_system_id nau8821_quirk_table[] = {
++	{
++		/* Positivo CW14Q01P-V2 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_BOARD_NAME, "CW14Q01P-V2"),
++		},
++		.driver_data = (void *)(NAU8821_JD_ACTIVE_HIGH),
++	},
++	{}
++};
++
++static void nau8821_check_quirks(void)
 +{
-+	struct hci_conn_hash *h = &hdev->conn_hash;
-+	struct hci_conn  *c;
++	const struct dmi_system_id *dmi_id;
 +
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(c, &h->list, list) {
-+		if (bacmp(&c->dst, ba) || c->type != ISO_LINK ||
-+			!test_bit(HCI_CONN_PER_ADV, &c->flags))
-+			continue;
-+
-+		if (c->iso_qos.bcast.big == big &&
-+		    c->iso_qos.bcast.bis == bis) {
-+			rcu_read_unlock();
-+			return c;
-+		}
++	if (quirk_override != -1) {
++		nau8821_quirk = quirk_override;
++		return;
 +	}
-+	rcu_read_unlock();
 +
-+	return NULL;
++	dmi_id = dmi_first_match(nau8821_quirk_table);
++	if (dmi_id)
++		nau8821_quirk = (unsigned long)dmi_id->driver_data;
 +}
 +
- static inline struct hci_conn *hci_conn_hash_lookup_handle(struct hci_dev *hdev,
- 								__u16 handle)
+ static int nau8821_i2c_probe(struct i2c_client *i2c)
  {
-@@ -1353,6 +1380,9 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 				 __u16 setting, struct bt_codec *codec);
- struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 			      __u8 dst_type, struct bt_iso_qos *qos);
-+struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
-+			      struct bt_iso_qos *qos,
-+			      __u8 base_len, __u8 *base);
- struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 				 __u8 dst_type, struct bt_iso_qos *qos);
- struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 31c115b225e7e..d9197916564f3 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -792,6 +792,7 @@ struct iso_list_data {
- 	};
- 	int count;
- 	struct iso_cig_params pdu;
-+	bool big_term;
- };
+ 	struct device *dev = &i2c->dev;
+@@ -1716,6 +1751,12 @@ static int nau8821_i2c_probe(struct i2c_client *i2c)
  
- static void bis_list(struct hci_conn *conn, void *data)
-@@ -828,11 +829,8 @@ static int terminate_big_sync(struct hci_dev *hdev, void *data)
- 
- 	hci_remove_ext_adv_instance_sync(hdev, d->bis, NULL);
- 
--	/* Check if ISO connection is a BIS and terminate BIG if there are
--	 * no other connections using it.
--	 */
--	hci_conn_hash_list_state(hdev, find_bis, ISO_LINK, BT_CONNECTED, d);
--	if (d->count)
-+	/* Only terminate BIG if it has been created */
-+	if (!d->big_term)
- 		return 0;
- 
- 	return hci_le_terminate_big_sync(hdev, d->big,
-@@ -844,19 +842,21 @@ static void terminate_big_destroy(struct hci_dev *hdev, void *data, int err)
- 	kfree(data);
- }
- 
--static int hci_le_terminate_big(struct hci_dev *hdev, u8 big, u8 bis)
-+static int hci_le_terminate_big(struct hci_dev *hdev, struct hci_conn *conn)
- {
- 	struct iso_list_data *d;
- 	int ret;
- 
--	bt_dev_dbg(hdev, "big 0x%2.2x bis 0x%2.2x", big, bis);
-+	bt_dev_dbg(hdev, "big 0x%2.2x bis 0x%2.2x", conn->iso_qos.bcast.big,
-+		   conn->iso_qos.bcast.bis);
- 
- 	d = kzalloc(sizeof(*d), GFP_KERNEL);
- 	if (!d)
- 		return -ENOMEM;
- 
--	d->big = big;
--	d->bis = bis;
-+	d->big = conn->iso_qos.bcast.big;
-+	d->bis = conn->iso_qos.bcast.bis;
-+	d->big_term = test_and_clear_bit(HCI_CONN_BIG_CREATED, &conn->flags);
- 
- 	ret = hci_cmd_sync_queue(hdev, terminate_big_sync, d,
- 				 terminate_big_destroy);
-@@ -916,6 +916,7 @@ static int hci_le_big_terminate(struct hci_dev *hdev, u8 big, u16 sync_handle)
- static void bis_cleanup(struct hci_conn *conn)
- {
- 	struct hci_dev *hdev = conn->hdev;
-+	struct hci_conn *bis;
- 
- 	bt_dev_dbg(hdev, "conn %p", conn);
- 
-@@ -923,8 +924,16 @@ static void bis_cleanup(struct hci_conn *conn)
- 		if (!test_and_clear_bit(HCI_CONN_PER_ADV, &conn->flags))
- 			return;
- 
--		hci_le_terminate_big(hdev, conn->iso_qos.bcast.big,
--				     conn->iso_qos.bcast.bis);
-+		/* Check if ISO connection is a BIS and terminate advertising
-+		 * set and BIG if there are no other connections using it.
-+		 */
-+		bis = hci_conn_hash_lookup_bis(hdev, BDADDR_ANY,
-+					       conn->iso_qos.bcast.big,
-+					       conn->iso_qos.bcast.bis);
-+		if (bis)
-+			return;
+ 	nau8821->dev = dev;
+ 	nau8821->irq = i2c->irq;
 +
-+		hci_le_terminate_big(hdev, conn);
- 	} else {
- 		hci_le_big_terminate(hdev, conn->iso_qos.bcast.big,
- 				     conn->sync_handle);
-@@ -1495,10 +1504,10 @@ static int qos_set_bis(struct hci_dev *hdev, struct bt_iso_qos *qos)
- 
- /* This function requires the caller holds hdev->lock */
- static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
--				    struct bt_iso_qos *qos)
-+				    struct bt_iso_qos *qos, __u8 base_len,
-+				    __u8 *base)
- {
- 	struct hci_conn *conn;
--	struct iso_list_data data;
- 	int err;
- 
- 	/* Let's make sure that le is enabled.*/
-@@ -1516,24 +1525,27 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 	if (err)
- 		return ERR_PTR(err);
- 
--	data.big = qos->bcast.big;
--	data.bis = qos->bcast.bis;
--	data.count = 0;
--
--	/* Check if there is already a matching BIG/BIS */
--	hci_conn_hash_list_state(hdev, bis_list, ISO_LINK, BT_BOUND, &data);
--	if (data.count)
-+	/* Check if the LE Create BIG command has already been sent */
-+	conn = hci_conn_hash_lookup_per_adv_bis(hdev, dst, qos->bcast.big,
-+						qos->bcast.big);
-+	if (conn)
- 		return ERR_PTR(-EADDRINUSE);
- 
--	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->bcast.big, qos->bcast.bis);
--	if (conn)
-+	/* Check BIS settings against other bound BISes, since all
-+	 * BISes in a BIG must have the same value for all parameters
-+	 */
-+	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->bcast.big,
-+					qos->bcast.bis);
++	nau8821_check_quirks();
 +
-+	if (conn && (memcmp(qos, &conn->iso_qos, sizeof(*qos)) ||
-+		     base_len != conn->le_per_adv_data_len ||
-+		     memcmp(conn->le_per_adv_data, base, base_len)))
- 		return ERR_PTR(-EADDRINUSE);
- 
- 	conn = hci_conn_add(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
- 	if (!conn)
- 		return ERR_PTR(-ENOMEM);
- 
--	set_bit(HCI_CONN_PER_ADV, &conn->flags);
- 	conn->state = BT_CONNECT;
- 
- 	hci_conn_hold(conn);
-@@ -1747,12 +1759,21 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
- {
- 	struct hci_dev *hdev = conn->hdev;
- 	struct hci_cp_le_create_big cp;
-+	struct iso_list_data data;
- 
- 	memset(&cp, 0, sizeof(cp));
- 
-+	data.big = qos->bcast.big;
-+	data.bis = qos->bcast.bis;
-+	data.count = 0;
++	if (nau8821_quirk & NAU8821_JD_ACTIVE_HIGH)
++		nau8821->jkdet_polarity = 0;
 +
-+	/* Create a BIS for each bound connection */
-+	hci_conn_hash_list_state(hdev, bis_list, ISO_LINK,
-+				 BT_BOUND, &data);
-+
- 	cp.handle = qos->bcast.big;
- 	cp.adv_handle = qos->bcast.bis;
--	cp.num_bis  = 0x01;
-+	cp.num_bis  = data.count;
- 	hci_cpu_to_le24(qos->bcast.out.interval, cp.bis.sdu_interval);
- 	cp.bis.sdu = cpu_to_le16(qos->bcast.out.sdu);
- 	cp.bis.latency =  cpu_to_le16(qos->bcast.out.latency);
-@@ -2053,16 +2074,6 @@ static void hci_iso_qos_setup(struct hci_dev *hdev, struct hci_conn *conn,
- 		qos->latency = conn->le_conn_latency;
- }
+ 	nau8821_print_device_properties(nau8821);
  
--static void hci_bind_bis(struct hci_conn *conn,
--			 struct bt_iso_qos *qos)
--{
--	/* Update LINK PHYs according to QoS preference */
--	conn->le_tx_phy = qos->bcast.out.phy;
--	conn->le_tx_phy = qos->bcast.out.phy;
--	conn->iso_qos = *qos;
--	conn->state = BT_BOUND;
--}
--
- static int create_big_sync(struct hci_dev *hdev, void *data)
- {
- 	struct hci_conn *conn = data;
-@@ -2185,27 +2196,80 @@ static void create_big_complete(struct hci_dev *hdev, void *data, int err)
- 	}
- }
- 
--struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
--				 __u8 dst_type, struct bt_iso_qos *qos,
--				 __u8 base_len, __u8 *base)
-+struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
-+			      struct bt_iso_qos *qos,
-+			      __u8 base_len, __u8 *base)
- {
- 	struct hci_conn *conn;
--	int err;
-+	__u8 eir[HCI_MAX_PER_AD_LENGTH];
-+
-+	if (base_len && base)
-+		base_len = eir_append_service_data(eir, 0,  0x1851,
-+						   base, base_len);
- 
- 	/* We need hci_conn object using the BDADDR_ANY as dst */
--	conn = hci_add_bis(hdev, dst, qos);
-+	conn = hci_add_bis(hdev, dst, qos, base_len, eir);
- 	if (IS_ERR(conn))
- 		return conn;
- 
--	hci_bind_bis(conn, qos);
-+	/* Update LINK PHYs according to QoS preference */
-+	conn->le_tx_phy = qos->bcast.out.phy;
-+	conn->le_tx_phy = qos->bcast.out.phy;
- 
- 	/* Add Basic Announcement into Peridic Adv Data if BASE is set */
- 	if (base_len && base) {
--		base_len = eir_append_service_data(conn->le_per_adv_data, 0,
--						   0x1851, base, base_len);
-+		memcpy(conn->le_per_adv_data,  eir, sizeof(eir));
- 		conn->le_per_adv_data_len = base_len;
- 	}
- 
-+	hci_iso_qos_setup(hdev, conn, &qos->bcast.out,
-+			  conn->le_tx_phy ? conn->le_tx_phy :
-+			  hdev->le_tx_def_phys);
-+
-+	conn->iso_qos = *qos;
-+	conn->state = BT_BOUND;
-+
-+	return conn;
-+}
-+
-+static void bis_mark_per_adv(struct hci_conn *conn, void *data)
-+{
-+	struct iso_list_data *d = data;
-+
-+	/* Skip if not broadcast/ANY address */
-+	if (bacmp(&conn->dst, BDADDR_ANY))
-+		return;
-+
-+	if (d->big != conn->iso_qos.bcast.big ||
-+	    d->bis == BT_ISO_QOS_BIS_UNSET ||
-+	    d->bis != conn->iso_qos.bcast.bis)
-+		return;
-+
-+	set_bit(HCI_CONN_PER_ADV, &conn->flags);
-+}
-+
-+struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
-+				 __u8 dst_type, struct bt_iso_qos *qos,
-+				 __u8 base_len, __u8 *base)
-+{
-+	struct hci_conn *conn;
-+	int err;
-+	struct iso_list_data data;
-+
-+	conn = hci_bind_bis(hdev, dst, qos, base_len, base);
-+	if (IS_ERR(conn))
-+		return conn;
-+
-+	data.big = qos->bcast.big;
-+	data.bis = qos->bcast.bis;
-+
-+	/* Set HCI_CONN_PER_ADV for all bound connections, to mark that
-+	 * the start periodic advertising and create BIG commands have
-+	 * been queued
-+	 */
-+	hci_conn_hash_list_state(hdev, bis_mark_per_adv, ISO_LINK,
-+				 BT_BOUND, &data);
-+
- 	/* Queue start periodic advertising and create BIG */
- 	err = hci_cmd_sync_queue(hdev, create_big_sync, conn,
- 				 create_big_complete);
-@@ -2214,10 +2278,6 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 		return ERR_PTR(err);
- 	}
- 
--	hci_iso_qos_setup(hdev, conn, &qos->bcast.out,
--			  conn->le_tx_phy ? conn->le_tx_phy :
--			  hdev->le_tx_def_phys);
--
- 	return conn;
- }
- 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index b2b38d5014e7f..ac0fcdeaba0c8 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6935,6 +6935,7 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
- {
- 	struct hci_evt_le_create_big_complete *ev = data;
- 	struct hci_conn *conn;
-+	__u8 bis_idx = 0;
- 
- 	BT_DBG("%s status 0x%2.2x", hdev->name, ev->status);
- 
-@@ -6943,33 +6944,44 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
- 		return;
- 
- 	hci_dev_lock(hdev);
-+	rcu_read_lock();
- 
--	conn = hci_conn_hash_lookup_big(hdev, ev->handle);
--	if (!conn)
--		goto unlock;
-+	/* Connect all BISes that are bound to the BIG */
-+	list_for_each_entry_rcu(conn, &hdev->conn_hash.list, list) {
-+		if (bacmp(&conn->dst, BDADDR_ANY) ||
-+		    conn->type != ISO_LINK ||
-+		    conn->iso_qos.bcast.big != ev->handle)
-+			continue;
- 
--	if (conn->type != ISO_LINK) {
--		bt_dev_err(hdev,
--			   "Invalid connection link type handle 0x%2.2x",
--			   ev->handle);
--		goto unlock;
--	}
-+		conn->handle = __le16_to_cpu(ev->bis_handle[bis_idx++]);
- 
--	if (ev->num_bis)
--		conn->handle = __le16_to_cpu(ev->bis_handle[0]);
-+		if (!ev->status) {
-+			conn->state = BT_CONNECTED;
-+			set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
-+			rcu_read_unlock();
-+			hci_debugfs_create_conn(conn);
-+			hci_conn_add_sysfs(conn);
-+			hci_iso_setup_path(conn);
-+			rcu_read_lock();
-+			continue;
-+		}
- 
--	if (!ev->status) {
--		conn->state = BT_CONNECTED;
--		hci_debugfs_create_conn(conn);
--		hci_conn_add_sysfs(conn);
--		hci_iso_setup_path(conn);
--		goto unlock;
-+		hci_connect_cfm(conn, ev->status);
-+		rcu_read_unlock();
-+		hci_conn_del(conn);
-+		rcu_read_lock();
- 	}
- 
--	hci_connect_cfm(conn, ev->status);
--	hci_conn_del(conn);
-+	if (!ev->status && !bis_idx)
-+		/* If no BISes have been connected for the BIG,
-+		 * terminate. This is in case all bound connections
-+		 * have been closed before the BIG creation
-+		 * has completed.
-+		 */
-+		hci_le_terminate_big_sync(hdev, ev->handle,
-+					  HCI_ERROR_LOCAL_HOST_TERM);
- 
--unlock:
-+	rcu_read_unlock();
- 	hci_dev_unlock(hdev);
- }
- 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 94d5bc104fede..8221f9ecb17f9 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -287,13 +287,24 @@ static int iso_connect_bis(struct sock *sk)
- 		goto unlock;
- 	}
- 
--	hcon = hci_connect_bis(hdev, &iso_pi(sk)->dst,
--			       le_addr_type(iso_pi(sk)->dst_type),
--			       &iso_pi(sk)->qos, iso_pi(sk)->base_len,
--			       iso_pi(sk)->base);
--	if (IS_ERR(hcon)) {
--		err = PTR_ERR(hcon);
--		goto unlock;
-+	/* Just bind if DEFER_SETUP has been set */
-+	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
-+		hcon = hci_bind_bis(hdev, &iso_pi(sk)->dst,
-+				    &iso_pi(sk)->qos, iso_pi(sk)->base_len,
-+				    iso_pi(sk)->base);
-+		if (IS_ERR(hcon)) {
-+			err = PTR_ERR(hcon);
-+			goto unlock;
-+		}
-+	} else {
-+		hcon = hci_connect_bis(hdev, &iso_pi(sk)->dst,
-+				       le_addr_type(iso_pi(sk)->dst_type),
-+				       &iso_pi(sk)->qos, iso_pi(sk)->base_len,
-+				       iso_pi(sk)->base);
-+		if (IS_ERR(hcon)) {
-+			err = PTR_ERR(hcon);
-+			goto unlock;
-+		}
- 	}
- 
- 	conn = iso_conn_add(hcon);
-@@ -317,6 +328,9 @@ static int iso_connect_bis(struct sock *sk)
- 	if (hcon->state == BT_CONNECTED) {
- 		iso_sock_clear_timer(sk);
- 		sk->sk_state = BT_CONNECTED;
-+	} else if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
-+		iso_sock_clear_timer(sk);
-+		sk->sk_state = BT_CONNECT;
- 	} else {
- 		sk->sk_state = BT_CONNECT;
- 		iso_sock_set_timer(sk, sk->sk_sndtimeo);
+ 	nau8821_reset_chip(nau8821->regmap);
 -- 
 2.40.1
 
