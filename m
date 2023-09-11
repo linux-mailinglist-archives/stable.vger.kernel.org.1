@@ -2,44 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7DE79BF6F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57AFD79BF61
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355317AbjIKV5t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36550 "EHLO
+        id S239352AbjIKV7b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242247AbjIKPZr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:47 -0400
+        with ESMTP id S241064AbjIKPBH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E09120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC995C433C8;
-        Mon, 11 Sep 2023 15:25:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3721DE40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741B1C433C7;
+        Mon, 11 Sep 2023 15:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445943;
-        bh=y38zTjK0TX+wZUT79pmMf81MT79ujSde8VmCSRw5d5c=;
+        s=korg; t=1694444461;
+        bh=n53DhF8hzTyTI/j2CCH7cyYQXJwTPgi3/odqs8WAdis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F6thynwXkGCxm03A7Vo7sslCiINgB8BepnhPF4h4xMCaX/sufuOcX8pDkwdJDPTUe
-         Ac804EDzhUIGc02Xd7XtJ/QpsqlMAdOPfCQw96kkAFvpFdZOx9ULgoxMd7bK/JWMYv
-         Rsz/PHAd1K4GjZd0ktHMgFkECoS/sL9MbgktN5Qc=
+        b=CGCajlQ1an9C3sj5jEgjkZNg7gISOocggDf41OZxHYDff28DyGtd7e46fM1SZMLTe
+         dzyIzU10swibfX/OdVTBtrivVvHDd9UNpW+WPZfcqUIGA7NJi2am3JUHzaoSnwzwKV
+         cu06VOudzHDSKTd0VckStTLpSXM9nnIT6zZA/0Cs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        Vijay Balakrishna <vijayb@linux.microsoft.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Tyler Hicks (Microsoft)" <code@tyhicks.com>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
-Subject: [PATCH 6.1 527/600] printk: ringbuffer: Fix truncating buffer size min_t cast
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.4 701/737] platform/chrome: chromeos_acpi: print hex string for ACPI_TYPE_BUFFER
 Date:   Mon, 11 Sep 2023 15:49:20 +0200
-Message-ID: <20230911134649.179461575@linuxfoundation.org>
+Message-ID: <20230911134710.104558507@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +49,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit 53e9e33ede37a247d926db5e4a9e56b55204e66c upstream.
+commit 0820debb7d489e9eb1f68b7bb69e6ae210699b3f upstream.
 
-If an output buffer size exceeded U16_MAX, the min_t(u16, ...) cast in
-copy_data() was causing writes to truncate. This manifested as output
-bytes being skipped, seen as %NUL bytes in pstore dumps when the available
-record size was larger than 65536. Fix the cast to no longer truncate
-the calculation.
+`element->buffer.pointer` should be binary blob.  `%s` doesn't work
+perfect for them.
 
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: John Ogness <john.ogness@linutronix.de>
-Reported-by: Vijay Balakrishna <vijayb@linux.microsoft.com>
-Link: https://lore.kernel.org/lkml/d8bb1ec7-a4c5-43a2-9de0-9643a70b899f@linux.microsoft.com/
-Fixes: b6cf8b3f3312 ("printk: add lockless ringbuffer")
+Print hex string for ACPI_TYPE_BUFFER.  Also update the documentation
+to reflect this.
+
+Fixes: 0a4cad9c11ad ("platform/chrome: Add ChromeOS ACPI device driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Tested-by: Vijay Balakrishna <vijayb@linux.microsoft.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Reviewed-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
-Tested-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230811054528.never.165-kees@kernel.org
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230803011245.3773756-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/printk/printk_ringbuffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/ABI/testing/sysfs-driver-chromeos-acpi |    2 -
+ drivers/platform/chrome/chromeos_acpi.c              |   31 ++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 2 deletions(-)
 
---- a/kernel/printk/printk_ringbuffer.c
-+++ b/kernel/printk/printk_ringbuffer.c
-@@ -1735,7 +1735,7 @@ static bool copy_data(struct prb_data_ri
- 	if (!buf || !buf_size)
- 		return true;
- 
--	data_size = min_t(u16, buf_size, len);
-+	data_size = min_t(unsigned int, buf_size, len);
- 
- 	memcpy(&buf[0], data, data_size); /* LMM(copy_data:A) */
- 	return true;
+--- a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
++++ b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
+@@ -134,4 +134,4 @@ KernelVersion:	5.19
+ Description:
+ 		Returns the verified boot data block shared between the
+ 		firmware verification step and the kernel verification step
+-		(binary).
++		(hex dump).
+--- a/drivers/platform/chrome/chromeos_acpi.c
++++ b/drivers/platform/chrome/chromeos_acpi.c
+@@ -90,7 +90,36 @@ static int chromeos_acpi_handle_package(
+ 	case ACPI_TYPE_STRING:
+ 		return sysfs_emit(buf, "%s\n", element->string.pointer);
+ 	case ACPI_TYPE_BUFFER:
+-		return sysfs_emit(buf, "%s\n", element->buffer.pointer);
++		{
++			int i, r, at, room_left;
++			const int byte_per_line = 16;
++
++			at = 0;
++			room_left = PAGE_SIZE - 1;
++			for (i = 0; i < element->buffer.length && room_left; i += byte_per_line) {
++				r = hex_dump_to_buffer(element->buffer.pointer + i,
++						       element->buffer.length - i,
++						       byte_per_line, 1, buf + at, room_left,
++						       false);
++				if (r > room_left)
++					goto truncating;
++				at += r;
++				room_left -= r;
++
++				r = sysfs_emit_at(buf, at, "\n");
++				if (!r)
++					goto truncating;
++				at += r;
++				room_left -= r;
++			}
++
++			buf[at] = 0;
++			return at;
++truncating:
++			dev_info_once(dev, "truncating sysfs content for %s\n", name);
++			sysfs_emit_at(buf, PAGE_SIZE - 4, "..\n");
++			return PAGE_SIZE - 1;
++		}
+ 	default:
+ 		dev_err(dev, "element type %d not supported\n", element->type);
+ 		return -EINVAL;
 
 
