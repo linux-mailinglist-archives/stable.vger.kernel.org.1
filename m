@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A5079BE5A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D37C79B843
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355369AbjIKV56 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53038 "EHLO
+        id S239678AbjIKWnC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238789AbjIKOFF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:05 -0400
+        with ESMTP id S240133AbjIKOh1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29BABCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7254BC433C7;
-        Mon, 11 Sep 2023 14:05:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EF2F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652F0C433C8;
+        Mon, 11 Sep 2023 14:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441100;
-        bh=c+ia0f29xaVBqIQs6WPcLGFR++ExWXBCjTCS2m+g9hs=;
+        s=korg; t=1694443042;
+        bh=IDMPUwszd1u/C8VodDerEqKEOnlmh5dRjMm/0++6Z7k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y6ad39692JqPy+GC6dADKClPy9vy4OwXfkMtIkO00LbIliBmi965MxgiOpB5YTG+r
-         nlwUKd9MYcX3pXwBgPAl3/0nA9mxHozTrpbRB8l7cRrTGO20ItqAyYKhdSa5+34KGF
-         KyDmHmNVMP1OHH728olPPL84dsUSdxheEFIVrhoI=
+        b=Ad/PDuVHL7qfW2kUcZVizJaz7i9yWM8W7iVSGCnJQbR37McIdn8VegUXwc5aKMr6H
+         0RPLKKq4ZXUCSm0VFLzBlBkUW7AUK1zQnc80nXrMCH3pl1q4eyyU3nI6BRQpTjg5Ci
+         gEzntwAZXKs0D82tOnepIeB55vNSBwR1E0ulTFWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Javier Martinez Canillas <javierm@redhat.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Simon Horman <horms@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 296/739] drm/armada: Fix off-by-one error in armada_overlay_get_property()
+Subject: [PATCH 6.4 236/737] wifi: nl80211/cfg80211: add forgotten nla_policy for BSS color attribute
 Date:   Mon, 11 Sep 2023 15:41:35 +0200
-Message-ID: <20230911134659.398702787@linuxfoundation.org>
+Message-ID: <20230911134657.200769085@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 5f0d984053f74983a287100a9519b2fabb785fb5 ]
+[ Upstream commit 218d690c49b7e9c94ad0d317adbdd4af846ea0dc ]
 
-As ffs() returns one more than the index of the first bit set (zero
-means no bits set), the color key mode value is shifted one position too
-much.
+The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
+NDP ranging parameters") adds a parameter for NDP ranging by introducing
+a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
 
-Fix this by using FIELD_GET() instead.
+However, the author forgot to also describe the nla_policy at
+nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
+complement it to avoid malformed attribute that causes out-of-attribute
+access.
 
-Fixes: c96103b6c49ff9a8 ("drm/armada: move colorkey properties into overlay plane state")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/a4d779d954a7515ddbbf31cb0f0d8184c0e7c879.1689600265.git.geert+renesas@glider.be
+Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809033151.768910-1-linma@zju.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/armada/armada_overlay.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/armada/armada_overlay.c b/drivers/gpu/drm/armada/armada_overlay.c
-index f21eb8fb76d87..3b9bd8ecda137 100644
---- a/drivers/gpu/drm/armada/armada_overlay.c
-+++ b/drivers/gpu/drm/armada/armada_overlay.c
-@@ -4,6 +4,8 @@
-  *  Rewritten from the dovefb driver, and Armada510 manuals.
-  */
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 1b688745ce0a1..be798ce8a20ff 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -323,6 +323,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
+ };
  
-+#include <linux/bitfield.h>
-+
- #include <drm/armada_drm.h>
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
-@@ -445,8 +447,8 @@ static int armada_overlay_get_property(struct drm_plane *plane,
- 			     drm_to_overlay_state(state)->colorkey_ug,
- 			     drm_to_overlay_state(state)->colorkey_vb, 0);
- 	} else if (property == priv->colorkey_mode_prop) {
--		*val = (drm_to_overlay_state(state)->colorkey_mode &
--			CFG_CKMODE_MASK) >> ffs(CFG_CKMODE_MASK);
-+		*val = FIELD_GET(CFG_CKMODE_MASK,
-+				 drm_to_overlay_state(state)->colorkey_mode);
- 	} else if (property == priv->brightness_prop) {
- 		*val = drm_to_overlay_state(state)->brightness + 256;
- 	} else if (property == priv->contrast_prop) {
+ static const struct nla_policy
 -- 
 2.40.1
 
