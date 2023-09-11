@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 990CD79BB2B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0CFE79B7B6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244278AbjIKVij (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
+        id S1376888AbjIKW0K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238871AbjIKOGz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:55 -0400
+        with ESMTP id S241283AbjIKPFn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC1F6CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F71AC433C8;
-        Mon, 11 Sep 2023 14:06:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18DE3125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D8AC433C8;
+        Mon, 11 Sep 2023 15:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441211;
-        bh=3xw3rTZhVxNuRu+ecXpoOBBQBSgBnPiwwcQHo+APiwA=;
+        s=korg; t=1694444738;
+        bh=kbMPWfmq8dVOzkYgD2ADoEb32xA47LUj0fLIwnaww4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fO8eOvdomcE0frQLmMYNqpTX3qcO9do+K9mR4+CUpO2e4hQbzEHzY1709a+OqmC88
-         fexsc90GCCJc6KEmYHcs5UcurN8Scme5ZudsQyCKvIPwgNHqqXCYXNbO1m8EL2pqsi
-         RzmAvEf9Q9VlFF126hjJ3UTd/2rKqs3GZonDiEn4=
+        b=Mm23hr5V0mFXO/BA/QaagoH+1YG9BrZsUqd/jcc5QumAbMwjhxyikav4etbtPPQrZ
+         eKNJWOdcVJO5+IMHkUD74jxKmMLCXQTQh0W6P00gIqb06KPupmOqkPy2MeNIsgADo1
+         PrkbLNC03GO6QMylfF3wfJ0jZHIoTER29uvhmhRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 333/739] drm/mediatek: dp: Add missing error checks in mtk_dp_parse_capabilities
+        patches@lists.linux.dev, Thorsten Leemhuis <linux@leemhuis.info>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Ian Rogers <irogers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1 099/600] tools/resolve_btfids: Pass HOSTCFLAGS as EXTRA_CFLAGS to prepare targets
 Date:   Mon, 11 Sep 2023 15:42:12 +0200
-Message-ID: <20230911134700.393027592@linuxfoundation.org>
+Message-ID: <20230911134636.525987145@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,68 +52,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit cfc146137a9f12e883ba64bc496b6da4d23f26d5 ]
+commit 2531ba0e4ae67d6d0219400af27805fe52cd28e8 upstream.
 
-If reading the RX capabilities fails the training pattern will be set
-wrongly: add error checking for drm_dp_read_dpcd_caps() and return if
-anything went wrong with it.
+Thorsten reported build issue with command line that defined extra
+HOSTCFLAGS that were not passed into 'prepare' targets, but were
+used to build resolve_btfids objects.
 
-While at it, also add a less critical error check when writing to
-clear the ESI0 IRQ vector.
+This results in build fail when these objects are linked together:
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230725073234.55892-2-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  /usr/bin/ld: /build.../tools/bpf/resolve_btfids//libbpf/libbpf.a(libbpf-in.o):
+  relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE \
+  object; recompile with -fPIE
+
+Fixing this by passing HOSTCFLAGS in EXTRA_CFLAGS as part of
+HOST_OVERRIDES variable for prepare targets.
+
+[1] https://lore.kernel.org/bpf/f7922132-6645-6316-5675-0ece4197bfff@leemhuis.info/
+
+Fixes: 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
+Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Thorsten Leemhuis <linux@leemhuis.info>
+Acked-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/bpf/20230209143735.4112845-1-jolsa@kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ tools/bpf/resolve_btfids/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 64eee77452c04..c58b775877a31 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -1588,7 +1588,9 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
- 	u8 val;
- 	ssize_t ret;
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -19,7 +19,7 @@ endif
  
--	drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
-+	ret = drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
-+	if (ret < 0)
-+		return ret;
+ # Overrides for the prepare step libraries.
+ HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
+-		  CROSS_COMPILE=""
++		  CROSS_COMPILE="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
  
- 	if (drm_dp_tps4_supported(mtk_dp->rx_cap))
- 		mtk_dp->train_info.channel_eq_pattern = DP_TRAINING_PATTERN_4;
-@@ -1615,10 +1617,13 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
- 			return ret == 0 ? -EIO : ret;
- 		}
- 
--		if (val)
--			drm_dp_dpcd_writeb(&mtk_dp->aux,
--					   DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
--					   val);
-+		if (val) {
-+			ret = drm_dp_dpcd_writeb(&mtk_dp->aux,
-+						 DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
-+						 val);
-+			if (ret < 0)
-+				return ret;
-+		}
- 	}
- 
- 	return 0;
--- 
-2.40.1
-
+ RM      ?= rm
+ HOSTCC  ?= gcc
 
 
