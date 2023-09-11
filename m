@@ -2,52 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4430979C034
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADFDD79BF81
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351208AbjIKVmv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50776 "EHLO
+        id S242851AbjIKWKd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:10:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239258AbjIKOPw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:52 -0400
+        with ESMTP id S241738AbjIKPNX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BFC1DE;
-        Mon, 11 Sep 2023 07:15:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA03C433C9;
-        Mon, 11 Sep 2023 14:15:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE157FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43649C433C8;
+        Mon, 11 Sep 2023 15:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441748;
-        bh=8uCFW7lYB/gsfNLN2r0tDYE3nhVcCCP5zKe+9i/YvlI=;
+        s=korg; t=1694445198;
+        bh=wLAkCjxgKQH0Xh0Y8G83WxFEB6WqErOo53+fs2W9LTk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i/cPLhiMoTX0Rz5bzWCh4q8S5MWgpqgjHavVsMri1lJpJxjw6zxQZ96fKZc/4hNqA
-         rhq8XIvgAOz0VPcvTvgKQj90v9YiYjK2Vat4SFonU3TfnyspuYMsd/GNoaOPxIJ63V
-         JktoTRXjy37HPJUteR/vLGdlHmSwLDzGwqi052eU=
+        b=FEToBKPfffnUTS2ZZtQmZUMT+38ODsDBWQoNn1VzJx6YnnVFdxZdRIt330O0bfp1O
+         bJ4+2bv+9yFUE2C8JMJ6E3ooDQN/Cyl1XNr/MQ9l3nnCvYrWWMG6DRO56bXQO3iSVz
+         nODw8RoZbJNc3sCNx/yrjir8P60RqxTCxBZ/Hq3Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Rob Evers <revers@redhat.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Jozef Bacik <jobacik@redhat.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Oleksandr Natalenko <oleksandr@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 496/739] scsi: qedf: Do not touch __user pointer in qedf_dbg_debug_cmd_read() directly
-Date:   Mon, 11 Sep 2023 15:44:55 +0200
-Message-ID: <20230911134704.979777082@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Juergen Gross <jgross@suse.com>,
+        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 263/600] x86/mm: Fix PAT bit missing from page protection modify mask
+Date:   Mon, 11 Sep 2023 15:44:56 +0200
+Message-ID: <20230911134641.371736529@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -59,68 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@redhat.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 31b5991a9a91ba97237ac9da509d78eec453ff72 ]
+[ Upstream commit 548cb932051fb6232ac983ed6673dae7bdf3cf4c ]
 
-The qedf_dbg_debug_cmd_read() function invokes sprintf() directly on a
-__user pointer, which may crash the kernel.
+Visible glitches have been observed when running graphics applications on
+Linux under Xen hypervisor.  Those observations have been confirmed with
+failures from kms_pwrite_crc Intel GPU test that verifies data coherency
+of DRM frame buffer objects using hardware CRC checksums calculated by
+display controllers, exposed to userspace via debugfs.  Affected
+processing paths have then been identified with new IGT test variants that
+mmap the objects using different methods and caching modes [1].
 
-Avoid doing that by using a small on-stack buffer for scnprintf() and then
-calling simple_read_from_buffer() which does a proper copy_to_user() call.
+When running as a Xen PV guest, Linux uses Xen provided PAT configuration
+which is different from its native one.  In particular, Xen specific PTE
+encoding of write-combining caching, likely used by graphics applications,
+differs from the Linux default one found among statically defined minimal
+set of supported modes.  Since Xen defines PTE encoding of the WC mode as
+_PAGE_PAT, it no longer belongs to the minimal set, depends on correct
+handling of _PAGE_PAT bit, and can be mismatched with write-back caching.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
-Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Rob Evers <revers@redhat.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Cc: Jozef Bacik <jobacik@redhat.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: GR-QLogic-Storage-Upstream@marvell.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-3-oleksandr@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+When a user calls mmap() for a DRM buffer object, DRM device specific
+.mmap file operation, called from mmap_region(), takes care of setting PTE
+encoding bits in a vm_page_prot field of an associated virtual memory area
+structure.  Unfortunately, _PAGE_PAT bit is not preserved when the vma's
+.vm_flags are then applied to .vm_page_prot via vm_set_page_prot().  Bits
+to be preserved are determined with _PAGE_CHG_MASK symbol that doesn't
+cover _PAGE_PAT.  As a consequence, WB caching is requested instead of WC
+when running under Xen (also, WP is silently changed to WT, and UC
+downgraded to UC_MINUS).  When running on bare metal, WC is not affected,
+but WP and WT extra modes are unintentionally replaced with WC and UC,
+respectively.
+
+WP and WT modes, encoded with _PAGE_PAT bit set, were introduced by commit
+281d4078bec3 ("x86: Make page cache mode a real type").  Care was taken
+to extend _PAGE_CACHE_MASK symbol with that additional bit, but that
+symbol has never been used for identification of bits preserved when
+applying page protection flags.  Support for all cache modes under Xen,
+including the problematic WC mode, was then introduced by commit
+47591df50512 ("xen: Support Xen pv-domains using PAT").
+
+The issue needs to be fixed by including _PAGE_PAT bit into a bitmask used
+by pgprot_modify() for selecting bits to be preserved.  We can do that
+either internally to pgprot_modify() (as initially proposed), or by making
+_PAGE_PAT a part of _PAGE_CHG_MASK.  If we go for the latter then, since
+_PAGE_PAT is the same as _PAGE_PSE, we need to note that _HPAGE_CHG_MASK
+-- a huge pmds' counterpart of _PAGE_CHG_MASK, introduced by commit
+c489f1257b8c ("thp: add pmd_modify"), defined as (_PAGE_CHG_MASK |
+_PAGE_PSE) -- will no longer differ from _PAGE_CHG_MASK.  If such
+modification of _PAGE_CHG_MASK was irrelevant to its users then one might
+wonder why that new _HPAGE_CHG_MASK symbol was introduced instead of
+reusing the existing one with that otherwise irrelevant bit (_PAGE_PSE in
+that case) added.
+
+Add _PAGE_PAT to _PAGE_CHG_MASK and _PAGE_PAT_LARGE to _HPAGE_CHG_MASK for
+symmetry.  Split out common bits from both symbols to a common symbol for
+clarity.
+
+[ dhansen: tweak the solution changelog description ]
+
+[1] https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commit/0f0754413f14
+
+Fixes: 281d4078bec3 ("x86: Make page cache mode a real type")
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
+Link: https://lore.kernel.org/all/20230710073613.8006-2-janusz.krzysztofik%40linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/pgtable_types.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 3eb4334ac6a32..1c5716540e465 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -138,15 +138,14 @@ qedf_dbg_debug_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 			loff_t *ppos)
- {
- 	int cnt;
-+	char cbuf[32];
- 	struct qedf_dbg_ctx *qedf_dbg =
- 				(struct qedf_dbg_ctx *)filp->private_data;
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index aa174fed3a71c..f6116b66f2892 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -125,11 +125,12 @@
+  * instance, and is *not* included in this mask since
+  * pte_modify() does modify it.
+  */
+-#define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
+-			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
+-			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC |  \
+-			 _PAGE_UFFD_WP)
+-#define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
++#define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	       \
++				 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |\
++				 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC | \
++				 _PAGE_UFFD_WP)
++#define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
++#define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
  
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "debug mask=0x%x\n", qedf_debug);
--	cnt = sprintf(buffer, "debug mask = 0x%x\n", qedf_debug);
-+	cnt = scnprintf(cbuf, sizeof(cbuf), "debug mask = 0x%x\n", qedf_debug);
- 
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
- }
- 
- static ssize_t
+ /*
+  * The cache modes defined here are used to translate between pure SW usage
 -- 
 2.40.1
 
