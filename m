@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A6979B3EB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4CFF79AEFE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358443AbjIKWKy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:10:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60580 "EHLO
+        id S1351494AbjIKVnP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239316AbjIKORd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:33 -0400
+        with ESMTP id S241839AbjIKPPy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C90DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4084CC433C8;
-        Mon, 11 Sep 2023 14:17:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C430FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82785C433C9;
+        Mon, 11 Sep 2023 15:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441848;
-        bh=8UFl4AnrnLbEsv7iJtPYFeoL1rel8kz4vDooVRAS1dY=;
+        s=korg; t=1694445349;
+        bh=V+VCU+SU2w0510C0YoHImuLkwBcrDYiBNisetO0w0Pc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eJcAc46YXNjo8mLxggmP4Xy58zv7oSUwsDs6xwz0CtpHn4whEbt/6ByrjmewVKF1m
-         /G+RUtTesdnf9veT7K1fUlJBsCtGglcOn/Y770x5EkjKylE8504p+xkx6dW8Tu1zrT
-         J0AWt5I35mS7f4hph2Sk2Ps8Af/AR3pntYFcN7Cs=
+        b=uRCNS1n0cSaZwGxe6VycrHMt+QGtlfAV5H+737GJupF3Itj1gritAH7ojhpqlE0vB
+         mJEUJnR3jUMN78lMjP1GUlCAxVXtEKSIMCOS9x9Ao31+0rNGnvQVVKuo3Vt7TxnW4G
+         SJsLJ1F3CDQ4MPEJQBofWlho2CMYGNPY90Tcai40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-        linux-f2fs-devel@lists.sourceforge.net,
-        Yangtao Li <frank.li@vivo.com>,
-        Konstantin Vyshetsky <vkon@google.com>,
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Xueshi Hu <xueshi.hu@smartx.com>, Song Liu <song@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 550/739] f2fs: fix spelling in ABI documentation
+Subject: [PATCH 6.1 316/600] md/raid1: free the r1bio before waiting for blocked rdev
 Date:   Mon, 11 Sep 2023 15:45:49 +0200
-Message-ID: <20230911134706.453276358@linuxfoundation.org>
+Message-ID: <20230911134643.002804112@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,66 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Xueshi Hu <xueshi.hu@smartx.com>
 
-[ Upstream commit c709d099a0d2befa2b16c249ef8df722b43e6c28 ]
+[ Upstream commit 992db13a4aee766c8bfbf046ad15c2db5fa7cab8 ]
 
-Correct spelling problems as identified by codespell.
+Raid1 reshape will change mempool and r1conf::raid_disks which are
+needed to free r1bio. allow_barrier() make a concurrent raid1_reshape()
+possible. So, free the in-flight r1bio before waiting blocked rdev.
 
-Fixes: 9e615dbba41e ("f2fs: add missing description for ipu_policy node")
-Fixes: b2e4a2b300e5 ("f2fs: expose discard related parameters in sysfs")
-Fixes: 846ae671ad36 ("f2fs: expose extension_list sysfs entry")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Chao Yu <chao@kernel.org>
-Cc: linux-f2fs-devel@lists.sourceforge.net
-Cc: Yangtao Li <frank.li@vivo.com>
-Cc: Konstantin Vyshetsky <vkon@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 6bfe0b499082 ("md: support blocking writes to an array on device failure")
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xueshi Hu <xueshi.hu@smartx.com>
+Link: https://lore.kernel.org/r/20230814135356.1113639-3-xueshi.hu@smartx.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/raid1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index 8140fc98f5aee..ad3d76d37c8ba 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -54,9 +54,9 @@ Description:	Controls the in-place-update policy.
- 		0x00  DISABLE         disable IPU(=default option in LFS mode)
- 		0x01  FORCE           all the time
- 		0x02  SSR             if SSR mode is activated
--		0x04  UTIL            if FS utilization is over threashold
-+		0x04  UTIL            if FS utilization is over threshold
- 		0x08  SSR_UTIL        if SSR mode is activated and FS utilization is over
--		                      threashold
-+		                      threshold
- 		0x10  FSYNC           activated in fsync path only for high performance
- 		                      flash storages. IPU will be triggered only if the
- 		                      # of dirty pages over min_fsync_blocks.
-@@ -117,7 +117,7 @@ Date:		December 2021
- Contact:	"Konstantin Vyshetsky" <vkon@google.com>
- Description:	Controls the number of discards a thread will issue at a time.
- 		Higher number will allow the discard thread to finish its work
--		faster, at the cost of higher latency for incomming I/O.
-+		faster, at the cost of higher latency for incoming I/O.
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index ac64c587191b9..433db7007f88b 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1370,6 +1370,7 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+ 		return;
+ 	}
  
- What:		/sys/fs/f2fs/<disk>/min_discard_issue_time
- Date:		December 2021
-@@ -334,7 +334,7 @@ Description:	This indicates how many GC can be failed for the pinned
- 		state. 2048 trials is set by default.
++ retry_write:
+ 	r1_bio = alloc_r1bio(mddev, bio);
+ 	r1_bio->sectors = max_write_sectors;
  
- What:		/sys/fs/f2fs/<disk>/extension_list
--Date:		Feburary 2018
-+Date:		February 2018
- Contact:	"Chao Yu" <yuchao0@huawei.com>
- Description:	Used to control configure extension list:
- 		- Query: cat /sys/fs/f2fs/<disk>/extension_list
+@@ -1385,7 +1386,6 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+ 	 */
+ 
+ 	disks = conf->raid_disks * 2;
+- retry_write:
+ 	blocked_rdev = NULL;
+ 	rcu_read_lock();
+ 	max_sectors = r1_bio->sectors;
+@@ -1465,7 +1465,7 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+ 		for (j = 0; j < i; j++)
+ 			if (r1_bio->bios[j])
+ 				rdev_dec_pending(conf->mirrors[j].rdev, mddev);
+-		r1_bio->state = 0;
++		free_r1bio(r1_bio);
+ 		allow_barrier(conf, bio->bi_iter.bi_sector);
+ 
+ 		if (bio->bi_opf & REQ_NOWAIT) {
 -- 
 2.40.1
 
