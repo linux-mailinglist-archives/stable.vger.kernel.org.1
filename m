@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D13D79AEDE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A55879AFF4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242495AbjIKU57 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
+        id S1377892AbjIKW3G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239349AbjIKOSe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:34 -0400
+        with ESMTP id S239367AbjIKOS7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F75BDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B548AC433C8;
-        Mon, 11 Sep 2023 14:18:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F32FDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78865C433C7;
+        Mon, 11 Sep 2023 14:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441909;
-        bh=fMFQk2xA5ht0o7iEAvhQ+Eml2ROTqeAm3D9ekscxgQc=;
+        s=korg; t=1694441934;
+        bh=EZkyWdaOGO1tIK90voxEgy4x9vr+sHomVKCSsg86m9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E46e7DSfkjj7cnCQFECQzPwpD21Xfu8FC9KawDa9b2J77feih1FhI7YBck+O59C55
-         464zF1enzN72P0fuiQ7aM+2c+fprXSBC2J7RzwnKIdy7HETHbOTa5HfPB0cgymffI4
-         b3MkRlURQjKsyveuw0VEfZcU9yERJomtzIgIwN2o=
+        b=Z6wdiGMuM7ErT9u82IQx8yS+qfk4SMGlfUkycfUql7EViaJ6kzHoI+2dSNnu+PYl6
+         7cB6W8QEIvp4bppnkbtUT4uA5WriaK31GqqY5+N90Bevn9oDy2nYuCE7CSVBK7YnWx
+         cXvReeXebhVHHCa3w4QbTIAmNnXH5ZN13h56870Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
+        patches@lists.linux.dev, Michael Margolin <mrgolin@amazon.com>,
+        Yossi Leybovich <sleybo@amazon.com>,
+        Yonatan Nachum <ynachum@amazon.com>,
         Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 578/739] RDMA/siw: Balance the reference of cep->kref in the error path
-Date:   Mon, 11 Sep 2023 15:46:17 +0200
-Message-ID: <20230911134707.249583503@linuxfoundation.org>
+Subject: [PATCH 6.5 580/739] RDMA/efa: Fix wrong resources deallocation order
+Date:   Mon, 11 Sep 2023 15:46:19 +0200
+Message-ID: <20230911134707.307176795@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -55,48 +56,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Yonatan Nachum <ynachum@amazon.com>
 
-[ Upstream commit b056327bee09e6b86683d3f709a438ccd6031d72 ]
+[ Upstream commit dc202c57e9a1423aed528e4b8dc949509cd32191 ]
 
-The siw_connect can go to err in below after cep is allocated successfully:
+When trying to destroy QP or CQ, we first decrease the refcount and
+potentially free memory regions allocated for the object and then
+request the device to destroy the object. If the device fails, the
+object isn't fully destroyed so the user/IB core can try to destroy the
+object again which will lead to underflow when trying to decrease an
+already zeroed refcount.
 
-1. If siw_cm_alloc_work returns failure. In this case socket is not
-assoicated with cep so siw_cep_put can't be called by siw_socket_disassoc.
-We need to call siw_cep_put twice since cep->kref is increased once after
-it was initialized.
+Deallocate resources in reverse order of allocating them to safely free
+them.
 
-2. If siw_cm_queue_work can't find a work, which means siw_cep_get is not
-called in siw_cm_queue_work, so cep->kref is increased twice by siw_cep_get
-and when associate socket with cep after it was initialized. So we need to
-call siw_cep_put three times (one in siw_socket_disassoc).
-
-3. siw_send_mpareqrep returns error, this scenario is similar as 2.
-
-So we need to remove one siw_cep_put in the error path.
-
-Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Link: https://lore.kernel.org/r/20230821133255.31111-2-guoqing.jiang@linux.dev
-Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
+Fixes: ff6629f88c52 ("RDMA/efa: Do not delay freeing of DMA pages")
+Reviewed-by: Michael Margolin <mrgolin@amazon.com>
+Reviewed-by: Yossi Leybovich <sleybo@amazon.com>
+Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
+Link: https://lore.kernel.org/r/20230822082725.31719-1-ynachum@amazon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_cm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/infiniband/hw/efa/efa_verbs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
-index da530c0404da4..a2605178f4eda 100644
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -1501,7 +1501,6 @@ int siw_connect(struct iw_cm_id *id, struct iw_cm_conn_param *params)
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 2a195c4b0f17d..3538d59521e41 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -449,12 +449,12 @@ int efa_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
  
- 		cep->cm_id = NULL;
- 		id->rem_ref(id);
--		siw_cep_put(cep);
+ 	ibdev_dbg(&dev->ibdev, "Destroy qp[%u]\n", ibqp->qp_num);
  
- 		qp->cep = NULL;
- 		siw_cep_put(cep);
+-	efa_qp_user_mmap_entries_remove(qp);
+-
+ 	err = efa_destroy_qp_handle(dev, qp->qp_handle);
+ 	if (err)
+ 		return err;
+ 
++	efa_qp_user_mmap_entries_remove(qp);
++
+ 	if (qp->rq_cpu_addr) {
+ 		ibdev_dbg(&dev->ibdev,
+ 			  "qp->cpu_addr[0x%p] freed: size[%lu], dma[%pad]\n",
+@@ -1013,8 +1013,8 @@ int efa_destroy_cq(struct ib_cq *ibcq, struct ib_udata *udata)
+ 		  "Destroy cq[%d] virt[0x%p] freed: size[%lu], dma[%pad]\n",
+ 		  cq->cq_idx, cq->cpu_addr, cq->size, &cq->dma_addr);
+ 
+-	efa_cq_user_mmap_entries_remove(cq);
+ 	efa_destroy_cq_idx(dev, cq->cq_idx);
++	efa_cq_user_mmap_entries_remove(cq);
+ 	if (cq->eq) {
+ 		xa_erase(&dev->cqs_xa, cq->cq_idx);
+ 		synchronize_irq(cq->eq->irq.irqn);
 -- 
 2.40.1
 
