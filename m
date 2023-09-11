@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32A979C0E0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E24DA79BBB6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236512AbjIKVF5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:05:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53786 "EHLO
+        id S1355700AbjIKWBr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239890AbjIKObA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:00 -0400
+        with ESMTP id S239903AbjIKObJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7627DE4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB12BC433C8;
-        Mon, 11 Sep 2023 14:30:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00259F3;
+        Mon, 11 Sep 2023 07:31:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4467CC433CA;
+        Mon, 11 Sep 2023 14:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442656;
-        bh=8vTeSm86SYWMXK/Yr/uFMr3A3HTfi0YPez9RowAd0Jc=;
+        s=korg; t=1694442664;
+        bh=dGY8bouzYw1pGm+Klq8fYjYzAAp6GtoW5HumYW/BqPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L9EOBnyQmzl7jkKa8heGThNilwNbzmkfO6olH4UUE1JTNfReH0dbzrsCc+kO973mQ
-         GlXn/mcC7qJ7NOGaEpe6h4Qb8VVHYxHRdm5s7hPXUKMtGkEb5g4ELs4mGoByjXzaEW
-         qarZeiiN+rtsOcLOpB9SaGHctUq7tF7Rd2c33Cag=
+        b=zdKMo8N6mupHhRwU42o85YLtRZq1HAodOLjg5sX19jofkei3hjjMGYc0OO0/DHcn7
+         AwYn603z4VG6/+dxN5fECBYAH4uqYTqVzByVe56AQnL/4Wdx/Fa+1K9M8G7ffAHc/8
+         cAfeGV7dalGE0SoAPtYit6xXQjDfMcsjjDZ2630k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Shuah Khan <shuah@kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>,
+        linux-kselftest@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 102/737] fs: Fix error checking for d_hash_and_lookup()
-Date:   Mon, 11 Sep 2023 15:39:21 +0200
-Message-ID: <20230911134653.363644114@linuxfoundation.org>
+Subject: [PATCH 6.4 105/737] selftests/harness: Actually report SKIP for signal tests
+Date:   Mon, 11 Sep 2023 15:39:24 +0200
+Message-ID: <20230911134653.444243590@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,36 +56,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Wang Ming <machel@vivo.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 0d5a4f8f775ff990142cdc810a84eae078589d27 ]
+[ Upstream commit b3d46e11fec0c5a8972e5061bb1462119ae5736d ]
 
-The d_hash_and_lookup() function returns error pointers or NULL.
-Most incorrect error checks were fixed, but the one in int path_pts()
-was forgotten.
+Tests that were expecting a signal were not correctly checking for a
+SKIP condition. Move the check before the signal checking when
+processing test result.
 
-Fixes: eedf265aa003 ("devpts: Make each mount of devpts an independent filesystem.")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Message-Id: <20230713120555.7025-1-machel@vivo.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Will Drewry <wad@chromium.org>
+Cc: linux-kselftest@vger.kernel.org
+Fixes: 9847d24af95c ("selftests/harness: Refactor XFAIL into SKIP")
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kselftest_harness.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/namei.c b/fs/namei.c
-index 7e5cb92feab3f..e18c8c9f1d9c6 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -2890,7 +2890,7 @@ int path_pts(struct path *path)
- 	dput(path->dentry);
- 	path->dentry = parent;
- 	child = d_hash_and_lookup(parent, &this);
--	if (!child)
-+	if (IS_ERR_OR_NULL(child))
- 		return -ENOENT;
- 
- 	path->dentry = child;
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index 5fd49ad0c696f..e05ac82610467 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -938,7 +938,11 @@ void __wait_for_test(struct __test_metadata *t)
+ 		fprintf(TH_LOG_STREAM,
+ 			"# %s: Test terminated by timeout\n", t->name);
+ 	} else if (WIFEXITED(status)) {
+-		if (t->termsig != -1) {
++		if (WEXITSTATUS(status) == 255) {
++			/* SKIP */
++			t->passed = 1;
++			t->skip = 1;
++		} else if (t->termsig != -1) {
+ 			t->passed = 0;
+ 			fprintf(TH_LOG_STREAM,
+ 				"# %s: Test exited normally instead of by signal (code: %d)\n",
+@@ -950,11 +954,6 @@ void __wait_for_test(struct __test_metadata *t)
+ 			case 0:
+ 				t->passed = 1;
+ 				break;
+-			/* SKIP */
+-			case 255:
+-				t->passed = 1;
+-				t->skip = 1;
+-				break;
+ 			/* Other failure, assume step report. */
+ 			default:
+ 				t->passed = 0;
 -- 
 2.40.1
 
