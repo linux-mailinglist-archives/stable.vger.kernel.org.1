@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 765C679BEC1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91BF79BAFE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379511AbjIKWof (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37698 "EHLO
+        id S1378827AbjIKWhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238786AbjIKOFA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:00 -0400
+        with ESMTP id S240131AbjIKOhV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700F4CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1A8C433C7;
-        Mon, 11 Sep 2023 14:04:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75845F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADC8C433C7;
+        Mon, 11 Sep 2023 14:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441095;
-        bh=RU883vJbqCiB8f1MK2ohq0q9kO6GnFNtGncMSfSsDas=;
+        s=korg; t=1694443037;
+        bh=/8azllQqtLwenJHmN6nsHGRsMZtuFIfPVK7yIEAHFbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FzYPOYhpQ4A2d29+aF0Z9f7MpQUZ3oV87trBV3ksORUqlkkT+QKHoSY/XnNjz2F9R
-         PR//CevxHidYpQcvYnJi7CiOElx89Wou6eUbOpyX8kSYX3bunIxWurSGc/mOEvQH0k
-         G0DR7B0gRuGG0d8zmlVXBWBCWMBccrcMcxt7tNgc=
+        b=Na0OP+z0xuxZGC7hOEuFaP+b0HxlI1tl0li3Ws4CnmYo9tvQW44vXSDm8lLXuHnbw
+         lnF5s+1r7Q/aZZSj8yvR1PUNLL3N3so3DJ+bQDJBzwCQu6DJE/kLYTzQx0XjkBm+Nt
+         kxOkEW6SDdiUghG9Jy0UIlaCuOA9wyw0f8ucPE6g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jocelyn Falempe <jfalempe@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 294/739] drm/ast: report connection status on Display Port.
-Date:   Mon, 11 Sep 2023 15:41:33 +0200
-Message-ID: <20230911134659.345973787@linuxfoundation.org>
+Subject: [PATCH 6.4 235/737] wifi: mac80211: fix puncturing bitmap handling in CSA
+Date:   Mon, 11 Sep 2023 15:41:34 +0200
+Message-ID: <20230911134657.174388025@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,223 +49,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f81bb0ac7872893241319ea82504956676ef02fd ]
+[ Upstream commit 927521170c4a18c620f97865f7bad48f17c48967 ]
 
-Aspeed always report the display port as "connected", because it
-doesn't set a .detect_ctx callback.
-Fix this by providing the proper detect callback for astdp and dp501.
+Code inspection reveals that we switch the puncturing bitmap
+before the real channel switch, since that happens only in
+the second round of the worker after the channel context is
+switched by ieee80211_link_use_reserved_context().
 
-This also fixes the following regression:
-Since commit fae7d186403e ("drm/probe-helper: Default to 640x480 if no
-EDID on DP") The default resolution is now 640x480 when no monitor is
-connected. But Aspeed graphics is mostly used in servers, where no monitor
-is attached. This also affects the remote BMC resolution to 640x480, which
-is inconvenient, and breaks the anaconda installer.
-
-v2: Add .detect callback to the dp/dp501 connector (Jani Nikula)
-v3: Use .detect_ctx callback, and refactors (Thomas Zimmermann)
-    Add a BMC virtual connector
-v4: Better indent detect_ctx() functions (Thomas Zimmermann)
-v5: Enable polling of the dp and dp501 connector status
-    (Thomas Zimmermann)
-v6: Change check order in ast_astdp_is_connected (Jammy Huang)
-
-Fixes: fae7d186403e ("drm/probe-helper: Default to 640x480 if no EDID on DP")
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230713134316.332502-2-jfalempe@redhat.com
+Fixes: 2cc25e4b2a04 ("wifi: mac80211: configure puncturing bitmap")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c    | 11 ++++++++++
- drivers/gpu/drm/ast/ast_dp501.c | 37 ++++++++++++++++++++++-----------
- drivers/gpu/drm/ast/ast_drv.h   |  2 ++
- drivers/gpu/drm/ast/ast_mode.c  | 30 ++++++++++++++++++++++++--
- 4 files changed, 66 insertions(+), 14 deletions(-)
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-index 6dc1a09504e13..fdd9a493aa9c0 100644
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -7,6 +7,17 @@
- #include <drm/drm_print.h>
- #include "ast_drv.h"
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f2d08dbccfb7d..30d69091064fe 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3640,12 +3640,6 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ 	lockdep_assert_held(&local->mtx);
+ 	lockdep_assert_held(&local->chanctx_mtx);
  
-+bool ast_astdp_is_connected(struct ast_device *ast)
-+{
-+	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1, ASTDP_MCU_FW_EXECUTING))
-+		return false;
-+	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDF, ASTDP_HPD))
-+		return false;
-+	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDC, ASTDP_LINK_SUCCESS))
-+		return false;
-+	return true;
-+}
-+
- int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata)
- {
- 	struct ast_device *ast = to_ast_device(dev);
-diff --git a/drivers/gpu/drm/ast/ast_dp501.c b/drivers/gpu/drm/ast/ast_dp501.c
-index 1bc35a992369d..fa7442b0c2612 100644
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -272,11 +272,9 @@ static bool ast_launch_m68k(struct drm_device *dev)
- 	return true;
- }
- 
--bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
-+bool ast_dp501_is_connected(struct ast_device *ast)
- {
--	struct ast_device *ast = to_ast_device(dev);
--	u32 i, boot_address, offset, data;
--	u32 *pEDIDidx;
-+	u32 boot_address, offset, data;
- 
- 	if (ast->config_mode == ast_use_p2a) {
- 		boot_address = get_fw_base(ast);
-@@ -292,14 +290,6 @@ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
- 		data = ast_mindwm(ast, boot_address + offset);
- 		if (!(data & AST_DP501_PNP_CONNECTED))
- 			return false;
+-	if (sdata->vif.bss_conf.eht_puncturing != sdata->vif.bss_conf.csa_punct_bitmap) {
+-		sdata->vif.bss_conf.eht_puncturing =
+-					sdata->vif.bss_conf.csa_punct_bitmap;
+-		changed |= BSS_CHANGED_EHT_PUNCTURING;
+-	}
 -
--		/* Read EDID */
--		offset = AST_DP501_EDID_DATA;
--		for (i = 0; i < 128; i += 4) {
--			data = ast_mindwm(ast, boot_address + offset + i);
--			pEDIDidx = (u32 *)(ediddata + i);
--			*pEDIDidx = data;
--		}
- 	} else {
- 		if (!ast->dp501_fw_buf)
- 			return false;
-@@ -319,7 +309,30 @@ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
- 		data = readl(ast->dp501_fw_buf + offset);
- 		if (!(data & AST_DP501_PNP_CONNECTED))
- 			return false;
+ 	/*
+ 	 * using reservation isn't immediate as it may be deferred until later
+ 	 * with multi-vif. once reservation is complete it will re-schedule the
+@@ -3675,6 +3669,12 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ 	if (err)
+ 		return err;
+ 
++	if (sdata->vif.bss_conf.eht_puncturing != sdata->vif.bss_conf.csa_punct_bitmap) {
++		sdata->vif.bss_conf.eht_puncturing =
++					sdata->vif.bss_conf.csa_punct_bitmap;
++		changed |= BSS_CHANGED_EHT_PUNCTURING;
 +	}
-+	return true;
-+}
 +
-+bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
-+{
-+	struct ast_device *ast = to_ast_device(dev);
-+	u32 i, boot_address, offset, data;
-+	u32 *pEDIDidx;
-+
-+	if (!ast_dp501_is_connected(ast))
-+		return false;
-+
-+	if (ast->config_mode == ast_use_p2a) {
-+		boot_address = get_fw_base(ast);
+ 	ieee80211_link_info_change_notify(sdata, &sdata->deflink, changed);
  
-+		/* Read EDID */
-+		offset = AST_DP501_EDID_DATA;
-+		for (i = 0; i < 128; i += 4) {
-+			data = ast_mindwm(ast, boot_address + offset + i);
-+			pEDIDidx = (u32 *)(ediddata + i);
-+			*pEDIDidx = data;
-+		}
-+	} else {
- 		/* Read EDID */
- 		offset = AST_DP501_EDID_DATA;
- 		for (i = 0; i < 128; i += 4) {
-diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-index 5498a6676f2e8..8a0ffa8b5939b 100644
---- a/drivers/gpu/drm/ast/ast_drv.h
-+++ b/drivers/gpu/drm/ast/ast_drv.h
-@@ -468,6 +468,7 @@ void ast_patch_ahb_2500(struct ast_device *ast);
- /* ast dp501 */
- void ast_set_dp501_video_output(struct drm_device *dev, u8 mode);
- bool ast_backup_fw(struct drm_device *dev, u8 *addr, u32 size);
-+bool ast_dp501_is_connected(struct ast_device *ast);
- bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata);
- u8 ast_get_dp501_max_clk(struct drm_device *dev);
- void ast_init_3rdtx(struct drm_device *dev);
-@@ -476,6 +477,7 @@ void ast_init_3rdtx(struct drm_device *dev);
- struct ast_i2c_chan *ast_i2c_create(struct drm_device *dev);
- 
- /* aspeed DP */
-+bool ast_astdp_is_connected(struct ast_device *ast);
- int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata);
- void ast_dp_launch(struct drm_device *dev);
- void ast_dp_power_on_off(struct drm_device *dev, bool no);
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index b3c670af6ef2b..0724516f29737 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -1585,8 +1585,20 @@ static int ast_dp501_connector_helper_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
-+static int ast_dp501_connector_helper_detect_ctx(struct drm_connector *connector,
-+						 struct drm_modeset_acquire_ctx *ctx,
-+						 bool force)
-+{
-+	struct ast_device *ast = to_ast_device(connector->dev);
-+
-+	if (ast_dp501_is_connected(ast))
-+		return connector_status_connected;
-+	return connector_status_disconnected;
-+}
-+
- static const struct drm_connector_helper_funcs ast_dp501_connector_helper_funcs = {
- 	.get_modes = ast_dp501_connector_helper_get_modes,
-+	.detect_ctx = ast_dp501_connector_helper_detect_ctx,
- };
- 
- static const struct drm_connector_funcs ast_dp501_connector_funcs = {
-@@ -1611,7 +1623,7 @@ static int ast_dp501_connector_init(struct drm_device *dev, struct drm_connector
- 	connector->interlace_allowed = 0;
- 	connector->doublescan_allowed = 0;
- 
--	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return 0;
- }
-@@ -1683,8 +1695,20 @@ static int ast_astdp_connector_helper_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
-+static int ast_astdp_connector_helper_detect_ctx(struct drm_connector *connector,
-+						 struct drm_modeset_acquire_ctx *ctx,
-+						 bool force)
-+{
-+	struct ast_device *ast = to_ast_device(connector->dev);
-+
-+	if (ast_astdp_is_connected(ast))
-+		return connector_status_connected;
-+	return connector_status_disconnected;
-+}
-+
- static const struct drm_connector_helper_funcs ast_astdp_connector_helper_funcs = {
- 	.get_modes = ast_astdp_connector_helper_get_modes,
-+	.detect_ctx = ast_astdp_connector_helper_detect_ctx,
- };
- 
- static const struct drm_connector_funcs ast_astdp_connector_funcs = {
-@@ -1709,7 +1733,7 @@ static int ast_astdp_connector_init(struct drm_device *dev, struct drm_connector
- 	connector->interlace_allowed = 0;
- 	connector->doublescan_allowed = 0;
- 
--	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return 0;
- }
-@@ -1848,5 +1872,7 @@ int ast_mode_config_init(struct ast_device *ast)
- 
- 	drm_mode_config_reset(dev);
- 
-+	drm_kms_helper_poll_init(dev);
-+
- 	return 0;
- }
+ 	if (sdata->deflink.csa_block_tx) {
 -- 
 2.40.1
 
