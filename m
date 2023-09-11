@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6820779B23E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A4779ADB1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235984AbjIKVFs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:05:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44142 "EHLO
+        id S236047AbjIKVFL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240004AbjIKOdm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:42 -0400
+        with ESMTP id S238644AbjIKOB3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E20CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E066AC433C7;
-        Mon, 11 Sep 2023 14:33:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5249CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269EEC433C8;
+        Mon, 11 Sep 2023 14:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442818;
-        bh=5USf60H8sS//ybTsHoFqh7rymLThQMBzuA/lN/U123Q=;
+        s=korg; t=1694440884;
+        bh=UOX69ib6ADDiG8HAGqVfsxOZf9CvV3UN+sWUc04kWkA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IDOSy71/AE7qJJfm1UQ+rlY7nJSRRiyIHgrPs42Gz5d7cM6ZbnY0v5IjHX40KNbZn
-         p9QuaNbODerlMzr5rpoeBwvMPsh2R3fnrd2aA2bxONcZw9Y1w88GRqnuhEX1eqOtbN
-         139pXGLzhxgEhjiGhpLzOTRl4nVWLLRdtnpjO8dc=
+        b=MDWczxAs6r4wlgHIrSZ2WBQVcXo4y/03p7qI3lFafm898TpfgPNp2EeUhwRheqbf5
+         vsG0Z0zAAT2gmWnE7modbfJ0+r4XF5Fh40plL0hc31kxm0B6kVEvVdLXL/2XM7n8xA
+         Hw389oP/erlJnLiBChICk6sXkvjHQRtwUk7WOVlc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 159/737] wifi: mt76: mt7915: fix background radar event being blocked
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 219/739] arm64: dts: qcom: sm8250-edo: Add gpio line names for TLMM
 Date:   Mon, 11 Sep 2023 15:40:18 +0200
-Message-ID: <20230911134654.935920730@linuxfoundation.org>
+Message-ID: <20230911134657.303802312@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -43,46 +42,440 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 9a3994077d170ec9ac75e800932b5671d9940cd2 ]
+[ Upstream commit 40b398beabdfe0e9088b13976e56b1dc706fe851 ]
 
-The background radar uses MT_RX_SEL2 as its band indication, so fix it.
+Sony ever so graciously provides GPIO line names in their downstream
+kernel (though sometimes they are not 100% accurate and you can judge
+that by simply looking at them and with what drivers they are used).
 
-Fixes: 7a53eecd5c87 (wifi: mt76: mt7915: check the correctness of event data)
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Add these to the PDX203&206 DTSIs to better document the hardware.
+
+Diff between 203 and 206:
+<                         "CAM_PWR_A_CS",
+>                         "FRONTC_PWR_EN",
+<                         "CAM4_MCLK",
+<                         "TOF_RST_N",
+>                         "NC",
+>                         "NC",
+<                         "WLC_I2C_SDA",
+<                         "WLC_I2C_SCL", /* GPIO_120 */
+>                         "NC",
+>                         "NC",
+<                         "WLC_INT_N",
+>                         "NC",
+
+Which makes sense, as 203 has a 3D iToF, slightly different camera
+power wiring and WLC (WireLess Charging).
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230614-topic-edo_pinsgpiopmic-v2-1-6f90bba54c53@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../qcom/sm8250-sony-xperia-edo-pdx203.dts    | 183 ++++++++++++++++++
+ .../qcom/sm8250-sony-xperia-edo-pdx206.dts    | 183 ++++++++++++++++++
+ 2 files changed, 366 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 9fcb22fa1f97e..088a065e37d5d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -274,7 +274,7 @@ mt7915_mcu_rx_radar_detected(struct mt7915_dev *dev, struct sk_buff *skb)
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
+index 356a81698731a..84104d2b20101 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
+@@ -14,3 +14,186 @@ / {
+ };
  
- 	r = (struct mt7915_mcu_rdd_report *)skb->data;
+ /delete-node/ &vreg_l7f_1p8;
++
++&tlmm {
++	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
++			  "MDM2AP_ERR_FATAL",
++			  "AP_CTI_OUT",
++			  "MDM2AP_STATUS",
++			  "NFC_I2C_SDA",
++			  "NFC_I2C_SCL",
++			  "NFC_EN",
++			  "NFC_CLK_REQ",
++			  "NFC_ESE_PWR_REQ",
++			  "DVDT_WRT_DET_AND",
++			  "SPK_AMP_RESET_N", /* GPIO_10 */
++			  "SPK_AMP_INT_N",
++			  "APPS_I2C_1_SDA",
++			  "APPS_I2C_1_SCL",
++			  "NC",
++			  "TX_GTR_THRES_IN",
++			  "HST_BT_UART_CTS",
++			  "HST_BT_UART_RFR",
++			  "HST_BT_UART_TX",
++			  "HST_BT_UART_RX",
++			  "HST_WLAN_EN", /* GPIO_20 */
++			  "HST_BT_EN",
++			  "RGBC_IR_PWR_EN",
++			  "FP_INT_N",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NFC_ESE_SPI_MISO",
++			  "NFC_ESE_SPI_MOSI",
++			  "NFC_ESE_SPI_SCLK", /* GPIO_30 */
++			  "NFC_ESE_SPI_CS_N",
++			  "WCD_RST_N",
++			  "NC",
++			  "SDM_DEBUG_UART_TX",
++			  "SDM_DEBUG_UART_RX",
++			  "TS_I2C_SDA",
++			  "TS_I2C_SCL",
++			  "TS_INT_N",
++			  "FP_SPI_MISO", /* GPIO_40 */
++			  "FP_SPI_MOSI",
++			  "FP_SPI_SCLK",
++			  "FP_SPI_CS_N",
++			  "APPS_I2C_0_SDA",
++			  "APPS_I2C_0_SCL",
++			  "DISP_ERR_FG",
++			  "UIM2_DETECT_EN",
++			  "NC",
++			  "NC",
++			  "NC", /* GPIO_50 */
++			  "NC",
++			  "MDM_UART_CTS",
++			  "MDM_UART_RFR",
++			  "MDM_UART_TX",
++			  "MDM_UART_RX",
++			  "AP2MDM_STATUS",
++			  "AP2MDM_ERR_FATAL",
++			  "MDM_IPC_HS_UART_TX",
++			  "MDM_IPC_HS_UART_RX",
++			  "NC", /* GPIO_60 */
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "USB_CC_DIR",
++			  "DISP_VSYNC",
++			  "NC",
++			  "NC",
++			  "CAM_PWR_B_CS",
++			  "NC", /* GPIO_70 */
++			  "CAM_PWR_A_CS",
++			  "SBU_SW_SEL",
++			  "SBU_SW_OE",
++			  "FP_RESET_N",
++			  "FP_RESET_N",
++			  "DISP_RESET_N",
++			  "DEBUG_GPIO0",
++			  "TRAY_DET",
++			  "CAM2_RST_N",
++			  "PCIE0_RST_N",
++			  "PCIE0_CLK_REQ_N", /* GPIO_80 */
++			  "PCIE0_WAKE_N",
++			  "DVDT_ENABLE",
++			  "DVDT_WRT_DET_OR",
++			  "NC",
++			  "PCIE2_RST_N",
++			  "PCIE2_CLK_REQ_N",
++			  "PCIE2_WAKE_N",
++			  "MDM_VFR_IRQ0",
++			  "MDM_VFR_IRQ1",
++			  "SW_SERVICE", /* GPIO_90 */
++			  "CAM_SOF",
++			  "CAM1_RST_N",
++			  "CAM0_RST_N",
++			  "CAM0_MCLK",
++			  "CAM1_MCLK",
++			  "CAM2_MCLK",
++			  "CAM3_MCLK",
++			  "CAM4_MCLK",
++			  "TOF_RST_N",
++			  "NC", /* GPIO_100 */
++			  "CCI0_I2C_SDA",
++			  "CCI0_I2C_SCL",
++			  "CCI1_I2C_SDA",
++			  "CCI1_I2C_SCL_",
++			  "CCI2_I2C_SDA",
++			  "CCI2_I2C_SCL",
++			  "CCI3_I2C_SDA",
++			  "CCI3_I2C_SCL",
++			  "CAM3_RST_N",
++			  "NFC_DWL_REQ", /* GPIO_110 */
++			  "NFC_IRQ",
++			  "XVS",
++			  "NC",
++			  "RF_ID_EXTENSION",
++			  "SPK_AMP_I2C_SDA",
++			  "SPK_AMP_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "WLC_I2C_SDA",
++			  "WLC_I2C_SCL", /* GPIO_120 */
++			  "ACC_COVER_OPEN",
++			  "ALS_PROX_INT_N",
++			  "ACCEL_INT",
++			  "WLAN_SW_CTRL",
++			  "CAMSENSOR_I2C_SDA",
++			  "CAMSENSOR_I2C_SCL",
++			  "UDON_SWITCH_SEL",
++			  "WDOG_DISABLE",
++			  "BAROMETER_INT",
++			  "NC", /* GPIO_130 */
++			  "NC",
++			  "FORCED_USB_BOOT",
++			  "NC",
++			  "NC",
++			  "WLC_INT_N",
++			  "NC",
++			  "NC",
++			  "RGBC_IR_INT",
++			  "NC",
++			  "NC", /* GPIO_140 */
++			  "NC",
++			  "BT_SLIMBUS_CLK",
++			  "BT_SLIMBUS_DATA",
++			  "HW_ID_0",
++			  "HW_ID_1",
++			  "WCD_SWR_TX_CLK",
++			  "WCD_SWR_TX_DATA0",
++			  "WCD_SWR_TX_DATA1",
++			  "WCD_SWR_RX_CLK",
++			  "WCD_SWR_RX_DATA0", /* GPIO_150 */
++			  "WCD_SWR_RX_DATA1",
++			  "SDM_DMIC_CLK1",
++			  "SDM_DMIC_DATA1",
++			  "SDM_DMIC_CLK2",
++			  "SDM_DMIC_DATA2",
++			  "SPK_AMP_I2S_CLK",
++			  "SPK_AMP_I2S_WS",
++			  "SPK_AMP_I2S_ASP_DIN",
++			  "SPK_AMP_I2S_ASP_DOUT",
++			  "COMPASS_I2C_SDA", /* GPIO_160 */
++			  "COMPASS_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "SSC_SPI_1_MISO",
++			  "SSC_SPI_1_MOSI",
++			  "SSC_SPI_1_CLK",
++			  "SSC_SPI_1_CS_N",
++			  "NC",
++			  "NC",
++			  "SSC_SENSOR_I2C_SDA", /* GPIO_170 */
++			  "SSC_SENSOR_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "HST_BLE_SNS_UART6_TX",
++			  "HST_BLE_SNS_UART6_RX",
++			  "HST_WLAN_UART_TX",
++			  "HST_WLAN_UART_RX";
++};
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
+index 01fe3974ee720..fae6568cb79e4 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
+@@ -30,6 +30,189 @@ g-assist-key {
+ 	};
+ };
  
--	if (r->band_idx > MT_BAND1)
-+	if (r->band_idx > MT_RX_SEL2)
- 		return;
- 
- 	if ((r->band_idx && !dev->phy.mt76->band_idx) &&
++&tlmm {
++	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
++			  "MDM2AP_ERR_FATAL",
++			  "AP_CTI_OUT",
++			  "MDM2AP_STATUS",
++			  "NFC_I2C_SDA",
++			  "NFC_I2C_SCL",
++			  "NFC_EN",
++			  "NFC_CLK_REQ",
++			  "NFC_ESE_PWR_REQ",
++			  "DVDT_WRT_DET_AND",
++			  "SPK_AMP_RESET_N", /* GPIO_10 */
++			  "SPK_AMP_INT_N",
++			  "APPS_I2C_1_SDA",
++			  "APPS_I2C_1_SCL",
++			  "NC",
++			  "TX_GTR_THRES_IN",
++			  "HST_BT_UART_CTS",
++			  "HST_BT_UART_RFR",
++			  "HST_BT_UART_TX",
++			  "HST_BT_UART_RX",
++			  "HST_WLAN_EN", /* GPIO_20 */
++			  "HST_BT_EN",
++			  "RGBC_IR_PWR_EN",
++			  "FP_INT_N",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NFC_ESE_SPI_MISO",
++			  "NFC_ESE_SPI_MOSI",
++			  "NFC_ESE_SPI_SCLK", /* GPIO_30 */
++			  "NFC_ESE_SPI_CS_N",
++			  "WCD_RST_N",
++			  "NC",
++			  "SDM_DEBUG_UART_TX",
++			  "SDM_DEBUG_UART_RX",
++			  "TS_I2C_SDA",
++			  "TS_I2C_SCL",
++			  "TS_INT_N",
++			  "FP_SPI_MISO", /* GPIO_40 */
++			  "FP_SPI_MOSI",
++			  "FP_SPI_SCLK",
++			  "FP_SPI_CS_N",
++			  "APPS_I2C_0_SDA",
++			  "APPS_I2C_0_SCL",
++			  "DISP_ERR_FG",
++			  "UIM2_DETECT_EN",
++			  "NC",
++			  "NC",
++			  "NC", /* GPIO_50 */
++			  "NC",
++			  "MDM_UART_CTS",
++			  "MDM_UART_RFR",
++			  "MDM_UART_TX",
++			  "MDM_UART_RX",
++			  "AP2MDM_STATUS",
++			  "AP2MDM_ERR_FATAL",
++			  "MDM_IPC_HS_UART_TX",
++			  "MDM_IPC_HS_UART_RX",
++			  "NC", /* GPIO_60 */
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "USB_CC_DIR",
++			  "DISP_VSYNC",
++			  "NC",
++			  "NC",
++			  "CAM_PWR_B_CS",
++			  "NC", /* GPIO_70 */
++			  "FRONTC_PWR_EN",
++			  "SBU_SW_SEL",
++			  "SBU_SW_OE",
++			  "FP_RESET_N",
++			  "FP_RESET_N",
++			  "DISP_RESET_N",
++			  "DEBUG_GPIO0",
++			  "TRAY_DET",
++			  "CAM2_RST_N",
++			  "PCIE0_RST_N",
++			  "PCIE0_CLK_REQ_N", /* GPIO_80 */
++			  "PCIE0_WAKE_N",
++			  "DVDT_ENABLE",
++			  "DVDT_WRT_DET_OR",
++			  "NC",
++			  "PCIE2_RST_N",
++			  "PCIE2_CLK_REQ_N",
++			  "PCIE2_WAKE_N",
++			  "MDM_VFR_IRQ0",
++			  "MDM_VFR_IRQ1",
++			  "SW_SERVICE", /* GPIO_90 */
++			  "CAM_SOF",
++			  "CAM1_RST_N",
++			  "CAM0_RST_N",
++			  "CAM0_MCLK",
++			  "CAM1_MCLK",
++			  "CAM2_MCLK",
++			  "CAM3_MCLK",
++			  "NC",
++			  "NC",
++			  "NC", /* GPIO_100 */
++			  "CCI0_I2C_SDA",
++			  "CCI0_I2C_SCL",
++			  "CCI1_I2C_SDA",
++			  "CCI1_I2C_SCL_",
++			  "CCI2_I2C_SDA",
++			  "CCI2_I2C_SCL",
++			  "CCI3_I2C_SDA",
++			  "CCI3_I2C_SCL",
++			  "CAM3_RST_N",
++			  "NFC_DWL_REQ", /* GPIO_110 */
++			  "NFC_IRQ",
++			  "XVS",
++			  "NC",
++			  "RF_ID_EXTENSION",
++			  "SPK_AMP_I2C_SDA",
++			  "SPK_AMP_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "ACC_COVER_OPEN",
++			  "ALS_PROX_INT_N",
++			  "ACCEL_INT",
++			  "WLAN_SW_CTRL",
++			  "CAMSENSOR_I2C_SDA",
++			  "CAMSENSOR_I2C_SCL",
++			  "UDON_SWITCH_SEL",
++			  "WDOG_DISABLE",
++			  "BAROMETER_INT",
++			  "NC", /* GPIO_130 */
++			  "NC",
++			  "FORCED_USB_BOOT",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "RGBC_IR_INT",
++			  "NC",
++			  "NC", /* GPIO_140 */
++			  "NC",
++			  "BT_SLIMBUS_CLK",
++			  "BT_SLIMBUS_DATA",
++			  "HW_ID_0",
++			  "HW_ID_1",
++			  "WCD_SWR_TX_CLK",
++			  "WCD_SWR_TX_DATA0",
++			  "WCD_SWR_TX_DATA1",
++			  "WCD_SWR_RX_CLK",
++			  "WCD_SWR_RX_DATA0", /* GPIO_150 */
++			  "WCD_SWR_RX_DATA1",
++			  "SDM_DMIC_CLK1",
++			  "SDM_DMIC_DATA1",
++			  "SDM_DMIC_CLK2",
++			  "SDM_DMIC_DATA2",
++			  "SPK_AMP_I2S_CLK",
++			  "SPK_AMP_I2S_WS",
++			  "SPK_AMP_I2S_ASP_DIN",
++			  "SPK_AMP_I2S_ASP_DOUT",
++			  "COMPASS_I2C_SDA", /* GPIO_160 */
++			  "COMPASS_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "SSC_SPI_1_MISO",
++			  "SSC_SPI_1_MOSI",
++			  "SSC_SPI_1_CLK",
++			  "SSC_SPI_1_CS_N",
++			  "NC",
++			  "NC",
++			  "SSC_SENSOR_I2C_SDA", /* GPIO_170 */
++			  "SSC_SENSOR_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "HST_BLE_SNS_UART6_TX",
++			  "HST_BLE_SNS_UART6_RX",
++			  "HST_WLAN_UART_TX",
++			  "HST_WLAN_UART_RX";
++};
++
+ &vreg_l2f_1p3 {
+ 	regulator-min-microvolt = <1200000>;
+ 	regulator-max-microvolt = <1200000>;
 -- 
 2.40.1
 
