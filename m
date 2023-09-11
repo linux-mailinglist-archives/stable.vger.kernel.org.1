@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0406E79ADB8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EEA79B262
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376581AbjIKWUA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58618 "EHLO
+        id S1377833AbjIKW2u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240840AbjIKOzZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:25 -0400
+        with ESMTP id S242086AbjIKPVz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523C4E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A534C433C7;
-        Mon, 11 Sep 2023 14:55:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C33DD3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E78EC433C8;
+        Mon, 11 Sep 2023 15:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444121;
-        bh=Bi6cjiyGJP2vcSA9UYUDmgma/NREIJ/W+gbiM+kMI5Y=;
+        s=korg; t=1694445710;
+        bh=Ezga5UQM0wH/oNDvQX3Kd7E2blp5KEHxXNIvlfOznzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FI2Lvjv5ch2kz7oDTgYJ9uVBLxWwSb4QdvfAwAOrp7zxnoVermZoRhlL6NQzD0ybE
-         3N/91TM2WPZd2itMpg8KBXpfKP9XU4pAPf/Zqig0j+zrKFLs870J/unvYGPO3En8/a
-         hgC3lL5LOCfzkDGK80rusghCUtbkF6gQFDGuAw4k=
+        b=RBD7hn7Qms8hytJXc8siyBg2NMS0MFNPY5qxZN4qro79URoX7Kbb6nKFddDEG02kT
+         Lr2r38Mo/CKiwWgIMpJFavK+tSwJXnyDkYars2ABmjJBP7bxZAVb86wbA/LJKGiWkv
+         CXwkQD7SeS+cPmXJDumTbQzsGF1l5A5F4P/ErZK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 618/737] leds: multicolor: Use rounded division when calculating color components
+        Chengchang Tang <tangchengchang@huawei.com>,
+        Junxian Huang <huangjunxian6@hisilicon.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 444/600] RDMA/hns: Fix port active speed
 Date:   Mon, 11 Sep 2023 15:47:57 +0200
-Message-ID: <20230911134707.793302323@linuxfoundation.org>
+Message-ID: <20230911134646.751768346@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,66 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 065d099f1be58187e6629273c50b948a02b7e1bf ]
+[ Upstream commit df1bcf90a66a10967a3a43510b42cb3566208011 ]
 
-Given channel intensity, LED brightness and max LED brightness, the
-multicolor LED framework helper led_mc_calc_color_components() computes
-the color channel brightness as
+HW supports a variety of different speed, but the current speed
+is fixed.
 
-    chan_brightness = brightness * chan_intensity / max_brightness
+The real speed should be querried from ethernet.
 
-Consider the situation when (brightness, intensity, max_brightness) is
-for example (16, 15, 255), then chan_brightness is computed to 0
-although the fractional divison would give 0.94, which should be rounded
-to 1.
-
-Use DIV_ROUND_CLOSEST here for the division to give more realistic
-component computation:
-
-    chan_brightness = DIV_ROUND_CLOSEST(brightness * chan_intensity,
-                                        max_brightness)
-
-Fixes: 55d5d3b46b08 ("leds: multicolor: Introduce a multicolor class definition")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://lore.kernel.org/r/20230801124931.8661-1-kabel@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20230804012711.808069-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-class-multicolor.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
-index e317408583df9..ec62a48116135 100644
---- a/drivers/leds/led-class-multicolor.c
-+++ b/drivers/leds/led-class-multicolor.c
-@@ -6,6 +6,7 @@
- #include <linux/device.h>
- #include <linux/init.h>
- #include <linux/led-class-multicolor.h>
-+#include <linux/math.h>
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/uaccess.h>
-@@ -19,9 +20,10 @@ int led_mc_calc_color_components(struct led_classdev_mc *mcled_cdev,
- 	int i;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 946ba1109e878..da1b33d818d82 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -219,6 +219,7 @@ static int hns_roce_query_port(struct ib_device *ib_dev, u32 port_num,
+ 	unsigned long flags;
+ 	enum ib_mtu mtu;
+ 	u32 port;
++	int ret;
  
- 	for (i = 0; i < mcled_cdev->num_colors; i++)
--		mcled_cdev->subled_info[i].brightness = brightness *
--					mcled_cdev->subled_info[i].intensity /
--					led_cdev->max_brightness;
-+		mcled_cdev->subled_info[i].brightness =
-+			DIV_ROUND_CLOSEST(brightness *
-+					  mcled_cdev->subled_info[i].intensity,
-+					  led_cdev->max_brightness);
+ 	port = port_num - 1;
  
- 	return 0;
- }
+@@ -231,8 +232,10 @@ static int hns_roce_query_port(struct ib_device *ib_dev, u32 port_num,
+ 				IB_PORT_BOOT_MGMT_SUP;
+ 	props->max_msg_sz = HNS_ROCE_MAX_MSG_LEN;
+ 	props->pkey_tbl_len = 1;
+-	props->active_width = IB_WIDTH_4X;
+-	props->active_speed = 1;
++	ret = ib_get_eth_speed(ib_dev, port_num, &props->active_speed,
++			       &props->active_width);
++	if (ret)
++		ibdev_warn(ib_dev, "failed to get speed, ret = %d.\n", ret);
+ 
+ 	spin_lock_irqsave(&hr_dev->iboe.lock, flags);
+ 
 -- 
 2.40.1
 
