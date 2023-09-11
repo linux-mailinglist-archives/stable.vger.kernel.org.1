@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 996C279BD9D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DE2679B876
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236755AbjIKUxS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:53:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46618 "EHLO
+        id S241892AbjIKWAD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:00:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239050AbjIKOKd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:33 -0400
+        with ESMTP id S240371AbjIKOmq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4314CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14824C433C8;
-        Mon, 11 Sep 2023 14:10:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B108612A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055FFC433C9;
+        Mon, 11 Sep 2023 14:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441428;
-        bh=1MLbwbBH3zbv3sfGQ+MXID2YbBrociFW3O2eiD3MMkU=;
+        s=korg; t=1694443361;
+        bh=HQCXRnX8aPmCsfQ0GMTE4Tw5FGgwc1YP84yOTeiCTcc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lrC2o041m81Wjg5bEuoPfxFlH52GElMYOK2BQnhqPMMI3iTQOKpWiDSvIkBzYkkmG
-         SEeMf7mCtczf6juNcf4bGAbEYIH/d6zgVjBJ97CWVyAJOyIcpVHispDW+PMdUHm76a
-         11UW+LeuY5Q/tm3U+cmwZh9NxcNvWnxvPv2yOrr0=
+        b=vuFBMHq0aqLKYzNOJV9fJX/8FamW/6T/81V1LVIhOGlbJtiIpje9rKz6BtRTnOLDs
+         4ZjLPbC9xDsU0aXTtY6EfBQMw5o0aiGWW2kF1SytxwI5yGvSgaeVfvKIjVkNqjePNB
+         nKcdeMLUUAoowguhuEFXGnNU7ofQS6vNgddqMQF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
-        Imran Shaik <quic_imrashai@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 410/739] clk: qcom: gcc-qdu1000: Fix gcc_pcie_0_pipe_clk_src clock handling
+Subject: [PATCH 6.4 350/737] drm/repaper: Reduce temporary buffer size in repaper_fb_dirty()
 Date:   Mon, 11 Sep 2023 15:43:29 +0200
-Message-ID: <20230911134702.633090195@linuxfoundation.org>
+Message-ID: <20230911134700.298053733@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,82 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imran Shaik <quic_imrashai@quicinc.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit b311f5d3c4749259043a9a458a8db07915210142 ]
+[ Upstream commit fedf429e071f6dbbe7a69dfc342492e037692018 ]
 
-Fix the gcc pcie pipe clock handling as per the clk_regmap_phy_mux_ops
-implementation to let the clock framework automatically park the clock
-at XO when the clock is switched off and restore the parent when the
-clock is switched on.
+As the temporary buffer is no longer used to store 8-bit grayscale data,
+its size can be reduced to the size needed to store the monochrome
+bitmap data.
 
-Fixes: 1c9efb0bc040 ("clk: qcom: Add QDU1000 and QRU1000 GCC support")
-Co-developed-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230803105741.2292309-3-quic_imrashai@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 24c6bedefbe71de9 ("drm/repaper: Use format helper for xrgb8888 to monochrome conversion")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220317081830.1211400-6-geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qdu1000.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/tiny/repaper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
-index 5051769ad90c7..c00d26a3e6df5 100644
---- a/drivers/clk/qcom/gcc-qdu1000.c
-+++ b/drivers/clk/qcom/gcc-qdu1000.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (c) 2022, Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/drivers/gpu/drm/tiny/repaper.c b/drivers/gpu/drm/tiny/repaper.c
+index c2677d081a7b6..13ae148f59b9b 100644
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -533,7 +533,7 @@ static int repaper_fb_dirty(struct drm_framebuffer *fb)
+ 	DRM_DEBUG("Flushing [FB:%d] st=%ums\n", fb->base.id,
+ 		  epd->factored_stage_time);
  
- #include <linux/clk-provider.h>
-@@ -370,16 +370,6 @@ static const struct clk_parent_data gcc_parent_data_6[] = {
- 	{ .index = DT_TCXO_IDX },
- };
- 
--static const struct parent_map gcc_parent_map_7[] = {
--	{ P_PCIE_0_PIPE_CLK, 0 },
--	{ P_BI_TCXO, 2 },
--};
--
--static const struct clk_parent_data gcc_parent_data_7[] = {
--	{ .index = DT_PCIE_0_PIPE_CLK_IDX },
--	{ .index = DT_TCXO_IDX },
--};
--
- static const struct parent_map gcc_parent_map_8[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GCC_GPLL0_OUT_MAIN, 1 },
-@@ -439,16 +429,15 @@ static struct clk_regmap_mux gcc_pcie_0_phy_aux_clk_src = {
- 	},
- };
- 
--static struct clk_regmap_mux gcc_pcie_0_pipe_clk_src = {
-+static struct clk_regmap_phy_mux gcc_pcie_0_pipe_clk_src = {
- 	.reg = 0x9d064,
--	.shift = 0,
--	.width = 2,
--	.parent_map = gcc_parent_map_7,
- 	.clkr = {
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_pcie_0_pipe_clk_src",
--			.parent_data = gcc_parent_data_7,
--			.num_parents = ARRAY_SIZE(gcc_parent_data_7),
-+			.parent_data = &(const struct clk_parent_data){
-+				.index = DT_PCIE_0_PIPE_CLK_IDX,
-+			},
-+			.num_parents = 1,
- 			.ops = &clk_regmap_phy_mux_ops,
- 		},
- 	},
+-	buf = kmalloc_array(fb->width, fb->height, GFP_KERNEL);
++	buf = kmalloc(fb->width * fb->height / 8, GFP_KERNEL);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
+ 		goto out_exit;
 -- 
 2.40.1
 
