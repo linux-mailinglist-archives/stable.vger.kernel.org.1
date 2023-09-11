@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0992A79B436
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0036579AF92
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350643AbjIKVkK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
+        id S242825AbjIKU6i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240246AbjIKOjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:51 -0400
+        with ESMTP id S241315AbjIKPGa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5AAF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85181C433C7;
-        Mon, 11 Sep 2023 14:39:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ACC1125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FC9C433C8;
+        Mon, 11 Sep 2023 15:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443186;
-        bh=KO0MFBhY7NFoG1zDcbkG88i8Fp5i4U7dqaFfAw06YfM=;
+        s=korg; t=1694444786;
+        bh=C6DK33F7WH3kuy9a4mytLF2yB8MpFiaqUV36lwVCzak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VAMCXxMQ4eByRgNxCtGFPxVuTXvvkEvJr0xmOo0rhtaBHz5cI/ojweKql63Yh12OX
-         5gKXYquRbMpIvP7CzI3AkURDM4WjJceIjE3n9frQ6ZWjfoPdDD+GCF7dqe/XUycQUz
-         mNtF9mAyI5VUNsEDa1Oj8Z2z0p2wK6N1/jnHNTqM=
+        b=VieuxfzRaJgCIzJCwdqXSxM4bOqZH6EYnnbH4bH8cChYemmP0SPSAef2UE+rv9rqQ
+         qcbxiQVewstAxwY0pAYIAXJilpRceI7gPWbJlnmxeL7KFIKB57KATc4BKre9KRpzUq
+         87IH3nx9SqHL5xof+GZVdCvf/Hitr2DKSgO5KPvQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Babu Moger <babu.moger@amd.com>,
+        "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 288/737] arm64: dts: qcom: sc8280xp-crd: Correct vreg_misc_3p3 GPIO
+Subject: [PATCH 6.1 114/600] selftests/resctrl: Unmount resctrl FS if child fails to run benchmark
 Date:   Mon, 11 Sep 2023 15:42:27 +0200
-Message-ID: <20230911134658.608718056@linuxfoundation.org>
+Message-ID: <20230911134636.968960913@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,51 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 9566b5271f68bdf6e69b7c511850e3fb75cd18be ]
+[ Upstream commit f99e413eb54652e2436cc56d081176bc9a34cd8d ]
 
-The vreg_misc_3p3 regulator is controlled by PMC8280_1 GPIO 2, not 1, on
-the CRD.
+A child calls PARENT_EXIT() when it fails to run a benchmark to kill
+the parent process. PARENT_EXIT() lacks unmount for the resctrl FS and
+the parent won't be there to unmount it either after it gets killed.
 
-Fixes: ccd3517faf18 ("arm64: dts: qcom: sc8280xp: Add reference device")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230620203915.141337-1-quic_bjorande@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add the resctrl FS unmount also to PARENT_EXIT().
+
+Fixes: 591a6e8588fc ("selftests/resctrl: Add basic resctrl file system operations and data")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Tested-by: Babu Moger <babu.moger@amd.com>
+Tested-by: Shaopeng Tan (Fujitsu) <tan.shaopeng@fujitsu.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-crd.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/resctrl/resctrl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-index 5b25d54b95911..4fa9a4f242273 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-@@ -167,7 +167,7 @@ vreg_misc_3p3: regulator-misc-3p3 {
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
+diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
+index f44fa2de4d986..dbe5cfb545585 100644
+--- a/tools/testing/selftests/resctrl/resctrl.h
++++ b/tools/testing/selftests/resctrl/resctrl.h
+@@ -43,6 +43,7 @@
+ 	do {					\
+ 		perror(err_msg);		\
+ 		kill(ppid, SIGKILL);		\
++		umount_resctrlfs();		\
+ 		exit(EXIT_FAILURE);		\
+ 	} while (0)
  
--		gpio = <&pmc8280_1_gpios 1 GPIO_ACTIVE_HIGH>;
-+		gpio = <&pmc8280_1_gpios 2 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 
- 		pinctrl-names = "default";
-@@ -696,7 +696,7 @@ edp_bl_reg_en: edp-bl-reg-en-state {
- 	};
- 
- 	misc_3p3_reg_en: misc-3p3-reg-en-state {
--		pins = "gpio1";
-+		pins = "gpio2";
- 		function = "normal";
- 	};
- };
 -- 
 2.40.1
 
