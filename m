@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D810879B998
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8E679B6B8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351154AbjIKVmr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
+        id S1379632AbjIKWpM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241701AbjIKPMZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:25 -0400
+        with ESMTP id S240498AbjIKOpr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67F8FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A3DC433C8;
-        Mon, 11 Sep 2023 15:12:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6EFCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602B1C433C8;
+        Mon, 11 Sep 2023 14:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445139;
-        bh=WMgmYze9uiw9HUbn+Ok3wojIe8rPcRy6DIg94auhLJ4=;
+        s=korg; t=1694443542;
+        bh=p/ZZzTGgpFZd/30Nh/WAPmetnBWxKVefuf4JlfmQbWI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZrkF7ysb+eHtNiInKYXIbcKoppFiZbceU9ACN7fMFXDrYS5eO7C/CPb7Y/a2GFWQh
-         gYTYbUot+1RsA7uohjEC4B1F8e/4AMc3uLhzqFnMdtfud0bBzdO2I1fA1eam2pANoK
-         DnqcyOISS+KRNRcymZmhCdMH6iv8QZI5Gm8Zj/ak=
+        b=gX0g0oRdY5kM4sXDFVgRUJ/c4iwaKakZpkg+EZigW6HzmSXkyp9AD26Dh/Tl9pYck
+         b3wYNbqw5rFtycKvqGMTiFg5RWxx6sig4iy7jBJkMV53QJD9EegCjAegn5mdC6yoKZ
+         iC1a0mifn+LSXnJ8HZZr/oyrQsMtaWYhNQak7QZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev, Danila Tikhonov <danila@jiaxyga.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/600] arm64: dts: qcom: sm8250: Mark PCIe hosts as DMA coherent
+Subject: [PATCH 6.4 414/737] clk: qcom: gcc-sm7150: Add CLK_OPS_PARENT_ENABLE to sdcc2 rcg
 Date:   Mon, 11 Sep 2023 15:44:33 +0200
-Message-ID: <20230911134640.684100670@linuxfoundation.org>
+Message-ID: <20230911134702.180574315@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,53 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Danila Tikhonov <danila@jiaxyga.com>
 
-[ Upstream commit 339d38a436f30d0f874815eafc7de2257346bf26 ]
+[ Upstream commit ff19022b9112d6bbd7c117c83e944cb21b438e91 ]
 
-The PCIe hosts on SM8250 are cache-coherent. Mark them as such.
+Set .flags = CLK_OPS_PARENT_ENABLE to fix "gcc_sdcc2_apps_clk_src: rcg
+didn't update its configuration" error.
 
-Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230704-topic-8250_pcie_dmac-v1-1-799603a980b0@linaro.org
+Fixes: a808d58ddf29 ("clk: qcom: Add Global Clock Controller (GCC) driver for SM7150")
+Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230630191944.20282-1-danila@jiaxyga.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/gcc-sm7150.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index c27f88c9f7b2a..4d9b30f0b2841 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -1862,6 +1862,7 @@ pcie0: pci@1c00000 {
+diff --git a/drivers/clk/qcom/gcc-sm7150.c b/drivers/clk/qcom/gcc-sm7150.c
+index 6b628178f62c4..6da87f0436d0c 100644
+--- a/drivers/clk/qcom/gcc-sm7150.c
++++ b/drivers/clk/qcom/gcc-sm7150.c
+@@ -739,6 +739,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_6,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_6),
+ 		.ops = &clk_rcg2_floor_ops,
++		.flags = CLK_OPS_PARENT_ENABLE,
+ 	},
+ };
  
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie0_default_state>;
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -1968,6 +1969,7 @@ pcie1: pci@1c08000 {
- 
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie1_default_state>;
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -2076,6 +2078,7 @@ pcie2: pci@1c10000 {
- 
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie2_default_state>;
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
 -- 
 2.40.1
 
