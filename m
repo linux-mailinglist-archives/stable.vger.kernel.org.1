@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15AF779B734
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98AEA79BCF5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238725AbjIKUyT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47838 "EHLO
+        id S1348713AbjIKVaP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240697AbjIKOvU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:20 -0400
+        with ESMTP id S239371AbjIKOTK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED91B118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E203C433C8;
-        Mon, 11 Sep 2023 14:51:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B9F9DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09F2C433C7;
+        Mon, 11 Sep 2023 14:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443875;
-        bh=uW839yjgBrJH69SABTORs4Y1Y40egSKZx8GMpQZqB30=;
+        s=korg; t=1694441946;
+        bh=i+1d57gpz5j6D/jHKQ4Z96y6mfw+qVZSNkBg899D2Z4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BMNdWacNoU1pZZLB1wsbofd73xvq8/20V4jhW0Y8D7QlmEC691qDUEEaM3uLiLcx7
-         1k1Uvfav88vKfPklIsymOWN1cDczA/Ve9YT4B5w3ULxhkgvUfGsl+C06LfUpqPpcDJ
-         MeArnZGm5RYMOKH/2XV9bnZXP0VDBUJDhNwJEVnk=
+        b=zU7jSYvwy3ertVUnqSA93tXDo/6EG2y+9z+o2DE9xaTnd2seH64PwYHJ8R+T9Rezs
+         z2ClEcqjRR6mZvlh6dIZcywxNorySGgGELgbN9ixh3ZYI+OklYmj2x5DUHIKSgP50K
+         vKfr8TRj3VUceah0ojZn04hBsDPIT+RTC6PZ4wO4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zenghui Yu <yuzenghui@huawei.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Kevin Tian <kevin.tian@intel.com>,
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mikhail Kobuk <m.kobuk@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 532/737] driver core: Call dma_cleanup() on the test_remove path
+Subject: [PATCH 6.5 592/739] tracing: Remove extra space at the end of hwlat_detector/mode
 Date:   Mon, 11 Sep 2023 15:46:31 +0200
-Message-ID: <20230911134705.434228533@linuxfoundation.org>
+Message-ID: <20230911134707.636813617@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-[ Upstream commit f429378a9bf84d79a7e2cae05d2e3384cf7d68ba ]
+[ Upstream commit 2cf0dee989a8b2501929eaab29473b6b1fa11057 ]
 
-When test_remove is enabled really_probe() does not properly pair
-dma_configure() with dma_remove(), it will end up calling dma_configure()
-twice. This corrupts the owner_cnt and renders the group unusable with
-VFIO/etc.
+Space is printed after each mode value including the last one:
+$ echo \"$(sudo cat /sys/kernel/tracing/hwlat_detector/mode)\"
+"none [round-robin] per-cpu "
 
-Add the missing cleanup before going back to re_probe.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 25f3bcfc54bc ("driver core: Add dma_cleanup callback in bus_type")
-Reported-by: Zenghui Yu <yuzenghui@huawei.com>
-Tested-by: Zenghui Yu <yuzenghui@huawei.com>
-Closes: https://lore.kernel.org/all/6472f254-c3c4-8610-4a37-8d9dfdd54ce8@huawei.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/0-v2-4deed94e283e+40948-really_probe_dma_cleanup_jgg@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20230825103432.7750-1-m.kobuk@ispras.ru
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 8fa826b7344d ("trace/hwlat: Implement the mode config option")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Reviewed-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Acked-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/dd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace_hwlat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 9c09ca5c4ab68..7145d9b940b14 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -693,6 +693,8 @@ static int really_probe(struct device *dev, struct device_driver *drv)
+diff --git a/kernel/trace/trace_hwlat.c b/kernel/trace/trace_hwlat.c
+index 2f37a6e68aa9f..b791524a6536a 100644
+--- a/kernel/trace/trace_hwlat.c
++++ b/kernel/trace/trace_hwlat.c
+@@ -635,7 +635,7 @@ static int s_mode_show(struct seq_file *s, void *v)
+ 	else
+ 		seq_printf(s, "%s", thread_mode_str[mode]);
  
- 		device_remove(dev);
- 		driver_sysfs_remove(dev);
-+		if (dev->bus && dev->bus->dma_cleanup)
-+			dev->bus->dma_cleanup(dev);
- 		device_unbind_cleanup(dev);
+-	if (mode != MODE_MAX)
++	if (mode < MODE_MAX - 1) /* if mode is any but last */
+ 		seq_puts(s, " ");
  
- 		goto re_probe;
+ 	return 0;
 -- 
 2.40.1
 
