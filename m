@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F040B79BE64
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E127A79B904
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354175AbjIKVwr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
+        id S241117AbjIKV66 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238406AbjIKNzo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:44 -0400
+        with ESMTP id S239749AbjIKO1z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E4A0FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEEBC433C8;
-        Mon, 11 Sep 2023 13:55:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC76F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28748C433C7;
+        Mon, 11 Sep 2023 14:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440540;
-        bh=dnQujpoQzgpG/mXnsVgaYhVxN8FluSTOaNZzYz5au2w=;
+        s=korg; t=1694442470;
+        bh=igBK/6RfI4lPRi+UsaBmA0LPKaA/oXpujf/lEhu7oMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cd1S6BncQC7brL2gj9xhvKVgKkDld/KLZzgoGcTmUZzJaVmGWDFWW8ABZrUqEbugS
-         KqmQcaNIdvcirFvEFkr+GsEuKYdVizzekoZm5FfTKJJwpWqInvWY9ZXpH/sHQg7cMD
-         Koa7a8Y2zr33dSenroLirp6L0kapiczfMyhP1W+k=
+        b=RGORemoMbGEACZVug3uxehrnvJiXDxUaWoLq5AsjNKnhhbKycbh6z6JhXW4Df0ufc
+         EYYajhEMnNvdwSeM6Mlk2rAVuRNk5vou2IjpB2x0VhPyj++DjYdPYrjjWGAOVgc9CO
+         xSdXa/ZCMqcPm4OjiU6p2xe8f+Ju9boo1Jsw7aCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Konstantin Shelekhin <k.shelekhin@ftml.net>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 097/739] spi: tegra20-sflash: fix to check return value of platform_get_irq() in tegra_sflash_probe()
+Subject: [PATCH 6.4 037/737] platform/x86: huawei-wmi: Silence ambient light sensor
 Date:   Mon, 11 Sep 2023 15:38:16 +0200
-Message-ID: <20230911134653.810386900@linuxfoundation.org>
+Message-ID: <20230911134651.455127010@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Konstantin Shelekhin <k.shelekhin@ftml.net>
 
-[ Upstream commit 29a449e765ff70a5bd533be94babb6d36985d096 ]
+[ Upstream commit c21733754cd6ecbca346f2adf9b17d4cfa50504f ]
 
-The platform_get_irq might be failed and return a negative result. So
-there should have an error handling code.
+Currently huawei-wmi causes a lot of spam in dmesg on my
+Huawei MateBook X Pro 2022:
 
-Fixed this by adding an error handling code.
+  ...
+  [36409.328463] input input9: Unknown key pressed, code: 0x02c1
+  [36411.335104] input input9: Unknown key pressed, code: 0x02c1
+  [36412.338674] input input9: Unknown key pressed, code: 0x02c1
+  [36414.848564] input input9: Unknown key pressed, code: 0x02c1
+  [36416.858706] input input9: Unknown key pressed, code: 0x02c1
+  ...
 
-Fixes: 8528547bcc33 ("spi: tegra: add spi driver for sflash controller")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_71FC162D589E4788C2152AAC84CD8D5C6D06@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix that by ignoring events generated by ambient light sensor.
+
+This issue was reported on GitHub and resolved with the following merge
+request:
+
+  https://github.com/aymanbagabas/Huawei-WMI/pull/70
+
+I've contacted the mainter of this repo and he gave me the "go ahead" to
+send this patch to the maling list.
+
+Signed-off-by: Konstantin Shelekhin <k.shelekhin@ftml.net>
+Link: https://lore.kernel.org/r/20230722155922.173856-1-k.shelekhin@ftml.net
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/platform/x86/huawei-wmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 4286310628a2b..0c5507473f972 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -455,7 +455,11 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		goto exit_free_master;
- 	}
+diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
+index 70e5c4c0574d5..0ef1c46b617b6 100644
+--- a/drivers/platform/x86/huawei-wmi.c
++++ b/drivers/platform/x86/huawei-wmi.c
+@@ -85,6 +85,8 @@ static const struct key_entry huawei_wmi_keymap[] = {
+ 	{ KE_IGNORE, 0x293, { KEY_KBDILLUMTOGGLE } },
+ 	{ KE_IGNORE, 0x294, { KEY_KBDILLUMUP } },
+ 	{ KE_IGNORE, 0x295, { KEY_KBDILLUMUP } },
++	// Ignore Ambient Light Sensoring
++	{ KE_KEY,    0x2c1, { KEY_RESERVED } },
+ 	{ KE_END,	 0 }
+ };
  
--	tsd->irq = platform_get_irq(pdev, 0);
-+	ret = platform_get_irq(pdev, 0);
-+	if (ret < 0)
-+		goto exit_free_master;
-+	tsd->irq = ret;
-+
- 	ret = request_irq(tsd->irq, tegra_sflash_isr, 0,
- 			dev_name(&pdev->dev), tsd);
- 	if (ret < 0) {
 -- 
 2.40.1
 
