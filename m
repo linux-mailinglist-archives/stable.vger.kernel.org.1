@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40EC679B8CB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 363AD79BD82
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355421AbjIKV6H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39354 "EHLO
+        id S1376395AbjIKWT1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241925AbjIKPSC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:02 -0400
+        with ESMTP id S240657AbjIKOuN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:50:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC06FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E9DC433C8;
-        Mon, 11 Sep 2023 15:17:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF4D2125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:50:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E047C433C8;
+        Mon, 11 Sep 2023 14:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445477;
-        bh=u33/xWUJL3IWKnwW84Tmj/YV2Pyb8QUo9WnamCn+Jz8=;
+        s=korg; t=1694443809;
+        bh=ccwdMyUsLBTz+/kg1Q0sJ68b5iSyHyAQYutHynNvN1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Na789qsuItHHi4hE3Cp/zjxvJWL7ztpdwTnKiBasTc4lZ/eMFyePPENc2cZpvlEbR
-         cNNX82ASkACnHBGt/kntVJZvVXHmWsUDLgXznj7D8YVaWYBS6RdKwI8lST7YXxKOQF
-         e5WS6qTnV9LYxNYNr6btSJVGQFIhjAKG+78SWX4A=
+        b=TcN696W9TUPgqIMDLmHOaxJyrROBRjm0M4Nrbl7i3xiT568Uz2SfMbfLnAbIREozy
+         tW3aAfHYcqxiUNksWvTX2Uh6Bk3P9g9FvbdZQZiMxnSeQS/Ixa8zac5AFpVvmStccK
+         RSwKSP1KCLsw0JnV6Eapcm29PKyop2EimKYzqcVo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alibek Omarov <a1ba.omarov@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 334/600] clk: rockchip: rk3568: Fix PLL rate setting for 78.75MHz
+Subject: [PATCH 6.4 508/737] media: mediatek: vcodec: fix resource leaks in vdec_msg_queue_init()
 Date:   Mon, 11 Sep 2023 15:46:07 +0200
-Message-ID: <20230911134643.546713393@linuxfoundation.org>
+Message-ID: <20230911134704.754573112@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alibek Omarov <a1ba.omarov@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit dafebd0f9a4f56b10d7fbda0bff1f540d16a2ea4 ]
+[ Upstream commit cf10b0bb503c974ba049d6f888b21178be20a962 ]
 
-PLL rate on RK356x is calculated through the simple formula:
-((24000000 / _refdiv) * _fbdiv) / (_postdiv1 * _postdiv2)
+If we encounter any error in the vdec_msg_queue_init() then we need
+to set "msg_queue->wdma_addr.size = 0;".  Normally, this is done
+inside the vdec_msg_queue_deinit() function.  However, if the
+first call to allocate &msg_queue->wdma_addr fails, then the
+vdec_msg_queue_deinit() function is a no-op.  For that situation, just
+set the size to zero explicitly and return.
 
-The PLL rate setting for 78.75MHz seems to be copied from 96MHz
-so this patch fixes it and configures it properly.
+There were two other error paths which did not clean up before returning.
+Change those error paths to goto mem_alloc_err.
 
-Signed-off-by: Alibek Omarov <a1ba.omarov@gmail.com>
-Fixes: 842f4cb72639 ("clk: rockchip: Add more PLL rates for rk3568")
-Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/r/20230614134750.1056293-1-a1ba.omarov@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: b199fe46f35c ("media: mtk-vcodec: Add msg queue feature for lat and core architecture")
+Fixes: 2f5d0aef37c6 ("media: mediatek: vcodec: support stateless AV1 decoder")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3568.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
-index f85902e2590c7..2f54f630c8b65 100644
---- a/drivers/clk/rockchip/clk-rk3568.c
-+++ b/drivers/clk/rockchip/clk-rk3568.c
-@@ -81,7 +81,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
- 	RK3036_PLL_RATE(108000000, 2, 45, 5, 1, 1, 0),
- 	RK3036_PLL_RATE(100000000, 1, 150, 6, 6, 1, 0),
- 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
--	RK3036_PLL_RATE(78750000, 1, 96, 6, 4, 1, 0),
-+	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
- 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
- 	{ /* sentinel */ },
- };
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index 675f62814f94e..a81212c0ade9d 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -313,6 +313,7 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+ 	err = mtk_vcodec_mem_alloc(ctx, &msg_queue->wdma_addr);
+ 	if (err) {
+ 		mtk_v4l2_err("failed to allocate wdma_addr buf");
++		msg_queue->wdma_addr.size = 0;
+ 		return -ENOMEM;
+ 	}
+ 	msg_queue->wdma_rptr_addr = msg_queue->wdma_addr.dma_addr;
 -- 
 2.40.1
 
