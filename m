@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C287979AF3D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62AAA79B556
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237780AbjIKUvp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60910 "EHLO
+        id S241440AbjIKV7F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240301AbjIKOlC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:02 -0400
+        with ESMTP id S239037AbjIKOKH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724B5F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8B6C433C7;
-        Mon, 11 Sep 2023 14:40:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74FECF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A98C433C7;
+        Mon, 11 Sep 2023 14:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443257;
-        bh=RFnI1a6dkB24JAGQh402N3NrrTUVVQL0Ijb7F+oSFH8=;
+        s=korg; t=1694441402;
+        bh=7aJQPERL4gzErk7YKK1CG/K0F/GQs0s5FBPiXcRBRKQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LUD7IBnRo4zJzCvmBg5vsElRC9WCCz7xXZ2+kI3ac6RUJzCQmYJyGlSbvUWwEDPyB
-         qUapPFn/rgW489F7XKHibxPfhnI/Y5o0IkU9SnW0DCrCuRLaOYGwxWvMdFRm5F6Ds4
-         W4c5izrTY2Qok+OVkkkfnjobhkSdZEaGY2QjUomA=
+        b=BxvCrgWikBk7NWA/EwHtfeM+Qj/jEPZD4uupjDaFrCtn1SAjOUoaiLE7L+ORHAnRt
+         ElhbPZtOr3TVEvG33kI8KIm0kCk0voVqhrMkQ6IjJBDIcpIXGkICpqY/YZSyzoDX6I
+         adzV25RRzlFTtRXncZNKpsNlBsEyAe1j9fKmfbDo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Corey Minyard <minyard@acm.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 314/737] arm64: dts: qcom: sm8250-sony-xperia: correct GPIO keys wakeup again
+Subject: [PATCH 6.5 374/739] ipmi:ssif: Add check for kstrdup
 Date:   Mon, 11 Sep 2023 15:42:53 +0200
-Message-ID: <20230911134659.336451835@linuxfoundation.org>
+Message-ID: <20230911134701.610707736@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit b8fbeea0253211d97c579eae787274633d3eaf0d ]
+[ Upstream commit c5586d0f711e9744d0cade39b0c4a2d116a333ca ]
 
-gpio-keys,wakeup is a deprecated property:
+Add check for the return value of kstrdup() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-  m8250-sony-xperia-edo-pdx206.dtb: gpio-keys: key-camera-focus: Unevaluated properties are not allowed ('gpio-key,wakeup' was unexpected)
-
-Fixes: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230711063011.16222-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c4436c9149c5 ("ipmi_ssif: avoid registering duplicate ssif interface")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Message-Id: <20230619092802.35384-1-jiasheng@iscas.ac.cn>
+Signed-off-by: Corey Minyard <minyard@acm.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-index eb82247131c10..0268d80248e5c 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-@@ -60,7 +60,7 @@ key-camera-focus {
- 			gpios = <&pm8150b_gpios 2 GPIO_ACTIVE_LOW>;
- 			debounce-interval = <15>;
- 			linux,can-disable;
--			gpio-key,wakeup;
-+			wakeup-source;
- 		};
- 
- 		key-camera-snapshot {
-@@ -69,7 +69,7 @@ key-camera-snapshot {
- 			gpios = <&pm8150b_gpios 1 GPIO_ACTIVE_LOW>;
- 			debounce-interval = <15>;
- 			linux,can-disable;
--			gpio-key,wakeup;
-+			wakeup-source;
- 		};
- 
- 		key-vol-down {
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index 3b921c78ba083..3b87a2726e994 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1600,6 +1600,11 @@ static int ssif_add_infos(struct i2c_client *client)
+ 	info->addr_src = SI_ACPI;
+ 	info->client = client;
+ 	info->adapter_name = kstrdup(client->adapter->name, GFP_KERNEL);
++	if (!info->adapter_name) {
++		kfree(info);
++		return -ENOMEM;
++	}
++
+ 	info->binfo.addr = client->addr;
+ 	list_add_tail(&info->link, &ssif_infos);
+ 	return 0;
 -- 
 2.40.1
 
