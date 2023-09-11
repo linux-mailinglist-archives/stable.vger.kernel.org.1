@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF6A79BDDE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B30779BB84
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355746AbjIKWBu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42594 "EHLO
+        id S240900AbjIKVSA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239602AbjIKOYZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:25 -0400
+        with ESMTP id S240894AbjIKO4p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FDA7DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8786C433C8;
-        Mon, 11 Sep 2023 14:24:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79D5E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B6CC433C9;
+        Mon, 11 Sep 2023 14:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442260;
-        bh=9g8Sg1IlEtqrCSBAB0MFkzwDr6J1Mrg2kkE4MldwLGA=;
+        s=korg; t=1694444200;
+        bh=wniMVd1Ab9YMOLjSDrTD4Xd/8+xtbCB7+HtF+7ZUC0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jNQy9LUciy8VAaek6jVKNfvP+wX6LZVOnIWwgplMzwJC23PGzD6y554hu7P2Y/VI2
-         r27gdZW+jURaMRPBkvdjsXrvBE0kxdsg9cTNmNHuKDzqX37yTBYgjNM6riSvF6yIRr
-         Mrg6li+djJ9/yvYFZAPviK4lxmSha4ihYtDVcDC0=
+        b=Fk2a3ftEsqnUmdk1Z7kpwVODSp9HRT+wEnUw7N6P7zrarJDnN/GMbAlWuki7t4+sK
+         Onwkit2j3pw9L811jPdUJ7RehrV2+o7BXCT6hVQv8PN9Iv3A5neeeatu16vrm+tBhY
+         htrFLoWoFixA2uRNw5eH6KbAZo8mdmz18FyV9RFc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
-        Ash Holland <ash@sorrel.sh>
-Subject: [PATCH 6.5 676/739] ALSA: seq: Fix snd_seq_expand_var_event() call to user-space
-Date:   Mon, 11 Sep 2023 15:47:55 +0200
-Message-ID: <20230911134709.982682525@linuxfoundation.org>
+        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 617/737] thermal/drivers/imx8mm: Suppress log message on probe deferral
+Date:   Mon, 11 Sep 2023 15:47:56 +0200
+Message-ID: <20230911134707.766813407@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-commit 86496fd4a2fabb7c978fdaca2d4b718207a96d36 upstream.
+[ Upstream commit 4afcb58ea47e66c025d2b0a5f091dce5aaf95b0f ]
 
-The recent fix to clear the padding bytes at
-snd_seq_expand_var_event() broke the read to user-space with
-in_kernel=0 parameter.  For user-space address, it has to use
-clear_user() instead of memset().
+nvmem_cell_read_u32() may return -EPROBE_DEFER if NVMEM supplier has not
+yet been probed. Future reprobe may succeed, so printing:
 
-Fixes: f80e6d60d677 ("ALSA: seq: Clear padded bytes at expanding events")
-Reported-and-tested-by: Ash Holland <ash@sorrel.sh>
-Closes: https://lore.kernel.org/r/8a555319-9f31-4ea2-878f-adc338bc40d4@sorrel.sh
-Link: https://lore.kernel.org/r/20230905052631.18240-1-tiwai@suse.de
-Link: https://lore.kernel.org/r/20230905081210.6731-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  i.mx8mm_thermal 30260000.tmu: Failed to read OCOTP nvmem cell (-517).
+
+to the log is confusing. Fix this by using dev_err_probe. This also
+elevates the message from warning to error, which is more correct: The
+log message is only ever printed in probe error path and probe aborts
+afterwards, so it really warrants an error-level message.
+
+Fixes: 403291648823 ("thermal/drivers/imx: Add support for loading calibration data from OCOTP")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230708112647.2897294-1-a.fatoum@pengutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_memory.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/thermal/imx8mm_thermal.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/sound/core/seq/seq_memory.c
-+++ b/sound/core/seq/seq_memory.c
-@@ -187,8 +187,13 @@ int snd_seq_expand_var_event(const struc
- 	err = expand_var_event(event, 0, len, buf, in_kernel);
- 	if (err < 0)
- 		return err;
--	if (len != newlen)
--		memset(buf + len, 0, newlen - len);
-+	if (len != newlen) {
-+		if (in_kernel)
-+			memset(buf + len, 0, newlen - len);
-+		else if (clear_user((__force void __user *)buf + len,
-+				    newlen - len))
-+			return -EFAULT;
-+	}
- 	return newlen;
- }
- EXPORT_SYMBOL(snd_seq_expand_var_event);
+diff --git a/drivers/thermal/imx8mm_thermal.c b/drivers/thermal/imx8mm_thermal.c
+index d8005e9ec992b..1f780c4a1c890 100644
+--- a/drivers/thermal/imx8mm_thermal.c
++++ b/drivers/thermal/imx8mm_thermal.c
+@@ -179,10 +179,8 @@ static int imx8mm_tmu_probe_set_calib_v1(struct platform_device *pdev,
+ 	int ret;
+ 
+ 	ret = nvmem_cell_read_u32(&pdev->dev, "calib", &ana0);
+-	if (ret) {
+-		dev_warn(dev, "Failed to read OCOTP nvmem cell (%d).\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to read OCOTP nvmem cell\n");
+ 
+ 	writel(FIELD_PREP(TASR_BUF_VREF_MASK,
+ 			  FIELD_GET(ANA0_BUF_VREF_MASK, ana0)) |
+-- 
+2.40.1
+
 
 
