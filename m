@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F4FB79BF77
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24E3D79BFAB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354295AbjIKVxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
+        id S236574AbjIKV0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240227AbjIKOj3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:29 -0400
+        with ESMTP id S241299AbjIKPGL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1D0CF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA535C433C8;
-        Mon, 11 Sep 2023 14:39:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E80FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66680C433C7;
+        Mon, 11 Sep 2023 15:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443164;
-        bh=epapR4rCWpbCcWOJ81lVy8k7uhU0Z+4x8bXmCQFJJi0=;
+        s=korg; t=1694444766;
+        bh=B7YcQQlbXXmRryEeJnE6Ds1PY9emYbf6yhifTVhEHAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WD6uPhXfiGomrAhenA6ZdXCuDwC4jZRPwmj5xhvw9e+S82YcZiZ8ygY3dnXuA0m5G
-         ETs5TKbaDpdhgixzmP3CUVS1Ms2ztvYIG4XN05KmsisIEv/a5t0syM4nJFwuFydp8z
-         C+UO1iFT1FF2asC2cQbUMfFz9G60Qac6gh+4CTsM=
+        b=aOdzttqPvmLCfQ2Zqe5tvdAU5sdQjD59xWN++LJdXpfjrZOIH1bedPWMLA7akuhOM
+         ckAJ8V0pbqcE08oLf+PHNRuRSu9whRAmkQnAsnt59wZLm3YXdp4l9M0QKfkl8WRJyX
+         tRand5E1maVHygSI9DoozCzE9oND19f0DHvaGqAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Degdag Mohamed <degdagmohamed@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 281/737] arm64: dts: qcom: sm8150: use proper DSI PHY compatible
-Date:   Mon, 11 Sep 2023 15:42:20 +0200
-Message-ID: <20230911134658.418096283@linuxfoundation.org>
+Subject: [PATCH 6.1 108/600] ARM: ptrace: Restore syscall restart tracing
+Date:   Mon, 11 Sep 2023 15:42:21 +0200
+Message-ID: <20230911134636.787846296@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 3091e5820a367f3368132f57e0a9ba6d545da15d ]
+[ Upstream commit cf007647475b5090819c5fe8da771073145c7334 ]
 
-The DSI PHY on the Qualcomm SM8150 platform requires platform-specific
-handling. Use the proper SoC-specific compatible string for the DSI
-PHYs.
+Since commit 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store
+thread_info->abi_syscall"), the seccomp selftests "syscall_restart" has
+been broken. This was caused by the restart syscall not being stored to
+"abi_syscall" during restart setup before branching to the "local_restart"
+label. Tracers would see the wrong syscall, and scno would get overwritten
+while returning from the TIF_WORK path. Add the missing store.
 
-Reported-by: Degdag Mohamed <degdagmohamed@gmail.com>
-Fixes: 2ef3bb17c45c ("arm64: dts: qcom: sm8150: Add DISPCC node")
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230612031623.3620155-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Fixes: 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store thread_info->abi_syscall")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230810195422.2304827-1-keescook@chromium.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/kernel/entry-common.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index 27dcda0d4288f..fe2d401a858a7 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -3805,7 +3805,7 @@ opp-358000000 {
- 			};
- 
- 			mdss_dsi0_phy: phy@ae94400 {
--				compatible = "qcom,dsi-phy-7nm";
-+				compatible = "qcom,dsi-phy-7nm-8150";
- 				reg = <0 0x0ae94400 0 0x200>,
- 				      <0 0x0ae94600 0 0x280>,
- 				      <0 0x0ae94900 0 0x260>;
-@@ -3879,7 +3879,7 @@ mdss_dsi1_out: endpoint {
- 			};
- 
- 			mdss_dsi1_phy: phy@ae96400 {
--				compatible = "qcom,dsi-phy-7nm";
-+				compatible = "qcom,dsi-phy-7nm-8150";
- 				reg = <0 0x0ae96400 0 0x200>,
- 				      <0 0x0ae96600 0 0x280>,
- 				      <0 0x0ae96900 0 0x260>;
+diff --git a/arch/arm/kernel/entry-common.S b/arch/arm/kernel/entry-common.S
+index 405a607b754f4..b413b541c3c71 100644
+--- a/arch/arm/kernel/entry-common.S
++++ b/arch/arm/kernel/entry-common.S
+@@ -103,6 +103,7 @@ slow_work_pending:
+ 	cmp	r0, #0
+ 	beq	no_work_pending
+ 	movlt	scno, #(__NR_restart_syscall - __NR_SYSCALL_BASE)
++	str	scno, [tsk, #TI_ABI_SYSCALL]	@ make sure tracers see update
+ 	ldmia	sp, {r0 - r6}			@ have to reload r0 - r6
+ 	b	local_restart			@ ... and off we go
+ ENDPROC(ret_fast_syscall)
 -- 
 2.40.1
 
