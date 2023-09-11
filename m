@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFE5579AF57
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAE679AFC3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377779AbjIKW2g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:28:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38230 "EHLO
+        id S237153AbjIKV0V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241720AbjIKPMz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:55 -0400
+        with ESMTP id S240518AbjIKOqY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E810CFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7F2C433C7;
-        Mon, 11 Sep 2023 15:12:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB30106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB4FC433C9;
+        Mon, 11 Sep 2023 14:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445170;
-        bh=jZaX3XXJd6w62Ci/uSS/aE2S/h+AW2GLHPBs57RubmI=;
+        s=korg; t=1694443579;
+        bh=cuOIeAWaJH+gn8pAUQ5v/JDB3KSUChyIolC4uHtGctg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U51lFScmQ1vKrxFLh6q3l4sHT4O7QtgR9BX9ZqFhTM0yOYQdjc6EBtPjGFadI0YXA
-         8ljeee6tFGuf2bqd8zzaFcehuupYXAvppIA+AVoxDxQhVV/yleMaMFbiFIFdYkXL5U
-         xftKMiXvfh/+MF3f/SsPjgxR4a8Mo3Q/ZVXpS7HU=
+        b=saHocYBAhxW8iIlWeQpqMsbrVBZh52dd1QBHue96EtnnGAXsZQ3M4VJ7xmlybwfmU
+         wuVirLouHMXuEcg9F25uKS5NxmvO67DclRVZ1WaBAz64cgxW1K4tvjsfT0sOA2WLzi
+         5OI8RfFT/qk6yhP36Tt0xoze4OqwzzcchZMTR0Xg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Elwell <phil@raspberrypi.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/600] ASoC: cs43130: Fix numerator/denominator mixup
-Date:   Mon, 11 Sep 2023 15:44:05 +0200
-Message-ID: <20230911134639.875522165@linuxfoundation.org>
+Subject: [PATCH 6.4 388/737] arm64: dts: qcom: msm8998: Drop bus clock reference from MMSS SMMU
+Date:   Mon, 11 Sep 2023 15:44:07 +0200
+Message-ID: <20230911134701.427789792@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,196 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit a9e7c964cea4fb1541cc81a11d1b2fd135f4cf38 ]
+[ Upstream commit a3ce236364b82688ca4c7605f63c4efd68e9589c ]
 
-In converting to using the standard u16_fract type, commit [1] made the
-obvious mistake and failed to take account of the difference in
-numerator and denominator ordering, breaking all uses of the cs43130
-codec.
+The MMSS SMMU has been abusingly consuming the exposed RPM interconnect
+clock. Drop it.
 
-Fix it.
-
-[1] commit e14bd35ef446 ("ASoC: cs43130: Re-use generic struct u16_fract")
-
-Fixes: e14bd35ef446 ("ASoC: cs43130: Re-use generic struct u16_fract")
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230621153229.1944132-1-phil@raspberrypi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 05ce21b54423 ("arm64: dts: qcom: msm8998: Configure the multimedia subsystem iommu")
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-1-ba1b1fd9ee75@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs43130.h | 138 ++++++++++++++++++-------------------
- 1 file changed, 69 insertions(+), 69 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/cs43130.h b/sound/soc/codecs/cs43130.h
-index 1dd8936743132..90e8895275e77 100644
---- a/sound/soc/codecs/cs43130.h
-+++ b/sound/soc/codecs/cs43130.h
-@@ -381,88 +381,88 @@ struct cs43130_clk_gen {
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 3ec941fed14fe..0bc98d3602340 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2428,10 +2428,10 @@ mmss_smmu: iommu@cd00000 {
  
- /* frm_size = 16 */
- static const struct cs43130_clk_gen cs43130_16_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 441,	10, }, },
--	{ 22579200,	44100,		.v = { 32,	1, }, },
--	{ 22579200,	48000,		.v = { 147,	5, }, },
--	{ 22579200,	88200,		.v = { 16,	1, }, },
--	{ 22579200,	96000,		.v = { 147,	10, }, },
--	{ 22579200,	176400,		.v = { 8,	1, }, },
--	{ 22579200,	192000,		.v = { 147,	20, }, },
--	{ 22579200,	352800,		.v = { 4,	1, }, },
--	{ 22579200,	384000,		.v = { 147,	40, }, },
--	{ 24576000,	32000,		.v = { 48,	1, }, },
--	{ 24576000,	44100,		.v = { 5120,	147, }, },
--	{ 24576000,	48000,		.v = { 32,	1, }, },
--	{ 24576000,	88200,		.v = { 2560,	147, }, },
--	{ 24576000,	96000,		.v = { 16,	1, }, },
--	{ 24576000,	176400,		.v = { 1280,	147, }, },
--	{ 24576000,	192000,		.v = { 8,	1, }, },
--	{ 24576000,	352800,		.v = { 640,	147, }, },
--	{ 24576000,	384000,		.v = { 4,	1, }, },
-+	{ 22579200,	32000,		.v = { 10,	441, }, },
-+	{ 22579200,	44100,		.v = { 1,	32, }, },
-+	{ 22579200,	48000,		.v = { 5,	147, }, },
-+	{ 22579200,	88200,		.v = { 1,	16, }, },
-+	{ 22579200,	96000,		.v = { 10,	147, }, },
-+	{ 22579200,	176400,		.v = { 1,	8, }, },
-+	{ 22579200,	192000,		.v = { 20,	147, }, },
-+	{ 22579200,	352800,		.v = { 1,	4, }, },
-+	{ 22579200,	384000,		.v = { 40,	147, }, },
-+	{ 24576000,	32000,		.v = { 1,	48, }, },
-+	{ 24576000,	44100,		.v = { 147,	5120, }, },
-+	{ 24576000,	48000,		.v = { 1,	32, }, },
-+	{ 24576000,	88200,		.v = { 147,	2560, }, },
-+	{ 24576000,	96000,		.v = { 1,	16, }, },
-+	{ 24576000,	176400,		.v = { 147,	1280, }, },
-+	{ 24576000,	192000,		.v = { 1,	8, }, },
-+	{ 24576000,	352800,		.v = { 147,	640, }, },
-+	{ 24576000,	384000,		.v = { 1,	4, }, },
- };
+ 			clocks = <&mmcc MNOC_AHB_CLK>,
+ 				 <&mmcc BIMC_SMMU_AHB_CLK>,
+-				 <&rpmcc RPM_SMD_MMAXI_CLK>,
+ 				 <&mmcc BIMC_SMMU_AXI_CLK>;
+-			clock-names = "iface-mm", "iface-smmu",
+-				      "bus-mm", "bus-smmu";
++			clock-names = "iface-mm",
++				      "iface-smmu",
++				      "bus-smmu";
  
- /* frm_size = 32 */
- static const struct cs43130_clk_gen cs43130_32_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 441,	20, }, },
--	{ 22579200,	44100,		.v = { 16,	1, }, },
--	{ 22579200,	48000,		.v = { 147,	10, }, },
--	{ 22579200,	88200,		.v = { 8,	1, }, },
--	{ 22579200,	96000,		.v = { 147,	20, }, },
--	{ 22579200,	176400,		.v = { 4,	1, }, },
--	{ 22579200,	192000,		.v = { 147,	40, }, },
--	{ 22579200,	352800,		.v = { 2,	1, }, },
--	{ 22579200,	384000,		.v = { 147,	80, }, },
--	{ 24576000,	32000,		.v = { 24,	1, }, },
--	{ 24576000,	44100,		.v = { 2560,	147, }, },
--	{ 24576000,	48000,		.v = { 16,	1, }, },
--	{ 24576000,	88200,		.v = { 1280,	147, }, },
--	{ 24576000,	96000,		.v = { 8,	1, }, },
--	{ 24576000,	176400,		.v = { 640,	147, }, },
--	{ 24576000,	192000,		.v = { 4,	1, }, },
--	{ 24576000,	352800,		.v = { 320,	147, }, },
--	{ 24576000,	384000,		.v = { 2,	1, }, },
-+	{ 22579200,	32000,		.v = { 20,	441, }, },
-+	{ 22579200,	44100,		.v = { 1,	16, }, },
-+	{ 22579200,	48000,		.v = { 10,	147, }, },
-+	{ 22579200,	88200,		.v = { 1,	8, }, },
-+	{ 22579200,	96000,		.v = { 20,	147, }, },
-+	{ 22579200,	176400,		.v = { 1,	4, }, },
-+	{ 22579200,	192000,		.v = { 40,	147, }, },
-+	{ 22579200,	352800,		.v = { 1,	2, }, },
-+	{ 22579200,	384000,		.v = { 80,	147, }, },
-+	{ 24576000,	32000,		.v = { 1,	24, }, },
-+	{ 24576000,	44100,		.v = { 147,	2560, }, },
-+	{ 24576000,	48000,		.v = { 1,	16, }, },
-+	{ 24576000,	88200,		.v = { 147,	1280, }, },
-+	{ 24576000,	96000,		.v = { 1,	8, }, },
-+	{ 24576000,	176400,		.v = { 147,	640, }, },
-+	{ 24576000,	192000,		.v = { 1,	4, }, },
-+	{ 24576000,	352800,		.v = { 147,	320, }, },
-+	{ 24576000,	384000,		.v = { 1,	2, }, },
- };
- 
- /* frm_size = 48 */
- static const struct cs43130_clk_gen cs43130_48_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 147,	100, }, },
--	{ 22579200,	44100,		.v = { 32,	3, }, },
--	{ 22579200,	48000,		.v = { 49,	5, }, },
--	{ 22579200,	88200,		.v = { 16,	3, }, },
--	{ 22579200,	96000,		.v = { 49,	10, }, },
--	{ 22579200,	176400,		.v = { 8,	3, }, },
--	{ 22579200,	192000,		.v = { 49,	20, }, },
--	{ 22579200,	352800,		.v = { 4,	3, }, },
--	{ 22579200,	384000,		.v = { 49,	40, }, },
--	{ 24576000,	32000,		.v = { 16,	1, }, },
--	{ 24576000,	44100,		.v = { 5120,	441, }, },
--	{ 24576000,	48000,		.v = { 32,	3, }, },
--	{ 24576000,	88200,		.v = { 2560,	441, }, },
--	{ 24576000,	96000,		.v = { 16,	3, }, },
--	{ 24576000,	176400,		.v = { 1280,	441, }, },
--	{ 24576000,	192000,		.v = { 8,	3, }, },
--	{ 24576000,	352800,		.v = { 640,	441, }, },
--	{ 24576000,	384000,		.v = { 4,	3, }, },
-+	{ 22579200,	32000,		.v = { 100,	147, }, },
-+	{ 22579200,	44100,		.v = { 3,	32, }, },
-+	{ 22579200,	48000,		.v = { 5,	49, }, },
-+	{ 22579200,	88200,		.v = { 3,	16, }, },
-+	{ 22579200,	96000,		.v = { 10,	49, }, },
-+	{ 22579200,	176400,		.v = { 3,	8, }, },
-+	{ 22579200,	192000,		.v = { 20,	49, }, },
-+	{ 22579200,	352800,		.v = { 3,	4, }, },
-+	{ 22579200,	384000,		.v = { 40,	49, }, },
-+	{ 24576000,	32000,		.v = { 1,	16, }, },
-+	{ 24576000,	44100,		.v = { 441,	5120, }, },
-+	{ 24576000,	48000,		.v = { 3,	32, }, },
-+	{ 24576000,	88200,		.v = { 441,	2560, }, },
-+	{ 24576000,	96000,		.v = { 3,	16, }, },
-+	{ 24576000,	176400,		.v = { 441,	1280, }, },
-+	{ 24576000,	192000,		.v = { 3,	8, }, },
-+	{ 24576000,	352800,		.v = { 441,	640, }, },
-+	{ 24576000,	384000,		.v = { 3,	4, }, },
- };
- 
- /* frm_size = 64 */
- static const struct cs43130_clk_gen cs43130_64_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 441,	40, }, },
--	{ 22579200,	44100,		.v = { 8,	1, }, },
--	{ 22579200,	48000,		.v = { 147,	20, }, },
--	{ 22579200,	88200,		.v = { 4,	1, }, },
--	{ 22579200,	96000,		.v = { 147,	40, }, },
--	{ 22579200,	176400,		.v = { 2,	1, }, },
--	{ 22579200,	192000,		.v = { 147,	80, }, },
-+	{ 22579200,	32000,		.v = { 40,	441, }, },
-+	{ 22579200,	44100,		.v = { 1,	8, }, },
-+	{ 22579200,	48000,		.v = { 20,	147, }, },
-+	{ 22579200,	88200,		.v = { 1,	4, }, },
-+	{ 22579200,	96000,		.v = { 40,	147, }, },
-+	{ 22579200,	176400,		.v = { 1,	2, }, },
-+	{ 22579200,	192000,		.v = { 80,	147, }, },
- 	{ 22579200,	352800,		.v = { 1,	1, }, },
--	{ 24576000,	32000,		.v = { 12,	1, }, },
--	{ 24576000,	44100,		.v = { 1280,	147, }, },
--	{ 24576000,	48000,		.v = { 8,	1, }, },
--	{ 24576000,	88200,		.v = { 640,	147, }, },
--	{ 24576000,	96000,		.v = { 4,	1, }, },
--	{ 24576000,	176400,		.v = { 320,	147, }, },
--	{ 24576000,	192000,		.v = { 2,	1, }, },
--	{ 24576000,	352800,		.v = { 160,	147, }, },
-+	{ 24576000,	32000,		.v = { 1,	12, }, },
-+	{ 24576000,	44100,		.v = { 147,	1280, }, },
-+	{ 24576000,	48000,		.v = { 1,	8, }, },
-+	{ 24576000,	88200,		.v = { 147,	640, }, },
-+	{ 24576000,	96000,		.v = { 1,	4, }, },
-+	{ 24576000,	176400,		.v = { 147,	320, }, },
-+	{ 24576000,	192000,		.v = { 1,	2, }, },
-+	{ 24576000,	352800,		.v = { 147,	160, }, },
- 	{ 24576000,	384000,		.v = { 1,	1, }, },
- };
- 
+ 			#global-interrupts = <0>;
+ 			interrupts =
 -- 
 2.40.1
 
