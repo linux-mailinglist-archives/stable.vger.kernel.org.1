@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98C479BB0F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 638D779B809
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358417AbjIKWKp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:10:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38498 "EHLO
+        id S1353278AbjIKVuF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242283AbjIKP0w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:26:52 -0400
+        with ESMTP id S241041AbjIKPA2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:00:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB19CE4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:26:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4012BC433C7;
-        Mon, 11 Sep 2023 15:26:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE44BE40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:00:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDE7C433C7;
+        Mon, 11 Sep 2023 15:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446007;
-        bh=kvCF6bShjucvA/ViKFbGM3MU93mIDXoQ8l+ghbtpp2U=;
+        s=korg; t=1694444422;
+        bh=ZISMgDT3cMFgS831g13yixoZlGtdjwE6e+FnOZnvGzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=stBL3lne00wszQl7OFycp+BXK7wM2cqUyjXs117H6gn5vfxvlp8hO+IBA80U0QP96
-         61wXhnuRBZg8jwV7xV2K/lN0vLrMFWzENlVAjcK0gNdUtmfWg6pRFj3brqBxXCrJZ7
-         8cyjyhmuy7946+AyZfW/bpdLC++kJ6ovlHg46vE8=
+        b=ALzR6UpRmLh+eGFJRuxfr7Mqp9MhcV+zqFou0o3DjWbRoYbVCdnRTAxAXtxPcORi0
+         MAZpYWKT1yJtL2VGU08q0QSzLb/2LKyObt6abAS3SJctyVC5hyEAKPRSS4kotAY0dA
+         OpW0tSg3Hpu0IeGEBy4t0T6LipvHVB7N2eAW4+kY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ranjan Kumar <ranjan.kumar@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 550/600] scsi: mpt3sas: Perform additional retries if doorbell read returns 0
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.4 724/737] media: ipu3-cio2: allow ipu_bridge to be a module again
 Date:   Mon, 11 Sep 2023 15:49:43 +0200
-Message-ID: <20230911134649.853324241@linuxfoundation.org>
+Message-ID: <20230911134710.734386464@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,186 +50,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Arnd Bergmann <arnd@kernel.org>
 
-commit 4ca10f3e31745d35249a727ecd108eb58f0a8c5e upstream.
+commit 2545a2c02ba1da9cfb9ec218623c71b00eb4a555 upstream.
 
-The driver retries certain register reads 3 times if the returned value is
-0. This was done because the controller could return 0 for certain
-registers if other registers were being accessed concurrently by the BMC.
+This code was previously part of the VIDEO_IPU3_CIO2 driver, which could
+be built-in or a loadable module, but after the move it turned into a
+builtin-only driver. This fails to link when the I2C subsystem is a
+module:
 
-In certain systems with increased BMC interactions, the register values
-returned can be 0 for longer than 3 retries. Change the retry count from 3
-to 30 for the affected registers to prevent problems with out-of-band
-management.
+x86_64-linux-ld: drivers/media/pci/intel/ipu-bridge.o: in function `ipu_bridge_unregister_sensors':
+ipu-bridge.c:(.text+0x50): undefined reference to `i2c_unregister_device'
+x86_64-linux-ld: drivers/media/pci/intel/ipu-bridge.o: in function `ipu_bridge_init':
+ipu-bridge.c:(.text+0x9c9): undefined reference to `i2c_acpi_new_device_by_fwnode'
 
-Fixes: b899202901a8 ("scsi: mpt3sas: Add separate function for aero doorbell reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+In general, drivers should not have to be built-in, so change the option
+to a tristate with the corresponding dependency. This in turn opens a
+new problem with the dependency, as the IPU bridge can be a loadable module
+while the ipu3 driver itself is built-in, producing a new link failure:
+
+86_64-linux-ld: drivers/media/pci/intel/ipu3/ipu3-cio2.o: in function `cio2_pci_probe':
+ipu3-cio2.c:(.text+0x197e): undefined reference to `ipu_bridge_init'
+
+In order to fix this, restore the old Kconfig option that controlled
+the ipu bridge driver before it was split out, but make it select a
+hidden symbol that now corresponds to the bridge driver.
+
+When other drivers get added that share ipu-bridge, this should cover
+all corner cases, and allow any combination of them to be built-in
+or modular.
+
+Link: https://lore.kernel.org/linux-media/20230727122331.2421453-1-arnd@kernel.org
+
+Fixes: 881ca25978c6 ("media: ipu3-cio2: rename cio2 bridge to ipu bridge and move out of ipu3")'
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c |   46 +++++++++++++++++++++++++-----------
- drivers/scsi/mpt3sas/mpt3sas_base.h |    1 
- 2 files changed, 34 insertions(+), 13 deletions(-)
+ drivers/media/pci/intel/Kconfig      |   21 +++++----------------
+ drivers/media/pci/intel/ipu-bridge.c |    3 +++
+ drivers/media/pci/intel/ipu3/Kconfig |   20 ++++++++++++++++++++
+ 3 files changed, 28 insertions(+), 16 deletions(-)
 
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -139,6 +139,9 @@ _base_get_ioc_facts(struct MPT3SAS_ADAPT
- static void
- _base_clear_outstanding_commands(struct MPT3SAS_ADAPTER *ioc);
+--- a/drivers/media/pci/intel/Kconfig
++++ b/drivers/media/pci/intel/Kconfig
+@@ -1,21 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config IPU_BRIDGE
+-	bool "Intel IPU Sensors Bridge"
+-	depends on VIDEO_IPU3_CIO2 && ACPI
+-	depends on I2C
++	tristate
++	depends on I2C && ACPI
+ 	help
+-	  This extension provides an API for the Intel IPU driver to create
+-	  connections to cameras that are hidden in the SSDB buffer in ACPI.
+-	  It can be used to enable support for cameras in detachable / hybrid
+-	  devices that ship with Windows.
+-
+-	  Say Y here if your device is a detachable / hybrid laptop that comes
+-	  with Windows installed by the OEM, for example:
+-
+-		- Microsoft Surface models (except Surface Pro 3)
+-		- The Lenovo Miix line (for example the 510, 520, 710 and 720)
+-		- Dell 7285
+-
+-	  If in doubt, say N here.
++	  This is a helper module for the IPU bridge, which can be
++	  used by ipu3 and other drivers. In order to handle module
++	  dependencies, this is selected by each driver that needs it.
  
-+static u32
-+_base_readl_ext_retry(const volatile void __iomem *addr);
-+
- /**
-  * mpt3sas_base_check_cmd_timeout - Function
-  *		to check timeout and command termination due
-@@ -214,6 +217,20 @@ _base_readl_aero(const volatile void __i
- 	return ret_val;
+ source "drivers/media/pci/intel/ipu3/Kconfig"
+--- a/drivers/media/pci/intel/ipu-bridge.c
++++ b/drivers/media/pci/intel/ipu-bridge.c
+@@ -497,3 +497,6 @@ err_free_bridge:
+ 	return ret;
  }
- 
-+static u32
-+_base_readl_ext_retry(const volatile void __iomem *addr)
-+{
-+	u32 i, ret_val;
+ EXPORT_SYMBOL_NS_GPL(ipu_bridge_init, INTEL_IPU_BRIDGE);
 +
-+	for (i = 0 ; i < 30 ; i++) {
-+		ret_val = readl(addr);
-+		if (ret_val == 0)
-+			continue;
-+	}
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Intel IPU Sensors Bridge driver");
+--- a/drivers/media/pci/intel/ipu3/Kconfig
++++ b/drivers/media/pci/intel/ipu3/Kconfig
+@@ -8,6 +8,7 @@ config VIDEO_IPU3_CIO2
+ 	select VIDEO_V4L2_SUBDEV_API
+ 	select V4L2_FWNODE
+ 	select VIDEOBUF2_DMA_SG
++	select IPU_BRIDGE if CIO2_BRIDGE
+ 
+ 	help
+ 	  This is the Intel IPU3 CIO2 CSI-2 receiver unit, found in Intel
+@@ -17,3 +18,22 @@ config VIDEO_IPU3_CIO2
+ 	  Say Y or M here if you have a Skylake/Kaby Lake SoC with MIPI CSI-2
+ 	  connected camera.
+ 	  The module will be called ipu3-cio2.
 +
-+	return ret_val;
-+}
++config CIO2_BRIDGE
++	bool "IPU3 CIO2 Sensors Bridge"
++	depends on VIDEO_IPU3_CIO2 && ACPI
++	depends on I2C
++	help
++	  This extension provides an API for the ipu3-cio2 driver to create
++	  connections to cameras that are hidden in the SSDB buffer in ACPI.
++	  It can be used to enable support for cameras in detachable / hybrid
++	  devices that ship with Windows.
 +
- static inline u32
- _base_readl(const volatile void __iomem *addr)
- {
-@@ -941,7 +958,7 @@ mpt3sas_halt_firmware(struct MPT3SAS_ADA
- 
- 	dump_stack();
- 
--	doorbell = ioc->base_readl(&ioc->chip->Doorbell);
-+	doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 	if ((doorbell & MPI2_IOC_STATE_MASK) == MPI2_IOC_STATE_FAULT) {
- 		mpt3sas_print_fault_code(ioc, doorbell &
- 		    MPI2_DOORBELL_DATA_MASK);
-@@ -6697,7 +6714,7 @@ mpt3sas_base_get_iocstate(struct MPT3SAS
- {
- 	u32 s, sc;
- 
--	s = ioc->base_readl(&ioc->chip->Doorbell);
-+	s = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 	sc = s & MPI2_IOC_STATE_MASK;
- 	return cooked ? sc : s;
- }
-@@ -6842,7 +6859,7 @@ _base_wait_for_doorbell_ack(struct MPT3S
- 					   __func__, count, timeout));
- 			return 0;
- 		} else if (int_status & MPI2_HIS_IOC2SYS_DB_STATUS) {
--			doorbell = ioc->base_readl(&ioc->chip->Doorbell);
-+			doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 			if ((doorbell & MPI2_IOC_STATE_MASK) ==
- 			    MPI2_IOC_STATE_FAULT) {
- 				mpt3sas_print_fault_code(ioc, doorbell);
-@@ -6882,7 +6899,7 @@ _base_wait_for_doorbell_not_used(struct
- 	count = 0;
- 	cntdn = 1000 * timeout;
- 	do {
--		doorbell_reg = ioc->base_readl(&ioc->chip->Doorbell);
-+		doorbell_reg = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 		if (!(doorbell_reg & MPI2_DOORBELL_USED)) {
- 			dhsprintk(ioc,
- 				  ioc_info(ioc, "%s: successful count(%d), timeout(%d)\n",
-@@ -7030,7 +7047,7 @@ _base_handshake_req_reply_wait(struct MP
- 	__le32 *mfp;
- 
- 	/* make sure doorbell is not in use */
--	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
-+	if ((ioc->base_readl_ext_retry(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
- 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
- 		return -EFAULT;
- 	}
-@@ -7079,7 +7096,7 @@ _base_handshake_req_reply_wait(struct MP
- 	}
- 
- 	/* read the first two 16-bits, it gives the total length of the reply */
--	reply[0] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
-+	reply[0] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
- 	    & MPI2_DOORBELL_DATA_MASK);
- 	writel(0, &ioc->chip->HostInterruptStatus);
- 	if ((_base_wait_for_doorbell_int(ioc, 5))) {
-@@ -7087,7 +7104,7 @@ _base_handshake_req_reply_wait(struct MP
- 			__LINE__);
- 		return -EFAULT;
- 	}
--	reply[1] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
-+	reply[1] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
- 	    & MPI2_DOORBELL_DATA_MASK);
- 	writel(0, &ioc->chip->HostInterruptStatus);
- 
-@@ -7098,10 +7115,10 @@ _base_handshake_req_reply_wait(struct MP
- 			return -EFAULT;
- 		}
- 		if (i >=  reply_bytes/2) /* overflow case */
--			ioc->base_readl(&ioc->chip->Doorbell);
-+			ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 		else
- 			reply[i] = le16_to_cpu(
--			    ioc->base_readl(&ioc->chip->Doorbell)
-+			    ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
- 			    & MPI2_DOORBELL_DATA_MASK);
- 		writel(0, &ioc->chip->HostInterruptStatus);
- 	}
-@@ -7960,7 +7977,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER
- 			goto out;
- 		}
- 
--		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
-+		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
- 		drsprintk(ioc,
- 			  ioc_info(ioc, "wrote magic sequence: count(%d), host_diagnostic(0x%08x)\n",
- 				   count, host_diagnostic));
-@@ -7980,7 +7997,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER
- 	for (count = 0; count < (300000000 /
- 		MPI2_HARD_RESET_PCIE_SECOND_READ_DELAY_MICRO_SEC); count++) {
- 
--		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
-+		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
- 
- 		if (host_diagnostic == 0xFFFFFFFF) {
- 			ioc_info(ioc,
-@@ -8370,10 +8387,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
- 	ioc->rdpq_array_enable_assigned = 0;
- 	ioc->use_32bit_dma = false;
- 	ioc->dma_mask = 64;
--	if (ioc->is_aero_ioc)
-+	if (ioc->is_aero_ioc) {
- 		ioc->base_readl = &_base_readl_aero;
--	else
-+		ioc->base_readl_ext_retry = &_base_readl_ext_retry;
-+	} else {
- 		ioc->base_readl = &_base_readl;
-+		ioc->base_readl_ext_retry = &_base_readl;
-+	}
- 	r = mpt3sas_base_map_resources(ioc);
- 	if (r)
- 		goto out_free_resources;
---- a/drivers/scsi/mpt3sas/mpt3sas_base.h
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
-@@ -1618,6 +1618,7 @@ struct MPT3SAS_ADAPTER {
- 	u8		diag_trigger_active;
- 	u8		atomic_desc_capable;
- 	BASE_READ_REG	base_readl;
-+	BASE_READ_REG	base_readl_ext_retry;
- 	struct SL_WH_MASTER_TRIGGER_T diag_trigger_master;
- 	struct SL_WH_EVENT_TRIGGERS_T diag_trigger_event;
- 	struct SL_WH_SCSI_TRIGGERS_T diag_trigger_scsi;
++	  Say Y here if your device is a detachable / hybrid laptop that comes
++	  with Windows installed by the OEM, for example:
++
++		- Microsoft Surface models (except Surface Pro 3)
++		- The Lenovo Miix line (for example the 510, 520, 710 and 720)
++		- Dell 7285
++
++	  If in doubt, say N here.
 
 
