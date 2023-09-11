@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00FCC79B618
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44AFA79BB2A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355258AbjIKV5j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57270 "EHLO
+        id S244190AbjIKV3M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:29:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240946AbjIKO5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:43 -0400
+        with ESMTP id S239655AbjIKOZg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5F4E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F30EC433CA;
-        Mon, 11 Sep 2023 14:57:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE879DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE99C433C7;
+        Mon, 11 Sep 2023 14:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444259;
-        bh=/kpNMW48JpbR8w1YiJc+WFmEQOnM0KPTZTsAjJxjehA=;
+        s=korg; t=1694442331;
+        bh=GQS+OrgjP/ZfJNMjtCeHhUdk5Melgb+1OVuHAhU/Stc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rkN1UkIakOXcAPybgQ71NUxIHb/lXutrfbAvOp2YCSIFb5bHp4JbOCynMwigczoLy
-         hU2JfZRcawP+mteYUcPo94Md9QPIcimI+3o5iXIhqePV9Bb6hcjUCHLtKpWUodXEKs
-         MBvsykXwMoN3HXw7Xgwsb7a9dyFDuhF/TYih8bA8=
+        b=1fv9we5aL3i6sF6db/IxyMgrSphhfHBHpFUQNEr+vorV5cs28ZhJOhHsgyBbgEi9A
+         PvS+Hm9ni5hVc0P53BX7fjHXTYdVxCnIwR1PADKp8L5wTp/3gSshtl6bbMNfq80qgg
+         HROThhgTwEzQqncq8CNtbPLxsJNP5XNSYuYYAbKU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Swapnil Patel <swapnil.patel@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.4 666/737] drm/amd/display: register edp_backlight_control() for DCN301
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.5 726/739] x86/build: Fix linker fill bytes quirk/incompatibility for ld.lld
 Date:   Mon, 11 Sep 2023 15:48:45 +0200
-Message-ID: <20230911134709.148260336@linuxfoundation.org>
+Message-ID: <20230911134711.351686864@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Song Liu <song@kernel.org>
 
-commit 1611917f39bee1abfc01501238db8ac19649042d upstream.
+commit 65e710899fd19f435f40268f3a92dfaa11f14470 upstream.
 
-As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
-intermittent black screen during PnP"), we need to turn off the
-display's backlight before powering off an eDP display. Not doing so
-will result in undefined behaviour according to the eDP spec. So, set
-DCN301's edp_backlight_control() function pointer to
-dce110_edp_backlight_control().
+With ":text =0xcccc", ld.lld fills unused text area with 0xcccc0000.
+Example objdump -D output:
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
-Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
-Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+	ffffffff82b04203:       00 00                   add    %al,(%rax)
+	ffffffff82b04205:       cc                      int3
+	ffffffff82b04206:       cc                      int3
+	ffffffff82b04207:       00 00                   add    %al,(%rax)
+	ffffffff82b04209:       cc                      int3
+	ffffffff82b0420a:       cc                      int3
+
+Replace it with ":text =0xcccccccc", so we get the following instead:
+
+	ffffffff82b04203:       cc                      int3
+	ffffffff82b04204:       cc                      int3
+	ffffffff82b04205:       cc                      int3
+	ffffffff82b04206:       cc                      int3
+	ffffffff82b04207:       cc                      int3
+	ffffffff82b04208:       cc                      int3
+
+gcc/ld doesn't seem to have the same issue. The generated code stays the
+same for gcc/ld.
+
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 7705dc855797 ("x86/vmlinux: Use INT3 instead of NOP for linker fill bytes")
+Link: https://lore.kernel.org/r/20230906175215.2236033-1-song@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/vmlinux.lds.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-@@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs d
- 	.get_hw_state = dcn10_get_hw_state,
- 	.clear_status_bits = dcn10_clear_status_bits,
- 	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
-+	.edp_backlight_control = dce110_edp_backlight_control,
- 	.edp_power_control = dce110_edp_power_control,
- 	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
- 	.set_cursor_position = dcn10_set_cursor_position,
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -156,7 +156,7 @@ SECTIONS
+ 		ALIGN_ENTRY_TEXT_END
+ 		*(.gnu.warning)
+ 
+-	} :text =0xcccc
++	} :text = 0xcccccccc
+ 
+ 	/* End of text section, which should occupy whole number of pages */
+ 	_etext = .;
 
 
