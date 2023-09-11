@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB25079BE76
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3CE79BD72
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbjIKUwe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47522 "EHLO
+        id S1378863AbjIKWhl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238747AbjIKOEI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:08 -0400
+        with ESMTP id S240147AbjIKOhr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D07CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B52CC433C8;
-        Mon, 11 Sep 2023 14:04:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7F5F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A5EC433C8;
+        Mon, 11 Sep 2023 14:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441043;
-        bh=jigvmVxwQaaIqSVHKG+bT6zGyBPu2EJHbtzFmlkQNTM=;
+        s=korg; t=1694443062;
+        bh=W0nqTaMHlmwwXpa5Y3y7ljzUIu7/FlR1kuRPtZ6TU2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yl2QOA5eclGNUM9nmcagLrTrgJ0T1NZAbN9YpT8ngDdw+CE/D1Xr2KtjITPoxpXFu
-         XUZqNi1VAretcC28sNv7c3TONKKVrGyAikeUOBylCAqzjWK/OsyGpSGjzhtb1b+7Tx
-         N4/sRoCYdUQLhILCBfWYn00e48xTUVWCWYB4pr9M=
+        b=r4cy+QTvskK/v+x/9YlWSrOxc8LQQe+UlIQxGc4UBJDwNLmklfM9mUt/65wk+JZH5
+         7jJ6XcFdcyF0eHo8DzSiDk2Xw1nq9y1I05qiJMWYr8utD5VM9w0esXnQz8Opq4cQdG
+         BQcHPtSl7/qJHoQ+Uj1y0ItqM7bUnPSRtB25dUWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 275/739] arm64: dts: qcom: sc8180x-pmics: add missing gpio-ranges
+Subject: [PATCH 6.4 215/737] net-memcg: Fix scope of sockmem pressure indicators
 Date:   Mon, 11 Sep 2023 15:41:14 +0200
-Message-ID: <20230911134658.808240129@linuxfoundation.org>
+Message-ID: <20230911134656.596497945@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +51,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-[ Upstream commit 565951b1202e1984154abaae4567f16f8073fca3 ]
+[ Upstream commit ac8a52962164a50e693fa021d3564d7745b83a7f ]
 
-The GPIO children of PMICs should use gpio-ranges:
+Now there are two indicators of socket memory pressure sit inside
+struct mem_cgroup, socket_pressure and tcpmem_pressure, indicating
+memory reclaim pressure in memcg->memory and ->tcpmem respectively.
 
-  sc8180x-primus.dtb: pmic@0: gpio@c000: 'gpio-ranges' is a required property
+When in legacy mode (cgroupv1), the socket memory is charged into
+->tcpmem which is independent of ->memory, so socket_pressure has
+nothing to do with socket's pressure at all. Things could be worse
+by taking socket_pressure into consideration in legacy mode, as a
+pressure in ->memory can lead to premature reclamation/throttling
+in socket.
 
-Fixes: d3302290f59e ("arm64: dts: qcom: sc8180x: Add pmics")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vinod Koul <vkoul@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230720083500.73554-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+While for the default mode (cgroupv2), the socket memory is charged
+into ->memory, and ->tcpmem/->tcpmem_pressure are simply not used.
+
+So {socket,tcpmem}_pressure are only used in default/legacy mode
+respectively for indicating socket memory pressure. This patch fixes
+the pieces of code that make mixed use of both.
+
+Fixes: 8e8ae645249b ("mm: memcontrol: hook up vmpressure to socket pressure")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/memcontrol.h | 9 +++++++--
+ mm/vmpressure.c            | 8 ++++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi b/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi
-index 675cad1fc53ba..b96ae45cd2df4 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi
-@@ -145,6 +145,7 @@ pmc8180_gpios: gpio@c000 {
- 			compatible = "qcom,pmc8180-gpio", "qcom,spmi-gpio";
- 			reg = <0xc000>;
- 			gpio-controller;
-+			gpio-ranges = <&pmc8180_gpios 0 0 10>;
- 			#gpio-cells = <2>;
- 			interrupt-controller;
- 			#interrupt-cells = <2>;
-@@ -303,6 +304,7 @@ pmc8180c_gpios: gpio@c000 {
- 			compatible = "qcom,pmc8180c-gpio", "qcom,spmi-gpio";
- 			reg = <0xc000>;
- 			gpio-controller;
-+			gpio-ranges = <&pmc8180c_gpios 0 0 12>;
- 			#gpio-cells = <2>;
- 			interrupt-controller;
- 			#interrupt-cells = <2>;
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 222d7370134c7..7f2921217f50b 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -284,6 +284,11 @@ struct mem_cgroup {
+ 	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+ 	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
+ 
++	/*
++	 * Hint of reclaim pressure for socket memroy management. Note
++	 * that this indicator should NOT be used in legacy cgroup mode
++	 * where socket memory is accounted/charged separately.
++	 */
+ 	unsigned long		socket_pressure;
+ 
+ 	/* Legacy tcp memory accounting */
+@@ -1743,8 +1748,8 @@ void mem_cgroup_sk_alloc(struct sock *sk);
+ void mem_cgroup_sk_free(struct sock *sk);
+ static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
+ {
+-	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && memcg->tcpmem_pressure)
+-		return true;
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return !!memcg->tcpmem_pressure;
+ 	do {
+ 		if (time_before(jiffies, READ_ONCE(memcg->socket_pressure)))
+ 			return true;
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index b52644771cc43..22c6689d93027 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -244,6 +244,14 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, bool tree,
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
++	/*
++	 * The in-kernel users only care about the reclaim efficiency
++	 * for this @memcg rather than the whole subtree, and there
++	 * isn't and won't be any in-kernel user in a legacy cgroup.
++	 */
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
++		return;
++
+ 	vmpr = memcg_to_vmpressure(memcg);
+ 
+ 	/*
 -- 
 2.40.1
 
