@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C39A179B1DC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 346F479AE60
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376315AbjIKWTL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:19:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
+        id S1353821AbjIKVuq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240551AbjIKOrE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:04 -0400
+        with ESMTP id S240553AbjIKOrG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA412125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A99BC433C8;
-        Mon, 11 Sep 2023 14:46:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97ADA125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECE6C433C9;
+        Mon, 11 Sep 2023 14:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443619;
-        bh=EPI6Atk0Yps1otKiLElj0acRiJh4u3+DqOwUPtwUV2E=;
+        s=korg; t=1694443622;
+        bh=X2HFYFZBr6hfqjYuk6ZkDGk54TTCmhJNMtBKulp82DA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BoBuZrWgp1e9infGhxB2xE/+Zrtw/5P3qS8dLewcBF+x1L6XLkerCEjw399h2csdi
-         jxuPlyFOFFzR5W6LOAuW6KzeeYysMVbsB+HeN/EjCNYofj5b3DFcZhmrrMMXyvZX2o
-         vAkjJ6HvuotwbDCOfsXME/BYtC4Xp+s4Ia+lQV7Q=
+        b=LBuBQNbUMxRh5lqbLQdZEvut5RNVlf4VeP5OlEEy53q/n9izpf+xdFhUfDIbhqo4G
+         gN+MBZSemqoAb7zJELVZFbphQ/+B4CCwmSafJGJjrZuOhg/jVlklb9IFbAa4BXVorZ
+         KXprPRMMIPmxfOL4QRCyQYbrO/FrYX6iJQFKMfVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Imran Shaik <quic_imrashai@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 441/737] clk: qcom: gcc-qdu1000: Fix clkref clocks handling
-Date:   Mon, 11 Sep 2023 15:45:00 +0200
-Message-ID: <20230911134702.918107208@linuxfoundation.org>
+Subject: [PATCH 6.4 442/737] dt-bindings: clock: Update GCC clocks for QDU1000 and QRU1000 SoCs
+Date:   Mon, 11 Sep 2023 15:45:01 +0200
+Message-ID: <20230911134702.944900721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -57,60 +57,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Imran Shaik <quic_imrashai@quicinc.com>
 
-[ Upstream commit 2524dae5cd453ca39e8ba1b95c2755a8a2d94059 ]
+[ Upstream commit df873243b2398a082d34a006bebe0e0ed7538f5c ]
 
-Update the GCC clkref clock's halt_check to BRANCH_HALT, as it's
-status bit is not inverted in the latest hardware version of QDU1000
-and QRU1000 SoCs. While at it, fix the gcc clkref clock ops as well.
+Add support for GCC_GPLL1_OUT_EVEN and GCC_DDRSS_ECPRI_GSI_CLK clock
+bindings for QDU1000 and QRU1000 SoCs. While at it, update the
+maintainers list.
 
-Fixes: 1c9efb0bc040 ("clk: qcom: Add QDU1000 and QRU1000 GCC support")
 Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230803105741.2292309-4-quic_imrashai@quicinc.com
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20230803105741.2292309-2-quic_imrashai@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 06d71fa10f2e ("clk: qcom: gcc-qdu1000: Register gcc_gpll1_out_even clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qdu1000.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml | 3 ++-
+ include/dt-bindings/clock/qcom,qdu1000-gcc.h                  | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
-index c00d26a3e6df5..8df7b79839680 100644
---- a/drivers/clk/qcom/gcc-qdu1000.c
-+++ b/drivers/clk/qcom/gcc-qdu1000.c
-@@ -1447,14 +1447,13 @@ static struct clk_branch gcc_pcie_0_cfg_ahb_clk = {
+diff --git a/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml
+index 767a9d03aa327..d712b1a87e25f 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,qdu1000-gcc.yaml
+@@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Qualcomm Global Clock & Reset Controller for QDU1000 and QRU1000
  
- static struct clk_branch gcc_pcie_0_clkref_en = {
- 	.halt_reg = 0x9c004,
--	.halt_bit = 31,
--	.halt_check = BRANCH_HALT_ENABLE,
-+	.halt_check = BRANCH_HALT,
- 	.clkr = {
- 		.enable_reg = 0x9c004,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_pcie_0_clkref_en",
--			.ops = &clk_branch_ops,
-+			.ops = &clk_branch2_ops,
- 		},
- 	},
- };
-@@ -2274,14 +2273,13 @@ static struct clk_branch gcc_tsc_etu_clk = {
+ maintainers:
+-  - Melody Olvera <quic_molvera@quicinc.com>
++  - Taniya Das <quic_tdas@quicinc.com>
++  - Imran Shaik <quic_imrashai@quicinc.com>
  
- static struct clk_branch gcc_usb2_clkref_en = {
- 	.halt_reg = 0x9c008,
--	.halt_bit = 31,
--	.halt_check = BRANCH_HALT_ENABLE,
-+	.halt_check = BRANCH_HALT,
- 	.clkr = {
- 		.enable_reg = 0x9c008,
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_usb2_clkref_en",
--			.ops = &clk_branch_ops,
-+			.ops = &clk_branch2_ops,
- 		},
- 	},
- };
+ description: |
+   Qualcomm global clock control module which supports the clocks, resets and
+diff --git a/include/dt-bindings/clock/qcom,qdu1000-gcc.h b/include/dt-bindings/clock/qcom,qdu1000-gcc.h
+index ddbc6b825e80c..2fd36cbfddbb2 100644
+--- a/include/dt-bindings/clock/qcom,qdu1000-gcc.h
++++ b/include/dt-bindings/clock/qcom,qdu1000-gcc.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
+ /*
+- * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2023, Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #ifndef _DT_BINDINGS_CLK_QCOM_GCC_QDU1000_H
+@@ -138,6 +138,8 @@
+ #define GCC_AGGRE_NOC_ECPRI_GSI_CLK			128
+ #define GCC_PCIE_0_PIPE_CLK_SRC				129
+ #define GCC_PCIE_0_PHY_AUX_CLK_SRC			130
++#define GCC_GPLL1_OUT_EVEN				131
++#define GCC_DDRSS_ECPRI_GSI_CLK				132
+ 
+ /* GCC resets */
+ #define GCC_ECPRI_CC_BCR				0
 -- 
 2.40.1
 
