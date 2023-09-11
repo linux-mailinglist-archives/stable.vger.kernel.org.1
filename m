@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9BE179B7F2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF72779BD81
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355625AbjIKWBc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53170 "EHLO
+        id S242075AbjIKVHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241078AbjIKPBX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:23 -0400
+        with ESMTP id S242318AbjIKP1i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AE1A125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DCEC433C7;
-        Mon, 11 Sep 2023 15:01:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968E6E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8B7C433C8;
+        Mon, 11 Sep 2023 15:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444479;
-        bh=IDYk3jvAmenvlQTpyGHXrdTLdYPxTmDOwhRVxH4UNhY=;
+        s=korg; t=1694446052;
+        bh=LyS0mwWuIKFo+UJYD4zlE2A7I1Xlb6cXXmI/yl51wLE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CegvH9sULCpKjbYTyFgGjghsOdLnLAFoz6p33CcdWEq7q3F32Nx0+2dKqZHunk/dH
-         Y3abge64MAISsPzORz2jz1S+TQWeFEzRGL/Q1yAayrj9uEuO6r8HmxcwC6Dms2V4sZ
-         nDVVoUdfPH2ft41NZwlGkH7fm96TJn2WYMnDtpeg=
+        b=KRAD7B25tcDgZrblnRWX8sUs2vwtMZ7EHLKpCumj3CyejAwD6UKZLAfUBxahP19lh
+         vbpM6bB2hWz6ZK90C2Of17duK0O0aWPBsBEkLB5aDtP18RdGTtgY5IL34lerQXTSnZ
+         /CZ/OZuPFJI5/TswS6AoZFShf3rI2dhdlAbNWTi4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>
-Subject: [PATCH 6.4 737/737] Revert "drm/amd/display: Do not set drr on pipe commit"
-Date:   Mon, 11 Sep 2023 15:49:56 +0200
-Message-ID: <20230911134711.107793802@linuxfoundation.org>
+        patches@lists.linux.dev, Steve Rutherford <srutherford@google.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Pankaj Gupta <pankaj.gupta@amd.com>,
+        Ben Hillier <bhillier@google.com>
+Subject: [PATCH 6.1 565/600] x86/sev: Make enc_dec_hypercall() accept a size instead of npages
+Date:   Mon, 11 Sep 2023 15:49:58 +0200
+Message-ID: <20230911134650.287793733@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,106 +52,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Dänzer <mdaenzer@redhat.com>
+From: Steve Rutherford <srutherford@google.com>
 
-commit 360930985ec9f394c82ba0b235403b4a366d1560 upstream.
+commit ac3f9c9f1b37edaa7d1a9b908bc79d843955a1a2 upstream.
 
-This reverts commit e101bf95ea87ccc03ac2f48dfc0757c6364ff3c7.
+enc_dec_hypercall() accepted a page count instead of a size, which
+forced its callers to round up. As a result, non-page aligned
+vaddrs caused pages to be spuriously marked as decrypted via the
+encryption status hypercall, which in turn caused consistent
+corruption of pages during live migration. Live migration requires
+accurate encryption status information to avoid migrating pages
+from the wrong perspective.
 
-Caused a regression:
-
-Samsung Odyssey Neo G9, running at 5120x1440@240/VRR, connected to Navi
-21 via DisplayPort, blanks and the GPU hangs while starting the Steam
-game Assetto Corsa Competizione (via Proton 7.0).
-
-Example dmesg excerpt:
-
- amdgpu 0000:0c:00.0: [drm] ERROR [CRTC:82:crtc-0] flip_done timed out
- NMI watchdog: Watchdog detected hard LOCKUP on cpu 6
- [...]
- RIP: 0010:amdgpu_device_rreg.part.0+0x2f/0xf0 [amdgpu]
- Code: 41 54 44 8d 24 b5 00 00 00 00 55 89 f5 53 48 89 fb 4c 3b a7 60 0b 00 00 73 6a 83 e2 02 74 29 4c 03 a3 68 0b 00 00 45 8b 24 24 <48> 8b 43 08 0f b7 70 3e 66 90 44 89 e0 5b 5d 41 5c 31 d2 31 c9 31
- RSP: 0000:ffffb39a119dfb88 EFLAGS: 00000086
- RAX: ffffffffc0eb96a0 RBX: ffff9e7963dc0000 RCX: 0000000000007fff
- RDX: 0000000000000000 RSI: 0000000000004ff6 RDI: ffff9e7963dc0000
- RBP: 0000000000004ff6 R08: ffffb39a119dfc40 R09: 0000000000000010
- R10: ffffb39a119dfc40 R11: ffffb39a119dfc44 R12: 00000000000e05ae
- R13: 0000000000000000 R14: ffff9e7963dc0010 R15: 0000000000000000
- FS:  000000001012f6c0(0000) GS:ffff9e805eb80000(0000) knlGS:000000007fd40000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00000000461ca000 CR3: 00000002a8a20000 CR4: 0000000000350ee0
- Call Trace:
-  <TASK>
-  dm_read_reg_func+0x37/0xc0 [amdgpu]
-  generic_reg_get2+0x22/0x60 [amdgpu]
-  optc1_get_crtc_scanoutpos+0x6a/0xc0 [amdgpu]
-  dc_stream_get_scanoutpos+0x74/0x90 [amdgpu]
-  dm_crtc_get_scanoutpos+0x82/0xf0 [amdgpu]
-  amdgpu_display_get_crtc_scanoutpos+0x91/0x190 [amdgpu]
-  ? dm_read_reg_func+0x37/0xc0 [amdgpu]
-  amdgpu_get_vblank_counter_kms+0xb4/0x1a0 [amdgpu]
-  dm_pflip_high_irq+0x213/0x2f0 [amdgpu]
-  amdgpu_dm_irq_handler+0x8a/0x200 [amdgpu]
-  amdgpu_irq_dispatch+0xd4/0x220 [amdgpu]
-  amdgpu_ih_process+0x7f/0x110 [amdgpu]
-  amdgpu_irq_handler+0x1f/0x70 [amdgpu]
-  __handle_irq_event_percpu+0x46/0x1b0
-  handle_irq_event+0x34/0x80
-  handle_edge_irq+0x9f/0x240
-  __common_interrupt+0x66/0x110
-  common_interrupt+0x5c/0xd0
-  asm_common_interrupt+0x22/0x40
-
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 064ce6c550a0 ("mm: x86: Invoke hypercall when page encryption status is changed")
+Signed-off-by: Steve Rutherford <srutherford@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Tested-by: Ben Hillier <bhillier@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230824223731.2055016-1-srutherford@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c |    6 ------
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c |    7 -------
- 2 files changed, 13 deletions(-)
+ arch/x86/include/asm/mem_encrypt.h |    6 +++---
+ arch/x86/kernel/kvm.c              |    4 +---
+ arch/x86/mm/mem_encrypt_amd.c      |   13 ++++++-------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -2124,12 +2124,6 @@ void dcn20_optimize_bandwidth(
- 	if (hubbub->funcs->program_compbuf_size)
- 		hubbub->funcs->program_compbuf_size(hubbub, context->bw_ctx.bw.dcn.compbuf_size_kb, true);
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -50,8 +50,8 @@ void __init sme_enable(struct boot_param
  
--	if (context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching) {
--		dc_dmub_srv_p_state_delegate(dc,
--			true, context);
--		context->bw_ctx.bw.dcn.clk.p_state_change_support = true;
--	}
--
- 	dc->clk_mgr->funcs->update_clocks(
- 			dc->clk_mgr,
- 			context,
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -985,18 +985,11 @@ void dcn30_set_disp_pattern_generator(co
- void dcn30_prepare_bandwidth(struct dc *dc,
- 			     struct dc_state *context)
- {
--	if (context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching) {
--		dc->optimized_required = true;
--		context->bw_ctx.bw.dcn.clk.p_state_change_support = false;
--	}
--
- 	if (dc->clk_mgr->dc_mode_softmax_enabled)
- 		if (dc->clk_mgr->clks.dramclk_khz <= dc->clk_mgr->bw_params->dc_mode_softmax_memclk * 1000 &&
- 				context->bw_ctx.bw.dcn.clk.dramclk_khz > dc->clk_mgr->bw_params->dc_mode_softmax_memclk * 1000)
- 			dc->clk_mgr->funcs->set_max_memclk(dc->clk_mgr, dc->clk_mgr->bw_params->clk_table.entries[dc->clk_mgr->bw_params->clk_table.num_entries - 1].memclk_mhz);
+ int __init early_set_memory_decrypted(unsigned long vaddr, unsigned long size);
+ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size);
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages,
+-					    bool enc);
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr,
++					    unsigned long size, bool enc);
  
- 	dcn20_prepare_bandwidth(dc, context);
--
--	dc_dmub_srv_p_state_delegate(dc, false, context);
+ void __init mem_encrypt_free_decrypted_mem(void);
+ 
+@@ -84,7 +84,7 @@ early_set_memory_decrypted(unsigned long
+ static inline int __init
+ early_set_memory_encrypted(unsigned long vaddr, unsigned long size) { return 0; }
+ static inline void __init
+-early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc) {}
++early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc) {}
+ 
+ static inline void mem_encrypt_free_decrypted_mem(void) { }
+ 
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -972,10 +972,8 @@ static void __init kvm_init_platform(voi
+ 		 * Ensure that _bss_decrypted section is marked as decrypted in the
+ 		 * shared pages list.
+ 		 */
+-		nr_pages = DIV_ROUND_UP(__end_bss_decrypted - __start_bss_decrypted,
+-					PAGE_SIZE);
+ 		early_set_mem_enc_dec_hypercall((unsigned long)__start_bss_decrypted,
+-						nr_pages, 0);
++						__end_bss_decrypted - __start_bss_decrypted, 0);
+ 
+ 		/*
+ 		 * If not booted using EFI, enable Live migration support.
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -288,11 +288,10 @@ static bool amd_enc_cache_flush_required
+ 	return !cpu_feature_enabled(X86_FEATURE_SME_COHERENT);
  }
  
+-static void enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+ #ifdef CONFIG_PARAVIRT
+-	unsigned long sz = npages << PAGE_SHIFT;
+-	unsigned long vaddr_end = vaddr + sz;
++	unsigned long vaddr_end = vaddr + size;
+ 
+ 	while (vaddr < vaddr_end) {
+ 		int psize, pmask, level;
+@@ -342,7 +341,7 @@ static bool amd_enc_status_change_finish
+ 		snp_set_memory_private(vaddr, npages);
+ 
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+-		enc_dec_hypercall(vaddr, npages, enc);
++		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
+ 	return true;
+ }
+@@ -466,7 +465,7 @@ static int __init early_set_memory_enc_d
+ 
+ 	ret = 0;
+ 
+-	early_set_mem_enc_dec_hypercall(start, PAGE_ALIGN(size) >> PAGE_SHIFT, enc);
++	early_set_mem_enc_dec_hypercall(start, size, enc);
+ out:
+ 	__flush_tlb_all();
+ 	return ret;
+@@ -482,9 +481,9 @@ int __init early_set_memory_encrypted(un
+ 	return early_set_memory_enc_dec(vaddr, size, true);
+ }
+ 
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+-	enc_dec_hypercall(vaddr, npages, enc);
++	enc_dec_hypercall(vaddr, size, enc);
+ }
+ 
+ void __init sme_early_init(void)
 
 
