@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4046D79BD05
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4618C79BDAE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355773AbjIKWB7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48144 "EHLO
+        id S240984AbjIKWWf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241695AbjIKPMK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:10 -0400
+        with ESMTP id S239112AbjIKOMH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCD1FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252EAC433C7;
-        Mon, 11 Sep 2023 15:12:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08173CD
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4C8C433C8;
+        Mon, 11 Sep 2023 14:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445125;
-        bh=fWLhTpsGi+XWPvOPdDgq1zu47fA5MPrEmk6DXZiu6PI=;
+        s=korg; t=1694441521;
+        bh=wytFWl21s1S1ov93okCH292LdZeLonD2Xxb/6q873PY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IHdVQ7O3HuECmk7kfzPG89MD23TTtpDgILuVDwrODDqlYBnP/9aWx7tR9XEgBdW4/
-         seQ8QTDxytsi+FQz9Ga8LRqjcHpRw/iXA3ClUwS8Yk1eLIIx3ykOKS/iGaEyYBGHbm
-         4qbS/hWvWxji7N84P/puSEb5XSruwpWNLqwBQI98=
+        b=vSMGopm7zX9D+DARxogat4fjEIr7kZyDUCN6EibZ1nb7w1Zz4M3aHkqRyxQE5XJhz
+         2+wC3V1qKjEVZcSJ18O4Zh1DBSAWROPVmoEnxyGoPOy88NBPnD0ZbA8gTGQ7kUl1ZN
+         xHAAcly3L/0jn/q3XjDq3zrql1Ye3eD9u5XRgxto=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Budimir Markovic <markovicbudimir@gmail.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/600] net/sched: sch_hfsc: Ensure inner classes have fsc curve
+Subject: [PATCH 6.5 443/739] fs: lockd: avoid possible wrong NULL parameter
 Date:   Mon, 11 Sep 2023 15:44:02 +0200
-Message-ID: <20230911134639.786154648@linuxfoundation.org>
+Message-ID: <20230911134703.541368963@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Budimir Markovic <markovicbudimir@gmail.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f ]
+[ Upstream commit de8d38cf44bac43e83bad28357ba84784c412752 ]
 
-HFSC assumes that inner classes have an fsc curve, but it is currently
-possible for classes without an fsc curve to become parents. This leads
-to bugs including a use-after-free.
+clang's static analysis warning: fs/lockd/mon.c: line 293, column 2:
+Null pointer passed as 2nd argument to memory copy function.
 
-Don't allow non-root classes without HFSC_FSC to become parents.
+Assuming 'hostname' is NULL and calling 'nsm_create_handle()', this will
+pass NULL as 2nd argument to memory copy function 'memcpy()'. So return
+NULL if 'hostname' is invalid.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230824084905.422-1-markovicbudimir@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 77a3ef33e2de ("NSM: More clean up of nsm_get_handle()")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/lockd/mon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 70b0c5873d326..61d52594ff6d8 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1012,6 +1012,10 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 		if (parent == NULL)
- 			return -ENOENT;
- 	}
-+	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
-+		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
-+		return -EINVAL;
-+	}
+diff --git a/fs/lockd/mon.c b/fs/lockd/mon.c
+index 1d9488cf05348..87a0f207df0b9 100644
+--- a/fs/lockd/mon.c
++++ b/fs/lockd/mon.c
+@@ -276,6 +276,9 @@ static struct nsm_handle *nsm_create_handle(const struct sockaddr *sap,
+ {
+ 	struct nsm_handle *new;
  
- 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
- 		return -EINVAL;
++	if (!hostname)
++		return NULL;
++
+ 	new = kzalloc(sizeof(*new) + hostname_len + 1, GFP_KERNEL);
+ 	if (unlikely(new == NULL))
+ 		return NULL;
 -- 
 2.40.1
 
