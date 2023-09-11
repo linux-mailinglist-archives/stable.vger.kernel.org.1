@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB4D79BBC6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3B5179BD17
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238571AbjIKWeU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:34:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52122 "EHLO
+        id S1355685AbjIKWBr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242218AbjIKPZT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:19 -0400
+        with ESMTP id S239649AbjIKOZ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0709A120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5029AC433C7;
-        Mon, 11 Sep 2023 15:25:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C08DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A81C433C7;
+        Mon, 11 Sep 2023 14:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445914;
-        bh=H7U2QFyGr7qNJOYaKALZ1kxjIB3MSJn06c7/HwQmU9Q=;
+        s=korg; t=1694442322;
+        bh=t+/xVJTAEz+ptlDSXtEKd3GX3L/qMq8VzkN64hMidhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AGWMbBoaHBKoWGZp+GzhTDljflhxJTMnOwFPRyzxgSkU0HZyXDySPmTZi5PCXxnkD
-         rPGATfqfnxjS14VoXtAHB18Tc0brMcrsNQR7BEZDB5XOvLyKjIummV+vMVE6PSjcdE
-         8sjrjPzL05TlIN9rIr/b/RfyY5tMHtaZcZoGgF1k=
+        b=Lt78wftRD8wRJS7x1uXDf7YjXLJUdWnBtqS8GsK3/Y7JIL6iRlgHC27TgqLrp0eIj
+         +QE49E6BJrbez5pMMKw2xrzqOM5JgnraEQaeOa+O1ZJwQRIWizWU+VZZ+6JFw/i7XM
+         oIGTTosjfT1E2qQkykW9C9ZkqG/twI55HmwXpHz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 490/600] RDMA/siw: Correct wrong debug message
+        patches@lists.linux.dev,
+        Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasant Hegde <vasant.hegde@amd.com>
+Subject: [PATCH 6.5 724/739] x86/smp: Dont send INIT to non-present and non-booted CPUs
 Date:   Mon, 11 Sep 2023 15:48:43 +0200
-Message-ID: <20230911134648.097692056@linuxfoundation.org>
+Message-ID: <20230911134711.300738950@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit bee024d20451e4ce04ea30099cad09f7f75d288b ]
+commit 3f874c9b2aae8e30463efc1872bea4baa9ed25dc upstream.
 
-We need to print num_sle first then pbl->max_buf per the condition.
-Also replace mem->pbl with pbl while at it.
+Vasant reported that kexec() can hang or reset the machine when it tries to
+park CPUs via INIT. This happens when the kernel is using extended APIC,
+but the present mask has APIC IDs >= 0x100 enumerated.
 
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Link: https://lore.kernel.org/r/20230821133255.31111-3-guoqing.jiang@linux.dev
-Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As extended APIC can only handle 8 bit of APIC ID sending INIT to APIC ID
+0x100 sends INIT to APIC ID 0x0. That's the boot CPU which is special on
+x86 and INIT causes the system to hang or resets the machine.
+
+Prevent this by sending INIT only to those CPUs which have been booted
+once.
+
+Fixes: 45e34c8af58f ("x86/smp: Put CPUs into INIT on shutdown if possible")
+Reported-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/87cyzwjbff.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 2 +-
+ arch/x86/kernel/smpboot.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 2e4cdcd26fe01..193f7d58d3845 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -1494,7 +1494,7 @@ int siw_map_mr_sg(struct ib_mr *base_mr, struct scatterlist *sl, int num_sle,
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1356,7 +1356,7 @@ bool smp_park_other_cpus_in_init(void)
+ 	if (this_cpu)
+ 		return false;
  
- 	if (pbl->max_buf < num_sle) {
- 		siw_dbg_mem(mem, "too many SGE's: %d > %d\n",
--			    mem->pbl->max_buf, num_sle);
-+			    num_sle, pbl->max_buf);
- 		return -ENOMEM;
- 	}
- 	for_each_sg(sl, slp, num_sle, i) {
--- 
-2.40.1
-
+-	for_each_present_cpu(cpu) {
++	for_each_cpu_and(cpu, &cpus_booted_once_mask, cpu_present_mask) {
+ 		if (cpu == this_cpu)
+ 			continue;
+ 		apicid = apic->cpu_present_to_apicid(cpu);
 
 
