@@ -2,52 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32B279B1A3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C7779AE63
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244603AbjIKVIQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53698 "EHLO
+        id S1345796AbjIKVWU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239519AbjIKOWx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:53 -0400
+        with ESMTP id S242002AbjIKPUO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE16DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4C7C433C7;
-        Mon, 11 Sep 2023 14:22:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24DFFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03147C433C8;
+        Mon, 11 Sep 2023 15:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442167;
-        bh=t8MqPtA4gvGtJ4XF4h7m6VwY0NxoFPqQVz5qKu9t5C0=;
+        s=korg; t=1694445609;
+        bh=pOYDOzjoVardfd6S4obBJIeYyq5ax8M8LMu6d93QtgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y+jZ0W8dX+7zETJ6LCcw4OnUo3sdYJNX6mbUlYzIZNhdhMMV8/62Ach3awWh6LZSz
-         hf8Z8+2g6+NMbUnAXEUJM/GmFvVWF2WDti2pgtuY3eXdMgN2Xrgb2yURvcemTVTlEY
-         0oxHeU7ivmekp5yPG8uRJ5eWOl6Y2UqZjfP/0sts=
+        b=vGi+Tif9hjMa88S7mRZyrdBA9aKKgIjrpFIrDy7lxlS0XXqJ5pwyOXZH8suwbSB1j
+         IVE8J0ass9KJzlBLxbrRDV1flY2xxxghvouaCRUoekzYNroY5pTWyNc+/Fl0KpXTuL
+         AfmMCoZASWFaSatfSX2nkk+xb0n0kqpCRaPLr1ao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalesh Singh <kaleshsingh@google.com>,
-        Charan Teja Kalla <quic_charante@quicinc.com>,
-        Lecopzer Chen <lecopzer.chen@mediatek.com>,
-        Yu Zhao <yuzhao@google.com>, Barry Song <baohua@kernel.org>,
-        Brian Geffon <bgeffon@google.com>,
-        "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Steven Barrett <steven@liquorix.net>,
-        Suleiman Souhlal <suleiman@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.5 642/739] Multi-gen LRU: fix per-zone reclaim
-Date:   Mon, 11 Sep 2023 15:47:21 +0200
-Message-ID: <20230911134709.026558286@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Ming Qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 409/600] media: amphion: fix CHECKED_RETURN issues reported by coverity
+Date:   Mon, 11 Sep 2023 15:47:22 +0200
+Message-ID: <20230911134645.750430208@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +52,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh Singh <kaleshsingh@google.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-commit 669281ee7ef731fb5204df9d948669bf32a5e68d upstream.
+[ Upstream commit b237b058adbc7825da9c8f358f1ff3f0467d623a ]
 
-MGLRU has a LRU list for each zone for each type (anon/file) in each
-generation:
+calling "vpu_cmd_send/vpu_get_buffer_state/vpu_session_alloc_fs"
+without checking return value
 
-	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
-
-The min_seq (oldest generation) can progress independently for each
-type but the max_seq (youngest generation) is shared for both anon and
-file. This is to maintain a common frame of reference.
-
-In order for eviction to advance the min_seq of a type, all the per-zone
-lists in the oldest generation of that type must be empty.
-
-The eviction logic only considers pages from eligible zones for
-eviction or promotion.
-
-    scan_folios() {
-	...
-	for (zone = sc->reclaim_idx; zone >= 0; zone--)  {
-	    ...
-	    sort_folio(); 	// Promote
-	    ...
-	    isolate_folio(); 	// Evict
-	}
-	...
-    }
-
-Consider the system has the movable zone configured and default 4
-generations. The current state of the system is as shown below
-(only illustrating one type for simplicity):
-
-Type: ANON
-
-	Zone    DMA32     Normal    Movable    Device
-
-	Gen 0       0          0        4GB         0
-
-	Gen 1       0        1GB        1MB         0
-
-	Gen 2     1MB        4GB        1MB         0
-
-	Gen 3     1MB        1MB        1MB         0
-
-Now consider there is a GFP_KERNEL allocation request (eligible zone
-index <= Normal), evict_folios() will return without doing any work
-since there are no pages to scan in the eligible zones of the oldest
-generation. Reclaim won't make progress until triggered from a ZONE_MOVABLE
-allocation request; which may not happen soon if there is a lot of free
-memory in the movable zone. This can lead to OOM kills, although there
-is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
-reclaim.
-
-This issue is not seen in the conventional active/inactive LRU since
-there are no per-zone lists.
-
-If there are no (not enough) folios to scan in the eligible zones, move
-folios from ineligible zone (zone_index > reclaim_index) to the next
-generation. This allows for the progression of min_seq and reclaiming
-from the next generation (Gen 1).
-
-Qualcomm, Mediatek and raspberrypi [1] discovered this issue independently.
-
-[1] https://github.com/raspberrypi/linux/issues/5395
-
-Link: https://lkml.kernel.org/r/20230802025606.346758-1-kaleshsingh@google.com
-Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
-Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Steven Barrett <steven@liquorix.net>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/media/platform/amphion/vdec.c     |  5 ++++-
+ drivers/media/platform/amphion/vpu_cmds.c |  3 ++-
+ drivers/media/platform/amphion/vpu_dbg.c  | 11 +++++++++--
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4891,7 +4891,8 @@ static int lru_gen_memcg_seg(struct lruv
-  *                          the eviction
-  ******************************************************************************/
- 
--static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
-+static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
-+		       int tier_idx)
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index b4cdd23c38af2..dc35a87e628ec 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -957,6 +957,7 @@ static int vdec_response_frame_abnormal(struct vpu_inst *inst)
  {
- 	bool success;
- 	int gen = folio_lru_gen(folio);
-@@ -4941,6 +4942,13 @@ static bool sort_folio(struct lruvec *lr
- 		return true;
- 	}
+ 	struct vdec_t *vdec = inst->priv;
+ 	struct vpu_fs_info info;
++	int ret;
  
-+	/* ineligible */
-+	if (zone > sc->reclaim_idx) {
-+		gen = folio_inc_gen(lruvec, folio, false);
-+		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
-+		return true;
-+	}
+ 	if (!vdec->req_frame_count)
+ 		return 0;
+@@ -964,7 +965,9 @@ static int vdec_response_frame_abnormal(struct vpu_inst *inst)
+ 	memset(&info, 0, sizeof(info));
+ 	info.type = MEM_RES_FRAME;
+ 	info.tag = vdec->seq_tag + 0xf0;
+-	vpu_session_alloc_fs(inst, &info);
++	ret = vpu_session_alloc_fs(inst, &info);
++	if (ret)
++		return ret;
+ 	vdec->req_frame_count--;
+ 
+ 	return 0;
+diff --git a/drivers/media/platform/amphion/vpu_cmds.c b/drivers/media/platform/amphion/vpu_cmds.c
+index 647d94554fb5d..7e137f276c3b1 100644
+--- a/drivers/media/platform/amphion/vpu_cmds.c
++++ b/drivers/media/platform/amphion/vpu_cmds.c
+@@ -306,7 +306,8 @@ static void vpu_core_keep_active(struct vpu_core *core)
+ 
+ 	dev_dbg(core->dev, "try to wake up\n");
+ 	mutex_lock(&core->cmd_lock);
+-	vpu_cmd_send(core, &pkt);
++	if (vpu_cmd_send(core, &pkt))
++		dev_err(core->dev, "fail to keep active\n");
+ 	mutex_unlock(&core->cmd_lock);
+ }
+ 
+diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/platform/amphion/vpu_dbg.c
+index bf8aded76e141..f105da82d92f9 100644
+--- a/drivers/media/platform/amphion/vpu_dbg.c
++++ b/drivers/media/platform/amphion/vpu_dbg.c
+@@ -50,6 +50,13 @@ static char *vpu_stat_name[] = {
+ 	[VPU_BUF_STATE_ERROR] = "error",
+ };
+ 
++static inline const char *to_vpu_stat_name(int state)
++{
++	if (state <= VPU_BUF_STATE_ERROR)
++		return vpu_stat_name[state];
++	return "unknown";
++}
 +
- 	/* waiting for writeback */
- 	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
- 	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
-@@ -4989,7 +4997,8 @@ static bool isolate_folio(struct lruvec
- static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 		       int type, int tier, struct list_head *list)
+ static int vpu_dbg_instance(struct seq_file *s, void *data)
  {
--	int gen, zone;
-+	int i;
-+	int gen;
- 	enum vm_event_item item;
- 	int sorted = 0;
- 	int scanned = 0;
-@@ -5005,9 +5014,10 @@ static int scan_folios(struct lruvec *lr
- 
- 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
- 
--	for (zone = sc->reclaim_idx; zone >= 0; zone--) {
-+	for (i = MAX_NR_ZONES; i > 0; i--) {
- 		LIST_HEAD(moved);
- 		int skipped = 0;
-+		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
- 		struct list_head *head = &lrugen->folios[gen][type][zone];
- 
- 		while (!list_empty(head)) {
-@@ -5021,7 +5031,7 @@ static int scan_folios(struct lruvec *lr
- 
- 			scanned += delta;
- 
--			if (sort_folio(lruvec, folio, tier))
-+			if (sort_folio(lruvec, folio, sc, tier))
- 				sorted += delta;
- 			else if (isolate_folio(lruvec, folio, sc)) {
- 				list_add(&folio->lru, list);
+ 	struct vpu_inst *inst = s->private;
+@@ -141,7 +148,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
+ 		num = scnprintf(str, sizeof(str),
+ 				"output [%2d] state = %10s, %8s\n",
+ 				i, vb2_stat_name[vb->state],
+-				vpu_stat_name[vpu_get_buffer_state(vbuf)]);
++				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
+ 		if (seq_write(s, str, num))
+ 			return 0;
+ 	}
+@@ -156,7 +163,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
+ 		num = scnprintf(str, sizeof(str),
+ 				"capture[%2d] state = %10s, %8s\n",
+ 				i, vb2_stat_name[vb->state],
+-				vpu_stat_name[vpu_get_buffer_state(vbuf)]);
++				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
+ 		if (seq_write(s, str, num))
+ 			return 0;
+ 	}
+-- 
+2.40.1
+
 
 
