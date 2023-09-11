@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 508D579BBE5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C374B79B8C6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237592AbjIKVJ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35342 "EHLO
+        id S233688AbjIKWsX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238423AbjIKN4S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:18 -0400
+        with ESMTP id S239796AbjIKO26 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74E010E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEEFC433C8;
-        Mon, 11 Sep 2023 13:56:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7C1F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4DBC433C7;
+        Mon, 11 Sep 2023 14:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440573;
-        bh=nhQ8O1mZ2AMRM3ZdN8vTTqJYWWBJK+MmGXtl8/liiJc=;
+        s=korg; t=1694442533;
+        bh=XkZiuzUmiRGP9YdpGRCM0LeHWToPWWz6HyiBmlUTr2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KxGCYQNVrNKVHMM6FWFDjFMe0E/4QrRoSxMImrMNQqtwqTasBrtZYrOytNHfucrQh
-         A5/lXf3i9+jET+ywmVnMqg9Q/smY0LLuB8WqtSQBeqCE06XOeSAS+789RnGAEJMHNr
-         OaXtksgubzq6ERJQIq8vakEgMjKP2GMIVRYQahVE=
+        b=H6JgLsITr2m0Ny5xtDZpYRfL/e9AXES/gmQfl4iW8iF7OS9Ygzrujpx5fsMwsIAJe
+         46ct/Ouh+/PARaiByaLZpNzLMVgci7EsDcqe0LVQuZNGuVvyqJVfWzTx911JVIfgwj
+         C4dZuei3lcwWmYWeEmth6GeHLBOKYRt/jASrqhVg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 083/739] wifi: mt76: mt7915: rework tx bytes counting when WED is active
+        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 023/737] s390/dasd: fix hanging device after request requeue
 Date:   Mon, 11 Sep 2023 15:38:02 +0200
-Message-ID: <20230911134653.428971206@linuxfoundation.org>
+Message-ID: <20230911134651.002491894@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,148 +50,224 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-[ Upstream commit f39d499345dddb8382986fd5a2a0e84a63b1a6d5 ]
+[ Upstream commit 8a2278ce9c25048d999fe1a3561def75d963f471 ]
 
-Concurrent binding/non-binding skbs could be handled anywhere which leads
-to mixed byte counting, so switch to use PPDU TxS reporting regardless Tx
-paths when WED is active.
+The DASD device driver has a function to requeue requests to the
+blocklayer.
+This function is used in various cases when basic settings for the device
+have to be changed like High Performance Ficon related parameters or copy
+pair settings.
 
-Fixes: 43eaa3689507 ("wifi: mt76: add PPDU based TxS support for WED device")
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The functions iterates over the device->ccw_queue and also removes the
+requests from the block->ccw_queue.
+In case the device is started on an alias device instead of the base
+device it might be removed from the block->ccw_queue without having it
+canceled properly before. This might lead to a hanging device since the
+request is no longer on a queue and can not be handled properly.
+
+Fix by iterating over the block->ccw_queue instead of the
+device->ccw_queue. This will take care of all blocklayer related requests
+and handle them on all associated DASD devices.
+
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230721193647.3889634-4-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mac.c  |  2 --
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  6 ++++
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 30 ++-----------------
- drivers/net/wireless/mediatek/mt76/tx.c       |  9 +++++-
- 4 files changed, 16 insertions(+), 31 deletions(-)
+ drivers/s390/block/dasd.c | 125 +++++++++++++++-----------------------
+ 1 file changed, 48 insertions(+), 77 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 49b2b1f3ffa87..e415ac5e321f1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -522,8 +522,6 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 		q_idx = wmm_idx * MT76_CONNAC_MAX_WMM_SETS +
- 			mt76_connac_lmac_mapping(skb_get_queue_mapping(skb));
- 
--		/* counting non-offloading skbs */
--		wcid->stats.tx_bytes += skb->len;
- 		/* mt7915 WA only counts WED path */
- 		if (is_mt7915(dev) && mtk_wed_device_active(&dev->mmio.wed))
- 			wcid->stats.tx_packets++;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index ac2049f49bb38..927a98a315ae8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -499,6 +499,12 @@ mt7915_mac_init_band(struct mt7915_dev *dev, u8 band)
- 	set = FIELD_PREP(MT_WTBLOFF_TOP_RSCR_RCPI_MODE, 0) |
- 	      FIELD_PREP(MT_WTBLOFF_TOP_RSCR_RCPI_PARAM, 0x3);
- 	mt76_rmw(dev, MT_WTBLOFF_TOP_RSCR(band), mask, set);
-+
-+	/* MT_TXD5_TX_STATUS_HOST (MPDU format) has higher priority than
-+	 * MT_AGG_ACR_PPDU_TXS2H (PPDU format) even though ACR bit is set.
-+	 */
-+	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
-+		mt76_set(dev, MT_AGG_ACR4(band), MT_AGG_ACR_PPDU_TXS2H);
- }
- 
- static void
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 45f3558bf31c1..2fa059af23ded 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -545,8 +545,6 @@ static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- static int mt7915_mmio_wed_offload_enable(struct mtk_wed_device *wed)
+diff --git a/drivers/s390/block/dasd.c b/drivers/s390/block/dasd.c
+index 9fbfce735d565..50c48a48fcae3 100644
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -2938,41 +2938,32 @@ static void _dasd_wake_block_flush_cb(struct dasd_ccw_req *cqr, void *data)
+  * Requeue a request back to the block request queue
+  * only works for block requests
+  */
+-static int _dasd_requeue_request(struct dasd_ccw_req *cqr)
++static void _dasd_requeue_request(struct dasd_ccw_req *cqr)
  {
- 	struct mt7915_dev *dev;
--	struct mt7915_phy *phy;
--	int ret;
+-	struct dasd_block *block = cqr->block;
+ 	struct request *req;
  
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
+-	if (!block)
+-		return -EINVAL;
+ 	/*
+ 	 * If the request is an ERP request there is nothing to requeue.
+ 	 * This will be done with the remaining original request.
+ 	 */
+ 	if (cqr->refers)
+-		return 0;
++		return;
+ 	spin_lock_irq(&cqr->dq->lock);
+ 	req = (struct request *) cqr->callback_data;
+ 	blk_mq_requeue_request(req, true);
+ 	spin_unlock_irq(&cqr->dq->lock);
  
-@@ -554,43 +552,19 @@ static int mt7915_mmio_wed_offload_enable(struct mtk_wed_device *wed)
- 	dev->mt76.token_size = wed->wlan.token_start;
- 	spin_unlock_bh(&dev->mt76.token_lock);
- 
--	ret = wait_event_timeout(dev->mt76.tx_wait,
--				 !dev->mt76.wed_token_count, HZ);
--	if (!ret)
--		return -EAGAIN;
--
--	phy = &dev->phy;
--	mt76_set(dev, MT_AGG_ACR4(phy->mt76->band_idx), MT_AGG_ACR_PPDU_TXS2H);
--
--	phy = dev->mt76.phys[MT_BAND1] ? dev->mt76.phys[MT_BAND1]->priv : NULL;
--	if (phy)
--		mt76_set(dev, MT_AGG_ACR4(phy->mt76->band_idx),
--			 MT_AGG_ACR_PPDU_TXS2H);
--
 -	return 0;
-+	return !wait_event_timeout(dev->mt76.tx_wait,
-+				   !dev->mt76.wed_token_count, HZ);
++	return;
  }
  
- static void mt7915_mmio_wed_offload_disable(struct mtk_wed_device *wed)
+-/*
+- * Go through all request on the dasd_block request queue, cancel them
+- * on the respective dasd_device, and return them to the generic
+- * block layer.
+- */
+-static int dasd_flush_block_queue(struct dasd_block *block)
++static int _dasd_requests_to_flushqueue(struct dasd_block *block,
++					struct list_head *flush_queue)
  {
- 	struct mt7915_dev *dev;
--	struct mt7915_phy *phy;
+ 	struct dasd_ccw_req *cqr, *n;
+-	int rc, i;
+-	struct list_head flush_queue;
+ 	unsigned long flags;
++	int rc, i;
  
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
- 
- 	spin_lock_bh(&dev->mt76.token_lock);
- 	dev->mt76.token_size = MT7915_TOKEN_SIZE;
- 	spin_unlock_bh(&dev->mt76.token_lock);
--
--	/* MT_TXD5_TX_STATUS_HOST (MPDU format) has higher priority than
--	 * MT_AGG_ACR_PPDU_TXS2H (PPDU format) even though ACR bit is set.
--	 */
--	phy = &dev->phy;
--	mt76_clear(dev, MT_AGG_ACR4(phy->mt76->band_idx), MT_AGG_ACR_PPDU_TXS2H);
--
--	phy = dev->mt76.phys[MT_BAND1] ? dev->mt76.phys[MT_BAND1]->priv : NULL;
--	if (phy)
--		mt76_clear(dev, MT_AGG_ACR4(phy->mt76->band_idx),
--			   MT_AGG_ACR_PPDU_TXS2H);
- }
- 
- static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 72b3ec715e47a..e9b9728458a9b 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -121,6 +121,7 @@ int
- mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		       struct sk_buff *skb)
- {
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct mt76_tx_cb *cb = mt76_tx_skb_cb(skb);
- 	int pid;
-@@ -134,8 +135,14 @@ mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		return MT_PACKET_ID_NO_ACK;
- 
- 	if (!(info->flags & (IEEE80211_TX_CTL_REQ_TX_STATUS |
--			     IEEE80211_TX_CTL_RATE_CTRL_PROBE)))
-+			     IEEE80211_TX_CTL_RATE_CTRL_PROBE))) {
-+		if (mtk_wed_device_active(&dev->mmio.wed) &&
-+		    ((info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) ||
-+		     ieee80211_is_data(hdr->frame_control)))
-+			return MT_PACKET_ID_WED;
+-	INIT_LIST_HEAD(&flush_queue);
+-	spin_lock_bh(&block->queue_lock);
++	spin_lock_irqsave(&block->queue_lock, flags);
+ 	rc = 0;
+ restart:
+ 	list_for_each_entry_safe(cqr, n, &block->ccw_queue, blocklist) {
+@@ -2987,13 +2978,32 @@ static int dasd_flush_block_queue(struct dasd_block *block)
+ 		 * is returned from the dasd_device layer.
+ 		 */
+ 		cqr->callback = _dasd_wake_block_flush_cb;
+-		for (i = 0; cqr != NULL; cqr = cqr->refers, i++)
+-			list_move_tail(&cqr->blocklist, &flush_queue);
++		for (i = 0; cqr; cqr = cqr->refers, i++)
++			list_move_tail(&cqr->blocklist, flush_queue);
+ 		if (i > 1)
+ 			/* moved more than one request - need to restart */
+ 			goto restart;
+ 	}
+-	spin_unlock_bh(&block->queue_lock);
++	spin_unlock_irqrestore(&block->queue_lock, flags);
 +
- 		return MT_PACKET_ID_NO_SKB;
-+	}
++	return rc;
++}
++
++/*
++ * Go through all request on the dasd_block request queue, cancel them
++ * on the respective dasd_device, and return them to the generic
++ * block layer.
++ */
++static int dasd_flush_block_queue(struct dasd_block *block)
++{
++	struct dasd_ccw_req *cqr, *n;
++	struct list_head flush_queue;
++	unsigned long flags;
++	int rc;
++
++	INIT_LIST_HEAD(&flush_queue);
++	rc = _dasd_requests_to_flushqueue(block, &flush_queue);
++
+ 	/* Now call the callback function of flushed requests */
+ restart_cb:
+ 	list_for_each_entry_safe(cqr, n, &flush_queue, blocklist) {
+@@ -3878,75 +3888,36 @@ EXPORT_SYMBOL_GPL(dasd_generic_space_avail);
+  */
+ int dasd_generic_requeue_all_requests(struct dasd_device *device)
+ {
++	struct dasd_block *block = device->block;
+ 	struct list_head requeue_queue;
+ 	struct dasd_ccw_req *cqr, *n;
+-	struct dasd_ccw_req *refers;
+ 	int rc;
  
- 	spin_lock_bh(&dev->status_lock);
+-	INIT_LIST_HEAD(&requeue_queue);
+-	spin_lock_irq(get_ccwdev_lock(device->cdev));
+-	rc = 0;
+-	list_for_each_entry_safe(cqr, n, &device->ccw_queue, devlist) {
+-		/* Check status and move request to flush_queue */
+-		if (cqr->status == DASD_CQR_IN_IO) {
+-			rc = device->discipline->term_IO(cqr);
+-			if (rc) {
+-				/* unable to terminate requeust */
+-				dev_err(&device->cdev->dev,
+-					"Unable to terminate request %p "
+-					"on suspend\n", cqr);
+-				spin_unlock_irq(get_ccwdev_lock(device->cdev));
+-				dasd_put_device(device);
+-				return rc;
+-			}
+-		}
+-		list_move_tail(&cqr->devlist, &requeue_queue);
+-	}
+-	spin_unlock_irq(get_ccwdev_lock(device->cdev));
+-
+-	list_for_each_entry_safe(cqr, n, &requeue_queue, devlist) {
+-		wait_event(dasd_flush_wq,
+-			   (cqr->status != DASD_CQR_CLEAR_PENDING));
++	if (!block)
++		return 0;
  
+-		/*
+-		 * requeue requests to blocklayer will only work
+-		 * for block device requests
+-		 */
+-		if (_dasd_requeue_request(cqr))
+-			continue;
++	INIT_LIST_HEAD(&requeue_queue);
++	rc = _dasd_requests_to_flushqueue(block, &requeue_queue);
+ 
+-		/* remove requests from device and block queue */
+-		list_del_init(&cqr->devlist);
+-		while (cqr->refers != NULL) {
+-			refers = cqr->refers;
+-			/* remove the request from the block queue */
+-			list_del(&cqr->blocklist);
+-			/* free the finished erp request */
+-			dasd_free_erp_request(cqr, cqr->memdev);
+-			cqr = refers;
++	/* Now call the callback function of flushed requests */
++restart_cb:
++	list_for_each_entry_safe(cqr, n, &requeue_queue, blocklist) {
++		wait_event(dasd_flush_wq, (cqr->status < DASD_CQR_QUEUED));
++		/* Process finished ERP request. */
++		if (cqr->refers) {
++			spin_lock_bh(&block->queue_lock);
++			__dasd_process_erp(block->base, cqr);
++			spin_unlock_bh(&block->queue_lock);
++			/* restart list_for_xx loop since dasd_process_erp
++			 * might remove multiple elements
++			 */
++			goto restart_cb;
+ 		}
+-
+-		/*
+-		 * _dasd_requeue_request already checked for a valid
+-		 * blockdevice, no need to check again
+-		 * all erp requests (cqr->refers) have a cqr->block
+-		 * pointer copy from the original cqr
+-		 */
++		_dasd_requeue_request(cqr);
+ 		list_del_init(&cqr->blocklist);
+ 		cqr->block->base->discipline->free_cp(
+ 			cqr, (struct request *) cqr->callback_data);
+ 	}
+-
+-	/*
+-	 * if requests remain then they are internal request
+-	 * and go back to the device queue
+-	 */
+-	if (!list_empty(&requeue_queue)) {
+-		/* move freeze_queue to start of the ccw_queue */
+-		spin_lock_irq(get_ccwdev_lock(device->cdev));
+-		list_splice_tail(&requeue_queue, &device->ccw_queue);
+-		spin_unlock_irq(get_ccwdev_lock(device->cdev));
+-	}
+ 	dasd_schedule_device_bh(device);
+ 	return rc;
+ }
 -- 
 2.40.1
 
