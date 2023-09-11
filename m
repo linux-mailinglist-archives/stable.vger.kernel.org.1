@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A74679B198
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94ADF79B406
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378920AbjIKWiF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33546 "EHLO
+        id S233142AbjIKUu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241208AbjIKPET (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:19 -0400
+        with ESMTP id S241218AbjIKPEY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24616125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9EAC433C8;
-        Mon, 11 Sep 2023 15:04:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA978125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D83C43391;
+        Mon, 11 Sep 2023 15:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444654;
-        bh=IqexUTo+4g0P+AceFcjRmYB2bvNKcodogTGBQgks5NE=;
+        s=korg; t=1694444660;
+        bh=fzvRgjl7FOijSrAl4nCeRtjdHxhW8bPt35Nca3/m4lw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ahh5oARqpu2FtZOF1aLsjQmnScWpxU73DV1uyRYyj1xs3uWrJ3E/EsK9TS7nEHWeQ
-         9y2ZLfateI6U9s2Oa2jGxtHgaMuw6GuKU/ooFYoih3bzV7XD88P2HdFZB6ICTMQW26
-         pjw17lSEUR+8MyVohoC6wBec8B+ESquYpvViSsnM=
+        b=MspWaD4UMz0QkbLz/BIAZB7MbVjL5VOJKkkLiD4+J1bva800W1Hq/GqRRLlUJ9T1B
+         2aXWp/5jc2Vuz2t7cGZ9rCtxTHsqSOLfEkx8B8LVHX276OaHz1YgmwPkfTMxW9lHWq
+         X10DP5rYkkUzKcm+lX0xyOUMacHjspSmce6CmuBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/600] sctp: handle invalid error codes without calling BUG()
-Date:   Mon, 11 Sep 2023 15:41:41 +0200
-Message-ID: <20230911134635.628775368@linuxfoundation.org>
+Subject: [PATCH 6.1 070/600] scsi: storvsc: Always set no_report_opcodes
+Date:   Mon, 11 Sep 2023 15:41:43 +0200
+Message-ID: <20230911134635.686681269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -54,43 +54,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Michael Kelley <mikelley@microsoft.com>
 
-[ Upstream commit a0067dfcd9418fd3b0632bc59210d120d038a9c6 ]
+[ Upstream commit 31d16e712bdcaee769de4780f72ff8d6cd3f0589 ]
 
-The sctp_sf_eat_auth() function is supposed to return enum sctp_disposition
-values but if the call to sctp_ulpevent_make_authkey() fails, it returns
--ENOMEM.
+Hyper-V synthetic SCSI devices do not support the MAINTENANCE_IN SCSI
+command, so scsi_report_opcode() always fails, resulting in messages like
+this:
 
-This results in calling BUG() inside the sctp_side_effects() function.
-Calling BUG() is an over reaction and not helpful.  Call WARN_ON_ONCE()
-instead.
+hv_storvsc <guid>: tag#205 cmd 0xa3 status: scsi 0x2 srb 0x86 hv 0xc0000001
 
-This code predates git.
+The recently added support for command duration limits calls
+scsi_report_opcode() four times as each device comes online, which
+significantly increases the number of messages logged in a system with many
+disks.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix the problem by always marking Hyper-V synthetic SCSI devices as not
+supporting scsi_report_opcode(). With this setting, the MAINTENANCE_IN SCSI
+command is not issued and no messages are logged.
+
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1686343101-18930-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_sideeffect.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/storvsc_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-index 463c4a58d2c36..970c6a486a9b0 100644
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -1251,7 +1251,10 @@ static int sctp_side_effects(enum sctp_event_type event_type,
- 	default:
- 		pr_err("impossible disposition %d in state %d, event_type %d, event_id %d\n",
- 		       status, state, event_type, subtype.chunk);
--		BUG();
-+		error = status;
-+		if (error >= 0)
-+			error = -EINVAL;
-+		WARN_ON_ONCE(1);
- 		break;
- 	}
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index 83d09c2009280..7a1dc5c7c49ee 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1568,6 +1568,8 @@ static int storvsc_device_configure(struct scsi_device *sdevice)
+ {
+ 	blk_queue_rq_timeout(sdevice->request_queue, (storvsc_timeout * HZ));
  
++	/* storvsc devices don't support MAINTENANCE_IN SCSI cmd */
++	sdevice->no_report_opcodes = 1;
+ 	sdevice->no_write_same = 1;
+ 
+ 	/*
 -- 
 2.40.1
 
