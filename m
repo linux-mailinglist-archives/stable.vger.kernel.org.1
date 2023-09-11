@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D4BD79B10B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3B0979B5AA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350791AbjIKVlY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:41:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60220 "EHLO
+        id S239043AbjIKVER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239488AbjIKOV6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:58 -0400
+        with ESMTP id S240799AbjIKOyJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78C3DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5483C433C8;
-        Mon, 11 Sep 2023 14:21:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21E7E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483F4C433C8;
+        Mon, 11 Sep 2023 14:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442113;
-        bh=XxiGG3fCs2FXD6sPx9TUBrWxC8Wuvx+KmGO4BDEg0J0=;
+        s=korg; t=1694444044;
+        bh=JKfPtuzMDydcJF1XPW2jezI2c0CoCJ6lBlFaBw5sWb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0PuZUF4mFNorQVnwOxQ2LwzzaL3swP1mcKD7bjadNbrKrIMD7EI196rs8IR7cB1EO
-         p3BdyCtlYWoACMzoXYv71SnuA5OwTo/XJc6wuGuSs3np9HaqmrQGcGshESCpFir4WR
-         56ij+cfCsRtgYfub8+3VYUHSI+Qp4BcQscH1GKNk=
+        b=wYscUSi6/Xf81IMOrLJBIEk9ToluuniQTeUBphoO3C3Ci0dtdut74mWgT899kQY/B
+         HQ9/xPORtCtH1U8wFASBga+AnWUXKTTw2pl5MwGCYJX+q+QGtWqLEdLH+XTM/sm+Rs
+         Cbe5F6r84Z1tHogYhLNlRdkqkuxKTgzrw1pjKeC8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.5 651/739] media: i2c: Add a camera sensor top level menu
+        patches@lists.linux.dev,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 591/737] Revert "IB/isert: Fix incorrect release of isert connection"
 Date:   Mon, 11 Sep 2023 15:47:30 +0200
-Message-ID: <20230911134709.287838938@linuxfoundation.org>
+Message-ID: <20230911134707.034896240@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,64 +51,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 7d3c7d2a2914e10bec3b9cdacdadb8e1f65f715a upstream.
+[ Upstream commit dfe261107c080709459c32695847eec96238852b ]
 
-Select V4L2_FWNODE and VIDEO_V4L2_SUBDEV_API for all sensor drivers. This
-also adds the options to drivers that don't specifically need them, these
-are still seldom used drivers using old APIs. The upside is that these
-should now all compile --- many drivers have had missing dependencies.
+Commit: 699826f4e30a ("IB/isert: Fix incorrect release of isert connection") is
+causing problems on OPA when DEVICE_REMOVAL is happening.
 
-The "menu" is replaced by selectable "menuconfig" to select the needed
-V4L2_FWNODE and VIDEO_V4L2_SUBDEV_API options.
+ ------------[ cut here ]------------
+ WARNING: CPU: 52 PID: 2117247 at drivers/infiniband/core/cq.c:359
+ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+ Modules linked in: nfsd nfs_acl target_core_user uio tcm_fc libfc
+scsi_transport_fc tcm_loop target_core_pscsi target_core_iblock target_core_file
+rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs
+rfkill rpcrdma rdma_ucm ib_srpt sunrpc ib_isert iscsi_target_mod target_core_mod
+opa_vnic ib_iser libiscsi ib_umad scsi_transport_iscsi rdma_cm ib_ipoib iw_cm
+ib_cm hfi1(-) rdmavt ib_uverbs intel_rapl_msr intel_rapl_common sb_edac ib_core
+x86_pkg_temp_thermal intel_powerclamp coretemp i2c_i801 mxm_wmi rapl iTCO_wdt
+ipmi_si iTCO_vendor_support mei_me ipmi_devintf mei intel_cstate ioatdma
+intel_uncore i2c_smbus joydev pcspkr lpc_ich ipmi_msghandler acpi_power_meter
+acpi_pad xfs libcrc32c sr_mod sd_mod cdrom t10_pi sg crct10dif_pclmul
+crc32_pclmul crc32c_intel drm_kms_helper drm_shmem_helper ahci libahci
+ghash_clmulni_intel igb drm libata dca i2c_algo_bit wmi fuse
+ CPU: 52 PID: 2117247 Comm: modprobe Not tainted 6.5.0-rc1+ #1
+ Hardware name: Intel Corporation S2600CWR/S2600CW, BIOS
+SE5C610.86B.01.01.0014.121820151719 12/18/2015
+ RIP: 0010:ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+ Code: ff 48 8b 43 40 48 8d 7b 40 48 83 e8 40 4c 39 e7 75 b3 49 83
+c4 10 4d 39 fc 75 94 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc <0f> 0b eb a1
+90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f
+ RSP: 0018:ffffc10bea13fc80 EFLAGS: 00010206
+ RAX: 000000000000010c RBX: ffff9bf5c7e66c00 RCX: 000000008020001d
+ RDX: 000000008020001e RSI: fffff175221f9900 RDI: ffff9bf5c7e67640
+ RBP: ffff9bf5c7e67600 R08: ffff9bf5c7e64400 R09: 000000008020001d
+ R10: 0000000040000000 R11: 0000000000000000 R12: ffff9bee4b1e8a18
+ R13: dead000000000122 R14: dead000000000100 R15: ffff9bee4b1e8a38
+ FS:  00007ff1e6d38740(0000) GS:ffff9bfd9fb00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00005652044ecc68 CR3: 0000000889b5c005 CR4: 00000000001706e0
+ Call Trace:
+  <TASK>
+  ? __warn+0x80/0x130
+  ? ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+  ? report_bug+0x195/0x1a0
+  ? handle_bug+0x3c/0x70
+  ? exc_invalid_op+0x14/0x70
+  ? asm_exc_invalid_op+0x16/0x20
+  ? ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+  disable_device+0x9d/0x160 [ib_core]
+  __ib_unregister_device+0x42/0xb0 [ib_core]
+  ib_unregister_device+0x22/0x30 [ib_core]
+  rvt_unregister_device+0x20/0x90 [rdmavt]
+  hfi1_unregister_ib_device+0x16/0xf0 [hfi1]
+  remove_one+0x55/0x1a0 [hfi1]
+  pci_device_remove+0x36/0xa0
+  device_release_driver_internal+0x193/0x200
+  driver_detach+0x44/0x90
+  bus_remove_driver+0x69/0xf0
+  pci_unregister_driver+0x2a/0xb0
+  hfi1_mod_cleanup+0xc/0x3c [hfi1]
+  __do_sys_delete_module.constprop.0+0x17a/0x2f0
+  ? exit_to_user_mode_prepare+0xc4/0xd0
+  ? syscall_trace_enter.constprop.0+0x126/0x1a0
+  do_syscall_64+0x5c/0x90
+  ? syscall_exit_to_user_mode+0x12/0x30
+  ? do_syscall_64+0x69/0x90
+  ? syscall_exit_work+0x103/0x130
+  ? syscall_exit_to_user_mode+0x12/0x30
+  ? do_syscall_64+0x69/0x90
+  ? exc_page_fault+0x65/0x150
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ RIP: 0033:0x7ff1e643f5ab
+ Code: 73 01 c3 48 8b 0d 75 a8 1b 00 f7 d8 64 89 01 48 83 c8 ff c3
+66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0
+ff ff 73 01 c3 48 8b 0d 45 a8 1b 00 f7 d8 64 89 01 48
+ RSP: 002b:00007ffec9103cc8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+ RAX: ffffffffffffffda RBX: 00005615267fdc50 RCX: 00007ff1e643f5ab
+ RDX: 0000000000000000 RSI: 0000000000000800 RDI: 00005615267fdcb8
+ RBP: 00005615267fdc50 R08: 0000000000000000 R09: 0000000000000000
+ R10: 00007ff1e659eac0 R11: 0000000000000206 R12: 00005615267fdcb8
+ R13: 0000000000000000 R14: 00005615267fdcb8 R15: 00007ffec9105ff8
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
 
-Also select MEDIA_CONTROLLER which VIDEO_V4L2_SUBDEV_API effectively
-depends on, and add the I2C dependency to the menu.
+And...
 
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: stable@vger.kernel.org # for >= 6.1
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ restrack: ------------[ cut here ]------------
+ infiniband hfi1_0: BUG: RESTRACK detected leak of resources
+ restrack: Kernel PD object allocated by ib_isert is not freed
+ restrack: Kernel CQ object allocated by ib_core is not freed
+ restrack: Kernel QP object allocated by rdma_cm is not freed
+ restrack: ------------[ cut here ]------------
+
+Fixes: 699826f4e30a ("IB/isert: Fix incorrect release of isert connection")
+Reported-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Closes: https://lore.kernel.org/all/921cd1d9-2879-f455-1f50-0053fe6a6655@cornelisnetworks.com
+Link: https://lore.kernel.org/r/a27982d3235005c58f6d321f3fad5eb6e1beaf9e.1692604607.git.leonro@nvidia.com
+Tested-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/Kconfig |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/i2c/Kconfig
-+++ b/drivers/media/i2c/Kconfig
-@@ -25,8 +25,15 @@ config VIDEO_IR_I2C
- # V4L2 I2C drivers that are related with Camera support
- #
- 
--menu "Camera sensor devices"
--	visible if MEDIA_CAMERA_SUPPORT
-+menuconfig VIDEO_CAMERA_SENSOR
-+	bool "Camera sensor devices"
-+	depends on MEDIA_CAMERA_SUPPORT && I2C
-+	select MEDIA_CONTROLLER
-+	select V4L2_FWNODE
-+	select VIDEO_V4L2_SUBDEV_API
-+	default y
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 92e1e7587af8b..00a7303c8cc60 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2570,6 +2570,8 @@ static void isert_wait_conn(struct iscsit_conn *conn)
+ 	isert_put_unsol_pending_cmds(conn);
+ 	isert_wait4cmds(conn);
+ 	isert_wait4logout(isert_conn);
 +
-+if VIDEO_CAMERA_SENSOR
++	queue_work(isert_release_wq, &isert_conn->release_work);
+ }
  
- config VIDEO_APTINA_PLL
- 	tristate
-@@ -810,7 +817,7 @@ config VIDEO_ST_VGXY61
- source "drivers/media/i2c/ccs/Kconfig"
- source "drivers/media/i2c/et8ek8/Kconfig"
- 
--endmenu
-+endif
- 
- menu "Lens drivers"
- 	visible if MEDIA_CAMERA_SUPPORT
+ static void isert_free_conn(struct iscsit_conn *conn)
+-- 
+2.40.1
+
 
 
