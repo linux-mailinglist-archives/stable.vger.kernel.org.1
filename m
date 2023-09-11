@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4667579B2BB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C988F79ACF0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236735AbjIKWWI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:22:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57258 "EHLO
+        id S1359827AbjIKWSt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239207AbjIKOOb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:31 -0400
+        with ESMTP id S240479AbjIKOpY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E050CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654A4C433C7;
-        Mon, 11 Sep 2023 14:14:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03D412A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98C1C433C8;
+        Mon, 11 Sep 2023 14:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441666;
-        bh=vggEKoSu+wCo3xzjwC54SL8nRQNY2OZV+CCim3qGJWU=;
+        s=korg; t=1694443520;
+        bh=skXZl1EARMAgyaPznX1qmRxLDOh0bsYTkYNhUen53sY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fyjR/+CZ6WIrhDqC3AaZrhByoysQEN/wTqhMvMjrhQSlXgauU3F92V8jlch2/6wfz
-         DLrPYJwwEq/6s5q/3aODH5zl4tRNcWTlkxvSOn0rcxP/1vlVP3upOY4/XPosTsNsU0
-         ziTj9l3CiGhSjJY+LBMTD3MFFHhBTi66onlmekMM=
+        b=Afd2FRbuaEDggt+EFf976E3rnZzd9LgpCAWPq2L+EFsp42t5WdA6JlNXLj3foN3wy
+         ZQQeGe+ZfGnFFq8KU0+FMQnU7C9sFXRR6x++TimDCBO2sb09ZnyLhe6zR6FEfQwocE
+         fywqigBlQaPxyOPeBCdCUv6bwZrgl6gVm0HeM0Sw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Michael Tretter <m.tretter@pengutronix.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Corey Minyard <minyard@acm.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 467/739] media: verisilicon: Fix TRY_FMT on encoder OUTPUT
+Subject: [PATCH 6.4 407/737] ipmi:ssif: Add check for kstrdup
 Date:   Mon, 11 Sep 2023 15:44:26 +0200
-Message-ID: <20230911134704.191840942@linuxfoundation.org>
+Message-ID: <20230911134701.993604290@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,75 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Tretter <m.tretter@pengutronix.de>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit b3b4c9d3cb3bf8725a3ded26f7042b1a37f25333 ]
+[ Upstream commit c5586d0f711e9744d0cade39b0c4a2d116a333ca ]
 
-Commit f100ce3bbd6a ("media: verisilicon: Fix crash when probing
-encoder") removed vpu_fmt from hantro_try_fmt(), since it was
-initialized from vpu_dst_fmt, which may not be initialized, when TRY_FMT
-is called. It was replaced by fmt, which is found using the pixelformat.
+Add check for the return value of kstrdup() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-For the encoder, this changed the fmt to contain the raw format instead
-of the coded format. The format constraints as of fmt->frmsize are only
-valid for the coded format and are 0 for the raw formats. Therefore, the
-size of a encoder OUTPUT device is constrained to 0 and the
-v4l2-compliance tests for G_FMT, TRY_FMT, and SET_FMT fail.
-
-Bring back vpu_fmt to use the coded format on an encoder OUTPUT device,
-but initialize it using the currently set pixelformat on dst_fmt, which
-is the coded format on an encoder.
-
-Fixes: f100ce3bbd6a ("media: verisilicon: Fix crash when probing encoder")
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: c4436c9149c5 ("ipmi_ssif: avoid registering duplicate ssif interface")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Message-Id: <20230619092802.35384-1-jiasheng@iscas.ac.cn>
+Signed-off-by: Corey Minyard <minyard@acm.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/hantro_v4l2.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
-index e871c078dd59e..b3ae037a50f61 100644
---- a/drivers/media/platform/verisilicon/hantro_v4l2.c
-+++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
-@@ -297,6 +297,7 @@ static int hantro_try_fmt(const struct hantro_ctx *ctx,
- 			  enum v4l2_buf_type type)
- {
- 	const struct hantro_fmt *fmt;
-+	const struct hantro_fmt *vpu_fmt;
- 	bool capture = V4L2_TYPE_IS_CAPTURE(type);
- 	bool coded;
- 
-@@ -316,19 +317,23 @@ static int hantro_try_fmt(const struct hantro_ctx *ctx,
- 
- 	if (coded) {
- 		pix_mp->num_planes = 1;
--	} else if (!ctx->is_encoder) {
-+		vpu_fmt = fmt;
-+	} else if (ctx->is_encoder) {
-+		vpu_fmt = hantro_find_format(ctx, ctx->dst_fmt.pixelformat);
-+	} else {
- 		/*
- 		 * Width/height on the CAPTURE end of a decoder are ignored and
- 		 * replaced by the OUTPUT ones.
- 		 */
- 		pix_mp->width = ctx->src_fmt.width;
- 		pix_mp->height = ctx->src_fmt.height;
-+		vpu_fmt = fmt;
- 	}
- 
- 	pix_mp->field = V4L2_FIELD_NONE;
- 
- 	v4l2_apply_frmsize_constraints(&pix_mp->width, &pix_mp->height,
--				       &fmt->frmsize);
-+				       &vpu_fmt->frmsize);
- 
- 	if (!coded) {
- 		/* Fill remaining fields */
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index 3b921c78ba083..3b87a2726e994 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1600,6 +1600,11 @@ static int ssif_add_infos(struct i2c_client *client)
+ 	info->addr_src = SI_ACPI;
+ 	info->client = client;
+ 	info->adapter_name = kstrdup(client->adapter->name, GFP_KERNEL);
++	if (!info->adapter_name) {
++		kfree(info);
++		return -ENOMEM;
++	}
++
+ 	info->binfo.addr = client->addr;
+ 	list_add_tail(&info->link, &ssif_infos);
+ 	return 0;
 -- 
 2.40.1
 
