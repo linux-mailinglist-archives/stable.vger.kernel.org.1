@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E84C79B22A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5660279B311
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353893AbjIKVvY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40896 "EHLO
+        id S240764AbjIKV6r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238865AbjIKOGo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:44 -0400
+        with ESMTP id S240270AbjIKOkR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30EBCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55ECC433C7;
-        Mon, 11 Sep 2023 14:06:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D89EF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4033C433C7;
+        Mon, 11 Sep 2023 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441200;
-        bh=KGDFfqeGMG8RbEVZ3GkPgBiP326N5HGZ/UB6fyJ7kL8=;
+        s=korg; t=1694443212;
+        bh=YA8hM1jR1VjQqkVeE3nGAqqKa+0C6yAo57b2e8Brxa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sCJIp80/8RMAYVk6mbu3mb+aEpaVRjoD14LMr5AsYiMBOfqHluxLshEvn+MRCzj17
-         /ccjyH00d2eJA8zOdgNKv+Kk3JnEygnL8SBXiBd4eRGv7MhI4nmpZxP68A05vokMYt
-         Z+c+trltpHBQ8JRm6+J6b1m49rSG68t7VEyug8bg=
+        b=Ts/PRlusBLLpl2SPyLEv9P4RwuF/ziwL77DOJDZ3JrTluBeakwRxSC8odMrpqdMLG
+         kzXMPR2CahNOs6Yjg5EC1CEzVSRhxC3wApk262IxfXy/Ozwh6FOEZp/QfkMBYp4hvX
+         VEOc9F2wND+px5eM5ftMhVFiNUnTb3az81f8LsGc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jinyoung Choi <j-young.choi@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 330/739] block: dont pass a bio to bio_try_merge_hw_seg
-Date:   Mon, 11 Sep 2023 15:42:09 +0200
-Message-ID: <20230911134700.313660557@linuxfoundation.org>
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 271/737] quota: factor out dquot_write_dquot()
+Date:   Mon, 11 Sep 2023 15:42:10 +0200
+Message-ID: <20230911134658.147100257@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,78 +49,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit ae42f0b3bf65912e122fc2e8d5f6d94b51156dba ]
+[ Upstream commit 024128477809f8073d870307c8157b8826ebfd08 ]
 
-There is no good reason to pass the bio to bio_try_merge_hw_seg.  Just
-pass the current bvec and rename the function to bvec_try_merge_hw_page.
-This will allow reusing this function for supporting multi-page integrity
-payload bvecs.
+Refactor out dquot_write_dquot() to reduce duplicate code.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jinyoung Choi <j-young.choi@samsung.com>
-Link: https://lore.kernel.org/r/20230724165433.117645-9-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 0ece1d649b6d ("bio-integrity: create multi-page bvecs in bio_integrity_add_page()")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230630110822.3881712-2-libaokun1@huawei.com>
+Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ fs/quota/dquot.c | 39 ++++++++++++++++-----------------------
+ 1 file changed, 16 insertions(+), 23 deletions(-)
 
-diff --git a/block/bio.c b/block/bio.c
-index c30f7489e4482..0766584563f6e 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -934,11 +934,10 @@ static bool bvec_try_merge_page(struct bio_vec *bv, struct page *page,
-  * size limit.  This is not for normal read/write bios, but for passthrough
-  * or Zone Append operations that we can't split.
-  */
--static bool bio_try_merge_hw_seg(struct request_queue *q, struct bio *bio,
--				 struct page *page, unsigned len,
--				 unsigned offset, bool *same_page)
-+static bool bvec_try_merge_hw_page(struct request_queue *q, struct bio_vec *bv,
-+		struct page *page, unsigned len, unsigned offset,
-+		bool *same_page)
- {
--	struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
- 	unsigned long mask = queue_segment_boundary(q);
- 	phys_addr_t addr1 = page_to_phys(bv->bv_page) + bv->bv_offset;
- 	phys_addr_t addr2 = page_to_phys(page) + offset + len - 1;
-@@ -967,8 +966,6 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
- 		struct page *page, unsigned int len, unsigned int offset,
- 		unsigned int max_sectors, bool *same_page)
- {
--	struct bio_vec *bvec;
--
- 	if (WARN_ON_ONCE(bio_flagged(bio, BIO_CLONED)))
- 		return 0;
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index e3e4f40476579..108ba9f1e4208 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -628,6 +628,18 @@ int dquot_scan_active(struct super_block *sb,
+ }
+ EXPORT_SYMBOL(dquot_scan_active);
  
-@@ -976,7 +973,9 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
- 		return 0;
- 
- 	if (bio->bi_vcnt > 0) {
--		if (bio_try_merge_hw_seg(q, bio, page, len, offset,
-+		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++static inline int dquot_write_dquot(struct dquot *dquot)
++{
++	int ret = dquot->dq_sb->dq_op->write_dquot(dquot);
++	if (ret < 0) {
++		quota_error(dquot->dq_sb, "Can't write quota structure "
++			    "(error %d). Quota may get out of sync!", ret);
++		/* Clear dirty bit anyway to avoid infinite loop. */
++		clear_dquot_dirty(dquot);
++	}
++	return ret;
++}
 +
-+		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
- 				same_page)) {
- 			bio->bi_iter.bi_size += len;
- 			return len;
-@@ -986,8 +985,7 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
- 		 * If the queue doesn't support SG gaps and adding this segment
- 		 * would create a gap, disallow it.
- 		 */
--		bvec = &bio->bi_io_vec[bio->bi_vcnt - 1];
--		if (bvec_gap_to_prev(&q->limits, bvec, offset))
-+		if (bvec_gap_to_prev(&q->limits, bv, offset))
- 			return 0;
+ /* Write all dquot structures to quota files */
+ int dquot_writeback_dquots(struct super_block *sb, int type)
+ {
+@@ -658,16 +670,9 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			 * use count */
+ 			dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+-			err = sb->dq_op->write_dquot(dquot);
+-			if (err) {
+-				/*
+-				 * Clear dirty bit anyway to avoid infinite
+-				 * loop here.
+-				 */
+-				clear_dquot_dirty(dquot);
+-				if (!ret)
+-					ret = err;
+-			}
++			err = dquot_write_dquot(dquot);
++			if (err && !ret)
++				ret = err;
+ 			dqput(dquot);
+ 			spin_lock(&dq_list_lock);
+ 		}
+@@ -765,8 +770,6 @@ static struct shrinker dqcache_shrinker = {
+  */
+ void dqput(struct dquot *dquot)
+ {
+-	int ret;
+-
+ 	if (!dquot)
+ 		return;
+ #ifdef CONFIG_QUOTA_DEBUG
+@@ -794,17 +797,7 @@ void dqput(struct dquot *dquot)
+ 	if (dquot_dirty(dquot)) {
+ 		spin_unlock(&dq_list_lock);
+ 		/* Commit dquot before releasing */
+-		ret = dquot->dq_sb->dq_op->write_dquot(dquot);
+-		if (ret < 0) {
+-			quota_error(dquot->dq_sb, "Can't write quota structure"
+-				    " (error %d). Quota may get out of sync!",
+-				    ret);
+-			/*
+-			 * We clear dirty bit anyway, so that we avoid
+-			 * infinite loop here
+-			 */
+-			clear_dquot_dirty(dquot);
+-		}
++		dquot_write_dquot(dquot);
+ 		goto we_slept;
  	}
- 
+ 	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
 -- 
 2.40.1
 
