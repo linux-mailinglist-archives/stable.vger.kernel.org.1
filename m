@@ -2,47 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A07D779B7AB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE2D79C023
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241172AbjIKWWh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:22:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51474 "EHLO
+        id S1344493AbjIKVOM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240740AbjIKOwc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:32 -0400
+        with ESMTP id S239429AbjIKOUV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA79118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE9CC433C8;
-        Mon, 11 Sep 2023 14:52:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4772DDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7F6C433C7;
+        Mon, 11 Sep 2023 14:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443946;
-        bh=IknDzujTlU5asqd1ghx3DAdUuFZfoB5KnDSGmz5EXQ8=;
+        s=korg; t=1694442016;
+        bh=5FkymuVd601f5pxD1FxsHB3dtRHVkH1yBrLfUCo4s/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SxmkaJ0ZVYhnW3y9l50DBixFMEheI+4zbD6LueRqkJQuG5uWdWqc3kE/0AbSU8/KE
-         GlZ01RUf6bGzXGSxbt4FBr7ytNwdQVKokxXlmGmaqCu3y5PIgQnz1Zf3uXAaDjfUL2
-         HM/g8OyIc3aepOxfDhZ7caOD/mRPcNsqwgPwgnAE=
+        b=lTpINjYe7JYPKgRLImr87ZFBaVwTsZewECA5/k2T8S6AfRrbHZp3usuARinWf0pJv
+         e/gUBuGWCwc9zNuIFciQ8NuFVOPH7gsK/Vgfk6os0yDXdlG0X7HY8qHCfHENDDdD2W
+         kR61MKQjldcjj0QXmoFKEWWMp8d69rAu+W50l40c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 549/737] media: cec: core: add adap_nb_transmit_canceled() callback
+Subject: [PATCH 6.5 609/739] thermal/drivers/mediatek/lvts_thermal: Manage threshold between sensors
 Date:   Mon, 11 Sep 2023 15:46:48 +0200
-Message-ID: <20230911134705.894585957@linuxfoundation.org>
+Message-ID: <20230911134708.107901812@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,83 +56,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit da53c36ddd3f118a525a04faa8c47ca471e6c467 ]
+[ Upstream commit 2bba1acf7a4cbe62abbb4c686e0414209ec5943b ]
 
-A potential deadlock was found by Zheng Zhang with a local syzkaller
-instance.
+Each LVTS thermal controller can have up to four sensors, each capable
+of triggering its own interrupt when its measured temperature crosses
+the configured threshold. The threshold for each sensor is handled
+separately by the thermal framework, since each one is registered with
+its own thermal zone and trips. However, the temperature thresholds are
+configured on the controller, and therefore are shared between all
+sensors on that controller.
 
-The problem is that when a non-blocking CEC transmit is canceled by calling
-cec_data_cancel, that in turn can call the high-level received() driver
-callback, which can call cec_transmit_msg() to transmit a new message.
+When the temperature measured by the sensors is different enough to
+cause the thermal framework to configure different thresholds for each
+one, interrupts start triggering on sensors outside the last threshold
+configured.
 
-The cec_data_cancel() function is called with the adap->lock mutex held,
-and cec_transmit_msg() tries to take that same lock.
+To address the issue, track the thresholds required by each sensor and
+only actually set the highest one in the hardware, and disable
+interrupts for all sensors outside the current configured range.
 
-The root cause is that the received() callback can either be used to pass
-on a received message (and then adap->lock is not held), or to report a
-canceled transmit (and then adap->lock is held).
-
-This is confusing, so create a new low-level adap_nb_transmit_canceled
-callback that reports back that a non-blocking transmit was canceled.
-
-And the received() callback is only called when a message is received,
-as was the case before commit f9d0ecbf56f4 ("media: cec: correctly pass
-on reply results") complicated matters.
-
-Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: f9d0ecbf56f4 ("media: cec: correctly pass on reply results")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230706153823.201943-7-nfraprado@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 4 ++--
- include/media/cec.h               | 6 ++++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 69 +++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 241b1621b197c..a9b73fb33888d 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -385,8 +385,8 @@ static void cec_data_cancel(struct cec_data *data, u8 tx_status, u8 rx_status)
- 	cec_queue_msg_monitor(adap, &data->msg, 1);
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 064269667fb89..b0d71b74a928e 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -67,6 +67,11 @@
+ #define LVTS_CALSCALE_CONF			0x300
+ #define LVTS_MONINT_CONF			0x8300318C
  
- 	if (!data->blocking && data->msg.sequence)
--		/* Allow drivers to process the message first */
--		call_op(adap, received, &data->msg);
-+		/* Allow drivers to react to a canceled transmit */
-+		call_void_op(adap, adap_nb_transmit_canceled, &data->msg);
- 
- 	cec_data_completed(data);
- }
-diff --git a/include/media/cec.h b/include/media/cec.h
-index abee41ae02d0e..6556cc161dc0a 100644
---- a/include/media/cec.h
-+++ b/include/media/cec.h
-@@ -121,14 +121,16 @@ struct cec_adap_ops {
- 	void (*adap_configured)(struct cec_adapter *adap, bool configured);
- 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
- 			     u32 signal_free_time, struct cec_msg *msg);
-+	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
-+					  const struct cec_msg *msg);
- 	void (*adap_status)(struct cec_adapter *adap, struct seq_file *file);
- 	void (*adap_free)(struct cec_adapter *adap);
- 
--	/* Error injection callbacks */
-+	/* Error injection callbacks, called without adap->lock held */
- 	int (*error_inj_show)(struct cec_adapter *adap, struct seq_file *sf);
- 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
- 
--	/* High-level CEC message callback */
-+	/* High-level CEC message callback, called without adap->lock held */
- 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
++#define LVTS_MONINT_OFFSET_SENSOR0		0xC
++#define LVTS_MONINT_OFFSET_SENSOR1		0x180
++#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
++#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
++
+ #define LVTS_INT_SENSOR0			0x0009001F
+ #define LVTS_INT_SENSOR1			0x001203E0
+ #define LVTS_INT_SENSOR2			0x00247C00
+@@ -112,6 +117,8 @@ struct lvts_sensor {
+ 	void __iomem *base;
+ 	int id;
+ 	int dt_id;
++	int low_thresh;
++	int high_thresh;
  };
  
+ struct lvts_ctrl {
+@@ -121,6 +128,8 @@ struct lvts_ctrl {
+ 	int num_lvts_sensor;
+ 	int mode;
+ 	void __iomem *base;
++	int low_thresh;
++	int high_thresh;
+ };
+ 
+ struct lvts_domain {
+@@ -292,12 +301,66 @@ static int lvts_get_temp(struct thermal_zone_device *tz, int *temp)
+ 	return 0;
+ }
+ 
++static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
++{
++	u32 masks[] = {
++		LVTS_MONINT_OFFSET_SENSOR0,
++		LVTS_MONINT_OFFSET_SENSOR1,
++		LVTS_MONINT_OFFSET_SENSOR2,
++		LVTS_MONINT_OFFSET_SENSOR3,
++	};
++	u32 value = 0;
++	int i;
++
++	value = readl(LVTS_MONINT(lvts_ctrl->base));
++
++	for (i = 0; i < ARRAY_SIZE(masks); i++) {
++		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
++		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
++			value |= masks[i];
++		else
++			value &= ~masks[i];
++	}
++
++	writel(value, LVTS_MONINT(lvts_ctrl->base));
++}
++
++static bool lvts_should_update_thresh(struct lvts_ctrl *lvts_ctrl, int high)
++{
++	int i;
++
++	if (high > lvts_ctrl->high_thresh)
++		return true;
++
++	for (i = 0; i < lvts_ctrl->num_lvts_sensor; i++)
++		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
++		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
++			return false;
++
++	return true;
++}
++
+ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ {
+ 	struct lvts_sensor *lvts_sensor = thermal_zone_device_priv(tz);
++	struct lvts_ctrl *lvts_ctrl = container_of(lvts_sensor, struct lvts_ctrl, sensors[lvts_sensor->id]);
+ 	void __iomem *base = lvts_sensor->base;
+ 	u32 raw_low = lvts_temp_to_raw(low != -INT_MAX ? low : LVTS_MINIMUM_THRESHOLD);
+ 	u32 raw_high = lvts_temp_to_raw(high);
++	bool should_update_thresh;
++
++	lvts_sensor->low_thresh = low;
++	lvts_sensor->high_thresh = high;
++
++	should_update_thresh = lvts_should_update_thresh(lvts_ctrl, high);
++	if (should_update_thresh) {
++		lvts_ctrl->high_thresh = high;
++		lvts_ctrl->low_thresh = low;
++	}
++	lvts_update_irq_mask(lvts_ctrl);
++
++	if (!should_update_thresh)
++		return 0;
+ 
+ 	/*
+ 	 * Low offset temperature threshold
+@@ -521,6 +584,9 @@ static int lvts_sensor_init(struct device *dev, struct lvts_ctrl *lvts_ctrl,
+ 		 */
+ 		lvts_sensor[i].msr = lvts_ctrl_data->mode == LVTS_MSR_IMMEDIATE_MODE ?
+ 			imm_regs[i] : msr_regs[i];
++
++		lvts_sensor[i].low_thresh = INT_MIN;
++		lvts_sensor[i].high_thresh = INT_MIN;
+ 	};
+ 
+ 	lvts_ctrl->num_lvts_sensor = lvts_ctrl_data->num_lvts_sensor;
+@@ -688,6 +754,9 @@ static int lvts_ctrl_init(struct device *dev, struct lvts_domain *lvts_td,
+ 		 */
+ 		lvts_ctrl[i].hw_tshut_raw_temp =
+ 			lvts_temp_to_raw(lvts_data->lvts_ctrl[i].hw_tshut_temp);
++
++		lvts_ctrl[i].low_thresh = INT_MIN;
++		lvts_ctrl[i].high_thresh = INT_MIN;
+ 	}
+ 
+ 	/*
 -- 
 2.40.1
 
