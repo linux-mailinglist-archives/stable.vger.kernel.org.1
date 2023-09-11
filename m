@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B2F179BD3C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 533E679B796
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243874AbjIKWYh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
+        id S237904AbjIKVGM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:06:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240455AbjIKOon (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:43 -0400
+        with ESMTP id S241493AbjIKPKA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03CF412A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEE5C433CA;
-        Mon, 11 Sep 2023 14:44:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54150CCC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1DCC433C7;
+        Mon, 11 Sep 2023 15:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443478;
-        bh=TcQEXWi/i/5Ja09I4YlQ1tqYpm2KStVHS3ckn+Ak5Bs=;
+        s=korg; t=1694444996;
+        bh=arANc2HCzBPHcKdlf9jqkvuw+Pe08ScI45nl8zS8gEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mbjhQ/4aqkNY7XTIJNy1LUeU0dSWdj3nWMLr7quFU1Tbg0210wk4FWYAqNCt8Rg4Z
-         dmOcH0UFmXzKI4+IPNRt3x62wM91MUJ9Blz2oDXj01vQx9yNSDndn+NFmC4qiLB6dk
-         OCCduiV3vPOttvxxZjAUtdQy5DGEQoPdwe4V0Al4=
+        b=mtR8NQvXM51M3C8vplC0123RjFos5lPUPG0wKac5sqwVtgQJNpIvNX+vMTwTJIII/
+         xHmc4ztdy2QG2IrPYjSadrqdjoi6kxrW+6PcUEOFdNZuQfNKoPHUrQefk5x45b+hhp
+         w+TqMGagLq8xvRNub+4VHl4dg/MYZzBlFRStKzeA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, "Daniel T. Lee" <danieltimlee@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 364/737] drm/msm/a6xx: Fix GMU lockdep splat
+Subject: [PATCH 6.1 190/600] samples/bpf: fix broken map lookup probe
 Date:   Mon, 11 Sep 2023 15:43:43 +0200
-Message-ID: <20230911134700.704803649@linuxfoundation.org>
+Message-ID: <20230911134639.229709773@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,255 +50,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Daniel T. Lee <danieltimlee@gmail.com>
 
-[ Upstream commit 3136a0f83519076edfbc14be65f286785434189a ]
+[ Upstream commit d93a7cf6ca2cfcd7de5d06f753ce8d5e863316ac ]
 
-For normal GPU devfreq, we need to acquire the GMU lock while already
-holding devfreq locks.  But in the teardown path, we were calling
-dev_pm_domain_detach() while already holding the GMU lock, resulting in
-this lockdep splat:
+In the commit 7c4cd051add3 ("bpf: Fix syscall's stackmap lookup
+potential deadlock"), a potential deadlock issue was addressed, which
+resulted in *_map_lookup_elem not triggering BPF programs.
+(prior to lookup, bpf_disable_instrumentation() is used)
 
-   ======================================================
-   WARNING: possible circular locking dependency detected
-   6.4.3-debug+ #3 Not tainted
-   ------------------------------------------------------
-   ring0/391 is trying to acquire lock:
-   ffffff80a025c078 (&devfreq->lock){+.+.}-{3:3}, at: qos_notifier_call+0x30/0x74
+To resolve the broken map lookup probe using "htab_map_lookup_elem",
+this commit introduces an alternative approach. Instead, it utilize
+"bpf_map_copy_value" and apply a filter specifically for the hash table
+with map_type.
 
-   but task is already holding lock:
-   ffffff809b8c1ce8 (&(c->notifiers)->rwsem){++++}-{3:3}, at: blocking_notifier_call_chain+0x34/0x78
-
-   which lock already depends on the new lock.
-
-   the existing dependency chain (in reverse order) is:
-
-   -> #4 (&(c->notifiers)->rwsem){++++}-{3:3}:
-          down_write+0x58/0x74
-          __blocking_notifier_chain_register+0x64/0x84
-          blocking_notifier_chain_register+0x1c/0x28
-          freq_qos_add_notifier+0x5c/0x7c
-          dev_pm_qos_add_notifier+0xd4/0xf0
-          devfreq_add_device+0x42c/0x560
-          devm_devfreq_add_device+0x6c/0xb8
-          msm_devfreq_init+0xa8/0x16c [msm]
-          msm_gpu_init+0x368/0x54c [msm]
-          adreno_gpu_init+0x248/0x2b0 [msm]
-          a6xx_gpu_init+0x2d0/0x384 [msm]
-          adreno_bind+0x264/0x2bc [msm]
-          component_bind_all+0x124/0x1f4
-          msm_drm_bind+0x2d0/0x5f4 [msm]
-          try_to_bring_up_aggregate_device+0x88/0x1a4
-          __component_add+0xd4/0x128
-          component_add+0x1c/0x28
-          dp_display_probe+0x37c/0x3c0 [msm]
-          platform_probe+0x70/0xc0
-          really_probe+0x148/0x280
-          __driver_probe_device+0xfc/0x114
-          driver_probe_device+0x44/0x100
-          __device_attach_driver+0x64/0xdc
-          bus_for_each_drv+0xb0/0xd8
-          __device_attach+0xe4/0x140
-          device_initial_probe+0x1c/0x28
-          bus_probe_device+0x44/0xb0
-          deferred_probe_work_func+0xb0/0xc8
-          process_one_work+0x288/0x3d8
-          worker_thread+0x1f0/0x260
-          kthread+0xf0/0x100
-          ret_from_fork+0x10/0x20
-
-   -> #3 (dev_pm_qos_mtx){+.+.}-{3:3}:
-          __mutex_lock+0xc8/0x388
-          mutex_lock_nested+0x2c/0x38
-          dev_pm_qos_remove_notifier+0x3c/0xc8
-          genpd_remove_device+0x40/0x11c
-          genpd_dev_pm_detach+0x88/0x130
-          dev_pm_domain_detach+0x2c/0x3c
-          a6xx_gmu_remove+0x44/0xdc [msm]
-          a6xx_destroy+0x7c/0xa4 [msm]
-          adreno_unbind+0x50/0x64 [msm]
-          component_unbind+0x44/0x64
-          component_unbind_all+0xb4/0xbc
-          msm_drm_uninit.isra.0+0x124/0x17c [msm]
-          msm_drm_bind+0x340/0x5f4 [msm]
-          try_to_bring_up_aggregate_device+0x88/0x1a4
-          __component_add+0xd4/0x128
-          component_add+0x1c/0x28
-          dp_display_probe+0x37c/0x3c0 [msm]
-          platform_probe+0x70/0xc0
-          really_probe+0x148/0x280
-          __driver_probe_device+0xfc/0x114
-          driver_probe_device+0x44/0x100
-          __device_attach_driver+0x64/0xdc
-          bus_for_each_drv+0xb0/0xd8
-          __device_attach+0xe4/0x140
-          device_initial_probe+0x1c/0x28
-          bus_probe_device+0x44/0xb0
-          deferred_probe_work_func+0xb0/0xc8
-          process_one_work+0x288/0x3d8
-          worker_thread+0x1f0/0x260
-          kthread+0xf0/0x100
-          ret_from_fork+0x10/0x20
-
-   -> #2 (&a6xx_gpu->gmu.lock){+.+.}-{3:3}:
-          __mutex_lock+0xc8/0x388
-          mutex_lock_nested+0x2c/0x38
-          a6xx_gpu_set_freq+0x38/0x64 [msm]
-          msm_devfreq_target+0x170/0x18c [msm]
-          devfreq_set_target+0x90/0x1e4
-          devfreq_update_target+0xb4/0xf0
-          update_devfreq+0x1c/0x28
-          devfreq_monitor+0x3c/0x10c
-          process_one_work+0x288/0x3d8
-          worker_thread+0x1f0/0x260
-          kthread+0xf0/0x100
-          ret_from_fork+0x10/0x20
-
-   -> #1 (&df->lock){+.+.}-{3:3}:
-          __mutex_lock+0xc8/0x388
-          mutex_lock_nested+0x2c/0x38
-          msm_devfreq_get_dev_status+0x4c/0x104 [msm]
-          devfreq_simple_ondemand_func+0x5c/0x128
-          devfreq_update_target+0x68/0xf0
-          update_devfreq+0x1c/0x28
-          devfreq_monitor+0x3c/0x10c
-          process_one_work+0x288/0x3d8
-          worker_thread+0x1f0/0x260
-          kthread+0xf0/0x100
-          ret_from_fork+0x10/0x20
-
-   -> #0 (&devfreq->lock){+.+.}-{3:3}:
-          __lock_acquire+0xdf8/0x109c
-          lock_acquire+0x234/0x284
-          __mutex_lock+0xc8/0x388
-          mutex_lock_nested+0x2c/0x38
-          qos_notifier_call+0x30/0x74
-          qos_min_notifier_call+0x1c/0x28
-          notifier_call_chain+0xf4/0x114
-          blocking_notifier_call_chain+0x4c/0x78
-          pm_qos_update_target+0x184/0x190
-          freq_qos_apply+0x4c/0x64
-          apply_constraint+0xf8/0xfc
-          __dev_pm_qos_update_request+0x138/0x164
-          dev_pm_qos_update_request+0x44/0x68
-          msm_devfreq_boost+0x40/0x70 [msm]
-          msm_devfreq_active+0xc0/0xf0 [msm]
-          msm_gpu_submit+0xc8/0x12c [msm]
-          msm_job_run+0x88/0x128 [msm]
-          drm_sched_main+0x240/0x324 [gpu_sched]
-          kthread+0xf0/0x100
-          ret_from_fork+0x10/0x20
-
-   other info that might help us debug this:
-   Chain exists of:
-     &devfreq->lock --> dev_pm_qos_mtx --> &(c->notifiers)->rwsem
-    Possible unsafe locking scenario:
-          CPU0                    CPU1
-          ----                    ----
-     rlock(&(c->notifiers)->rwsem);
-                                  lock(dev_pm_qos_mtx);
-                                  lock(&(c->notifiers)->rwsem);
-     lock(&devfreq->lock);
-
-    *** DEADLOCK ***
-   4 locks held by ring0/391:
-    #0: ffffff809c811170 (&gpu->lock){+.+.}-{3:3}, at: msm_job_run+0x7c/0x128 [msm]
-    #1: ffffff809c811208 (&gpu->active_lock){+.+.}-{3:3}, at: msm_gpu_submit+0xa8/0x12c [msm]
-    #2: ffffffecbbb46600 (dev_pm_qos_mtx){+.+.}-{3:3}, at: dev_pm_qos_update_request+0x38/0x68
-    #3: ffffff809b8c1ce8 (&(c->notifiers)->rwsem){++++}-{3:3}, at: blocking_notifier_call_chain+0x34/0x78
-
-   stack backtrace:
-   CPU: 6 PID: 391 Comm: ring0 Not tainted 6.4.3debug+ #3
-   Hardware name: Google Villager (rev1+) with LTE (DT)
-   Call trace:
-    dump_backtrace+0xb4/0xf0
-    show_stack+0x20/0x30
-    dump_stack_lvl+0x60/0x84
-    dump_stack+0x18/0x24
-    print_circular_bug+0x1cc/0x234
-    check_noncircular+0x78/0xac
-    __lock_acquire+0xdf8/0x109c
-    lock_acquire+0x234/0x284
-    __mutex_lock+0xc8/0x388
-    mutex_lock_nested+0x2c/0x38
-    qos_notifier_call+0x30/0x74
-    qos_min_notifier_call+0x1c/0x28
-    notifier_call_chain+0xf4/0x114
-    blocking_notifier_call_chain+0x4c/0x78
-    pm_qos_update_target+0x184/0x190
-    freq_qos_apply+0x4c/0x64
-    apply_constraint+0xf8/0xfc
-    __dev_pm_qos_update_request+0x138/0x164
-    dev_pm_qos_update_request+0x44/0x68
-    msm_devfreq_boost+0x40/0x70 [msm]
-    msm_devfreq_active+0xc0/0xf0 [msm]
-    msm_gpu_submit+0xc8/0x12c [msm]
-    msm_job_run+0x88/0x128 [msm]
-    drm_sched_main+0x240/0x324 [gpu_sched]
-    kthread+0xf0/0x100
-    ret_from_fork+0x10/0x20
-
-Fix this by only synchronizing access to gmu->initialized.
-
-Fixes: 4cd15a3e8b36 ("drm/msm/a6xx: Make GPU destroy a bit safer")
-Cc: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/551171/
+Signed-off-by: Daniel T. Lee <danieltimlee@gmail.com>
+Fixes: 7c4cd051add3 ("bpf: Fix syscall's stackmap lookup potential deadlock")
+Link: https://lore.kernel.org/r/20230818090119.477441-8-danieltimlee@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 11 ++++++++---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c |  2 --
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ samples/bpf/tracex6_kern.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 8914992378f21..1ff2a71e1aea5 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1472,8 +1472,15 @@ void a6xx_gmu_remove(struct a6xx_gpu *a6xx_gpu)
- 	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
- 	struct platform_device *pdev = to_platform_device(gmu->dev);
+diff --git a/samples/bpf/tracex6_kern.c b/samples/bpf/tracex6_kern.c
+index acad5712d8b4f..fd602c2774b8b 100644
+--- a/samples/bpf/tracex6_kern.c
++++ b/samples/bpf/tracex6_kern.c
+@@ -2,6 +2,8 @@
+ #include <linux/version.h>
+ #include <uapi/linux/bpf.h>
+ #include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++#include <bpf/bpf_core_read.h>
  
--	if (!gmu->initialized)
-+	mutex_lock(&gmu->lock);
-+	if (!gmu->initialized) {
-+		mutex_unlock(&gmu->lock);
- 		return;
-+	}
-+
-+	gmu->initialized = false;
-+
-+	mutex_unlock(&gmu->lock);
- 
- 	pm_runtime_force_suspend(gmu->dev);
- 
-@@ -1501,8 +1508,6 @@ void a6xx_gmu_remove(struct a6xx_gpu *a6xx_gpu)
- 
- 	/* Drop reference taken in of_find_device_by_node */
- 	put_device(gmu->dev);
--
--	gmu->initialized = false;
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+@@ -45,13 +47,24 @@ int bpf_prog1(struct pt_regs *ctx)
+ 	return 0;
  }
  
- static int cxpd_notifier_cb(struct notifier_block *nb,
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 411b7a5fa2f32..bdda1a6336543 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1697,9 +1697,7 @@ static void a6xx_destroy(struct msm_gpu *gpu)
+-SEC("kprobe/htab_map_lookup_elem")
+-int bpf_prog2(struct pt_regs *ctx)
++/*
++ * Since *_map_lookup_elem can't be expected to trigger bpf programs
++ * due to potential deadlocks (bpf_disable_instrumentation), this bpf
++ * program will be attached to bpf_map_copy_value (which is called
++ * from map_lookup_elem) and will only filter the hashtable type.
++ */
++SEC("kprobe/bpf_map_copy_value")
++int BPF_KPROBE(bpf_prog2, struct bpf_map *map)
+ {
+ 	u32 key = bpf_get_smp_processor_id();
+ 	struct bpf_perf_event_value *val, buf;
++	enum bpf_map_type type;
+ 	int error;
  
- 	a6xx_llc_slices_destroy(a6xx_gpu);
- 
--	mutex_lock(&a6xx_gpu->gmu.lock);
- 	a6xx_gmu_remove(a6xx_gpu);
--	mutex_unlock(&a6xx_gpu->gmu.lock);
- 
- 	adreno_gpu_cleanup(adreno_gpu);
- 
++	type = BPF_CORE_READ(map, map_type);
++	if (type != BPF_MAP_TYPE_HASH)
++		return 0;
++
+ 	error = bpf_perf_event_read_value(&counters, key, &buf, sizeof(buf));
+ 	if (error)
+ 		return 0;
 -- 
 2.40.1
 
