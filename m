@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6AB79B24F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD36779B209
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238129AbjIKVRE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:17:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59512 "EHLO
+        id S242792AbjIKWkK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:40:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238856AbjIKOGV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:21 -0400
+        with ESMTP id S240184AbjIKOil (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5499120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C9AC433C8;
-        Mon, 11 Sep 2023 14:06:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192A0E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E04C433C7;
+        Mon, 11 Sep 2023 14:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441177;
-        bh=vxqOg9zK5nlxHwx1QEbApMFakIp/+Zu96Fu+YcDjEoQ=;
+        s=korg; t=1694443116;
+        bh=kodaDjdgIMWKiwvXRcKvsYALa1HjbgtPg5unye4eWyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UT/cov25IGCAt2P8wp0RmOrT1Zv/tYgyqc2hsZtpz/Ph/e2X7uuAKpF+oDroSCuBd
-         bjqenk52JrtJIoc1FUAnSF3ZiYhn4/rn1wFQue48QsOwelG9u0hzf5bZuebZ75PvXQ
-         32nU4QNoVCfvwaNam3D+NbIJMHQjVqX3BXM+khwg=
+        b=PPo38UXXNUazSlli/lVO3ac17nr/vnWJyzytKBOkkps2wLKS+Ri8eOzQJL18hXjO5
+         NHWR4LABLymIln1JtNKHHAlzAHBEtYmScwZ5JfHJBW/qH5Z6X7cqT+JARCbL7HNFFk
+         mPb2rp4vDjpJfXnjdoswGedeFLC8NIc0jclwDmAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Nancy.Lin" <nancy.lin@mediatek.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
+        Brett Creeley <brett.creeley@amd.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 322/739] drm/mediatek: Fix uninitialized symbol
-Date:   Mon, 11 Sep 2023 15:42:01 +0200
-Message-ID: <20230911134700.098932869@linuxfoundation.org>
+Subject: [PATCH 6.4 263/737] pds_core: no reset command for VF
+Date:   Mon, 11 Sep 2023 15:42:02 +0200
+Message-ID: <20230911134657.934269319@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nancy.Lin <nancy.lin@mediatek.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 63ee9438f2aeffb2d1b2df2599c168ca08d35025 ]
+[ Upstream commit 95e383226d6fcda6c217912f11edf8d74de9cc85 ]
 
-Fix Smatch static checker warning
-  -Fix uninitialized symbol comp_pdev in mtk_ddp_comp_init.
+The VF doesn't need to send a reset command, and in a PCI reset
+scenario it might not have a valid IO space to write to anyway.
 
-Fixes: 0d9eee9118b7 ("drm/mediatek: Add drm ovl_adaptor sub driver for MT8195")
-Signed-off-by: Nancy.Lin <nancy.lin@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230803094843.4439-1-nancy.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 523847df1b37 ("pds_core: add devcmd device interfaces")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230824161754.34264-4-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/amd/pds_core/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
-index f114da4d36a96..771f4e1733539 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
-@@ -563,14 +563,15 @@ int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
- 	/* Not all drm components have a DTS device node, such as ovl_adaptor,
- 	 * which is the drm bring up sub driver
- 	 */
--	if (node) {
--		comp_pdev = of_find_device_by_node(node);
--		if (!comp_pdev) {
--			DRM_INFO("Waiting for device %s\n", node->full_name);
--			return -EPROBE_DEFER;
--		}
--		comp->dev = &comp_pdev->dev;
-+	if (!node)
-+		return 0;
-+
-+	comp_pdev = of_find_device_by_node(node);
-+	if (!comp_pdev) {
-+		DRM_INFO("Waiting for device %s\n", node->full_name);
-+		return -EPROBE_DEFER;
- 	}
-+	comp->dev = &comp_pdev->dev;
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index 2a315f2da37d7..d06934edc265e 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -464,7 +464,8 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
+ {
+ 	int i;
  
- 	if (type == MTK_DISP_AAL ||
- 	    type == MTK_DISP_BLS ||
-@@ -580,7 +581,6 @@ int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
- 	    type == MTK_DISP_MERGE ||
- 	    type == MTK_DISP_OVL ||
- 	    type == MTK_DISP_OVL_2L ||
--	    type == MTK_DISP_OVL_ADAPTOR ||
- 	    type == MTK_DISP_PWM ||
- 	    type == MTK_DISP_RDMA ||
- 	    type == MTK_DPI ||
+-	pdsc_devcmd_reset(pdsc);
++	if (!pdsc->pdev->is_virtfn)
++		pdsc_devcmd_reset(pdsc);
+ 	pdsc_qcq_free(pdsc, &pdsc->notifyqcq);
+ 	pdsc_qcq_free(pdsc, &pdsc->adminqcq);
+ 
 -- 
 2.40.1
 
