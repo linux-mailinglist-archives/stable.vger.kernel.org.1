@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 332E479B72C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB40579B70E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240402AbjIKWXt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35422 "EHLO
+        id S1353755AbjIKVt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241962AbjIKPTG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:06 -0400
+        with ESMTP id S240741AbjIKOwe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6410DFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAE6C433C8;
-        Mon, 11 Sep 2023 15:19:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC12118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32D1C433C7;
+        Mon, 11 Sep 2023 14:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445542;
-        bh=wPlOxrz3Il636PJa7TBGWgbqKKUXH08Iy0R3q+ex2s8=;
+        s=korg; t=1694443949;
+        bh=8/dtDIJgcsK1gzsZbm6+r1gA4zK/0E3Sx17KvzeW5v8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jmeJM4LukKtfzAEHV8kDCT6rW7Ca7LMWiKA6LS4TQFLNaJS1Wu5YP6y4uB9sKIaiQ
-         THRD9tArbWSZsaNzhLqVaFkWgI8FnXnfq/CrWNhf/i7rJW0SGYvCQX6+EIwbTwETtV
-         jhd8YrqwZoUwqCZ3FOfLlIACkJRwN2aDjjXCfqtM=
+        b=RjDRAbJ2quu08v1OTmJhVk++PLEVf7NOxU5MaPJV3kTGeqw8Wu8GHYgDIpjv9iZLk
+         FIGvo1dZmAOjru3zEDQTTA4qX6iIMVuuXf6gWH9A4TEtmT3IfbGHj+UVfOb0f4atjf
+         3NnuliZFkjKDpP2bYLfP2G5a6VTAIYD+hff0VoXs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 384/600] fs: lockd: avoid possible wrong NULL parameter
+Subject: [PATCH 6.4 558/737] USB: gadget: core: Add missing kerneldoc for vbus_work
 Date:   Mon, 11 Sep 2023 15:46:57 +0200
-Message-ID: <20230911134645.001255820@linuxfoundation.org>
+Message-ID: <20230911134706.140234682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +49,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit de8d38cf44bac43e83bad28357ba84784c412752 ]
+[ Upstream commit 159a98afc88e88f588077afe818081d67f50a5e0 ]
 
-clang's static analysis warning: fs/lockd/mon.c: line 293, column 2:
-Null pointer passed as 2nd argument to memory copy function.
+Add a missing kerneldoc description of the vbus_work field in struct usb_udc.
 
-Assuming 'hostname' is NULL and calling 'nsm_create_handle()', this will
-pass NULL as 2nd argument to memory copy function 'memcpy()'. So return
-NULL if 'hostname' is invalid.
-
-Fixes: 77a3ef33e2de ("NSM: More clean up of nsm_get_handle()")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 50966da807c8 ("usb: gadget: udc: core: Offload usb_udc_vbus_handler processing")
+Link: https://lore.kernel.org/r/1e5e7cda-b2c8-4917-9952-4354f365ede0@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/mon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/gadget/udc/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/lockd/mon.c b/fs/lockd/mon.c
-index 1d9488cf05348..87a0f207df0b9 100644
---- a/fs/lockd/mon.c
-+++ b/fs/lockd/mon.c
-@@ -276,6 +276,9 @@ static struct nsm_handle *nsm_create_handle(const struct sockaddr *sap,
- {
- 	struct nsm_handle *new;
- 
-+	if (!hostname)
-+		return NULL;
-+
- 	new = kzalloc(sizeof(*new) + hostname_len + 1, GFP_KERNEL);
- 	if (unlikely(new == NULL))
- 		return NULL;
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index d5bc2892184ca..5ec47757167e8 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -40,6 +40,7 @@ static const struct bus_type gadget_bus_type;
+  * @allow_connect: Indicates whether UDC is allowed to be pulled up.
+  * Set/cleared by gadget_(un)bind_driver() after gadget driver is bound or
+  * unbound.
++ * @vbus_work: work routine to handle VBUS status change notifications.
+  * @connect_lock: protects udc->started, gadget->connect,
+  * gadget->allow_connect and gadget->deactivate. The routines
+  * usb_gadget_connect_locked(), usb_gadget_disconnect_locked(),
 -- 
 2.40.1
 
