@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BDE279B6FB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9049379BE22
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344339AbjIKVNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37220 "EHLO
+        id S1378917AbjIKWiC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241131AbjIKPCd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:33 -0400
+        with ESMTP id S238720AbjIKODj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF901B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16CEC433C7;
-        Mon, 11 Sep 2023 15:02:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37ED3CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81748C433C8;
+        Mon, 11 Sep 2023 14:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444549;
-        bh=ejScEBix8v37U/Px5Ii/UZy/SyQLpQEOVChhXLKcZn4=;
+        s=korg; t=1694441014;
+        bh=tg2NEEQG9i8rfLfBvAxAkdNPSxOhWiJg1XK+hDrccG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qpCapTyFltM7vk+aKpPN3xBZyj1ExLnIMRjarQT2Ip3Fjbsw2nBNgh3GymYxapxva
-         Plftiarhxe0zwtkazxALh0iUnknzSr94g0owQOTSJV0fASvers+YimtdxSHoC2Kbhd
-         aTFVpJIvNYYTA0y7QWXNsxHNOb861m3eeeBQWVOs=
+        b=YFR+0LU3Y95KkeacYVtLovy7eHAucBh6wUSkptb20w0c2IKXe6g66AaAZwxggDWPj
+         vN8SJbI05yQLQkjpWEWoFbk880ofFNTE3PsMFlJEAwhgl76mEy2CQsTSqMl88VIaow
+         eoc6uJkCO+nUZtBPrhKXtVmkxPoGbSo0psSmvZcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/600] ASoC: atmel: Fix the 8K sample parameter in I2SC master
+Subject: [PATCH 6.5 266/739] ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)
 Date:   Mon, 11 Sep 2023 15:41:05 +0200
-Message-ID: <20230911134634.555006317@linuxfoundation.org>
+Message-ID: <20230911134658.566208179@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guiting Shen <aarongt.shen@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f85739c0b2b0d98a32f5ca4fcc5501d2b76df4f6 ]
+[ Upstream commit cf0cb2af6a18f28b84f9f1416bff50ca60d6e98a ]
 
-The 8K sample parameter of 12.288Mhz main system bus clock doesn't work
-because the I2SC_MR.IMCKDIV must not be 0 according to the sama5d2
-series datasheet(I2SC Mode Register of Register Summary).
+The davicom,dm9000 Ethernet Controller accepts two reg addresses.
 
-So use the 6.144Mhz instead of 12.288Mhz to support 8K sample.
-
-Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
-Link: https://lore.kernel.org/r/20230715030620.62328-1-aarongt.shen@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a43736deb47d ("ARM: dts: Add dts file for S3C6410-based Mini6410 board")
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20230713152926.82884-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/atmel/atmel-i2s.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/samsung/s3c6410-mini6410.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/atmel/atmel-i2s.c b/sound/soc/atmel/atmel-i2s.c
-index 425d66edbf867..5e43ff0b537a3 100644
---- a/sound/soc/atmel/atmel-i2s.c
-+++ b/sound/soc/atmel/atmel-i2s.c
-@@ -163,11 +163,14 @@ struct atmel_i2s_gck_param {
+diff --git a/arch/arm/boot/dts/samsung/s3c6410-mini6410.dts b/arch/arm/boot/dts/samsung/s3c6410-mini6410.dts
+index 17097da36f5ed..0b07b3c319604 100644
+--- a/arch/arm/boot/dts/samsung/s3c6410-mini6410.dts
++++ b/arch/arm/boot/dts/samsung/s3c6410-mini6410.dts
+@@ -51,7 +51,7 @@ srom-cs1-bus@18000000 {
  
- #define I2S_MCK_12M288		12288000UL
- #define I2S_MCK_11M2896		11289600UL
-+#define I2S_MCK_6M144		6144000UL
- 
- /* mck = (32 * (imckfs+1) / (imckdiv+1)) * fs */
- static const struct atmel_i2s_gck_param gck_params[] = {
-+	/* mck = 6.144Mhz */
-+	{  8000, I2S_MCK_6M144,  1, 47},	/* mck =  768 fs */
-+
- 	/* mck = 12.288MHz */
--	{  8000, I2S_MCK_12M288, 0, 47},	/* mck = 1536 fs */
- 	{ 16000, I2S_MCK_12M288, 1, 47},	/* mck =  768 fs */
- 	{ 24000, I2S_MCK_12M288, 3, 63},	/* mck =  512 fs */
- 	{ 32000, I2S_MCK_12M288, 3, 47},	/* mck =  384 fs */
+ 		ethernet@18000000 {
+ 			compatible = "davicom,dm9000";
+-			reg = <0x18000000 0x2 0x18000004 0x2>;
++			reg = <0x18000000 0x2>, <0x18000004 0x2>;
+ 			interrupt-parent = <&gpn>;
+ 			interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
+ 			davicom,no-eeprom;
 -- 
 2.40.1
 
