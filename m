@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8450979B1A5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D49B79AEA8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243165AbjIKU7P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52038 "EHLO
+        id S1355326AbjIKV5v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239445AbjIKOUw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:52 -0400
+        with ESMTP id S240760AbjIKOxD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC11DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17D9C433C8;
-        Mon, 11 Sep 2023 14:20:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7DA118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675AFC433C8;
+        Mon, 11 Sep 2023 14:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442048;
-        bh=Xc9SSexNzep9L+H+EJveJBdndh2/+7x24j3XzEECMF8=;
+        s=korg; t=1694443978;
+        bh=R3BZ+UoYH4N+bjLj8oCNP44X2z4G+d+52AxFMb3bjGc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bIuLwo4yFCM2t4SdsSl0AtrSNEtkLmXSWgbqfkqKcH7v9+ak/mpgCjSPNbGH6uCSx
-         Mlm6Lsov8sxu0I+vcpTwKYgQvYFdaQKxwZcU1gDzALTgaVDeNdJz8bnwheVLYD4R9L
-         njYavMA+NzwI1AIEE0XlidwTJOG+Jw6NxGM/0JPQ=
+        b=JIWv5dkB2Bz4m20S4woBC2Oq0jplpsgv/CC7D0jbLzBHKDXrPj6ogoezScxkggU+Z
+         tCopMAo6mmqMte0QYUJl5w0BmTOh2Vw6NIG6YwYPmAX4mxmgZsFr2APzXxwXzhLU6+
+         TYFHzkj8nFMSgsmIsol1j8MzHnUF9f58H1PagcVc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 610/739] thermal/drivers/imx8mm: Suppress log message on probe deferral
+Subject: [PATCH 6.4 550/737] media: cec: core: add adap_unconfigured() callback
 Date:   Mon, 11 Sep 2023 15:46:49 +0200
-Message-ID: <20230911134708.138002070@linuxfoundation.org>
+Message-ID: <20230911134705.921180189@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +50,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 4afcb58ea47e66c025d2b0a5f091dce5aaf95b0f ]
+[ Upstream commit 948a77aaecf202f722cf2264025f9987e5bd5c26 ]
 
-nvmem_cell_read_u32() may return -EPROBE_DEFER if NVMEM supplier has not
-yet been probed. Future reprobe may succeed, so printing:
+The adap_configured() callback was called with the adap->lock mutex
+held if the 'configured' argument was false, and without the adap->lock
+mutex held if that argument was true.
 
-  i.mx8mm_thermal 30260000.tmu: Failed to read OCOTP nvmem cell (-517).
+That was very confusing, and so split this up in a adap_unconfigured()
+callback and a high-level configured() callback.
 
-to the log is confusing. Fix this by using dev_err_probe. This also
-elevates the message from warning to error, which is more correct: The
-log message is only ever printed in probe error path and probe aborts
-afterwards, so it really warrants an error-level message.
+This also makes it easier to understand when the mutex is held: all
+low-level adap_* callbacks are called with the mutex held. All other
+callbacks are called without that mutex held.
 
-Fixes: 403291648823 ("thermal/drivers/imx: Add support for loading calibration data from OCOTP")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230708112647.2897294-1-a.fatoum@pengutronix.de
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: f1b57164305d ("media: cec: add optional adap_configured callback")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/imx8mm_thermal.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/media/cec/core/cec-adap.c | 4 ++--
+ include/media/cec.h               | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/imx8mm_thermal.c b/drivers/thermal/imx8mm_thermal.c
-index d4b40869c7d7b..dd474166ca671 100644
---- a/drivers/thermal/imx8mm_thermal.c
-+++ b/drivers/thermal/imx8mm_thermal.c
-@@ -179,10 +179,8 @@ static int imx8mm_tmu_probe_set_calib_v1(struct platform_device *pdev,
- 	int ret;
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index a9b73fb33888d..09ca83c233299 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1348,7 +1348,7 @@ static void cec_adap_unconfigure(struct cec_adapter *adap)
+ 	cec_flush(adap);
+ 	wake_up_interruptible(&adap->kthread_waitq);
+ 	cec_post_state_event(adap);
+-	call_void_op(adap, adap_configured, false);
++	call_void_op(adap, adap_unconfigured);
+ }
  
- 	ret = nvmem_cell_read_u32(&pdev->dev, "calib", &ana0);
--	if (ret) {
--		dev_warn(dev, "Failed to read OCOTP nvmem cell (%d).\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to read OCOTP nvmem cell\n");
+ /*
+@@ -1539,7 +1539,7 @@ static int cec_config_thread_func(void *arg)
+ 	adap->kthread_config = NULL;
+ 	complete(&adap->config_completion);
+ 	mutex_unlock(&adap->lock);
+-	call_void_op(adap, adap_configured, true);
++	call_void_op(adap, configured);
+ 	return 0;
  
- 	writel(FIELD_PREP(TASR_BUF_VREF_MASK,
- 			  FIELD_GET(ANA0_BUF_VREF_MASK, ana0)) |
+ unconfigure:
+diff --git a/include/media/cec.h b/include/media/cec.h
+index 6556cc161dc0a..9c007f83569aa 100644
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -113,12 +113,12 @@ struct cec_fh {
+ #define CEC_FREE_TIME_TO_USEC(ft)		((ft) * 2400)
+ 
+ struct cec_adap_ops {
+-	/* Low-level callbacks */
++	/* Low-level callbacks, called with adap->lock held */
+ 	int (*adap_enable)(struct cec_adapter *adap, bool enable);
+ 	int (*adap_monitor_all_enable)(struct cec_adapter *adap, bool enable);
+ 	int (*adap_monitor_pin_enable)(struct cec_adapter *adap, bool enable);
+ 	int (*adap_log_addr)(struct cec_adapter *adap, u8 logical_addr);
+-	void (*adap_configured)(struct cec_adapter *adap, bool configured);
++	void (*adap_unconfigured)(struct cec_adapter *adap);
+ 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
+ 			     u32 signal_free_time, struct cec_msg *msg);
+ 	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
+@@ -131,6 +131,7 @@ struct cec_adap_ops {
+ 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
+ 
+ 	/* High-level CEC message callback, called without adap->lock held */
++	void (*configured)(struct cec_adapter *adap);
+ 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
+ };
+ 
 -- 
 2.40.1
 
