@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C9879BF02
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E2D079BA31
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240131AbjIKWjf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36562 "EHLO
+        id S234381AbjIKUwG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238898AbjIKOHf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:35 -0400
+        with ESMTP id S241238AbjIKPEo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC43CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AAAC433C7;
-        Mon, 11 Sep 2023 14:07:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DFE125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B83EC43391;
+        Mon, 11 Sep 2023 15:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441251;
-        bh=u0W47arON9wkGxWZTEu+RWK+bPW3uia03lX2+2yth6U=;
+        s=korg; t=1694444679;
+        bh=cvyhglbtVfJZIkGh4sCGWX58pWUG6N9U39VEGLedf5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cNLF5LD1vZOwdMGvn8kexPPi0ln8ACrrAUEdY5RcjixtX3t6e8ca4hIyUyqx0+QGU
-         C8LvQwVcxf1usNMEzO+/Jy7pjbyee6+uatT7NRHmPbbK+C1a79zgwPVy/Z98BqCl9d
-         deoM6yWNsYeQvyHCb+lqYZdwuei826ePUd2Y9kB0=
+        b=i8T1KKizD4VLPqZjvRYXs3RibXLDk0q9m1MBYnUeH9wCxIzdU5MmEQVy0wtLDkerd
+         6zjRPCIWqSjKJlsd9f7fmSWISWBh1qqcRAsvOLn6uyKQ+zo0PGcgJPW3hgQ/hFXkQl
+         wFu+SHbE008wy6cpGD2g5mlUxOyRwLYmCGJF3Q7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Shih-Yi Chen <shihyic@nvidia.com>,
+        Liming Sung <limings@nvidia.com>,
+        David Thompson <davthompson@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 311/739] drm/msm/dpu: fix the irq index in dpu_encoder_phys_wb_wait_for_commit_done
+Subject: [PATCH 6.1 077/600] platform/mellanox: Fix mlxbf-tmfifo not handling all virtio CONSOLE notifications
 Date:   Mon, 11 Sep 2023 15:41:50 +0200
-Message-ID: <20230911134659.804144078@linuxfoundation.org>
+Message-ID: <20230911134635.887961016@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Shih-Yi Chen <shihyic@nvidia.com>
 
-[ Upstream commit d93cf453f51da168f4410ba73656f1e862096973 ]
+[ Upstream commit 0848cab765c634597636810bf76d0934003cce28 ]
 
-Since commit 1e7ac595fa46 ("drm/msm/dpu: pass irq to
-dpu_encoder_helper_wait_for_irq()") the
-dpu_encoder_phys_wb_wait_for_commit_done expects the IRQ index rather
-than the IRQ index in phys_enc->intr table, however writeback got the
-older invocation in place. This was unnoticed for several releases, but
-now it's time to fix it.
+rshim console does not show all entries of dmesg.
 
-Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/550924/
-Link: https://lore.kernel.org/r/20230802100426.4184892-2-dmitry.baryshkov@linaro.org
+Fixed by setting MLXBF_TM_TX_LWM_IRQ for every CONSOLE notification.
+
+Signed-off-by: Shih-Yi Chen <shihyic@nvidia.com>
+Reviewed-by: Liming Sung <limings@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20230821150627.26075-1-shihyic@nvidia.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-index a466ff70a4d62..78037a697633b 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-@@ -446,7 +446,8 @@ static int dpu_encoder_phys_wb_wait_for_commit_done(
- 	wait_info.atomic_cnt = &phys_enc->pending_kickoff_cnt;
- 	wait_info.timeout_ms = KICKOFF_TIMEOUT_MS;
- 
--	ret = dpu_encoder_helper_wait_for_irq(phys_enc, INTR_IDX_WB_DONE,
-+	ret = dpu_encoder_helper_wait_for_irq(phys_enc,
-+			phys_enc->irq[INTR_IDX_WB_DONE],
- 			dpu_encoder_phys_wb_done_irq, &wait_info);
- 	if (ret == -ETIMEDOUT)
- 		_dpu_encoder_phys_wb_handle_wbdone_timeout(phys_enc);
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index b2e19f30a928b..d31fe7eed38df 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -868,6 +868,7 @@ static bool mlxbf_tmfifo_virtio_notify(struct virtqueue *vq)
+ 			tm_vdev = fifo->vdev[VIRTIO_ID_CONSOLE];
+ 			mlxbf_tmfifo_console_output(tm_vdev, vring);
+ 			spin_unlock_irqrestore(&fifo->spin_lock[0], flags);
++			set_bit(MLXBF_TM_TX_LWM_IRQ, &fifo->pend_events);
+ 		} else if (test_and_set_bit(MLXBF_TM_TX_LWM_IRQ,
+ 					    &fifo->pend_events)) {
+ 			return true;
 -- 
 2.40.1
 
