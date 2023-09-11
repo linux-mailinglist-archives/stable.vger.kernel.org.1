@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1836679ACB3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D79EC79B239
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242939AbjIKU6t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
+        id S242217AbjIKU5p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:57:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240680AbjIKOvA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:00 -0400
+        with ESMTP id S241885AbjIKPRI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7360106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:50:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02615C433C8;
-        Mon, 11 Sep 2023 14:50:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566F8120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F64C433C7;
+        Mon, 11 Sep 2023 15:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443855;
-        bh=ZmDsxyGj3dGFp5poXOhr2gzee75iZNrUusikavS+SZs=;
+        s=korg; t=1694445424;
+        bh=1JEZFi+4AE5J4LIQhuM5D8gEKY5sQkP59e3kd63Ffzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V86++AiUpsD8+2JKeZGaDshyL47Ql6hfGmem7X1tX0p+NY8ktvR/zHg7JuNu0zlyl
-         2v226Q6vFwCCfnTXSRxMBczt9TzJEPfOK2vc8gJAlTMWIQ/T+5/ZdDC8/CrrBX6O9V
-         BptcvdtfE5uYX1lfCwaEhGfgv4mTQj8JJTzFfdLw=
+        b=uQAFbzKPDHDri4du6u8Cyruz14R24rWxEldiupEkwfqFmrdxWy3iZc/iyebfTEzp+
+         RsoP1wr6NxUDe7JYhMANrlVAAyWTPq+55shCBb3nBN4YuSHoSXtjxgZ3KNimFmJyUh
+         PK/AzG6SITDBpV6pJ57vVFwpJL4Osk4+ya6OTVKg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 517/737] serial: sprd: Assign sprd_port after initialized to avoid wrong access
+        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 343/600] ext4: avoid potential data overflow in next_linear_group
 Date:   Mon, 11 Sep 2023 15:46:16 +0200
-Message-ID: <20230911134704.995199236@linuxfoundation.org>
+Message-ID: <20230911134643.814470184@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,119 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit f9608f1887568b728839d006024585ab02ef29e5 ]
+[ Upstream commit 60c672b7f2d1e5dd1774f2399b355c9314e709f8 ]
 
-The global pointer 'sprd_port' may not zero when sprd_probe returns
-failure, that is a risk for sprd_port to be accessed afterward, and
-may lead to unexpected errors.
+ngroups is ext4_group_t (unsigned int) while next_linear_group treat it
+in int. If ngroups is bigger than max number described by int, it will
+be treat as a negative number. Then "return group + 1 >= ngroups ? 0 :
+group + 1;" may keep returning 0.
+Switch int to ext4_group_t in next_linear_group to fix the overflow.
 
-For example:
-
-There are two UART ports, UART1 is used for console and configured in
-kernel command line, i.e. "console=";
-
-The UART1 probe failed and the memory allocated to sprd_port[1] was
-released, but sprd_port[1] was not set to NULL;
-
-In UART2 probe, the same virtual address was allocated to sprd_port[2],
-and UART2 probe process finally will go into sprd_console_setup() to
-register UART1 as console since it is configured as preferred console
-(filled to console_cmdline[]), but the console parameters (sprd_port[1])
-belong to UART2.
-
-So move the sprd_port[] assignment to where the port already initialized
-can avoid the above issue.
-
-Fixes: b7396a38fb28 ("tty/serial: Add Spreadtrum sc9836-uart driver support")
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-Link: https://lore.kernel.org/r/20230725064053.235448-1-chunyan.zhang@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230801143204.2284343-3-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sprd_serial.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ fs/ext4/mballoc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
-index b58f51296ace2..fc1377029021b 100644
---- a/drivers/tty/serial/sprd_serial.c
-+++ b/drivers/tty/serial/sprd_serial.c
-@@ -1106,7 +1106,7 @@ static bool sprd_uart_is_console(struct uart_port *uport)
- static int sprd_clk_init(struct uart_port *uport)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 20d02cc0a17aa..016925b1a0908 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -966,8 +966,9 @@ static inline int should_optimize_scan(struct ext4_allocation_context *ac)
+  * Return next linear group for allocation. If linear traversal should not be
+  * performed, this function just returns the same group
+  */
+-static int
+-next_linear_group(struct ext4_allocation_context *ac, int group, int ngroups)
++static ext4_group_t
++next_linear_group(struct ext4_allocation_context *ac, ext4_group_t group,
++		  ext4_group_t ngroups)
  {
- 	struct clk *clk_uart, *clk_parent;
--	struct sprd_uart_port *u = sprd_port[uport->line];
-+	struct sprd_uart_port *u = container_of(uport, struct sprd_uart_port, port);
- 
- 	clk_uart = devm_clk_get(uport->dev, "uart");
- 	if (IS_ERR(clk_uart)) {
-@@ -1149,22 +1149,22 @@ static int sprd_probe(struct platform_device *pdev)
- {
- 	struct resource *res;
- 	struct uart_port *up;
-+	struct sprd_uart_port *sport;
- 	int irq;
- 	int index;
- 	int ret;
- 
- 	index = of_alias_get_id(pdev->dev.of_node, "serial");
--	if (index < 0 || index >= ARRAY_SIZE(sprd_port)) {
-+	if (index < 0 || index >= UART_NR_MAX) {
- 		dev_err(&pdev->dev, "got a wrong serial alias id %d\n", index);
- 		return -EINVAL;
- 	}
- 
--	sprd_port[index] = devm_kzalloc(&pdev->dev, sizeof(*sprd_port[index]),
--					GFP_KERNEL);
--	if (!sprd_port[index])
-+	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
-+	if (!sport)
- 		return -ENOMEM;
- 
--	up = &sprd_port[index]->port;
-+	up = &sport->port;
- 	up->dev = &pdev->dev;
- 	up->line = index;
- 	up->type = PORT_SPRD;
-@@ -1195,7 +1195,7 @@ static int sprd_probe(struct platform_device *pdev)
- 	 * Allocate one dma buffer to prepare for receive transfer, in case
- 	 * memory allocation failure at runtime.
- 	 */
--	ret = sprd_rx_alloc_buf(sprd_port[index]);
-+	ret = sprd_rx_alloc_buf(sport);
- 	if (ret)
- 		return ret;
- 
-@@ -1206,14 +1206,23 @@ static int sprd_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 	}
-+
- 	sprd_ports_num++;
-+	sprd_port[index] = sport;
- 
- 	ret = uart_add_one_port(&sprd_uart_driver, up);
- 	if (ret)
--		sprd_remove(pdev);
-+		goto clean_port;
- 
- 	platform_set_drvdata(pdev, up);
- 
-+	return 0;
-+
-+clean_port:
-+	sprd_port[index] = NULL;
-+	if (--sprd_ports_num == 0)
-+		uart_unregister_driver(&sprd_uart_driver);
-+	sprd_rx_free_buf(sport);
- 	return ret;
- }
- 
+ 	if (!should_optimize_scan(ac))
+ 		goto inc_and_return;
 -- 
 2.40.1
 
