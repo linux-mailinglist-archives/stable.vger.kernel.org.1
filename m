@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9646679B347
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0881279B35D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354288AbjIKVxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
+        id S240929AbjIKWnK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239619AbjIKOYo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:44 -0400
+        with ESMTP id S242148AbjIKPXb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E27DDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EF9C433C7;
-        Mon, 11 Sep 2023 14:24:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC1CBD8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420DAC433C7;
+        Mon, 11 Sep 2023 15:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442280;
-        bh=lXXY3X3TcAVWOSFe/5a2cO4Yj6yIhctzHvULzWB0ni4=;
+        s=korg; t=1694445807;
+        bh=LL26BHxHyi3FvNhECXm+5VuN0wgFl5l8eT1YcyH5iCg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n5lCcCC3U6d71Lt1tcC87ULWtBrhHjDui+8nRDAA8No6K2rRCRqNPlxN51fkbh+RV
-         VRUB+Yvm/yb+t+uYp7oD8my0dgsrm84Rrs0b5Y2Tp5jqs71KCemH0/f1I2CSRa8hLA
-         bO8L06x2MblTpPAxcgxalvS30p5AUzGKGDz4xexo=
+        b=W21EPRjEkBc3WW3ujpZ8ivyNvA4VT5gpn7fuwY9PtL0e7bxGpmZbP4yNirXPBxmWH
+         ruHYGGNxoSHNDNPE+Di1NmGEMg8PKtwfTFBKtN95zsaMAW/khpvzW85uW6B8D01IyR
+         sU5AkytRClKdAwdli6kzndkG2tAcDqdGWEuggnT4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
-        Enlin Mu <enlin.mu@unisoc.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.5 710/739] pstore/ram: Check start of empty przs during init
-Date:   Mon, 11 Sep 2023 15:48:29 +0200
-Message-ID: <20230911134710.914028793@linuxfoundation.org>
+        patches@lists.linux.dev, Lu Jialin <lujialin4@huawei.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 478/600] cgroup:namespace: Remove unused cgroup_namespaces_init()
+Date:   Mon, 11 Sep 2023 15:48:31 +0200
+Message-ID: <20230911134647.752004297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enlin Mu <enlin.mu@unisoc.com>
+From: Lu Jialin <lujialin4@huawei.com>
 
-commit fe8c3623ab06603eb760444a032d426542212021 upstream.
+[ Upstream commit 82b90b6c5b38e457c7081d50dff11ecbafc1e61a ]
 
-After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
-valid"), initialization would assume a prz was valid after seeing that
-the buffer_size is zero (regardless of the buffer start position). This
-unchecked start value means it could be outside the bounds of the buffer,
-leading to future access panics when written to:
+cgroup_namspace_init() just return 0. Therefore, there is no need to
+call it during start_kernel. Just remove it.
 
- sysdump_panic_event+0x3b4/0x5b8
- atomic_notifier_call_chain+0x54/0x90
- panic+0x1c8/0x42c
- die+0x29c/0x2a8
- die_kernel_fault+0x68/0x78
- __do_kernel_fault+0x1c4/0x1e0
- do_bad_area+0x40/0x100
- do_translation_fault+0x68/0x80
- do_mem_abort+0x68/0xf8
- el1_da+0x1c/0xc0
- __raw_writeb+0x38/0x174
- __memcpy_toio+0x40/0xac
- persistent_ram_update+0x44/0x12c
- persistent_ram_write+0x1a8/0x1b8
- ramoops_pstore_write+0x198/0x1e8
- pstore_console_write+0x94/0xe0
- ...
-
-To avoid this, also check if the prz start is 0 during the initialization
-phase. If not, the next prz sanity check case will discover it (start >
-size) and zap the buffer back to a sane state.
-
-Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
-Cc: Yunlong Xing <yunlong.xing@unisoc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
-Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
-[kees: update commit log with backtrace and clarifications]
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a79a908fd2b0 ("cgroup: introduce cgroup namespaces")
+Signed-off-by: Lu Jialin <lujialin4@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/namespace.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -519,7 +519,7 @@ static int persistent_ram_post_init(stru
- 	sig ^= PERSISTENT_RAM_SIG;
- 
- 	if (prz->buffer->sig == sig) {
--		if (buffer_size(prz) == 0) {
-+		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
- 			pr_debug("found existing empty buffer\n");
- 			return 0;
- 		}
+diff --git a/kernel/cgroup/namespace.c b/kernel/cgroup/namespace.c
+index 0d5c29879a50b..144a464e45c66 100644
+--- a/kernel/cgroup/namespace.c
++++ b/kernel/cgroup/namespace.c
+@@ -149,9 +149,3 @@ const struct proc_ns_operations cgroupns_operations = {
+ 	.install	= cgroupns_install,
+ 	.owner		= cgroupns_owner,
+ };
+-
+-static __init int cgroup_namespaces_init(void)
+-{
+-	return 0;
+-}
+-subsys_initcall(cgroup_namespaces_init);
+-- 
+2.40.1
+
 
 
