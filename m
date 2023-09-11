@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D52D679B36B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A932879B38E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243485AbjIKVH6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58374 "EHLO
+        id S1379381AbjIKWnt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240899AbjIKO4x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:53 -0400
+        with ESMTP id S239615AbjIKOYm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D70E4D
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F807C433C7;
-        Mon, 11 Sep 2023 14:56:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AECEDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE40C433C7;
+        Mon, 11 Sep 2023 14:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444208;
-        bh=lLtKGAFVMMwu5M6NKu5TL0MyoXDLpOHT2Ure+O4Y1G4=;
+        s=korg; t=1694442277;
+        bh=WX0MHsCwvTojTgKubD8jUhF3HHKi9n22FSL3p8S6BJM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yjhW4x91otZzbf71lvbQ8Np1qtCvVs1HgBf0Lm6mxiyXaAIQ0VZvh1WHYOwpDtXiv
-         R5Sn54cFn4/GZ2dDrrWjEaYd+rFYqtNBCACZEAwjwcIBaWHMFbVo8aZKc2cR6Nxdn8
-         6vvPMoDaUAwRiAkNrvasfg75I4BSAZ/T0vBoyve8=
+        b=I91iKVw5z1D4OsMzaAyGiHSNsqjDh+aVKTNVQizsXkpI72dtUheHEBalN6j3O2cZ3
+         f/RK7/nShlWrgeIV+0snrxaD5aPAQTA6UC/wMPw/MubmY+6tXyj7gBxA3ZKoikMNTo
+         KNkvVVDKoC3Csrq51wkPoam+0BPE/b/H4aRuRXc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Zqiang <qiang.zhang1211@gmail.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 649/737] mm/vmalloc: add a safer version of find_vm_area() for debug
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5 709/739] mmc: renesas_sdhi: register irqs before registering controller
 Date:   Mon, 11 Sep 2023 15:48:28 +0200
-Message-ID: <20230911134708.660099582@linuxfoundation.org>
+Message-ID: <20230911134710.886462878@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,73 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 0818e739b5c061b0251c30152380600fb9b84c0c upstream.
+commit 74f45de394d979cc7770271f92fafa53e1ed3119 upstream.
 
-It is unsafe to dump vmalloc area information when trying to do so from
-some contexts.  Add a safer trylock version of the same function to do a
-best-effort VMA finding and use it from vmalloc_dump_obj().
+IRQs should be ready to serve when we call mmc_add_host() via
+tmio_mmc_host_probe(). To achieve that, ensure that all irqs are masked
+before registering the handlers.
 
-[applied test robot feedback on unused function fix.]
-[applied Uladzislau feedback on locking.]
-Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernandes.org
-Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230712140011.18602-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmalloc.c |   26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4228,14 +4228,32 @@ void pcpu_free_vm_areas(struct vm_struct
- #ifdef CONFIG_PRINTK
- bool vmalloc_dump_obj(void *object)
- {
--	struct vm_struct *vm;
- 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-+	const void *caller;
-+	struct vm_struct *vm;
-+	struct vmap_area *va;
-+	unsigned long addr;
-+	unsigned int nr_pages;
-+
-+	if (!spin_trylock(&vmap_area_lock))
-+		return false;
-+	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
-+	if (!va) {
-+		spin_unlock(&vmap_area_lock);
-+		return false;
-+	}
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1006,6 +1006,8 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
+ 		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
+ 		host->reset = renesas_sdhi_reset;
++	} else {
++		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+ 	}
  
--	vm = find_vm_area(objp);
--	if (!vm)
-+	vm = va->vm;
-+	if (!vm) {
-+		spin_unlock(&vmap_area_lock);
- 		return false;
-+	}
-+	addr = (unsigned long)vm->addr;
-+	caller = vm->caller;
-+	nr_pages = vm->nr_pages;
-+	spin_unlock(&vmap_area_lock);
- 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
--		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
-+		nr_pages, addr, caller);
- 	return true;
- }
- #endif
+ 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
+@@ -1100,9 +1102,7 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->ops.hs400_complete = renesas_sdhi_hs400_complete;
+ 	}
+ 
+-	ret = tmio_mmc_host_probe(host);
+-	if (ret < 0)
+-		goto edisclk;
++	sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, host->sdcard_irq_mask_all);
+ 
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+@@ -1129,6 +1129,10 @@ int renesas_sdhi_probe(struct platform_d
+ 			goto eirq;
+ 	}
+ 
++	ret = tmio_mmc_host_probe(host);
++	if (ret < 0)
++		goto edisclk;
++
+ 	dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
+ 		 mmc_hostname(host->mmc), &res->start, host->mmc->f_max / 1000000);
+ 
 
 
