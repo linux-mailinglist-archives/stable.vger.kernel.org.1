@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 681FC79BC1C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 278E679B926
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379621AbjIKWpI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
+        id S1379540AbjIKWon (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241713AbjIKPMl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:41 -0400
+        with ESMTP id S239115AbjIKOMJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B13FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4ACC433C7;
-        Mon, 11 Sep 2023 15:12:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E2EDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCC0C433C8;
+        Mon, 11 Sep 2023 14:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445156;
-        bh=nYzCxxoYjmD4cWbJ9F/i+4i0bPUxqMQVmBVrevaXvHk=;
+        s=korg; t=1694441524;
+        bh=XZC/rE8zaI7eoDZeZr5m/r7cHVFO/szJDJNbYTht2Ns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uKrnfgtPjbQBM7+6rgMk426BrvjGxxkK4OcWhzFRbBo2dmySycsFyEGR4XygNPSI4
-         wwTSdF8dFJI+L0I7s1a7TnyzYKQ3oe0EmvtCGfnXQoVIlhOmnAutNFsIt80NzNJDPA
-         5ZtddAnd3NeukES0V3ewPK3cfCtl3zck2t6WgGpA=
+        b=Sz4TzdyK/xBho0AnRy3cJAHuDyScmy6vZ96GPXeiTaPMVs85P0YcDXUvRLjQHhgwa
+         kU2nbKiyfOnkDaZ2Qt4mht1leugxRCU8zdejfpoZbRG9t9w4tGOebdU38U66NVTu/o
+         mCo+QCrqvyiyhTTXJOrPZ/JyEsR0hKxsE0KE2Z5U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+666c97e4686410e79649@syzkaller.appspotmail.com,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Tom Haynes <loghyr@gmail.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/600] netrom: Deny concurrent connect().
+Subject: [PATCH 6.5 444/739] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
 Date:   Mon, 11 Sep 2023 15:44:03 +0200
-Message-ID: <20230911134639.818440216@linuxfoundation.org>
+Message-ID: <20230911134703.567835975@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,141 +51,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit c2f8fd7949603efb03908e05abbf7726748c8de3 ]
+[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
 
-syzkaller reported null-ptr-deref [0] related to AF_NETROM.
-This is another self-accept issue from the strace log. [1]
+The XDR specification in RFC 8881 looks like this:
 
-syz-executor creates an AF_NETROM socket and calls connect(), which
-is blocked at that time.  Then, sk->sk_state is TCP_SYN_SENT and
-sock->state is SS_CONNECTING.
+struct device_addr4 {
+	layouttype4	da_layout_type;
+	opaque		da_addr_body<>;
+};
 
-  [pid  5059] socket(AF_NETROM, SOCK_SEQPACKET, 0) = 4
-  [pid  5059] connect(4, {sa_family=AF_NETROM, sa_data="..." <unfinished ...>
+struct GETDEVICEINFO4resok {
+	device_addr4	gdir_device_addr;
+	bitmap4		gdir_notification;
+};
 
-Another thread calls connect() concurrently, which finally fails
-with -EINVAL.  However, the problem here is the socket state is
-reset even while the first connect() is blocked.
+union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
+case NFS4_OK:
+	GETDEVICEINFO4resok gdir_resok4;
+case NFS4ERR_TOOSMALL:
+	count4		gdir_mincount;
+default:
+	void;
+};
 
-  [pid  5060] connect(4, NULL, 0 <unfinished ...>
-  [pid  5060] <... connect resumed>)      = -1 EINVAL (Invalid argument)
+Looking at nfsd4_encode_getdeviceinfo() ....
 
-As sk->state is TCP_CLOSE and sock->state is SS_UNCONNECTED, the
-following listen() succeeds.  Then, the first connect() looks up
-itself as a listener and puts skb into the queue with skb->sk itself.
-As a result, the next accept() gets another FD of itself as 3, and
-the first connect() finishes.
+When the client provides a zero gd_maxcount, then the Linux NFS
+server implementation encodes the da_layout_type field and then
+skips the da_addr_body field completely, proceeding directly to
+encode gdir_notification field.
 
-  [pid  5060] listen(4, 0 <unfinished ...>
-  [pid  5060] <... listen resumed>)       = 0
-  [pid  5060] accept(4, NULL, NULL <unfinished ...>
-  [pid  5060] <... accept resumed>)       = 3
-  [pid  5059] <... connect resumed>)      = 0
+There does not appear to be an option in the specification to skip
+encoding da_addr_body. Moreover, Section 18.40.3 says:
 
-Then, accept4() is called but blocked, which causes the general protection
-fault later.
+> If the client wants to just update or turn off notifications, it
+> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
+> In that event, if the device ID is valid, the reply's da_addr_body
+> field of the gdir_device_addr field will be of zero length.
 
-  [pid  5059] accept4(4, NULL, 0x20000400, SOCK_NONBLOCK <unfinished ...>
+Since the layout drivers are responsible for encoding the
+da_addr_body field, put this fix inside the ->encode_getdeviceinfo
+methods.
 
-After that, another self-accept occurs by accept() and writev().
-
-  [pid  5060] accept(4, NULL, NULL <unfinished ...>
-  [pid  5061] writev(3, [{iov_base=...}] <unfinished ...>
-  [pid  5061] <... writev resumed>)       = 99
-  [pid  5060] <... accept resumed>)       = 6
-
-Finally, the leader thread close()s all FDs.  Since the three FDs
-reference the same socket, nr_release() does the cleanup for it
-three times, and the remaining accept4() causes the following fault.
-
-  [pid  5058] close(3)                    = 0
-  [pid  5058] close(4)                    = 0
-  [pid  5058] close(5)                    = -1 EBADF (Bad file descriptor)
-  [pid  5058] close(6)                    = 0
-  [pid  5058] <... exit_group resumed>)   = ?
-  [   83.456055][ T5059] general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
-
-To avoid the issue, we need to return an error for connect() if
-another connect() is in progress, as done in __inet_stream_connect().
-
-[0]:
-general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-CPU: 0 PID: 5059 Comm: syz-executor.0 Not tainted 6.5.0-rc5-syzkaller-00194-gace0ab3a4b54 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-RIP: 0010:__lock_acquire+0x109/0x5de0 kernel/locking/lockdep.c:5012
-Code: 45 85 c9 0f 84 cc 0e 00 00 44 8b 05 11 6e 23 0b 45 85 c0 0f 84 be 0d 00 00 48 ba 00 00 00 00 00 fc ff df 4c 89 d1 48 c1 e9 03 <80> 3c 11 00 0f 85 e8 40 00 00 49 81 3a a0 69 48 90 0f 84 96 0d 00
-RSP: 0018:ffffc90003d6f9e0 EFLAGS: 00010006
-RAX: ffff8880244c8000 RBX: 1ffff920007adf6c RCX: 0000000000000003
-RDX: dffffc0000000000 RSI: 0000000000000000 RDI: 0000000000000018
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
-R10: 0000000000000018 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007f51d519a6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f51d5158d58 CR3: 000000002943f000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- lock_acquire kernel/locking/lockdep.c:5761 [inline]
- lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x3a/0x50 kernel/locking/spinlock.c:162
- prepare_to_wait+0x47/0x380 kernel/sched/wait.c:269
- nr_accept+0x20d/0x650 net/netrom/af_netrom.c:798
- do_accept+0x3a6/0x570 net/socket.c:1872
- __sys_accept4_file net/socket.c:1913 [inline]
- __sys_accept4+0x99/0x120 net/socket.c:1943
- __do_sys_accept4 net/socket.c:1954 [inline]
- __se_sys_accept4 net/socket.c:1951 [inline]
- __x64_sys_accept4+0x96/0x100 net/socket.c:1951
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f51d447cae9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f51d519a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000120
-RAX: ffffffffffffffda RBX: 00007f51d459bf80 RCX: 00007f51d447cae9
-RDX: 0000000020000400 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00007f51d44c847a R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000800 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007f51d459bf80 R15: 00007ffc25c34e48
- </TASK>
-
-Link: https://syzkaller.appspot.com/text?tag=CrashLog&x=152cdb63a80000 [1]
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+666c97e4686410e79649@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=666c97e4686410e79649
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Tom Haynes <loghyr@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/af_netrom.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
+ fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
+ fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
+ 3 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
-index 5a4cb796150f5..ec5747969f964 100644
---- a/net/netrom/af_netrom.c
-+++ b/net/netrom/af_netrom.c
-@@ -660,6 +660,11 @@ static int nr_connect(struct socket *sock, struct sockaddr *uaddr,
- 		goto out_release;
- 	}
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index 8e9c1a0f8d380..1ed2f691ebb90 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -83,6 +83,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int len = sizeof(__be32), ret, i;
+ 	__be32 *p;
  
-+	if (sock->state == SS_CONNECTING) {
-+		err = -EALREADY;
-+		goto out_release;
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
 +	}
 +
- 	sk->sk_state   = TCP_CLOSE;
- 	sock->state = SS_UNCONNECTED;
+ 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
+ 	if (!p)
+ 		return nfserr_resource;
+diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
+index e81d2a5cf381e..bb205328e043d 100644
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int addr_len;
+ 	__be32 *p;
  
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	/* len + padding for two strings */
+ 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
+ 	ver_len = 20;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index b30dca7de8cc0..be72628b13376 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4678,20 +4678,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
+ 
+ 	*p++ = cpu_to_be32(gdev->gd_layout_type);
+ 
+-	/* If maxcount is 0 then just update notifications */
+-	if (gdev->gd_maxcount != 0) {
+-		ops = nfsd4_layout_ops[gdev->gd_layout_type];
+-		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
+-		if (nfserr) {
+-			/*
+-			 * We don't bother to burden the layout drivers with
+-			 * enforcing gd_maxcount, just tell the client to
+-			 * come back with a bigger buffer if it's not enough.
+-			 */
+-			if (xdr->buf->len + 4 > gdev->gd_maxcount)
+-				goto toosmall;
+-			return nfserr;
+-		}
++	ops = nfsd4_layout_ops[gdev->gd_layout_type];
++	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
++	if (nfserr) {
++		/*
++		 * We don't bother to burden the layout drivers with
++		 * enforcing gd_maxcount, just tell the client to
++		 * come back with a bigger buffer if it's not enough.
++		 */
++		if (xdr->buf->len + 4 > gdev->gd_maxcount)
++			goto toosmall;
++		return nfserr;
+ 	}
+ 
+ 	if (gdev->gd_notify_types) {
 -- 
 2.40.1
 
