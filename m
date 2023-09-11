@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FC779BFF7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2554279B737
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357516AbjIKWnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37334 "EHLO
+        id S1347336AbjIKWZu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240240AbjIKOjm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:42 -0400
+        with ESMTP id S238979AbjIKOIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB01F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C11BC433CB;
-        Mon, 11 Sep 2023 14:39:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73996CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AA3C433C7;
+        Mon, 11 Sep 2023 14:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443178;
-        bh=CB8LldSsHZ1PLIK/830o+Nk5YBsUWixFvyyFRZQGM+Y=;
+        s=korg; t=1694441326;
+        bh=hxIrzVaCeunsb7tUx4YAGG/OxyE678sR/KdOCPu8WMU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qcITX7kw7YCYt+Qmh9pXu3lGFZyQjwh0c6KFgPqEaqCVV736J6ntcwGc3Nq4htVbB
-         8+HNrDV1BD6l5Z64vSlelcrOnUvEJMVb9qaQ8CxLWeF1n89AtTMbPUN4yTGu4Cedj8
-         l5dXJ72Rwuo9IJiYI5TJAEyqLEl+m9R5PkOYXtRs=
+        b=OdG3YbYXpPjzl9cRkqmOYaobjAs5lgVTUSdTZsiKdc6dhhPDnExZxujoEpncFaKT+
+         /3VPOtF+AGlDm9CWVcOj77SP7D+uf8LlRm+/G6+NqNhnNGZ5P4nDazbybpLxA3t2H4
+         Pi8i6nsk078AFKfePnF5773np3r9ZoXbCsf8NsVE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 286/737] arm64: dts: qcom: sm8250-edo: Add GPIO line names for PMIC GPIOs
-Date:   Mon, 11 Sep 2023 15:42:25 +0200
-Message-ID: <20230911134658.554742395@linuxfoundation.org>
+Subject: [PATCH 6.5 347/739] arm64: dts: qcom: msm8998: Add missing power domain to MMSS SMMU
+Date:   Mon, 11 Sep 2023 15:42:26 +0200
+Message-ID: <20230911134700.809577819@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,166 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 6b8a63350752c6a5e4b54f2de6174084652cd3cd ]
+[ Upstream commit 7f828f3207142351750e9545527341425187de7b ]
 
-Sony ever so graciously provides GPIO line names in their downstream
-kernel (though sometimes they are not 100% accurate and you can judge
-that by simply looking at them and with what drivers they are used).
+The MMSS SMMU has its own power domain. Attach it so that we can drop
+the "keep it always-on" hack.
 
-Add these to the PDX203&206 DTSIs to better document the hardware.
-
-Diff between 203 and 206:
-pm8009_gpios
-<                         "CAM_PWR_LD_EN",
->                         "NC",
-
-pm8150_gpios
-<                         "NC",
->                         "G_ASSIST_N",
-<                         "WLC_EN_N", /* GPIO_10 */
->                         "NC", /* GPIO_10 */
-Which is due to 5 II having an additional Google Assistant hardware
-button and 1 II having a wireless charger & different camera wiring
-to accommodate the additional 3D iToF sensor.
-
+Fixes: 05ce21b54423 ("arm64: dts: qcom: msm8998: Configure the multimedia subsystem iommu")
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230614-topic-edo_pinsgpiopmic-v2-2-6f90bba54c53@linaro.org
+Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-2-ba1b1fd9ee75@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../qcom/sm8250-sony-xperia-edo-pdx203.dts    | 50 +++++++++++++++++++
- .../qcom/sm8250-sony-xperia-edo-pdx206.dts    | 50 +++++++++++++++++++
- 2 files changed, 100 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
-index 84104d2b20101..62590c6bd3067 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
-@@ -15,6 +15,56 @@ / {
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 2c3e595091fbc..ed764d02819f7 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2764,6 +2764,8 @@ mmss_smmu: iommu@cd00000 {
+ 				<GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>,
+ 				<GIC_SPI 262 IRQ_TYPE_LEVEL_HIGH>,
+ 				<GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
++
++			power-domains = <&mmcc BIMC_SMMU_GDSC>;
+ 		};
  
- /delete-node/ &vreg_l7f_1p8;
- 
-+&pm8009_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "CAM_PWR_LD_EN",
-+			  "WIDEC_PWR_EN",
-+			  "NC";
-+};
-+
-+&pm8150_gpios {
-+	gpio-line-names = "VOL_DOWN_N", /* GPIO_1 */
-+			  "OPTION_2",
-+			  "NC",
-+			  "PM_SLP_CLK_IN",
-+			  "OPTION_1",
-+			  "NC",
-+			  "NC",
-+			  "SP_ARI_PWR_ALARM",
-+			  "NC",
-+			  "NC"; /* GPIO_10 */
-+};
-+
-+&pm8150b_gpios {
-+	gpio-line-names = "SNAPSHOT_N", /* GPIO_1 */
-+			  "FOCUS_N",
-+			  "NC",
-+			  "NC",
-+			  "RF_LCD_ID_EN",
-+			  "NC",
-+			  "NC",
-+			  "LCD_ID",
-+			  "NC",
-+			  "WLC_EN_N", /* GPIO_10 */
-+			  "NC",
-+			  "RF_ID";
-+};
-+
-+&pm8150l_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "PM3003A_EN",
-+			  "NC",
-+			  "NC",
-+			  "NC",
-+			  "AUX2_THERM",
-+			  "BB_HP_EN",
-+			  "FP_LDO_EN",
-+			  "PMX_RESET_N",
-+			  "AUX3_THERM", /* GPIO_10 */
-+			  "DTV_PWR_EN",
-+			  "PM3003A_MODE";
-+};
-+
- &tlmm {
- 	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
- 			  "MDM2AP_ERR_FATAL",
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
-index fae6568cb79e4..ea4571bf4fbf0 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
-@@ -30,6 +30,56 @@ g-assist-key {
- 	};
- };
- 
-+&pm8009_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "NC",
-+			  "WIDEC_PWR_EN",
-+			  "NC";
-+};
-+
-+&pm8150_gpios {
-+	gpio-line-names = "VOL_DOWN_N", /* GPIO_1 */
-+			  "OPTION_2",
-+			  "NC",
-+			  "PM_SLP_CLK_IN",
-+			  "OPTION_1",
-+			  "G_ASSIST_N",
-+			  "NC",
-+			  "SP_ARI_PWR_ALARM",
-+			  "NC",
-+			  "NC"; /* GPIO_10 */
-+};
-+
-+&pm8150b_gpios {
-+	gpio-line-names = "SNAPSHOT_N", /* GPIO_1 */
-+			  "FOCUS_N",
-+			  "NC",
-+			  "NC",
-+			  "RF_LCD_ID_EN",
-+			  "NC",
-+			  "NC",
-+			  "LCD_ID",
-+			  "NC",
-+			  "NC", /* GPIO_10 */
-+			  "NC",
-+			  "RF_ID";
-+};
-+
-+&pm8150l_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "PM3003A_EN",
-+			  "NC",
-+			  "NC",
-+			  "NC",
-+			  "AUX2_THERM",
-+			  "BB_HP_EN",
-+			  "FP_LDO_EN",
-+			  "PMX_RESET_N",
-+			  "NC", /* GPIO_10 */
-+			  "NC",
-+			  "PM3003A_MODE";
-+};
-+
- &tlmm {
- 	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
- 			  "MDM2AP_ERR_FATAL",
+ 		remoteproc_adsp: remoteproc@17300000 {
 -- 
 2.40.1
 
