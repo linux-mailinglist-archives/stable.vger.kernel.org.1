@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 843BB79B1CF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C17A79B024
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376660AbjIKWUK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36548 "EHLO
+        id S1358041AbjIKWKl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242243AbjIKPZr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:47 -0400
+        with ESMTP id S241014AbjIKO7q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3EDF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54FAC433C7;
-        Mon, 11 Sep 2023 15:25:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C8A9E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505FAC433C7;
+        Mon, 11 Sep 2023 14:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445940;
-        bh=efWyJUNM8bNcN+0cUHAJ7j7JOa8OZ+PJvkaUJCPlxA8=;
+        s=korg; t=1694444380;
+        bh=9otKf8loXp0++gGrAqx+i0+S8Y39VZ+WCmbArwWX1w0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=19mXw6LlhEgmW+Te6IyevkQ838dmigRkmwMDuHdeRmBXp/7VB9yNvEOBuET+oAoVo
-         IC3K4Lc2rZxgh0nlQ961xA2RSroEvIenNsbIQjpkZpqMv7MrHmYjOSrlKtHJkSFWkZ
-         05dWI/vLStCuUAVkAWG3eQyGL9XQXkIrjQGqEL+E=
+        b=T7lQ2Ag6KGGvWc6TnJIlaIMQ7MbuG0H2X+QjMWraEfeBaw55hupK73OIgVJEpEuyb
+         4Xyyx2lWlvVoXHkGdiobvRuJAe8NXH0vzGq9lIqEH6K/gvsv4yfR1rdv+O+4BK1TvV
+         6zV1A+lpLexiIpb1d6kUgnofJL3OJsSeu2BKM804=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zqiang <qiang.zhang1211@gmail.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 526/600] rcu: dump vmalloc memory info safely
-Date:   Mon, 11 Sep 2023 15:49:19 +0200
-Message-ID: <20230911134649.149648020@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.4 702/737] mmc: renesas_sdhi: register irqs before registering controller
+Date:   Mon, 11 Sep 2023 15:49:21 +0200
+Message-ID: <20230911134710.131413933@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,99 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit c83ad36a18c02c0f51280b50272327807916987f upstream.
+commit 74f45de394d979cc7770271f92fafa53e1ed3119 upstream.
 
-Currently, for double invoke call_rcu(), will dump rcu_head objects memory
-info, if the objects is not allocated from the slab allocator, the
-vmalloc_dump_obj() will be invoke and the vmap_area_lock spinlock need to
-be held, since the call_rcu() can be invoked in interrupt context,
-therefore, there is a possibility of spinlock deadlock scenarios.
+IRQs should be ready to serve when we call mmc_add_host() via
+tmio_mmc_host_probe(). To achieve that, ensure that all irqs are masked
+before registering the handlers.
 
-And in Preempt-RT kernel, the rcutorture test also trigger the following
-lockdep warning:
-
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-preempt_count: 1, expected: 0
-RCU nest depth: 1, expected: 1
-3 locks held by swapper/0/1:
- #0: ffffffffb534ee80 (fullstop_mutex){+.+.}-{4:4}, at: torture_init_begin+0x24/0xa0
- #1: ffffffffb5307940 (rcu_read_lock){....}-{1:3}, at: rcu_torture_init+0x1ec7/0x2370
- #2: ffffffffb536af40 (vmap_area_lock){+.+.}-{3:3}, at: find_vmap_area+0x1f/0x70
-irq event stamp: 565512
-hardirqs last  enabled at (565511): [<ffffffffb379b138>] __call_rcu_common+0x218/0x940
-hardirqs last disabled at (565512): [<ffffffffb5804262>] rcu_torture_init+0x20b2/0x2370
-softirqs last  enabled at (399112): [<ffffffffb36b2586>] __local_bh_enable_ip+0x126/0x170
-softirqs last disabled at (399106): [<ffffffffb43fef59>] inet_register_protosw+0x9/0x1d0
-Preemption disabled at:
-[<ffffffffb58040c3>] rcu_torture_init+0x1f13/0x2370
-CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.5.0-rc4-rt2-yocto-preempt-rt+ #15
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x68/0xb0
- dump_stack+0x14/0x20
- __might_resched+0x1aa/0x280
- ? __pfx_rcu_torture_err_cb+0x10/0x10
- rt_spin_lock+0x53/0x130
- ? find_vmap_area+0x1f/0x70
- find_vmap_area+0x1f/0x70
- vmalloc_dump_obj+0x20/0x60
- mem_dump_obj+0x22/0x90
- __call_rcu_common+0x5bf/0x940
- ? debug_smp_processor_id+0x1b/0x30
- call_rcu_hurry+0x14/0x20
- rcu_torture_init+0x1f82/0x2370
- ? __pfx_rcu_torture_leak_cb+0x10/0x10
- ? __pfx_rcu_torture_leak_cb+0x10/0x10
- ? __pfx_rcu_torture_init+0x10/0x10
- do_one_initcall+0x6c/0x300
- ? debug_smp_processor_id+0x1b/0x30
- kernel_init_freeable+0x2b9/0x540
- ? __pfx_kernel_init+0x10/0x10
- kernel_init+0x1f/0x150
- ret_from_fork+0x40/0x50
- ? __pfx_kernel_init+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
-
-The previous patch fixes this by using the deadlock-safe best-effort
-version of find_vm_area.  However, in case of failure print the fact that
-the pointer was a vmalloc pointer so that we print at least something.
-
-Link: https://lkml.kernel.org/r/20230904180806.1002832-2-joel@joelfernandes.org
-Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230712140011.18602-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/util.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1127,7 +1127,9 @@ void mem_dump_obj(void *object)
- 	if (vmalloc_dump_obj(object))
- 		return;
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1006,6 +1006,8 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
+ 		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
+ 		host->reset = renesas_sdhi_reset;
++	} else {
++		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+ 	}
  
--	if (virt_addr_valid(object))
-+	if (is_vmalloc_addr(object))
-+		type = "vmalloc memory";
-+	else if (virt_addr_valid(object))
- 		type = "non-slab/vmalloc memory";
- 	else if (object == NULL)
- 		type = "NULL pointer";
+ 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
+@@ -1100,9 +1102,7 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->ops.hs400_complete = renesas_sdhi_hs400_complete;
+ 	}
+ 
+-	ret = tmio_mmc_host_probe(host);
+-	if (ret < 0)
+-		goto edisclk;
++	sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, host->sdcard_irq_mask_all);
+ 
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+@@ -1129,6 +1129,10 @@ int renesas_sdhi_probe(struct platform_d
+ 			goto eirq;
+ 	}
+ 
++	ret = tmio_mmc_host_probe(host);
++	if (ret < 0)
++		goto edisclk;
++
+ 	dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
+ 		 mmc_hostname(host->mmc), &res->start, host->mmc->f_max / 1000000);
+ 
 
 
