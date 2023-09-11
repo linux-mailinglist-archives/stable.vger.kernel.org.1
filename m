@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 781EC79B4EA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60E2879B527
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240587AbjIKV2p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48926 "EHLO
+        id S1348485AbjIKV04 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:26:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238427AbjIKN4X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:23 -0400
+        with ESMTP id S239799AbjIKO3G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4602310E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C38C433C8;
-        Mon, 11 Sep 2023 13:56:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA6AF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:29:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B15C433C7;
+        Mon, 11 Sep 2023 14:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440578;
-        bh=Oj/KkJHDj6CeEtsID+5FOpk7zZechjY4TrdXYU0wjUo=;
+        s=korg; t=1694442542;
+        bh=wbNhwX2DaQ+VF0sU5+dfxJ9hes5s8wF2GtT6QHnpVfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qdVoYpxjmU9FtJ0MfmAr5Zcx5/UIR+fWqZrTEiBT9TrnBcvQTld3XMVI/9HOT/3h6
-         yffR7TJQPG+Kxm0zHf1CMxL7DMWAY5YqVpCe8snnzDchf10sI4G7/yZid2hfPsFi5V
-         Nc/kxWOyz0h3vLSAwfOvUWUOpTi953kjYv8p5354=
+        b=lQDzS38chrFghu2C98MmWNN8qGkZeMW4l9hdMR7+tcL4a8dIR+jZ/aHh6xNvDlQNG
+         ZuXarPRWi2ZyxFAdr23XzWREzRT0He3tiTpTN38g3QmAQnMTR+4yGeZzdLL4P+RumQ
+         dD1V5YDyOCCnFlRWkdklW9stQH5Q4rTlaXhOwk9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shayne Chen <shayne.chen@mediatek.com>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 085/739] wifi: mt76: mt7996: fix bss wlan_idx when sending bss_info command
-Date:   Mon, 11 Sep 2023 15:38:04 +0200
-Message-ID: <20230911134653.483610538@linuxfoundation.org>
+        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
+        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 026/737] ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0
+Date:   Mon, 11 Sep 2023 15:38:05 +0200
+Message-ID: <20230911134651.119197501@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit cc945b546227423488fe4be0ab92fd126b703246 ]
+[ Upstream commit 02fb23d72720df2b6be3f29fc5787ca018eb92c3 ]
 
-The bmc_tx_wlan_idx should be the wlan_idx of the current bss rather
-than peer AP's wlan_idx, otherwise there will appear some frame
-decryption problems on station mode.
+When the system suspends, peripheral Imp-defined interrupt is disabled.
+When system level resume is invoked, the peripheral Imp-defined interrupts
+should be enabled to handle JD events.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Reported-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20230721090643.128213-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5682-sdw.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 88e2f9d0e5130..cd54e81d73044 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -712,6 +712,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	struct cfg80211_chan_def *chandef = &phy->chandef;
- 	struct mt76_connac_bss_basic_tlv *bss;
- 	u32 type = CONNECTION_INFRA_AP;
-+	u16 sta_wlan_idx = wlan_idx;
- 	struct tlv *tlv;
- 	int idx;
+diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
+index 23f17f70d7e9b..9622aaf1b3e63 100644
+--- a/sound/soc/codecs/rt5682-sdw.c
++++ b/sound/soc/codecs/rt5682-sdw.c
+@@ -753,8 +753,15 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
+ 	if (!rt5682->first_hw_init)
+ 		return 0;
  
-@@ -731,7 +732,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 				struct mt76_wcid *wcid;
+-	if (!slave->unattach_request)
++	if (!slave->unattach_request) {
++		if (rt5682->disable_irq == true) {
++			mutex_lock(&rt5682->disable_irq_lock);
++			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
++			rt5682->disable_irq = false;
++			mutex_unlock(&rt5682->disable_irq_lock);
++		}
+ 		goto regmap_sync;
++	}
  
- 				wcid = (struct mt76_wcid *)sta->drv_priv;
--				wlan_idx = wcid->idx;
-+				sta_wlan_idx = wcid->idx;
- 			}
- 			rcu_read_unlock();
- 		}
-@@ -751,7 +752,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	bss->bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int);
- 	bss->dtim_period = vif->bss_conf.dtim_period;
- 	bss->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
--	bss->sta_idx = cpu_to_le16(wlan_idx);
-+	bss->sta_idx = cpu_to_le16(sta_wlan_idx);
- 	bss->conn_type = cpu_to_le32(type);
- 	bss->omac_idx = mvif->omac_idx;
- 	bss->band_idx = mvif->band_idx;
+ 	time = wait_for_completion_timeout(&slave->initialization_complete,
+ 				msecs_to_jiffies(RT5682_PROBE_TIMEOUT));
 -- 
 2.40.1
 
