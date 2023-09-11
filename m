@@ -2,36 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E548F79BF12
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CCB479B72F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238729AbjIKVT6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50450 "EHLO
+        id S239963AbjIKUzp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238246AbjIKNwP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:15 -0400
+        with ESMTP id S238219AbjIKNvl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:51:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6981FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F39C433C7;
-        Mon, 11 Sep 2023 13:52:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493BAFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:51:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAC1C433C8;
+        Mon, 11 Sep 2023 13:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440331;
-        bh=UJ8H1wA8PBIzn8qU+H73b1C+Avn9y1S0i3TQ8+0RLMQ=;
+        s=korg; t=1694440296;
+        bh=qlkctebdvAhGs81wGo53psdRpraTM0jujkiPybSlBMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W60X4Nff7PBskOHPgC5SUMoIRpmHqEYqtMtQAs7m2RtRF7wWyBWgLP3D1I68WqDnk
-         hhrrV9Y7ybSWWGXh8vS5e8oRa8savRCEQ/MkiTofdN3NhVLNsV7/dPwfGlDGWYKq17
-         RkS6HpA1nC2EfHGY0fnT86kQxqXjErCL9XISZCKI=
+        b=ihT84OflhQtlmTMAyGqlRMrRDj0vwe0VMBEqQwZ8hVGeiAsIzuB9vjPn3v+xKMOE0
+         8GmkqmnKAfa4jgrp2QbplDjm9fONV5EGcUzqW7yGMCWeXUQkqZgRLvMLrJnJa6ARiq
+         2d0GVNNw0Le71PlH0XigIuY2509T28OiI9VQX3gE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.5 008/739] Revert "f2fs: clean up w/ sbi->log_sectors_per_block"
-Date:   Mon, 11 Sep 2023 15:36:47 +0200
-Message-ID: <20230911134651.221827085@linuxfoundation.org>
+        =?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= 
+        <nabijaczleweli@nabijaczleweli.xyz>, Jan Kara <jack@suse.cz>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 012/739] splice: always fsnotify_access(in), fsnotify_modify(out) on success
+Date:   Mon, 11 Sep 2023 15:36:51 +0200
+Message-ID: <20230911134651.353536267@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -39,6 +42,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,134 +58,106 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
 
-commit 579c7e41507e85dc3eedf998a3dca14a2a1526ad upstream.
+[ Upstream commit 12ee4b66af34f8e72f3b2fd93a946a955efe7c86 ]
 
-This reverts commit bfd476623999118d9c509cb0fa9380f2912bc225.
+The current behaviour caused an asymmetry where some write APIs
+(write, sendfile) would notify the written-to/read-from objects,
+but splice wouldn't.
 
-Shinichiro Kawasaki reported:
+This affected userspace which uses inotify, most notably coreutils
+tail -f, to monitor pipes.
+If the pipe buffer had been filled by a splice-family function:
+  * tail wouldn't know and thus wouldn't service the pipe, and
+  * all writes to the pipe would block because it's full,
+thus service was denied.
+(For the particular case of tail -f this could be worked around
+ with ---disable-inotify.)
 
-When I ran workloads on f2fs using v6.5-rcX with fixes [1][2] and a zoned block
-devices with 4kb logical block size, I observe mount failure as follows. When
-I revert this commit, the failure goes away.
-
-[  167.781975][ T1555] F2FS-fs (dm-0): IO Block Size:        4 KB
-[  167.890728][ T1555] F2FS-fs (dm-0): Found nat_bits in checkpoint
-[  171.482588][ T1555] F2FS-fs (dm-0): Zone without valid block has non-zero write pointer. Reset the write pointer: wp[0x1300,0x8]
-[  171.496000][ T1555] F2FS-fs (dm-0): (0) : Unaligned zone reset attempted (block 280000 + 80000)
-[  171.505037][ T1555] F2FS-fs (dm-0): Discard zone failed:  (errno=-5)
-
-The patch replaced "sbi->log_blocksize - SECTOR_SHIFT" with
-"sbi->log_sectors_per_block". However, I think these two are not equal when the
-device has 4k logical block size. The former uses Linux kernel sector size 512
-byte. The latter use 512b sector size or 4kb sector size depending on the
-device. mkfs.f2fs obtains logical block size via BLKSSZGET ioctl from the device
-and reflects it to the value sbi->log_sector_size_per_block. This causes
-unexpected write pointer calculations in check_zone_write_pointer(). This
-resulted in unexpected zone reset and the mount failure.
-
-[1] https://lkml.kernel.org/linux-f2fs-devel/20230711050101.GA19128@lst.de/
-[2] https://lore.kernel.org/linux-f2fs-devel/20230804091556.2372567-1-shinichiro.kawasaki@wdc.com/
-
-Cc: stable@vger.kernel.org
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: bfd476623999 ("f2fs: clean up w/ sbi->log_sectors_per_block")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 983652c69199 ("splice: report related fsnotify events")
+Link: https://lore.kernel.org/linux-fsdevel/jbyihkyk5dtaohdwjyivambb2gffyjs3dodpofafnkkunxq7bu@jngkdxx65pux/t/#u
+Link: https://bugs.debian.org/1039488
+Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+Acked-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Message-Id: <604ec704d933e0e0121d9e107ce914512e045fad.1688393619.git.nabijaczleweli@nabijaczleweli.xyz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ fs/splice.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 0457d620011f..cbb4bd95ea19 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -4846,17 +4846,17 @@ static int check_zone_write_pointer(struct f2fs_sb_info *sbi,
- {
- 	unsigned int wp_segno, wp_blkoff, zone_secno, zone_segno, segno;
- 	block_t zone_block, wp_block, last_valid_block;
-+	unsigned int log_sectors_per_block = sbi->log_blocksize - SECTOR_SHIFT;
- 	int i, s, b, ret;
- 	struct seg_entry *se;
+diff --git a/fs/splice.c b/fs/splice.c
+index 3e2a31e1ce6a8..53831eb0fefa8 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -1269,10 +1269,8 @@ long do_splice(struct file *in, loff_t *off_in, struct file *out,
+ 		if ((in->f_flags | out->f_flags) & O_NONBLOCK)
+ 			flags |= SPLICE_F_NONBLOCK;
  
- 	if (zone->type != BLK_ZONE_TYPE_SEQWRITE_REQ)
- 		return 0;
+-		return splice_pipe_to_pipe(ipipe, opipe, len, flags);
+-	}
+-
+-	if (ipipe) {
++		ret = splice_pipe_to_pipe(ipipe, opipe, len, flags);
++	} else if (ipipe) {
+ 		if (off_in)
+ 			return -ESPIPE;
+ 		if (off_out) {
+@@ -1297,18 +1295,11 @@ long do_splice(struct file *in, loff_t *off_in, struct file *out,
+ 		ret = do_splice_from(ipipe, out, &offset, len, flags);
+ 		file_end_write(out);
  
--	wp_block = fdev->start_blk + (zone->wp >> sbi->log_sectors_per_block);
-+	wp_block = fdev->start_blk + (zone->wp >> log_sectors_per_block);
- 	wp_segno = GET_SEGNO(sbi, wp_block);
- 	wp_blkoff = wp_block - START_BLOCK(sbi, wp_segno);
--	zone_block = fdev->start_blk + (zone->start >>
--						sbi->log_sectors_per_block);
-+	zone_block = fdev->start_blk + (zone->start >> log_sectors_per_block);
- 	zone_segno = GET_SEGNO(sbi, zone_block);
- 	zone_secno = GET_SEC_FROM_SEG(sbi, zone_segno);
+-		if (ret > 0)
+-			fsnotify_modify(out);
+-
+ 		if (!off_out)
+ 			out->f_pos = offset;
+ 		else
+ 			*off_out = offset;
+-
+-		return ret;
+-	}
+-
+-	if (opipe) {
++	} else if (opipe) {
+ 		if (off_out)
+ 			return -ESPIPE;
+ 		if (off_in) {
+@@ -1324,18 +1315,25 @@ long do_splice(struct file *in, loff_t *off_in, struct file *out,
  
-@@ -4906,7 +4906,7 @@ static int check_zone_write_pointer(struct f2fs_sb_info *sbi,
- 			    "pointer. Reset the write pointer: wp[0x%x,0x%x]",
- 			    wp_segno, wp_blkoff);
- 		ret = __f2fs_issue_discard_zone(sbi, fdev->bdev, zone_block,
--				zone->len >> sbi->log_sectors_per_block);
-+					zone->len >> log_sectors_per_block);
- 		if (ret)
- 			f2fs_err(sbi, "Discard zone failed: %s (errno=%d)",
- 				 fdev->path, ret);
-@@ -4967,6 +4967,7 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 	struct blk_zone zone;
- 	unsigned int cs_section, wp_segno, wp_blkoff, wp_sector_off;
- 	block_t cs_zone_block, wp_block;
-+	unsigned int log_sectors_per_block = sbi->log_blocksize - SECTOR_SHIFT;
- 	sector_t zone_sector;
- 	int err;
+ 		ret = splice_file_to_pipe(in, opipe, &offset, len, flags);
  
-@@ -4978,8 +4979,8 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 		return 0;
+-		if (ret > 0)
+-			fsnotify_access(in);
+-
+ 		if (!off_in)
+ 			in->f_pos = offset;
+ 		else
+ 			*off_in = offset;
++	} else {
++		ret = -EINVAL;
++	}
  
- 	/* report zone for the sector the curseg points to */
--	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk) <<
--						sbi->log_sectors_per_block;
-+	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk)
-+		<< log_sectors_per_block;
- 	err = blkdev_report_zones(zbd->bdev, zone_sector, 1,
- 				  report_one_zone_cb, &zone);
- 	if (err != 1) {
-@@ -4991,10 +4992,10 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 	if (zone.type != BLK_ZONE_TYPE_SEQWRITE_REQ)
- 		return 0;
+-		return ret;
++	if (ret > 0) {
++		/*
++		 * Generate modify out before access in:
++		 * do_splice_from() may've already sent modify out,
++		 * and this ensures the events get merged.
++		 */
++		fsnotify_modify(out);
++		fsnotify_access(in);
+ 	}
  
--	wp_block = zbd->start_blk + (zone.wp >> sbi->log_sectors_per_block);
-+	wp_block = zbd->start_blk + (zone.wp >> log_sectors_per_block);
- 	wp_segno = GET_SEGNO(sbi, wp_block);
- 	wp_blkoff = wp_block - START_BLOCK(sbi, wp_segno);
--	wp_sector_off = zone.wp & GENMASK(sbi->log_sectors_per_block - 1, 0);
-+	wp_sector_off = zone.wp & GENMASK(log_sectors_per_block - 1, 0);
+-	return -EINVAL;
++	return ret;
+ }
  
- 	if (cs->segno == wp_segno && cs->next_blkoff == wp_blkoff &&
- 		wp_sector_off == 0)
-@@ -5021,8 +5022,8 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 	if (!zbd)
- 		return 0;
- 
--	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk) <<
--						sbi->log_sectors_per_block;
-+	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk)
-+		<< log_sectors_per_block;
- 	err = blkdev_report_zones(zbd->bdev, zone_sector, 1,
- 				  report_one_zone_cb, &zone);
- 	if (err != 1) {
-@@ -5040,7 +5041,7 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 			    "Reset the zone: curseg[0x%x,0x%x]",
- 			    type, cs->segno, cs->next_blkoff);
- 		err = __f2fs_issue_discard_zone(sbi, zbd->bdev,	cs_zone_block,
--					zone.len >> sbi->log_sectors_per_block);
-+					zone.len >> log_sectors_per_block);
- 		if (err) {
- 			f2fs_err(sbi, "Discard zone failed: %s (errno=%d)",
- 				 zbd->path, err);
+ static long __do_splice(struct file *in, loff_t __user *off_in,
 -- 
-2.42.0
+2.40.1
 
 
 
