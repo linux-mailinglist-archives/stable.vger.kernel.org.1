@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 122B279AD0E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB3579B4E8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237815AbjIKUvq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36520 "EHLO
+        id S1376566AbjIKWT5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241835AbjIKPPq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:46 -0400
+        with ESMTP id S240638AbjIKOth (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07D3FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38020C433C8;
-        Mon, 11 Sep 2023 15:15:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57DA4125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3490C433C8;
+        Mon, 11 Sep 2023 14:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445341;
-        bh=xcGruUL41PrshpdcG5e5hbWdmpEmHR/0tt/7LTKji6w=;
+        s=korg; t=1694443773;
+        bh=KuaKsOLL4k3GVJyAUMGQRxlr+WNO6CuoS/U+E15ct5E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oTxxz3w545Wdv8VIQy0HAdC1beib00jhdlUH6Wa+5SxKp56x2BFpWyetLTNb69z09
-         rJxOieRG4l8bHOwbQt0aKKEkVP4XXtbbCTwNYDlAmAeFgjp8Q29+BFcbmvLeL4Te/g
-         IA2/vkcI5hJe0gIFxpJAw7N13jPlFI9yxBpy2bGc=
+        b=M0mIGnc671TX/dN9Oxqe2bu11VfBCSjkNb1JL478uVEoEWOD1+tyyzsls6GHkCpy1
+         i+biot3mlbDbz57ZoH7Lrp8Q+W6nan0jrgymFcWQDOhmHQt9C1VdDE0FWvqhSjyD28
+         KywXQNO0q6loBHqv/UQzImKqQfTPOA/Iqv238zVc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 313/600] md/raid5-cache: fix a deadlock in r5l_exit_log()
-Date:   Mon, 11 Sep 2023 15:45:46 +0200
-Message-ID: <20230911134642.902260021@linuxfoundation.org>
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 488/737] media: dib7000p: Fix potential division by zero
+Date:   Mon, 11 Sep 2023 15:45:47 +0200
+Message-ID: <20230911134704.206012953@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,65 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit a705b11b358dee677aad80630e7608b2d5f56691 ]
+[ Upstream commit a1db7b2c5533fc67e2681eb5efc921a67bc7d5b8 ]
 
-Commit b13015af94cf ("md/raid5-cache: Clear conf->log after finishing
-work") introduce a new problem:
+Variable loopdiv can be assigned 0, then it is used as a denominator,
+without checking it for 0.
 
-// caller hold reconfig_mutex
-r5l_exit_log
- flush_work(&log->disable_writeback_work)
-			r5c_disable_writeback_async
-			 wait_event
-			  /*
-			   * conf->log is not NULL, and mddev_trylock()
-			   * will fail, wait_event() can never pass.
-			   */
- conf->log = NULL
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fix this problem by setting 'config->log' to NULL before wake_up() as it
-used to be, so that wait_event() from r5c_disable_writeback_async() can
-exist. In the meantime, move forward md_unregister_thread() so that
-null-ptr-deref this commit fixed can still be fixed.
-
-Fixes: b13015af94cf ("md/raid5-cache: Clear conf->log after finishing work")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20230708091727.1417894-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 713d54a8bd81 ("[media] DiB7090: add support for the dib7090 based")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: (bw != NULL) -> bw]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5-cache.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
-index 832d8566e1656..477e3ae17545a 100644
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -3166,12 +3166,15 @@ void r5l_exit_log(struct r5conf *conf)
- {
- 	struct r5l_log *log = conf->log;
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index a90d2f51868ff..632534eff0ffa 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -497,7 +497,7 @@ static int dib7000p_update_pll(struct dvb_frontend *fe, struct dibx000_bandwidth
+ 	prediv = reg_1856 & 0x3f;
+ 	loopdiv = (reg_1856 >> 6) & 0x3f;
  
--	/* Ensure disable_writeback_work wakes up and exits */
--	wake_up(&conf->mddev->sb_wait);
--	flush_work(&log->disable_writeback_work);
- 	md_unregister_thread(&log->reclaim_thread);
- 
-+	/*
-+	 * 'reconfig_mutex' is held by caller, set 'confg->log' to NULL to
-+	 * ensure disable_writeback_work wakes up and exits.
-+	 */
- 	conf->log = NULL;
-+	wake_up(&conf->mddev->sb_wait);
-+	flush_work(&log->disable_writeback_work);
- 
- 	mempool_exit(&log->meta_pool);
- 	bioset_exit(&log->bs);
+-	if ((bw != NULL) && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
++	if (loopdiv && bw && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
+ 		dprintk("Updating pll (prediv: old =  %d new = %d ; loopdiv : old = %d new = %d)\n", prediv, bw->pll_prediv, loopdiv, bw->pll_ratio);
+ 		reg_1856 &= 0xf000;
+ 		reg_1857 = dib7000p_read_word(state, 1857);
 -- 
 2.40.1
 
