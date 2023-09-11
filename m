@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19D4B79B6BA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BC0F79B9B4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379385AbjIKWnv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56324 "EHLO
+        id S1343811AbjIKVMk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238695AbjIKODC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:02 -0400
+        with ESMTP id S238697AbjIKODG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB827CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D21C433C8;
-        Mon, 11 Sep 2023 14:02:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56B2CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B1FC433C8;
+        Mon, 11 Sep 2023 14:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440978;
-        bh=ipmZR02bvnI0RzJ3kVrJG+zR1sfI49Qd1xKGaVuGo5M=;
+        s=korg; t=1694440981;
+        bh=zb+VrpDF1TmKgHDL3SzxZEPEqDEffpdNHYewHbtuEbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ziGcCRHFd/03L9V9VjW1bCdFcrWWY3jrfJRj2ohTAd/d3EVDu1qWanzBs8z9qXGwN
-         1Vs/0J9fpJoiUlWPrNTlNfHtYC6Aqeq69DKb7Wp570JRlG+hdKQ+uEa3wH7R/R5CFw
-         KXY9J3fZKIaM0TbfJ+64X/dpyB9tiHDcojH8h5mo=
+        b=puMKuqPdJzopfZzhSgCP7UNU7cswIJP9Uzck6Li4DsNwRauxi8nb3B4PnDlIVnOPH
+         G8aknqjo16j/yKuehghz5N7vfbaCQvjd6o87lbBCcWDCE+2yANbuaPGuAI2nY/mWWv
+         Zsw0eNVoY7ec801Ev8tNQYZcw88PSvpkZc3QElUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 226/739] arm64: dts: qcom: msm8996: Add missing interrupt to the USB2 controller
-Date:   Mon, 11 Sep 2023 15:40:25 +0200
-Message-ID: <20230911134657.490179826@linuxfoundation.org>
+Subject: [PATCH 6.5 227/739] arm64: dts: qcom: sdm845-tama: Set serial indices and stdout-path
+Date:   Mon, 11 Sep 2023 15:40:26 +0200
+Message-ID: <20230911134657.516485919@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -56,33 +57,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 36541089c4733355ed844c67eebd0c3936953454 ]
+[ Upstream commit 9acc60c3e2d449243e4c2126e3b56f1c4f7fd3bc ]
 
-The interrupt line was previously not described. Take care of that.
+UART6 is used for debug (routed via uSD pins) and UART9 is connected
+to the bluetooth chip.
 
-Fixes: 1e39255ed29d ("arm64: dts: msm8996: Add device node for qcom,dwc3")
+Set indexed aliases to make the GENI UART driver happy and route serial
+traffic through the debug uart by default.
+
+Fixes: 30a7f99befc6 ("arm64: dts: qcom: Add support for SONY Xperia XZ2 / XZ2C / XZ3 (Tama platform)")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230627-topic-more_bindings-v1-11-6b4b6cd081e5@linaro.org
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Link: https://lore.kernel.org/r/20230627-topic-tama_uart-v1-1-0fa790248db8@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index 3855366ca89fd..dd5f2b9677832 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3336,6 +3336,9 @@ usb2: usb@76f8800 {
- 			#size-cells = <1>;
- 			ranges;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
+index 3bc187a066aeb..7ee61b20452e2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
+@@ -15,6 +15,15 @@ / {
+ 	qcom,msm-id = <321 0x20001>; /* SDM845 v2.1 */
+ 	qcom,board-id = <8 0>;
  
-+			interrupts = <GIC_SPI 352 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "hs_phy_irq";
++	aliases {
++		serial0 = &uart6;
++		serial1 = &uart9;
++	};
 +
- 			clocks = <&gcc GCC_PERIPH_NOC_USB20_AHB_CLK>,
- 				<&gcc GCC_USB20_MASTER_CLK>,
- 				<&gcc GCC_USB20_MOCK_UTMI_CLK>,
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
+ 
 -- 
 2.40.1
 
