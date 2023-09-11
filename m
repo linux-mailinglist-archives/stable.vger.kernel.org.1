@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51CBF79B8F9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D52979BD9F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379651AbjIKWpQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54870 "EHLO
+        id S1345751AbjIKVWI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239732AbjIKO1a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:30 -0400
+        with ESMTP id S239781AbjIKO2d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A1A4E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4273C433C7;
-        Mon, 11 Sep 2023 14:27:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 588F5F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0966C433C8;
+        Mon, 11 Sep 2023 14:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442445;
-        bh=YkpG6+TwycQTQtyS+Bz17xM6O6sg0CJCbJtBtOgQrzw=;
+        s=korg; t=1694442508;
+        bh=j58lyBJushbWTmyjqH9m3+186XAsAvMZWsHWVfVWjeE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JP26J4TW4M/A9nnE7uI9/dBMPQ0LkAV3vt4e9Lh/VZfxDEqjGWX8GwnzcPkkyibDV
-         5J/i3DBFTukkSh5zhP0Yd33R5we7SuWtj7eNQE+x5e1UFG/WAndIvQH6lZoXcaJ6v6
-         jen5r3xijYvSAaN31Pm4aSj134y0r8ThadYgCjMk=
+        b=D/1ExaKjJKkZhHvy0LNKor4hiHFU4wlfUJ+IkWZRJDBMIsvYapTf1zG4s4qmS3G43
+         5nCPEsm9zCIYhOLGhjm9FKgqCHukkluhnj+v3J1H/c4iJ0KvrYXTlN5eJgeDpqOxXl
+         1S6nx7QGIo+dYOP4strh0bsU/CYwF5DJkJnTYecs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 020/737] ethernet: atheros: fix return value check in atl1c_tso_csum()
-Date:   Mon, 11 Sep 2023 15:37:59 +0200
-Message-ID: <20230911134650.909969562@linuxfoundation.org>
+        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 022/737] s390/dasd: use correct number of retries for ERP requests
+Date:   Mon, 11 Sep 2023 15:38:01 +0200
+Message-ID: <20230911134650.972571058@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,40 +54,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-[ Upstream commit 8d01da0a1db237c44c92859ce3612df7af8d3a53 ]
+[ Upstream commit acea28a6b74f458defda7417d2217b051ba7d444 ]
 
-in atl1c_tso_csum, it should check the return value of pskb_trim(),
-and return an error code if an unexpected value is returned
-by pskb_trim().
+If a DASD request fails an error recovery procedure (ERP) request might
+be built as a copy of the original request to do error recovery.
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The ERP request gets a number of retries assigned.
+This number is always 256 no matter what other value might have been set
+for the original request. This is not what is expected when a user
+specifies a certain amount of retries for the device via sysfs.
+
+Correctly use the number of retries of the original request for ERP
+requests.
+
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230721193647.3889634-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/atl1c/atl1c_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/s390/block/dasd_3990_erp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-index 4a288799633f8..940c5d1ff9cfc 100644
---- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-+++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2094,8 +2094,11 @@ static int atl1c_tso_csum(struct atl1c_adapter *adapter,
- 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
- 					+ ntohs(ip_hdr(skb)->tot_len));
+diff --git a/drivers/s390/block/dasd_3990_erp.c b/drivers/s390/block/dasd_3990_erp.c
+index f0f210627cadf..89957bb7244d2 100644
+--- a/drivers/s390/block/dasd_3990_erp.c
++++ b/drivers/s390/block/dasd_3990_erp.c
+@@ -2441,7 +2441,7 @@ static struct dasd_ccw_req *dasd_3990_erp_add_erp(struct dasd_ccw_req *cqr)
+ 	erp->block    = cqr->block;
+ 	erp->magic    = cqr->magic;
+ 	erp->expires  = cqr->expires;
+-	erp->retries  = 256;
++	erp->retries  = device->default_retries;
+ 	erp->buildclk = get_tod_clock();
+ 	erp->status = DASD_CQR_FILLED;
  
--			if (real_len < skb->len)
--				pskb_trim(skb, real_len);
-+			if (real_len < skb->len) {
-+				err = pskb_trim(skb, real_len);
-+				if (err)
-+					return err;
-+			}
- 
- 			hdr_len = skb_tcp_all_headers(skb);
- 			if (unlikely(skb->len == hdr_len)) {
 -- 
 2.40.1
 
