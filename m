@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11A1C79AFDE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99EDD79B2E3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235731AbjIKVQX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48236 "EHLO
+        id S241455AbjIKWXM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240220AbjIKOjU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:20 -0400
+        with ESMTP id S240221AbjIKOjX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2271AF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E40BC433C8;
-        Mon, 11 Sep 2023 14:39:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195F1CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55448C433C7;
+        Mon, 11 Sep 2023 14:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443155;
-        bh=VEpNAImbAMIUKDVVkR4uJ/w8iw3J7mJq7bRGbjHaWls=;
+        s=korg; t=1694443158;
+        bh=wLS+YtDBwqXS4i5NB8YVkMqiWwi11hZ0XUOXc8azHTs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sTH/UGVBFR/+ezk65DtyG68mIS8t6EZYQLUc3wLz50eXkSmlPS+UCHCcHbpHyqpbl
-         FA030vPj6dscDcbOLbM+hixuHY4NXlE20/cB4zmNpTLrJZMIvNub5Po61axmWPRDai
-         P9qi5EqoFrxRXMzbZyXOdw0pgJiA5G1NORiqJpOg=
+        b=xumtVOsUOTQF11TQFLHqnoIfAwLRJvlcyg8oTbDj9kgO2UEGHGVKbIjsKwZZsZCLh
+         nDsp8T8iY6u9CXl3LEyqupffTucviGVaC2z0jp0r6iWJDt2Ov0Xh5Aq9tWa34klCfm
+         nL+xPL1wOMMTkTlsDgFgbnYZgTF8GciAcq6Ls2oo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luca Weiss <luca@z3ntu.xyz>,
+        patches@lists.linux.dev,
+        Caleb Connolly <caleb.connolly@linaro.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 278/737] soc: qcom: ocmem: Add OCMEM hardware version print
-Date:   Mon, 11 Sep 2023 15:42:17 +0200
-Message-ID: <20230911134658.337922185@linuxfoundation.org>
+Subject: [PATCH 6.4 279/737] soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
+Date:   Mon, 11 Sep 2023 15:42:18 +0200
+Message-ID: <20230911134658.364062762@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -57,49 +59,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit e81a16e77259294cd4ff0a9c1fbe5aa0e311a47d ]
+[ Upstream commit a7b484b1c9332a1ee12e8799d62a11ee3f8e0801 ]
 
-It might be useful to know what hardware version of the OCMEM block the
-SoC contains. Add a debug print for that.
+Since we're using these two macros to read a value from a register, we
+need to use the FIELD_GET instead of the FIELD_PREP macro, otherwise
+we're getting wrong values.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+So instead of:
+
+  [    3.111779] ocmem fdd00000.sram: 2 ports, 1 regions, 512 macros, not interleaved
+
+we now get the correct value of:
+
+  [    3.129672] ocmem fdd00000.sram: 2 ports, 1 regions, 2 macros, not interleaved
+
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20230506-msm8226-ocmem-v3-1-79da95a2581f@z3ntu.xyz
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz
-Stable-dep-of: a7b484b1c933 ("soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/soc/qcom/ocmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index 199fe98720350..aaddc3cc53b7f 100644
+index aaddc3cc53b7f..ef7c1748242ac 100644
 --- a/drivers/soc/qcom/ocmem.c
 +++ b/drivers/soc/qcom/ocmem.c
-@@ -76,6 +76,10 @@ struct ocmem {
- #define OCMEM_REG_GFX_MPU_START			0x00001004
- #define OCMEM_REG_GFX_MPU_END			0x00001008
+@@ -80,8 +80,8 @@ struct ocmem {
+ #define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
+ #define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
  
-+#define OCMEM_HW_VERSION_MAJOR(val)		FIELD_GET(GENMASK(31, 28), val)
-+#define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
-+#define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
-+
- #define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
- #define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
+-#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
+-#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
++#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_GET(0x0000000f, (val))
++#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_GET(0x00003f00, (val))
  
-@@ -355,6 +359,12 @@ static int ocmem_dev_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	reg = ocmem_read(ocmem, OCMEM_REG_HW_VERSION);
-+	dev_dbg(dev, "OCMEM hardware version: %lu.%lu.%lu\n",
-+		OCMEM_HW_VERSION_MAJOR(reg),
-+		OCMEM_HW_VERSION_MINOR(reg),
-+		OCMEM_HW_VERSION_STEP(reg));
-+
- 	reg = ocmem_read(ocmem, OCMEM_REG_HW_PROFILE);
- 	ocmem->num_ports = OCMEM_HW_PROFILE_NUM_PORTS(reg);
- 	ocmem->num_macros = OCMEM_HW_PROFILE_NUM_MACROS(reg);
+ #define OCMEM_HW_PROFILE_LAST_REGN_HALFSIZE	0x00010000
+ #define OCMEM_HW_PROFILE_INTERLEAVING		0x00020000
 -- 
 2.40.1
 
