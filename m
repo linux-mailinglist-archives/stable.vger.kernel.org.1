@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F00F679ADEB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D632179B28D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353882AbjIKVvW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48220 "EHLO
+        id S237135AbjIKV6P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240217AbjIKOjS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:18 -0400
+        with ESMTP id S238864AbjIKOGm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51700E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDE3C433CA;
-        Mon, 11 Sep 2023 14:39:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D708DCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA057C433C8;
+        Mon, 11 Sep 2023 14:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443153;
-        bh=NZuDjQANBNddqbMJIPF1B6aRs36mdj7kQa1G/iPvBbA=;
+        s=korg; t=1694441197;
+        bh=EjhX3ISOepAWN1LJRW4JMVaSQgYGCWc9Mq8/XM3nIIo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UlYJxE4T0weyU7nlL8G1b87iAZPpDxGUITOb70BX5zFM21rYVW9CvwqBOLz6hmvJU
-         ukgXIKVKWCyOZXY/+6AFr7/wXmU9olghS73e1GM4lOgpLC5fX8Ppd8WwgNkOD+h5zs
-         j7KuAEi+dYIe70wIoALrVclGDsIJRqUujhuonyxw=
+        b=q/PbWTR2lhPVgQHDZaxEc+WhlmS/Y8OFqdkGmBxpJXdOcmrvETVOEfHQwNbPy5nAG
+         QslftNJXk+Wb3aj7i2TS5IKEau+pakii+HQgXgv7QQqC1Hm3dEjuWjvdNASUq9JIE1
+         Y7w8GElpj/18OYKW11hk6Pe7eENr9ip6V9/CMomM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Elwell <phil@raspberrypi.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 269/737] ASoC: cs43130: Fix numerator/denominator mixup
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jinyoung Choi <j-young.choi@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 329/739] block: move the bi_size update out of __bio_try_merge_page
 Date:   Mon, 11 Sep 2023 15:42:08 +0200
-Message-ID: <20230911134658.093420250@linuxfoundation.org>
+Message-ID: <20230911134700.287810653@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,196 +50,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit a9e7c964cea4fb1541cc81a11d1b2fd135f4cf38 ]
+[ Upstream commit 858c708d9efb7e8e5c6320793b778cc17cf8368a ]
 
-In converting to using the standard u16_fract type, commit [1] made the
-obvious mistake and failed to take account of the difference in
-numerator and denominator ordering, breaking all uses of the cs43130
-codec.
+The update of bi_size is the only thing in __bio_try_merge_page that
+needs a bio.  Move it to the callers, and merge __bio_try_merge_page
+and page_is_mergeable into a single bvec_try_merge_page that only takes
+the current bvec instead of a full bio.  This will allow reusing this
+function for supporting multi-page integrity payload bvecs.
 
-Fix it.
-
-[1] commit e14bd35ef446 ("ASoC: cs43130: Re-use generic struct u16_fract")
-
-Fixes: e14bd35ef446 ("ASoC: cs43130: Re-use generic struct u16_fract")
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230621153229.1944132-1-phil@raspberrypi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jinyoung Choi <j-young.choi@samsung.com>
+Link: https://lore.kernel.org/r/20230724165433.117645-8-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 0ece1d649b6d ("bio-integrity: create multi-page bvecs in bio_integrity_add_page()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs43130.h | 138 ++++++++++++++++++-------------------
- 1 file changed, 69 insertions(+), 69 deletions(-)
+ block/bio.c | 57 +++++++++++++++++++----------------------------------
+ 1 file changed, 20 insertions(+), 37 deletions(-)
 
-diff --git a/sound/soc/codecs/cs43130.h b/sound/soc/codecs/cs43130.h
-index 1dd8936743132..90e8895275e77 100644
---- a/sound/soc/codecs/cs43130.h
-+++ b/sound/soc/codecs/cs43130.h
-@@ -381,88 +381,88 @@ struct cs43130_clk_gen {
+diff --git a/block/bio.c b/block/bio.c
+index b9b8328d1bc82..c30f7489e4482 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -903,9 +903,8 @@ static inline bool bio_full(struct bio *bio, unsigned len)
+ 	return false;
+ }
  
- /* frm_size = 16 */
- static const struct cs43130_clk_gen cs43130_16_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 441,	10, }, },
--	{ 22579200,	44100,		.v = { 32,	1, }, },
--	{ 22579200,	48000,		.v = { 147,	5, }, },
--	{ 22579200,	88200,		.v = { 16,	1, }, },
--	{ 22579200,	96000,		.v = { 147,	10, }, },
--	{ 22579200,	176400,		.v = { 8,	1, }, },
--	{ 22579200,	192000,		.v = { 147,	20, }, },
--	{ 22579200,	352800,		.v = { 4,	1, }, },
--	{ 22579200,	384000,		.v = { 147,	40, }, },
--	{ 24576000,	32000,		.v = { 48,	1, }, },
--	{ 24576000,	44100,		.v = { 5120,	147, }, },
--	{ 24576000,	48000,		.v = { 32,	1, }, },
--	{ 24576000,	88200,		.v = { 2560,	147, }, },
--	{ 24576000,	96000,		.v = { 16,	1, }, },
--	{ 24576000,	176400,		.v = { 1280,	147, }, },
--	{ 24576000,	192000,		.v = { 8,	1, }, },
--	{ 24576000,	352800,		.v = { 640,	147, }, },
--	{ 24576000,	384000,		.v = { 4,	1, }, },
-+	{ 22579200,	32000,		.v = { 10,	441, }, },
-+	{ 22579200,	44100,		.v = { 1,	32, }, },
-+	{ 22579200,	48000,		.v = { 5,	147, }, },
-+	{ 22579200,	88200,		.v = { 1,	16, }, },
-+	{ 22579200,	96000,		.v = { 10,	147, }, },
-+	{ 22579200,	176400,		.v = { 1,	8, }, },
-+	{ 22579200,	192000,		.v = { 20,	147, }, },
-+	{ 22579200,	352800,		.v = { 1,	4, }, },
-+	{ 22579200,	384000,		.v = { 40,	147, }, },
-+	{ 24576000,	32000,		.v = { 1,	48, }, },
-+	{ 24576000,	44100,		.v = { 147,	5120, }, },
-+	{ 24576000,	48000,		.v = { 1,	32, }, },
-+	{ 24576000,	88200,		.v = { 147,	2560, }, },
-+	{ 24576000,	96000,		.v = { 1,	16, }, },
-+	{ 24576000,	176400,		.v = { 147,	1280, }, },
-+	{ 24576000,	192000,		.v = { 1,	8, }, },
-+	{ 24576000,	352800,		.v = { 147,	640, }, },
-+	{ 24576000,	384000,		.v = { 1,	4, }, },
- };
+-static inline bool page_is_mergeable(const struct bio_vec *bv,
+-		struct page *page, unsigned int len, unsigned int off,
+-		bool *same_page)
++static bool bvec_try_merge_page(struct bio_vec *bv, struct page *page,
++		unsigned int len, unsigned int off, bool *same_page)
+ {
+ 	size_t bv_end = bv->bv_offset + bv->bv_len;
+ 	phys_addr_t vec_end_addr = page_to_phys(bv->bv_page) + bv_end - 1;
+@@ -919,38 +918,14 @@ static inline bool page_is_mergeable(const struct bio_vec *bv,
+ 		return false;
  
- /* frm_size = 32 */
- static const struct cs43130_clk_gen cs43130_32_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 441,	20, }, },
--	{ 22579200,	44100,		.v = { 16,	1, }, },
--	{ 22579200,	48000,		.v = { 147,	10, }, },
--	{ 22579200,	88200,		.v = { 8,	1, }, },
--	{ 22579200,	96000,		.v = { 147,	20, }, },
--	{ 22579200,	176400,		.v = { 4,	1, }, },
--	{ 22579200,	192000,		.v = { 147,	40, }, },
--	{ 22579200,	352800,		.v = { 2,	1, }, },
--	{ 22579200,	384000,		.v = { 147,	80, }, },
--	{ 24576000,	32000,		.v = { 24,	1, }, },
--	{ 24576000,	44100,		.v = { 2560,	147, }, },
--	{ 24576000,	48000,		.v = { 16,	1, }, },
--	{ 24576000,	88200,		.v = { 1280,	147, }, },
--	{ 24576000,	96000,		.v = { 8,	1, }, },
--	{ 24576000,	176400,		.v = { 640,	147, }, },
--	{ 24576000,	192000,		.v = { 4,	1, }, },
--	{ 24576000,	352800,		.v = { 320,	147, }, },
--	{ 24576000,	384000,		.v = { 2,	1, }, },
-+	{ 22579200,	32000,		.v = { 20,	441, }, },
-+	{ 22579200,	44100,		.v = { 1,	16, }, },
-+	{ 22579200,	48000,		.v = { 10,	147, }, },
-+	{ 22579200,	88200,		.v = { 1,	8, }, },
-+	{ 22579200,	96000,		.v = { 20,	147, }, },
-+	{ 22579200,	176400,		.v = { 1,	4, }, },
-+	{ 22579200,	192000,		.v = { 40,	147, }, },
-+	{ 22579200,	352800,		.v = { 1,	2, }, },
-+	{ 22579200,	384000,		.v = { 80,	147, }, },
-+	{ 24576000,	32000,		.v = { 1,	24, }, },
-+	{ 24576000,	44100,		.v = { 147,	2560, }, },
-+	{ 24576000,	48000,		.v = { 1,	16, }, },
-+	{ 24576000,	88200,		.v = { 147,	1280, }, },
-+	{ 24576000,	96000,		.v = { 1,	8, }, },
-+	{ 24576000,	176400,		.v = { 147,	640, }, },
-+	{ 24576000,	192000,		.v = { 1,	4, }, },
-+	{ 24576000,	352800,		.v = { 147,	320, }, },
-+	{ 24576000,	384000,		.v = { 1,	2, }, },
- };
+ 	*same_page = ((vec_end_addr & PAGE_MASK) == page_addr);
+-	if (*same_page)
+-		return true;
+-	else if (IS_ENABLED(CONFIG_KMSAN))
+-		return false;
+-	return (bv->bv_page + bv_end / PAGE_SIZE) == (page + off / PAGE_SIZE);
+-}
+-
+-/**
+- * __bio_try_merge_page - try appending data to an existing bvec.
+- * @bio: destination bio
+- * @page: start page to add
+- * @len: length of the data to add
+- * @off: offset of the data relative to @page
+- * @same_page: return if the segment has been merged inside the same page
+- *
+- * Try to add the data at @page + @off to the last bvec of @bio.  This is a
+- * useful optimisation for file systems with a block size smaller than the
+- * page size.
+- *
+- * Warn if (@len, @off) crosses pages in case that @same_page is true.
+- *
+- * Return %true on success or %false on failure.
+- */
+-static bool __bio_try_merge_page(struct bio *bio, struct page *page,
+-		unsigned int len, unsigned int off, bool *same_page)
+-{
+-	struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++	if (!*same_page) {
++		if (IS_ENABLED(CONFIG_KMSAN))
++			return false;
++		if (bv->bv_page + bv_end / PAGE_SIZE != page + off / PAGE_SIZE)
++			return false;
++	}
  
- /* frm_size = 48 */
- static const struct cs43130_clk_gen cs43130_48_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 147,	100, }, },
--	{ 22579200,	44100,		.v = { 32,	3, }, },
--	{ 22579200,	48000,		.v = { 49,	5, }, },
--	{ 22579200,	88200,		.v = { 16,	3, }, },
--	{ 22579200,	96000,		.v = { 49,	10, }, },
--	{ 22579200,	176400,		.v = { 8,	3, }, },
--	{ 22579200,	192000,		.v = { 49,	20, }, },
--	{ 22579200,	352800,		.v = { 4,	3, }, },
--	{ 22579200,	384000,		.v = { 49,	40, }, },
--	{ 24576000,	32000,		.v = { 16,	1, }, },
--	{ 24576000,	44100,		.v = { 5120,	441, }, },
--	{ 24576000,	48000,		.v = { 32,	3, }, },
--	{ 24576000,	88200,		.v = { 2560,	441, }, },
--	{ 24576000,	96000,		.v = { 16,	3, }, },
--	{ 24576000,	176400,		.v = { 1280,	441, }, },
--	{ 24576000,	192000,		.v = { 8,	3, }, },
--	{ 24576000,	352800,		.v = { 640,	441, }, },
--	{ 24576000,	384000,		.v = { 4,	3, }, },
-+	{ 22579200,	32000,		.v = { 100,	147, }, },
-+	{ 22579200,	44100,		.v = { 3,	32, }, },
-+	{ 22579200,	48000,		.v = { 5,	49, }, },
-+	{ 22579200,	88200,		.v = { 3,	16, }, },
-+	{ 22579200,	96000,		.v = { 10,	49, }, },
-+	{ 22579200,	176400,		.v = { 3,	8, }, },
-+	{ 22579200,	192000,		.v = { 20,	49, }, },
-+	{ 22579200,	352800,		.v = { 3,	4, }, },
-+	{ 22579200,	384000,		.v = { 40,	49, }, },
-+	{ 24576000,	32000,		.v = { 1,	16, }, },
-+	{ 24576000,	44100,		.v = { 441,	5120, }, },
-+	{ 24576000,	48000,		.v = { 3,	32, }, },
-+	{ 24576000,	88200,		.v = { 441,	2560, }, },
-+	{ 24576000,	96000,		.v = { 3,	16, }, },
-+	{ 24576000,	176400,		.v = { 441,	1280, }, },
-+	{ 24576000,	192000,		.v = { 3,	8, }, },
-+	{ 24576000,	352800,		.v = { 441,	640, }, },
-+	{ 24576000,	384000,		.v = { 3,	4, }, },
- };
+-	if (!page_is_mergeable(bv, page, len, off, same_page))
+-		return false;
+ 	bv->bv_len += len;
+-	bio->bi_iter.bi_size += len;
+ 	return true;
+ }
  
- /* frm_size = 64 */
- static const struct cs43130_clk_gen cs43130_64_clk_gen[] = {
--	{ 22579200,	32000,		.v = { 441,	40, }, },
--	{ 22579200,	44100,		.v = { 8,	1, }, },
--	{ 22579200,	48000,		.v = { 147,	20, }, },
--	{ 22579200,	88200,		.v = { 4,	1, }, },
--	{ 22579200,	96000,		.v = { 147,	40, }, },
--	{ 22579200,	176400,		.v = { 2,	1, }, },
--	{ 22579200,	192000,		.v = { 147,	80, }, },
-+	{ 22579200,	32000,		.v = { 40,	441, }, },
-+	{ 22579200,	44100,		.v = { 1,	8, }, },
-+	{ 22579200,	48000,		.v = { 20,	147, }, },
-+	{ 22579200,	88200,		.v = { 1,	4, }, },
-+	{ 22579200,	96000,		.v = { 40,	147, }, },
-+	{ 22579200,	176400,		.v = { 1,	2, }, },
-+	{ 22579200,	192000,		.v = { 80,	147, }, },
- 	{ 22579200,	352800,		.v = { 1,	1, }, },
--	{ 24576000,	32000,		.v = { 12,	1, }, },
--	{ 24576000,	44100,		.v = { 1280,	147, }, },
--	{ 24576000,	48000,		.v = { 8,	1, }, },
--	{ 24576000,	88200,		.v = { 640,	147, }, },
--	{ 24576000,	96000,		.v = { 4,	1, }, },
--	{ 24576000,	176400,		.v = { 320,	147, }, },
--	{ 24576000,	192000,		.v = { 2,	1, }, },
--	{ 24576000,	352800,		.v = { 160,	147, }, },
-+	{ 24576000,	32000,		.v = { 1,	12, }, },
-+	{ 24576000,	44100,		.v = { 147,	1280, }, },
-+	{ 24576000,	48000,		.v = { 1,	8, }, },
-+	{ 24576000,	88200,		.v = { 147,	640, }, },
-+	{ 24576000,	96000,		.v = { 1,	4, }, },
-+	{ 24576000,	176400,		.v = { 147,	320, }, },
-+	{ 24576000,	192000,		.v = { 1,	2, }, },
-+	{ 24576000,	352800,		.v = { 147,	160, }, },
- 	{ 24576000,	384000,		.v = { 1,	1, }, },
- };
+@@ -972,7 +947,7 @@ static bool bio_try_merge_hw_seg(struct request_queue *q, struct bio *bio,
+ 		return false;
+ 	if (bv->bv_len + len > queue_max_segment_size(q))
+ 		return false;
+-	return __bio_try_merge_page(bio, page, len, offset, same_page);
++	return bvec_try_merge_page(bv, page, len, offset, same_page);
+ }
  
+ /**
+@@ -1001,8 +976,11 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+ 		return 0;
+ 
+ 	if (bio->bi_vcnt > 0) {
+-		if (bio_try_merge_hw_seg(q, bio, page, len, offset, same_page))
++		if (bio_try_merge_hw_seg(q, bio, page, len, offset,
++				same_page)) {
++			bio->bi_iter.bi_size += len;
+ 			return len;
++		}
+ 
+ 		/*
+ 		 * If the queue doesn't support SG gaps and adding this segment
+@@ -1125,8 +1103,11 @@ int bio_add_page(struct bio *bio, struct page *page,
+ 		return 0;
+ 
+ 	if (bio->bi_vcnt > 0 &&
+-	    __bio_try_merge_page(bio, page, len, offset, &same_page))
++	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
++				page, len, offset, &same_page)) {
++		bio->bi_iter.bi_size += len;
+ 		return len;
++	}
+ 
+ 	if (bio_full(bio, len))
+ 		return 0;
+@@ -1208,7 +1189,9 @@ static int bio_iov_add_page(struct bio *bio, struct page *page,
+ 		return -EIO;
+ 
+ 	if (bio->bi_vcnt > 0 &&
+-	    __bio_try_merge_page(bio, page, len, offset, &same_page)) {
++	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
++				page, len, offset, &same_page)) {
++		bio->bi_iter.bi_size += len;
+ 		if (same_page)
+ 			bio_release_page(bio, page);
+ 		return 0;
 -- 
 2.40.1
 
