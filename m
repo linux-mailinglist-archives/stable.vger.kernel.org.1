@@ -2,35 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA37579B6CF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ED2879B803
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241040AbjIKWKC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:10:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40910 "EHLO
+        id S1379538AbjIKWom (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242369AbjIKP3I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:08 -0400
+        with ESMTP id S242372AbjIKP3P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C685FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B08C433C7;
-        Mon, 11 Sep 2023 15:29:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A93E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D4FC433CD;
+        Mon, 11 Sep 2023 15:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446144;
-        bh=6oMWxhrb2eS5eANf1mRAKlS9nDPl2F7DHcYgXkoPJLE=;
+        s=korg; t=1694446150;
+        bh=mLi0Uu84ne3seEo7ESlfczfWxXikSNQ5gb5bUL/CuEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hz0hdKgK3LLo6VaepL/4xXIHyNbtdg7W03tLbKn9WnK6CpyLlmZdopyxOWRwLwjpL
-         TB+n0pvQ5rkERJIbcqNy7M+dhvPVibBXXlC9XPO0o1g/mJUpWqd16OwbwABl5b29C0
-         2EdiWwwy9skZW4D5kbZuaCvl26A6TVP4/rdJVAbM=
+        b=Iv/QJcHTtkpZGZ/2bjqqELg0NRlxAHXAOJlEzkZT54+hpvZXJI3KroepFUEGxKoe/
+         yhf8MFPd/pErVWCjvAgEcW93yqWenUzzhGE7kIKUd9xEXm5DVal1FNI8qbkDpu7uRU
+         in9YrPsSonmuGExTQ3DIugcXkgGyr54Sg1DzBWDs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Xiao Ni <xni@redhat.com>, Song Liu <song@kernel.org>
-Subject: [PATCH 6.1 597/600] md: fix regression for null-ptr-deference in __md_stop()
-Date:   Mon, 11 Sep 2023 15:50:30 +0200
-Message-ID: <20230911134651.280884388@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Ivan Bornyakov <i.bornyakov@metrotek.ru>,
+        Rob Herring <robh@kernel.org>, Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 599/600] treewide: Fix probing of devices in DT overlays
+Date:   Mon, 11 Sep 2023 15:50:32 +0200
+Message-ID: <20230911134651.343027257@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -53,108 +58,125 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 433279beba1d4872da10b7b60a539e0cb828b32b upstream.
+commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924 upstream.
 
-Commit 3e453522593d ("md: Free resources in __md_stop") tried to fix
-null-ptr-deference for 'active_io' by moving percpu_ref_exit() to
-__md_stop(), however, the commit also moving 'writes_pending' to
-__md_stop(), and this will cause mdadm tests broken:
+When loading a DT overlay that creates a device, the device is not
+probed, unless the DT overlay is unloaded and reloaded again.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000038
-Oops: 0000 [#1] PREEMPT SMP
-CPU: 15 PID: 17830 Comm: mdadm Not tainted 6.3.0-rc3-next-20230324-00009-g520d37
-RIP: 0010:free_percpu+0x465/0x670
-Call Trace:
- <TASK>
- __percpu_ref_exit+0x48/0x70
- percpu_ref_exit+0x1a/0x90
- __md_stop+0xe9/0x170
- do_md_stop+0x1e1/0x7b0
- md_ioctl+0x90c/0x1aa0
- blkdev_ioctl+0x19b/0x400
- vfs_ioctl+0x20/0x50
- __x64_sys_ioctl+0xba/0xe0
- do_syscall_64+0x6c/0xe0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+After the recent refactoring to improve fw_devlink, it no longer depends
+on the "compatible" property to identify which device tree nodes will
+become struct devices.   fw_devlink now picks up dangling consumers
+(consumers pointing to descendent device tree nodes of a device that
+aren't converted to child devices) when a device is successfully bound
+to a driver.  See __fw_devlink_pickup_dangling_consumers().
 
-And the problem can be reporduced 100% by following test:
+However, during DT overlay, a device's device tree node can have
+sub-nodes added/removed without unbinding/rebinding the driver.  This
+difference in behavior between the normal device instantiation and
+probing flow vs. the DT overlay flow has a bunch of implications that
+are pointed out elsewhere[1].  One of them is that the fw_devlink logic
+to pick up dangling consumers is never exercised.
 
-mdadm -CR /dev/md0 -l1 -n1 /dev/sda --force
-echo inactive > /sys/block/md0/md/array_state
-echo read-auto  > /sys/block/md0/md/array_state
-echo inactive > /sys/block/md0/md/array_state
+This patch solves the fw_devlink issue by marking all DT nodes added by
+DT overlays with FWNODE_FLAG_NOT_DEVICE (fwnode that won't become
+device), and by clearing the flag when a struct device is actually
+created for the DT node.  This way, fw_devlink knows not to have
+consumers waiting on these newly added DT nodes, and to propagate the
+dependency to an ancestor DT node that has the corresponding struct
+device.
 
-Root cause:
+Based on a patch by Saravana Kannan, which covered only platform and spi
+devices.
 
-// start raid
-raid1_run
- mddev_init_writes_pending
-  percpu_ref_init
+[1] https://lore.kernel.org/r/CAGETcx_bkuFaLCiPrAWCPQz+w79ccDp6=9e881qmK=vx3hBMyg@mail.gmail.com
 
-// inactive raid
-array_state_store
- do_md_stop
-  __md_stop
-   percpu_ref_exit
-
-// start raid again
-array_state_store
- do_md_run
-  raid1_run
-   mddev_init_writes_pending
-    if (mddev->writes_pending.percpu_count_ptr)
-    // won't reinit
-
-// inactive raid again
-...
-percpu_ref_exit
--> null-ptr-deference
-
-Before the commit, 'writes_pending' is exited when mddev is freed, and
-it's safe to restart raid because mddev_init_writes_pending() already make
-sure that 'writes_pending' will only be initialized once.
-
-Fix the prblem by moving 'writes_pending' back, it's a litter hard to find
-the relationship between alloc memory and free memory, however, code
-changes is much less and we lived with this for a long time already.
-
-Fixes: 3e453522593d ("md: Free resources in __md_stop")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230328094400.1448955-1-yukuai1@huaweicloud.com
+Fixes: 4a032827daa89350 ("of: property: Simplify of_link_to_phandle()")
+Link: https://lore.kernel.org/r/CAGETcx_+rhHvaC_HJXGrr5_WAd2+k5f=rWYnkCZ6z5bGX-wj4w@mail.gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Mark Brown <broonie@kernel.org>
+Acked-by: Wolfram Sang <wsa@kernel.org> # for I2C
+Acked-by: Shawn Guo <shawnguo@kernel.org>
+Acked-by: Saravana Kannan <saravanak@google.com>
+Tested-by: Ivan Bornyakov <i.bornyakov@metrotek.ru>
+Link: https://lore.kernel.org/r/e1fa546682ea4c8474ff997ab6244c5e11b6f8bc.1680182615.git.geert+renesas@glider.be
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bus/imx-weim.c    |    6 ++++++
+ drivers/i2c/i2c-core-of.c |    5 +++++
+ drivers/of/dynamic.c      |    1 +
+ drivers/of/platform.c     |    5 +++++
+ drivers/spi/spi.c         |    5 +++++
+ 5 files changed, 22 insertions(+)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -6278,7 +6278,6 @@ static void __md_stop(struct mddev *mdde
- 	module_put(pers->owner);
- 	clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+--- a/drivers/bus/imx-weim.c
++++ b/drivers/bus/imx-weim.c
+@@ -331,6 +331,12 @@ static int of_weim_notify(struct notifie
+ 				 "Failed to setup timing for '%pOF'\n", rd->dn);
  
--	percpu_ref_exit(&mddev->writes_pending);
- 	percpu_ref_exit(&mddev->active_io);
- 	bioset_exit(&mddev->bio_set);
- 	bioset_exit(&mddev->sync_set);
-@@ -6293,6 +6292,7 @@ void md_stop(struct mddev *mddev)
- 	 */
- 	__md_stop_writes(mddev);
- 	__md_stop(mddev);
-+	percpu_ref_exit(&mddev->writes_pending);
+ 		if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
++			/*
++			 * Clear the flag before adding the device so that
++			 * fw_devlink doesn't skip adding consumers to this
++			 * device.
++			 */
++			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
+ 				dev_err(&pdev->dev,
+ 					"Failed to create child device '%pOF'\n",
+--- a/drivers/i2c/i2c-core-of.c
++++ b/drivers/i2c/i2c-core-of.c
+@@ -244,6 +244,11 @@ static int of_i2c_notify(struct notifier
+ 			return NOTIFY_OK;
+ 		}
+ 
++		/*
++		 * Clear the flag before adding the device so that fw_devlink
++		 * doesn't skip adding consumers to this device.
++		 */
++		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		client = of_i2c_register_device(adap, rd->dn);
+ 		if (IS_ERR(client)) {
+ 			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -225,6 +225,7 @@ static void __of_attach_node(struct devi
+ 	np->sibling = np->parent->child;
+ 	np->parent->child = np;
+ 	of_node_clear_flag(np, OF_DETACHED);
++	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
  }
  
- EXPORT_SYMBOL_GPL(md_stop);
-@@ -7859,6 +7859,7 @@ static void md_free_disk(struct gendisk
- {
- 	struct mddev *mddev = disk->private_data;
+ /**
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -741,6 +741,11 @@ static int of_platform_notify(struct not
+ 		if (of_node_check_flag(rd->dn, OF_POPULATED))
+ 			return NOTIFY_OK;
  
-+	percpu_ref_exit(&mddev->writes_pending);
- 	mddev_free(mddev);
- }
++		/*
++		 * Clear the flag before adding the device so that fw_devlink
++		 * doesn't skip adding consumers to this device.
++		 */
++		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		/* pdev_parent may be NULL when no bus platform device */
+ 		pdev_parent = of_find_device_by_node(rd->dn->parent);
+ 		pdev = of_platform_device_create(rd->dn, NULL,
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4370,6 +4370,11 @@ static int of_spi_notify(struct notifier
+ 			return NOTIFY_OK;
+ 		}
+ 
++		/*
++		 * Clear the flag before adding the device so that fw_devlink
++		 * doesn't skip adding consumers to this device.
++		 */
++		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		spi = of_register_spi_device(ctlr, rd->dn);
+ 		put_device(&ctlr->dev);
  
 
 
