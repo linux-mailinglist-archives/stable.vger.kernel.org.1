@@ -2,38 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A8E79ADD0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1191779B43B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242904AbjIKVHr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36670 "EHLO
+        id S1348499AbjIKV1G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242197AbjIKPYp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:45 -0400
+        with ESMTP id S239673AbjIKO0E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C1AD8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AABC433C7;
-        Mon, 11 Sep 2023 15:24:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2638FDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675FAC433C9;
+        Mon, 11 Sep 2023 14:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445880;
-        bh=wtVWWGlfVJlnxu6wL1TATBu6dcdGnvqxCCtgpOBa8uk=;
+        s=korg; t=1694442359;
+        bh=U+rdpYITGSATQnSbvs7W8O7fAgVegDAVV8V7I8IEOLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JWDIysuevMiBE2wbofQPtQirxr7lIieHIu0bOmPJWy9GPt4dviX2ZkAW5aFnQ+5R5
-         OkNIEm8VUDhyL2TdX4X2fGJsJkHURlVw1MIcN1c+BKj8xQEPxODu2HlgM7Qq1y7eLt
-         KSNEZYMZwe6J4sh+XuQaWunOZuLEf6J2CS/uwWUQ=
+        b=MgsDQ8fOHFj+WAK8KdIzeDCGoXPXKDa6fyAcs9u3GaE4Aibx0/KiKRvIYx6CMUpVq
+         TOiqRwRzAFKAseRZ1lFTugRB0kc5WLOum0LXbaQJEIbn7qezt8PHDsBpTVFDduD31b
+         hCghmgbZksR9cLgy+G7noVJywdxu/m7uaBqYXx/I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 504/600] phy/rockchip: inno-hdmi: do not power on rk3328 post pll on reg write
+        patches@lists.linux.dev,
+        Damian Tometzki <dtometzki@fedoraproject.org>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Daniel Verkamp <dverkamp@chromium.org>,
+        Jeff Xu <jeffxu@google.com>, Kees Cook <keescook@chromium.org>,
+        Shuah Khan <shuah@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 738/739] revert "memfd: improve userspace warnings for missing exec-related flags".
 Date:   Mon, 11 Sep 2023 15:48:57 +0200
-Message-ID: <20230911134648.498743646@linuxfoundation.org>
+Message-ID: <20230911134711.671046183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,59 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-[ Upstream commit 19a1d46bd699940a496d3b0d4e142ef99834988c ]
+commit 2562d67b1bdf91c7395b0225d60fdeb26b4bc5a0 upstream.
 
-inno_write is used to configure 0xaa reg, that also hold the
-POST_PLL_POWER_DOWN bit.
-When POST_PLL_REFCLK_SEL_TMDS is configured the power down bit is not
-taken into consideration.
+This warning is telling userspace developers to pass MFD_EXEC and
+MFD_NOEXEC_SEAL to memfd_create().  Commit 434ed3350f57 ("memfd: improve
+userspace warnings for missing exec-related flags") made the warning more
+frequent and visible in the hope that this would accelerate the fixing of
+errant userspace.
 
-Fix this by keeping the power down bit until configuration is complete.
-Also reorder the reg write order for consistency.
+But the overall effect is to generate far too much dmesg noise.
 
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-5-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 434ed3350f57 ("memfd: improve userspace warnings for missing exec-related flags")
+Reported-by: Damian Tometzki <dtometzki@fedoraproject.org>
+Closes: https://lkml.kernel.org/r/ZPFzCSIgZ4QuHsSC@fedora.fritz.box
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Daniel Verkamp <dverkamp@chromium.org>
+Cc: Jeff Xu <jeffxu@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/memfd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index 15a008a1ac7b9..2556caf475c0c 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -1023,9 +1023,10 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -316,7 +316,7 @@ SYSCALL_DEFINE2(memfd_create,
+ 		return -EINVAL;
  
- 	inno_write(inno, 0xac, RK3328_POST_PLL_FB_DIV_7_0(cfg->fbdiv));
- 	if (cfg->postdiv == 1) {
--		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS);
- 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
- 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
-+		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS |
-+			   RK3328_POST_PLL_POWER_DOWN);
- 	} else {
- 		v = (cfg->postdiv / 2) - 1;
- 		v &= RK3328_POST_PLL_POST_DIV_MASK;
-@@ -1033,7 +1034,8 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
- 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
- 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
- 		inno_write(inno, 0xaa, RK3328_POST_PLL_POST_DIV_ENABLE |
--			   RK3328_POST_PLL_REFCLK_SEL_TMDS);
-+			   RK3328_POST_PLL_REFCLK_SEL_TMDS |
-+			   RK3328_POST_PLL_POWER_DOWN);
+ 	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
+-		pr_info_ratelimited(
++		pr_warn_once(
+ 			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
+ 			current->comm, task_pid_nr(current));
  	}
- 
- 	for (v = 0; v < 14; v++)
--- 
-2.40.1
-
 
 
