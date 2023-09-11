@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D988B79B53D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE5C79B39B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377624AbjIKW1r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:27:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
+        id S242516AbjIKVHg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241507AbjIKPKO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:14 -0400
+        with ESMTP id S240412AbjIKOne (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5082FFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FC2C433CA;
-        Mon, 11 Sep 2023 15:10:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF2712A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7AFC433C8;
+        Mon, 11 Sep 2023 14:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445010;
-        bh=yBx3Tk0P7SqcCLXbhOp6LoKl1vGQNNR77cDtkOApZaU=;
+        s=korg; t=1694443410;
+        bh=CHLsQaCZh0X//MEO2TjILqpkddfmSx7LgS//xYKgV3A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SFxV5mDrR1HHj0AyhKLixdKndXR4c3UhKnVI+iYsyWZZGdDIfevVVLTEKWSYDBD5Q
-         Sec1NJr12sZy8vQgkC6qnGHE7DEAZ997NnEY0K9aRXA08PQJ+PZF7h6X9IhfKjFujW
-         VJG355rZq8J8VSJsNtSyab2jBmxYqz92broVZqMY=
+        b=1/ts89lHK9tEZ6K0vH0Q4zYTfRVDNakN6Mq98E+rt/Mot5TdgLnLcNG2rguRmt9cF
+         1irh4fPJV8kYBFzxMLiDcsnoXX8VssNZWsUt91t0cR2VCIgrNCGkp5dQYctBu1qywY
+         NPekp2vxCsMo++L1vVFWvW2w+ffTJtYnMJUXHhfY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Paul Moore <paul@paul-moore.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 194/600] mac80211: make ieee80211_tx_info padding explicit
+Subject: [PATCH 6.4 368/737] audit: fix possible soft lockup in __audit_inode_child()
 Date:   Mon, 11 Sep 2023 15:43:47 +0200
-Message-ID: <20230911134639.344103473@linuxfoundation.org>
+Message-ID: <20230911134700.823312504@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit a7a2ef0c4b3efbd7d6f3fabd87dbbc0b3f2de5af ]
+[ Upstream commit b59bc6e37237e37eadf50cd5de369e913f524463 ]
 
-While looking at a bug, I got rather confused by the layout of the
-'status' field in ieee80211_tx_info. Apparently, the intention is that
-status_driver_data[] is used for driver specific data, and fills up the
-size of the union to 40 bytes, just like the other ones.
+Tracefs or debugfs maybe cause hundreds to thousands of PATH records,
+too many PATH records maybe cause soft lockup.
 
-This is indeed what actually happens, but only because of the
-combination of two mistakes:
+For example:
+  1. CONFIG_KASAN=y && CONFIG_PREEMPTION=n
+  2. auditctl -a exit,always -S open -k key
+  3. sysctl -w kernel.watchdog_thresh=5
+  4. mkdir /sys/kernel/debug/tracing/instances/test
 
- - "void *status_driver_data[18 / sizeof(void *)];" is intended
-   to be 18 bytes long but is actually two bytes shorter because of
-   rounding-down in the division, to a multiple of the pointer
-   size (4 bytes or 8 bytes).
+There may be a soft lockup as follows:
+  watchdog: BUG: soft lockup - CPU#45 stuck for 7s! [mkdir:15498]
+  Kernel panic - not syncing: softlockup: hung tasks
+  Call trace:
+   dump_backtrace+0x0/0x30c
+   show_stack+0x20/0x30
+   dump_stack+0x11c/0x174
+   panic+0x27c/0x494
+   watchdog_timer_fn+0x2bc/0x390
+   __run_hrtimer+0x148/0x4fc
+   __hrtimer_run_queues+0x154/0x210
+   hrtimer_interrupt+0x2c4/0x760
+   arch_timer_handler_phys+0x48/0x60
+   handle_percpu_devid_irq+0xe0/0x340
+   __handle_domain_irq+0xbc/0x130
+   gic_handle_irq+0x78/0x460
+   el1_irq+0xb8/0x140
+   __audit_inode_child+0x240/0x7bc
+   tracefs_create_file+0x1b8/0x2a0
+   trace_create_file+0x18/0x50
+   event_create_dir+0x204/0x30c
+   __trace_add_new_event+0xac/0x100
+   event_trace_add_tracer+0xa0/0x130
+   trace_array_create_dir+0x60/0x140
+   trace_array_create+0x1e0/0x370
+   instance_mkdir+0x90/0xd0
+   tracefs_syscall_mkdir+0x68/0xa0
+   vfs_mkdir+0x21c/0x34c
+   do_mkdirat+0x1b4/0x1d4
+   __arm64_sys_mkdirat+0x4c/0x60
+   el0_svc_common.constprop.0+0xa8/0x240
+   do_el0_svc+0x8c/0xc0
+   el0_svc+0x20/0x30
+   el0_sync_handler+0xb0/0xb4
+   el0_sync+0x160/0x180
 
- - The other fields combined are intended to be 22 bytes long, but
-   are actually 24 bytes because of padding in front of the
-   unaligned tx_time member, and in front of the pointer array.
+Therefore, we add cond_resched() to __audit_inode_child() to fix it.
 
-The two mistakes cancel out. so the size ends up fine, but it seems
-more helpful to make this explicit, by having a multiple of 8 bytes
-in the size calculation and explicitly describing the padding.
-
-Fixes: ea5907db2a9cc ("mac80211: fix struct ieee80211_tx_info size")
-Fixes: 02219b3abca59 ("mac80211: add WMM admission control support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230623152443.2296825-2-arnd@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 5195d8e217a7 ("audit: dynamically allocate audit_names when not enough space is in the names array")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/auditsc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 8a338c33118f9..43173204d6d5e 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1141,9 +1141,11 @@ struct ieee80211_tx_info {
- 			u8 ampdu_ack_len;
- 			u8 ampdu_len;
- 			u8 antenna;
-+			u8 pad;
- 			u16 tx_time;
- 			u8 flags;
--			void *status_driver_data[18 / sizeof(void *)];
-+			u8 pad2;
-+			void *status_driver_data[16 / sizeof(void *)];
- 		} status;
- 		struct {
- 			struct ieee80211_tx_rate driver_rates[
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index addeed3df15d3..8dfd581cd5543 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2456,6 +2456,8 @@ void __audit_inode_child(struct inode *parent,
+ 		}
+ 	}
+ 
++	cond_resched();
++
+ 	/* is there a matching child entry? */
+ 	list_for_each_entry(n, &context->names_list, list) {
+ 		/* can only match entries that have a name */
 -- 
 2.40.1
 
