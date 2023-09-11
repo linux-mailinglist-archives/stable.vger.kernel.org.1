@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB3C79B4C9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA3579B17A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238650AbjIKVGc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34036 "EHLO
+        id S1349233AbjIKVcy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240435AbjIKOoI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:08 -0400
+        with ESMTP id S239104AbjIKOLz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA12A12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B485C433C8;
-        Mon, 11 Sep 2023 14:44:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2E6CD
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094EAC433C7;
+        Mon, 11 Sep 2023 14:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443444;
-        bh=CN1Md9uniynNFvl8vxLJ5LCUB1DJl0PfgWQh3XsGrRY=;
+        s=korg; t=1694441510;
+        bh=4vJmPdIdWiUixAiuzq3/AkBWaaRAcN2qjaRlxGXVIQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MJbsqORZHVqbCb14t/16M8yNv3QkqQyCiUR+4BLvT9hp3uFOiaTJ1/j7YhKIHew2A
-         9vBDFxlmm7ofNEZs1m6I/HlC6cZ1j8gLyYm8rBRDBSc+sK4yQr5hI+NNUvv+jFYjDc
-         NUHkgBTbM6VSH477aKExgTaDxE4lAW6SlWQHWfSE=
+        b=sQ6oJLU9seQF1y/2B+9+f+EEhNichmG6JqNGHFTuqPvqthp6iuN63iPC5bUBL8BOD
+         AbOv+QinJJn56YdGhjUckMaegLbHyfK9lIPTtPWVeJX0okp0Fu3INGAvNxptCyT+/P
+         NojoFugNQQk77hm+//LfQqGc9v4/l9IvuiUIs0L0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthias Brugger <matthias.bgg@gmail.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        CK Hu <ck.hu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev,
+        Nageswara R Sastry <rnsastry@linux.ibm.com>,
+        Russell Currey <ruscur@russell.cc>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 379/737] drm/mediatek: Fix potential memory leak if vmap() fail
+Subject: [PATCH 6.5 439/739] powerpc/iommu: Fix notifiers being shared by PCI and VIO buses
 Date:   Mon, 11 Sep 2023 15:43:58 +0200
-Message-ID: <20230911134701.159114401@linuxfoundation.org>
+Message-ID: <20230911134703.430859073@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,47 +53,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Russell Currey <ruscur@russell.cc>
 
-[ Upstream commit 379091e0f6d179d1a084c65de90fa44583b14a70 ]
+[ Upstream commit c37b6908f7b2bd24dcaaf14a180e28c9132b9c58 ]
 
-Also return -ENOMEM if such a failure happens, the implement should take
-responsibility for the error handling.
+fail_iommu_setup() registers the fail_iommu_bus_notifier struct to both
+PCI and VIO buses.  struct notifier_block is a linked list node, so this
+causes any notifiers later registered to either bus type to also be
+registered to the other since they share the same node.
 
-Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap function")
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230706134000.130098-1-suijingfeng@loongson.cn/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+This causes issues in (at least) the vgaarb code, which registers a
+notifier for PCI buses.  pci_notify() ends up being called on a vio
+device, converted with to_pci_dev() even though it's not a PCI device,
+and finally makes a bad access in vga_arbiter_add_pci_device() as
+discovered with KASAN:
+
+ BUG: KASAN: slab-out-of-bounds in vga_arbiter_add_pci_device+0x60/0xe00
+ Read of size 4 at addr c000000264c26fdc by task swapper/0/1
+
+ Call Trace:
+   dump_stack_lvl+0x1bc/0x2b8 (unreliable)
+   print_report+0x3f4/0xc60
+   kasan_report+0x244/0x698
+   __asan_load4+0xe8/0x250
+   vga_arbiter_add_pci_device+0x60/0xe00
+   pci_notify+0x88/0x444
+   notifier_call_chain+0x104/0x320
+   blocking_notifier_call_chain+0xa0/0x140
+   device_add+0xac8/0x1d30
+   device_register+0x58/0x80
+   vio_register_device_node+0x9ac/0xce0
+   vio_bus_scan_register_devices+0xc4/0x13c
+   __machine_initcall_pseries_vio_device_init+0x94/0xf0
+   do_one_initcall+0x12c/0xaa8
+   kernel_init_freeable+0xa48/0xba8
+   kernel_init+0x64/0x400
+   ret_from_kernel_thread+0x5c/0x64
+
+Fix this by creating separate notifier_block structs for each bus type.
+
+Fixes: d6b9a81b2a45 ("powerpc: IOMMU fault injection")
+Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+[mpe: Add #ifdef to fix CONFIG_IBMVIO=n build]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230322035322.328709-1-ruscur@russell.cc
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/iommu.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index a25b28d3ee902..9f364df52478d 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -247,7 +247,11 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index c52449ae6936a..14251bc5219eb 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -172,17 +172,28 @@ static int fail_iommu_bus_notify(struct notifier_block *nb,
+ 	return 0;
+ }
  
- 	mtk_gem->kvaddr = vmap(mtk_gem->pages, npages, VM_MAP,
- 			       pgprot_writecombine(PAGE_KERNEL));
--
-+	if (!mtk_gem->kvaddr) {
-+		kfree(sgt);
-+		kfree(mtk_gem->pages);
-+		return -ENOMEM;
-+	}
- out:
- 	kfree(sgt);
- 	iosys_map_set_vaddr(map, mtk_gem->kvaddr);
+-static struct notifier_block fail_iommu_bus_notifier = {
++/*
++ * PCI and VIO buses need separate notifier_block structs, since they're linked
++ * list nodes.  Sharing a notifier_block would mean that any notifiers later
++ * registered for PCI buses would also get called by VIO buses and vice versa.
++ */
++static struct notifier_block fail_iommu_pci_bus_notifier = {
+ 	.notifier_call = fail_iommu_bus_notify
+ };
+ 
++#ifdef CONFIG_IBMVIO
++static struct notifier_block fail_iommu_vio_bus_notifier = {
++	.notifier_call = fail_iommu_bus_notify
++};
++#endif
++
+ static int __init fail_iommu_setup(void)
+ {
+ #ifdef CONFIG_PCI
+-	bus_register_notifier(&pci_bus_type, &fail_iommu_bus_notifier);
++	bus_register_notifier(&pci_bus_type, &fail_iommu_pci_bus_notifier);
+ #endif
+ #ifdef CONFIG_IBMVIO
+-	bus_register_notifier(&vio_bus_type, &fail_iommu_bus_notifier);
++	bus_register_notifier(&vio_bus_type, &fail_iommu_vio_bus_notifier);
+ #endif
+ 
+ 	return 0;
 -- 
 2.40.1
 
