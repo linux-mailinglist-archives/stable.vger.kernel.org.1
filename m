@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF99A79ACAE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84ABF79AF56
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238655AbjIKWY0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49268 "EHLO
+        id S238867AbjIKVUx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240232AbjIKOje (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:34 -0400
+        with ESMTP id S238972AbjIKOIk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5561FF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9711CC433C7;
-        Mon, 11 Sep 2023 14:39:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC35CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003FEC433C7;
+        Mon, 11 Sep 2023 14:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443170;
-        bh=GF1K4+HSz/23xbxGUjE5umRLIXq2RCmeNe2NBYfV/Mo=;
+        s=korg; t=1694441314;
+        bh=N3GPBUEBj7SfhhcTAqnWlZ6igchrr4/X+PBnba5eN0s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a7L7WAjyth7Chws60YzJVg/tYalp5zKZPdkkfOKXu742ZB+yb0HMsZJLyZJQCGcCm
-         WlUO9X80i6x4StFZNI/ZugebJh+qwlPT3hYDtbHi432vx00JdOSJQ7r7WqML57MQH3
-         6qnAQ9HlI92sGKRnTIfGrriKwMxnxPT6zkCPiM+I=
+        b=n3bPT/xhhsvw2k+nQwKl+7ueDoVinOV4toakdnT2l73bbhELtAcQa9kS3IAWXK4oo
+         VbAb7v/CtoPboABNYwwYxQK0sup5Iasv2UZjx8Jrf2cKMltKOAVUm22KVdp7Tz8p3h
+         vbnpjYXHj1EMB7uZAB1mlhHbcNFhg+4S1Iu0QYss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        kernel test robot <lkp@intel.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 283/737] arm64: dts: qcom: sm8250: correct dynamic power coefficients
+Subject: [PATCH 6.5 343/739] drm/mediatek: Fix void-pointer-to-enum-cast warning
 Date:   Mon, 11 Sep 2023 15:42:22 +0200
-Message-ID: <20230911134658.474477581@linuxfoundation.org>
+Message-ID: <20230911134700.691783293@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,94 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 775a5283c25d160b2a1359018c447bc518096547 ]
+[ Upstream commit 89cba955f879b1c6a9a71f67c8fb92ea8f5dfdc4 ]
 
-sm8250 faces the same problem with its Energy Model as sdm845. The energy
-cost of LITTLE cores is reported to be higher than medium or big cores
+1. Fix build warning message in mtk_disp_ovl_adaptor.c
+>> drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c:415:10:
+  warning: cast to smaller integer type 'enum mtk_ovl_adaptor_comp_type'
+  from 'const void *' [-Wvoid-pointer-to-enum-cast]
 
-EM computes the energy with formula:
+  type = (enum mtk_ovl_adaptor_comp_type)of_id->data;
 
-energy = OPP's cost / maximum cpu capacity * utilization
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         1 warning generated.
 
-On v6.4-rc6 we have:
-max capacity of CPU0 = 284
-capacity of CPU0's OPP(1612800 Hz) = 253
-cost of CPU0's OPP(1612800 Hz) = 191704
+2. Also fix the same warning message in mtk_drm_drv.c
+>> drivers/gpu/drm/mediatek/mtk_drm_drv.c:832:15:
+   warning: cast to smaller integer type 'enum mtk_ddp_comp_type'
+   from 'const void *' [-Wvoid-pointer-to-enum-cast]
 
-max capacity of CPU4 = 871
-capacity of CPU4's OPP(710400 Hz) = 255
-cost of CPU4's OPP(710400 Hz) = 343217
+   comp_type = (enum mtk_ddp_comp_type)of_id->data;
 
-Both OPPs have almost the same compute capacity but the estimated energy
-per unit of utilization will be estimated to:
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               1 warning generated.
 
-energy CPU0 = 191704 / 284 * 1 = 675
-energy CPU4 = 343217 / 871 * 1 = 394
-
-EM estimates that little CPU0 will consume 71% more than medium CPU4 for
-the same compute capacity. According to [1], little consumes 25% less than
-medium core for Coremark benchmark at those OPPs for the same duration.
-
-Set the dynamic-power-coefficient of CPU0-3 to 105 to fix the energy model
-for little CPUs.
-
-[1] https://github.com/kdrag0n/freqbench/tree/master/results/sm8250/k30s
-
-Fixes: 6aabed5526ee ("arm64: dts: qcom: sm8250: Add CPU capacities and energy model")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20230615154852.130076-1-vincent.guittot@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202305042054.ZtWME9OU-lkp@intel.com/
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230621075421.1982-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 2 +-
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 7bea916900e29..4b0835109b01e 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -100,7 +100,7 @@ CPU0: cpu@0 {
- 			clocks = <&cpufreq_hw 0>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <448>;
--			dynamic-power-coefficient = <205>;
-+			dynamic-power-coefficient = <105>;
- 			next-level-cache = <&L2_0>;
- 			power-domains = <&CPU_PD0>;
- 			power-domain-names = "psci";
-@@ -131,7 +131,7 @@ CPU1: cpu@100 {
- 			clocks = <&cpufreq_hw 0>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <448>;
--			dynamic-power-coefficient = <205>;
-+			dynamic-power-coefficient = <105>;
- 			next-level-cache = <&L2_100>;
- 			power-domains = <&CPU_PD1>;
- 			power-domain-names = "psci";
-@@ -156,7 +156,7 @@ CPU2: cpu@200 {
- 			clocks = <&cpufreq_hw 0>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <448>;
--			dynamic-power-coefficient = <205>;
-+			dynamic-power-coefficient = <105>;
- 			next-level-cache = <&L2_200>;
- 			power-domains = <&CPU_PD2>;
- 			power-domain-names = "psci";
-@@ -181,7 +181,7 @@ CPU3: cpu@300 {
- 			clocks = <&cpufreq_hw 0>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <448>;
--			dynamic-power-coefficient = <205>;
-+			dynamic-power-coefficient = <105>;
- 			next-level-cache = <&L2_300>;
- 			power-domains = <&CPU_PD3>;
- 			power-domain-names = "psci";
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+index c0a38f5217eee..f2f6a5c01a6d2 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+@@ -426,7 +426,7 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
+ 			continue;
+ 		}
+ 
+-		type = (enum mtk_ovl_adaptor_comp_type)of_id->data;
++		type = (enum mtk_ovl_adaptor_comp_type)(uintptr_t)of_id->data;
+ 		id = ovl_adaptor_comp_get_id(dev, node, type);
+ 		if (id < 0) {
+ 			dev_warn(dev, "Skipping unknown component %pOF\n",
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index fc217e0acd45d..30d10f21562f4 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -832,7 +832,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
+ 			continue;
+ 		}
+ 
+-		comp_type = (enum mtk_ddp_comp_type)of_id->data;
++		comp_type = (enum mtk_ddp_comp_type)(uintptr_t)of_id->data;
+ 
+ 		if (comp_type == MTK_DISP_MUTEX) {
+ 			int id;
 -- 
 2.40.1
 
