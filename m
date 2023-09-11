@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1570579AEBB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B10679B0CB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348552AbjIKV1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41096 "EHLO
+        id S1348975AbjIKVcC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238718AbjIKODd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:33 -0400
+        with ESMTP id S240148AbjIKOhu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90155CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0ECC433C9;
-        Mon, 11 Sep 2023 14:03:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F5DF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5E6C433C7;
+        Mon, 11 Sep 2023 14:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441009;
-        bh=j5r23vyFoahWPtJBp2HtwAd3GdslrbFEH+evg+6jg8s=;
+        s=korg; t=1694443065;
+        bh=8lA31x8XKI6F5gNAdU0Cb9eZQKsj1VHA02fri5jwt84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z2cmpgFOrTteMBoZl4DeT/FSpqQcu3HUSIblbFHzAH9EtjNqrEaflmqKXRPG6zo2a
-         i0WWLXfKsqPV2qIfh0BzMJuZ1R/uciWti2+1bpcJ3S3Uc3bCpFZBhUPHh2SBtVRWGB
-         KRpXK6sZG2wvCiPgJxWnUwxonaLpJ1+E/R+CxN9Q=
+        b=xCQmenIp/pjlPqG2pNtgPOsPYKmH7/4KQ0bTm0IOL2bDhkMt5Uvfx4s3oBDI9UdDH
+         MeZpbGT4fQWW0sdzjPcEuE9ytG5v5FNxJXfRk4gTRU5Scus//jxvX2s5FN3CjNaogp
+         HDVXtaL5uhb+J7FIUTLpL0u8uyPW5nQu21xDkK6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>, Robert Foss <rfoss@kernel.org>,
+        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 264/739] drm/bridge: anx7625: Use common macros for DP power sequencing commands
-Date:   Mon, 11 Sep 2023 15:41:03 +0200
-Message-ID: <20230911134658.514115413@linuxfoundation.org>
+Subject: [PATCH 6.4 206/737] Bluetooth: hci_event: drop only unbound CIS if Set CIG Parameters fails
+Date:   Mon, 11 Sep 2023 15:41:05 +0200
+Message-ID: <20230911134656.351107644@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,53 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 2ba776f903cb7157e80b5f314fb0b4faf6ea6958 ]
+[ Upstream commit 66dee21524d9ac6461ec3052652b7bc0603ee0c5 ]
 
-The DRM DP code has macros for the DP power sequencing commands. Use
-them in the anx7625 driver instead of raw numbers.
+When user tries to connect a new CIS when its CIG is not configurable,
+that connection shall fail, but pre-existing connections shall not be
+affected.  However, currently hci_cc_le_set_cig_params deletes all CIS
+of the CIG on error so it doesn't work, even though controller shall not
+change CIG/CIS configuration if the command fails.
 
-Fixes: 548b512e144f ("drm/bridge: anx7625: send DPCD command to downstream")
-Fixes: 27f26359de9b ("drm/bridge: anx7625: Set downstream sink into normal status")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230710090929.1873646-1-wenst@chromium.org
+Fix by failing on command error only the connections that are not yet
+bound, so that we keep the previous CIS configuration like the
+controller does.
+
+Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_event.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 8b985efdc086b..9db3784cb554f 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -931,8 +931,8 @@ static void anx7625_dp_start(struct anx7625_data *ctx)
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 22fb9f9da866b..866d2cd43bf78 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3803,6 +3803,22 @@ static u8 hci_cc_le_read_buffer_size_v2(struct hci_dev *hdev, void *data,
+ 	return rp->status;
+ }
  
- 	dev_dbg(dev, "set downstream sink into normal\n");
- 	/* Downstream sink enter into normal mode */
--	data = 1;
--	ret = anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, 0x000600, 1, &data);
-+	data = DP_SET_POWER_D0;
-+	ret = anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, DP_SET_POWER, 1, &data);
- 	if (ret < 0)
- 		dev_err(dev, "IO error : set sink into normal mode fail\n");
++static void hci_unbound_cis_failed(struct hci_dev *hdev, u8 cig, u8 status)
++{
++	struct hci_conn *conn, *tmp;
++
++	lockdep_assert_held(&hdev->lock);
++
++	list_for_each_entry_safe(conn, tmp, &hdev->conn_hash.list, list) {
++		if (conn->type != ISO_LINK || !bacmp(&conn->dst, BDADDR_ANY) ||
++		    conn->state == BT_OPEN || conn->iso_qos.ucast.cig != cig)
++			continue;
++
++		if (HCI_CONN_HANDLE_UNSET(conn->handle))
++			hci_conn_failed(conn, status);
++	}
++}
++
+ static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
+ 				   struct sk_buff *skb)
+ {
+@@ -3823,12 +3839,15 @@ static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
  
-@@ -971,8 +971,8 @@ static void anx7625_dp_stop(struct anx7625_data *ctx)
+ 	hci_dev_lock(hdev);
  
- 	dev_dbg(dev, "notify downstream enter into standby\n");
- 	/* Downstream monitor enter into standby mode */
--	data = 2;
--	ret |= anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, 0x000600, 1, &data);
-+	data = DP_SET_POWER_D3;
-+	ret |= anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, DP_SET_POWER, 1, &data);
- 	if (ret < 0)
- 		DRM_DEV_ERROR(dev, "IO error : mute video fail\n");
++	/* BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 4, Part E page 2554
++	 *
++	 * If the Status return parameter is non-zero, then the state of the CIG
++	 * and its CIS configurations shall not be changed by the command. If
++	 * the CIG did not already exist, it shall not be created.
++	 */
+ 	if (status) {
+-		while ((conn = hci_conn_hash_lookup_cig(hdev, rp->cig_id))) {
+-			conn->state = BT_CLOSED;
+-			hci_connect_cfm(conn, status);
+-			hci_conn_del(conn);
+-		}
++		/* Keep current configuration, fail only the unbound CIS */
++		hci_unbound_cis_failed(hdev, rp->cig_id, status);
+ 		goto unlock;
+ 	}
  
 -- 
 2.40.1
