@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 410CD79BD5F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B4CF79BC0A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242703AbjIKU6O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58000 "EHLO
+        id S1350667AbjIKVkb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:40:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240266AbjIKOkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:11 -0400
+        with ESMTP id S238938AbjIKOH4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6E9F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366BFC433C7;
-        Mon, 11 Sep 2023 14:40:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 971A4CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAAE1C433CB;
+        Mon, 11 Sep 2023 14:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443206;
-        bh=87RG6x/xH5Wnb+01vjVrOKNziBGLbGoOtw2XZFcg8LY=;
+        s=korg; t=1694441271;
+        bh=e4nYY/j5VtaYznp+g1N0zPH+EB+nkKcBbqV/8iRoZJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZYv46OqFY67c2GBW5Fjdr3s40CPxMinwT4Nb0b2e0j7UiShN4k0yygiY4OoZEG4iJ
-         kKqQ/dvM1kacGD5OfLwUG28lOC91YYwl+TmmJvvq2NnfdMkdpGtugEel9n+z/B25wx
-         cU7CSsDpKsbv5zz27HpgNpWS/U8B5wt1jhkXM1wQ=
+        b=oLydnQiCG6hRssPWWMdhCGDAOAdrP7Shm8q0pidIbRKrm5vB8CaoKCUt/7Q7308VP
+         Qucfg1pGXxrUeuaCiYBjIc6DcBW7m2lgqyx3ffP9k+61wYm66A4Ses3U7ttufJEzw9
+         cvM02PryDVz/YTNaeE0Dsctwb5B9maBfNxXt8drk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 295/737] arm64: dts: qcom: pm8350: fix thermal zone name
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Corey Hickey <bugfood-ml@fatooh.org>
+Subject: [PATCH 6.5 355/739] md/raid5-cache: fix null-ptr-deref for r5l_flush_stripe_to_raid()
 Date:   Mon, 11 Sep 2023 15:42:34 +0200
-Message-ID: <20230911134658.799702219@linuxfoundation.org>
+Message-ID: <20230911134701.048708684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +51,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 64f19c06f704846db5e4885ca63c689d9bef5723 ]
+[ Upstream commit 0d0bd28c500173bfca78aa840f8f36d261ef1765 ]
 
-The name of the thermal zone in pm8350.dtsi (pm8350c-thermal) conflicts
-with the thermal zone in pm8350c.dtsi. Rename the thermal zone according
-to the chip name.
+r5l_flush_stripe_to_raid() will check if the list 'flushing_ios' is
+empty, and then submit 'flush_bio', however, r5l_log_flush_endio()
+is clearing the list first and then clear the bio, which will cause
+null-ptr-deref:
 
-Fixes: 7a79b95f4288 ("arm64: dts: qcom: pm8350: add temp sensor and thermal zone config")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230707123027.1510723-3-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+T1: submit flush io
+raid5d
+ handle_active_stripes
+  r5l_flush_stripe_to_raid
+   // list is empty
+   // add 'io_end_ios' to the list
+   bio_init
+   submit_bio
+   // io1
+
+T2: io1 is done
+r5l_log_flush_endio
+ list_splice_tail_init
+ // clear the list
+			T3: submit new flush io
+			...
+			r5l_flush_stripe_to_raid
+			 // list is empty
+			 // add 'io_end_ios' to the list
+			 bio_init
+ bio_uninit
+ // clear bio->bi_blkg
+			 submit_bio
+			 // null-ptr-deref
+
+Fix this problem by clearing bio before clearing the list in
+r5l_log_flush_endio().
+
+Fixes: 0dd00cba99c3 ("raid5-cache: fully initialize flush_bio when needed")
+Reported-and-tested-by: Corey Hickey <bugfood-ml@fatooh.org>
+Closes: https://lore.kernel.org/all/cddd7213-3dfd-4ab7-a3ac-edd54d74a626@fatooh.org/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/pm8350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/raid5-cache.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/pm8350.dtsi b/arch/arm64/boot/dts/qcom/pm8350.dtsi
-index 2dfeb99300d74..9ed9ba23e81e4 100644
---- a/arch/arm64/boot/dts/qcom/pm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm8350.dtsi
-@@ -8,7 +8,7 @@
+diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
+index 2eac4a50d99bd..8b3fc484fd758 100644
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -1260,14 +1260,13 @@ static void r5l_log_flush_endio(struct bio *bio)
  
- / {
- 	thermal-zones {
--		pm8350_thermal: pm8350c-thermal {
-+		pm8350_thermal: pm8350-thermal {
- 			polling-delay-passive = <100>;
- 			polling-delay = <0>;
- 			thermal-sensors = <&pm8350_temp_alarm>;
+ 	if (bio->bi_status)
+ 		md_error(log->rdev->mddev, log->rdev);
++	bio_uninit(bio);
+ 
+ 	spin_lock_irqsave(&log->io_list_lock, flags);
+ 	list_for_each_entry(io, &log->flushing_ios, log_sibling)
+ 		r5l_io_run_stripes(io);
+ 	list_splice_tail_init(&log->flushing_ios, &log->finished_ios);
+ 	spin_unlock_irqrestore(&log->io_list_lock, flags);
+-
+-	bio_uninit(bio);
+ }
+ 
+ /*
 -- 
 2.40.1
 
