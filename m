@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9198079AD32
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F078C79AF5C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345383AbjIKVUG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58658 "EHLO
+        id S243026AbjIKU67 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240481AbjIKOpb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:31 -0400
+        with ESMTP id S241692AbjIKPME (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 597C712A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D53AC433C7;
-        Mon, 11 Sep 2023 14:45:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36DAF12E
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816F9C433C7;
+        Mon, 11 Sep 2023 15:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443526;
-        bh=OGBn8EjFLSdXQlGyx7VI2SWz8jYcBRCcY7FEQ66xFhs=;
+        s=korg; t=1694445119;
+        bh=CEkUe+gYRZ5+/wmId39lXFhqpayQG3TbsOhnwMHLlq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zo+8LiIP8slXOrOn+uX6ZKFH5thjvRbezRNf/NLeym3CgGFpP1ixOotDyq73k1dvq
-         pCZkl6+NMl86YjwHHMC/LypkGE24H04o1sa9EHZeVukt4rwbSwbzfzyDtu9Ne0WZqP
-         q5KgdVxAN8kRgPTY8awF7QKPP96mKj61uBw90pqE=
+        b=0Uz1G+k05Qf9uqjYxiaze/48UwBKPZ8d6XkNINQairmr863boTqryZhTBWhQOtfv9
+         rX8tbJmKYcd3W55IXDNJTtqpZZNyWPpK6/LSQ2JRBeiQSLy/zJ/C5r4+f63ItrIZeV
+         XWSjeiofI1L3GAo7MmMEPv/KPMzhmBV7OLwZeNr0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Corey Minyard <minyard@acm.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 408/737] ipmi:ssif: Fix a memory leak when scanning for an adapter
+Subject: [PATCH 6.1 234/600] arm64: dts: qcom: sm8350: Add missing LMH interrupts to cpufreq
 Date:   Mon, 11 Sep 2023 15:44:27 +0200
-Message-ID: <20230911134702.020610677@linuxfoundation.org>
+Message-ID: <20230911134640.509584323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <minyard@acm.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit b8d72e32e1453d37ee5c8a219f24e7eeadc471ef ]
+[ Upstream commit 951151c2bb548e0f6b2c40ab4c48675f5342c914 ]
 
-The adapter scan ssif_info_find() sets info->adapter_name if the adapter
-info came from SMBIOS, as it's not set in that case.  However, this
-function can be called more than once, and it will leak the adapter name
-if it had already been set.  So check for NULL before setting it.
+Add the missing interrupts that communicate the hardware-managed
+throttling to Linux.
 
-Fixes: c4436c9149c5 ("ipmi_ssif: avoid registering duplicate ssif interface")
-Signed-off-by: Corey Minyard <minyard@acm.org>
+Fixes: ccbb3abb23a5 ("arm64: dts: qcom: sm8350: Add cpufreq node")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230705-topic-sm8350_fixes-v1-3-0f69f70ccb6a@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index 3b87a2726e994..faf1f2ad584bf 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1400,7 +1400,7 @@ static struct ssif_addr_info *ssif_info_find(unsigned short addr,
- restart:
- 	list_for_each_entry(info, &ssif_infos, link) {
- 		if (info->binfo.addr == addr) {
--			if (info->addr_src == SI_SMBIOS)
-+			if (info->addr_src == SI_SMBIOS && !info->adapter_name)
- 				info->adapter_name = kstrdup(adapter_name,
- 							     GFP_KERNEL);
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index b91247856f9dc..0b5a1841d607d 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2072,6 +2072,13 @@ cpufreq_hw: cpufreq@18591000 {
+ 			      <0 0x18593000 0 0x1000>;
+ 			reg-names = "freq-domain0", "freq-domain1", "freq-domain2";
+ 
++			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "dcvsh-irq-0",
++					  "dcvsh-irq-1",
++					  "dcvsh-irq-2";
++
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>, <&gcc GCC_GPLL0>;
+ 			clock-names = "xo", "alternate";
  
 -- 
 2.40.1
