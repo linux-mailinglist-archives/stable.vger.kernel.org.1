@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5AB79B5D1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB0FC79B03C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358184AbjIKWIF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
+        id S1348517AbjIKV1I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242371AbjIKP3M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:12 -0400
+        with ESMTP id S238382AbjIKNzH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D04E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20B8C433CD;
-        Mon, 11 Sep 2023 15:29:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFFFECD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349C9C433C9;
+        Mon, 11 Sep 2023 13:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446147;
-        bh=WyUP2yoGJ8hp2U6YkugJzU6K0BYbyAJS4zQcCB3SVWs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qg2jNo5WtNRGfCgABhbpMWiwxaWrfW3pqIJxo75jckMIIOovQSkyEhvQ/Or19zi73
-         RGel2IWTYrVX7zng7vWsmJZnC4tX4W0xLFkhls8nECU4zfBsmYrgHIS0JXP+KY/QTS
-         y6OgvjB04yC/ipHiJ1GIBV0i6ppxrcmQj3yuLhYc=
+        s=korg; t=1694440501;
+        bh=ljzwRkyqmbgqNAW1gkceF3WRm9XEP5FoHRGIULX2ezE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=u+GuM2Vyw53dIVIT55eyxzynuDZ6C0vB7LuCabna4GQc1iJHqKsAnimI+GSY0q6FJ
+         so7BHe6S6+pFoom0HwzGZxfSStJLfByqFbgLUhTh3q2u7ksSlIa7Ohp9v3bvJgWqpz
+         WUqUTeQhyf36A+/ynoHhf8or9vDuX4ws/OoUJu/M=
+Date:   Mon, 11 Sep 2023 15:54:59 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.1 598/600] clk: Mark a fwnode as initialized when using CLK_OF_DECLARE() macro
-Date:   Mon, 11 Sep 2023 15:50:31 +0200
-Message-ID: <20230911134651.311386161@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+To:     Donald Buczek <buczek@molgen.mpg.de>
+Cc:     stable@vger.kernel.org,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        David Ahern <dsahern@kernel.org>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Re: [PATCH 5.15 052/107] Remove DECnet support from kernel
+Message-ID: <2023091117-unripe-ceremony-c29a@gregkh>
+References: <20230619102141.541044823@linuxfoundation.org>
+ <20230619102143.987013167@linuxfoundation.org>
+ <6084b5fc-577c-468a-a28e-e0ccc530ed9e@molgen.mpg.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6084b5fc-577c-468a-a28e-e0ccc530ed9e@molgen.mpg.de>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -50,86 +51,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On Mon, Sep 11, 2023 at 03:47:01PM +0200, Donald Buczek wrote:
+> On 6/19/23 12:30 PM, Greg Kroah-Hartman wrote:
+> > From: Stephen Hemminger <stephen@networkplumber.org>
+> > 
+> > commit 1202cdd665315c525b5237e96e0bedc76d7e754f upstream.
+> > 
+> > DECnet is an obsolete network protocol that receives more attention
+> > from kernel janitors than users. It belongs in computer protocol
+> > history museum not in Linux kernel.
+> [...]
+> 
+> May I ask, how and why this patch made it into the stable kernels?
+> 
+> Did this patch "fix a real bug that bothers people?"
 
-------------------
+Yes.
 
-From: Saravana Kannan <saravanak@google.com>
+> No, we don't use DECNET since 25 years or so. But still any change of kconfig patterns bothers us. 
 
-commit c28cd1f3433c7e339315d1ddacaeacf0fdfbe252 upstream.
+We have never guaranteed that Kconfig options will never change in
+stable kernel releases, sorry.  This happens all the time with things
+being removed, and fixes happening to add new ones for various reasons
+as you have seen.
 
-We already mark fwnodes as initialized when they are registered as clock
-providers. We do this so that fw_devlink can tell when a clock driver
-doesn't use the driver core framework to probe/initialize its device.
-This ensures fw_devlink doesn't block the consumers of such a clock
-provider indefinitely.
+> We automatically build each released kernel and our config evolves automatically following a `cp config-mpi .config && make olddefconfig && make savedefconfig && cp defconfig config-mpi && git commit -m"Update for new kernel version" config-mpi` pattern.
 
-However, some users of CLK_OF_DECLARE() macros don't use the same node
-that matches the macro as the node for the clock provider, but they
-initialize the entire node. To cover these cases, also mark the nodes
-that match the macros as initialized when the init callback function is
-called.
+You might want to manually check this as well, because as you have seen,
+sometimes things are added that you need to keep things working properly
+(like the spectre/meltdown-like fixes.)
 
-An example of this is "stericsson,u8500-clks" that's handled using
-CLK_OF_DECLARE() and looks something like this:
+thanks,
 
-clocks {
-	compatible = "stericsson,u8500-clks";
-
-	prcmu_clk: prcmu-clock {
-		#clock-cells = <1>;
-	};
-
-	prcc_pclk: prcc-periph-clock {
-		#clock-cells = <2>;
-	};
-
-	prcc_kclk: prcc-kernel-clock {
-		#clock-cells = <2>;
-	};
-
-	prcc_reset: prcc-reset-controller {
-		#reset-cells = <2>;
-	};
-	...
-};
-
-This patch makes sure that "clocks" is marked as initialized so that
-fw_devlink knows that all nodes under it have been initialized. If the
-driver creates struct devices for some of the subnodes, fw_devlink is
-smart enough to know to wait for those devices to probe, so no special
-handling is required for those cases.
-
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reported-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/lkml/CACRpkdamxDX6EBVjKX5=D3rkHp17f5pwGdBVhzFU90-0MHY6dQ@mail.gmail.com/
-Fixes: 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Link: https://lore.kernel.org/r/20230302014639.297514-1-saravanak@google.com
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Tested-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/linux/clk-provider.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -1361,7 +1361,13 @@ struct clk_hw_onecell_data {
- 	struct clk_hw *hws[];
- };
- 
--#define CLK_OF_DECLARE(name, compat, fn) OF_DECLARE_1(clk, name, compat, fn)
-+#define CLK_OF_DECLARE(name, compat, fn) \
-+	static void __init name##_of_clk_init_declare(struct device_node *np) \
-+	{								\
-+		fn(np);							\
-+		fwnode_dev_initialized(of_fwnode_handle(np), true);	\
-+	}								\
-+	OF_DECLARE_1(clk, name, compat, name##_of_clk_init_declare)
- 
- /*
-  * Use this macro when you have a driver that requires two initialization
-
-
+greg k-h
