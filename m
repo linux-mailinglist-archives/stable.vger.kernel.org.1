@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2469079B370
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBE179AF4D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238157AbjIKWZM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59176 "EHLO
+        id S1350418AbjIKViK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242207AbjIKPY7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:59 -0400
+        with ESMTP id S240970AbjIKO63 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49589D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8710AC433C8;
-        Mon, 11 Sep 2023 15:24:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 619BE1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9837C433CA;
+        Mon, 11 Sep 2023 14:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445894;
-        bh=GUkn7hvFyGB9YsMdaVJFzSb8lPgA8EM54rOkDDg5FZo=;
+        s=korg; t=1694444305;
+        bh=4f2ht3aMa6FJd18AfxOKtvCnqx1n5dwh5H32XMbY4Mc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gOkv9P2FklyF80T/K/5O/VZr3QnWyxLV9xGQ+RnIVMeCkEGn2DbqgFzjKJ9dmOd/M
-         xqTTvEmPatAkdnCGu8KWUMpr4MBerOw+0NkZo5SmFOys6gQu6UCgOxiWHApp1yMYM/
-         eNf5zNufvm06N0jiSrzl5RxBGB7C4zmTV0zr1wSo=
+        b=LjKZsEB1K8xgVTitUredZ3XBVSOSDCARuBRvP69JgAZ2cGeieGKRyUrcPe2RsBe+r
+         tkpjvEJgpmDrDGU7VOtd2EbdZNDP+5M6MLAKmtkLlqhpz+8FkBDA4UybqP+beOpbx8
+         S3RlRgYzanWAdCiemrtEuh4AvVNQ+Zhs//beVras=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 509/600] leds: trigger: tty: Do not use LED_ON/OFF constants, use led_blink_set_oneshot instead
+        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.4 683/737] ntb: Clean up tx tail index on link down
 Date:   Mon, 11 Sep 2023 15:49:02 +0200
-Message-ID: <20230911134648.645121734@linuxfoundation.org>
+Message-ID: <20230911134709.614926848@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,78 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 730094577e0c37e1bc40be37cbd41f71b0a8a2a4 ]
+commit cc79bd2738c2d40aba58b2be6ce47dc0e471df0e upstream.
 
-The tty LED trigger uses the obsolete LED_ON & LED_OFF constants when
-setting LED brightness. This is bad because the LED_ON constant is equal
-to 1, and so when activating the tty LED trigger on a LED class device
-with max_brightness greater than 1, the LED is dimmer than it can be
-(when max_brightness is 255, the LED is very dimm indeed; some devices
-translate 1/255 to 0, so the LED is OFF all the time).
+The tx tail index is not reset when the link goes down. This causes the
+tail index to go out of sync when the link goes down and comes back up.
+Refactor the ntb_qp_link_down_reset() and reset the tail index as well.
 
-Instead of directly setting brightness to a specific value, use the
-led_blink_set_oneshot() function from LED core to configure the blink.
-This function takes the current configured brightness as blink
-brightness if not zero, and max brightness otherwise.
-
-This also changes the behavior of the TTY LED trigger. Previously if
-rx/tx stats kept changing, the LED was ON all the time they kept
-changing. With this patch the LED will blink on TTY activity.
-
-Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://lore.kernel.org/r/20230802090753.13611-1-kabel@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2849b5d70641 ("NTB: Reset transport QP link stats on down")
+Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/trigger/ledtrig-tty.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/ntb/ntb_transport.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-tty.c b/drivers/leds/trigger/ledtrig-tty.c
-index f62db7e520b52..8ae0d2d284aff 100644
---- a/drivers/leds/trigger/ledtrig-tty.c
-+++ b/drivers/leds/trigger/ledtrig-tty.c
-@@ -7,6 +7,8 @@
- #include <linux/tty.h>
- #include <uapi/linux/serial.h>
- 
-+#define LEDTRIG_TTY_INTERVAL	50
-+
- struct ledtrig_tty_data {
- 	struct led_classdev *led_cdev;
- 	struct delayed_work dwork;
-@@ -122,17 +124,19 @@ static void ledtrig_tty_work(struct work_struct *work)
- 
- 	if (icount.rx != trigger_data->rx ||
- 	    icount.tx != trigger_data->tx) {
--		led_set_brightness_sync(trigger_data->led_cdev, LED_ON);
-+		unsigned long interval = LEDTRIG_TTY_INTERVAL;
-+
-+		led_blink_set_oneshot(trigger_data->led_cdev, &interval,
-+				      &interval, 0);
- 
- 		trigger_data->rx = icount.rx;
- 		trigger_data->tx = icount.tx;
--	} else {
--		led_set_brightness_sync(trigger_data->led_cdev, LED_OFF);
- 	}
- 
- out:
- 	mutex_unlock(&trigger_data->mutex);
--	schedule_delayed_work(&trigger_data->dwork, msecs_to_jiffies(100));
-+	schedule_delayed_work(&trigger_data->dwork,
-+			      msecs_to_jiffies(LEDTRIG_TTY_INTERVAL * 2));
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -909,7 +909,7 @@ static int ntb_set_mw(struct ntb_transpo
+ 	return 0;
  }
  
- static struct attribute *ledtrig_tty_attrs[] = {
--- 
-2.40.1
-
+-static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
+ {
+ 	qp->link_is_up = false;
+ 	qp->active = false;
+@@ -932,6 +932,13 @@ static void ntb_qp_link_down_reset(struc
+ 	qp->tx_async = 0;
+ }
+ 
++static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++{
++	ntb_qp_link_context_reset(qp);
++	if (qp->remote_rx_info)
++		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
++}
++
+ static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
+ {
+ 	struct ntb_transport_ctx *nt = qp->transport;
+@@ -1174,7 +1181,7 @@ static int ntb_transport_init_queue(stru
+ 	qp->ndev = nt->ndev;
+ 	qp->client_ready = false;
+ 	qp->event_handler = NULL;
+-	ntb_qp_link_down_reset(qp);
++	ntb_qp_link_context_reset(qp);
+ 
+ 	if (mw_num < qp_count % mw_count)
+ 		num_qps_mw = qp_count / mw_count + 1;
 
 
