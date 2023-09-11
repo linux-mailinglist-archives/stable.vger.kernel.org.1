@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D4FE79B9CA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B83A279BC45
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377472AbjIKW0e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35904 "EHLO
+        id S240720AbjIKVUX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239497AbjIKOWP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:15 -0400
+        with ESMTP id S241993AbjIKPUC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E65DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFDCC433C9;
-        Mon, 11 Sep 2023 14:22:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB7AFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B489CC433C8;
+        Mon, 11 Sep 2023 15:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442130;
-        bh=mMIDWto1G6f3RZ65JtSy2sEDnDOWslBlaKXi7DzRpNE=;
+        s=korg; t=1694445598;
+        bh=TOcK9ayqp5H/7lAOEPAo+TdmxmjSXynnjpjnfqsTRVU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S0xBAdzveNszQY5G38l6qCP8/ZAwD3JeA/hL/e/0J9R21Y8hnD9scueBKi124cddf
-         mN0h1lANyHPxuqKrrebtiBaokY1nGWcv2cMXVmKctlsSmFq3veMSqv/KYPWK1Te5V8
-         YTGXdQ5g4HlwaJEGWrQqJfi9fM+VDq41mWlWB6FY=
+        b=EGfrKy9OfEeEMu6gxYqaGLLWKj6CGqsM40kw0p2gl3t/c6TLKR2Ihlg/qoIEiKBRa
+         4D+Dfx7Tmf/QTCfZLe7LmaZu12JRrZGDTjhuafre6Ppq+AL6AX78sdKLrMc35NAaCT
+         698i2r40iMwzAsTL8ENaUE6OaZTLrPzAdwLHmdXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
-        Radoslaw Tyl <radoslawx.tyl@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 6.5 639/739] igb: set max size RX buffer when store bad packet is enabled
+        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 405/600] media: amphion: reinit vpu if reqbufs output 0
 Date:   Mon, 11 Sep 2023 15:47:18 +0200
-Message-ID: <20230911134708.943287103@linuxfoundation.org>
+Message-ID: <20230911134645.631921207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radoslaw Tyl <radoslawx.tyl@intel.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-commit bb5ed01cd2428cd25b1c88a3a9cba87055eb289f upstream.
+[ Upstream commit 73e3f09292a0492a3fe0f87a8170a74f12624c5e ]
 
-Increase the RX buffer size to 3K when the SBP bit is on. The size of
-the RX buffer determines the number of pages allocated which may not
-be sufficient for receive frames larger than the set MTU size.
+according to v4l2 stateful decoder document 4.5.1.3. State Machine,
+the state should change from seek to initialization
+if call VIDIOC_REQBUFS(OUTPUT, 0).
 
-Cc: stable@vger.kernel.org
-Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
-Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
-Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+so reinit the vpu decoder if reqbufs output 0
+
+Fixes: 6de8d628df6e ("media: amphion: add v4l2 m2m vpu decoder stateful driver")
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/platform/amphion/vdec.c     | 2 --
+ drivers/media/platform/amphion/vpu_v4l2.c | 7 ++++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -4814,6 +4814,10 @@ void igb_configure_rx_ring(struct igb_ad
- static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
- 				  struct igb_ring *rx_ring)
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index c08b5a2bfc1df..8edb313cd6358 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -1407,9 +1407,7 @@ static void vdec_release(struct vpu_inst *inst)
  {
-+#if (PAGE_SIZE < 8192)
-+	struct e1000_hw *hw = &adapter->hw;
-+#endif
-+
- 	/* set build_skb and buffer size flags */
- 	clear_ring_build_skb_enabled(rx_ring);
- 	clear_ring_uses_large_buffer(rx_ring);
-@@ -4824,10 +4828,9 @@ static void igb_set_rx_buffer_len(struct
- 	set_ring_build_skb_enabled(rx_ring);
- 
- #if (PAGE_SIZE < 8192)
--	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
--		return;
--
--	set_ring_uses_large_buffer(rx_ring);
-+	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
-+	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
-+		set_ring_uses_large_buffer(rx_ring);
- #endif
+ 	if (inst->id != VPU_INST_NULL_ID)
+ 		vpu_trace(inst->dev, "[%d]\n", inst->id);
+-	vpu_inst_lock(inst);
+ 	vdec_stop(inst, true);
+-	vpu_inst_unlock(inst);
  }
  
+ static void vdec_cleanup(struct vpu_inst *inst)
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index a74953191c221..e5c8e1a753ccd 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -404,6 +404,11 @@ static int vpu_vb2_queue_setup(struct vb2_queue *vq,
+ 	for (i = 0; i < cur_fmt->num_planes; i++)
+ 		psize[i] = cur_fmt->sizeimage[i];
+ 
++	if (V4L2_TYPE_IS_OUTPUT(vq->type) && inst->state == VPU_CODEC_STATE_SEEK) {
++		vpu_trace(inst->dev, "reinit when VIDIOC_REQBUFS(OUTPUT, 0)\n");
++		call_void_vop(inst, release);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -688,9 +693,9 @@ int vpu_v4l2_close(struct file *file)
+ 		v4l2_m2m_ctx_release(inst->fh.m2m_ctx);
+ 		inst->fh.m2m_ctx = NULL;
+ 	}
++	call_void_vop(inst, release);
+ 	vpu_inst_unlock(inst);
+ 
+-	call_void_vop(inst, release);
+ 	vpu_inst_unregister(inst);
+ 	vpu_inst_put(inst);
+ 
+-- 
+2.40.1
+
 
 
