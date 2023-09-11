@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 015F379B089
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2DBF79B3A4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237318AbjIKV4k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52478 "EHLO
+        id S243157AbjIKU7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239575AbjIKOYC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:02 -0400
+        with ESMTP id S242159AbjIKPXy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5D5DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC9CC433C7;
-        Mon, 11 Sep 2023 14:23:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 718D2D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F33C433C8;
+        Mon, 11 Sep 2023 15:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442237;
-        bh=YtNpg308qCTfnkJQWbaFNWxUENChlsj8l5J12I0Zlj8=;
+        s=korg; t=1694445830;
+        bh=OLDUhQT2KQa8FiztKy0EWxjqo5AJUn/pscCzHLZ5gD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Vk7iEFKgPMoPq62kN1QVLs3WehDvVk7ag8rmOMO32cZWy0DfcIQAXHe/ZYAYDo9c
-         aIq++doJrCpPjyfVB2LnW3nv+pFpZrnw375+cs/jJ/YrgcS0QlSmAR/ESoUJpWSGhy
-         YU6ZGcpblF1LiRA8KnZRvfcFZbaaBdd/gZmKEP5E=
+        b=qRfep93JxYfYJZCOnQtPJqXA4s/UPGB3Yn9O+hlsv4T6KC4HER03+sE2YB4Zy8zAy
+         EZzGvTff307tHX6as+yPrxMkNuxVuvkOimQ186lbi24a4EADtyE8K8BGs7K7k7SRCz
+         0z9jWmA74fpXsANGeA0JOYNp3Uz0iwfx+qRAYTvM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.5 694/739] procfs: block chmod on /proc/thread-self/comm
+        patches@lists.linux.dev, David Gow <davidgow@google.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 460/600] drivers: base: Free devm resources when unregistering a device
 Date:   Mon, 11 Sep 2023 15:48:13 +0200
-Message-ID: <20230911134710.479629581@linuxfoundation.org>
+Message-ID: <20230911134647.231037830@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,46 +50,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: David Gow <davidgow@google.com>
 
-commit ccf61486fe1e1a48e18c638d1813cda77b3c0737 upstream.
+[ Upstream commit 699fb50d99039a50e7494de644f96c889279aca3 ]
 
-Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
-cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
-chmod operations on /proc/thread-self/comm were no longer blocked as
-they are on almost all other procfs files.
+In the current code, devres_release_all() only gets called if the device
+has a bus and has been probed.
 
-A very similar situation with /proc/self/environ was used to as a root
-exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
-correctness issue.
+This leads to issues when using bus-less or driver-less devices where
+the device might never get freed if a managed resource holds a reference
+to the device. This is happening in the DRM framework for example.
 
-Ref: https://lwn.net/Articles/191954/
-Ref: 6d76fa58b050 ("Don't allow chmod() on the /proc/<pid>/ files")
-Fixes: 1b3044e39a89 ("procfs: fix pthread cross-thread naming if !PR_DUMPABLE")
-Cc: stable@vger.kernel.org # v4.7+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Message-Id: <20230713141001.27046-1-cyphar@cyphar.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+We should thus call devres_release_all() in the device_del() function to
+make sure that the device-managed actions are properly executed when the
+device is unregistered, even if it has neither a bus nor a driver.
+
+This is effectively the same change than commit 2f8d16a996da ("devres:
+release resources on device_del()") that got reverted by commit
+a525a3ddeaca ("driver core: free devres in device_release") over
+memory leaks concerns.
+
+This patch effectively combines the two commits mentioned above to
+release the resources both on device_del() and device_release() and get
+the best of both worlds.
+
+Fixes: a525a3ddeaca ("driver core: free devres in device_release")
+Signed-off-by: David Gow <davidgow@google.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230720-kunit-devm-inconsistencies-test-v3-3-6aa7e074f373@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/base.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -3583,7 +3583,8 @@ static int proc_tid_comm_permission(stru
- }
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index e30223c2672fc..af90bfb0cc3d8 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3855,6 +3855,17 @@ void device_del(struct device *dev)
+ 	device_platform_notify_remove(dev);
+ 	device_links_purge(dev);
  
- static const struct inode_operations proc_tid_comm_inode_operations = {
--		.permission = proc_tid_comm_permission,
-+		.setattr	= proc_setattr,
-+		.permission	= proc_tid_comm_permission,
- };
- 
- /*
++	/*
++	 * If a device does not have a driver attached, we need to clean
++	 * up any managed resources. We do this in device_release(), but
++	 * it's never called (and we leak the device) if a managed
++	 * resource holds a reference to the device. So release all
++	 * managed resources here, like we do in driver_detach(). We
++	 * still need to do so again in device_release() in case someone
++	 * adds a new resource after this point, though.
++	 */
++	devres_release_all(dev);
++
+ 	if (dev->bus)
+ 		blocking_notifier_call_chain(&dev->bus->p->bus_notifier,
+ 					     BUS_NOTIFY_REMOVED_DEVICE, dev);
+-- 
+2.40.1
+
 
 
