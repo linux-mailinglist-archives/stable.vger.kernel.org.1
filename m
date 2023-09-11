@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9C579B9A2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD7679BAC7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237072AbjIKWJA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
+        id S243153AbjIKU7M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238778AbjIKOEs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:48 -0400
+        with ESMTP id S241184AbjIKPDo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB63CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D211C433C7;
-        Mon, 11 Sep 2023 14:04:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF22125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738C3C433C7;
+        Mon, 11 Sep 2023 15:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441083;
-        bh=HoCR6rTWDg4eCuSIpQainXQjJMMAdprbCvy7qCjb0sY=;
+        s=korg; t=1694444619;
+        bh=LyAXghCpPbICLiBCjjN4zYAA7Qlhl1D5XbBW5TMWgGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tTYOm/JOmH5k3W142E5vNC46V/yB88M2TgbOa0STjk4f6aKN05fA3WK8dhPUVu400
-         LBUG+dn2QfWWXxRNEveXXYqqAbfg2kfqnfi0w23U9x/n0Vo+VTz72g/BofsrI2WPPW
-         TapZlaMfV8r5KvQutoLswbF7lG9EGfxcfWk9gYcs=
+        b=jsujhMc/3KRRCpMoFAsoAqMR2ejAOT+IQwH/TSIka4vZTjBfQ0nrpujylffTOxU3Y
+         wjge9Lyt/iasJ1uBWOJA250OXtAEjDyCtp10pzLMST8g+mDaK7hdnfQF1UCszh6wmw
+         sVAcnPYWJNvIBSykFX+lk1D3Zm5RirWInXAv9PiY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 282/739] arm64: dts: rockchip: Enable SATA on Radxa E25
-Date:   Mon, 11 Sep 2023 15:41:21 +0200
-Message-ID: <20230911134658.998646536@linuxfoundation.org>
+        patches@lists.linux.dev, Ani Sinha <anisinha@redhat.com>,
+        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 049/600] vmbus_testing: fix wrong python syntax for integer value comparison
+Date:   Mon, 11 Sep 2023 15:41:22 +0200
+Message-ID: <20230911134635.049714069@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,53 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Ani Sinha <anisinha@redhat.com>
 
-[ Upstream commit 2bdfe84fbd57a4ed9fd65a67210442559ce078f0 ]
+[ Upstream commit ed0cf84e9cc42e6310961c87709621f1825c2bb8 ]
 
-The M.2 KEY B port can be used for WWAN USB2 modules or SATA drives.
+It is incorrect in python to compare integer values using the "is" keyword.
+The "is" keyword in python is used to compare references to two objects,
+not their values. Newer version of python3 (version 3.8) throws a warning
+when such incorrect comparison is made. For value comparison, "==" should
+be used.
 
-Enable sata1 node to fix use of SATA drives on the M.2 slot.
+Fix this in the code and suppress the following warning:
 
-Fixes: 2bf2f4d9f673 ("arm64: dts: rockchip: Add Radxa CM3I E25")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230724145213.3833099-1-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+/usr/sbin/vmbus_testing:167: SyntaxWarning: "is" with a literal. Did you mean "=="?
+
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Link: https://lore.kernel.org/r/20230705134408.6302-1-anisinha@redhat.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/hv/vmbus_testing | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts b/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
-index f0e4884438e39..72ad74c38a2b4 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
-@@ -99,6 +99,10 @@ vcc3v3_pi6c_05: vcc3v3-pi6c-05-regulator {
- 	};
- };
+diff --git a/tools/hv/vmbus_testing b/tools/hv/vmbus_testing
+index e7212903dd1d9..4467979d8f699 100755
+--- a/tools/hv/vmbus_testing
++++ b/tools/hv/vmbus_testing
+@@ -164,7 +164,7 @@ def recursive_file_lookup(path, file_map):
+ def get_all_devices_test_status(file_map):
  
-+&combphy1 {
-+	phy-supply = <&vcc3v3_pcie30x1>;
-+};
-+
- &pcie2x1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie20_reset_h>;
-@@ -178,6 +182,10 @@ &pwm12 {
- 	status = "okay";
- };
+         for device in file_map:
+-                if (get_test_state(locate_state(device, file_map)) is 1):
++                if (get_test_state(locate_state(device, file_map)) == 1):
+                         print("Testing = ON for: {}"
+                               .format(device.split("/")[5]))
+                 else:
+@@ -203,7 +203,7 @@ def write_test_files(path, value):
+ def set_test_state(state_path, state_value, quiet):
  
-+&sata1 {
-+	status = "okay";
-+};
-+
- &sdmmc0 {
- 	bus-width = <4>;
- 	cap-sd-highspeed;
+         write_test_files(state_path, state_value)
+-        if (get_test_state(state_path) is 1):
++        if (get_test_state(state_path) == 1):
+                 if (not quiet):
+                         print("Testing = ON for device: {}"
+                               .format(state_path.split("/")[5]))
 -- 
 2.40.1
 
