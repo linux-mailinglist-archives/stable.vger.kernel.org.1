@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C28D79BCC7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D810879B998
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350332AbjIKVhD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35136 "EHLO
+        id S1351154AbjIKVmr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:42:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240496AbjIKOpl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:41 -0400
+        with ESMTP id S241701AbjIKPMZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A358CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D680AC433C7;
-        Mon, 11 Sep 2023 14:45:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67F8FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A3DC433C8;
+        Mon, 11 Sep 2023 15:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443537;
-        bh=CiI9TDewDjXMQ4njX4E9k++SCJ+WNde0c9EHxM50NRM=;
+        s=korg; t=1694445139;
+        bh=WMgmYze9uiw9HUbn+Ok3wojIe8rPcRy6DIg94auhLJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a/pUt5QByxoPdY8ylqXI6+Aiy0/KoX3aFXtUw9XzA/+tHcba5h77C8yHPM69wPhHL
-         vNRiTUcb+IY1er+qLnLcJrYTbesqNMnfqe40fnplBGNi4ntInzWlKIig4RMn07k3Wt
-         7da5SmXDmAWcy8CVvf0T7l4N4ydIgBNs2mMsnYpc=
+        b=ZrkF7ysb+eHtNiInKYXIbcKoppFiZbceU9ACN7fMFXDrYS5eO7C/CPb7Y/a2GFWQh
+         gYTYbUot+1RsA7uohjEC4B1F8e/4AMc3uLhzqFnMdtfud0bBzdO2I1fA1eam2pANoK
+         DnqcyOISS+KRNRcymZmhCdMH6iv8QZI5Gm8Zj/ak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 412/737] dt-bindings: clock: qcom,gcc-sc8280xp: Add missing GDSCs
-Date:   Mon, 11 Sep 2023 15:44:31 +0200
-Message-ID: <20230911134702.127768894@linuxfoundation.org>
+Subject: [PATCH 6.1 240/600] arm64: dts: qcom: sm8250: Mark PCIe hosts as DMA coherent
+Date:   Mon, 11 Sep 2023 15:44:33 +0200
+Message-ID: <20230911134640.684100670@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 9eba4db02a88e7a810aabd70f7a6960f184f391f ]
+[ Upstream commit 339d38a436f30d0f874815eafc7de2257346bf26 ]
 
-There are 10 more GDSCs that we've not been caring about, and by extension
-(and perhaps even more importantly), not putting to sleep. Add them.
+The PCIe hosts on SM8250 are cache-coherent. Mark them as such.
 
-Fixes: a66a82f2a55e ("dt-bindings: clock: Add Qualcomm SC8280XP GCC bindings")
-Acked-by: Rob Herring <robh@kernel.org>
+Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-2-562c1428c10d@linaro.org
+Link: https://lore.kernel.org/r/20230704-topic-8250_pcie_dmac-v1-1-799603a980b0@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,gcc-sc8280xp.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/dt-bindings/clock/qcom,gcc-sc8280xp.h b/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
-index 721105ea4fad8..8454915917849 100644
---- a/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
-+++ b/include/dt-bindings/clock/qcom,gcc-sc8280xp.h
-@@ -494,5 +494,15 @@
- #define USB30_SEC_GDSC					11
- #define EMAC_0_GDSC					12
- #define EMAC_1_GDSC					13
-+#define USB4_1_GDSC					14
-+#define USB4_GDSC					15
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		16
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		17
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC		18
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC		19
-+#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			20
-+#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			21
-+#define HLOS1_VOTE_TURING_MMU_TBU2_GDSC			22
-+#define HLOS1_VOTE_TURING_MMU_TBU3_GDSC			23
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index c27f88c9f7b2a..4d9b30f0b2841 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -1862,6 +1862,7 @@ pcie0: pci@1c00000 {
  
- #endif
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie0_default_state>;
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
+@@ -1968,6 +1969,7 @@ pcie1: pci@1c08000 {
+ 
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie1_default_state>;
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
+@@ -2076,6 +2078,7 @@ pcie2: pci@1c10000 {
+ 
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie2_default_state>;
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
 -- 
 2.40.1
 
