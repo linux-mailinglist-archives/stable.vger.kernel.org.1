@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB26679B77C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3983479B815
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237371AbjIKUv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
+        id S1359476AbjIKWQz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240645AbjIKOtw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:52 -0400
+        with ESMTP id S239320AbjIKORm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94410106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE897C433C8;
-        Mon, 11 Sep 2023 14:49:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A358BDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBBBC433C7;
+        Mon, 11 Sep 2023 14:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443787;
-        bh=+GbnCDSV98oCkmx8EkOXQfbd+vOFPVKeHAbLb8lHijM=;
+        s=korg; t=1694441857;
+        bh=8vONUe1tyQCdIB+KTR7VFeJqezrP1QCSG/kvTqxQ54M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wy12s5gtOUTuS7ZogSg7UMMvaOg8QcQovod9Aw/cQ/KEfvuoO4bWPzBRhq+g/8RmK
-         apAhNpI3oW4DF5dmo/c0uezpnCJCY4GAzsKaBzmN5MnBs21RunUSm5hLC6kVA3px/L
-         78M4qRbVl5lsj8bjnew047mkvfUSlBnLSwNL8Cs0=
+        b=wgScrEYlJBhdVbnGJ/FQC/h09ao7lCVsExX/+XQwt39D9JwTvd8O4oBE58ebwtZn+
+         Xdhb6FISmDXpP+FcPD/sGOdTROi7O3OQqRK38rKa8pUSPG8UMUZo9Df1GBKQWDyUnR
+         f1kTlToa8VTY+OZ/JMAat/7SE4sfA0askRyVUJHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-        Ming Qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Junhao He <hejunhao3@huawei.com>,
+        James Clark <james.clark@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 501/737] media: amphion: fix CHECKED_RETURN issues reported by coverity
+Subject: [PATCH 6.5 561/739] coresight: Fix memory leak in acpi_buffer->pointer
 Date:   Mon, 11 Sep 2023 15:46:00 +0200
-Message-ID: <20230911134704.567386228@linuxfoundation.org>
+Message-ID: <20230911134706.748693902@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +51,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Junhao He <hejunhao3@huawei.com>
 
-[ Upstream commit b237b058adbc7825da9c8f358f1ff3f0467d623a ]
+[ Upstream commit 1a9e02673e2550f5612099e64e8761f0c8fc0f50 ]
 
-calling "vpu_cmd_send/vpu_get_buffer_state/vpu_session_alloc_fs"
-without checking return value
+There are memory leaks reported by kmemleak:
+...
+unreferenced object 0xffff00213c141000 (size 1024):
+  comm "systemd-udevd", pid 2123, jiffies 4294909467 (age 6062.160s)
+  hex dump (first 32 bytes):
+    04 00 00 00 02 00 00 00 18 10 14 3c 21 00 ff ff  ...........<!...
+    00 00 00 00 00 00 00 00 03 00 00 00 10 00 00 00  ................
+  backtrace:
+    [<000000004b7c9001>] __kmem_cache_alloc_node+0x2f8/0x348
+    [<00000000b0fc7ceb>] __kmalloc+0x58/0x108
+    [<0000000064ff4695>] acpi_os_allocate+0x2c/0x68
+    [<000000007d57d116>] acpi_ut_initialize_buffer+0x54/0xe0
+    [<0000000024583908>] acpi_evaluate_object+0x388/0x438
+    [<0000000017b2e72b>] acpi_evaluate_object_typed+0xe8/0x240
+    [<000000005df0eac2>] coresight_get_platform_data+0x1b4/0x988 [coresight]
+...
 
-Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The ACPI buffer memory (buf.pointer) should be freed. But the buffer
+is also used after returning from acpi_get_dsd_graph().
+Move the temporary variables buf to acpi_coresight_parse_graph(),
+and free it before the function return to prevent memory leak.
+
+Fixes: 76ffa5ab5b79 ("coresight: Support for ACPI bindings")
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Reviewed-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20230817085937.55590-2-hejunhao3@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vdec.c     |  5 ++++-
- drivers/media/platform/amphion/vpu_cmds.c |  3 ++-
- drivers/media/platform/amphion/vpu_dbg.c  | 11 +++++++++--
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ .../hwtracing/coresight/coresight-platform.c  | 40 ++++++++++++-------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index eeb2ef72df5b3..133d77d1ea0c3 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -1019,6 +1019,7 @@ static int vdec_response_frame_abnormal(struct vpu_inst *inst)
+diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
+index c8940314cceb8..dbf508fdd8d16 100644
+--- a/drivers/hwtracing/coresight/coresight-platform.c
++++ b/drivers/hwtracing/coresight/coresight-platform.c
+@@ -494,19 +494,18 @@ static inline bool acpi_validate_dsd_graph(const union acpi_object *graph)
+ 
+ /* acpi_get_dsd_graph	- Find the _DSD Graph property for the given device. */
+ static const union acpi_object *
+-acpi_get_dsd_graph(struct acpi_device *adev)
++acpi_get_dsd_graph(struct acpi_device *adev, struct acpi_buffer *buf)
  {
- 	struct vdec_t *vdec = inst->priv;
- 	struct vpu_fs_info info;
-+	int ret;
+ 	int i;
+-	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+ 	acpi_status status;
+ 	const union acpi_object *dsd;
  
- 	if (!vdec->req_frame_count)
- 		return 0;
-@@ -1026,7 +1027,9 @@ static int vdec_response_frame_abnormal(struct vpu_inst *inst)
- 	memset(&info, 0, sizeof(info));
- 	info.type = MEM_RES_FRAME;
- 	info.tag = vdec->seq_tag + 0xf0;
--	vpu_session_alloc_fs(inst, &info);
-+	ret = vpu_session_alloc_fs(inst, &info);
-+	if (ret)
-+		return ret;
- 	vdec->req_frame_count--;
+ 	status = acpi_evaluate_object_typed(adev->handle, "_DSD", NULL,
+-					    &buf, ACPI_TYPE_PACKAGE);
++					    buf, ACPI_TYPE_PACKAGE);
+ 	if (ACPI_FAILURE(status))
+ 		return NULL;
  
- 	return 0;
-diff --git a/drivers/media/platform/amphion/vpu_cmds.c b/drivers/media/platform/amphion/vpu_cmds.c
-index 647d94554fb5d..7e137f276c3b1 100644
---- a/drivers/media/platform/amphion/vpu_cmds.c
-+++ b/drivers/media/platform/amphion/vpu_cmds.c
-@@ -306,7 +306,8 @@ static void vpu_core_keep_active(struct vpu_core *core)
+-	dsd = buf.pointer;
++	dsd = buf->pointer;
  
- 	dev_dbg(core->dev, "try to wake up\n");
- 	mutex_lock(&core->cmd_lock);
--	vpu_cmd_send(core, &pkt);
-+	if (vpu_cmd_send(core, &pkt))
-+		dev_err(core->dev, "fail to keep active\n");
- 	mutex_unlock(&core->cmd_lock);
+ 	/*
+ 	 * _DSD property consists tuples { Prop_UUID, Package() }
+@@ -557,12 +556,12 @@ acpi_validate_coresight_graph(const union acpi_object *cs_graph)
+  * returns NULL.
+  */
+ static const union acpi_object *
+-acpi_get_coresight_graph(struct acpi_device *adev)
++acpi_get_coresight_graph(struct acpi_device *adev, struct acpi_buffer *buf)
+ {
+ 	const union acpi_object *graph_list, *graph;
+ 	int i, nr_graphs;
+ 
+-	graph_list = acpi_get_dsd_graph(adev);
++	graph_list = acpi_get_dsd_graph(adev, buf);
+ 	if (!graph_list)
+ 		return graph_list;
+ 
+@@ -663,22 +662,24 @@ static int acpi_coresight_parse_graph(struct device *dev,
+ 				      struct acpi_device *adev,
+ 				      struct coresight_platform_data *pdata)
+ {
++	int ret = 0;
+ 	int i, nlinks;
+ 	const union acpi_object *graph;
+ 	struct coresight_connection conn, zero_conn = {};
+ 	struct coresight_connection *new_conn;
++	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
+ 
+-	graph = acpi_get_coresight_graph(adev);
++	graph = acpi_get_coresight_graph(adev, &buf);
+ 	/*
+ 	 * There are no graph connections, which is fine for some components.
+ 	 * e.g., ETE
+ 	 */
+ 	if (!graph)
+-		return 0;
++		goto free;
+ 
+ 	nlinks = graph->package.elements[2].integer.value;
+ 	if (!nlinks)
+-		return 0;
++		goto free;
+ 
+ 	for (i = 0; i < nlinks; i++) {
+ 		const union acpi_object *link = &graph->package.elements[3 + i];
+@@ -686,17 +687,28 @@ static int acpi_coresight_parse_graph(struct device *dev,
+ 
+ 		conn = zero_conn;
+ 		dir = acpi_coresight_parse_link(adev, link, &conn);
+-		if (dir < 0)
+-			return dir;
++		if (dir < 0) {
++			ret = dir;
++			goto free;
++		}
+ 
+ 		if (dir == ACPI_CORESIGHT_LINK_MASTER) {
+ 			new_conn = coresight_add_out_conn(dev, pdata, &conn);
+-			if (IS_ERR(new_conn))
+-				return PTR_ERR(new_conn);
++			if (IS_ERR(new_conn)) {
++				ret = PTR_ERR(new_conn);
++				goto free;
++			}
+ 		}
+ 	}
+ 
+-	return 0;
++free:
++	/*
++	 * When ACPI fails to alloc a buffer, it will free the buffer
++	 * created via ACPI_ALLOCATE_BUFFER and set to NULL.
++	 * ACPI_FREE can handle NULL pointers, so free it directly.
++	 */
++	ACPI_FREE(buf.pointer);
++	return ret;
  }
  
-diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/platform/amphion/vpu_dbg.c
-index adc523b950618..982c2c777484c 100644
---- a/drivers/media/platform/amphion/vpu_dbg.c
-+++ b/drivers/media/platform/amphion/vpu_dbg.c
-@@ -50,6 +50,13 @@ static char *vpu_stat_name[] = {
- 	[VPU_BUF_STATE_ERROR] = "error",
- };
- 
-+static inline const char *to_vpu_stat_name(int state)
-+{
-+	if (state <= VPU_BUF_STATE_ERROR)
-+		return vpu_stat_name[state];
-+	return "unknown";
-+}
-+
- static int vpu_dbg_instance(struct seq_file *s, void *data)
- {
- 	struct vpu_inst *inst = s->private;
-@@ -141,7 +148,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
- 		num = scnprintf(str, sizeof(str),
- 				"output [%2d] state = %10s, %8s\n",
- 				i, vb2_stat_name[vb->state],
--				vpu_stat_name[vpu_get_buffer_state(vbuf)]);
-+				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
- 		if (seq_write(s, str, num))
- 			return 0;
- 	}
-@@ -156,7 +163,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
- 		num = scnprintf(str, sizeof(str),
- 				"capture[%2d] state = %10s, %8s\n",
- 				i, vb2_stat_name[vb->state],
--				vpu_stat_name[vpu_get_buffer_state(vbuf)]);
-+				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
- 		if (seq_write(s, str, num))
- 			return 0;
- 	}
+ /*
 -- 
 2.40.1
 
