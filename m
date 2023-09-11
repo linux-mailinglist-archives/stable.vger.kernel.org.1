@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A3B79B012
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8B079AD74
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244256AbjIKVKx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:10:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41014 "EHLO
+        id S240867AbjIKVTj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239289AbjIKOQo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:44 -0400
+        with ESMTP id S240617AbjIKOs5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3EC6DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454E4C433C8;
-        Mon, 11 Sep 2023 14:16:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A04E125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0313C433C7;
+        Mon, 11 Sep 2023 14:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441799;
-        bh=JswTmcR34La5xIBLJ6jbD9mB19/oOR6n/couNv3CBqU=;
+        s=korg; t=1694443733;
+        bh=zYHcGNApC2rrccJC2L1mH9pzdJj+siav4ucbxvUxHXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GXs3mVo56j2qFIzv7Go/lQk8nLMxwW7eotutSPkTvQjPyimte6iJVTBeusPh0biaF
-         bJp3kfFrC1rQF22bNY8Lcs0DRaFq36YaSi0B3c3mkph2iUP2ZbP/F8tInJBioXt3Jz
-         xRCo7d3cHz0Bp244upXr/x5AESXTMaW3lCL/C83s=
+        b=uy7+n//bQ1vy7SJynU0bdGZcVjNljtVvizZHjpdOUq5CjZZwLjaUqNgehJLTAbHFq
+         eg/yPGjLxk7xZp4O5P+QAkzSUgWI7BT26a9JrB7zSWY3sBVWTfW74RCValFO9fJaUP
+         K09PYPKplZowptNJPzEt2+PkJs+IeMwIy51s/Jj8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        patches@lists.linux.dev, Tommaso Merciai <tomm.merciai@gmail.com>,
+        Dave Stevenson <dave.stevenson@raspberrypi.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 540/739] media: Documentation: Fix [GS]_ROUTING documentation
-Date:   Mon, 11 Sep 2023 15:45:39 +0200
-Message-ID: <20230911134706.180850915@linuxfoundation.org>
+Subject: [PATCH 6.4 481/737] media: i2c: imx290: drop format param from imx290_ctrl_update
+Date:   Mon, 11 Sep 2023 15:45:40 +0200
+Message-ID: <20230911134704.014685646@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +52,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Tommaso Merciai <tomm.merciai@gmail.com>
 
-[ Upstream commit 997a6b01cd97b74684728d5af6511c333f25957d ]
+[ Upstream commit 9b4e0e7a570d222be5f5e0f914d3c4528eadeeb4 ]
 
-Add mention that successful VIDIOC_SUBDEV_G_ROUTING call will update
-'num_routes' and remove mention about non-existing streams, which is
-incorrect.
+The format param actually is not used in imx290_ctrl_update
+function, let's drop this
 
-Fixes: ea73eda50813 ("media: Documentation: Add GS_ROUTING documentation")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: bc35f9a21a55 ("media: i2c: imx290: Fix the pixel rate at 148.5Mpix/s")
+Signed-off-by: Tommaso Merciai <tomm.merciai@gmail.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../userspace-api/media/v4l/vidioc-subdev-g-routing.rst    | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/i2c/imx290.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-index 2d6e3bbdd0404..72677a280cd64 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-@@ -58,6 +58,9 @@ the subdevice exposes, drivers return the ENOSPC error code and adjust the
- value of the ``num_routes`` field. Application should then reserve enough memory
- for all the route entries and call ``VIDIOC_SUBDEV_G_ROUTING`` again.
+diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
+index 5ea25b7acc55f..a84b581682a21 100644
+--- a/drivers/media/i2c/imx290.c
++++ b/drivers/media/i2c/imx290.c
+@@ -902,7 +902,6 @@ static const char * const imx290_test_pattern_menu[] = {
+ };
  
-+On a successful ``VIDIOC_SUBDEV_G_ROUTING`` call the driver updates the
-+``num_routes`` field to reflect the actual number of routes returned.
-+
- .. tabularcolumns:: |p{4.4cm}|p{4.4cm}|p{8.7cm}|
+ static void imx290_ctrl_update(struct imx290 *imx290,
+-			       const struct v4l2_mbus_framefmt *format,
+ 			       const struct imx290_mode *mode)
+ {
+ 	unsigned int hblank_min = mode->hmax_min - mode->width;
+@@ -1195,7 +1194,7 @@ static int imx290_set_fmt(struct v4l2_subdev *sd,
+ 	if (fmt->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
+ 		imx290->current_mode = mode;
  
- .. c:type:: v4l2_subdev_routing
-@@ -138,9 +141,7 @@ ENOSPC
+-		imx290_ctrl_update(imx290, &fmt->format, mode);
++		imx290_ctrl_update(imx290, mode);
+ 		imx290_exposure_update(imx290, mode);
+ 	}
  
- EINVAL
-    The sink or source pad identifiers reference a non-existing pad, or reference
--   pads of different types (ie. the sink_pad identifiers refers to a source pad)
--   or the sink or source stream identifiers reference a non-existing stream on
--   the sink or source pad.
-+   pads of different types (ie. the sink_pad identifiers refers to a source pad).
+@@ -1300,7 +1299,6 @@ static const struct media_entity_operations imx290_subdev_entity_ops = {
+ static int imx290_subdev_init(struct imx290 *imx290)
+ {
+ 	struct i2c_client *client = to_i2c_client(imx290->dev);
+-	const struct v4l2_mbus_framefmt *format;
+ 	struct v4l2_subdev_state *state;
+ 	int ret;
  
- E2BIG
-    The application provided ``num_routes`` for ``VIDIOC_SUBDEV_S_ROUTING`` is
+@@ -1335,8 +1333,7 @@ static int imx290_subdev_init(struct imx290 *imx290)
+ 	}
+ 
+ 	state = v4l2_subdev_lock_and_get_active_state(&imx290->sd);
+-	format = v4l2_subdev_get_pad_format(&imx290->sd, state, 0);
+-	imx290_ctrl_update(imx290, format, imx290->current_mode);
++	imx290_ctrl_update(imx290, imx290->current_mode);
+ 	v4l2_subdev_unlock_state(state);
+ 
+ 	return 0;
 -- 
 2.40.1
 
