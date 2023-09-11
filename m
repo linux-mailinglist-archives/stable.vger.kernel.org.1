@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 419DD79AD79
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E1379AED9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242137AbjIKVuU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:50:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52034 "EHLO
+        id S1357920AbjIKWGy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239997AbjIKOd3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:29 -0400
+        with ESMTP id S238563AbjIKN72 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 634A2F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809FFC433C8;
-        Mon, 11 Sep 2023 14:33:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6ECCE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7423C433C8;
+        Mon, 11 Sep 2023 13:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442804;
-        bh=y4R94f14i5oX2WbgJxTcjLJuymBRVBvXDyruPmTfG6A=;
+        s=korg; t=1694440763;
+        bh=WQXEP1AM/tpC0OwmoZtHkfQmwOYbOBUrDefZ2bWiR9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dZAwEfVYG+EX0trc7RMhoblrOo1/PLF9pfF4rSCM++GFqTaGeO0YCR2+FmZEetbTs
-         +6EHRzW5Bg2c2XnjD4uR/gvQoS9kqDMS7zu6sYdx6GPdGabOa54P43jkTU3yI3oFJx
-         1kLNlwpzvam8t6QVH/syW1sEOeaW3VaJMPI1W17A=
+        b=xF/sGXIaTOHsohMjaqvuUgU/c02DQHOBlWILpue1wr1oxMJoaYN1xSLioJbwIvIif
+         KcSxWLPfxOyObxyCBKQqaKVKvSBL0rVHS0RDF4KtKRwD2b9mB5StSmuJXdw4ixZ33u
+         BbRxlO5UjGEUnAwArfc/EUvqf7ZRYizjHsr78RpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Babu Moger <babu.moger@amd.com>,
-        "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 116/737] selftests/resctrl: Unmount resctrl FS if child fails to run benchmark
-Date:   Mon, 11 Sep 2023 15:39:35 +0200
-Message-ID: <20230911134653.745142031@linuxfoundation.org>
+Subject: [PATCH 6.5 177/739] arm64: mm: use ptep_clear() instead of pte_clear() in clear_flush()
+Date:   Mon, 11 Sep 2023 15:39:36 +0200
+Message-ID: <20230911134656.138531837@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,43 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-[ Upstream commit f99e413eb54652e2436cc56d081176bc9a34cd8d ]
+[ Upstream commit 00de2c9f26b15f1a6f2af516dd8ec5f8d28189b7 ]
 
-A child calls PARENT_EXIT() when it fails to run a benchmark to kill
-the parent process. PARENT_EXIT() lacks unmount for the resctrl FS and
-the parent won't be there to unmount it either after it gets killed.
+In clear_flush(), the original pte may be a present entry, so we should
+use ptep_clear() to let page_table_check track the pte clearing operation,
+otherwise it may cause false positive in subsequent set_pte_at().
 
-Add the resctrl FS unmount also to PARENT_EXIT().
-
-Fixes: 591a6e8588fc ("selftests/resctrl: Add basic resctrl file system operations and data")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Tested-by: Babu Moger <babu.moger@amd.com>
-Tested-by: Shaopeng Tan (Fujitsu) <tan.shaopeng@fujitsu.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230810093241.1181142-1-qi.zheng@linux.dev
+Fixes: 42b2547137f5 ("arm64/mm: enable ARCH_SUPPORTS_PAGE_TABLE_CHECK")
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrl.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/mm/hugetlbpage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
-index 87e39456dee08..f455f0b7e314b 100644
---- a/tools/testing/selftests/resctrl/resctrl.h
-+++ b/tools/testing/selftests/resctrl/resctrl.h
-@@ -43,6 +43,7 @@
- 	do {					\
- 		perror(err_msg);		\
- 		kill(ppid, SIGKILL);		\
-+		umount_resctrlfs();		\
- 		exit(EXIT_FAILURE);		\
- 	} while (0)
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 21716c9406821..9c52718ea7509 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -236,7 +236,7 @@ static void clear_flush(struct mm_struct *mm,
+ 	unsigned long i, saddr = addr;
  
+ 	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++)
+-		pte_clear(mm, addr, ptep);
++		ptep_clear(mm, addr, ptep);
+ 
+ 	flush_tlb_range(&vma, saddr, addr);
+ }
 -- 
 2.40.1
 
