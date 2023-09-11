@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE9279BDDA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31CD779BE8D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243176AbjIKU7Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34042 "EHLO
+        id S240185AbjIKVEd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239043AbjIKOKV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:21 -0400
+        with ESMTP id S241376AbjIKPHX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C430E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7554C433C7;
-        Mon, 11 Sep 2023 14:10:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84105FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0E5C433C8;
+        Mon, 11 Sep 2023 15:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441417;
-        bh=0g62UUPreABlL3Kwo3bRHHKfsBCz9GyKjcn3UOOXPVY=;
+        s=korg; t=1694444839;
+        bh=WGSvBHcR3LI9xIBZidaP6gntcYAZVDV6VBTdE6xDQG4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o0b2e+mgyeLab9X+vp6WOSKyu8xMLZrsKKUcFpTFGkG+zJmSfgHvILgB8hsYMvr9R
-         Ap6NVXxi4ENbBmY8i/dINlEMCMZTFR0Rhqy4kqkX+++/hJ3ctbGTLVlA/mgenkXjkB
-         OQ2OHiV9+Zglb3t2+Lztjo0Qhig5k2uVNwtPZEMU=
+        b=DOTCNTwtFScPZ7yfXDzKtOHTF/CRHHFCvFTo+WtZ5nnXCQgIqY1E8AX2A7+ChZPZo
+         PnakBusU9RVdH02WxZ4KHzeoFUYVf1HtTwf+KpZB0gnFkMGFp6/p6g+yut7ug7mRNb
+         mcGwl+dqHAtAuco0Mkqspb0AL6Km6gTg0dmpx5o4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Su Hui <suhui@nfschina.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 369/739] ALSA: ac97: Fix possible error value of *rac97
+Subject: [PATCH 6.1 135/600] cpufreq: powernow-k8: Use related_cpus instead of cpus in driver.exit()
 Date:   Mon, 11 Sep 2023 15:42:48 +0200
-Message-ID: <20230911134701.465026925@linuxfoundation.org>
+Message-ID: <20230911134637.597102754@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Liao Chang <liaochang1@huawei.com>
 
-[ Upstream commit 67de40c9df94037769967ba28c7d951afb45b7fb ]
+[ Upstream commit 03997da042dac73c69e60d91942c727c76828b65 ]
 
-Before committing 79597c8bf64c, *rac97 always be NULL if there is
-an error. When error happens, make sure *rac97 is NULL is safer.
+Since the 'cpus' field of policy structure will become empty in the
+cpufreq core API, it is better to use 'related_cpus' in the exit()
+callback of driver.
 
-For examble, in snd_vortex_mixer():
-	err = snd_ac97_mixer(pbus, &ac97, &vortex->codec);
-	vortex->isquad = ((vortex->codec == NULL) ?
-		0 : (vortex->codec->ext_id&0x80));
-If error happened but vortex->codec isn't NULL, this may cause some
-problems.
-
-Move the judgement order to be clearer and better.
-
-Fixes: 79597c8bf64c ("ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20230823025212.1000961-1-suhui@nfschina.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c3274763bfc3 ("cpufreq: powernow-k8: Initialize per-cpu data-structures properly")
+Signed-off-by: Liao Chang <liaochang1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/ac97/ac97_codec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/cpufreq/powernow-k8.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
-index 80a65b8ad7b9b..25f93e56cfc7a 100644
---- a/sound/pci/ac97/ac97_codec.c
-+++ b/sound/pci/ac97/ac97_codec.c
-@@ -2069,10 +2069,9 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
- 		.dev_disconnect =	snd_ac97_dev_disconnect,
- 	};
+diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
+index d289036beff23..b10f7a1b77f11 100644
+--- a/drivers/cpufreq/powernow-k8.c
++++ b/drivers/cpufreq/powernow-k8.c
+@@ -1101,7 +1101,8 @@ static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
  
--	if (!rac97)
--		return -EINVAL;
--	if (snd_BUG_ON(!bus || !template))
-+	if (snd_BUG_ON(!bus || !template || !rac97))
- 		return -EINVAL;
-+	*rac97 = NULL;
- 	if (snd_BUG_ON(template->num >= 4))
- 		return -EINVAL;
- 	if (bus->codec[template->num])
+ 	kfree(data->powernow_table);
+ 	kfree(data);
+-	for_each_cpu(cpu, pol->cpus)
++	/* pol->cpus will be empty here, use related_cpus instead. */
++	for_each_cpu(cpu, pol->related_cpus)
+ 		per_cpu(powernow_data, cpu) = NULL;
+ 
+ 	return 0;
 -- 
 2.40.1
 
