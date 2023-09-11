@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA7079AC8F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 854A079ADF9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238180AbjIKWQY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:16:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43336 "EHLO
+        id S230465AbjIKUwC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240153AbjIKOhz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:55 -0400
+        with ESMTP id S238823AbjIKOFp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBEBF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D239C433C7;
-        Mon, 11 Sep 2023 14:37:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E6FCF0;
+        Mon, 11 Sep 2023 07:05:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBC3C433C8;
+        Mon, 11 Sep 2023 14:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443071;
-        bh=0TI97JvwdXHwDf/uLofCwvM4mF/7vk8O1RPn4gN8xFA=;
+        s=korg; t=1694441140;
+        bh=1jnFHpGHBBkyLPMeQDjn1SZEtbvQs6xIw4C/GV4kXj4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ByvbnF0mD7qMCIF1Untfyjre/EpdpIRPGZct6yGsVC43SxBgF1c+t3RkMl4ifUiEh
-         K0Ol3UrqXRYMBuDx9pArAZEPljkaG/n5ojGgozv4Ud/VzQyKaDHb/gGhTROcx1nKUu
-         D7t+QbeLrMXGyytKzM/u8nEPZE5dWGT/dZ80/Lks=
+        b=BE7Mcp0Jx3EvniXDOuJ+BQBhVLEuiD9FpCgyi6K5GSrq5c4VCJI5vkDbrdy6PmNG+
+         XBblv0lTU7NYsdhqaM6vEnJRpIG2pRgmLJWDLaeK9CjyNWv+3EWTY8Np+pfVJRM3lo
+         Fz7fcbE1oGfFYRPagl6EEAyUwSddu2GKMNkDIRW8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        dorum@noisolation.com, Daniel Vetter <daniel.vetter@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 248/737] wifi: ath9k: use IS_ERR() with debugfs_create_dir()
-Date:   Mon, 11 Sep 2023 15:41:47 +0200
-Message-ID: <20230911134657.527207124@linuxfoundation.org>
+Subject: [PATCH 6.5 309/739] drm/msm/mdp5: Dont leak some plane state
+Date:   Mon, 11 Sep 2023 15:41:48 +0200
+Message-ID: <20230911134659.750192459@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,43 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Ming <machel@vivo.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit 1e4134610d93271535ecf900a676e1f094e9944c ]
+[ Upstream commit fd0ad3b2365c1c58aa5a761c18efc4817193beb6 ]
 
-The debugfs_create_dir() function returns error pointers,
-it never returns NULL. Most incorrect error checks were fixed,
-but the one in ath9k_htc_init_debug() was forgotten.
+Apparently no one noticed that mdp5 plane states leak like a sieve
+ever since we introduced plane_state->commit refcount a few years ago
+in 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too
+early by tracking commits, v3.")
 
-Fix the remaining error check.
+Fix it by using the right helpers.
 
-Fixes: e5facc75fa91 ("ath9k_htc: Cleanup HTC debugfs")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230713030358.12379-1-machel@vivo.com
+Fixes: 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too early by tracking commits, v3.")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: freedreno@lists.freedesktop.org
+Reported-and-tested-by: dorum@noisolation.com
+Cc: dorum@noisolation.com
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Reviewed-by: Rob Clark <robdclark@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/551236/
+Link: https://lore.kernel.org/r/20230803204521.928582-1-daniel.vetter@ffwll.ch
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-index b3ed65e5c4da8..c55aab01fff5d 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-@@ -491,7 +491,7 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
+index bd2c4ac456017..0d5ff03cb0910 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
+@@ -130,8 +130,7 @@ static void mdp5_plane_destroy_state(struct drm_plane *plane,
+ {
+ 	struct mdp5_plane_state *pstate = to_mdp5_plane_state(state);
  
- 	priv->debug.debugfs_phy = debugfs_create_dir(KBUILD_MODNAME,
- 					     priv->hw->wiphy->debugfsdir);
--	if (!priv->debug.debugfs_phy)
-+	if (IS_ERR(priv->debug.debugfs_phy))
- 		return -ENOMEM;
+-	if (state->fb)
+-		drm_framebuffer_put(state->fb);
++	__drm_atomic_helper_plane_destroy_state(state);
  
- 	ath9k_cmn_spectral_init_debug(&priv->spec_priv, priv->debug.debugfs_phy);
+ 	kfree(pstate);
+ }
 -- 
 2.40.1
 
