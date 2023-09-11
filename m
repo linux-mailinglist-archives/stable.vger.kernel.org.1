@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D48E79B13B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A8E79ADD0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376480AbjIKWTp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50812 "EHLO
+        id S242904AbjIKVHr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241007AbjIKO7g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:36 -0400
+        with ESMTP id S242197AbjIKPYp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C341B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1690C433C9;
-        Mon, 11 Sep 2023 14:59:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C1AD8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AABC433C7;
+        Mon, 11 Sep 2023 15:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444372;
-        bh=VqJwHl95cPbEKie0uiibHg5QP8Wo1lpzwjzb27+11uc=;
+        s=korg; t=1694445880;
+        bh=wtVWWGlfVJlnxu6wL1TATBu6dcdGnvqxCCtgpOBa8uk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q47eXek21q2HjmL3dBnqeLCS9klPFawmEkvEgipEZalI25iDAoPGuCpLfyM9wBRkN
-         4h2GDl6J+LHBKgXdMVyX1rmk350/MKLSGjc9/3JsnByRq8H3iKpgt2oHlqD0ClC72n
-         mW5RtAuprMz4yusPaVgERmBhgQ2v92w20x2gB4wo=
+        b=JWDIysuevMiBE2wbofQPtQirxr7lIieHIu0bOmPJWy9GPt4dviX2ZkAW5aFnQ+5R5
+         OkNIEm8VUDhyL2TdX4X2fGJsJkHURlVw1MIcN1c+BKj8xQEPxODu2HlgM7Qq1y7eLt
+         KSNEZYMZwe6J4sh+XuQaWunOZuLEf6J2CS/uwWUQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 677/737] Revert "scsi: qla2xxx: Fix buffer overrun"
-Date:   Mon, 11 Sep 2023 15:48:56 +0200
-Message-ID: <20230911134709.449313786@linuxfoundation.org>
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 504/600] phy/rockchip: inno-hdmi: do not power on rk3328 post pll on reg write
+Date:   Mon, 11 Sep 2023 15:48:57 +0200
+Message-ID: <20230911134648.498743646@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,37 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-commit 641671d97b9199f1ba35ccc2222d4b189a6a5de5 upstream.
+[ Upstream commit 19a1d46bd699940a496d3b0d4e142ef99834988c ]
 
-Revert due to Get PLOGI Template failed.
-This reverts commit b68710a8094fdffe8dd4f7a82c82649f479bb453.
+inno_write is used to configure 0xaa reg, that also hold the
+POST_PLL_POWER_DOWN bit.
+When POST_PLL_REFCLK_SEL_TMDS is configured the power down bit is not
+taken into consideration.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-9-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by keeping the power down bit until configuration is complete.
+Also reorder the reg write order for consistency.
+
+Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20230615171005.2251032-5-jonas@kwiboo.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -5549,7 +5549,7 @@ static void qla_get_login_template(scsi_
- 	__be32 *q;
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+index 15a008a1ac7b9..2556caf475c0c 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+@@ -1023,9 +1023,10 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
  
- 	memset(ha->init_cb, 0, ha->init_cb_size);
--	sz = min_t(int, sizeof(struct fc_els_csp), ha->init_cb_size);
-+	sz = min_t(int, sizeof(struct fc_els_flogi), ha->init_cb_size);
- 	rval = qla24xx_get_port_login_templ(vha, ha->init_cb_dma,
- 					    ha->init_cb, sz);
- 	if (rval != QLA_SUCCESS) {
+ 	inno_write(inno, 0xac, RK3328_POST_PLL_FB_DIV_7_0(cfg->fbdiv));
+ 	if (cfg->postdiv == 1) {
+-		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS);
+ 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
+ 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
++		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS |
++			   RK3328_POST_PLL_POWER_DOWN);
+ 	} else {
+ 		v = (cfg->postdiv / 2) - 1;
+ 		v &= RK3328_POST_PLL_POST_DIV_MASK;
+@@ -1033,7 +1034,8 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
+ 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
+ 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
+ 		inno_write(inno, 0xaa, RK3328_POST_PLL_POST_DIV_ENABLE |
+-			   RK3328_POST_PLL_REFCLK_SEL_TMDS);
++			   RK3328_POST_PLL_REFCLK_SEL_TMDS |
++			   RK3328_POST_PLL_POWER_DOWN);
+ 	}
+ 
+ 	for (v = 0; v < 14; v++)
+-- 
+2.40.1
+
 
 
