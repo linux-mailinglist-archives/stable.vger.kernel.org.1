@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 363E279B8CE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F3F79B7DC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233584AbjIKUvC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58172 "EHLO
+        id S1378660AbjIKWgV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240163AbjIKOiM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:12 -0400
+        with ESMTP id S238885AbjIKOHQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C356EF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146CAC433C7;
-        Mon, 11 Sep 2023 14:38:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06A60CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503BCC433C9;
+        Mon, 11 Sep 2023 14:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443088;
-        bh=6FBLafqsfBQFNwUV7SWwIuq0pFhraBCdibzexDasiTY=;
+        s=korg; t=1694441231;
+        bh=qgF+bY/sfqUn3lown4rSIVl++eh/M9WxAEc4NZeOf2I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gHpuhFfo5890aO5zzPi+vynOTp/FewJ5Q3tShJcn0L0m/0PLgCp5TKRqWG2pxCZW+
-         rBCwZDl4hJyQQPNUWaD4hcGNTcl6P2uv7fik84bXZROJml3Gu2ia0a610U7L9USOZd
-         jnsCsl0fG8Cn+mAMA6Jl2aW0PBAVbgpXFrUzEAXM=
+        b=gnQGo/MilZwBbo5fs0HbhZjNgDGywX7VYoSkxFtEN4AAWEQn1keb14d+wJ583UqUo
+         CoYw00orrCAqI0no8z9YQoZsMEJoTylx8tcg0w+2wLXOAB2Iyphxbtz5rfoTdtdGXN
+         P0bYns+fyOze4PLhdOotG+n0YyEASs788MqeV9gg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 254/737] hwmon: (tmp513) Fix the channel number in tmp51x_is_visible()
+Subject: [PATCH 6.5 314/739] smackfs: Prevent underflow in smk_set_cipso()
 Date:   Mon, 11 Sep 2023 15:41:53 +0200
-Message-ID: <20230911134657.687375754@linuxfoundation.org>
+Message-ID: <20230911134659.883078735@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d103337e38e7e64c3d915029e947b1cb0b512737 ]
+[ Upstream commit 3ad49d37cf5759c3b8b68d02e3563f633d9c1aee ]
 
-The supported channels for this driver are {0..3}. Fix the incorrect
-channel in tmp51x_is_visible().
+There is a upper bound to "catlen" but no lower bound to prevent
+negatives.  I don't see that this necessarily causes a problem but we
+may as well be safe.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/ea0eccc0-a29f-41e4-9049-a1a13f8b16f1@roeck-us.net/
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20230824204456.401580-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tmp513.c | 2 +-
+ security/smack/smackfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 0693eaee054ff..a8167a48f824c 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -434,7 +434,7 @@ static umode_t tmp51x_is_visible(const void *_data,
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 5590eaad241bb..25f67d1b5c73e 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -896,7 +896,7 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	}
  
- 	switch (type) {
- 	case hwmon_temp:
--		if (data->id == tmp512 && channel == 4)
-+		if (data->id == tmp512 && channel == 3)
- 			return 0;
- 		switch (attr) {
- 		case hwmon_temp_input:
+ 	ret = sscanf(rule, "%d", &catlen);
+-	if (ret != 1 || catlen > SMACK_CIPSO_MAXCATNUM)
++	if (ret != 1 || catlen < 0 || catlen > SMACK_CIPSO_MAXCATNUM)
+ 		goto out;
+ 
+ 	if (format == SMK_FIXED24_FMT &&
 -- 
 2.40.1
 
