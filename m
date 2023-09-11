@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5C079B06E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0BC79B4B0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239532AbjIKVi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
+        id S1378666AbjIKWgX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238759AbjIKOE2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:28 -0400
+        with ESMTP id S240068AbjIKOfe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344BAE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F059C433C8;
-        Mon, 11 Sep 2023 14:04:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AF6F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5D6C433C9;
+        Mon, 11 Sep 2023 14:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441063;
-        bh=aHWhKORo1I4ZkUlzYt6nwUI7cw0BtQ7sJocn0UE/Wtg=;
+        s=korg; t=1694442928;
+        bh=IKIhk2F3jHeY7OftrYuO3p4qg2FepWdzRMD3WOscyis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cji+Fi1W4sRkzEoP6xiUz3SYqOECAv2CkGliDXB45nq1qOvPhedk3yivYEEuAm7h6
-         En3GQBSmD4aFQMpsfrwPwRWepBmVg4oDbfxOmMO5hsYWiqbw0ax9qL/p/fEfr21D/x
-         9vVt+2N5omjijF34GrkSPYLLbhf4PQ168kWevbvU=
+        b=P9MaG7AeO7g5WgPEMvfid6nv2TsfM9XQqzxlo1rAzcsTww5OZJSXYcwmPeDGBhvcz
+         F8Tse0pIiRE67wp8g3j+iHySmk2r8RldAyHSRtNYMtwZRm1YQYC/RhgPKvvn0a4TDs
+         QbDtEDSQTvx9vOR0BmfZm2zTasO075Gx5QmG9Ndw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 256/739] arm64: dts: qcom: pmi8994: Add missing OVP interrupt
-Date:   Mon, 11 Sep 2023 15:40:55 +0200
-Message-ID: <20230911134658.301769920@linuxfoundation.org>
+Subject: [PATCH 6.4 197/737] Bluetooth: nokia: fix value check in nokia_bluetooth_serdev_probe()
+Date:   Mon, 11 Sep 2023 15:40:56 +0200
+Message-ID: <20230911134656.104048224@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 8db94432690371b1736e9a2566a9b3d8a73d5a97 ]
+[ Upstream commit e8b5aed31355072faac8092ead4938ddec3111fd ]
 
-Add the missing OVP interrupt. This fixes the schema warning:
+in nokia_bluetooth_serdev_probe(), check the return value of
+clk_prepare_enable() and return the error code if
+clk_prepare_enable() returns an unexpected value.
 
-wled@d800: interrupt-names: ['short'] is too short
-
-Fixes: 37aa540cbd30 ("arm64: dts: qcom: pmi8994: Add WLED node")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230626-topic-bindingsfixups-v1-6-254ae8642e69@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 7bb318680e86 ("Bluetooth: add nokia driver")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/pmi8994.dtsi | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/hci_nokia.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi8994.dtsi b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
-index 0192968f4d9b3..36d6a1fb553ac 100644
---- a/arch/arm64/boot/dts/qcom/pmi8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
-@@ -54,8 +54,9 @@ pmi8994_spmi_regulators: regulators {
- 		pmi8994_wled: wled@d800 {
- 			compatible = "qcom,pmi8994-wled";
- 			reg = <0xd800>, <0xd900>;
--			interrupts = <3 0xd8 0x02 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "short";
-+			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
-+				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "ovp", "short";
- 			qcom,cabc;
- 			qcom,external-pfet;
- 			status = "disabled";
+diff --git a/drivers/bluetooth/hci_nokia.c b/drivers/bluetooth/hci_nokia.c
+index 05f7f6de6863d..97da0b2bfd17e 100644
+--- a/drivers/bluetooth/hci_nokia.c
++++ b/drivers/bluetooth/hci_nokia.c
+@@ -734,7 +734,11 @@ static int nokia_bluetooth_serdev_probe(struct serdev_device *serdev)
+ 		return err;
+ 	}
+ 
+-	clk_prepare_enable(sysclk);
++	err = clk_prepare_enable(sysclk);
++	if (err) {
++		dev_err(dev, "could not enable sysclk: %d", err);
++		return err;
++	}
+ 	btdev->sysclk_speed = clk_get_rate(sysclk);
+ 	clk_disable_unprepare(sysclk);
+ 
 -- 
 2.40.1
 
