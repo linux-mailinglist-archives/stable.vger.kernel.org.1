@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C3FB79B464
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 773AF79AFB2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236296AbjIKV4f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:56:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58868 "EHLO
+        id S1345398AbjIKVUQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241784AbjIKPOd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:33 -0400
+        with ESMTP id S239315AbjIKORa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87778FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD87C433C8;
-        Mon, 11 Sep 2023 15:14:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17E6BDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A0CC433C8;
+        Mon, 11 Sep 2023 14:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445269;
-        bh=zZ/Hs/Tg573edVUCpgoTtzsh55tpZ4K0kC0Lwk10sHk=;
+        s=korg; t=1694441845;
+        bh=ttHV1JS89jdehL2uaXJimIp/blNE4rGLl7ytz2xJ4eA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qyTl9ORGkPRuqF5UGDjGoCyx+53p3dTPWnVSsrhZdiWQiDoFXwDGASeh2eC8MZTvq
-         uhQi5LORX/YUCPoOeqzbvW4Tr433dZPYXDcLv/PYXJNKfVPQsjx3XhqY/HKQMHkKW1
-         hQo1nw35Zm4yzMvI8+vf/PcvvQLzYv+NyHnkDUPg=
+        b=D6l0r7VDtHE4PK4IbLkhl4jTz8IrlmRka/khmkErlzNzqmj9d7P4HqprgVLfZHwxX
+         51oZoxa22aD76OBfs3AX/Y0td0qzmVZ1ogEohTAHCKkYDM+e19HjDfxu+S029Z6ouV
+         nPoElhPGlBgX/n/b9pMh+ycs32oBvgOIf75hpWwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 286/600] ARM: dts: BCM53573: Fix Tenda AC9 switch CPU port
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 520/739] iommu/qcom: Disable and reset context bank before programming
 Date:   Mon, 11 Sep 2023 15:45:19 +0200
-Message-ID: <20230911134642.054874902@linuxfoundation.org>
+Message-ID: <20230911134705.637093546@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,40 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 7141209db9c335ab261a17933809a3e660ebdc12 ]
+[ Upstream commit 9f3fef23d9b5a858a6e6d5f478bb1b6b76265e76 ]
 
-Primary Ethernet interface is connected to the port 8 (not 5).
+Writing	the new	TTBRs, TCRs and MAIRs on a previously enabled
+context bank may trigger a context fault, resulting in firmware
+driven AP resets: change the domain initialization programming
+sequence to disable the context bank(s) and to also clear the
+related fault address (CB_FAR) and fault status (CB_FSR)
+registers before writing new values to TTBR0/1, TCR/TCR2, MAIR0/1.
 
-Fixes: 64612828628c ("ARM: dts: BCM53573: Add Tenda AC9 switch ports")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230723195416.7831-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230622092742.74819-4-angelogioacchino.delregno@collabora.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm47189-tenda-ac9.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/boot/dts/bcm47189-tenda-ac9.dts b/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
-index 55b92645b0f1f..b7c7bf0be76f4 100644
---- a/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
-+++ b/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
-@@ -135,8 +135,8 @@ port@4 {
- 			label = "lan4";
- 		};
+diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+index a503ed758ec30..3e551ca6afdb9 100644
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -273,6 +273,13 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
+ 			ctx->secure_init = true;
+ 		}
  
--		port@5 {
--			reg = <5>;
-+		port@8 {
-+			reg = <8>;
- 			label = "cpu";
- 			ethernet = <&gmac0>;
- 		};
++		/* Disable context bank before programming */
++		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
++
++		/* Clear context bank fault address fault status registers */
++		iommu_writel(ctx, ARM_SMMU_CB_FAR, 0);
++		iommu_writel(ctx, ARM_SMMU_CB_FSR, ARM_SMMU_FSR_FAULT);
++
+ 		/* TTBRs */
+ 		iommu_writeq(ctx, ARM_SMMU_CB_TTBR0,
+ 				pgtbl_cfg.arm_lpae_s1_cfg.ttbr |
 -- 
 2.40.1
 
