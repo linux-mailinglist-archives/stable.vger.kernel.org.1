@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA64479B269
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C142E79B4DC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358093AbjIKWHn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53416 "EHLO
+        id S238653AbjIKWJQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240525AbjIKOqf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:35 -0400
+        with ESMTP id S239219AbjIKOOs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ACA3106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EE1C433C7;
-        Mon, 11 Sep 2023 14:46:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C409DDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1795DC433C7;
+        Mon, 11 Sep 2023 14:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443591;
-        bh=I5hpyCB5KKTAjk6UhUGLT9eAtgXmZakzZ8+kXHbo3ao=;
+        s=korg; t=1694441683;
+        bh=O3v4fMQLZLi/mAdmWZ3/DHqjC5pFqYnktSoPz1E3pLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XQSfSCTJ1icXN3h1bYEpwcmC9jjsAkHAbaiEkXG3o8BdipJfzEdow5iA+FWiafhgA
-         6mTA8vVHDdSMhceFQHD76+TFVbv8QU8Mq9g4XJ72F16/P2OrCWzMXv5nwJ7CtEGAEO
-         JOvws3b+tdOz1d0jcP086se1WlIraM9n+OJ6Tv4Q=
+        b=bRPClsHM/ndX6+f6Jb9tISWqupKYBgFGmBUdMrcVg/BFP4TXCWK4GN0+LQ7BvtZUG
+         +WItwBujceX5s4G6e5YtjFr4yQHsI6Bs0jVV9WqA5Gk5szntOoW1sEKnuBQ1FfkdRQ
+         /O8EezHqHciWQT7ofNZMj/J9ToBEeJ87wANsp8vQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luca Weiss <luca.weiss@fairphone.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+2da1965168e7dbcba136@syzkaller.appspotmail.com,
+        Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 432/737] clk: qcom: gcc-sm6350: Fix gcc_sdcc2_apps_clk_src
+Subject: [PATCH 6.5 492/739] RDMA/rxe: Fix unsafe drain work queue code
 Date:   Mon, 11 Sep 2023 15:44:51 +0200
-Message-ID: <20230911134702.665801640@linuxfoundation.org>
+Message-ID: <20230911134704.871675222@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit df04d166d1f346dbf740bbea64a3bed3e7f14c8d ]
+[ Upstream commit 5993b75d0bc71cd2b441d174b028fc36180f032c ]
 
-GPLL7 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
-didn't update its configuration" error when booting. Set .flags =
-CLK_OPS_PARENT_ENABLE to fix the error.
+If create_qp does not fully succeed it is possible for qp cleanup
+code to attempt to drain the send or recv work queues before the
+queues have been created causing a seg fault. This patch checks
+to see if the queues exist before attempting to drain them.
 
-Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230620135519.9365-3-rpearsonhpe@gmail.com
+Reported-by: syzbot+2da1965168e7dbcba136@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-rdma/00000000000012d89205fe7cfe00@google.com/raw
+Fixes: 49dc9c1f0c7e ("RDMA/rxe: Cleanup reset state handling in rxe_resp.c")
+Fixes: fbdeb828a21f ("RDMA/rxe: Cleanup error state handling in rxe_comp.c")
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm6350.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/sw/rxe/rxe_comp.c | 4 ++++
+ drivers/infiniband/sw/rxe/rxe_resp.c | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-index 9b4e4bb059635..cf4a7b6e0b23a 100644
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -641,6 +641,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_8,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
-+		.flags = CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
+index 5111735aafaed..d0bdc2d8adc82 100644
+--- a/drivers/infiniband/sw/rxe/rxe_comp.c
++++ b/drivers/infiniband/sw/rxe/rxe_comp.c
+@@ -597,6 +597,10 @@ static void flush_send_queue(struct rxe_qp *qp, bool notify)
+ 	struct rxe_queue *q = qp->sq.queue;
+ 	int err;
+ 
++	/* send queue never got created. nothing to do. */
++	if (!qp->sq.queue)
++		return;
++
+ 	while ((wqe = queue_head(q, q->type))) {
+ 		if (notify) {
+ 			err = flush_send_wqe(qp, wqe);
+diff --git a/drivers/infiniband/sw/rxe/rxe_resp.c b/drivers/infiniband/sw/rxe/rxe_resp.c
+index 64c64f5f36a81..da470a925efc7 100644
+--- a/drivers/infiniband/sw/rxe/rxe_resp.c
++++ b/drivers/infiniband/sw/rxe/rxe_resp.c
+@@ -1469,6 +1469,10 @@ static void flush_recv_queue(struct rxe_qp *qp, bool notify)
+ 		return;
+ 	}
+ 
++	/* recv queue not created. nothing to do. */
++	if (!qp->rq.queue)
++		return;
++
+ 	while ((wqe = queue_head(q, q->type))) {
+ 		if (notify) {
+ 			err = flush_recv_wqe(qp, wqe);
 -- 
 2.40.1
 
