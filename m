@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7191E79BE73
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 263F279BCDF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239042AbjIKVaA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57294 "EHLO
+        id S239272AbjIKVsh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240949AbjIKO5r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:47 -0400
+        with ESMTP id S242173AbjIKPYO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 892C61B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D364AC433C9;
-        Mon, 11 Sep 2023 14:57:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 384E2D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753AEC433C8;
+        Mon, 11 Sep 2023 15:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444262;
-        bh=S3KcD8JFwM5EvTgvpNBXOgs3Cjrqk0MNBvv/bk1jXvg=;
+        s=korg; t=1694445849;
+        bh=yFX4Eelge7UuFqGRhCqQTOsc911VlSyzpZjfJdcfjGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zB0++nr8MjeJ/AK3924Bi8jJqVfQbtc5IudIEjF4ftax5HDYedOpci5RZY7IpNJ+/
-         sDiC8iWBLdwMfic4hqmScyrZD2mfeESVVYtovU7OKkx4KEp/5qPcuSBUAv90gmGZhH
-         PdTLuR7HFMX+yMnOnqJgL+W06z1/bJZxW8QmJ15o=
+        b=k9709fVTN8VczZZdzATkMFkF703JSDy5hKp09bxVlz/3yFLzwANDoB/mmqPIIjowo
+         NtfRljFd6kUd3XzO7YIQAKKlivE+qfRnGKO492PO0Q1tp/RRqEMlf1jbqjzZ3pJr4e
+         NmUfWZcG3sXZLHSFPqlKEJc4yn7Zo1rJHaEwYhHE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 6.4 667/737] xtensa: PMU: fix base address for the newer hardware
-Date:   Mon, 11 Sep 2023 15:48:46 +0200
-Message-ID: <20230911134709.174849788@linuxfoundation.org>
+        patches@lists.linux.dev, Maxime Ripard <mripard@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
+        Benjamin Tissoires <bentiss@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 494/600] HID: multitouch: Correct devm device reference for hidinput input_dev name
+Date:   Mon, 11 Sep 2023 15:48:47 +0200
+Message-ID: <20230911134648.212170083@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,73 +52,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 
-commit 687eb3c42f4ad81e7c947c50e2d865f692064291 upstream.
+[ Upstream commit 4794394635293a3e74591351fff469cea7ad15a2 ]
 
-With introduction of ERI access control in RG.0 base address of the PMU
-unit registers has changed. Add support for the new PMU configuration.
+Reference the HID device rather than the input device for the devm
+allocation of the input_dev name. Referencing the input_dev would lead to a
+use-after-free when the input_dev was unregistered and subsequently fires a
+uevent that depends on the name. At the point of firing the uevent, the
+name would be freed by devres management.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use devm_kasprintf to simplify the logic for allocating memory and
+formatting the input_dev name string.
+
+Reported-by: Maxime Ripard <mripard@kernel.org>
+Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
+Fixes: c08d46aa805b ("HID: multitouch: devm conversion")
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230824061308.222021-3-sergeantsagara@protonmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/include/asm/core.h  |    9 +++++++++
- arch/xtensa/kernel/perf_event.c |   17 +++++++++++++----
- 2 files changed, 22 insertions(+), 4 deletions(-)
+ drivers/hid/hid-multitouch.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
---- a/arch/xtensa/include/asm/core.h
-+++ b/arch/xtensa/include/asm/core.h
-@@ -44,4 +44,13 @@
- #define XTENSA_STACK_ALIGNMENT	16
- #endif
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index e31be0cb8b850..521b2ffb42449 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1594,7 +1594,6 @@ static void mt_post_parse(struct mt_device *td, struct mt_application *app)
+ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ {
+ 	struct mt_device *td = hid_get_drvdata(hdev);
+-	char *name;
+ 	const char *suffix = NULL;
+ 	struct mt_report_data *rdata;
+ 	struct mt_application *mt_application = NULL;
+@@ -1645,15 +1644,9 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ 		break;
+ 	}
  
-+#ifndef XCHAL_HW_MIN_VERSION
-+#if defined(XCHAL_HW_MIN_VERSION_MAJOR) && defined(XCHAL_HW_MIN_VERSION_MINOR)
-+#define XCHAL_HW_MIN_VERSION (XCHAL_HW_MIN_VERSION_MAJOR * 100 + \
-+			      XCHAL_HW_MIN_VERSION_MINOR)
-+#else
-+#define XCHAL_HW_MIN_VERSION 0
-+#endif
-+#endif
-+
- #endif
---- a/arch/xtensa/kernel/perf_event.c
-+++ b/arch/xtensa/kernel/perf_event.c
-@@ -13,17 +13,26 @@
- #include <linux/perf_event.h>
- #include <linux/platform_device.h>
+-	if (suffix) {
+-		name = devm_kzalloc(&hi->input->dev,
+-				    strlen(hdev->name) + strlen(suffix) + 2,
+-				    GFP_KERNEL);
+-		if (name) {
+-			sprintf(name, "%s %s", hdev->name, suffix);
+-			hi->input->name = name;
+-		}
+-	}
++	if (suffix)
++		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
++						 "%s %s", hdev->name, suffix);
  
-+#include <asm/core.h>
- #include <asm/processor.h>
- #include <asm/stacktrace.h>
- 
-+#define XTENSA_HWVERSION_RG_2015_0	260000
-+
-+#if XCHAL_HW_MIN_VERSION >= XTENSA_HWVERSION_RG_2015_0
-+#define XTENSA_PMU_ERI_BASE		0x00101000
-+#else
-+#define XTENSA_PMU_ERI_BASE		0x00001000
-+#endif
-+
- /* Global control/status for all perf counters */
--#define XTENSA_PMU_PMG			0x1000
-+#define XTENSA_PMU_PMG			XTENSA_PMU_ERI_BASE
- /* Perf counter values */
--#define XTENSA_PMU_PM(i)		(0x1080 + (i) * 4)
-+#define XTENSA_PMU_PM(i)		(XTENSA_PMU_ERI_BASE + 0x80 + (i) * 4)
- /* Perf counter control registers */
--#define XTENSA_PMU_PMCTRL(i)		(0x1100 + (i) * 4)
-+#define XTENSA_PMU_PMCTRL(i)		(XTENSA_PMU_ERI_BASE + 0x100 + (i) * 4)
- /* Perf counter status registers */
--#define XTENSA_PMU_PMSTAT(i)		(0x1180 + (i) * 4)
-+#define XTENSA_PMU_PMSTAT(i)		(XTENSA_PMU_ERI_BASE + 0x180 + (i) * 4)
- 
- #define XTENSA_PMU_PMG_PMEN		0x1
- 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
