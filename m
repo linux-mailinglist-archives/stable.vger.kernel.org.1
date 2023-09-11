@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC0679BCA5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03CD979BC08
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349052AbjIKVcU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
+        id S1376352AbjIKWTS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240953AbjIKO55 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:57 -0400
+        with ESMTP id S242125AbjIKPXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D3D1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED16C433CA;
-        Mon, 11 Sep 2023 14:57:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124BBF9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54059C433C8;
+        Mon, 11 Sep 2023 15:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444273;
-        bh=4O+1DJ34+NlhATQ5dzzaI2v//w/AzNUAeaQnGTZN+F0=;
+        s=korg; t=1694445781;
+        bh=fOC0Vx12doIgBKBQwYJoTJ0wCavcGap+Ix4WIa9fTqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WBR/dyl5z0G1JjELqLrktgyeZxkYfLIVxWebWUQnwXSqCLJFG5G1M4WF36Mnl1XnG
-         eyQFgnVvO4nG9DrjJNdkB1KxiCmF2K6Kzvf1aarZvcFAVRpKLm8OSRw2BnEpZ/1dMU
-         cuM9/NvAsVR8SG78tVeNetO7z9doBhLkWPbtVMa0=
+        b=zn7Rp3GXRjUd6+aFrd0VzRrnSFf/wxBjFiMYE7rpkGFR+4PvtNBf9JaSwhvVvWxbw
+         na5+XlzU4McYBYmX7NWT+JKKE5XI8BttAoJXXACsefcjPa6rr4A5ooh2htntAHab9/
+         ud/pXnezmY3zk1nYA2W7e+iJgSN+KwaQHuwqAf3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Meng_Cai@novatek.com.cn,
-        Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.4 644/737] ALSA: pcm: Fix missing fixup call in compat hw_refine ioctl
+        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 470/600] media: ov2680: Add ov2680_fill_format() helper function
 Date:   Mon, 11 Sep 2023 15:48:23 +0200
-Message-ID: <20230911134708.521478769@linuxfoundation.org>
+Message-ID: <20230911134647.520356448@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,53 +53,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 358040e3807754944dbddf948a23c6d914297ed7 upstream.
+[ Upstream commit 6d6849b2203f3244b575ba01d3e41ee19aa2cadf ]
 
-The update of rate_num/den and msbits were factored out to
-fixup_unreferenced_params() function to be called explicitly after the
-hw_refine or hw_params procedure.  It's called from
-snd_pcm_hw_refine_user(), but it's forgotten in the PCM compat ioctl.
-This ended up with the incomplete rate_num/den and msbits parameters
-when 32bit compat ioctl is used.
+Add a ov2680_fill_format() helper function and use this everywhere were
+a v4l2_mbus_framefmt struct needs to be filled in so that the driver always
+fills it consistently.
 
-This patch adds the missing call in snd_pcm_ioctl_hw_params_compat().
+This is a preparation patch for fixing ov2680_set_fmt()
+which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
+the passed in v4l2_mbus_framefmt struct.
 
-Reported-by: Meng_Cai@novatek.com.cn
-Fixes: f9a076bff053 ("ALSA: pcm: calculate non-mask/non-interval parameters always when possible")
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230829134344.31588-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that for ov2680_init_cfg() this now simply always fills
+the try_fmt struct of the passed in sd_state. This is correct because
+ov2680_init_cfg() is never called with a NULL sd_state so the old
+sd_state check is not necessary.
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_compat.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ov2680.c | 49 +++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 22 deletions(-)
 
---- a/sound/core/pcm_compat.c
-+++ b/sound/core/pcm_compat.c
-@@ -253,10 +253,14 @@ static int snd_pcm_ioctl_hw_params_compa
- 		goto error;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 4f7ff23ef8973..6e0e8d21d189f 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -54,6 +54,9 @@
+ #define OV2680_WIDTH_MAX		1600
+ #define OV2680_HEIGHT_MAX		1200
+ 
++#define OV2680_DEFAULT_WIDTH			800
++#define OV2680_DEFAULT_HEIGHT			600
++
+ enum ov2680_mode_id {
+ 	OV2680_MODE_QUXGA_800_600,
+ 	OV2680_MODE_720P_1280_720,
+@@ -315,7 +318,8 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
+ 	usleep_range(5000, 10000);
+ }
+ 
+-static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
++static void ov2680_set_bayer_order(struct ov2680_dev *sensor,
++				   struct v4l2_mbus_framefmt *fmt)
+ {
+ 	int hv_flip = 0;
+ 
+@@ -325,7 +329,19 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+ 	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
+ 		hv_flip += 2;
+ 
+-	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
++	fmt->code = ov2680_hv_flip_bayer_order[hv_flip];
++}
++
++static void ov2680_fill_format(struct ov2680_dev *sensor,
++			       struct v4l2_mbus_framefmt *fmt,
++			       unsigned int width, unsigned int height)
++{
++	memset(fmt, 0, sizeof(*fmt));
++	fmt->width = width;
++	fmt->height = height;
++	fmt->field = V4L2_FIELD_NONE;
++	fmt->colorspace = V4L2_COLORSPACE_SRGB;
++	ov2680_set_bayer_order(sensor, fmt);
+ }
+ 
+ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
+@@ -340,7 +356,7 @@ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ov2680_set_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor, &sensor->fmt);
+ 	return 0;
+ }
+ 
+@@ -356,7 +372,7 @@ static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ov2680_set_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor, &sensor->fmt);
+ 	return 0;
+ }
+ 
+@@ -614,10 +630,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		goto unlock;
  	}
  
--	if (refine)
-+	if (refine) {
- 		err = snd_pcm_hw_refine(substream, data);
--	else
-+		if (err < 0)
-+			goto error;
-+		err = fixup_unreferenced_params(substream, data);
-+	} else {
- 		err = snd_pcm_hw_params(substream, data);
-+	}
- 	if (err < 0)
- 		goto error;
- 	if (copy_to_user(data32, data, sizeof(*data32)) ||
+-	fmt->width = mode->width;
+-	fmt->height = mode->height;
+-	fmt->code = sensor->fmt.code;
+-	fmt->colorspace = sensor->fmt.colorspace;
++	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
+ 
+ 	sensor->current_mode = mode;
+ 	sensor->fmt = format->format;
+@@ -632,16 +645,11 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ static int ov2680_init_cfg(struct v4l2_subdev *sd,
+ 			   struct v4l2_subdev_state *sd_state)
+ {
+-	struct v4l2_subdev_format fmt = {
+-		.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
+-		: V4L2_SUBDEV_FORMAT_ACTIVE,
+-		.format = {
+-			.width = 800,
+-			.height = 600,
+-		}
+-	};
++	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+ 
+-	return ov2680_set_fmt(sd, sd_state, &fmt);
++	ov2680_fill_format(sensor, &sd_state->pads[0].try_fmt,
++			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
++	return 0;
+ }
+ 
+ static int ov2680_enum_frame_size(struct v4l2_subdev *sd,
+@@ -740,11 +748,8 @@ static int ov2680_mode_init(struct ov2680_dev *sensor)
+ 	const struct ov2680_mode_info *init_mode;
+ 
+ 	/* set initial mode */
+-	sensor->fmt.code = MEDIA_BUS_FMT_SBGGR10_1X10;
+-	sensor->fmt.width = 800;
+-	sensor->fmt.height = 600;
+-	sensor->fmt.field = V4L2_FIELD_NONE;
+-	sensor->fmt.colorspace = V4L2_COLORSPACE_SRGB;
++	ov2680_fill_format(sensor, &sensor->fmt,
++			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
+ 
+ 	sensor->frame_interval.denominator = OV2680_FRAME_RATE;
+ 	sensor->frame_interval.numerator = 1;
+-- 
+2.40.1
+
 
 
