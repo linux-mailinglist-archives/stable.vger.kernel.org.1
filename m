@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C512B79B6F5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B14D379B63A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233797AbjIKWWM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:22:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42130 "EHLO
+        id S1350811AbjIKVlf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240476AbjIKOpQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:16 -0400
+        with ESMTP id S241683AbjIKPLy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4705412A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F12C433C9;
-        Mon, 11 Sep 2023 14:45:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA32FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D510C433C7;
+        Mon, 11 Sep 2023 15:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443511;
-        bh=vgCG2T74dVeSJGko8Q6HbrNyjTiv4U3RsmxNuFd3Ggw=;
+        s=korg; t=1694445108;
+        bh=+QBNA6CED8GlpKLI9Yuic2A2lZfjKDMI38zRqqN6hNI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gGxpm4uCBaEPPI9Vs10qrNPYgeHbutOy4o/Wsv2zBqW0xpDmTUu66nuqoNcklD5wo
-         90eYlwngqBz8AusbdCncLifYqmG2IppdR0ve/I9Mz1ej/p6W1O1dYGCBv8IqQYH6zO
-         ZvJEKQ1Amh+U/6apOP9vH8OtOS48REcZjFLLRJvI=
+        b=D1nkaJXcDKI67jEoQGjM8b5qJW10NoccUCvE1OdDQjtVECwuPfii31jEs5+4rzoNE
+         lZc9Uf4RFga2Gmz5+mJr1dlGylAp1l5Ht1D8hX5ExU6MKj0v2/dqHN8svNGHF0yNwy
+         ELrdnoCyUIR2YYUznSNRKVU9sQvDn2kAGjg64PJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 404/737] of: overlay: Call of_changeset_init() early
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 230/600] arm64: dts: qcom: sc8280xp: Add missing SCM interconnect
 Date:   Mon, 11 Sep 2023 15:44:23 +0200
-Message-ID: <20230911134701.911084052@linuxfoundation.org>
+Message-ID: <20230911134640.397273297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit a9515ff4fb142b690a0d2b58782b15903b990dba ]
+[ Upstream commit 0a69ccf20b0837db857abfc94d7e3bacf1cb771b ]
 
-When of_overlay_fdt_apply() fails, the changeset may be partially
-applied, and the caller is still expected to call of_overlay_remove() to
-clean up this partial state.
+The SCM interconnect path was missing. Add it.
 
-However, of_overlay_apply() calls of_resolve_phandles() before
-init_overlay_changeset().  Hence if the overlay fails to apply due to an
-unresolved symbol, the overlay_changeset.cset.entries list is still
-uninitialized, and cleanup will crash with a NULL-pointer dereference in
-overlay_removal_is_ok().
-
-Fix this by moving the call to of_changeset_init() from
-init_overlay_changeset() to of_overlay_fdt_apply(), where all other
-early initialization is done.
-
-Fixes: f948d6d8b792bb90 ("of: overlay: avoid race condition between applying multiple overlays")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/4f1d6d74b61cba2599026adb6d1948ae559ce91f.1690533838.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring <robh@kernel.org>
+Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230622-topic-8280scmicc-v1-2-6ef318919ea5@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/overlay.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 7feb643f13707..28b479afd506f 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -752,8 +752,6 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs)
- 	if (!of_node_is_root(ovcs->overlay_root))
- 		pr_debug("%s() ovcs->overlay_root is not root\n", __func__);
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index 1afc960bab5c9..405835ad28bcd 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -396,6 +396,7 @@ CLUSTER_SLEEP_0: cluster-sleep-0 {
+ 	firmware {
+ 		scm: scm {
+ 			compatible = "qcom,scm-sc8280xp", "qcom,scm";
++			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
+ 		};
+ 	};
  
--	of_changeset_init(&ovcs->cset);
--
- 	cnt = 0;
- 
- 	/* fragment nodes */
-@@ -1013,6 +1011,7 @@ int of_overlay_fdt_apply(const void *overlay_fdt, u32 overlay_fdt_size,
- 
- 	INIT_LIST_HEAD(&ovcs->ovcs_list);
- 	list_add_tail(&ovcs->ovcs_list, &ovcs_list);
-+	of_changeset_init(&ovcs->cset);
- 
- 	/*
- 	 * Must create permanent copy of FDT because of_fdt_unflatten_tree()
 -- 
 2.40.1
 
