@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D762079BAF9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8C779BC4D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238951AbjIKUye (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33990 "EHLO
+        id S1350800AbjIKVl2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239039AbjIKOKN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:13 -0400
+        with ESMTP id S240307AbjIKOlH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6A4CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB89C433C8;
-        Mon, 11 Sep 2023 14:10:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFF7E6
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EF8C433C7;
+        Mon, 11 Sep 2023 14:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441408;
-        bh=3XZ5MeC1BoiLQD32Cnz1knn2ulPi4LGOczQP2gnuDG4=;
+        s=korg; t=1694443262;
+        bh=tY21J9NDDCWjGRnK6vEGmUIdDXd2ULewqYjOugd6Sws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hucRCvXMuBcjMG/ia92TmnWXma+eStH5AoQs/WveRVg3LBTMqN9d8ZASMtmirkwdA
-         jH6MesuFnyqO4sCw6kUhSaL5ySsciOdEw4u5BPXNwXvn5cyOQlIO7fgWpMnJpnal5q
-         Zr5bk8ePW+XbyvF+XaZelqdqCgHpHVTvnxL8N6Ho=
+        b=1GN332B/+xCSMyc+euCAN/1iiNLdnH7NuXNewb35aDt+IxpHHwp8auUuL0YEf98Xj
+         Mi8993LC/0cXViRssNT0q2euhggL80OodakCvBmsQxDlYA7qceR98PfJolxEN+4ir1
+         RWXX0rXU3HxamQ9+UqSg3Et/7OD25hXiFjr95Dm0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 376/739] clk: qcom: gpucc-sm6350: Introduce index-based clk lookup
+Subject: [PATCH 6.4 316/737] arm64: dts: qcom: pm660l: Add missing short interrupt
 Date:   Mon, 11 Sep 2023 15:42:55 +0200
-Message-ID: <20230911134701.669100111@linuxfoundation.org>
+Message-ID: <20230911134659.390141865@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,90 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit f6f89d194e4ddcfe197ac8a05ed4161f642a5c68 ]
+[ Upstream commit 9a4ac09db3c7413e334b4abd6b2f6de8930dd781 ]
 
-Add the nowadays-prefered and marginally faster way of looking up parent
-clocks in the device tree. It also allows for clock-names-independent
-operation, so long as the order (which is enforced by schema) is kept.
+Add the missing short interrupt. This fixes the schema warning:
 
+wled@d800: interrupt-names: ['ovp'] is too short
+
+Fixes: 7b56a804e58b ("arm64: dts: qcom: pm660l: Add WLED support")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230315-topic-lagoon_gpu-v2-1-afcdfb18bb13@linaro.org
+Link: https://lore.kernel.org/r/20230626-topic-bindingsfixups-v1-4-254ae8642e69@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 743913b343a3 ("clk: qcom: gpucc-sm6350: Fix clock source names")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sm6350.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/pm660l.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sm6350.c b/drivers/clk/qcom/gpucc-sm6350.c
-index ef15185a99c31..a9887d1f0ed71 100644
---- a/drivers/clk/qcom/gpucc-sm6350.c
-+++ b/drivers/clk/qcom/gpucc-sm6350.c
-@@ -24,6 +24,12 @@
- #define CX_GMU_CBCR_WAKE_MASK		0xF
- #define CX_GMU_CBCR_WAKE_SHIFT		8
+diff --git a/arch/arm64/boot/dts/qcom/pm660l.dtsi b/arch/arm64/boot/dts/qcom/pm660l.dtsi
+index 87b71b7205b85..6fdbf507c262a 100644
+--- a/arch/arm64/boot/dts/qcom/pm660l.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm660l.dtsi
+@@ -74,8 +74,9 @@ pm660l_lpg: pwm {
+ 		pm660l_wled: leds@d800 {
+ 			compatible = "qcom,pm660l-wled";
+ 			reg = <0xd800>, <0xd900>;
+-			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "ovp";
++			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
++				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "ovp", "short";
+ 			label = "backlight";
  
-+enum {
-+	DT_BI_TCXO,
-+	DT_GPLL0_OUT_MAIN,
-+	DT_GPLL0_OUT_MAIN_DIV,
-+};
-+
- enum {
- 	P_BI_TCXO,
- 	P_GPLL0_OUT_MAIN,
-@@ -61,6 +67,7 @@ static struct clk_alpha_pll gpu_cc_pll0 = {
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gpu_cc_pll0",
- 			.parent_data =  &(const struct clk_parent_data){
-+				.index = DT_BI_TCXO,
- 				.fw_name = "bi_tcxo",
- 			},
- 			.num_parents = 1,
-@@ -104,6 +111,7 @@ static struct clk_alpha_pll gpu_cc_pll1 = {
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gpu_cc_pll1",
- 			.parent_data =  &(const struct clk_parent_data){
-+				.index = DT_BI_TCXO,
- 				.fw_name = "bi_tcxo",
- 			},
- 			.num_parents = 1,
-@@ -121,11 +129,11 @@ static const struct parent_map gpu_cc_parent_map_0[] = {
- };
- 
- static const struct clk_parent_data gpu_cc_parent_data_0[] = {
--	{ .fw_name = "bi_tcxo" },
-+	{ .index = DT_BI_TCXO, .fw_name = "bi_tcxo" },
- 	{ .hw = &gpu_cc_pll0.clkr.hw },
- 	{ .hw = &gpu_cc_pll1.clkr.hw },
--	{ .fw_name = "gcc_gpu_gpll0_clk" },
--	{ .fw_name = "gcc_gpu_gpll0_div_clk" },
-+	{ .index = DT_GPLL0_OUT_MAIN, .fw_name = "gcc_gpu_gpll0_clk" },
-+	{ .index = DT_GPLL0_OUT_MAIN_DIV, .fw_name = "gcc_gpu_gpll0_div_clk" },
- };
- 
- static const struct parent_map gpu_cc_parent_map_1[] = {
-@@ -138,12 +146,12 @@ static const struct parent_map gpu_cc_parent_map_1[] = {
- };
- 
- static const struct clk_parent_data gpu_cc_parent_data_1[] = {
--	{ .fw_name = "bi_tcxo" },
-+	{ .index = DT_BI_TCXO, .fw_name = "bi_tcxo" },
- 	{ .hw = &crc_div.hw },
- 	{ .hw = &gpu_cc_pll0.clkr.hw },
- 	{ .hw = &gpu_cc_pll1.clkr.hw },
- 	{ .hw = &gpu_cc_pll1.clkr.hw },
--	{ .fw_name = "gcc_gpu_gpll0_clk" },
-+	{ .index = DT_GPLL0_OUT_MAIN, .fw_name = "gcc_gpu_gpll0_clk" },
- };
- 
- static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src[] = {
+ 			status = "disabled";
 -- 
 2.40.1
 
