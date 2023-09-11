@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF1179BD9C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D95D79B9FE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238879AbjIKUy2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56518 "EHLO
+        id S1345639AbjIKVVn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:21:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239189AbjIKOOF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:05 -0400
+        with ESMTP id S240571AbjIKOrk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA15DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EDEC433C8;
-        Mon, 11 Sep 2023 14:14:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F1BF106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8324C433C8;
+        Mon, 11 Sep 2023 14:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441641;
-        bh=wSj8lRujX1SpSKzf97+2Ies0JHYYMERjS45jKl98/bI=;
+        s=korg; t=1694443656;
+        bh=p9Zf2O6fgobDWE2CcMaGybzEFKcdIl7qxcsVjHSKDXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=btBAGEmamtZaMWC8GF8Cq5K2Mx/xBkZ0vl3mT+IC293ddZJ2abTaWaFB74tnKcRxo
-         U4DC1WvEq1GwFGM84z83aybBZhA6+8zWeRRdB399fs5rQU82i7vyddTAnz2UdF0jkZ
-         V6FuUUgClbhmcKqnXQmgNlxnOBoKcyZCkCZ6eL0U=
+        b=mN0WupwyP8kx1LLQm22XeBb13nDZYVOcs1w/D0+q6IdRIXZ0ZrNwd/91W6vhTW9on
+         c5Yp4fm894qQgHki2IqV5LyuzbfTXga/LVK9JLa3vssDiJKhOePc/C6+8+Xx4AXgVj
+         sAPMRcFwlSJTTWOv163tA1WEHPNnupZ0oy9MQ0bA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Ee Wey Lim <ee.wey.lim@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 484/739] scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()
-Date:   Mon, 11 Sep 2023 15:44:43 +0200
-Message-ID: <20230911134704.657739872@linuxfoundation.org>
+Subject: [PATCH 6.4 425/737] EDAC/igen6: Fix the issue of no error events
+Date:   Mon, 11 Sep 2023 15:44:44 +0200
+Message-ID: <20230911134702.472288650@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit ce51c817008450ef4188471db31639d42d37a5e1 ]
+[ Upstream commit ce53ad81ed36c24aff075f94474adecfabfcf239 ]
 
-The functions iscsi_if_set_param() and iscsi_if_set_host_param() convert an
-nlattr payload to type char* and then call C string handling functions like
-sscanf and kstrdup:
+Current igen6_edac checks for pending errors before the registration
+of the error handler. However, there is a possibility that the error
+occurs during the registration process, leading to unhandled pending
+errors and no future error events. This issue can be reproduced by
+repeatedly injecting errors during the loading of the igen6_edac.
 
-  char *data = (char*)ev + sizeof(*ev);
-  ...
-  sscanf(data, "%d", &value);
+Fix this issue by moving the pending error handler after the registration
+of the error handler, ensuring that no pending errors are left unhandled.
 
-However, since the nlattr is provided by the user-space program and the
-nlmsg skb is allocated with GFP_KERNEL instead of GFP_ZERO flag (see
-netlink_alloc_large_skb() in netlink_sendmsg()), dirty data on the heap can
-lead to an OOB access for those string handling functions.
-
-By investigating how the bug is introduced, we find it is really
-interesting as the old version parsing code starting from commit
-fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up") treated
-the nlattr as integer bytes instead of string and had length check in
-iscsi_copy_param():
-
-  if (ev->u.set_param.len != sizeof(uint32_t))
-    BUG();
-
-But, since the commit a54a52caad4b ("[SCSI] iscsi: fixup set/get param
-functions"), the code treated the nlattr as C string while forgetting to
-add any strlen checks(), opening the possibility of an OOB access.
-
-Fix the potential OOB by adding the strlen() check before accessing the
-buf. If the data passes this check, all low-level set_param handlers can
-safely treat this buf as legal C string.
-
-Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
-Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230723075820.3713119-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Reported-by: Ee Wey Lim <ee.wey.lim@intel.com>
+Tested-by: Ee Wey Lim <ee.wey.lim@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20230725080427.23883-1-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/edac/igen6_edac.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 62b24f1c0232f..3075b2ddf7a69 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3030,6 +3030,10 @@ iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev, u
- 	if (!conn || !session)
- 		return -EINVAL;
+diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
+index 544dd19072eab..1a18693294db4 100644
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -27,7 +27,7 @@
+ #include "edac_mc.h"
+ #include "edac_module.h"
  
-+	/* data will be regarded as NULL-ended string, do length check */
-+	if (strlen(data) > ev->u.set_param.len)
-+		return -EINVAL;
-+
- 	switch (ev->u.set_param.param) {
- 	case ISCSI_PARAM_SESS_RECOVERY_TMO:
- 		sscanf(data, "%d", &value);
-@@ -3203,6 +3207,10 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 		return -ENODEV;
+-#define IGEN6_REVISION	"v2.5"
++#define IGEN6_REVISION	"v2.5.1"
+ 
+ #define EDAC_MOD_STR	"igen6_edac"
+ #define IGEN6_NMI_NAME	"igen6_ibecc"
+@@ -1216,9 +1216,6 @@ static int igen6_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	INIT_WORK(&ecclog_work, ecclog_work_cb);
+ 	init_irq_work(&ecclog_irq_work, ecclog_irq_work_cb);
+ 
+-	/* Check if any pending errors before registering the NMI handler */
+-	ecclog_handler();
+-
+ 	rc = register_err_handler();
+ 	if (rc)
+ 		goto fail3;
+@@ -1230,6 +1227,9 @@ static int igen6_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto fail4;
  	}
  
-+	/* see similar check in iscsi_if_set_param() */
-+	if (strlen(data) > ev->u.set_host_param.len)
-+		return -EINVAL;
++	/* Check if any pending errors before/during the registration of the error handler */
++	ecclog_handler();
 +
- 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
- 					data, ev->u.set_host_param.len);
- 	scsi_host_put(shost);
+ 	igen6_debug_setup();
+ 	return 0;
+ fail4:
 -- 
 2.40.1
 
