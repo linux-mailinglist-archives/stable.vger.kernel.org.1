@@ -2,104 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2EE079AD7B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF7679B086
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350892AbjIKVmG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54900 "EHLO
+        id S1376601AbjIKWUC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242978AbjIKQiy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 12:38:54 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 402C0E0;
-        Mon, 11 Sep 2023 09:38:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694450328; x=1725986328;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CyXiEIA0NDK841I9Ihuf4Iuy+Pl5nH6gQ03aphA8PVQ=;
-  b=a7+DH6HG4f+85MZTZ+qRWAVvLKUUfHqVxd8W3S7D60z92qzYdTRH57pE
-   hkZXcl1uEZ04M6XOU8PErUOdr3zRUsN57hCqI6DCX3S4Y14JyaofHjB9G
-   KBKF3cP2uokE3Md7acpex+vxqPjrg8wrERm9nzWzEpD/VJiiU8O6o2rR9
-   08O6hhjUn0wu7Zkx+y93oyDLIeIgjrhht+mrHbthNNna5/WjxM47MJMQk
-   uOU4y5ASuOZVNVlQz6CKwhpXFkaZDVzqowacHcuJkpoppbLa+nE8j4rLb
-   Vo8z4UCrT9n9m/6h5QzqLd/Mja+nTlgOka9Zrv+eIQYqgP60oHdu+RzKM
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="442137748"
-X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
-   d="scan'208";a="442137748"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 09:10:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="693141455"
-X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
-   d="scan'208";a="693141455"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orsmga003.jf.intel.com with ESMTP; 11 Sep 2023 09:10:26 -0700
-From:   Alexander Lobakin <aleksander.lobakin@intel.com>
-To:     Shuah Khan <shuah@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Cc:     Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        with ESMTP id S243539AbjIKRS1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 13:18:27 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9B31AD;
+        Mon, 11 Sep 2023 10:18:22 -0700 (PDT)
+Date:   Mon, 11 Sep 2023 17:18:19 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1694452700;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=867yLIomPbzGLMNy6s8oxhGFE6oZmpPevaskEwqcT3I=;
+        b=foWTQah0jByvHUUGQGZrfp6+CKSLZo9Nsyahb/IWgTRUxLhjSQ0jANuish83dCbTNoAdLA
+        XqzXoF6OsNJAwNQ3nwx3PJvaQwGcDSquGh6MKQtGuPxq9xWvSqI5McO4mBhl/gjDUqyqFt
+        Tz0n5VeF1xGqwNWiVzXUgD4mbfMzUF/uywFGQOjscrTH82+DKJTC/M2j/b16nAfX2xAlkJ
+        LLSOV6/G7QQedPsd6X+67Lfdxp5luz9LJEGu3CVPQOxDkDj9JoNEEdagP56q6fO+2Zw9hf
+        MGmHnDTxX7RsGvXClW5ZdTOtGkPYh5Fdgx/wu3nkYo12fP9GmimIW254TPtIyQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1694452700;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=867yLIomPbzGLMNy6s8oxhGFE6oZmpPevaskEwqcT3I=;
+        b=6NINBcfWk9RgsXZ4HiQ6NmlGotbL9nxcUy9vK+O72v9gc7Mcp+dd6YZUQi9EFh7c9rUi9e
+        yLD4/mE9DEpcPkBA==
+From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/platform/uv: Use alternate source for socket to
+ node data
+Cc:     Steve Wahl <steve.wahl@hpe.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] tracing/user_events: fix long size check in the ABI selftest
-Date:   Mon, 11 Sep 2023 18:09:35 +0200
-Message-ID: <20230911160935.10720-1-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <169445269945.27769.14010917111299045082.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The current check for 64-bit architecture is double-bugged.
-First of all, %BITS_PER_LONG is not available in the userspace,
-the underscored version from <asm/bitsperlong.h> must be used.
-The following check:
+The following commit has been merged into the x86/urgent branch of tip:
 
- #if BITS_PER_LONG == 0
- #error
- #endif
+Commit-ID:     5290e88ba2c742ca77c5f5b690e5af549cfd8591
+Gitweb:        https://git.kernel.org/tip/5290e88ba2c742ca77c5f5b690e5af549cfd8591
+Author:        Steve Wahl <steve.wahl@hpe.com>
+AuthorDate:    Mon, 07 Aug 2023 09:17:30 -05:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 11 Sep 2023 10:06:22 -07:00
 
-triggers the error in this source file -- the macro is undefined and
-thus is implicitly evaluated to 0.
-Next, %BITS_PER_LONG means "bits", not "bytes". In the Linux kernel,
-it can be 32 or 64, never 8. Given that the tests guarded by that check
-are meant to be run on a 64-bit system, the correct value would be 64.
+x86/platform/uv: Use alternate source for socket to node data
 
-Prefix the macro name and fix the value it's compared to.
+The UV code attempts to build a set of tables to allow it to do
+bidirectional socket<=>node lookups.
 
-Fixes: 60b1af8de8c1 ("tracing/user_events: Add ABI self-test")
-Cc: stable@vger.kernel.org # 6.4+
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+But when nr_cpus is set to a smaller number than actually present, the
+cpu_to_node() mapping information for unused CPUs is not available to
+build_socket_tables(). This results in skipping some nodes or sockets
+when creating the tables and leaving some -1's for later code to trip.
+over, causing oopses.
+
+The problem is that the socket<=>node lookups are created by doing a
+loop over all CPUs, then looking up the CPU's APICID and socket. But
+if a CPU is not present, there is no way to start this lookup.
+
+Instead of looping over all CPUs, take CPUs out of the equation
+entirely. Loop over all APICIDs which are mapped to a valid NUMA node.
+Then just extract the socket-id from the APICID.
+
+This avoid tripping over disabled CPUs.
+
+Fixes: 8a50c5851927 ("x86/platform/uv: UV support for sub-NUMA clustering")
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20230807141730.1117278-1-steve.wahl%40hpe.com
 ---
- tools/testing/selftests/user_events/abi_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/user_events/abi_test.c b/tools/testing/selftests/user_events/abi_test.c
-index 5125c42efe65..4b30461fc741 100644
---- a/tools/testing/selftests/user_events/abi_test.c
-+++ b/tools/testing/selftests/user_events/abi_test.c
-@@ -129,7 +129,7 @@ TEST_F(user, bit_sizes) {
- 	ASSERT_EQ(0, reg_disable(&self->check, 0));
- 	ASSERT_EQ(0, reg_disable(&self->check, 31));
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index d9f5d74..205cee5 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1533,7 +1533,7 @@ static void __init build_socket_tables(void)
+ {
+ 	struct uv_gam_range_entry *gre = uv_gre_table;
+ 	int nums, numn, nump;
+-	int cpu, i, lnid;
++	int i, lnid, apicid;
+ 	int minsock = _min_socket;
+ 	int maxsock = _max_socket;
+ 	int minpnode = _min_pnode;
+@@ -1584,15 +1584,14 @@ static void __init build_socket_tables(void)
  
--#if BITS_PER_LONG == 8
-+#if __BITS_PER_LONG == 64
- 	/* Allow 0-64 bits for 64-bit */
- 	ASSERT_EQ(0, reg_enable(&self->check, sizeof(long), 63));
- 	ASSERT_NE(0, reg_enable(&self->check, sizeof(long), 64));
--- 
-2.41.0
-
+ 	/* Set socket -> node values: */
+ 	lnid = NUMA_NO_NODE;
+-	for_each_possible_cpu(cpu) {
+-		int nid = cpu_to_node(cpu);
+-		int apicid, sockid;
++	for (apicid = 0; apicid < ARRAY_SIZE(__apicid_to_node); apicid++) {
++		int nid = __apicid_to_node[apicid];
++		int sockid;
+ 
+-		if (lnid == nid)
++		if ((nid == NUMA_NO_NODE) || (lnid == nid))
+ 			continue;
+ 		lnid = nid;
+ 
+-		apicid = per_cpu(x86_cpu_to_apicid, cpu);
+ 		sockid = apicid >> uv_cpuid.socketid_shift;
+ 
+ 		if (_socket_to_node[sockid - minsock] == SOCK_EMPTY)
