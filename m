@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 753AD79B56F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F33C79AEA7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjIKUw4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43966 "EHLO
+        id S1377553AbjIKW1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239877AbjIKOaq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:46 -0400
+        with ESMTP id S238532AbjIKN6h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 579A3E50
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A289CC433C7;
-        Mon, 11 Sep 2023 14:30:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382C3CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD87C433C8;
+        Mon, 11 Sep 2023 13:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442642;
-        bh=zdx2+XVy0zBdMGkdkrZA52Yi4rYGjVmJUoGacxhDtl8=;
+        s=korg; t=1694440712;
+        bh=EAXEADVjzjlWffsypqRkfn6h8mG7qOzem1E7FDELiLM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V0L+goZTqFgX5q6EIrYwaM3wHkvlJ9moOs5pI+i7vnkrVkweB+92q3/c7jmzoMqnR
-         Oux5OIwg9f292NLvpZ02XoatgZuoxW2jIJFy3AmJuOIqO3/XVDHZz21Dh0ZK9pvTDE
-         qPCVG7CRpFTb9ekNfZmB3TIZBw+u7zIXuSASLiUQ=
+        b=NlOHi17md0fkwr2oiiejHuzgMbvvdMb0F7urpC7Pt7tuvNnqt/9XzxGBBsCj/UV81
+         8MIPDTii5G12+K4syB8Y7eTxF0Vc7UAjCZQJusMEnO3x1y5bBlk1RZBDOvS/etHrKp
+         tvpdphmUzLj0yj17q67U31jZBS2zfEshZGCPZMdw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        butt3rflyh4ck <butterflyhuangxx@gmail.com>,
-        Edward Shishkin <edward.shishkin@gmail.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 097/737] reiserfs: Check the return value from __getblk()
-Date:   Mon, 11 Sep 2023 15:39:16 +0200
-Message-ID: <20230911134653.220834436@linuxfoundation.org>
+        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 158/739] wifi: mwifiex: Fix missed return in oob checks failed path
+Date:   Mon, 11 Sep 2023 15:39:17 +0200
+Message-ID: <20230911134655.565008283@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox <willy@infradead.org>
+From: Polaris Pi <pinkperfect2021@gmail.com>
 
-[ Upstream commit ba38980add7ffc9e674ada5b4ded4e7d14e76581 ]
+[ Upstream commit 2785851c627f2db05f9271f7f63661b5dbd95c4c ]
 
-__getblk() can return a NULL pointer if we run out of memory or if we
-try to access beyond the end of the device; check it and handle it
-appropriately.
+Add missed return in mwifiex_uap_queue_bridged_pkt() and
+mwifiex_process_rx_packet().
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/lkml/CAFcO6XOacq3hscbXevPQP7sXRoYFz34ZdKPYjmd6k5sZuhGFDw@mail.gmail.com/
-Tested-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") # probably introduced in 2002
-Acked-by: Edward Shishkin <edward.shishkin@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
+Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+Reported-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230810083911.3725248-1-pinkperfect2021@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/reiserfs/journal.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c   | 1 +
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/reiserfs/journal.c b/fs/reiserfs/journal.c
-index 4d11d60f493c1..dd58e0dca5e5a 100644
---- a/fs/reiserfs/journal.c
-+++ b/fs/reiserfs/journal.c
-@@ -2326,7 +2326,7 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	int i, j;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+index f2899d53a43f9..65420ad674167 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+@@ -92,6 +92,7 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 			    skb->len, rx_pkt_off);
+ 		priv->stats.rx_dropped++;
+ 		dev_kfree_skb_any(skb);
++		return -1;
+ 	}
  
- 	bh = __getblk(dev, block, bufsize);
--	if (buffer_uptodate(bh))
-+	if (!bh || buffer_uptodate(bh))
- 		return (bh);
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index 04ff051f5d186..c1b8d41dd7536 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -110,6 +110,7 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
+ 			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
+ 		priv->stats.rx_dropped++;
+ 		dev_kfree_skb_any(skb);
++		return;
+ 	}
  
- 	if (block + BUFNR > max_block) {
-@@ -2336,6 +2336,8 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	j = 1;
- 	for (i = 1; i < blocks; i++) {
- 		bh = __getblk(dev, block + i, bufsize);
-+		if (!bh)
-+			break;
- 		if (buffer_uptodate(bh)) {
- 			brelse(bh);
- 			break;
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
 -- 
 2.40.1
 
