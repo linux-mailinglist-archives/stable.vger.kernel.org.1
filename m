@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EA8979B983
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E35F79BBDC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbjIKWrH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:47:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
+        id S1379369AbjIKWno (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239767AbjIKO2P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:15 -0400
+        with ESMTP id S238417AbjIKN4E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1879F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F5EC433C8;
-        Mon, 11 Sep 2023 14:28:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D093AFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CE1C433C8;
+        Mon, 11 Sep 2023 13:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442490;
-        bh=fJjIL8yiNg4GUXKYGikib+6YMxaQky49UqtDKkMo/1E=;
+        s=korg; t=1694440559;
+        bh=g3SMnFmJ48S6ID680NM+GKKDIJLwHB+72LDt/SJXYPA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xT8CacSYudcOMMRoDpoMSohSttI+Ysl3H7P4CsxIwylt2QuAC6s4c5tKTcVCcJZ1x
-         2KxsIwuHqGGWofZNCn4GrC2gtah1Hz1wBfrat+x1L/1NF4hFWOLCFeeS3ZcoUrNDYj
-         hG/S17wrlHhtEy9fXNu6lRSq4YKLt5zs7z7UEEek=
+        b=0umIqvbtqufx/Z/my0sWKISPX+wIl+VZ5bkZ3UJT+rkzzp1xlYKebd/W10JevVy9I
+         I/V6IgSR6u2O14Dg0I3YD/rE6IHv1mt/7zKr8TPCw5Clt9Aqt6o77hWHzuK3bVOY49
+         Gj17LHfMQ9jt/Dahs+Ffp9CI5qRR2P6mCyblr7CI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jussi Laako <jussi@sonarnerd.net>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 043/737] ALSA: usb-audio: Update for native DSD support quirks
-Date:   Mon, 11 Sep 2023 15:38:22 +0200
-Message-ID: <20230911134651.642991671@linuxfoundation.org>
+        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
+        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 104/739] wifi: mwifiex: fix error recovery in PCIE buffer descriptor management
+Date:   Mon, 11 Sep 2023 15:38:23 +0200
+Message-ID: <20230911134654.004816025@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,138 +50,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jussi Laako <jussi@sonarnerd.net>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit f7fea075edfa085c25eb34c44ceacf3602537f98 ]
+[ Upstream commit 288c63d5cb4667a51a04668b3e2bb0ea499bc5f4 ]
 
-Maintenance patch for native DSD support.
+Add missing 'kfree_skb()' in 'mwifiex_init_rxq_ring()' and never do
+'kfree(card->rxbd_ring_vbase)' because this area is DMAed and should
+be released with 'dma_free_coherent()'. The latter is performed in
+'mwifiex_pcie_delete_rxbd_ring()', which is now called to recover
+from possible errors in 'mwifiex_pcie_create_rxbd_ring()'. Likewise
+for 'mwifiex_pcie_init_evt_ring()', 'kfree(card->evtbd_ring_vbase)'
+'mwifiex_pcie_delete_evtbd_ring()' and 'mwifiex_pcie_create_rxbd_ring()'.
 
-Remove incorrect T+A device quirks. Move set of device quirks to vendor
-quirks. Add set of missing device and vendor quirks.
-
-Signed-off-by: Jussi Laako <jussi@sonarnerd.net>
-Link: https://lore.kernel.org/r/20230726165645.404311-1-jussi@sonarnerd.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d930faee141b ("mwifiex: add support for Marvell pcie8766 chipset")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230731074334.56463-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/pcie.c | 25 ++++++++++++++-------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index d4a7ffef82194..4667d543f7481 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1874,8 +1874,10 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
+index 9a698a16a8f38..6697132ecc977 100644
+--- a/drivers/net/wireless/marvell/mwifiex/pcie.c
++++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+@@ -189,6 +189,8 @@ static int mwifiex_pcie_probe_of(struct device *dev)
+ }
  
- 	/* XMOS based USB DACs */
- 	switch (chip->usb_id) {
--	case USB_ID(0x1511, 0x0037): /* AURALiC VEGA */
--	case USB_ID(0x21ed, 0xd75a): /* Accuphase DAC-60 option card */
-+	case USB_ID(0x139f, 0x5504): /* Nagra DAC */
-+	case USB_ID(0x20b1, 0x3089): /* Mola-Mola DAC */
-+	case USB_ID(0x2522, 0x0007): /* LH Labs Geek Out 1V5 */
-+	case USB_ID(0x2522, 0x0009): /* LH Labs Geek Pulse X Inifinity 2V0 */
- 	case USB_ID(0x2522, 0x0012): /* LH Labs VI DAC Infinity */
- 	case USB_ID(0x2772, 0x0230): /* Pro-Ject Pre Box S2 Digital */
- 		if (fp->altsetting == 2)
-@@ -1885,14 +1887,18 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
- 	case USB_ID(0x0d8c, 0x0316): /* Hegel HD12 DSD */
- 	case USB_ID(0x10cb, 0x0103): /* The Bit Opus #3; with fp->dsd_raw */
- 	case USB_ID(0x16d0, 0x06b2): /* NuPrime DAC-10 */
--	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
-+	case USB_ID(0x16d0, 0x06b4): /* NuPrime Audio HD-AVP/AVA */
- 	case USB_ID(0x16d0, 0x0733): /* Furutech ADL Stratos */
-+	case USB_ID(0x16d0, 0x09d8): /* NuPrime IDA-8 */
- 	case USB_ID(0x16d0, 0x09db): /* NuPrime Audio DAC-9 */
-+	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
- 	case USB_ID(0x1db5, 0x0003): /* Bryston BDA3 */
-+	case USB_ID(0x20a0, 0x4143): /* WaveIO USB Audio 2.0 */
- 	case USB_ID(0x22e1, 0xca01): /* HDTA Serenade DSD */
- 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
- 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
- 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
-+	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
- 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
- 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
- 	case USB_ID(0x6b42, 0x0042): /* MSB Technology */
-@@ -1902,9 +1908,6 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+ static void mwifiex_pcie_work(struct work_struct *work);
++static int mwifiex_pcie_delete_rxbd_ring(struct mwifiex_adapter *adapter);
++static int mwifiex_pcie_delete_evtbd_ring(struct mwifiex_adapter *adapter);
  
- 	/* Amanero Combo384 USB based DACs with native DSD support */
- 	case USB_ID(0x16d0, 0x071a):  /* Amanero - Combo384 */
--	case USB_ID(0x2ab6, 0x0004):  /* T+A DAC8DSD-V2.0, MP1000E-V2.0, MP2000R-V2.0, MP2500R-V2.0, MP3100HV-V2.0 */
--	case USB_ID(0x2ab6, 0x0005):  /* T+A USB HD Audio 1 */
--	case USB_ID(0x2ab6, 0x0006):  /* T+A USB HD Audio 2 */
- 		if (fp->altsetting == 2) {
- 			switch (le16_to_cpu(chip->dev->descriptor.bcdDevice)) {
- 			case 0x199:
-@@ -2049,6 +2052,9 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_IFACE_DELAY),
- 	DEVICE_FLG(0x0644, 0x805f, /* TEAC Model 12 */
- 		   QUIRK_FLAG_FORCE_IFACE_RESET),
-+	DEVICE_FLG(0x0644, 0x806b, /* TEAC UD-701 */
-+		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY |
-+		   QUIRK_FLAG_IFACE_DELAY),
- 	DEVICE_FLG(0x06f8, 0xb000, /* Hercules DJ Console (Windows Edition) */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x06f8, 0xd002, /* Hercules DJ Console (Macintosh Edition) */
-@@ -2087,6 +2093,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x154e, 0x3006, /* Marantz SA-14S1 */
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
-+	DEVICE_FLG(0x154e, 0x300b, /* Marantz SA-KI RUBY / SA-12 */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x154e, 0x500e, /* Denon DN-X1600 */
- 		   QUIRK_FLAG_IGNORE_CLOCK_SOURCE),
- 	DEVICE_FLG(0x1686, 0x00dd, /* Zoom R16/24 */
-@@ -2131,6 +2139,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x21b4, 0x0230, /* Ayre QB-9 Twenty */
-+		   QUIRK_FLAG_DSD_RAW),
-+	DEVICE_FLG(0x21b4, 0x0232, /* Ayre QX-5 Twenty */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x2522, 0x0007, /* LH Labs Geek Out HD Audio 1V5 */
- 		   QUIRK_FLAG_SET_IFACE_FIRST),
- 	DEVICE_FLG(0x2708, 0x0002, /* Audient iD14 */
-@@ -2173,12 +2185,18 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_VALIDATE_RATES),
- 	VENDOR_FLG(0x1235, /* Focusrite Novation */
- 		   QUIRK_FLAG_VALIDATE_RATES),
-+	VENDOR_FLG(0x1511, /* AURALiC */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x152a, /* Thesycon devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x18d1, /* iBasso devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x1de7, /* Phoenix Audio */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	VENDOR_FLG(0x20b1, /* XMOS based devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x21ed, /* Accuphase Laboratory */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x22d9, /* Oppo */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x23ba, /* Playback Design */
-@@ -2194,10 +2212,14 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x2ab6, /* T+A devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x2d87, /* Cayin device */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3336, /* HEM devices */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3353, /* Khadas devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x35f4, /* MSB Technology */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3842, /* EVGA */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0xc502, /* HiBy devices */
+ static int
+ mwifiex_map_pci_memory(struct mwifiex_adapter *adapter, struct sk_buff *skb,
+@@ -792,14 +794,15 @@ static int mwifiex_init_rxq_ring(struct mwifiex_adapter *adapter)
+ 		if (!skb) {
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "Unable to allocate skb for RX ring.\n");
+-			kfree(card->rxbd_ring_vbase);
+ 			return -ENOMEM;
+ 		}
+ 
+ 		if (mwifiex_map_pci_memory(adapter, skb,
+ 					   MWIFIEX_RX_DATA_BUF_SIZE,
+-					   DMA_FROM_DEVICE))
+-			return -1;
++					   DMA_FROM_DEVICE)) {
++			kfree_skb(skb);
++			return -ENOMEM;
++		}
+ 
+ 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
+ 
+@@ -849,7 +852,6 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
+ 		if (!skb) {
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "Unable to allocate skb for EVENT buf.\n");
+-			kfree(card->evtbd_ring_vbase);
+ 			return -ENOMEM;
+ 		}
+ 		skb_put(skb, MAX_EVENT_SIZE);
+@@ -857,8 +859,7 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
+ 		if (mwifiex_map_pci_memory(adapter, skb, MAX_EVENT_SIZE,
+ 					   DMA_FROM_DEVICE)) {
+ 			kfree_skb(skb);
+-			kfree(card->evtbd_ring_vbase);
+-			return -1;
++			return -ENOMEM;
+ 		}
+ 
+ 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
+@@ -1058,6 +1059,7 @@ static int mwifiex_pcie_delete_txbd_ring(struct mwifiex_adapter *adapter)
+  */
+ static int mwifiex_pcie_create_rxbd_ring(struct mwifiex_adapter *adapter)
+ {
++	int ret;
+ 	struct pcie_service_card *card = adapter->card;
+ 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
+ 
+@@ -1096,7 +1098,10 @@ static int mwifiex_pcie_create_rxbd_ring(struct mwifiex_adapter *adapter)
+ 		    (u32)((u64)card->rxbd_ring_pbase >> 32),
+ 		    card->rxbd_ring_size);
+ 
+-	return mwifiex_init_rxq_ring(adapter);
++	ret = mwifiex_init_rxq_ring(adapter);
++	if (ret)
++		mwifiex_pcie_delete_rxbd_ring(adapter);
++	return ret;
+ }
+ 
+ /*
+@@ -1127,6 +1132,7 @@ static int mwifiex_pcie_delete_rxbd_ring(struct mwifiex_adapter *adapter)
+  */
+ static int mwifiex_pcie_create_evtbd_ring(struct mwifiex_adapter *adapter)
+ {
++	int ret;
+ 	struct pcie_service_card *card = adapter->card;
+ 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
+ 
+@@ -1161,7 +1167,10 @@ static int mwifiex_pcie_create_evtbd_ring(struct mwifiex_adapter *adapter)
+ 		    (u32)((u64)card->evtbd_ring_pbase >> 32),
+ 		    card->evtbd_ring_size);
+ 
+-	return mwifiex_pcie_init_evt_ring(adapter);
++	ret = mwifiex_pcie_init_evt_ring(adapter);
++	if (ret)
++		mwifiex_pcie_delete_evtbd_ring(adapter);
++	return ret;
+ }
+ 
+ /*
 -- 
 2.40.1
 
