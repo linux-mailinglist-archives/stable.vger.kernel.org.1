@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C6A79BA2C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4854779BD96
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243529AbjIKWGW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:06:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
+        id S231234AbjIKWrG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:47:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238848AbjIKOGE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:04 -0400
+        with ESMTP id S241251AbjIKPFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA32ACF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A763C433C8;
-        Mon, 11 Sep 2023 14:05:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB55125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15091C433C8;
+        Mon, 11 Sep 2023 15:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441159;
-        bh=hxilh9q+EWJNqjIbr5YG6Th/wpgWc5gg/NDgsBGix5k=;
+        s=korg; t=1694444699;
+        bh=cLBGI8Sf5PlK1kJeVdM/ugGG3QXO0yTUX61UB58JAZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n3lKbOuBk9qwAueTCJLWBfZ4ysgoM3tFpId8b+Bs08S6WRUOUUgurlTzjTf4jNY/j
-         wnfTSPyG5B+wjJcqiehepQl1vxBZlAmpK2layqApDSRDecdmERJsYu9wcb7fR/b26f
-         MV9r6pgXqAW8HJHRukPNzC23cvxNmAQ3GSCrKZWY=
+        b=Mw8iONCDfUmpKSDaYO8Kg4EDnDj7Xd/NbCD6L5IHdAwmKXt4WSqTxxiuwFsklREHf
+         CKqObDb5fi1R4IFEpeGT+vgsWrOZoTO0vROno6cLyzDMToi1KT/ay4p5SGMH1tGbGY
+         q9Dt7RfMFvD8YTwS4eDunZBWOw9NOh9g/9EUaJBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 288/739] md/md-bitmap: remove unnecessary local variable in backlog_store()
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 054/600] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
 Date:   Mon, 11 Sep 2023 15:41:27 +0200
-Message-ID: <20230911134659.178264863@linuxfoundation.org>
+Message-ID: <20230911134635.213776343@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,39 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b4d129640f194ffc4cc64c3e97f98ae944c072e8 ]
+[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
 
-Local variable is definied first in the beginning of backlog_store(),
-there is no need to define it again.
+Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
+a backtrace caused by the following field-spanning warning:
 
-Fixes: 8c13ab115b57 ("md/bitmap: don't set max_write_behind if there is no write mostly device")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20230706083727.608914-2-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+memcpy: detected field-spanning write (size 120) of single field
+  "&params_le->channel_list[0]" at
+  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
+
+The driver still works after this warning. The warning was introduced by the
+new field-spanning write checks which were enabled recently.
+
+Fix this by replacing the channel_list[1] declaration at the end of
+the struct with a flexible array declaration.
+
+Most users of struct brcmf_scan_params_le calculate the size to alloc
+using the size of the non flex-array part of the struct + needed extra
+space, so they do not care about sizeof(struct brcmf_scan_params_le).
+
+brcmf_notify_escan_complete() however uses the struct on the stack,
+expecting there to be room for at least 1 entry in the channel-list
+to store the special -1 abort channel-id.
+
+To make this work use an anonymous union with a padding member
+added + the actual channel_list flexible array.
+
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 1ff712889a3b3..697ca41c186c6 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2565,8 +2565,6 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
- 			mddev_destroy_serial_pool(mddev, NULL, false);
- 	} else if (backlog && !mddev->serial_info_pool) {
- 		/* serial_info_pool is needed since backlog is not zero */
--		struct md_rdev *rdev;
--
- 		rdev_for_each(rdev, mddev)
- 			mddev_create_serial_pool(mddev, rdev, false);
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index f518e025d6e46..a8d88aedc4227 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -383,7 +383,12 @@ struct brcmf_scan_params_le {
+ 				 * fixed parameter portion is assumed, otherwise
+ 				 * ssid in the fixed portion is ignored
+ 				 */
+-	__le16 channel_list[1];	/* list of chanspecs */
++	union {
++		__le16 padding;	/* Reserve space for at least 1 entry for abort
++				 * which uses an on stack brcmf_scan_params_le
++				 */
++		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
++	};
+ };
+ 
+ struct brcmf_scan_results {
 -- 
 2.40.1
 
