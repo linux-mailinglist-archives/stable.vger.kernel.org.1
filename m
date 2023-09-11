@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B2479B4B6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73CF179AD9C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350883AbjIKVmA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39382 "EHLO
+        id S241720AbjIKWfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241930AbjIKPSM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:12 -0400
+        with ESMTP id S239336AbjIKOSN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C6E120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFE9C433C7;
-        Mon, 11 Sep 2023 15:18:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FE8DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BA9C433C8;
+        Mon, 11 Sep 2023 14:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445486;
-        bh=wxuq9fR3YYMfHSqC9Bmv1sYjgQsULmSV/fMoILt6cfw=;
+        s=korg; t=1694441888;
+        bh=/p5mMPAY7E+LuZwhJUH8AYOYE72wlgvSW7rnhTJEEQQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zcKLlA12wRLLk25hima6PXDJggQkNY3e8O1YHibqWydv0HpiQLWmPwDhfdK8eg6CD
-         5WromltnRrRgofGRNEWLXwvyMtJLKnu/nUTtde6JUyYXHbUwUiqGO7KzCmlKVBTXND
-         Ukq+88XzaL/eDpNgeDw9gSByLmvOHpkTL2893Mco=
+        b=rocttZmk568jxtizTgGSqQzW8cszPbW+cfUOKxqlzmkAWtS15D5LJvANtdibU3Wcc
+         aRaauy9VmKCzysYlYnx9AdXYo0ZzgCv2YlJjGuEz6wBT06kXpcWc8F+Tbg6yoO/7+d
+         uLNpCdfFN3m67zNGbO0t+x2zI83DivWRaEEkr4Y8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Minjie Du <duminjie@vivo.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 337/600] drivers: clk: keystone: Fix parameter judgment in _of_pll_clk_init()
+Subject: [PATCH 6.5 571/739] dt-bindings: usb: samsung,exynos-dwc3: Fix Exynos5433 compatible
 Date:   Mon, 11 Sep 2023 15:46:10 +0200
-Message-ID: <20230911134643.638446321@linuxfoundation.org>
+Message-ID: <20230911134707.023339106@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjie Du <duminjie@vivo.com>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-[ Upstream commit a995c50db887ef97f3160775aef7d772635a6f6e ]
+[ Upstream commit 26f4f8358d89c0d9972a30abdb3f3a425ef49e38 ]
 
-The function clk_register_pll() may return NULL or an ERR_PTR. Don't
-treat an ERR_PTR as valid.
+The correct compatible for Exynos5433 is "samsung,exynos5433-dwusb3".
+Fix the typo in its usage.
 
-Signed-off-by: Minjie Du <duminjie@vivo.com>
-Link: https://lore.kernel.org/r/20230712102246.10348-1-duminjie@vivo.com
-Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
-[sboyd@kernel.org: Reword commit text]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: 949ea75b7ba4 ("dt-bindings: usb: samsung,exynos-dwc3: convert to dtschema")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230816201123.3530-1-semen.protsenko@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/keystone/pll.c | 2 +-
+ Documentation/devicetree/bindings/usb/samsung,exynos-dwc3.yaml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
-index d59a7621bb204..ee5c72369334f 100644
---- a/drivers/clk/keystone/pll.c
-+++ b/drivers/clk/keystone/pll.c
-@@ -209,7 +209,7 @@ static void __init _of_pll_clk_init(struct device_node *node, bool pllctrl)
- 	}
- 
- 	clk = clk_register_pll(NULL, node->name, parent_name, pll_data);
--	if (clk) {
-+	if (!IS_ERR_OR_NULL(clk)) {
- 		of_clk_add_provider(node, of_clk_src_simple_get, clk);
- 		return;
- 	}
+diff --git a/Documentation/devicetree/bindings/usb/samsung,exynos-dwc3.yaml b/Documentation/devicetree/bindings/usb/samsung,exynos-dwc3.yaml
+index e61badb61b35a..deeed2bca2cdc 100644
+--- a/Documentation/devicetree/bindings/usb/samsung,exynos-dwc3.yaml
++++ b/Documentation/devicetree/bindings/usb/samsung,exynos-dwc3.yaml
+@@ -72,7 +72,7 @@ allOf:
+       properties:
+         compatible:
+           contains:
+-            const: samsung,exynos54333-dwusb3
++            const: samsung,exynos5433-dwusb3
+     then:
+       properties:
+         clocks:
 -- 
 2.40.1
 
