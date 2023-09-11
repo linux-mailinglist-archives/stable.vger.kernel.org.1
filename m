@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF25F79B530
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6B679AD29
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359637AbjIKWSO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:18:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45024 "EHLO
+        id S1355179AbjIKV5W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239736AbjIKO1f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:35 -0400
+        with ESMTP id S239743AbjIKO1s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 496C0F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90013C433C9;
-        Mon, 11 Sep 2023 14:27:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A9EF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB531C433C7;
+        Mon, 11 Sep 2023 14:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442450;
-        bh=rPHbqRO9wR0H4SWhc3W2INuA5NxhuI23NZfMMnfk0YU=;
+        s=korg; t=1694442462;
+        bh=5gnewnyw4jnlnRBMqMSpB2sVF/jo454EytG+XIs5mWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dmchFVpRJo1duCwUnNJDFoftzv5f3iB+T3hZGNQFMDffbdNdYMS/2IEMNF4MhZVTn
-         E/Rhg/K71CJweOqJKvHd+u5RQCVk3BuvCUXGVY1HY64f8UvP9REHJ7GkAN0hEjb690
-         zTUKn+zGRlNEIICeQZthu0CK0HSe+26YvqZzE/C4=
+        b=HLgkol3UokhRxcULVKhs04bx1GUPia4nAxkos5OcGS3wpjn89q4k5LfT/BfqHkkxv
+         xAExKVexil6eZiAVCasnHX3K895yQ6aQ4dM5CCp9HwVbFFGW0PLQazOXTMNdgVni29
+         kk3xxjPA8LSr4RFXSxLJA7unEfhS1NIw6l232APs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Maxim Mikityanskiy <maxtram95@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 030/737] ASoC: rt711-sdca: fix for JD event handling in ClockStop Mode0
-Date:   Mon, 11 Sep 2023 15:38:09 +0200
-Message-ID: <20230911134651.239384449@linuxfoundation.org>
+Subject: [PATCH 6.4 034/737] platform/x86/intel/hid: Add HP Dragonfly G2 to VGBS DMI quirks
+Date:   Mon, 11 Sep 2023 15:38:13 +0200
+Message-ID: <20230911134651.362801535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,46 +54,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 23adeb7056acd4fd866969f4afb91441776cc4f5 ]
+[ Upstream commit 7783e97f8558ad7a4d1748922461bc88483fbcdf ]
 
-When the system suspends, peripheral SDCA interrupts are disabled.
-When system level resume is invoked, the peripheral SDCA interrupts
-should be enabled to handle JD events.
-Enable SDCA interrupts in resume sequence when ClockStop Mode0 is applied.
+HP Elite Dragonfly G2 (a convertible laptop/tablet) has a reliable VGBS
+method. If VGBS is not called on boot, the firmware sends an initial
+0xcd event shortly after calling the BTNL method, but only if the device
+is booted in the laptop mode. However, if the device is booted in the
+tablet mode and VGBS is not called, there is no initial 0xcc event, and
+the input device for SW_TABLET_MODE is not registered up until the user
+turns the device into the laptop mode.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Reported-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20230721090711.128247-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Call VGBS on boot on this device to get the initial state of
+SW_TABLET_MODE in a reliable way.
+
+Tested with BIOS 1.13.1.
+
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://lore.kernel.org/r/20230716183213.64173-1-maxtram95@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt711-sdca-sdw.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/codecs/rt711-sdca-sdw.c b/sound/soc/codecs/rt711-sdca-sdw.c
-index 51f3335343e08..76ed61e47316d 100644
---- a/sound/soc/codecs/rt711-sdca-sdw.c
-+++ b/sound/soc/codecs/rt711-sdca-sdw.c
-@@ -441,8 +441,16 @@ static int __maybe_unused rt711_sdca_dev_resume(struct device *dev)
- 	if (!rt711->first_hw_init)
- 		return 0;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 641f2797406e1..7457ca2b27a60 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -150,6 +150,12 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite Dragonfly G2 Notebook PC"),
++		},
++	},
+ 	{ }
+ };
  
--	if (!slave->unattach_request)
-+	if (!slave->unattach_request) {
-+		if (rt711->disable_irq == true) {
-+			mutex_lock(&rt711->disable_irq_lock);
-+			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK1, SDW_SCP_SDCA_INTMASK_SDCA_0);
-+			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK2, SDW_SCP_SDCA_INTMASK_SDCA_8);
-+			rt711->disable_irq = false;
-+			mutex_unlock(&rt711->disable_irq_lock);
-+		}
- 		goto regmap_sync;
-+	}
- 
- 	time = wait_for_completion_timeout(&slave->initialization_complete,
- 				msecs_to_jiffies(RT711_PROBE_TIMEOUT));
 -- 
 2.40.1
 
