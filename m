@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6580679BD52
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CA4879BAD1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355590AbjIKWBU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
+        id S1359543AbjIKWRi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238878AbjIKOHH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:07 -0400
+        with ESMTP id S241292AbjIKPF5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC75CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863D0C433C8;
-        Mon, 11 Sep 2023 14:07:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87ACF1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADDAC433C8;
+        Mon, 11 Sep 2023 15:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441223;
-        bh=KxW68Ueh3bRI3JzsBdQhuPw61tZ5i21y9ABPMbx9UNk=;
+        s=korg; t=1694444752;
+        bh=zLYoMdwExIzjF44ly5Ga5eyTEPyuvws7G4YZwsESzaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PjvOXdxu6p5/yjgOrl58zs45yPEM+R2IXaug/EVYpNeCB6wLHHNFxzkjsOqmT9kPK
-         M+6WEdk/Od4yWkb4jjmXrHjvLB81wtbLUndyTC8GlmmQ4xb5g9Gkshsje/Y7LKJ2T6
-         NE78ZDs6QMDbsp7uh7wVkIjSEHUyKt20Pps+TvWU=
+        b=1lNR1YgeugL4pcLwG7dwSd+DTjnb0p7SUjLzFNR+Jd/E00RgHrbImirRIyCn1iIKX
+         pXUl/KgUdC2XqeD/9mygiO//k3UEPytgz8jhK/4CJzGt5yQ1tVWaXcR05sRepeA321
+         5IfIAIqZU2drXpCtQ2qRhsJRQvV0AkNQp4qHFa8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 337/739] drm/mediatek: Remove freeing not dynamic allocated memory
+Subject: [PATCH 6.1 103/600] fs: Fix error checking for d_hash_and_lookup()
 Date:   Mon, 11 Sep 2023 15:42:16 +0200
-Message-ID: <20230911134700.515074906@linuxfoundation.org>
+Message-ID: <20230911134636.642156612@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,64 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Wang Ming <machel@vivo.com>
 
-[ Upstream commit 27b9e2ea3f2757da26bb8280e46f7fdbb1acb219 ]
+[ Upstream commit 0d5a4f8f775ff990142cdc810a84eae078589d27 ]
 
-Fixing the coverity issue of:
-mtk_drm_cmdq_pkt_destroy frees address of mtk_crtc->cmdq_handle
+The d_hash_and_lookup() function returns error pointers or NULL.
+Most incorrect error checks were fixed, but the one in int path_pts()
+was forgotten.
 
-So remove the free function.
-
-Fixes: 7627122fd1c0 ("drm/mediatek: Add cmdq_handle in mtk_crtc")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230714094908.13087-2-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: eedf265aa003 ("devpts: Make each mount of devpts an independent filesystem.")
+Signed-off-by: Wang Ming <machel@vivo.com>
+Message-Id: <20230713120555.7025-1-machel@vivo.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-index d40142842f85c..8d44f3df116fa 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-@@ -116,10 +116,9 @@ static int mtk_drm_cmdq_pkt_create(struct cmdq_client *client, struct cmdq_pkt *
- 	dma_addr_t dma_addr;
+diff --git a/fs/namei.c b/fs/namei.c
+index 5b3865ad9d052..4248647f1ab24 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -2859,7 +2859,7 @@ int path_pts(struct path *path)
+ 	dput(path->dentry);
+ 	path->dentry = parent;
+ 	child = d_hash_and_lookup(parent, &this);
+-	if (!child)
++	if (IS_ERR_OR_NULL(child))
+ 		return -ENOENT;
  
- 	pkt->va_base = kzalloc(size, GFP_KERNEL);
--	if (!pkt->va_base) {
--		kfree(pkt);
-+	if (!pkt->va_base)
- 		return -ENOMEM;
--	}
-+
- 	pkt->buf_size = size;
- 	pkt->cl = (void *)client;
- 
-@@ -129,7 +128,6 @@ static int mtk_drm_cmdq_pkt_create(struct cmdq_client *client, struct cmdq_pkt *
- 	if (dma_mapping_error(dev, dma_addr)) {
- 		dev_err(dev, "dma map failed, size=%u\n", (u32)(u64)size);
- 		kfree(pkt->va_base);
--		kfree(pkt);
- 		return -ENOMEM;
- 	}
- 
-@@ -145,7 +143,6 @@ static void mtk_drm_cmdq_pkt_destroy(struct cmdq_pkt *pkt)
- 	dma_unmap_single(client->chan->mbox->dev, pkt->pa_base, pkt->buf_size,
- 			 DMA_TO_DEVICE);
- 	kfree(pkt->va_base);
--	kfree(pkt);
- }
- #endif
- 
+ 	path->dentry = child;
 -- 
 2.40.1
 
