@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A502279BD3E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316BD79C0F4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232169AbjIKWuV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44166 "EHLO
+        id S240338AbjIKVGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240007AbjIKOds (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:48 -0400
+        with ESMTP id S238647AbjIKOBh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FBBCF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A37C433C7;
-        Mon, 11 Sep 2023 14:33:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7272FCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E9AC433C8;
+        Mon, 11 Sep 2023 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442823;
-        bh=Gcfcmk7Rdre/TkDxWB9LhWr7Hqm//P5G9OuPT0M6XMA=;
+        s=korg; t=1694440893;
+        bh=AsBXe/jnuD5L+FPiQjZLa1gV8V5visF1Osd1kf155oY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wvbDsDnQUrXCBWfy3IwiyfVE8/LOE2HmL2qlxBii8Z7I97z1nfFevV9CPCxHOUlVj
-         cnudX3L+vWuykgYlurPwioLcSP/eCBrHHJfoaxQJZ3MbqzVNEOfpqgAqnYNGcPBHWL
-         DDK3PWzOE+DCL4+1OOwZ+iqq2nyI4lnEkdK/Tafc=
+        b=0pg0Xlvf7uDtUAmFZEWbhAxf7l8zzi/Y1VCXFLjVhon+iEYaETLYCrs5BVXGnopMk
+         CkEHxWD7Bfq+ouKXmcE2SN6QTJrpDGSsfV3yS+6OqSCC646Zzyt3Ccvungvr9A7jY3
+         gwo4Rdrn6SsIJbmIr8F0rN/pPfBdmaaxno9ZtJEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 161/737] wifi: mt76: mt7915: rework tx bytes counting when WED is active
-Date:   Mon, 11 Sep 2023 15:40:20 +0200
-Message-ID: <20230911134654.993290292@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 222/739] arm64: dts: qcom: sc8280xp-crd: Correct vreg_misc_3p3 GPIO
+Date:   Mon, 11 Sep 2023 15:40:21 +0200
+Message-ID: <20230911134657.384057055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,148 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit f39d499345dddb8382986fd5a2a0e84a63b1a6d5 ]
+[ Upstream commit 9566b5271f68bdf6e69b7c511850e3fb75cd18be ]
 
-Concurrent binding/non-binding skbs could be handled anywhere which leads
-to mixed byte counting, so switch to use PPDU TxS reporting regardless Tx
-paths when WED is active.
+The vreg_misc_3p3 regulator is controlled by PMC8280_1 GPIO 2, not 1, on
+the CRD.
 
-Fixes: 43eaa3689507 ("wifi: mt76: add PPDU based TxS support for WED device")
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: ccd3517faf18 ("arm64: dts: qcom: sc8280xp: Add reference device")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230620203915.141337-1-quic_bjorande@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mac.c  |  2 --
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  6 ++++
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 30 ++-----------------
- drivers/net/wireless/mediatek/mt76/tx.c       |  9 +++++-
- 4 files changed, 16 insertions(+), 31 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp-crd.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 49b2b1f3ffa87..e415ac5e321f1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -522,8 +522,6 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 		q_idx = wmm_idx * MT76_CONNAC_MAX_WMM_SETS +
- 			mt76_connac_lmac_mapping(skb_get_queue_mapping(skb));
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
+index b566e403d1db2..b21b41a066b62 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
+@@ -167,7 +167,7 @@ vreg_misc_3p3: regulator-misc-3p3 {
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
  
--		/* counting non-offloading skbs */
--		wcid->stats.tx_bytes += skb->len;
- 		/* mt7915 WA only counts WED path */
- 		if (is_mt7915(dev) && mtk_wed_device_active(&dev->mmio.wed))
- 			wcid->stats.tx_packets++;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index ac2049f49bb38..927a98a315ae8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -499,6 +499,12 @@ mt7915_mac_init_band(struct mt7915_dev *dev, u8 band)
- 	set = FIELD_PREP(MT_WTBLOFF_TOP_RSCR_RCPI_MODE, 0) |
- 	      FIELD_PREP(MT_WTBLOFF_TOP_RSCR_RCPI_PARAM, 0x3);
- 	mt76_rmw(dev, MT_WTBLOFF_TOP_RSCR(band), mask, set);
-+
-+	/* MT_TXD5_TX_STATUS_HOST (MPDU format) has higher priority than
-+	 * MT_AGG_ACR_PPDU_TXS2H (PPDU format) even though ACR bit is set.
-+	 */
-+	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
-+		mt76_set(dev, MT_AGG_ACR4(band), MT_AGG_ACR_PPDU_TXS2H);
- }
+-		gpio = <&pmc8280_1_gpios 1 GPIO_ACTIVE_HIGH>;
++		gpio = <&pmc8280_1_gpios 2 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
  
- static void
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 45f3558bf31c1..2fa059af23ded 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -545,8 +545,6 @@ static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- static int mt7915_mmio_wed_offload_enable(struct mtk_wed_device *wed)
- {
- 	struct mt7915_dev *dev;
--	struct mt7915_phy *phy;
--	int ret;
+ 		pinctrl-names = "default";
+@@ -757,7 +757,7 @@ edp_bl_reg_en: edp-bl-reg-en-state {
+ 	};
  
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
- 
-@@ -554,43 +552,19 @@ static int mt7915_mmio_wed_offload_enable(struct mtk_wed_device *wed)
- 	dev->mt76.token_size = wed->wlan.token_start;
- 	spin_unlock_bh(&dev->mt76.token_lock);
- 
--	ret = wait_event_timeout(dev->mt76.tx_wait,
--				 !dev->mt76.wed_token_count, HZ);
--	if (!ret)
--		return -EAGAIN;
--
--	phy = &dev->phy;
--	mt76_set(dev, MT_AGG_ACR4(phy->mt76->band_idx), MT_AGG_ACR_PPDU_TXS2H);
--
--	phy = dev->mt76.phys[MT_BAND1] ? dev->mt76.phys[MT_BAND1]->priv : NULL;
--	if (phy)
--		mt76_set(dev, MT_AGG_ACR4(phy->mt76->band_idx),
--			 MT_AGG_ACR_PPDU_TXS2H);
--
--	return 0;
-+	return !wait_event_timeout(dev->mt76.tx_wait,
-+				   !dev->mt76.wed_token_count, HZ);
- }
- 
- static void mt7915_mmio_wed_offload_disable(struct mtk_wed_device *wed)
- {
- 	struct mt7915_dev *dev;
--	struct mt7915_phy *phy;
- 
- 	dev = container_of(wed, struct mt7915_dev, mt76.mmio.wed);
- 
- 	spin_lock_bh(&dev->mt76.token_lock);
- 	dev->mt76.token_size = MT7915_TOKEN_SIZE;
- 	spin_unlock_bh(&dev->mt76.token_lock);
--
--	/* MT_TXD5_TX_STATUS_HOST (MPDU format) has higher priority than
--	 * MT_AGG_ACR_PPDU_TXS2H (PPDU format) even though ACR bit is set.
--	 */
--	phy = &dev->phy;
--	mt76_clear(dev, MT_AGG_ACR4(phy->mt76->band_idx), MT_AGG_ACR_PPDU_TXS2H);
--
--	phy = dev->mt76.phys[MT_BAND1] ? dev->mt76.phys[MT_BAND1]->priv : NULL;
--	if (phy)
--		mt76_clear(dev, MT_AGG_ACR4(phy->mt76->band_idx),
--			   MT_AGG_ACR_PPDU_TXS2H);
- }
- 
- static void mt7915_mmio_wed_release_rx_buf(struct mtk_wed_device *wed)
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 72b3ec715e47a..e9b9728458a9b 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -121,6 +121,7 @@ int
- mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		       struct sk_buff *skb)
- {
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct mt76_tx_cb *cb = mt76_tx_skb_cb(skb);
- 	int pid;
-@@ -134,8 +135,14 @@ mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		return MT_PACKET_ID_NO_ACK;
- 
- 	if (!(info->flags & (IEEE80211_TX_CTL_REQ_TX_STATUS |
--			     IEEE80211_TX_CTL_RATE_CTRL_PROBE)))
-+			     IEEE80211_TX_CTL_RATE_CTRL_PROBE))) {
-+		if (mtk_wed_device_active(&dev->mmio.wed) &&
-+		    ((info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) ||
-+		     ieee80211_is_data(hdr->frame_control)))
-+			return MT_PACKET_ID_WED;
-+
- 		return MT_PACKET_ID_NO_SKB;
-+	}
- 
- 	spin_lock_bh(&dev->status_lock);
- 
+ 	misc_3p3_reg_en: misc-3p3-reg-en-state {
+-		pins = "gpio1";
++		pins = "gpio2";
+ 		function = "normal";
+ 	};
+ };
 -- 
 2.40.1
 
