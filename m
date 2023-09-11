@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9B2579AE67
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8B179AD36
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345078AbjIKVTW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34870 "EHLO
+        id S1376743AbjIKWUY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238299AbjIKNxf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:35 -0400
+        with ESMTP id S238253AbjIKNwa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51884CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9412FC433C7;
-        Mon, 11 Sep 2023 13:53:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C466FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B96C433C8;
+        Mon, 11 Sep 2023 13:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440411;
-        bh=89CA5l0AobDrkj6Qnrt75EtKU0Nhf8QAgXtGPcbaD9U=;
+        s=korg; t=1694440346;
+        bh=BSOJ9h+sCSu8MUzd+wySrv4cioS4i83j26G23kPqPSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IEKDYsl1zzRDJfzwQyoesqqkMg1cmTql6CeQFchLwKjc411RK2sQqYwOafGsuqJMq
-         BhVNLVBJ8EaH1hflekZXl0/CxszKGCQKLVroXWWom3muvRx0qGfMy1QD9Yaj+SSgkg
-         7TQMq2ibTrD0RABXaCIM8h6Wvw9MOYDo8EiFVyf8=
+        b=Su3xKKKrf8xrR2Mas1UTY+cMl5BoHxqyhkBqaT3edPMC35+fz0aFp77MqReVHwsKw
+         czVAzkYMRvgWmZUtctOITaTr4lhoANcAhFyYR0ZKAmiu7257NLWe5lVxJV7ATy2RVz
+         Is9XPMFbhzitZI5kimMLtszzKluigqKimiGK2+dE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Charlemagne Lasse <charlemagnelasse@gmail.com>,
-        Uros Bizjak <ubizjak@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 025/739] locking/arch: Avoid variable shadowing in local_try_cmpxchg()
-Date:   Mon, 11 Sep 2023 15:37:04 +0200
-Message-ID: <20230911134651.762159183@linuxfoundation.org>
+Subject: [PATCH 6.5 029/739] OPP: Fix potential null ptr dereference in dev_pm_opp_get_required_pstate()
+Date:   Mon, 11 Sep 2023 15:37:08 +0200
+Message-ID: <20230911134651.882937623@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -56,74 +55,55 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit d6b45484c130f4095313ae3edeb4aae662c12fb1 ]
+[ Upstream commit 7ddd8deb1c3c0363a7e14fafb5df26e2089a69a5 ]
 
-Several architectures define arch_try_local_cmpxchg macro using
-internal temporary variables named ___old, __old or _old. Remove
-temporary varible in local_try_cmpxchg to avoid variable shadowing.
+"opp" pointer is dereferenced before the IS_ERR_OR_NULL() check. Fix it by
+removing the dereference to cache opp_table and dereference it directly
+where opp_table is used.
 
-No functional change intended.
+This fixes the following smatch warning:
 
-Fixes: d994f2c8e241 ("locking/arch: Wire up local_try_cmpxchg()")
-Closes: https://lore.kernel.org/lkml/CAFGhKbyxtuk=LoW-E3yLXgcmR93m+Dfo5-u9oQA_YC5Fcy_t9g@mail.gmail.com/
-Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230708090048.63046-1-ubizjak@gmail.com
+drivers/opp/core.c:232 dev_pm_opp_get_required_pstate() warn: variable
+dereferenced before IS_ERR check 'opp' (see line 230)
+
+Fixes: 84cb7ff35fcf ("OPP: pstate is only valid for genpd OPP tables")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/local.h | 4 ++--
- arch/mips/include/asm/local.h      | 4 ++--
- arch/x86/include/asm/local.h       | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/opp/core.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/local.h b/arch/loongarch/include/asm/local.h
-index 83e995b30e472..c49675852bdcd 100644
---- a/arch/loongarch/include/asm/local.h
-+++ b/arch/loongarch/include/asm/local.h
-@@ -63,8 +63,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
- 
- static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 3f46e499d615f..98633ccd170a3 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -227,20 +227,18 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_get_level);
+ unsigned int dev_pm_opp_get_required_pstate(struct dev_pm_opp *opp,
+ 					    unsigned int index)
  {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
+-	struct opp_table *opp_table = opp->opp_table;
+-
+ 	if (IS_ERR_OR_NULL(opp) || !opp->available ||
+-	    index >= opp_table->required_opp_count) {
++	    index >= opp->opp_table->required_opp_count) {
+ 		pr_err("%s: Invalid parameters\n", __func__);
+ 		return 0;
+ 	}
  
- #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
-diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
-index 5daf6fe8e3e9a..e6ae3df0349d2 100644
---- a/arch/mips/include/asm/local.h
-+++ b/arch/mips/include/asm/local.h
-@@ -101,8 +101,8 @@ static __inline__ long local_cmpxchg(local_t *l, long old, long new)
+ 	/* required-opps not fully initialized yet */
+-	if (lazy_linking_pending(opp_table))
++	if (lazy_linking_pending(opp->opp_table))
+ 		return 0;
  
- static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
-diff --git a/arch/x86/include/asm/local.h b/arch/x86/include/asm/local.h
-index 56d4ef604b919..635132a127782 100644
---- a/arch/x86/include/asm/local.h
-+++ b/arch/x86/include/asm/local.h
-@@ -127,8 +127,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
- 
- static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- /* Always has a lock prefix */
+ 	/* The required OPP table must belong to a genpd */
+-	if (unlikely(!opp_table->required_opp_tables[index]->is_genpd)) {
++	if (unlikely(!opp->opp_table->required_opp_tables[index]->is_genpd)) {
+ 		pr_err("%s: Performance state is only valid for genpds.\n", __func__);
+ 		return 0;
+ 	}
 -- 
 2.40.1
 
