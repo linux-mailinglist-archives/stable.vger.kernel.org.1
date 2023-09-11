@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA92379B658
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA8979B983
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240353AbjIKVit (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
+        id S231282AbjIKWrH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:47:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239764AbjIKO2J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:09 -0400
+        with ESMTP id S239767AbjIKO2P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66423F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F58C433C8;
-        Mon, 11 Sep 2023 14:28:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1879F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F5EC433C8;
+        Mon, 11 Sep 2023 14:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442485;
-        bh=5BfHHNYLtBggiQlydorJjJtc9JC/ipUMoktLgPa4sJ8=;
+        s=korg; t=1694442490;
+        bh=fJjIL8yiNg4GUXKYGikib+6YMxaQky49UqtDKkMo/1E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OQa6ymcB4oYD96LUsvob5B90JRU5/glV5WKG2xwS7XHQ8nODWR/GqmwfSAjtmgb1g
-         aO8RyxDmaX7JA/L2dkM7CnFiuayKOgs/lZVwo3ix27J+vxkieKfrOji/hCaIlcxC4M
-         OvRjb9J9/mpnHmgHEoksFANoy+EB44h62jB0ZzJU=
+        b=xT8CacSYudcOMMRoDpoMSohSttI+Ysl3H7P4CsxIwylt2QuAC6s4c5tKTcVCcJZ1x
+         2KxsIwuHqGGWofZNCn4GrC2gtah1Hz1wBfrat+x1L/1NF4hFWOLCFeeS3ZcoUrNDYj
+         hG/S17wrlHhtEy9fXNu6lRSq4YKLt5zs7z7UEEek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Snowberg <eric.snowberg@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 041/737] ovl: Always reevaluate the file signature for IMA
-Date:   Mon, 11 Sep 2023 15:38:20 +0200
-Message-ID: <20230911134651.582204417@linuxfoundation.org>
+        patches@lists.linux.dev, Jussi Laako <jussi@sonarnerd.net>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 043/737] ALSA: usb-audio: Update for native DSD support quirks
+Date:   Mon, 11 Sep 2023 15:38:22 +0200
+Message-ID: <20230911134651.642991671@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,42 +53,134 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Snowberg <eric.snowberg@oracle.com>
+From: Jussi Laako <jussi@sonarnerd.net>
 
-[ Upstream commit 18b44bc5a67275641fb26f2c54ba7eef80ac5950 ]
+[ Upstream commit f7fea075edfa085c25eb34c44ceacf3602537f98 ]
 
-Commit db1d1e8b9867 ("IMA: use vfs_getattr_nosec to get the i_version")
-partially closed an IMA integrity issue when directly modifying a file
-on the lower filesystem.  If the overlay file is first opened by a user
-and later the lower backing file is modified by root, but the extended
-attribute is NOT updated, the signature validation succeeds with the old
-original signature.
+Maintenance patch for native DSD support.
 
-Update the super_block s_iflags to SB_I_IMA_UNVERIFIABLE_SIGNATURE to
-force signature reevaluation on every file access until a fine grained
-solution can be found.
+Remove incorrect T+A device quirks. Move set of device quirks to vendor
+quirks. Add set of missing device and vendor quirks.
 
-Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Jussi Laako <jussi@sonarnerd.net>
+Link: https://lore.kernel.org/r/20230726165645.404311-1-jussi@sonarnerd.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index ae1058fbfb5b2..8c60da7b4afd8 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -2052,7 +2052,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
- 		ovl_trusted_xattr_handlers;
- 	sb->s_fs_info = ofs;
- 	sb->s_flags |= SB_POSIXACL;
--	sb->s_iflags |= SB_I_SKIP_SYNC;
-+	sb->s_iflags |= SB_I_SKIP_SYNC | SB_I_IMA_UNVERIFIABLE_SIGNATURE;
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index d4a7ffef82194..4667d543f7481 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1874,8 +1874,10 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
  
- 	err = -ENOMEM;
- 	root_dentry = ovl_get_root(sb, upperpath.dentry, oe);
+ 	/* XMOS based USB DACs */
+ 	switch (chip->usb_id) {
+-	case USB_ID(0x1511, 0x0037): /* AURALiC VEGA */
+-	case USB_ID(0x21ed, 0xd75a): /* Accuphase DAC-60 option card */
++	case USB_ID(0x139f, 0x5504): /* Nagra DAC */
++	case USB_ID(0x20b1, 0x3089): /* Mola-Mola DAC */
++	case USB_ID(0x2522, 0x0007): /* LH Labs Geek Out 1V5 */
++	case USB_ID(0x2522, 0x0009): /* LH Labs Geek Pulse X Inifinity 2V0 */
+ 	case USB_ID(0x2522, 0x0012): /* LH Labs VI DAC Infinity */
+ 	case USB_ID(0x2772, 0x0230): /* Pro-Ject Pre Box S2 Digital */
+ 		if (fp->altsetting == 2)
+@@ -1885,14 +1887,18 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+ 	case USB_ID(0x0d8c, 0x0316): /* Hegel HD12 DSD */
+ 	case USB_ID(0x10cb, 0x0103): /* The Bit Opus #3; with fp->dsd_raw */
+ 	case USB_ID(0x16d0, 0x06b2): /* NuPrime DAC-10 */
+-	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
++	case USB_ID(0x16d0, 0x06b4): /* NuPrime Audio HD-AVP/AVA */
+ 	case USB_ID(0x16d0, 0x0733): /* Furutech ADL Stratos */
++	case USB_ID(0x16d0, 0x09d8): /* NuPrime IDA-8 */
+ 	case USB_ID(0x16d0, 0x09db): /* NuPrime Audio DAC-9 */
++	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
+ 	case USB_ID(0x1db5, 0x0003): /* Bryston BDA3 */
++	case USB_ID(0x20a0, 0x4143): /* WaveIO USB Audio 2.0 */
+ 	case USB_ID(0x22e1, 0xca01): /* HDTA Serenade DSD */
+ 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
+ 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
+ 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
++	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
+ 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
+ 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
+ 	case USB_ID(0x6b42, 0x0042): /* MSB Technology */
+@@ -1902,9 +1908,6 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+ 
+ 	/* Amanero Combo384 USB based DACs with native DSD support */
+ 	case USB_ID(0x16d0, 0x071a):  /* Amanero - Combo384 */
+-	case USB_ID(0x2ab6, 0x0004):  /* T+A DAC8DSD-V2.0, MP1000E-V2.0, MP2000R-V2.0, MP2500R-V2.0, MP3100HV-V2.0 */
+-	case USB_ID(0x2ab6, 0x0005):  /* T+A USB HD Audio 1 */
+-	case USB_ID(0x2ab6, 0x0006):  /* T+A USB HD Audio 2 */
+ 		if (fp->altsetting == 2) {
+ 			switch (le16_to_cpu(chip->dev->descriptor.bcdDevice)) {
+ 			case 0x199:
+@@ -2049,6 +2052,9 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_IFACE_DELAY),
+ 	DEVICE_FLG(0x0644, 0x805f, /* TEAC Model 12 */
+ 		   QUIRK_FLAG_FORCE_IFACE_RESET),
++	DEVICE_FLG(0x0644, 0x806b, /* TEAC UD-701 */
++		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY |
++		   QUIRK_FLAG_IFACE_DELAY),
+ 	DEVICE_FLG(0x06f8, 0xb000, /* Hercules DJ Console (Windows Edition) */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x06f8, 0xd002, /* Hercules DJ Console (Macintosh Edition) */
+@@ -2087,6 +2093,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
+ 	DEVICE_FLG(0x154e, 0x3006, /* Marantz SA-14S1 */
+ 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
++	DEVICE_FLG(0x154e, 0x300b, /* Marantz SA-KI RUBY / SA-12 */
++		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x154e, 0x500e, /* Denon DN-X1600 */
+ 		   QUIRK_FLAG_IGNORE_CLOCK_SOURCE),
+ 	DEVICE_FLG(0x1686, 0x00dd, /* Zoom R16/24 */
+@@ -2131,6 +2139,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x21b4, 0x0230, /* Ayre QB-9 Twenty */
++		   QUIRK_FLAG_DSD_RAW),
++	DEVICE_FLG(0x21b4, 0x0232, /* Ayre QX-5 Twenty */
++		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2522, 0x0007, /* LH Labs Geek Out HD Audio 1V5 */
+ 		   QUIRK_FLAG_SET_IFACE_FIRST),
+ 	DEVICE_FLG(0x2708, 0x0002, /* Audient iD14 */
+@@ -2173,12 +2185,18 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_VALIDATE_RATES),
+ 	VENDOR_FLG(0x1235, /* Focusrite Novation */
+ 		   QUIRK_FLAG_VALIDATE_RATES),
++	VENDOR_FLG(0x1511, /* AURALiC */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x152a, /* Thesycon devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x18d1, /* iBasso devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x1de7, /* Phoenix Audio */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	VENDOR_FLG(0x20b1, /* XMOS based devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x21ed, /* Accuphase Laboratory */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x22d9, /* Oppo */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x23ba, /* Playback Design */
+@@ -2194,10 +2212,14 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x2ab6, /* T+A devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2d87, /* Cayin device */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3336, /* HEM devices */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3353, /* Khadas devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x35f4, /* MSB Technology */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3842, /* EVGA */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0xc502, /* HiBy devices */
 -- 
 2.40.1
 
