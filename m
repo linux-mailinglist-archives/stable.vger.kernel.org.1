@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADFDD79BF81
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2EF79B6ED
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242851AbjIKWKd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:10:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37684 "EHLO
+        id S1350487AbjIKViv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241738AbjIKPNX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:23 -0400
+        with ESMTP id S239261AbjIKOP6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE157FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43649C433C8;
-        Mon, 11 Sep 2023 15:13:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3AAEDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:15:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486F2C433C9;
+        Mon, 11 Sep 2023 14:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445198;
-        bh=wLAkCjxgKQH0Xh0Y8G83WxFEB6WqErOo53+fs2W9LTk=;
+        s=korg; t=1694441753;
+        bh=7AH5LaGmsJin0v7cq7sxcSToM5LEt5kWImCq3MkXkmc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FEToBKPfffnUTS2ZZtQmZUMT+38ODsDBWQoNn1VzJx6YnnVFdxZdRIt330O0bfp1O
-         bJ4+2bv+9yFUE2C8JMJ6E3ooDQN/Cyl1XNr/MQ9l3nnCvYrWWMG6DRO56bXQO3iSVz
-         nODw8RoZbJNc3sCNx/yrjir8P60RqxTCxBZ/Hq3Q=
+        b=HBLrFUodwv1TvfLmCOGKwyULKEXNOgzZsipgQJQzOpxvuRCjMOYyKqnzi8Pixb8p8
+         x22ZmfpYY0O6AVS3/3Ms5GnEHr/5n14/avrTXaxsG3DuVRq7Wc6pj+pY1M4WdP9n5b
+         B39bBWeA45UEKynmPaIWhuC5I0qbH6xY96MoF3AY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Juergen Gross <jgross@suse.com>,
-        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/600] x86/mm: Fix PAT bit missing from page protection modify mask
-Date:   Mon, 11 Sep 2023 15:44:56 +0200
-Message-ID: <20230911134641.371736529@linuxfoundation.org>
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 498/739] RDMA/irdma: Replace one-element array with flexible-array member
+Date:   Mon, 11 Sep 2023 15:44:57 +0200
+Message-ID: <20230911134705.036729071@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,106 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 548cb932051fb6232ac983ed6673dae7bdf3cf4c ]
+[ Upstream commit 38313c6d2a02c28162e06753b01bd885caf9386d ]
 
-Visible glitches have been observed when running graphics applications on
-Linux under Xen hypervisor.  Those observations have been confirmed with
-failures from kms_pwrite_crc Intel GPU test that verifies data coherency
-of DRM frame buffer objects using hardware CRC checksums calculated by
-display controllers, exposed to userspace via debugfs.  Affected
-processing paths have then been identified with new IGT test variants that
-mmap the objects using different methods and caching modes [1].
+One-element and zero-length arrays are deprecated. So, replace
+one-element array in struct irdma_qvlist_info with flexible-array
+member.
 
-When running as a Xen PV guest, Linux uses Xen provided PAT configuration
-which is different from its native one.  In particular, Xen specific PTE
-encoding of write-combining caching, likely used by graphics applications,
-differs from the Linux default one found among statically defined minimal
-set of supported modes.  Since Xen defines PTE encoding of the WC mode as
-_PAGE_PAT, it no longer belongs to the minimal set, depends on correct
-handling of _PAGE_PAT bit, and can be mismatched with write-back caching.
+A patch for this was sent a while ago[1]. However, it seems that, at
+the time, the changes were partially folded[2][3], and the actual
+flexible-array transformation was omitted. This patch fixes that.
 
-When a user calls mmap() for a DRM buffer object, DRM device specific
-.mmap file operation, called from mmap_region(), takes care of setting PTE
-encoding bits in a vm_page_prot field of an associated virtual memory area
-structure.  Unfortunately, _PAGE_PAT bit is not preserved when the vma's
-.vm_flags are then applied to .vm_page_prot via vm_set_page_prot().  Bits
-to be preserved are determined with _PAGE_CHG_MASK symbol that doesn't
-cover _PAGE_PAT.  As a consequence, WB caching is requested instead of WC
-when running under Xen (also, WP is silently changed to WT, and UC
-downgraded to UC_MINUS).  When running on bare metal, WC is not affected,
-but WP and WT extra modes are unintentionally replaced with WC and UC,
-respectively.
+The only binary difference seen before/after changes is shown below:
 
-WP and WT modes, encoded with _PAGE_PAT bit set, were introduced by commit
-281d4078bec3 ("x86: Make page cache mode a real type").  Care was taken
-to extend _PAGE_CACHE_MASK symbol with that additional bit, but that
-symbol has never been used for identification of bits preserved when
-applying page protection flags.  Support for all cache modes under Xen,
-including the problematic WC mode, was then introduced by commit
-47591df50512 ("xen: Support Xen pv-domains using PAT").
+|  drivers/infiniband/hw/irdma/hw.o
+| @@ -868,7 +868,7 @@
+| drivers/infiniband/hw/irdma/hw.c:484 (discriminator 2)
+|	size += struct_size(iw_qvlist, qv_info, rf->msix_count);
+|      55b:      imul   $0x45c,%rdi,%rdi
+|-     562:      add    $0x10,%rdi
+|+     562:      add    $0x4,%rdi
 
-The issue needs to be fixed by including _PAGE_PAT bit into a bitmask used
-by pgprot_modify() for selecting bits to be preserved.  We can do that
-either internally to pgprot_modify() (as initially proposed), or by making
-_PAGE_PAT a part of _PAGE_CHG_MASK.  If we go for the latter then, since
-_PAGE_PAT is the same as _PAGE_PSE, we need to note that _HPAGE_CHG_MASK
--- a huge pmds' counterpart of _PAGE_CHG_MASK, introduced by commit
-c489f1257b8c ("thp: add pmd_modify"), defined as (_PAGE_CHG_MASK |
-_PAGE_PSE) -- will no longer differ from _PAGE_CHG_MASK.  If such
-modification of _PAGE_CHG_MASK was irrelevant to its users then one might
-wonder why that new _HPAGE_CHG_MASK symbol was introduced instead of
-reusing the existing one with that otherwise irrelevant bit (_PAGE_PSE in
-that case) added.
+which is, of course, expected as it reflects the mistake made
+while folding the patch I've mentioned above.
 
-Add _PAGE_PAT to _PAGE_CHG_MASK and _PAGE_PAT_LARGE to _HPAGE_CHG_MASK for
-symmetry.  Split out common bits from both symbols to a common symbol for
-clarity.
+Worth mentioning is the fact that with this change we save 12 bytes
+of memory, as can be inferred from the diff snapshot above. Notice
+that:
 
-[ dhansen: tweak the solution changelog description ]
+$ pahole -C rdma_qv_info idrivers/infiniband/hw/irdma/hw.o
+struct irdma_qv_info {
+	u32                        v_idx;                /*     0     4 */
+	u16                        ceq_idx;              /*     4     2 */
+	u16                        aeq_idx;              /*     6     2 */
+	u8                         itr_idx;              /*     8     1 */
 
-[1] https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commit/0f0754413f14
+	/* size: 12, cachelines: 1, members: 4 */
+	/* padding: 3 */
+	/* last cacheline: 12 bytes */
+};
 
-Fixes: 281d4078bec3 ("x86: Make page cache mode a real type")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
-Link: https://lore.kernel.org/all/20230710073613.8006-2-janusz.krzysztofik%40linux.intel.com
+Link: https://lore.kernel.org/linux-hardening/20210525230038.GA175516@embeddedor/ [1]
+Link: https://lore.kernel.org/linux-hardening/bf46b428deef4e9e89b0ea1704b1f0e5@intel.com/ [2]
+Link: https://lore.kernel.org/linux-rdma/20210520143809.819-1-shiraz.saleem@intel.com/T/#u [3]
+Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZMpsQrZadBaJGkt4@work
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/pgtable_types.h | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/irdma/main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index aa174fed3a71c..f6116b66f2892 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -125,11 +125,12 @@
-  * instance, and is *not* included in this mask since
-  * pte_modify() does modify it.
-  */
--#define _PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |		\
--			 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |	\
--			 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC |  \
--			 _PAGE_UFFD_WP)
--#define _HPAGE_CHG_MASK (_PAGE_CHG_MASK | _PAGE_PSE)
-+#define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	       \
-+				 _PAGE_SPECIAL | _PAGE_ACCESSED | _PAGE_DIRTY |\
-+				 _PAGE_SOFT_DIRTY | _PAGE_DEVMAP | _PAGE_ENC | \
-+				 _PAGE_UFFD_WP)
-+#define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
-+#define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index 2323962cdeacb..de2f4c0514118 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -239,7 +239,7 @@ struct irdma_qv_info {
  
- /*
-  * The cache modes defined here are used to translate between pure SW usage
+ struct irdma_qvlist_info {
+ 	u32 num_vectors;
+-	struct irdma_qv_info qv_info[1];
++	struct irdma_qv_info qv_info[];
+ };
+ 
+ struct irdma_gen_ops {
 -- 
 2.40.1
 
