@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92E2879BA4D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E6A79BFD0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244661AbjIKVIV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58918 "EHLO
+        id S1351458AbjIKVnM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238604AbjIKOAa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:30 -0400
+        with ESMTP id S239919AbjIKObc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87918CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D289FC433C8;
-        Mon, 11 Sep 2023 14:00:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7448F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC82C433C8;
+        Mon, 11 Sep 2023 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440825;
-        bh=EqH/pao9dQSpXaDobEGtn20IDlYvyM00psYKxTANWxo=;
+        s=korg; t=1694442687;
+        bh=Kfc+XG8HZDVG/6ee8g3qhRr87O82t4guftMiMaPnF9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e7jwsjaXXRynBbusPlZjk77T+FFgIlgr6KuSXUrIP3z2Eq7BjWsa/3mCmkpAwJvW2
-         mYXB8M7Z2wCJWM/02W/UEQJWeRc2nCgevAARLgR1O1mpS6qPBwFHXAVj50exoYFXqV
-         LNiv03dm+QYa1ogBDnsLBBKvKZGKLprhiqWeuZlY=
+        b=jWWOHKbAyPh3CCYy5c7B2IsJXB1A2E5G6JvxGzqnRjelizVKep8DScywXee+ZnBYh
+         boArmzC9LzzUAOo5eIQi6Hbo5gWfie1wgxijG/fyb1JpdVtsCbBmxZjj4ogySuPiR/
+         phv7G1CRyhR8w1I8Sy7G3wvc1Xw15TlNjtOtnEbE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 171/739] Bluetooth: hci_conn: Consolidate code for aborting connections
-Date:   Mon, 11 Sep 2023 15:39:30 +0200
-Message-ID: <20230911134655.968108725@linuxfoundation.org>
+Subject: [PATCH 6.4 112/737] powercap: arm_scmi: Remove recursion while parsing zones
+Date:   Mon, 11 Sep 2023 15:39:31 +0200
+Message-ID: <20230911134653.633343466@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,339 +52,300 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit a13f316e90fdb1fb6df6582e845aa9b3270f3581 ]
+[ Upstream commit 3e767d6850f867cc33ac16ca097350a1d2417982 ]
 
-This consolidates code for aborting connections using
-hci_cmd_sync_queue so it is synchronized with other threads, but
-because of the fact that some commands may block the cmd_sync_queue
-while waiting specific events this attempt to cancel those requests by
-using hci_cmd_sync_cancel.
+Powercap zones can be defined as arranged in a hierarchy of trees and when
+registering a zone with powercap_register_zone(), the kernel powercap
+subsystem expects this to happen starting from the root zones down to the
+leaves; on the other side, de-registration by powercap_deregister_zone()
+must begin from the leaf zones.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 94d9ba9f9888 ("Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync")
+Available SCMI powercap zones are retrieved dynamically from the platform
+at probe time and, while any defined hierarchy between the zones is
+described properly in the zones descriptor, the platform returns the
+availables zones with no particular well-defined order: as a consequence,
+the trees possibly composing the hierarchy of zones have to be somehow
+walked properly to register the retrieved zones from the root.
+
+Currently the ARM SCMI Powercap driver walks the zones using a recursive
+algorithm; this approach, even though correct and tested can lead to kernel
+stack overflow when processing a returned hierarchy of zones composed by
+particularly high trees.
+
+Avoid possible kernel stack overflow by substituting the recursive approach
+with an iterative one supported by a dynamically allocated stack-like data
+structure.
+
+Fixes: b55eef5226b7 ("powercap: arm_scmi: Add SCMI Powercap based driver")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |   2 +-
- net/bluetooth/hci_conn.c         | 154 ++++++-------------------------
- net/bluetooth/hci_sync.c         |  23 +++--
- net/bluetooth/mgmt.c             |  15 +--
- 4 files changed, 47 insertions(+), 147 deletions(-)
+ drivers/powercap/arm_scmi_powercap.c | 159 ++++++++++++++++-----------
+ 1 file changed, 92 insertions(+), 67 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 4b0fd2cf0855a..79183c9eed4d6 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -739,6 +739,7 @@ struct hci_conn {
- 	unsigned long	flags;
+diff --git a/drivers/powercap/arm_scmi_powercap.c b/drivers/powercap/arm_scmi_powercap.c
+index 05d0e516176a5..5d7330280bd83 100644
+--- a/drivers/powercap/arm_scmi_powercap.c
++++ b/drivers/powercap/arm_scmi_powercap.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/powercap.h>
+ #include <linux/scmi_protocol.h>
++#include <linux/slab.h>
  
- 	enum conn_reasons conn_reason;
-+	__u8		abort_reason;
+ #define to_scmi_powercap_zone(z)		\
+ 	container_of(z, struct scmi_powercap_zone, zone)
+@@ -19,6 +20,8 @@
+ static const struct scmi_powercap_proto_ops *powercap_ops;
  
- 	__u32		clock;
- 	__u16		clock_accuracy;
-@@ -758,7 +759,6 @@ struct hci_conn {
- 	struct delayed_work auto_accept_work;
- 	struct delayed_work idle_work;
- 	struct delayed_work le_conn_timeout;
--	struct work_struct  le_scan_cleanup;
+ struct scmi_powercap_zone {
++	bool registered;
++	bool invalid;
+ 	unsigned int height;
+ 	struct device *dev;
+ 	struct scmi_protocol_handle *ph;
+@@ -32,6 +35,7 @@ struct scmi_powercap_root {
+ 	unsigned int num_zones;
+ 	struct scmi_powercap_zone *spzones;
+ 	struct list_head *registered_zones;
++	struct list_head scmi_zones;
+ };
  
- 	struct device	dev;
- 	struct dentry	*debugfs;
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 96a1c6c9d9577..8b5a41229f55c 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -178,57 +178,6 @@ static void hci_conn_cleanup(struct hci_conn *conn)
- 	hci_conn_put(conn);
+ static struct powercap_control_type *scmi_top_pcntrl;
+@@ -255,12 +259,6 @@ static void scmi_powercap_unregister_all_zones(struct scmi_powercap_root *pr)
+ 	}
  }
  
--static void le_scan_cleanup(struct work_struct *work)
+-static inline bool
+-scmi_powercap_is_zone_registered(struct scmi_powercap_zone *spz)
 -{
--	struct hci_conn *conn = container_of(work, struct hci_conn,
--					     le_scan_cleanup);
--	struct hci_dev *hdev = conn->hdev;
--	struct hci_conn *c = NULL;
--
--	BT_DBG("%s hcon %p", hdev->name, conn);
--
--	hci_dev_lock(hdev);
--
--	/* Check that the hci_conn is still around */
--	rcu_read_lock();
--	list_for_each_entry_rcu(c, &hdev->conn_hash.list, list) {
--		if (c == conn)
--			break;
--	}
--	rcu_read_unlock();
--
--	if (c == conn) {
--		hci_connect_le_scan_cleanup(conn, 0x00);
--		hci_conn_cleanup(conn);
--	}
--
--	hci_dev_unlock(hdev);
--	hci_dev_put(hdev);
--	hci_conn_put(conn);
+-	return !list_empty(&spz->node);
 -}
 -
--static void hci_connect_le_scan_remove(struct hci_conn *conn)
--{
--	BT_DBG("%s hcon %p", conn->hdev->name, conn);
--
--	/* We can't call hci_conn_del/hci_conn_cleanup here since that
--	 * could deadlock with another hci_conn_del() call that's holding
--	 * hci_dev_lock and doing cancel_delayed_work_sync(&conn->disc_work).
--	 * Instead, grab temporary extra references to the hci_dev and
--	 * hci_conn and perform the necessary cleanup in a separate work
--	 * callback.
--	 */
--
--	hci_dev_hold(conn->hdev);
--	hci_conn_get(conn);
--
--	/* Even though we hold a reference to the hdev, many other
--	 * things might get cleaned up meanwhile, including the hdev's
--	 * own workqueue, so we can't use that for scheduling.
--	 */
--	schedule_work(&conn->le_scan_cleanup);
--}
--
- static void hci_acl_create_connection(struct hci_conn *conn)
+ static inline unsigned int
+ scmi_powercap_get_zone_height(struct scmi_powercap_zone *spz)
  {
- 	struct hci_dev *hdev = conn->hdev;
-@@ -679,13 +628,6 @@ static void hci_conn_timeout(struct work_struct *work)
- 	if (refcnt > 0)
- 		return;
- 
--	/* LE connections in scanning state need special handling */
--	if (conn->state == BT_CONNECT && conn->type == LE_LINK &&
--	    test_bit(HCI_CONN_SCANNING, &conn->flags)) {
--		hci_connect_le_scan_remove(conn);
--		return;
--	}
--
- 	hci_abort_conn(conn, hci_proto_disconn_ind(conn));
+@@ -279,11 +277,46 @@ scmi_powercap_get_parent_zone(struct scmi_powercap_zone *spz)
+ 	return &spz->spzones[spz->info->parent_id];
  }
  
-@@ -1086,7 +1028,6 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 	INIT_DELAYED_WORK(&conn->auto_accept_work, hci_conn_auto_accept);
- 	INIT_DELAYED_WORK(&conn->idle_work, hci_conn_idle);
- 	INIT_DELAYED_WORK(&conn->le_conn_timeout, le_conn_timeout);
--	INIT_WORK(&conn->le_scan_cleanup, le_scan_cleanup);
- 
- 	atomic_set(&conn->refcnt, 0);
- 
-@@ -2885,81 +2826,46 @@ u32 hci_conn_get_phy(struct hci_conn *conn)
- 	return phys;
- }
- 
--int hci_abort_conn(struct hci_conn *conn, u8 reason)
-+static int abort_conn_sync(struct hci_dev *hdev, void *data)
- {
--	int r = 0;
-+	struct hci_conn *conn;
-+	u16 handle = PTR_ERR(data);
- 
--	if (test_and_set_bit(HCI_CONN_CANCEL, &conn->flags))
-+	conn = hci_conn_hash_lookup_handle(hdev, handle);
-+	if (!conn)
- 		return 0;
- 
--	switch (conn->state) {
--	case BT_CONNECTED:
--	case BT_CONFIG:
--		if (conn->type == AMP_LINK) {
--			struct hci_cp_disconn_phy_link cp;
-+	return hci_abort_conn_sync(hdev, conn, conn->abort_reason);
-+}
- 
--			cp.phy_handle = HCI_PHY_HANDLE(conn->handle);
--			cp.reason = reason;
--			r = hci_send_cmd(conn->hdev, HCI_OP_DISCONN_PHY_LINK,
--					 sizeof(cp), &cp);
--		} else {
--			struct hci_cp_disconnect dc;
-+int hci_abort_conn(struct hci_conn *conn, u8 reason)
++static int scmi_powercap_register_zone(struct scmi_powercap_root *pr,
++				       struct scmi_powercap_zone *spz,
++				       struct scmi_powercap_zone *parent)
 +{
-+	struct hci_dev *hdev = conn->hdev;
- 
--			dc.handle = cpu_to_le16(conn->handle);
--			dc.reason = reason;
--			r = hci_send_cmd(conn->hdev, HCI_OP_DISCONNECT,
--					 sizeof(dc), &dc);
--		}
-+	/* If abort_reason has already been set it means the connection is
-+	 * already being aborted so don't attempt to overwrite it.
-+	 */
-+	if (conn->abort_reason)
-+		return 0;
- 
--		conn->state = BT_DISCONN;
-+	bt_dev_dbg(hdev, "handle 0x%2.2x reason 0x%2.2x", conn->handle, reason);
- 
--		break;
--	case BT_CONNECT:
--		if (conn->type == LE_LINK) {
--			if (test_bit(HCI_CONN_SCANNING, &conn->flags))
--				break;
--			r = hci_send_cmd(conn->hdev,
--					 HCI_OP_LE_CREATE_CONN_CANCEL, 0, NULL);
--		} else if (conn->type == ACL_LINK) {
--			if (conn->hdev->hci_ver < BLUETOOTH_VER_1_2)
--				break;
--			r = hci_send_cmd(conn->hdev,
--					 HCI_OP_CREATE_CONN_CANCEL,
--					 6, &conn->dst);
--		}
--		break;
--	case BT_CONNECT2:
--		if (conn->type == ACL_LINK) {
--			struct hci_cp_reject_conn_req rej;
++	int ret = 0;
++	struct powercap_zone *z;
++
++	if (spz->invalid) {
++		list_del(&spz->node);
++		return -EINVAL;
++	}
++
++	z = powercap_register_zone(&spz->zone, scmi_top_pcntrl, spz->info->name,
++				   parent ? &parent->zone : NULL,
++				   &zone_ops, 1, &constraint_ops);
++	if (!IS_ERR(z)) {
++		spz->height = scmi_powercap_get_zone_height(spz);
++		spz->registered = true;
++		list_move(&spz->node, &pr->registered_zones[spz->height]);
++		dev_dbg(spz->dev, "Registered node %s - parent %s - height:%d\n",
++			spz->info->name, parent ? parent->info->name : "ROOT",
++			spz->height);
++	} else {
++		list_del(&spz->node);
++		ret = PTR_ERR(z);
++		dev_err(spz->dev,
++			"Error registering node:%s - parent:%s - h:%d - ret:%d\n",
++			spz->info->name,
++			parent ? parent->info->name : "ROOT",
++			spz->height, ret);
++	}
++
++	return ret;
++}
++
+ /**
+- * scmi_powercap_register_zone  - Register an SCMI powercap zone recursively
++ * scmi_zones_register- Register SCMI powercap zones starting from parent zones
+  *
++ * @dev: A reference to the SCMI device
+  * @pr: A reference to the root powercap zones descriptors
+- * @spz: A reference to the SCMI powercap zone to register
+  *
+  * When registering SCMI powercap zones with the powercap framework we should
+  * take care to always register zones starting from the root ones and to
+@@ -293,10 +326,10 @@ scmi_powercap_get_parent_zone(struct scmi_powercap_zone *spz)
+  * zones provided by the SCMI platform firmware is built to comply with such
+  * requirement.
+  *
+- * This function, given an SCMI powercap zone to register, takes care to walk
+- * the SCMI powercap zones tree up to the root looking recursively for
+- * unregistered parent zones before registering the provided zone; at the same
+- * time each registered zone height in such a tree is accounted for and each
++ * This function, given the set of SCMI powercap zones to register, takes care
++ * to walk the SCMI powercap zones trees up to the root registering any
++ * unregistered parent zone before registering the child zones; at the same
++ * time each registered-zone height in such a tree is accounted for and each
+  * zone, once registered, is stored in the @registered_zones array that is
+  * indexed by zone height: this way will be trivial, at unregister time, to walk
+  * the @registered_zones array backward and unregister all the zones starting
+@@ -314,57 +347,55 @@ scmi_powercap_get_parent_zone(struct scmi_powercap_zone *spz)
+  *
+  * Return: 0 on Success
+  */
+-static int scmi_powercap_register_zone(struct scmi_powercap_root *pr,
+-				       struct scmi_powercap_zone *spz)
++static int scmi_zones_register(struct device *dev,
++			       struct scmi_powercap_root *pr)
+ {
+ 	int ret = 0;
+-	struct scmi_powercap_zone *parent;
 -
--			bacpy(&rej.bdaddr, &conn->dst);
--			rej.reason = reason;
--
--			r = hci_send_cmd(conn->hdev,
--					 HCI_OP_REJECT_CONN_REQ,
--					 sizeof(rej), &rej);
--		} else if (conn->type == SCO_LINK || conn->type == ESCO_LINK) {
--			struct hci_cp_reject_sync_conn_req rej;
--
--			bacpy(&rej.bdaddr, &conn->dst);
--
--			/* SCO rejection has its own limited set of
--			 * allowed error values (0x0D-0x0F) which isn't
--			 * compatible with most values passed to this
--			 * function. To be safe hard-code one of the
--			 * values that's suitable for SCO.
--			 */
--			rej.reason = HCI_ERROR_REJ_LIMITED_RESOURCES;
-+	conn->abort_reason = reason;
+-	if (!spz->info)
+-		return ret;
++	unsigned int sp = 0, reg_zones = 0;
++	struct scmi_powercap_zone *spz, **zones_stack;
  
--			r = hci_send_cmd(conn->hdev,
--					 HCI_OP_REJECT_SYNC_CONN_REQ,
--					 sizeof(rej), &rej);
-+	/* If the connection is pending check the command opcode since that
-+	 * might be blocking on hci_cmd_sync_work while waiting its respective
-+	 * event so we need to hci_cmd_sync_cancel to cancel it.
-+	 */
-+	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
-+		switch (hci_skb_event(hdev->sent_cmd)) {
-+		case HCI_EV_LE_CONN_COMPLETE:
-+		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
-+		case HCI_EVT_LE_CIS_ESTABLISHED:
-+			hci_cmd_sync_cancel(hdev, -ECANCELED);
-+			break;
+-	parent = scmi_powercap_get_parent_zone(spz);
+-	if (parent && !scmi_powercap_is_zone_registered(parent)) {
+-		/*
+-		 * Bail out if a parent domain was marked as unsupported:
+-		 * only domains participating as leaves can be skipped.
+-		 */
+-		if (!parent->info)
+-			return -ENODEV;
++	zones_stack = kcalloc(pr->num_zones, sizeof(spz), GFP_KERNEL);
++	if (!zones_stack)
++		return -ENOMEM;
+ 
+-		ret = scmi_powercap_register_zone(pr, parent);
+-		if (ret)
+-			return ret;
+-	}
++	spz = list_first_entry_or_null(&pr->scmi_zones,
++				       struct scmi_powercap_zone, node);
++	while (spz) {
++		struct scmi_powercap_zone *parent;
+ 
+-	if (!scmi_powercap_is_zone_registered(spz)) {
+-		struct powercap_zone *z;
+-
+-		z = powercap_register_zone(&spz->zone,
+-					   scmi_top_pcntrl,
+-					   spz->info->name,
+-					   parent ? &parent->zone : NULL,
+-					   &zone_ops, 1, &constraint_ops);
+-		if (!IS_ERR(z)) {
+-			spz->height = scmi_powercap_get_zone_height(spz);
+-			list_add(&spz->node,
+-				 &pr->registered_zones[spz->height]);
+-			dev_dbg(spz->dev,
+-				"Registered node %s - parent %s - height:%d\n",
+-				spz->info->name,
+-				parent ? parent->info->name : "ROOT",
+-				spz->height);
+-			ret = 0;
++		parent = scmi_powercap_get_parent_zone(spz);
++		if (parent && !parent->registered) {
++			zones_stack[sp++] = spz;
++			spz = parent;
+ 		} else {
+-			ret = PTR_ERR(z);
+-			dev_err(spz->dev,
+-				"Error registering node:%s - parent:%s - h:%d - ret:%d\n",
+-				 spz->info->name,
+-				 parent ? parent->info->name : "ROOT",
+-				 spz->height, ret);
++			ret = scmi_powercap_register_zone(pr, spz, parent);
++			if (!ret) {
++				reg_zones++;
++			} else if (sp) {
++				/* Failed to register a non-leaf zone.
++				 * Bail-out.
++				 */
++				dev_err(dev,
++					"Failed to register non-leaf zone - ret:%d\n",
++					ret);
++				scmi_powercap_unregister_all_zones(pr);
++				reg_zones = 0;
++				goto out;
++			}
++			/* Pick next zone to process */
++			if (sp)
++				spz = zones_stack[--sp];
++			else
++				spz = list_first_entry_or_null(&pr->scmi_zones,
++							       struct scmi_powercap_zone,
++							       node);
  		}
--		break;
--	default:
--		conn->state = BT_CLOSED;
--		break;
  	}
  
--	return r;
-+	return hci_cmd_sync_queue(hdev, abort_conn_sync, ERR_PTR(conn->handle),
-+				  NULL);
- }
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index b617d1dd247a5..501550cb16b7e 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5269,22 +5269,27 @@ static int hci_disconnect_sync(struct hci_dev *hdev, struct hci_conn *conn,
++out:
++	kfree(zones_stack);
++	dev_info(dev, "Registered %d SCMI Powercap domains !\n", reg_zones);
++
+ 	return ret;
  }
  
- static int hci_le_connect_cancel_sync(struct hci_dev *hdev,
--				      struct hci_conn *conn)
-+				      struct hci_conn *conn, u8 reason)
- {
-+	/* Return reason if scanning since the connection shall probably be
-+	 * cleanup directly.
-+	 */
- 	if (test_bit(HCI_CONN_SCANNING, &conn->flags))
--		return 0;
-+		return reason;
+@@ -408,6 +439,8 @@ static int scmi_powercap_probe(struct scmi_device *sdev)
+ 	if (!pr->registered_zones)
+ 		return -ENOMEM;
  
--	if (test_and_set_bit(HCI_CONN_CANCEL, &conn->flags))
-+	if (conn->role == HCI_ROLE_SLAVE ||
-+	    test_and_set_bit(HCI_CONN_CANCEL, &conn->flags))
- 		return 0;
++	INIT_LIST_HEAD(&pr->scmi_zones);
++
+ 	for (i = 0, spz = pr->spzones; i < pr->num_zones; i++, spz++) {
+ 		/*
+ 		 * Powercap domains are validate by the protocol layer, i.e.
+@@ -422,6 +455,7 @@ static int scmi_powercap_probe(struct scmi_device *sdev)
+ 		INIT_LIST_HEAD(&spz->node);
+ 		INIT_LIST_HEAD(&pr->registered_zones[i]);
  
- 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_CREATE_CONN_CANCEL,
- 				     0, NULL, HCI_CMD_TIMEOUT);
- }
++		list_add_tail(&spz->node, &pr->scmi_zones);
+ 		/*
+ 		 * Forcibly skip powercap domains using an abstract scale.
+ 		 * Note that only leaves domains can be skipped, so this could
+@@ -432,7 +466,7 @@ static int scmi_powercap_probe(struct scmi_device *sdev)
+ 			dev_warn(dev,
+ 				 "Abstract power scale not supported. Skip %s.\n",
+ 				 spz->info->name);
+-			spz->info = NULL;
++			spz->invalid = true;
+ 			continue;
+ 		}
+ 	}
+@@ -441,21 +475,12 @@ static int scmi_powercap_probe(struct scmi_device *sdev)
+ 	 * Scan array of retrieved SCMI powercap domains and register them
+ 	 * recursively starting from the root domains.
+ 	 */
+-	for (i = 0, spz = pr->spzones; i < pr->num_zones; i++, spz++) {
+-		ret = scmi_powercap_register_zone(pr, spz);
+-		if (ret) {
+-			dev_err(dev,
+-				"Failed to register powercap zone %s - ret:%d\n",
+-				spz->info->name, ret);
+-			scmi_powercap_unregister_all_zones(pr);
+-			return ret;
+-		}
+-	}
++	ret = scmi_zones_register(dev, pr);
++	if (ret)
++		return ret;
  
--static int hci_connect_cancel_sync(struct hci_dev *hdev, struct hci_conn *conn)
-+static int hci_connect_cancel_sync(struct hci_dev *hdev, struct hci_conn *conn,
-+				   u8 reason)
- {
- 	if (conn->type == LE_LINK)
--		return hci_le_connect_cancel_sync(hdev, conn);
-+		return hci_le_connect_cancel_sync(hdev, conn, reason);
+ 	dev_set_drvdata(dev, pr);
  
- 	if (hdev->hci_ver < BLUETOOTH_VER_1_2)
- 		return 0;
-@@ -5337,9 +5342,11 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- 	case BT_CONFIG:
- 		return hci_disconnect_sync(hdev, conn, reason);
- 	case BT_CONNECT:
--		err = hci_connect_cancel_sync(hdev, conn);
-+		err = hci_connect_cancel_sync(hdev, conn, reason);
- 		/* Cleanup hci_conn object if it cannot be cancelled as it
--		 * likelly means the controller and host stack are out of sync.
-+		 * likelly means the controller and host stack are out of sync
-+		 * or in case of LE it was still scanning so it can be cleanup
-+		 * safely.
- 		 */
- 		if (err) {
- 			hci_dev_lock(hdev);
-@@ -6253,7 +6260,7 @@ int hci_le_create_conn_sync(struct hci_dev *hdev, struct hci_conn *conn)
- 
- done:
- 	if (err == -ETIMEDOUT)
--		hci_le_connect_cancel_sync(hdev, conn);
-+		hci_le_connect_cancel_sync(hdev, conn, 0x00);
- 
- 	/* Re-enable advertising after the connection attempt is finished. */
- 	hci_resume_advertising_sync(hdev);
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index d4498037fadc6..6240b20f020a8 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -3580,18 +3580,6 @@ static int pair_device(struct sock *sk, struct hci_dev *hdev, void *data,
- 	return err;
- }
- 
--static int abort_conn_sync(struct hci_dev *hdev, void *data)
--{
--	struct hci_conn *conn;
--	u16 handle = PTR_ERR(data);
+-	dev_info(dev, "Registered %d SCMI Powercap domains !\n", pr->num_zones);
 -
--	conn = hci_conn_hash_lookup_handle(hdev, handle);
--	if (!conn)
--		return 0;
--
--	return hci_abort_conn_sync(hdev, conn, HCI_ERROR_REMOTE_USER_TERM);
--}
--
- static int cancel_pair_device(struct sock *sk, struct hci_dev *hdev, void *data,
- 			      u16 len)
- {
-@@ -3642,8 +3630,7 @@ static int cancel_pair_device(struct sock *sk, struct hci_dev *hdev, void *data,
- 					      le_addr_type(addr->type));
+ 	return ret;
+ }
  
- 	if (conn->conn_reason == CONN_REASON_PAIR_DEVICE)
--		hci_cmd_sync_queue(hdev, abort_conn_sync, ERR_PTR(conn->handle),
--				   NULL);
-+		hci_abort_conn(conn, HCI_ERROR_REMOTE_USER_TERM);
- 
- unlock:
- 	hci_dev_unlock(hdev);
 -- 
 2.40.1
 
