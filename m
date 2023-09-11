@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AF5D79ACC5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD71479AD50
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345719AbjIKVV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36690 "EHLO
+        id S241231AbjIKWWo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240976AbjIKO6h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:37 -0400
+        with ESMTP id S240977AbjIKO6k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82031B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13089C433C9;
-        Mon, 11 Sep 2023 14:58:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27AE1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05966C433C7;
+        Mon, 11 Sep 2023 14:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444313;
-        bh=uNyCctfAEz3T8EfYVRaj72aliIn7yWUeWe5NOHaSM+Y=;
+        s=korg; t=1694444316;
+        bh=+GeVFJvsIIrkdNUKLw7HBANGQ7zMMpH/WRtNfBoWOAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d2CPaxECdHJYNSkRV/KdhRmgLvmFcSR4Xfx1TaSpyya/SnTo6+xDi5JJl3gpV5Kgs
-         KqIPABIuL++cBzFY/l9RJfuTcT2dCMIWRN2kdATFD6v6V7Af0j6B+gkeNfGuC2WaLk
-         ge5A7Q6fI1RlK92nVTwmxC0UeoErP0qGXY2qaAaw=
+        b=mtXBq9z6mjS7709kXRUw5SmdJBhl6sV3GNgJop+4SweGU007FNYQvfsgTJoaI3O9Y
+         VHJVYSBAeQJPzVp5Li2ZvP4f6PIhzWve6kIEfkGbbbpqF5khVJPk590MM7ZyaulwxC
+         JGr1CGCSRncAj+YWRaScVPuYYuCdCkyXWUXsmOyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 686/737] block: dont add or resize partition on the disk with GENHD_FL_NO_PART
-Date:   Mon, 11 Sep 2023 15:49:05 +0200
-Message-ID: <20230911134709.696492711@linuxfoundation.org>
+        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.4 687/737] procfs: block chmod on /proc/thread-self/comm
+Date:   Mon, 11 Sep 2023 15:49:06 +0200
+Message-ID: <20230911134709.722940736@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -53,38 +53,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-commit 1a721de8489fa559ff4471f73c58bb74ac5580d3 upstream.
+commit ccf61486fe1e1a48e18c638d1813cda77b3c0737 upstream.
 
-Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
-disk_expand_part_tbl() in add_partition(), which means all kinds of
-devices will support extended dynamic `dev_t`.
-However, some devices with GENHD_FL_NO_PART are not expected to add or
-resize partition.
-Fix this by adding check of GENHD_FL_NO_PART before add or resize
-partition.
+Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
+cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
+chmod operations on /proc/thread-self/comm were no longer blocked as
+they are on almost all other procfs files.
 
-Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+A very similar situation with /proc/self/environ was used to as a root
+exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
+correctness issue.
+
+Ref: https://lwn.net/Articles/191954/
+Ref: 6d76fa58b050 ("Don't allow chmod() on the /proc/<pid>/ files")
+Fixes: 1b3044e39a89 ("procfs: fix pthread cross-thread naming if !PR_DUMPABLE")
+Cc: stable@vger.kernel.org # v4.7+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Message-Id: <20230713141001.27046-1-cyphar@cyphar.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/ioctl.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/proc/base.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_d
- 	struct blkpg_partition p;
- 	long long start, length;
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -3583,7 +3583,8 @@ static int proc_tid_comm_permission(stru
+ }
  
-+	if (disk->flags & GENHD_FL_NO_PART)
-+		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+ static const struct inode_operations proc_tid_comm_inode_operations = {
+-		.permission = proc_tid_comm_permission,
++		.setattr	= proc_setattr,
++		.permission	= proc_tid_comm_permission,
+ };
+ 
+ /*
 
 
