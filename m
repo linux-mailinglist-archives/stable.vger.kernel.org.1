@@ -2,157 +2,287 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1024379B941
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 723BE79B87F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354162AbjIKVwo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
+        id S234476AbjIKUvy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243083AbjIKQsq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 12:48:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B671BE3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 09:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694450874;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=SlE5hxD39QAwP7iSa7A3UcuUWfmPcVu6XAYVvHUfNKU=;
-        b=jQJRFw7dlS6CJbiiyVAu3Hm9bh2nhDHvf/3uLiZMNVb9kQsvd0WjSIbxTkDCfcWzHtocdy
-        kVshMD/3Ph/zhmkvwAL9vQbeKwLtc46tO1ibF47lkP4LtTzN8LovcG0hzEqvfZncckWcD0
-        N+a8LEMRS/QTfCm7cqihYdd3dfn29PE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-642-dKd75GJuOlmpkmOBMSDFWw-1; Mon, 11 Sep 2023 12:47:51 -0400
-X-MC-Unique: dKd75GJuOlmpkmOBMSDFWw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D42D3C19371;
-        Mon, 11 Sep 2023 16:47:50 +0000 (UTC)
-Received: from optiplex-fbsd (unknown [10.22.48.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A13D2156702;
-        Mon, 11 Sep 2023 16:47:49 +0000 (UTC)
-Date:   Mon, 11 Sep 2023 12:47:47 -0400
-From:   Rafael Aquini <aquini@redhat.com>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Waiman Long <longman@redhat.com>,
-        Rafael Aquini <raquini@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab_common: fix slab_caches list corruption after
- kmem_cache_destroy()
-Message-ID: <ZP9Es3zK1XCY7i6-@optiplex-fbsd>
-References: <20230908230649.802560-1-aquini@redhat.com>
- <afaa8691-0be9-4574-a87d-aab68c7a49b3@suse.cz>
+        with ESMTP id S243843AbjIKR7M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 13:59:12 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D620E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 10:59:07 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-4009fdc224dso11225e9.1
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 10:59:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1694455146; x=1695059946; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v5d3t9wchAGCfDcXuyC+exyIaodFBWJVCMSu2pi73l0=;
+        b=ECV8PNt3IZUb1qlM51kSHJsTf6Fajl5UIvZgI8dfdM1oF3TSSV6bTOxtKPVeEECgPY
+         BgwKZ0bhQDXnVtxvkBiWVCikR3S1amRfIJm5AL8SbzE3663jvqa9q90HKwQ3rkiPowvl
+         c5GWgxABF9ldG+gRAA7uN/SGUUbewD5Wo6qopWEKnl4Aqrnhdxyq7x9GseWv9/C+Hluv
+         BKjov3+w/1bdYfn4MvVOAfS8H0PMvcRCLK32q8k2+GGxyVaGHX2Suho4cqX5rgM7XBxV
+         9gYIz2zFzTWr06L5oGASITDFAa2eYUQ6inU7xWVmI+4fgQ3IXZnkxm8/GamfDlyZwDW2
+         ZV2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694455146; x=1695059946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v5d3t9wchAGCfDcXuyC+exyIaodFBWJVCMSu2pi73l0=;
+        b=O+pQN9eHyyH03GSnZ7UQi4M7l7vKjyJY85eiowB005RrSZ5V/nAoHPVFCm3yMNNyri
+         xy9v7hrR5YcGVTFK5r7vncUoFV+ARVexYPA+g63hIIXxw31HLt1EKZroinQ+sM/4mAj+
+         ye4lflc3dubDGs51OMu8wVTYpErJbGIHBYJV5vTFd4ggjo1xhN39HYc0c8LWr0sy7dfq
+         fKHGE90IGTObQiW28YahueZU4eiodoFBMwSdunDPfnTrzGMTcAaylJBdecIjESGlYDNT
+         xPX/KIZAIihIOlCABp61/1gWCmAtK0ip5MGN+SZXFRMZi+dqpkKP7/eSeT16KSdWerCy
+         Xa2A==
+X-Gm-Message-State: AOJu0Yw+mK409cP58yUBGwMITDAW1ctSmCC61L2Aqc5Us9Q+FS15be7Q
+        ws9TDpRtCuoVJBAlSMLVg5KNcZnReEpv3rheC9ClHQ==
+X-Google-Smtp-Source: AGHT+IFI/Xiby4nCSZfqef2CmbV7N/OdGjlV40bMjjCMLmugVEIsybhKG6qRrmq03dZDv7qBDVPoZUC/qvRFuaqeYQY=
+X-Received: by 2002:a05:600c:4f08:b0:401:a494:2bbb with SMTP id
+ l8-20020a05600c4f0800b00401a4942bbbmr11606wmq.5.1694455145699; Mon, 11 Sep
+ 2023 10:59:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afaa8691-0be9-4574-a87d-aab68c7a49b3@suse.cz>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <2023090959-mothproof-scarf-6195@gregkh>
+In-Reply-To: <2023090959-mothproof-scarf-6195@gregkh>
+From:   Kalesh Singh <kaleshsingh@google.com>
+Date:   Mon, 11 Sep 2023 10:58:54 -0700
+Message-ID: <CAC_TJvfS3TWr4NtzU+STAeQQio3PcK=r5sp_NbsW2jEffhHUGQ@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] Multi-gen LRU: fix per-zone reclaim"
+ failed to apply to 6.1-stable tree
+To:     gregkh@linuxfoundation.org
+Cc:     akpm@linux-foundation.org, aneesh.kumar@linux.ibm.com,
+        angelogioacchino.delregno@collabora.com, baohua@kernel.org,
+        bgeffon@google.com, heftig@archlinux.org,
+        lecopzer.chen@mediatek.com, matthias.bgg@gmail.com,
+        oleksandr@natalenko.name, quic_charante@quicinc.com,
+        steven@liquorix.net, suleiman@google.com, surenb@google.com,
+        yuzhao@google.com, zhengqi.arch@bytedance.com,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 05:06:15PM +0200, Vlastimil Babka wrote:
-> On 9/9/23 01:06, Rafael Aquini wrote:
-> > After the commit in Fixes:, if a module that created a slab cache does not
-> > release all of its allocated objects before destroying the cache (at rmmod
-> > time), we might end up releasing the kmem_cache object without removing it
-> > from the slab_caches list thus corrupting the list as kmem_cache_destroy()
-> > ignores the return value from shutdown_cache(), which in turn never removes
-> > the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
-> > to release all of the cache's slabs.
-> > 
-> > This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
-> > as after that ill release the system will immediately trip on list_add,
-> > or list_del, assertions similar to the one shown below as soon as another
-> > kmem_cache gets created, or destroyed:
-> > 
-> >   [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
-> >   [ 1041.219165] ------------[ cut here ]------------
-> >   [ 1041.221517] kernel BUG at lib/list_debug.c:62!
-> >   [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-> >   [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-> >   [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-> >   [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
-> > 
-> > Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
-> > is to set slub_debug to poison the released objects and then just run
-> > cat /proc/slabinfo after removing the module that leaks slab objects,
-> > in which case the kernel will panic:
-> > 
-> >   [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
-> >   [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-> >   [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-> >   [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
-> > 
-> > This patch fixes this issue by properly checking shutdown_cache()'s
-> > return value before taking the kmem_cache_release() branch.
-> > 
-> > Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
-> > Signed-off-by: Rafael Aquini <aquini@redhat.com>
-> > Cc: stable@vger.kernel.org
-> 
-> Thanks, added to slab.git. Tweaked the code a bit:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/commit/?h=slab/for-6.6/hotfixes&id=46a9ea6681907a3be6b6b0d43776dccc62cad6cf
+On Sat, Sep 9, 2023 at 6:04=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
 >
+>
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 669281ee7ef731fb5204df9d948669bf32a5e68d
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090959-=
+mothproof-scarf-6195@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+>
+> Possible dependencies:
+>
+> 669281ee7ef7 ("Multi-gen LRU: fix per-zone reclaim")
+> 6df1b2212950 ("mm: multi-gen LRU: rename lrugen->lists[] to lrugen->folio=
+s[]")
 
-Thank you, Vlastimil.
+Hi Greg,
 
- 
-> > ---
-> >  mm/slab_common.c | 13 ++++++++-----
-> >  1 file changed, 8 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/mm/slab_common.c b/mm/slab_common.c
-> > index cd71f9581e67..31e581dc6e85 100644
-> > --- a/mm/slab_common.c
-> > +++ b/mm/slab_common.c
-> > @@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
-> >  
-> >  void kmem_cache_destroy(struct kmem_cache *s)
-> >  {
-> > -	int refcnt;
-> > +	int err;
-> >  	bool rcu_set;
-> >  
-> >  	if (unlikely(!s) || !kasan_check_byte(s))
-> > @@ -490,17 +490,20 @@ void kmem_cache_destroy(struct kmem_cache *s)
-> >  
-> >  	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
-> >  
-> > -	refcnt = --s->refcount;
-> > -	if (refcnt)
-> > +	s->refcount--;
-> > +	if (s->refcount) {
-> > +		err = -EBUSY;
-> >  		goto out_unlock;
-> > +	}
-> >  
-> > -	WARN(shutdown_cache(s),
-> > +	err = shutdown_cache(s);
-> > +	WARN(err,
-> >  	     "%s %s: Slab cache still has objects when called from %pS",
-> >  	     __func__, s->name, (void *)_RET_IP_);
-> >  out_unlock:
-> >  	mutex_unlock(&slab_mutex);
-> >  	cpus_read_unlock();
-> > -	if (!refcnt && !rcu_set)
-> > +	if (!err && !rcu_set)
-> >  		kmem_cache_release(s);
-> >  }
-> >  EXPORT_SYMBOL(kmem_cache_destroy);
-> 
-> 
+Can you apply in this order please:
 
+1) 6df1b2212950 ("mm: multi-gen LRU: rename lrugen->lists[] to
+lrugen->folios[]")
+2) 669281ee7ef7 ("Multi-gen LRU: fix per-zone reclaim")
+
+With the one rename dependency, I've checked that this applies cleanly
+and tested it.
+Or let me know if you prefer I resend both.
+
+Thanks,
+Kalesh
+
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From 669281ee7ef731fb5204df9d948669bf32a5e68d Mon Sep 17 00:00:00 2001
+> From: Kalesh Singh <kaleshsingh@google.com>
+> Date: Tue, 1 Aug 2023 19:56:02 -0700
+> Subject: [PATCH] Multi-gen LRU: fix per-zone reclaim
+>
+> MGLRU has a LRU list for each zone for each type (anon/file) in each
+> generation:
+>
+>         long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
+>
+> The min_seq (oldest generation) can progress independently for each
+> type but the max_seq (youngest generation) is shared for both anon and
+> file. This is to maintain a common frame of reference.
+>
+> In order for eviction to advance the min_seq of a type, all the per-zone
+> lists in the oldest generation of that type must be empty.
+>
+> The eviction logic only considers pages from eligible zones for
+> eviction or promotion.
+>
+>     scan_folios() {
+>         ...
+>         for (zone =3D sc->reclaim_idx; zone >=3D 0; zone--)  {
+>             ...
+>             sort_folio();       // Promote
+>             ...
+>             isolate_folio();    // Evict
+>         }
+>         ...
+>     }
+>
+> Consider the system has the movable zone configured and default 4
+> generations. The current state of the system is as shown below
+> (only illustrating one type for simplicity):
+>
+> Type: ANON
+>
+>         Zone    DMA32     Normal    Movable    Device
+>
+>         Gen 0       0          0        4GB         0
+>
+>         Gen 1       0        1GB        1MB         0
+>
+>         Gen 2     1MB        4GB        1MB         0
+>
+>         Gen 3     1MB        1MB        1MB         0
+>
+> Now consider there is a GFP_KERNEL allocation request (eligible zone
+> index <=3D Normal), evict_folios() will return without doing any work
+> since there are no pages to scan in the eligible zones of the oldest
+> generation. Reclaim won't make progress until triggered from a ZONE_MOVAB=
+LE
+> allocation request; which may not happen soon if there is a lot of free
+> memory in the movable zone. This can lead to OOM kills, although there
+> is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
+> reclaim.
+>
+> This issue is not seen in the conventional active/inactive LRU since
+> there are no per-zone lists.
+>
+> If there are no (not enough) folios to scan in the eligible zones, move
+> folios from ineligible zone (zone_index > reclaim_index) to the next
+> generation. This allows for the progression of min_seq and reclaiming
+> from the next generation (Gen 1).
+>
+> Qualcomm, Mediatek and raspberrypi [1] discovered this issue independentl=
+y.
+>
+> [1] https://github.com/raspberrypi/linux/issues/5395
+>
+> Link: https://lkml.kernel.org/r/20230802025606.346758-1-kaleshsingh@googl=
+e.com
+> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
+> Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabor=
+a.com> [mediatek]
+> Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> Cc: Yu Zhao <yuzhao@google.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Brian Geffon <bgeffon@google.com>
+> Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
+> Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+> Cc: Steven Barrett <steven@liquorix.net>
+> Cc: Suleiman Souhlal <suleiman@google.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 4039620d30fe..489a4fc7d9b1 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4889,7 +4889,8 @@ static int lru_gen_memcg_seg(struct lruvec *lruvec)
+>   *                          the eviction
+>   ***********************************************************************=
+*******/
+>
+> -static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int t=
+ier_idx)
+> +static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struc=
+t scan_control *sc,
+> +                      int tier_idx)
+>  {
+>         bool success;
+>         int gen =3D folio_lru_gen(folio);
+> @@ -4939,6 +4940,13 @@ static bool sort_folio(struct lruvec *lruvec, stru=
+ct folio *folio, int tier_idx)
+>                 return true;
+>         }
+>
+> +       /* ineligible */
+> +       if (zone > sc->reclaim_idx) {
+> +               gen =3D folio_inc_gen(lruvec, folio, false);
+> +               list_move_tail(&folio->lru, &lrugen->folios[gen][type][zo=
+ne]);
+> +               return true;
+> +       }
+> +
+>         /* waiting for writeback */
+>         if (folio_test_locked(folio) || folio_test_writeback(folio) ||
+>             (type =3D=3D LRU_GEN_FILE && folio_test_dirty(folio))) {
+> @@ -4987,7 +4995,8 @@ static bool isolate_folio(struct lruvec *lruvec, st=
+ruct folio *folio, struct sca
+>  static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
+>                        int type, int tier, struct list_head *list)
+>  {
+> -       int gen, zone;
+> +       int i;
+> +       int gen;
+>         enum vm_event_item item;
+>         int sorted =3D 0;
+>         int scanned =3D 0;
+> @@ -5003,9 +5012,10 @@ static int scan_folios(struct lruvec *lruvec, stru=
+ct scan_control *sc,
+>
+>         gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+>
+> -       for (zone =3D sc->reclaim_idx; zone >=3D 0; zone--) {
+> +       for (i =3D MAX_NR_ZONES; i > 0; i--) {
+>                 LIST_HEAD(moved);
+>                 int skipped =3D 0;
+> +               int zone =3D (sc->reclaim_idx + i) % MAX_NR_ZONES;
+>                 struct list_head *head =3D &lrugen->folios[gen][type][zon=
+e];
+>
+>                 while (!list_empty(head)) {
+> @@ -5019,7 +5029,7 @@ static int scan_folios(struct lruvec *lruvec, struc=
+t scan_control *sc,
+>
+>                         scanned +=3D delta;
+>
+> -                       if (sort_folio(lruvec, folio, tier))
+> +                       if (sort_folio(lruvec, folio, sc, tier))
+>                                 sorted +=3D delta;
+>                         else if (isolate_folio(lruvec, folio, sc)) {
+>                                 list_add(&folio->lru, list);
+>
