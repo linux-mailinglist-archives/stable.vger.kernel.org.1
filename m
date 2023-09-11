@@ -2,41 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07DA979B7F9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4BE79BE5C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378608AbjIKWfz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
+        id S238996AbjIKUzb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:55:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235970AbjIKJrg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:47:36 -0400
+        with ESMTP id S236057AbjIKJty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:49:54 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695A4E50;
-        Mon, 11 Sep 2023 02:47:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B88D1ED;
+        Mon, 11 Sep 2023 02:49:50 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 109AC1C0004; Mon, 11 Sep 2023 11:47:30 +0200 (CEST)
-Date:   Mon, 11 Sep 2023 11:47:29 +0200
+        id 80CBA1C0006; Mon, 11 Sep 2023 11:49:49 +0200 (CEST)
+Date:   Mon, 11 Sep 2023 11:49:49 +0200
 From:   Pavel Machek <pavel@denx.de>
 To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        John Watts <contact@jookia.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>, wg@grandegger.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, wens@csie.org, jernej.skrabec@gmail.com,
-        samuel@sholland.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.1 10/26] can: sun4i_can: Add support for the
- Allwinner D1
-Message-ID: <ZP7iMa8xv7RhxWU7@duo.ucw.cz>
-References: <20230908181806.3460164-1-sashal@kernel.org>
- <20230908181806.3460164-10-sashal@kernel.org>
+        Zhang Shurong <zhang_shurong@foxmail.com>,
+        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        linux-raid@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.14 2/3] md: raid1: fix potential OOB in
+ raid1_remove_disk()
+Message-ID: <ZP7ivTQR0bjM6WU/@duo.ucw.cz>
+References: <20230908193656.3464052-1-sashal@kernel.org>
+ <20230908193656.3464052-2-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="W6zyC+oVbfVKM7Mx"
+        protocol="application/pgp-signature"; boundary="OGjEqHIQQgjcf3XB"
 Content-Disposition: inline
-In-Reply-To: <20230908181806.3460164-10-sashal@kernel.org>
+In-Reply-To: <20230908193656.3464052-2-sashal@kernel.org>
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
         autolearn_force=no version=3.4.6
@@ -47,101 +43,59 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---W6zyC+oVbfVKM7Mx
+--OGjEqHIQQgjcf3XB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: John Watts <contact@jookia.org>
+> From: Zhang Shurong <zhang_shurong@foxmail.com>
 >=20
-> [ Upstream commit 8abb95250ae6af2d51993da8fcae18da2ce24cc4 ]
+> [ Upstream commit 8b0472b50bcf0f19a5119b00a53b63579c8e1e4d ]
 >=20
-> The controllers present in the D1 are extremely similar to the R40
-> and require the same reset quirks, but An extra quirk is needed to support
-> receiving packets.
+> If rddev->raid_disk is greater than mddev->raid_disks, there will be
+> an out-of-bounds in raid1_remove_disk(). We have already found
+> similar reports as follows:
+>=20
+> 1) commit d17f744e883b ("md-raid10: fix KASAN warning")
+> 2) commit 1ebc2cec0b7d ("dm raid: fix KASAN warning in raid5_remove_disk")
+>=20
+> Fix this bug by checking whether the "number" variable is
+> valid.
 
-Well, we are not adding the rest of support to 6.1, so we don't need
-this, either. It will be unused.
-
-BR,
-								Pavel
-
-> +++ b/drivers/net/can/Kconfig
-> @@ -174,10 +174,10 @@ config CAN_SLCAN
-> =20
->  config CAN_SUN4I
->  	tristate "Allwinner A10 CAN controller"
-> -	depends on MACH_SUN4I || MACH_SUN7I || COMPILE_TEST
-> +	depends on MACH_SUN4I || MACH_SUN7I || RISCV || COMPILE_TEST
->  	help
->  	  Say Y here if you want to use CAN controller found on Allwinner
-> -	  A10/A20 SoCs.
-> +	  A10/A20/D1 SoCs.
-> =20
->  	  To compile this driver as a module, choose M here: the module will
->  	  be called sun4i_can.
-> diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-> index dd0c6cd76c5f5..c3a6b028ea4d6 100644
-> --- a/drivers/net/can/sun4i_can.c
-> +++ b/drivers/net/can/sun4i_can.c
-> @@ -91,6 +91,8 @@
->  #define SUN4I_REG_BUF12_ADDR	0x0070	/* CAN Tx/Rx Buffer 12 */
->  #define SUN4I_REG_ACPC_ADDR	0x0040	/* CAN Acceptance Code 0 */
->  #define SUN4I_REG_ACPM_ADDR	0x0044	/* CAN Acceptance Mask 0 */
-> +#define SUN4I_REG_ACPC_ADDR_D1	0x0028	/* CAN Acceptance Code 0 on the D1=
- */
-> +#define SUN4I_REG_ACPM_ADDR_D1	0x002C	/* CAN Acceptance Mask 0 on the D1=
- */
->  #define SUN4I_REG_RBUF_RBACK_START_ADDR	0x0180	/* CAN transmit buffer st=
-art */
->  #define SUN4I_REG_RBUF_RBACK_END_ADDR	0x01b0	/* CAN transmit buffer end =
-*/
-> =20
-> @@ -779,6 +781,11 @@ static const struct sun4ican_quirks sun4ican_quirks_=
-r40 =3D {
->  	.acp_offset =3D 0,
->  };
-> =20
-> +static const struct sun4ican_quirks sun4ican_quirks_d1 =3D {
-> +	.has_reset =3D true,
-> +	.acp_offset =3D (SUN4I_REG_ACPC_ADDR_D1 - SUN4I_REG_ACPC_ADDR),
-> +};
+> +++ b/drivers/md/raid1.c
+> @@ -1775,6 +1775,10 @@ static int raid1_remove_disk(struct mddev *mddev, =
+struct md_rdev *rdev)
+>  	struct r1conf *conf =3D mddev->private;
+>  	int err =3D 0;
+>  	int number =3D rdev->raid_disk;
 > +
->  static const struct of_device_id sun4ican_of_match[] =3D {
->  	{
->  		.compatible =3D "allwinner,sun4i-a10-can",
-> @@ -789,6 +796,9 @@ static const struct of_device_id sun4ican_of_match[] =
-=3D {
->  	}, {
->  		.compatible =3D "allwinner,sun8i-r40-can",
->  		.data =3D &sun4ican_quirks_r40
-> +	}, {
-> +		.compatible =3D "allwinner,sun20i-d1-can",
-> +		.data =3D &sun4ican_quirks_d1
->  	}, {
->  		/* sentinel */
->  	},
-> @@ -915,4 +925,4 @@ module_platform_driver(sun4i_can_driver);
->  MODULE_AUTHOR("Peter Chen <xingkongcp@gmail.com>");
->  MODULE_AUTHOR("Gerhard Bertelsmann <info@gerhard-bertelsmann.de>");
->  MODULE_LICENSE("Dual BSD/GPL");
-> -MODULE_DESCRIPTION("CAN driver for Allwinner SoCs (A10/A20)");
-> +MODULE_DESCRIPTION("CAN driver for Allwinner SoCs (A10/A20/D1)");
+> +	if (unlikely(number >=3D conf->raid_disks))
+> +		goto abort;
+> +
+>  	struct raid1_info *p =3D conf->mirrors + number;
+> =20
+>  	if (rdev !=3D p->rdev)
 
+Wow. Mixing declarations and code. I'm pretty sure that's not ok
+according to our coding style, and I'd be actually surprised if all
+our compiler configurations allowed this.
+
+Best regards,
+								Pavel=09
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---W6zyC+oVbfVKM7Mx
+--OGjEqHIQQgjcf3XB
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7iMQAKCRAw5/Bqldv6
-8iNHAKCr9iGC2Pae585vS5gdFDGcVzZNgQCgouu4FKM/lvI8gqIRrcpjyUG7DsQ=
-=22Uz
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7ivQAKCRAw5/Bqldv6
+8le7AKCgrKgcgGkSi2I67IFDj1QPs5ZO5gCeMTHbL+GKcdVrmS8czxZCE2n+SaI=
+=Qad9
 -----END PGP SIGNATURE-----
 
---W6zyC+oVbfVKM7Mx--
+--OGjEqHIQQgjcf3XB--
