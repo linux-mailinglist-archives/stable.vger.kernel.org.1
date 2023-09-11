@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 135F879B5BF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED00279AD41
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344253AbjIKVNk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36244 "EHLO
+        id S1357974AbjIKWHH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239771AbjIKO2R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:17 -0400
+        with ESMTP id S238496AbjIKN5w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E70C6F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAC8C433C7;
-        Mon, 11 Sep 2023 14:28:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87F2CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC9EC433C8;
+        Mon, 11 Sep 2023 13:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442493;
-        bh=NZZ0YkFvvhsnlUdYyKDXfPiwC9Ex2Z9QGIdlDCASoL4=;
+        s=korg; t=1694440667;
+        bh=Ia9n5HC5jxwgTRbW0C+1fpl5tYFoJmKpkWzvMJm20wU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XNkpUvh2Yl5ZvXyib+77PDno4kWy7tQxf8aAYj/FQjYfVEiz5aAH3WhDYTTwKY0ZB
-         ApAbIRsXfiM8xS2jynEN/pHU689Xwo3ScpwvlWaZC5vAflqMbZT9pDQAjGfIIrEss9
-         dKEwsp7SMz89y9xG3R8/Zc97E1IZaAav92z19xPo=
+        b=esnzm7rmCWqEmK8dqzzwtiDs4A2eJKQgVtKKMTuTIw/eVUQI3EO7Hp7ftfAmadR2P
+         1E3iHmEA3td5z5W6pOKaSW/Dn+5EVAqAsBllQoTMgM4fqE61/D4SIpe49zInC7n4fl
+         xyYlFUhLQvkM7CIfxO9lPqj/iFIHPzt1zWWl+ZJ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Raphael Gallais-Pou <rgallaispou@gmail.com>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 044/737] staging: fbtft: ili9341: use macro FBTFT_REGISTER_SPI_DRIVER
-Date:   Mon, 11 Sep 2023 15:38:23 +0200
-Message-ID: <20230911134651.673870461@linuxfoundation.org>
+Subject: [PATCH 6.5 105/739] wifi: ath11k: fix band selection for ppdu received in channel 177 of 5 GHz
+Date:   Mon, 11 Sep 2023 15:38:24 +0200
+Message-ID: <20230911134654.032019422@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Gallais-Pou <rgallaispou@gmail.com>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-[ Upstream commit 4912649e1cf0317bf563f91655e04a303cacaf8d ]
+[ Upstream commit 72c8caf904aed2caed5d6e75233294b6159ddb5d ]
 
-Using FBTFT_REGISTER_DRIVER resolves to a NULL struct spi_device_id. This
-ultimately causes a warning when the module probes. Fixes it.
+5 GHz band channel 177 support was added with the commit e5e94d10c856 ("wifi:
+ath11k: add channel 177 into 5 GHz channel list"). However, during processing
+for the received ppdu in ath11k_dp_rx_h_ppdu(), channel number is checked only
+till 173. This leads to driver code checking for channel and then fetching the
+band from it which is extra effort since firmware has already given the channel
+number in the metadata.
 
-Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Link: https://lore.kernel.org/r/20230718172024.67488-1-rgallaispou@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this issue by checking the channel number till 177 since we support
+it now.
+
+Found via code review. Compile tested only.
+
+Fixes: e5e94d10c856 ("wifi: ath11k: add channel 177 into 5 GHz channel list")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230726044624.20507-1-quic_adisi@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/fbtft/fb_ili9341.c | 2 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/fbtft/fb_ili9341.c b/drivers/staging/fbtft/fb_ili9341.c
-index 9ccd0823c3ab3..47e72b87d76d9 100644
---- a/drivers/staging/fbtft/fb_ili9341.c
-+++ b/drivers/staging/fbtft/fb_ili9341.c
-@@ -145,7 +145,7 @@ static struct fbtft_display display = {
- 	},
- };
- 
--FBTFT_REGISTER_DRIVER(DRVNAME, "ilitek,ili9341", &display);
-+FBTFT_REGISTER_SPI_DRIVER(DRVNAME, "ilitek", "ili9341", &display);
- 
- MODULE_ALIAS("spi:" DRVNAME);
- MODULE_ALIAS("platform:" DRVNAME);
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 5c76664ba0dd9..1e488eed282b5 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2408,7 +2408,7 @@ static void ath11k_dp_rx_h_ppdu(struct ath11k *ar, struct hal_rx_desc *rx_desc,
+ 		rx_status->freq = center_freq;
+ 	} else if (channel_num >= 1 && channel_num <= 14) {
+ 		rx_status->band = NL80211_BAND_2GHZ;
+-	} else if (channel_num >= 36 && channel_num <= 173) {
++	} else if (channel_num >= 36 && channel_num <= 177) {
+ 		rx_status->band = NL80211_BAND_5GHZ;
+ 	} else {
+ 		spin_lock_bh(&ar->data_lock);
 -- 
 2.40.1
 
