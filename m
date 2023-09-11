@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A5A579B282
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 219F979AF6E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239182AbjIKWKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47890 "EHLO
+        id S243282AbjIKVHw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241363AbjIKPHM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:12 -0400
+        with ESMTP id S240339AbjIKOl5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 215A8CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2A1C433C7;
-        Mon, 11 Sep 2023 15:07:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB77D12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD61C433C7;
+        Mon, 11 Sep 2023 14:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444827;
-        bh=kKYzmYUwg1u/zrujySA7jY3d6Jbff61wnr6jCiM9OvA=;
+        s=korg; t=1694443313;
+        bh=y62njVEuWdaAu1zB77H9u89JYr/5jDK2CysGUdZuIRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sOhtuAnPRlJadIFQyHWTE5CqQci9xcWiH0Byg4ovoOI1qtQv1jmXogs2aZaB+dBax
-         4PwhmYUuF2pEkG+1rFyAHZF7k1cqLTKbYQ0CVds5v3EKvXrDfLQb+3AgFdYcFCkRh2
-         R50GeEU7DU/a+tsgo9XZamY5GnYASxjRldQ+iWEw=
+        b=Q09U7CPXcOwKeU4vLMsiRrVmr5e38cjttilQF58XVz6gjiGm2mTkUtqprcdYeCKCq
+         W336O2bwFYKlzXDJDWGWizHe/21d17gi62cvt2biRuZot4USdqg8CMNAo8yClMXnBd
+         qfuOJofP1ZxT+Yp6Ls7fKumybdLbRueAYj53UPa0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/600] thermal/of: Fix potential uninitialized value access
+Subject: [PATCH 6.4 305/737] ARM: dts: stm32: Add missing detach mailbox for DHCOM SoM
 Date:   Mon, 11 Sep 2023 15:42:44 +0200
-Message-ID: <20230911134637.482521847@linuxfoundation.org>
+Message-ID: <20230911134659.091224465@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit f96801f0cfcefc0a16b146596577c53c75ee9773 ]
+[ Upstream commit deb7edbc27a6ec4d8f5edfd8519b7ed13cbd2a52 ]
 
-If of_parse_phandle_with_args() called from __thermal_of_bind() or
-__thermal_of_unbind() fails, cooling_spec.np will not be initialized,
-so move the of_node_put() calls below the respective return value checks
-to avoid dereferencing an uninitialized pointer.
+Add missing "detach" mailbox to this board to permit the CPU to inform
+the remote processor on a detach. This signal allows the remote processor
+firmware to stop IPC communication and to reinitialize the resources for
+a re-attach.
 
-Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Without this mailbox, detach is not possible and kernel log contains the
+following warning to, so make sure all the STM32MP15xx platform DTs are
+in sync regarding the mailboxes to fix the detach issue and the warning:
+"
+stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
+"
+
+Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_of.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index aacba30bc10c1..762d1990180bf 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -409,13 +409,13 @@ static int __thermal_of_unbind(struct device_node *map_np, int index, int trip_i
- 	ret = of_parse_phandle_with_args(map_np, "cooling-device", "#cooling-cells",
- 					 index, &cooling_spec);
- 
--	of_node_put(cooling_spec.np);
--
- 	if (ret < 0) {
- 		pr_err("Invalid cooling-device entry\n");
- 		return ret;
- 	}
- 
-+	of_node_put(cooling_spec.np);
-+
- 	if (cooling_spec.args_count < 2) {
- 		pr_err("wrong reference to cooling device, missing limits\n");
- 		return -EINVAL;
-@@ -442,13 +442,13 @@ static int __thermal_of_bind(struct device_node *map_np, int index, int trip_id,
- 	ret = of_parse_phandle_with_args(map_np, "cooling-device", "#cooling-cells",
- 					 index, &cooling_spec);
- 
--	of_node_put(cooling_spec.np);
--
- 	if (ret < 0) {
- 		pr_err("Invalid cooling-device entry\n");
- 		return ret;
- 	}
- 
-+	of_node_put(cooling_spec.np);
-+
- 	if (cooling_spec.args_count < 2) {
- 		pr_err("wrong reference to cooling device, missing limits\n");
- 		return -EINVAL;
+diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
+index e61df23d361a7..74a11ccc5333f 100644
+--- a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
++++ b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
+@@ -416,8 +416,8 @@ &iwdg2 {
+ &m4_rproc {
+ 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
+ 			<&vdev0vring1>, <&vdev0buffer>;
+-	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+-	mbox-names = "vq0", "vq1", "shutdown";
++	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
++	mbox-names = "vq0", "vq1", "shutdown", "detach";
+ 	interrupt-parent = <&exti>;
+ 	interrupts = <68 1>;
+ 	status = "okay";
 -- 
 2.40.1
 
