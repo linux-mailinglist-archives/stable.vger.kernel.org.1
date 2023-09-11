@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3573379C3EE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 05:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C857079C3FD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 05:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242025AbjILDRy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 23:17:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
+        id S234838AbjILDT4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 23:19:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242232AbjILDRh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 23:17:37 -0400
+        with ESMTP id S242323AbjILDLX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 23:11:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9B413C8DF;
-        Mon, 11 Sep 2023 19:02:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7B0C433CD;
-        Mon, 11 Sep 2023 21:00:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4719F900D3;
+        Mon, 11 Sep 2023 19:07:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E798DC433D9;
+        Mon, 11 Sep 2023 21:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1694466053;
-        bh=ZsH1kV3lAUPP8ykkzVUlLE2mYT6JMcgSoplaVtsK1W8=;
+        s=korg; t=1694466057;
+        bh=643GfPbprEsbqWcpIfBHQtKx2WQZ0BbufwN2QRQ1Czo=;
         h=Date:To:From:Subject:From;
-        b=q/9TcJPIm+cCSBtbfGfQniXDFl561K9HEEgvQhOeunCtWykkaTWzfjczP86wYeE9K
-         j1wu8KaPAKvLmgb9mhfQIom0SlgSbSHmraP/2WdRBNsKBpuJ02iHS9TQA0qrRqSr7w
-         BoURePMNDXXhXCw/9F7v0CB/ouO/BWSPAgTIQYCs=
-Date:   Mon, 11 Sep 2023 14:00:52 -0700
+        b=XwkQb32jsM844VD4aqikPBRWIwLOBfz1dreWNIKNT7jQNsDt1iC2fJHCfdOm+sI1t
+         bGaJBf/DgQiSG+lWdKwxf2iftbg1lad9IAyBJn6y3NAqsBI1CLgBoYcy4c/kfoBj9+
+         e4cEQ4rX33wYBl08P/T5AyYrk6nCoUyCJPGZIIUg=
+Date:   Mon, 11 Sep 2023 14:00:56 -0700
 To:     mm-commits@vger.kernel.org, vbabka@suse.cz, stable@vger.kernel.org,
-        joe.liu@mediatek.com, hannes@cmpxchg.org,
-        mgorman@techsingularity.net, akpm@linux-foundation.org
+        joe.liu@mediatek.com, hannes@cmpxchg.org, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230911210053.8B7B0C433CD@smtp.kernel.org>
+Subject: + mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230911210056.E798DC433D9@smtp.kernel.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
 The patch titled
-     Subject: mm: page_alloc: free pages to correct buddy list after PCP lock contention
+     Subject: mm: page_alloc: fix CMA and HIGHATOMIC landing on the wrong buddy list
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch
+     mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -59,54 +58,98 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Mel Gorman <mgorman@techsingularity.net>
-Subject: mm: page_alloc: free pages to correct buddy list after PCP lock contention
-Date: Tue, 5 Sep 2023 10:09:22 +0100
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: mm: page_alloc: fix CMA and HIGHATOMIC landing on the wrong buddy list
+Date: Mon, 11 Sep 2023 14:11:08 -0400
 
 Commit 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-returns pages to the buddy list on PCP lock contention. However, for
-migratetypes that are not MIGRATE_PCPTYPES, the migratetype may have
-been clobbered already for pages that are not being isolated. In
-practice, this means that CMA pages may be returned to the wrong
-buddy list. While this might be harmless in some cases as it is
-MIGRATE_MOVABLE, the pageblock could be reassigned in rmqueue_fallback
-and prevent a future CMA allocation. Lookup the PCP migratetype
-against unconditionally if the PCP lock is contended.
+bypasses the pcplist on lock contention and returns the page directly to
+the buddy list of the page's migratetype.
 
-[lecopzer.chen@mediatek.com: CMA-specific fix]
-Link: https://lkml.kernel.org/r/20230905090922.zy7srh33rg5c3zao@techsingularity.net
+For pages that don't have their own pcplist, such as CMA and HIGHATOMIC,
+the migratetype is temporarily updated such that the page can hitch a ride
+on the MOVABLE pcplist.  Their true type is later reassessed when flushing
+in free_pcppages_bulk().  However, when lock contention is detected after
+the type was already overriden, the bypass will then put the page on the
+wrong buddy list.
+
+Once on the MOVABLE buddy list, the page becomes eligible for fallbacks
+and even stealing.  In the case of HIGHATOMIC, otherwise ineligible
+allocations can dip into the highatomic reserves.  In the case of CMA, the
+page can be lost from the CMA region permanently.
+
+Use a separate pcpmigratetype variable for the pcplist override.  Use the
+original migratetype when going directly to the buddy.  This fixes the bug
+and should make the intentions more obvious in the code.
+
+Originally sent here to address the HIGHATOMIC case:
+https://lore.kernel.org/lkml/20230821183733.106619-4-hannes@cmpxchg.org/
+
+Changelog updated in response to the CMA-specific bug report.
+
+[mgorman@techsingularity.net: updated changelog]
+Link: https://lkml.kernel.org/r/20230911181108.GA104295@cmpxchg.org
 Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Reported-by: Joe Liu <joe.liu@mediatek.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_alloc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ mm/page_alloc.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/mm/page_alloc.c~mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention
+--- a/mm/page_alloc.c~mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list
 +++ a/mm/page_alloc.c
-@@ -2428,7 +2428,13 @@ void free_unref_page(struct page *page,
- 		free_unref_page_commit(zone, pcp, page, migratetype, order);
+@@ -2400,7 +2400,7 @@ void free_unref_page(struct page *page,
+ 	struct per_cpu_pages *pcp;
+ 	struct zone *zone;
+ 	unsigned long pfn = page_to_pfn(page);
+-	int migratetype;
++	int migratetype, pcpmigratetype;
+ 
+ 	if (!free_unref_page_prepare(page, pfn, order))
+ 		return;
+@@ -2408,24 +2408,24 @@ void free_unref_page(struct page *page,
+ 	/*
+ 	 * We only track unmovable, reclaimable and movable on pcp lists.
+ 	 * Place ISOLATE pages on the isolated list because they are being
+-	 * offlined but treat HIGHATOMIC as movable pages so we can get those
+-	 * areas back if necessary. Otherwise, we may have to free
++	 * offlined but treat HIGHATOMIC and CMA as movable pages so we can
++	 * get those areas back if necessary. Otherwise, we may have to free
+ 	 * excessively into the page allocator
+ 	 */
+-	migratetype = get_pcppage_migratetype(page);
++	migratetype = pcpmigratetype = get_pcppage_migratetype(page);
+ 	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
+ 		if (unlikely(is_migrate_isolate(migratetype))) {
+ 			free_one_page(page_zone(page), page, pfn, order, migratetype, FPI_NONE);
+ 			return;
+ 		}
+-		migratetype = MIGRATE_MOVABLE;
++		pcpmigratetype = MIGRATE_MOVABLE;
+ 	}
+ 
+ 	zone = page_zone(page);
+ 	pcp_trylock_prepare(UP_flags);
+ 	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 	if (pcp) {
+-		free_unref_page_commit(zone, pcp, page, migratetype, order);
++		free_unref_page_commit(zone, pcp, page, pcpmigratetype, order);
  		pcp_spin_unlock(pcp);
  	} else {
--		free_one_page(zone, page, pfn, order, migratetype, FPI_NONE);
-+		/*
-+		 * The page migratetype may have been clobbered for types
-+		 * (type >= MIGRATE_PCPTYPES && !is_migrate_isolate) so
-+		 * must be rechecked.
-+		 */
-+		free_one_page(zone, page, pfn, order,
-+			      get_pcppage_migratetype(page), FPI_NONE);
- 	}
- 	pcp_trylock_finish(UP_flags);
- }
+ 		/*
 _
 
-Patches currently in -mm which might be from mgorman@techsingularity.net are
+Patches currently in -mm which might be from hannes@cmpxchg.org are
 
-mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch
+mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch
+mm-page_alloc-remove-pcppage-migratetype-caching.patch
+mm-page_alloc-fix-up-block-types-when-merging-compatible-blocks.patch
+mm-page_alloc-move-free-pages-when-converting-block-during-isolation.patch
+mm-page_alloc-fix-move_freepages_block-range-error.patch
+mm-page_alloc-fix-freelist-movement-during-block-conversion.patch
+mm-page_alloc-consolidate-free-page-accounting.patch
 
