@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2713479B9C9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC26979B959
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377504AbjIKW0o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49262 "EHLO
+        id S1357965AbjIKWHE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238769AbjIKOEj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:39 -0400
+        with ESMTP id S240072AbjIKOfp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4086CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF500C433C8;
-        Mon, 11 Sep 2023 14:04:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BED0F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5C9C43395;
+        Mon, 11 Sep 2023 14:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441075;
-        bh=Uh7cuEVwhcnT7BtIkO5cRCqcOGlHb7cRjXfHxc5IQco=;
+        s=korg; t=1694442939;
+        bh=DfQnKl6kmdeWZ/tBSr/gdMXGWajwpZqyENV0eHNZ58g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q0W8pPkOG9ruBRmUG7C37pqNOm53DOlH/+zaYhXgBCEMB7I/ttEq17sd3hDG/QT0U
-         Sh+Lw1JrtSSG4haT7h6PUDYEd4IP42sONzFh/tHC6145e0+gtFuzWdgu9zpy2FYZU9
-         A8cXPR5K1cOkkn+RRuxWHYYVaTHH/zIWv+oQ9m3I=
+        b=NpMBkn5yxiivt6PZcxuZVkJQeM1JHd3/mY/fmUtR5mTuCNx+7GHxtHPDkGczpJHdb
+         n1FJkwkYQr0PJdTBCYErg3V+d8d7Pua3v3YOMw6Mwzas0NnmzgBEHAeMnygqLvBM0H
+         K/fn48IQNhAUvUZMfZWIRK7+fKc1xpGcCcQNRyiI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 260/739] block: cleanup queue_wc_store
-Date:   Mon, 11 Sep 2023 15:40:59 +0200
-Message-ID: <20230911134658.408649632@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 201/737] Bluetooth: hci_conn: Fix hci_le_set_cig_params
+Date:   Mon, 11 Sep 2023 15:41:00 +0200
+Message-ID: <20230911134656.213567934@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +50,238 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit c4e21bcd0f9d01f9c5d6c52007f5541871a5b1de ]
+[ Upstream commit a091289218202bc09d9b9caa8afcde1018584aec ]
 
-Get rid of the local queue_wc_store variable and handling setting and
-clearing the QUEUE_FLAG_WC flag diretly instead the if / else if.
+When running with concurrent task only one CIS was being assigned so
+this attempts to rework the way the PDU is constructed so it is handled
+later at the callback instead of in place.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230707094239.107968-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 43c9835b144c ("block: don't allow enabling a cache on devices that don't support it")
+Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ net/bluetooth/hci_conn.c | 157 ++++++++++++++++-----------------------
+ 1 file changed, 63 insertions(+), 94 deletions(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index afc797fb0dfc4..0cde6598fb2f4 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -449,21 +449,13 @@ static ssize_t queue_wc_show(struct request_queue *q, char *page)
- static ssize_t queue_wc_store(struct request_queue *q, const char *page,
- 			      size_t count)
- {
--	int set = -1;
--
- 	if (!strncmp(page, "write back", 10))
--		set = 1;
-+		blk_queue_flag_set(QUEUE_FLAG_WC, q);
- 	else if (!strncmp(page, "write through", 13) ||
- 		 !strncmp(page, "none", 4))
--		set = 0;
--
--	if (set == -1)
--		return -EINVAL;
--
--	if (set)
--		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
-+	else
-+		return -EINVAL;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 7516166652a08..7762161a3fc8b 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -791,7 +791,6 @@ struct iso_list_data {
+ 		u16 sync_handle;
+ 	};
+ 	int count;
+-	struct iso_cig_params pdu;
+ 	bool big_term;
+ };
  
- 	return count;
+@@ -1719,42 +1718,6 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
+ 	return sco;
+ }
+ 
+-static void cis_add(struct iso_list_data *d, struct bt_iso_qos *qos)
+-{
+-	struct hci_cis_params *cis = &d->pdu.cis[d->pdu.cp.num_cis];
+-
+-	cis->cis_id = qos->ucast.cis;
+-	cis->c_sdu  = cpu_to_le16(qos->ucast.out.sdu);
+-	cis->p_sdu  = cpu_to_le16(qos->ucast.in.sdu);
+-	cis->c_phy  = qos->ucast.out.phy ? qos->ucast.out.phy : qos->ucast.in.phy;
+-	cis->p_phy  = qos->ucast.in.phy ? qos->ucast.in.phy : qos->ucast.out.phy;
+-	cis->c_rtn  = qos->ucast.out.rtn;
+-	cis->p_rtn  = qos->ucast.in.rtn;
+-
+-	d->pdu.cp.num_cis++;
+-}
+-
+-static void cis_list(struct hci_conn *conn, void *data)
+-{
+-	struct iso_list_data *d = data;
+-
+-	/* Skip if broadcast/ANY address */
+-	if (!bacmp(&conn->dst, BDADDR_ANY))
+-		return;
+-
+-	if (d->cig != conn->iso_qos.ucast.cig || d->cis == BT_ISO_QOS_CIS_UNSET ||
+-	    d->cis != conn->iso_qos.ucast.cis)
+-		return;
+-
+-	d->count++;
+-
+-	if (d->pdu.cp.cig_id == BT_ISO_QOS_CIG_UNSET ||
+-	    d->count >= ARRAY_SIZE(d->pdu.cis))
+-		return;
+-
+-	cis_add(d, &conn->iso_qos);
+-}
+-
+ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+@@ -1787,25 +1750,62 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 	return hci_send_cmd(hdev, HCI_OP_LE_CREATE_BIG, sizeof(cp), &cp);
+ }
+ 
+-static void set_cig_params_complete(struct hci_dev *hdev, void *data, int err)
++static int set_cig_params_sync(struct hci_dev *hdev, void *data)
+ {
+-	struct iso_cig_params *pdu = data;
++	u8 cig_id = PTR_ERR(data);
++	struct hci_conn *conn;
++	struct bt_iso_qos *qos;
++	struct iso_cig_params pdu;
++	u8 cis_id;
+ 
+-	bt_dev_dbg(hdev, "");
++	conn = hci_conn_hash_lookup_cig(hdev, cig_id);
++	if (!conn)
++		return 0;
+ 
+-	if (err)
+-		bt_dev_err(hdev, "Unable to set CIG parameters: %d", err);
++	memset(&pdu, 0, sizeof(pdu));
+ 
+-	kfree(pdu);
+-}
++	qos = &conn->iso_qos;
++	pdu.cp.cig_id = cig_id;
++	hci_cpu_to_le24(qos->ucast.out.interval, pdu.cp.c_interval);
++	hci_cpu_to_le24(qos->ucast.in.interval, pdu.cp.p_interval);
++	pdu.cp.sca = qos->ucast.sca;
++	pdu.cp.packing = qos->ucast.packing;
++	pdu.cp.framing = qos->ucast.framing;
++	pdu.cp.c_latency = cpu_to_le16(qos->ucast.out.latency);
++	pdu.cp.p_latency = cpu_to_le16(qos->ucast.in.latency);
+ 
+-static int set_cig_params_sync(struct hci_dev *hdev, void *data)
+-{
+-	struct iso_cig_params *pdu = data;
+-	u32 plen;
++	/* Reprogram all CIS(s) with the same CIG, valid range are:
++	 * num_cis: 0x00 to 0x1F
++	 * cis_id: 0x00 to 0xEF
++	 */
++	for (cis_id = 0x00; cis_id < 0xf0 &&
++	     pdu.cp.num_cis < ARRAY_SIZE(pdu.cis); cis_id++) {
++		struct hci_cis_params *cis;
++
++		conn = hci_conn_hash_lookup_cis(hdev, NULL, 0, cig_id, cis_id);
++		if (!conn)
++			continue;
+ 
+-	plen = sizeof(pdu->cp) + pdu->cp.num_cis * sizeof(pdu->cis[0]);
+-	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_CIG_PARAMS, plen, pdu,
++		qos = &conn->iso_qos;
++
++		cis = &pdu.cis[pdu.cp.num_cis++];
++		cis->cis_id = cis_id;
++		cis->c_sdu  = cpu_to_le16(conn->iso_qos.ucast.out.sdu);
++		cis->p_sdu  = cpu_to_le16(conn->iso_qos.ucast.in.sdu);
++		cis->c_phy  = qos->ucast.out.phy ? qos->ucast.out.phy :
++			      qos->ucast.in.phy;
++		cis->p_phy  = qos->ucast.in.phy ? qos->ucast.in.phy :
++			      qos->ucast.out.phy;
++		cis->c_rtn  = qos->ucast.out.rtn;
++		cis->p_rtn  = qos->ucast.in.rtn;
++	}
++
++	if (!pdu.cp.num_cis)
++		return 0;
++
++	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_CIG_PARAMS,
++				     sizeof(pdu.cp) +
++				     pdu.cp.num_cis * sizeof(pdu.cis[0]), &pdu,
+ 				     HCI_CMD_TIMEOUT);
+ }
+ 
+@@ -1813,7 +1813,6 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 	struct iso_list_data data;
+-	struct iso_cig_params *pdu;
+ 
+ 	memset(&data, 0, sizeof(data));
+ 
+@@ -1840,61 +1839,31 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 		qos->ucast.cig = data.cig;
+ 	}
+ 
+-	data.pdu.cp.cig_id = qos->ucast.cig;
+-	hci_cpu_to_le24(qos->ucast.out.interval, data.pdu.cp.c_interval);
+-	hci_cpu_to_le24(qos->ucast.in.interval, data.pdu.cp.p_interval);
+-	data.pdu.cp.sca = qos->ucast.sca;
+-	data.pdu.cp.packing = qos->ucast.packing;
+-	data.pdu.cp.framing = qos->ucast.framing;
+-	data.pdu.cp.c_latency = cpu_to_le16(qos->ucast.out.latency);
+-	data.pdu.cp.p_latency = cpu_to_le16(qos->ucast.in.latency);
+-
+ 	if (qos->ucast.cis != BT_ISO_QOS_CIS_UNSET) {
+-		data.count = 0;
+-		data.cig = qos->ucast.cig;
+-		data.cis = qos->ucast.cis;
+-
+-		hci_conn_hash_list_state(hdev, cis_list, ISO_LINK, BT_BOUND,
+-					 &data);
+-		if (data.count)
++		if (hci_conn_hash_lookup_cis(hdev, NULL, 0, qos->ucast.cig,
++					     qos->ucast.cis))
+ 			return false;
+-
+-		cis_add(&data, qos);
++		goto done;
+ 	}
+ 
+-	/* Reprogram all CIS(s) with the same CIG, valid range are:
+-	 * num_cis: 0x00 to 0x1F
+-	 * cis_id: 0x00 to 0xEF
+-	 */
+-	for (data.cig = qos->ucast.cig, data.cis = 0x00; data.cis < 0xf0 &&
+-	     data.pdu.cp.num_cis < ARRAY_SIZE(data.pdu.cis); data.cis++) {
+-		data.count = 0;
+-
+-		hci_conn_hash_list_state(hdev, cis_list, ISO_LINK, BT_BOUND,
+-					 &data);
+-		if (data.count)
+-			continue;
+-
+-		/* Allocate a CIS if not set */
+-		if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET) {
++	/* Allocate first available CIS if not set */
++	for (data.cig = qos->ucast.cig, data.cis = 0x00; data.cis < 0xf0;
++	     data.cis++) {
++		if (!hci_conn_hash_lookup_cis(hdev, NULL, 0, data.cig,
++					      data.cis)) {
+ 			/* Update CIS */
+ 			qos->ucast.cis = data.cis;
+-			cis_add(&data, qos);
++			break;
+ 		}
+ 	}
+ 
+-	if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET || !data.pdu.cp.num_cis)
++	if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET)
+ 		return false;
+ 
+-	pdu = kmemdup(&data.pdu, sizeof(*pdu), GFP_KERNEL);
+-	if (!pdu)
+-		return false;
+-
+-	if (hci_cmd_sync_queue(hdev, set_cig_params_sync, pdu,
+-			       set_cig_params_complete) < 0) {
+-		kfree(pdu);
++done:
++	if (hci_cmd_sync_queue(hdev, set_cig_params_sync,
++			       ERR_PTR(qos->ucast.cig), NULL) < 0)
+ 		return false;
+-	}
+ 
+ 	return true;
  }
 -- 
 2.40.1
