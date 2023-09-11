@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9F6779C08B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7133679B9B7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237233AbjIKVrT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36994 "EHLO
+        id S1343797AbjIKVMg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239841AbjIKOaK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:10 -0400
+        with ESMTP id S238553AbjIKN7L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF199F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423AFC433C7;
-        Mon, 11 Sep 2023 14:30:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5C1CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A24C433C9;
+        Mon, 11 Sep 2023 13:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442605;
-        bh=7k0MUi6EMGyMMvZT5F65jYLDP834p4chOCpVKLiPA4o=;
+        s=korg; t=1694440746;
+        bh=JpXQBTZvPQxNAzDPJUr3JDjy0cI2dr7HLblazUYQKZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WMjMRPCFvZcdfsfJqkT+Ue4QMBCXQ1ZorOYKsM8yM7xtNiLA6xXm4wOL6mBmH8Hg/
-         5VGqNiRd9s4q5A47CQH9vLx+ht5yZAz+piHJ0QKb5e7mP8UPpa9lSNP5RrJwBcVZmv
-         lPfQhAv3lSEGMiP5LFAeILywdbJIskIuz3IhRXnk=
+        b=HW5tz8q3mHNfOcAGOwYZv5femQxZmcVCM7gidAAmegRJzaONEeyPTkAYgObCWpOca
+         djDaDscAwjzqpeab6m7q2yoOtDXOuuGqMt7kD++X+m43rgxH8cgpSVMH2OI7Ax/6QY
+         rwj3N44lZb6++e7r+bGbs/B58c2DDAw0JBjoFsUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josua Mayer <josua@solid-run.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Yan Zhai <yan@cloudflare.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 083/737] net: sfp: handle 100G/25G active optical cables in sfp_parse_support
-Date:   Mon, 11 Sep 2023 15:39:02 +0200
-Message-ID: <20230911134652.826934964@linuxfoundation.org>
+Subject: [PATCH 6.5 144/739] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
+Date:   Mon, 11 Sep 2023 15:39:03 +0200
+Message-ID: <20230911134655.140516930@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +51,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit db1a6ad77c180efc7242d7204b9a0c72c8a5a1bb ]
+[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
 
-Handle extended compliance code 0x1 (SFF8024_ECC_100G_25GAUI_C2M_AOC)
-for active optical cables supporting 25G and 100G speeds.
+LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
+such that any positive return value from a xmit hook could cause
+unexpected continue behavior, despite that related skb may have been
+freed. This could be error-prone for future xmit hook ops. One of the
+possible errors is to return statuses of dst_output directly.
 
-Since the specification makes no statement about transmitter range, and
-as the specific sfp module that had been tested features only 2m fiber -
-short-range (SR) modes are selected.
+To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
+distinguish from dst_output statuses and check the continue
+condition explicitly.
 
-The 100G speed is irrelevant because it would require multiple fibers /
-multiple SFP28 modules combined under one netdev.
-sfp-bus.c only handles a single module per netdev, so only 25Gbps modes
-are selected.
-
-sfp_parse_support already handles SFF8024_ECC_100GBASE_SR4_25GBASE_SR
-with compatible properties, however that entry is a contradiction in
-itself since with SFP(28) 100GBASE_SR4 is impossible - that would likely
-be a mode for qsfp modules only.
-
-Add a case for SFF8024_ECC_100G_25GAUI_C2M_AOC selecting 25gbase-r
-interface mode and 25000baseSR link mode.
-Also enforce SFP28 bitrate limits on the values read from sfp eeprom as
-requested by Russell King.
-
-Tested with fs.com S28-AO02 AOC SFP28 module.
-
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp-bus.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/net/lwtunnel.h | 5 ++++-
+ net/ipv4/ip_output.c   | 2 +-
+ net/ipv6/ip6_output.c  | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/sfp-bus.c b/drivers/net/phy/sfp-bus.c
-index 9372e5a4cadcf..5093fc82a0248 100644
---- a/drivers/net/phy/sfp-bus.c
-+++ b/drivers/net/phy/sfp-bus.c
-@@ -258,6 +258,16 @@ void sfp_parse_support(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
- 	switch (id->base.extended_cc) {
- 	case SFF8024_ECC_UNSPEC:
- 		break;
-+	case SFF8024_ECC_100G_25GAUI_C2M_AOC:
-+		if (br_min <= 28000 && br_max >= 25000) {
-+			/* 25GBASE-R, possibly with FEC */
-+			__set_bit(PHY_INTERFACE_MODE_25GBASER, interfaces);
-+			/* There is currently no link mode for 25000base
-+			 * with unspecified range, reuse SR.
-+			 */
-+			phylink_set(modes, 25000baseSR_Full);
-+		}
-+		break;
- 	case SFF8024_ECC_100GBASE_SR4_25GBASE_SR:
- 		phylink_set(modes, 100000baseSR4_Full);
- 		phylink_set(modes, 25000baseSR_Full);
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index 6f15e6fa154e6..53bd2d02a4f0d 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -16,9 +16,12 @@
+ #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
+ #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
+ 
++/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
++ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
++ */
+ enum {
+ 	LWTUNNEL_XMIT_DONE,
+-	LWTUNNEL_XMIT_CONTINUE,
++	LWTUNNEL_XMIT_CONTINUE = 0x100,
+ };
+ 
+ 
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 6ba1a0fafbaab..a6e4c82615d7e 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -216,7 +216,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 1e8c90e976080..016b0a513259f 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -113,7 +113,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
 -- 
 2.40.1
 
