@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E74E879B91F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88D179B777
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbjIKUwc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33476 "EHLO
+        id S233397AbjIKUuk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240679AbjIKOu6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:50:58 -0400
+        with ESMTP id S241836AbjIKPPs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDCA9106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:50:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D0EC433C7;
-        Mon, 11 Sep 2023 14:50:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD59FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04018C433C7;
+        Mon, 11 Sep 2023 15:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443852;
-        bh=+HIVt6HAvE6YErjx7P/n4hPOMROg7bASjmoiQ0QKDvc=;
+        s=korg; t=1694445344;
+        bh=98mCHClD++n33fU7vGwNcnTkw3HQfnCgf87MdFE2QQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B4QNOmfx7awZp4s/CJ/yhxznAvwx1FJng0Ln+t/Rj1hKkgEPV1WOFb5vk0knY0DyV
-         bQUSrDaNnSjZ84HxiOaFT8tsY+M0z7ivSfQGbzR99P05VZ21GJXzp7GjJ0sJOFpgqe
-         I4W0yKZFeRnLosWEhE7bnR2et3V0fN2P3uKclQ8I=
+        b=zESjDlzh50Qx1H6MsYnN2A9S0zETcpVK0uK8wgZlj2oTp7H65Lx83MsbMbJaPuf2Z
+         dx4zoFv4oZGMareNNiJGBETpvK9XU3q1wGJZ6ZcpaF8lNpUaArTBwgQaQ3il+umnty
+         MyiDxnIyBZ6ypf0nnz/HyT5IWhLQ+ogfJmjTwwJY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 487/737] drivers: usb: smsusb: fix error handling code in smsusb_init_device
-Date:   Mon, 11 Sep 2023 15:45:46 +0200
-Message-ID: <20230911134704.178048764@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Corey Hickey <bugfood-ml@fatooh.org>
+Subject: [PATCH 6.1 314/600] md/raid5-cache: fix null-ptr-deref for r5l_flush_stripe_to_raid()
+Date:   Mon, 11 Sep 2023 15:45:47 +0200
+Message-ID: <20230911134642.935196371@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +51,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit b9c7141f384097fa4fa67d2f72e5731d628aef7c ]
+[ Upstream commit 0d0bd28c500173bfca78aa840f8f36d261ef1765 ]
 
-The previous commit 4b208f8b561f ("[media] siano: register media controller
-earlier")moves siano_media_device_register before smscore_register_device,
-and adds corresponding error handling code if smscore_register_device
-fails. However, it misses the following error handling code of
-smsusb_init_device.
+r5l_flush_stripe_to_raid() will check if the list 'flushing_ios' is
+empty, and then submit 'flush_bio', however, r5l_log_flush_endio()
+is clearing the list first and then clear the bio, which will cause
+null-ptr-deref:
 
-Fix this by moving error handling code at the end of smsusb_init_device
-and adding a goto statement in the following error handling parts.
+T1: submit flush io
+raid5d
+ handle_active_stripes
+  r5l_flush_stripe_to_raid
+   // list is empty
+   // add 'io_end_ios' to the list
+   bio_init
+   submit_bio
+   // io1
 
-Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+T2: io1 is done
+r5l_log_flush_endio
+ list_splice_tail_init
+ // clear the list
+			T3: submit new flush io
+			...
+			r5l_flush_stripe_to_raid
+			 // list is empty
+			 // add 'io_end_ios' to the list
+			 bio_init
+ bio_uninit
+ // clear bio->bi_blkg
+			 submit_bio
+			 // null-ptr-deref
+
+Fix this problem by clearing bio before clearing the list in
+r5l_log_flush_endio().
+
+Fixes: 0dd00cba99c3 ("raid5-cache: fully initialize flush_bio when needed")
+Reported-and-tested-by: Corey Hickey <bugfood-ml@fatooh.org>
+Closes: https://lore.kernel.org/all/cddd7213-3dfd-4ab7-a3ac-edd54d74a626@fatooh.org/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/siano/smsusb.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/md/raid5-cache.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
-index 640737d3b8aeb..8a39cac76c585 100644
---- a/drivers/media/usb/siano/smsusb.c
-+++ b/drivers/media/usb/siano/smsusb.c
-@@ -455,12 +455,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_register_device(&params, &dev->coredev, 0, mdev);
- 	if (rc < 0) {
- 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
--		smsusb_term_device(intf);
--#ifdef CONFIG_MEDIA_CONTROLLER_DVB
--		media_device_unregister(mdev);
--#endif
--		kfree(mdev);
--		return rc;
-+		goto err_unregister_device;
- 	}
+diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
+index 477e3ae17545a..eb66d0bfe39d2 100644
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -1260,14 +1260,13 @@ static void r5l_log_flush_endio(struct bio *bio)
  
- 	smscore_set_board_id(dev->coredev, board_id);
-@@ -477,8 +472,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smsusb_start_streaming(dev);
- 	if (rc < 0) {
- 		pr_err("smsusb_start_streaming(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
+ 	if (bio->bi_status)
+ 		md_error(log->rdev->mddev, log->rdev);
++	bio_uninit(bio);
  
- 	dev->state = SMSUSB_ACTIVE;
-@@ -486,13 +480,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_start_device(dev->coredev);
- 	if (rc < 0) {
- 		pr_err("smscore_start_device(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	pr_debug("device 0x%p created\n", dev);
- 
- 	return rc;
-+
-+err_unregister_device:
-+	smsusb_term_device(intf);
-+#ifdef CONFIG_MEDIA_CONTROLLER_DVB
-+	media_device_unregister(mdev);
-+#endif
-+	kfree(mdev);
-+	return rc;
+ 	spin_lock_irqsave(&log->io_list_lock, flags);
+ 	list_for_each_entry(io, &log->flushing_ios, log_sibling)
+ 		r5l_io_run_stripes(io);
+ 	list_splice_tail_init(&log->flushing_ios, &log->finished_ios);
+ 	spin_unlock_irqrestore(&log->io_list_lock, flags);
+-
+-	bio_uninit(bio);
  }
  
- static int smsusb_probe(struct usb_interface *intf,
+ /*
 -- 
 2.40.1
 
