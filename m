@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8B079AD74
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3068A79B28E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240867AbjIKVTj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56850 "EHLO
+        id S236072AbjIKVQZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240617AbjIKOs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:57 -0400
+        with ESMTP id S239292AbjIKOQu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A04E125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0313C433C7;
-        Mon, 11 Sep 2023 14:48:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C019DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C10C433C7;
+        Mon, 11 Sep 2023 14:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443733;
-        bh=zYHcGNApC2rrccJC2L1mH9pzdJj+siav4ucbxvUxHXY=;
+        s=korg; t=1694441805;
+        bh=Xy78Bj3tLE6LIISzVeFLCN4gcMVWAj1EO5QmnX4SIho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uy7+n//bQ1vy7SJynU0bdGZcVjNljtVvizZHjpdOUq5CjZZwLjaUqNgehJLTAbHFq
-         eg/yPGjLxk7xZp4O5P+QAkzSUgWI7BT26a9JrB7zSWY3sBVWTfW74RCValFO9fJaUP
-         K09PYPKplZowptNJPzEt2+PkJs+IeMwIy51s/Jj8=
+        b=XmgbilDpw5wvecRDqT4AClkUuOGANj3baGlEtqLdLRxZAf6iaXtgs5wesc7SQTYy+
+         3WNYdQ1FyVlLpZPdNBd9Fm04gCgxXplWhBSeGARAj6zrQD7X/ij1b4rwNOav7rEWpf
+         /XV9Lhy/w8WW84hNxpVcsfGTAf6RQV5h6QULXGnU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tommaso Merciai <tomm.merciai@gmail.com>,
-        Dave Stevenson <dave.stevenson@raspberrypi.com>,
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 481/737] media: i2c: imx290: drop format param from imx290_ctrl_update
-Date:   Mon, 11 Sep 2023 15:45:40 +0200
-Message-ID: <20230911134704.014685646@linuxfoundation.org>
+Subject: [PATCH 6.5 542/739] media: ov2680: Fix ov2680_bayer_order()
+Date:   Mon, 11 Sep 2023 15:45:41 +0200
+Message-ID: <20230911134706.234955092@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,66 +54,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommaso Merciai <tomm.merciai@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9b4e0e7a570d222be5f5e0f914d3c4528eadeeb4 ]
+[ Upstream commit 50a7bad4e0a37d7018ab6fe843dd84bc6b2ecf72 ]
 
-The format param actually is not used in imx290_ctrl_update
-function, let's drop this
+The index into ov2680_hv_flip_bayer_order[] should be 0-3, but
+ov2680_bayer_order() was using 0 + BIT(2) + (BIT(2) << 1) as
+max index, while the intention was to use: 0 + 1 + 2 as max index.
 
-Fixes: bc35f9a21a55 ("media: i2c: imx290: Fix the pixel rate at 148.5Mpix/s")
-Signed-off-by: Tommaso Merciai <tomm.merciai@gmail.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fix the index calculation in ov2680_bayer_order(), while at it
+also just use the ctrl values rather then reading them back using
+a slow i2c-read transaction.
+
+This also allows making the function void, since there now are
+no more i2c-reads to error check.
+
+Note the check for the ctrls being NULL is there to allow
+adding an ov2680_fill_format() helper later, which will call
+ov2680_set_bayer_order() during probe() before the ctrls are created.
+
+[Sakari Ailus: Change all users of ov2680_set_bayer_order() here]
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx290.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/media/i2c/ov2680.c | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-index 5ea25b7acc55f..a84b581682a21 100644
---- a/drivers/media/i2c/imx290.c
-+++ b/drivers/media/i2c/imx290.c
-@@ -902,7 +902,6 @@ static const char * const imx290_test_pattern_menu[] = {
- };
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 049ca28b96631..38c8b95f36523 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -315,26 +315,17 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
+ 	usleep_range(5000, 10000);
+ }
  
- static void imx290_ctrl_update(struct imx290 *imx290,
--			       const struct v4l2_mbus_framefmt *format,
- 			       const struct imx290_mode *mode)
+-static int ov2680_bayer_order(struct ov2680_dev *sensor)
++static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
  {
- 	unsigned int hblank_min = mode->hmax_min - mode->width;
-@@ -1195,7 +1194,7 @@ static int imx290_set_fmt(struct v4l2_subdev *sd,
- 	if (fmt->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
- 		imx290->current_mode = mode;
+-	u32 format1;
+-	u32 format2;
+-	u32 hv_flip;
+-	int ret;
+-
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT1, &format1);
+-	if (ret < 0)
+-		return ret;
++	int hv_flip = 0;
  
--		imx290_ctrl_update(imx290, &fmt->format, mode);
-+		imx290_ctrl_update(imx290, mode);
- 		imx290_exposure_update(imx290, mode);
- 	}
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT2, &format2);
+-	if (ret < 0)
+-		return ret;
++	if (sensor->ctrls.vflip && sensor->ctrls.vflip->val)
++		hv_flip += 1;
  
-@@ -1300,7 +1299,6 @@ static const struct media_entity_operations imx290_subdev_entity_ops = {
- static int imx290_subdev_init(struct imx290 *imx290)
- {
- 	struct i2c_client *client = to_i2c_client(imx290->dev);
--	const struct v4l2_mbus_framefmt *format;
- 	struct v4l2_subdev_state *state;
- 	int ret;
+-	hv_flip = (format2 & BIT(2)  << 1) | (format1 & BIT(2));
++	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
++		hv_flip += 2;
  
-@@ -1335,8 +1333,7 @@ static int imx290_subdev_init(struct imx290 *imx290)
- 	}
+ 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
+-
+-	return 0;
+ }
  
- 	state = v4l2_subdev_lock_and_get_active_state(&imx290->sd);
--	format = v4l2_subdev_get_pad_format(&imx290->sd, state, 0);
--	imx290_ctrl_update(imx290, format, imx290->current_mode);
-+	imx290_ctrl_update(imx290, imx290->current_mode);
- 	v4l2_subdev_unlock_state(state);
+ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+@@ -345,7 +336,8 @@ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
  
- 	return 0;
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+@@ -356,7 +348,8 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+@@ -367,7 +360,8 @@ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+@@ -378,7 +372,8 @@ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
 -- 
 2.40.1
 
