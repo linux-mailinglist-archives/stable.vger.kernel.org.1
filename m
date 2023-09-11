@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D31079BD12
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D16779B64B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353804AbjIKVuV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47910 "EHLO
+        id S234883AbjIKUvO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241365AbjIKPHS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:18 -0400
+        with ESMTP id S240293AbjIKOkp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C6ACCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212FFC433C8;
-        Mon, 11 Sep 2023 15:07:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5C7F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B338DC433C8;
+        Mon, 11 Sep 2023 14:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444833;
-        bh=G52vkOSTeKI4yRE2NkN4u42Q6+0UXqZKxoKrJY02JNI=;
+        s=korg; t=1694443240;
+        bh=sRoTLzUW8Ewf086wt2zkVl15uS8Mu6yVL+g58Jdf+TA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fd+3/8zkcvBVrXTSqV/gaTDUxp3EWWYkiqsrQnYeqIZKuWDQZi46TiD5peqNKVKm0
-         rZzJigJ+0vE7nAah9ikPfRCVN4z1s16MozGMcsNfAOBgbEckDT6GUQ0XuildhZMGkf
-         AnljAo7dcIpCiC+43T+AJke09dau2Rtm7mHhzovw=
+        b=GN1DPwxbzyD7IsydSnUH5dv1kyYH4JXGbEFj+StP3gcsYIHiYWnKgBlboByUePwmj
+         rd/gQRd+KjBFDX1hCd2CMxAEhyVMYsUGBRGXs636WAEUcO0gf121F325FkUJDsdqQA
+         dj+bbTHY6s7jMG0erL5NZPmaL7iPG2N9P3wknt6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Meng Li <li.meng@amd.com>, Wyes Karny <wyes.karny@amd.com>,
-        Swapnil Sapkal <swapnil.sapkal@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/600] cpufreq: amd-pstate-ut: Fix kernel panic when loading the driver
-Date:   Mon, 11 Sep 2023 15:42:46 +0200
-Message-ID: <20230911134637.539928597@linuxfoundation.org>
+Subject: [PATCH 6.4 308/737] drm/amdgpu: avoid integer overflow warning in amdgpu_device_resize_fb_bar()
+Date:   Mon, 11 Sep 2023 15:42:47 +0200
+Message-ID: <20230911134659.175468448@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,174 +53,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Sapkal <swapnil.sapkal@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 60dd283804479c4a52f995b713f448e2cd65b8c8 ]
+[ Upstream commit 822130b5e8834ab30ad410cf19a582e5014b9a85 ]
 
-After loading the amd-pstate-ut driver, amd_pstate_ut_check_perf()
-and amd_pstate_ut_check_freq() use cpufreq_cpu_get() to get the policy
-of the CPU and mark it as busy.
+On 32-bit architectures comparing a resource against a value larger than
+U32_MAX can cause a warning:
 
-In these functions, cpufreq_cpu_put() should be used to release the
-policy, but it is not, so any other entity trying to access the policy
-is blocked indefinitely.
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1344:18: error: result of comparison of constant 4294967296 with expression of type 'resource_size_t' (aka 'unsigned int') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+                    res->start > 0x100000000ull)
+                    ~~~~~~~~~~ ^ ~~~~~~~~~~~~~~
 
-One such scenario is when amd_pstate mode is changed, leading to the
-following splat:
+As gcc does not warn about this in dead code, add an IS_ENABLED() check at
+the start of the function. This will always return success but not actually resize
+the BAR on 32-bit architectures without high memory, which is exactly what
+we want here, as the driver can fall back to bank switching the VRAM
+access.
 
-[ 1332.103727] INFO: task bash:2929 blocked for more than 120 seconds.
-[ 1332.110001]       Not tainted 6.5.0-rc2-amd-pstate-ut #5
-[ 1332.115315] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1332.123140] task:bash            state:D stack:0     pid:2929  ppid:2873   flags:0x00004006
-[ 1332.123143] Call Trace:
-[ 1332.123145]  <TASK>
-[ 1332.123148]  __schedule+0x3c1/0x16a0
-[ 1332.123154]  ? _raw_read_lock_irqsave+0x2d/0x70
-[ 1332.123157]  schedule+0x6f/0x110
-[ 1332.123160]  schedule_timeout+0x14f/0x160
-[ 1332.123162]  ? preempt_count_add+0x86/0xd0
-[ 1332.123165]  __wait_for_common+0x92/0x190
-[ 1332.123168]  ? __pfx_schedule_timeout+0x10/0x10
-[ 1332.123170]  wait_for_completion+0x28/0x30
-[ 1332.123173]  cpufreq_policy_put_kobj+0x4d/0x90
-[ 1332.123177]  cpufreq_policy_free+0x157/0x1d0
-[ 1332.123178]  ? preempt_count_add+0x58/0xd0
-[ 1332.123180]  cpufreq_remove_dev+0xb6/0x100
-[ 1332.123182]  subsys_interface_unregister+0x114/0x120
-[ 1332.123185]  ? preempt_count_add+0x58/0xd0
-[ 1332.123187]  ? __pfx_amd_pstate_change_driver_mode+0x10/0x10
-[ 1332.123190]  cpufreq_unregister_driver+0x3b/0xd0
-[ 1332.123192]  amd_pstate_change_driver_mode+0x1e/0x50
-[ 1332.123194]  store_status+0xe9/0x180
-[ 1332.123197]  dev_attr_store+0x1b/0x30
-[ 1332.123199]  sysfs_kf_write+0x42/0x50
-[ 1332.123202]  kernfs_fop_write_iter+0x143/0x1d0
-[ 1332.123204]  vfs_write+0x2df/0x400
-[ 1332.123208]  ksys_write+0x6b/0xf0
-[ 1332.123210]  __x64_sys_write+0x1d/0x30
-[ 1332.123213]  do_syscall_64+0x60/0x90
-[ 1332.123216]  ? fpregs_assert_state_consistent+0x2e/0x50
-[ 1332.123219]  ? exit_to_user_mode_prepare+0x49/0x1a0
-[ 1332.123223]  ? irqentry_exit_to_user_mode+0xd/0x20
-[ 1332.123225]  ? irqentry_exit+0x3f/0x50
-[ 1332.123226]  ? exc_page_fault+0x8e/0x190
-[ 1332.123228]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[ 1332.123232] RIP: 0033:0x7fa74c514a37
-[ 1332.123234] RSP: 002b:00007ffe31dd0788 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[ 1332.123238] RAX: ffffffffffffffda RBX: 0000000000000008 RCX: 00007fa74c514a37
-[ 1332.123239] RDX: 0000000000000008 RSI: 000055e27c447aa0 RDI: 0000000000000001
-[ 1332.123241] RBP: 000055e27c447aa0 R08: 00007fa74c5d1460 R09: 000000007fffffff
-[ 1332.123242] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000008
-[ 1332.123244] R13: 00007fa74c61a780 R14: 00007fa74c616600 R15: 00007fa74c615a00
-[ 1332.123247]  </TASK>
-
-Fix this by calling cpufreq_cpu_put() wherever necessary.
-
-Fixes: 14eb1c96e3a3 ("cpufreq: amd-pstate: Add test module for amd-pstate driver")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Meng Li <li.meng@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Suggested-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 31b8adab3247 ("drm/amdgpu: require a root bus window above 4GB for BAR resize")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate-ut.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/cpufreq/amd-pstate-ut.c b/drivers/cpufreq/amd-pstate-ut.c
-index e7f452d221384..b448c8d6a16dd 100644
---- a/drivers/cpufreq/amd-pstate-ut.c
-+++ b/drivers/cpufreq/amd-pstate-ut.c
-@@ -140,7 +140,7 @@ static void amd_pstate_ut_check_perf(u32 index)
- 			if (ret) {
- 				amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
- 				pr_err("%s cppc_get_perf_caps ret=%d error!\n", __func__, ret);
--				return;
-+				goto skip_test;
- 			}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 3108f5219cf3b..f7770e9c9aaca 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1231,6 +1231,9 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
+ 	u16 cmd;
+ 	int r;
  
- 			nominal_perf = cppc_perf.nominal_perf;
-@@ -151,7 +151,7 @@ static void amd_pstate_ut_check_perf(u32 index)
- 			if (ret) {
- 				amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
- 				pr_err("%s read CPPC_CAP1 ret=%d error!\n", __func__, ret);
--				return;
-+				goto skip_test;
- 			}
- 
- 			nominal_perf = AMD_CPPC_NOMINAL_PERF(cap1);
-@@ -169,7 +169,7 @@ static void amd_pstate_ut_check_perf(u32 index)
- 				nominal_perf, cpudata->nominal_perf,
- 				lowest_nonlinear_perf, cpudata->lowest_nonlinear_perf,
- 				lowest_perf, cpudata->lowest_perf);
--			return;
-+			goto skip_test;
- 		}
- 
- 		if (!((highest_perf >= nominal_perf) &&
-@@ -180,11 +180,15 @@ static void amd_pstate_ut_check_perf(u32 index)
- 			pr_err("%s cpu%d highest=%d >= nominal=%d > lowest_nonlinear=%d > lowest=%d > 0, the formula is incorrect!\n",
- 				__func__, cpu, highest_perf, nominal_perf,
- 				lowest_nonlinear_perf, lowest_perf);
--			return;
-+			goto skip_test;
- 		}
-+		cpufreq_cpu_put(policy);
- 	}
- 
- 	amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_PASS;
-+	return;
-+skip_test:
-+	cpufreq_cpu_put(policy);
- }
- 
- /*
-@@ -212,14 +216,14 @@ static void amd_pstate_ut_check_freq(u32 index)
- 			pr_err("%s cpu%d max=%d >= nominal=%d > lowest_nonlinear=%d > min=%d > 0, the formula is incorrect!\n",
- 				__func__, cpu, cpudata->max_freq, cpudata->nominal_freq,
- 				cpudata->lowest_nonlinear_freq, cpudata->min_freq);
--			return;
-+			goto skip_test;
- 		}
- 
- 		if (cpudata->min_freq != policy->min) {
- 			amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
- 			pr_err("%s cpu%d cpudata_min_freq=%d policy_min=%d, they should be equal!\n",
- 				__func__, cpu, cpudata->min_freq, policy->min);
--			return;
-+			goto skip_test;
- 		}
- 
- 		if (cpudata->boost_supported) {
-@@ -231,16 +235,20 @@ static void amd_pstate_ut_check_freq(u32 index)
- 				pr_err("%s cpu%d policy_max=%d should be equal cpu_max=%d or cpu_nominal=%d !\n",
- 					__func__, cpu, policy->max, cpudata->max_freq,
- 					cpudata->nominal_freq);
--				return;
-+				goto skip_test;
- 			}
- 		} else {
- 			amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
- 			pr_err("%s cpu%d must support boost!\n", __func__, cpu);
--			return;
-+			goto skip_test;
- 		}
-+		cpufreq_cpu_put(policy);
- 	}
- 
- 	amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_PASS;
-+	return;
-+skip_test:
-+	cpufreq_cpu_put(policy);
- }
- 
- static int __init amd_pstate_ut_init(void)
++	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
++		return 0;
++
+ 	/* Bypass for VF */
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
 -- 
 2.40.1
 
