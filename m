@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D33DE79BD91
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 765C679BEC1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240368AbjIKV5B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45100 "EHLO
+        id S1379511AbjIKWof (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241189AbjIKPDu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:50 -0400
+        with ESMTP id S238786AbjIKOFA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CA01B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208FDC433C8;
-        Mon, 11 Sep 2023 15:03:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700F4CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1A8C433C7;
+        Mon, 11 Sep 2023 14:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444625;
-        bh=wdtEE65LNr821hfuRctCLLoVeoyD3I6F/a+0nq8NkwQ=;
+        s=korg; t=1694441095;
+        bh=RU883vJbqCiB8f1MK2ohq0q9kO6GnFNtGncMSfSsDas=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ufguN/2fgTa2IGvyV336uOsCniZqYp5FvinoSk4yQkiR+ERnxgwQ7RUaK+tp+rU+Y
-         mjgD1ZZu61JNoiCZwOVgHXf0O0awsDIKTG4xayJCQXajXO3gRqw4+Ws8yXU/CrJJUj
-         QGU32b9Y0FD+XhGhHaCXUp/EU9FutIfIRx1ZRTlU=
+        b=FzYPOYhpQ4A2d29+aF0Z9f7MpQUZ3oV87trBV3ksORUqlkkT+QKHoSY/XnNjz2F9R
+         PR//CevxHidYpQcvYnJi7CiOElx89Wou6eUbOpyX8kSYX3bunIxWurSGc/mOEvQH0k
+         G0DR7B0gRuGG0d8zmlVXBWBCWMBccrcMcxt7tNgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Jocelyn Falempe <jfalempe@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/600] scsi: qedi: Fix potential deadlock on &qedi_percpu->p_work_lock
-Date:   Mon, 11 Sep 2023 15:41:32 +0200
-Message-ID: <20230911134635.368736915@linuxfoundation.org>
+Subject: [PATCH 6.5 294/739] drm/ast: report connection status on Display Port.
+Date:   Mon, 11 Sep 2023 15:41:33 +0200
+Message-ID: <20230911134659.345973787@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,69 +50,223 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-[ Upstream commit dd64f80587190265ca8a0f4be6c64c2fda6d3ac2 ]
+[ Upstream commit f81bb0ac7872893241319ea82504956676ef02fd ]
 
-As &qedi_percpu->p_work_lock is acquired by hard IRQ qedi_msix_handler(),
-other acquisitions of the same lock under process context should disable
-IRQ, otherwise deadlock could happen if the IRQ preempts the execution
-while the lock is held in process context on the same CPU.
+Aspeed always report the display port as "connected", because it
+doesn't set a .detect_ctx callback.
+Fix this by providing the proper detect callback for astdp and dp501.
 
-qedi_cpu_offline() is one such function which acquires the lock in process
-context.
+This also fixes the following regression:
+Since commit fae7d186403e ("drm/probe-helper: Default to 640x480 if no
+EDID on DP") The default resolution is now 640x480 when no monitor is
+connected. But Aspeed graphics is mostly used in servers, where no monitor
+is attached. This also affects the remote BMC resolution to 640x480, which
+is inconvenient, and breaks the anaconda installer.
 
-[Deadlock Scenario]
-qedi_cpu_offline()
-    ->spin_lock(&p->p_work_lock)
-        <irq>
-        ->qedi_msix_handler()
-        ->edi_process_completions()
-        ->spin_lock_irqsave(&p->p_work_lock, flags); (deadlock here)
+v2: Add .detect callback to the dp/dp501 connector (Jani Nikula)
+v3: Use .detect_ctx callback, and refactors (Thomas Zimmermann)
+    Add a BMC virtual connector
+v4: Better indent detect_ctx() functions (Thomas Zimmermann)
+v5: Enable polling of the dp and dp501 connector status
+    (Thomas Zimmermann)
+v6: Change check order in ast_astdp_is_connected (Jammy Huang)
 
-This flaw was found by an experimental static analysis tool I am developing
-for IRQ-related deadlocks.
-
-The tentative patch fix the potential deadlock by spin_lock_irqsave()
-under process context.
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230726125655.4197-1-dg573847474@gmail.com
-Acked-by: Manish Rangankar <mrangankar@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: fae7d186403e ("drm/probe-helper: Default to 640x480 if no EDID on DP")
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230713134316.332502-2-jfalempe@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_dp.c    | 11 ++++++++++
+ drivers/gpu/drm/ast/ast_dp501.c | 37 ++++++++++++++++++++++-----------
+ drivers/gpu/drm/ast/ast_drv.h   |  2 ++
+ drivers/gpu/drm/ast/ast_mode.c  | 30 ++++++++++++++++++++++++--
+ 4 files changed, 66 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index 9fd68d362698f..2ee109fb65616 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -1977,8 +1977,9 @@ static int qedi_cpu_offline(unsigned int cpu)
- 	struct qedi_percpu_s *p = this_cpu_ptr(&qedi_percpu);
- 	struct qedi_work *work, *tmp;
- 	struct task_struct *thread;
-+	unsigned long flags;
+diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
+index 6dc1a09504e13..fdd9a493aa9c0 100644
+--- a/drivers/gpu/drm/ast/ast_dp.c
++++ b/drivers/gpu/drm/ast/ast_dp.c
+@@ -7,6 +7,17 @@
+ #include <drm/drm_print.h>
+ #include "ast_drv.h"
  
--	spin_lock_bh(&p->p_work_lock);
-+	spin_lock_irqsave(&p->p_work_lock, flags);
- 	thread = p->iothread;
- 	p->iothread = NULL;
++bool ast_astdp_is_connected(struct ast_device *ast)
++{
++	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1, ASTDP_MCU_FW_EXECUTING))
++		return false;
++	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDF, ASTDP_HPD))
++		return false;
++	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDC, ASTDP_LINK_SUCCESS))
++		return false;
++	return true;
++}
++
+ int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata)
+ {
+ 	struct ast_device *ast = to_ast_device(dev);
+diff --git a/drivers/gpu/drm/ast/ast_dp501.c b/drivers/gpu/drm/ast/ast_dp501.c
+index 1bc35a992369d..fa7442b0c2612 100644
+--- a/drivers/gpu/drm/ast/ast_dp501.c
++++ b/drivers/gpu/drm/ast/ast_dp501.c
+@@ -272,11 +272,9 @@ static bool ast_launch_m68k(struct drm_device *dev)
+ 	return true;
+ }
  
-@@ -1989,7 +1990,7 @@ static int qedi_cpu_offline(unsigned int cpu)
- 			kfree(work);
- 	}
+-bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
++bool ast_dp501_is_connected(struct ast_device *ast)
+ {
+-	struct ast_device *ast = to_ast_device(dev);
+-	u32 i, boot_address, offset, data;
+-	u32 *pEDIDidx;
++	u32 boot_address, offset, data;
  
--	spin_unlock_bh(&p->p_work_lock);
-+	spin_unlock_irqrestore(&p->p_work_lock, flags);
- 	if (thread)
- 		kthread_stop(thread);
+ 	if (ast->config_mode == ast_use_p2a) {
+ 		boot_address = get_fw_base(ast);
+@@ -292,14 +290,6 @@ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
+ 		data = ast_mindwm(ast, boot_address + offset);
+ 		if (!(data & AST_DP501_PNP_CONNECTED))
+ 			return false;
+-
+-		/* Read EDID */
+-		offset = AST_DP501_EDID_DATA;
+-		for (i = 0; i < 128; i += 4) {
+-			data = ast_mindwm(ast, boot_address + offset + i);
+-			pEDIDidx = (u32 *)(ediddata + i);
+-			*pEDIDidx = data;
+-		}
+ 	} else {
+ 		if (!ast->dp501_fw_buf)
+ 			return false;
+@@ -319,7 +309,30 @@ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
+ 		data = readl(ast->dp501_fw_buf + offset);
+ 		if (!(data & AST_DP501_PNP_CONNECTED))
+ 			return false;
++	}
++	return true;
++}
++
++bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
++{
++	struct ast_device *ast = to_ast_device(dev);
++	u32 i, boot_address, offset, data;
++	u32 *pEDIDidx;
++
++	if (!ast_dp501_is_connected(ast))
++		return false;
++
++	if (ast->config_mode == ast_use_p2a) {
++		boot_address = get_fw_base(ast);
+ 
++		/* Read EDID */
++		offset = AST_DP501_EDID_DATA;
++		for (i = 0; i < 128; i += 4) {
++			data = ast_mindwm(ast, boot_address + offset + i);
++			pEDIDidx = (u32 *)(ediddata + i);
++			*pEDIDidx = data;
++		}
++	} else {
+ 		/* Read EDID */
+ 		offset = AST_DP501_EDID_DATA;
+ 		for (i = 0; i < 128; i += 4) {
+diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
+index 5498a6676f2e8..8a0ffa8b5939b 100644
+--- a/drivers/gpu/drm/ast/ast_drv.h
++++ b/drivers/gpu/drm/ast/ast_drv.h
+@@ -468,6 +468,7 @@ void ast_patch_ahb_2500(struct ast_device *ast);
+ /* ast dp501 */
+ void ast_set_dp501_video_output(struct drm_device *dev, u8 mode);
+ bool ast_backup_fw(struct drm_device *dev, u8 *addr, u32 size);
++bool ast_dp501_is_connected(struct ast_device *ast);
+ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata);
+ u8 ast_get_dp501_max_clk(struct drm_device *dev);
+ void ast_init_3rdtx(struct drm_device *dev);
+@@ -476,6 +477,7 @@ void ast_init_3rdtx(struct drm_device *dev);
+ struct ast_i2c_chan *ast_i2c_create(struct drm_device *dev);
+ 
+ /* aspeed DP */
++bool ast_astdp_is_connected(struct ast_device *ast);
+ int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata);
+ void ast_dp_launch(struct drm_device *dev);
+ void ast_dp_power_on_off(struct drm_device *dev, bool no);
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index b3c670af6ef2b..0724516f29737 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -1585,8 +1585,20 @@ static int ast_dp501_connector_helper_get_modes(struct drm_connector *connector)
  	return 0;
+ }
+ 
++static int ast_dp501_connector_helper_detect_ctx(struct drm_connector *connector,
++						 struct drm_modeset_acquire_ctx *ctx,
++						 bool force)
++{
++	struct ast_device *ast = to_ast_device(connector->dev);
++
++	if (ast_dp501_is_connected(ast))
++		return connector_status_connected;
++	return connector_status_disconnected;
++}
++
+ static const struct drm_connector_helper_funcs ast_dp501_connector_helper_funcs = {
+ 	.get_modes = ast_dp501_connector_helper_get_modes,
++	.detect_ctx = ast_dp501_connector_helper_detect_ctx,
+ };
+ 
+ static const struct drm_connector_funcs ast_dp501_connector_funcs = {
+@@ -1611,7 +1623,7 @@ static int ast_dp501_connector_init(struct drm_device *dev, struct drm_connector
+ 	connector->interlace_allowed = 0;
+ 	connector->doublescan_allowed = 0;
+ 
+-	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
++	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
+ 
+ 	return 0;
+ }
+@@ -1683,8 +1695,20 @@ static int ast_astdp_connector_helper_get_modes(struct drm_connector *connector)
+ 	return 0;
+ }
+ 
++static int ast_astdp_connector_helper_detect_ctx(struct drm_connector *connector,
++						 struct drm_modeset_acquire_ctx *ctx,
++						 bool force)
++{
++	struct ast_device *ast = to_ast_device(connector->dev);
++
++	if (ast_astdp_is_connected(ast))
++		return connector_status_connected;
++	return connector_status_disconnected;
++}
++
+ static const struct drm_connector_helper_funcs ast_astdp_connector_helper_funcs = {
+ 	.get_modes = ast_astdp_connector_helper_get_modes,
++	.detect_ctx = ast_astdp_connector_helper_detect_ctx,
+ };
+ 
+ static const struct drm_connector_funcs ast_astdp_connector_funcs = {
+@@ -1709,7 +1733,7 @@ static int ast_astdp_connector_init(struct drm_device *dev, struct drm_connector
+ 	connector->interlace_allowed = 0;
+ 	connector->doublescan_allowed = 0;
+ 
+-	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
++	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
+ 
+ 	return 0;
+ }
+@@ -1848,5 +1872,7 @@ int ast_mode_config_init(struct ast_device *ast)
+ 
+ 	drm_mode_config_reset(dev);
+ 
++	drm_kms_helper_poll_init(dev);
++
+ 	return 0;
+ }
 -- 
 2.40.1
 
