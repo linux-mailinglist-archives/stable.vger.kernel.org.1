@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF37279BDC4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A37179BAC4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345642AbjIKVVp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55076 "EHLO
+        id S231365AbjIKUud (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242269AbjIKP0a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:26:30 -0400
+        with ESMTP id S240981AbjIKO6w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFF6DB
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:26:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E8DC433C7;
-        Mon, 11 Sep 2023 15:26:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F111B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D33C433C7;
+        Mon, 11 Sep 2023 14:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445985;
-        bh=17aA590RUILvCW7ZTee6V8o1xBhGEfyQL16soezPhLo=;
+        s=korg; t=1694444327;
+        bh=ZO5kvKfbi4dn867EwKYHbAOwD0XihALG+4v1s2llqRQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w5Jf9npmyw6tUiWYC3nSIdNe5D5rQy91js6LLdv6HtpIDCH5pdpfpnYxV3ZyKvT0+
-         G+hWGMKMxAPTOOwCC8OgQHLgUERRvkEHD16KmNcpeb0WstYEs91ePCLMxyDaFQukr1
-         2dBMnf6oj9FNYS8iAoygArn5lIgnzH0QuDpxCltY=
+        b=QfjxLLNK11sTtaI4omxXfyqrkX4MNNbpZ1eZq4CLNUOieLrui2B53XB65daxwhpKq
+         OYpNO0amcCPR18Ff7kHa4HSmYUgDTdiSpK+yQr2lsy7dQQIGa0HxChNqYJZjeo3jZZ
+         W5CvaLujBRltLXcW6z8zJUCt71y/h+1n0XKt/mJk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 515/600] cpufreq: Fix the race condition while updating the transition_task of policy
-Date:   Mon, 11 Sep 2023 15:49:08 +0200
-Message-ID: <20230911134648.814056566@linuxfoundation.org>
+        patches@lists.linux.dev, Charlene Liu <charlene.liu@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Fudong Wang <fudong.wang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.4 690/737] drm/amd/display: Add smu write msg id fail retry process
+Date:   Mon, 11 Sep 2023 15:49:09 +0200
+Message-ID: <20230911134709.806069692@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,84 +51,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Fudong Wang <fudong.wang@amd.com>
 
-[ Upstream commit 61bfbf7951ba561dcbdd5357702d3cbc2d447812 ]
+commit 72105dcfa3d12b5af49311f857e3490baa225135 upstream.
 
-The field 'transition_task' of policy structure is used to track the
-task which is performing the frequency transition. Using this field to
-print a warning once detect a case where the same task is calling
-_begin() again before completing the preivous frequency transition via
-the _end().
+A benchmark stress test (12-40 machines x 48hours) found that DCN315 has
+cases where DC writes to an indirect register to set the smu clock msg
+id, but when we go to read the same indirect register the returned msg
+id doesn't match with what we just set it to. So, to fix this retry the
+write until the register's value matches with the requested value.
 
-However, there is a potential race condition in _end() and _begin() APIs
-while updating the field 'transition_task' of policy, the scenario is
-depicted below:
-
-             Task A                            Task B
-
-        /* 1st freq transition */
-        Invoke _begin() {
-                ...
-                ...
-        }
-                                        /* 2nd freq transition */
-                                        Invoke _begin() {
-                                                ... //waiting for A to
-                                                ... //clear
-                                                ... //transition_ongoing
-                                                ... //in _end() for
-                                                ... //the 1st transition
-                                                        |
-        Change the frequency                            |
-                                                        |
-        Invoke _end() {                                 |
-                ...                                     |
-                ...                                     |
-                transition_ongoing = false;             V
-                                                transition_ongoing = true;
-                                                transition_task = current;
-                transition_task = NULL;
-                ... //A overwrites the task
-                ... //performing the transition
-                ... //result in error warning.
-        }
-
-To fix this race condition, the transition_lock of policy structure is
-now acquired before updating policy structure in _end() API. Which ensure
-that only one task can update the 'transition_task' field at a time.
-
-Link: https://lore.kernel.org/all/b3c61d8a-d52d-3136-fbf0-d1de9f1ba411@huawei.com/
-Fixes: ca654dc3a93d ("cpufreq: Catch double invocations of cpufreq_freq_transition_begin/end")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Fixes: f94903996140 ("drm/amd/display: Add DCN315 CLK_MGR")
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Fudong Wang <fudong.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_smu.c |   20 ++++++++++---
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 285ba51b31f60..c8912756fc06d 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -450,8 +450,10 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
- 			    policy->cur,
- 			    policy->cpuinfo.max_freq);
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_smu.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_smu.c
+@@ -32,6 +32,7 @@
  
-+	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
- 	policy->transition_task = NULL;
-+	spin_unlock(&policy->transition_lock);
+ #define MAX_INSTANCE                                        6
+ #define MAX_SEGMENT                                         6
++#define SMU_REGISTER_WRITE_RETRY_COUNT                      5
  
- 	wake_up(&policy->transition_wait);
- }
--- 
-2.40.1
-
+ struct IP_BASE_INSTANCE
+ {
+@@ -134,6 +135,8 @@ static int dcn315_smu_send_msg_with_para
+ 		unsigned int msg_id, unsigned int param)
+ {
+ 	uint32_t result;
++	uint32_t i = 0;
++	uint32_t read_back_data;
+ 
+ 	result = dcn315_smu_wait_for_response(clk_mgr, 10, 200000);
+ 
+@@ -150,10 +153,19 @@ static int dcn315_smu_send_msg_with_para
+ 	/* Set the parameter register for the SMU message, unit is Mhz */
+ 	REG_WRITE(MP1_SMN_C2PMSG_37, param);
+ 
+-	/* Trigger the message transaction by writing the message ID */
+-	generic_write_indirect_reg(CTX,
+-		REG_NBIO(RSMU_INDEX), REG_NBIO(RSMU_DATA),
+-		mmMP1_C2PMSG_3, msg_id);
++	for (i = 0; i < SMU_REGISTER_WRITE_RETRY_COUNT; i++) {
++		/* Trigger the message transaction by writing the message ID */
++		generic_write_indirect_reg(CTX,
++			REG_NBIO(RSMU_INDEX), REG_NBIO(RSMU_DATA),
++			mmMP1_C2PMSG_3, msg_id);
++		read_back_data = generic_read_indirect_reg(CTX,
++			REG_NBIO(RSMU_INDEX), REG_NBIO(RSMU_DATA),
++			mmMP1_C2PMSG_3);
++		if (read_back_data == msg_id)
++			break;
++		udelay(2);
++		smu_print("SMU msg id write fail %x times. \n", i + 1);
++	}
+ 
+ 	result = dcn315_smu_wait_for_response(clk_mgr, 10, 200000);
+ 
 
 
