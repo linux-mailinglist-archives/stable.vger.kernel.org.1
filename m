@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9B179C0DA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 331C879B902
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234624AbjIKUv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43440 "EHLO
+        id S235774AbjIKVEz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242152AbjIKPXl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:41 -0400
+        with ESMTP id S239563AbjIKOXu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6942FD8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE61AC433C7;
-        Mon, 11 Sep 2023 15:23:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77D7DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FF7C433C7;
+        Mon, 11 Sep 2023 14:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445816;
-        bh=WgRfxjtWN7fPHoPbEl8vZx+RmChggvSZSAn2KFWYrQM=;
+        s=korg; t=1694442226;
+        bh=0LbR7zLni6rILWoTwa0/7B08NkX6sUW2vrg2GJVveYA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YUjeHdrTmhz9/l64IigieyR3f+0xQ4ZJJyhzMmncnMNJNUs2KFOGVnRzFjcKB6o1l
-         K5+jGPoF5G0OnmAHCVzvn6zT63K1l2YTleD8EFywO0EI0RtO5D06MjeHZKykbcNJiU
-         p4nxQF7lMnsVXgT2wcrhnTmiEMjimSEUiETaPILg=
+        b=o9DcojS6ITCCBZE/hczt2+SqG+vonHJbKfyK5z7BtTnJJ54oHDF5qwvkh627A/uLD
+         TfMiQStdxsfXQtflDcqU1lHG65C3yXV36+TIrQIoZM+x0fF/ZIzkE49Qky4Km4jaMV
+         bONxDs5T/HOrl3TQ5V8Ark40z1TiM3XFordxykMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 455/600] media: go7007: Remove redundant if statement
-Date:   Mon, 11 Sep 2023 15:48:08 +0200
-Message-ID: <20230911134647.083834226@linuxfoundation.org>
+        patches@lists.linux.dev, Logan Gunthorpe <logang@deltatee.com>,
+        renlonglong <ren.longlong@h3c.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.5 690/739] ntb: Fix calculation ntb_transport_tx_free_entry()
+Date:   Mon, 11 Sep 2023 15:48:09 +0200
+Message-ID: <20230911134710.372700898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit f33cb49081da0ec5af0888f8ecbd566bd326eed1 ]
+commit 5a7693e6bbf19b22fd6c1d2c4b7beb0a03969e2c upstream.
 
-The if statement that compares msgs[i].len != 3 is always false because
-it is in a code block where msg[i].len is equal to 3. The check is
-redundant and can be removed.
+ntb_transport_tx_free_entry() never returns 0 with the current
+calculation. If head == tail, then it would return qp->tx_max_entry.
+Change compare to tail >= head and when they are equal, a 0 would be
+returned.
 
-As detected by cppcheck static analysis:
-drivers/media/usb/go7007/go7007-i2c.c:168:20: warning: Opposite inner
-'if' condition leads to a dead code block. [oppositeInnerCondition]
-
-Link: https://lore.kernel.org/linux-media/20230727174007.635572-1-colin.i.king@gmail.com
-
-Fixes: 866b8695d67e ("Staging: add the go7007 video driver")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e74bfeedad08 ("NTB: Add flow control to the ntb_netdev")
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: renlonglong <ren.longlong@h3c.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/go7007/go7007-i2c.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/ntb/ntb_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/go7007/go7007-i2c.c b/drivers/media/usb/go7007/go7007-i2c.c
-index 38339dd2f83f7..2880370e45c8b 100644
---- a/drivers/media/usb/go7007/go7007-i2c.c
-+++ b/drivers/media/usb/go7007/go7007-i2c.c
-@@ -165,8 +165,6 @@ static int go7007_i2c_master_xfer(struct i2c_adapter *adapter,
- 		} else if (msgs[i].len == 3) {
- 			if (msgs[i].flags & I2C_M_RD)
- 				return -EIO;
--			if (msgs[i].len != 3)
--				return -EIO;
- 			if (go7007_i2c_xfer(go, msgs[i].addr, 0,
- 					(msgs[i].buf[0] << 8) | msgs[i].buf[1],
- 					0x01, &msgs[i].buf[2]) < 0)
--- 
-2.40.1
-
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -2429,7 +2429,7 @@ unsigned int ntb_transport_tx_free_entry
+ 	unsigned int head = qp->tx_index;
+ 	unsigned int tail = qp->remote_rx_info->entry;
+ 
+-	return tail > head ? tail - head : qp->tx_max_entry + tail - head;
++	return tail >= head ? tail - head : qp->tx_max_entry + tail - head;
+ }
+ EXPORT_SYMBOL_GPL(ntb_transport_tx_free_entry);
+ 
 
 
