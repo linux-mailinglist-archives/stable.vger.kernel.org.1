@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E27779AFD9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36AE679B515
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378935AbjIKWiM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49076 "EHLO
+        id S243868AbjIKWYe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240590AbjIKOsO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:14 -0400
+        with ESMTP id S241846AbjIKPQK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E3A125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CD3C433C8;
-        Mon, 11 Sep 2023 14:48:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5957FFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89988C433C8;
+        Mon, 11 Sep 2023 15:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443690;
-        bh=n4E9H+jhKfrruuJHPbYuqN1jN5R5QpvYrJIddx/69fk=;
+        s=korg; t=1694445364;
+        bh=0v4kOuipInV2Fi+HO0PCprubCUzH54jDqVyJLS5XK2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kwhHXc+LSplbmjYG++pqw7XWaKiPTTmB9Yx0A0F8IVDow2ro+1Li0BBZxooXnosZg
-         JZoGCPUoHkAn4S7hUpsyad+njyiSwMK/PC8ZvsoQKiu+qoc/A9+upNTlYeZI35BgCg
-         k/QSBIO82OANFzTTAw5VopxyG0NawZ3y5dC3RcRQ=
+        b=nZ42mXaqbjDc3Lce0Ogin4y1XhTJiB8daI3+SePXyQhJtL4vKe6cMc7uHBrkdCGxD
+         SbWTGDvhM88gYWQrvQBJJ2mpejUCBbk+cwBdyMgb8abadSj9GLvjf5emOYM5IYX1Pj
+         DEkV8z8obkDB2KqOIs2Im1wBhRaUh2S/3znYCFwk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 467/737] nfs/blocklayout: Use the passed in gfp flags
-Date:   Mon, 11 Sep 2023 15:45:26 +0200
-Message-ID: <20230911134703.634573997@linuxfoundation.org>
+Subject: [PATCH 6.1 294/600] firmware: meson_sm: fix to avoid potential NULL pointer dereference
+Date:   Mon, 11 Sep 2023 15:45:27 +0200
+Message-ID: <20230911134642.289789126@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 08b45fcb2d4675f6182fe0edc0d8b1fe604051fa ]
+[ Upstream commit f2ed165619c16577c02b703a114a1f6b52026df4 ]
 
-This allocation should use the passed in GFP_ flags instead of
-GFP_KERNEL.  One places where this matters is in filelayout_pg_init_write()
-which uses GFP_NOFS as the allocation flags.
+of_match_device() may fail and returns a NULL pointer.
 
-Fixes: 5c83746a0cf2 ("pnfs/blocklayout: in-kernel GETDEVICEINFO XDR parsing")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fix this by checking the return value of of_match_device.
+
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/tencent_AA08AAA6C4F34D53ADCE962E188A879B8206@qq.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/dev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/meson/meson_sm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index fea5f8821da5e..ce2ea62397972 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -402,7 +402,7 @@ bl_parse_concat(struct nfs_server *server, struct pnfs_block_dev *d,
- 	int ret, i;
- 
- 	d->children = kcalloc(v->concat.volumes_count,
--			sizeof(struct pnfs_block_dev), GFP_KERNEL);
-+			sizeof(struct pnfs_block_dev), gfp_mask);
- 	if (!d->children)
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index 77aa5c6398aa6..d081a6312627b 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -292,6 +292,8 @@ static int __init meson_sm_probe(struct platform_device *pdev)
  		return -ENOMEM;
  
-@@ -431,7 +431,7 @@ bl_parse_stripe(struct nfs_server *server, struct pnfs_block_dev *d,
- 	int ret, i;
+ 	chip = of_match_device(meson_sm_ids, dev)->data;
++	if (!chip)
++		return -EINVAL;
  
- 	d->children = kcalloc(v->stripe.volumes_count,
--			sizeof(struct pnfs_block_dev), GFP_KERNEL);
-+			sizeof(struct pnfs_block_dev), gfp_mask);
- 	if (!d->children)
- 		return -ENOMEM;
- 
+ 	if (chip->cmd_shmem_in_base) {
+ 		fw->sm_shmem_in_base = meson_sm_map_shmem(chip->cmd_shmem_in_base,
 -- 
 2.40.1
 
