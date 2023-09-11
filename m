@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0E679B16D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF3679AF31
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376684AbjIKWUO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58668 "EHLO
+        id S242758AbjIKWfV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241305AbjIKPGR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:17 -0400
+        with ESMTP id S238973AbjIKOIl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFEB8FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F02C433C7;
-        Mon, 11 Sep 2023 15:06:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E83CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0F8C433C8;
+        Mon, 11 Sep 2023 14:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444772;
-        bh=saofTuUKWPvIhRGQT3owU++5dblPwoXF2HwrapxZGi8=;
+        s=korg; t=1694441317;
+        bh=QcfD/g8jYlQBkECaL6JSeqhu+ehAM4Jz5VzF8K74Fj8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IdF385c58AmkvBJzwzVkGpnfXiKvXHa8YlOyK30ZnMsEezeAL37cXlvBa5XkKTbnT
-         C74evrWVLcL1e+9+whIirYYodJo36sod9UC0pv1JCZoct40Ywi8cpmcYoN2IqUa/QW
-         ZvqtU113zTCNBV/YjATuEVApi+a3OxAr29j0J0wk=
+        b=2veZfgSik68X/F0Z4kMXCndqHwaEvry2t9O35bkqMKLRiB4ZoJdKVIMcF8XHYVyxf
+         AJUvr2008OiMOKzSbgmu8OcdbkQHmb/MUrea81JGIp5DNNIPFfwArWRfpr0huz8BNq
+         V7PK5w/yoeCBFzX/BM3MY6olC+PG1O4m6gYz+8/o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/600] refscale: Fix uninitalized use of wait_queue_head_t
+Subject: [PATCH 6.5 344/739] arm64: dts: qcom: apq8016-sbc: Fix ov5640 regulator supply names
 Date:   Mon, 11 Sep 2023 15:42:23 +0200
-Message-ID: <20230911134636.847908855@linuxfoundation.org>
+Message-ID: <20230911134700.721144960@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit f5063e8948dad7f31adb007284a5d5038ae31bb8 ]
+[ Upstream commit 43a684580819e7f35b6cb38236be63c4cba26ef4 ]
 
-Running the refscale test occasionally crashes the kernel with the
-following error:
+The ov5640 driver expects DOVDD, AVDD and DVDD as regulator supply names.
 
-[ 8569.952896] BUG: unable to handle page fault for address: ffffffffffffffe8
-[ 8569.952900] #PF: supervisor read access in kernel mode
-[ 8569.952902] #PF: error_code(0x0000) - not-present page
-[ 8569.952904] PGD c4b048067 P4D c4b049067 PUD c4b04b067 PMD 0
-[ 8569.952910] Oops: 0000 [#1] PREEMPT_RT SMP NOPTI
-[ 8569.952916] Hardware name: Dell Inc. PowerEdge R750/0WMWCR, BIOS 1.2.4 05/28/2021
-[ 8569.952917] RIP: 0010:prepare_to_wait_event+0x101/0x190
-  :
-[ 8569.952940] Call Trace:
-[ 8569.952941]  <TASK>
-[ 8569.952944]  ref_scale_reader+0x380/0x4a0 [refscale]
-[ 8569.952959]  kthread+0x10e/0x130
-[ 8569.952966]  ret_from_fork+0x1f/0x30
-[ 8569.952973]  </TASK>
+The ov5640 has depended on these names since the driver was committed
+upstream in 2017. Similarly apq8016-sbc.dtsi has had completely different
+regulator names since its own initial commit in 2020.
 
-The likely cause is that init_waitqueue_head() is called after the call to
-the torture_create_kthread() function that creates the ref_scale_reader
-kthread.  Although this init_waitqueue_head() call will very likely
-complete before this kthread is created and starts running, it is
-possible that the calling kthread will be delayed between the calls to
-torture_create_kthread() and init_waitqueue_head().  In this case, the
-new kthread will use the waitqueue head before it is properly initialized,
-which is not good for the kernel's health and well-being.
+Perhaps the regulators were left on in previous 410c bootloaders. In any
+case today on 6.5 we won't switch on the ov5640 without correctly naming
+the regulators.
 
-The above crash happened here:
-
-	static inline void __add_wait_queue(...)
-	{
-		:
-		if (!(wq->flags & WQ_FLAG_PRIORITY)) <=== Crash here
-
-The offset of flags from list_head entry in wait_queue_entry is
--0x18. If reader_tasks[i].wq.head.next is NULL as allocated reader_task
-structure is zero initialized, the instruction will try to access address
-0xffffffffffffffe8, which is exactly the fault address listed above.
-
-This commit therefore invokes init_waitqueue_head() before creating
-the kthread.
-
-Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811234738.2859417-3-bryan.odonoghue@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/refscale.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
-index d49a9d66e0000..3a93c53f615f0 100644
---- a/kernel/rcu/refscale.c
-+++ b/kernel/rcu/refscale.c
-@@ -867,12 +867,11 @@ ref_scale_init(void)
- 	VERBOSE_SCALEOUT("Starting %d reader threads", nreaders);
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index f3d65a6061949..1a71dfe75a921 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -287,9 +287,9 @@ camera_rear@3b {
+ 		clock-names = "xclk";
+ 		clock-frequency = <23880000>;
  
- 	for (i = 0; i < nreaders; i++) {
-+		init_waitqueue_head(&reader_tasks[i].wq);
- 		firsterr = torture_create_kthread(ref_scale_reader, (void *)i,
- 						  reader_tasks[i].task);
- 		if (torture_init_error(firsterr))
- 			goto unwind;
--
--		init_waitqueue_head(&(reader_tasks[i].wq));
- 	}
+-		vdddo-supply = <&camera_vdddo_1v8>;
+-		vdda-supply = <&camera_vdda_2v8>;
+-		vddd-supply = <&camera_vddd_1v5>;
++		DOVDD-supply = <&camera_vdddo_1v8>;
++		AVDD-supply = <&camera_vdda_2v8>;
++		DVDD-supply = <&camera_vddd_1v5>;
  
- 	// Main Task
+ 		/* No camera mezzanine by default */
+ 		status = "disabled";
 -- 
 2.40.1
 
