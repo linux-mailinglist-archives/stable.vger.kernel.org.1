@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF92C79AFA4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C433479B1BB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242303AbjIKU5v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38800 "EHLO
+        id S1345331AbjIKVTd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242153AbjIKPXn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:43 -0400
+        with ESMTP id S240867AbjIKO4F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C58D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88450C433C9;
-        Mon, 11 Sep 2023 15:23:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7B0118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DEFC433C7;
+        Mon, 11 Sep 2023 14:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445818;
-        bh=6EHsIZVV0fU8VikCstG27XL9ipuKdl3FDhKKIPo0Mhw=;
+        s=korg; t=1694444160;
+        bh=/rfLeDycxAxbLgCu7hJnCB4ooTvNgZYvK6R467TmaCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iIQvWX43oZqmqFSUOCNflv4Yuqzfeop6D1ucrwtYrYV6gRxcpcGsn/zzK6LuWbm3Y
-         GjrsJ16OdB8+rxr35JhxAbQRC0mNE9rpgbQadq05/tPtWNGI0U3ZkeSRfIIX+QTPdy
-         wJvoy2lVUA/N10zTbM0sHl302NBlJMVWp3spU+uY=
+        b=jshnLREEtW5u1jINdKyHxyV7T6dhZqhxHUSflp25cQOC+IngoDIVzKvn1xNvD2fwJ
+         ORCUy6DmQL7Pg2dVppKKtMpPLlNfSO9yxKSvJFpKWX8C7csYaiqhvwbEJIdfHUuuOg
+         UjmAX7wEe74oo9eShaipoSs1B9TXh+PeDZ7+4eUw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 456/600] media: venus: hfi_venus: Only consider sys_idle_indicator on V1
-Date:   Mon, 11 Sep 2023 15:48:09 +0200
-Message-ID: <20230911134647.113378044@linuxfoundation.org>
+Subject: [PATCH 6.4 631/737] cpufreq: Fix the race condition while updating the transition_task of policy
+Date:   Mon, 11 Sep 2023 15:48:10 +0200
+Message-ID: <20230911134708.157960802@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +51,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Liao Chang <liaochang1@huawei.com>
 
-[ Upstream commit 6283e4834c69fa93a108efa18c6aa09c7e626f49 ]
+[ Upstream commit 61bfbf7951ba561dcbdd5357702d3cbc2d447812 ]
 
-As per information from Qualcomm [1], this property is not really
-supported beyond msm8916 (HFI V1) and some newer HFI versions really
-dislike receiving it, going as far as crashing the device.
+The field 'transition_task' of policy structure is used to track the
+task which is performing the frequency transition. Using this field to
+print a warning once detect a case where the same task is calling
+_begin() again before completing the preivous frequency transition via
+the _end().
 
-Only consider toggling it (via the module option) on HFIV1.
-While at it, get rid of the global static variable (which defaulted
-to zero) which was never explicitly assigned to for V1.
+However, there is a potential race condition in _end() and _begin() APIs
+while updating the field 'transition_task' of policy, the scenario is
+depicted below:
 
-Note: [1] is a reply to the actual message in question, as lore did not
-properly receive some of the emails..
+             Task A                            Task B
 
-[1] https://lore.kernel.org/lkml/955cd520-3881-0c22-d818-13fe9a47e124@linaro.org/
-Fixes: 7ed9e0b3393c ("media: venus: hfi, vdec: v6 Add IS_V6() to existing IS_V4() if locations")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+        /* 1st freq transition */
+        Invoke _begin() {
+                ...
+                ...
+        }
+                                        /* 2nd freq transition */
+                                        Invoke _begin() {
+                                                ... //waiting for A to
+                                                ... //clear
+                                                ... //transition_ongoing
+                                                ... //in _end() for
+                                                ... //the 1st transition
+                                                        |
+        Change the frequency                            |
+                                                        |
+        Invoke _end() {                                 |
+                ...                                     |
+                ...                                     |
+                transition_ongoing = false;             V
+                                                transition_ongoing = true;
+                                                transition_task = current;
+                transition_task = NULL;
+                ... //A overwrites the task
+                ... //performing the transition
+                ... //result in error warning.
+        }
+
+To fix this race condition, the transition_lock of policy structure is
+now acquired before updating policy structure in _end() API. Which ensure
+that only one task can update the 'transition_task' field at a time.
+
+Link: https://lore.kernel.org/all/b3c61d8a-d52d-3136-fbf0-d1de9f1ba411@huawei.com/
+Fixes: ca654dc3a93d ("cpufreq: Catch double invocations of cpufreq_freq_transition_begin/end")
+Signed-off-by: Liao Chang <liaochang1@huawei.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/cpufreq/cpufreq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index 2ad40b3945b0b..bff435abd59ba 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -131,7 +131,6 @@ struct venus_hfi_device {
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 6b52ebe5a8904..f11b01b25e8d5 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -455,8 +455,10 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
+ 			    policy->cur,
+ 			    policy->cpuinfo.max_freq);
  
- static bool venus_pkt_debug;
- int venus_fw_debug = HFI_DEBUG_MSG_ERROR | HFI_DEBUG_MSG_FATAL;
--static bool venus_sys_idle_indicator;
- static bool venus_fw_low_power_mode = true;
- static int venus_hw_rsp_timeout = 1000;
- static bool venus_fw_coverage;
-@@ -947,17 +946,12 @@ static int venus_sys_set_default_properties(struct venus_hfi_device *hdev)
- 	if (ret)
- 		dev_warn(dev, "setting fw debug msg ON failed (%d)\n", ret);
++	spin_lock(&policy->transition_lock);
+ 	policy->transition_ongoing = false;
+ 	policy->transition_task = NULL;
++	spin_unlock(&policy->transition_lock);
  
--	/*
--	 * Idle indicator is disabled by default on some 4xx firmware versions,
--	 * enable it explicitly in order to make suspend functional by checking
--	 * WFI (wait-for-interrupt) bit.
--	 */
--	if (IS_V4(hdev->core) || IS_V6(hdev->core))
--		venus_sys_idle_indicator = true;
--
--	ret = venus_sys_set_idle_message(hdev, venus_sys_idle_indicator);
--	if (ret)
--		dev_warn(dev, "setting idle response ON failed (%d)\n", ret);
-+	/* HFI_PROPERTY_SYS_IDLE_INDICATOR is not supported beyond 8916 (HFI V1) */
-+	if (IS_V1(hdev->core)) {
-+		ret = venus_sys_set_idle_message(hdev, false);
-+		if (ret)
-+			dev_warn(dev, "setting idle response ON failed (%d)\n", ret);
-+	}
- 
- 	ret = venus_sys_set_power_control(hdev, venus_fw_low_power_mode);
- 	if (ret)
+ 	wake_up(&policy->transition_wait);
+ }
 -- 
 2.40.1
 
