@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABEBC79B4BC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A88079B0F2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344139AbjIKVNX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45252 "EHLO
+        id S241610AbjIKVUN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240851AbjIKOzh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:37 -0400
+        with ESMTP id S242093AbjIKPWH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C4E118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E697DC433C8;
-        Mon, 11 Sep 2023 14:55:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85AA9D3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C662DC433C8;
+        Mon, 11 Sep 2023 15:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444132;
-        bh=nz3pv/+HgjtRwg4VIOvjlCG7TSgkJilNVnGOfGbkdVU=;
+        s=korg; t=1694445722;
+        bh=tlnyJJPElZsr6uhw/lye0TmfLkcXyrbryJYgrbbBrZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UYfJr2FnAeHho9kDwDzYirmZDMqfgMLywiCTnzZbd5EI0xd0VbnLUsCATGk8nOltw
-         PjaTtr7V4dNxkyw+bwD21q8L455fF2M+5WqBPM0i1sZ5fkQh8XFXB8No+b6M5zgP4z
-         DJhnWsRptprv2p1OAEhk/BmGy4ft/X0/O4QFwgVo=
+        b=sMB6yLFPq2coM9C8+ArT2johUJxnRQrDDmWQUlGjb9ZCfiDTiaFqVSTVEiWl1bpcC
+         lkHD9XzSNooM2MQjqOYNCK+VZrepVz5vZbxP8GtzpSanBwBeXyXWyH+swUBNXkx9wz
+         xgT6CdePOyc3lsx5Mhb/VJalXKa6J7fcyYttJ6rw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        patches@lists.linux.dev, Xiang Yang <xiangyang3@huawei.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 622/737] mtd: rawnand: fsmc: handle clk prepare error in fsmc_nand_resume()
+Subject: [PATCH 6.1 448/600] IB/uverbs: Fix an potential error pointer dereference
 Date:   Mon, 11 Sep 2023 15:48:01 +0200
-Message-ID: <20230911134707.907377322@linuxfoundation.org>
+Message-ID: <20230911134646.870499322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-[ Upstream commit a5a88125d00612586e941ae13e7fcf36ba8f18a7 ]
+[ Upstream commit 26b7d1a27167e7adf75b150755e05d2bc123ce55 ]
 
-In fsmc_nand_resume(), the return value of clk_prepare_enable() should be
-checked since it might fail.
+smatch reports the warning below:
+drivers/infiniband/core/uverbs_std_types_counters.c:110
+ib_uverbs_handler_UVERBS_METHOD_COUNTERS_READ() error: 'uattr'
+dereferencing possible ERR_PTR()
 
-Fixes: e25da1c07dfb ("mtd: fsmc_nand: Add clk_{un}prepare() support")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230817115839.10192-1-yiyang13@huawei.com
+The return value of uattr maybe ERR_PTR(-ENOENT), fix this by checking
+the value of uattr before using it.
+
+Fixes: ebb6796bd397 ("IB/uverbs: Add read counters support")
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Link: https://lore.kernel.org/r/20230804022525.1916766-1-xiangyang3@huawei.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/fsmc_nand.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/uverbs_std_types_counters.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
-index 7b4742420dfcb..2e33ae77502a0 100644
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -1200,9 +1200,14 @@ static int fsmc_nand_suspend(struct device *dev)
- static int fsmc_nand_resume(struct device *dev)
- {
- 	struct fsmc_nand_data *host = dev_get_drvdata(dev);
-+	int ret;
+diff --git a/drivers/infiniband/core/uverbs_std_types_counters.c b/drivers/infiniband/core/uverbs_std_types_counters.c
+index 999da9c798668..381aa57976417 100644
+--- a/drivers/infiniband/core/uverbs_std_types_counters.c
++++ b/drivers/infiniband/core/uverbs_std_types_counters.c
+@@ -107,6 +107,8 @@ static int UVERBS_HANDLER(UVERBS_METHOD_COUNTERS_READ)(
+ 		return ret;
  
- 	if (host) {
--		clk_prepare_enable(host->clk);
-+		ret = clk_prepare_enable(host->clk);
-+		if (ret) {
-+			dev_err(dev, "failed to enable clk\n");
-+			return ret;
-+		}
- 		if (host->dev_timings)
- 			fsmc_nand_setup(host, host->dev_timings);
- 		nand_reset(&host->nand, 0);
+ 	uattr = uverbs_attr_get(attrs, UVERBS_ATTR_READ_COUNTERS_BUFF);
++	if (IS_ERR(uattr))
++		return PTR_ERR(uattr);
+ 	read_attr.ncounters = uattr->ptr_attr.len / sizeof(u64);
+ 	read_attr.counters_buff = uverbs_zalloc(
+ 		attrs, array_size(read_attr.ncounters, sizeof(u64)));
 -- 
 2.40.1
 
