@@ -2,39 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48E2D79BB93
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D046D79C0A3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240801AbjIKVEk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47578 "EHLO
+        id S1349075AbjIKVc0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239153AbjIKONI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:08 -0400
+        with ESMTP id S239156AbjIKONM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F97DDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E816DC433C8;
-        Mon, 11 Sep 2023 14:13:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73AFDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F56C433C8;
+        Mon, 11 Sep 2023 14:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441584;
-        bh=zzaxbCRiJ20QLCspOUFSSdYuPIp8lI+XlrwNmRB4GA8=;
+        s=korg; t=1694441587;
+        bh=fSblEN/Aln7HmN1yP2zWKGdp/je49exlVy8jHv8Pris=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E3Nqgywk84WVNowSYdx7O2vySdUyfcDtnS2f58fXi1eI6oSQVmdB2UGLPxlpK3aoF
-         wJNaax9SFOdqchzAf3d6k6T8fwwPLR6fAWz/JAKmPjowjJKOouGuXXFAR7p/YoROUX
-         6bpfRar5Ji6uYW/9LcyZARMXHShGSvebB093l0CM=
+        b=A9kyOOuD+/kVKtIQ4yrkEOoFdXLiGoq7d+KtnC3Lrf3nPLrz2nN8Mdja6ociVi+zH
+         l5Y0Vrj/daxRQ+Ws41imwWxkKda/b724AMV3VGexDYt1d6qCZYh5/i+SkFJLpD52um
+         KIeTTeXE1mHJBpyzSb8UvBkdvibyIndwB8URoTdI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaowei Bao <xiaowei.bao@nxp.com>,
-        Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-        Frank Li <Frank.Li@nxp.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
+        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 433/739] PCI: layerscape: Add workaround for lost link capabilities during reset
-Date:   Mon, 11 Sep 2023 15:43:52 +0200
-Message-ID: <20230911134703.268526269@linuxfoundation.org>
+Subject: [PATCH 6.5 434/739] powerpc: Dont include lppaca.h in paca.h
+Date:   Mon, 11 Sep 2023 15:43:53 +0200
+Message-ID: <20230911134703.295738337@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -57,86 +53,132 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xiaowei Bao <xiaowei.bao@nxp.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 17cf8661ee0f065c08152e611a568dd1fb0285f1 ]
+[ Upstream commit 1aa000667669fa855853decbb1c69e974d8ff716 ]
 
-The endpoint controller loses the Maximum Link Width and Supported Link Speed
-value from the Link Capabilities Register - initially configured by the Reset
-Configuration Word (RCW) - during a link-down or hot reset event.
+By adding a forward declaration for struct lppaca we can untangle paca.h
+and lppaca.h. Also move get_lppaca() into lppaca.h for consistency.
 
-Address this issue in the endpoint event handler.
+Add includes of lppaca.h to some files that need it.
 
-Link: https://lore.kernel.org/r/20230720135834.1977616-2-Frank.Li@nxp.com
-Fixes: a805770d8a22 ("PCI: layerscape: Add EP mode support")
-Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230823055317.751786-3-mpe@ellerman.id.au
+Stable-dep-of: eac030b22ea1 ("powerpc/pseries: Rework lppaca_shared_proc() to avoid DEBUG_PREEMPT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pci/controller/dwc/pci-layerscape-ep.c    | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/powerpc/include/asm/lppaca.h         | 4 ++++
+ arch/powerpc/include/asm/paca.h           | 6 +-----
+ arch/powerpc/include/asm/paravirt.h       | 1 +
+ arch/powerpc/include/asm/plpar_wrappers.h | 1 +
+ arch/powerpc/kvm/book3s_hv_ras.c          | 1 +
+ arch/powerpc/mm/book3s64/slb.c            | 1 +
+ arch/powerpc/xmon/xmon.c                  | 1 +
+ 7 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index de4c1758a6c33..19595e93dd4b6 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -45,6 +45,7 @@ struct ls_pcie_ep {
- 	struct pci_epc_features		*ls_epc;
- 	const struct ls_pcie_ep_drvdata *drvdata;
- 	int				irq;
-+	u32				lnkcap;
- 	bool				big_endian;
- };
+diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
+index 34d44cb17c874..fe278172e9d42 100644
+--- a/arch/powerpc/include/asm/lppaca.h
++++ b/arch/powerpc/include/asm/lppaca.h
+@@ -134,6 +134,10 @@ static inline bool lppaca_shared_proc(struct lppaca *l)
+ 	return !!(l->__old_status & LPPACA_OLD_SHARED_PROC);
+ }
  
-@@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
- 	struct ls_pcie_ep *pcie = dev_id;
- 	struct dw_pcie *pci = pcie->pci;
- 	u32 val, cfg;
-+	u8 offset;
- 
- 	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
- 	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-@@ -81,6 +83,19 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
- 		return IRQ_NONE;
- 
- 	if (val & PEX_PF0_PME_MES_DR_LUD) {
++#ifdef CONFIG_PPC_PSERIES
++#define get_lppaca()	(get_paca()->lppaca_ptr)
++#endif
 +
-+		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+
-+		/*
-+		 * The values of the Maximum Link Width and Supported Link
-+		 * Speed from the Link Capabilities Register will be lost
-+		 * during link down or hot reset. Restore initial value
-+		 * that configured by the Reset Configuration Word (RCW).
-+		 */
-+		dw_pcie_dbi_ro_wr_en(pci);
-+		dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
-+		dw_pcie_dbi_ro_wr_dis(pci);
-+
- 		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
- 		cfg |= PEX_PF0_CFG_READY;
- 		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-@@ -215,6 +230,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	struct ls_pcie_ep *pcie;
- 	struct pci_epc_features *ls_epc;
- 	struct resource *dbi_base;
-+	u8 offset;
- 	int ret;
+ /*
+  * SLB shadow buffer structure as defined in the PAPR.  The save_area
+  * contains adjacent ESID and VSID pairs for each shadowed SLB.  The
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index cb325938766a5..e667d455ecb41 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -15,7 +15,6 @@
+ #include <linux/cache.h>
+ #include <linux/string.h>
+ #include <asm/types.h>
+-#include <asm/lppaca.h>
+ #include <asm/mmu.h>
+ #include <asm/page.h>
+ #ifdef CONFIG_PPC_BOOK3E_64
+@@ -47,14 +46,11 @@ extern unsigned int debug_smp_processor_id(void); /* from linux/smp.h */
+ #define get_paca()	local_paca
+ #endif
  
- 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-@@ -251,6 +267,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+-#ifdef CONFIG_PPC_PSERIES
+-#define get_lppaca()	(get_paca()->lppaca_ptr)
+-#endif
+-
+ #define get_slb_shadow()	(get_paca()->slb_shadow_ptr)
  
- 	platform_set_drvdata(pdev, pcie);
+ struct task_struct;
+ struct rtas_args;
++struct lppaca;
  
-+	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-+
- 	ret = dw_pcie_ep_init(&pci->ep);
- 	if (ret)
- 		return ret;
+ /*
+  * Defines the layout of the paca.
+diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+index f5ba1a3c41f8e..e08513d731193 100644
+--- a/arch/powerpc/include/asm/paravirt.h
++++ b/arch/powerpc/include/asm/paravirt.h
+@@ -6,6 +6,7 @@
+ #include <asm/smp.h>
+ #ifdef CONFIG_PPC64
+ #include <asm/paca.h>
++#include <asm/lppaca.h>
+ #include <asm/hvcall.h>
+ #endif
+ 
+diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
+index 8239c0af5eb2b..fe3d0ea0058ac 100644
+--- a/arch/powerpc/include/asm/plpar_wrappers.h
++++ b/arch/powerpc/include/asm/plpar_wrappers.h
+@@ -9,6 +9,7 @@
+ 
+ #include <asm/hvcall.h>
+ #include <asm/paca.h>
++#include <asm/lppaca.h>
+ #include <asm/page.h>
+ 
+ static inline long poll_pending(void)
+diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
+index ccfd969656306..82be6d87514b7 100644
+--- a/arch/powerpc/kvm/book3s_hv_ras.c
++++ b/arch/powerpc/kvm/book3s_hv_ras.c
+@@ -9,6 +9,7 @@
+ #include <linux/kvm.h>
+ #include <linux/kvm_host.h>
+ #include <linux/kernel.h>
++#include <asm/lppaca.h>
+ #include <asm/opal.h>
+ #include <asm/mce.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+index 6956f637a38c1..f2708c8629a52 100644
+--- a/arch/powerpc/mm/book3s64/slb.c
++++ b/arch/powerpc/mm/book3s64/slb.c
+@@ -13,6 +13,7 @@
+ #include <asm/mmu.h>
+ #include <asm/mmu_context.h>
+ #include <asm/paca.h>
++#include <asm/lppaca.h>
+ #include <asm/ppc-opcode.h>
+ #include <asm/cputable.h>
+ #include <asm/cacheflush.h>
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index fae747cc57d2d..97e61a17e936a 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -58,6 +58,7 @@
+ #ifdef CONFIG_PPC64
+ #include <asm/hvcall.h>
+ #include <asm/paca.h>
++#include <asm/lppaca.h>
+ #endif
+ 
+ #include "nonstdio.h"
 -- 
 2.40.1
 
