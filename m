@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6874979B026
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD91279ACDC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242554AbjIKU6F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
+        id S236094AbjIKUwv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241864AbjIKPQc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:32 -0400
+        with ESMTP id S239314AbjIKOR1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B292AFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA01DC433C9;
-        Mon, 11 Sep 2023 15:16:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62E08DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D3BC433C8;
+        Mon, 11 Sep 2023 14:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445387;
-        bh=vquO9jfW7yXkVHHMWSNUnQyQS/1DFj6/WI/AAbN9Mls=;
+        s=korg; t=1694441842;
+        bh=cFx53V1nR3le4Skggb/jXxBehg0tZgOPMG3qkkdxJ3g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xc+m1j1IMXEqIlNCmH4p7t1q8lZRB2CTvJ0mfYfVG/QVL/llhzQ8UbNb48WgmaOH+
-         DI4YFf+MHxQRNxhERA8J4ovB5pK1FgurfQl18YfQKjHZfhvr+4D5jnGghX7+ze2NaV
-         dK+wIxTwQMeULrDaHVwHbJtJixdeatnYEYjov0Vg=
+        b=AeaDa9Kk+b7c4ouk6ZR+AKODEVLEkwIG14w+Lc7I6t06vpEcokGOb28gKQMnCur/K
+         S7qFsSOVIUpPBfqOsHHTCL+j9h8aZzoUieizS5cMJckmk8T7pr5qlKOI1wyUg6tMg3
+         wE+6shDFfuHU0oXxSkBYq/SO/7gudmrpi8JQtcM8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        =?UTF-8?q?Fabian=20W=C3=BCthrich?= <me@fabwu.ch>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 295/600] drm/msm/dpu: fix the irq index in dpu_encoder_phys_wb_wait_for_commit_done
+Subject: [PATCH 6.5 529/739] media: ipu-bridge: Fix null pointer deref on SSDB/PLD parsing warnings
 Date:   Mon, 11 Sep 2023 15:45:28 +0200
-Message-ID: <20230911134642.317661076@linuxfoundation.org>
+Message-ID: <20230911134705.884092553@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,44 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d93cf453f51da168f4410ba73656f1e862096973 ]
+[ Upstream commit 284be5693163343e1cf17c03917eecd1d6681bcf ]
 
-Since commit 1e7ac595fa46 ("drm/msm/dpu: pass irq to
-dpu_encoder_helper_wait_for_irq()") the
-dpu_encoder_phys_wb_wait_for_commit_done expects the IRQ index rather
-than the IRQ index in phys_enc->intr table, however writeback got the
-older invocation in place. This was unnoticed for several releases, but
-now it's time to fix it.
+When ipu_bridge_parse_rotation() and ipu_bridge_parse_orientation() run
+sensor->adev is not set yet.
 
-Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/550924/
-Link: https://lore.kernel.org/r/20230802100426.4184892-2-dmitry.baryshkov@linaro.org
+So if either of the dev_warn() calls about unknown values are hit this
+will lead to a NULL pointer deref.
+
+Set sensor->adev earlier, with a borrowed ref to avoid making unrolling
+on errors harder, to fix this.
+
+Fixes: 485aa3df0dff ("media: ipu3-cio2: Parse sensor orientation and rotation")
+Cc: Fabian Wüthrich <me@fabwu.ch>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/pci/intel/ipu3/cio2-bridge.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-index 62f6ff6abf410..42c7e378d504d 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-@@ -460,7 +460,8 @@ static int dpu_encoder_phys_wb_wait_for_commit_done(
- 	wait_info.atomic_cnt = &phys_enc->pending_kickoff_cnt;
- 	wait_info.timeout_ms = KICKOFF_TIMEOUT_MS;
+diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
+index 3c2accfe54551..7fba87736b6b8 100644
+--- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
++++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
+@@ -308,6 +308,11 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+ 		}
  
--	ret = dpu_encoder_helper_wait_for_irq(phys_enc, INTR_IDX_WB_DONE,
-+	ret = dpu_encoder_helper_wait_for_irq(phys_enc,
-+			phys_enc->irq[INTR_IDX_WB_DONE],
- 			dpu_encoder_phys_wb_done_irq, &wait_info);
- 	if (ret == -ETIMEDOUT)
- 		_dpu_encoder_phys_wb_handle_wbdone_timeout(phys_enc);
+ 		sensor = &bridge->sensors[bridge->n_sensors];
++		/*
++		 * Borrow our adev ref to the sensor for now, on success
++		 * acpi_dev_get(adev) is done further below.
++		 */
++		sensor->adev = adev;
+ 
+ 		ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
+ 						   &sensor->ssdb,
 -- 
 2.40.1
 
