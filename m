@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 955FD79B993
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C4AE79BB1E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355382AbjIKV56 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56612 "EHLO
+        id S235928AbjIKWmk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:42:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240805AbjIKOyX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:23 -0400
+        with ESMTP id S239496AbjIKOWM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B4FE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C00CC433C7;
-        Mon, 11 Sep 2023 14:54:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7BE2DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6DEC433C7;
+        Mon, 11 Sep 2023 14:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444058;
-        bh=HbURyQnB4JPBtSAl18ujYVLq/35jh8Uf2rYPkBHvJ3w=;
+        s=korg; t=1694442127;
+        bh=THzNyZ+F0jWaCTw6IKBKln/lrApay70AHVhi70vJiic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otSk2nZfm7Zy9m55jN3NqQhsjOyf60FqFszF1SaQKSMmXF8mqgbP2qMzooAsb1Ad0
-         yphp182xN4qrLjxMjUwuEt7WVXE/YkQ/JbpZnuccq5Pn1SkrP/6AY9DKXJoGZvYGb/
-         KsBfu03l6DyXiuPiNpY0iZj425io2taYw+iQFWyw=
+        b=dEOw+0XbtSNI37v+xKric6pFQezSnpLShkCj3f5bWI1HyeG+WQ+GPx+EFApDRRSnN
+         P0AWTUajB7cxYqDIYGWujvg3EygvQAXeHoZHgan/kmHcfR9JFfntM4BAACYJwHYPNw
+         mk3zXMzu6CzgOEta2jZPOVubmk6YIIhgOw8QbWq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Michael Walle <michael@walle.cc>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 596/737] nvmem: core: Return NULL when no nvmem layout is found
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.5 656/739] riscv: Mark KASAN tmp* page tables variables as static
 Date:   Mon, 11 Sep 2023 15:47:35 +0200
-Message-ID: <20230911134707.187982641@linuxfoundation.org>
+Message-ID: <20230911134709.432830664@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 81e1d9a39569d315f747c2af19ce502cd08645ed ]
+commit dd7664d67b478afeb79a89e4586c2cd7707d17d6 upstream.
 
-Currently, of_nvmem_layout_get_container() returns NULL on error, or an
-error pointer if either CONFIG_NVMEM or CONFIG_OF is turned off. We
-should likely avoid this kind of mix for two reasons: to clarify the
-intend and anyway fix the !CONFIG_OF which will likely always if we use
-this helper somewhere else. Let's just return NULL when no layout is
-found, we don't need an error value here.
+tmp_pg_dir, tmp_p4d and tmp_pud are only used in kasan_init.c so they
+should be declared as static.
 
-Link: https://staticthinking.wordpress.com/2022/08/01/mixing-error-pointers-and-null/
-Fixes: 266570f496b9 ("nvmem: core: introduce NVMEM layouts")
 Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202308030002.DnSFOrMB-lkp@intel.com/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230823132744.350618-21-srinivas.kandagatla@linaro.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202306282202.bODptiGE-lkp@intel.com/
+Fixes: 96f9d4daf745 ("riscv: Rework kasan population functions")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20230704074357.233982-1-alexghiti@rivosinc.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/nvmem-consumer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/mm/kasan_init.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
-index fa030d93b768e..27373024856dc 100644
---- a/include/linux/nvmem-consumer.h
-+++ b/include/linux/nvmem-consumer.h
-@@ -256,7 +256,7 @@ static inline struct nvmem_device *of_nvmem_device_get(struct device_node *np,
- static inline struct device_node *
- of_nvmem_layout_get_container(struct nvmem_device *nvmem)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return NULL;
- }
- #endif /* CONFIG_NVMEM && CONFIG_OF */
+--- a/arch/riscv/mm/kasan_init.c
++++ b/arch/riscv/mm/kasan_init.c
+@@ -22,9 +22,9 @@
+  * region is not and then we have to go down to the PUD level.
+  */
  
--- 
-2.40.1
-
+-pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
+-p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
+-pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
++static pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
++static p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
++static pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
+ 
+ static void __init kasan_populate_pte(pmd_t *pmd, unsigned long vaddr, unsigned long end)
+ {
 
 
