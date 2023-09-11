@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C270879B7BD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B460979BBB9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239921AbjIKUzo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59976 "EHLO
+        id S1350762AbjIKVlH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241602AbjIKPK5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:57 -0400
+        with ESMTP id S239096AbjIKOLj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D74E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9C2C433CC;
-        Mon, 11 Sep 2023 15:10:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67FDCD
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F28C433C7;
+        Mon, 11 Sep 2023 14:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445052;
-        bh=0+MD1wqOsNnXJcAjJe/CqzyDow1gAhpMtRSSRoTdbMk=;
+        s=korg; t=1694441493;
+        bh=qARIgqwiw6OqNmB+O1cLSpxwjMZh+MTsWFQdj64fSDM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=baiQVdnq8jypUdeqM/l0+fQ9ALRSsInXNesdD/UQ/oo3Oa8VTKL3zMd4+N2MY1gy2
-         nyj9UhRXxA2lsHwU+KvKqIK6wemP1JbT3gq9RmwalQrW62ialpHL17DbFn1K8Je4z8
-         QUo/eT1gH8ziKhMu3dUre1huBWVSvvmY0r3l/nis=
+        b=l5jd+7fHUqb+a5G4s2a75rD/3A+rlAavOsW6a6Fy1QRIDAKaDq23DOTKaZCrOCcYG
+         Wkh/tk4Lk1Fg72oQLF41u7tQsiOOfl8xYdjQGtbzCwjf/bMtkVvTkRt+CvMJvQX1EC
+         NtapAGeoFSwypygJiRGnb7468BjWJwatj3FC25gM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/600] Bluetooth: Fix potential use-after-free when clear keys
-Date:   Mon, 11 Sep 2023 15:43:23 +0200
-Message-ID: <20230911134638.628794490@linuxfoundation.org>
+Subject: [PATCH 6.5 405/739] PCI: Add locking to RMW PCI Express Capability Register accessors
+Date:   Mon, 11 Sep 2023 15:43:24 +0200
+Message-ID: <20230911134702.490487133@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,78 +53,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Min Li <lm0963hack@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 3673952cf0c6cf81b06c66a0b788abeeb02ff3ae ]
+[ Upstream commit 5e70d0acf0825f439079736080350371f8d6699a ]
 
-Similar to commit c5d2b6fa26b5 ("Bluetooth: Fix use-after-free in
-hci_remove_ltk/hci_remove_irk"). We can not access k after kfree_rcu()
-call.
+Many places in the kernel write the Link Control and Root Control PCI
+Express Capability Registers without proper concurrency control and this
+could result in losing the changes one of the writers intended to make.
 
-Fixes: d7d41682efc2 ("Bluetooth: Fix Suspicious RCU usage warnings")
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Add pcie_cap_lock spinlock into the struct pci_dev and use it to protect
+bit changes made in the RMW capability accessors. Protect only a selected
+set of registers by differentiating the RMW accessor internally to
+locked/unlocked variants using a wrapper which has the same signature as
+pcie_capability_clear_and_set_word(). As the Capability Register (pos)
+given to the wrapper is always a constant, the compiler should be able to
+simplify all the dead-code away.
+
+So far only the Link Control Register (ASPM, hotplug, link retraining,
+various drivers) and the Root Control Register (AER & PME) seem to
+require RMW locking.
+
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: c7f486567c1d ("PCI PM: PCIe PME root port service driver")
+Fixes: f12eb72a268b ("PCI/ASPM: Use PCI Express Capability accessors")
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Fixes: affa48de8417 ("staging/rdma/hfi1: Add support for enabling/disabling PCIe ASPM")
+Fixes: 849a9366cba9 ("misc: rtsx: Add support new chip rts5228 mmc: rtsx: Add support MMC_CAP2_NO_MMC")
+Fixes: 3d1e7aa80d1c ("misc: rtsx: Use pcie_capability_clear_and_set_word() for PCI_EXP_LNKCTL")
+Fixes: c0e5f4e73a71 ("misc: rtsx: Add support for RTS5261")
+Fixes: 3df4fce739e2 ("misc: rtsx: separate aspm mode into MODE_REG and MODE_CFG")
+Fixes: 121e9c6b5c4c ("misc: rtsx: modify and fix init_hw function")
+Fixes: 19f3bd548f27 ("mfd: rtsx: Remove LCTLR defination")
+Fixes: 773ccdfd9cc6 ("mfd: rtsx: Read vendor setting from config space")
+Fixes: 8275b77a1513 ("mfd: rts5249: Add support for RTS5250S power saving")
+Fixes: 5da4e04ae480 ("misc: rtsx: Add support for RTS5260")
+Fixes: 0f49bfbd0f2e ("tg3: Use PCI Express Capability accessors")
+Fixes: 5e7dfd0fb94a ("tg3: Prevent corruption at 10 / 100Mbps w CLKREQ")
+Fixes: b726e493e8dc ("r8169: sync existing 8168 device hardware start sequences with vendor driver")
+Fixes: e6de30d63eb1 ("r8169: more 8168dp support.")
+Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
+Fixes: 6f461f6c7c96 ("e1000e: enable/disable ASPM L0s and L1 and ERT according to hardware errata")
+Fixes: 1eae4eb2a1c7 ("e1000e: Disable L1 ASPM power savings for 82573 mobile variants")
+Fixes: 8060e169e02f ("ath9k: Enable extended synch for AR9485 to fix L0s recovery issue")
+Fixes: 69ce674bfa69 ("ath9k: do btcoex ASPM disabling at initialization time")
+Fixes: f37f05503575 ("mt76: mt76x2e: disable pcie_aspm by default")
+Link: https://lore.kernel.org/r/20230717120503.15276-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: "Rafael J. Wysocki" <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/pci/access.c | 20 +++++++++++++++++---
+ drivers/pci/probe.c  |  1 +
+ include/linux/pci.h  | 34 ++++++++++++++++++++++++++++++++--
+ 3 files changed, 50 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index d034bf2a999e1..26884447d72be 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -1074,9 +1074,9 @@ void hci_uuids_clear(struct hci_dev *hdev)
+diff --git a/drivers/pci/access.c b/drivers/pci/access.c
+index 3c230ca3de584..0b2e90d2f04f2 100644
+--- a/drivers/pci/access.c
++++ b/drivers/pci/access.c
+@@ -497,8 +497,8 @@ int pcie_capability_write_dword(struct pci_dev *dev, int pos, u32 val)
+ }
+ EXPORT_SYMBOL(pcie_capability_write_dword);
  
- void hci_link_keys_clear(struct hci_dev *hdev)
+-int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
+-				       u16 clear, u16 set)
++int pcie_capability_clear_and_set_word_unlocked(struct pci_dev *dev, int pos,
++						u16 clear, u16 set)
  {
--	struct link_key *key;
-+	struct link_key *key, *tmp;
+ 	int ret;
+ 	u16 val;
+@@ -512,7 +512,21 @@ int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
  
--	list_for_each_entry(key, &hdev->link_keys, list) {
-+	list_for_each_entry_safe(key, tmp, &hdev->link_keys, list) {
- 		list_del_rcu(&key->list);
- 		kfree_rcu(key, rcu);
- 	}
-@@ -1084,9 +1084,9 @@ void hci_link_keys_clear(struct hci_dev *hdev)
+ 	return ret;
+ }
+-EXPORT_SYMBOL(pcie_capability_clear_and_set_word);
++EXPORT_SYMBOL(pcie_capability_clear_and_set_word_unlocked);
++
++int pcie_capability_clear_and_set_word_locked(struct pci_dev *dev, int pos,
++					      u16 clear, u16 set)
++{
++	unsigned long flags;
++	int ret;
++
++	spin_lock_irqsave(&dev->pcie_cap_lock, flags);
++	ret = pcie_capability_clear_and_set_word_unlocked(dev, pos, clear, set);
++	spin_unlock_irqrestore(&dev->pcie_cap_lock, flags);
++
++	return ret;
++}
++EXPORT_SYMBOL(pcie_capability_clear_and_set_word_locked);
  
- void hci_smp_ltks_clear(struct hci_dev *hdev)
+ int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
+ 					u32 clear, u32 set)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 8bac3ce02609c..f1587fb0ba719 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2324,6 +2324,7 @@ struct pci_dev *pci_alloc_dev(struct pci_bus *bus)
+ 		.end = -1,
+ 	};
+ 
++	spin_lock_init(&dev->pcie_cap_lock);
+ #ifdef CONFIG_PCI_MSI
+ 	raw_spin_lock_init(&dev->msi_lock);
+ #endif
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index c69a2cc1f4123..7ee498cd1f374 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -467,6 +467,7 @@ struct pci_dev {
+ 	pci_dev_flags_t dev_flags;
+ 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
+ 
++	spinlock_t	pcie_cap_lock;		/* Protects RMW ops in capability accessors */
+ 	u32		saved_config_space[16]; /* Config space saved at suspend time */
+ 	struct hlist_head saved_cap_space;
+ 	int		rom_attr_enabled;	/* Display of ROM attribute enabled? */
+@@ -1217,11 +1218,40 @@ int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val);
+ int pcie_capability_read_dword(struct pci_dev *dev, int pos, u32 *val);
+ int pcie_capability_write_word(struct pci_dev *dev, int pos, u16 val);
+ int pcie_capability_write_dword(struct pci_dev *dev, int pos, u32 val);
+-int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
+-				       u16 clear, u16 set);
++int pcie_capability_clear_and_set_word_unlocked(struct pci_dev *dev, int pos,
++						u16 clear, u16 set);
++int pcie_capability_clear_and_set_word_locked(struct pci_dev *dev, int pos,
++					      u16 clear, u16 set);
+ int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
+ 					u32 clear, u32 set);
+ 
++/**
++ * pcie_capability_clear_and_set_word - RMW accessor for PCI Express Capability Registers
++ * @dev:	PCI device structure of the PCI Express device
++ * @pos:	PCI Express Capability Register
++ * @clear:	Clear bitmask
++ * @set:	Set bitmask
++ *
++ * Perform a Read-Modify-Write (RMW) operation using @clear and @set
++ * bitmasks on PCI Express Capability Register at @pos. Certain PCI Express
++ * Capability Registers are accessed concurrently in RMW fashion, hence
++ * require locking which is handled transparently to the caller.
++ */
++static inline int pcie_capability_clear_and_set_word(struct pci_dev *dev,
++						     int pos,
++						     u16 clear, u16 set)
++{
++	switch (pos) {
++	case PCI_EXP_LNKCTL:
++	case PCI_EXP_RTCTL:
++		return pcie_capability_clear_and_set_word_locked(dev, pos,
++								 clear, set);
++	default:
++		return pcie_capability_clear_and_set_word_unlocked(dev, pos,
++								   clear, set);
++	}
++}
++
+ static inline int pcie_capability_set_word(struct pci_dev *dev, int pos,
+ 					   u16 set)
  {
--	struct smp_ltk *k;
-+	struct smp_ltk *k, *tmp;
- 
--	list_for_each_entry(k, &hdev->long_term_keys, list) {
-+	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
- 		list_del_rcu(&k->list);
- 		kfree_rcu(k, rcu);
- 	}
-@@ -1094,9 +1094,9 @@ void hci_smp_ltks_clear(struct hci_dev *hdev)
- 
- void hci_smp_irks_clear(struct hci_dev *hdev)
- {
--	struct smp_irk *k;
-+	struct smp_irk *k, *tmp;
- 
--	list_for_each_entry(k, &hdev->identity_resolving_keys, list) {
-+	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
- 		list_del_rcu(&k->list);
- 		kfree_rcu(k, rcu);
- 	}
-@@ -1104,9 +1104,9 @@ void hci_smp_irks_clear(struct hci_dev *hdev)
- 
- void hci_blocked_keys_clear(struct hci_dev *hdev)
- {
--	struct blocked_key *b;
-+	struct blocked_key *b, *tmp;
- 
--	list_for_each_entry(b, &hdev->blocked_keys, list) {
-+	list_for_each_entry_safe(b, tmp, &hdev->blocked_keys, list) {
- 		list_del_rcu(&b->list);
- 		kfree_rcu(b, rcu);
- 	}
 -- 
 2.40.1
 
