@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61B8979ADB9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6ED279B03A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358227AbjIKWIQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40492 "EHLO
+        id S242973AbjIKU6w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240249AbjIKOjy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:54 -0400
+        with ESMTP id S238906AbjIKOHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284A7F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C41C433C8;
-        Mon, 11 Sep 2023 14:39:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83196E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8FEC433C8;
+        Mon, 11 Sep 2023 14:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443189;
-        bh=RE9Kb3IB4Q3B4kYxWAwLWN4QEL6iVmnDq/N48Ftmq94=;
+        s=korg; t=1694441257;
+        bh=Hx6eyoBYnb+pnGzYPtggFA0mLHPBX3H3UkMymILi7t4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpqFAtOT0jrJ8tgpvPSiBev3w7485gmTstU27pRxKlswUOoxGp3+CyBimJKiN0JPb
-         qLBYFc+M65Uq1X0xjD1xtI2pivU7sHqryHSFYVRK4HD4pujgKyV7EaKNELusES2Wz8
-         a2Sqhq1kcfPLK3gFlNEWHiPiiY07hrKLTkvRgyR4=
+        b=YanaccKYaPOAulhXKkCDpO0SsDzdAgwPuBGRPPDrCzT1egk/xVOg1aJfpzcrWE17R
+         jBqFkhdcbhcQkPFbP2TF4OT7FAtFFQtfV2sGBUAuOyOm+oBUw2+3VuP6Lce0mZPFnZ
+         VRB/djMOwIEv6uPLNa1d2T0TJeGhAG0HEuA17m4w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 289/737] arm64: dts: qcom: sc8280xp: Add missing SCM interconnect
-Date:   Mon, 11 Sep 2023 15:42:28 +0200
-Message-ID: <20230911134658.636225636@linuxfoundation.org>
+Subject: [PATCH 6.5 350/739] arm64: dts: qcom: sc8280xp-x13s: Unreserve NC pins
+Date:   Mon, 11 Sep 2023 15:42:29 +0200
+Message-ID: <20230911134700.896062096@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 0a69ccf20b0837db857abfc94d7e3bacf1cb771b ]
+[ Upstream commit 7868ed0144b33903e16a50485775f669c109e41a ]
 
-The SCM interconnect path was missing. Add it.
+Pins 83-86 and 158-160 are NC, so there's no point in keeping them
+reserved. Take care of that.
 
-Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
+Fixes: 32c231385ed4 ("arm64: dts: qcom: sc8280xp: add Lenovo Thinkpad X13s devicetree")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230622-topic-8280scmicc-v1-2-6ef318919ea5@linaro.org
+Link: https://lore.kernel.org/r/20230803-topic-x13s_pin-v1-1-fae792274e89@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index cc4aef21e6172..9c3fb75e06005 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -296,6 +296,7 @@ CLUSTER_SLEEP_0: cluster-sleep-0 {
- 	firmware {
- 		scm: scm {
- 			compatible = "qcom,scm-sc8280xp", "qcom,scm";
-+			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
- 		};
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+index 7cc3028440b64..059dfccdfe7c2 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+@@ -1246,7 +1246,7 @@ hastings_reg_en: hastings-reg-en-state {
+ };
  
+ &tlmm {
+-	gpio-reserved-ranges = <70 2>, <74 6>, <83 4>, <125 2>, <128 2>, <154 7>;
++	gpio-reserved-ranges = <70 2>, <74 6>, <125 2>, <128 2>, <154 4>;
+ 
+ 	bt_default: bt-default-state {
+ 		hstp-bt-en-pins {
 -- 
 2.40.1
 
