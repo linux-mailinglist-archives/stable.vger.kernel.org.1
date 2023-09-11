@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26FB279AF30
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8A179B290
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244059AbjIKV5G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
+        id S1354200AbjIKVwu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242078AbjIKPVr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:47 -0400
+        with ESMTP id S242084AbjIKPVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3E8D3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D23C433C7;
-        Mon, 11 Sep 2023 15:21:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3148DD8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7288FC433C7;
+        Mon, 11 Sep 2023 15:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445702;
-        bh=kKk1DPQjLlcsRyPnnFpX7MhDGC0BSpy8smDJ0I4jATI=;
+        s=korg; t=1694445707;
+        bh=F2xYqyts/k5qoxtqlAnHEAmuM8+0gdvA34FSnJ+RMpQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BjERUzgirfU7p/IHoXQjeXVOIljAzkDd1EWL3aEkNGcnb9uJOUbdaIYDFSwaVa4bC
-         bpcKc1/tx8sLma1DP8BoU4ey/vR4HFDW9NqqzLYAtrty+SnjUnqJ46tcARMp0NNXqj
-         GFfJyP0WVdLAjPgf1LOnYb44v/wNjtsWagj9eQq0=
+        b=AFyssmaJSRWSggbuodftxslqzRjE7/R87asRU4E2w4iUZOwK8wjqDusGlYLa+fWIV
+         m6eEKVqmfJqNs4pr6lob6nyqYeLDoLYjHQmnf/1RxKH5ppIJZQoSlmQnz7AL3bx/6o
+         BgmV2hMupTnHz9GZ3Uji6B4teONMtS3WzVTaZjxM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Chengci.Xu" <chengci.xu@mediatek.com>,
-        Yong Wu <yong.wu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
+        patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
         Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 442/600] iommu/mediatek: Fix two IOMMU share pagetable issue
-Date:   Mon, 11 Sep 2023 15:47:55 +0200
-Message-ID: <20230911134646.694013545@linuxfoundation.org>
+Subject: [PATCH 6.1 443/600] iommu/sprd: Add missing force_aperture
+Date:   Mon, 11 Sep 2023 15:47:56 +0200
+Message-ID: <20230911134646.723417381@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -57,98 +54,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Chengci.Xu <chengci.xu@mediatek.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit cf69ef46dbd980a0b1c956d668e066a73e0acd0f ]
+[ Upstream commit d48a51286c698f7fe8efc688f23a532f4fe9a904 ]
 
-Prepare for mt8188 to fix a two IOMMU HWs share pagetable issue.
+force_aperture was intended to false only by GART drivers that have an
+identity translation outside the aperture. This does not describe sprd, so
+add the missing 'force_aperture = true'.
 
-We have two MM IOMMU HWs in mt8188, one is VPP-IOMMU, the other is
-VDO-IOMMU. The 2 MM IOMMU HWs share pagetable don't work in this case:
- a) VPP-IOMMU probe firstly.
- b) VDO-IOMMU probe.
- c) The master for VDO-IOMMU probe (means frstdata is vpp-iommu).
- d) The master in another domain probe. No matter it is vdo or vpp.
-Then it still create a new pagetable in step d). The problem is
-"frstdata->bank[0]->m4u_dom" was not initialized. Then when d) enter, it
-still create a new one.
-
-In this patch, we create a new variable "share_dom" for this share
-pgtable case, it should be helpful for readable. and put all the share
-pgtable logic in the mtk_iommu_domain_finalise.
-
-In mt8195, the master of VPP-IOMMU probes before than VDO-IOMMU
-from its dtsi node sequence, we don't see this issue in it. Prepare for
-mt8188.
-
-Fixes: 645b87c190c9 ("iommu/mediatek: Fix 2 HW sharing pgtable issue")
-Signed-off-by: Chengci.Xu <chengci.xu@mediatek.com>
-Signed-off-by: Yong Wu <yong.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://lore.kernel.org/r/20230602090227.7264-3-yong.wu@mediatek.com
+Fixes: b23e4fc4e3fa ("iommu: add Unisoc IOMMU basic driver")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Acked-by: Chunyan Zhang <zhang.lyra@gmail.com>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/iommu/sprd-iommu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 5ff8982712e0f..9673cd60c84fc 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -223,6 +223,8 @@ struct mtk_iommu_data {
- 	struct device			*smicomm_dev;
+diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
+index fadd2c907222b..8261066de07d7 100644
+--- a/drivers/iommu/sprd-iommu.c
++++ b/drivers/iommu/sprd-iommu.c
+@@ -147,6 +147,7 @@ static struct iommu_domain *sprd_iommu_domain_alloc(unsigned int domain_type)
  
- 	struct mtk_iommu_bank_data	*bank;
-+	struct mtk_iommu_domain		*share_dom; /* For 2 HWs share pgtable */
-+
- 	struct regmap			*pericfg;
- 	struct mutex			mutex; /* Protect m4u_group/m4u_dom above */
+ 	dom->domain.geometry.aperture_start = 0;
+ 	dom->domain.geometry.aperture_end = SZ_256M - 1;
++	dom->domain.geometry.force_aperture = true;
  
-@@ -574,15 +576,14 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom,
- 				     struct mtk_iommu_data *data,
- 				     unsigned int region_id)
- {
-+	struct mtk_iommu_domain	*share_dom = data->share_dom;
- 	const struct mtk_iommu_iova_region *region;
--	struct mtk_iommu_domain	*m4u_dom;
--
--	/* Always use bank0 in sharing pgtable case */
--	m4u_dom = data->bank[0].m4u_dom;
--	if (m4u_dom) {
--		dom->iop = m4u_dom->iop;
--		dom->cfg = m4u_dom->cfg;
--		dom->domain.pgsize_bitmap = m4u_dom->cfg.pgsize_bitmap;
-+
-+	/* Always use share domain in sharing pgtable case */
-+	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE) && share_dom) {
-+		dom->iop = share_dom->iop;
-+		dom->cfg = share_dom->cfg;
-+		dom->domain.pgsize_bitmap = share_dom->cfg.pgsize_bitmap;
- 		goto update_iova_region;
- 	}
- 
-@@ -612,6 +613,9 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom,
- 	/* Update our support page sizes bitmap */
- 	dom->domain.pgsize_bitmap = dom->cfg.pgsize_bitmap;
- 
-+	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE))
-+		data->share_dom = dom;
-+
- update_iova_region:
- 	/* Update the iova region for this domain */
- 	region = data->plat_data->iova_region + region_id;
-@@ -662,7 +666,9 @@ static int mtk_iommu_attach_device(struct iommu_domain *domain,
- 		/* Data is in the frstdata in sharing pgtable case. */
- 		frstdata = mtk_iommu_get_frst_data(hw_list);
- 
-+		mutex_lock(&frstdata->mutex);
- 		ret = mtk_iommu_domain_finalise(dom, frstdata, region_id);
-+		mutex_unlock(&frstdata->mutex);
- 		if (ret) {
- 			mutex_unlock(&dom->mutex);
- 			return -ENODEV;
+ 	return &dom->domain;
+ }
 -- 
 2.40.1
 
