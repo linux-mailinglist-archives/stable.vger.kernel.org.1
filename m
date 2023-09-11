@@ -2,52 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A104179B400
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D2979B0AB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241618AbjIKVRl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
+        id S1358459AbjIKWLF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239411AbjIKOTx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:53 -0400
+        with ESMTP id S241941AbjIKPSa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F05DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2B0C433C7;
-        Mon, 11 Sep 2023 14:19:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35376FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2A7C433C7;
+        Mon, 11 Sep 2023 15:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441988;
-        bh=zXYVguQhctkJGy7AoL/vinSqjFYs924jhMJWA8lIkf8=;
+        s=korg; t=1694445505;
+        bh=11zuF0wd4CH28OMKOgZh7RioE56lzVa1ptOIiyhOVfE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7yHN3405LlHg+qutlbmhqeIIsJiAkRIVqpls5vlX/nhSNst4FQGdMm5NGKnIFYKN
-         qhmnTz5pdMMX6C5fVT7hPKKdO0Sxt9uy2q/UTgVMrQefWlgORtZ23rSreE8+KrE8IX
-         9qGLKRhA9reMjfiepLWYNtHS2PHUxS2b1+SyUwhw=
+        b=m3khoVPzkP564+EP8o+2mXXCvW7tjDtJTEfklYOQSXvpq175fGFWuQMjNYsNTwzse
+         c82x8KjOiA1IJKOM33dyrer+OViN/tp56RmnLCVh4pBI6aRyQIRvWfA97cLsCTwpXH
+         Cz75LPltrCZcMS3ETCXlG7N49oCVu0qf3ELMuYls=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 606/739] thermal/drivers/mediatek/lvts_thermal: Use offset threshold for IRQ
+Subject: [PATCH 6.1 372/600] NFSv4.2: Rework scratch handling for READ_PLUS
 Date:   Mon, 11 Sep 2023 15:46:45 +0200
-Message-ID: <20230911134708.024573733@linuxfoundation.org>
+Message-ID: <20230911134644.661125798@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,84 +50,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit f79e996c7ed27bb196facbcd1c69ee33631d7051 ]
+[ Upstream commit fbd2a05f29a95d5b42b294bf47e55a711424965b ]
 
-There are two kinds of temperature monitoring interrupts available:
-* High Offset, Low Offset
-* Hot, Hot to normal, Cold
+Instead of using a tiny, static scratch buffer, we should use a kmalloc()-ed
+buffer that is allocated when checking for read plus usage. This lets us
+use the buffer before decoding any part of the READ_PLUS operation
+instead of setting it right before segment decoding, meaning it should
+be a little more robust.
 
-The code currently uses the hot/h2n/cold interrupts, however in a way
-that doesn't work: the cold threshold is left uninitialized, which
-prevents the other thresholds from ever triggering, and the h2n
-interrupt is used as the lower threshold, which prevents the hot
-interrupt from triggering again after the thresholds are updated by the
-thermal framework, since a hot interrupt can only trigger again after
-the hot to normal interrupt has been triggered.
-
-But better yet than addressing those issues, is to use the high/low
-offset interrupts instead. This way only two thresholds need to be
-managed, which have a simpler state machine, making them a better match
-to the thermal framework's high and low thresholds.
-
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230706153823.201943-4-nfraprado@collabora.com
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: bb05a617f06b ("NFSv4.2: Fix READ_PLUS smatch warnings")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/nfs/nfs42xdr.c       |  4 ++--
+ fs/nfs/nfs4proc.c       | 17 ++++++++++++-----
+ include/linux/nfs_xdr.h |  1 +
+ 3 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 6d4e45e6f46a3..25cdcec4a50c9 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -298,9 +298,9 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	u32 raw_high = lvts_temp_to_raw(high);
+diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
+index 2fd465cab631d..08c1dd094f010 100644
+--- a/fs/nfs/nfs42xdr.c
++++ b/fs/nfs/nfs42xdr.c
+@@ -1121,7 +1121,6 @@ static int decode_read_plus(struct xdr_stream *xdr, struct nfs_pgio_res *res)
+ 	uint32_t segments;
+ 	struct read_plus_segment *segs;
+ 	int status, i;
+-	char scratch_buf[16];
+ 	__be32 *p;
  
- 	/*
--	 * Hot to normal temperature threshold
-+	 * Low offset temperature threshold
- 	 *
--	 * LVTS_H2NTHRE
-+	 * LVTS_OFFSETL
- 	 *
- 	 * Bits:
- 	 *
-@@ -309,13 +309,13 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	if (low != -INT_MAX) {
- 		pr_debug("%s: Setting low limit temperature interrupt: %d\n",
- 			 thermal_zone_device_type(tz), low);
--		writel(raw_low, LVTS_H2NTHRE(base));
-+		writel(raw_low, LVTS_OFFSETL(base));
- 	}
+ 	status = decode_op_hdr(xdr, OP_READ_PLUS);
+@@ -1142,7 +1141,6 @@ static int decode_read_plus(struct xdr_stream *xdr, struct nfs_pgio_res *res)
+ 	if (!segs)
+ 		return -ENOMEM;
  
- 	/*
--	 * Hot temperature threshold
-+	 * High offset temperature threshold
- 	 *
--	 * LVTS_HTHRE
-+	 * LVTS_OFFSETH
- 	 *
- 	 * Bits:
- 	 *
-@@ -323,7 +323,7 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	 */
- 	pr_debug("%s: Setting high limit temperature interrupt: %d\n",
- 		 thermal_zone_device_type(tz), high);
--	writel(raw_high, LVTS_HTHRE(base));
-+	writel(raw_high, LVTS_OFFSETH(base));
+-	xdr_set_scratch_buffer(xdr, &scratch_buf, sizeof(scratch_buf));
+ 	status = -EIO;
+ 	for (i = 0; i < segments; i++) {
+ 		status = decode_read_plus_segment(xdr, &segs[i]);
+@@ -1347,6 +1345,8 @@ static int nfs4_xdr_dec_read_plus(struct rpc_rqst *rqstp,
+ 	struct compound_hdr hdr;
+ 	int status;
  
- 	return 0;
++	xdr_set_scratch_buffer(xdr, res->scratch, sizeof(res->scratch));
++
+ 	status = decode_compound_hdr(xdr, &hdr);
+ 	if (status)
+ 		goto out;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 1044305e77996..3f96ccc386c34 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5446,6 +5446,8 @@ static bool nfs4_read_plus_not_supported(struct rpc_task *task,
+ 
+ static int nfs4_read_done(struct rpc_task *task, struct nfs_pgio_header *hdr)
+ {
++	if (hdr->res.scratch)
++		kfree(hdr->res.scratch);
+ 	if (!nfs4_sequence_done(task, &hdr->res.seq_res))
+ 		return -EAGAIN;
+ 	if (nfs4_read_stateid_changed(task, &hdr->args))
+@@ -5459,17 +5461,22 @@ static int nfs4_read_done(struct rpc_task *task, struct nfs_pgio_header *hdr)
  }
+ 
+ #if defined CONFIG_NFS_V4_2 && defined CONFIG_NFS_V4_2_READ_PLUS
+-static void nfs42_read_plus_support(struct nfs_pgio_header *hdr,
++static bool nfs42_read_plus_support(struct nfs_pgio_header *hdr,
+ 				    struct rpc_message *msg)
+ {
+ 	/* Note: We don't use READ_PLUS with pNFS yet */
+-	if (nfs_server_capable(hdr->inode, NFS_CAP_READ_PLUS) && !hdr->ds_clp)
++	if (nfs_server_capable(hdr->inode, NFS_CAP_READ_PLUS) && !hdr->ds_clp) {
+ 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS];
++		hdr->res.scratch = kmalloc(32, GFP_KERNEL);
++		return hdr->res.scratch != NULL;
++	}
++	return false;
+ }
+ #else
+-static void nfs42_read_plus_support(struct nfs_pgio_header *hdr,
++static bool nfs42_read_plus_support(struct nfs_pgio_header *hdr,
+ 				    struct rpc_message *msg)
+ {
++	return false;
+ }
+ #endif /* CONFIG_NFS_V4_2 */
+ 
+@@ -5479,8 +5486,8 @@ static void nfs4_proc_read_setup(struct nfs_pgio_header *hdr,
+ 	hdr->timestamp   = jiffies;
+ 	if (!hdr->pgio_done_cb)
+ 		hdr->pgio_done_cb = nfs4_read_done_cb;
+-	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
+-	nfs42_read_plus_support(hdr, msg);
++	if (!nfs42_read_plus_support(hdr, msg))
++		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ];
+ 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
+ }
+ 
+diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
+index e86cf6642d212..2fd973d188c47 100644
+--- a/include/linux/nfs_xdr.h
++++ b/include/linux/nfs_xdr.h
+@@ -670,6 +670,7 @@ struct nfs_pgio_res {
+ 		struct {
+ 			unsigned int		replen;		/* used by read */
+ 			int			eof;		/* used by read */
++			void *			scratch;	/* used by read */
+ 		};
+ 		struct {
+ 			struct nfs_writeverf *	verf;		/* used by write */
 -- 
 2.40.1
 
