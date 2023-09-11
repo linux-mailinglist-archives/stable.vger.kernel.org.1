@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C374B79B8C6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A5F79B743
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233688AbjIKWsX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53342 "EHLO
+        id S1359669AbjIKWSU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239796AbjIKO26 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:58 -0400
+        with ESMTP id S239798AbjIKO3E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7C1F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4DBC433C7;
-        Mon, 11 Sep 2023 14:28:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB771F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C03C433C8;
+        Mon, 11 Sep 2023 14:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442533;
-        bh=XkZiuzUmiRGP9YdpGRCM0LeHWToPWWz6HyiBmlUTr2A=;
+        s=korg; t=1694442539;
+        bh=9fqjBwv2LBwO4nIds1qbI4+GaoStwo+5qp+YVqfuzpE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H6JgLsITr2m0Ny5xtDZpYRfL/e9AXES/gmQfl4iW8iF7OS9Ygzrujpx5fsMwsIAJe
-         46ct/Ouh+/PARaiByaLZpNzLMVgci7EsDcqe0LVQuZNGuVvyqJVfWzTx911JVIfgwj
-         C4dZuei3lcwWmYWeEmth6GeHLBOKYRt/jASrqhVg=
+        b=va0/RCq2kLSzNnh17BqCg508vk95mDuOCY8UV6S3VZq/VIx6dykb3lKslOTb+pW7F
+         K+f/28QNRVs2kGp1nHOOzLyNkJ8Y702e3WsaLG718IWjPRy7N38jUCddAVo9J6W0K/
+         sVUS6gTDRjrX1FpjPU2NeL4i+2QuetFG4cQjN4lQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 023/737] s390/dasd: fix hanging device after request requeue
-Date:   Mon, 11 Sep 2023 15:38:02 +0200
-Message-ID: <20230911134651.002491894@linuxfoundation.org>
+        patches@lists.linux.dev, Winston Wen <wentao@uniontech.com>,
+        Paulo Alcantara <pc@manguebit.com>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 025/737] cifs: fix charset issue in reconnection
+Date:   Mon, 11 Sep 2023 15:38:04 +0200
+Message-ID: <20230911134651.082226690@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,220 +55,118 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Winston Wen <wentao@uniontech.com>
 
-[ Upstream commit 8a2278ce9c25048d999fe1a3561def75d963f471 ]
+[ Upstream commit a43f95fdd39490f7b156fd126f1e90ec2d5553f1 ]
 
-The DASD device driver has a function to requeue requests to the
-blocklayer.
-This function is used in various cases when basic settings for the device
-have to be changed like High Performance Ficon related parameters or copy
-pair settings.
+We need to specify charset, like "iocharset=utf-8", in mount options for
+Chinese path if the nls_default don't support it, such as iso8859-1, the
+default value for CONFIG_NLS_DEFAULT.
 
-The functions iterates over the device->ccw_queue and also removes the
-requests from the block->ccw_queue.
-In case the device is started on an alias device instead of the base
-device it might be removed from the block->ccw_queue without having it
-canceled properly before. This might lead to a hanging device since the
-request is no longer on a queue and can not be handled properly.
+But now in reconnection the nls_default is used, instead of the one we
+specified and used in mount, and this can lead to mount failure.
 
-Fix by iterating over the block->ccw_queue instead of the
-device->ccw_queue. This will take care of all blocklayer related requests
-and handle them on all associated DASD devices.
-
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230721193647.3889634-4-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Reviewed-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd.c | 125 +++++++++++++++-----------------------
- 1 file changed, 48 insertions(+), 77 deletions(-)
+ fs/smb/client/cifsglob.h | 1 +
+ fs/smb/client/cifssmb.c  | 3 +--
+ fs/smb/client/connect.c  | 5 +++++
+ fs/smb/client/misc.c     | 1 +
+ fs/smb/client/smb2pdu.c  | 3 +--
+ 5 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/block/dasd.c b/drivers/s390/block/dasd.c
-index 9fbfce735d565..50c48a48fcae3 100644
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -2938,41 +2938,32 @@ static void _dasd_wake_block_flush_cb(struct dasd_ccw_req *cqr, void *data)
-  * Requeue a request back to the block request queue
-  * only works for block requests
-  */
--static int _dasd_requeue_request(struct dasd_ccw_req *cqr)
-+static void _dasd_requeue_request(struct dasd_ccw_req *cqr)
- {
--	struct dasd_block *block = cqr->block;
- 	struct request *req;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index ca2da713c5fe9..87c6ce54c72d0 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1062,6 +1062,7 @@ struct cifs_ses {
+ 	unsigned long chans_need_reconnect;
+ 	/* ========= end: protected by chan_lock ======== */
+ 	struct cifs_ses *dfs_root_ses;
++	struct nls_table *local_nls;
+ };
  
--	if (!block)
--		return -EINVAL;
+ static inline bool
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index a0c4e9874b010..a49f95ea7cf6f 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -129,7 +129,7 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 	}
+ 	spin_unlock(&server->srv_lock);
+ 
+-	nls_codepage = load_nls_default();
++	nls_codepage = ses->local_nls;
+ 
  	/*
- 	 * If the request is an ERP request there is nothing to requeue.
- 	 * This will be done with the remaining original request.
- 	 */
- 	if (cqr->refers)
--		return 0;
-+		return;
- 	spin_lock_irq(&cqr->dq->lock);
- 	req = (struct request *) cqr->callback_data;
- 	blk_mq_requeue_request(req, true);
- 	spin_unlock_irq(&cqr->dq->lock);
- 
--	return 0;
-+	return;
- }
- 
--/*
-- * Go through all request on the dasd_block request queue, cancel them
-- * on the respective dasd_device, and return them to the generic
-- * block layer.
-- */
--static int dasd_flush_block_queue(struct dasd_block *block)
-+static int _dasd_requests_to_flushqueue(struct dasd_block *block,
-+					struct list_head *flush_queue)
- {
- 	struct dasd_ccw_req *cqr, *n;
--	int rc, i;
--	struct list_head flush_queue;
- 	unsigned long flags;
-+	int rc, i;
- 
--	INIT_LIST_HEAD(&flush_queue);
--	spin_lock_bh(&block->queue_lock);
-+	spin_lock_irqsave(&block->queue_lock, flags);
- 	rc = 0;
- restart:
- 	list_for_each_entry_safe(cqr, n, &block->ccw_queue, blocklist) {
-@@ -2987,13 +2978,32 @@ static int dasd_flush_block_queue(struct dasd_block *block)
- 		 * is returned from the dasd_device layer.
- 		 */
- 		cqr->callback = _dasd_wake_block_flush_cb;
--		for (i = 0; cqr != NULL; cqr = cqr->refers, i++)
--			list_move_tail(&cqr->blocklist, &flush_queue);
-+		for (i = 0; cqr; cqr = cqr->refers, i++)
-+			list_move_tail(&cqr->blocklist, flush_queue);
- 		if (i > 1)
- 			/* moved more than one request - need to restart */
- 			goto restart;
+ 	 * need to prevent multiple threads trying to simultaneously
+@@ -200,7 +200,6 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 		rc = -EAGAIN;
  	}
--	spin_unlock_bh(&block->queue_lock);
-+	spin_unlock_irqrestore(&block->queue_lock, flags);
-+
-+	return rc;
-+}
-+
-+/*
-+ * Go through all request on the dasd_block request queue, cancel them
-+ * on the respective dasd_device, and return them to the generic
-+ * block layer.
-+ */
-+static int dasd_flush_block_queue(struct dasd_block *block)
-+{
-+	struct dasd_ccw_req *cqr, *n;
-+	struct list_head flush_queue;
-+	unsigned long flags;
-+	int rc;
-+
-+	INIT_LIST_HEAD(&flush_queue);
-+	rc = _dasd_requests_to_flushqueue(block, &flush_queue);
-+
- 	/* Now call the callback function of flushed requests */
- restart_cb:
- 	list_for_each_entry_safe(cqr, n, &flush_queue, blocklist) {
-@@ -3878,75 +3888,36 @@ EXPORT_SYMBOL_GPL(dasd_generic_space_avail);
-  */
- int dasd_generic_requeue_all_requests(struct dasd_device *device)
- {
-+	struct dasd_block *block = device->block;
- 	struct list_head requeue_queue;
- 	struct dasd_ccw_req *cqr, *n;
--	struct dasd_ccw_req *refers;
- 	int rc;
  
--	INIT_LIST_HEAD(&requeue_queue);
--	spin_lock_irq(get_ccwdev_lock(device->cdev));
--	rc = 0;
--	list_for_each_entry_safe(cqr, n, &device->ccw_queue, devlist) {
--		/* Check status and move request to flush_queue */
--		if (cqr->status == DASD_CQR_IN_IO) {
--			rc = device->discipline->term_IO(cqr);
--			if (rc) {
--				/* unable to terminate requeust */
--				dev_err(&device->cdev->dev,
--					"Unable to terminate request %p "
--					"on suspend\n", cqr);
--				spin_unlock_irq(get_ccwdev_lock(device->cdev));
--				dasd_put_device(device);
--				return rc;
--			}
--		}
--		list_move_tail(&cqr->devlist, &requeue_queue);
--	}
--	spin_unlock_irq(get_ccwdev_lock(device->cdev));
--
--	list_for_each_entry_safe(cqr, n, &requeue_queue, devlist) {
--		wait_event(dasd_flush_wq,
--			   (cqr->status != DASD_CQR_CLEAR_PENDING));
-+	if (!block)
-+		return 0;
- 
--		/*
--		 * requeue requests to blocklayer will only work
--		 * for block device requests
--		 */
--		if (_dasd_requeue_request(cqr))
--			continue;
-+	INIT_LIST_HEAD(&requeue_queue);
-+	rc = _dasd_requests_to_flushqueue(block, &requeue_queue);
- 
--		/* remove requests from device and block queue */
--		list_del_init(&cqr->devlist);
--		while (cqr->refers != NULL) {
--			refers = cqr->refers;
--			/* remove the request from the block queue */
--			list_del(&cqr->blocklist);
--			/* free the finished erp request */
--			dasd_free_erp_request(cqr, cqr->memdev);
--			cqr = refers;
-+	/* Now call the callback function of flushed requests */
-+restart_cb:
-+	list_for_each_entry_safe(cqr, n, &requeue_queue, blocklist) {
-+		wait_event(dasd_flush_wq, (cqr->status < DASD_CQR_QUEUED));
-+		/* Process finished ERP request. */
-+		if (cqr->refers) {
-+			spin_lock_bh(&block->queue_lock);
-+			__dasd_process_erp(block->base, cqr);
-+			spin_unlock_bh(&block->queue_lock);
-+			/* restart list_for_xx loop since dasd_process_erp
-+			 * might remove multiple elements
-+			 */
-+			goto restart_cb;
- 		}
--
--		/*
--		 * _dasd_requeue_request already checked for a valid
--		 * blockdevice, no need to check again
--		 * all erp requests (cqr->refers) have a cqr->block
--		 * pointer copy from the original cqr
--		 */
-+		_dasd_requeue_request(cqr);
- 		list_del_init(&cqr->blocklist);
- 		cqr->block->base->discipline->free_cp(
- 			cqr, (struct request *) cqr->callback_data);
- 	}
--
--	/*
--	 * if requests remain then they are internal request
--	 * and go back to the device queue
--	 */
--	if (!list_empty(&requeue_queue)) {
--		/* move freeze_queue to start of the ccw_queue */
--		spin_lock_irq(get_ccwdev_lock(device->cdev));
--		list_splice_tail(&requeue_queue, &device->ccw_queue);
--		spin_unlock_irq(get_ccwdev_lock(device->cdev));
--	}
- 	dasd_schedule_device_bh(device);
+-	unload_nls(nls_codepage);
  	return rc;
  }
+ 
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 853209268f507..e965196e4f746 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1837,6 +1837,10 @@ static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 			    CIFS_MAX_PASSWORD_LEN))
+ 			return 0;
+ 	}
++
++	if (strcmp(ctx->local_nls->charset, ses->local_nls->charset))
++		return 0;
++
+ 	return 1;
+ }
+ 
+@@ -2280,6 +2284,7 @@ cifs_get_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
+ 
+ 	ses->sectype = ctx->sectype;
+ 	ses->sign = ctx->sign;
++	ses->local_nls = load_nls(ctx->local_nls->charset);
+ 
+ 	/* add server as first channel */
+ 	spin_lock(&ses->chan_lock);
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 70dbfe6584f9e..d7e85d9a26553 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -95,6 +95,7 @@ sesInfoFree(struct cifs_ses *buf_to_free)
+ 		return;
+ 	}
+ 
++	unload_nls(buf_to_free->local_nls);
+ 	atomic_dec(&sesInfoAllocCount);
+ 	kfree(buf_to_free->serverOS);
+ 	kfree(buf_to_free->serverDomain);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index e04766fe6f803..a457f07f820dc 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -242,7 +242,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	}
+ 	spin_unlock(&server->srv_lock);
+ 
+-	nls_codepage = load_nls_default();
++	nls_codepage = ses->local_nls;
+ 
+ 	/*
+ 	 * need to prevent multiple threads trying to simultaneously
+@@ -324,7 +324,6 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 		rc = -EAGAIN;
+ 	}
+ failed:
+-	unload_nls(nls_codepage);
+ 	return rc;
+ }
+ 
 -- 
 2.40.1
 
