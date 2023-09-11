@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9618979BC70
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F1B79BB45
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348545AbjIKV1P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55316 "EHLO
+        id S1343656AbjIKVMN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239852AbjIKOa2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:28 -0400
+        with ESMTP id S238459AbjIKN46 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6177E4D
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF69C433CB;
-        Mon, 11 Sep 2023 14:30:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFAC10E
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EA1C433C7;
+        Mon, 11 Sep 2023 13:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442622;
-        bh=uW6CodLHXziK1OJuopCdIWBEcfeG/0LQHYfUWzsifEY=;
+        s=korg; t=1694440613;
+        bh=z6H2CmpUoGAAb8cczqBYQd2fit3F20ozlmvSDZlUB5M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KQCA/GNi8fWTfbXeau9mZb1NkeY9bZqIsVzYoxoHqa9oM3oeqco8JniFkdMYvaNnt
-         oHyzggAjXdIZBPFcd3HLUbMUIhzQVwpr5R1PWUV9OTXi/TZaIkcubZMllsKcQYfU1N
-         AMLSwhzCqRnUdWKDclJrNPJjktBFhvFLyOZtcPRs=
+        b=nsHRw//Cz2ROURc1hnacO7iHW1d4XafqDWHhnyoRlJBioGSH44jegX20WXaXTb6+T
+         GTPAi6ux+lnYVa0liK7yZZsfoATgaulmIHX1Wc0MVPdXjh7FGPwNW3NCGU0uJCz2xd
+         ZjfMrrGViAT/Fq74vViFcnCFOsbRm6LAlRWwTGag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
-        Peiyang Wang <wangpeiyang1@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 062/737] net: hns3: restore user pause configure when disable autoneg
-Date:   Mon, 11 Sep 2023 15:38:41 +0200
-Message-ID: <20230911134652.233822304@linuxfoundation.org>
+Subject: [PATCH 6.5 124/739] Bluetooth: Fix potential use-after-free when clear keys
+Date:   Mon, 11 Sep 2023 15:38:43 +0200
+Message-ID: <20230911134654.557099820@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,72 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Min Li <lm0963hack@gmail.com>
 
-[ Upstream commit 15159ec0c831b565820c2de05114ea1b4cf07681 ]
+[ Upstream commit 3673952cf0c6cf81b06c66a0b788abeeb02ff3ae ]
 
-Restore the mac pause state to user configuration when autoneg is disabled
+Similar to commit c5d2b6fa26b5 ("Bluetooth: Fix use-after-free in
+hci_remove_ltk/hci_remove_irk"). We can not access k after kfree_rcu()
+call.
 
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230807113452.474224-2-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d7d41682efc2 ("Bluetooth: Fix Suspicious RCU usage warnings")
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 5 ++++-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h   | 1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index c3e94598f3983..0876890798ba4 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10936,9 +10936,12 @@ int hclge_cfg_flowctrl(struct hclge_dev *hdev)
- 	u32 rx_pause, tx_pause;
- 	u8 flowctl;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 1ec83985f1ab0..793b66da22653 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1074,9 +1074,9 @@ void hci_uuids_clear(struct hci_dev *hdev)
  
--	if (!phydev->link || !phydev->autoneg)
-+	if (!phydev->link)
- 		return 0;
- 
-+	if (!phydev->autoneg)
-+		return hclge_mac_pause_setup_hw(hdev);
-+
- 	local_advertising = linkmode_adv_to_lcl_adv_t(phydev->advertising);
- 
- 	if (phydev->pause)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index de509e5751a7c..c58c312217628 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -1553,7 +1553,7 @@ static int hclge_bp_setup_hw(struct hclge_dev *hdev, u8 tc)
- 	return 0;
- }
- 
--static int hclge_mac_pause_setup_hw(struct hclge_dev *hdev)
-+int hclge_mac_pause_setup_hw(struct hclge_dev *hdev)
+ void hci_link_keys_clear(struct hci_dev *hdev)
  {
- 	bool tx_en, rx_en;
+-	struct link_key *key;
++	struct link_key *key, *tmp;
  
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-index 45dcfef3f90cc..53eec6df51946 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-@@ -245,6 +245,7 @@ int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
- 			   u8 pfc_bitmap);
- int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
- int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
-+int hclge_mac_pause_setup_hw(struct hclge_dev *hdev);
- void hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
- void hclge_pfc_tx_stats_get(struct hclge_dev *hdev, u64 *stats);
- int hclge_tm_qs_shaper_cfg(struct hclge_vport *vport, int max_tx_rate);
+-	list_for_each_entry(key, &hdev->link_keys, list) {
++	list_for_each_entry_safe(key, tmp, &hdev->link_keys, list) {
+ 		list_del_rcu(&key->list);
+ 		kfree_rcu(key, rcu);
+ 	}
+@@ -1084,9 +1084,9 @@ void hci_link_keys_clear(struct hci_dev *hdev)
+ 
+ void hci_smp_ltks_clear(struct hci_dev *hdev)
+ {
+-	struct smp_ltk *k;
++	struct smp_ltk *k, *tmp;
+ 
+-	list_for_each_entry(k, &hdev->long_term_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
+ 		list_del_rcu(&k->list);
+ 		kfree_rcu(k, rcu);
+ 	}
+@@ -1094,9 +1094,9 @@ void hci_smp_ltks_clear(struct hci_dev *hdev)
+ 
+ void hci_smp_irks_clear(struct hci_dev *hdev)
+ {
+-	struct smp_irk *k;
++	struct smp_irk *k, *tmp;
+ 
+-	list_for_each_entry(k, &hdev->identity_resolving_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
+ 		list_del_rcu(&k->list);
+ 		kfree_rcu(k, rcu);
+ 	}
+@@ -1104,9 +1104,9 @@ void hci_smp_irks_clear(struct hci_dev *hdev)
+ 
+ void hci_blocked_keys_clear(struct hci_dev *hdev)
+ {
+-	struct blocked_key *b;
++	struct blocked_key *b, *tmp;
+ 
+-	list_for_each_entry(b, &hdev->blocked_keys, list) {
++	list_for_each_entry_safe(b, tmp, &hdev->blocked_keys, list) {
+ 		list_del_rcu(&b->list);
+ 		kfree_rcu(b, rcu);
+ 	}
 -- 
 2.40.1
 
