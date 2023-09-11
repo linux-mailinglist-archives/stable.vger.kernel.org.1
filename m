@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B292779B98B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B88379BDD9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350906AbjIKVmK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47490 "EHLO
+        id S1355765AbjIKWB5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240509AbjIKOqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:15 -0400
+        with ESMTP id S239132AbjIKOMn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E95106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901A9C433C7;
-        Mon, 11 Sep 2023 14:46:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497D6CE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F262C433C8;
+        Mon, 11 Sep 2023 14:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443570;
-        bh=4iWla1tvlViRHH/dQeCQJS+IUdK6uw/MBQj4edbr8uk=;
+        s=korg; t=1694441558;
+        bh=moFL05icBGrlmue6hs+gAR5OMjSBZ4U6F3C5yHlllp0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y71zJ5wRyiBKOVjqaPYdV8w2kFGGEIFgtkBS0VGDgoBVhKfC0tqhHLU7PZX5twOav
-         YA0ZtXByYvLGFeHjYE6fKyUdTF2aMrj/PX7WqiGNBc2fQzJ09oVh6WUSk2kv42/EDM
-         z6gGjmhAfatmCIWSDAXwNctlEjtfBa/A5q4w5Zu0=
+        b=Kpq3vCTndGbrhOuz7/ulsbycdfMtuUEX4ZXGJ9ScIfR7L20zFmYjMqfG4FceeWj05
+         qLOMcBB+0rtlC7ME+q5mZQr2PGbBWyNwSU8kwGSlotiER7kyQK/4ZCN9sucevQiXKc
+         v4rS/XRzpStdrw4ElHDTIsb0iZSNVtlv/G1lnHrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Corey Hickey <bugfood-ml@fatooh.org>
-Subject: [PATCH 6.4 395/737] md/raid5-cache: fix null-ptr-deref for r5l_flush_stripe_to_raid()
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 455/739] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
 Date:   Mon, 11 Sep 2023 15:44:14 +0200
-Message-ID: <20230911134701.630589094@linuxfoundation.org>
+Message-ID: <20230911134703.864930861@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +52,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0d0bd28c500173bfca78aa840f8f36d261ef1765 ]
+[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
 
-r5l_flush_stripe_to_raid() will check if the list 'flushing_ios' is
-empty, and then submit 'flush_bio', however, r5l_log_flush_endio()
-is clearing the list first and then clear the bio, which will cause
-null-ptr-deref:
+If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
+so fwnode_handle_put() is a no-op.
 
-T1: submit flush io
-raid5d
- handle_active_stripes
-  r5l_flush_stripe_to_raid
-   // list is empty
-   // add 'io_end_ios' to the list
-   bio_init
-   submit_bio
-   // io1
+Release the reference taken from a previous fwnode_graph_get_port_parent()
+call instead.
 
-T2: io1 is done
-r5l_log_flush_endio
- list_splice_tail_init
- // clear the list
-			T3: submit new flush io
-			...
-			r5l_flush_stripe_to_raid
-			 // list is empty
-			 // add 'io_end_ios' to the list
-			 bio_init
- bio_uninit
- // clear bio->bi_blkg
-			 submit_bio
-			 // null-ptr-deref
+Also handle fwnode_graph_get_port_parent() failures.
 
-Fix this problem by clearing bio before clearing the list in
-r5l_log_flush_endio().
+In order to fix these issues, add an error handling path to the function
+and the needed gotos.
 
-Fixes: 0dd00cba99c3 ("raid5-cache: fully initialize flush_bio when needed")
-Reported-and-tested-by: Corey Hickey <bugfood-ml@fatooh.org>
-Closes: https://lore.kernel.org/all/cddd7213-3dfd-4ab7-a3ac-edd54d74a626@fatooh.org/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5-cache.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
-index 5c246b2697e0b..21653e1ed9384 100644
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -1260,14 +1260,13 @@ static void r5l_log_flush_endio(struct bio *bio)
+diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+index 049c2f2001eaa..4fa9225aa3d93 100644
+--- a/drivers/media/v4l2-core/v4l2-fwnode.c
++++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+@@ -568,19 +568,29 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
+ 	link->local_id = fwep.id;
+ 	link->local_port = fwep.port;
+ 	link->local_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->local_node)
++		return -ENOLINK;
  
- 	if (bio->bi_status)
- 		md_error(log->rdev->mddev, log->rdev);
-+	bio_uninit(bio);
+ 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
+-	if (!fwnode) {
+-		fwnode_handle_put(fwnode);
+-		return -ENOLINK;
+-	}
++	if (!fwnode)
++		goto err_put_local_node;
  
- 	spin_lock_irqsave(&log->io_list_lock, flags);
- 	list_for_each_entry(io, &log->flushing_ios, log_sibling)
- 		r5l_io_run_stripes(io);
- 	list_splice_tail_init(&log->flushing_ios, &log->finished_ios);
- 	spin_unlock_irqrestore(&log->io_list_lock, flags);
--
--	bio_uninit(bio);
+ 	fwnode_graph_parse_endpoint(fwnode, &fwep);
+ 	link->remote_id = fwep.id;
+ 	link->remote_port = fwep.port;
+ 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->remote_node)
++		goto err_put_remote_endpoint;
+ 
+ 	return 0;
++
++err_put_remote_endpoint:
++	fwnode_handle_put(fwnode);
++
++err_put_local_node:
++	fwnode_handle_put(link->local_node);
++
++	return -ENOLINK;
  }
+ EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
  
- /*
 -- 
 2.40.1
 
