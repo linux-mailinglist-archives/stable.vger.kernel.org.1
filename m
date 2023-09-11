@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A455679BABC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D613379BEB9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358353AbjIKWIm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53696 "EHLO
+        id S238421AbjIKWJE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239479AbjIKOVs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:48 -0400
+        with ESMTP id S240834AbjIKOzO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1880ADE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E96CC433C8;
-        Mon, 11 Sep 2023 14:21:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04649118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16648C433C7;
+        Mon, 11 Sep 2023 14:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442101;
-        bh=W+oIAlqefgKpOvvKJmNktzHfw8muSiE2nihRPA8y3AE=;
+        s=korg; t=1694444109;
+        bh=baFUIrtFDxVZ3j2me8VQ5NunKMY7je2KhFuqJtSGU+s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dDQq7d/q4NK/Jqw7GEWlQBEmQzgBMpDHLaEOqk8PUPATBoAvUkCzZ1ngzpGPDlper
-         jynMRDltg4oHwPjeA5s4qWXeR+ysDYzmvZVOSnqDB6EshEQCVwSepOe/rmXO09xaGR
-         Lu8Pd3STGoD6XSy2JhX+n8mJslXpzppkbxdRVx1U=
+        b=xbXRBLyogFab7FNDAlLDBBt8xtKAF7f7T/I+dfCB456mcHnICDMY+EsUOUFW7QUmM
+         zwT3sY8ct05tHUzHwIwpok6zcl9pNKVAwDNokcOxpQFxrRX6h0glmz8CG8BUBG3CWy
+         WMEcupm/5a+RbPVdvTYN52oElHcZrtE6eNbq/EGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Douglas Gilbert <dgilbert@interlog.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 647/739] scsi: core: Fix the scsi_set_resid() documentation
+        patches@lists.linux.dev,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 587/737] interconnect: qcom: bcm-voter: Improve enable_mask handling
 Date:   Mon, 11 Sep 2023 15:47:26 +0200
-Message-ID: <20230911134709.179140544@linuxfoundation.org>
+Message-ID: <20230911134706.922834823@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +52,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit f669b8a683e4ee26fa5cafe19d71cec1786b556a upstream.
+[ Upstream commit a1f4170dec440f023601d57e49227b784074d218 ]
 
-Because scsi_finish_command() subtracts the residual from the buffer
-length, residual overflows must not be reported. Reflect this in the SCSI
-documentation. See also commit 9237f04e12cc ("scsi: core: Fix
-scsi_get/set_resid() interface")
+We don't need all the complex arithmetic for BCMs utilizing enable_mask,
+as all we need to do is to determine whether there's any user (or
+keepalive) asking for it to be on.
 
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Douglas Gilbert <dgilbert@interlog.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230721160154.874010-2-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Separate the logic for such BCMs for a small speed boost.
+
+Suggested-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811-topic-icc_fix_1he-v2-1-0620af8ac133@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Stable-dep-of: 1a70ca71547b ("interconnect: qcom: bcm-voter: Use enable_maks for keepalive voting")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/scsi/scsi_mid_low_api.rst |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/interconnect/qcom/bcm-voter.c | 43 ++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
---- a/Documentation/scsi/scsi_mid_low_api.rst
-+++ b/Documentation/scsi/scsi_mid_low_api.rst
-@@ -1190,11 +1190,11 @@ Members of interest:
- 		 - pointer to scsi_device object that this command is
-                    associated with.
-     resid
--		 - an LLD should set this signed integer to the requested
-+		 - an LLD should set this unsigned integer to the requested
-                    transfer length (i.e. 'request_bufflen') less the number
-                    of bytes that are actually transferred. 'resid' is
-                    preset to 0 so an LLD can ignore it if it cannot detect
--                   underruns (overruns should be rare). If possible an LLD
-+                   underruns (overruns should not be reported). An LLD
-                    should set 'resid' prior to invoking 'done'. The most
-                    interesting case is data transfers from a SCSI target
-                    device (e.g. READs) that underrun.
+diff --git a/drivers/interconnect/qcom/bcm-voter.c b/drivers/interconnect/qcom/bcm-voter.c
+index d5f2a6b5376bd..d857eb8838b95 100644
+--- a/drivers/interconnect/qcom/bcm-voter.c
++++ b/drivers/interconnect/qcom/bcm-voter.c
+@@ -58,6 +58,36 @@ static u64 bcm_div(u64 num, u32 base)
+ 	return num;
+ }
+ 
++/* BCMs with enable_mask use one-hot-encoding for on/off signaling */
++static void bcm_aggregate_mask(struct qcom_icc_bcm *bcm)
++{
++	struct qcom_icc_node *node;
++	int bucket, i;
++
++	for (bucket = 0; bucket < QCOM_ICC_NUM_BUCKETS; bucket++) {
++		bcm->vote_x[bucket] = 0;
++		bcm->vote_y[bucket] = 0;
++
++		for (i = 0; i < bcm->num_nodes; i++) {
++			node = bcm->nodes[i];
++
++			/* If any vote in this bucket exists, keep the BCM enabled */
++			if (node->sum_avg[bucket] || node->max_peak[bucket]) {
++				bcm->vote_x[bucket] = 0;
++				bcm->vote_y[bucket] = bcm->enable_mask;
++				break;
++			}
++		}
++	}
++
++	if (bcm->keepalive) {
++		bcm->vote_x[QCOM_ICC_BUCKET_AMC] = 1;
++		bcm->vote_x[QCOM_ICC_BUCKET_WAKE] = 1;
++		bcm->vote_y[QCOM_ICC_BUCKET_AMC] = 1;
++		bcm->vote_y[QCOM_ICC_BUCKET_WAKE] = 1;
++	}
++}
++
+ static void bcm_aggregate(struct qcom_icc_bcm *bcm)
+ {
+ 	struct qcom_icc_node *node;
+@@ -83,11 +113,6 @@ static void bcm_aggregate(struct qcom_icc_bcm *bcm)
+ 
+ 		temp = agg_peak[bucket] * bcm->vote_scale;
+ 		bcm->vote_y[bucket] = bcm_div(temp, bcm->aux_data.unit);
+-
+-		if (bcm->enable_mask && (bcm->vote_x[bucket] || bcm->vote_y[bucket])) {
+-			bcm->vote_x[bucket] = 0;
+-			bcm->vote_y[bucket] = bcm->enable_mask;
+-		}
+ 	}
+ 
+ 	if (bcm->keepalive && bcm->vote_x[QCOM_ICC_BUCKET_AMC] == 0 &&
+@@ -260,8 +285,12 @@ int qcom_icc_bcm_voter_commit(struct bcm_voter *voter)
+ 		return 0;
+ 
+ 	mutex_lock(&voter->lock);
+-	list_for_each_entry(bcm, &voter->commit_list, list)
+-		bcm_aggregate(bcm);
++	list_for_each_entry(bcm, &voter->commit_list, list) {
++		if (bcm->enable_mask)
++			bcm_aggregate_mask(bcm);
++		else
++			bcm_aggregate(bcm);
++	}
+ 
+ 	/*
+ 	 * Pre sort the BCMs based on VCD for ease of generating a command list
+-- 
+2.40.1
+
 
 
