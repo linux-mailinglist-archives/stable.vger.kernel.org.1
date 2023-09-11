@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 858AA79AF8F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC6679ACEA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237441AbjIKVTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34884 "EHLO
+        id S237069AbjIKUvS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239654AbjIKOZc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:32 -0400
+        with ESMTP id S242119AbjIKPWy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5A9DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7CBC433C8;
-        Mon, 11 Sep 2023 14:25:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99C35F9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD97EC433C9;
+        Mon, 11 Sep 2023 15:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442328;
-        bh=Lp16CY7BhTg1fEmg2r5b3rzImD8J7Bs9rBTRaVD8XFQ=;
+        s=korg; t=1694445770;
+        bh=jqDG9T+dJ85i2C9WxJFoPTOKXdnVjUZEg5OA3wuC+/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rXOhTn05Uh8cn/ZoVqWaYEtx4F8s2qPMXI0w7QXoA+qPbckY1BAgTlaYir+b7wCck
-         eFJHZ/1NacL1azrB+im9FIflu0su5d1jK07Hmvz6IlNXEoZ3plWvEXE002rJsWrmKL
-         abESeTgFR/ZMCggxX+6BXCeKbk1JtQsFYutsV4E4=
+        b=TIzKVVyejeOaL9Cc5epYJR2vFYreNzqjBK1qwvGWvHb2VakEnk27Urhpe234kjZpx
+         2NsGGz02inFtjdmEGc7u7EZCJsFP4DFNhSV4U1oBzCgQPFRVvMdY+ob3quUcjCwrpo
+         Dr2XU5KTIAu3rO2HP1K1VaMTLUp9bw/wW0mLCB+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Barry Marson <bmarson@redhat.com>,
-        Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 6.5 699/739] dlm: fix plock lookup when using multiple lockspaces
-Date:   Mon, 11 Sep 2023 15:48:18 +0200
-Message-ID: <20230911134710.616768642@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 466/600] media: ov2680: Fix ov2680_bayer_order()
+Date:   Mon, 11 Sep 2023 15:48:19 +0200
+Message-ID: <20230911134647.406096755@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +54,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 7c53e847ff5e97f033fdd31f71949807633d506b upstream.
+[ Upstream commit 50a7bad4e0a37d7018ab6fe843dd84bc6b2ecf72 ]
 
-All posix lock ops, for all lockspaces (gfs2 file systems) are
-sent to userspace (dlm_controld) through a single misc device.
-The dlm_controld daemon reads the ops from the misc device
-and sends them to other cluster nodes using separate, per-lockspace
-cluster api communication channels.  The ops for a single lockspace
-are ordered at this level, so that the results are received in
-the same sequence that the requests were sent.  When the results
-are sent back to the kernel via the misc device, they are again
-funneled through the single misc device for all lockspaces.  When
-the dlm code in the kernel processes the results from the misc
-device, these results will be returned in the same sequence that
-the requests were sent, on a per-lockspace basis.  A recent change
-in this request/reply matching code missed the "per-lockspace"
-check (fsid comparison) when matching request and reply, so replies
-could be incorrectly matched to requests from other lockspaces.
+The index into ov2680_hv_flip_bayer_order[] should be 0-3, but
+ov2680_bayer_order() was using 0 + BIT(2) + (BIT(2) << 1) as
+max index, while the intention was to use: 0 + 1 + 2 as max index.
 
-Cc: stable@vger.kernel.org
-Reported-by: Barry Marson <bmarson@redhat.com>
-Fixes: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the index calculation in ov2680_bayer_order(), while at it
+also just use the ctrl values rather then reading them back using
+a slow i2c-read transaction.
+
+This also allows making the function void, since there now are
+no more i2c-reads to error check.
+
+Note the check for the ctrls being NULL is there to allow
+adding an ov2680_fill_format() helper later, which will call
+ov2680_set_bayer_order() during probe() before the ctrls are created.
+
+[Sakari Ailus: Change all users of ov2680_set_bayer_order() here]
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ov2680.c | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -456,7 +456,8 @@ static ssize_t dev_write(struct file *fi
- 		}
- 	} else {
- 		list_for_each_entry(iter, &recv_list, list) {
--			if (!iter->info.wait) {
-+			if (!iter->info.wait &&
-+			    iter->info.fsid == info.fsid) {
- 				op = iter;
- 				break;
- 			}
-@@ -468,8 +469,7 @@ static ssize_t dev_write(struct file *fi
- 		if (info.wait)
- 			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
- 		else
--			WARN_ON(op->info.fsid != info.fsid ||
--				op->info.number != info.number ||
-+			WARN_ON(op->info.number != info.number ||
- 				op->info.owner != info.owner ||
- 				op->info.optype != info.optype);
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 42efd60c6a96b..7d072448c8530 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -315,26 +315,17 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
+ 	usleep_range(5000, 10000);
+ }
  
+-static int ov2680_bayer_order(struct ov2680_dev *sensor)
++static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+ {
+-	u32 format1;
+-	u32 format2;
+-	u32 hv_flip;
+-	int ret;
+-
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT1, &format1);
+-	if (ret < 0)
+-		return ret;
++	int hv_flip = 0;
+ 
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT2, &format2);
+-	if (ret < 0)
+-		return ret;
++	if (sensor->ctrls.vflip && sensor->ctrls.vflip->val)
++		hv_flip += 1;
+ 
+-	hv_flip = (format2 & BIT(2)  << 1) | (format1 & BIT(2));
++	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
++		hv_flip += 2;
+ 
+ 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
+-
+-	return 0;
+ }
+ 
+ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+@@ -345,7 +336,8 @@ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+@@ -356,7 +348,8 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+@@ -367,7 +360,8 @@ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+@@ -378,7 +372,8 @@ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
+-- 
+2.40.1
+
 
 
