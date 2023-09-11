@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ED8679B7A1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 830EC79B783
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377812AbjIKW2m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:28:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
+        id S230180AbjIKUvw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240363AbjIKOmf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:35 -0400
+        with ESMTP id S241453AbjIKPJK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9216D12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95F6C433C8;
-        Mon, 11 Sep 2023 14:42:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E83FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D2FC433C7;
+        Mon, 11 Sep 2023 15:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443350;
-        bh=Btc7kPy5dser70DY2gpK8srfkZG7i2oMoeqee4M/Jhg=;
+        s=korg; t=1694444945;
+        bh=SdiobAsLAjlJ9JIu65yYeLUQSrchlBJ4+p3f2f0Sdic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xYjY+PnRtdsZLW+z+3iDxgEbtZJ9fqZ+77ADoAb8r6L9HN8nhXFY9rqqJ7ml83o1k
-         1JX5U0LmEH0gV/WLI574RfPzE5b+Sc2fJ1tBQDYlSji0r1ejoT0BPXjaDNFvfzt+00
-         t1GcujljEifMPpSaqGrU0GFKbtfb3xWu0d6WJnYc=
+        b=ZEchn39Fc8rVXuBTKMJG3RqemeW4ujA5KdTn480G3P5Prv2tPRkkGnEwi1FjAMmSi
+         tbV0IcTi/52cMGI//aT3ToZ7VQ1OR+peEDZnqbl93R7YWjfx5gM+MEgXDSpMjnZvoM
+         p1oZakku76ADfOo7D1ht1DTPa0MMHACCvJQMdiCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jocelyn Falempe <jfalempe@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+        patches@lists.linux.dev, Menglong Dong <imagedong@tencent.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 347/737] drm/ast: report connection status on Display Port.
+Subject: [PATCH 6.1 173/600] net: tcp: fix unexcepted socket die when snd_wnd is 0
 Date:   Mon, 11 Sep 2023 15:43:26 +0200
-Message-ID: <20230911134700.217316031@linuxfoundation.org>
+Message-ID: <20230911134638.713115949@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,223 +51,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Menglong Dong <imagedong@tencent.com>
 
-[ Upstream commit f81bb0ac7872893241319ea82504956676ef02fd ]
+[ Upstream commit e89688e3e97868451a5d05b38a9d2633d6785cd4 ]
 
-Aspeed always report the display port as "connected", because it
-doesn't set a .detect_ctx callback.
-Fix this by providing the proper detect callback for astdp and dp501.
+In tcp_retransmit_timer(), a window shrunk connection will be regarded
+as timeout if 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX'. This is not
+right all the time.
 
-This also fixes the following regression:
-Since commit fae7d186403e ("drm/probe-helper: Default to 640x480 if no
-EDID on DP") The default resolution is now 640x480 when no monitor is
-connected. But Aspeed graphics is mostly used in servers, where no monitor
-is attached. This also affects the remote BMC resolution to 640x480, which
-is inconvenient, and breaks the anaconda installer.
+The retransmits will become zero-window probes in tcp_retransmit_timer()
+if the 'snd_wnd==0'. Therefore, the icsk->icsk_rto will come up to
+TCP_RTO_MAX sooner or later.
 
-v2: Add .detect callback to the dp/dp501 connector (Jani Nikula)
-v3: Use .detect_ctx callback, and refactors (Thomas Zimmermann)
-    Add a BMC virtual connector
-v4: Better indent detect_ctx() functions (Thomas Zimmermann)
-v5: Enable polling of the dp and dp501 connector status
-    (Thomas Zimmermann)
-v6: Change check order in ast_astdp_is_connected (Jammy Huang)
+However, the timer can be delayed and be triggered after 122877ms, not
+TCP_RTO_MAX, as I tested.
 
-Fixes: fae7d186403e ("drm/probe-helper: Default to 640x480 if no EDID on DP")
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230713134316.332502-2-jfalempe@redhat.com
+Therefore, 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX' is always true
+once the RTO come up to TCP_RTO_MAX, and the socket will die.
+
+Fix this by replacing the 'tcp_jiffies32' with '(u32)icsk->icsk_timeout',
+which is exact the timestamp of the timeout.
+
+However, "tp->rcv_tstamp" can restart from idle, then tp->rcv_tstamp
+could already be a long time (minutes or hours) in the past even on the
+first RTO. So we double check the timeout with the duration of the
+retransmission.
+
+Meanwhile, making "2 * TCP_RTO_MAX" as the timeout to avoid the socket
+dying too soon.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/netdev/CADxym3YyMiO+zMD4zj03YPM3FBi-1LHi6gSD2XT8pyAMM096pg@mail.gmail.com/
+Signed-off-by: Menglong Dong <imagedong@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c    | 11 ++++++++++
- drivers/gpu/drm/ast/ast_dp501.c | 37 ++++++++++++++++++++++-----------
- drivers/gpu/drm/ast/ast_drv.h   |  2 ++
- drivers/gpu/drm/ast/ast_mode.c  | 30 ++++++++++++++++++++++++--
- 4 files changed, 66 insertions(+), 14 deletions(-)
+ net/ipv4/tcp_timer.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-index 6dc1a09504e13..fdd9a493aa9c0 100644
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -7,6 +7,17 @@
- #include <drm/drm_print.h>
- #include "ast_drv.h"
- 
-+bool ast_astdp_is_connected(struct ast_device *ast)
-+{
-+	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1, ASTDP_MCU_FW_EXECUTING))
-+		return false;
-+	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDF, ASTDP_HPD))
-+		return false;
-+	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDC, ASTDP_LINK_SUCCESS))
-+		return false;
-+	return true;
-+}
-+
- int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata)
- {
- 	struct ast_device *ast = to_ast_device(dev);
-diff --git a/drivers/gpu/drm/ast/ast_dp501.c b/drivers/gpu/drm/ast/ast_dp501.c
-index 1bc35a992369d..fa7442b0c2612 100644
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -272,11 +272,9 @@ static bool ast_launch_m68k(struct drm_device *dev)
- 	return true;
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index cf354c29ec123..44b49f7d1a9e6 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -441,6 +441,22 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 			  req->timeout << req->num_timeout, TCP_RTO_MAX);
  }
  
--bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
-+bool ast_dp501_is_connected(struct ast_device *ast)
- {
--	struct ast_device *ast = to_ast_device(dev);
--	u32 i, boot_address, offset, data;
--	u32 *pEDIDidx;
-+	u32 boot_address, offset, data;
- 
- 	if (ast->config_mode == ast_use_p2a) {
- 		boot_address = get_fw_base(ast);
-@@ -292,14 +290,6 @@ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
- 		data = ast_mindwm(ast, boot_address + offset);
- 		if (!(data & AST_DP501_PNP_CONNECTED))
- 			return false;
--
--		/* Read EDID */
--		offset = AST_DP501_EDID_DATA;
--		for (i = 0; i < 128; i += 4) {
--			data = ast_mindwm(ast, boot_address + offset + i);
--			pEDIDidx = (u32 *)(ediddata + i);
--			*pEDIDidx = data;
--		}
- 	} else {
- 		if (!ast->dp501_fw_buf)
- 			return false;
-@@ -319,7 +309,30 @@ bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
- 		data = readl(ast->dp501_fw_buf + offset);
- 		if (!(data & AST_DP501_PNP_CONNECTED))
- 			return false;
-+	}
-+	return true;
-+}
-+
-+bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
++static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
++				     const struct sk_buff *skb)
 +{
-+	struct ast_device *ast = to_ast_device(dev);
-+	u32 i, boot_address, offset, data;
-+	u32 *pEDIDidx;
++	const struct tcp_sock *tp = tcp_sk(sk);
++	const int timeout = TCP_RTO_MAX * 2;
++	u32 rcv_delta, rtx_delta;
 +
-+	if (!ast_dp501_is_connected(ast))
++	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
++	if (rcv_delta <= timeout)
 +		return false;
 +
-+	if (ast->config_mode == ast_use_p2a) {
-+		boot_address = get_fw_base(ast);
- 
-+		/* Read EDID */
-+		offset = AST_DP501_EDID_DATA;
-+		for (i = 0; i < 128; i += 4) {
-+			data = ast_mindwm(ast, boot_address + offset + i);
-+			pEDIDidx = (u32 *)(ediddata + i);
-+			*pEDIDidx = data;
-+		}
-+	} else {
- 		/* Read EDID */
- 		offset = AST_DP501_EDID_DATA;
- 		for (i = 0; i < 128; i += 4) {
-diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-index 5498a6676f2e8..8a0ffa8b5939b 100644
---- a/drivers/gpu/drm/ast/ast_drv.h
-+++ b/drivers/gpu/drm/ast/ast_drv.h
-@@ -468,6 +468,7 @@ void ast_patch_ahb_2500(struct ast_device *ast);
- /* ast dp501 */
- void ast_set_dp501_video_output(struct drm_device *dev, u8 mode);
- bool ast_backup_fw(struct drm_device *dev, u8 *addr, u32 size);
-+bool ast_dp501_is_connected(struct ast_device *ast);
- bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata);
- u8 ast_get_dp501_max_clk(struct drm_device *dev);
- void ast_init_3rdtx(struct drm_device *dev);
-@@ -476,6 +477,7 @@ void ast_init_3rdtx(struct drm_device *dev);
- struct ast_i2c_chan *ast_i2c_create(struct drm_device *dev);
- 
- /* aspeed DP */
-+bool ast_astdp_is_connected(struct ast_device *ast);
- int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata);
- void ast_dp_launch(struct drm_device *dev);
- void ast_dp_power_on_off(struct drm_device *dev, bool no);
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index b3c670af6ef2b..0724516f29737 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -1585,8 +1585,20 @@ static int ast_dp501_connector_helper_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
-+static int ast_dp501_connector_helper_detect_ctx(struct drm_connector *connector,
-+						 struct drm_modeset_acquire_ctx *ctx,
-+						 bool force)
-+{
-+	struct ast_device *ast = to_ast_device(connector->dev);
++	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
++			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
 +
-+	if (ast_dp501_is_connected(ast))
-+		return connector_status_connected;
-+	return connector_status_disconnected;
++	return rtx_delta > timeout;
 +}
-+
- static const struct drm_connector_helper_funcs ast_dp501_connector_helper_funcs = {
- 	.get_modes = ast_dp501_connector_helper_get_modes,
-+	.detect_ctx = ast_dp501_connector_helper_detect_ctx,
- };
  
- static const struct drm_connector_funcs ast_dp501_connector_funcs = {
-@@ -1611,7 +1623,7 @@ static int ast_dp501_connector_init(struct drm_device *dev, struct drm_connector
- 	connector->interlace_allowed = 0;
- 	connector->doublescan_allowed = 0;
- 
--	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return 0;
- }
-@@ -1683,8 +1695,20 @@ static int ast_astdp_connector_helper_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
-+static int ast_astdp_connector_helper_detect_ctx(struct drm_connector *connector,
-+						 struct drm_modeset_acquire_ctx *ctx,
-+						 bool force)
-+{
-+	struct ast_device *ast = to_ast_device(connector->dev);
-+
-+	if (ast_astdp_is_connected(ast))
-+		return connector_status_connected;
-+	return connector_status_disconnected;
-+}
-+
- static const struct drm_connector_helper_funcs ast_astdp_connector_helper_funcs = {
- 	.get_modes = ast_astdp_connector_helper_get_modes,
-+	.detect_ctx = ast_astdp_connector_helper_detect_ctx,
- };
- 
- static const struct drm_connector_funcs ast_astdp_connector_funcs = {
-@@ -1709,7 +1733,7 @@ static int ast_astdp_connector_init(struct drm_device *dev, struct drm_connector
- 	connector->interlace_allowed = 0;
- 	connector->doublescan_allowed = 0;
- 
--	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return 0;
- }
-@@ -1848,5 +1872,7 @@ int ast_mode_config_init(struct ast_device *ast)
- 
- 	drm_mode_config_reset(dev);
- 
-+	drm_kms_helper_poll_init(dev);
-+
- 	return 0;
- }
+ /**
+  *  tcp_retransmit_timer() - The TCP retransmit timeout handler
+@@ -506,7 +522,7 @@ void tcp_retransmit_timer(struct sock *sk)
+ 					    tp->snd_una, tp->snd_nxt);
+ 		}
+ #endif
+-		if (tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX) {
++		if (tcp_rtx_probe0_timed_out(sk, skb)) {
+ 			tcp_write_err(sk);
+ 			goto out;
+ 		}
 -- 
 2.40.1
 
