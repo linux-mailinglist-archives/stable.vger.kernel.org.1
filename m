@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0DE179B541
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D8879AF13
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237353AbjIKUv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34954 "EHLO
+        id S1377471AbjIKWfe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:35:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242008AbjIKPUW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:22 -0400
+        with ESMTP id S239453AbjIKOVE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29BCFFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAC6C433C8;
-        Mon, 11 Sep 2023 15:20:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E29EDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB6CC433C7;
+        Mon, 11 Sep 2023 14:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445617;
-        bh=8KVILE3RnJt9f9aC/JvvGpNlzlUbBJ2bwlrwvxqLVDE=;
+        s=korg; t=1694442059;
+        bh=mNIPYQuB2TlbBvrr207reVqbRw5gj5vRbUvu1X7RCoE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eOBiZlYIdf2RIAfx2cQYULUCnsnrgFz1pv7uFb1YdDGywBlS2w4h2LYOaxIWUjobk
-         NMlL+vrWVi47vykOpkaOw79eLSwSgoXfr6moY3Sr4qGsRRBnUKVZOQp329FHyCaX9X
-         2KMbqw0nGgcrKfiQeaGf6fG4hyobf1QUH2Kw8uaE=
+        b=eCF2CyVV6iESi4NI50fnGdlISVbV3EDqhpSnXdB9hIOicAPC2Lu+OCnEqa0J/PUKm
+         +dfkSxkMSCxodyEw7+6Ij4Km/Yh/Ve4oaRSe+pbkDgTkXz9+/NOCKKOYhR2dEuTUx0
+         ghcUAo0zpZL/7NS4bUSya2LdRjs0U8SSbskDUpRI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 394/600] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
-Date:   Mon, 11 Sep 2023 15:47:07 +0200
-Message-ID: <20230911134645.307045352@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Kyle Zeng <zengyhkyle@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 631/739] igmp: limit igmpv3_newpack() packet size to IP_MAX_MTU
+Date:   Mon, 11 Sep 2023 15:47:10 +0200
+Message-ID: <20230911134708.718226515@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
+commit c3b704d4a4a265660e665df51b129e8425216ed1 upstream.
 
-If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
-so fwnode_handle_put() is a no-op.
+This is a follow up of commit 915d975b2ffa ("net: deal with integer
+overflows in kmalloc_reserve()") based on David Laight feedback.
 
-Release the reference taken from a previous fwnode_graph_get_port_parent()
-call instead.
+Back in 2010, I failed to realize malicious users could set dev->mtu
+to arbitrary values. This mtu has been since limited to 0x7fffffff but
+regardless of how big dev->mtu is, it makes no sense for igmpv3_newpack()
+to allocate more than IP_MAX_MTU and risk various skb fields overflows.
 
-Also handle fwnode_graph_get_port_parent() failures.
-
-In order to fix these issues, add an error handling path to the function
-and the needed gotos.
-
-Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 57e1ab6eaddc ("igmp: refine skb allocations")
+Link: https://lore.kernel.org/netdev/d273628df80f45428e739274ab9ecb72@AcuMS.aculab.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: David Laight <David.Laight@ACULAB.COM>
+Cc: Kyle Zeng <zengyhkyle@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ net/ipv4/igmp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-index 3d85a8600f576..69c8b3b656860 100644
---- a/drivers/media/v4l2-core/v4l2-fwnode.c
-+++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-@@ -551,19 +551,29 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
- 	link->local_id = fwep.id;
- 	link->local_port = fwep.port;
- 	link->local_node = fwnode_graph_get_port_parent(fwnode);
-+	if (!link->local_node)
-+		return -ENOLINK;
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -353,8 +353,9 @@ static struct sk_buff *igmpv3_newpack(st
+ 	struct flowi4 fl4;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	unsigned int size = mtu;
++	unsigned int size;
  
- 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
--	if (!fwnode) {
--		fwnode_handle_put(fwnode);
--		return -ENOLINK;
--	}
-+	if (!fwnode)
-+		goto err_put_local_node;
- 
- 	fwnode_graph_parse_endpoint(fwnode, &fwep);
- 	link->remote_id = fwep.id;
- 	link->remote_port = fwep.port;
- 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
-+	if (!link->remote_node)
-+		goto err_put_remote_endpoint;
- 
- 	return 0;
-+
-+err_put_remote_endpoint:
-+	fwnode_handle_put(fwnode);
-+
-+err_put_local_node:
-+	fwnode_handle_put(link->local_node);
-+
-+	return -ENOLINK;
- }
- EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
- 
--- 
-2.40.1
-
++	size = min(mtu, IP_MAX_MTU);
+ 	while (1) {
+ 		skb = alloc_skb(size + hlen + tlen,
+ 				GFP_ATOMIC | __GFP_NOWARN);
 
 
