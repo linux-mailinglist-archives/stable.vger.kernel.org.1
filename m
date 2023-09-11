@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D3B479C03E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BEAC79B980
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350610AbjIKVjo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42988 "EHLO
+        id S238873AbjIKWWY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240861AbjIKOz4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:56 -0400
+        with ESMTP id S239559AbjIKOXp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AACCC118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DB4C433C7;
-        Mon, 11 Sep 2023 14:55:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EB3DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C7BC433C7;
+        Mon, 11 Sep 2023 14:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444152;
-        bh=xZkXvTe3OiXbwtVSGEr6cMtG+HRDrSJhwEBcAWMLe8Y=;
+        s=korg; t=1694442221;
+        bh=Y0MEL2KH2sq47Pqo4hWYrajR1qGVis3ixgKU4t7zaZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pFHN+VHQKf3T+OYqN1I1ve5rKEQU7XId8SOFv9Uood/f/CVSsofG+OctL3skX2UlH
-         K4/x+nAc24lBZXwy1i0TxEcQYD2pXOEb7nToSybPvYZfZw1F8Ys3hABd3FoGG0sSxx
-         CABknKAyJ6zdN7FYViYNs8e7Z0Qd/QuRo8ARnNms=
+        b=JE2DUsLFDgx+bz/OAOaWxzwd5tm5efI++ip3T8I6G2xsmptf9M0j9f75M4sRervLQ
+         sUd1OZivHqwG/jSnF0VluRMQRlFgoZ5STemJcr+4/hJ9C29KM6LBa0fjrcK4lA3vsJ
+         gUgbWFnkyZeC/gDffewjgs4BAQA0J0Kv8LQD/qDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 628/737] dmaengine: idxd: Fix issues with PRS disable sysfs knob
+        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.5 688/739] ntb: Drop packets when qp link is down
 Date:   Mon, 11 Sep 2023 15:48:07 +0200
-Message-ID: <20230911134708.072235184@linuxfoundation.org>
+Message-ID: <20230911134710.316867211@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 8cae66574398326134a41513b419e00ad4e380ca ]
+commit f195a1a6fe416882984f8bd6c61afc1383171860 upstream.
 
-There are two issues in the current PRS disable sysfs store function
-wq_prs_disable_store():
+Currently when the transport receive packets after netdev has closed the
+transport returns error and triggers tx errors to be incremented and
+carrier to be stopped. There is no reason to return error if the device is
+already closed. Drop the packet and return 0.
 
-1. Since PRS disable knob is invisible if PRS disable is not supported
-   in WQ, it's redundant to check PRS support again in the store function
-   again. Remove the redundant PRS support check.
-2. Since PRS disable is read-only when the device is not configurable,
-   PRS disable cannot be changed on the device. Add device configurable
-   check in the store function.
-
-Fixes: f2dc327131b5 ("dmaengine: idxd: add per wq PRS disable")
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230811012635.535413-2-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
+Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ntb/ntb_transport.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-index 66c89b07b3f7b..a5c3eb4348325 100644
---- a/drivers/dma/idxd/sysfs.c
-+++ b/drivers/dma/idxd/sysfs.c
-@@ -1131,8 +1131,8 @@ static ssize_t wq_prs_disable_store(struct device *dev, struct device_attribute
- 	if (wq->state != IDXD_WQ_DISABLED)
- 		return -EPERM;
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -2276,9 +2276,13 @@ int ntb_transport_tx_enqueue(struct ntb_
+ 	struct ntb_queue_entry *entry;
+ 	int rc;
  
--	if (!idxd->hw.wq_cap.wq_prs_support)
--		return -EOPNOTSUPP;
-+	if (!test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
-+		return -EPERM;
+-	if (!qp || !qp->link_is_up || !len)
++	if (!qp || !len)
+ 		return -EINVAL;
  
- 	rc = kstrtobool(buf, &prs_dis);
- 	if (rc < 0)
--- 
-2.40.1
-
++	/* If the qp link is down already, just ignore. */
++	if (!qp->link_is_up)
++		return 0;
++
+ 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
+ 	if (!entry) {
+ 		qp->tx_err_no_buf++;
 
 
