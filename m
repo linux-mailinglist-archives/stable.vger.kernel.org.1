@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C39179BC7E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FECE79BE5F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376751AbjIKWUZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
+        id S1346212AbjIKVXJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:23:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241172AbjIKPDd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:33 -0400
+        with ESMTP id S238761AbjIKOEe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECCA1125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41632C433C9;
-        Mon, 11 Sep 2023 15:03:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2818E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38DB4C433C8;
+        Mon, 11 Sep 2023 14:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444608;
-        bh=OzrzZD42RVgeWDDW4ZyWEZ9S5DCA8VFzHIyUn+rhfeA=;
+        s=korg; t=1694441069;
+        bh=QqeEyO9OZpVub+4MWJG8thqd/CrW5xWnmdfFVjgmIik=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qdSfLiE25g7OtRZambYC5pJdC6wyHbXv2jaMgEv/PxFnp8Fh7N3moiuXJX+yd8rt7
-         O7sSl68jrKcyy3CSguBU0gwp0JL9nYCN3ywEIrhdZsO6yknApFGPuxJ6zC0ocWATbW
-         vL9rWAmWh10Mgf1NIeebJGwEfp2qYSHxkVipsEUE=
+        b=bJkLRU+iAtN57Oq4JNlqEqQSboOaBbDamAgSsMOHXBw4lc4UHEnTV3XvMvEgepBCN
+         PXFaRLPbarWxsqece8Grithg8YOhj6+th00Dum4WKF7iANpYoE+zFVlrQzzo/PzOl2
+         /uSn1Vb8uQGNcobeNiWDCL+OfBnaOXH4BSlzoItw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>,
-        Jan-Benedict Glaw <jbglaw@lug-owl.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        patches@lists.linux.dev, Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/600] m68k: Fix invalid .section syntax
+Subject: [PATCH 6.5 258/739] arm64: tegra: Fix HSUART for Smaug
 Date:   Mon, 11 Sep 2023 15:40:57 +0200
-Message-ID: <20230911134634.325703454@linuxfoundation.org>
+Message-ID: <20230911134658.355350731@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,102 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit 922a9bd138101e3e5718f0f4d40dba68ef89bb43 ]
+[ Upstream commit 590bfe51838f6345a6a3288507661dc9b7208464 ]
 
-gas supports several different forms for .section for ELF targets,
-including:
-    .section NAME [, "FLAGS"[, @TYPE[,FLAG_SPECIFIC_ARGUMENTS]]]
-and:
-    .section "NAME"[, #FLAGS...]
+After commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
+reset-names") was applied, the HSUART failed to probe and the following
+error is seen:
 
-In several places we use a mix of these two forms:
-    .section NAME, #FLAGS...
+ serial-tegra 70006300.serial: Couldn't get the reset
+ serial-tegra: probe of 70006300.serial failed with error -2
 
-A current development snapshot of binutils (2.40.50.20230611) treats
-this mixed syntax as an error.
+Commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
+reset-names") is correct because the "reset-names" property is not
+needed for 8250 UARTs. However, the "reset-names" is required for the
+HSUART and should have been populated as part of commit a63c0cd83720c
+("arm64: dts: tegra: smaug: Add Bluetooth node") that enabled the HSUART
+for the Pixel C. Fix this by populating the "reset-names" property for
+the HSUART on the Pixel C.
 
-Change to consistently use:
-    .section NAME, "FLAGS"
-as is used elsewhere in the kernel.
-
-Link: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=m68k&ver=6.4%7Erc6-1%7Eexp1&stamp=1686907300&raw=1
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Tested-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Link: https://lore.kernel.org/r/ZIyBaueWT9jnTwRC@decadent.org.uk
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: a63c0cd83720 ("arm64: dts: tegra: smaug: Add Bluetooth node")
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/fpsp040/skeleton.S       | 4 ++--
- arch/m68k/ifpsp060/os.S            | 4 ++--
- arch/m68k/kernel/relocate_kernel.S | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra210-smaug.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/m68k/fpsp040/skeleton.S b/arch/m68k/fpsp040/skeleton.S
-index 439395aa6fb42..081922c72daaa 100644
---- a/arch/m68k/fpsp040/skeleton.S
-+++ b/arch/m68k/fpsp040/skeleton.S
-@@ -499,13 +499,13 @@ in_ea:
- 	dbf	%d0,morein
- 	rts
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts b/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
+index 5a1ce432c1fbb..15a71a59745c4 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
+@@ -1317,6 +1317,7 @@ serial@70006000 {
  
--	.section .fixup,#alloc,#execinstr
-+	.section .fixup,"ax"
- 	.even
- 1:
- 	jbsr	fpsp040_die
- 	jbra	.Lnotkern
+ 	uartd: serial@70006300 {
+ 		compatible = "nvidia,tegra30-hsuart";
++		reset-names = "serial";
+ 		status = "okay";
  
--	.section __ex_table,#alloc
-+	.section __ex_table,"a"
- 	.align	4
- 
- 	.long	in_ea,1b
-diff --git a/arch/m68k/ifpsp060/os.S b/arch/m68k/ifpsp060/os.S
-index 7a0d6e4280665..89e2ec224ab6c 100644
---- a/arch/m68k/ifpsp060/os.S
-+++ b/arch/m68k/ifpsp060/os.S
-@@ -379,11 +379,11 @@ _060_real_access:
- 
- 
- | Execption handling for movs access to illegal memory
--	.section .fixup,#alloc,#execinstr
-+	.section .fixup,"ax"
- 	.even
- 1:	moveq		#-1,%d1
- 	rts
--.section __ex_table,#alloc
-+.section __ex_table,"a"
- 	.align 4
- 	.long	dmrbuae,1b
- 	.long	dmrwuae,1b
-diff --git a/arch/m68k/kernel/relocate_kernel.S b/arch/m68k/kernel/relocate_kernel.S
-index ab0f1e7d46535..f7667079e08e9 100644
---- a/arch/m68k/kernel/relocate_kernel.S
-+++ b/arch/m68k/kernel/relocate_kernel.S
-@@ -26,7 +26,7 @@ ENTRY(relocate_new_kernel)
- 	lea %pc@(.Lcopy),%a4
- 2:	addl #0x00000000,%a4		/* virt_to_phys() */
- 
--	.section ".m68k_fixup","aw"
-+	.section .m68k_fixup,"aw"
- 	.long M68K_FIXUP_MEMOFFSET, 2b+2
- 	.previous
- 
-@@ -49,7 +49,7 @@ ENTRY(relocate_new_kernel)
- 	lea %pc@(.Lcont040),%a4
- 5:	addl #0x00000000,%a4		/* virt_to_phys() */
- 
--	.section ".m68k_fixup","aw"
-+	.section .m68k_fixup,"aw"
- 	.long M68K_FIXUP_MEMOFFSET, 5b+2
- 	.previous
- 
+ 		bluetooth {
 -- 
 2.40.1
 
