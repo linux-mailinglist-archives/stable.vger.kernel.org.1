@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F173F79B03D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D60979B107
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244386AbjIKVIO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
+        id S1345626AbjIKVVj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:21:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239794AbjIKO2z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:55 -0400
+        with ESMTP id S238436AbjIKN4f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C381F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62501C433C8;
-        Mon, 11 Sep 2023 14:28:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF9610E
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17082C433C8;
+        Mon, 11 Sep 2023 13:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442530;
-        bh=sGJz9kwHEOTPPnt5sj64k99d2Ycuy77Yr4nKzK8UJkU=;
+        s=korg; t=1694440590;
+        bh=9PXvsWga6eogYamu/Q8gXFAuij/8BOCxlr483cO8RHI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U8fLqdifND+nyoAFwL6YUpInKWAwWxSHP1Z9btgfnPOatM/1/f2rn5RQgb3OxKG9S
-         PiYSClUgr5lbL8D2l/XbGUjVkWnM63qYeO+L93RKNIyhmxxFw8CxhmFQVIL78toqLq
-         L1cOKLcAcHt2IpPZyPWqaOmIFasnOaNVP2k8U8sg=
+        b=1eGWHataKjv2cHQDMLCXSpOHqUpZnO5/0MwTRNy8stB0v115NcH+KnJwrXcd72638
+         REWzwPoAhKgz5QKco3JSIHcRaZbJrlDF4CYYiLucLhHFkfYeBigQjxzj2IkXbfmEfb
+         1EPP63FesaoK+XRU4isFB8idp/GA2xcNjrHq8B5k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 056/737] powerpc/powermac: Use early_* IO variants in via_calibrate_decr()
+Subject: [PATCH 6.5 116/739] crypto: stm32 - Properly handle pm_runtime_get failing
 Date:   Mon, 11 Sep 2023 15:38:35 +0200
-Message-ID: <20230911134652.051314768@linuxfoundation.org>
+Message-ID: <20230911134654.337291461@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,70 +53,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 86582e6189dd8f9f52c25d46c70fe5d111da6345 ]
+[ Upstream commit aec48805163338f8413118796c1dd035661b9140 ]
 
-On a powermac platform, via the call path:
+If pm_runtime_get() (disguised as pm_runtime_resume_and_get()) fails, this
+means the clk wasn't prepared and enabled. Returning early in this case
+however is wrong as then the following resource frees are skipped and this
+is never catched up. So do all the cleanups but clk_disable_unprepare().
 
-  start_kernel()
-    time_init()
-      ppc_md.calibrate_decr() (pmac_calibrate_decr)
-        via_calibrate_decr()
+Also don't emit a warning, as stm32_hash_runtime_resume() already emitted
+one.
 
-ioremap() and iounmap() are called. The unmap can enable interrupts
-unexpectedly (cond_resched() in vunmap_pmd_range()), which causes a
-warning later in the boot sequence in start_kernel().
+Note that the return value of stm32_hash_remove() is mostly ignored by
+the device core. The only effect of returning zero instead of an error
+value is to suppress another warning in platform_remove(). So return 0
+even if pm_runtime_resume_and_get() failed.
 
-Use the early_* variants of these IO functions to prevent this.
-
-The issue is pre-existing, but is surfaced by commit 721255b9826b
-("genirq: Use a maple tree for interrupt descriptor management").
-
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230706010816.72682-1-bgray@linux.ibm.com
+Fixes: 8b4d566de6a5 ("crypto: stm32/hash - Add power management support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powermac/time.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/crypto/stm32/stm32-hash.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powermac/time.c b/arch/powerpc/platforms/powermac/time.c
-index 4c5790aff1b54..8633891b7aa58 100644
---- a/arch/powerpc/platforms/powermac/time.c
-+++ b/arch/powerpc/platforms/powermac/time.c
-@@ -26,8 +26,8 @@
- #include <linux/rtc.h>
- #include <linux/of_address.h>
+diff --git a/drivers/crypto/stm32/stm32-hash.c b/drivers/crypto/stm32/stm32-hash.c
+index f0df32382719c..342ed46ddf882 100644
+--- a/drivers/crypto/stm32/stm32-hash.c
++++ b/drivers/crypto/stm32/stm32-hash.c
+@@ -1705,9 +1705,7 @@ static int stm32_hash_remove(struct platform_device *pdev)
+ 	if (!hdev)
+ 		return -ENODEV;
  
-+#include <asm/early_ioremap.h>
- #include <asm/sections.h>
--#include <asm/io.h>
- #include <asm/machdep.h>
- #include <asm/time.h>
- #include <asm/nvram.h>
-@@ -182,7 +182,7 @@ static int __init via_calibrate_decr(void)
- 		return 0;
- 	}
- 	of_node_put(vias);
--	via = ioremap(rsrc.start, resource_size(&rsrc));
-+	via = early_ioremap(rsrc.start, resource_size(&rsrc));
- 	if (via == NULL) {
- 		printk(KERN_ERR "Failed to map VIA for timer calibration !\n");
- 		return 0;
-@@ -207,7 +207,7 @@ static int __init via_calibrate_decr(void)
+-	ret = pm_runtime_resume_and_get(hdev->dev);
+-	if (ret < 0)
+-		return ret;
++	ret = pm_runtime_get_sync(hdev->dev);
  
- 	ppc_tb_freq = (dstart - dend) * 100 / 6;
+ 	stm32_hash_unregister_algs(hdev);
  
--	iounmap(via);
-+	early_iounmap((void *)via, resource_size(&rsrc));
+@@ -1723,7 +1721,8 @@ static int stm32_hash_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(hdev->dev);
+ 	pm_runtime_put_noidle(hdev->dev);
  
- 	return 1;
+-	clk_disable_unprepare(hdev->clk);
++	if (ret >= 0)
++		clk_disable_unprepare(hdev->clk);
+ 
+ 	return 0;
  }
 -- 
 2.40.1
