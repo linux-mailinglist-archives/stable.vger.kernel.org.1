@@ -2,43 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C3079BD5A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DBD979BC87
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353906AbjIKVv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47254 "EHLO
+        id S1359614AbjIKWSI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239791AbjIKO2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:50 -0400
+        with ESMTP id S238495AbjIKN5t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57FA1F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758C0C433C8;
-        Mon, 11 Sep 2023 14:28:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061FCCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B9FC433C8;
+        Mon, 11 Sep 2023 13:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442525;
-        bh=kevZPUhznbI7G9gT3SUYTHNX4dPzs08NuolOysZR7ng=;
+        s=korg; t=1694440664;
+        bh=MFRJk2M72hhoSOSI4JTeQ4TdNaa79t1gaK4AZyTnMeY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1xI87vaaYqJTlAGcO4XDeujKP8J+13LhJZ6UnQxq73d5AWVceB5Kh5W9V66yp4NfQ
-         +3U5YrSmPuyCOOfZwLLEhtzwOFlzSi/u7SabSQF7Zvlgdq2H72f9Z8yPiWvyZWrFpW
-         xlY3rmmJ3Fof1KRpTceEy2vz3YsdWbVchfKp50Ms=
+        b=B8PAvXo2F5CXjdaT7yJxW8LsuU8BeyH1B+MST2xySMPA/NgQzVebkXhxOMhtTjJ2Y
+         rIiJMNGnwRvr2a8AJmfjqHiqB+s8ZJIf1ceyZ7idXqbpmRApUgH5/JyyIuJDexNDM4
+         0oEh2O+TmUU6y5JGshH0YVK00Y9MQVz+nQJditqI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        =?UTF-8?q?Fran=C3=A7ois=20Valenduc?= <francoisvalenduc@gmail.com>,
+        Alexandru Radovici <msg4alex@gmail.com>,
+        Matthew Leach <dev@mattleach.net>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 054/737] net: usb: qmi_wwan: add Quectel EM05GV2
+Subject: [PATCH 6.5 114/739] kbuild: rust_is_available: add check for `bindgen` invocation
 Date:   Mon, 11 Sep 2023 15:38:33 +0200
-Message-ID: <20230911134651.989830409@linuxfoundation.org>
+Message-ID: <20230911134654.281239063@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,66 +58,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kohn <m.kohn@welotec.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit d4480c9bb9258db9ddf2e632f6ef81e96b41089c ]
+[ Upstream commit 52cae7f28ed6c3992489f16bb355f5b623f0912e ]
 
-Add support for Quectel EM05GV2 (G=global) with vendor ID
-0x2c7c and product ID 0x030e
+`scripts/rust_is_available.sh` calls `bindgen` with a special
+header in order to check whether the `libclang` version in use
+is suitable.
 
-Enabling DTR on this modem was necessary to ensure stable operation.
-Patch for usb: serial: option: is also in progress.
+However, the invocation itself may fail if, for instance, `bindgen`
+cannot locate `libclang`. This is fine for Kconfig (since the
+script will still fail and therefore disable Rust as it should),
+but it is pretty confusing for users of the `rustavailable` target
+given the error will be unrelated:
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=030e Rev= 3.18
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM05-G
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+    ./scripts/rust_is_available.sh: 21: arithmetic expression: expecting primary: "100000 *  + 100 *  + "
+    make: *** [Makefile:1816: rustavailable] Error 2
 
-Signed-off-by: Martin Kohn <m.kohn@welotec.com>
-Link: https://lore.kernel.org/r/AM0PR04MB57648219DE893EE04FA6CC759701A@AM0PR04MB5764.eurprd04.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Instead, run the `bindgen` invocation independently in a previous
+step, saving its output and return code. If it fails, then show
+the user a proper error message. Otherwise, continue as usual
+with the saved output.
+
+Since the previous patch we show a reference to the docs, and
+the docs now explain how `bindgen` looks for `libclang`,
+thus the error message can leverage the documentation, avoiding
+duplication here (and making users aware of the setup guide in
+the documentation).
+
+Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/rust-for-linux/CAKwvOdm5JT4wbdQQYuW+RT07rCi6whGBM2iUAyg8A1CmLXG6Nw@mail.gmail.com/
+Reported-by: François Valenduc <francoisvalenduc@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/934
+Reported-by: Alexandru Radovici <msg4alex@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/pull/921
+Reported-by: Matthew Leach <dev@mattleach.net>
+Closes: https://lore.kernel.org/rust-for-linux/20230507084116.1099067-1-dev@mattleach.net/
+Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20230616001631.463536-6-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/rust_is_available.sh | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 2e7c7b0cdc549..c1bcd2ab1488e 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1423,6 +1423,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
-+	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index 0c9be438e4cd3..c965895d80b97 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -90,8 +90,28 @@ if [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cvers
+ fi
+ 
+ # Check that the `libclang` used by the Rust bindings generator is suitable.
++#
++# In order to do that, first invoke `bindgen` to get the `libclang` version
++# found by `bindgen`. This step may already fail if, for instance, `libclang`
++# is not found, thus inform the user in such a case.
++bindgen_libclang_output=$( \
++	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null
++) || bindgen_libclang_code=$?
++if [ -n "$bindgen_libclang_code" ]; then
++	echo >&2 "***"
++	echo >&2 "*** Running '$BINDGEN' to check the libclang version (used by the Rust"
++	echo >&2 "*** bindings generator) failed with code $bindgen_libclang_code. This may be caused by"
++	echo >&2 "*** a failure to locate libclang. See output and docs below for details:"
++	echo >&2 "***"
++	echo >&2 "$bindgen_libclang_output"
++	echo >&2 "***"
++	exit 1
++fi
++
++# `bindgen` returned successfully, thus use the output to check that the version
++# of the `libclang` found by the Rust bindings generator is suitable.
+ bindgen_libclang_version=$( \
+-	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
++	echo "$bindgen_libclang_output" \
+ 		| grep -F 'clang version ' \
+ 		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
+ 		| head -n 1 \
 -- 
 2.40.1
 
