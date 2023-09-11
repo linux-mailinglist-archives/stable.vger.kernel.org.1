@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8B179AD36
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F00079B301
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376743AbjIKWUY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33256 "EHLO
+        id S236949AbjIKVQf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238253AbjIKNwa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:30 -0400
+        with ESMTP id S238262AbjIKNwo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C466FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B96C433C8;
-        Mon, 11 Sep 2023 13:52:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0838FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE78C433C8;
+        Mon, 11 Sep 2023 13:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440346;
-        bh=BSOJ9h+sCSu8MUzd+wySrv4cioS4i83j26G23kPqPSA=;
+        s=korg; t=1694440360;
+        bh=+lzfGrJaJMgOWDnMOH8hZ5qi8NLnfSQkTk8Re3afKIw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Su3xKKKrf8xrR2Mas1UTY+cMl5BoHxqyhkBqaT3edPMC35+fz0aFp77MqReVHwsKw
-         czVAzkYMRvgWmZUtctOITaTr4lhoANcAhFyYR0ZKAmiu7257NLWe5lVxJV7ATy2RVz
-         Is9XPMFbhzitZI5kimMLtszzKluigqKimiGK2+dE=
+        b=CoqxbcUVM5ueUyIGBbSuU5HlvfimAxhSsc252Jk84aoLeuQ3nV79moaJDwyp1yvhG
+         kSAcb493pFodHmMYxa+q6FleJTDH/QMcVDlzsDtvTV9m5T2+9bPDPoo8ZqtS/mc0Kn
+         tsQlxX9m3MfilRz2ZxZf9ZDCyAONOXRjG0KucACQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Babu Moger <babu.moger@amd.com>,
+        "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 029/739] OPP: Fix potential null ptr dereference in dev_pm_opp_get_required_pstate()
-Date:   Mon, 11 Sep 2023 15:37:08 +0200
-Message-ID: <20230911134651.882937623@linuxfoundation.org>
+Subject: [PATCH 6.5 034/739] selftests/resctrl: Close perf value read fd on errors
+Date:   Mon, 11 Sep 2023 15:37:13 +0200
+Message-ID: <20230911134652.043816218@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -40,6 +42,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,55 +58,82 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 7ddd8deb1c3c0363a7e14fafb5df26e2089a69a5 ]
+[ Upstream commit 51a0c3b7f028169e40db930575dd01fe81c3e765 ]
 
-"opp" pointer is dereferenced before the IS_ERR_OR_NULL() check. Fix it by
-removing the dereference to cache opp_table and dereference it directly
-where opp_table is used.
+Perf event fd (fd_lm) is not closed when run_fill_buf() returns error.
 
-This fixes the following smatch warning:
+Close fd_lm only in cat_val() to make it easier to track it is always
+closed.
 
-drivers/opp/core.c:232 dev_pm_opp_get_required_pstate() warn: variable
-dereferenced before IS_ERR check 'opp' (see line 230)
-
-Fixes: 84cb7ff35fcf ("OPP: pstate is only valid for genpd OPP tables")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 790bf585b0ee ("selftests/resctrl: Add Cache Allocation Technology (CAT) selftest")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Babu Moger <babu.moger@amd.com>
+Tested-by: Shaopeng Tan (Fujitsu) <tan.shaopeng@fujitsu.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ tools/testing/selftests/resctrl/cache.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 3f46e499d615f..98633ccd170a3 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -227,20 +227,18 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_get_level);
- unsigned int dev_pm_opp_get_required_pstate(struct dev_pm_opp *opp,
- 					    unsigned int index)
+diff --git a/tools/testing/selftests/resctrl/cache.c b/tools/testing/selftests/resctrl/cache.c
+index 8a4fe8693be63..289b619116fec 100644
+--- a/tools/testing/selftests/resctrl/cache.c
++++ b/tools/testing/selftests/resctrl/cache.c
+@@ -87,21 +87,19 @@ static int reset_enable_llc_perf(pid_t pid, int cpu_no)
+ static int get_llc_perf(unsigned long *llc_perf_miss)
  {
--	struct opp_table *opp_table = opp->opp_table;
+ 	__u64 total_misses;
++	int ret;
+ 
+ 	/* Stop counters after one span to get miss rate */
+ 
+ 	ioctl(fd_lm, PERF_EVENT_IOC_DISABLE, 0);
+ 
+-	if (read(fd_lm, &rf_cqm, sizeof(struct read_format)) == -1) {
++	ret = read(fd_lm, &rf_cqm, sizeof(struct read_format));
++	if (ret == -1) {
+ 		perror("Could not get llc misses through perf");
 -
- 	if (IS_ERR_OR_NULL(opp) || !opp->available ||
--	    index >= opp_table->required_opp_count) {
-+	    index >= opp->opp_table->required_opp_count) {
- 		pr_err("%s: Invalid parameters\n", __func__);
- 		return 0;
+ 		return -1;
  	}
  
- 	/* required-opps not fully initialized yet */
--	if (lazy_linking_pending(opp_table))
-+	if (lazy_linking_pending(opp->opp_table))
- 		return 0;
+ 	total_misses = rf_cqm.values[0].value;
+-
+-	close(fd_lm);
+-
+ 	*llc_perf_miss = total_misses;
  
- 	/* The required OPP table must belong to a genpd */
--	if (unlikely(!opp_table->required_opp_tables[index]->is_genpd)) {
-+	if (unlikely(!opp->opp_table->required_opp_tables[index]->is_genpd)) {
- 		pr_err("%s: Performance state is only valid for genpds.\n", __func__);
- 		return 0;
+ 	return 0;
+@@ -253,19 +251,25 @@ int cat_val(struct resctrl_val_param *param)
+ 					 memflush, operation, resctrl_val)) {
+ 				fprintf(stderr, "Error-running fill buffer\n");
+ 				ret = -1;
+-				break;
++				goto pe_close;
+ 			}
+ 
+ 			sleep(1);
+ 			ret = measure_cache_vals(param, bm_pid);
+ 			if (ret)
+-				break;
++				goto pe_close;
++
++			close(fd_lm);
+ 		} else {
+ 			break;
+ 		}
  	}
+ 
+ 	return ret;
++
++pe_close:
++	close(fd_lm);
++	return ret;
+ }
+ 
+ /*
 -- 
 2.40.1
 
