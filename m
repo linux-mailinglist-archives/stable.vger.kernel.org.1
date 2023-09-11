@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD0079B806
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D774079BA96
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242652AbjIKWfU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44074 "EHLO
+        id S241126AbjIKWK3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242376AbjIKP3U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:20 -0400
+        with ESMTP id S242382AbjIKP3c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F0AF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAE8C433AD;
-        Mon, 11 Sep 2023 15:29:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC58E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D75FC433CC;
+        Mon, 11 Sep 2023 15:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446156;
-        bh=nXJKOWuJivfRWmD0H9eRSd7N1UWemOTS2A0XJxgneoY=;
+        s=korg; t=1694446167;
+        bh=43bCo5cF4IEyc/pCGq7U5ZLS4aA8mcSN96Lazh9ttoI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B2+twzHantcAGS2cBM/zCLJgP8GoV1495513MohkF8S3fPaQJ4m+J/rJckVt14zc/
-         kcCmh3u1HENg5jzWz+PzUNFS0go+yqLJ8Do1ONAfgZ0RONGwoV7D/n0p+s/NegLyxp
-         8tRF8rKZd8G3uN2echclaXv68Ya7My8JOLs49/jo=
+        b=uwbF19zVcTEuS0iJmCZsKfHxFAUixvNeGJpHaZxfYXxqsY1n2zpOcVVrRSZcPfBp0
+         ROSzPRS808XHQqDsVlZp2Xzmd7hBCc2U11Eibrw+x0Cfio473EUuQBZ9HZjqyAoUgt
+         Cbvj+SVOiMa7Ew+ZHkfqDNOrKFies467EiK7PF88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: [PATCH 6.1 575/600] s390/dcssblk: fix kernel crash with list_add corruption
-Date:   Mon, 11 Sep 2023 15:50:08 +0200
-Message-ID: <20230911134650.590266644@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.1 579/600] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
+Date:   Mon, 11 Sep 2023 15:50:12 +0200
+Message-ID: <20230911134650.709305684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -53,70 +55,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit c8f40a0bccefd613748d080147469a4652d6e74c upstream.
+commit e520d0b6be950ce3738cf4b9bd3b392be818f1dc upstream.
 
-Commit fb08a1908cb1 ("dax: simplify the dax_device <-> gendisk
-association") introduced new logic for gendisk association, requiring
-drivers to explicitly call dax_add_host() and dax_remove_host().
+Allocate extra space for terminating element at:
 
-For dcssblk driver, some dax_remove_host() calls were missing, e.g. in
-device remove path. The commit also broke error handling for out_dax case
-in device add path, resulting in an extra put_device() w/o the previous
-get_device() in that case.
+drivers/cpufreq/brcmstb-avs-cpufreq.c:
+449         table[i].frequency = CPUFREQ_TABLE_END;
 
-This lead to stale xarray entries after device add / remove cycles. In the
-case when a previously used struct gendisk pointer (xarray index) would be
-used again, because blk_alloc_disk() happened to return such a pointer, the
-xa_insert() in dax_add_host() would fail and go to out_dax, doing the extra
-put_device() in the error path. In combination with an already flawed error
-handling in dcssblk (device_register() cleanup), which needs to be
-addressed in a separate patch, this resulted in a missing device_del() /
-klist_del(), and eventually in the kernel crash with list_add corruption on
-a subsequent device_add() / klist_add().
+and add code comment to make this clear.
 
-Fix this by adding the missing dax_remove_host() calls, and also move the
-put_device() in the error path to restore the previous logic.
+This fixes the following -Warray-bounds warning seen after building
+ARM with multi_v7_defconfig (GCC 13):
+In function 'brcm_avs_get_freq_table',
+    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
+drivers/cpufreq/brcmstb-avs-cpufreq.c:449:28: warning: array subscript 5 is outside array bounds of 'void[60]' [-Warray-bounds=]
+  449 |         table[i].frequency = CPUFREQ_TABLE_END;
+In file included from include/linux/node.h:18,
+                 from include/linux/cpu.h:17,
+                 from include/linux/cpufreq.h:12,
+                 from drivers/cpufreq/brcmstb-avs-cpufreq.c:44:
+In function 'devm_kmalloc_array',
+    inlined from 'devm_kcalloc' at include/linux/device.h:328:9,
+    inlined from 'brcm_avs_get_freq_table' at drivers/cpufreq/brcmstb-avs-cpufreq.c:437:10,
+    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
+include/linux/device.h:323:16: note: at offset 60 into object of size 60 allocated by 'devm_kmalloc'
+  323 |         return devm_kmalloc(dev, bytes, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: fb08a1908cb1 ("dax: simplify the dax_device <-> gendisk association")
-Cc: <stable@vger.kernel.org> # 5.17+
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -Warray-bounds.
+
+Link: https://github.com/KSPP/linux/issues/324
+Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dcssblk.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/cpufreq/brcmstb-avs-cpufreq.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/s390/block/dcssblk.c
-+++ b/drivers/s390/block/dcssblk.c
-@@ -411,6 +411,7 @@ removeseg:
- 	}
- 	list_del(&dev_info->lh);
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -434,7 +434,11 @@ brcm_avs_get_freq_table(struct device *d
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
-+	dax_remove_host(dev_info->gd);
- 	kill_dax(dev_info->dax_dev);
- 	put_dax(dev_info->dax_dev);
- 	del_gendisk(dev_info->gd);
-@@ -706,9 +707,9 @@ dcssblk_add_store(struct device *dev, st
- 	goto out;
- 
- out_dax_host:
-+	put_device(&dev_info->dev);
- 	dax_remove_host(dev_info->gd);
- out_dax:
--	put_device(&dev_info->dev);
- 	kill_dax(dev_info->dax_dev);
- 	put_dax(dev_info->dax_dev);
- put_dev:
-@@ -788,6 +789,7 @@ dcssblk_remove_store(struct device *dev,
- 	}
- 
- 	list_del(&dev_info->lh);
-+	dax_remove_host(dev_info->gd);
- 	kill_dax(dev_info->dax_dev);
- 	put_dax(dev_info->dax_dev);
- 	del_gendisk(dev_info->gd);
+-	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1, sizeof(*table),
++	/*
++	 * We allocate space for the 5 different P-STATES AVS,
++	 * plus extra space for a terminating element.
++	 */
++	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1 + 1, sizeof(*table),
+ 			     GFP_KERNEL);
+ 	if (!table)
+ 		return ERR_PTR(-ENOMEM);
 
 
