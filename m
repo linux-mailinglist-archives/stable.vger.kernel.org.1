@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE5379ADE9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF62279AD10
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235332AbjIKUu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43918 "EHLO
+        id S1355283AbjIKV5o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242094AbjIKPWJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:09 -0400
+        with ESMTP id S240854AbjIKOzm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B27D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81056C433C8;
-        Mon, 11 Sep 2023 15:22:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E089118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B353AC433C7;
+        Mon, 11 Sep 2023 14:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445724;
-        bh=pFTwr2ztWEYfPbK7n7klhBuLMQqaKR6fQ6WZUIZeyuk=;
+        s=korg; t=1694444138;
+        bh=bB9EQHM2JAcl0l8PEcOt9KdEO8p2jyBXkx+S1QhNizY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iWxxwdpjb7UyC6bi8XjBJkG7EHDNvVLjU+gMjfIFDSzVj8XutBIS+G7qY7guvV5l0
-         aegRWzur8em3pH0hiN4ALLjhNTot+qNCV768f51e/UvKdTPMz2UjZjEeErVtG+R7zZ
-         wvxV1EQDSRzUdx6C3g2lBmn1hustHf7pieUIXNQs=
+        b=iqUFWV099y2P25r/jlsmdyQadX7iA0u8AbKupRC08JkXo63T5u+Nf/5B0jnwLR6Yr
+         1JMxgq61LpUzPyIxZEbyan8PZ2RC+ohR7NGg2sW/eVtlG0H5dZk7TETGS7ESvBs+n5
+         KRdE2VCEZa4q9oSBDJUPrEOWv/sjfuA2KTummw80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eddie James <eajames@linux.ibm.com>,
-        Joel Stanley <joel@jms.id.au>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 449/600] fsi: aspeed: Reset master errors after CFAM reset
-Date:   Mon, 11 Sep 2023 15:48:02 +0200
-Message-ID: <20230911134646.899827201@linuxfoundation.org>
+        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 624/737] dmaengine: ste_dma40: Add missing IRQ check in d40_probe
+Date:   Mon, 11 Sep 2023 15:48:03 +0200
+Message-ID: <20230911134707.962467386@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: ruanjinjie <ruanjinjie@huawei.com>
 
-[ Upstream commit 52300909f4670ac552bfeb33c1355b896eac8c06 ]
+[ Upstream commit c05ce6907b3d6e148b70f0bb5eafd61dcef1ddc1 ]
 
-It has been observed that sometimes the FSI master will return all 0xffs
-after a CFAM has been taken out of reset, without presenting any error.
-Resetting the FSI master errors resolves the issue.
+Check for the return value of platform_get_irq(): if no interrupt
+is specified, it wouldn't make sense to call request_irq().
 
-Fixes: 4a851d714ead ("fsi: aspeed: Support CFAM reset GPIO")
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230612195657.245125-8-eajames@linux.ibm.com
-Signed-off-by: Joel Stanley <joel@jms.id.au>
+Fixes: 8d318a50b3d7 ("DMAENGINE: Support for ST-Ericssons DMA40 block v3")
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20230724144108.2582917-1-ruanjinjie@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fsi/fsi-master-aspeed.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/dma/ste_dma40.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/fsi/fsi-master-aspeed.c b/drivers/fsi/fsi-master-aspeed.c
-index 7cec1772820d3..5eccab175e86b 100644
---- a/drivers/fsi/fsi-master-aspeed.c
-+++ b/drivers/fsi/fsi-master-aspeed.c
-@@ -454,6 +454,8 @@ static ssize_t cfam_reset_store(struct device *dev, struct device_attribute *att
- 	gpiod_set_value(aspeed->cfam_reset_gpio, 1);
- 	usleep_range(900, 1000);
- 	gpiod_set_value(aspeed->cfam_reset_gpio, 0);
-+	usleep_range(900, 1000);
-+	opb_writel(aspeed, ctrl_base + FSI_MRESP0, cpu_to_be32(FSI_MRESP_RST_ALL_MASTER));
- 	mutex_unlock(&aspeed->lock);
- 	trace_fsi_master_aspeed_cfam_reset(false);
+diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
+index f093e08c23b16..3b09fdc507e04 100644
+--- a/drivers/dma/ste_dma40.c
++++ b/drivers/dma/ste_dma40.c
+@@ -3597,6 +3597,10 @@ static int __init d40_probe(struct platform_device *pdev)
+ 	spin_lock_init(&base->lcla_pool.lock);
  
+ 	base->irq = platform_get_irq(pdev, 0);
++	if (base->irq < 0) {
++		ret = base->irq;
++		goto destroy_cache;
++	}
+ 
+ 	ret = request_irq(base->irq, d40_handle_interrupt, 0, D40_NAME, base);
+ 	if (ret) {
 -- 
 2.40.1
 
