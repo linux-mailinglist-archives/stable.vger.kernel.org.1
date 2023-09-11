@@ -2,329 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C3CA79B942
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D46179B96F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239061AbjIKV4v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55922 "EHLO
+        id S1357940AbjIKWG7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:06:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241996AbjIKPUF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:05 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF0FFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:59 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf7423ef3eso32468265ad.3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694445599; x=1695050399; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=CrQNmAHf9U0/ILzfIoMS2zMRz36l5kz3YYFLYp4E0nA=;
-        b=jEQfMhbX/RV4PHgjHGh883IJchiPp2Ka3qY0AAj2VlVNop6NWimKHvdVNmOi5pAIGg
-         zWSxEDPi5I6OumilPhnS84bogSxCfjlwBL9q4qtlWTKHGy7ljw902ko2MXPfAhLt8dGc
-         N9KGCfq8Fs/hzoHWMlv2XOl4Pu12jg636ekerbTj4xH1lI9aUx9g67Y4aw9aidIGddgo
-         hCYnyLItVDCfftAhtW1WLosqKwHjB4HXJtvpKyhoAqdk6E+4+PuUDstzSmXjPXowL8H4
-         kYQBzax6308qwckDU4DtC/XKL5aDbZyNjoxNkakdemM52Si7sjq+PVmuJBqNmj9ypXmN
-         fJyQ==
+        with ESMTP id S242400AbjIKPau (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:30:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 23401E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694446199;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=beFb4jOtgVaCPAjALRMLom3ODylTFoGFqg6zPcwa1kU=;
+        b=OxVSjlRJikvRKcoUu+fre0mMhOjb3KrTbGjU8J6ap2VFe3urPH/0ZnQn4eB+0TiicD4Vms
+        7Sic+dirwFyM2nMAsuQNY94xTu1UiiUxmMrtBhb2WSFbS5W0IpLwcGVNSLadTpl1WyuXSr
+        B7nqDETrHQuGZNwAYAdVv9JIAHLVIug=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-Us7MO3yxNCaxwbB0X3zuLg-1; Mon, 11 Sep 2023 11:29:57 -0400
+X-MC-Unique: Us7MO3yxNCaxwbB0X3zuLg-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcb47970eeso51159991fa.3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694445599; x=1695050399;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CrQNmAHf9U0/ILzfIoMS2zMRz36l5kz3YYFLYp4E0nA=;
-        b=hZK6vFoWnUCS++9RST7Duo3cTZpl/g3SBEB8KggRnHB+4jofdNOlHsJF3539piAppP
-         riAA422vZO/EheIkRRe+DhS3SorpcbQmq6ABGWKyusucLbPqvEIS8fZnSuX9yLUOEvZU
-         PkDz5VORUIGlPy/yViqj/RIKj7V9MWCBe8thoMeHR1BR2EJW8vWJnm/7zLl6QrbftSGJ
-         qetEh6jft0OXkrtAXCc6aHMP4FHLCgUvyOIho4jR7cdSy1FqRwt8VLOQb7uz7wM+46/4
-         WLOSZo1RuT5im5h2HFkYNb7XqwlR/la89/Mg+Nqvzw5Xg3Y0LQkQ2G7HVh03DMOneUZd
-         dyNQ==
-X-Gm-Message-State: AOJu0Yw39+F9hPnEZfOzk896dzlELeDSRIQuzhTKPuDwJXIYWEYhpdJv
-        uonpq0Dg6d5Fnsyeu64wqRAyjjpKOaYjmKMfakM=
-X-Google-Smtp-Source: AGHT+IGstZqBy0jPUApmZCdi8IkR1RZCiGpmEIPkJ8WVT6wuZbYHhDrxLEp+Vyy/v8Q80rUBIi6mxQ==
-X-Received: by 2002:a17:902:ce81:b0:1bb:a125:f831 with SMTP id f1-20020a170902ce8100b001bba125f831mr10716316plg.58.1694445598768;
-        Mon, 11 Sep 2023 08:19:58 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id g24-20020a1709029f9800b0019ee045a2b3sm6577016plq.308.2023.09.11.08.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 08:19:57 -0700 (PDT)
-Message-ID: <64ff301d.170a0220.350a3.0151@mx.google.com>
-Date:   Mon, 11 Sep 2023 08:19:57 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1694446196; x=1695050996;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=beFb4jOtgVaCPAjALRMLom3ODylTFoGFqg6zPcwa1kU=;
+        b=UYA850bexHXLwsNXNVpY89ZTxLkGQBBToS0lbNp72D6qLwRrlScIFMwkmUYJP7DLjm
+         mRAsdl/6AAX3Qbs25HKuY4Tdx9zndFAQaS3Ujf+Tc6vm2VUEbOPSLODrFCh13w5mf89v
+         LaFtbmgYVGFgR6KGCea0BI0GNHfuj6Muls6NeRxAHYG2na5qfeeuVYq9GGJum/+xFYjo
+         6wbCEj8RySHMvqjuNjkfNJY2QNMrDnkJrpDETXBD50bnw2dy+zD3rjzc65FsoN9CS0rz
+         32lKlsWf84Nt8t8GQ0BbzN6gSr8ULSEaXHdXyMn0iKRPyiky1GqqLveYdDX85CwgsUxV
+         cKpw==
+X-Gm-Message-State: AOJu0Yz6KRnzU/p2rzrfnywAWj+rI21NKudvSUvURG3UhnYVQBC6rAEU
+        YjpjrL8NYwz8yN44NnVSMU3QjpvU9rp6LaGb0Rrz/xBpvm0ek4O/ZsF4eHX+ioNkylPIbW6q8m5
+        ISUTYSbhQVCH91RRm
+X-Received: by 2002:a2e:9a86:0:b0:2b9:d28c:9c2d with SMTP id p6-20020a2e9a86000000b002b9d28c9c2dmr7888765lji.23.1694446196339;
+        Mon, 11 Sep 2023 08:29:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCnYmSBBt/79HOY6oG86XzJSUTORWQ+TBN3kldt1k+nkoJjPzYCmkfeSD1Dy0l69/ipFgEMw==
+X-Received: by 2002:a2e:9a86:0:b0:2b9:d28c:9c2d with SMTP id p6-20020a2e9a86000000b002b9d28c9c2dmr7888747lji.23.1694446196036;
+        Mon, 11 Sep 2023 08:29:56 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id m27-20020a1709060d9b00b009a5f7fb51d1sm5497936eji.40.2023.09.11.08.29.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Sep 2023 08:29:55 -0700 (PDT)
+Message-ID: <3c54154f-dd9d-f74c-9852-5135b4bda297@redhat.com>
+Date:   Mon, 11 Sep 2023 17:29:54 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.256-240-gedabcd6633bf
-Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
- 34 warnings (v5.4.256-240-gedabcd6633bf)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] USB: add ignore remote wakeup quirk for one of Logitech's
+ receivers
+To:     Hamza Mahfooz <someguy@effective-light.com>
+Cc:     linux-usb@vger.kernel.org, stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        =?UTF-8?Q?=c5=81ukasz_Bartosik?= <lb@semihalf.com>,
+        Nicolas Dumazet <ndumazet@google.com>,
+        Jean-Francois Le Fillatre <jflf_kernel@gmx.com>,
+        Mark Pearson <mpearson-lenovo@squebb.ca>,
+        Hannu Hartikainen <hannu@hrtk.in>, linux-kernel@vger.kernel.org
+References: <20230910163751.4210-1-someguy@effective-light.com>
+ <9d2dff10-5a3b-b24a-c3d8-3c843891966d@redhat.com>
+ <ZKUT0S.QB90NRXC7O1R1@effective-light.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <ZKUT0S.QB90NRXC7O1R1@effective-light.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 34 warnings (v=
-5.4.256-240-gedabcd6633bf)
+Hi Hamza,
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.256-240-gedabcd6633bf/
+On 9/11/23 17:19, Hamza Mahfooz wrote:
+> Hey Hans,
+> 
+> On Mon, Sep 11 2023 at 09:32:42 AM +02:00:00, Hans de Goede <hdegoede@redhat.com> wrote:
+>> Hi Hamza,
+>>
+>> On 9/10/23 18:37, Hamza Mahfooz wrote:
+>>>  This device causes the system to wake up from suspend, as soon as it
+>>>  enters it (even if the device attached to the receiver is powered off).
+>>>  So, ignore remote wakeup events from it.
+>>>
+>>>  Cc: stable@vger.kernel.org
+>>>  Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
+>>>  ---
+>>>   drivers/usb/core/quirks.c | 4 ++++
+>>>   1 file changed, 4 insertions(+)
+>>>
+>>>  diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+>>>  index 15e9bd180a1d..d2e2a2873f34 100644
+>>>  --- a/drivers/usb/core/quirks.c
+>>>  +++ b/drivers/usb/core/quirks.c
+>>>  @@ -264,6 +264,10 @@ static const struct usb_device_id usb_quirk_list[] = {
+>>>       /* Logitech Harmony 700-series */
+>>>       { USB_DEVICE(0x046d, 0xc122), .driver_info = USB_QUIRK_DELAY_INIT },
+>>>
+>>>  +    /* Logitech lightspeed receiver (0xc547) */
+>>>  +    { USB_DEVICE(0x046d, 0xc547), .driver_info =
+>>>  +            USB_QUIRK_IGNORE_REMOTE_WAKEUP },
+>>>  +
+>>>       /* Philips PSC805 audio device */
+>>>       { USB_DEVICE(0x0471, 0x0155), .driver_info = USB_QUIRK_RESET_RESUME },
+>>>
+>>
+>> If this is a lightspeed receiver then it really should be handled by
+>> hid-logitech-dj.c unless this new receiver is using a new protocol ?
+>>
+>> I wonder if adding it there also fixes the remote
+>> wakeup issue (I doubt it fixes it but worth a try) ?
+> 
+> 
+> Seems like the following series does indeed fix this issue:
+> https://lore.kernel.org/linux-input/20230716182320.85483-1-mavchatz@protonmail.com/T/#u
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.256-240-gedabcd6633bf
-Git Commit: edabcd6633bf9949283fee7b8ed58348f97cb549
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Great, thank you for letting us know that this is resolved with
+that patch series.
 
-Warnings Detected:
+Regards,
 
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 4 warnings
-
-arm:
-    imx_v6_v7_defconfig (gcc-10): 1 warning
-    omap2plus_defconfig (gcc-10): 1 warning
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 5 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 5 warnings
+Hans
 
 
-Warnings summary:
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    7    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defi=
-ned but not used [-Wunused-label]
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-    1    drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning =
-=E2=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=
-=80=99 makes pointer from integer without a cast [-Wint-conversion]
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-    drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning =E2=
-=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=80=
-=99 makes pointer from integer without a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 5 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-5 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    fs/quota/dquot.c:2611:1: warning: label =E2=80=98out=E2=80=99 defined b=
-ut not used [-Wunused-label]
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
