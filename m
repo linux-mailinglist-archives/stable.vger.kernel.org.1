@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7430B79BC01
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB3F79BF47
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353601AbjIKVru (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37646 "EHLO
+        id S236935AbjIKWml (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240415AbjIKOno (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:44 -0400
+        with ESMTP id S241514AbjIKPKZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5362012A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B855C433C8;
-        Mon, 11 Sep 2023 14:43:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7947FFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C1EC433C8;
+        Mon, 11 Sep 2023 15:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443419;
-        bh=uSrQzmmdOPUMCoNboBPbwNOVTy1D0dluaVP23kjqIwI=;
+        s=korg; t=1694445021;
+        bh=zj4V7N69lKSCG4lncdW1ipuwTLj/WGoLP5RpCLzd5qA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y560RaCr7uWmxut1natbi/E+XU7XzyNMFtWXTLo1WJwJGkPmqPszaJNXDkg40Ats8
-         jThG14+yNIdkvm1Ze4tu2F3HFui/D+towBxSsnVIfSC3CXx74T3gOXz9lFDQWz0fYu
-         lq9yPF6OFN7Hc8x8j9CL/vjHZ6OwncTRQdRxKPzM=
+        b=NqqwA2K+BptyVshy0d0j+xpakWjOGOkfENFNeEM/LcSt2IQG5HjMP1RECwMz7Cwj8
+         3lRyFh+Dg5m6WMvCLFSGydCrj8PFwLOJPJJ0Zaup01uOc08+6+7OpRVrM/54atD78O
+         0knTzjDP1oM+YyxjVyJRjMQpgo5HQYcR7XWdtBAg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 371/737] drm/mediatek: dp: Add missing error checks in mtk_dp_parse_capabilities
-Date:   Mon, 11 Sep 2023 15:43:50 +0200
-Message-ID: <20230911134700.911363790@linuxfoundation.org>
+Subject: [PATCH 6.1 198/600] wifi: ath9k: use IS_ERR() with debugfs_create_dir()
+Date:   Mon, 11 Sep 2023 15:43:51 +0200
+Message-ID: <20230911134639.462405681@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,66 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Wang Ming <machel@vivo.com>
 
-[ Upstream commit cfc146137a9f12e883ba64bc496b6da4d23f26d5 ]
+[ Upstream commit 1e4134610d93271535ecf900a676e1f094e9944c ]
 
-If reading the RX capabilities fails the training pattern will be set
-wrongly: add error checking for drm_dp_read_dpcd_caps() and return if
-anything went wrong with it.
+The debugfs_create_dir() function returns error pointers,
+it never returns NULL. Most incorrect error checks were fixed,
+but the one in ath9k_htc_init_debug() was forgotten.
 
-While at it, also add a less critical error check when writing to
-clear the ESI0 IRQ vector.
+Fix the remaining error check.
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230725073234.55892-2-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: e5facc75fa91 ("ath9k_htc: Cleanup HTC debugfs")
+Signed-off-by: Wang Ming <machel@vivo.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230713030358.12379-1-machel@vivo.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 64eee77452c04..c58b775877a31 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -1588,7 +1588,9 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
- 	u8 val;
- 	ssize_t ret;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+index b3ed65e5c4da8..c55aab01fff5d 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+@@ -491,7 +491,7 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
  
--	drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
-+	ret = drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
-+	if (ret < 0)
-+		return ret;
+ 	priv->debug.debugfs_phy = debugfs_create_dir(KBUILD_MODNAME,
+ 					     priv->hw->wiphy->debugfsdir);
+-	if (!priv->debug.debugfs_phy)
++	if (IS_ERR(priv->debug.debugfs_phy))
+ 		return -ENOMEM;
  
- 	if (drm_dp_tps4_supported(mtk_dp->rx_cap))
- 		mtk_dp->train_info.channel_eq_pattern = DP_TRAINING_PATTERN_4;
-@@ -1615,10 +1617,13 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
- 			return ret == 0 ? -EIO : ret;
- 		}
- 
--		if (val)
--			drm_dp_dpcd_writeb(&mtk_dp->aux,
--					   DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
--					   val);
-+		if (val) {
-+			ret = drm_dp_dpcd_writeb(&mtk_dp->aux,
-+						 DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
-+						 val);
-+			if (ret < 0)
-+				return ret;
-+		}
- 	}
- 
- 	return 0;
+ 	ath9k_cmn_spectral_init_debug(&priv->spec_priv, priv->debug.debugfs_phy);
 -- 
 2.40.1
 
