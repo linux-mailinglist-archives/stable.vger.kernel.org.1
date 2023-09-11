@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB6079B0DA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFF7A79B56A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344257AbjIKVNo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57776 "EHLO
+        id S237459AbjIKUvc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238750AbjIKOEN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:13 -0400
+        with ESMTP id S240092AbjIKOg1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E85CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09444C433C8;
-        Mon, 11 Sep 2023 14:04:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6843CF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD4FC433C7;
+        Mon, 11 Sep 2023 14:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441049;
-        bh=gs7hxhKO1DMTVC1WMVz9z5/9Imj35MB2VlGsUTjPH+8=;
+        s=korg; t=1694442983;
+        bh=Z7YRGJ0VYqbWWL7nvxxhxovoyVI+yfknRLECb6FX91c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=up4ib8CZW1V4c1WqtuDuX6vGasIWjhBqEO7PIJl/ztmlFKKegf+0VbgrDVgzB02xf
-         SPSyjGIc8pfdUve9TQbbmXQKQhyXqGFVoH5omCQWodzZ5JyfEyCRke6KEqncGEQAco
-         G7ivXqX8CHoht+5L/Ks5ykuDq+Liw8iHHrJn/Dcw=
+        b=OHM9mxDkEpDYbbybG/J2OMTRYKioDsr5VKikpLO+YiHe3+ukrTKJgIuOx8UWf9r/P
+         AoYF0/vd2RshVyoWlIDb3lz6IWXsIZisfNUg9KC1auIlG+AHqWCPMjMdGcjg5VP6a8
+         jvOHa8uoZF8k0exNQehlk6y5iHf7UxLHtE5EsRh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Gaurav Jain <gaurav.jain@nxp.com>,
+        Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 277/739] arm64: dts: qcom: sc8180x-pmics: align LPG node name with dtschema
+Subject: [PATCH 6.4 217/737] crypto: caam - fix unchecked return value error
 Date:   Mon, 11 Sep 2023 15:41:16 +0200
-Message-ID: <20230911134658.861530254@linuxfoundation.org>
+Message-ID: <20230911134656.650803539@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,42 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Gaurav Jain <gaurav.jain@nxp.com>
 
-[ Upstream commit 4af302a7e29e70bd930e80ab8f967da48a99a31a ]
+[ Upstream commit e30685204711a6be40dec2622606950ccd37dafe ]
 
-Bindings expect the LPG node name to be "pwm":
+error:
+Unchecked return value (CHECKED_RETURN)
+check_return: Calling sg_miter_next without checking return value
 
-  sc8180x-lenovo-flex-5g.dtb: pmic@5: 'lpg' does not match any of the regexes:
+fix:
+added check if(!sg_miter_next)
 
-Fixes: d3302290f59e ("arm64: dts: qcom: sc8180x: Add pmics")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vinod Koul <vkoul@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230720083500.73554-4-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8a2a0dd35f2e ("crypto: caam - strip input zeros from RSA input buffer")
+Signed-off-by: Gaurav Jain <gaurav.jain@nxp.com>
+Signed-off-by: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/caam/caampkc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi b/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi
-index ffd374b9b3158..925047af734fc 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi
-@@ -315,7 +315,7 @@ pmic@5 {
- 		compatible = "qcom,pmc8180c", "qcom,spmi-pmic";
- 		reg = <0x5 SPMI_USID>;
+diff --git a/drivers/crypto/caam/caampkc.c b/drivers/crypto/caam/caampkc.c
+index 72afc249d42fb..7e08af751e4ea 100644
+--- a/drivers/crypto/caam/caampkc.c
++++ b/drivers/crypto/caam/caampkc.c
+@@ -225,7 +225,9 @@ static int caam_rsa_count_leading_zeros(struct scatterlist *sgl,
+ 		if (len && *buff)
+ 			break;
  
--		pmc8180c_lpg: lpg {
-+		pmc8180c_lpg: pwm {
- 			compatible = "qcom,pmc8180c-lpg";
+-		sg_miter_next(&miter);
++		if (!sg_miter_next(&miter))
++			break;
++
+ 		buff = miter.addr;
+ 		len = miter.length;
  
- 			#address-cells = <1>;
 -- 
 2.40.1
 
