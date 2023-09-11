@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56FDC79B852
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FF2D79B6F1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343535AbjIKVLn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50342 "EHLO
+        id S1358305AbjIKWId (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239948AbjIKOcI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:08 -0400
+        with ESMTP id S238587AbjIKN76 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED4CF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:32:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5191C433C8;
-        Mon, 11 Sep 2023 14:32:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB692CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E444C433C8;
+        Mon, 11 Sep 2023 13:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442724;
-        bh=Ix6E76ph/b6yJHkPXu2ablcKZ1kobIqd+KKTn0W6IP8=;
+        s=korg; t=1694440794;
+        bh=Fg+25EGZqYpSXrJgqw/HEsHF+2/tq+froswtqKJTc6E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VxGo6fv4fc84X0Y+WHj9xJyoLVu9P0/OyFher5KPl2TJ8bNJ7XraFAnJikW9leq2z
-         Gk/+11ZFDy9mWaxTsp7+k9EvigGr0hqNWMexbTl4TKf9rjo74NfgB6JzJIwZI5EZJy
-         Jeb3SDn8XXqeNaLkISWONzyv2QGZLCPUWfIPJRzo=
+        b=dVsU950IyAtj2dFyy22r+hGoBbssZXYFhvfCAOSrYwCm4mhMndiZvy8AXt/SSoY/w
+         7kY+b2mCxvwjR/+sxoU+j+i93Kj7vNxhBsUy8GhxL8cjlm1+b72Zs/YJQ2xVP2HdqY
+         OMvwSu9eXjbNz99gOJREqM2h3SCMbn/KqMnP2eXc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Adam Guerin <adam.guerin@intel.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 126/737] s390/pkey: fix/harmonize internal keyblob headers
-Date:   Mon, 11 Sep 2023 15:39:45 +0200
-Message-ID: <20230911134654.023724254@linuxfoundation.org>
+Subject: [PATCH 6.5 187/739] crypto: qat - fix crypto capability detection for 4xxx
+Date:   Mon, 11 Sep 2023 15:39:46 +0200
+Message-ID: <20230911134656.414787337@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,91 +52,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Adam Guerin <adam.guerin@intel.com>
 
-[ Upstream commit 37a08f010b7c423b5e4c9ed3b187d21166553007 ]
+[ Upstream commit fab9516f02b418e37d3cde6c21c316085262aece ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES as a supplement to
-PKEY_TYPE_EP11. All pkeys have an internal header/payload structure,
-which is opaque to the userspace. The header structures for
-PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES are nearly identical and there
-is no reason, why different structures are used. In preparation to fix
-the keyversion handling in the broken PKEY IOCTLs, the same header
-structure is used for PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES. This
-reduces the number of different code paths and increases the
-readability.
+When extending the capability detection logic for 4xxx devices the
+SMx algorithms were accidentally missed.
+Enable these SMx capabilities by default for QAT GEN4 devices.
 
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Check for device variants where the SMx algorithms are explicitly
+disabled by the GEN4 hardware. This is indicated in fusectl1
+register.
+Mask out SM3 and SM4 based on a bit specific to those algorithms.
+Mask out SM2 if the PKE slice is not present.
+
+Fixes: 4b44d28c715d ("crypto: qat - extend crypto capability detection for 4xxx")
+Signed-off-by: Adam Guerin <adam.guerin@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Fiona Trahe <fiona.trahe@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/pkey_api.c        | 2 +-
- drivers/s390/crypto/zcrypt_ep11misc.c | 4 ++--
- drivers/s390/crypto/zcrypt_ep11misc.h | 9 +--------
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c | 9 +++++++++
+ drivers/crypto/intel/qat/qat_common/icp_qat_hw.h     | 5 ++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index a8def50c149bd..e650df3fe7ccb 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -747,7 +747,7 @@ static int pkey_verifykey2(const u8 *key, size_t keylen,
- 		if (ktype)
- 			*ktype = PKEY_TYPE_EP11;
- 		if (ksize)
--			*ksize = kb->head.keybitlen;
-+			*ksize = kb->head.bitlen;
+diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+index e543a9e24a06f..3eda91aa7c112 100644
+--- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+@@ -223,6 +223,8 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
+ 			  ICP_ACCEL_CAPABILITIES_HKDF |
+ 			  ICP_ACCEL_CAPABILITIES_CHACHA_POLY |
+ 			  ICP_ACCEL_CAPABILITIES_AESGCM_SPC |
++			  ICP_ACCEL_CAPABILITIES_SM3 |
++			  ICP_ACCEL_CAPABILITIES_SM4 |
+ 			  ICP_ACCEL_CAPABILITIES_AES_V2;
  
- 		rc = ep11_findcard2(&_apqns, &_nr_apqns, *cardnr, *domain,
- 				    ZCRYPT_CEX7, EP11_API_V, kb->wkvp);
-diff --git a/drivers/s390/crypto/zcrypt_ep11misc.c b/drivers/s390/crypto/zcrypt_ep11misc.c
-index f67d19d08571b..79dc57e720ff1 100644
---- a/drivers/s390/crypto/zcrypt_ep11misc.c
-+++ b/drivers/s390/crypto/zcrypt_ep11misc.c
-@@ -787,7 +787,7 @@ int ep11_genaeskey(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
- 	kb->head.type = TOKTYPE_NON_CCA;
- 	kb->head.len = rep_pl->data_len;
- 	kb->head.version = TOKVER_EP11_AES;
--	kb->head.keybitlen = keybitsize;
-+	kb->head.bitlen = keybitsize;
+ 	/* A set bit in fusectl1 means the feature is OFF in this SKU */
+@@ -246,12 +248,19 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
+ 		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_CIPHER;
+ 	}
  
- out:
- 	kfree(req);
-@@ -1055,7 +1055,7 @@ static int ep11_unwrapkey(u16 card, u16 domain,
- 	kb->head.type = TOKTYPE_NON_CCA;
- 	kb->head.len = rep_pl->data_len;
- 	kb->head.version = TOKVER_EP11_AES;
--	kb->head.keybitlen = keybitsize;
-+	kb->head.bitlen = keybitsize;
++	if (fusectl1 & ICP_ACCEL_4XXX_MASK_SMX_SLICE) {
++		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_SM3;
++		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_SM4;
++	}
++
+ 	capabilities_asym = ICP_ACCEL_CAPABILITIES_CRYPTO_ASYMMETRIC |
+ 			  ICP_ACCEL_CAPABILITIES_CIPHER |
++			  ICP_ACCEL_CAPABILITIES_SM2 |
+ 			  ICP_ACCEL_CAPABILITIES_ECEDMONT;
  
- out:
- 	kfree(req);
-diff --git a/drivers/s390/crypto/zcrypt_ep11misc.h b/drivers/s390/crypto/zcrypt_ep11misc.h
-index 07445041869fe..912b3918c10a1 100644
---- a/drivers/s390/crypto/zcrypt_ep11misc.h
-+++ b/drivers/s390/crypto/zcrypt_ep11misc.h
-@@ -29,14 +29,7 @@ struct ep11keyblob {
- 	union {
- 		u8 session[32];
- 		/* only used for PKEY_TYPE_EP11: */
--		struct {
--			u8  type;      /* 0x00 (TOKTYPE_NON_CCA) */
--			u8  res0;      /* unused */
--			u16 len;       /* total length in bytes of this blob */
--			u8  version;   /* 0x03 (TOKVER_EP11_AES) */
--			u8  res1;      /* unused */
--			u16 keybitlen; /* clear key bit len, 0 for unknown */
--		} head;
-+		struct ep11kblob_header head;
- 	};
- 	u8  wkvp[16];  /* wrapping key verification pattern */
- 	u64 attr;      /* boolean key attributes */
+ 	if (fusectl1 & ICP_ACCEL_4XXX_MASK_PKE_SLICE) {
+ 		capabilities_asym &= ~ICP_ACCEL_CAPABILITIES_CRYPTO_ASYMMETRIC;
++		capabilities_asym &= ~ICP_ACCEL_CAPABILITIES_SM2;
+ 		capabilities_asym &= ~ICP_ACCEL_CAPABILITIES_ECEDMONT;
+ 	}
+ 
+diff --git a/drivers/crypto/intel/qat/qat_common/icp_qat_hw.h b/drivers/crypto/intel/qat/qat_common/icp_qat_hw.h
+index a65059e56248a..0c8883e2ccc6d 100644
+--- a/drivers/crypto/intel/qat/qat_common/icp_qat_hw.h
++++ b/drivers/crypto/intel/qat/qat_common/icp_qat_hw.h
+@@ -97,7 +97,10 @@ enum icp_qat_capabilities_mask {
+ 	ICP_ACCEL_CAPABILITIES_SHA3_EXT = BIT(15),
+ 	ICP_ACCEL_CAPABILITIES_AESGCM_SPC = BIT(16),
+ 	ICP_ACCEL_CAPABILITIES_CHACHA_POLY = BIT(17),
+-	/* Bits 18-21 are currently reserved */
++	ICP_ACCEL_CAPABILITIES_SM2 = BIT(18),
++	ICP_ACCEL_CAPABILITIES_SM3 = BIT(19),
++	ICP_ACCEL_CAPABILITIES_SM4 = BIT(20),
++	/* Bit 21 is currently reserved */
+ 	ICP_ACCEL_CAPABILITIES_CNV_INTEGRITY = BIT(22),
+ 	ICP_ACCEL_CAPABILITIES_CNV_INTEGRITY64 = BIT(23),
+ 	ICP_ACCEL_CAPABILITIES_LZ4_COMPRESSION = BIT(24),
 -- 
 2.40.1
 
