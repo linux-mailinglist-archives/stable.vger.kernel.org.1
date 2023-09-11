@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF0E79AE8E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0CA379AF61
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242113AbjIKV35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34036 "EHLO
+        id S1353964AbjIKVvp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239042AbjIKOKT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:19 -0400
+        with ESMTP id S240313AbjIKOlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BCB4E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23CFC433C8;
-        Mon, 11 Sep 2023 14:10:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7552DE6
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0A2C433C8;
+        Mon, 11 Sep 2023 14:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441414;
-        bh=eSxRgnxSyv+W01+qE/cRKknoXssgEfaKOptHX7AM8po=;
+        s=korg; t=1694443271;
+        bh=9O5ZI7KEbyfAjWK8GaIb/o6yaXkZhjGuI/wPpiXpFwg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pEH5xIZiACkS2/ewgzTmfBZp+/Cl8saEyL6kd7aTwavfllfyoOKVTDZtnSJ1s5WUQ
-         1UwSrEi6N16rSO/XiIPwovJWRJCeWtvvURvD1zrBXy6PpC/WDzTeq0a5iwUos0w2T2
-         nncwURaaSqSeUXAVvYnh9zm945CDMeixXZIGGWsQ=
+        b=JE9uJAxnKiW1+u/hmgwL8VlonInr3m53prWjKH/9JP5Xx+wKAL5LEXC1WjqCRnuUf
+         tKlTZCu57r5gz1VNvn2RR6rKJjHUDC7b92gXji2b+fYuTqYUXWStuNqClEcroj8a/y
+         VOTCe7uL3WXYeJJ+sHEq4w36gjWBuBCQJvqvl5Ig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 378/739] clk: qcom: gcc-sc8280xp: Add missing GDSC flags
+Subject: [PATCH 6.4 318/737] arm64: dts: qcom: pmi8994: Add missing OVP interrupt
 Date:   Mon, 11 Sep 2023 15:42:57 +0200
-Message-ID: <20230911134701.727239167@linuxfoundation.org>
+Message-ID: <20230911134659.443057393@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,150 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 2fd02de27054576a4a8c89302e2f77122c55e957 ]
+[ Upstream commit 8db94432690371b1736e9a2566a9b3d8a73d5a97 ]
 
-All of the 8280's GCC GDSCs can and should use the retain registers so
-as not to lose their state when entering lower power modes.
+Add the missing OVP interrupt. This fixes the schema warning:
 
-Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
+wled@d800: interrupt-names: ['short'] is too short
+
+Fixes: 37aa540cbd30 ("arm64: dts: qcom: pmi8994: Add WLED node")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-1-562c1428c10d@linaro.org
+Link: https://lore.kernel.org/r/20230626-topic-bindingsfixups-v1-6-254ae8642e69@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8280xp.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/pmi8994.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
-index b90c71637814b..64bea886322d4 100644
---- a/drivers/clk/qcom/gcc-sc8280xp.c
-+++ b/drivers/clk/qcom/gcc-sc8280xp.c
-@@ -6761,7 +6761,7 @@ static struct gdsc pcie_0_tunnel_gdsc = {
- 		.name = "pcie_0_tunnel_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc pcie_1_tunnel_gdsc = {
-@@ -6772,7 +6772,7 @@ static struct gdsc pcie_1_tunnel_gdsc = {
- 		.name = "pcie_1_tunnel_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE,
- };
- 
- /*
-@@ -6787,7 +6787,7 @@ static struct gdsc pcie_2a_gdsc = {
- 		.name = "pcie_2a_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_2b_gdsc = {
-@@ -6798,7 +6798,7 @@ static struct gdsc pcie_2b_gdsc = {
- 		.name = "pcie_2b_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_3a_gdsc = {
-@@ -6809,7 +6809,7 @@ static struct gdsc pcie_3a_gdsc = {
- 		.name = "pcie_3a_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_3b_gdsc = {
-@@ -6820,7 +6820,7 @@ static struct gdsc pcie_3b_gdsc = {
- 		.name = "pcie_3b_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_4_gdsc = {
-@@ -6831,7 +6831,7 @@ static struct gdsc pcie_4_gdsc = {
- 		.name = "pcie_4_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc ufs_card_gdsc = {
-@@ -6840,6 +6840,7 @@ static struct gdsc ufs_card_gdsc = {
- 		.name = "ufs_card_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc ufs_phy_gdsc = {
-@@ -6848,6 +6849,7 @@ static struct gdsc ufs_phy_gdsc = {
- 		.name = "ufs_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_mp_gdsc = {
-@@ -6856,6 +6858,7 @@ static struct gdsc usb30_mp_gdsc = {
- 		.name = "usb30_mp_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_prim_gdsc = {
-@@ -6864,6 +6867,7 @@ static struct gdsc usb30_prim_gdsc = {
- 		.name = "usb30_prim_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_sec_gdsc = {
-@@ -6872,6 +6876,7 @@ static struct gdsc usb30_sec_gdsc = {
- 		.name = "usb30_sec_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc emac_0_gdsc = {
-@@ -6880,6 +6885,7 @@ static struct gdsc emac_0_gdsc = {
- 		.name = "emac_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc emac_1_gdsc = {
-@@ -6888,6 +6894,7 @@ static struct gdsc emac_1_gdsc = {
- 		.name = "emac_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct clk_regmap *gcc_sc8280xp_clocks[] = {
+diff --git a/arch/arm64/boot/dts/qcom/pmi8994.dtsi b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
+index 0192968f4d9b3..36d6a1fb553ac 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8994.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
+@@ -54,8 +54,9 @@ pmi8994_spmi_regulators: regulators {
+ 		pmi8994_wled: wled@d800 {
+ 			compatible = "qcom,pmi8994-wled";
+ 			reg = <0xd800>, <0xd900>;
+-			interrupts = <3 0xd8 0x02 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "short";
++			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
++				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "ovp", "short";
+ 			qcom,cabc;
+ 			qcom,external-pfet;
+ 			status = "disabled";
 -- 
 2.40.1
 
