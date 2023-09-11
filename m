@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9A0779B5FC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FA7A79B9A7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243063AbjIKU7C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33116 "EHLO
+        id S240072AbjIKWJp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239064AbjIKOLC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:02 -0400
+        with ESMTP id S240408AbjIKOnb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F534CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856ECC433C7;
-        Mon, 11 Sep 2023 14:10:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6463ECF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796D4C433C8;
+        Mon, 11 Sep 2023 14:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441456;
-        bh=kDIGIiClBgJvcdok2deF5vZxFLuFeH6YuVjCFPKFYhQ=;
+        s=korg; t=1694443407;
+        bh=e+Lky8KTRwoSDt6DEuudvpHwEa3NxqKBE7S6Z/i7Sfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JlfyT86ydXhXRnzYr8OsE8IbKrxhjReKoRW2n5wgDRc8Lm3dfYrXcgqxAYsEK9mWI
-         ILutj2LHY1CEGVzd4fCJCUzjr4nUC5fysu8Lx5qHC94k1EcLrP1mYyGOz/gGzD4P08
-         DfVuGUuCCGsr4TIaMQvlD3H3zVd3zW1y0AbG4+uk=
+        b=WnAlkxJjbHzXim+pbly85+ZOas9t08lA6UlRiK/bkjgKi/Xf/k98snVUwtRxhK8w9
+         t/wMlCjBGLOdLFK2wVLQfCl6ZK0Ku7I/LGwUkH+XcPNum/+gFXRRgAfbIgRDma10zH
+         7F6oTUVzr/i/DNuUqSgL4VLV0YtI4WwjR8wqnXDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 6.5 419/739] nvdimm: Fix dereference after free in register_nvdimm_pmu()
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 359/737] firmware: meson_sm: fix to avoid potential NULL pointer dereference
 Date:   Mon, 11 Sep 2023 15:43:38 +0200
-Message-ID: <20230911134702.881144721@linuxfoundation.org>
+Message-ID: <20230911134700.556008402@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 08ca6906a4b7e48f8e93b7c1f49a742a415be6d5 ]
+[ Upstream commit f2ed165619c16577c02b703a114a1f6b52026df4 ]
 
-'nd_pmu->pmu.attr_groups' is dereferenced in function
-'nvdimm_pmu_free_hotplug_memory' call after it has been freed. Because in
-function 'nvdimm_pmu_free_hotplug_memory' memory pointed by the fields of
-'nd_pmu->pmu.attr_groups' is deallocated it is necessary to call 'kfree'
-after 'nvdimm_pmu_free_hotplug_memory'.
+of_match_device() may fail and returns a NULL pointer.
 
-Fixes: 0fab1ba6ad6b ("drivers/nvdimm: Add perf interface to expose nvdimm performance stats")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
-Link: https://lore.kernel.org/r/20230817114103.754977-1-konstantin.meskhidze@huawei.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fix this by checking the return value of of_match_device.
+
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/tencent_AA08AAA6C4F34D53ADCE962E188A879B8206@qq.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/nd_perf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/meson/meson_sm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvdimm/nd_perf.c b/drivers/nvdimm/nd_perf.c
-index 14881c4e03e6b..2b6dc80d8fb5b 100644
---- a/drivers/nvdimm/nd_perf.c
-+++ b/drivers/nvdimm/nd_perf.c
-@@ -308,8 +308,8 @@ int register_nvdimm_pmu(struct nvdimm_pmu *nd_pmu, struct platform_device *pdev)
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index 798bcdb05d84e..9a2656d73600b 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -292,6 +292,8 @@ static int __init meson_sm_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
- 	rc = perf_pmu_register(&nd_pmu->pmu, nd_pmu->pmu.name, -1);
- 	if (rc) {
--		kfree(nd_pmu->pmu.attr_groups);
- 		nvdimm_pmu_free_hotplug_memory(nd_pmu);
-+		kfree(nd_pmu->pmu.attr_groups);
- 		return rc;
- 	}
+ 	chip = of_match_device(meson_sm_ids, dev)->data;
++	if (!chip)
++		return -EINVAL;
  
+ 	if (chip->cmd_shmem_in_base) {
+ 		fw->sm_shmem_in_base = meson_sm_map_shmem(chip->cmd_shmem_in_base,
 -- 
 2.40.1
 
