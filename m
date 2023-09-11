@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4025E79BF09
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 365EF79BA6A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345853AbjIKVWb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37930 "EHLO
+        id S245026AbjIKVIl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239119AbjIKOMT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:19 -0400
+        with ESMTP id S239122AbjIKOMX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAD40CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1EEC433C7;
-        Mon, 11 Sep 2023 14:12:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD851CE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18B0C433C7;
+        Mon, 11 Sep 2023 14:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441533;
-        bh=EO7QWCm4wSfgiY4+xaxaERxiZkTs5Fjsg1NcO4TdWsA=;
+        s=korg; t=1694441539;
+        bh=yIWslXPVhR323JflC16QdGdkHgs0gYFiQ47jHmroDxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t2US9zRBwYTxbeshSvYpZObjHYW5/ibecbcI2jtelSr9LPooNV7Fty6w9VgYFAgXI
-         7zMKnQo6lWJ6D6810hqTEc9D6W6QaAeAlzdOUWUpDPkgN4F8qxRZHLOtjciN+Ot/yB
-         JNNOZUqt3k5F/eMUL/BP4PA7lpL5hcjW2CI3ZHKA=
+        b=QJD9UXUP8tBijlMM9BZ6WFhYnlA8xq9O1purLkPt9XYnwJA8ozGO/16gRuAR4MvZy
+         iLQtG9hjhmEX4VFuVQM9agriG1LddPc8wmXE7o2OaDviZZDOgjzU7WAk1VeaHAEDol
+         aLEoLWupCiXw1pyPDW7p1AoUIDvG8IVsZLr2MkEM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
         Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 447/739] NFSv4.2: fix handling of COPY ERR_OFFLOAD_NO_REQ
-Date:   Mon, 11 Sep 2023 15:44:06 +0200
-Message-ID: <20230911134703.649466019@linuxfoundation.org>
+Subject: [PATCH 6.5 448/739] pNFS: Fix assignment of xprtdata.cred
+Date:   Mon, 11 Sep 2023 15:44:07 +0200
+Message-ID: <20230911134703.676187357@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -54,38 +54,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit 5690eed941ab7e33c3c3d6b850100cabf740f075 ]
+[ Upstream commit c4a123d2e8c4dc91d581ee7d05c0cd51a0273fab ]
 
-If the client sent a synchronous copy and the server replied with
-ERR_OFFLOAD_NO_REQ indicating that it wants an asynchronous
-copy instead, the client should retry with asynchronous copy.
+The comma at the end of the line was leftover from an earlier refactor
+of the _nfs4_pnfs_v3_ds_connect() function. This is technically valid C,
+so the compilers didn't catch it, but if I'm understanding how it works
+correctly it assigns the return value of rpc_clnt_add_xprtr() to
+xprtdata.cred.
 
-Fixes: 539f57b3e0fd ("NFS handle COPY ERR_OFFLOAD_NO_REQS")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Reported-by: Olga Kornievskaia <kolga@netapp.com>
+Fixes: a12f996d3413 ("NFSv4/pNFS: Use connections to a DS that are all of the same protocol family")
 Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/nfs/pnfs_nfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index 49f78e23b34c0..063e00aff87ed 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -471,8 +471,9 @@ ssize_t nfs42_proc_copy(struct file *src, loff_t pos_src,
- 				continue;
- 			}
- 			break;
--		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS && !args.sync) {
--			args.sync = true;
-+		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS &&
-+				args.sync != res.synchronous) {
-+			args.sync = res.synchronous;
- 			dst_exception.retry = 1;
- 			continue;
- 		} else if ((err == -ESTALE ||
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index a0112ad4937aa..2e14ce2f82191 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -943,7 +943,7 @@ static int _nfs4_pnfs_v4_ds_connect(struct nfs_server *mds_srv,
+ 			* Test this address for session trunking and
+ 			* add as an alias
+ 			*/
+-			xprtdata.cred = nfs4_get_clid_cred(clp),
++			xprtdata.cred = nfs4_get_clid_cred(clp);
+ 			rpc_clnt_add_xprt(clp->cl_rpcclient, &xprt_args,
+ 					  rpc_clnt_setup_test_and_add_xprt,
+ 					  &rpcdata);
 -- 
 2.40.1
 
