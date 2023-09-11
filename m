@@ -2,163 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE7379B3EA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6631D79ACAA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379627AbjIKWpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
+        id S1344577AbjIKVOc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235615AbjIKJFE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:05:04 -0400
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F087CCC;
-        Mon, 11 Sep 2023 02:04:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1694423100; x=1725959100;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6HZ3ImJ0ubDWZx9vArQn3ZwdK51K1SOGtrY5KEqqUJM=;
-  b=ODuC5x1Vu0vuj3tOhyODVfJVxxi84TZBu5sOjFtY7na4bGIYeXxXf1Zx
-   13DCP2tdkETu6hwnjItlz97EZb24nmIULdr9yLP9Civn9taCi81t9fqbk
-   xGerZWls8cOvVRB4+6kRwLo1HsJpZxHG8/qfgPz8cD5014lrU3mshDG7D
-   k=;
-X-IronPort-AV: E=Sophos;i="6.02,243,1688428800"; 
-   d="scan'208";a="357793259"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-94edd59b.us-west-2.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 09:04:56 +0000
-Received: from EX19D008EUA003.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2c-m6i4x-94edd59b.us-west-2.amazon.com (Postfix) with ESMTPS id AA6D440DEF;
-        Mon, 11 Sep 2023 09:04:54 +0000 (UTC)
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
- EX19D008EUA003.ant.amazon.com (10.252.50.155) with Microsoft SMTP Server
+        with ESMTP id S235614AbjIKJEb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:04:31 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5285BCCC;
+        Mon, 11 Sep 2023 02:04:27 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38B7XMh6005610;
+        Mon, 11 Sep 2023 09:04:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=cWaDRN7ZWbf9bSgQ+TGVZpgFp59ybLzgWZRvwNOhHwM=;
+ b=dHUY7rsTft988QuB2bb/z7gEprXGgOM4dN8MmnRIrSTENaD6lDGpFIhdhQ9VXX5Syu6C
+ SIUwEZQ950rxUVNPrfgO3ZguZBxE9RB1/ifYb4uCOoKV5aRZYThrLpXIASsPGQDzy4Jq
+ LfpCTpj7SWjo4UlrXlKuy1UHyzzVXL5fNzv1iugwdZXeAkuSodZhYwEOnVgTQNQIZf1U
+ fwEhP7bwoGE485PphGW2GHvjllMebEgkN05pDtzT62CIn3L3XDiMXSp2wFF3dy+DZNKG
+ UFt1/oU5nPBvg/BeVP1uJ5c37TRIWet75ij8iKUjlVPwNWZAtbvjO4hbpex9zR65SKzE 1w== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t1xjmr56a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 Sep 2023 09:04:24 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38B94NZB004134
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 Sep 2023 09:04:23 GMT
+Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Mon, 11 Sep 2023 09:04:53 +0000
-Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
- by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP Server id
- 15.2.1118.37 via Frontend Transport; Mon, 11 Sep 2023 09:04:52 +0000
-Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
-        id 47D4C368A; Mon, 11 Sep 2023 09:04:52 +0000 (UTC)
-From:   Maximilian Heyne <mheyne@amazon.de>
-To:     Catalin Marinas <catalin.marinas@arm.com>,
-        <virtualization@lists.linux-foundation.org>
-CC:     Maximilian Heyne <mheyne@amazon.de>, <stable@vger.kernel.org>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3] virtio-mmio: fix memory leak of vm_dev
-Date:   Mon, 11 Sep 2023 09:03:29 +0000
-Message-ID: <20230911090328.40538-1-mheyne@amazon.de>
-X-Mailer: git-send-email 2.40.1
+ 15.2.1118.36; Mon, 11 Sep 2023 02:04:20 -0700
+From:   Prashanth K <quic_prashk@quicinc.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Prashanth K <quic_prashk@quicinc.com>,
+        "# 5 . 16" <stable@vger.kernel.org>
+Subject: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command fails
+Date:   Mon, 11 Sep 2023 14:34:15 +0530
+Message-ID: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,T_SPF_PERMERROR
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: BBC4WeTFvO5MZ6S0ePRr4g_SRmYjLD0F
+X-Proofpoint-GUID: BBC4WeTFvO5MZ6S0ePRr4g_SRmYjLD0F
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1011 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309110082
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-With the recent removal of vm_dev from devres its memory is only freed
-via the callback virtio_mmio_release_dev. However, this only takes
-effect after device_add is called by register_virtio_device. Until then
-it's an unmanaged resource and must be explicitly freed on error exit.
+Currently if ucsi_send_command() fails, then we bail out without
+clearing EVENT_PENDING flag. So when the next connector change
+event comes, ucsi_connector_change() won't queue the con->work,
+because of which none of the new events will be processed.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
+fails.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-
+Cc: <stable@vger.kernel.org> # 5.16
+Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
 ---
-Resending this patch because the previous email wasn't delivered to lore.
-Copied the reviewed-bys from 
-https://lore.kernel.org/all/ZPn6KZpdPdG2LQqL@arm.com/ and
-https://lore.kernel.org/all/1694137778.7008362-1-xuanzhuo@linux.alibaba.com/
+ drivers/usb/typec/ucsi/ucsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/virtio/virtio_mmio.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
-index 97760f611295..59892a31cf76 100644
---- a/drivers/virtio/virtio_mmio.c
-+++ b/drivers/virtio/virtio_mmio.c
-@@ -631,14 +631,17 @@ static int virtio_mmio_probe(struct platform_device *pdev)
- 	spin_lock_init(&vm_dev->lock);
- 
- 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(vm_dev->base))
--		return PTR_ERR(vm_dev->base);
-+	if (IS_ERR(vm_dev->base)) {
-+		rc = PTR_ERR(vm_dev->base);
-+		goto free_vm_dev;
-+	}
- 
- 	/* Check magic value */
- 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
- 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
- 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto free_vm_dev;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index c6dfe3d..509c67c 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+ 	if (ret < 0) {
+ 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+ 			__func__, ret);
++		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+ 		goto out_unlock;
  	}
  
- 	/* Check device version */
-@@ -646,7 +649,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
- 	if (vm_dev->version < 1 || vm_dev->version > 2) {
- 		dev_err(&pdev->dev, "Version %ld not supported!\n",
- 				vm_dev->version);
--		return -ENXIO;
-+		rc = -ENXIO;
-+		goto free_vm_dev;
- 	}
- 
- 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
-@@ -655,7 +659,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
- 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
- 		 * with no function. End probing now with no error reported.
- 		 */
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto free_vm_dev;
- 	}
- 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
- 
-@@ -685,6 +690,10 @@ static int virtio_mmio_probe(struct platform_device *pdev)
- 		put_device(&vm_dev->vdev.dev);
- 
- 	return rc;
-+
-+free_vm_dev:
-+	kfree(vm_dev);
-+	return rc;
- }
- 
- static int virtio_mmio_remove(struct platform_device *pdev)
 -- 
-2.40.1
-
-
-
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
+2.7.4
 
