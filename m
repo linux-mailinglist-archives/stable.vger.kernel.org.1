@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2D179B7C3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A1779BAAC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350912AbjIKVmL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
+        id S240352AbjIKV6f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240809AbjIKOy2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:28 -0400
+        with ESMTP id S242081AbjIKPVt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D37E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082DBC433C8;
-        Mon, 11 Sep 2023 14:54:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D047D3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44DFC433C8;
+        Mon, 11 Sep 2023 15:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444064;
-        bh=2tpaTC2rrkLms70UZjWhDwtPf/CyhVa5SjdPH41FBBk=;
+        s=korg; t=1694445705;
+        bh=HhYdb5marBmYTniShP4d2ffMMpgun96KdHCA8HF5Z0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UR9D3MziH5nZ/+Mb2Fpd1sqa/wu8pKYjNM8aQ1XtITit3maBhOH8r/tE4QES7Aeje
-         KSCh02l9pv/Lb7tgxVOpjZgICA/+uelP4u/H6a2cGLd4ntfLdgkSbk+YchdkiiC60E
-         KFOR1jSSXVKb46YHMa8bXfC7syJfCJP+3jNVPwDI=
+        b=Y/pyMQCWvqtOjuPgCPZ1+Qf5WIUH4TdqG0ruiMVYl7hJ9+sKwAjUNimmLqV9MXlo4
+         iYjSsv4SvG9LB//VM8jcyTDKBySaH3UCz9gqm6WCS0z7gGgtuVa74WLcbg6icdilRE
+         LD4FaafOx7pPWgFfWYNIbAocdWIk4Iol4/rXO5C8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxime Ripard <mripard@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-        Benjamin Tissoires <bentiss@kernel.org>,
+        patches@lists.linux.dev, Chunyan Zhang <chunyan.zhang@unisoc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 598/737] HID: multitouch: Correct devm device reference for hidinput input_dev name
-Date:   Mon, 11 Sep 2023 15:47:37 +0200
-Message-ID: <20230911134707.242692884@linuxfoundation.org>
+Subject: [PATCH 6.1 425/600] serial: sprd: Assign sprd_port after initialized to avoid wrong access
+Date:   Mon, 11 Sep 2023 15:47:38 +0200
+Message-ID: <20230911134646.208325484@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,68 +49,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Chunyan Zhang <chunyan.zhang@unisoc.com>
 
-[ Upstream commit 4794394635293a3e74591351fff469cea7ad15a2 ]
+[ Upstream commit f9608f1887568b728839d006024585ab02ef29e5 ]
 
-Reference the HID device rather than the input device for the devm
-allocation of the input_dev name. Referencing the input_dev would lead to a
-use-after-free when the input_dev was unregistered and subsequently fires a
-uevent that depends on the name. At the point of firing the uevent, the
-name would be freed by devres management.
+The global pointer 'sprd_port' may not zero when sprd_probe returns
+failure, that is a risk for sprd_port to be accessed afterward, and
+may lead to unexpected errors.
 
-Use devm_kasprintf to simplify the logic for allocating memory and
-formatting the input_dev name string.
+For example:
 
-Reported-by: Maxime Ripard <mripard@kernel.org>
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
-Fixes: c08d46aa805b ("HID: multitouch: devm conversion")
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230824061308.222021-3-sergeantsagara@protonmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+There are two UART ports, UART1 is used for console and configured in
+kernel command line, i.e. "console=";
+
+The UART1 probe failed and the memory allocated to sprd_port[1] was
+released, but sprd_port[1] was not set to NULL;
+
+In UART2 probe, the same virtual address was allocated to sprd_port[2],
+and UART2 probe process finally will go into sprd_console_setup() to
+register UART1 as console since it is configured as preferred console
+(filled to console_cmdline[]), but the console parameters (sprd_port[1])
+belong to UART2.
+
+So move the sprd_port[] assignment to where the port already initialized
+can avoid the above issue.
+
+Fixes: b7396a38fb28 ("tty/serial: Add Spreadtrum sc9836-uart driver support")
+Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
+Link: https://lore.kernel.org/r/20230725064053.235448-1-chunyan.zhang@unisoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/tty/serial/sprd_serial.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index e31be0cb8b850..521b2ffb42449 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1594,7 +1594,6 @@ static void mt_post_parse(struct mt_device *td, struct mt_application *app)
- static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
+index 342a879676315..58825443529f3 100644
+--- a/drivers/tty/serial/sprd_serial.c
++++ b/drivers/tty/serial/sprd_serial.c
+@@ -1132,7 +1132,7 @@ static bool sprd_uart_is_console(struct uart_port *uport)
+ static int sprd_clk_init(struct uart_port *uport)
  {
- 	struct mt_device *td = hid_get_drvdata(hdev);
--	char *name;
- 	const char *suffix = NULL;
- 	struct mt_report_data *rdata;
- 	struct mt_application *mt_application = NULL;
-@@ -1645,15 +1644,9 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		break;
+ 	struct clk *clk_uart, *clk_parent;
+-	struct sprd_uart_port *u = sprd_port[uport->line];
++	struct sprd_uart_port *u = container_of(uport, struct sprd_uart_port, port);
+ 
+ 	clk_uart = devm_clk_get(uport->dev, "uart");
+ 	if (IS_ERR(clk_uart)) {
+@@ -1175,22 +1175,22 @@ static int sprd_probe(struct platform_device *pdev)
+ {
+ 	struct resource *res;
+ 	struct uart_port *up;
++	struct sprd_uart_port *sport;
+ 	int irq;
+ 	int index;
+ 	int ret;
+ 
+ 	index = of_alias_get_id(pdev->dev.of_node, "serial");
+-	if (index < 0 || index >= ARRAY_SIZE(sprd_port)) {
++	if (index < 0 || index >= UART_NR_MAX) {
+ 		dev_err(&pdev->dev, "got a wrong serial alias id %d\n", index);
+ 		return -EINVAL;
  	}
  
--	if (suffix) {
--		name = devm_kzalloc(&hi->input->dev,
--				    strlen(hdev->name) + strlen(suffix) + 2,
--				    GFP_KERNEL);
--		if (name) {
--			sprintf(name, "%s %s", hdev->name, suffix);
--			hi->input->name = name;
--		}
--	}
-+	if (suffix)
-+		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
-+						 "%s %s", hdev->name, suffix);
+-	sprd_port[index] = devm_kzalloc(&pdev->dev, sizeof(*sprd_port[index]),
+-					GFP_KERNEL);
+-	if (!sprd_port[index])
++	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
++	if (!sport)
+ 		return -ENOMEM;
  
- 	return 0;
+-	up = &sprd_port[index]->port;
++	up = &sport->port;
+ 	up->dev = &pdev->dev;
+ 	up->line = index;
+ 	up->type = PORT_SPRD;
+@@ -1221,7 +1221,7 @@ static int sprd_probe(struct platform_device *pdev)
+ 	 * Allocate one dma buffer to prepare for receive transfer, in case
+ 	 * memory allocation failure at runtime.
+ 	 */
+-	ret = sprd_rx_alloc_buf(sprd_port[index]);
++	ret = sprd_rx_alloc_buf(sport);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1232,14 +1232,23 @@ static int sprd_probe(struct platform_device *pdev)
+ 			return ret;
+ 		}
+ 	}
++
+ 	sprd_ports_num++;
++	sprd_port[index] = sport;
+ 
+ 	ret = uart_add_one_port(&sprd_uart_driver, up);
+ 	if (ret)
+-		sprd_remove(pdev);
++		goto clean_port;
+ 
+ 	platform_set_drvdata(pdev, up);
+ 
++	return 0;
++
++clean_port:
++	sprd_port[index] = NULL;
++	if (--sprd_ports_num == 0)
++		uart_unregister_driver(&sprd_uart_driver);
++	sprd_rx_free_buf(sport);
+ 	return ret;
  }
+ 
 -- 
 2.40.1
 
