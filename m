@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8666A79B832
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22EA379BE65
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239382AbjIKUyw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56192 "EHLO
+        id S235514AbjIKVFm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241924AbjIKPR7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:59 -0400
+        with ESMTP id S239330AbjIKOSC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5386AFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDABC433C8;
-        Mon, 11 Sep 2023 15:17:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB83DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043CBC433C8;
+        Mon, 11 Sep 2023 14:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445475;
-        bh=wf8IeV5Yb2n+2P/8orHtMLHE4ZvrMBxH68MTBifJPAI=;
+        s=korg; t=1694441877;
+        bh=LB/PMEpzLbihfLhHQIszAxJvK3w3cH0PUOvnisUp9JM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H5mS2L4D2j7gMj0Yg8UoW4CbHUdR8ikw55QAI8dcppFXv9BkyDti8QrmH+bmgEyTJ
-         h7wMwTyFFE8j6EvBrzxxMFf4SRkhbsi/ruddkijnLEgrm6sx8P7sR97STh259OIa0h
-         qWTOyxb314aUTWRnbAcIRJwHkFraR3BLlGDzWgyM=
+        b=ZaoIXRivGwKAu+uISvhwM7ZXpl2VYrCsNJNdqpyQj2/iQ7iXKDmv4/+aIlLutgTdv
+         fqcXaEJK9XB+fdy1EF6yRZCpJx0JB3PyAVHtY4Pqju94KgafutF93slTnpEOljLG8j
+         zIPOhkoLuXEVCgWRCgUcImtEvojInrVEGcc8UmGQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 333/600] clk: qcom: gcc-sc8280xp: Add missing GDSCs
-Date:   Mon, 11 Sep 2023 15:46:06 +0200
-Message-ID: <20230911134643.518066149@linuxfoundation.org>
+Subject: [PATCH 6.5 568/739] interconnect: qcom: bcm-voter: Improve enable_mask handling
+Date:   Mon, 11 Sep 2023 15:46:07 +0200
+Message-ID: <20230911134706.939370626@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,145 +52,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 4712eb7ff85bd3dd09c6668b8de4080e02b3eea9 ]
+[ Upstream commit a1f4170dec440f023601d57e49227b784074d218 ]
 
-There are 10 more GDSCs that we've not been caring about, and by extension
-(and perhaps even more importantly), not putting to sleep. Add them.
+We don't need all the complex arithmetic for BCMs utilizing enable_mask,
+as all we need to do is to determine whether there's any user (or
+keepalive) asking for it to be on.
 
-Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
+Separate the logic for such BCMs for a small speed boost.
+
+Suggested-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-3-562c1428c10d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230811-topic-icc_fix_1he-v2-1-0620af8ac133@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Stable-dep-of: 1a70ca71547b ("interconnect: qcom: bcm-voter: Use enable_maks for keepalive voting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8280xp.c | 100 ++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
+ drivers/interconnect/qcom/bcm-voter.c | 43 ++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
-index 43c518e5c986b..57bbd609151cd 100644
---- a/drivers/clk/qcom/gcc-sc8280xp.c
-+++ b/drivers/clk/qcom/gcc-sc8280xp.c
-@@ -6896,6 +6896,96 @@ static struct gdsc emac_1_gdsc = {
- 	.flags = RETAIN_FF_ENABLE,
- };
+diff --git a/drivers/interconnect/qcom/bcm-voter.c b/drivers/interconnect/qcom/bcm-voter.c
+index d5f2a6b5376bd..d857eb8838b95 100644
+--- a/drivers/interconnect/qcom/bcm-voter.c
++++ b/drivers/interconnect/qcom/bcm-voter.c
+@@ -58,6 +58,36 @@ static u64 bcm_div(u64 num, u32 base)
+ 	return num;
+ }
  
-+static struct gdsc usb4_1_gdsc = {
-+	.gdscr = 0xb8004,
-+	.pd = {
-+		.name = "usb4_1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
-+};
++/* BCMs with enable_mask use one-hot-encoding for on/off signaling */
++static void bcm_aggregate_mask(struct qcom_icc_bcm *bcm)
++{
++	struct qcom_icc_node *node;
++	int bucket, i;
 +
-+static struct gdsc usb4_gdsc = {
-+	.gdscr = 0x2a004,
-+	.pd = {
-+		.name = "usb4_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
-+};
++	for (bucket = 0; bucket < QCOM_ICC_NUM_BUCKETS; bucket++) {
++		bcm->vote_x[bucket] = 0;
++		bcm->vote_y[bucket] = 0;
 +
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
-+	.gdscr = 0x7d050,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
++		for (i = 0; i < bcm->num_nodes; i++) {
++			node = bcm->nodes[i];
 +
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
-+	.gdscr = 0x7d058,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
++			/* If any vote in this bucket exists, keep the BCM enabled */
++			if (node->sum_avg[bucket] || node->max_peak[bucket]) {
++				bcm->vote_x[bucket] = 0;
++				bcm->vote_y[bucket] = bcm->enable_mask;
++				break;
++			}
++		}
++	}
 +
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc = {
-+	.gdscr = 0x7d054,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
++	if (bcm->keepalive) {
++		bcm->vote_x[QCOM_ICC_BUCKET_AMC] = 1;
++		bcm->vote_x[QCOM_ICC_BUCKET_WAKE] = 1;
++		bcm->vote_y[QCOM_ICC_BUCKET_AMC] = 1;
++		bcm->vote_y[QCOM_ICC_BUCKET_WAKE] = 1;
++	}
++}
 +
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc = {
-+	.gdscr = 0x7d06c,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
-+	.gdscr = 0x7d05c,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
-+	.gdscr = 0x7d060,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu2_gdsc = {
-+	.gdscr = 0x7d0a0,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu2_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu3_gdsc = {
-+	.gdscr = 0x7d0a4,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu3_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
- static struct clk_regmap *gcc_sc8280xp_clocks[] = {
- 	[GCC_AGGRE_NOC_PCIE0_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie0_tunnel_axi_clk.clkr,
- 	[GCC_AGGRE_NOC_PCIE1_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie1_tunnel_axi_clk.clkr,
-@@ -7376,6 +7466,16 @@ static struct gdsc *gcc_sc8280xp_gdscs[] = {
- 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
- 	[EMAC_0_GDSC] = &emac_0_gdsc,
- 	[EMAC_1_GDSC] = &emac_1_gdsc,
-+	[USB4_1_GDSC] = &usb4_1_gdsc,
-+	[USB4_GDSC] = &usb4_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU2_GDSC] = &hlos1_vote_turing_mmu_tbu2_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU3_GDSC] = &hlos1_vote_turing_mmu_tbu3_gdsc,
- };
+ static void bcm_aggregate(struct qcom_icc_bcm *bcm)
+ {
+ 	struct qcom_icc_node *node;
+@@ -83,11 +113,6 @@ static void bcm_aggregate(struct qcom_icc_bcm *bcm)
  
- static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
+ 		temp = agg_peak[bucket] * bcm->vote_scale;
+ 		bcm->vote_y[bucket] = bcm_div(temp, bcm->aux_data.unit);
+-
+-		if (bcm->enable_mask && (bcm->vote_x[bucket] || bcm->vote_y[bucket])) {
+-			bcm->vote_x[bucket] = 0;
+-			bcm->vote_y[bucket] = bcm->enable_mask;
+-		}
+ 	}
+ 
+ 	if (bcm->keepalive && bcm->vote_x[QCOM_ICC_BUCKET_AMC] == 0 &&
+@@ -260,8 +285,12 @@ int qcom_icc_bcm_voter_commit(struct bcm_voter *voter)
+ 		return 0;
+ 
+ 	mutex_lock(&voter->lock);
+-	list_for_each_entry(bcm, &voter->commit_list, list)
+-		bcm_aggregate(bcm);
++	list_for_each_entry(bcm, &voter->commit_list, list) {
++		if (bcm->enable_mask)
++			bcm_aggregate_mask(bcm);
++		else
++			bcm_aggregate(bcm);
++	}
+ 
+ 	/*
+ 	 * Pre sort the BCMs based on VCD for ease of generating a command list
 -- 
 2.40.1
 
