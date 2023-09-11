@@ -2,43 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F38879BABE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F0B79BFC2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349133AbjIKVco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46630 "EHLO
+        id S1344038AbjIKVNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240813AbjIKOyi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:38 -0400
+        with ESMTP id S239505AbjIKOW0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60111E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FE9C433C7;
-        Mon, 11 Sep 2023 14:54:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430E0CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC6CC433C8;
+        Mon, 11 Sep 2023 14:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444073;
-        bh=/ve7Vj1FGlxihhcU9MJNREFRmyNfety+eiIqhN5fi3k=;
+        s=korg; t=1694442141;
+        bh=FjQOnngEc2FOBWKBSHZF39mASNWFUnxvPgtHACxgc18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=khIQMM8JtrxiekGmSBMXAf0oRzbtu+MnFpSqh+3a/uSfluB1yXM8apTvf4jKA1bQq
-         VmA2pwFBr0k5zp2e9TTCkQA7h9N+srILeFv/WPVCQAmWPHJGaRyKX63c++zbYYlArV
-         l13ZWtsa7IXh9ozyvX9Q2pi6vszotWDmCmmQUanM=
+        b=U7E3Q0rQq+chn3VDeNFkbYqOhfhLf7a7tGRUSf9/PeVBTUbreJcEqG4Gh/7hBymcz
+         7MVwXNRDifcff5UxpmsW4DxnzFb/V9yJwx/2mJr94PHeqmG1iR4n2pmtjymCgyaV6e
+         3gwcxzYuz3BsRlBojrsUxNkASMpXkaMuLl9pHEpU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Wen Yang <wenyang.linux@foxmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 600/737] tick/rcu: Fix false positive "softirq work is pending" messages
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 660/739] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used
 Date:   Mon, 11 Sep 2023 15:47:39 +0200
-Message-ID: <20230911134707.297884260@linuxfoundation.org>
+Message-ID: <20230911134709.543085399@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +48,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Gortmaker <paul.gortmaker@windriver.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 96c1fa04f089a7e977a44e4e8fdc92e81be20bef ]
+commit ebdfefc09c6de7897962769bd3e63a2ff443ebf5 upstream.
 
-In commit 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle") the
-new function report_idle_softirq() was created by breaking code out of the
-existing can_stop_idle_tick() for kernels v5.18 and newer.
+If we setup the ring with SQPOLL, then that polling thread has its
+own io-wq setup. This means that if the application uses
+IORING_REGISTER_IOWQ_AFF to set the io-wq affinity, we should not be
+setting it for the invoking task, but rather the sqpoll task.
 
-In doing so, the code essentially went from a one conditional:
+Add an sqpoll helper that parks the thread and updates the affinity,
+and use that one if we're using SQPOLL.
 
-	if (a && b && c)
-		warn();
-
-to a three conditional:
-
-	if (!a)
-		return;
-	if (!b)
-		return;
-	if (!c)
-		return;
-	warn();
-
-But that conversion got the condition for the RT specific
-local_bh_blocked() wrong. The original condition was:
-
-   	!local_bh_blocked()
-
-but the conversion failed to negate it so it ended up as:
-
-        if (!local_bh_blocked())
-		return false;
-
-This issue lay dormant until another fixup for the same commit was added
-in commit a7e282c77785 ("tick/rcu: Fix bogus ratelimit condition").
-This commit realized the ratelimit was essentially set to zero instead
-of ten, and hence *no* softirq pending messages would ever be issued.
-
-Once this commit was backported via linux-stable, both the v6.1 and v6.4
-preempt-rt kernels started printing out 10 instances of this at boot:
-
-  NOHZ tick-stop error: local softirq work is pending, handler #80!!!
-
-Remove the negation and return when local_bh_blocked() evaluates to true to
-bring the correct behaviour back.
-
-Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Reviewed-by: Wen Yang <wenyang.linux@foxmail.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230818200757.1808398-1-paul.gortmaker@windriver.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe76421d1da1 ("io_uring: allow user configurable IO thread CPU affinity")
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://github.com/axboe/liburing/discussions/884
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/tick-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io-wq.c    |    9 ++++++---
+ io_uring/io-wq.h    |    2 +-
+ io_uring/io_uring.c |   29 ++++++++++++++++++-----------
+ io_uring/sqpoll.c   |   15 +++++++++++++++
+ io_uring/sqpoll.h   |    1 +
+ 5 files changed, 41 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 4df14db4da490..87015e9deacc9 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1045,7 +1045,7 @@ static bool report_idle_softirq(void)
- 		return false;
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1285,13 +1285,16 @@ static int io_wq_cpu_offline(unsigned in
+ 	return __io_wq_cpu_online(wq, cpu, false);
+ }
  
- 	/* On RT, softirqs handling may be waiting on some lock */
--	if (!local_bh_blocked())
-+	if (local_bh_blocked())
- 		return false;
+-int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask)
++int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
+ {
++	if (!tctx || !tctx->io_wq)
++		return -EINVAL;
++
+ 	rcu_read_lock();
+ 	if (mask)
+-		cpumask_copy(wq->cpu_mask, mask);
++		cpumask_copy(tctx->io_wq->cpu_mask, mask);
+ 	else
+-		cpumask_copy(wq->cpu_mask, cpu_possible_mask);
++		cpumask_copy(tctx->io_wq->cpu_mask, cpu_possible_mask);
+ 	rcu_read_unlock();
  
- 	pr_warn("NOHZ tick-stop error: local softirq work is pending, handler #%02x!!!\n",
--- 
-2.40.1
-
+ 	return 0;
+--- a/io_uring/io-wq.h
++++ b/io_uring/io-wq.h
+@@ -50,7 +50,7 @@ void io_wq_put_and_exit(struct io_wq *wq
+ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work);
+ void io_wq_hash_work(struct io_wq_work *work, void *val);
+ 
+-int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask);
++int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask);
+ int io_wq_max_workers(struct io_wq *wq, int *new_count);
+ 
+ static inline bool io_wq_is_hashed(struct io_wq_work *work)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -4201,16 +4201,28 @@ static int io_register_enable_rings(stru
+ 	return 0;
+ }
+ 
++static __cold int __io_register_iowq_aff(struct io_ring_ctx *ctx,
++					 cpumask_var_t new_mask)
++{
++	int ret;
++
++	if (!(ctx->flags & IORING_SETUP_SQPOLL)) {
++		ret = io_wq_cpu_affinity(current->io_uring, new_mask);
++	} else {
++		mutex_unlock(&ctx->uring_lock);
++		ret = io_sqpoll_wq_cpu_affinity(ctx, new_mask);
++		mutex_lock(&ctx->uring_lock);
++	}
++
++	return ret;
++}
++
+ static __cold int io_register_iowq_aff(struct io_ring_ctx *ctx,
+ 				       void __user *arg, unsigned len)
+ {
+-	struct io_uring_task *tctx = current->io_uring;
+ 	cpumask_var_t new_mask;
+ 	int ret;
+ 
+-	if (!tctx || !tctx->io_wq)
+-		return -EINVAL;
+-
+ 	if (!alloc_cpumask_var(&new_mask, GFP_KERNEL))
+ 		return -ENOMEM;
+ 
+@@ -4231,19 +4243,14 @@ static __cold int io_register_iowq_aff(s
+ 		return -EFAULT;
+ 	}
+ 
+-	ret = io_wq_cpu_affinity(tctx->io_wq, new_mask);
++	ret = __io_register_iowq_aff(ctx, new_mask);
+ 	free_cpumask_var(new_mask);
+ 	return ret;
+ }
+ 
+ static __cold int io_unregister_iowq_aff(struct io_ring_ctx *ctx)
+ {
+-	struct io_uring_task *tctx = current->io_uring;
+-
+-	if (!tctx || !tctx->io_wq)
+-		return -EINVAL;
+-
+-	return io_wq_cpu_affinity(tctx->io_wq, NULL);
++	return __io_register_iowq_aff(ctx, NULL);
+ }
+ 
+ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -421,3 +421,18 @@ err:
+ 	io_sq_thread_finish(ctx);
+ 	return ret;
+ }
++
++__cold int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx,
++				     cpumask_var_t mask)
++{
++	struct io_sq_data *sqd = ctx->sq_data;
++	int ret = -EINVAL;
++
++	if (sqd) {
++		io_sq_thread_park(sqd);
++		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
++		io_sq_thread_unpark(sqd);
++	}
++
++	return ret;
++}
+--- a/io_uring/sqpoll.h
++++ b/io_uring/sqpoll.h
+@@ -27,3 +27,4 @@ void io_sq_thread_park(struct io_sq_data
+ void io_sq_thread_unpark(struct io_sq_data *sqd);
+ void io_put_sq_data(struct io_sq_data *sqd);
+ void io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
++int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
 
 
