@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6820579B5A2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FFFD79B5A5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239200AbjIKWXF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
+        id S237450AbjIKVQg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239826AbjIKO3o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:44 -0400
+        with ESMTP id S238554AbjIKN7O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264A2F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:29:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D17C433C8;
-        Mon, 11 Sep 2023 14:29:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C41C9CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D88C433C9;
+        Mon, 11 Sep 2023 13:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442579;
-        bh=ndNe+vLgR9pUMLxASmAssrGbWMMzvapkPlFeMGHhgu4=;
+        s=korg; t=1694440749;
+        bh=3C3m55gZM02/Qwnc7DUycRqNc6P8D85g7ID5ZhqCGUI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EV4B1MKQfRsMtLvxDlmdNi6xI4G9zh5sbRTzezVUJmH6KRiXwNVt3Ull8MISLTnwO
-         3iTW+MlkA7WwLh8HKTMQs2iVybNwXuESb0Rxx73LSSMfgyaoEsQOBhSGWPD9LQ5lJ3
-         MG+xNB/Jtev6Vg9cfxRpbNlkAPmFbuiM8Cyy3Z6A=
+        b=UsxJsN3r0UQuiD7GL+sLSLDSxa0APsp005akpxHSJ9ZuNqB/l30uNYB1++m2I5JBY
+         0feDiqy3emZGidvVYiOFJc/ha9XUCkuibD0YMv0Szzns7xJlE12OsL3SzepdO9h1+i
+         pT7fDW0sUV5YxbHEOv2Lc6v19dSZ2Zsys+T768oU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Yujun <linyujun809@huawei.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 075/737] ARM: dts: integrator: fix PCI bus dtc warnings
+        patches@lists.linux.dev,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Lorenz Bauer <lmb@isovalent.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 135/739] net: Fix slab-out-of-bounds in inet[6]_steal_sock
 Date:   Mon, 11 Sep 2023 15:38:54 +0200
-Message-ID: <20230911134652.610859863@linuxfoundation.org>
+Message-ID: <20230911134654.862788030@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Yujun <linyujun809@huawei.com>
+From: Lorenz Bauer <lmb@isovalent.com>
 
-[ Upstream commit 42ff49a1967af71772b264009659ce181f7d2d2a ]
+[ Upstream commit 8897562f67b3e61ad736cd5c9f307447d33280e4 ]
 
-An warning is reported when allmodconfig is used to compile the kernel of the ARM architecture:
+Kumar reported a KASAN splat in tcp_v6_rcv:
 
-arch/arm/boot/dts/arm/integratorap.dts:161.22-206.4: Warning (pci_bridge): /pciv3@62000000: node name is not "pci" or "pcie"
+  bash-5.2# ./test_progs -t btf_skc_cls_ingress
+  ...
+  [   51.810085] BUG: KASAN: slab-out-of-bounds in tcp_v6_rcv+0x2d7d/0x3440
+  [   51.810458] Read of size 2 at addr ffff8881053f038c by task test_progs/226
 
-Change the node name to pci to clear the build warning.
+The problem is that inet[6]_steal_sock accesses sk->sk_protocol without
+accounting for request or timewait sockets. To fix this we can't just
+check sock_common->skc_reuseport since that flag is present on timewait
+sockets.
 
-Signed-off-by: Lin Yujun <linyujun809@huawei.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20230811-versatile-dts-v6-6-v1-1-d8cb9d1947ed@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Instead, add a fullsock check to avoid the out of bands access of sk_protocol.
+
+Fixes: 9c02bec95954 ("bpf, net: Support SO_REUSEPORT sockets with bpf_sk_assign")
+Reported-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
+Link: https://lore.kernel.org/r/20230815-bpf-next-v2-1-95126eaa4c1b@isovalent.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/integratorap.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/inet6_hashtables.h | 2 +-
+ include/net/inet_hashtables.h  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/integratorap.dts b/arch/arm/boot/dts/integratorap.dts
-index 5b52d75bc6bed..d9927d3181dce 100644
---- a/arch/arm/boot/dts/integratorap.dts
-+++ b/arch/arm/boot/dts/integratorap.dts
-@@ -158,7 +158,7 @@
- 		valid-mask = <0x003fffff>;
- 	};
+diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
+index 475e672b4facc..12780b8fb5630 100644
+--- a/include/net/inet6_hashtables.h
++++ b/include/net/inet6_hashtables.h
+@@ -107,7 +107,7 @@ struct sock *inet6_steal_sock(struct net *net, struct sk_buff *skb, int doff,
+ 	if (!sk)
+ 		return NULL;
  
--	pci: pciv3@62000000 {
-+	pci: pci@62000000 {
- 		compatible = "arm,integrator-ap-pci", "v3,v360epc-pci";
- 		device_type = "pci";
- 		#interrupt-cells = <1>;
+-	if (!prefetched)
++	if (!prefetched || !sk_fullsock(sk))
+ 		return sk;
+ 
+ 	if (sk->sk_protocol == IPPROTO_TCP) {
+diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
+index a1b8eb147ce73..9414cb4e6e624 100644
+--- a/include/net/inet_hashtables.h
++++ b/include/net/inet_hashtables.h
+@@ -455,7 +455,7 @@ struct sock *inet_steal_sock(struct net *net, struct sk_buff *skb, int doff,
+ 	if (!sk)
+ 		return NULL;
+ 
+-	if (!prefetched)
++	if (!prefetched || !sk_fullsock(sk))
+ 		return sk;
+ 
+ 	if (sk->sk_protocol == IPPROTO_TCP) {
 -- 
 2.40.1
 
