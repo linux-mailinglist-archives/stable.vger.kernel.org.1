@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F80179B4EF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1063679B2B4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236704AbjIKWBB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54186 "EHLO
+        id S237855AbjIKViW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242087AbjIKPV6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:58 -0400
+        with ESMTP id S239532AbjIKOXV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF1DAD3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A5EC433C7;
-        Mon, 11 Sep 2023 15:21:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16733CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4FBC433C9;
+        Mon, 11 Sep 2023 14:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445713;
-        bh=I0rw2+mUmll8Ci+6eV+fjCFhaVoFBNC7eSuqd/4Hmfc=;
+        s=korg; t=1694442195;
+        bh=wuQGo0AqQXKfDN26I1GBqEEag0sy/HUm5Ed2Px1UtCQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K0gnFVJE6I0hv85VE7WAriTQHuNilZfV47LsVfa8VOU+Do24R18TMxjn1W7C4NmUd
-         iRqoWDuixWqX44JesPQo4nf97N2Oy7qQ/DPe7mTsJoKmonsWUfh0eyzz1hJjRdBGhR
-         EbzcCl1FrzpaMbOi41jMuXqfXZYULGRLUVskhxvs=
+        b=PFeVGktc6Bx8ZO+jFaH/y3l8nxsi/0eIsQu+JtEaZ7sAuUBSH59vGUsMXoGtriXrl
+         J+YyEUDl59NPsSbCVzM0LtOuSYfK7OvGS2ANPSLd3grDsenL6yUAKx6R8rKH9p+qGX
+         NTbIoVj5cYzWK+j3qaOJoBpnO5q1hWvXCGMXreXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Junxian Huang <huangjunxian6@hisilicon.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 445/600] RDMA/hns: Fix incorrect post-send with direct wqe of wr-list
-Date:   Mon, 11 Sep 2023 15:47:58 +0200
-Message-ID: <20230911134646.780570973@linuxfoundation.org>
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 680/739] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
+Date:   Mon, 11 Sep 2023 15:47:59 +0200
+Message-ID: <20230911134710.092068716@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 706efac4477cdb8be857f6322457de524acc02ff ]
+commit d74e481609808330b4625b3691cf01e1f56e255e upstream.
 
-Currently, direct wqe is not supported for wr-list. RoCE driver excludes
-direct wqe for wr-list by judging whether the number of wr is 1.
+The startup procedure shouldn't be started with interrupts masked, as that
+may entail silent failures.
 
-For a wr-list where the second wr is a length-error atomic wr, the
-post-send driver handles the first wr and adds 1 to the wr number counter
-firstly. While handling the second wr, the driver finds out a length error
-and terminates the wr handle process, remaining the counter at 1. This
-causes the driver mistakenly judges there is only 1 wr and thus enters
-the direct wqe process, carrying the current length-error atomic wqe.
+Kick off initialization only after the interrupts are unmasked.
 
-This patch fixes the error by adding a judgement whether the current wr
-is a bad wr. If so, use the normal doorbell process but not direct wqe
-despite the wr number is 1.
-
-Fixes: 01584a5edcc4 ("RDMA/hns: Add support of direct wqe")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20230804012711.808069-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v4.12+
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 34a270b6891a9..e9a1985f7f17c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -757,7 +757,8 @@ static int hns_roce_v2_post_send(struct ib_qp *ibqp,
- 		qp->sq.head += nreq;
- 		qp->next_sge = sge_idx;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_
+ 	void __iomem *wrapper_base = hdev->core->wrapper_base;
+ 	int ret = 0;
  
--		if (nreq == 1 && (qp->en_flags & HNS_ROCE_QP_CAP_DIRECT_WQE))
-+		if (nreq == 1 && !ret &&
-+		    (qp->en_flags & HNS_ROCE_QP_CAP_DIRECT_WQE))
- 			write_dwqe(hr_dev, qp, wqe);
- 		else
- 			update_sq_db(hr_dev, qp);
--- 
-2.40.1
-
+-	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	if (IS_V6(hdev->core)) {
+ 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
+ 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
+@@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_
+ 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+ 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
+ 
++	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	while (!ctrl_status && count < max_tries) {
+ 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
+ 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
 
 
