@@ -2,47 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2708279B952
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9C579B9A2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378617AbjIKWgC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34412 "EHLO
+        id S237072AbjIKWJA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240104AbjIKOgl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:41 -0400
+        with ESMTP id S238778AbjIKOEs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4DCF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7346C433C8;
-        Mon, 11 Sep 2023 14:36:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB63CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D211C433C7;
+        Mon, 11 Sep 2023 14:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442997;
-        bh=70eH4StgCFuqcPTq4uL3qMD+rwGUPTjbFgr33/nT6S0=;
+        s=korg; t=1694441083;
+        bh=HoCR6rTWDg4eCuSIpQainXQjJMMAdprbCvy7qCjb0sY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M/GFPk3v0NINhjp+Es/lqsiiWDOgt2qbpbexBIUXzKfqQfBYiu/NkUBb0G2iQbNk6
-         9R+7Btuk4+p4skuoHzh09EI5Pti3GW4tTSvAAQZQXeV8fhrX06eCw0EVlbFEMdchvm
-         pFOOp2+LS2Kt7AZ2vScR53JDIAzeXfgecaG2Azuw=
+        b=tTYOm/JOmH5k3W142E5vNC46V/yB88M2TgbOa0STjk4f6aKN05fA3WK8dhPUVu400
+         LBUG+dn2QfWWXxRNEveXXYqqAbfg2kfqnfi0w23U9x/n0Vo+VTz72g/BofsrI2WPPW
+         TapZlaMfV8r5KvQutoLswbF7lG9EGfxcfWk9gYcs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Kurt Hackel <kurt.hackel@oracle.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 222/737] fs: ocfs2: namei: check return value of ocfs2_add_entry()
+Subject: [PATCH 6.5 282/739] arm64: dts: rockchip: Enable SATA on Radxa E25
 Date:   Mon, 11 Sep 2023 15:41:21 +0200
-Message-ID: <20230911134656.785890783@linuxfoundation.org>
+Message-ID: <20230911134658.998646536@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,52 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 6b72e5f9e79360fce4f2be7fe81159fbdf4256a5 ]
+[ Upstream commit 2bdfe84fbd57a4ed9fd65a67210442559ce078f0 ]
 
-Process result of ocfs2_add_entry() in case we have an error
-value.
+The M.2 KEY B port can be used for WWAN USB2 modules or SATA drives.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Enable sata1 node to fix use of SATA drives on the M.2 slot.
 
-Link: https://lkml.kernel.org/r/20230803145417.177649-1-artem.chernyshev@red-soft.ru
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Kurt Hackel <kurt.hackel@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 2bf2f4d9f673 ("arm64: dts: rockchip: Add Radxa CM3I E25")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20230724145213.3833099-1-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 17c52225b87d4..03bccfd183f3c 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -1535,6 +1535,10 @@ static int ocfs2_rename(struct mnt_idmap *idmap,
- 		status = ocfs2_add_entry(handle, new_dentry, old_inode,
- 					 OCFS2_I(old_inode)->ip_blkno,
- 					 new_dir_bh, &target_insert);
-+		if (status < 0) {
-+			mlog_errno(status);
-+			goto bail;
-+		}
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts b/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
+index f0e4884438e39..72ad74c38a2b4 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
+@@ -99,6 +99,10 @@ vcc3v3_pi6c_05: vcc3v3-pi6c-05-regulator {
+ 	};
+ };
  
- 	old_inode->i_ctime = current_time(old_inode);
++&combphy1 {
++	phy-supply = <&vcc3v3_pcie30x1>;
++};
++
+ &pcie2x1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pcie20_reset_h>;
+@@ -178,6 +182,10 @@ &pwm12 {
+ 	status = "okay";
+ };
+ 
++&sata1 {
++	status = "okay";
++};
++
+ &sdmmc0 {
+ 	bus-width = <4>;
+ 	cap-sd-highspeed;
 -- 
 2.40.1
 
