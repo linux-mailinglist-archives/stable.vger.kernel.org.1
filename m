@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62AEA79BED2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87CCC79B636
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378641AbjIKWgN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49840 "EHLO
+        id S1344808AbjIKVOt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239910AbjIKObU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:20 -0400
+        with ESMTP id S238600AbjIKOAY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D108F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09B5C433C8;
-        Mon, 11 Sep 2023 14:31:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0782ECD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C476C433C7;
+        Mon, 11 Sep 2023 14:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442676;
-        bh=9GL3EXWK90u/QZlmA3uTSIMfrDWEwv+Jm8YlvTfqttQ=;
+        s=korg; t=1694440819;
+        bh=nI+/mFhPW7+MpvqvY6aiPUN3MWGBSiKxgFCA6dqyc78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpA/RsE2oxw9FV7pIDyDagxqEmazWZX8UlHqou4xphPUWl0I2LvrG1T7DskhqlqoQ
-         tRJ7fJucZ5AENRJnjdi86xwtnrAFOovLXnViLFEw0xZM+GuMoKomZCxh+WxA2QGJvp
-         9aH1kU4s8tsO5MFzarUq/1E/8lJcLoaTX2i5ZN/Q=
+        b=m8jY+XQfrZfnMHvpY3MWnAP9zB3suPWxDfh14ubvh887y9ZRKKNtLsEmBMOrL+U1J
+         5TiIbUwpdhzQl5iJRHKRQXRnhbBQVENvjZ4ipSDAe4OdjwToBMf7EOORLOvTfErt9I
+         Wh8YOd4YcY7c6EndMIuhBR/pE400aGQqz4DUl898=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Lecopzer Chen <lecopzer.chen@mediatek.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
+        patches@lists.linux.dev,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 108/737] ARM: ptrace: Restore syscall skipping for tracers
-Date:   Mon, 11 Sep 2023 15:39:27 +0200
-Message-ID: <20230911134653.526327199@linuxfoundation.org>
+Subject: [PATCH 6.5 169/739] bpf: Fix check_func_arg_reg_off bug for graph root/node
+Date:   Mon, 11 Sep 2023 15:39:28 +0200
+Message-ID: <20230911134655.905699940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,70 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 4697b5848bd933f68ebd04836362c8de0cacaf71 ]
+[ Upstream commit 6785b2edf48c6b1c3ea61fe3b0d2e02b8fbf90c0 ]
 
-Since commit 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store
-thread_info->abi_syscall"), the seccomp selftests "syscall_errno"
-and "syscall_faked" have been broken. Both seccomp and PTRACE depend
-on using the special value of "-1" for skipping syscalls. This value
-wasn't working because it was getting masked by __NR_SYSCALL_MASK in
-both PTRACE_SET_SYSCALL and get_syscall_nr().
+The commit being fixed introduced a hunk into check_func_arg_reg_off
+that bypasses reg->off == 0 enforcement when offset points to a graph
+node or root. This might possibly be done for treating bpf_rbtree_remove
+and others as KF_RELEASE and then later check correct reg->off in helper
+argument checks.
 
-Explicitly test for -1 in PTRACE_SET_SYSCALL and get_syscall_nr(),
-leaving it exposed when present, allowing tracers to skip syscalls
-again.
+But this is not the case, those helpers are already not KF_RELEASE and
+permit non-zero reg->off and verify it later to match the subobject in
+BTF type.
 
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Fixes: 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store thread_info->abi_syscall")
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230810195422.2304827-2-keescook@chromium.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+However, this logic leads to bpf_obj_drop permitting free of register
+arguments with non-zero offset when they point to a graph root or node
+within them, which is not ok.
+
+For instance:
+
+struct foo {
+	int i;
+	int j;
+	struct bpf_rb_node node;
+};
+
+struct foo *f = bpf_obj_new(typeof(*f));
+if (!f) ...
+bpf_obj_drop(f); // OK
+bpf_obj_drop(&f->i); // still ok from verifier PoV
+bpf_obj_drop(&f->node); // Not OK, but permitted right now
+
+Fix this by dropping the whole part of code altogether.
+
+Fixes: 6a3cd3318ff6 ("bpf: Migrate release_on_unlock logic to non-owning ref semantics")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230822175140.1317749-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/syscall.h | 3 +++
- arch/arm/kernel/ptrace.c       | 5 +++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
-index dfeed440254a8..fe4326d938c18 100644
---- a/arch/arm/include/asm/syscall.h
-+++ b/arch/arm/include/asm/syscall.h
-@@ -25,6 +25,9 @@ static inline int syscall_get_nr(struct task_struct *task,
- 	if (IS_ENABLED(CONFIG_AEABI) && !IS_ENABLED(CONFIG_OABI_COMPAT))
- 		return task_thread_info(task)->abi_syscall;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 903de82dec423..ed49ec0675625 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7807,17 +7807,6 @@ int check_func_arg_reg_off(struct bpf_verifier_env *env,
+ 		if (arg_type_is_dynptr(arg_type) && type == PTR_TO_STACK)
+ 			return 0;
  
-+	if (task_thread_info(task)->abi_syscall == -1)
-+		return -1;
-+
- 	return task_thread_info(task)->abi_syscall & __NR_SYSCALL_MASK;
- }
- 
-diff --git a/arch/arm/kernel/ptrace.c b/arch/arm/kernel/ptrace.c
-index 2d8e2516906b6..fef32d73f9120 100644
---- a/arch/arm/kernel/ptrace.c
-+++ b/arch/arm/kernel/ptrace.c
-@@ -783,8 +783,9 @@ long arch_ptrace(struct task_struct *child, long request,
- 			break;
- 
- 		case PTRACE_SET_SYSCALL:
--			task_thread_info(child)->abi_syscall = data &
--							__NR_SYSCALL_MASK;
-+			if (data != -1)
-+				data &= __NR_SYSCALL_MASK;
-+			task_thread_info(child)->abi_syscall = data;
- 			ret = 0;
- 			break;
- 
+-		if ((type_is_ptr_alloc_obj(type) || type_is_non_owning_ref(type)) && reg->off) {
+-			if (reg_find_field_offset(reg, reg->off, BPF_GRAPH_NODE_OR_ROOT))
+-				return __check_ptr_off_reg(env, reg, regno, true);
+-
+-			verbose(env, "R%d must have zero offset when passed to release func\n",
+-				regno);
+-			verbose(env, "No graph node or root found at R%d type:%s off:%d\n", regno,
+-				btf_type_name(reg->btf, reg->btf_id), reg->off);
+-			return -EINVAL;
+-		}
+-
+ 		/* Doing check_ptr_off_reg check for the offset will catch this
+ 		 * because fixed_off_ok is false, but checking here allows us
+ 		 * to give the user a better error message.
 -- 
 2.40.1
 
