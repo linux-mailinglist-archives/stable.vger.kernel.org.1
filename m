@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAEED79BEF2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C42579BCF1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242357AbjIKVjd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:39:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39502 "EHLO
+        id S1345577AbjIKVVX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240058AbjIKOfN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:13 -0400
+        with ESMTP id S238776AbjIKOEp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B8FF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426B4C433C7;
-        Mon, 11 Sep 2023 14:35:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4921BCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8108CC433C8;
+        Mon, 11 Sep 2023 14:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442908;
-        bh=Xslq3NdqREmtREbDPglR2/AlOTvDyxrVGPJav9ekDT4=;
+        s=korg; t=1694441080;
+        bh=R19GClVQyu99IoRWb+TbD9uEbdoEDHf9V7KfZHn8mfE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jMjx9rn99XO6qaAVKZGnoaaJnK73EUJX0DVxlhYkRQVyUqlxVCyBLRIXVtqlz+1nk
-         +96umIWiVQ90eAYhGh/dHmyTyMaSYtpUF5rXABX+OFOeABEjR3lXedBo6ZAS3i9Ixl
-         66T5oJ9j+WcSUygJfe9szoAl3FP44BcevUhB7UII=
+        b=dHWY8e7sDXSOIqLDAODMR/fSabyd9Fvug3krUqmXPTLHQoiAQpzuyQHKsAiUW/A6c
+         +FUmDOKP+aLxeCAXZH+kggl1HWQd+u03eLnu07s+fOm94RcI+qL7MJP3GgRfnSqjj4
+         K8MQJ0h7Ewn/NVnATEhFuZLPK83TimSYxn9rCZeU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Isaacs <mail@jdisaacs.com>,
-        "Ethan D. Twardy" <ethan.twardy@gmail.com>,
-        Tiago Lam <tiagolam@gmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 191/737] kbuild: rust_is_available: fix confusion when a version appears in the path
-Date:   Mon, 11 Sep 2023 15:40:50 +0200
-Message-ID: <20230911134655.923874448@linuxfoundation.org>
+Subject: [PATCH 6.5 252/739] arm64: dts: qcom: sm8250-sony-xperia: correct GPIO keys wakeup again
+Date:   Mon, 11 Sep 2023 15:40:51 +0200
+Message-ID: <20230911134658.191739300@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,61 +52,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 9eb7e20e0c5cd069457845f965b3e8a7d736ecb7 ]
+[ Upstream commit b8fbeea0253211d97c579eae787274633d3eaf0d ]
 
-`bindgen`'s output for `libclang`'s version check contains paths, which
-in turn may contain strings that look like version numbers [1][2]:
+gpio-keys,wakeup is a deprecated property:
 
-    .../6.1.0-dev/.../rust_is_available_bindgen_libclang.h:2:9: warning: clang version 11.1.0  [-W#pragma-messages], err: false
+  m8250-sony-xperia-edo-pdx206.dtb: gpio-keys: key-camera-focus: Unevaluated properties are not allowed ('gpio-key,wakeup' was unexpected)
 
-which the script will pick up as the version instead of the latter.
-
-It is also the case that versions may appear after the actual version
-(e.g. distribution's version text), which was the reason behind `head` [3]:
-
-    .../rust-is-available-bindgen-libclang.h:2:9: warning: clang version 13.0.0 (Fedora 13.0.0-3.fc35) [-W#pragma-messages], err: false
-
-Thus instead ask for a match after the `clang version` string.
-
-Reported-by: Jordan Isaacs <mail@jdisaacs.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/942 [1]
-Reported-by: "Ethan D. Twardy" <ethan.twardy@gmail.com>
-Closes: https://lore.kernel.org/rust-for-linux/20230528131802.6390-2-ethan.twardy@gmail.com/ [2]
-Reported-by: Tiago Lam <tiagolam@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/pull/789 [3]
-Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Ethan Twardy <ethan.twardy@gmail.com>
-Tested-by: Ethan Twardy <ethan.twardy@gmail.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230616001631.463536-8-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230711063011.16222-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index c965895d80b97..7a925d2b20fc7 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -112,9 +112,7 @@ fi
- # of the `libclang` found by the Rust bindings generator is suitable.
- bindgen_libclang_version=$( \
- 	echo "$bindgen_libclang_output" \
--		| grep -F 'clang version ' \
--		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
--		| head -n 1 \
-+		| sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- )
- bindgen_libclang_min_version=$($min_tool_version llvm)
- bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+index 4727a4e0fc95b..b044cffb419e5 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+@@ -60,7 +60,7 @@ key-camera-focus {
+ 			gpios = <&pm8150b_gpios 2 GPIO_ACTIVE_LOW>;
+ 			debounce-interval = <15>;
+ 			linux,can-disable;
+-			gpio-key,wakeup;
++			wakeup-source;
+ 		};
+ 
+ 		key-camera-snapshot {
+@@ -69,7 +69,7 @@ key-camera-snapshot {
+ 			gpios = <&pm8150b_gpios 1 GPIO_ACTIVE_LOW>;
+ 			debounce-interval = <15>;
+ 			linux,can-disable;
+-			gpio-key,wakeup;
++			wakeup-source;
+ 		};
+ 
+ 		key-vol-down {
 -- 
 2.40.1
 
