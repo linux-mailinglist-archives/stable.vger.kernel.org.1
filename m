@@ -2,52 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFCA79B4AC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26FE179B1BC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244228AbjIKVIM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39070 "EHLO
+        id S243052AbjIKU7B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240891AbjIKO4j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:39 -0400
+        with ESMTP id S242075AbjIKPVo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6705CE4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69284C433C8;
-        Mon, 11 Sep 2023 14:56:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A95D3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8EDC433C8;
+        Mon, 11 Sep 2023 15:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444194;
-        bh=oDURCKqlTcUMyenF6chXdWdNO9hWEm0ZzKjEwOqp6Cc=;
+        s=korg; t=1694445699;
+        bh=PvvSPQPEMuSLN/cNRsK/Xf+tViP9mPd6Jn8ihFGywno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aVZEFbrJQe8sFKZXWggi0dFeIEAMeoL4R4NcVc7ECJAfYuBQePxEV9wryL5pxNnQb
-         huZCxfPJi8wXVOEY+/r5VwRUh0wO3jgKkhYdKDWS5TpjM/W6RQe/nlTqNaLyT/bTbq
-         zAQNUv36gnTcI1716er3QzSut//hrJUmkFFIpLns=
+        b=cRLlrHkzHmDI6IblxygyzqexEXtzthyG5BxMuWaiuavw+n6fxKgCXPQi523QgJbtS
+         8H3ekr1N2bcerkta0vcgLQ1ZVro+HczpjVmNigdlc70HUV+s4vNvse2qYmSyHqspom
+         Q3hALgIxvbyl2/sRTbx3a0K4G6RSdLicHQY79z44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
+        patches@lists.linux.dev, Yong Wu <yong.wu@mediatek.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 615/737] thermal/drivers/mediatek/lvts_thermal: Dont leave threshold zeroed
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 441/600] iommu/mediatek: Remove unused "mapping" member from mtk_iommu_data
 Date:   Mon, 11 Sep 2023 15:47:54 +0200
-Message-ID: <20230911134707.712019297@linuxfoundation.org>
+Message-ID: <20230911134646.665830968@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,77 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Yong Wu <yong.wu@mediatek.com>
 
-[ Upstream commit 77354eaef8218bc40d6b37e783b0b8dcca22a7d9 ]
+[ Upstream commit 9ff894edd542618dad2fef538f8272c620a501db ]
 
-The thermal framework might leave the low threshold unset if there
-aren't any lower trip points. This leaves the register zeroed, which
-translates to a very high temperature for the low threshold. The
-interrupt for this threshold is then immediately triggered, and the
-state machine gets stuck, preventing any other temperature monitoring
-interrupts to ever trigger.
+Just remove a unused variable that only is for mtk_iommu_v1.
 
-(The same happens by not setting the Cold or Hot to Normal thresholds
-when using those)
-
-Set the unused threshold to a valid low value. This value was chosen so
-that for any valid golden temperature read from the efuse, when the
-value is converted to raw and back again to milliCelsius, the result
-doesn't underflow.
-
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Signed-off-by: Yong Wu <yong.wu@mediatek.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230706153823.201943-6-nfraprado@collabora.com
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20221018024258.19073-7-yong.wu@mediatek.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: cf69ef46dbd9 ("iommu/mediatek: Fix two IOMMU share pagetable issue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iommu/mtk_iommu.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 0fa90ac6ed41f..a6bdcdfffa333 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -81,6 +81,8 @@
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 2ae5a6058a34a..5ff8982712e0f 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -223,10 +223,7 @@ struct mtk_iommu_data {
+ 	struct device			*smicomm_dev;
  
- #define LVTS_HW_SHUTDOWN_MT8195		105000
- 
-+#define LVTS_MINIMUM_THRESHOLD		20000
-+
- static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
- static int coeff_b = LVTS_COEFF_B;
- 
-@@ -292,7 +294,7 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- {
- 	struct lvts_sensor *lvts_sensor = thermal_zone_device_priv(tz);
- 	void __iomem *base = lvts_sensor->base;
--	u32 raw_low = lvts_temp_to_raw(low);
-+	u32 raw_low = lvts_temp_to_raw(low != -INT_MAX ? low : LVTS_MINIMUM_THRESHOLD);
- 	u32 raw_high = lvts_temp_to_raw(high);
+ 	struct mtk_iommu_bank_data	*bank;
+-
+-	struct dma_iommu_mapping	*mapping; /* For mtk_iommu_v1.c */
+ 	struct regmap			*pericfg;
+-
+ 	struct mutex			mutex; /* Protect m4u_group/m4u_dom above */
  
  	/*
-@@ -304,11 +306,9 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	 *
- 	 * 14-0 : Raw temperature for threshold
- 	 */
--	if (low != -INT_MAX) {
--		pr_debug("%s: Setting low limit temperature interrupt: %d\n",
--			 thermal_zone_device_type(tz), low);
--		writel(raw_low, LVTS_OFFSETL(base));
--	}
-+	pr_debug("%s: Setting low limit temperature interrupt: %d\n",
-+		 thermal_zone_device_type(tz), low);
-+	writel(raw_low, LVTS_OFFSETL(base));
- 
- 	/*
- 	 * High offset temperature threshold
 -- 
 2.40.1
 
