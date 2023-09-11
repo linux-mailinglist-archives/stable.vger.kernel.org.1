@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A0F879BE85
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FB9479B5F7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376622AbjIKWUF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
+        id S240133AbjIKWpv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240826AbjIKOy7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:59 -0400
+        with ESMTP id S239604AbjIKOY1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0AD5118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0898AC433C9;
-        Mon, 11 Sep 2023 14:54:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62DE3DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA34C433C8;
+        Mon, 11 Sep 2023 14:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444092;
-        bh=8lEMwdxjDtduUhuvEzbnumPAksaaRldvUfZ38qWYo9c=;
+        s=korg; t=1694442263;
+        bh=IQqVLD7H1h8AI1V9zPol9HNtqa3hlw0MhSoQ9y/BxBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iH+DHdpjoSYBdYH4yHoej5FGkRCdcKHddoZ3FcVZ1CJKfATvHIf61UrSGd5mhi0wz
-         n5qFyc5Dnd1rcRlA9/s8JYTpTqxeDE+jGExKK7paGy8zFNNtHH0qUEc/6yHJZZaPUr
-         9nhF+ACyFdmZ8QTm+7dLJr9LkGr0wqNv4WTKjn48=
+        b=tgewablr3ohwbynma6cTkYteOMM/JU5Fo8Az0Q29fxwtaQja9iCu0w8kfg3a7wenI
+         rVfnL6di7O5NglysFojDEeHhs3Ebs/utSbNzcGt5Zz3xdQjd7feCubNBHL3YsXyb7V
+         Vkpl3/Q1Vxi07fOXeyoWIA6GGHv9BuhUjkyB2Bp4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yang <zhengyang@rock-chips.com>,
-        Jonas Karlman <jonas@kwiboo.se>, Vinod Koul <vkoul@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 607/737] phy/rockchip: inno-hdmi: round fractal pixclock in rk3328 recalc_rate
+        patches@lists.linux.dev, Swapnil Patel <swapnil.patel@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 667/739] drm/amd/display: register edp_backlight_control() for DCN301
 Date:   Mon, 11 Sep 2023 15:47:46 +0200
-Message-ID: <20230911134707.491079128@linuxfoundation.org>
+Message-ID: <20230911134709.737442697@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yang <zhengyang@rock-chips.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit d5ef343c1d62bc4c4c2c393af654a41cb34b449f ]
+commit 1611917f39bee1abfc01501238db8ac19649042d upstream.
 
-inno_hdmi_phy_rk3328_clk_recalc_rate() is returning a rate not found
-in the pre pll config table when the fractal divider is used.
-This can prevent proper power_on because a tmdsclock for the new rate
-is not found in the pre pll config table.
+As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
+intermittent black screen during PnP"), we need to turn off the
+display's backlight before powering off an eDP display. Not doing so
+will result in undefined behaviour according to the eDP spec. So, set
+DCN301's edp_backlight_control() function pointer to
+dce110_edp_backlight_control().
 
-Fix this by saving and returning a rounded pixel rate that exist
-in the pre pll config table.
-
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Zheng Yang <zhengyang@rock-chips.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-3-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
+Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
+Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index f348e5347d817..7d412f771f6c3 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -745,10 +745,12 @@ unsigned long inno_hdmi_phy_rk3328_clk_recalc_rate(struct clk_hw *hw,
- 		do_div(vco, (nd * (no_a == 1 ? no_b : no_a) * no_d * 2));
- 	}
- 
--	inno->pixclock = vco;
--	dev_dbg(inno->dev, "%s rate %lu\n", __func__, inno->pixclock);
-+	inno->pixclock = DIV_ROUND_CLOSEST((unsigned long)vco, 1000) * 1000;
- 
--	return vco;
-+	dev_dbg(inno->dev, "%s rate %lu vco %llu\n",
-+		__func__, inno->pixclock, vco);
-+
-+	return inno->pixclock;
- }
- 
- static long inno_hdmi_phy_rk3328_clk_round_rate(struct clk_hw *hw,
--- 
-2.40.1
-
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+@@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs d
+ 	.get_hw_state = dcn10_get_hw_state,
+ 	.clear_status_bits = dcn10_clear_status_bits,
+ 	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
++	.edp_backlight_control = dce110_edp_backlight_control,
+ 	.edp_power_control = dce110_edp_power_control,
+ 	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
+ 	.set_cursor_position = dcn10_set_cursor_position,
 
 
