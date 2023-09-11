@@ -2,36 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E93279AD7D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EC7079AF75
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237651AbjIKUvj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
+        id S1350656AbjIKVkW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242344AbjIKP2X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:23 -0400
+        with ESMTP id S242346AbjIKP23 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A5AE4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021F3C433C9;
-        Mon, 11 Sep 2023 15:28:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA8BF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AE5C433C8;
+        Mon, 11 Sep 2023 15:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446098;
-        bh=g+r2QTXP1nMVJInCJQ8FGsrjY+0EVISl8wLyscPgbRk=;
+        s=korg; t=1694446104;
+        bh=dLjOV5HtTBC91piQHEm1jLdn0aoRM1gpLO22irGZ6OM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2E//iZEEFqsJFE/fFTV731jfgEnia1wJmEgSe2ZLkmxS2CN0ZbVX4Ffh8eLxKnkfm
-         BfAUXc1kiIObKY6g1Gh1n5FhOmAKSYj2VGzqV0JEaT5XLwbWfU0GgXbgK8m0FOtnS4
-         qVvAGxywx90bQeie0CB3/VsPpvXU9E/Ww2xU/8og=
+        b=uVrVBdqDmIfy/9dW+5nRcbbNEI5pQ5ae1mj8DU39pa9qc0XijfDfGFnxS8G3FZhrw
+         kZ15ynxYU5yPbhJe2Abw76a13Qn2KjdCJGC1J2vyz87ei2vEI7IjHnPuLaxMtl8DfT
+         NMmXtjzL2SUIXldQzPJMdjsXRUBQhjT8i3RFAqA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, RD Babiera <rdbabiera@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 582/600] usb: typec: bus: verify partner exists in typec_altmode_attention
-Date:   Mon, 11 Sep 2023 15:50:15 +0200
-Message-ID: <20230911134650.802140057@linuxfoundation.org>
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 584/600] USB: core: Change usb_get_device_descriptor() API
+Date:   Mon, 11 Sep 2023 15:50:17 +0200
+Message-ID: <20230911134650.859533624@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -54,83 +52,242 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit f23643306430f86e2f413ee2b986e0773e79da31 upstream.
+commit de28e469da75359a2bb8cd8778b78aa64b1be1f4 upstream.
 
-Some usb hubs will negotiate DisplayPort Alt mode with the device
-but will then negotiate a data role swap after entering the alt
-mode. The data role swap causes the device to unregister all alt
-modes, however the usb hub will still send Attention messages
-even after failing to reregister the Alt Mode. type_altmode_attention
-currently does not verify whether or not a device's altmode partner
-exists, which results in a NULL pointer error when dereferencing
-the typec_altmode and typec_altmode_ops belonging to the altmode
-partner.
+The usb_get_device_descriptor() routine reads the device descriptor
+from the udev device and stores it directly in udev->descriptor.  This
+interface is error prone, because the USB subsystem expects in-memory
+copies of a device's descriptors to be immutable once the device has
+been initialized.
 
-Verify the presence of a device's altmode partner before sending
-the Attention message to the Alt Mode driver.
+The interface is changed so that the device descriptor is left in a
+kmalloc-ed buffer, not copied into the usb_device structure.  A
+pointer to the buffer is returned to the caller, who is then
+responsible for kfree-ing it.  The corresponding changes needed in the
+various callers are fairly small.
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230814180559.923475-1-rdbabiera@google.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/d0111bb6-56c1-4f90-adf2-6cfe152f6561@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/bus.c           |   12 ++++++++++--
- drivers/usb/typec/tcpm/tcpm.c     |    3 ++-
- include/linux/usb/typec_altmode.h |    2 +-
- 3 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/usb/core/hcd.c     |   10 +++++++---
+ drivers/usb/core/hub.c     |   44 +++++++++++++++++++++++---------------------
+ drivers/usb/core/message.c |   29 ++++++++++++-----------------
+ drivers/usb/core/usb.h     |    4 ++--
+ 4 files changed, 44 insertions(+), 43 deletions(-)
 
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -154,12 +154,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
-  *
-  * Notifies the partner of @adev about Attention command.
-  */
--void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-+int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -983,6 +983,7 @@ static int register_root_hub(struct usb_
  {
--	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-+	struct altmode *partner = to_altmode(adev)->partner;
-+	struct typec_altmode *pdev;
-+
-+	if (!partner)
-+		return -ENODEV;
-+
-+	pdev = &partner->adev;
+ 	struct device *parent_dev = hcd->self.controller;
+ 	struct usb_device *usb_dev = hcd->self.root_hub;
++	struct usb_device_descriptor *descr;
+ 	const int devnum = 1;
+ 	int retval;
  
- 	if (pdev->ops && pdev->ops->attention)
- 		pdev->ops->attention(pdev, vdo);
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(typec_altmode_attention);
+@@ -994,13 +995,16 @@ static int register_root_hub(struct usb_
+ 	mutex_lock(&usb_bus_idr_lock);
  
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1871,7 +1871,8 @@ static void tcpm_handle_vdm_request(stru
- 			}
- 			break;
- 		case ADEV_ATTENTION:
--			typec_altmode_attention(adev, p[1]);
-+			if (typec_altmode_attention(adev, p[1]))
-+				tcpm_log(port, "typec_altmode_attention no port partner altmode");
- 			break;
- 		}
+ 	usb_dev->ep0.desc.wMaxPacketSize = cpu_to_le16(64);
+-	retval = usb_get_device_descriptor(usb_dev, USB_DT_DEVICE_SIZE);
+-	if (retval != sizeof usb_dev->descriptor) {
++	descr = usb_get_device_descriptor(usb_dev);
++	if (IS_ERR(descr)) {
++		retval = PTR_ERR(descr);
+ 		mutex_unlock(&usb_bus_idr_lock);
+ 		dev_dbg (parent_dev, "can't read %s device descriptor %d\n",
+ 				dev_name(&usb_dev->dev), retval);
+-		return (retval < 0) ? retval : -EMSGSIZE;
++		return retval;
  	}
---- a/include/linux/usb/typec_altmode.h
-+++ b/include/linux/usb/typec_altmode.h
-@@ -67,7 +67,7 @@ struct typec_altmode_ops {
++	usb_dev->descriptor = *descr;
++	kfree(descr);
  
- int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
- int typec_altmode_exit(struct typec_altmode *altmode);
--void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-+int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
- int typec_altmode_vdm(struct typec_altmode *altmode,
- 		      const u32 header, const u32 *vdo, int count);
- int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
+ 	if (le16_to_cpu(usb_dev->descriptor.bcdUSB) >= 0x0201) {
+ 		retval = usb_get_bos_descriptor(usb_dev);
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2656,12 +2656,17 @@ int usb_authorize_device(struct usb_devi
+ 	}
+ 
+ 	if (usb_dev->wusb) {
+-		result = usb_get_device_descriptor(usb_dev, sizeof(usb_dev->descriptor));
+-		if (result < 0) {
++		struct usb_device_descriptor *descr;
++
++		descr = usb_get_device_descriptor(usb_dev);
++		if (IS_ERR(descr)) {
++			result = PTR_ERR(descr);
+ 			dev_err(&usb_dev->dev, "can't re-read device descriptor for "
+ 				"authorization: %d\n", result);
+ 			goto error_device_descriptor;
+ 		}
++		usb_dev->descriptor = *descr;
++		kfree(descr);
+ 	}
+ 
+ 	usb_dev->authorized = 1;
+@@ -4747,7 +4752,7 @@ hub_port_init(struct usb_hub *hub, struc
+ 	const char		*driver_name;
+ 	bool			do_new_scheme;
+ 	int			maxp0;
+-	struct usb_device_descriptor	*buf;
++	struct usb_device_descriptor	*buf, *descr;
+ 
+ 	buf = kmalloc(GET_DESCRIPTOR_BUFSIZE, GFP_NOIO);
+ 	if (!buf)
+@@ -4984,15 +4989,16 @@ hub_port_init(struct usb_hub *hub, struc
+ 		usb_ep0_reinit(udev);
+ 	}
+ 
+-	retval = usb_get_device_descriptor(udev, USB_DT_DEVICE_SIZE);
+-	if (retval < (signed)sizeof(udev->descriptor)) {
++	descr = usb_get_device_descriptor(udev);
++	if (IS_ERR(descr)) {
++		retval = PTR_ERR(descr);
+ 		if (retval != -ENODEV)
+ 			dev_err(&udev->dev, "device descriptor read/all, error %d\n",
+ 					retval);
+-		if (retval >= 0)
+-			retval = -ENOMSG;
+ 		goto fail;
+ 	}
++	udev->descriptor = *descr;
++	kfree(descr);
+ 
+ 	/*
+ 	 * Some superspeed devices have finished the link training process
+@@ -5111,7 +5117,7 @@ hub_power_remaining(struct usb_hub *hub)
+ 
+ 
+ static int descriptors_changed(struct usb_device *udev,
+-		struct usb_device_descriptor *old_device_descriptor,
++		struct usb_device_descriptor *new_device_descriptor,
+ 		struct usb_host_bos *old_bos)
+ {
+ 	int		changed = 0;
+@@ -5122,8 +5128,8 @@ static int descriptors_changed(struct us
+ 	int		length;
+ 	char		*buf;
+ 
+-	if (memcmp(&udev->descriptor, old_device_descriptor,
+-			sizeof(*old_device_descriptor)) != 0)
++	if (memcmp(&udev->descriptor, new_device_descriptor,
++			sizeof(*new_device_descriptor)) != 0)
+ 		return 1;
+ 
+ 	if ((old_bos && !udev->bos) || (!old_bos && udev->bos))
+@@ -5443,9 +5449,8 @@ static void hub_port_connect_change(stru
+ {
+ 	struct usb_port *port_dev = hub->ports[port1 - 1];
+ 	struct usb_device *udev = port_dev->child;
+-	struct usb_device_descriptor descriptor;
++	struct usb_device_descriptor *descr;
+ 	int status = -ENODEV;
+-	int retval;
+ 
+ 	dev_dbg(&port_dev->dev, "status %04x, change %04x, %s\n", portstatus,
+ 			portchange, portspeed(hub, portstatus));
+@@ -5472,23 +5477,20 @@ static void hub_port_connect_change(stru
+ 			 * changed device descriptors before resuscitating the
+ 			 * device.
+ 			 */
+-			descriptor = udev->descriptor;
+-			retval = usb_get_device_descriptor(udev,
+-					sizeof(udev->descriptor));
+-			if (retval < 0) {
++			descr = usb_get_device_descriptor(udev);
++			if (IS_ERR(descr)) {
+ 				dev_dbg(&udev->dev,
+-						"can't read device descriptor %d\n",
+-						retval);
++						"can't read device descriptor %ld\n",
++						PTR_ERR(descr));
+ 			} else {
+-				if (descriptors_changed(udev, &descriptor,
++				if (descriptors_changed(udev, descr,
+ 						udev->bos)) {
+ 					dev_dbg(&udev->dev,
+ 							"device descriptor has changed\n");
+-					/* for disconnect() calls */
+-					udev->descriptor = descriptor;
+ 				} else {
+ 					status = 0; /* Nothing to do */
+ 				}
++				kfree(descr);
+ 			}
+ #ifdef CONFIG_PM
+ 		} else if (udev->state == USB_STATE_SUSPENDED &&
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -1039,40 +1039,35 @@ char *usb_cache_string(struct usb_device
+ }
+ 
+ /*
+- * usb_get_device_descriptor - (re)reads the device descriptor (usbcore)
+- * @dev: the device whose device descriptor is being updated
+- * @size: how much of the descriptor to read
++ * usb_get_device_descriptor - read the device descriptor
++ * @udev: the device whose device descriptor should be read
+  *
+  * Context: task context, might sleep.
+  *
+- * Updates the copy of the device descriptor stored in the device structure,
+- * which dedicates space for this purpose.
+- *
+  * Not exported, only for use by the core.  If drivers really want to read
+  * the device descriptor directly, they can call usb_get_descriptor() with
+  * type = USB_DT_DEVICE and index = 0.
+  *
+- * This call is synchronous, and may not be used in an interrupt context.
+- *
+- * Return: The number of bytes received on success, or else the status code
+- * returned by the underlying usb_control_msg() call.
++ * Returns: a pointer to a dynamically allocated usb_device_descriptor
++ * structure (which the caller must deallocate), or an ERR_PTR value.
+  */
+-int usb_get_device_descriptor(struct usb_device *dev, unsigned int size)
++struct usb_device_descriptor *usb_get_device_descriptor(struct usb_device *udev)
+ {
+ 	struct usb_device_descriptor *desc;
+ 	int ret;
+ 
+-	if (size > sizeof(*desc))
+-		return -EINVAL;
+ 	desc = kmalloc(sizeof(*desc), GFP_NOIO);
+ 	if (!desc)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
++
++	ret = usb_get_descriptor(udev, USB_DT_DEVICE, 0, desc, sizeof(*desc));
++	if (ret == sizeof(*desc))
++		return desc;
+ 
+-	ret = usb_get_descriptor(dev, USB_DT_DEVICE, 0, desc, size);
+ 	if (ret >= 0)
+-		memcpy(&dev->descriptor, desc, size);
++		ret = -EMSGSIZE;
+ 	kfree(desc);
+-	return ret;
++	return ERR_PTR(ret);
+ }
+ 
+ /*
+--- a/drivers/usb/core/usb.h
++++ b/drivers/usb/core/usb.h
+@@ -42,8 +42,8 @@ extern bool usb_endpoint_is_ignored(stru
+ 		struct usb_endpoint_descriptor *epd);
+ extern int usb_remove_device(struct usb_device *udev);
+ 
+-extern int usb_get_device_descriptor(struct usb_device *dev,
+-		unsigned int size);
++extern struct usb_device_descriptor *usb_get_device_descriptor(
++		struct usb_device *udev);
+ extern int usb_set_isoch_delay(struct usb_device *dev);
+ extern int usb_get_bos_descriptor(struct usb_device *dev);
+ extern void usb_release_bos_descriptor(struct usb_device *dev);
 
 
