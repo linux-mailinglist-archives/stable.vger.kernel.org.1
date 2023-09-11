@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1F579B75A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B292779B98B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379561AbjIKWos (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
+        id S1350906AbjIKVmK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:42:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239131AbjIKOMl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:41 -0400
+        with ESMTP id S240509AbjIKOqP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5C4CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C127BC433C7;
-        Mon, 11 Sep 2023 14:12:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E95106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901A9C433C7;
+        Mon, 11 Sep 2023 14:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441556;
-        bh=ThUc+kqUFrt5a5D+4kYaUtc79CMLGMe6knmiZCgJSUw=;
+        s=korg; t=1694443570;
+        bh=4iWla1tvlViRHH/dQeCQJS+IUdK6uw/MBQj4edbr8uk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N5KXd9pMV64yewD9eKrRT3Lr5QPWpFmOLlNkbSQwIgXBKR3fjzQIJnrgzCKVU1Tpz
-         dozeWSEYiVtgUs7EkqrVf8WLxAxP7zo7vPezijITU7CZR+J7FuDOC4hMw10DTJEB8X
-         DMXW4Fu2fSq7ZGj/w8A6RoXZeB+h7m5L/Q+Lyg/8=
+        b=y71zJ5wRyiBKOVjqaPYdV8w2kFGGEIFgtkBS0VGDgoBVhKfC0tqhHLU7PZX5twOav
+         YA0ZtXByYvLGFeHjYE6fKyUdTF2aMrj/PX7WqiGNBc2fQzJ09oVh6WUSk2kv42/EDM
+         z6gGjmhAfatmCIWSDAXwNctlEjtfBa/A5q4w5Zu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 454/739] media: i2c: tvp5150: check return value of devm_kasprintf()
-Date:   Mon, 11 Sep 2023 15:44:13 +0200
-Message-ID: <20230911134703.838176881@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Corey Hickey <bugfood-ml@fatooh.org>
+Subject: [PATCH 6.4 395/737] md/raid5-cache: fix null-ptr-deref for r5l_flush_stripe_to_raid()
+Date:   Mon, 11 Sep 2023 15:44:14 +0200
+Message-ID: <20230911134701.630589094@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +51,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 26ce7054d804be73935b9268d6e0ecf2fbbc8aef ]
+[ Upstream commit 0d0bd28c500173bfca78aa840f8f36d261ef1765 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+r5l_flush_stripe_to_raid() will check if the list 'flushing_ios' is
+empty, and then submit 'flush_bio', however, r5l_log_flush_endio()
+is clearing the list first and then clear the bio, which will cause
+null-ptr-deref:
 
-Fixes: 0556f1d580d4 ("media: tvp5150: add input source selection of_graph support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+T1: submit flush io
+raid5d
+ handle_active_stripes
+  r5l_flush_stripe_to_raid
+   // list is empty
+   // add 'io_end_ios' to the list
+   bio_init
+   submit_bio
+   // io1
+
+T2: io1 is done
+r5l_log_flush_endio
+ list_splice_tail_init
+ // clear the list
+			T3: submit new flush io
+			...
+			r5l_flush_stripe_to_raid
+			 // list is empty
+			 // add 'io_end_ios' to the list
+			 bio_init
+ bio_uninit
+ // clear bio->bi_blkg
+			 submit_bio
+			 // null-ptr-deref
+
+Fix this problem by clearing bio before clearing the list in
+r5l_log_flush_endio().
+
+Fixes: 0dd00cba99c3 ("raid5-cache: fully initialize flush_bio when needed")
+Reported-and-tested-by: Corey Hickey <bugfood-ml@fatooh.org>
+Closes: https://lore.kernel.org/all/cddd7213-3dfd-4ab7-a3ac-edd54d74a626@fatooh.org/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tvp5150.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/raid5-cache.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/tvp5150.c b/drivers/media/i2c/tvp5150.c
-index c7fb35ee3f9de..e543b3f7a4d89 100644
---- a/drivers/media/i2c/tvp5150.c
-+++ b/drivers/media/i2c/tvp5150.c
-@@ -2068,6 +2068,10 @@ static int tvp5150_parse_dt(struct tvp5150 *decoder, struct device_node *np)
- 		tvpc->ent.name = devm_kasprintf(dev, GFP_KERNEL, "%s %s",
- 						v4l2c->name, v4l2c->label ?
- 						v4l2c->label : "");
-+		if (!tvpc->ent.name) {
-+			ret = -ENOMEM;
-+			goto err_free;
-+		}
- 	}
+diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
+index 5c246b2697e0b..21653e1ed9384 100644
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -1260,14 +1260,13 @@ static void r5l_log_flush_endio(struct bio *bio)
  
- 	ep_np = of_graph_get_endpoint_by_regs(np, TVP5150_PAD_VID_OUT, 0);
+ 	if (bio->bi_status)
+ 		md_error(log->rdev->mddev, log->rdev);
++	bio_uninit(bio);
+ 
+ 	spin_lock_irqsave(&log->io_list_lock, flags);
+ 	list_for_each_entry(io, &log->flushing_ios, log_sibling)
+ 		r5l_io_run_stripes(io);
+ 	list_splice_tail_init(&log->flushing_ios, &log->finished_ios);
+ 	spin_unlock_irqrestore(&log->io_list_lock, flags);
+-
+-	bio_uninit(bio);
+ }
+ 
+ /*
 -- 
 2.40.1
 
