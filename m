@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06FFB79BDFD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7870F79B8FA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244026AbjIKWYy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48820 "EHLO
+        id S1355173AbjIKV5W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239196AbjIKOOO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:14 -0400
+        with ESMTP id S240574AbjIKOrt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE8E8CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A68C433CB;
-        Mon, 11 Sep 2023 14:14:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0520E106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E811C433C7;
+        Mon, 11 Sep 2023 14:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441649;
-        bh=Uay2A6HFMFHtlxqD2n/wWLqrubh+01zMuqF3cc/piRc=;
+        s=korg; t=1694443664;
+        bh=8SlWh2U15QCLekzM+ux0idkK3LDf3wc6r7xJQ6SmoAU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xXAWYOePcLuldhaNU0xSH038df+1fCDuXjVi6Y9hMIOaQ4rzR6qr1QeoTgmCkYK8+
-         tgXdLkhbC6Hpbfk6phSC6LkTLC0GFP+VMxvweJlV6HnZrGZW+tzckeCe/rzE3RHqcy
-         +HKZMtNL/91ES1GjIx4A0U+k/MJv0tNQM6oc1lww=
+        b=H13fYelJS5M5dNfhEelMEc8QHU916WEStNva3vbWx+FWsj6Mmcz0zafCJIeiNo1np
+         zpyODj5M+s7TnAI5jkGc19c2FBeL2YxZRnDXU35ndAmJZ2Y+9s8h3UYtdbIuVf8n4b
+         38+S4u7nv8MsC5quYpdG4vghnp+3Qce2vEF4K52E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Patrick Whewell <patrick.whewell@sightlineapplications.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 487/739] iio: accel: adxl313: Fix adxl313_i2c_id[] table
-Date:   Mon, 11 Sep 2023 15:44:46 +0200
-Message-ID: <20230911134704.737699584@linuxfoundation.org>
+Subject: [PATCH 6.4 428/737] clk: qcom: gcc-sm8250: Fix gcc_sdcc2_apps_clk_src
+Date:   Mon, 11 Sep 2023 15:44:47 +0200
+Message-ID: <20230911134702.555356162@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Patrick Whewell <patrick.whewell@sightlineapplications.com>
 
-[ Upstream commit f636554c4cd1c644109cc525900a056495b86cc9 ]
+[ Upstream commit 783cb693828ce487cf0bc6ad16cbcf2caae6f8d9 ]
 
-The .driver_data in adxl313_i2c_id[] for adxl312 and adxl314 is
-wrong. Fix this issue by adding corresponding adxl31x_chip_info
-data.
+GPLL9 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
+didn't update its configuration" error when booting. Set .flags =
+CLK_OPS_PARENT_ENABLE to fix the error.
 
-Reported-by: Jonathan Cameron <jic23@kernel.org>
-Closes: https://lore.kernel.org/all/20230722172832.04ad7738@jic23-huawei
-Fixes: a7a1c60bc4c9 ("drivers: iio: accel: adxl312 and adxl314 support")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230725171624.331283-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Patrick Whewell <patrick.whewell@sightlineapplications.com>
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20230802210359.408-1-patrick.whewell@sightlineapplications.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl313_i2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-sm8250.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
-index 524327ea36631..e0a860ab9e58f 100644
---- a/drivers/iio/accel/adxl313_i2c.c
-+++ b/drivers/iio/accel/adxl313_i2c.c
-@@ -40,8 +40,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
- 
- static const struct i2c_device_id adxl313_i2c_id[] = {
- 	{ .name = "adxl312", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
--	{ .name = "adxl313", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
--	{ .name = "adxl314", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
-+	{ .name = "adxl313", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL313] },
-+	{ .name = "adxl314", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL314] },
- 	{ }
+diff --git a/drivers/clk/qcom/gcc-sm8250.c b/drivers/clk/qcom/gcc-sm8250.c
+index b6cf4bc88d4d4..d3c75bb55946a 100644
+--- a/drivers/clk/qcom/gcc-sm8250.c
++++ b/drivers/clk/qcom/gcc-sm8250.c
+@@ -721,6 +721,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.name = "gcc_sdcc2_apps_clk_src",
+ 		.parent_data = gcc_parent_data_4,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
++		.flags = CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_rcg2_floor_ops,
+ 	},
  };
- 
 -- 
 2.40.1
 
