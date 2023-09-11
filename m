@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9C0879BB89
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78EB479B757
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350362AbjIKVhI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
+        id S1359799AbjIKWSq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238431AbjIKN43 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:29 -0400
+        with ESMTP id S239775AbjIKO2Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E564B10E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DD8C433C8;
-        Mon, 11 Sep 2023 13:56:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2228F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059FBC433C8;
+        Mon, 11 Sep 2023 14:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440584;
-        bh=XZFjGDAP9daipokb4HbJySnGlnd2guff1/zTqPL4axE=;
+        s=korg; t=1694442499;
+        bh=lT6Y6VuUTqiZD5penofz4qKci4XpU04WxZ/HbU2kY8k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HnE3lB5ooVWm8cWoqnqzBvnyfX2yEHOV3TkFbvXDXzep8guDb3SBzuBS9x7tTXy5b
-         XD3mj3LjFjsizw5KeNa1Ax4uf0Nb2/thfTmxpUQGytLiS1RQ1iLSACUM1JVnIyPZHL
-         bZdDIxMwuHCWUp8rqtZLu9XeC2oO49N21/hS4jj8=
+        b=E4u1N32SDATNP8C3B4rLkl+Rc/cmK7E62hTj6UOVzbYWgb6tYxo82LaZivAxq78dr
+         6Jhe1phwoCuaa+r/P0tJ8Ul2kpmcWkAp52D2oVZoxcJIG7kj00dzUQYtjqb0eSGknV
+         d5xkdQGz0Q77R4nXJ7rdCnIJ9slp0i68w/rSqMAU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Zhihong Dong <donmor3000@hotmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 106/739] wifi: ath12k: fix memcpy array overflow in ath12k_peer_assoc_h_he()
+Subject: [PATCH 6.4 046/737] LoongArch: Fix CMDLINE_EXTEND and CMDLINE_BOOTLOADER handling
 Date:   Mon, 11 Sep 2023 15:38:25 +0200
-Message-ID: <20230911134654.060394359@linuxfoundation.org>
+Message-ID: <20230911134651.735440304@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Zhihong Dong <donmor3000@hotmail.com>
 
-[ Upstream commit 603cf6c2fcdcbc38f1daa316794e7268852677a7 ]
+[ Upstream commit 83da30d73b86ab5898fb84f8b49c11557c3fcc67 ]
 
-Two memory copies in this function copy from a short array into a longer one,
-using the wrong size, which leads to an out-of-bounds access:
+On FDT systems these command line processing are already taken care of
+by early_init_dt_scan_chosen(). Add similar handling to the ACPI (non-
+FDT) code path to allow these config options to work for ACPI (non-FDT)
+systems too.
 
-include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
-                        ^
-include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-2 errors generated.
-
-Fixes: d889913205cf7 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230703123737.3420464-1-arnd@kernel.org
+Signed-off-by: Zhihong Dong <donmor3000@hotmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/setup.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 1bb9802ef5696..45d88e35fc2eb 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1637,9 +1637,9 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 78a00359bde3c..9d830ab4e3025 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -332,9 +332,25 @@ static void __init bootcmdline_init(char **cmdline_p)
+ 			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
  
- 	memcpy(&arg->peer_he_cap_macinfo, he_cap->he_cap_elem.mac_cap_info,
--	       sizeof(arg->peer_he_cap_macinfo));
-+	       sizeof(he_cap->he_cap_elem.mac_cap_info));
- 	memcpy(&arg->peer_he_cap_phyinfo, he_cap->he_cap_elem.phy_cap_info,
--	       sizeof(arg->peer_he_cap_phyinfo));
-+	       sizeof(he_cap->he_cap_elem.phy_cap_info));
- 	arg->peer_he_ops = vif->bss_conf.he_oper.params;
+ 		strlcat(boot_command_line, init_command_line, COMMAND_LINE_SIZE);
++		goto out;
+ 	}
+ #endif
  
- 	/* the top most byte is used to indicate BSS color info */
++	/*
++	 * Append built-in command line to the bootloader command line if
++	 * CONFIG_CMDLINE_EXTEND is enabled.
++	 */
++	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) && CONFIG_CMDLINE[0]) {
++		strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
++		strlcat(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
++	}
++
++	/*
++	 * Use built-in command line if the bootloader command line is empty.
++	 */
++	if (IS_ENABLED(CONFIG_CMDLINE_BOOTLOADER) && !boot_command_line[0])
++		strscpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
++
+ out:
+ 	*cmdline_p = boot_command_line;
+ }
 -- 
 2.40.1
 
