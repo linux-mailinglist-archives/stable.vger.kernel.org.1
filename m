@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F51779BECD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75C5679C019
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350652AbjIKVkT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38404 "EHLO
+        id S235720AbjIKVRS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238863AbjIKOGi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:38 -0400
+        with ESMTP id S241268AbjIKPFe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92CBCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05658C433C7;
-        Mon, 11 Sep 2023 14:06:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3E9125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC400C433C9;
+        Mon, 11 Sep 2023 15:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441194;
-        bh=mreJ62WD1SOXlrqdhrFWHAivBuaeVc6Wfj9oUjEA4LM=;
+        s=korg; t=1694444730;
+        bh=dozTN6aNcmZHmhWBpnSVBJKAZfX7HJ4KrR/TXvILNr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SQeYL3KXmip5SpAE5vD+El2D/mCv3Av29W6Zvh77qrDRghxYKvBhR980hkwg6K0tW
-         6GMerNJFTVIz/TyTVsSHfbeGHiSZBqGZyQMQkNLUTGRVdbIWRElHvQyuNIxglSyJ3l
-         ju0jJbXEBUk/OMGagvZmHdhLF+3HM0OagOBqUeO4=
+        b=0PF5TK+mszHdutfkWH2/0EvYAsIPr+eoNuORyXCCycAfM+7zt+Sy4WrONqE8+R8fe
+         r5uGKp5U0T6ScilNHoDUbQhKIEra3Fvry0an1jbyRp07yUwRy8RrPnG8HJ4eabknaN
+         DdsaYFlUmdSDdkcRB1Fcm+IqVckKs8OfEl2k9Nv0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jinyoung Choi <j-young.choi@samsung.com>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 328/739] block: move the bi_size overflow check in __bio_try_merge_page
-Date:   Mon, 11 Sep 2023 15:42:07 +0200
-Message-ID: <20230911134700.261573529@linuxfoundation.org>
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1 096/600] tools/resolve_btfids: Alter how HOSTCC is forced
+Date:   Mon, 11 Sep 2023 15:42:09 +0200
+Message-ID: <20230911134636.440791027@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +51,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 613699050a49760f1d70c74f71bd0b013ca3c356 ]
+commit 13e07691a16ff31b209fbfce25c01ff296b05e45 upstream.
 
-Checking for availability in bi_size in a function that attempts to
-merge into an existing segment is a bit odd, as the limit also applies
-when adding a new segment.  This code works fine as we always call
-__bio_try_merge_page, but contributes to sub-optimal calling conventions
-and doesn't lead to clear code.
+HOSTCC is always wanted when building. Setting CC to HOSTCC happens
+after tools/scripts/Makefile.include is included, meaning flags are
+set assuming say CC is gcc, but then it can be later set to HOSTCC
+which may be clang. tools/scripts/Makefile.include is needed for host
+set up and common macros in objtool's Makefile. Rather than override
+CC to HOSTCC, just pass CC as HOSTCC to Makefile.build, the libsubcmd
+builds and the linkage step. This means the Makefiles don't see things
+like CC changing and tool flag determination, and similar, work
+properly.
 
-Move it to two of the callers instead, the third one already has a more
-strict check that includes max_hw_segments anyway.
+Also, clear the passed subdir as otherwise an outer build may break by
+inadvertently passing an inappropriate value.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jinyoung Choi <j-young.choi@samsung.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20230724165433.117645-6-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 0ece1d649b6d ("bio-integrity: create multi-page bvecs in bio_integrity_add_page()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230124064324.672022-2-irogers@google.com
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/bpf/resolve_btfids/Makefile |   17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/block/bio.c b/block/bio.c
-index 4369c9a355c3c..b9b8328d1bc82 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -949,10 +949,6 @@ static bool __bio_try_merge_page(struct bio *bio, struct page *page,
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -18,14 +18,11 @@ else
+ endif
  
- 	if (!page_is_mergeable(bv, page, len, off, same_page))
- 		return false;
--	if (bio->bi_iter.bi_size > UINT_MAX - len) {
--		*same_page = false;
--		return false;
--	}
- 	bv->bv_len += len;
- 	bio->bi_iter.bi_size += len;
- 	return true;
-@@ -1125,6 +1121,8 @@ int bio_add_page(struct bio *bio, struct page *page,
- 
- 	if (WARN_ON_ONCE(bio_flagged(bio, BIO_CLONED)))
- 		return 0;
-+	if (bio->bi_iter.bi_size > UINT_MAX - len)
-+		return 0;
- 
- 	if (bio->bi_vcnt > 0 &&
- 	    __bio_try_merge_page(bio, page, len, offset, &same_page))
-@@ -1206,6 +1204,9 @@ static int bio_iov_add_page(struct bio *bio, struct page *page,
- {
- 	bool same_page = false;
- 
-+	if (WARN_ON_ONCE(bio->bi_iter.bi_size > UINT_MAX - len))
-+		return -EIO;
+ # always use the host compiler
+-AR       = $(HOSTAR)
+-CC       = $(HOSTCC)
+-LD       = $(HOSTLD)
+-ARCH     = $(HOSTARCH)
++HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
++		  EXTRA_CFLAGS="$(HOSTCFLAGS) $(KBUILD_HOSTCFLAGS)"
 +
- 	if (bio->bi_vcnt > 0 &&
- 	    __bio_try_merge_page(bio, page, len, offset, &same_page)) {
- 		if (same_page)
--- 
-2.40.1
-
+ RM      ?= rm
+ CROSS_COMPILE =
+-CFLAGS  := $(KBUILD_HOSTCFLAGS)
+-LDFLAGS := $(KBUILD_HOSTLDFLAGS)
+ 
+ OUTPUT ?= $(srctree)/tools/bpf/resolve_btfids/
+ 
+@@ -56,12 +53,12 @@ $(OUTPUT) $(OUTPUT)/libsubcmd $(LIBBPF_O
+ 
+ $(SUBCMDOBJ): fixdep FORCE | $(OUTPUT)/libsubcmd
+ 	$(Q)$(MAKE) -C $(SUBCMD_SRC) OUTPUT=$(SUBCMD_OUT) \
+-		    DESTDIR=$(SUBCMD_DESTDIR) prefix= \
++		    DESTDIR=$(SUBCMD_DESTDIR) $(HOST_OVERRIDES) prefix= subdir= \
+ 		    $(abspath $@) install_headers
+ 
+ $(BPFOBJ): $(wildcard $(LIBBPF_SRC)/*.[ch] $(LIBBPF_SRC)/Makefile) | $(LIBBPF_OUT)
+ 	$(Q)$(MAKE) $(submake_extras) -C $(LIBBPF_SRC) OUTPUT=$(LIBBPF_OUT)    \
+-		    DESTDIR=$(LIBBPF_DESTDIR) prefix= EXTRA_CFLAGS="$(CFLAGS)" \
++		    DESTDIR=$(LIBBPF_DESTDIR) $(HOST_OVERRIDES) prefix= subdir= \
+ 		    $(abspath $@) install_headers
+ 
+ LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2>/dev/null)
+@@ -80,11 +77,11 @@ export srctree OUTPUT CFLAGS Q
+ include $(srctree)/tools/build/Makefile.include
+ 
+ $(BINARY_IN): fixdep FORCE prepare | $(OUTPUT)
+-	$(Q)$(MAKE) $(build)=resolve_btfids
++	$(Q)$(MAKE) $(build)=resolve_btfids $(HOST_OVERRIDES)
+ 
+ $(BINARY): $(BPFOBJ) $(SUBCMDOBJ) $(BINARY_IN)
+ 	$(call msg,LINK,$@)
+-	$(Q)$(CC) $(BINARY_IN) $(LDFLAGS) -o $@ $(BPFOBJ) $(SUBCMDOBJ) $(LIBS)
++	$(Q)$(HOSTCC) $(BINARY_IN) $(KBUILD_HOSTLDFLAGS) -o $@ $(BPFOBJ) $(SUBCMDOBJ) $(LIBS)
+ 
+ clean_objects := $(wildcard $(OUTPUT)/*.o                \
+                             $(OUTPUT)/.*.o.cmd           \
 
 
