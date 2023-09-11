@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C758A79C086
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7D079BA6E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377887AbjIKW3G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51696 "EHLO
+        id S1350365AbjIKVhK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238232AbjIKNvz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:51:55 -0400
+        with ESMTP id S238249AbjIKNwY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E6D0CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:51:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D3BC433C7;
-        Mon, 11 Sep 2023 13:51:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA035CD7;
+        Mon, 11 Sep 2023 06:52:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32B7C433CA;
+        Mon, 11 Sep 2023 13:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440311;
-        bh=bWyYbxPzHCQvB8zV9sMvkLYZ4f16+LHKrrBTIv8G1aI=;
+        s=korg; t=1694440340;
+        bh=G+uYgBverc1Ro/xgHPw6sRBSg+pKfkM04MdXBtul8Ys=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vx5Qz8a/URXUgg489NKms5X39Iluj7Rj7Tzwh2vA4Y6GLHJvmTHaKVNgr8uH7SrZ2
-         diSF5dHMiQLMrQ3Ixst68twFaa4KWVYt7KAy+pPBenkQGTB0BFLrJeVK7hsJ2P1VEY
-         Wg+zHxCPidGUHveu7XmcBgIWk1N1hbm3934dTVYM=
+        b=zAa4SXRRmgVZFAyg8O4lK6YGb/A1l92rZqVK2b3brRAqh1V3aY8FlNEDTfBH4RIqa
+         MdU3LwywjdNmZOZ9VgV3eZMRY2twybZHLb+rXK3Nu8BAYUGWXeHQuU1VC+9s1crcf1
+         SK0CAkyO4infzSgIxq+QVLyxneSg7iAom8Fl7M8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 017/739] iomap: Remove large folio handling in iomap_invalidate_folio()
-Date:   Mon, 11 Sep 2023 15:36:56 +0200
-Message-ID: <20230911134651.508719528@linuxfoundation.org>
+        patches@lists.linux.dev, Shuah Khan <shuah@kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>,
+        linux-kselftest@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 019/739] selftests/harness: Actually report SKIP for signal tests
+Date:   Mon, 11 Sep 2023 15:36:58 +0200
+Message-ID: <20230911134651.576399076@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -55,44 +56,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit a221ab717c43147f728d93513923ba3528f861bf ]
+[ Upstream commit b3d46e11fec0c5a8972e5061bb1462119ae5736d ]
 
-We do not need to release the iomap_page in iomap_invalidate_folio()
-to allow the folio to be split.  The splitting code will call
-->release_folio() if there is still per-fs private data attached to
-the folio.  At that point, we will check if the folio is still dirty
-and decline to release the iomap_page.  It is possible to trigger the
-warning in perfectly legitimate circumstances (eg if a disk read fails,
-we do a partial write to the folio, then we truncate the folio), which
-will cause those writes to be lost.
+Tests that were expecting a signal were not correctly checking for a
+SKIP condition. Move the check before the signal checking when
+processing test result.
 
-Fixes: 60d8231089f0 ("iomap: Support large folios in invalidatepage")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Will Drewry <wad@chromium.org>
+Cc: linux-kselftest@vger.kernel.org
+Fixes: 9847d24af95c ("selftests/harness: Refactor XFAIL into SKIP")
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 5 -----
- 1 file changed, 5 deletions(-)
+ tools/testing/selftests/kselftest_harness.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index aa8967cca1a31..7d2f70708f37d 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -508,11 +508,6 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len)
- 		WARN_ON_ONCE(folio_test_writeback(folio));
- 		folio_cancel_dirty(folio);
- 		iomap_page_release(folio);
--	} else if (folio_test_large(folio)) {
--		/* Must release the iop so the page can be split */
--		WARN_ON_ONCE(!folio_test_uptodate(folio) &&
--			     folio_test_dirty(folio));
--		iomap_page_release(folio);
- 	}
- }
- EXPORT_SYMBOL_GPL(iomap_invalidate_folio);
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index 5fd49ad0c696f..e05ac82610467 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -938,7 +938,11 @@ void __wait_for_test(struct __test_metadata *t)
+ 		fprintf(TH_LOG_STREAM,
+ 			"# %s: Test terminated by timeout\n", t->name);
+ 	} else if (WIFEXITED(status)) {
+-		if (t->termsig != -1) {
++		if (WEXITSTATUS(status) == 255) {
++			/* SKIP */
++			t->passed = 1;
++			t->skip = 1;
++		} else if (t->termsig != -1) {
+ 			t->passed = 0;
+ 			fprintf(TH_LOG_STREAM,
+ 				"# %s: Test exited normally instead of by signal (code: %d)\n",
+@@ -950,11 +954,6 @@ void __wait_for_test(struct __test_metadata *t)
+ 			case 0:
+ 				t->passed = 1;
+ 				break;
+-			/* SKIP */
+-			case 255:
+-				t->passed = 1;
+-				t->skip = 1;
+-				break;
+ 			/* Other failure, assume step report. */
+ 			default:
+ 				t->passed = 0;
 -- 
 2.40.1
 
