@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1824E79BADE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4025E79BF09
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240521AbjIKWqK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:46:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47252 "EHLO
+        id S1345853AbjIKVWb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240447AbjIKOoc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:32 -0400
+        with ESMTP id S239119AbjIKOMT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082E212A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2612FC433C7;
-        Mon, 11 Sep 2023 14:44:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAD40CE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1EEC433C7;
+        Mon, 11 Sep 2023 14:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443467;
-        bh=kbGp7hq1NG3wqxFTckdeViWVVomahll2NvQM5Im4th8=;
+        s=korg; t=1694441533;
+        bh=EO7QWCm4wSfgiY4+xaxaERxiZkTs5Fjsg1NcO4TdWsA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OUN2ZQ1cJVrx/tTk3lJ9dYa2AsZlgeIDYv36PidMEqGHuRPL4pn1pvFsVh1WtPjsd
-         uCUWXoCBUsmNWXfZbbLX7Z+F9aa6GGPqjDG973hTJHHvltOiPIQttzOjZks0ybTW3Q
-         +KIZb/j3JQXEcKI+swERlGjxNeTHTGaa5qlfF7fI=
+        b=t2US9zRBwYTxbeshSvYpZObjHYW5/ibecbcI2jtelSr9LPooNV7Fty6w9VgYFAgXI
+         7zMKnQo6lWJ6D6810hqTEc9D6W6QaAeAlzdOUWUpDPkgN4F8qxRZHLOtjciN+Ot/yB
+         JNNOZUqt3k5F/eMUL/BP4PA7lpL5hcjW2CI3ZHKA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 387/737] arm64: dts: qcom: apq8016-sbc: Rename ov5640 enable-gpios to powerdown-gpios
+Subject: [PATCH 6.5 447/739] NFSv4.2: fix handling of COPY ERR_OFFLOAD_NO_REQ
 Date:   Mon, 11 Sep 2023 15:44:06 +0200
-Message-ID: <20230911134701.398864209@linuxfoundation.org>
+Message-ID: <20230911134703.649466019@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 4facccb44a82129195878750eed8f9890091c1b8 ]
+[ Upstream commit 5690eed941ab7e33c3c3d6b850100cabf740f075 ]
 
-There are two control lines controlled by GPIO going into ov5640
+If the client sent a synchronous copy and the server replied with
+ERR_OFFLOAD_NO_REQ indicating that it wants an asynchronous
+copy instead, the client should retry with asynchronous copy.
 
-- Reset
-- Powerdown
-
-The driver and yaml expect "reset-gpios" and "powerdown-gpios" there has
-never been an "enable-gpios".
-
-Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811234738.2859417-6-bryan.odonoghue@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 539f57b3e0fd ("NFS handle COPY ERR_OFFLOAD_NO_REQS")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs42proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index 80a6526779849..fa92a870cfc40 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -276,7 +276,7 @@ camera_rear@3b {
- 		compatible = "ovti,ov5640";
- 		reg = <0x3b>;
- 
--		enable-gpios = <&tlmm 34 GPIO_ACTIVE_HIGH>;
-+		powerdown-gpios = <&tlmm 34 GPIO_ACTIVE_HIGH>;
- 		reset-gpios = <&tlmm 35 GPIO_ACTIVE_LOW>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&camera_rear_default>;
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index 49f78e23b34c0..063e00aff87ed 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -471,8 +471,9 @@ ssize_t nfs42_proc_copy(struct file *src, loff_t pos_src,
+ 				continue;
+ 			}
+ 			break;
+-		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS && !args.sync) {
+-			args.sync = true;
++		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS &&
++				args.sync != res.synchronous) {
++			args.sync = res.synchronous;
+ 			dst_exception.retry = 1;
+ 			continue;
+ 		} else if ((err == -ESTALE ||
 -- 
 2.40.1
 
