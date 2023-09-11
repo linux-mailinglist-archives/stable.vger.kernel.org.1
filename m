@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC8879B4FF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 122B279AD0E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355457AbjIKV7m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36782 "EHLO
+        id S237815AbjIKUvq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239296AbjIKOQ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:58 -0400
+        with ESMTP id S241835AbjIKPPq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42567DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AF0C433C7;
-        Mon, 11 Sep 2023 14:16:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07D3FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38020C433C8;
+        Mon, 11 Sep 2023 15:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441813;
-        bh=lO/4y/fWdVcnCYI+pLSlDiKNhF91ZyGCLZB06Sw1NTY=;
+        s=korg; t=1694445341;
+        bh=xcGruUL41PrshpdcG5e5hbWdmpEmHR/0tt/7LTKji6w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AfGwLaj8dyTK4IXzuYqx4+85/YtZ6edCAr3xgnCGcEapjoDYcWqUucQy3TEzL2ry1
-         N15AklwnywHmMsCoWDOk91sgCtv5pQBsiuaLDjhFd6778W8TZ+9uDAxyJEdH2igrNW
-         EFkuFGQ9ShfSarA56UkTORHQcroya5tW7i/NAgfI=
+        b=oTxxz3w545Wdv8VIQy0HAdC1beib00jhdlUH6Wa+5SxKp56x2BFpWyetLTNb69z09
+         rJxOieRG4l8bHOwbQt0aKKEkVP4XXtbbCTwNYDlAmAeFgjp8Q29+BFcbmvLeL4Te/g
+         IA2/vkcI5hJe0gIFxpJAw7N13jPlFI9yxBpy2bGc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 545/739] media: ov2680: Dont take the lock for try_fmt calls
-Date:   Mon, 11 Sep 2023 15:45:44 +0200
-Message-ID: <20230911134706.317147199@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 313/600] md/raid5-cache: fix a deadlock in r5l_exit_log()
+Date:   Mon, 11 Sep 2023 15:45:46 +0200
+Message-ID: <20230911134642.902260021@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +49,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit e521b9cc1a49de677f4fc65909ce4877fbf7b113 ]
+[ Upstream commit a705b11b358dee677aad80630e7608b2d5f56691 ]
 
-On ov2680_set_fmt() calls with format->which == V4L2_SUBDEV_FORMAT_TRY,
-ov2680_set_fmt() does not talk to the sensor.
+Commit b13015af94cf ("md/raid5-cache: Clear conf->log after finishing
+work") introduce a new problem:
 
-So in this case there is no need to lock the sensor->lock mutex or
-to check that the sensor is streaming.
+// caller hold reconfig_mutex
+r5l_exit_log
+ flush_work(&log->disable_writeback_work)
+			r5c_disable_writeback_async
+			 wait_event
+			  /*
+			   * conf->log is not NULL, and mddev_trylock()
+			   * will fail, wait_event() can never pass.
+			   */
+ conf->log = NULL
 
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fix this problem by setting 'config->log' to NULL before wake_up() as it
+used to be, so that wait_event() from r5c_disable_writeback_async() can
+exist. In the meantime, move forward md_unregister_thread() so that
+null-ptr-deref this commit fixed can still be fixed.
+
+Fixes: b13015af94cf ("md/raid5-cache: Clear conf->log after finishing work")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230708091727.1417894-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/md/raid5-cache.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index f6297874af3be..2b20990f4cf55 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -595,24 +595,22 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- 	if (format->pad != 0)
- 		return -EINVAL;
+diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
+index 832d8566e1656..477e3ae17545a 100644
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -3166,12 +3166,15 @@ void r5l_exit_log(struct r5conf *conf)
+ {
+ 	struct r5l_log *log = conf->log;
  
--	mutex_lock(&sensor->lock);
--
--	if (sensor->is_streaming) {
--		ret = -EBUSY;
--		goto unlock;
--	}
--
- 	mode = v4l2_find_nearest_size(ov2680_mode_data,
- 				      ARRAY_SIZE(ov2680_mode_data), width,
- 				      height, fmt->width, fmt->height);
--	if (!mode) {
--		ret = -EINVAL;
--		goto unlock;
--	}
-+	if (!mode)
-+		return -EINVAL;
+-	/* Ensure disable_writeback_work wakes up and exits */
+-	wake_up(&conf->mddev->sb_wait);
+-	flush_work(&log->disable_writeback_work);
+ 	md_unregister_thread(&log->reclaim_thread);
  
- 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
- 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
- 		format->format = *try_fmt;
-+		return 0;
-+	}
-+
-+	mutex_lock(&sensor->lock);
-+
-+	if (sensor->is_streaming) {
-+		ret = -EBUSY;
- 		goto unlock;
- 	}
++	/*
++	 * 'reconfig_mutex' is held by caller, set 'confg->log' to NULL to
++	 * ensure disable_writeback_work wakes up and exits.
++	 */
+ 	conf->log = NULL;
++	wake_up(&conf->mddev->sb_wait);
++	flush_work(&log->disable_writeback_work);
  
+ 	mempool_exit(&log->meta_pool);
+ 	bioset_exit(&log->bs);
 -- 
 2.40.1
 
