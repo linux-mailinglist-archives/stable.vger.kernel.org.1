@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77C0779AC91
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DCC79B255
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237854AbjIKVa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
+        id S239337AbjIKUyu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240337AbjIKOlx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:53 -0400
+        with ESMTP id S241446AbjIKPI7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B731CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB07C433C8;
-        Mon, 11 Sep 2023 14:41:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD74DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F27C433C7;
+        Mon, 11 Sep 2023 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443307;
-        bh=JOMM9/PmNPNfWwuMo89FaO7n4vpxfj1vxWKNNWWOflw=;
+        s=korg; t=1694444934;
+        bh=Vk5ErAYXfgi7gwo9RtX3ZGa+TYP6PuhCP2d5sTNjLNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wkzc9cAUFTqXSQutGqcSIZwVCegIMYgGfZdhh+Jnt5BBEdbcEQ4gKeXX4ZlePA/wU
-         s/+JWcF+/8lbqd/erLqSYaCcopNuuOf57hBdC52gacw8tQs6S4DqFfCBFngcRVnu7u
-         TA1NPCvqKKOCRajQv0N8PJqHjgDVP4Oef5ap9Rz8=
+        b=Bs1a1mgFEo0sOUzVZMNqn3GdS9FNzweOLQHr0Ge5Ndrhmo4HcTHHEDO7yApiPtwPR
+         WexgB43kb3frGLZRvElWjMrQqDnoraDPyjTyFwIRYo0Vm+f/kn869MhwnKn/hknZbR
+         I3VUFvoKlLTnJ3ecGRCXJN1qrzzUHRom0y/d7eP8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 303/737] ARM: dts: stm32: Add missing detach mailbox for Odyssey SoM
+Subject: [PATCH 6.1 129/600] ACPI: x86: s2idle: Post-increment variables when getting constraints
 Date:   Mon, 11 Sep 2023 15:42:42 +0200
-Message-ID: <20230911134659.015092157@linuxfoundation.org>
+Message-ID: <20230911134637.424529772@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +54,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 966f04a89d77548e673de2c400abe0b2cf5c15db ]
+[ Upstream commit 3c6b1212d20bbbffcad5709ab0f2d5ed9b5859a8 ]
 
-Add missing "detach" mailbox to this board to permit the CPU to inform
-the remote processor on a detach. This signal allows the remote processor
-firmware to stop IPC communication and to reinitialize the resources for
-a re-attach.
+When code uses a pre-increment it makes the reader question "why".
+In the constraint fetching code there is no reason for the variables
+to be pre-incremented so adjust to post-increment.
+No intended functional changes.
 
-Without this mailbox, detach is not possible and kernel log contains the
-following warning to, so make sure all the STM32MP15xx platform DTs are
-in sync regarding the mailboxes to fix the detach issue and the warning:
-"
-stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
-"
-
-Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 9cc8cd086f05 ("ACPI: x86: s2idle: Fix a logic error parsing AMD constraints table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/x86/s2idle.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi b/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
-index e22871dc580c8..cf74852514906 100644
---- a/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
-+++ b/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
-@@ -230,8 +230,8 @@ &iwdg2 {
- &m4_rproc {
- 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
- 			<&vdev0vring1>, <&vdev0buffer>;
--	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
--	mbox-names = "vq0", "vq1", "shutdown";
-+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
-+	mbox-names = "vq0", "vq1", "shutdown", "detach";
- 	interrupt-parent = <&exti>;
- 	interrupts = <68 1>;
- 	status = "okay";
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index e499c60c45791..3a9195df1aab3 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -122,13 +122,13 @@ static void lpi_device_get_constraints_amd(void)
+ 			acpi_handle_debug(lps0_device_handle,
+ 					  "LPI: constraints list begin:\n");
+ 
+-			for (j = 0; j < package->package.count; ++j) {
++			for (j = 0; j < package->package.count; j++) {
+ 				union acpi_object *info_obj = &package->package.elements[j];
+ 				struct lpi_device_constraint_amd dev_info = {};
+ 				struct lpi_constraints *list;
+ 				acpi_status status;
+ 
+-				for (k = 0; k < info_obj->package.count; ++k) {
++				for (k = 0; k < info_obj->package.count; k++) {
+ 					union acpi_object *obj = &info_obj->package.elements[k];
+ 
+ 					list = &lpi_constraints_table[lpi_constraints_table_size];
+@@ -213,7 +213,7 @@ static void lpi_device_get_constraints(void)
+ 		if (!package)
+ 			continue;
+ 
+-		for (j = 0; j < package->package.count; ++j) {
++		for (j = 0; j < package->package.count; j++) {
+ 			union acpi_object *element =
+ 					&(package->package.elements[j]);
+ 
+@@ -245,7 +245,7 @@ static void lpi_device_get_constraints(void)
+ 
+ 		constraint->min_dstate = -1;
+ 
+-		for (j = 0; j < package_count; ++j) {
++		for (j = 0; j < package_count; j++) {
+ 			union acpi_object *info_obj = &info.package[j];
+ 			union acpi_object *cnstr_pkg;
+ 			union acpi_object *obj;
 -- 
 2.40.1
 
