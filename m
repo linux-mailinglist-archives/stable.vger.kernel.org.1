@@ -2,85 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB0FC79B03C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1592B79B241
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348517AbjIKV1I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
+        id S1355154AbjIKV5O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238382AbjIKNzH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:07 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFFFECD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349C9C433C9;
-        Mon, 11 Sep 2023 13:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440501;
-        bh=ljzwRkyqmbgqNAW1gkceF3WRm9XEP5FoHRGIULX2ezE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=u+GuM2Vyw53dIVIT55eyxzynuDZ6C0vB7LuCabna4GQc1iJHqKsAnimI+GSY0q6FJ
-         so7BHe6S6+pFoom0HwzGZxfSStJLfByqFbgLUhTh3q2u7ksSlIa7Ohp9v3bvJgWqpz
-         WUqUTeQhyf36A+/ynoHhf8or9vDuX4ws/OoUJu/M=
-Date:   Mon, 11 Sep 2023 15:54:59 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Donald Buczek <buczek@molgen.mpg.de>
-Cc:     stable@vger.kernel.org,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        David Ahern <dsahern@kernel.org>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: Re: [PATCH 5.15 052/107] Remove DECnet support from kernel
-Message-ID: <2023091117-unripe-ceremony-c29a@gregkh>
-References: <20230619102141.541044823@linuxfoundation.org>
- <20230619102143.987013167@linuxfoundation.org>
- <6084b5fc-577c-468a-a28e-e0ccc530ed9e@molgen.mpg.de>
+        with ESMTP id S239893AbjIKObB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:01 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91AEDE4D;
+        Mon, 11 Sep 2023 07:30:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1694442654; x=1695047454; i=rwarsow@gmx.de;
+ bh=kqEiy54vHn9A4hNDsY9RHpQci3bLlNR1YiGevJHTVVY=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=uf3gdlve24u9lyCpemVAxC1VET+HgN1VCnUvOop78pCXTjVEfxRya6vSsC3J4PRLFHQq5iJ
+ K8XJNOmT/Rg87EzqFfh5pPkV9ggPm5JQSzZ70r6X/JDw1pYQ7tUtDEJT+tU4E8brQgWjC155e
+ DaW37iqVL989WA95O+Bjkyqts0IwVd0hJDE0d0bTL1QjtVFTRAfy9FxYipbv+9ceCJ5T4IHMs
+ qnJKnJp7K7EEzkxWbpksX7hf2/EYWCwVYm4X5fr8vCQBUSxkLgQKxjSC08hjliJm15gW3Ak2W
+ mLNMSr9+Ba6rFcFcWCSg4GGgWyuW6Od4rtgghVW2tyX7zMD1mG2w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.34.50]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmDEg-1pxoTu1HpA-00iEBd; Mon, 11
+ Sep 2023 16:30:54 +0200
+Message-ID: <800b38d5-c66a-bb9b-1d86-385dd796b34f@gmx.de>
+Date:   Mon, 11 Sep 2023 16:30:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6084b5fc-577c-468a-a28e-e0ccc530ed9e@molgen.mpg.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+From:   Ronald Warsow <rwarsow@gmx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.5 000/739] 6.5.3-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:jx3m3w0du9Nmk20OGQaMPYAk/aAHTmJHb4zV8o6DROZNTjxQrjJ
+ Wfe8l4igtZuWpAEEJTmEv7y1gdFevXYo9ag/TrkFd1Y7bBZZSKzqJvT5g4t9e201EQSsKuc
+ ITuJH/4eQ0mixlQcyM+oYcDXvwPHjMBtGqXoGO31I2VGPikhKFRKo32Z7xoTAddShINKZze
+ yOsKN1w11iNr9mTMeD0TA==
+UI-OutboundReport: notjunk:1;M01:P0:jEE64T2UVY4=;AtX7Q+Q2xBzwRKEYY7RcT5D86ij
+ CLYS+rqMA+rGjsSYfr2f6iup3wbGgV19hGRmjIp18GTe6hF7GpUNzy6uUeQXCjsj6PcclCd/u
+ me7rmgIoIp3XYRtI/zGk+ska1STBYRpbVk8qYODHpCJvncfVLinuPNbsrIuuk2x1vvKHTZdfV
+ dL2CLz5gu3oHztVqXzhr2lePPk2navUY3li9Fg977w3LN8DCEuvtCFrRg3EgMmuu3yvM4aPdt
+ jS9mudFwOzx4fgEbKrA4DZV0Hnvp6DrV17F39MJC5Go4TYMiPwfTq2p2cqEa5a+ZNN1fXca6i
+ a5XCBu36Q4VSWa6R5OZuEPpGZdP4XvoYLtzQj+/1uT6hfezOBOF2cS+1vwuM82tBrpPhQkye6
+ YYETZbJchNddXvlRJ7kClP/b30amA4HAoqduZVZtQpLt0B6MAG6kw9lFxxGaIdJNH8VXOuFJW
+ HluJ9BmBymysCwMipqQUCT2sgZ61YZ5EUY8WndimBEJQQDqCEwL0kFrdKQ/ACACEOjhWmU9TW
+ PGfRUeZKHc0UyVvIsWCR4GzVcGJ919GYa/iRVfR2zJQgGPDx2ePY9aLFQXAPzvt6XO4a2p0vL
+ /KsWGE4FIN2mzhE40YGTTaIWa10T82pVamRBbdClYZM/XzJaUZskKI1y0b1MEbiTvdRd7mjO9
+ hlakBfuQQQUAlCPwMHv/sgZjTMSIdazlzJgy7K2ZfcDcL4/g5Bf/ZYZ4X1DHVs5fTPlXvyaZ3
+ Ffrbvmbcb+NR2mbBMrn7xV712vbrC/YwpiJiPuz0oFxSRleetDR2wxTPjRrSRAFWJb9GePbZe
+ GEPnrSJku4nS7hOvSBxjPBfOp2y535rONADjZs5rQn3eWyir4o68r/pYoWUA1dN4JTlimULMt
+ sd/xIhn4Br8S6yuQOQF/lG6RIPv83ZwYwl7d/uSgd3iwm8aouRftgay7rGwn/2X4AeHHMggbL
+ oPWRdw==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 03:47:01PM +0200, Donald Buczek wrote:
-> On 6/19/23 12:30 PM, Greg Kroah-Hartman wrote:
-> > From: Stephen Hemminger <stephen@networkplumber.org>
-> > 
-> > commit 1202cdd665315c525b5237e96e0bedc76d7e754f upstream.
-> > 
-> > DECnet is an obsolete network protocol that receives more attention
-> > from kernel janitors than users. It belongs in computer protocol
-> > history museum not in Linux kernel.
-> [...]
-> 
-> May I ask, how and why this patch made it into the stable kernels?
-> 
-> Did this patch "fix a real bug that bothers people?"
+Hi Greg
 
-Yes.
+6.5.3-rc1
 
-> No, we don't use DECNET since 25 years or so. But still any change of kconfig patterns bothers us. 
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake, i5-11400)
 
-We have never guaranteed that Kconfig options will never change in
-stable kernel releases, sorry.  This happens all the time with things
-being removed, and fixes happening to add new ones for various reasons
-as you have seen.
+Thanks
 
-> We automatically build each released kernel and our config evolves automatically following a `cp config-mpi .config && make olddefconfig && make savedefconfig && cp defconfig config-mpi && git commit -m"Update for new kernel version" config-mpi` pattern.
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-You might want to manually check this as well, because as you have seen,
-sometimes things are added that you need to keep things working properly
-(like the spectre/meltdown-like fixes.)
-
-thanks,
-
-greg k-h
