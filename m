@@ -2,35 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A58D579BE63
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 476BF79BFDB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378911AbjIKWh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37620 "EHLO
+        id S1354279AbjIKVxP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242385AbjIKP3h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:29:37 -0400
+        with ESMTP id S242339AbjIKP2R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87244FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:29:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A95C433C7;
-        Mon, 11 Sep 2023 15:29:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683F5F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B82C433C7;
+        Mon, 11 Sep 2023 15:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446173;
-        bh=kN0ilVn/WfDYWcQIObvS7ZR6aACEk5c9TCgyL83El5I=;
+        s=korg; t=1694446092;
+        bh=Fm5EDDl58w4KeKRQDYtt623KkF51ZIgboKA3jssPIfg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zPp4XYB2VkIOBgcJGzhYmRf3ICegp/n+pXYVe8SJFpPoDh/mlzF8EJ/40fcY0D0uj
-         t9lNY/tTYtgekzlvJbEa12UmnNsGwBwCG+a7cy+00wn967nqnivSeRpFwmOx19hMAS
-         rVUK06D/X6sMldhW3NL8NZJZX53eDJoExloobuD0=
+        b=FIkkUHR1gWo3ydui2S24zAFtUP2J/9Bft5xNsJoVQ0o5bId+xGFNgtjgo8MWsRgSS
+         OyV8VgbG86i8+6daq1DPpsKkmW9z5YoOVQ/0t3JLixXiqdnb9fJxzKoNvcolMmTSy/
+         YC1PCKqKwSpaEEvEPPDcI+axq2+C7ly4q4XAN9lk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.1 571/600] platform/chrome: chromeos_acpi: print hex string for ACPI_TYPE_BUFFER
-Date:   Mon, 11 Sep 2023 15:50:04 +0200
-Message-ID: <20230911134650.467322535@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 572/600] mmc: renesas_sdhi: register irqs before registering controller
+Date:   Mon, 11 Sep 2023 15:50:05 +0200
+Message-ID: <20230911134650.497422822@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -53,74 +56,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 0820debb7d489e9eb1f68b7bb69e6ae210699b3f upstream.
+commit 74f45de394d979cc7770271f92fafa53e1ed3119 upstream.
 
-`element->buffer.pointer` should be binary blob.  `%s` doesn't work
-perfect for them.
+IRQs should be ready to serve when we call mmc_add_host() via
+tmio_mmc_host_probe(). To achieve that, ensure that all irqs are masked
+before registering the handlers.
 
-Print hex string for ACPI_TYPE_BUFFER.  Also update the documentation
-to reflect this.
-
-Fixes: 0a4cad9c11ad ("platform/chrome: Add ChromeOS ACPI device driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: stable@vger.kernel.org
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230803011245.3773756-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20230712140011.18602-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-driver-chromeos-acpi |    2 -
- drivers/platform/chrome/chromeos_acpi.c              |   31 ++++++++++++++++++-
- 2 files changed, 31 insertions(+), 2 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-+++ b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-@@ -134,4 +134,4 @@ KernelVersion:	5.19
- Description:
- 		Returns the verified boot data block shared between the
- 		firmware verification step and the kernel verification step
--		(binary).
-+		(hex dump).
---- a/drivers/platform/chrome/chromeos_acpi.c
-+++ b/drivers/platform/chrome/chromeos_acpi.c
-@@ -90,7 +90,36 @@ static int chromeos_acpi_handle_package(
- 	case ACPI_TYPE_STRING:
- 		return sysfs_emit(buf, "%s\n", element->string.pointer);
- 	case ACPI_TYPE_BUFFER:
--		return sysfs_emit(buf, "%s\n", element->buffer.pointer);
-+		{
-+			int i, r, at, room_left;
-+			const int byte_per_line = 16;
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1006,6 +1006,8 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
+ 		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
+ 		host->reset = renesas_sdhi_reset;
++	} else {
++		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+ 	}
+ 
+ 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
+@@ -1102,9 +1104,7 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->ops.hs400_complete = renesas_sdhi_hs400_complete;
+ 	}
+ 
+-	ret = tmio_mmc_host_probe(host);
+-	if (ret < 0)
+-		goto edisclk;
++	sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, host->sdcard_irq_mask_all);
+ 
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+@@ -1131,6 +1131,10 @@ int renesas_sdhi_probe(struct platform_d
+ 			goto eirq;
+ 	}
+ 
++	ret = tmio_mmc_host_probe(host);
++	if (ret < 0)
++		goto edisclk;
 +
-+			at = 0;
-+			room_left = PAGE_SIZE - 1;
-+			for (i = 0; i < element->buffer.length && room_left; i += byte_per_line) {
-+				r = hex_dump_to_buffer(element->buffer.pointer + i,
-+						       element->buffer.length - i,
-+						       byte_per_line, 1, buf + at, room_left,
-+						       false);
-+				if (r > room_left)
-+					goto truncating;
-+				at += r;
-+				room_left -= r;
-+
-+				r = sysfs_emit_at(buf, at, "\n");
-+				if (!r)
-+					goto truncating;
-+				at += r;
-+				room_left -= r;
-+			}
-+
-+			buf[at] = 0;
-+			return at;
-+truncating:
-+			dev_info_once(dev, "truncating sysfs content for %s\n", name);
-+			sysfs_emit_at(buf, PAGE_SIZE - 4, "..\n");
-+			return PAGE_SIZE - 1;
-+		}
- 	default:
- 		dev_err(dev, "element type %d not supported\n", element->type);
- 		return -EINVAL;
+ 	dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
+ 		 mmc_hostname(host->mmc), &res->start, host->mmc->f_max / 1000000);
+ 
 
 
