@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F7F79BBF6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 707D479BFCB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233781AbjIKWtS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:49:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51958 "EHLO
+        id S1348494AbjIKV1D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238578AbjIKN7r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:47 -0400
+        with ESMTP id S238598AbjIKOAS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A09CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF70C433C7;
-        Mon, 11 Sep 2023 13:59:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EB29CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6B6C433C8;
+        Mon, 11 Sep 2023 14:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440783;
-        bh=D9kERBqc1W21zkaYNu1lRL1+406AT24ykVpoM4jrg6s=;
+        s=korg; t=1694440814;
+        bh=7r9kEcu1172ODM0aLL5PdjavzOeL/EHdyjlSSzQwMdk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nGCU3wNz3AA5CYIyP/q7KlfJkF2tIW6RS9APBWH9sKvqslkppFaL8IPidLv1C2Dkq
-         TqcvG5vbVa0WWmc3Gh7q+PwOgZIq1V4jBpnLs1NI49mCos462lgq0w2Y15vEvXf5lJ
-         4ijz+OvYS1uFUiLABzeGRXgG4ZCWx3SEPX4l2gNE=
+        b=bA08cAMERFcTK/AntBinvlCEeFClu7kq8xmuL+RpqaItA3UtXDGMNJLzJoTsc4vHq
+         Y0fVQ6E+RVe11dfAUKf6pbKnyz7Uj+L9kuoQGRysbdvj67o50OH2nhpQRaVZCMA+4B
+         qCMfJAklDdv+k6GcRSM3oiiujyrMn05Ln66hcB2Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Simon Horman <horms@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 166/739] wifi: mac80211: fix puncturing bitmap handling in CSA
-Date:   Mon, 11 Sep 2023 15:39:25 +0200
-Message-ID: <20230911134655.810869958@linuxfoundation.org>
+Subject: [PATCH 6.5 167/739] wifi: nl80211/cfg80211: add forgotten nla_policy for BSS color attribute
+Date:   Mon, 11 Sep 2023 15:39:26 +0200
+Message-ID: <20230911134655.840480956@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -53,52 +55,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 927521170c4a18c620f97865f7bad48f17c48967 ]
+[ Upstream commit 218d690c49b7e9c94ad0d317adbdd4af846ea0dc ]
 
-Code inspection reveals that we switch the puncturing bitmap
-before the real channel switch, since that happens only in
-the second round of the worker after the channel context is
-switched by ieee80211_link_use_reserved_context().
+The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
+NDP ranging parameters") adds a parameter for NDP ranging by introducing
+a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
 
-Fixes: 2cc25e4b2a04 ("wifi: mac80211: configure puncturing bitmap")
+However, the author forgot to also describe the nla_policy at
+nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
+complement it to avoid malformed attribute that causes out-of-attribute
+access.
+
+Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809033151.768910-1-linma@zju.edu.cn
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index e7ac246038925..d354b32a20f8f 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3648,12 +3648,6 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
- 	lockdep_assert_held(&local->mtx);
- 	lockdep_assert_held(&local->chanctx_mtx);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 8bcf8e293308e..4dcbc40d07c85 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -323,6 +323,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
+ };
  
--	if (sdata->vif.bss_conf.eht_puncturing != sdata->vif.bss_conf.csa_punct_bitmap) {
--		sdata->vif.bss_conf.eht_puncturing =
--					sdata->vif.bss_conf.csa_punct_bitmap;
--		changed |= BSS_CHANGED_EHT_PUNCTURING;
--	}
--
- 	/*
- 	 * using reservation isn't immediate as it may be deferred until later
- 	 * with multi-vif. once reservation is complete it will re-schedule the
-@@ -3683,6 +3677,12 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
- 	if (err)
- 		return err;
- 
-+	if (sdata->vif.bss_conf.eht_puncturing != sdata->vif.bss_conf.csa_punct_bitmap) {
-+		sdata->vif.bss_conf.eht_puncturing =
-+					sdata->vif.bss_conf.csa_punct_bitmap;
-+		changed |= BSS_CHANGED_EHT_PUNCTURING;
-+	}
-+
- 	ieee80211_link_info_change_notify(sdata, &sdata->deflink, changed);
- 
- 	if (sdata->deflink.csa_block_tx) {
+ static const struct nla_policy
 -- 
 2.40.1
 
