@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E13C79AD89
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 954F979ACA7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378742AbjIKWhC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52092 "EHLO
+        id S1378749AbjIKWhG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242213AbjIKPZO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:14 -0400
+        with ESMTP id S239646AbjIKOZV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70FC4D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A47C433C8;
-        Mon, 11 Sep 2023 15:25:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC00DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B46C433C7;
+        Mon, 11 Sep 2023 14:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445909;
-        bh=gdyCvE36AeVx1C1xO5emj5POAMhRyzC3T1UQQpJi5qQ=;
+        s=korg; t=1694442317;
+        bh=3GSnM1Mh25k1sZrWtZzM8go4SNG2Dz1VRKg4INU+2b0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WSo411lKXkOcM1A6WmWVQ+Eiq/JPt9Kk7M+2HQkqFfahEcUjU7fukX9R9yamhieVi
-         DV7QgCVfzk5rKVZ8j6dYM+5ptmoZuBS2+cJMI52o52OJMr1UBc59YP+8pxdlP40luk
-         IEZjVfeSiO1kOd9Vmw+b/FyyBr1YlxGDNJSZfPro=
+        b=C+LQkZlCXXnrrVAXSGDUKZWaTvU0/V0AFbPPeQublswyNH7Qv0yV1gv4R64GTrVM8
+         c6iHffz5WhqLHkZbNd1h2lkfW3CCKnNP5QAyRAQFxWcU1vKqNUtm6pSOtC5Vf8akiy
+         pSLaWNN7GPtnahuO5hzF82mi1uBg98gpfrqGNTxY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 488/600] Revert "IB/isert: Fix incorrect release of isert connection"
+        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Adam Ford <aford173@gmail.com>
+Subject: [PATCH 6.5 722/739] of: property: fw_devlink: Add a devlink for panel followers
 Date:   Mon, 11 Sep 2023 15:48:41 +0200
-Message-ID: <20230911134648.041079469@linuxfoundation.org>
+Message-ID: <20230911134711.249670114@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,128 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit dfe261107c080709459c32695847eec96238852b ]
+commit fbf0ea2da3c7cd0b33ed7ae53a67ab1c24838cba upstream.
 
-Commit: 699826f4e30a ("IB/isert: Fix incorrect release of isert connection") is
-causing problems on OPA when DEVICE_REMOVAL is happening.
+Inform fw_devlink of the fact that a panel follower (like a
+touchscreen) is effectively a consumer of the panel from the purposes
+of fw_devlink.
 
- ------------[ cut here ]------------
- WARNING: CPU: 52 PID: 2117247 at drivers/infiniband/core/cq.c:359
-ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
- Modules linked in: nfsd nfs_acl target_core_user uio tcm_fc libfc
-scsi_transport_fc tcm_loop target_core_pscsi target_core_iblock target_core_file
-rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs
-rfkill rpcrdma rdma_ucm ib_srpt sunrpc ib_isert iscsi_target_mod target_core_mod
-opa_vnic ib_iser libiscsi ib_umad scsi_transport_iscsi rdma_cm ib_ipoib iw_cm
-ib_cm hfi1(-) rdmavt ib_uverbs intel_rapl_msr intel_rapl_common sb_edac ib_core
-x86_pkg_temp_thermal intel_powerclamp coretemp i2c_i801 mxm_wmi rapl iTCO_wdt
-ipmi_si iTCO_vendor_support mei_me ipmi_devintf mei intel_cstate ioatdma
-intel_uncore i2c_smbus joydev pcspkr lpc_ich ipmi_msghandler acpi_power_meter
-acpi_pad xfs libcrc32c sr_mod sd_mod cdrom t10_pi sg crct10dif_pclmul
-crc32_pclmul crc32c_intel drm_kms_helper drm_shmem_helper ahci libahci
-ghash_clmulni_intel igb drm libata dca i2c_algo_bit wmi fuse
- CPU: 52 PID: 2117247 Comm: modprobe Not tainted 6.5.0-rc1+ #1
- Hardware name: Intel Corporation S2600CWR/S2600CW, BIOS
-SE5C610.86B.01.01.0014.121820151719 12/18/2015
- RIP: 0010:ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
- Code: ff 48 8b 43 40 48 8d 7b 40 48 83 e8 40 4c 39 e7 75 b3 49 83
-c4 10 4d 39 fc 75 94 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc <0f> 0b eb a1
-90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f
- RSP: 0018:ffffc10bea13fc80 EFLAGS: 00010206
- RAX: 000000000000010c RBX: ffff9bf5c7e66c00 RCX: 000000008020001d
- RDX: 000000008020001e RSI: fffff175221f9900 RDI: ffff9bf5c7e67640
- RBP: ffff9bf5c7e67600 R08: ffff9bf5c7e64400 R09: 000000008020001d
- R10: 0000000040000000 R11: 0000000000000000 R12: ffff9bee4b1e8a18
- R13: dead000000000122 R14: dead000000000100 R15: ffff9bee4b1e8a38
- FS:  00007ff1e6d38740(0000) GS:ffff9bfd9fb00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005652044ecc68 CR3: 0000000889b5c005 CR4: 00000000001706e0
- Call Trace:
-  <TASK>
-  ? __warn+0x80/0x130
-  ? ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
-  ? report_bug+0x195/0x1a0
-  ? handle_bug+0x3c/0x70
-  ? exc_invalid_op+0x14/0x70
-  ? asm_exc_invalid_op+0x16/0x20
-  ? ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
-  disable_device+0x9d/0x160 [ib_core]
-  __ib_unregister_device+0x42/0xb0 [ib_core]
-  ib_unregister_device+0x22/0x30 [ib_core]
-  rvt_unregister_device+0x20/0x90 [rdmavt]
-  hfi1_unregister_ib_device+0x16/0xf0 [hfi1]
-  remove_one+0x55/0x1a0 [hfi1]
-  pci_device_remove+0x36/0xa0
-  device_release_driver_internal+0x193/0x200
-  driver_detach+0x44/0x90
-  bus_remove_driver+0x69/0xf0
-  pci_unregister_driver+0x2a/0xb0
-  hfi1_mod_cleanup+0xc/0x3c [hfi1]
-  __do_sys_delete_module.constprop.0+0x17a/0x2f0
-  ? exit_to_user_mode_prepare+0xc4/0xd0
-  ? syscall_trace_enter.constprop.0+0x126/0x1a0
-  do_syscall_64+0x5c/0x90
-  ? syscall_exit_to_user_mode+0x12/0x30
-  ? do_syscall_64+0x69/0x90
-  ? syscall_exit_work+0x103/0x130
-  ? syscall_exit_to_user_mode+0x12/0x30
-  ? do_syscall_64+0x69/0x90
-  ? exc_page_fault+0x65/0x150
-  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- RIP: 0033:0x7ff1e643f5ab
- Code: 73 01 c3 48 8b 0d 75 a8 1b 00 f7 d8 64 89 01 48 83 c8 ff c3
-66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0
-ff ff 73 01 c3 48 8b 0d 45 a8 1b 00 f7 d8 64 89 01 48
- RSP: 002b:00007ffec9103cc8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
- RAX: ffffffffffffffda RBX: 00005615267fdc50 RCX: 00007ff1e643f5ab
- RDX: 0000000000000000 RSI: 0000000000000800 RDI: 00005615267fdcb8
- RBP: 00005615267fdc50 R08: 0000000000000000 R09: 0000000000000000
- R10: 00007ff1e659eac0 R11: 0000000000000206 R12: 00005615267fdcb8
- R13: 0000000000000000 R14: 00005615267fdcb8 R15: 00007ffec9105ff8
-  </TASK>
- ---[ end trace 0000000000000000 ]---
+NOTE: this patch isn't required for correctness but instead optimizes
+probe order / helps avoid deferrals.
 
-And...
-
- restrack: ------------[ cut here ]------------
- infiniband hfi1_0: BUG: RESTRACK detected leak of resources
- restrack: Kernel PD object allocated by ib_isert is not freed
- restrack: Kernel CQ object allocated by ib_core is not freed
- restrack: Kernel QP object allocated by rdma_cm is not freed
- restrack: ------------[ cut here ]------------
-
-Fixes: 699826f4e30a ("IB/isert: Fix incorrect release of isert connection")
-Reported-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Closes: https://lore.kernel.org/all/921cd1d9-2879-f455-1f50-0053fe6a6655@cornelisnetworks.com
-Link: https://lore.kernel.org/r/a27982d3235005c58f6d321f3fad5eb6e1beaf9e.1692604607.git.leonro@nvidia.com
-Tested-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230727101636.v4.4.Ibf8e1342b5b7906279db2365aca45e6253857bb3@changeid
+Cc: Adam Ford <aford173@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 2 ++
+ drivers/of/property.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index a7fef3ea77fe3..a02a3caeaa4e7 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2571,6 +2571,8 @@ static void isert_wait_conn(struct iscsit_conn *conn)
- 	isert_put_unsol_pending_cmds(conn);
- 	isert_wait4cmds(conn);
- 	isert_wait4logout(isert_conn);
-+
-+	queue_work(isert_release_wq, &isert_conn->release_work);
- }
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1266,6 +1266,7 @@ DEFINE_SIMPLE_PROP(pwms, "pwms", "#pwm-c
+ DEFINE_SIMPLE_PROP(resets, "resets", "#reset-cells")
+ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
+ DEFINE_SIMPLE_PROP(backlight, "backlight", NULL)
++DEFINE_SIMPLE_PROP(panel, "panel", NULL)
+ DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
+ DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
  
- static void isert_free_conn(struct iscsit_conn *conn)
--- 
-2.40.1
-
+@@ -1354,6 +1355,7 @@ static const struct supplier_bindings of
+ 	{ .parse_prop = parse_resets, },
+ 	{ .parse_prop = parse_leds, },
+ 	{ .parse_prop = parse_backlight, },
++	{ .parse_prop = parse_panel, },
+ 	{ .parse_prop = parse_gpio_compat, },
+ 	{ .parse_prop = parse_interrupts, },
+ 	{ .parse_prop = parse_regulators, },
 
 
