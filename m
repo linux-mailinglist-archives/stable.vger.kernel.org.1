@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D367579B899
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0773779B63B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345616AbjIKVVi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S240966AbjIKV3y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239668AbjIKOZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:55 -0400
+        with ESMTP id S242113AbjIKPWm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604ABDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A914AC433C8;
-        Mon, 11 Sep 2023 14:25:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E4FF9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF365C433C8;
+        Mon, 11 Sep 2023 15:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442351;
-        bh=1KTjkPdT9unbvvmN7zAnG3a8e16zqtCtDyrlHCmNzlk=;
+        s=korg; t=1694445758;
+        bh=n0dpMF49s8GZF2nt6khvkhkjHL8s9AxRZqJfKNEu8QM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rdw7ZJ3Ks2hlZrZGe9EEcai0ULENNF2TVkcBkmOVTsvnNvziuMcPFJd0IN07XBG+K
-         lvaO6L//lvlq9F6qeYh2dBplpZM2+ObhOByv19NF9uidrBMhhKfib6gTds4hI22Z2U
-         rXNMRNV+RF68LJ8raEh2fCM21cjytUCmHMnhTW6c=
+        b=2hjbQDtXeibUyakUB4dRNQ2GobTJMcgHNvKjllUH5ksG+YJJfTen0Nw1nXhRje4n0
+         MAT2tZwpccRxVmEuVsXpUWwTcR6POAspJt3OBhVV9PFqG9uER0ZBCaaNqxwqltkFLd
+         pV/TTsJvXNrDK/Jr9ESGC3tMcax1ZlomKYODuG9g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ekansh Gupta <quic_ekangupt@quicinc.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.5 696/739] misc: fastrpc: Pass proper scm arguments for static process init
+        patches@lists.linux.dev,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Marek Vasut <marex@denx.de>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, Jai Luthra <j-luthra@ti.com>
+Subject: [PATCH 6.1 462/600] media: ov5640: Enable MIPI interface in ov5640_set_power_mipi()
 Date:   Mon, 11 Sep 2023 15:48:15 +0200
-Message-ID: <20230911134710.534219907@linuxfoundation.org>
+Message-ID: <20230911134647.289431201@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +53,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Marek Vasut <marex@denx.de>
 
-commit fe6518d547fc52ba74201018dc9aeb364072ac78 upstream.
+[ Upstream commit 98cb72d3b9c5e03b10fa993752ecfcbd9c572d8c ]
 
-Memory is allocated for dynamic loading when audio daemon is trying
-to attach to audioPD on DSP side. This memory is allocated from
-reserved CMA memory region and needs ownership assignment to
-new VMID in order to use it from audioPD.
+Set OV5640_REG_IO_MIPI_CTRL00 bit 2 to 1 instead of 0, since 1 means
+MIPI CSI2 interface, while 0 means CPI parallel interface.
 
-In the current implementation, arguments are not correctly passed
-to the scm call which might result in failure of dynamic loading
-on audioPD. Added changes to pass correct arguments during daemon
-attach request.
+In the ov5640_set_power_mipi() the interface should obviously be set
+to MIPI CSI2 since this functions is used to power up the sensor when
+operated in MIPI CSI2 mode. The sensor should not be in CPI mode in
+that case.
 
-Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
-Cc: stable <stable@kernel.org>
-Tested-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230811115643.38578-4-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes a corner case where capturing the first frame on i.MX8MN
+with CSI/ISI resulted in corrupted frame.
+
+Fixes: aa4bb8b8838f ("media: ov5640: Re-work MIPI startup sequence")
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Tested-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com> # [Test on imx6q]
+Signed-off-by: Marek Vasut <marex@denx.de>
+Tested-by: Jai Luthra <j-luthra@ti.com> # [Test on bplay, sk-am62]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ov5640.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1322,13 +1322,18 @@ static int fastrpc_init_create_static_pr
- 	return 0;
- err_invoke:
- 	if (fl->cctx->vmcount) {
--		struct qcom_scm_vmperm perm;
-+		u64 src_perms = 0;
-+		struct qcom_scm_vmperm dst_perms;
-+		u32 i;
+diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
+index cc23ff2067f6a..f76bcb395cffa 100644
+--- a/drivers/media/i2c/ov5640.c
++++ b/drivers/media/i2c/ov5640.c
+@@ -2531,9 +2531,9 @@ static int ov5640_set_power_mipi(struct ov5640_dev *sensor, bool on)
+ 	 *		  "ov5640_set_stream_mipi()")
+ 	 * [4] = 0	: Power up MIPI HS Tx
+ 	 * [3] = 0	: Power up MIPI LS Rx
+-	 * [2] = 0	: MIPI interface disabled
++	 * [2] = 1	: MIPI interface enabled
+ 	 */
+-	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x40);
++	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x44);
+ 	if (ret)
+ 		return ret;
  
--		perm.vmid = QCOM_SCM_VMID_HLOS;
--		perm.perm = QCOM_SCM_PERM_RWX;
-+		for (i = 0; i < fl->cctx->vmcount; i++)
-+			src_perms |= BIT(fl->cctx->vmperms[i].vmid);
-+
-+		dst_perms.vmid = QCOM_SCM_VMID_HLOS;
-+		dst_perms.perm = QCOM_SCM_PERM_RWX;
- 		err = qcom_scm_assign_mem(fl->cctx->remote_heap->phys,
- 						(u64)fl->cctx->remote_heap->size,
--						&fl->cctx->perms, &perm, 1);
-+						&src_perms, &dst_perms, 1);
- 		if (err)
- 			dev_err(fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
- 				fl->cctx->remote_heap->phys, fl->cctx->remote_heap->size, err);
+-- 
+2.40.1
+
 
 
