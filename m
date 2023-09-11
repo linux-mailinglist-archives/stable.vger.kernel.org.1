@@ -2,38 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF4A79BE3F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A16DF79B60A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241873AbjIKU5Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47620 "EHLO
+        id S1348566AbjIKV12 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240825AbjIKOyy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:54 -0400
+        with ESMTP id S242107AbjIKPWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C19E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C293C433C7;
-        Mon, 11 Sep 2023 14:54:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CBBF9;
+        Mon, 11 Sep 2023 08:22:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EFBC433C8;
+        Mon, 11 Sep 2023 15:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444089;
-        bh=H1sQI3YFYrSeblQvBDQpoPUyKksj5jxZ3FZu31KfKiQ=;
+        s=korg; t=1694445750;
+        bh=sL69OBpTRTAubfuzQKYPpDkZuN7GcMWhkTTKiS48Vp4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uuFE4BYfa0UzzHIy3Q0ikyEXMXKJGo0OANggsyATmzGnFCNMyJggkmm8CXXeDxejP
-         z/8uRntqyBJiQnSvoufeqUm8X7bMv/LhmYkdLZ/4xtb96l4Se1buIXe5AtbqDPVCFC
-         AFBe9dVusEtIEclPW6Hov0y/kNcBz+mHwm+bZK/s=
+        b=NBEd71BR7Ayfc0k8SumllCohlpoXAsNQqyXRsnfXXa889bcptz0JK2MxIjbRqvD6S
+         Dw9EvqISrGrqQk4Ku2sfFDjlJG8DTbu08NME06lToJBsj4sUKG1nyPHJR/DkB7UDxM
+         RH2CABgPQUCIPoak0jM2wIwazwqmVK6aj9CWN0zo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 606/737] phy/rockchip: inno-hdmi: use correct vco_div_5 macro on rk3328
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 432/600] scsi: qedf: Do not touch __user pointer in qedf_dbg_fp_int_cmd_read() directly
 Date:   Mon, 11 Sep 2023 15:47:45 +0200
-Message-ID: <20230911134707.463761096@linuxfoundation.org>
+Message-ID: <20230911134646.410413081@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +59,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit 644c06dfbd0da713f772abf0a8f8581ac78e6264 ]
+[ Upstream commit 25dbc20deab5165f847b4eb42f376f725a986ee8 ]
 
-inno_hdmi_phy_rk3328_clk_set_rate() is using the RK3228 macro
-when configuring vco_div_5 on RK3328.
+The qedf_dbg_fp_int_cmd_read() function invokes sprintf() directly on a
+__user pointer, which may crash the kernel.
 
-Fix this by using correct vco_div_5 macro for RK3328.
+Avoid doing that by vmalloc()'ating a buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
 
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-2-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-4-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qedf/qedf_dbg.h     |  2 ++
+ drivers/scsi/qedf/qedf_debugfs.c | 21 +++++++++++++++------
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index 1e1563f5fffc4..f348e5347d817 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -790,8 +790,8 @@ static int inno_hdmi_phy_rk3328_clk_set_rate(struct clk_hw *hw,
- 			 RK3328_PRE_PLL_POWER_DOWN);
+diff --git a/drivers/scsi/qedf/qedf_dbg.h b/drivers/scsi/qedf/qedf_dbg.h
+index f4d81127239eb..5ec2b817c694a 100644
+--- a/drivers/scsi/qedf/qedf_dbg.h
++++ b/drivers/scsi/qedf/qedf_dbg.h
+@@ -59,6 +59,8 @@ extern uint qedf_debug;
+ #define QEDF_LOG_NOTICE	0x40000000	/* Notice logs */
+ #define QEDF_LOG_WARN		0x80000000	/* Warning logs */
  
- 	/* Configure pre-pll */
--	inno_update_bits(inno, 0xa0, RK3228_PCLK_VCO_DIV_5_MASK,
--			 RK3228_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
-+	inno_update_bits(inno, 0xa0, RK3328_PCLK_VCO_DIV_5_MASK,
-+			 RK3328_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
- 	inno_write(inno, 0xa1, RK3328_PRE_PLL_PRE_DIV(cfg->prediv));
++#define QEDF_DEBUGFS_LOG_LEN (2 * PAGE_SIZE)
++
+ /* Debug context structure */
+ struct qedf_dbg_ctx {
+ 	unsigned int host_no;
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 1c5716540e465..451fd236bfd05 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -8,6 +8,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/debugfs.h>
+ #include <linux/module.h>
++#include <linux/vmalloc.h>
  
- 	val = RK3328_SPREAD_SPECTRUM_MOD_DISABLE;
+ #include "qedf.h"
+ #include "qedf_dbg.h"
+@@ -98,7 +99,9 @@ static ssize_t
+ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 			 loff_t *ppos)
+ {
++	ssize_t ret;
+ 	size_t cnt = 0;
++	char *cbuf;
+ 	int id;
+ 	struct qedf_fastpath *fp = NULL;
+ 	struct qedf_dbg_ctx *qedf_dbg =
+@@ -108,19 +111,25 @@ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
+ 
+-	cnt = sprintf(buffer, "\nFastpath I/O completions\n\n");
++	cbuf = vmalloc(QEDF_DEBUGFS_LOG_LEN);
++	if (!cbuf)
++		return 0;
++
++	cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt, "\nFastpath I/O completions\n\n");
+ 
+ 	for (id = 0; id < qedf->num_queues; id++) {
+ 		fp = &(qedf->fp_array[id]);
+ 		if (fp->sb_id == QEDF_SB_ID_NULL)
+ 			continue;
+-		cnt += sprintf((buffer + cnt), "#%d: %lu\n", id,
+-			       fp->completions);
++		cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt,
++				 "#%d: %lu\n", id, fp->completions);
+ 	}
+ 
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	ret = simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
++
++	vfree(cbuf);
++
++	return ret;
+ }
+ 
+ static ssize_t
 -- 
 2.40.1
 
