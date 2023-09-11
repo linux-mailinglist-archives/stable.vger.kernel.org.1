@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C97A079B413
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718D879B09B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238993AbjIKVQ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:16:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51724 "EHLO
+        id S1348944AbjIKVbv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238801AbjIKOFT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:19 -0400
+        with ESMTP id S240105AbjIKOgp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66600E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE535C433C8;
-        Mon, 11 Sep 2023 14:05:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D56F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3DDC433C7;
+        Mon, 11 Sep 2023 14:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441115;
-        bh=PZ/VrB+mkpnz9F2oLSaTfpWKq7lX09tVAcgZqfXba7Q=;
+        s=korg; t=1694443000;
+        bh=nLT1A0XyCAeoi7a2btSTJXQ6H6ZiNA3JLPkvnRGWk/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w9BtTSS8b3jz/BVwJIEkC7rkYzU+1pdFdFeVKeJx++8GbSR6/naJd3NoUtbIoF96w
-         827VksmKwl0MLDUwptVhM9tXBZ5jAOzZ0P/vg5NPlivgp5gMxNOApACnWeIM7O/Odx
-         uFOw7NDE/a1R4EcwemdGZ2sIsWcgzbPYDvr/T05U=
+        b=VQQzR+DwZGNkR1pgFFQBojHvMmWj6zFIkQeBUhaZURxIBGtFOZ13ykCMOB89VeVtl
+         uxDxPp+b2HeFVtWC0kh5bk7oYbQCFR1iXZ+C/f8ko+iznfZwvcHqrFPKcp+onf6zoX
+         zTRPgHjuXjl2Gwkq6EzHzkbHgzHuI7E96yaeEW6Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        YingKun Meng <mengyingkun@loongson.cn>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 283/739] ASoC: loongson: drop of_match_ptr for OF device id
+Subject: [PATCH 6.4 223/737] net: lan966x: Fix return value check for vcap_get_rule()
 Date:   Mon, 11 Sep 2023 15:41:22 +0200
-Message-ID: <20230911134659.026910721@linuxfoundation.org>
+Message-ID: <20230911134656.813134150@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +52,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YingKun Meng <mengyingkun@loongson.cn>
+From: Ruan Jinjie <ruanjinjie@huawei.com>
 
-[ Upstream commit c17bd30d0ba5ca59266771cdfc387f26271a7042 ]
+[ Upstream commit ab104318f63997113b0ce7ac288e51359925ed79 ]
 
-The ASoC Sound Card driver can be compile tested with !CONFIG_OF
-making 'loongson_asoc_dt_ids' unused:
+As Simon Horman suggests, update vcap_get_rule() to always
+return an ERR_PTR() and update the error detection conditions to
+use IS_ERR(), so use IS_ERR() to fix the return value issue.
 
-sound/soc/loongson/loongson_card.c:200:34: warning: unused variable 'loongson_asoc_dt_ids' [-Wunused-const-variable]
-
-As krzysztof advice, we drop of_match_ptr so the device id
-can also be used on ACPI.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202307242008.xqdjgk04-lkp@intel.com
-Fixes: d24028606e76 ("ASoC: loongson: Add Loongson ASoC Sound Card Support")
-Signed-off-by: YingKun Meng <mengyingkun@loongson.cn>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230726110516.703342-1-mengyingkun@loongson.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 72df3489fb10 ("net: lan966x: Add ptp trap rules")
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/loongson/loongson_card.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/loongson/loongson_card.c b/sound/soc/loongson/loongson_card.c
-index 9ded163297477..406ee8db1a3c5 100644
---- a/sound/soc/loongson/loongson_card.c
-+++ b/sound/soc/loongson/loongson_card.c
-@@ -208,7 +208,7 @@ static struct platform_driver loongson_audio_driver = {
- 	.driver = {
- 		.name = "loongson-asoc-card",
- 		.pm = &snd_soc_pm_ops,
--		.of_match_table = of_match_ptr(loongson_asoc_dt_ids),
-+		.of_match_table = loongson_asoc_dt_ids,
- 	},
- };
- module_platform_driver(loongson_audio_driver);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+index 266a21a2d1246..1da2b1f82ae93 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+@@ -59,7 +59,7 @@ static int lan966x_ptp_add_trap(struct lan966x_port *port,
+ 	int err;
+ 
+ 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
+-	if (vrule) {
++	if (!IS_ERR(vrule)) {
+ 		u32 value, mask;
+ 
+ 		/* Just modify the ingress port mask and exit */
+@@ -106,7 +106,7 @@ static int lan966x_ptp_del_trap(struct lan966x_port *port,
+ 	int err;
+ 
+ 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
+-	if (!vrule)
++	if (IS_ERR(vrule))
+ 		return -EEXIST;
+ 
+ 	vcap_rule_get_key_u32(vrule, VCAP_KF_IF_IGR_PORT_MASK, &value, &mask);
 -- 
 2.40.1
 
