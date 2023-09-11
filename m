@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E657E79AECF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F3F79B350
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240919AbjIKVGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33292 "EHLO
+        id S238025AbjIKWJB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241145AbjIKPCs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:48 -0400
+        with ESMTP id S238714AbjIKODZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2BC1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB24C433C8;
-        Mon, 11 Sep 2023 15:02:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 478B0CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAECC433C7;
+        Mon, 11 Sep 2023 14:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444563;
-        bh=f5MTWx4+KxIor/GEt8KFBn6SP3bpqjTLNGZhbOYFPU8=;
+        s=korg; t=1694441000;
+        bh=NtqGWMpr9T63u0GnTPX3CYuEuIXrk9c7NcAQ2JDf9CQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EckRQ5i8J+NiT7QZeDsE16Bk6A7jYE+X5NdGbgGpQnhPqlwtqi+N/BDCLFOCrPLeM
-         loH8VBz3Ovro1HwiLhK6EuB9QL8F3TWriUv4/ZMBoMM3CQ/VudOUeb2TFD0aQ9wvFg
-         t2JnNytAtzQrCpPWU/Lb6ocnCnf+FLtkXDWCstPE=
+        b=fQpjjtzBNMrJO6qkXVierk5L5jlBfjjlvr9KU+q6LxHAdG4vQ6r+Zkb5kPLEi3YUJ
+         mVXbwLYbn4CYS22ql9b6X0toC9VB4JZeMkcG2zQ9JoTzykcSSQAalH8uQWUpgp4jL6
+         6C7CEe/GTOGB7LHpFuiIHaY3SGE1PfrMQkpSGU38=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.1 019/600] ksmbd: fix out of bounds in init_smb2_rsp_hdr()
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 253/739] arm64: dts: qcom: pm6150l: Add missing short interrupt
 Date:   Mon, 11 Sep 2023 15:40:52 +0200
-Message-ID: <20230911134634.182889121@linuxfoundation.org>
+Message-ID: <20230911134658.221138489@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,109 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 536bb492d39bb6c080c92f31e8a55fe9934f452b ]
+[ Upstream commit 7e1f024ef0d1da456f61d00f01dc3287ede915b3 ]
 
-If client send smb2 negotiate request and then send smb1 negotiate
-request, init_smb2_rsp_hdr is called for smb1 negotiate request since
-need_neg is set to false. This patch ignore smb1 packets after ->need_neg
-is set to false.
+Add the missing short interrupt. This fixes the schema warning:
 
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21541
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+wled@d800: interrupt-names: ['ovp'] is too short
+
+Fixes: fe508ced49dd ("arm64: dts: qcom: pm6150l: Add wled node")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20230626-topic-bindingsfixups-v1-3-254ae8642e69@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/server.c     |  7 ++++++-
- fs/smb/server/smb_common.c | 19 +++++++++++--------
- fs/smb/server/smb_common.h |  2 +-
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/qcom/pm6150l.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 847ee62afb8a1..9804cabe72a84 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -286,6 +286,7 @@ static void handle_ksmbd_work(struct work_struct *wk)
- static int queue_ksmbd_work(struct ksmbd_conn *conn)
- {
- 	struct ksmbd_work *work;
-+	int err;
+diff --git a/arch/arm64/boot/dts/qcom/pm6150l.dtsi b/arch/arm64/boot/dts/qcom/pm6150l.dtsi
+index 6f7aa67501e27..0fdf440596c01 100644
+--- a/arch/arm64/boot/dts/qcom/pm6150l.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm6150l.dtsi
+@@ -121,8 +121,9 @@ pm6150l_flash: led-controller@d300 {
+ 		pm6150l_wled: leds@d800 {
+ 			compatible = "qcom,pm6150l-wled";
+ 			reg = <0xd800>, <0xd900>;
+-			interrupts = <0x5 0xd8 0x1 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "ovp";
++			interrupts = <0x5 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
++				     <0x5 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "ovp", "short";
+ 			label = "backlight";
  
- 	work = ksmbd_alloc_work_struct();
- 	if (!work) {
-@@ -297,7 +298,11 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
- 	work->request_buf = conn->request_buf;
- 	conn->request_buf = NULL;
- 
--	ksmbd_init_smb_server(work);
-+	err = ksmbd_init_smb_server(work);
-+	if (err) {
-+		ksmbd_free_work_struct(work);
-+		return 0;
-+	}
- 
- 	ksmbd_conn_enqueue_request(work);
- 	atomic_inc(&conn->r_count);
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index d937e2f45c829..a4421d9458d90 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -388,26 +388,29 @@ static struct smb_version_cmds smb1_server_cmds[1] = {
- 	[SMB_COM_NEGOTIATE_EX]	= { .proc = smb1_negotiate, },
- };
- 
--static void init_smb1_server(struct ksmbd_conn *conn)
-+static int init_smb1_server(struct ksmbd_conn *conn)
- {
- 	conn->ops = &smb1_server_ops;
- 	conn->cmds = smb1_server_cmds;
- 	conn->max_cmds = ARRAY_SIZE(smb1_server_cmds);
-+	return 0;
- }
- 
--void ksmbd_init_smb_server(struct ksmbd_work *work)
-+int ksmbd_init_smb_server(struct ksmbd_work *work)
- {
- 	struct ksmbd_conn *conn = work->conn;
- 	__le32 proto;
- 
--	if (conn->need_neg == false)
--		return;
--
- 	proto = *(__le32 *)((struct smb_hdr *)work->request_buf)->Protocol;
-+	if (conn->need_neg == false) {
-+		if (proto == SMB1_PROTO_NUMBER)
-+			return -EINVAL;
-+		return 0;
-+	}
-+
- 	if (proto == SMB1_PROTO_NUMBER)
--		init_smb1_server(conn);
--	else
--		init_smb3_11_server(conn);
-+		return init_smb1_server(conn);
-+	return init_smb3_11_server(conn);
- }
- 
- int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
-diff --git a/fs/smb/server/smb_common.h b/fs/smb/server/smb_common.h
-index e63d2a4f466b5..1cbb492cdefec 100644
---- a/fs/smb/server/smb_common.h
-+++ b/fs/smb/server/smb_common.h
-@@ -427,7 +427,7 @@ bool ksmbd_smb_request(struct ksmbd_conn *conn);
- 
- int ksmbd_lookup_dialect_by_id(__le16 *cli_dialects, __le16 dialects_count);
- 
--void ksmbd_init_smb_server(struct ksmbd_work *work);
-+int ksmbd_init_smb_server(struct ksmbd_work *work);
- 
- struct ksmbd_kstat;
- int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work,
+ 			status = "disabled";
 -- 
 2.40.1
 
