@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA97179B3FA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2498E79B431
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235840AbjIKV7P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60460 "EHLO
+        id S238722AbjIKV6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241642AbjIKPLJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:09 -0400
+        with ESMTP id S240439AbjIKOoP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA21E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35794C433C7;
-        Mon, 11 Sep 2023 15:11:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E79512A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B377AC433C8;
+        Mon, 11 Sep 2023 14:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445063;
-        bh=5EAASnXOBw5vby7O6JYuTHGOjvrd1iC889JLKGFYDzI=;
+        s=korg; t=1694443450;
+        bh=rRYKM6yTdyOQkS4v1BuMygkh7GfXx2JpJvbIthNK9cM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pQ5CwQBjU7j7u1nuZXQUAQl0AcTj9Yo6q+FCxpKt8Te97fm4SDhDN8nDDxvK+dQRw
-         JFhqwoXGIkkY53x+waRdtaiKU5TUJqsQsCA73LvT/U33ba59vBtkAlg6HcyU1UwpOo
-         h4Oh68JaiUJvGuh/IvdvsJFL/Y2tVU743NVewdJ8=
+        b=UcjB9jomI+4AiPbdeKV0U0SrnJx26IcqRWSCkQMbSxkbD5jyxh7oAgCfODn1Qm77N
+         rzz+HXBPd6ld8tw+BOJtI5lpj1CpvEkayQyjIxnK8VjX+9Kd1AqupelgTnEbM1vtW9
+         bv4QQB6aD3zWeC7DpLN1IHvZuz7QPiLZ2G4Q/4oY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/600] cteonxt2-pf: Fix backpressure config for multiple PFC priorities to work simultaneously
+Subject: [PATCH 6.4 381/737] arm64: dts: qcom: apq8016-sbc: Fix ov5640 regulator supply names
 Date:   Mon, 11 Sep 2023 15:44:00 +0200
-Message-ID: <20230911134639.727068189@linuxfoundation.org>
+Message-ID: <20230911134701.216893488@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,66 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 597d0ec0e4ca6a912affea4cc94df08959e9ec74 ]
+[ Upstream commit 43a684580819e7f35b6cb38236be63c4cba26ef4 ]
 
-MAC (CGX or RPM) asserts backpressure at TL3 or TL2 node of the egress
-hierarchical scheduler tree depending on link level config done. If
-there are multiple PFC priorities enabled at a time and for all such
-flows to backoff, each priority will have to assert backpressure at
-different TL3/TL2 scheduler nodes and these flows will need to submit
-egress pkts to these nodes.
+The ov5640 driver expects DOVDD, AVDD and DVDD as regulator supply names.
 
-Current PFC configuration has an issue where in only one backpressure
-scheduler node is being allocated which is resulting in only one PFC
-priority to work. This patch fixes this issue.
+The ov5640 has depended on these names since the driver was committed
+upstream in 2017. Similarly apq8016-sbc.dtsi has had completely different
+regulator names since its own initial commit in 2020.
 
-Fixes: 99c969a83d82 ("octeontx2-pf: Add egress PFC support")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230824081032.436432-4-sumang@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Perhaps the regulators were left on in previous 410c bootloaders. In any
+case today on 6.5 we won't switch on the ov5640 without correctly naming
+the regulators.
+
+Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811234738.2859417-3-bryan.odonoghue@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c | 6 +++---
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-index 6492749dd7c89..bfddbff7bcdfb 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-@@ -70,7 +70,7 @@ static int otx2_pfc_txschq_alloc_one(struct otx2_nic *pfvf, u8 prio)
- 	 * link config level. These rest of the scheduler can be
- 	 * same as hw.txschq_list.
- 	 */
--	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++)
-+	for (lvl = 0; lvl <= pfvf->hw.txschq_link_cfg_lvl; lvl++)
- 		req->schq[lvl] = 1;
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index 3ec449f5cab78..7261cfc99f9fa 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -285,9 +285,9 @@ camera_rear@3b {
+ 		clock-names = "xclk";
+ 		clock-frequency = <23880000>;
  
- 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
-@@ -83,7 +83,7 @@ static int otx2_pfc_txschq_alloc_one(struct otx2_nic *pfvf, u8 prio)
- 		return PTR_ERR(rsp);
+-		vdddo-supply = <&camera_vdddo_1v8>;
+-		vdda-supply = <&camera_vdda_2v8>;
+-		vddd-supply = <&camera_vddd_1v5>;
++		DOVDD-supply = <&camera_vdddo_1v8>;
++		AVDD-supply = <&camera_vdda_2v8>;
++		DVDD-supply = <&camera_vddd_1v5>;
  
- 	/* Setup transmit scheduler list */
--	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++) {
-+	for (lvl = 0; lvl <= pfvf->hw.txschq_link_cfg_lvl; lvl++) {
- 		if (!rsp->schq[lvl])
- 			return -ENOSPC;
- 
-@@ -128,7 +128,7 @@ static int otx2_pfc_txschq_stop_one(struct otx2_nic *pfvf, u8 prio)
- 	int lvl;
- 
- 	/* free PFC TLx nodes */
--	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++)
-+	for (lvl = 0; lvl <= pfvf->hw.txschq_link_cfg_lvl; lvl++)
- 		otx2_txschq_free_one(pfvf, lvl,
- 				     pfvf->pfc_schq_list[lvl][prio]);
- 
+ 		/* No camera mezzanine by default */
+ 		status = "disabled";
 -- 
 2.40.1
 
