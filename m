@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E046279B55C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67FFC79B3CB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345716AbjIKVV6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56694 "EHLO
+        id S1359471AbjIKWQz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239214AbjIKOOm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:42 -0400
+        with ESMTP id S241697AbjIKPMP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D57BDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933DAC433C8;
-        Mon, 11 Sep 2023 14:14:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53F1DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2B2C433C7;
+        Mon, 11 Sep 2023 15:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441678;
-        bh=NK/YvXIUGrjTQ92639si5SP4VEzAJ1/2jXnHmj/yIa4=;
+        s=korg; t=1694445131;
+        bh=23KoSTTJcCvAW8Dl+ajVFWYC+GpkOjIa/psn+fvZlXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dGDDsiB9ZBEV1G/rne7ulkbATPOTZ/H3gYHQalK6jhUx9oIM0ChnF8YT2LwlCYXlz
-         31SPVt1FCqYu9BGFth+HfNs8tUWU+fDDfUFuubA0Uh6Yqt2usfSCnUbbgBj04tyg6k
-         su7Y4xUf1dlWWB/kgiHrpY2PULlY/GPQhR7HssYU=
+        b=GFeerXRVY1PNnmTDNcJ3hU0D+D5nq3qudMLq9ZFqbPZi7s6Cf/DpJRVMAfWMDfMKn
+         T9BvLcMk3zfW8FD9zhwjiwyX9RDN/yGWWsA+h4uSum0d0rVDflfKXA/4aiAF3fQIL7
+         jCpX0mYRdWZbyz4a/TUL9t5/mvw+p69TkPXhdnyw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-        Ming Qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 471/739] media: amphion: fix CHECKED_RETURN issues reported by coverity
+Subject: [PATCH 6.1 237/600] arm64: dts: qcom: pm8350b: fix thermal zone name
 Date:   Mon, 11 Sep 2023 15:44:30 +0200
-Message-ID: <20230911134704.301145746@linuxfoundation.org>
+Message-ID: <20230911134640.596553755@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b237b058adbc7825da9c8f358f1ff3f0467d623a ]
+[ Upstream commit aad41d9e6c44dfe299cddab97528a5333f17bdfe ]
 
-calling "vpu_cmd_send/vpu_get_buffer_state/vpu_session_alloc_fs"
-without checking return value
+The name of the thermal zone in pm8350b.dtsi (pm8350c-thermal) conflicts
+with the thermal zone in pm8350c.dtsi. Rename the thermal zone according
+to the chip name.
 
-Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 5c1399299d9d ("arm64: dts: qcom: pm8350b: add temp sensor and thermal zone config")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230707123027.1510723-4-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vdec.c     |  5 ++++-
- drivers/media/platform/amphion/vpu_cmds.c |  3 ++-
- drivers/media/platform/amphion/vpu_dbg.c  | 11 +++++++++--
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/pm8350b.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index eeb2ef72df5b3..133d77d1ea0c3 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -1019,6 +1019,7 @@ static int vdec_response_frame_abnormal(struct vpu_inst *inst)
- {
- 	struct vdec_t *vdec = inst->priv;
- 	struct vpu_fs_info info;
-+	int ret;
+diff --git a/arch/arm64/boot/dts/qcom/pm8350b.dtsi b/arch/arm64/boot/dts/qcom/pm8350b.dtsi
+index f1c7bd9d079c2..05c1058988927 100644
+--- a/arch/arm64/boot/dts/qcom/pm8350b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm8350b.dtsi
+@@ -8,7 +8,7 @@
  
- 	if (!vdec->req_frame_count)
- 		return 0;
-@@ -1026,7 +1027,9 @@ static int vdec_response_frame_abnormal(struct vpu_inst *inst)
- 	memset(&info, 0, sizeof(info));
- 	info.type = MEM_RES_FRAME;
- 	info.tag = vdec->seq_tag + 0xf0;
--	vpu_session_alloc_fs(inst, &info);
-+	ret = vpu_session_alloc_fs(inst, &info);
-+	if (ret)
-+		return ret;
- 	vdec->req_frame_count--;
- 
- 	return 0;
-diff --git a/drivers/media/platform/amphion/vpu_cmds.c b/drivers/media/platform/amphion/vpu_cmds.c
-index 647d94554fb5d..7e137f276c3b1 100644
---- a/drivers/media/platform/amphion/vpu_cmds.c
-+++ b/drivers/media/platform/amphion/vpu_cmds.c
-@@ -306,7 +306,8 @@ static void vpu_core_keep_active(struct vpu_core *core)
- 
- 	dev_dbg(core->dev, "try to wake up\n");
- 	mutex_lock(&core->cmd_lock);
--	vpu_cmd_send(core, &pkt);
-+	if (vpu_cmd_send(core, &pkt))
-+		dev_err(core->dev, "fail to keep active\n");
- 	mutex_unlock(&core->cmd_lock);
- }
- 
-diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/platform/amphion/vpu_dbg.c
-index adc523b950618..982c2c777484c 100644
---- a/drivers/media/platform/amphion/vpu_dbg.c
-+++ b/drivers/media/platform/amphion/vpu_dbg.c
-@@ -50,6 +50,13 @@ static char *vpu_stat_name[] = {
- 	[VPU_BUF_STATE_ERROR] = "error",
- };
- 
-+static inline const char *to_vpu_stat_name(int state)
-+{
-+	if (state <= VPU_BUF_STATE_ERROR)
-+		return vpu_stat_name[state];
-+	return "unknown";
-+}
-+
- static int vpu_dbg_instance(struct seq_file *s, void *data)
- {
- 	struct vpu_inst *inst = s->private;
-@@ -141,7 +148,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
- 		num = scnprintf(str, sizeof(str),
- 				"output [%2d] state = %10s, %8s\n",
- 				i, vb2_stat_name[vb->state],
--				vpu_stat_name[vpu_get_buffer_state(vbuf)]);
-+				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
- 		if (seq_write(s, str, num))
- 			return 0;
- 	}
-@@ -156,7 +163,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
- 		num = scnprintf(str, sizeof(str),
- 				"capture[%2d] state = %10s, %8s\n",
- 				i, vb2_stat_name[vb->state],
--				vpu_stat_name[vpu_get_buffer_state(vbuf)]);
-+				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
- 		if (seq_write(s, str, num))
- 			return 0;
- 	}
+ / {
+ 	thermal-zones {
+-		pm8350b_thermal: pm8350c-thermal {
++		pm8350b_thermal: pm8350b-thermal {
+ 			polling-delay-passive = <100>;
+ 			polling-delay = <0>;
+ 			thermal-sensors = <&pm8350b_temp_alarm>;
 -- 
 2.40.1
 
