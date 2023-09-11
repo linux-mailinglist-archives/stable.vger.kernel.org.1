@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE0B79BB74
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4972279B9A4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239838AbjIKVh7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60586 "EHLO
+        id S236012AbjIKWq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239317AbjIKORh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:37 -0400
+        with ESMTP id S241858AbjIKPQX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F3ADE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7EBC433C9;
-        Mon, 11 Sep 2023 14:17:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21345FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FAAC433C7;
+        Mon, 11 Sep 2023 15:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441851;
-        bh=4l5843avEpi1/1KbUbU7MnL3t7zrI0ZENmnwQzHCgvA=;
+        s=korg; t=1694445378;
+        bh=17NVAkdqmGDilc0gF3qjoSwkObggs3Oj0KE36ojaFx0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QTgcc4ivDlsBlcgFnl2oppEPFrV+RG2rar5co8eeSp9piZtjq4XGK4vEAJrXoUCXM
-         d1n2bfycUgGBtKm568dNhCh/5gwkSECFHRQarRNXXAwN1X8zG7j/rdgHjvOtbC/y4F
-         np7xs/PtoBpoBMMAZASdiiej1fQtlt2Sp90W30Ok=
+        b=vfJlGTahRJ90fyljRh3r1FZPdqhpqO8kNgfQrnMEUDAUaIVN/Wm3iltrqapCskYTV
+         S7NpsDNvltBiZStdSkjtDHu1qxvWmMf7CQU0UeXR1NSFA0fla140yjFlYTR5mS3Rud
+         +5tzF7v6VCOD8kMTu021ADKBwRT0LiuPsQajh4Vk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junhao He <hejunhao3@huawei.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        James Clark <james.clark@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Su Hui <suhui@nfschina.com>, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 559/739] coresight: trbe: Allocate platform data per device
+Subject: [PATCH 6.1 325/600] ALSA: ac97: Fix possible error value of *rac97
 Date:   Mon, 11 Sep 2023 15:45:58 +0200
-Message-ID: <20230911134706.695135989@linuxfoundation.org>
+Message-ID: <20230911134643.282827981@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 39744738a67de9153d73e11817937c0004feab2e ]
+[ Upstream commit 67de40c9df94037769967ba28c7d951afb45b7fb ]
 
-Coresight TRBE driver shares a single platform data (which is empty btw).
-However, with the commit 4e8fe7e5c3a5
-("coresight: Store pointers to connections rather than an array of them")
-the coresight core would free up the pdata, resulting in multiple attempts
-to free the same pdata for TRBE instances. Fix this by allocating a pdata per
-coresight_device.
+Before committing 79597c8bf64c, *rac97 always be NULL if there is
+an error. When error happens, make sure *rac97 is NULL is safer.
 
-Fixes: 4e8fe7e5c3a5 ("coresight: Store pointers to connections rather than an array of them")
-Link: https://lore.kernel.org/r/20230814093813.19152-3-hejunhao3@huawei.com
-Reported-by: Junhao He <hejunhao3@huawei.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: James Clark <james.clark@arm.com>
-Tested-by: Junhao He <hejunhao3@huawei.com>
-Link: https://lore.kernel.org/r/20230816141008.535450-2-suzuki.poulose@arm.com
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+For examble, in snd_vortex_mixer():
+	err = snd_ac97_mixer(pbus, &ac97, &vortex->codec);
+	vortex->isquad = ((vortex->codec == NULL) ?
+		0 : (vortex->codec->ext_id&0x80));
+If error happened but vortex->codec isn't NULL, this may cause some
+problems.
+
+Move the judgement order to be clearer and better.
+
+Fixes: 79597c8bf64c ("ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20230823025212.1000961-1-suhui@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ sound/pci/ac97/ac97_codec.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 7720619909d65..8e4eb37e66e82 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -1244,10 +1244,13 @@ static void arm_trbe_register_coresight_cpu(struct trbe_drvdata *drvdata, int cp
- 	if (!desc.name)
- 		goto cpu_clear;
+diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
+index 534ea7a256ec3..606b318f34e56 100644
+--- a/sound/pci/ac97/ac97_codec.c
++++ b/sound/pci/ac97/ac97_codec.c
+@@ -2070,10 +2070,9 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
+ 		.dev_disconnect =	snd_ac97_dev_disconnect,
+ 	};
  
-+	desc.pdata = coresight_get_platform_data(dev);
-+	if (IS_ERR(desc.pdata))
-+		goto cpu_clear;
-+
- 	desc.type = CORESIGHT_DEV_TYPE_SINK;
- 	desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_PERCPU_SYSMEM;
- 	desc.ops = &arm_trbe_cs_ops;
--	desc.pdata = dev_get_platdata(dev);
- 	desc.groups = arm_trbe_groups;
- 	desc.dev = dev;
- 	trbe_csdev = coresight_register(&desc);
-@@ -1479,7 +1482,6 @@ static void arm_trbe_remove_irq(struct trbe_drvdata *drvdata)
- 
- static int arm_trbe_device_probe(struct platform_device *pdev)
- {
--	struct coresight_platform_data *pdata;
- 	struct trbe_drvdata *drvdata;
- 	struct device *dev = &pdev->dev;
- 	int ret;
-@@ -1494,12 +1496,7 @@ static int arm_trbe_device_probe(struct platform_device *pdev)
- 	if (!drvdata)
- 		return -ENOMEM;
- 
--	pdata = coresight_get_platform_data(dev);
--	if (IS_ERR(pdata))
--		return PTR_ERR(pdata);
--
- 	dev_set_drvdata(dev, drvdata);
--	dev->platform_data = pdata;
- 	drvdata->pdev = pdev;
- 	ret = arm_trbe_probe_irq(pdev, drvdata);
- 	if (ret)
+-	if (!rac97)
+-		return -EINVAL;
+-	if (snd_BUG_ON(!bus || !template))
++	if (snd_BUG_ON(!bus || !template || !rac97))
+ 		return -EINVAL;
++	*rac97 = NULL;
+ 	if (snd_BUG_ON(template->num >= 4))
+ 		return -EINVAL;
+ 	if (bus->codec[template->num])
 -- 
 2.40.1
 
