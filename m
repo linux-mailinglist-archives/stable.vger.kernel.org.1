@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84ABF79AF56
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0E679B16D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238867AbjIKVUx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60866 "EHLO
+        id S1376684AbjIKWUO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238972AbjIKOIk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:40 -0400
+        with ESMTP id S241305AbjIKPGR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC35CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003FEC433C7;
-        Mon, 11 Sep 2023 14:08:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFEB8FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F02C433C7;
+        Mon, 11 Sep 2023 15:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441314;
-        bh=N3GPBUEBj7SfhhcTAqnWlZ6igchrr4/X+PBnba5eN0s=;
+        s=korg; t=1694444772;
+        bh=saofTuUKWPvIhRGQT3owU++5dblPwoXF2HwrapxZGi8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n3bPT/xhhsvw2k+nQwKl+7ueDoVinOV4toakdnT2l73bbhELtAcQa9kS3IAWXK4oo
-         VbAb7v/CtoPboABNYwwYxQK0sup5Iasv2UZjx8Jrf2cKMltKOAVUm22KVdp7Tz8p3h
-         vbnpjYXHj1EMB7uZAB1mlhHbcNFhg+4S1Iu0QYss=
+        b=IdF385c58AmkvBJzwzVkGpnfXiKvXHa8YlOyK30ZnMsEezeAL37cXlvBa5XkKTbnT
+         C74evrWVLcL1e+9+whIirYYodJo36sod9UC0pv1JCZoct40Ywi8cpmcYoN2IqUa/QW
+         ZvqtU113zTCNBV/YjATuEVApi+a3OxAr29j0J0wk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-        kernel test robot <lkp@intel.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 343/739] drm/mediatek: Fix void-pointer-to-enum-cast warning
-Date:   Mon, 11 Sep 2023 15:42:22 +0200
-Message-ID: <20230911134700.691783293@linuxfoundation.org>
+Subject: [PATCH 6.1 110/600] refscale: Fix uninitalized use of wait_queue_head_t
+Date:   Mon, 11 Sep 2023 15:42:23 +0200
+Message-ID: <20230911134636.847908855@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 89cba955f879b1c6a9a71f67c8fb92ea8f5dfdc4 ]
+[ Upstream commit f5063e8948dad7f31adb007284a5d5038ae31bb8 ]
 
-1. Fix build warning message in mtk_disp_ovl_adaptor.c
->> drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c:415:10:
-  warning: cast to smaller integer type 'enum mtk_ovl_adaptor_comp_type'
-  from 'const void *' [-Wvoid-pointer-to-enum-cast]
+Running the refscale test occasionally crashes the kernel with the
+following error:
 
-  type = (enum mtk_ovl_adaptor_comp_type)of_id->data;
+[ 8569.952896] BUG: unable to handle page fault for address: ffffffffffffffe8
+[ 8569.952900] #PF: supervisor read access in kernel mode
+[ 8569.952902] #PF: error_code(0x0000) - not-present page
+[ 8569.952904] PGD c4b048067 P4D c4b049067 PUD c4b04b067 PMD 0
+[ 8569.952910] Oops: 0000 [#1] PREEMPT_RT SMP NOPTI
+[ 8569.952916] Hardware name: Dell Inc. PowerEdge R750/0WMWCR, BIOS 1.2.4 05/28/2021
+[ 8569.952917] RIP: 0010:prepare_to_wait_event+0x101/0x190
+  :
+[ 8569.952940] Call Trace:
+[ 8569.952941]  <TASK>
+[ 8569.952944]  ref_scale_reader+0x380/0x4a0 [refscale]
+[ 8569.952959]  kthread+0x10e/0x130
+[ 8569.952966]  ret_from_fork+0x1f/0x30
+[ 8569.952973]  </TASK>
 
-         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         1 warning generated.
+The likely cause is that init_waitqueue_head() is called after the call to
+the torture_create_kthread() function that creates the ref_scale_reader
+kthread.  Although this init_waitqueue_head() call will very likely
+complete before this kthread is created and starts running, it is
+possible that the calling kthread will be delayed between the calls to
+torture_create_kthread() and init_waitqueue_head().  In this case, the
+new kthread will use the waitqueue head before it is properly initialized,
+which is not good for the kernel's health and well-being.
 
-2. Also fix the same warning message in mtk_drm_drv.c
->> drivers/gpu/drm/mediatek/mtk_drm_drv.c:832:15:
-   warning: cast to smaller integer type 'enum mtk_ddp_comp_type'
-   from 'const void *' [-Wvoid-pointer-to-enum-cast]
+The above crash happened here:
 
-   comp_type = (enum mtk_ddp_comp_type)of_id->data;
+	static inline void __add_wait_queue(...)
+	{
+		:
+		if (!(wq->flags & WQ_FLAG_PRIORITY)) <=== Crash here
 
-               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-               1 warning generated.
+The offset of flags from list_head entry in wait_queue_entry is
+-0x18. If reader_tasks[i].wq.head.next is NULL as allocated reader_task
+structure is zero initialized, the instruction will try to access address
+0xffffffffffffffe8, which is exactly the fault address listed above.
 
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202305042054.ZtWME9OU-lkp@intel.com/
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230621075421.1982-1-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+This commit therefore invokes init_waitqueue_head() before creating
+the kthread.
+
+Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 2 +-
- drivers/gpu/drm/mediatek/mtk_drm_drv.c          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/rcu/refscale.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-index c0a38f5217eee..f2f6a5c01a6d2 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-@@ -426,7 +426,7 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
- 			continue;
- 		}
+diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
+index d49a9d66e0000..3a93c53f615f0 100644
+--- a/kernel/rcu/refscale.c
++++ b/kernel/rcu/refscale.c
+@@ -867,12 +867,11 @@ ref_scale_init(void)
+ 	VERBOSE_SCALEOUT("Starting %d reader threads", nreaders);
  
--		type = (enum mtk_ovl_adaptor_comp_type)of_id->data;
-+		type = (enum mtk_ovl_adaptor_comp_type)(uintptr_t)of_id->data;
- 		id = ovl_adaptor_comp_get_id(dev, node, type);
- 		if (id < 0) {
- 			dev_warn(dev, "Skipping unknown component %pOF\n",
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index fc217e0acd45d..30d10f21562f4 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -832,7 +832,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
- 			continue;
- 		}
+ 	for (i = 0; i < nreaders; i++) {
++		init_waitqueue_head(&reader_tasks[i].wq);
+ 		firsterr = torture_create_kthread(ref_scale_reader, (void *)i,
+ 						  reader_tasks[i].task);
+ 		if (torture_init_error(firsterr))
+ 			goto unwind;
+-
+-		init_waitqueue_head(&(reader_tasks[i].wq));
+ 	}
  
--		comp_type = (enum mtk_ddp_comp_type)of_id->data;
-+		comp_type = (enum mtk_ddp_comp_type)(uintptr_t)of_id->data;
- 
- 		if (comp_type == MTK_DISP_MUTEX) {
- 			int id;
+ 	// Main Task
 -- 
 2.40.1
 
