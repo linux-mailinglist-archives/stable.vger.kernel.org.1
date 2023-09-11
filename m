@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E26F879B6E2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6580679BD52
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245002AbjIKVIh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58294 "EHLO
+        id S1355590AbjIKWBU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:01:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240282AbjIKOka (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:30 -0400
+        with ESMTP id S238878AbjIKOHH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D05CCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BAAC433C7;
-        Mon, 11 Sep 2023 14:40:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC75CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863D0C433C8;
+        Mon, 11 Sep 2023 14:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443226;
-        bh=h5MLCy8BzRvRFaY+b1qfdYnAH8KkNNfaT3vuPksMX8U=;
+        s=korg; t=1694441223;
+        bh=KxW68Ueh3bRI3JzsBdQhuPw61tZ5i21y9ABPMbx9UNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DHqqccR16bocicy6VaUbYvrdZ4QjdcNKTaPvu/jGR3IM2H3cHkjiW7FYcU5aDk11l
-         gkkScLBEaxvtafJvIS1isTqJOV4k9kw2YcWr4vGItZi5x6NspgpoOquTFh6cGbJ+1M
-         He3kc/tGmsLJAHHXSCQrOwy7PlqUTi6Ao5wg0dT4=
+        b=PjvOXdxu6p5/yjgOrl58zs45yPEM+R2IXaug/EVYpNeCB6wLHHNFxzkjsOqmT9kPK
+         M+6WEdk/Od4yWkb4jjmXrHjvLB81wtbLUndyTC8GlmmQ4xb5g9Gkshsje/Y7LKJ2T6
+         NE78ZDs6QMDbsp7uh7wVkIjSEHUyKt20Pps+TvWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+        patches@lists.linux.dev,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 276/737] drm/hyperv: Fix a compilation issue because of not including screen_info.h
-Date:   Mon, 11 Sep 2023 15:42:15 +0200
-Message-ID: <20230911134658.284102358@linuxfoundation.org>
+Subject: [PATCH 6.5 337/739] drm/mediatek: Remove freeing not dynamic allocated memory
+Date:   Mon, 11 Sep 2023 15:42:16 +0200
+Message-ID: <20230911134700.515074906@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 8d1077cf2e43b15fefd76ebec2b71541eb27ef2c ]
+[ Upstream commit 27b9e2ea3f2757da26bb8280e46f7fdbb1acb219 ]
 
-Fixes the following build errors on arm64:
+Fixing the coverity issue of:
+mtk_drm_cmdq_pkt_destroy frees address of mtk_crtc->cmdq_handle
 
-drivers/video/fbdev/hyperv_fb.c: In function 'hvfb_getmem':
->> drivers/video/fbdev/hyperv_fb.c:1033:24: error: 'screen_info' undeclared (first use in this function)
-    1033 |                 base = screen_info.lfb_base;
-         |                        ^~~~~~~~~~~
-drivers/video/fbdev/hyperv_fb.c:1033:24: note: each undeclared identifier is reported only once for each function it appears in
+So remove the free function.
 
->> drivers/gpu/drm/hyperv/hyperv_drm_drv.c:75:54: error: 'screen_info' undeclared (first use in this function)
-      75 |         drm_aperture_remove_conflicting_framebuffers(screen_info.lfb_base,
-	 |                                                      ^~~~~~~~~~~
-drivers/gpu/drm/hyperv/hyperv_drm_drv.c:75:54: note: each undeclared identifier is reported only once for each function it appears in
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202307090823.nxnT8Kk5-lkp@intel.com/
-Fixes: 81d2393485f0 ("fbdev/hyperv-fb: Do not set struct fb_info.apertures")
-Fixes: 8b0d13545b09 ("efi: Do not include <linux/screen_info.h> from EFI header")
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230709100514.703759-1-suijingfeng@loongson.cn
+Fixes: 7627122fd1c0 ("drm/mediatek: Add cmdq_handle in mtk_crtc")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230714094908.13087-2-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index f830d62a5ce60..559ce242919df 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -7,6 +7,7 @@
- #include <linux/hyperv.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/screen_info.h>
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index d40142842f85c..8d44f3df116fa 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -116,10 +116,9 @@ static int mtk_drm_cmdq_pkt_create(struct cmdq_client *client, struct cmdq_pkt *
+ 	dma_addr_t dma_addr;
  
- #include <drm/drm_aperture.h>
- #include <drm/drm_atomic_helper.h>
+ 	pkt->va_base = kzalloc(size, GFP_KERNEL);
+-	if (!pkt->va_base) {
+-		kfree(pkt);
++	if (!pkt->va_base)
+ 		return -ENOMEM;
+-	}
++
+ 	pkt->buf_size = size;
+ 	pkt->cl = (void *)client;
+ 
+@@ -129,7 +128,6 @@ static int mtk_drm_cmdq_pkt_create(struct cmdq_client *client, struct cmdq_pkt *
+ 	if (dma_mapping_error(dev, dma_addr)) {
+ 		dev_err(dev, "dma map failed, size=%u\n", (u32)(u64)size);
+ 		kfree(pkt->va_base);
+-		kfree(pkt);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -145,7 +143,6 @@ static void mtk_drm_cmdq_pkt_destroy(struct cmdq_pkt *pkt)
+ 	dma_unmap_single(client->chan->mbox->dev, pkt->pa_base, pkt->buf_size,
+ 			 DMA_TO_DEVICE);
+ 	kfree(pkt->va_base);
+-	kfree(pkt);
+ }
+ #endif
+ 
 -- 
 2.40.1
 
