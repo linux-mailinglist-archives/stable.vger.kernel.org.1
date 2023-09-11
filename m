@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9221479B72A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 996C279BD9D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244183AbjIKVg4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:36:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
+        id S236755AbjIKUxS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241456AbjIKPJS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:18 -0400
+        with ESMTP id S239050AbjIKOKd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419AAFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881DFC433C8;
-        Mon, 11 Sep 2023 15:09:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4314CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14824C433C8;
+        Mon, 11 Sep 2023 14:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444953;
-        bh=r283K8RdGffxmm19eCE+OI1AkspPXD3kyKh373HtvnM=;
+        s=korg; t=1694441428;
+        bh=1MLbwbBH3zbv3sfGQ+MXID2YbBrociFW3O2eiD3MMkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NN5VIk9VmkFYMzfpqCkOcNPrXDDkppJwpoch97tuusQsRwjAA5W6LfS0z6xdtUl3X
-         pk0YMJVcO3wlaTjyKbgjtLI+kWHqokdjfeBGkqKc6ENntmcYQJMwKM5ki3uN2hwcFK
-         ilEkcf+cG5+D2EVJixZZGRscdtVbLe6ZsO9nsQgM=
+        b=lrC2o041m81Wjg5bEuoPfxFlH52GElMYOK2BQnhqPMMI3iTQOKpWiDSvIkBzYkkmG
+         SEeMf7mCtczf6juNcf4bGAbEYIH/d6zgVjBJ97CWVyAJOyIcpVHispDW+PMdUHm76a
+         11UW+LeuY5Q/tm3U+cmwZh9NxcNvWnxvPv2yOrr0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Danilenko <al.b.danilenko@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        Imran Shaik <quic_imrashai@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/600] spi: tegra114: Remove unnecessary NULL-pointer checks
+Subject: [PATCH 6.5 410/739] clk: qcom: gcc-qdu1000: Fix gcc_pcie_0_pipe_clk_src clock handling
 Date:   Mon, 11 Sep 2023 15:43:29 +0200
-Message-ID: <20230911134638.797306182@linuxfoundation.org>
+Message-ID: <20230911134702.633090195@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,75 +52,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Danilenko <al.b.danilenko@gmail.com>
+From: Imran Shaik <quic_imrashai@quicinc.com>
 
-[ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
+[ Upstream commit b311f5d3c4749259043a9a458a8db07915210142 ]
 
-cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
-so there is no sense in checking them for NULL.
+Fix the gcc pcie pipe clock handling as per the clk_regmap_phy_mux_ops
+implementation to let the clock framework automatically park the clock
+at XO when the clock is switched off and restore the parent when the
+clock is switched on.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
-Signed-off-by: Alexander Danilenko <al.b.danilenko@gmail.com>
-Link: https://lore.kernel.org/r/20230815092058.4083-1-al.b.danilenko@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1c9efb0bc040 ("clk: qcom: Add QDU1000 and QRU1000 GCC support")
+Co-developed-by: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230803105741.2292309-3-quic_imrashai@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/clk/qcom/gcc-qdu1000.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index d9be80e3e1bcb..6b56108308fc5 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -723,27 +723,23 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
- 	struct spi_delay *setup = &spi->cs_setup;
- 	struct spi_delay *hold = &spi->cs_hold;
- 	struct spi_delay *inactive = &spi->cs_inactive;
--	u8 setup_dly, hold_dly, inactive_dly;
-+	u8 setup_dly, hold_dly;
- 	u32 setup_hold;
- 	u32 spi_cs_timing;
- 	u32 inactive_cycles;
- 	u8 cs_state;
+diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
+index 5051769ad90c7..c00d26a3e6df5 100644
+--- a/drivers/clk/qcom/gcc-qdu1000.c
++++ b/drivers/clk/qcom/gcc-qdu1000.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2022, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
--	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
--	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
--	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
-+	if (setup->unit != SPI_DELAY_UNIT_SCK ||
-+	    hold->unit != SPI_DELAY_UNIT_SCK ||
-+	    inactive->unit != SPI_DELAY_UNIT_SCK) {
- 		dev_err(&spi->dev,
- 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
- 			SPI_DELAY_UNIT_SCK);
- 		return -EINVAL;
- 	}
+ #include <linux/clk-provider.h>
+@@ -370,16 +370,6 @@ static const struct clk_parent_data gcc_parent_data_6[] = {
+ 	{ .index = DT_TCXO_IDX },
+ };
  
--	setup_dly = setup ? setup->value : 0;
--	hold_dly = hold ? hold->value : 0;
--	inactive_dly = inactive ? inactive->value : 0;
+-static const struct parent_map gcc_parent_map_7[] = {
+-	{ P_PCIE_0_PIPE_CLK, 0 },
+-	{ P_BI_TCXO, 2 },
+-};
 -
--	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
--	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
-+	setup_dly = min_t(u8, setup->value, MAX_SETUP_HOLD_CYCLES);
-+	hold_dly = min_t(u8, hold->value, MAX_SETUP_HOLD_CYCLES);
- 	if (setup_dly && hold_dly) {
- 		setup_hold = SPI_SETUP_HOLD(setup_dly - 1, hold_dly - 1);
- 		spi_cs_timing = SPI_CS_SETUP_HOLD(tspi->spi_cs_timing1,
-@@ -755,7 +751,7 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
- 		}
- 	}
+-static const struct clk_parent_data gcc_parent_data_7[] = {
+-	{ .index = DT_PCIE_0_PIPE_CLK_IDX },
+-	{ .index = DT_TCXO_IDX },
+-};
+-
+ static const struct parent_map gcc_parent_map_8[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_GCC_GPLL0_OUT_MAIN, 1 },
+@@ -439,16 +429,15 @@ static struct clk_regmap_mux gcc_pcie_0_phy_aux_clk_src = {
+ 	},
+ };
  
--	inactive_cycles = min_t(u8, inactive_dly, MAX_INACTIVE_CYCLES);
-+	inactive_cycles = min_t(u8, inactive->value, MAX_INACTIVE_CYCLES);
- 	if (inactive_cycles)
- 		inactive_cycles--;
- 	cs_state = inactive_cycles ? 0 : 1;
+-static struct clk_regmap_mux gcc_pcie_0_pipe_clk_src = {
++static struct clk_regmap_phy_mux gcc_pcie_0_pipe_clk_src = {
+ 	.reg = 0x9d064,
+-	.shift = 0,
+-	.width = 2,
+-	.parent_map = gcc_parent_map_7,
+ 	.clkr = {
+ 		.hw.init = &(const struct clk_init_data) {
+ 			.name = "gcc_pcie_0_pipe_clk_src",
+-			.parent_data = gcc_parent_data_7,
+-			.num_parents = ARRAY_SIZE(gcc_parent_data_7),
++			.parent_data = &(const struct clk_parent_data){
++				.index = DT_PCIE_0_PIPE_CLK_IDX,
++			},
++			.num_parents = 1,
+ 			.ops = &clk_regmap_phy_mux_ops,
+ 		},
+ 	},
 -- 
 2.40.1
 
