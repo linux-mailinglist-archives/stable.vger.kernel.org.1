@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FC6679ACEA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1511B79B16A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237069AbjIKUvS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34576 "EHLO
+        id S237823AbjIKV0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242119AbjIKPWy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:54 -0400
+        with ESMTP id S239658AbjIKOZl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99C35F9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD97EC433C9;
-        Mon, 11 Sep 2023 15:22:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFFFDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11D1C433C7;
+        Mon, 11 Sep 2023 14:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445770;
-        bh=jqDG9T+dJ85i2C9WxJFoPTOKXdnVjUZEg5OA3wuC+/o=;
+        s=korg; t=1694442337;
+        bh=an282FUfmSaRSWpr/3BEHxEKa9X7z1omwIpoWjcORdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TIzKVVyejeOaL9Cc5epYJR2vFYreNzqjBK1qwvGWvHb2VakEnk27Urhpe234kjZpx
-         2NsGGz02inFtjdmEGc7u7EZCJsFP4DFNhSV4U1oBzCgQPFRVvMdY+ob3quUcjCwrpo
-         Dr2XU5KTIAu3rO2HP1K1VaMTLUp9bw/wW0mLCB+k=
+        b=S/8PnxQeQ4aeFj1+hZ9qlU+vkm6kz1zsSnXpGiQjmU71gj5UqCkilT0fzd0+DB8EG
+         hp0SKHMlts5G/hBWFr1Gx1Nf8pKs6sjfocCI+rhti8f6kNrHHzsBcifZDRwXgANAuL
+         q3yNgqDHOlHtE72YbQkdnYKKYY3juRnFNuV7/4gM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 466/600] media: ov2680: Fix ov2680_bayer_order()
-Date:   Mon, 11 Sep 2023 15:48:19 +0200
-Message-ID: <20230911134647.406096755@linuxfoundation.org>
+        patches@lists.linux.dev, Steve Rutherford <srutherford@google.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Pankaj Gupta <pankaj.gupta@amd.com>,
+        Ben Hillier <bhillier@google.com>
+Subject: [PATCH 6.5 701/739] x86/sev: Make enc_dec_hypercall() accept a size instead of npages
+Date:   Mon, 11 Sep 2023 15:48:20 +0200
+Message-ID: <20230911134710.670419444@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,121 +52,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Steve Rutherford <srutherford@google.com>
 
-[ Upstream commit 50a7bad4e0a37d7018ab6fe843dd84bc6b2ecf72 ]
+commit ac3f9c9f1b37edaa7d1a9b908bc79d843955a1a2 upstream.
 
-The index into ov2680_hv_flip_bayer_order[] should be 0-3, but
-ov2680_bayer_order() was using 0 + BIT(2) + (BIT(2) << 1) as
-max index, while the intention was to use: 0 + 1 + 2 as max index.
+enc_dec_hypercall() accepted a page count instead of a size, which
+forced its callers to round up. As a result, non-page aligned
+vaddrs caused pages to be spuriously marked as decrypted via the
+encryption status hypercall, which in turn caused consistent
+corruption of pages during live migration. Live migration requires
+accurate encryption status information to avoid migrating pages
+from the wrong perspective.
 
-Fix the index calculation in ov2680_bayer_order(), while at it
-also just use the ctrl values rather then reading them back using
-a slow i2c-read transaction.
-
-This also allows making the function void, since there now are
-no more i2c-reads to error check.
-
-Note the check for the ctrls being NULL is there to allow
-adding an ov2680_fill_format() helper later, which will call
-ov2680_set_bayer_order() during probe() before the ctrls are created.
-
-[Sakari Ailus: Change all users of ov2680_set_bayer_order() here]
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 064ce6c550a0 ("mm: x86: Invoke hypercall when page encryption status is changed")
+Signed-off-by: Steve Rutherford <srutherford@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Tested-by: Ben Hillier <bhillier@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230824223731.2055016-1-srutherford@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2680.c | 33 ++++++++++++++-------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/mem_encrypt.h |    6 +++---
+ arch/x86/kernel/kvm.c              |    4 +---
+ arch/x86/mm/mem_encrypt_amd.c      |   13 ++++++-------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 42efd60c6a96b..7d072448c8530 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -315,26 +315,17 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
- 	usleep_range(5000, 10000);
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -50,8 +50,8 @@ void __init sme_enable(struct boot_param
+ 
+ int __init early_set_memory_decrypted(unsigned long vaddr, unsigned long size);
+ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size);
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages,
+-					    bool enc);
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr,
++					    unsigned long size, bool enc);
+ 
+ void __init mem_encrypt_free_decrypted_mem(void);
+ 
+@@ -85,7 +85,7 @@ early_set_memory_decrypted(unsigned long
+ static inline int __init
+ early_set_memory_encrypted(unsigned long vaddr, unsigned long size) { return 0; }
+ static inline void __init
+-early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc) {}
++early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc) {}
+ 
+ static inline void mem_encrypt_free_decrypted_mem(void) { }
+ 
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -966,10 +966,8 @@ static void __init kvm_init_platform(voi
+ 		 * Ensure that _bss_decrypted section is marked as decrypted in the
+ 		 * shared pages list.
+ 		 */
+-		nr_pages = DIV_ROUND_UP(__end_bss_decrypted - __start_bss_decrypted,
+-					PAGE_SIZE);
+ 		early_set_mem_enc_dec_hypercall((unsigned long)__start_bss_decrypted,
+-						nr_pages, 0);
++						__end_bss_decrypted - __start_bss_decrypted, 0);
+ 
+ 		/*
+ 		 * If not booted using EFI, enable Live migration support.
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -288,11 +288,10 @@ static bool amd_enc_cache_flush_required
+ 	return !cpu_feature_enabled(X86_FEATURE_SME_COHERENT);
  }
  
--static int ov2680_bayer_order(struct ov2680_dev *sensor)
-+static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+-static void enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
  {
--	u32 format1;
--	u32 format2;
--	u32 hv_flip;
--	int ret;
--
--	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT1, &format1);
--	if (ret < 0)
--		return ret;
-+	int hv_flip = 0;
+ #ifdef CONFIG_PARAVIRT
+-	unsigned long sz = npages << PAGE_SHIFT;
+-	unsigned long vaddr_end = vaddr + sz;
++	unsigned long vaddr_end = vaddr + size;
  
--	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT2, &format2);
--	if (ret < 0)
--		return ret;
-+	if (sensor->ctrls.vflip && sensor->ctrls.vflip->val)
-+		hv_flip += 1;
+ 	while (vaddr < vaddr_end) {
+ 		int psize, pmask, level;
+@@ -342,7 +341,7 @@ static bool amd_enc_status_change_finish
+ 		snp_set_memory_private(vaddr, npages);
  
--	hv_flip = (format2 & BIT(2)  << 1) | (format1 & BIT(2));
-+	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
-+		hv_flip += 2;
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+-		enc_dec_hypercall(vaddr, npages, enc);
++		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
  
- 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
--
--	return 0;
+ 	return true;
+ }
+@@ -466,7 +465,7 @@ static int __init early_set_memory_enc_d
+ 
+ 	ret = 0;
+ 
+-	early_set_mem_enc_dec_hypercall(start, PAGE_ALIGN(size) >> PAGE_SHIFT, enc);
++	early_set_mem_enc_dec_hypercall(start, size, enc);
+ out:
+ 	__flush_tlb_all();
+ 	return ret;
+@@ -482,9 +481,9 @@ int __init early_set_memory_encrypted(un
+ 	return early_set_memory_enc_dec(vaddr, size, true);
  }
  
- static int ov2680_vflip_enable(struct ov2680_dev *sensor)
-@@ -345,7 +336,8 @@ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+-	enc_dec_hypercall(vaddr, npages, enc);
++	enc_dec_hypercall(vaddr, size, enc);
  }
  
- static int ov2680_vflip_disable(struct ov2680_dev *sensor)
-@@ -356,7 +348,8 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_hflip_enable(struct ov2680_dev *sensor)
-@@ -367,7 +360,8 @@ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_hflip_disable(struct ov2680_dev *sensor)
-@@ -378,7 +372,8 @@ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
--- 
-2.40.1
-
+ void __init sme_early_init(void)
 
 
