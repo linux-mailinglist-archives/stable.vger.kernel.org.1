@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6904279B66D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1CD79BB7D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240690AbjIKWjq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58634 "EHLO
+        id S1377538AbjIKW06 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239309AbjIKORV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:21 -0400
+        with ESMTP id S240591AbjIKOsR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73AA8DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B985AC433C7;
-        Mon, 11 Sep 2023 14:17:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 519E6106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842D1C433C7;
+        Mon, 11 Sep 2023 14:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441837;
-        bh=DLBCMHd7a6dkZiT1lkA3isejnIEHc+mwQTpdjRxWQqs=;
+        s=korg; t=1694443692;
+        bh=qIu6qL9EVLWUwvT3qxCZucj0qfKtOHli99P4UIdJthE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hwVZJgEHBc7ZSrLWN71XSIn3DUxhb1v4UHnpVzhETBfudaqBCj21HLcxIPHd/xIpZ
-         MhEtmJmpgpitNt08Qt7aWMwYfdQCOUBhWDQwDGQAUab9kRfhJDRhgFU9N7tFn6FJmY
-         +3ODCTJfD9N6WuUCv1aFqBLH2mh4WpzBduDtOwyI=
+        b=EtvMYzStZsLe0C1cQyOjZGuITfvlwepGkcoJLf3P0Cp7OE2zDV5qcMJrfddVTYzoA
+         XxO6tF8PWlQhuuMT9kPoNJs3vn7jz126BdCvNMivqkaQ4XH8D8ISRe/RNNIVgCxzBE
+         5sNNkb14lJ4L2olSg4R1pMhd6XVR6dxhfjuHaj/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 527/739] media: venus: hfi_venus: Only consider sys_idle_indicator on V1
-Date:   Mon, 11 Sep 2023 15:45:26 +0200
-Message-ID: <20230911134705.830157139@linuxfoundation.org>
+Subject: [PATCH 6.4 468/737] powerpc/pseries: Fix hcall tracepoints with JUMP_LABEL=n
+Date:   Mon, 11 Sep 2023 15:45:27 +0200
+Message-ID: <20230911134703.663115035@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 6283e4834c69fa93a108efa18c6aa09c7e626f49 ]
+[ Upstream commit 750bd41aeaeb1f0e0128aa4f8fcd6dd759713641 ]
 
-As per information from Qualcomm [1], this property is not really
-supported beyond msm8916 (HFI V1) and some newer HFI versions really
-dislike receiving it, going as far as crashing the device.
+With JUMP_LABEL=n, hcall_tracepoint_refcount's address is being tested
+instead of its value. This results in the tracing slowpath always being
+taken unnecessarily.
 
-Only consider toggling it (via the module option) on HFIV1.
-While at it, get rid of the global static variable (which defaulted
-to zero) which was never explicitly assigned to for V1.
-
-Note: [1] is a reply to the actual message in question, as lore did not
-properly receive some of the emails..
-
-[1] https://lore.kernel.org/lkml/955cd520-3881-0c22-d818-13fe9a47e124@linaro.org/
-Fixes: 7ed9e0b3393c ("media: venus: hfi, vdec: v6 Add IS_V6() to existing IS_V4() if locations")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 9a10ccb29c0a2 ("powerpc/pseries: move hcall_tracepoint_refcount out of .toc")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230509091600.70994-1-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ arch/powerpc/platforms/pseries/hvCall.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index f0b46389e8d56..918a283bd8900 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -131,7 +131,6 @@ struct venus_hfi_device {
- 
- static bool venus_pkt_debug;
- int venus_fw_debug = HFI_DEBUG_MSG_ERROR | HFI_DEBUG_MSG_FATAL;
--static bool venus_sys_idle_indicator;
- static bool venus_fw_low_power_mode = true;
- static int venus_hw_rsp_timeout = 1000;
- static bool venus_fw_coverage;
-@@ -927,17 +926,12 @@ static int venus_sys_set_default_properties(struct venus_hfi_device *hdev)
- 	if (ret)
- 		dev_warn(dev, "setting fw debug msg ON failed (%d)\n", ret);
- 
--	/*
--	 * Idle indicator is disabled by default on some 4xx firmware versions,
--	 * enable it explicitly in order to make suspend functional by checking
--	 * WFI (wait-for-interrupt) bit.
--	 */
--	if (IS_V4(hdev->core) || IS_V6(hdev->core))
--		venus_sys_idle_indicator = true;
--
--	ret = venus_sys_set_idle_message(hdev, venus_sys_idle_indicator);
--	if (ret)
--		dev_warn(dev, "setting idle response ON failed (%d)\n", ret);
-+	/* HFI_PROPERTY_SYS_IDLE_INDICATOR is not supported beyond 8916 (HFI V1) */
-+	if (IS_V1(hdev->core)) {
-+		ret = venus_sys_set_idle_message(hdev, false);
-+		if (ret)
-+			dev_warn(dev, "setting idle response ON failed (%d)\n", ret);
-+	}
- 
- 	ret = venus_sys_set_power_control(hdev, venus_fw_low_power_mode);
- 	if (ret)
+diff --git a/arch/powerpc/platforms/pseries/hvCall.S b/arch/powerpc/platforms/pseries/hvCall.S
+index 35254ac7af5ee..ca0674b0b683e 100644
+--- a/arch/powerpc/platforms/pseries/hvCall.S
++++ b/arch/powerpc/platforms/pseries/hvCall.S
+@@ -91,6 +91,7 @@ BEGIN_FTR_SECTION;						\
+ 	b	1f;						\
+ END_FTR_SECTION(0, 1);						\
+ 	LOAD_REG_ADDR(r12, hcall_tracepoint_refcount) ;		\
++	ld	r12,0(r12);					\
+ 	std	r12,32(r1);					\
+ 	cmpdi	r12,0;						\
+ 	bne-	LABEL;						\
 -- 
 2.40.1
 
