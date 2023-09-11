@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1C879AD2F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BDF279B1E0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241727AbjIKWX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
+        id S237202AbjIKUvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239277AbjIKOQ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:27 -0400
+        with ESMTP id S241811AbjIKPPJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D2CDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40331C433C9;
-        Mon, 11 Sep 2023 14:16:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA29FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64DBC433C9;
+        Mon, 11 Sep 2023 15:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441782;
-        bh=whMa8IEI7ZWaSznBbt6VacBY6aC3vX2HKpHw8nj8kP0=;
+        s=korg; t=1694445305;
+        bh=Nq/59gWCM5RsvKHt3ssgFgZqx73BmoXx+7kLpvK/PvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TsJY3RDrnT49Vy9aseHYCwVnJrZmJG1HZTdXLPwEqVSdfPg85Yj5HmkfhHFUCgcdg
-         +dkQVoLCrECt3SQzA3d3cnuOn/Lxz75iN9MnSMjH9eN4IPC6Vwm8B4Dg87m01+eX5s
-         x706LBsju3ZLqpLzwDSRGcewujvYn/v3ny/qvt9c=
+        b=U7HDsMkjS015AdhDlsuSRbxZVyULJxE44twMIlP7VFi2jhOZFJUGRAtGMfkf+orac
+         KYonGJKggEUOnPu+ZGRdvlylcJEcZStS6NKXSwU1I7XY9PD71b2bs+l89TvHfmFLxz
+         3M8tagIztov6mGCCtHVLHKuwMNr+Ac8uAanKSxoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Gow <davidgow@google.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 535/739] drivers: base: Free devm resources when unregistering a device
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 301/600] io_uring: fix drain stalls by invalid SQE
 Date:   Mon, 11 Sep 2023 15:45:34 +0200
-Message-ID: <20230911134706.047604727@linuxfoundation.org>
+Message-ID: <20230911134642.499392774@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 699fb50d99039a50e7494de644f96c889279aca3 ]
+[ Upstream commit cfdbaa3a291d6fd2cb4a1a70d74e63b4abc2f5ec ]
 
-In the current code, devres_release_all() only gets called if the device
-has a bus and has been probed.
+cq_extra is protected by ->completion_lock, which io_get_sqe() misses.
+The bug is harmless as it doesn't happen in real life, requires invalid
+SQ index array and racing with submission, and only messes up the
+userspace, i.e. stall requests execution but will be cleaned up on
+ring destruction.
 
-This leads to issues when using bus-less or driver-less devices where
-the device might never get freed if a managed resource holds a reference
-to the device. This is happening in the DRM framework for example.
-
-We should thus call devres_release_all() in the device_del() function to
-make sure that the device-managed actions are properly executed when the
-device is unregistered, even if it has neither a bus nor a driver.
-
-This is effectively the same change than commit 2f8d16a996da ("devres:
-release resources on device_del()") that got reverted by commit
-a525a3ddeaca ("driver core: free devres in device_release") over
-memory leaks concerns.
-
-This patch effectively combines the two commits mentioned above to
-release the resources both on device_del() and device_release() and get
-the best of both worlds.
-
-Fixes: a525a3ddeaca ("driver core: free devres in device_release")
-Signed-off-by: David Gow <davidgow@google.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230720-kunit-devm-inconsistencies-test-v3-3-6aa7e074f373@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15641e427070f ("io_uring: don't cache number of dropped SQEs")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/66096d54651b1a60534bb2023f2947f09f50ef73.1691538547.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ io_uring/io_uring.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 3dff5037943e0..6ceaf50f5a671 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3817,6 +3817,17 @@ void device_del(struct device *dev)
- 	device_platform_notify_remove(dev);
- 	device_links_purge(dev);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index b0e47fe1eb4bb..e15abe26a0e61 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2240,7 +2240,9 @@ static const struct io_uring_sqe *io_get_sqe(struct io_ring_ctx *ctx)
+ 	}
  
-+	/*
-+	 * If a device does not have a driver attached, we need to clean
-+	 * up any managed resources. We do this in device_release(), but
-+	 * it's never called (and we leak the device) if a managed
-+	 * resource holds a reference to the device. So release all
-+	 * managed resources here, like we do in driver_detach(). We
-+	 * still need to do so again in device_release() in case someone
-+	 * adds a new resource after this point, though.
-+	 */
-+	devres_release_all(dev);
-+
- 	bus_notify(dev, BUS_NOTIFY_REMOVED_DEVICE);
- 	kobject_uevent(&dev->kobj, KOBJ_REMOVE);
- 	glue_dir = get_glue_dir(dev);
+ 	/* drop invalid entries */
++	spin_lock(&ctx->completion_lock);
+ 	ctx->cq_extra--;
++	spin_unlock(&ctx->completion_lock);
+ 	WRITE_ONCE(ctx->rings->sq_dropped,
+ 		   READ_ONCE(ctx->rings->sq_dropped) + 1);
+ 	return NULL;
 -- 
 2.40.1
 
