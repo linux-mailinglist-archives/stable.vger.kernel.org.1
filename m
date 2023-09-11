@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 161FF79AE81
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E02CA79AE09
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242719AbjIKU6T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38362 "EHLO
+        id S239224AbjIKWYG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240562AbjIKOrU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:20 -0400
+        with ESMTP id S241764AbjIKPN6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B0F106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AE0C433C9;
-        Mon, 11 Sep 2023 14:47:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEC44FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019D1C433C9;
+        Mon, 11 Sep 2023 15:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443636;
-        bh=6BACRRXB+NcSajMHSRfmBA4aHXKYRTJ2h0bctC3LcWA=;
+        s=korg; t=1694445232;
+        bh=uBZ8+scG1ZeyTz5USd/W8aisXwumTDK0fL4LtBz3r/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZxLKArnoax5x+QhxrGX7npxJAJDtLaJaA5Ip1tcSmDrO7hOmUnPjHnmAxSJx/3qZI
-         2oo2KiJd82ZzB2K//2C13x1ABQBnJedP8GBXgWzLyje73xUaZb1QLta57a9FaGnGAW
-         Yzc3g5AtGXN9xx4Q3U2HETLJ2ppn8wOtkdhmBH04=
+        b=KX24wLFnsRKvg0NbPQ/VzxT9P8ShHlbuuR7uCPeeVCB4q5LLNQ2CTztHnF+w6Le+0
+         VnpEjZc9qcGJyf3GEneqBBQNdZzR2RT2GSbf/Y0I8Y6a/L2M5Mvh+yMPq0Kb9goRSO
+         9o/Nv+4qjf7cZEdQSAbcVX47fR4Ahyx+IGXRiLxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 447/737] clk: imx: composite-8m: fix clock pauses when set_rate would be a no-op
-Date:   Mon, 11 Sep 2023 15:45:06 +0200
-Message-ID: <20230911134703.087481698@linuxfoundation.org>
+Subject: [PATCH 6.1 274/600] drm/amdgpu: Update min() to min_t() in amdgpu_info_ioctl
+Date:   Mon, 11 Sep 2023 15:45:07 +0200
+Message-ID: <20230911134641.693639399@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,78 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 4dd432d985ef258e3bc436e568fba4b987b59171 ]
+[ Upstream commit a0cc8e1512ad72c9f97cdcb76d42715730adaf62 ]
 
-Reconfiguring the clock divider to the exact same value is observed
-on an i.MX8MN to often cause a longer than usual clock pause, probably
-because the divider restarts counting whenever the register is rewritten.
+Fixes the following:
 
-This issue doesn't show up normally, because the clock framework will
-take care to not call set_rate when the clock rate is the same.
-However, when we reconfigure an upstream clock, the common code will
-call set_rate with the newly calculated rate on all children, e.g.:
+WARNING: min() should probably be min_t(size_t, size, sizeof(ip))
++               ret = copy_to_user(out, &ip, min((size_t)size, sizeof(ip)));
 
-  - sai5 is running normally and divides Audio PLL out by 16.
-  - Audio PLL rate is increased by 32Hz (glitch-free kdiv change)
-  - rates for children are recalculated and rates are set recursively
-  - imx8m_clk_composite_divider_set_rate(sai5) is called with
-    32/16 = 2Hz more
-  - imx8m_clk_composite_divider_set_rate computes same divider as before
-  - divider register is written, so it restarts counting from zero and
-    MCLK is briefly paused, so instead of e.g. 40ns, MCLK is low for 120ns.
+And other style fixes:
 
-Some external clock consumers can be upset by such unexpected clock pauses,
-so let's make sure we only rewrite the divider value when the value to be
-written is actually different.
+WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
+WARNING: Missing a blank line after declarations
 
-Fixes: d3ff9728134e ("clk: imx: Add imx composite clock")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20230807082201.2332746-1-a.fatoum@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-composite-8m.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
-index 7a6e3ce97133b..27a08c50ac1d8 100644
---- a/drivers/clk/imx/clk-composite-8m.c
-+++ b/drivers/clk/imx/clk-composite-8m.c
-@@ -97,7 +97,7 @@ static int imx8m_clk_composite_divider_set_rate(struct clk_hw *hw,
- 	int prediv_value;
- 	int div_value;
- 	int ret;
--	u32 val;
-+	u32 orig, val;
- 
- 	ret = imx8m_clk_composite_compute_dividers(rate, parent_rate,
- 						&prediv_value, &div_value);
-@@ -106,13 +106,15 @@ static int imx8m_clk_composite_divider_set_rate(struct clk_hw *hw,
- 
- 	spin_lock_irqsave(divider->lock, flags);
- 
--	val = readl(divider->reg);
--	val &= ~((clk_div_mask(divider->width) << divider->shift) |
--			(clk_div_mask(PCG_DIV_WIDTH) << PCG_DIV_SHIFT));
-+	orig = readl(divider->reg);
-+	val = orig & ~((clk_div_mask(divider->width) << divider->shift) |
-+		       (clk_div_mask(PCG_DIV_WIDTH) << PCG_DIV_SHIFT));
- 
- 	val |= (u32)(prediv_value  - 1) << divider->shift;
- 	val |= (u32)(div_value - 1) << PCG_DIV_SHIFT;
--	writel(val, divider->reg);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 4e42dcb1950f7..9e3313dd956ae 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -554,6 +554,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 			crtc = (struct drm_crtc *)minfo->crtcs[i];
+ 			if (crtc && crtc->base.id == info->mode_crtc.id) {
+ 				struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
 +
-+	if (val != orig)
-+		writel(val, divider->reg);
+ 				ui32 = amdgpu_crtc->crtc_id;
+ 				found = 1;
+ 				break;
+@@ -572,7 +573,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 		if (ret)
+ 			return ret;
  
- 	spin_unlock_irqrestore(divider->lock, flags);
+-		ret = copy_to_user(out, &ip, min((size_t)size, sizeof(ip)));
++		ret = copy_to_user(out, &ip, min_t(size_t, size, sizeof(ip)));
+ 		return ret ? -EFAULT : 0;
+ 	}
+ 	case AMDGPU_INFO_HW_IP_COUNT: {
+@@ -718,17 +719,18 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				    ? -EFAULT : 0;
+ 	}
+ 	case AMDGPU_INFO_READ_MMR_REG: {
+-		unsigned n, alloc_size;
++		unsigned int n, alloc_size;
+ 		uint32_t *regs;
+-		unsigned se_num = (info->read_mmr_reg.instance >>
++		unsigned int se_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
+-		unsigned sh_num = (info->read_mmr_reg.instance >>
++		unsigned int sh_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
+ 
+ 		/* set full masks if the userspace set all bits
+-		 * in the bitfields */
++		 * in the bitfields
++		 */
+ 		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
+ 			se_num = 0xffffffff;
+ 		else if (se_num >= AMDGPU_GFX_MAX_SE)
+@@ -852,7 +854,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 		return ret;
+ 	}
+ 	case AMDGPU_INFO_VCE_CLOCK_TABLE: {
+-		unsigned i;
++		unsigned int i;
+ 		struct drm_amdgpu_info_vce_clock_table vce_clk_table = {};
+ 		struct amd_vce_state *vce_state;
  
 -- 
 2.40.1
