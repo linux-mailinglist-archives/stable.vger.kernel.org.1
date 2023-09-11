@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FCA79B8F2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABCB579BF8E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243010AbjIKU65 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53342 "EHLO
+        id S240808AbjIKVaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240185AbjIKOio (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:44 -0400
+        with ESMTP id S238858AbjIKOG2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6752F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D5DC433C8;
-        Mon, 11 Sep 2023 14:38:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71876120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61CCC433C7;
+        Mon, 11 Sep 2023 14:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443119;
-        bh=0wUp5NXJg/U5Tqf1sqPElWqWo2bGZifKvuwE9KXna7U=;
+        s=korg; t=1694441183;
+        bh=mx6wC7BpBDDcFtQSn0S+OyEHLJTBU1q/E4Q/FEOJJPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1u7AQmIhO3MJf6XBLOy2LXTuy7iWFLDs1Nrt7GTB4iVYhKlXbVjEeV3iVU8OVK2BY
-         /Gc2bzDORYVvAK3JMsC8zdAfx4hbvRIT6CEiDBB2IBntrTTQYSk/6DR9qkLxnJlKjs
-         AEhJ+cpQN/Hcdca4uMKLwxnSn1yaENsix7LtQv/k=
+        b=tZhZKQkqWr+emCXO4h9mtSmG8wqb3uslxX7FiX071wCQ5Ytida1XL7ZTwb0ubMci4
+         VQ9F+p0BYTM8buTLbp4VximYV7JzuUXUQHrKEwdUvima3V7rZiWYS13zyqutz4MnlH
+         gCA9nwsTC9EX1Bl4h9rxgzgqVxsQHzt5M8OV514U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Brett Creeley <brett.creeley@amd.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 264/737] pds_core: check for work queue before use
+        patches@lists.linux.dev, Zhiguo Niu <zhiguo.niu@unisoc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 324/739] block/mq-deadline: use correct way to throttling write requests
 Date:   Mon, 11 Sep 2023 15:42:03 +0200
-Message-ID: <20230911134657.961329804@linuxfoundation.org>
+Message-ID: <20230911134700.152468033@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 969cfd4c8ca50c32901342cdd3d677c3ffe61371 ]
+[ Upstream commit d47f9717e5cfd0dd8c0ba2ecfa47c38d140f1bb6 ]
 
-Add a check that the wq exists before queuing up work for a
-failed devcmd, as the PF is responsible for health and the VF
-doesn't have a wq.
+The original formula was inaccurate:
+dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
 
-Fixes: c2dbb0904310 ("pds_core: health timer and workqueue")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230824161754.34264-5-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For write requests, when we assign a tags from sched_tags,
+data->shallow_depth will be passed to sbitmap_find_bit,
+see the following code:
+
+nr = sbitmap_find_bit_in_word(&sb->map[index],
+			min_t (unsigned int,
+			__map_depth(sb, index),
+			depth),
+			alloc_hint, wrap);
+
+The smaller of data->shallow_depth and __map_depth(sb, index)
+will be used as the maximum range when allocating bits.
+
+For a mmc device (one hw queue, deadline I/O scheduler):
+q->nr_requests = sched_tags = 128, so according to the previous
+calculation method, dd->async_depth = data->shallow_depth = 96,
+and the platform is 64bits with 8 cpus, sched_tags.bitmap_tags.sb.shift=5,
+sb.maps[]=32/32/32/32, 32 is smaller than 96, whether it is a read or
+a write I/O, tags can be allocated to the maximum range each time,
+which has not throttling effect.
+
+In addition, refer to the methods of bfg/kyber I/O scheduler,
+limit ratiois are calculated base on sched_tags.bitmap_tags.sb.shift.
+
+This patch can throttle write requests really.
+
+Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
+
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/1691061162-22898-1-git-send-email-zhiguo.niu@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/mq-deadline.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index debe5216fe29e..524f422ee7ace 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -183,7 +183,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 	err = pdsc_devcmd_wait(pdsc, max_seconds);
- 	memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 02a916ba62ee7..f958e79277b8b 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -646,8 +646,9 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
+ 	struct request_queue *q = hctx->queue;
+ 	struct deadline_data *dd = q->elevator->elevator_data;
+ 	struct blk_mq_tags *tags = hctx->sched_tags;
++	unsigned int shift = tags->bitmap_tags.sb.shift;
  
--	if (err == -ENXIO || err == -ETIMEDOUT)
-+	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
- 		queue_work(pdsc->wq, &pdsc->health_work);
+-	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
++	dd->async_depth = max(1U, 3 * (1U << shift)  / 4);
  
- 	return err;
+ 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
+ }
 -- 
 2.40.1
 
