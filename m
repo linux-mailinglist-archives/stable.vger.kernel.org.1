@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535DB79B822
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCFEC79B964
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233308AbjIKUwW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56336 "EHLO
+        id S239793AbjIKWjW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239537AbjIKOXX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:23 -0400
+        with ESMTP id S240848AbjIKOze (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1ADDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC86C433C7;
-        Mon, 11 Sep 2023 14:23:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0093118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B0EC433C7;
+        Mon, 11 Sep 2023 14:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442198;
-        bh=Lv1NKOg82lki41tgK0SHqljC2HbKVyyCERc2RsVr6kw=;
+        s=korg; t=1694444129;
+        bh=/1jtHE7ESuefcnY7ne7h5cA3S7s+KfvVx7Z6j690/LI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c3pU75jms3vy4wkA1QOr8NyK9Kka4RcmA3WRM9WRnGKgTo8NI1dPOuvmUi+As6QCC
-         hbdNVh2qaFo3W43zT1Mad7e+AIRQAguMnIrgmB0M8dl0V5pxyFLSuHeke877RkuZ00
-         I/UGfRDNHbxhnrGI0QQKni6ocB71ss1/PELmz3Ko=
+        b=RCMU9W0camgymh6CiuzdZA/i63xbHhLTuveTHMVC6omA3gH1c4aSQE70Qm33c5ZEv
+         VrJ/KTIm2WpqpvNaACOqeFfVIZ9xIbgAj9gZbsnSKFxYgpvLHHGrDfjfvcQakxoKFM
+         E3hQr3qpEK6fYZk4ayKWSfUyWRjG87WKw4o1L38Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.5 681/739] media: nxp: Fix wrong return pointer check in mxc_isi_crossbar_init()
+        patches@lists.linux.dev, Michael Walle <michael@walle.cc>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 621/737] mtd: spi-nor: Check bus width while setting QE bit
 Date:   Mon, 11 Sep 2023 15:48:00 +0200
-Message-ID: <20230911134710.120144229@linuxfoundation.org>
+Message-ID: <20230911134707.878447709@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-commit 4b60db99babad0254129ddc58e0927ffa9e93e35 upstream.
+[ Upstream commit f01d8155a92e33cdaa85d20bfbe6c441907b3c1f ]
 
-It should check 'xbar->inputs', when allocate memory for it.
+spi_nor_write_16bit_sr_and_check() should also check if bus width is
+4 before setting QE bit.
 
-Cc: stable@vger.kernel.org
-Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39d1e3340c73 ("mtd: spi-nor: Fix clearing of QE bit on lock()/unlock()")
+Suggested-by: Michael Walle <michael@walle.cc>
+Suggested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Reviewed-by: Michael Walle <michael@walle.cc>
+Link: https://lore.kernel.org/r/20230818064524.1229100-2-hsinyi@chromium.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/spi-nor/core.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-@@ -483,7 +483,7 @@ int mxc_isi_crossbar_init(struct mxc_isi
- 
- 	xbar->inputs = kcalloc(xbar->num_sinks, sizeof(*xbar->inputs),
- 			       GFP_KERNEL);
--	if (!xbar->pads) {
-+	if (!xbar->inputs) {
- 		ret = -ENOMEM;
- 		goto err_free;
- 	}
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 5f29fac8669a3..55f4a902b8be9 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -870,21 +870,22 @@ static int spi_nor_write_16bit_sr_and_check(struct spi_nor *nor, u8 sr1)
+ 		ret = spi_nor_read_cr(nor, &sr_cr[1]);
+ 		if (ret)
+ 			return ret;
+-	} else if (nor->params->quad_enable) {
++	} else if (spi_nor_get_protocol_width(nor->read_proto) == 4 &&
++		   spi_nor_get_protocol_width(nor->write_proto) == 4 &&
++		   nor->params->quad_enable) {
+ 		/*
+ 		 * If the Status Register 2 Read command (35h) is not
+ 		 * supported, we should at least be sure we don't
+ 		 * change the value of the SR2 Quad Enable bit.
+ 		 *
+-		 * We can safely assume that when the Quad Enable method is
+-		 * set, the value of the QE bit is one, as a consequence of the
+-		 * nor->params->quad_enable() call.
++		 * When the Quad Enable method is set and the buswidth is 4, we
++		 * can safely assume that the value of the QE bit is one, as a
++		 * consequence of the nor->params->quad_enable() call.
+ 		 *
+-		 * We can safely assume that the Quad Enable bit is present in
+-		 * the Status Register 2 at BIT(1). According to the JESD216
+-		 * revB standard, BFPT DWORDS[15], bits 22:20, the 16-bit
+-		 * Write Status (01h) command is available just for the cases
+-		 * in which the QE bit is described in SR2 at BIT(1).
++		 * According to the JESD216 revB standard, BFPT DWORDS[15],
++		 * bits 22:20, the 16-bit Write Status (01h) command is
++		 * available just for the cases in which the QE bit is
++		 * described in SR2 at BIT(1).
+ 		 */
+ 		sr_cr[1] = SR2_QUAD_EN_BIT1;
+ 	} else {
+-- 
+2.40.1
+
 
 
