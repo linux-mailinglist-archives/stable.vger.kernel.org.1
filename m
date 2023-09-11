@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBB9779BC68
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A88AE79BB4D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378832AbjIKWhe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42562 "EHLO
+        id S243383AbjIKVHx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239680AbjIKO0Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:16 -0400
+        with ESMTP id S240996AbjIKO7S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD06CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B484AC433C8;
-        Mon, 11 Sep 2023 14:26:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5A01B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E68DC433C8;
+        Mon, 11 Sep 2023 14:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442371;
-        bh=6sMB2t9NDbKSNEbk87OLjdcaBUHGHCgrVwvg25+5bw8=;
+        s=korg; t=1694444352;
+        bh=/BJnuyx4RNIchX27QoktikvhUrNDHtg97geTsCjvyk4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LEehNLNLASwsjsBzEl+O2D7MtdJYxiLhxVQba6YUQrehFZwMISQbWq6xkEcTBSwko
-         0gkb/NIbbUqTCB2mla0o1QWZSrFBFrMdqtLBckgKAnWGkRqR3z9hFSazaR70vRQbWo
-         wTlm7UDkgv2t2KIZeJmHbR3G7cvE41Zwr0T/jgmk=
+        b=z2ZndF8vIyENJ4UX+/M2PBMV7uRYCff3aUjRfdRs3/5khWgv5uXqLGYpD09IE3mC6
+         lZ/PlbZcd2EgHeUjsYDGsNE5vsoCp9HGwUFo6+yyrXvFDyrr4FcJNi25AcdFsRgR7i
+         hGXtBwdhQLaEm2sM2eJnmxwYbvlpFHKnQkRKN4Qo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 731/739] serial: sc16is7xx: remove obsolete out_thread label
-Date:   Mon, 11 Sep 2023 15:48:50 +0200
-Message-ID: <20230911134711.482147596@linuxfoundation.org>
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 6.4 672/737] arm64: csum: Fix OoB access in IP checksum code for negative lengths
+Date:   Mon, 11 Sep 2023 15:48:51 +0200
+Message-ID: <20230911134709.309424441@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit dabc54a45711fe77674a6c0348231e00e66bd567 ]
+commit 8bd795fedb8450ecbef18eeadbd23ed8fc7630f5 upstream.
 
-Commit c8f71b49ee4d ("serial: sc16is7xx: setup GPIO controller later
-in probe") moved GPIO setup code later in probe function. Doing so
-also required to move ports cleanup code (out_ports label) after the
-GPIO cleanup code.
+Although commit c2c24edb1d9c ("arm64: csum: Fix pathological zero-length
+calls") added an early return for zero-length input, syzkaller has
+popped up with an example of a _negative_ length which causes an
+undefined shift and an out-of-bounds read:
 
-After these moves, the out_thread label becomes misplaced and makes
-part of the cleanup code illogical.
+ | BUG: KASAN: slab-out-of-bounds in do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
+ | Read of size 4294966928 at addr ffff0000d7ac0170 by task syz-executor412/5975
+ |
+ | CPU: 0 PID: 5975 Comm: syz-executor412 Not tainted 6.4.0-rc4-syzkaller-g908f31f2a05b #0
+ | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+ | Call trace:
+ |  dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
+ |  show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
+ |  __dump_stack lib/dump_stack.c:88 [inline]
+ |  dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
+ |  print_address_description mm/kasan/report.c:351 [inline]
+ |  print_report+0x174/0x514 mm/kasan/report.c:462
+ |  kasan_report+0xd4/0x130 mm/kasan/report.c:572
+ |  kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
+ |  __kasan_check_read+0x20/0x30 mm/kasan/shadow.c:31
+ |  do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
+ |  csum_partial+0x30/0x58 lib/checksum.c:128
+ |  gso_make_checksum include/linux/skbuff.h:4928 [inline]
+ |  __udp_gso_segment+0xaf4/0x1bc4 net/ipv4/udp_offload.c:332
+ |  udp6_ufo_fragment+0x540/0xca0 net/ipv6/udp_offload.c:47
+ |  ipv6_gso_segment+0x5cc/0x1760 net/ipv6/ip6_offload.c:119
+ |  skb_mac_gso_segment+0x2b4/0x5b0 net/core/gro.c:141
+ |  __skb_gso_segment+0x250/0x3d0 net/core/dev.c:3401
+ |  skb_gso_segment include/linux/netdevice.h:4859 [inline]
+ |  validate_xmit_skb+0x364/0xdbc net/core/dev.c:3659
+ |  validate_xmit_skb_list+0x94/0x130 net/core/dev.c:3709
+ |  sch_direct_xmit+0xe8/0x548 net/sched/sch_generic.c:327
+ |  __dev_xmit_skb net/core/dev.c:3805 [inline]
+ |  __dev_queue_xmit+0x147c/0x3318 net/core/dev.c:4210
+ |  dev_queue_xmit include/linux/netdevice.h:3085 [inline]
+ |  packet_xmit+0x6c/0x318 net/packet/af_packet.c:276
+ |  packet_snd net/packet/af_packet.c:3081 [inline]
+ |  packet_sendmsg+0x376c/0x4c98 net/packet/af_packet.c:3113
+ |  sock_sendmsg_nosec net/socket.c:724 [inline]
+ |  sock_sendmsg net/socket.c:747 [inline]
+ |  __sys_sendto+0x3b4/0x538 net/socket.c:2144
 
-This patch remove the now obsolete out_thread label and make GPIO
-setup code jump to out_ports label if it fails.
+Extend the early return to reject negative lengths as well, aligning our
+implementation with the generic code in lib/checksum.c
 
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20230807214556.540627-3-hugo@hugovil.com
+Cc: Robin Murphy <robin.murphy@arm.com>
+Fixes: 5777eaed566a ("arm64: Implement optimised checksum routine")
+Reported-by: syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/000000000000e0e94c0603f8d213@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 049994292834 ("serial: sc16is7xx: fix regression with GPIO configuration")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/lib/csum.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index faeb3dc371c05..f714ba3abc980 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1529,7 +1529,7 @@ static int sc16is7xx_probe(struct device *dev,
- 		s->gpio.can_sleep	 = 1;
- 		ret = gpiochip_add_data(&s->gpio, s);
- 		if (ret)
--			goto out_thread;
-+			goto out_ports;
- 	}
- #endif
+--- a/arch/arm64/lib/csum.c
++++ b/arch/arm64/lib/csum.c
+@@ -24,7 +24,7 @@ unsigned int __no_sanitize_address do_cs
+ 	const u64 *ptr;
+ 	u64 data, sum64 = 0;
  
-@@ -1555,8 +1555,6 @@ static int sc16is7xx_probe(struct device *dev,
- #ifdef CONFIG_GPIOLIB
- 	if (devtype->nr_gpio)
- 		gpiochip_remove(&s->gpio);
--
--out_thread:
- #endif
+-	if (unlikely(len == 0))
++	if (unlikely(len <= 0))
+ 		return 0;
  
- out_ports:
--- 
-2.40.1
-
+ 	offset = (unsigned long)buff & 7;
 
 
