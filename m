@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B8A79BFA3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14CBE79C07D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229990AbjIKWu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35370 "EHLO
+        id S229675AbjIKWqx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:46:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240084AbjIKOgR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:17 -0400
+        with ESMTP id S241085AbjIKPBi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2340F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AEFC433C7;
-        Mon, 11 Sep 2023 14:36:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C8CF125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CCBC433CD;
+        Mon, 11 Sep 2023 15:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442971;
-        bh=p/xNuthaiJauC3e7kNrOyeoq9UlCVXrj8oX3evznlio=;
+        s=korg; t=1694444492;
+        bh=T7uMimOF/c7HVJx7qOoWtUrL/02aTX2Ovzk+ceR44w8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g+2qsANLn0LGAQIGCLsJSl9bf7YxTJWrc8Yb6R8fT5QgvtHAEkLRofhEPxYT0q/0K
-         1JZD348kTcdFW9as6MQ9zHvOo34HibIhjoIoqmAIVk+5sUsQJD5Bf86DmIUBgrb7oX
-         bUvhqyuU2/fxMCtJcdJkx+obQTBJg3gtw2Tk9QBk=
+        b=EeMkk0aYnQHxdoXz5PgAyQOZLlsJmAxEw2pUl8PJ/RaHmDHETVO4uKUVErOz25yOo
+         p1ZNQWLS+objGr48pQ/18BunCx+vvCFrGizX/Ny8NdYJcHuchOkMh77DWY3e9cJzXe
+         S4D8p4vmsoWR/MQT734/g7eJDz/iznZYN/D4CigE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Colm Harrington <colm.harrington@oracle.com>,
-        Alan Maguire <alan.maguire@oracle.com>,
-        Yipeng Zou <zouyipeng@huawei.com>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 185/737] selftests/bpf: fix static assert compilation issue for test_cls_*.c
-Date:   Mon, 11 Sep 2023 15:40:44 +0200
-Message-ID: <20230911134655.739594868@linuxfoundation.org>
+Subject: [PATCH 6.1 012/600] media: pulse8-cec: handle possible ping error
+Date:   Mon, 11 Sep 2023 15:40:45 +0200
+Message-ID: <20230911134633.979622351@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,84 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 416c6d01244ecbf0abfdb898fd091b50ef951b48 ]
+[ Upstream commit 92cbf865ea2e0f2997ff97815c6db182eb23df1b ]
 
-commit bdeeed3498c7 ("libbpf: fix offsetof() and container_of() to work with CO-RE")
+Handle (and warn about) possible error waiting for MSGCODE_PING result.
 
-...was backported to stable trees such as 5.15. The problem is that with older
-LLVM/clang (14/15) - which is often used for older kernels - we see compilation
-failures in BPF selftests now:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-In file included from progs/test_cls_redirect_subprogs.c:2:
-progs/test_cls_redirect.c:90:2: error: static assertion expression is not an integral constant expression
-        sizeof(flow_ports_t) !=
-        ^~~~~~~~~~~~~~~~~~~~~~~
-progs/test_cls_redirect.c:91:3: note: cast that performs the conversions of a reinterpret_cast is not allowed in a constant expression
-                offsetofend(struct bpf_sock_tuple, ipv4.dport) -
-                ^
-progs/test_cls_redirect.c:32:3: note: expanded from macro 'offsetofend'
-        (offsetof(TYPE, MEMBER) + sizeof((((TYPE *)0)->MEMBER)))
-         ^
-tools/testing/selftests/bpf/tools/include/bpf/bpf_helpers.h:86:33: note: expanded from macro 'offsetof'
-                                 ^
-In file included from progs/test_cls_redirect_subprogs.c:2:
-progs/test_cls_redirect.c:95:2: error: static assertion expression is not an integral constant expression
-        sizeof(flow_ports_t) !=
-        ^~~~~~~~~~~~~~~~~~~~~~~
-progs/test_cls_redirect.c:96:3: note: cast that performs the conversions of a reinterpret_cast is not allowed in a constant expression
-                offsetofend(struct bpf_sock_tuple, ipv6.dport) -
-                ^
-progs/test_cls_redirect.c:32:3: note: expanded from macro 'offsetofend'
-        (offsetof(TYPE, MEMBER) + sizeof((((TYPE *)0)->MEMBER)))
-         ^
-tools/testing/selftests/bpf/tools/include/bpf/bpf_helpers.h:86:33: note: expanded from macro 'offsetof'
-                                 ^
-2 errors generated.
-make: *** [Makefile:594: tools/testing/selftests/bpf/test_cls_redirect_subprogs.bpf.o] Error 1
-
-The problem is the new offsetof() does not play nice with static asserts.
-Given that the context is a static assert (and CO-RE relocation is not
-needed at compile time), offsetof() usage can be replaced by restoring
-the original offsetof() definition as __builtin_offsetof().
-
-Fixes: bdeeed3498c7 ("libbpf: fix offsetof() and container_of() to work with CO-RE")
-Reported-by: Colm Harrington <colm.harrington@oracle.com>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Tested-by: Yipeng Zou <zouyipeng@huawei.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20230802073906.3197480-1-alan.maguire@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/test_cls_redirect.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/media/cec/usb/pulse8/pulse8-cec.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_cls_redirect.h b/tools/testing/selftests/bpf/progs/test_cls_redirect.h
-index 76eab0aacba0c..233b089d1fbac 100644
---- a/tools/testing/selftests/bpf/progs/test_cls_redirect.h
-+++ b/tools/testing/selftests/bpf/progs/test_cls_redirect.h
-@@ -12,6 +12,15 @@
- #include <linux/ipv6.h>
- #include <linux/udp.h>
+diff --git a/drivers/media/cec/usb/pulse8/pulse8-cec.c b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+index 04b13cdc38d2c..ba67587bd43ec 100644
+--- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
++++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+@@ -809,8 +809,11 @@ static void pulse8_ping_eeprom_work_handler(struct work_struct *work)
  
-+/* offsetof() is used in static asserts, and the libbpf-redefined CO-RE
-+ * friendly version breaks compilation for older clang versions <= 15
-+ * when invoked in a static assert.  Restore original here.
-+ */
-+#ifdef offsetof
-+#undef offsetof
-+#define offsetof(type, member) __builtin_offsetof(type, member)
-+#endif
-+
- struct gre_base_hdr {
- 	uint16_t flags;
- 	uint16_t protocol;
+ 	mutex_lock(&pulse8->lock);
+ 	cmd = MSGCODE_PING;
+-	pulse8_send_and_wait(pulse8, &cmd, 1,
+-			     MSGCODE_COMMAND_ACCEPTED, 0);
++	if (pulse8_send_and_wait(pulse8, &cmd, 1,
++				 MSGCODE_COMMAND_ACCEPTED, 0)) {
++		dev_warn(pulse8->dev, "failed to ping EEPROM\n");
++		goto unlock;
++	}
+ 
+ 	if (pulse8->vers < 2)
+ 		goto unlock;
 -- 
 2.40.1
 
