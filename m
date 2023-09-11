@@ -2,39 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAAE79B89D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC0E79BB4F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239058AbjIKViz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43710 "EHLO
+        id S1378760AbjIKWhJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242298AbjIKP1I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:08 -0400
+        with ESMTP id S241054AbjIKPAo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:00:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C96FCE4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FCAC433C8;
-        Mon, 11 Sep 2023 15:27:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAD2A1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:00:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DEBC433C7;
+        Mon, 11 Sep 2023 15:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446024;
-        bh=h5xJE8kGXMtEL3zsAphY1KLhYvutgmj2VDkzCEbnDPg=;
+        s=korg; t=1694444439;
+        bh=1fss1qIGbUz6/f4QCzbJIglAZMPC13vLC09XPpGR9LE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b9vJiHVsvFJ2KFF/JQ/p9n/WKiYbneiigDljEc3TGtEKntNbYHa9e+O2jn6vtuO5e
-         J0Nr8M7aIhvizpp0s6I+EpJWPVzxrSZrkWGkaamjaMeEp8Jl0MKy9DmJ15lAT1SZBj
-         BWGB70LKifJMYeOXd1DbNalcrPvDYylIi/+PYI2Y=
+        b=gl9U9zdEebezurzQDenRqWKhmwBejFxyKA9VF5vQiid9bHYIOtWwOKlUDoFW7catd
+         ZDanNQrnltfasnsJ8MwJsvhFcFnms8doYrlJLYO5R0lgGVg93ElaJ1vPpZSvN/5IjV
+         gtSpr9EnrHnO2uyKIXWyekXnoyu0tCE0DpZsixlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Logan Gunthorpe <logang@deltatee.com>,
-        renlonglong <ren.longlong@h3c.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.1 556/600] ntb: Fix calculation ntb_transport_tx_free_entry()
+        patches@lists.linux.dev,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        kernel test robot <lkp@intel.com>,
+        Jeff Xu <jeffxu@google.com>,
+        Daniel Verkamp <dverkamp@chromium.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+        Jorge Lucangeli Obes <jorgelo@chromium.org>,
+        Kees Cook <keescook@chromium.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 730/737] mm/memfd: sysctl: fix MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED
 Date:   Mon, 11 Sep 2023 15:49:49 +0200
-Message-ID: <20230911134650.028436735@linuxfoundation.org>
+Message-ID: <20230911134710.901810156@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +60,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Jeff Xu <jeffxu@google.com>
 
-commit 5a7693e6bbf19b22fd6c1d2c4b7beb0a03969e2c upstream.
+[ Upstream commit 72de259130229412ca49871e70ffaf17dc9fba98 ]
 
-ntb_transport_tx_free_entry() never returns 0 with the current
-calculation. If head == tail, then it would return qp->tx_max_entry.
-Change compare to tail >= head and when they are equal, a 0 would be
-returned.
+Patch series "mm/memfd: fix sysctl MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED", v2.
 
-Fixes: e74bfeedad08 ("NTB: Add flow control to the ntb_netdev")
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: renlonglong <ren.longlong@h3c.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When sysctl vm.memfd_noexec is 2 (MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED),
+memfd_create(.., MFD_EXEC) should fail.
+
+This complies with how MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED is defined -
+"memfd_create() without MFD_NOEXEC_SEAL will be rejected"
+
+Thanks to Dominique Martinet <asmadeus@codewreck.org> who reported the bug.
+see [1] for context.
+
+[1] https://lore.kernel.org/linux-mm/CABi2SkXUX_QqTQ10Yx9bBUGpN1wByOi_=gZU6WEy5a8MaQY3Jw@mail.gmail.com/T/
+
+This patch (of 2):
+
+When vm.memfd_noexec is 2 (MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED),
+memfd_create(.., MFD_EXEC) should fail.
+
+This complies with how MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED is
+defined - "memfd_create() without MFD_NOEXEC_SEAL will be rejected"
+
+Link: https://lkml.kernel.org/r/20230705063315.3680666-1-jeffxu@google.com
+Link: https://lkml.kernel.org/r/20230705063315.3680666-2-jeffxu@google.com
+Fixes: 105ff5339f49 ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
+Reported-by: Dominique Martinet <asmadeus@codewreck.org>
+Closes: https://lore.kernel.org/linux-mm/CABi2SkXUX_QqTQ10Yx9bBUGpN1wByOi_=gZU6WEy5a8MaQY3Jw@mail.gmail.com/T/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306301351.kkbSegQW-lkp@intel.com/
+Signed-off-by: Jeff Xu <jeffxu@google.com>
+Cc: Daniel Verkamp <dverkamp@chromium.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jorge Lucangeli Obes <jorgelo@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 202e14222fad ("memfd: do not -EACCES old memfd_create() users with vm.memfd_noexec=2")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memfd.c | 57 +++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 33 insertions(+), 24 deletions(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -2429,7 +2429,7 @@ unsigned int ntb_transport_tx_free_entry
- 	unsigned int head = qp->tx_index;
- 	unsigned int tail = qp->remote_rx_info->entry;
+diff --git a/mm/memfd.c b/mm/memfd.c
+index e763e76f11064..0bdbd2335af75 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -268,6 +268,36 @@ long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg)
  
--	return tail > head ? tail - head : qp->tx_max_entry + tail - head;
-+	return tail >= head ? tail - head : qp->tx_max_entry + tail - head;
- }
- EXPORT_SYMBOL_GPL(ntb_transport_tx_free_entry);
+ #define MFD_ALL_FLAGS (MFD_CLOEXEC | MFD_ALLOW_SEALING | MFD_HUGETLB | MFD_NOEXEC_SEAL | MFD_EXEC)
  
++static int check_sysctl_memfd_noexec(unsigned int *flags)
++{
++#ifdef CONFIG_SYSCTL
++	char comm[TASK_COMM_LEN];
++	int sysctl = MEMFD_NOEXEC_SCOPE_EXEC;
++	struct pid_namespace *ns;
++
++	ns = task_active_pid_ns(current);
++	if (ns)
++		sysctl = ns->memfd_noexec_scope;
++
++	if (!(*flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
++		if (sysctl == MEMFD_NOEXEC_SCOPE_NOEXEC_SEAL)
++			*flags |= MFD_NOEXEC_SEAL;
++		else
++			*flags |= MFD_EXEC;
++	}
++
++	if (*flags & MFD_EXEC && sysctl >= MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED) {
++		pr_warn_once(
++			"memfd_create(): MFD_NOEXEC_SEAL is enforced, pid=%d '%s'\n",
++			task_pid_nr(current), get_task_comm(comm, current));
++
++		return -EACCES;
++	}
++#endif
++
++	return 0;
++}
++
+ SYSCALL_DEFINE2(memfd_create,
+ 		const char __user *, uname,
+ 		unsigned int, flags)
+@@ -294,35 +324,14 @@ SYSCALL_DEFINE2(memfd_create,
+ 		return -EINVAL;
+ 
+ 	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
+-#ifdef CONFIG_SYSCTL
+-		int sysctl = MEMFD_NOEXEC_SCOPE_EXEC;
+-		struct pid_namespace *ns;
+-
+-		ns = task_active_pid_ns(current);
+-		if (ns)
+-			sysctl = ns->memfd_noexec_scope;
+-
+-		switch (sysctl) {
+-		case MEMFD_NOEXEC_SCOPE_EXEC:
+-			flags |= MFD_EXEC;
+-			break;
+-		case MEMFD_NOEXEC_SCOPE_NOEXEC_SEAL:
+-			flags |= MFD_NOEXEC_SEAL;
+-			break;
+-		default:
+-			pr_warn_once(
+-				"memfd_create(): MFD_NOEXEC_SEAL is enforced, pid=%d '%s'\n",
+-				task_pid_nr(current), get_task_comm(comm, current));
+-			return -EINVAL;
+-		}
+-#else
+-		flags |= MFD_EXEC;
+-#endif
+ 		pr_warn_once(
+ 			"memfd_create() without MFD_EXEC nor MFD_NOEXEC_SEAL, pid=%d '%s'\n",
+ 			task_pid_nr(current), get_task_comm(comm, current));
+ 	}
+ 
++	if (check_sysctl_memfd_noexec(&flags) < 0)
++		return -EACCES;
++
+ 	/* length includes terminating zero */
+ 	len = strnlen_user(uname, MFD_NAME_MAX_LEN + 1);
+ 	if (len <= 0)
+-- 
+2.40.1
+
 
 
