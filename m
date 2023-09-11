@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8978A79ADE8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A4AC79B035
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239848AbjIKUz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39244 "EHLO
+        id S1379643AbjIKWpN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239915AbjIKObY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:24 -0400
+        with ESMTP id S238603AbjIKOA1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B378F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B54C433CA;
-        Mon, 11 Sep 2023 14:31:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83BACD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD0DC433C7;
+        Mon, 11 Sep 2023 14:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442678;
-        bh=en448N2tMjfD87wHumQy1ONXXNW9qdwnoBO7/kL7zfM=;
+        s=korg; t=1694440822;
+        bh=arihZi5u6mS+jVsNIPnNTBGduYR5Cu9pgudOxzwyU30=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y8C/ZwSKNYf8FOpcLt3JSkf+283jSJNT90mJyl3W2h4IKfcdEjPhSk8PNSArbYHbz
-         pXq+jqYuCTFbQKNGASv1QOfq5Z4r86PXa5ZO+hoyk9cZMx6lWkOBv14fbVeu6HhUu6
-         UCx8bupsyPT859duT24sDWcv/g5d1eh+Az8tI4rA=
+        b=nWQY1BJL7FKrnyjONd4//dTXgm6elzOxUufwoN8kcymEQZMZdItjxxQVMDOYzTKeo
+         F/zoh5nINOV6+dsajBCNJGXUtPacsk/hEc4dNLAmXODEBKRo2o5n6aB9c3N+5LhYc6
+         0HY1FKHLndpKY+8HC5QYS55N35JluW1HCofO1Y0I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charlemagne Lasse <charlemagnelasse@gmail.com>,
-        Uros Bizjak <ubizjak@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 109/737] locking/arch: Avoid variable shadowing in local_try_cmpxchg()
-Date:   Mon, 11 Sep 2023 15:39:28 +0200
-Message-ID: <20230911134653.553585474@linuxfoundation.org>
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 170/739] wifi: mwifiex: avoid possible NULL skb pointer dereference
+Date:   Mon, 11 Sep 2023 15:39:29 +0200
+Message-ID: <20230911134655.934788209@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,78 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit d6b45484c130f4095313ae3edeb4aae662c12fb1 ]
+[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
 
-Several architectures define arch_try_local_cmpxchg macro using
-internal temporary variables named ___old, __old or _old. Remove
-temporary varible in local_try_cmpxchg to avoid variable shadowing.
+In 'mwifiex_handle_uap_rx_forward()', always check the value
+returned by 'skb_copy()' to avoid potential NULL pointer
+dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
+original skb in case of copying failure.
 
-No functional change intended.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: d994f2c8e241 ("locking/arch: Wire up local_try_cmpxchg()")
-Closes: https://lore.kernel.org/lkml/CAFGhKbyxtuk=LoW-E3yLXgcmR93m+Dfo5-u9oQA_YC5Fcy_t9g@mail.gmail.com/
-Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20230708090048.63046-1-ubizjak@gmail.com
+Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/local.h | 4 ++--
- arch/mips/include/asm/local.h      | 4 ++--
- arch/x86/include/asm/local.h       | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/local.h b/arch/loongarch/include/asm/local.h
-index 83e995b30e472..c49675852bdcd 100644
---- a/arch/loongarch/include/asm/local.h
-+++ b/arch/loongarch/include/asm/local.h
-@@ -63,8 +63,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index c1b8d41dd7536..b8b9a0fcb19cd 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -253,7 +253,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
  
- static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
-diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
-index 5daf6fe8e3e9a..e6ae3df0349d2 100644
---- a/arch/mips/include/asm/local.h
-+++ b/arch/mips/include/asm/local.h
-@@ -101,8 +101,8 @@ static __inline__ long local_cmpxchg(local_t *l, long old, long new)
- 
- static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
-diff --git a/arch/x86/include/asm/local.h b/arch/x86/include/asm/local.h
-index 56d4ef604b919..635132a127782 100644
---- a/arch/x86/include/asm/local.h
-+++ b/arch/x86/include/asm/local.h
-@@ -127,8 +127,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
- 
- static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
- {
--	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
--	return try_cmpxchg_local(&l->a.counter, __old, new);
-+	return try_cmpxchg_local(&l->a.counter,
-+				 (typeof(l->a.counter) *) old, new);
- }
- 
- /* Always has a lock prefix */
+ 	if (is_multicast_ether_addr(ra)) {
+ 		skb_uap = skb_copy(skb, GFP_ATOMIC);
+-		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		if (likely(skb_uap)) {
++			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		} else {
++			mwifiex_dbg(adapter, ERROR,
++				    "failed to copy skb for uAP\n");
++			priv->stats.rx_dropped++;
++			dev_kfree_skb_any(skb);
++			return -1;
++		}
+ 	} else {
+ 		if (mwifiex_get_sta_entry(priv, ra)) {
+ 			/* Requeue Intra-BSS packet */
 -- 
 2.40.1
 
