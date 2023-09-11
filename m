@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AC979AFD6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22CDD79AF7A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378953AbjIKWiR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
+        id S239338AbjIKWJT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237289AbjIKM1S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 08:27:18 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23CCF1B9;
-        Mon, 11 Sep 2023 05:27:13 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qfg0T-0000WD-Fw; Mon, 11 Sep 2023 14:27:09 +0200
-Message-ID: <7e9735bf-c42b-4f03-8645-8cdbf87a75f3@leemhuis.info>
-Date:   Mon, 11 Sep 2023 14:27:08 +0200
+        with ESMTP id S238238AbjIKNwE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E0EFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A94EC433C8;
+        Mon, 11 Sep 2023 13:51:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694440319;
+        bh=tE5DQIAfZr37Wo/dZnspD5ZeryOMLwuYV/0sjvj3LPE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Ih0xrvPL9aQ91u6LOD5H6U0j+3d2HI0gj8cmgK/ocVRjg/sbWsrTYdD2efOOu1543
+         Z5MnBtKEzpyDBT4s+uIJEixLiv2s1kFe8WB/sfyglOIlCnj3R7IzBNSKf6lhisFk2q
+         HLNo9qTIOplRRItr+9vpJZjBCOle1WyM9k9XcdQQ=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 004/739] net: Avoid address overwrite in kernel_connect
+Date:   Mon, 11 Sep 2023 15:36:43 +0200
+Message-ID: <20230911134651.084438589@linuxfoundation.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-Content-Language: en-US, de-DE
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
- <20230819004356.1454718-2-Liam.Howlett@oracle.com>
- <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694435233;82f00e33;
-X-HE-SMSGID: 1qfg0T-0000WD-Fw
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,53 +49,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; the text you find below is based on a few templates
-paragraphs you might have encountered already in similar form.
-See link in footer if these mails annoy you.]
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
-On 29.08.23 18:42, Geert Uytterhoeven wrote:
-> 
-> On Fri, 18 Aug 2023, Liam R. Howlett wrote:
->> The current implementation of append may cause duplicate data and/or
->> incorrect ranges to be returned to a reader during an update.  Although
->> this has not been reported or seen, disable the append write operation
->> while the tree is in rcu mode out of an abundance of caution.
->>
->> During the analysis of the mas_next_slot() the following was
->> artificially created by separating the writer and reader code:
-> [...]
-> Thanks for your patch, which is now commit cfeb6ae8bcb96ccf
-> ("maple_tree: disable mas_wr_append() when other readers are
-> possible") in v6.5, and is being backported to stable.
-> 
-> On Renesas RZ/A1 and RZ/A2 (single-core Cortex-A9), this causes the
-> following warning:
-> > […]
-> Reverting this commit fixes the issue.
+------------------
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+From: Jordan Rife <jrife@google.com>
 
-#regzbot ^introduced cfeb6ae8bcb96ccf
-#regzbot title maple_tree: warning on Renesas RZ/A1 and RZ/A2
-(single-core Cortex-A9
-#regzbot ignore-activity
+commit 0bdf399342c5acbd817c9098b6c7ed21f1974312 upstream.
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+BPF programs that run on connect can rewrite the connect address. For
+the connect system call this isn't a problem, because a copy of the address
+is made when it is moved into kernel space. However, kernel_connect
+simply passes through the address it is given, so the caller may observe
+its address value unexpectedly change.
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
+A practical example where this is problematic is where NFS is combined
+with a system such as Cilium which implements BPF-based load balancing.
+A common pattern in software-defined storage systems is to have an NFS
+mount that connects to a persistent virtual IP which in turn maps to an
+ephemeral server IP. This is usually done to achieve high availability:
+if your server goes down you can quickly spin up a replacement and remap
+the virtual IP to that endpoint. With BPF-based load balancing, mounts
+will forget the virtual IP address when the address rewrite occurs
+because a pointer to the only copy of that address is passed down the
+stack. Server failover then breaks, because clients have forgotten the
+virtual IP address. Reconnects fail and mounts remain broken. This patch
+was tested by setting up a scenario like this and ensuring that NFS
+reconnects worked after applying the patch.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+Signed-off-by: Jordan Rife <jrife@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/socket.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -3519,7 +3519,11 @@ EXPORT_SYMBOL(kernel_accept);
+ int kernel_connect(struct socket *sock, struct sockaddr *addr, int addrlen,
+ 		   int flags)
+ {
+-	return sock->ops->connect(sock, addr, addrlen, flags);
++	struct sockaddr_storage address;
++
++	memcpy(&address, addr, addrlen);
++
++	return sock->ops->connect(sock, (struct sockaddr *)&address, addrlen, flags);
+ }
+ EXPORT_SYMBOL(kernel_connect);
+ 
+
+
