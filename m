@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 707D479BFCB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D0A279BEA7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348494AbjIKV1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
+        id S239941AbjIKVE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238598AbjIKOAS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:18 -0400
+        with ESMTP id S239909AbjIKObR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EB29CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6B6C433C8;
-        Mon, 11 Sep 2023 14:00:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09A0F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B31C433C8;
+        Mon, 11 Sep 2023 14:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440814;
-        bh=7r9kEcu1172ODM0aLL5PdjavzOeL/EHdyjlSSzQwMdk=;
+        s=korg; t=1694442673;
+        bh=4ahIq3wP3mk0HetFg/ww5WsQl6vAS9pOb8us1GUdi44=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bA08cAMERFcTK/AntBinvlCEeFClu7kq8xmuL+RpqaItA3UtXDGMNJLzJoTsc4vHq
-         Y0fVQ6E+RVe11dfAUKf6pbKnyz7Uj+L9kuoQGRysbdvj67o50OH2nhpQRaVZCMA+4B
-         qCMfJAklDdv+k6GcRSM3oiiujyrMn05Ln66hcB2Y=
+        b=IhyniWyWbcgBeuG1SMEax55pJpK3G0jpKpPwosteZV/qjrmNL+iXoI7HBrH2iyiJe
+         zjZuW2gF+hJGTyOn9s/e1F6TRnz16+Ty7IoNQpBpe38ATtNIivH/asIxh/MKiNzffz
+         Bdp4VDp4vwaOALqJrokXANTCoQetoVzI4Kd7v73o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Simon Horman <horms@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 167/739] wifi: nl80211/cfg80211: add forgotten nla_policy for BSS color attribute
+Subject: [PATCH 6.4 107/737] ARM: ptrace: Restore syscall restart tracing
 Date:   Mon, 11 Sep 2023 15:39:26 +0200
-Message-ID: <20230911134655.840480956@linuxfoundation.org>
+Message-ID: <20230911134653.498855239@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 218d690c49b7e9c94ad0d317adbdd4af846ea0dc ]
+[ Upstream commit cf007647475b5090819c5fe8da771073145c7334 ]
 
-The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
-NDP ranging parameters") adds a parameter for NDP ranging by introducing
-a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
+Since commit 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store
+thread_info->abi_syscall"), the seccomp selftests "syscall_restart" has
+been broken. This was caused by the restart syscall not being stored to
+"abi_syscall" during restart setup before branching to the "local_restart"
+label. Tracers would see the wrong syscall, and scno would get overwritten
+while returning from the TIF_WORK path. Add the missing store.
 
-However, the author forgot to also describe the nla_policy at
-nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
-complement it to avoid malformed attribute that causes out-of-attribute
-access.
-
-Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809033151.768910-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Fixes: 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store thread_info->abi_syscall")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230810195422.2304827-1-keescook@chromium.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
+ arch/arm/kernel/entry-common.S | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 8bcf8e293308e..4dcbc40d07c85 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -323,6 +323,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
- };
- 
- static const struct nla_policy
+diff --git a/arch/arm/kernel/entry-common.S b/arch/arm/kernel/entry-common.S
+index 03d4c5578c5c9..b60bba3c1d516 100644
+--- a/arch/arm/kernel/entry-common.S
++++ b/arch/arm/kernel/entry-common.S
+@@ -90,6 +90,7 @@ slow_work_pending:
+ 	cmp	r0, #0
+ 	beq	no_work_pending
+ 	movlt	scno, #(__NR_restart_syscall - __NR_SYSCALL_BASE)
++	str	scno, [tsk, #TI_ABI_SYSCALL]	@ make sure tracers see update
+ 	ldmia	sp, {r0 - r6}			@ have to reload r0 - r6
+ 	b	local_restart			@ ... and off we go
+ ENDPROC(ret_fast_syscall)
 -- 
 2.40.1
 
