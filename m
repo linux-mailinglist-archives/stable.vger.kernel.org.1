@@ -2,35 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C19A79AE28
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2102E79B56E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239746AbjIKVGg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59820 "EHLO
+        id S240655AbjIKVT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239720AbjIKO1J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:09 -0400
+        with ESMTP id S239724AbjIKO1N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50939F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93143C433C7;
-        Mon, 11 Sep 2023 14:27:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9EEF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599B5C433C8;
+        Mon, 11 Sep 2023 14:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442424;
-        bh=uRCe0uZGVLKxvqBZ0yJYQKA+4G7RJGVrfnAClw0TESM=;
+        s=korg; t=1694442427;
+        bh=pu1DxkdpqEmw2O8JhME0CH24oCVfvcRcSDFwXxUTwng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h3aXGDUH7e1InJ5ETqngzuHInCg89+5+Z7Nc4ksZ0SRw1AaqVGEsr2RLQhzKUlQO2
-         KKf9p4U9mLjBAG7I0dKgcqNRQs1dpRyKesTCGCFcWjS9sh5TR/32uEFi9tfPwqVwBk
-         MVvxEgF6hfD4780KILyKWNud1OskyMRkaOVgUibs=
+        b=lJbv8aWrDFBS5g2VpY+4MN/HStuZoTxXln/z0xkFgbbViWn5MbnQJSeIxUhBr3z0O
+         4gAuUbXKr1XwIuvlasefQMnoxKA6+eqHgK0nonYs0DSYiAiOsLnE8FvUV2HL0T1Xvl
+         Wc0/HlXx3Kc1eqodBmGFLBOPd9OIkGv+xH+Bysb4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 004/737] phy: qcom-snps-femto-v2: use qcom_snps_hsphy_suspend/resume error code
-Date:   Mon, 11 Sep 2023 15:37:43 +0200
-Message-ID: <20230911134650.426486409@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        ming_qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 005/737] media: amphion: use dev_err_probe
+Date:   Mon, 11 Sep 2023 15:37:44 +0200
+Message-ID: <20230911134650.455868040@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -53,45 +57,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Adrien Thierry <athierry@redhat.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 8932089b566c24ea19b57e37704c492678de1420 ]
+[ Upstream commit 517f088385e1b8015606143e6212cb30f8714070 ]
 
-The return value from qcom_snps_hsphy_suspend/resume is not used. Make
-sure qcom_snps_hsphy_runtime_suspend/resume return this value as well.
+This simplifies the code and silences -517 error messages. Also
+the reason is listed in /sys/kernel/debug/devices_deferred.
 
-Signed-off-by: Adrien Thierry <athierry@redhat.com>
-Link: https://lore.kernel.org/r/20230629144542.14906-4-athierry@redhat.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: ming_qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/media/platform/amphion/vpu_mbox.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index 6170f8fd118e2..d0319bee01c0f 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -214,8 +214,7 @@ static int __maybe_unused qcom_snps_hsphy_runtime_suspend(struct device *dev)
- 	if (!hsphy->phy_initialized)
- 		return 0;
+diff --git a/drivers/media/platform/amphion/vpu_mbox.c b/drivers/media/platform/amphion/vpu_mbox.c
+index bf759eb2fd46d..b6d5b4844f672 100644
+--- a/drivers/media/platform/amphion/vpu_mbox.c
++++ b/drivers/media/platform/amphion/vpu_mbox.c
+@@ -46,11 +46,10 @@ static int vpu_mbox_request_channel(struct device *dev, struct vpu_mbox *mbox)
+ 	cl->rx_callback = vpu_mbox_rx_callback;
  
--	qcom_snps_hsphy_suspend(hsphy);
--	return 0;
-+	return qcom_snps_hsphy_suspend(hsphy);
- }
+ 	ch = mbox_request_channel_byname(cl, mbox->name);
+-	if (IS_ERR(ch)) {
+-		dev_err(dev, "Failed to request mbox chan %s, ret : %ld\n",
+-			mbox->name, PTR_ERR(ch));
+-		return PTR_ERR(ch);
+-	}
++	if (IS_ERR(ch))
++		return dev_err_probe(dev, PTR_ERR(ch),
++				     "Failed to request mbox chan %s\n",
++				     mbox->name);
  
- static int __maybe_unused qcom_snps_hsphy_runtime_resume(struct device *dev)
-@@ -225,8 +224,7 @@ static int __maybe_unused qcom_snps_hsphy_runtime_resume(struct device *dev)
- 	if (!hsphy->phy_initialized)
- 		return 0;
- 
--	qcom_snps_hsphy_resume(hsphy);
--	return 0;
-+	return qcom_snps_hsphy_resume(hsphy);
- }
- 
- static int qcom_snps_hsphy_set_mode(struct phy *phy, enum phy_mode mode,
+ 	mbox->ch = ch;
+ 	return 0;
 -- 
 2.40.1
 
