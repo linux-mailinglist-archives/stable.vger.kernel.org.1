@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBAFB79BAF6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B3179C02F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233709AbjIKWs1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:48:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39066 "EHLO
+        id S238758AbjIKWJL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242338AbjIKP2O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:14 -0400
+        with ESMTP id S241019AbjIKO76 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B92EF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EDEC433C9;
-        Mon, 11 Sep 2023 15:28:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AA21B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB23C433C9;
+        Mon, 11 Sep 2023 14:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446090;
-        bh=eCPL9xiUhoKWQNUyhX088CC5ek1lXCSbFOnysYwEoCM=;
+        s=korg; t=1694444392;
+        bh=35TmcI1fWXsZZ3sBARmKXRUO2R5s9MXVrdSe0JP7fGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fSGt3Eis8sHq3/iMESaT2PufXbC/pNP8/l/9IOsIpuhmKqCWf4BR67I6VK1D5IRl4
-         2Bl60jDNyovj68PoEB3CIivyvYhWyIljmSvcPiXGyBHk6fz6f0ooqGS442WhaGW7Dr
-         XQyxolxui2iccsEEA0WSNjxe1yf5xJT5+LgyUjQU=
+        b=a94GZgzK2Ms5RZxrsOKpiLh8dD8xXAZL/+57ogM1NXoePwmRK4Ku16wmwhE76AEiJ
+         v7xDNPvlHdlMqTPm0TJI5/N5S1ZWcCc54zwNP4nDHn+lvbX7onV7zTMwEiLP2ln2kC
+         aqo5U8CmcCmdbwUXnCzb9cZJWfHEqy0oaBzokyUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 6.1 539/600] backlight/bd6107: Compare against struct fb_info.device
-Date:   Mon, 11 Sep 2023 15:49:32 +0200
-Message-ID: <20230911134649.532223192@linuxfoundation.org>
+        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Adam Ford <aford173@gmail.com>
+Subject: [PATCH 6.4 714/737] of: property: fw_devlink: Add a devlink for panel followers
+Date:   Mon, 11 Sep 2023 15:49:33 +0200
+Message-ID: <20230911134710.463830752@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,52 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 992bdddaabfba19bdc77c1c7a4977b2aa41ec891 upstream.
+commit fbf0ea2da3c7cd0b33ed7ae53a67ab1c24838cba upstream.
 
-Struct bd6107_platform_data refers to a platform device within
-the Linux device hierarchy. The test in bd6107_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+Inform fw_devlink of the fact that a panel follower (like a
+touchscreen) is effectively a consumer of the panel from the purposes
+of fw_devlink.
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
+NOTE: this patch isn't required for correctness but instead optimizes
+probe order / helps avoid deferrals.
 
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Fixes: 67b43e590415 ("backlight: Add ROHM BD6107 backlight driver")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-2-tzimmermann@suse.de
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230727101636.v4.4.Ibf8e1342b5b7906279db2365aca45e6253857bb3@changeid
+Cc: Adam Ford <aford173@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/bd6107.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/property.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/backlight/bd6107.c
-+++ b/drivers/video/backlight/bd6107.c
-@@ -104,7 +104,7 @@ static int bd6107_backlight_check_fb(str
- {
- 	struct bd6107 *bd = bl_get_data(backlight);
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1266,6 +1266,7 @@ DEFINE_SIMPLE_PROP(pwms, "pwms", "#pwm-c
+ DEFINE_SIMPLE_PROP(resets, "resets", "#reset-cells")
+ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
+ DEFINE_SIMPLE_PROP(backlight, "backlight", NULL)
++DEFINE_SIMPLE_PROP(panel, "panel", NULL)
+ DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
+ DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
  
--	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->dev;
-+	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->device;
- }
- 
- static const struct backlight_ops bd6107_backlight_ops = {
+@@ -1354,6 +1355,7 @@ static const struct supplier_bindings of
+ 	{ .parse_prop = parse_resets, },
+ 	{ .parse_prop = parse_leds, },
+ 	{ .parse_prop = parse_backlight, },
++	{ .parse_prop = parse_panel, },
+ 	{ .parse_prop = parse_gpio_compat, },
+ 	{ .parse_prop = parse_interrupts, },
+ 	{ .parse_prop = parse_regulators, },
 
 
