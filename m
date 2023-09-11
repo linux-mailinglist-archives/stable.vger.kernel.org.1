@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCCF79B5F0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E2879B9BA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236957AbjIKWie (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S239411AbjIKVRo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239130AbjIKOMh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:37 -0400
+        with ESMTP id S241664AbjIKPLW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933B6CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5D1C433C7;
-        Mon, 11 Sep 2023 14:12:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AE6FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66547C433C8;
+        Mon, 11 Sep 2023 15:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441553;
-        bh=5UKcSz227dlPaO+1rnuOM8EhQGWh56FHEkaDqAsYQWs=;
+        s=korg; t=1694445077;
+        bh=kdHDmZBJypm3+Z6nLoVCkTJCRK1I6EVTUwEg0G2swWU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j0dKwtdf63ZG+uD8mTP0zOse5Efxh/SgSiod1NOn+u/wflL5fAzKEjtgosvpzF8pl
-         xNi75cs9jHUL3S/BMTINwiCFi3KRukn47VFlDEIbEGw4NFY+9E9oKH5gXE+Z5q+mkR
-         uglkoSnASsWuULnUMNUydpkzCEXP6vtsXUxu4clk=
+        b=FtO9TrDdyRmS17AHZDkzl0kes0EG6IrMW25dZ0rePyl+cdJYxbyJugphx644A8lpq
+         Yr+esc5WJeCL+kKMHLDBOh67D/A/Xf81fALHmf9uKq+PWrbEsjRJ6DxpCcI4kSS280
+         ILL69BOrUi41eTAR/VWHqd33hlvpB8kmiLXgCSus=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Machek <pavel@ucw.cz>,
-        Ricardo Ribalda Delgado <ribalda@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ricardo Ribalda <ribalda@chromium.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 453/739] media: ad5820: Drop unsupported ad5823 from i2c_ and of_device_id tables
-Date:   Mon, 11 Sep 2023 15:44:12 +0200
-Message-ID: <20230911134703.811385810@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        alsa-devel@alsa-project.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 220/600] ASoC: stac9766: fix build errors with REGMAP_AC97
+Date:   Mon, 11 Sep 2023 15:44:13 +0200
+Message-ID: <20230911134640.109966659@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit f126ff7e4024f6704e6ec0d4137037568708a3c7 ]
+[ Upstream commit c70064b96f509daa78f57992aeabcf274fb2fed4 ]
 
-The supported ad5820 and ad5821 VCMs both use a single 16 bit register
-which is written by sending 2 bytes with the data directly after sending
-the i2c-client address.
+Select REGMAP_AC97 to fix these build errors:
 
-The ad5823 OTOH has a more typical i2c / smbus device setup with multiple
-8 bit registers where the first byte send after the i2c-client address is
-the register address and the actual data only starts from the second byte
-after the i2c-client address.
+ERROR: modpost: "regmap_ac97_default_volatile" [sound/soc/codecs/snd-soc-stac9766.ko] undefined!
+ERROR: modpost: "__regmap_init_ac97" [sound/soc/codecs/snd-soc-stac9766.ko] undefined!
 
-The ad5823 i2c_ and of_device_id-s was added at the same time as
-the ad5821 ids with as rationale:
-
-"""
-Some camera modules also refer that AD5823 is a replacement of AD5820:
-https://download.kamami.com/p564094-OV8865_DS.pdf
-"""
-
-The AD5823 may be an electrical and functional replacement of the AD5820,
-but from a software pov it is not compatible at all and it is going to
-need its own driver, drop its id from the ad5820 driver.
-
-Fixes: b8bf73136bae ("media: ad5820: Add support for ad5821 and ad5823")
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 6bbf787bb70c ("ASoC: stac9766: Convert to regmap")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: alsa-devel@alsa-project.org
+Link: https://lore.kernel.org/r/20230701044836.18789-1-rdunlap@infradead.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ad5820.c | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/codecs/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/ad5820.c b/drivers/media/i2c/ad5820.c
-index 5f605b9be3b15..1543d24f522c3 100644
---- a/drivers/media/i2c/ad5820.c
-+++ b/drivers/media/i2c/ad5820.c
-@@ -349,7 +349,6 @@ static void ad5820_remove(struct i2c_client *client)
- static const struct i2c_device_id ad5820_id_table[] = {
- 	{ "ad5820", 0 },
- 	{ "ad5821", 0 },
--	{ "ad5823", 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, ad5820_id_table);
-@@ -357,7 +356,6 @@ MODULE_DEVICE_TABLE(i2c, ad5820_id_table);
- static const struct of_device_id ad5820_of_table[] = {
- 	{ .compatible = "adi,ad5820" },
- 	{ .compatible = "adi,ad5821" },
--	{ .compatible = "adi,ad5823" },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ad5820_of_table);
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index 965ae55fa1607..0904827e2f3db 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -1552,6 +1552,7 @@ config SND_SOC_STA529
+ config SND_SOC_STAC9766
+ 	tristate
+ 	depends on SND_SOC_AC97_BUS
++	select REGMAP_AC97
+ 
+ config SND_SOC_STI_SAS
+ 	tristate "codec Audio support for STI SAS codec"
 -- 
 2.40.1
 
