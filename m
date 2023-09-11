@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1297A79B76B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD7579BC62
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235494AbjIKWva (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47636 "EHLO
+        id S240881AbjIKVin (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240828AbjIKOy7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:59 -0400
+        with ESMTP id S239523AbjIKOXA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785BDE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26C3C433C8;
-        Mon, 11 Sep 2023 14:54:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA1EDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AD9C433C9;
+        Mon, 11 Sep 2023 14:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444095;
-        bh=ggYWYrpl/+qqzZl+nwQU/qpOPyvFvzvKGPOmbpPZQ8A=;
+        s=korg; t=1694442175;
+        bh=RAgUC2hfEEkUujqQSopen+lUBe4bEK8FtUPk4yLxzLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L8Rp66jJELQ9CPhShMZTwVGtkSa1JyqWxPEOFnZwBcQ8oQ1wmJaPSI5omBhIxQqdl
-         rmlwwvnvDEiZ43dKe7h2jDGYM4OrdZ68jk4dQOICwEL4TixwfWqa0iS48fHTVfJg3x
-         4W04ZLv54H+nocNm6l2RX/L8Y3ViLA71+2qqVVEU=
+        b=oLkiZonGPy68gcd34LZ1cE2e693DfstsRJnltPjQ/t9T8pbBpTiK/HQx7XE/lReYC
+         2Ct37CXsk78Bg2g7Rvo4XckuZ1rqxuokSq2ION+sP2Fm6Khig/FxULsLPMZLQsRX1J
+         4QbhEUW2ExlplaePerJta69+GWhXpezQIlhKsWZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junhao He <hejunhao3@huawei.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 582/737] coresight: trbe: Fix TRBE potential sleep in atomic context
-Date:   Mon, 11 Sep 2023 15:47:21 +0200
-Message-ID: <20230911134706.785553475@linuxfoundation.org>
+        patches@lists.linux.dev, Zqiang <qiang.zhang1211@gmail.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Zhen Lei <thunder.leizhen@huaweicloud.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 645/739] rcu: dump vmalloc memory info safely
+Date:   Mon, 11 Sep 2023 15:47:24 +0200
+Message-ID: <20230911134709.124935295@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,124 +54,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit c0a232f1e19e378c5c4e5973a996392942c80090 ]
+commit c83ad36a18c02c0f51280b50272327807916987f upstream.
 
-smp_call_function_single() will allocate an IPI interrupt vector to
-the target processor and send a function call request to the interrupt
-vector. After the target processor receives the IPI interrupt, it will
-execute arm_trbe_remove_coresight_cpu() call request in the interrupt
-handler.
+Currently, for double invoke call_rcu(), will dump rcu_head objects memory
+info, if the objects is not allocated from the slab allocator, the
+vmalloc_dump_obj() will be invoke and the vmap_area_lock spinlock need to
+be held, since the call_rcu() can be invoked in interrupt context,
+therefore, there is a possibility of spinlock deadlock scenarios.
 
-According to the device_unregister() stack information, if other process
-is useing the device, the down_write() may sleep, and trigger deadlocks
-or unexpected errors.
+And in Preempt-RT kernel, the rcutorture test also trigger the following
+lockdep warning:
 
-  arm_trbe_remove_coresight_cpu
-    coresight_unregister
-      device_unregister
-        device_del
-          kobject_del
-            __kobject_del
-              sysfs_remove_dir
-                kernfs_remove
-                  down_write ---------> it may sleep
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+preempt_count: 1, expected: 0
+RCU nest depth: 1, expected: 1
+3 locks held by swapper/0/1:
+ #0: ffffffffb534ee80 (fullstop_mutex){+.+.}-{4:4}, at: torture_init_begin+0x24/0xa0
+ #1: ffffffffb5307940 (rcu_read_lock){....}-{1:3}, at: rcu_torture_init+0x1ec7/0x2370
+ #2: ffffffffb536af40 (vmap_area_lock){+.+.}-{3:3}, at: find_vmap_area+0x1f/0x70
+irq event stamp: 565512
+hardirqs last  enabled at (565511): [<ffffffffb379b138>] __call_rcu_common+0x218/0x940
+hardirqs last disabled at (565512): [<ffffffffb5804262>] rcu_torture_init+0x20b2/0x2370
+softirqs last  enabled at (399112): [<ffffffffb36b2586>] __local_bh_enable_ip+0x126/0x170
+softirqs last disabled at (399106): [<ffffffffb43fef59>] inet_register_protosw+0x9/0x1d0
+Preemption disabled at:
+[<ffffffffb58040c3>] rcu_torture_init+0x1f13/0x2370
+CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.5.0-rc4-rt2-yocto-preempt-rt+ #15
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xb0
+ dump_stack+0x14/0x20
+ __might_resched+0x1aa/0x280
+ ? __pfx_rcu_torture_err_cb+0x10/0x10
+ rt_spin_lock+0x53/0x130
+ ? find_vmap_area+0x1f/0x70
+ find_vmap_area+0x1f/0x70
+ vmalloc_dump_obj+0x20/0x60
+ mem_dump_obj+0x22/0x90
+ __call_rcu_common+0x5bf/0x940
+ ? debug_smp_processor_id+0x1b/0x30
+ call_rcu_hurry+0x14/0x20
+ rcu_torture_init+0x1f82/0x2370
+ ? __pfx_rcu_torture_leak_cb+0x10/0x10
+ ? __pfx_rcu_torture_leak_cb+0x10/0x10
+ ? __pfx_rcu_torture_init+0x10/0x10
+ do_one_initcall+0x6c/0x300
+ ? debug_smp_processor_id+0x1b/0x30
+ kernel_init_freeable+0x2b9/0x540
+ ? __pfx_kernel_init+0x10/0x10
+ kernel_init+0x1f/0x150
+ ret_from_fork+0x40/0x50
+ ? __pfx_kernel_init+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-Add a helper arm_trbe_disable_cpu() to disable TRBE precpu irq and reset
-per TRBE.
-Simply call arm_trbe_remove_coresight_cpu() directly without useing the
-smp_call_function_single(), which is the same as registering the TRBE
-coresight device.
+The previous patch fixes this by using the deadlock-safe best-effort
+version of find_vm_area.  However, in case of failure print the fact that
+the pointer was a vmalloc pointer so that we print at least something.
 
-Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Link: https://lore.kernel.org/r/20230814093813.19152-2-hejunhao3@huawei.com
-[ Remove duplicate cpumask checks during removal ]
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-[ v3 - Remove the operation of assigning NULL to cpudata->drvdata ]
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20230818084052.10116-1-hejunhao3@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230904180806.1002832-2-joel@joelfernandes.org
+Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 32 +++++++++++---------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ mm/util.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 1fc4fd79a1c69..925f6c9cecff4 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -1223,6 +1223,16 @@ static void arm_trbe_enable_cpu(void *info)
- 	enable_percpu_irq(drvdata->irq, IRQ_TYPE_NONE);
- }
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1071,7 +1071,9 @@ void mem_dump_obj(void *object)
+ 	if (vmalloc_dump_obj(object))
+ 		return;
  
-+static void arm_trbe_disable_cpu(void *info)
-+{
-+	struct trbe_drvdata *drvdata = info;
-+	struct trbe_cpudata *cpudata = this_cpu_ptr(drvdata->cpudata);
-+
-+	disable_percpu_irq(drvdata->irq);
-+	trbe_reset_local(cpudata);
-+}
-+
-+
- static void arm_trbe_register_coresight_cpu(struct trbe_drvdata *drvdata, int cpu)
- {
- 	struct trbe_cpudata *cpudata = per_cpu_ptr(drvdata->cpudata, cpu);
-@@ -1324,18 +1334,12 @@ static void arm_trbe_probe_cpu(void *info)
- 	cpumask_clear_cpu(cpu, &drvdata->supported_cpus);
- }
- 
--static void arm_trbe_remove_coresight_cpu(void *info)
-+static void arm_trbe_remove_coresight_cpu(struct trbe_drvdata *drvdata, int cpu)
- {
--	int cpu = smp_processor_id();
--	struct trbe_drvdata *drvdata = info;
--	struct trbe_cpudata *cpudata = per_cpu_ptr(drvdata->cpudata, cpu);
- 	struct coresight_device *trbe_csdev = coresight_get_percpu_sink(cpu);
- 
--	disable_percpu_irq(drvdata->irq);
--	trbe_reset_local(cpudata);
- 	if (trbe_csdev) {
- 		coresight_unregister(trbe_csdev);
--		cpudata->drvdata = NULL;
- 		coresight_set_percpu_sink(cpu, NULL);
- 	}
- }
-@@ -1364,8 +1368,10 @@ static int arm_trbe_remove_coresight(struct trbe_drvdata *drvdata)
- {
- 	int cpu;
- 
--	for_each_cpu(cpu, &drvdata->supported_cpus)
--		smp_call_function_single(cpu, arm_trbe_remove_coresight_cpu, drvdata, 1);
-+	for_each_cpu(cpu, &drvdata->supported_cpus) {
-+		smp_call_function_single(cpu, arm_trbe_disable_cpu, drvdata, 1);
-+		arm_trbe_remove_coresight_cpu(drvdata, cpu);
-+	}
- 	free_percpu(drvdata->cpudata);
- 	return 0;
- }
-@@ -1404,12 +1410,8 @@ static int arm_trbe_cpu_teardown(unsigned int cpu, struct hlist_node *node)
- {
- 	struct trbe_drvdata *drvdata = hlist_entry_safe(node, struct trbe_drvdata, hotplug_node);
- 
--	if (cpumask_test_cpu(cpu, &drvdata->supported_cpus)) {
--		struct trbe_cpudata *cpudata = per_cpu_ptr(drvdata->cpudata, cpu);
--
--		disable_percpu_irq(drvdata->irq);
--		trbe_reset_local(cpudata);
--	}
-+	if (cpumask_test_cpu(cpu, &drvdata->supported_cpus))
-+		arm_trbe_disable_cpu(drvdata);
- 	return 0;
- }
- 
--- 
-2.40.1
-
+-	if (virt_addr_valid(object))
++	if (is_vmalloc_addr(object))
++		type = "vmalloc memory";
++	else if (virt_addr_valid(object))
+ 		type = "non-slab/vmalloc memory";
+ 	else if (object == NULL)
+ 		type = "NULL pointer";
 
 
