@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6666E79C006
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9C779BBB3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240822AbjIKVGw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54602 "EHLO
+        id S1353660AbjIKVsA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239474AbjIKOVh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:37 -0400
+        with ESMTP id S240792AbjIKOxz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFC1DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A637AC433C8;
-        Mon, 11 Sep 2023 14:21:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047F2E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231C6C433C9;
+        Mon, 11 Sep 2023 14:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442093;
-        bh=iJncXwidsdrKdbiUpymtuxMDxnCDHIuljyK3dFJq3Ts=;
+        s=korg; t=1694444030;
+        bh=vcwpRKeDpCon9UW2c/DzoTCz3ubPSE27rMp5Z20Rg2Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nJAX4GU/+Mg1ydjVARzoCExSfGC+f72hLAQ59KzYUCHCwMMnbkc0DVwLhM7bcpz5a
-         s82ROE6WHX1rwajwfSZ7iw2ieXBZR4yDJn5TbIyMXcPkN/0X2k2kZjwrQICSl4fvsi
-         xlS+tSWeP5XfZ70YrmerKcn+wo1LDvy+NOx3kvYo=
+        b=1QYknI+zqnC//uIXiFXe2UAZg8p/dOfBkSpv+n7tyQCyyy305FkIsySZrWzWJ6XbN
+         nVFqv+VwQela7fkmzRk0PDgRrL++lFTJj3orc4t3ecTUb4bbW557uQTWlROHCgSWGH
+         9RDww/xj3vx2NS0Ol9PQhGPGAWOW3uvYfsio5khE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 617/739] mfd: rz-mtu3: Link time dependencies
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Eddie James <eajames@linux.ibm.com>,
+        Joel Stanley <joel@jms.id.au>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 557/737] docs: ABI: fix spelling/grammar in SBEFIFO timeout interface
 Date:   Mon, 11 Sep 2023 15:46:56 +0200
-Message-ID: <20230911134708.331974683@linuxfoundation.org>
+Message-ID: <20230911134706.113728246@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,157 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 10d3340441bd0db857fc7fcb1733a800acf47a3d ]
+[ Upstream commit 2cd9ec2a51474d4c0b4d2a061f2de7da34eff476 ]
 
-The new set of drivers for RZ/G2L MTU3a tries to enable compile-testing the
-individual client drivers even when the MFD portion is disabled but gets it
-wrong, causing a link failure when the core is in a loadable module but the
-other drivers are built-in:
+Correct spelling problems as identified by codespell.
+Correct one grammar error.
 
-x86_64-linux-ld: drivers/pwm/pwm-rz-mtu3.o: in function `rz_mtu3_pwm_apply':
-pwm-rz-mtu3.c:(.text+0x4bf): undefined reference to `rz_mtu3_8bit_ch_write'
-x86_64-linux-ld: pwm-rz-mtu3.c:(.text+0x509): undefined reference to `rz_mtu3_disable'
-
-arm-linux-gnueabi-ld: drivers/counter/rz-mtu3-cnt.o: in function `rz_mtu3_cascade_counts_enable_get':
-rz-mtu3-cnt.c:(.text+0xbec): undefined reference to `rz_mtu3_shared_reg_read'
-
-It seems better not to add the extra complexity here but instead just use
-a normal hard dependency, so remove the #else portion in the header along
-with the "|| COMPILE_TEST". This could also be fixed by having slightly more
-elaborate Kconfig dependencies or using the cursed 'IS_REACHABLE()' helper,
-but in practice it's already possible to compile-test all these drivers
-by enabling the mtd portion.
-
-Fixes: 254d3a727421c ("pwm: Add Renesas RZ/G2L MTU3a PWM driver")
-Fixes: 0be8907359df4 ("counter: Add Renesas RZ/G2L MTU3a counter driver")
-Fixes: 654c293e1687b ("mfd: Add Renesas RZ/G2L MTU3a core driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20230719090430.1925182-1-arnd@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 9a93de620e0a ("docs: ABI: testing: Document the SBEFIFO timeout interface")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Eddie James <eajames@linux.ibm.com>
+Cc: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20230710052305.29611-1-rdunlap@infradead.org
+Signed-off-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/Kconfig     |  2 +-
- drivers/pwm/Kconfig         |  2 +-
- include/linux/mfd/rz-mtu3.h | 66 -------------------------------------
- 3 files changed, 2 insertions(+), 68 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 62962ae84b77d..497bc05dca4df 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -92,7 +92,7 @@ config MICROCHIP_TCB_CAPTURE
- 
- config RZ_MTU3_CNT
- 	tristate "Renesas RZ/G2L MTU3a counter driver"
--	depends on RZ_MTU3 || COMPILE_TEST
-+	depends on RZ_MTU3
- 	help
- 	  Enable support for MTU3a counter driver found on Renesas RZ/G2L alike
- 	  SoCs. This IP supports both 16-bit and 32-bit phase counting mode
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 6210babb0741a..8ebcddf91f7b7 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -505,7 +505,7 @@ config PWM_ROCKCHIP
- 
- config PWM_RZ_MTU3
- 	tristate "Renesas RZ/G2L MTU3a PWM Timer support"
--	depends on RZ_MTU3 || COMPILE_TEST
-+	depends on RZ_MTU3
- 	depends on HAS_IOMEM
- 	help
- 	  This driver exposes the MTU3a PWM Timer controller found in Renesas
-diff --git a/include/linux/mfd/rz-mtu3.h b/include/linux/mfd/rz-mtu3.h
-index c5173bc062701..8421d49500bf4 100644
---- a/include/linux/mfd/rz-mtu3.h
-+++ b/include/linux/mfd/rz-mtu3.h
-@@ -151,7 +151,6 @@ struct rz_mtu3 {
- 	void *priv_data;
- };
- 
--#if IS_ENABLED(CONFIG_RZ_MTU3)
- static inline bool rz_mtu3_request_channel(struct rz_mtu3_channel *ch)
- {
- 	mutex_lock(&ch->lock);
-@@ -188,70 +187,5 @@ void rz_mtu3_32bit_ch_write(struct rz_mtu3_channel *ch, u16 off, u32 val);
- void rz_mtu3_shared_reg_write(struct rz_mtu3_channel *ch, u16 off, u16 val);
- void rz_mtu3_shared_reg_update_bit(struct rz_mtu3_channel *ch, u16 off,
- 				   u16 pos, u8 val);
--#else
--static inline bool rz_mtu3_request_channel(struct rz_mtu3_channel *ch)
--{
--	return false;
--}
--
--static inline void rz_mtu3_release_channel(struct rz_mtu3_channel *ch)
--{
--}
--
--static inline bool rz_mtu3_is_enabled(struct rz_mtu3_channel *ch)
--{
--	return false;
--}
--
--static inline void rz_mtu3_disable(struct rz_mtu3_channel *ch)
--{
--}
--
--static inline int rz_mtu3_enable(struct rz_mtu3_channel *ch)
--{
--	return 0;
--}
--
--static inline u8 rz_mtu3_8bit_ch_read(struct rz_mtu3_channel *ch, u16 off)
--{
--	return 0;
--}
--
--static inline u16 rz_mtu3_16bit_ch_read(struct rz_mtu3_channel *ch, u16 off)
--{
--	return 0;
--}
--
--static inline u32 rz_mtu3_32bit_ch_read(struct rz_mtu3_channel *ch, u16 off)
--{
--	return 0;
--}
--
--static inline u16 rz_mtu3_shared_reg_read(struct rz_mtu3_channel *ch, u16 off)
--{
--	return 0;
--}
--
--static inline void rz_mtu3_8bit_ch_write(struct rz_mtu3_channel *ch, u16 off, u8 val)
--{
--}
--
--static inline void rz_mtu3_16bit_ch_write(struct rz_mtu3_channel *ch, u16 off, u16 val)
--{
--}
--
--static inline void rz_mtu3_32bit_ch_write(struct rz_mtu3_channel *ch, u16 off, u32 val)
--{
--}
--
--static inline void rz_mtu3_shared_reg_write(struct rz_mtu3_channel *ch, u16 off, u16 val)
--{
--}
--
--static inline void rz_mtu3_shared_reg_update_bit(struct rz_mtu3_channel *ch,
--						 u16 off, u16 pos, u8 val)
--{
--}
--#endif
- 
- #endif /* __MFD_RZ_MTU3_H__ */
+diff --git a/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo b/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo
+index 531fe9d6b40aa..c7393b4dd2d88 100644
+--- a/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo
++++ b/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo
+@@ -5,6 +5,6 @@ Description:
+ 		Indicates whether or not this SBE device has experienced a
+ 		timeout; i.e. the SBE did not respond within the time allotted
+ 		by the driver. A value of 1 indicates that a timeout has
+-		ocurred and no transfers have completed since the timeout. A
+-		value of 0 indicates that no timeout has ocurred, or if one
+-		has, more recent transfers have completed successful.
++		occurred and no transfers have completed since the timeout. A
++		value of 0 indicates that no timeout has occurred, or if one
++		has, more recent transfers have completed successfully.
 -- 
 2.40.1
 
