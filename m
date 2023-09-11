@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7BF079C076
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF81779BDAC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237640AbjIKVGE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
+        id S1353597AbjIKVrp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:47:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240506AbjIKOqH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:07 -0400
+        with ESMTP id S240507AbjIKOqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C773712A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FC7C433C7;
-        Mon, 11 Sep 2023 14:46:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5118106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC82FC433C7;
+        Mon, 11 Sep 2023 14:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443562;
-        bh=SwATrI6CwjAZ6IOuhyuUvWyw+VQxnDk4EJtMR4tidUg=;
+        s=korg; t=1694443565;
+        bh=NlzhHss2MaxOK/W7nT93vQYRKzMFIoH0CTuwf34nkKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r/jMsS3hPJy4lVCqEJ9mLgaru4bDuYiOguaL2ZOgNWKZa2ZC3P09ScAcFIEN+3MsO
-         RF66hUk7Nmj/XD2SIVjCUjj0ogj9kbPI0IqHVt1BX7bn/AmuVcWjjx+KpBa+SUXAev
-         kXC104jd4JRg87265zfFG2/EOzkhz4NIQXomJBxQ=
+        b=b7xCOXKwox/7+mK1acfkF777E6l6EfDlsXBdqQOVjpCaSsxYp8xG6+5wVlfGBWIDP
+         /w/j60TC4P3g+j1H/ChiHIubAFLT2MCyITAlV7yKg/Cuz8K2SZJoxck2l0RdZNhdly
+         msTmiquyGBSn8A6u8vw8HaF2GoVIjBoyuZs9aJ2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        kernel test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 392/737] arm64: dts: qcom: sc8280xp-x13s: Unreserve NC pins
-Date:   Mon, 11 Sep 2023 15:44:11 +0200
-Message-ID: <20230911134701.544216354@linuxfoundation.org>
+Subject: [PATCH 6.4 393/737] bus: ti-sysc: Fix cast to enum warning
+Date:   Mon, 11 Sep 2023 15:44:12 +0200
+Message-ID: <20230911134701.572473642@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,35 +55,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 7868ed0144b33903e16a50485775f669c109e41a ]
+[ Upstream commit de44bf2f7683347f75690ef6cf61a1d5ba8f0891 ]
 
-Pins 83-86 and 158-160 are NC, so there's no point in keeping them
-reserved. Take care of that.
+Fix warning for "cast to smaller integer type 'enum sysc_soc' from 'const
+void *'".
 
-Fixes: 32c231385ed4 ("arm64: dts: qcom: sc8280xp: add Lenovo Thinkpad X13s devicetree")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230803-topic-x13s_pin-v1-1-fae792274e89@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Nishanth Menon <nm@ti.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308150723.ziuGCdM3-lkp@intel.com/
+Fixes: e1e1e9bb9d94 ("bus: ti-sysc: Fix build warning for 64-bit build")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 2 +-
+ drivers/bus/ti-sysc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index bdcba719fc385..9fa9b40b41b49 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -1212,7 +1212,7 @@ hastings_reg_en: hastings-reg-en-state {
- };
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index dbc37b3b84a8d..c95fa4335fee2 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -3106,7 +3106,7 @@ static int sysc_init_static_data(struct sysc *ddata)
  
- &tlmm {
--	gpio-reserved-ranges = <70 2>, <74 6>, <83 4>, <125 2>, <128 2>, <154 7>;
-+	gpio-reserved-ranges = <70 2>, <74 6>, <125 2>, <128 2>, <154 4>;
+ 	match = soc_device_match(sysc_soc_match);
+ 	if (match && match->data)
+-		sysc_soc->soc = (enum sysc_soc)match->data;
++		sysc_soc->soc = (enum sysc_soc)(uintptr_t)match->data;
  
- 	bt_default: bt-default-state {
- 		hstp-bt-en-pins {
+ 	/*
+ 	 * Check and warn about possible old incomplete dtb. We now want to see
 -- 
 2.40.1
 
