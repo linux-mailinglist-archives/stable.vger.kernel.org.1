@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 745DA79BFB4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE6E79C0A5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244989AbjIKVIg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43426 "EHLO
+        id S1355185AbjIKV5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242151AbjIKPXh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:37 -0400
+        with ESMTP id S240909AbjIKO5L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA23D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF21EC433C9;
-        Mon, 11 Sep 2023 15:23:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E92E4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79615C433C7;
+        Mon, 11 Sep 2023 14:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445813;
-        bh=slzoSb9fPkYnAco/kQxdrgs6wiowB8KW2u2Mp+iYXnI=;
+        s=korg; t=1694444225;
+        bh=sN8cddUGMF3ncNDGQjXyuGITD/d5TSYIAMXsNSFAYmE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=teXJRnhOkirObiBeRLFVV9laZwYqouAYUY2W4JH1VNLSQrFn+EuTSCUmwIOi7iHug
-         Lcs+EUJHPIU+XzVKYAhf+ziROAQ6cuzdwCqHWy8pXOGc8G/aeAzWb65fPRjiKmGvET
-         j682RpmyIPEFKwv08LoBCNgoSPvVnezjt/PmeqTU=
+        b=AA/9SAvb+zmM4Z6oKHXeySih3yfS3aD8V7Y3vbTXDCxO/ryit2DG65VFm7HtNRKd+
+         gVXeDrG3f8bkcEBBIzWm9v2rOXIAsSsr0rCwit3HmBrXgkaiUGLg9n4wUxpY9tm7Qv
+         5LWoptbdSUXqaEuqMuJNEEr26dOHlX4NyRY5u6bU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christopher Bednarz <christopher.n.bednarz@intel.com>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 480/600] RDMA/irdma: Prevent zero-length STAG registration
-Date:   Mon, 11 Sep 2023 15:48:33 +0200
-Message-ID: <20230911134647.809580680@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.4 655/737] ARM: OMAP2+: Fix -Warray-bounds warning in _pwrdm_state_switch()
+Date:   Mon, 11 Sep 2023 15:48:34 +0200
+Message-ID: <20230911134708.827780174@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,130 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher Bednarz <christopher.n.bednarz@intel.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit bb6d73d9add68ad270888db327514384dfa44958 ]
+commit 847fb80cc01a54bc827b02547bb8743bdb59ddab upstream.
 
-Currently irdma allows zero-length STAGs to be programmed in HW during
-the kernel mode fast register flow. Zero-length MR or STAG registration
-disable HW memory length checks.
+If function pwrdm_read_prev_pwrst() returns -EINVAL, we will end
+up accessing array pwrdm->state_counter through negative index
+-22. This is wrong and the compiler is legitimately warning us
+about this potential problem.
 
-Improve gaps in bounds checking in irdma by preventing zero-length STAG or
-MR registrations except if the IB_PD_UNSAFE_GLOBAL_RKEY is set.
+Fix this by sanity checking the value stored in variable _prev_
+before accessing array pwrdm->state_counter.
 
-This addresses the disclosure CVE-2023-25775.
+Address the following -Warray-bounds warning:
+arch/arm/mach-omap2/powerdomain.c:178:45: warning: array subscript -22 is below array bounds of 'unsigned int[4]' [-Warray-bounds]
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Christopher Bednarz <christopher.n.bednarz@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230818144838.1758-1-shiraz.saleem@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/KSPP/linux/issues/307
+Fixes: ba20bb126940 ("OMAP: PM counter infrastructure.")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/lkml/20230607050639.LzbPn%25lkp@intel.com/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Message-ID: <ZIFVGwImU3kpaGeH@work>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c  |  6 ++++++
- drivers/infiniband/hw/irdma/type.h  |  2 ++
- drivers/infiniband/hw/irdma/verbs.c | 10 ++++++++--
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap2/powerdomain.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
-index 6544c9c60b7db..d98bfb83c3b4b 100644
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -1061,6 +1061,9 @@ static int irdma_sc_alloc_stag(struct irdma_sc_dev *dev,
- 	u64 hdr;
- 	enum irdma_page_size page_size;
- 
-+	if (!info->total_len && !info->all_memory)
-+		return -EINVAL;
-+
- 	if (info->page_size == 0x40000000)
- 		page_size = IRDMA_PAGE_SIZE_1G;
- 	else if (info->page_size == 0x200000)
-@@ -1126,6 +1129,9 @@ static int irdma_sc_mr_reg_non_shared(struct irdma_sc_dev *dev,
- 	u8 addr_type;
- 	enum irdma_page_size page_size;
- 
-+	if (!info->total_len && !info->all_memory)
-+		return -EINVAL;
-+
- 	if (info->page_size == 0x40000000)
- 		page_size = IRDMA_PAGE_SIZE_1G;
- 	else if (info->page_size == 0x200000)
-diff --git a/drivers/infiniband/hw/irdma/type.h b/drivers/infiniband/hw/irdma/type.h
-index d6cb94dc744c5..1c7cbf7c67bed 100644
---- a/drivers/infiniband/hw/irdma/type.h
-+++ b/drivers/infiniband/hw/irdma/type.h
-@@ -1015,6 +1015,7 @@ struct irdma_allocate_stag_info {
- 	bool remote_access:1;
- 	bool use_hmc_fcn_index:1;
- 	bool use_pf_rid:1;
-+	bool all_memory:1;
- 	u8 hmc_fcn_index;
- };
- 
-@@ -1042,6 +1043,7 @@ struct irdma_reg_ns_stag_info {
- 	bool use_hmc_fcn_index:1;
- 	u8 hmc_fcn_index;
- 	bool use_pf_rid:1;
-+	bool all_memory:1;
- };
- 
- struct irdma_fast_reg_stag_info {
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 5962261f1b156..3b8b2341981ea 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2557,7 +2557,8 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
- 			       struct irdma_mr *iwmr)
- {
- 	struct irdma_allocate_stag_info *info;
--	struct irdma_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
-+	struct ib_pd *pd = iwmr->ibmr.pd;
-+	struct irdma_pd *iwpd = to_iwpd(pd);
- 	int status;
- 	struct irdma_cqp_request *cqp_request;
- 	struct cqp_cmds_info *cqp_info;
-@@ -2573,6 +2574,7 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
- 	info->stag_idx = iwmr->stag >> IRDMA_CQPSQ_STAG_IDX_S;
- 	info->pd_id = iwpd->sc_pd.pd_id;
- 	info->total_len = iwmr->len;
-+	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	info->remote_access = true;
- 	cqp_info->cqp_cmd = IRDMA_OP_ALLOC_STAG;
- 	cqp_info->post_sq = 1;
-@@ -2620,6 +2622,8 @@ static struct ib_mr *irdma_alloc_mr(struct ib_pd *pd, enum ib_mr_type mr_type,
- 	iwmr->type = IRDMA_MEMREG_TYPE_MEM;
- 	palloc = &iwpbl->pble_alloc;
- 	iwmr->page_cnt = max_num_sg;
-+	/* Use system PAGE_SIZE as the sg page sizes are unknown at this point */
-+	iwmr->len = max_num_sg * PAGE_SIZE;
- 	err_code = irdma_get_pble(iwdev->rf->pble_rsrc, palloc, iwmr->page_cnt,
- 				  false);
- 	if (err_code)
-@@ -2699,7 +2703,8 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
- {
- 	struct irdma_pbl *iwpbl = &iwmr->iwpbl;
- 	struct irdma_reg_ns_stag_info *stag_info;
--	struct irdma_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
-+	struct ib_pd *pd = iwmr->ibmr.pd;
-+	struct irdma_pd *iwpd = to_iwpd(pd);
- 	struct irdma_pble_alloc *palloc = &iwpbl->pble_alloc;
- 	struct irdma_cqp_request *cqp_request;
- 	struct cqp_cmds_info *cqp_info;
-@@ -2718,6 +2723,7 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
- 	stag_info->total_len = iwmr->len;
- 	stag_info->access_rights = irdma_get_mr_access(access);
- 	stag_info->pd_id = iwpd->sc_pd.pd_id;
-+	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	if (stag_info->access_rights & IRDMA_ACCESS_FLAGS_ZERO_BASED)
- 		stag_info->addr_type = IRDMA_ADDR_TYPE_ZERO_BASED;
- 	else
--- 
-2.40.1
-
+--- a/arch/arm/mach-omap2/powerdomain.c
++++ b/arch/arm/mach-omap2/powerdomain.c
+@@ -174,7 +174,7 @@ static int _pwrdm_state_switch(struct po
+ 		break;
+ 	case PWRDM_STATE_PREV:
+ 		prev = pwrdm_read_prev_pwrst(pwrdm);
+-		if (pwrdm->state != prev)
++		if (prev >= 0 && pwrdm->state != prev)
+ 			pwrdm->state_counter[prev]++;
+ 		if (prev == PWRDM_POWER_RET)
+ 			_update_logic_membank_counters(pwrdm);
 
 
