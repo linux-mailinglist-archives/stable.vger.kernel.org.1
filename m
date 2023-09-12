@@ -2,80 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 071D579CFF6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69DBA79D001
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234704AbjILLcF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 07:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54766 "EHLO
+        id S234720AbjILLcc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 07:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235050AbjILLbx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:31:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2997C10EC
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 04:31:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45413C433C7;
-        Tue, 12 Sep 2023 11:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694518308;
-        bh=muFzVWE7/Pn8WOpl2g8Ur9UebZr9nl6F+cpwiGSAsU4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ssgALcrFyIqzhhNG6SJgV891MPCHPg59WF/GhSWjsyx6rW3rqQw/HvCxqZ0tvWL7x
-         Ut0Y6+XOLYPIx8vcmickPxG7N+i9gmmoT23pYZavRxUuVV0DPdIiQHXeSvN+NKVF/P
-         MsS9jYqVvzi3GfbCVNntOCCb0gawjus1BZ0eJJrA=
-Date:   Tue, 12 Sep 2023 13:31:45 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Deucher, Alexander" <Alexander.Deucher@amd.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Yu, Lang" <Lang.Yu@amd.com>, Sasha Levin <sashal@kernel.org>,
-        Bryan Jennings <bryjen423@gmail.com>
-Subject: Re: [PATCH 5.15 015/139] drm/amdgpu: install stub fence into
- potential unused fence pointers
-Message-ID: <2023091236-renovator-bronchial-52c6@gregkh>
-References: <20230824145023.559380953@linuxfoundation.org>
- <20230824145024.239654518@linuxfoundation.org>
- <BL1PR12MB5144A0E84378A2666A26AE18F7F2A@BL1PR12MB5144.namprd12.prod.outlook.com>
+        with ESMTP id S234719AbjILLcH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:32:07 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31C1910C9;
+        Tue, 12 Sep 2023 04:32:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694518323; x=1726054323;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JG4GmfnpXv90VCpDbO3rQysAp8JtiQPJgT+rVgDM8H8=;
+  b=bZPYQPBqm4xexx4GcWM3uSmowIDfjHVEYsPIbXrStsyJVNn0uq170BT/
+   eQY8TOQ3sMQzGnWnm51y1+Pmkq/8HX+Yas8pi5Dr3Xg8peFxUY+t21K6Y
+   lFTD9IJEvdGzQ4aszprSeOtE1Ont6a+p/RoU08uZfGInjXp3ivGoK82SZ
+   wRDr5GajExUx5RhW9sVFrPJYA1xsy/qOv/DaKHkol6OoBNCF6FsIxRKXq
+   M09kSnp+ygQ7oLdguVJejwBHLcScvVJxmDEzbmR29N0EWIT57b1E9V7WY
+   WLDLmGWI6cRTeAERgeduHgra0Wg94cUjER/Kb7E8fIlGt1NZZg4HzajQk
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="464716678"
+X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
+   d="scan'208";a="464716678"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 04:32:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="772963220"
+X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
+   d="scan'208";a="772963220"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by orsmga008.jf.intel.com with ESMTP; 12 Sep 2023 04:32:00 -0700
+Message-ID: <7c388791-e4cd-28da-3d98-5cc233bec165@linux.intel.com>
+Date:   Tue, 12 Sep 2023 14:33:20 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <BL1PR12MB5144A0E84378A2666A26AE18F7F2A@BL1PR12MB5144.namprd12.prod.outlook.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: [PATCH] usb: xhci: xhci-ring: Use sysdev for mapping bounce
+ buffer
+Content-Language: en-US
+To:     Wesley Cheng <quic_wcheng@quicinc.com>, mathias.nyman@intel.com,
+        gregkh@linuxfoundation.org
+Cc:     linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        quic_jackp@quicinc.com, stable@vger.kernel.org
+References: <20230911234122.1408-1-quic_wcheng@quicinc.com>
+From:   Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <20230911234122.1408-1-quic_wcheng@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 08:44:28PM +0000, Deucher, Alexander wrote:
-> [Public]
+On 12.9.2023 2.41, Wesley Cheng wrote:
+> As mentioned in:
+>    commit 474ed23a6257 ("xhci: align the last trb before link if it is
+> easily splittable.")
 > 
-> > -----Original Message-----
-> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Sent: Thursday, August 24, 2023 10:49 AM
-> > To: stable@vger.kernel.org
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
-> > patches@lists.linux.dev; Koenig, Christian <Christian.Koenig@amd.com>; Yu,
-> > Lang <Lang.Yu@amd.com>; Deucher, Alexander
-> > <Alexander.Deucher@amd.com>; Sasha Levin <sashal@kernel.org>
-> > Subject: [PATCH 5.15 015/139] drm/amdgpu: install stub fence into potential
-> > unused fence pointers
-> >
-> > From: Lang Yu <Lang.Yu@amd.com>
-> >
-> > [ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
-> >
-> > When using cpu to update page tables, vm update fences are unused.
-> > Install stub fence into these fence pointers instead of NULL to avoid NULL
-> > dereference when calling dma_fence_wait() on them.
-> >
-> > Suggested-by: Christian König <christian.koenig@amd.com>
-> > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> > Reviewed-by: Christian König <christian.koenig@amd.com>
-> > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> A bounce buffer is utilized for ensuring that transfers that span across
+> ring segments are aligned to the EP's max packet size.  However, the device
+> that is used to map the DMA buffer to is currently using the XHCI HCD,
+> which does not carry any DMA operations in certain configrations.
+> Migration to using the sysdev entry was introduced for DWC3 based
+> implementations where the IOMMU operations are present.
 > 
-> Please revert this from 5.15.  This was autoselected for 5.15, but is not applicable to this branch.  This is causing log spam on 5.15.  It was included in 5.15.128 as commit 4921792e04f2125b5eadef9dbe9417a8354c7eff.  See https://gitlab.freedesktop.org/drm/amd/-/issues/2820
+> Replace the reference to the controller device to sysdev instead.  This
+> allows the bounce buffer to be properly mapped to any implementations that
+> have an IOMMU involved.
+> 
+> cc: <stable@vger.kernel.org>
+> Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
+> Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+> ---
 
-Now reverted, thanks.
+Thanks, adding to queue
 
-greg k-h
+-Mathias
+
+
+
