@@ -2,71 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F4279CE84
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8EFB79CE8D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233859AbjILKiQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 06:38:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38452 "EHLO
+        id S231560AbjILKji (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 06:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233577AbjILKiQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:38:16 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A422ACC3
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:38:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED305C433C7;
-        Tue, 12 Sep 2023 10:38:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694515092;
-        bh=dIQVlyP42PolZznaFbAugpHLN9YBTqBzjJDxsh5OtkA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bqYNCVznT0v0Az3+noQuUAtDd4QEztxZrwh6XGd4u9MrjfTLN1tOd9iQIKGcK1S3B
-         CrwgW0FthmtCVqBdzX/jZ+454Xacv3F26zuLpsklEh5q/acYnTrjno7C3FeV5WjEId
-         eUF8C8ld+PBpPfqO5MPOGpZds2kOcCW+Kctb7OVU=
-Date:   Tue, 12 Sep 2023 12:38:09 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Alexander Danilenko <al.b.danilenko@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.5 134/739] spi: tegra114: Remove unnecessary
- NULL-pointer checks
-Message-ID: <2023091212-dispose-oboe-ba98@gregkh>
-References: <20230911134650.921299741@linuxfoundation.org>
- <20230911134654.832694547@linuxfoundation.org>
- <ZP8lHSmZVOvbI3wN@finisterre.sirena.org.uk>
+        with ESMTP id S230223AbjILKji (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:39:38 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A7DF2;
+        Tue, 12 Sep 2023 03:39:34 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qg0nq-00042X-9f; Tue, 12 Sep 2023 12:39:30 +0200
+Message-ID: <516005ff-636e-4aa9-9bcb-76902c09f855@leemhuis.info>
+Date:   Tue, 12 Sep 2023 12:39:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZP8lHSmZVOvbI3wN@finisterre.sirena.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "comedi: add HAS_IOPORT dependencies"
+Content-Language: en-US, de-DE
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@kernel.org>, stable@vger.kernel.org,
+        Ian Abbott <abbotti@mev.co.uk>, linux-kernel@vger.kernel.org
+References: <20230905090922.3314-1-abbotti@mev.co.uk>
+ <76acff7e-3959-4193-9531-22a5e5a68221@leemhuis.info>
+ <2023091226-foe-reanalyze-b859@gregkh>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <2023091226-foe-reanalyze-b859@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694515174;6d73b4fc;
+X-HE-SMSGID: 1qg0nq-00042X-9f
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 03:33:01PM +0100, Mark Brown wrote:
-> On Mon, Sep 11, 2023 at 03:38:53PM +0200, Greg Kroah-Hartman wrote:
-> > 6.5-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Alexander Danilenko <al.b.danilenko@gmail.com>
-> > 
-> > [ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
-> > 
-> > cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
-> > so there is no sense in checking them for NULL.
-> > 
-> > Found by Linux Verification Center (linuxtesting.org) with SVACE.
+On 12.09.23 12:13, Greg Kroah-Hartman wrote:
+> On Tue, Sep 12, 2023 at 11:44:39AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> On 05.09.23 11:09, Ian Abbott wrote:
+>>> This reverts commit b5c75b68b7ded84d4c82118974ce3975a4dcaa74.
+>>>
+>>> The commit makes it impossible to select configuration options that
+>>> depend on COMEDI_8254, COMEDI_DAS08, COMEDI_NI_LABPC, or
+>>> COMEDI_AMPLC_DIO200 options due to changing 'select' directives to
+>>> 'depends on' directives and there being no other way to select those
+>>> codependent configuration options.
+>>>
+>>> Fixes: b5c75b68b7de ("comedi: add HAS_IOPORT dependencies")
+>>> Cc: Niklas Schnelle <schnelle@linux.ibm.com>
+>>> Cc: Arnd Bergmann <arnd@kernel.org>
+>>> Cc: <stable@vger.kernel.org> # v6.5+
+>>> Acked-by: Arnd Bergmann <arnd@kernel.org>
+>>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+>>
+>> Hmmm, that fix for a regression from the 6.5 cycle was posted a week ago
+>> but didn't get a single reply afaics and hasn't hit next.
+>>
+>> Greg, is this still in your to-review queue and just delayed due to the
+>> merge window? Or are you waiting for something? A ACK fromn Niklas
+>> maybe? Or a newer patch to address the kernel test robot report in case
+>> its relevant?
 > 
-> This is a code cleanup, why is it a stable candidate?  It's not a
-> warning fix or anything.
+> The merge window "freeze" ended on Monday, give me a chance to catch up
+> with patches please, this is part of my very large todo mbox:
+> 
+> 	$ mdfrm -c ~/mail/todo/
+> 	1637 messages in /home/gregkh/mail/todo/
 
-{sigh}  This is due to the crazy people using SVACE marking stuff as a
-"fix" when it really isn't to try to boost the chance that their patches
-will be accepted :(
+Well, I know that you deal with a lot of patches and often wonder how
+you manage to do all that great work, but nevertheless please allow me
+to ask:
 
-I'm all but refusing to take their patches now due to all of the
-problems they have caused in the past.  I'll go drop this from all
-stable queues as well, thanks for catching this.
+I assume that that not all of those 1600+ patches are fixes for
+regressions, so should a revert for a very recent regression be in a
+different mbox with a slightly higher priority[1] to get handled before
+the others?
 
-greg k-h
+Ciao, Thorsten
+
+[1] for most other developers I would have said "highest priory", but I
+assume in your case there are still more important things
