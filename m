@@ -2,248 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 994E279C93C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CFDF79C955
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjILIHT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 04:07:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60600 "EHLO
+        id S232158AbjILIJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 04:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232701AbjILIG2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:06:28 -0400
-Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E278F2130
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:03:05 -0700 (PDT)
-Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-4935f87ca26so1865245e0c.3
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:03:05 -0700 (PDT)
+        with ESMTP id S232011AbjILIJF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:09:05 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C8710C3;
+        Tue, 12 Sep 2023 01:09:00 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-501ce655fcbso8547805e87.2;
+        Tue, 12 Sep 2023 01:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694505785; x=1695110585; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694506139; x=1695110939; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IcYYrVUsshmH5A6TR+yYvs3OB8iN1jYR1U1q6ihQM5s=;
-        b=jBzLO36gN4u44O5Bf2mNkAT0KXJjyVZwqXpu7fqFp0euQqj6AY8LKtt17wLp+DUHJJ
-         vhblh++uyn9Tq5vVpniKuZaDKP8jMwjcqqsQcngQVJDtFq55NpsaAt0HxgALyYPh+5mv
-         cieoRmA5uDfOJrf9j+bcl6F20mo9KJGznrZdZ8VBbFs3TsOvxfhUZPIH2vXBQQ+1vPiX
-         FYTb9YYX3+/pya7Dv0QrXMorvZAL3l/B7b7/wfJf0Lj6WV9jzZtGc1JB7EM1Rgl5x1+h
-         J0jp5NN6DOsU/zAEdXhCKlIX8/kbRGlOac3omozH5nRTqCnT4lEpsf5KszVyctROZz5t
-         Xluw==
+        bh=BRy58mtOMfLsnyOd5KeG4RjAf/fDpf2NPVmv4pRKN3U=;
+        b=synp5sDsxiYJB6hXt2QIko5GmsZf7l3rEGA+uRtQiO/o+ouNMhfwUemlSqs6OuRLGi
+         LZSlyXtWBYVBl8hiPYpWoMgAsvqa3V0NSrUjjSa7Y+fZRdgci4u5crAybgFT3baoNKS3
+         BpXrjiOz/KwMHwozQg1bLEqsjzEcuuR8C9hs+9WyAx84rzXBXe1u4mYfhvbW2sgRtWa+
+         Z2iDJdHzG7govOxV0Wu/ISkOqUSaXhsT6KSCz5wN0/LzzLD0bVXDiJyyjJv23T5cwpTy
+         QO2+qjoZoxVBB2rHq+gAH51r0trrf5bGtav5/LPeF2L+29LlyVkjzi6ktE3ORXNFtXC+
+         25sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694505785; x=1695110585;
+        d=1e100.net; s=20230601; t=1694506139; x=1695110939;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IcYYrVUsshmH5A6TR+yYvs3OB8iN1jYR1U1q6ihQM5s=;
-        b=X0gBhoRE4MTuwU3ExGssXGXZ9M+749C0rxVcyUVlb4oi6eefMgPU1YNOIFjA7FL6sB
-         m2ru4zze4lnK+HbJnQNMs1VajlIwFyQKK+WBGfdd+1MdG8u8APgNGY36IVrirYrV+bx1
-         op3V6FKKmn8ZVdmvFbWWat2CpPmo+e3uYCt0MZD+c9AxjZE5UMh/WnavyvBgmhja5BJ8
-         nuFd1OjZ5Kuw3f/bBs7w0A7Zco92E0vV+T2N7+6gWjf5XxOh/rfGiLLXe5flEWk/sj0N
-         d7Un98FsB/tTv1DjRx3qNEYd3ubvBvTiIBQPjnjBy+H3mmflh+ujnS0QtJovgzdoNTJ7
-         TYCg==
-X-Gm-Message-State: AOJu0YzBpJ/W6/VPjyskqsxhEZK1EruxUlPui6acBIHW8Ost3FEGUDHy
-        htQEF5Hwce2OP/PT39nA4Bz1+QEzp0+B/jsu+hPe9w==
-X-Google-Smtp-Source: AGHT+IFLm2Dmj+RMHkOiznh51B2T48mFLnh4UugXX6gsnZIP6rRqLe64+INTDKxRcRy4pjA9xUYD3jS0nlbs8Ah1t4g=
-X-Received: by 2002:a1f:e6c3:0:b0:48f:e0c4:1a1 with SMTP id
- d186-20020a1fe6c3000000b0048fe0c401a1mr10652871vkh.12.1694505784949; Tue, 12
- Sep 2023 01:03:04 -0700 (PDT)
+        bh=BRy58mtOMfLsnyOd5KeG4RjAf/fDpf2NPVmv4pRKN3U=;
+        b=AVf+hYvCKSNNuVZQNgtjiapaXJyQwniBwk9VHpos/SRYz0hE2OqxVTRVtPM8Tlu3KU
+         l7vJC5dzKAkGNnFlTjO2SrGQp5NR/R9POYvNN4RdjZEq/2fzVeMhMJ02DHLsFEykLr39
+         NByvDvhGaU3mrb/y/ES/ysXMWaYhPpgxvfI0TiC4bSQcT6InXN47a/GYwFN8+Zviiuqr
+         T2Yc2xc2U0ucJrtexWJhmeGILsIgOQQGQbMJvvP7eqDCONfvxZRwW4PMGNrQ/Jo3HUms
+         mMeqALy0mMfVG8n+m+MyGRLui04kKi4KKCkvbIsOeHKWAEgsWigU52xlXAOYRvh1fmGV
+         Lc1g==
+X-Gm-Message-State: AOJu0YyIaOTht1UIywO+ysGC91p2HMdURbMwtDfCd3j8FEjKClfmUHSJ
+        RbM6UFAsI/gI0pf4Xpjn9QQZ0PjdwOfFQt7HOeM=
+X-Google-Smtp-Source: AGHT+IFwDwJhrpy8HowhIBYcBi/whf/X/T3w9uKWfcXrLILoGcUMzinlah9wOUe1t9L08eJ9Z5UmcgaMaRFE2N9j4uo=
+X-Received: by 2002:a05:6512:33c8:b0:502:a56b:65f7 with SMTP id
+ d8-20020a05651233c800b00502a56b65f7mr8526287lfg.16.1694506138521; Tue, 12 Sep
+ 2023 01:08:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230911134650.921299741@linuxfoundation.org>
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 12 Sep 2023 13:32:53 +0530
-Message-ID: <CA+G9fYv7PymkiagSGFU-BXG43gHm2NYDd2CNJw26C52EGhjpig@mail.gmail.com>
-Subject: Re: [PATCH 6.5 000/739] 6.5.3-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+References: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
+ <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info> <ZPc8v9-lHF4jAcxL@kbusch-mbp>
+In-Reply-To: <ZPc8v9-lHF4jAcxL@kbusch-mbp>
+From:   =?UTF-8?Q?Cl=C3=A1udio_Sampaio?= <patola@gmail.com>
+Date:   Tue, 12 Sep 2023 10:08:48 +0200
+Message-ID: <CA+4wXKCAYM19H7n4TpbnrtRy_Yv1JOjT3CHVuxh_18Mb7NB4+A@mail.gmail.com>
+Subject: Re: Fwd: Lexar NM790 SSDs are not recognized anymore after 6.1.50 LTS
+To:     Keith Busch <kbusch@kernel.org>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux NVMe <linux-nvme@lists.infradead.org>,
+        Linux Stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 11 Sept 2023 at 19:22, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Hi, Keith... Just to give you guys a response concerning this, I'm
+sorry for the late reply -- too much work. But yes, you are correct,
+due to having tried patching the kernel in different days and too much
+stuff going on at the same time, I applied this two-line patch to the
+same source where I have applied the other patch that multiplies the
+timeout by 2 and occurs at an earlier time on activation. I thought I
+had an unpatched kernel at the time and ended up compiling it this
+way. Sorry for the mistake, but I also saw that now there's a better
+patch for the issue.
+
+On Tue, Sep 5, 2023 at 4:35=E2=80=AFPM Keith Busch <kbusch@kernel.org> wrot=
+e:
 >
-> This is the start of the stable review cycle for the 6.5.3 release.
-> There are 739 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Tue, Sep 05, 2023 at 01:37:36PM +0200, Linux regression tracking (Thor=
+sten Leemhuis) wrote:
+> > On 04.09.23 13:07, Bagas Sanjaya wrote:
+> > >
+> > > I notice a regression report on Bugzilla [1]. Quoting from it:
+> > >
+> > >> I bought a new 4 TB Lexar NM790 and I was using kernel 6.3.13 at the=
+ time. It wasn't recognized, with these messages in dmesg:
+> > >>
+> > >> [ 358.950147] nvme nvme0: pci function 0000:06:00.0
+> > >> [ 358.958327] nvme nvme0: Device not ready; aborting initialisation,=
+ CSTS=3D0x0
+> > >>
+> > >> My other NVMe appears correctly in the nvme list though.
+> > >>
+> > >>
+> > >> So I tried using other kernels I had installed at the time: 6.3.7, 6=
+.4.10, 6.5.0rc6, 6.5.0, 6.5.1 and none of these recognized the disk.
+> > >> I installed the 6.1.50 lts kernel from arch repositories (I can comp=
+ile my own too if this would be an issue) and then the device was correctly=
+ recognized:
+> > >>
+> > >> [    4.654613] nvme 0000:06:00.0: platform quirk: setting simple sus=
+pend
+> > >> [    4.654632] nvme nvme0: pci function 0000:06:00.0
+> > >> [    4.667290] nvme nvme0: allocated 40 MiB host memory buffer.
+> > >> [    4.709473] nvme nvme0: 16/0/0 default/read/poll queues
+> >
+> > FWIW, the quoted mail missed one crucial detail:
+> > """
+> >  Claudio Sampaio 2023-09-02 19:04:29 UTC
+> >
+> > Adding the two lines
+> >
+> > =E2=94=82 3457   { PCI_DEVICE(0x1d97, 0x1602), /* Lexar NM790 */
+> > =E2=94=82 3458   =E2=94=82 .driver_data =3D NVME_QUIRK_BOGUS_NID, },
+> >
+> > in file drivers/nvme/host/pci.c made my NVMe work correctly. Compiled a
+> > new 6.5.1 kernel and everything works.
+> > """
+> >
+> > @NVME maintainers: is there anything more you need from Claudio at this
+> > point?
 >
-> Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
-> Anything received after that time might be too late.
+> Yes: it doesn't really make any sense. The report says the device
+> stopped showing up with message:
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.5.3-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.5.y
-> and the diffstat can be found below.
+>   nvme nvme0: Device not ready; aborting initialisation, CSTS=3D0x0
 >
-> thanks,
+> That (a) happens long before the mentioned quirk is considered by the
+> driver, and (b) the "quirk" behavior is now the default in 6.5 and
+> several of the listed stable kernels anyway.
 >
-> greg k-h
+> It more likely sounds like the device is flaky and either never becomes
+> ready due to some unspecified internal firmware condition, or
+> inaccurately reports how long it actually needs to become ready in
+> worst-case-scenario.
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-NOTE:
-Kernel crash noticed on Linux stable-rc 6.5.3-rc1 on qemu-arm64 while
-running LTP sched tests cases have been reported on other threads.
-Since this crash is not always reproducible it is hard to bisect.
-Link:
- - https://lore.kernel.org/ltp/CA+G9fYvHhiiGKhNd=3DL9+xYFVwv0Q8k6gUBeFQGWCW=
-w1cWhb50Q@mail.gmail.com/T/#u
-
-## Build
-* kernel: 6.5.3-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.5.y
-* git commit: 7bfd1316ceae2dc3bf962695aafe5f1d0f5bb4a5
-* git describe: v6.5.2-740-g7bfd1316ceae
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.2=
--740-g7bfd1316ceae
-
-## Test Regressions (compared to v6.5.2)
-
-## Metric Regressions (compared to v6.5.2)
-
-## Test Fixes (compared to v6.5.2)
-
-## Metric Fixes (compared to v6.5.2)
-
-## Test result summary
-total: 138096, pass: 119333, fail: 2020, skip: 16565, xfail: 178
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 142 total, 140 passed, 2 failed
-* arm64: 52 total, 49 passed, 3 failed
-* i386: 41 total, 39 passed, 2 failed
-* mips: 29 total, 27 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 26 total, 23 passed, 3 failed
-* s390: 16 total, 13 passed, 3 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 45 total, 41 passed, 4 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--=20
+Cl=C3=A1udio "Patola" Sampaio
+MakerLinux Labs - Campinas, SP
+Resume Gmail - YOUTUBE!
+Facebook - Facebook da MakerLinux - Lattes
