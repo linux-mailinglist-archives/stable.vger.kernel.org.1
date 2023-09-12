@@ -2,127 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0D279D2AB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 15:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C567579D2E5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 15:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234920AbjILNuh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 09:50:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35318 "EHLO
+        id S234834AbjILNx2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 09:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234834AbjILNuh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 09:50:37 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD0C10D0
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:50:32 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-76ef8b91a72so346754385a.0
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:50:32 -0700 (PDT)
+        with ESMTP id S235708AbjILNxT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 09:53:19 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A617A1992
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:53:13 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-500c37d479aso9195709e87.2
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:53:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1694526632; x=1695131432; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DG/S9kEpT/rLqv5tf8oU3tSCxop5cRy8sJkoaweQRbM=;
-        b=BiXRHs2crIQO/7pMppDc7gjKOjmT5Bv0o0NisnRcvFrq9jZ09fHeiGco9ClJyFGqBG
-         hMeTNNBaYI+GHJzcUj+fq806xnd7lCALKI4fV3ZnIaI/Mb5iDPWZJSggIJT+uZizf5iY
-         eCMiMUJV5h9Jtp9Q//iym11SShB2BnNAmbxp+RTi1gnvQsc7nZc7QmMVY49b+xYFQLIZ
-         DMfo0CjtGtciOfzjpdfULkFdk8wpf1n1Q1MV4V969RWZsiBoNJxzKIUIXrHoYnd0OlwK
-         sL8rx9BY0//cu6kSQJJOm9ufwmUsUutYnTE0ChkKSZrLY2aGtEOSg5/zW4Z1RUaYaKVC
-         WsZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694526632; x=1695131432;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=ionos.com; s=google; t=1694526792; x=1695131592; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DG/S9kEpT/rLqv5tf8oU3tSCxop5cRy8sJkoaweQRbM=;
-        b=mmMJ4Gt6TqD1B8adyyB1yOvZmZk8buROWjAWOpWFu4oFLxZRDXaoMbwBRe5ongrwa3
-         OIxeCJnU7EmF9e0S4CC+OMRFZ64+Ni2mqMo1pWQYAavcwZWmjFG8ZUCwExSpEv+kZNt5
-         0DC9x5FVYdQ72pYaow/tmP1c6uwBGLM3lUtXEc/QQzWgdI/0CcJp/CeeJvc2x5v2EiS7
-         SW4V1SIzkBPncv8sYg+pcrsjkabOlcuoYLLBrQ94S0CO5kWXyn4XeZ5CNyrJBs/OI8Lf
-         SmeSSs500Rpn6eBBosLJhGysb7bsHmCGOsW7ikquU9KDUtFTs6+AKVoKonzFvEc/01ts
-         xhRA==
-X-Gm-Message-State: AOJu0Yy2G+xW4dGTveBYBbPaownrXLfrBT0GUeIl7HUwDpTL5tOsJrqV
-        tjxuVT3qscl2VAMbQWL4Nb6+zQ==
-X-Google-Smtp-Source: AGHT+IHl17Fh754j/sY1LMMjJ+dwmOkJ5oU0X+qqqtvKNtHGorsM7EEe2ygKmW1RZLvnRBMWm/Uy9g==
-X-Received: by 2002:a05:620a:894:b0:76f:e2e:4d99 with SMTP id b20-20020a05620a089400b0076f0e2e4d99mr10826440qka.78.1694526631952;
-        Tue, 12 Sep 2023 06:50:31 -0700 (PDT)
-Received: from localhost (2603-7000-0c01-2716-3012-16a2-6bc2-2937.res6.spectrum.com. [2603:7000:c01:2716:3012:16a2:6bc2:2937])
-        by smtp.gmail.com with ESMTPSA id 20-20020a05620a071400b00767d6ec578csm3203622qkc.20.2023.09.12.06.50.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 06:50:31 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 09:50:29 -0400
-From:   Johannes Weiner <hannes@cmpxchg.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     mm-commits@vger.kernel.org, vbabka@suse.cz, stable@vger.kernel.org,
-        joe.liu@mediatek.com, mgorman@techsingularity.net
-Subject: Re: +
- mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch
- added to mm-hotfixes-unstable branch
-Message-ID: <20230912135029.GA249952@cmpxchg.org>
-References: <20230911210053.8B7B0C433CD@smtp.kernel.org>
+        bh=Sj3TDD9XY/2NurDLatMBw2VIZpwYLfq4TtQJpIkMx6E=;
+        b=K0CNPnbeFR5wESgn+ABlF+oEogYRRYfate2plw1qsxzkp2b1kz253LGGmpPLWJnnOk
+         08fZ1f3OHTho2Isgj1o2EBLz4GDV5dAVoNBN23Q2NxHbmAHBPjk3joCfvFXetBxdBnTi
+         R1+Ojah0s3hOrtz0M5eTp392fN5qlYUfhSy0L5eK6sKxwHVV3VsjpiJwCS8/s6B3p1k9
+         fuOmAheDKQJGTBZA60MGgm+4K0LumiVkc+iiOqmuEWrqnxputteJA9MVUELMkSeVpXkw
+         OI9mM05GwkKpnRGffs/bt8GJnkgLio0pxlXMkC/cLmOaNeUvXjJIPeBmQyMLg1s9yeET
+         amXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694526792; x=1695131592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Sj3TDD9XY/2NurDLatMBw2VIZpwYLfq4TtQJpIkMx6E=;
+        b=Pl9UsOWNagdb578wODIwz0zjfZr+DWZOreYnS/DM4UH+AHVi50R1DI2J7fSWXf9E71
+         gfdTfDek6devQxpjrloDoTxH2XNk3oqXGPeDLQ0xLsH48HqQIq6dB8g3sUs4ov3ymcQt
+         WA0TDvooLqvFUh8S9qFmxYiHSD+4CNuH9RYxNDEH94ACs+Qzb0MN94db20Io8gaMYg5B
+         B4ksWbzfMSiDCIubT6oX1C3hSbI5dZCB2Y+rBNkbhVWXG321LmJV1ZJ+GvGLU6v954vK
+         s3NDGnMPo3c+o12LGrrR5AmAkdiqebZuXYgHGJgNeJbzCVklPuoTb9hR5tvYJ3uaRDc8
+         BXBQ==
+X-Gm-Message-State: AOJu0YxdhCqVR2BsEg3Up/ETsTmhKRE4R7SJuL/6C47TyW01S1qWDF9y
+        KGZzzfOdoBh7IBoVhIvKry6IOS4UQq8cyE+Hx/KLIQ==
+X-Google-Smtp-Source: AGHT+IGGeEhCa84Ovvh4yQ9qAKoZAggX1AgyD4kvc5kwGZD3MWrBiul84PCjt9rrxjfmod32z2JZ27cggvsC8Kl6MOc=
+X-Received: by 2002:ac2:5991:0:b0:500:8fcd:c3b8 with SMTP id
+ w17-20020ac25991000000b005008fcdc3b8mr9492054lfn.8.1694526791495; Tue, 12 Sep
+ 2023 06:53:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230911210053.8B7B0C433CD@smtp.kernel.org>
+References: <CAMGffEmtW+95Hsmf-6sZmS76Mpdt+R6uYQKtjbLup+iX96eVfg@mail.gmail.com>
+ <2023091241-ecology-greyhound-4e24@gregkh>
+In-Reply-To: <2023091241-ecology-greyhound-4e24@gregkh>
+From:   Jinpu Wang <jinpu.wang@ionos.com>
+Date:   Tue, 12 Sep 2023 15:53:00 +0200
+Message-ID: <CAMGffEkSQ-d4sHL3tvDvEsf7TE4Bn7yWUraTqw374Leor1CS2Q@mail.gmail.com>
+Subject: Re: Regression with raid1 in stable 5.15.132-rc1 and 6.1.53-rc1
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 02:00:52PM -0700, Andrew Morton wrote:
-> 
-> The patch titled
->      Subject: mm: page_alloc: free pages to correct buddy list after PCP lock contention
-> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
->      mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch
-> 
-> This patch will shortly appear at
->      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-free-pages-to-correct-buddy-list-after-pcp-lock-contention.patch
-> 
-> This patch will later appear in the mm-hotfixes-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> 
-> Before you just go and hit "reply", please:
->    a) Consider who else should be cc'ed
->    b) Prefer to cc a suitable mailing list as well
->    c) Ideally: find the original patch on the mailing list and do a
->       reply-to-all to that, adding suitable additional cc's
-> 
-> *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-> 
-> The -mm tree is included into linux-next via the mm-everything
-> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there every 2-3 working days
-> 
-> ------------------------------------------------------
-> From: Mel Gorman <mgorman@techsingularity.net>
-> Subject: mm: page_alloc: free pages to correct buddy list after PCP lock contention
-> Date: Tue, 5 Sep 2023 10:09:22 +0100
-> 
-> Commit 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-> returns pages to the buddy list on PCP lock contention. However, for
-> migratetypes that are not MIGRATE_PCPTYPES, the migratetype may have
-> been clobbered already for pages that are not being isolated. In
-> practice, this means that CMA pages may be returned to the wrong
-> buddy list. While this might be harmless in some cases as it is
-> MIGRATE_MOVABLE, the pageblock could be reassigned in rmqueue_fallback
-> and prevent a future CMA allocation. Lookup the PCP migratetype
-> against unconditionally if the PCP lock is contended.
-> 
-> [lecopzer.chen@mediatek.com: CMA-specific fix]
-> Link: https://lkml.kernel.org/r/20230905090922.zy7srh33rg5c3zao@techsingularity.net
-> Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-> Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-> Reported-by: Joe Liu <joe.liu@mediatek.com>
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-This patch is superseded by the following patch you picked up:
-mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch
-
-If you drop this patch here, you can also drop the fixlet to
-free_unref_page(). The branch in there should look like this:
-
-	if (pcp)
-		free_unref_page_commit(..., pcpmigratetype, ...);
-	else
-		free_one_page(..., migratetype, ...);
+On Tue, Sep 12, 2023 at 2:08=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Sep 12, 2023 at 01:46:29PM +0200, Jinpu Wang wrote:
+> > Hi Greg and Stable folks.
+> >
+> > We've noticed regression in raid1 due to following commits:
+> > 79dabfd00a2b ("md/raid1: hold the barrier until handle_read_error() fin=
+ishes")
+> > caeed0b9f1ce ("md/raid1: free the r1bio before waiting for blocked rdev=
+")
+>
+> I'll drop them from all queues, but can you test 6.6-rc1 to be sure that
+> all is ok there?
+Sure, I will test 6.6-rc1.
+>
+> thanks,
+>
+> greg k-h
+Thx
