@@ -2,242 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6511179D957
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 21:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BDF779D961
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 21:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232040AbjILTKF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 15:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46734 "EHLO
+        id S229946AbjILTN5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 15:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbjILTKE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 15:10:04 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65E0AE6;
-        Tue, 12 Sep 2023 12:10:00 -0700 (PDT)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38CHJVi1028541;
-        Tue, 12 Sep 2023 19:09:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2023-03-30;
- bh=e2dLYtEbcCLnKgbkkyS9VKH/E/VEOIj3lp1+qn/wgdU=;
- b=JkG+sg7nLY5cuqxZ41teMVvMsOuTX7xZOWdf5WMH8fnEpKCqEQ1d5wrtb4Sl05RZ16kC
- 3mE3nCcKEsO+TT31Gc7VYpTGZfT1qFycwwclQnjTgMLufGM4ixNJs8PJC6G8jf3jjnfm
- 0RSRolNIT1P50NZQSNuyC3JB02H37w0mnsat+OY3D68DG0UEbmTouMrSAwHEKhezSUmG
- hFPEQ06IdgX4wEpB6lW6TWGXXkVxH1IrYxuR6Vy4OkmRA0NqPjmDGwgF/rQcZkui8GAW
- vH5178ROMnCTnV0CjXUuSvg0tbRogPQk1+GGZM5tkhuFa21iYt4Bn0A2uk19TMi7psOr gw== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t1jp7crq9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 Sep 2023 19:09:37 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38CIFUE0007794;
-        Tue, 12 Sep 2023 19:09:36 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2105.outbound.protection.outlook.com [104.47.55.105])
-        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3t0f567k4x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 Sep 2023 19:09:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BvejvL+GdTwp4iFEszpjnQnecokjtlARq5+LmDRkcdU74FO7P4qvQxNC/UQlMufqzrLVY1SKd7BiITZlJHCmLC0DQK6/cMWyvlfBAavAeF0ODURFB8gd2Z4+gfLr9/pCiHO2w8AlGnrvyDGFNqZNlN02G9Rmp0R9ahAsmLCwAvy8WRJe0I+4lLsyk8O/ufkgGjFmQUtupqLKQjVWLeAcjMqXY6zoWmF3/inQrEREg9lgsHVZ9OEVpP/jNEEXNlN6BftoLzY6PuqDqxbKV8YdzU+tM0w7DTH2E2zXZxibBQsgF8zkA/uIGt8/xcMY7MRtmaCnpMnjOXmDVl//diIAYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e2dLYtEbcCLnKgbkkyS9VKH/E/VEOIj3lp1+qn/wgdU=;
- b=MEODOB+hwpecah9S4dkCQfbQltlHfV3jZIM4jsVWh9PJ/mrB1kooxqk+5jba3xjX0CVN1jVO2PIWi2yeUozmD5hzp7zdIGW+p/LJMp9W/uJle9a7uNZ2TE0/oz8nxC0a1M0PjYGpvX8ZifViWuFx7jKXR6kQpv3VF/Z7eNaCYym4nDwKc9I+18Mzxbc1WPwfejLLNr1EZfha0vbalHgm2XdWMBuBuvkL4RCxEtG6Q+L6VE1wxQXRsLdwuZ7lBbI6JL360007oGi8RtfaJSBJUxq4J8ksPnL9+5FS9EqlW+piKV8bUY5kUVM5buQ7NrKgDGGIZOv8kfsp++NdCFhgaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S229904AbjILTN4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 15:13:56 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A234EE6;
+        Tue, 12 Sep 2023 12:13:52 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-401b393df02so70420975e9.1;
+        Tue, 12 Sep 2023 12:13:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e2dLYtEbcCLnKgbkkyS9VKH/E/VEOIj3lp1+qn/wgdU=;
- b=BYVGZReFUNUGSVsId9llD7QRu1VjFHa97VoXq/m1KFsupB4k5Bhe0IISW4mPmt0Z1ANnUul8xVWcObSXjYI1t/TSmOHd+/GPWBkz6LejPEIXHBdTuJHeLBvhPW81i2bCerUjB1NQrGkGl06Q60X0j4Mvv8Cvaz/IU4NBXAxSUEo=
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
- by CH0PR10MB5017.namprd10.prod.outlook.com (2603:10b6:610:c3::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.19; Tue, 12 Sep
- 2023 19:09:34 +0000
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8979:3e3f:c3e0:8dfa]) by SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8979:3e3f:c3e0:8dfa%4]) with mapi id 15.20.6768.036; Tue, 12 Sep 2023
- 19:09:34 +0000
-Date:   Tue, 12 Sep 2023 15:09:29 -0400
-From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-To:     Andreas Schwab <schwab@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-Message-ID: <20230912190929.54kxm7wyws7pgcsv@revolver>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-        Andreas Schwab <schwab@linux-m68k.org>,
+        d=gmail.com; s=20221208; t=1694546031; x=1695150831; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TeoZs7xQmKdzpDag8SbCgUnRAmmiY/rfJsyiwqIz2wg=;
+        b=amX+k6hxuuWY/0W0kWLMTgiY1rofP/kdN25Gl8u7G+buAgZwSHJo/T+rzzYGsdrUKn
+         tZlrppuQzOjosdZ5zpyMyt02bhNSkIRnhvfukQ7hoBPbrMvGpcvhbLX18yJo/TSyukFj
+         so3EOwkrqwNvegdMy/2Gch4iP4iQ+zwdLkBG0jkKATV0HW71uzH43r9apH1nEXtNi7ig
+         VciGEGTo/XEM2pnxH75sqpVoloxKxjTyLwD11mDfFbINOVgKPkfarhgWv2hh9+oeF7eS
+         DZMPAw50jGySl9/2Ajl2wUuu4qNU814sJBC3LfPRC8BV9ybsAHluiLN6UHnCrg2qbQRd
+         osYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694546031; x=1695150831;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TeoZs7xQmKdzpDag8SbCgUnRAmmiY/rfJsyiwqIz2wg=;
+        b=N55bdneS94k7rNewsV2eyTrgJgOWVHiE+UfzSodO87EHUmDaVgGqcJgzYxtP6EuAV4
+         y1C8JtEW2JXEIkjJPjl6YX17D0A76sRFuSxEICeG/eg2CZEbfH4hGIzT+CuiZPV2NwEx
+         w19FX1Fu/et+iF01XIrwO58IukWTMfcgfqq4T2lu/fSEjDR/v5XFSogNWtlL+5ZDDINO
+         YVE3hF+y7pVz4LWNML36falksH5ztnU/NzwZHIcBpjrYeau5y+vebYO5mOO3k71cBgZ7
+         /IVIwI4IUjpBET0pXeGU8kPhVCZAn2n7FyVu9RFlEY0oPbLpXtMIUHR5Ys2CLsQtxz8B
+         Q+xQ==
+X-Gm-Message-State: AOJu0Yx+Jg3TXf/p32P2h8WgM6+DrjMx1HpkymWWibhmyXosjrr3riOx
+        RYvaELeOhb8Nd0neC0z3BFg=
+X-Google-Smtp-Source: AGHT+IEKiL11zfBDl8yaQlLJxvTC9Xw7ZSCVeIdBcoIFgGvnKVa07dBGn4wXuvlP08eImu0izECGPQ==
+X-Received: by 2002:a05:600c:20c4:b0:3fe:e85b:425d with SMTP id y4-20020a05600c20c400b003fee85b425dmr300453wmm.9.1694546030978;
+        Tue, 12 Sep 2023 12:13:50 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id y12-20020a1c4b0c000000b003fee9cdf55esm13409501wma.14.2023.09.12.12.13.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Sep 2023 12:13:50 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id B695BBE2DE0; Tue, 12 Sep 2023 21:13:49 +0200 (CEST)
+Date:   Tue, 12 Sep 2023 21:13:49 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     Timo Sigurdsson <public_timo.s@silentcreek.de>
+Cc:     pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
- <20230819004356.1454718-2-Liam.Howlett@oracle.com>
- <87bkeotin8.fsf@igel.home>
- <87edj3b6me.fsf@igel.home>
-Content-Type: multipart/mixed; boundary="5aqidbzt6oq7a3jx"
-Content-Disposition: inline
-In-Reply-To: <87edj3b6me.fsf@igel.home>
-User-Agent: NeoMutt/20220429
-X-ClientProxiedBy: YT4PR01CA0140.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d5::11) To SN6PR10MB3022.namprd10.prod.outlook.com
- (2603:10b6:805:d8::25)
+        regressions@lists.linux.dev, sashal@kernel.org,
+        1051592@bugs.debian.org,
+        Arturo Borrero Gonzalez <arturo@debian.org>
+Subject: Re: Regression: Commit "netfilter: nf_tables: disallow rule addition
+ to bound chain via NFTA_RULE_CHAIN_ID" breaks ruleset loading in
+ linux-stable
+Message-ID: <ZQC4bcVVK99Q8WrO@eldamar.lan>
+References: <20230911213750.5B4B663206F5@dd20004.kasserver.com>
+ <ZP+bUpxJiFcmTWhy@calendula>
+ <20230912113959.8F8B26321005@dd20004.kasserver.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|CH0PR10MB5017:EE_
-X-MS-Office365-Filtering-Correlation-Id: 681bd913-e2a0-4893-f66f-08dbb3c3cc60
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cbzOenbfYH6hVQ3UT4tpMdPTBeIuba2HvQvGq1LiOtTooj0i3dQjVvP4Hdntyy9YZQ9z3efppJcQPTQdQP3Xt7n/JFyQ2gjxiZAhtLm5ih45iQaNqP65r4+UDwmccGgivJdcEdWKJ7GF+iRvf03mZ6AaOiooV2fM1u/5RmTWjwu/2DJl/DDvufs5Ri0kAZrX7Yo3FePjgnk1QAvYgRsxY7i7QzuYezYoOBynLuwMBMAuRNIBbEv2qo/xJrdtfuxqjIhz9AgdQ0qX+Zoci4A1pdJNTytbeOzSWTFnWdzFFeTaHCRExb/enG+rWGl/Z7bWmyzJvtDVo4YLh9xvk08SZToaMXIkCTYmrm9aEKdft6UF4ut7J/pRMnNJZxN6lJelYu5sVlWsIznJrT2Cwcd5h/joFmU4RvuuRjAqVHF8f5aTB4qjcr8Pm3d5WCoh7MS9Xuf1x1z4zrwT+Xn7SaN7dUv/cYGCW/AbVLYoX8n6BBZ+fhLs9Lz00+V36e6hr2GAqrq8vj6+/onLTVAUJqCZkjNnTttTpznTm5d4AIqOktIUV76/oBwF7R/9E52mDmNiSpx6Hhzmlqwm3lRHftYqFAVwC/b05q/yJPDcyzqpTrFKXomaW80Bo7L7onUd+l4C
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(136003)(376002)(346002)(396003)(366004)(186009)(451199024)(1800799009)(66556008)(33716001)(8936002)(41300700001)(4326008)(8676002)(54906003)(478600001)(1076003)(66946007)(6666004)(26005)(316002)(6506007)(44144004)(6916009)(6512007)(9686003)(6486002)(2906002)(66476007)(86362001)(5660300002)(564344004)(38100700002)(235185007)(2700100001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qcv6js39xjeElLqeoMlh78DxN6JolTTxXpuINTxhXC+ee6vbMFJeqewg+/jW?=
- =?us-ascii?Q?Yf+s1ZOSHgQQESACqi/d+31ZPDVFGNuhL/ggK6aXitFcbJ7qvXozRRk/iIkR?=
- =?us-ascii?Q?sZgaF45c0TeI1ICtCZMabDjQ5pa32k0uoAhVNh0oVoabeSKV18PBynv1PQvn?=
- =?us-ascii?Q?b6wPtDjou02UT9mb4DPbN4DmSdiV5+4opbDvDc2B58GaZmecfu+oZ5INPP68?=
- =?us-ascii?Q?CBgzFB2HnOmXc1+PsL+rHfs4BDKz425YUUiJnXcfUcmpdNZCgb1/aIfHPH/Q?=
- =?us-ascii?Q?fEPn9AzGUAfEw84x/1/4Jl2U6P6iG/o9vHuDq69XHKKwTn+Wy1RdYfTxlJ+B?=
- =?us-ascii?Q?a/njPRRNQxV+xiKb4mCqqsSEG3qFuH8DxJf34FpXsuM73SeJdxZLdOwE/+FK?=
- =?us-ascii?Q?8WbHLxB1JoO5IcElWVzFe7Taw0XQf6yZb7HI0EAGT9XEJm40Mk33mWmZ637y?=
- =?us-ascii?Q?n/nkulQwTMbDuTHJNCxYhGWndd3PveXIUB72TKYRuyAGdJTqM/iHJGAnyEwN?=
- =?us-ascii?Q?/CDSBhWODV1JWCMuPkprTJNaAPi+mMWaHMfdNzr+U72ElV6SsY13O1j9VTye?=
- =?us-ascii?Q?jCPX+joR+JwF7t2gJ32hPeFR846yiQrwhO68WK6VpsbgRv2GALXDatMUBjGA?=
- =?us-ascii?Q?xHeB1N7faZUxwMH5u4X14w2tuZiM2U26xuvkKlgZumRyku+aNIi5T39aYPg/?=
- =?us-ascii?Q?ujwg1cBRMRYovKtLLYdcgWcQew3xhvVr8EzlSJ4ETKmghF3+CUGpf8UKjzw/?=
- =?us-ascii?Q?iYRBP//WNBPe1gmsqbOhUPPNeRMCyXaFGDpxbsNEk4yKtdYPKv2AAbnruX/r?=
- =?us-ascii?Q?TqW96uGWurHyuSPqM6MosSC0EpNNc4brIyYtFOxQoUHM0eX307FDo7sWsnoq?=
- =?us-ascii?Q?URMZLplaSIXswyaxMyzkUGLoxfcD7S0XsrxIXUJ+vhwM1mCDFk/gGCtgT/YU?=
- =?us-ascii?Q?lL7CysxahPEucOsrYJv6zYEDHlOlXo3S+viF1Fis5e60xmuSyToXaDL/LhYW?=
- =?us-ascii?Q?/w3uPbG2hE2b5ntTbanYtEwcCSTMkBYZJ0JKa/WBnIbZnVQMG+5d0QChh/zu?=
- =?us-ascii?Q?x8ErDpuKYFAfLfpRs1wvZorjMvAAtr6mcYgLs4eo1FW4b5hwRJ3G09jHlOG6?=
- =?us-ascii?Q?nOAMSVaHy3n+haXiFMGsv0H//RvirADxWjMhckponaZGoG89lY4TawLHk/8q?=
- =?us-ascii?Q?GjuRvDKBNROSaB5if5LHof8zjXKnlVkgF26AdcUrHlwVlKWIdK/ach7fSOcc?=
- =?us-ascii?Q?ECpniR7gRwsYtobJu5alhI+iJLuLSi6cLpWIB0kkqi0v8EcsRUoGPsuuc8gH?=
- =?us-ascii?Q?RFQBzM1wFkUp/lZw3LaLgb5Vhg1vKxNWeZllVUfHCpuSHinkVij0Oi8rkvXY?=
- =?us-ascii?Q?in4n2lxT5iqoO6ECbZe3qbg343+NOCHFMQcMzsujNvs401oheVvbm+5FEk0W?=
- =?us-ascii?Q?qd8su1LnB/aQE0O4oxyM5NsEeDWkxxuPoRnA/Q6oMjnikHO48OaFr13XhFGQ?=
- =?us-ascii?Q?QHz5V9KDJIq84X9VLK/xfMPWjPyckFZUTxloLpMF+p9vAGUajcE0BhpI0bq8?=
- =?us-ascii?Q?l4eByN10r9cjG/+/yzACWpqQ/8eW+N+RE0azlj9UY+tm99DQxHgjmJLjkU6f?=
- =?us-ascii?Q?Jw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?gaTReFN/E82Ur53B4dwFe88ITxZ1k/ugdHR8GXSQZA7QkQz9N+LM7pymqvki?=
- =?us-ascii?Q?ANpyJHemPQqPkE4xynWa26AT1XOUPec7EBllhKSH8wz1WJtMa3UfbvwCHtwL?=
- =?us-ascii?Q?kZW8wla/cRXDnb1WYJ2U86m/hmPjJExyj5MhiCBJQ5hf4RomFK00mbKPhMVG?=
- =?us-ascii?Q?dlRMfMAnvDhuHSWjBbzundSU6mtzKQvUTAHEZ9JX9WNLLHhNaZNkH1pfnvz5?=
- =?us-ascii?Q?QGQJYPUu4C5Bka/XN+oMinGN+tPX+Cegk0d6MOPj3NkcDmO7Wf8Fes4dtcjD?=
- =?us-ascii?Q?h3kFAkKzkBXWk/2UdRseImBw6yuhv0ZaoH9zN0jB7/cQxDk5oU8SMUwJuljB?=
- =?us-ascii?Q?KydhagksfGbjl/PlPTojiQW2yyczw6IUKZ65DlwMT+VsCUKc7eOa1rGHq9hE?=
- =?us-ascii?Q?apR99K4fy9FudfSF18D283JLII4CCMNpuZXVEtylI/aC8g15b2JFjdtqHdb3?=
- =?us-ascii?Q?h0dmzH3i2G3Lay8FzFKUU1DPzZHxG4mDUzR4Weyijx1LYxX3PiuGOVa4oIxq?=
- =?us-ascii?Q?jkr+h4ouMeNFr9grBnZmNBuvmdPw5N3yesx2alVmp3Uz2qxK58HTAwkuBnaJ?=
- =?us-ascii?Q?cMflq4peBS62yAC7IJ73EcqNtv+wRR5IIfYksZkLT+bL7SgDJf2v+5iw0Zui?=
- =?us-ascii?Q?SVy3OudXko8MAgiy1EyzjjmtkE2YcyvWrenO88qAtkyODfLo6nvKIN2RXzzt?=
- =?us-ascii?Q?RPYVR6cKmRFFEZOWwXwL4tRKjcqOVP0Zx9xXgHeW1kSUInBAwTCApswkMSO5?=
- =?us-ascii?Q?h0Ip6zm2/n/q4A4RpJsivARhF1AZoEIIlHuqBlOkGnZBA3I2kNXNOmSiWrHt?=
- =?us-ascii?Q?4C52RYes08REZuVo/e3mV5v90JJW8tcCbmsCLWn6JgDj6dgHo3kmJnv5nuf4?=
- =?us-ascii?Q?r4CQ5WXF65GJZWtY0eqdHK37bJ3DiUJjFAbPAm9n7Bt4ZS0XKIosTJ3LFXIH?=
- =?us-ascii?Q?dpYsPte0LajxV06NZXsl6HFiD2j6aZl1FPuHbn7QahPNFSuMjqMC1mlsySR6?=
- =?us-ascii?Q?TqTRFWzvwdB9uLOIFVv1U+4TfQ=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 681bd913-e2a0-4893-f66f-08dbb3c3cc60
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2023 19:09:33.9479
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v9zp4vF/JZBWfdhwM3Osc7fSaYK+h3S1otTmv4V/YWR/GPvp2uLnk0H0LEqKFrWMp16hhVA6xQRqH2XkN2em8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5017
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_18,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- spamscore=0 mlxscore=0 mlxlogscore=865 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309120161
-X-Proofpoint-GUID: KljUFc6WHBeEOWtaJL298SuwaSd8xot3
-X-Proofpoint-ORIG-GUID: KljUFc6WHBeEOWtaJL298SuwaSd8xot3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230912113959.8F8B26321005@dd20004.kasserver.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---5aqidbzt6oq7a3jx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Timo,
 
-* Andreas Schwab <schwab@linux-m68k.org> [230912 14:15]:
-> Any news?  This is still broken.
+On Tue, Sep 12, 2023 at 01:39:59PM +0200, Timo Sigurdsson wrote:
+> Hi Pablo,
+> 
+> Pablo Neira Ayuso schrieb am 12.09.2023 00:57 (GMT +02:00):
+> 
+> > Hi Timo,
+> > 
+> > On Mon, Sep 11, 2023 at 11:37:50PM +0200, Timo Sigurdsson wrote:
+> >> Hi,
+> >> 
+> >> recently, Debian updated their stable kernel from 6.1.38 to 6.1.52
+> >> which broke nftables ruleset loading on one of my machines with lots
+> >> of "Operation not supported" errors. I've reported this to the
+> >> Debian project (see link below) and Salvatore Bonaccorso and I
+> >> identified "netfilter: nf_tables: disallow rule addition to bound
+> >> chain via NFTA_RULE_CHAIN_ID" (0ebc1064e487) as the offending commit
+> >> that introduced the regression. Salvatore also found that this issue
+> >> affects the 5.10 stable tree as well (observed in 5.10.191), but he
+> >> cannot reproduce it on 6.4.13 and 6.5.2.
+> >> 
+> >> The issue only occurs with some rulesets. While I can't trigger it
+> >> with simple/minimal rulesets that I use on some machines, it does
+> >> occur with a more complex ruleset that has been in use for months
+> >> (if not years, for large parts of it). I'm attaching a somewhat
+> >> stripped down version of the ruleset from the machine I originally
+> >> observed this issue on. It's still not a small or simple ruleset,
+> >> but I'll try to reduce it further when I have more time.
+> >> 
+> >> The error messages shown when trying to load the ruleset don't seem
+> >> to be helpful. Just two simple examples: Just to give two simple
+> >> examples from the log when nftables fails to start:
+> >> /etc/nftables.conf:99:4-44: Error: Could not process rule: Operation not
+> >> supported
+> >>                         tcp option maxseg size 1-500 counter drop
+> >>                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> >> /etc/nftables.conf:308:4-27: Error: Could not process rule: Operation not
+> >> supported
+> >>                         tcp dport sip-tls accept
+> >>                         ^^^^^^^^^^^^^^^^^^^^^^^^
+> > 
+> > I can reproduce this issue with 5.10.191 and 6.1.52 and nftables v1.0.6,
+> > this is not reproducible with v1.0.7 and v1.0.8.
+> > 
+> >> Since the issue only affects some stable trees, Salvatore thought it
+> >> might be an incomplete backport that causes this.
+> >> 
+> >> If you need further information, please let me know.
+> > 
+> > Userspace nftables v1.0.6 generates incorrect bytecode that hits a new
+> > kernel check that rejects adding rules to bound chains. The incorrect
+> > bytecode adds the chain binding, attach it to the rule and it adds the
+> > rules to the chain binding. I have cherry-picked these three patches
+> > for nftables v1.0.6 userspace and your ruleset restores fine.
+> 
+> hmm, that doesn't explain why Salvatore didn't observe this with
+> more recent kernels.
+> 
+> Salvatore, did you use newer userspace components when you tested
+> your 6.4.13 and 6.5.2 builds?
 
-I have a proposed fix.  I seem to have caused a pre-existing problem to
-show up.  Please see if the attached works for you, and I'll send it
-to a lot of people.
+It does explain now because understanding the issue better. While one
+while experinting should only change each one constraint for the
+6.4.13 and 6.5.2 testing I indeed switched to a Debian unstable
+system, which has newer userpace nftables and so not triggering the
+issue. This was missleading for the report.
 
-Thanks,
-Liam
+> As for the regression and how it be dealt with: Personally, I don't
+> really care whether the regression is solved in the kernel or
+> userspace. If everybody agrees that this is the best or only viable
+> option and Debian decides to push a nftables update to fix this,
+> that works for me. But I do feel the burden to justify this should
+> be high. A kernel change that leaves users without a working packet
+> filter after upgrading their machines is serious, if you ask me. And
+> since it affects several stable/longterm trees, I would assume this
+> will hit other stable (non-rolling) distributions as well, since
+> they will also use older userspace components (unless this is
+> behavior specific to nftables 1.0.6 but not older versions). They
+> probably should get a heads up then.
 
---5aqidbzt6oq7a3jx
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-init-main-Clear-boot-task-idle-flag.patch"
-Content-Transfer-Encoding: quoted-printable
+So if it is generally believed on kernel side there should not happen
+any further changes to work with older userland, I guess in Debian we
+will need to patch nftables. I'm CC'ing Arturo Borrero Gonzalez
+<arturo@debian.org>, maintainer for the package. The update should go
+ideally in the next point releases from October (and maybe released
+earlier as well trough the stable-updates mechanism).
 
-From 9ef8f834bb0342dc26464b9dd0165929d3e6a7e5 Mon Sep 17 00:00:00 2001
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Date: Tue, 12 Sep 2023 13:45:29 -0400
-Subject: [PATCH] init/main: Clear boot task idle flag
+FWIW: In Debian bullseye we have 0.9.8 based nftables, in bookworm
+1.0.6, so both will need those fixes.
 
-Initial booting was setting the task flag to idle (PF_IDLE) by the call
-path sched_init() -> init_idle().  Having the task idle and calling
-call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
-enabled.  Subsequent calls to any cond_resched() will enable IRQs,
-potentially earlier than the enabling of IRQs.
+As 0ebc1064e487 is to address CVE-2023-4147 other distros picking the
+fix will likely encounter the problem at some point. It looks Red Hat
+has taken it (some RHSA's were released), I assume Ubuntu will shortly
+as well release USN's containing a fix.
 
-This causes a warning later in start_kernel() as interrupts are enabled
-before the are fully set up.
-
-Fix this issue by clearing the PF_IDLE flag on return from sched_init()
-and restore the flag in rest_init().
-
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
----
- init/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/init/main.c b/init/main.c
-index ad920fac325c..46b35be8f00a 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
- 	 */
- 	rcu_read_lock();
- 	tsk =3D find_task_by_pid_ns(pid, &init_pid_ns);
--	tsk->flags |=3D PF_NO_SETAFFINITY;
-+	tsk->flags |=3D PF_NO_SETAFFINITY | PF_IDLE;
- 	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
- 	rcu_read_unlock();
-=20
-@@ -938,6 +938,7 @@ void start_kernel(void)
- 	 * time - but meanwhile we still have a functioning scheduler.
- 	 */
- 	sched_init();
-+	current->flags &=3D ~PF_IDLE;
-=20
- 	if (WARN(!irqs_disabled(),
- 		 "Interrupts were enabled *very* early, fixing it\n"))
---=20
-2.39.2
-
-
---5aqidbzt6oq7a3jx--
+Regards,
+Salvatore
