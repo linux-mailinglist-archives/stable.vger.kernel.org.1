@@ -2,60 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF75679D2FE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 15:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB4479D2FF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 15:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235598AbjILN5q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 09:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37836 "EHLO
+        id S235548AbjILN5r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 09:57:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235548AbjILN5p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 09:57:45 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE57510CE
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:57:41 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-99c3d3c3db9so751691066b.3
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:57:41 -0700 (PDT)
+        with ESMTP id S235673AbjILN5q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 09:57:46 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A893C10CE
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:57:42 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-991c786369cso752911166b.1
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 06:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694527060; x=1695131860; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694527061; x=1695131861; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kW4orxAP7Rpu+67X2Ekr0XhNYH8NLh0oXTcAmvjjIiI=;
-        b=RyGkoyE7Ld49gTOjEjhDev9JEq8UntzVoKKNtB0K98vtQsS51Iv3tFrGfxA/Vdf/cV
-         +fwoyW/ga/68orzeDVeDhUyoByxghmrYIE0uqY9Z8+f4BDC85aa1BlZVnK8FqcORE0B5
-         G+OYnUfh5TAFwga+q7wVbP9blM+NDGWCMmYYkkn/pS8+DbyW/NB9uh+wh9Na+OmTFRH1
-         x/1xkWjDuwOtJ83bTORjRObj7o6CpLwuNzWI9xNBr0+XpypZ5zLnGgFYzwL6EzOPZKYi
-         +caI6tbjhDIZyhhSKwPTatn0KzZI6MEjBzXGkrp1Wr7fTwpIIbI1YR4wN3zb9dMOkOcD
-         zuOA==
+        bh=FGgm+Q1ISvcVbNXmrUKxzkTkchDbvViFbDmRswe/vbE=;
+        b=lNSCisZZVXy6UIg3JdKk1kqO4d+Pi0aa/C0nJPl5s3yHTkIc7F/CTNpXORhkmNrwOU
+         5SFcXaJnkqGytQ4Dk0byz8qFdnlsaIEXtZk+qk/tiuC5h4obdVR/LnM44sae4VGfTtyb
+         hFkwXIQbLi8PQnj9OcksEZQr//ZWQdbxbU9TbKiR+0RSyG8zKAuVbh1YhaKlhlFNPIzn
+         128wQpqc1N3MhCadl1MpKn94Jvq52M2p3CCg5rPlHxkmvVfAFoIT+r4/3JuFsykAdLOq
+         uUjrAgDeQF2AOfAEVj2/el2JwhpQt/6FSW9CVtNAR0GBMRgK+zPwRI34eofThwQuuvlS
+         I4+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694527060; x=1695131860;
+        d=1e100.net; s=20230601; t=1694527061; x=1695131861;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kW4orxAP7Rpu+67X2Ekr0XhNYH8NLh0oXTcAmvjjIiI=;
-        b=nAnldMg7K+PIoxw/DyfzjRmkPWP2/nj+aR0WWwQzOIfqpOn1DLJnN7j7VwaGdssv1r
-         I53nww7DOZaUX9svIZ7PDH4XRDlkZhyw+CRdj/xHymePylb1RDVmGyhRVt6fZR9u0+Mm
-         WkFk+VBZNa0NSV47vgXw+SXBKvA/MhvzP1BGgayjH/+u7qLzJ46C70EdJM3dV7024Sry
-         yxPVLEbJqNoYQP8uvkvcpFuSexzPfLef2X4Y7e5ubUucSWK68/T9Xk/+ZI7fGtav2AfZ
-         RFc5yHDKxplN7FdGdgTcpAWey8SuqFi0ih2BLMBMJuEFV1nUG8M7v0XWlupbtV0RR+aM
-         oYRQ==
-X-Gm-Message-State: AOJu0YzZlvH5XbBQ/vTQ9LhixP2fyPy2A/igG+PntaqBdPmQt9mmlocm
-        anCEfISYV218DzIpLV+p44g38L0rAVY=
-X-Google-Smtp-Source: AGHT+IERhpHPrcYkc0ovtWLmBEU1Xr2OIpjJoTlh3njeC2tSrvH9aiBQ6C6uJsyTf1FY/s4fQenNcg==
-X-Received: by 2002:a17:906:5395:b0:9aa:25f5:8d93 with SMTP id g21-20020a170906539500b009aa25f58d93mr5940087ejo.49.1694527060027;
+        bh=FGgm+Q1ISvcVbNXmrUKxzkTkchDbvViFbDmRswe/vbE=;
+        b=eLETdUhoa9wPLBsdzfYqtQKt8G8cgDbH0YAyfWB5JzJ3Vxn58KPUXtYPr1710mywXr
+         I+e1XTYTo4TIRzSW3Z9GF69IMDYw6vdJ05h3AXQg90YJbmy999+hBmSXBpYoYFYYdu6/
+         fYpawJXKSndQEUaDYA1s/+gIP7kbG8AXNocl+LADgXWLnMC4pSZlRZMP+BgTyYgp0X2m
+         bVXyP19dbzhSuRHgilN3/DQAkalClEFwmf3Ns1L0CoxO4PtOCnJHa8IYHNAFWLUvXWMT
+         5AV3XJirtHeC77kOkYzyeAFGx31Etf4AgsFwBqgTbjWB+qhOeZUCyub2ij5wVLgGhTtb
+         Sr7w==
+X-Gm-Message-State: AOJu0YxnMBo5PJcrTq3HTS9OmhwQdezrW+dKLDO4oIUYcfmTR4NXCdhu
+        r5xTYyyWNoajzoHxvqhnXU0cJHo4+Lw=
+X-Google-Smtp-Source: AGHT+IGMhVhSSgHdYS0OkzoiniuBUInS3u4pkP+BPH5rJmu9LiPFxHyXjxE12HwGhPodZNbJ0ZfRAg==
+X-Received: by 2002:a17:907:b16:b0:9a1:f21e:cdfe with SMTP id h22-20020a1709070b1600b009a1f21ecdfemr9256169ejl.58.1694527060964;
         Tue, 12 Sep 2023 06:57:40 -0700 (PDT)
 Received: from 127.0.0.1localhost ([85.255.237.46])
-        by smtp.gmail.com with ESMTPSA id x18-20020a170906805200b0099cadcf13cesm6863182ejw.66.2023.09.12.06.57.39
+        by smtp.gmail.com with ESMTPSA id x18-20020a170906805200b0099cadcf13cesm6863182ejw.66.2023.09.12.06.57.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 06:57:39 -0700 (PDT)
+        Tue, 12 Sep 2023 06:57:40 -0700 (PDT)
 From:   Pavel Begunkov <asml.silence@gmail.com>
 To:     stable@vger.kernel.org
-Cc:     Jens Axboe <axboe@kernel.dk>, asml.silence@gmail.com,
-        Dylan Yudaken <dylany@meta.com>
-Subject: [PATCH 2/6] io_uring: revert "io_uring fix multishot accept ordering"
-Date:   Tue, 12 Sep 2023 14:57:04 +0100
-Message-ID: <1efad3afea9ba65984ae63ec853f4a29f8e1c0fa.1694486400.git.asml.silence@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, asml.silence@gmail.com
+Subject: [PATCH 3/6] io_uring/net: don't overflow multishot accept
+Date:   Tue, 12 Sep 2023 14:57:05 +0100
+Message-ID: <6dd4ad61d825bde6200a27e4f09dee059cb29214.1694486400.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1694486400.git.asml.silence@gmail.com>
 References: <cover.1694486400.git.asml.silence@gmail.com>
@@ -65,45 +64,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dylan Yudaken <dylany@meta.com>
+[ upstream commit 1bfed23349716a7811645336a7ce42c4b8f250bc ]
 
-[ upstream commit 515e26961295bee9da5e26916c27739dca6c10e1 ]
+Don't allow overflowing multishot accept CQEs, we want to limit
+the grows of the overflow list.
 
-This is no longer needed after commit aa1df3a360a0 ("io_uring: fix CQE
-reordering"), since all reordering is now taken care of.
-
-This reverts commit cbd25748545c ("io_uring: fix multishot accept
-ordering").
-
-Signed-off-by: Dylan Yudaken <dylany@meta.com>
-Link: https://lore.kernel.org/r/20221107125236.260132-2-dylany@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Fixes: 4e86a2c980137 ("io_uring: implement multishot mode for accept")
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/7d0d749649244873772623dd7747966f516fe6e2.1691757663.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- io_uring/net.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ io_uring/net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/io_uring/net.c b/io_uring/net.c
-index 2b44126a876e..00b4433b6cd8 100644
+index 00b4433b6cd8..7245218fdbe2 100644
 --- a/io_uring/net.c
 +++ b/io_uring/net.c
-@@ -1337,12 +1337,12 @@ int io_accept(struct io_kiocb *req, unsigned int issue_flags)
- 		return IOU_OK;
- 	}
+@@ -1339,7 +1339,7 @@ int io_accept(struct io_kiocb *req, unsigned int issue_flags)
  
--	if (ret >= 0 &&
--	    io_post_aux_cqe(ctx, req->cqe.user_data, ret, IORING_CQE_F_MORE, false))
-+	if (ret < 0)
-+		return ret;
-+	if (io_post_aux_cqe(ctx, req->cqe.user_data, ret, IORING_CQE_F_MORE, true))
+ 	if (ret < 0)
+ 		return ret;
+-	if (io_post_aux_cqe(ctx, req->cqe.user_data, ret, IORING_CQE_F_MORE, true))
++	if (io_post_aux_cqe(ctx, req->cqe.user_data, ret, IORING_CQE_F_MORE, false))
  		goto retry;
  
--	io_req_set_res(req, ret, 0);
--	return (issue_flags & IO_URING_F_MULTISHOT) ? IOU_STOP_MULTISHOT : IOU_OK;
-+	return -ECANCELED;
- }
- 
- int io_socket_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	return -ECANCELED;
 -- 
 2.41.0
 
