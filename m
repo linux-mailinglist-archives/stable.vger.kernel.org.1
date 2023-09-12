@@ -2,89 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC47779D9C3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 21:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D76E579D9DA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 22:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232259AbjILTtR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 15:49:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43252 "EHLO
+        id S237766AbjILUBb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 16:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbjILTtR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 15:49:17 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CBA0115;
-        Tue, 12 Sep 2023 12:49:13 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-68fac346f6aso2900903b3a.3;
-        Tue, 12 Sep 2023 12:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694548153; x=1695152953; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zXtz6kUeyzBvqA0abDYiD1qX4EoG1vT0PHAg7mdRrOA=;
-        b=ZkIjeaK9JRohqDKx4Giz8HfnViZA77fnbPa/0vMstQRFCLiEIkXapYSq6OGBe2gxMZ
-         TNTyBZkKsVfcA/FL0ramwXH/G23OmyyPcCgHLGZvXPC9Qipxsq992iyDdWQoJErfVAiz
-         ZreU62S/RxBYPO4R1llfh8HJFHdEcXnP4Hb0mCzSbnhbKM8AvLkKWaXbBRObtPf4M50Q
-         KDs6+VP9/awigQ4wR5raKdfdQFuaEanmJIUTELUtQEgC0a6RCbTDB/eCW6yD2f+9Gjim
-         WeGIbwKft+8ha6joSEAYMQoxyNQtTqlOU8HVWZjHtPLC6rjlcO/J4c6roPKu/2fd3sTR
-         Yu7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694548153; x=1695152953;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zXtz6kUeyzBvqA0abDYiD1qX4EoG1vT0PHAg7mdRrOA=;
-        b=g+M2rAJcds2EnoA9v0REv0QyehBNA/h2bl+ho33+9J0HyJyfhRQgSoSJXo0LJ7NGO9
-         q0nzJSqqjlH9n/ANOlQHu6e0dPoVayO0Z1ZVmO4aiXjoxO3Kdp7bLYlZ2cG0sQZUkjHs
-         TFJZF5F86QTdjGT1UKymIB8I5mMyk/HKawYKZ5GQqH6WC1LNMz3Bva41YIrRrsUiqO0x
-         fW4haHtHw0vj2vO6nD4zqLSa81mtvmfOc/EN5zKIo68xnuzJ764wGjHBbJ8QPwk1eznf
-         fin3UwoHdjElf4G6o6ULzpfQsZ0O90ngsMYb8eFKPogd9TlBY8BcIGBowqVSEU+DDR4M
-         vS9A==
-X-Gm-Message-State: AOJu0YyoNwnk2EL4KC7fffx3NzznMGvz9ig75Pmgul0vwqQgQSWBee3S
-        SP17KCLZKmZjL0k002Wf9dM=
-X-Google-Smtp-Source: AGHT+IGQGAAlkxVcbXgpeRdjUlyV5lOAHgZaQ4fT2dRzL337/7ncDt/qjvZswUeNAvL7v0AnlIEDWA==
-X-Received: by 2002:a05:6a00:248a:b0:68c:dcc:3578 with SMTP id c10-20020a056a00248a00b0068c0dcc3578mr832412pfv.25.1694548152785;
-        Tue, 12 Sep 2023 12:49:12 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e9-20020aa78249000000b006829969e3b0sm7713640pfn.85.2023.09.12.12.49.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 12:49:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 12 Sep 2023 12:49:10 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 000/737] 6.4.16-rc1 review
-Message-ID: <9becc541-29f1-42ea-8b7c-af5f64d8bcf5@roeck-us.net>
-References: <20230911134650.286315610@linuxfoundation.org>
+        with ESMTP id S229500AbjILUBa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 16:01:30 -0400
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1182E4B;
+        Tue, 12 Sep 2023 13:01:25 -0700 (PDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4RlZGT6RWJz1sCHB;
+        Tue, 12 Sep 2023 22:01:21 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+        by mail.m-online.net (Postfix) with ESMTP id 4RlZGS6ZMTz1qqlW;
+        Tue, 12 Sep 2023 22:01:20 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
+ with ESMTP id 5XmMrTpGkowr; Tue, 12 Sep 2023 22:01:18 +0200 (CEST)
+X-Auth-Info: /CYuj1d8CSY9w7emKuNdoE8IT8M85oBonNI0rYcXkSZzjRPMJKll2vkUZB6/Y2QA
+Received: from igel.home (unknown [62.216.205.103])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Tue, 12 Sep 2023 22:01:18 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+        id DB4D52C12A1; Tue, 12 Sep 2023 22:01:02 +0200 (CEST)
+From:   Andreas Schwab <schwab@linux-m68k.org>
+To:     "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
+ readers are possible
+In-Reply-To: <20230912190929.54kxm7wyws7pgcsv@revolver> (Liam R. Howlett's
+        message of "Tue, 12 Sep 2023 15:09:29 -0400")
+References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
+        <20230819004356.1454718-2-Liam.Howlett@oracle.com>
+        <87bkeotin8.fsf@igel.home> <87edj3b6me.fsf@igel.home>
+        <20230912190929.54kxm7wyws7pgcsv@revolver>
+X-Yow:  I always have fun because I'm out of my mind!!!
+Date:   Tue, 12 Sep 2023 22:01:02 +0200
+Message-ID: <8734zjb1q9.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 03:37:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.16 release.
-> There are 737 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
-> Anything received after that time might be too late.
-> 
+On Sep 12 2023, Liam R. Howlett wrote:
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 530 pass: 530 fail: 0
+> * Andreas Schwab <schwab@linux-m68k.org> [230912 14:15]:
+>> Any news?  This is still broken.
+>
+> I have a proposed fix.  I seem to have caused a pre-existing problem to
+> show up.  Please see if the attached works for you, and I'll send it
+> to a lot of people.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Thanks, it fixes the issue for me (tested both 6.5 and 6.6-rc1).
 
-Guenter
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
