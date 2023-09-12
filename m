@@ -2,127 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CDE279D747
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 19:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 472E679D7A0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 19:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233220AbjILRKq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 13:10:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43892 "EHLO
+        id S235260AbjILRfQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 13:35:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232660AbjILRKq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 13:10:46 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700B1110
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 10:10:42 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qg6uN-0008KM-0i; Tue, 12 Sep 2023 19:10:39 +0200
-Message-ID: <82469f2f-59e4-49d5-823d-344589cbb119@leemhuis.info>
-Date:   Tue, 12 Sep 2023 19:10:38 +0200
+        with ESMTP id S232791AbjILRfP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 13:35:15 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862D710E9;
+        Tue, 12 Sep 2023 10:35:11 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-6516a8e2167so36249796d6.2;
+        Tue, 12 Sep 2023 10:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694540110; x=1695144910; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yKgCvol1JzLTTChhP3VLdzRO6GqcPOymhq/VwIVtzK4=;
+        b=QrPwq9dlK5INKStO6T+vTihnUo3d2Fu751rnMfjrAIug6K+JX1ONa3tYJn2I4tLp3o
+         myK6lZApEYtD0xW+GIFUISn2/Ay3RXCjW+vlxxYNfI3ei3NNznnPN0nt2m6gNtStnkim
+         PZRrszIhwrliSvHy19+e6ThIsnfpuGmc5BA/A+tmOZ+aAsoiP2SHgdO+rXdr+8Kte+Cd
+         5QaQxSzdoJw6o2UG4jtrL0WXM/BPsCwwZIkZjSE5H5cfZoyjldo7EDV9+PMJr4Z1uBbr
+         AXXI4Iw3eHOVrDgAwZL9RQsL+XHhJ6KQFOTCSI9iGYOawv0x/Ejl/RLjaBGxIwl8mWqi
+         JwBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694540110; x=1695144910;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yKgCvol1JzLTTChhP3VLdzRO6GqcPOymhq/VwIVtzK4=;
+        b=KW8a3syU2XnOc/d7p8EWe1MPdIghU0arWZnoZrLULTMD7qkdrBJTIAllvO4LBjWS7T
+         0eSngG5/9xWyWvbBQT3/4tA4jVPDcviZGjp2jHiTBpJUEYfFqqtgB639gDZJpFNFCaWg
+         wfpxuGQp9rsCuTA78YHU2fdJN01X2ev64oN/bGXtQvAuDZQjiSRSr0NN8UN2Y15K8S14
+         3+5swhIxX754NRSfokgiSkwMHc6FkdctgJqJGIwhEiI7NAQN66/az8iCl00N3SrhhDJx
+         Zh6vCB7afK2amkiWSXio4kKEV4DgLyLzJDhdAA7sRsgqBxDLTrGNF3r5dBiXquR7RvYb
+         Qk+w==
+X-Gm-Message-State: AOJu0YyQi7wjj/RAGDwssImpuN27e6oehVHBDPQToy8nqCzLO8Jq25i+
+        enZ/goBbaWURMiDN0Sa/yPg=
+X-Google-Smtp-Source: AGHT+IHV9F+Tf9UD8lr0rPhQb70NfocrHfzH/nQsnnu2dp0ULBv8jGmQbcgWbmKf3aK67d4nUtIuNw==
+X-Received: by 2002:a0c:f892:0:b0:64f:5ad7:f57b with SMTP id u18-20020a0cf892000000b0064f5ad7f57bmr118055qvn.6.1694540110592;
+        Tue, 12 Sep 2023 10:35:10 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id e11-20020a0cb44b000000b0065359e0a3efsm3849935qvf.36.2023.09.12.10.35.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Sep 2023 10:35:09 -0700 (PDT)
+Message-ID: <19f0d292-5377-3606-e83e-3a5c0fad5cc7@gmail.com>
+Date:   Tue, 12 Sep 2023 10:35:03 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
- drivers/misc/cardreader breaks NVME power state, preventing system boot
-Content-Language: en-US, de-DE
-To:     Paul Grandperrin <paul.grandperrin@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, Wei WANG <wei_wang@realsil.com.cn>,
-        Roger Tseng <rogerable@realtek.com>,
-        Ricky WU <ricky_wu@realtek.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <5DHV0S.D0F751ZF65JA1@gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <5DHV0S.D0F751ZF65JA1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694538642;44837c33;
-X-HE-SMSGID: 1qg6uN-0008KM-0i
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230911134633.619970489@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-(CCing Greg, as he merged the culprit, and Linus, in case he wants to
-revert this from mainline directly as this apparently affects and annoys
-quite a few people)
 
-On 12.09.23 14:29, Paul Grandperrin wrote:
-> 
-> My computer doesn't boot with kernels newer than 6.1.45.>
-> Here's what happens:
-> - system boots in initramfs
-> - detects my encrypted ZFS pool and asks for password
-> - mount system, pivots to it, starts real init
-> - before any daemon had time to start, the system hangs and the kernel
-> writes on the console
-> "nvme 0000:04:00.0: Unable to change power state from D3cold to D0,
-> device inaccessible"
-> - if I reboot directly without powering off (using magic sysrq or
-> panic=10), even the UEFI complains about not finding any storage to boot
-> from.
-> - after a real power off, I can boot using a kernel <= 6.1.45.
 
-Thx for the report.
+On 9/11/2023 6:40 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.53 release.
+> There are 600 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.53-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-> The bug has been discussed here:
-> https://bugzilla.kernel.org/show_bug.cgi?id=217705
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-And recently here:
-https://bugzilla.kernel.org/show_bug.cgi?id=217802
-https://lore.kernel.org/all/5f968b95-6b1c-4d6f-aac7-5d54f66834a8@sapience.com/
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-And in
-https://bugzilla.suse.com/show_bug.cgi?id=1214428
-and a few other places iirc, too.
-
-openSUSE Tumblewed reverted the culprit a while ago:
-
-https://github.com/openSUSE/kernel-source/commit/1b02b1528a26f4e9b577e215c114d8c5e773ee10
-
-I think we should do the same for mainline (and stable afterwards).
-
-Ciao, Thorsten
-
-> My laptop is a Dell XPS 15 9560 (Intel 7700hq).
-> 
-> I bisected between 6.1.45 and 6.1.46 and found this commit
-> 
-> commit 8ee39ec479147e29af704639f8e55fce246ed2d9
-> Author: Ricky WU <ricky_wu@realtek.com>
-> Date:   Tue Jul 25 09:10:54 2023 +0000
-> 
->    misc: rtsx: judge ASPM Mode to set PETXCFG Reg
-> 
->    commit 101bd907b4244a726980ee67f95ed9cafab6ff7a upstream.
-> 
->    ASPM Mode is ASPM_MODE_CFG need to judge the value of clkreq_0
->    to set HIGH or LOW, if the ASPM Mode is ASPM_MODE_REG
->    always set to HIGH during the initialization.
-> 
->    Cc: stable@vger.kernel.org
->    Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
->    Link:
-> https://lore.kernel.org/r/52906c6836374c8cb068225954c5543a@realtek.com
->    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> drivers/misc/cardreader/rts5227.c  |  2 +-
-> drivers/misc/cardreader/rts5228.c  | 18 ------------------
-> drivers/misc/cardreader/rts5249.c  |  3 +--
-> drivers/misc/cardreader/rts5260.c  | 18 ------------------
-> drivers/misc/cardreader/rts5261.c  | 18 ------------------
-> drivers/misc/cardreader/rtsx_pcr.c |  5 ++++-
-> 6 files changed, 6 insertions(+), 58 deletions(-)
-> 
-> If I build 6.1.51 with this commit reverted, my laptop works again,
-> confirming that this commit is to blame.
-> 
-> Also, blacklisting `rtsx_pci_sdmmc` and `rtsx_pci`, while preventing to
-> use the sd card reading, allows to boot the system.
-> 
-> I can't try 6.4 or 6.5 because my system is dependent on ZFS..
-> 
-> Have a nice day,
-> Paul Grandperrin
-> 
