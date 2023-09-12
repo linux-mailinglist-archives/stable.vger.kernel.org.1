@@ -2,162 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E88AE79CA15
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64EDA79CA8C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbjILIfU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Tue, 12 Sep 2023 04:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46830 "EHLO
+        id S232888AbjILItx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 04:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232894AbjILIfO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:35:14 -0400
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 375DD170E;
-        Tue, 12 Sep 2023 01:34:59 -0700 (PDT)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5925e580f12so52350687b3.3;
-        Tue, 12 Sep 2023 01:34:59 -0700 (PDT)
+        with ESMTP id S233044AbjILItv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:49:51 -0400
+Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3752710C4
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:49:47 -0700 (PDT)
+Received: by mail-vk1-xa31.google.com with SMTP id 71dfb90a1353d-495f20c5832so626290e0c.0
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:49:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694508586; x=1695113386; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mD+MQJMeaBa6LFiT1hlKHLQpprHXSGsKW9Ny8S5q/Ig=;
+        b=KoBlR2Ata623NR1NDHn+TJhvPNJxlZXlFrD9NiJbryhbU08dvy6jWvwoskd15Rtv5b
+         xZG4L0DNDdGrzN70WKi8gNLoeX/c1mqKAPu6k34vs/vClha3bIdbM7kwVcBoTjgX9AVa
+         h8AJCH2D8ftUV5AJkqcQPMXUkmcRI/qMNaGnAQbaSzF6s4WgeTkf27Mv37z4psosYpcQ
+         mBiu158MzRBtYpVhqPwh3ADLUko/kEHvEAKmARkkSisJ85OlLvr38sSUgNtbrg37nSgA
+         nUsuh2xceqpFj6T2ySUxOgY27QLZZMEY4QzCAmHkU4sWpVIFSlNMTr9asCfeyyTQ2iLV
+         8zXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694507698; x=1695112498;
+        d=1e100.net; s=20230601; t=1694508586; x=1695113386;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=va0K00GDqUxBnNiJnV24w11PAu0AJJ95xu4LbYWmM+8=;
-        b=ehGb+lwm1yGT5jJ+zEODgoVK78tvbDnkLQ8eL4Iq5QEeekzLalEmwBfDYRT9khwHS9
-         3tcQYMJtiQqG2aA4mjUrszEEOKZUg4jlXjWia1fqNrnU50WnY1rhmbEzaMXLWyHToobG
-         sZYra9WwS8fgmS9Se8S7Ve0oMmNGtGXPWZRth9Vd/ozPdplkihwUo9EekBsySCQGj7Pp
-         fTa/Yx5kiGR9Gi0+cHScF+0yT31Qz4ACOSf4I2URJwAwtjTaqng4eBhd7f1asIhBfHYA
-         gq047wpfBdZoxwFh9NCHAPymQ45fqbpuC9mQQCGRcqTsv3ofbgKyyZm31f8VsWbHfTzZ
-         fH6Q==
-X-Gm-Message-State: AOJu0Yxi86sQtXCP3MixBkcGScH869AjKxEnBRL7vLP2Rv0g6qjf90nj
-        bwKg09IZ1ejzDLBVwaOPPOPfe37L/uZfWw==
-X-Google-Smtp-Source: AGHT+IHhuZWnrgtlgRKuGuVTJ7r+DO90VMYiTmFmWxqSuE91YxpUSW8SNLvGr+XOsCYOsJsHctDe4Q==
-X-Received: by 2002:a0d:fc07:0:b0:592:9035:8356 with SMTP id m7-20020a0dfc07000000b0059290358356mr13618824ywf.26.1694507698269;
-        Tue, 12 Sep 2023 01:34:58 -0700 (PDT)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
-        by smtp.gmail.com with ESMTPSA id e184-20020a8169c1000000b0059a34cfa2a5sm2389774ywc.67.2023.09.12.01.34.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Sep 2023 01:34:56 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-58d31f142eeso52596597b3.0;
-        Tue, 12 Sep 2023 01:34:56 -0700 (PDT)
-X-Received: by 2002:a25:a3c5:0:b0:d77:91db:e5c6 with SMTP id
- e63-20020a25a3c5000000b00d7791dbe5c6mr12060515ybi.17.1694507696692; Tue, 12
- Sep 2023 01:34:56 -0700 (PDT)
+        bh=mD+MQJMeaBa6LFiT1hlKHLQpprHXSGsKW9Ny8S5q/Ig=;
+        b=hqijXI3nsL0jeWKOgZYR6qyMDvzJuxw6VQG/h/bFKZSW9saOsu/iUpq3+kSjSIs0yN
+         aLpthze93liUNHQay5u8ZQDY4vy2LYRImBDCANFYVj3dJ+DzzcFfpr3CD4c2k/STKNYS
+         vglXQ+2hlTjPTkSTDLtqnCNhNPXStRB5HNehIO5t/cIzWS9oBliech9LLTFvLku0wS8v
+         9XiYzONNe6pnzDzRM7y/cyjmgEFdxnxzqQuX0W5V4EDvEia1ErbK9597i2nXyhGXUdZr
+         ZxVXjEVPy+TJ+7jU8ocq4xZABbYW+CItDB3rUBsSTddS4GZgsXxZn2REyumsaZYhcNU1
+         Tq5w==
+X-Gm-Message-State: AOJu0YyXts9mk3V7QfM9Rrfu+LtKpw5aZv3j7eOjhCYB5ffMfz0KH+DI
+        BfoA5yLlKUSlMvBcy38MYEUJUcXw0tY53xQk1gY28g==
+X-Google-Smtp-Source: AGHT+IElu424t/b8d80CYSFdFlzkKycfRWGMJCtpMumDMtu8yR2dpAVu6q4YzRxTCXN4YZLnuuutHif/fDOEVKbTSJg=
+X-Received: by 2002:a1f:c9c3:0:b0:493:5363:d1dc with SMTP id
+ z186-20020a1fc9c3000000b004935363d1dcmr9446089vkf.12.1694508586058; Tue, 12
+ Sep 2023 01:49:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
- <20230819004356.1454718-2-Liam.Howlett@oracle.com> <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
- <20230906152325.dblzauybyoq5kd35@revolver> <ad298077-fca8-437e-b9e3-66e31424afb1@paulmck-laptop>
- <20230906172954.oq4vogeuco25zam7@revolver> <495849d6-1dc6-4f38-bce7-23c50df3a99f@paulmck-laptop>
- <20230911235452.xhtnt7ply7ayr53x@revolver> <33150b55-970c-4607-9015-af0e50e4112d@paulmck-laptop>
- <CAMuHMdWKwdxjRf031aD=Ko7vRdvFW-OR48QAc=ZFy=FP_LNAoA@mail.gmail.com> <f9b0a88c-8a64-439f-a488-85d500c9f2aa@paulmck-laptop>
-In-Reply-To: <f9b0a88c-8a64-439f-a488-85d500c9f2aa@paulmck-laptop>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 12 Sep 2023 10:34:44 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX89u6wL9W+8ZOn-OTT1FreYjEqYnvEip4Aq3k1gOP0EQ@mail.gmail.com>
-Message-ID: <CAMuHMdX89u6wL9W+8ZOn-OTT1FreYjEqYnvEip4Aq3k1gOP0EQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-To:     paulmck@kernel.org
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Shanker Donthineni <sdonthineni@nvidia.com>
+References: <20230911134633.619970489@linuxfoundation.org> <1ffe4f64-f238-859a-ab14-7559d03c4671@linaro.org>
+ <CAEUSe7_XA16yZAHA+YTbJygwaUYkU5gs=FnV9BAmQRYzwgVjvQ@mail.gmail.com>
+In-Reply-To: <CAEUSe7_XA16yZAHA+YTbJygwaUYkU5gs=FnV9BAmQRYzwgVjvQ@mail.gmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 12 Sep 2023 14:19:34 +0530
+Message-ID: <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>, jack@suse.cz
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Paul,
-
-On Tue, Sep 12, 2023 at 10:30 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> On Tue, Sep 12, 2023 at 10:23:37AM +0200, Geert Uytterhoeven wrote:
-> > On Tue, Sep 12, 2023 at 10:14 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > On Mon, Sep 11, 2023 at 07:54:52PM -0400, Liam R. Howlett wrote:
-> > > > * Paul E. McKenney <paulmck@kernel.org> [230906 14:03]:
-> > > > > On Wed, Sep 06, 2023 at 01:29:54PM -0400, Liam R. Howlett wrote:
-> > > > > > * Paul E. McKenney <paulmck@kernel.org> [230906 13:24]:
-> > > > > > > On Wed, Sep 06, 2023 at 11:23:25AM -0400, Liam R. Howlett wrote:
-> > > > > > > > (Adding Paul & Shanker to Cc list.. please see below for why)
-> > > > > > > >
-> > > > > > > > Apologies on the late response, I was away and have been struggling to
-> > > > > > > > get a working PPC32 test environment.
-> > > > > > > >
-> > > > > > > > * Geert Uytterhoeven <geert@linux-m68k.org> [230829 12:42]:
-> > > > > > > > >     Hi Liam,
-> > > > > > > > >
-> > > > > > > > > On Fri, 18 Aug 2023, Liam R. Howlett wrote:
-> > > > > > > > > > The current implementation of append may cause duplicate data and/or
-> > > > > > > > > > incorrect ranges to be returned to a reader during an update.  Although
-> > > > > > > > > > this has not been reported or seen, disable the append write operation
-> > > > > > > > > > while the tree is in rcu mode out of an abundance of caution.
-> > > > > > > >
-> > > > > > > > ...
-> > > > > > > > > >
-> > > >
-> > > > ...
-> > > >
-> > > > > > > > > RCU-related configs:
-> > > > > > > > >
-> > > > > > > > >     $ grep RCU .config
-> > > > > > > > >     # RCU Subsystem
-> > > > > > > > >     CONFIG_TINY_RCU=y
+On Tue, 12 Sept 2023 at 07:55, Daniel D=C3=ADaz <daniel.diaz@linaro.org> wr=
+ote:
+>
+> Hello!
+>
+> On Mon, 11 Sept 2023 at 14:58, Daniel D=C3=ADaz <daniel.diaz@linaro.org> =
+wrote:
+> > On 11/09/23 7:40 a. m., Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.1.53 release.
+> > > There are 600 patches in this series, all will be posted as a respons=
+e
+> > > to this one.  If anyone has any issues with these being applied, plea=
+se
+> > > let me know.
 > > >
-> > > I must have been asleep last time I looked at this.  I was looking at
-> > > Tree RCU.  Please accept my apologies for my lapse.  :-/
+> > > Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
+> > > Anything received after that time might be too late.
 > > >
-> > > However, Tiny RCU's call_rcu() also avoids enabling IRQs, so I would
-> > > have said the same thing, albeit after looking at a lot less RCU code.
+> > > The whole patch series can be found in one patch at:
+> > >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
+h-6.1.53-rc1.gz
+> > > or in the git tree and branch at:
+> > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-6.1.y
+> > > and the diffstat can be found below.
 > > >
-> > > TL;DR:
+> > > thanks,
 > > >
-> > > 1.      Try making the __setup_irq() function's call to mutex_lock()
-> > >         instead be as follows:
-> > >
-> > >         if (!mutex_trylock(&desc->request_mutex))
-> > >                 mutex_lock(&desc->request_mutex);
-> > >
-> > >         This might fail if __setup_irq() has other dependencies on a
-> > >         fully operational scheduler.
-> > >
-> > > 2.      Move that ppc32 call to __setup_irq() much later, most definitely
-> > >         after interrupts have been enabled and the scheduler is fully
-> > >         operational.  Invoking mutex_lock() before that time is not a
-> > >         good idea.  ;-)
+> > > greg k-h
 > >
-> > There is no call to __setup_irq() from arch/powerpc/?
->
-> Glad it is not just me, given that I didn't see a direct call, either.  So
-> later in this email, I asked Liam to put a WARN_ON_ONCE(irqs_disabled())
-> just before that mutex_lock() in __setup_irq().
->
-> Either way, invoking mutex_lock() early in boot before interrupts have
-> been enabled is a bad idea.  ;-)
-
-I'll add that WARN_ON_ONCE() too, and will report back later today...
-
-> > Note that there are (possibly different) issues seen on ppc32 and on arm32
-> > (Renesas RZ/A in particular, but not on other Renesas ARM systems).
+> > We're seeing this new warning:
+> > -----8<-----
+> >    /builds/linux/fs/udf/inode.c:892:6: warning: variable 'newblock' is =
+used uninitialized whenever 'if' condition is true [-Wsometimes-uninitializ=
+ed]
+> >      892 |         if (*err < 0)
+> >          |             ^~~~~~~~
+> >    /builds/linux/fs/udf/inode.c:914:9: note: uninitialized use occurs h=
+ere
+> >      914 |         return newblock;
+> >          |                ^~~~~~~~
+> >    /builds/linux/fs/udf/inode.c:892:2: note: remove the 'if' if its con=
+dition is always false
+> >      892 |         if (*err < 0)
+> >          |         ^~~~~~~~~~~~~
+> >      893 |                 goto out_free;
+> >          |                 ~~~~~~~~~~~~~
+> >    /builds/linux/fs/udf/inode.c:699:34: note: initialize the variable '=
+newblock' to silence this warning
+> >      699 |         udf_pblk_t newblocknum, newblock;
+> >          |                                         ^
+> >          |                                          =3D 0
+> >    1 warning generated.
+> > ----->8-----
 > >
-> > I saw an issue on arm32 with cfeb6ae8bcb96ccf, but not with cfeb6ae8bcb96ccf^.
-> > Other people saw an issue on ppc32 with both cfeb6ae8bcb96ccf and
-> > cfeb6ae8bcb96ccf^.
+> > That's with Clang 17 (and nightly) on:
+> > * arm
+> > * powerpc
+> > * s390
 >
-> I look forward to hearing what is the issue in both cases.
+> For what it's worth, bisection points to 903b487b5ba6 ("udf: Handle
+> error when adding extent to a file").
 
-For RZ/A, my problem report is
-https://lore.kernel.org/all/3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org/
+I see the following commit is fixing the reported problem.
 
-Thanks!
+commit 6d5ab7c2f7cf90877dab8f2bb06eb5ca8edc73ef
+Author: Tom Rix <trix@redhat.com>
+Date:   Fri Dec 30 12:53:41 2022 -0500
 
-Gr{oetje,eeting}s,
+    udf: initialize newblock to 0
 
-                        Geert
+    The clang build reports this error
+    fs/udf/inode.c:805:6: error: variable 'newblock' is used
+uninitialized whenever 'if' condition is true
+[-Werror,-Wsometimes-uninitialized]
+            if (*err < 0)
+                ^~~~~~~~
+    newblock is never set before error handling jump.
+    Initialize newblock to 0 and remove redundant settings.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+    Fixes: d8b39db5fab8 ("udf: Handle error when adding extent to a file")
+    Reported-by: Nathan Chancellor <nathan@kernel.org>
+    Signed-off-by: Tom Rix <trix@redhat.com>
+    Signed-off-by: Jan Kara <jack@suse.cz>
+    Message-Id: <20221230175341.1629734-1-trix@redhat.com>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
+--
+Linaro LKFT
+https://lkft.linaro.org
