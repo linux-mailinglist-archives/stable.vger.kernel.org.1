@@ -2,71 +2,180 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A99E279D066
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A959C79D06F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234814AbjILLxI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 07:53:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58118 "EHLO
+        id S234845AbjILL4q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 07:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234743AbjILLxH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:53:07 -0400
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [IPv6:2a0a:51c0:0:237:300::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4180510CE;
-        Tue, 12 Sep 2023 04:53:03 -0700 (PDT)
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-        (envelope-from <fw@strlen.de>)
-        id 1qg1wr-0004bL-Km; Tue, 12 Sep 2023 13:52:53 +0200
-Date:   Tue, 12 Sep 2023 13:52:53 +0200
-From:   Florian Westphal <fw@strlen.de>
-To:     Timo Sigurdsson <public_timo.s@silentcreek.de>
-Cc:     regressions@lists.linux.dev, fw@strlen.de, pablo@netfilter.org,
-        kadlec@netfilter.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, sashal@kernel.org, carnil@debian.org,
-        1051592@bugs.debian.org
-Subject: Re: Regression: Commit "netfilter: nf_tables: disallow rule addition
- to bound chain via NFTA_RULE_CHAIN_ID" breaks ruleset loading in
- linux-stable
-Message-ID: <20230912115253.GB13516@breakpoint.cc>
-References: <20230911213750.5B4B663206F5@dd20004.kasserver.com>
- <ZP+bUpxJiFcmTWhy@calendula>
- <b30a81fa-6b59-4bac-b109-99a4dca689de@leemhuis.info>
- <20230912102701.GA13516@breakpoint.cc>
- <20230912114729.EFBC26320998@dd20004.kasserver.com>
+        with ESMTP id S234860AbjILL4o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:56:44 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C21410D5
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 04:56:40 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id a1e0cc1a2514c-7a7e11a53c3so2675928241.1
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 04:56:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694519799; x=1695124599; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hM+GZDrqeSJbN3AByx2ZfKWwBecQmUtkdjQEAlP2iy0=;
+        b=MDHZsNvSeLS/OCwtRwoa/16HNGkASThsry1ARnMrmiVUlYMCS/sBIRgSW7Nty47b1l
+         scwSdIocwZVW31HblVIPK5/QqSTQ5Beo9mmiZBtB46MQXkRzvsTis/RanMpgClHOEonw
+         3DOXhSuSbrqoOJEvhWI1Y9JCCpOYB5bZ4LQj1w+YObArarFd7YELLNPFLzz9rGCEGhUi
+         XBs+rLbDj210qIUjC31Yd34qn1VANEowaSzNdS6W+d/1jKWaBPQqMKRwI7CAswXympvL
+         jFWGrmT/IfG2DW2YNiR1r7+zknMFZOFc1R68auILk0SW3eLLDNK53/lJoe8y+AGVcOo7
+         TYIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694519799; x=1695124599;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hM+GZDrqeSJbN3AByx2ZfKWwBecQmUtkdjQEAlP2iy0=;
+        b=VAy8VaCYb7zelfY36P0dpM9Ke6P+P3vReUFLKERnrFx5FbTaE4ZJcNEcBG3iiQ4tGq
+         AiGV1/Z81jcW1sueo9lN1pld8xe5NZkj11Slv8DqfXtC7sBd29c1wYhFxmdcy0dWAYi6
+         G2Y/tpxAbmV1rf6UzBxBP/t8RhqBpQ0GpvIvq/33v90EdcnnRk/m9zJ5jHA510LOJpoT
+         G9vkOLXPMUwX3Q0dUkOCGh/eurUgfRDDMSLS5M3+roA9HkwkBooYqkpy9rWynVN8v9id
+         X2qee1DuwJftC+aTugtHX1HALvMAlvS0kDlACDGk5X+gTiVuuJGgEosTF/6HDN230xKy
+         UEGA==
+X-Gm-Message-State: AOJu0Yz5z7iD70SkYLzvt1zPeHkOWMH4P2MLTgOjNp2qUInMSRXvsuvT
+        GBQzgWVqkXZxYx+2dqqRwNXphPXpkfqekoLbgw6Dpw==
+X-Google-Smtp-Source: AGHT+IGgWWHDG3U3xZjhxJlUgNBntR20hjZb21XDRq5dpijLuAigU2VJD5bsWfFlFRPo7V/LoyZy0iqN5FJ9h/3IbKI=
+X-Received: by 2002:a05:6102:3564:b0:44d:6320:f0c5 with SMTP id
+ bh4-20020a056102356400b0044d6320f0c5mr1070772vsb.12.1694519799125; Tue, 12
+ Sep 2023 04:56:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230912114729.EFBC26320998@dd20004.kasserver.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20230911134633.619970489@linuxfoundation.org> <1ffe4f64-f238-859a-ab14-7559d03c4671@linaro.org>
+ <CAEUSe7_XA16yZAHA+YTbJygwaUYkU5gs=FnV9BAmQRYzwgVjvQ@mail.gmail.com>
+ <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com> <2023091233-boots-line-a3d4@gregkh>
+In-Reply-To: <2023091233-boots-line-a3d4@gregkh>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 12 Sep 2023 17:26:27 +0530
+Message-ID: <CA+G9fYt2Jnxwvpzcd66HCqkPi6CNistHfmxQYAzX22OWHUoUSA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     jack@suse.cz, stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Timo Sigurdsson <public_timo.s@silentcreek.de> wrote:
-> > Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info>
-> > wrote:
-> >> On 12.09.23 00:57, Pablo Neira Ayuso wrote:
-> >> > Userspace nftables v1.0.6 generates incorrect bytecode that hits a new
-> >> > kernel check that rejects adding rules to bound chains. The incorrect
-> >> > bytecode adds the chain binding, attach it to the rule and it adds the
-> >> > rules to the chain binding. I have cherry-picked these three patches
-> >> > for nftables v1.0.6 userspace and your ruleset restores fine.
-> >> > [...]
-> >> 
-> >> Hmmmm. Well, this sounds like a kernel regression to me that normally
-> >> should be dealt with on the kernel level, as users after updating the
-> >> kernel should never have to update any userspace stuff to continue what
-> >> they have been doing before the kernel update.
-> > 
-> > This is a combo of a userspace bug and this new sanity check that
-> > rejects the incorrect ordering (adding rules to the already-bound
-> > anonymous chain).
-> > 
-> 
-> Out of curiosity, did the incorrect ordering or bytecode from the older userspace components actually lead to a wrong representation of the rules in the kernel or did the rules still work despite all that?
+On Tue, 12 Sept 2023 at 16:02, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Sep 12, 2023 at 02:19:34PM +0530, Naresh Kamboju wrote:
+> > On Tue, 12 Sept 2023 at 07:55, Daniel D=C3=ADaz <daniel.diaz@linaro.org=
+> wrote:
+> > >
+> > > Hello!
+> > >
+> > > On Mon, 11 Sept 2023 at 14:58, Daniel D=C3=ADaz <daniel.diaz@linaro.o=
+rg> wrote:
+> > > > On 11/09/23 7:40 a. m., Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.1.53 relea=
+se.
+> > > > > There are 600 patches in this series, all will be posted as a res=
+ponse
+> > > > > to this one.  If anyone has any issues with these being applied, =
+please
+> > > > > let me know.
+> > > > >
+> > > > > Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
+> > > > > Anything received after that time might be too late.
+> > > > >
+> > > > > The whole patch series can be found in one patch at:
+> > > > >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/=
+patch-6.1.53-rc1.gz
+> > > > > or in the git tree and branch at:
+> > > > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
+stable-rc.git linux-6.1.y
+> > > > > and the diffstat can be found below.
+> > > > >
+> > > > > thanks,
+> > > > >
+> > > > > greg k-h
+> > > >
+> > > > We're seeing this new warning:
+> > > > -----8<-----
+> > > >    /builds/linux/fs/udf/inode.c:892:6: warning: variable 'newblock'=
+ is used uninitialized whenever 'if' condition is true [-Wsometimes-uniniti=
+alized]
+> > > >      892 |         if (*err < 0)
+> > > >          |             ^~~~~~~~
+> > > >    /builds/linux/fs/udf/inode.c:914:9: note: uninitialized use occu=
+rs here
+> > > >      914 |         return newblock;
+> > > >          |                ^~~~~~~~
+> > > >    /builds/linux/fs/udf/inode.c:892:2: note: remove the 'if' if its=
+ condition is always false
+> > > >      892 |         if (*err < 0)
+> > > >          |         ^~~~~~~~~~~~~
+> > > >      893 |                 goto out_free;
+> > > >          |                 ~~~~~~~~~~~~~
+> > > >    /builds/linux/fs/udf/inode.c:699:34: note: initialize the variab=
+le 'newblock' to silence this warning
+> > > >      699 |         udf_pblk_t newblocknum, newblock;
+> > > >          |                                         ^
+> > > >          |                                          =3D 0
+> > > >    1 warning generated.
+> > > > ----->8-----
+> > > >
+> > > > That's with Clang 17 (and nightly) on:
+> > > > * arm
+> > > > * powerpc
+> > > > * s390
+> > >
+> > > For what it's worth, bisection points to 903b487b5ba6 ("udf: Handle
+> > > error when adding extent to a file").
+> >
+> > I see the following commit is fixing the reported problem.
+> >
+> > commit 6d5ab7c2f7cf90877dab8f2bb06eb5ca8edc73ef
+> > Author: Tom Rix <trix@redhat.com>
+> > Date:   Fri Dec 30 12:53:41 2022 -0500
+> >
+> >     udf: initialize newblock to 0
+> >
+> >     The clang build reports this error
+> >     fs/udf/inode.c:805:6: error: variable 'newblock' is used
+> > uninitialized whenever 'if' condition is true
+> > [-Werror,-Wsometimes-uninitialized]
+> >             if (*err < 0)
+> >                 ^~~~~~~~
+> >     newblock is never set before error handling jump.
+> >     Initialize newblock to 0 and remove redundant settings.
+> >
+> >     Fixes: d8b39db5fab8 ("udf: Handle error when adding extent to a fil=
+e")
+> >     Reported-by: Nathan Chancellor <nathan@kernel.org>
+> >     Signed-off-by: Tom Rix <trix@redhat.com>
+> >     Signed-off-by: Jan Kara <jack@suse.cz>
+> >     Message-Id: <20221230175341.1629734-1-trix@redhat.com>
+>
+> Wait, where is this commit?  I don't see it in Linus's tree either, nor
+> in linux-next.  Where did you find it?
 
-It works, but without the stricter behaviour userspace can trigger
-memory corruption in the kernel. nftables userland will not trigger this.
+Can you find this commit id ?
+
+Commit id: 23970a1c9475b305770fd37bebfec7a10f263787
+subject: ("udf: initialize newblock to 0")
+
+- Naresh
+
+
+>
+> confused,
+>
+> greg k-h
