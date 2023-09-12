@@ -2,126 +2,178 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E8479D11A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88A879D12A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235351AbjILMaO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 08:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43328 "EHLO
+        id S235141AbjILMe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 08:34:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235192AbjILM3o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:29:44 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92149199C
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:29:38 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-31f915c3c42so3013547f8f.0
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694521777; x=1695126577; darn=vger.kernel.org;
-        h=mime-version:message-id:cc:to:subject:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=R9IuEw4G9LWwDgWkkTsMBJnIy6GFGBJ28aUkaVyc45w=;
-        b=KZYR2sNuf7yww9hvTQkc0i4vyKttxgJwvW/yBlTHlNcSE17IhQuP+NI7dJCxcbeb/Q
-         +ZnabrRFo7JjvKMICjA2zjHhgFzEnLFq/KkeLnVrB9qOEVkPija6gFd+aPsox1m6K1kO
-         loHBXf01s1AncvP/GOqah1ieW7XmrNR7qZnj8n5lnew3W2NmMg5MIOY4X1fpqcXRoXFX
-         WXNOdnnLeTygmY/vJlbO9w3JNTqheY/fr/ySuJYpJ2GmAoti0hJPz3TCU2DRmLTpZlG/
-         u8fIJQSCQXB2qZVehQz4xfq+kZdo9hASzbcpAVq0ik2uq/J10e8eWSf8V6N3dxUW5Yze
-         zyhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694521777; x=1695126577;
-        h=mime-version:message-id:cc:to:subject:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R9IuEw4G9LWwDgWkkTsMBJnIy6GFGBJ28aUkaVyc45w=;
-        b=u3l3iT+uZOMxjXWSOPABLMDgk1t+7f5jFZkGOq5vIAfuktCa8dzFwcKsjwiE0ffI6t
-         T35CwlG2TEuIqDCC2H6O27N7t/OGY44hcBngmb1El0K6v4WlVuAVF0KGB1Cepkr/24tB
-         5NgTSg4RzVoyjEXMsl1brdPp7EhzyMLKL9aUfefrHzx8Fu3RkTM/X5d3yn/Yhy6DluU9
-         liwPkK2dcxXCeXIlsmjUqV6E7P9lZvWCgIgsraaMMqaKu/4+QpW77lxNOK64BD3TSy84
-         KnfqUCDl7RGMe9WpmH1XfSo8vEo5Rry5pLlxPPEWUBbNiYLMAsdXjM9LbU2U0+vKxi5p
-         BvIQ==
-X-Gm-Message-State: AOJu0YydP1CWglFGbNtQFLUi+L9M8+5WPKlny5XpAdGIMgyAPw3SS2xY
-        zOr/gTbJgHJFLEd5DrrCTPm22bYuKJjUzg==
-X-Google-Smtp-Source: AGHT+IEzzh91BX3W97ldgbmINVWNcJhn9/xYPrxDri1Hu+B+eA5d2IN7V8Y33pF7Dwo7/aiEVn5ytw==
-X-Received: by 2002:adf:cd0b:0:b0:317:3b13:94c3 with SMTP id w11-20020adfcd0b000000b003173b1394c3mr10518864wrm.41.1694521776281;
-        Tue, 12 Sep 2023 05:29:36 -0700 (PDT)
-Received: from [192.168.1.7] (82-64-78-170.subs.proxad.net. [82.64.78.170])
-        by smtp.gmail.com with ESMTPSA id e12-20020a5d594c000000b0031ad5470f89sm12645807wri.18.2023.09.12.05.29.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 05:29:35 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 14:29:29 +0200
-From:   Paul Grandperrin <paul.grandperrin@gmail.com>
-Subject: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
- drivers/misc/cardreader breaks NVME power state, preventing system boot
+        with ESMTP id S235149AbjILMe6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:34:58 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC9A9F
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:34:54 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 8711F32009D0;
+        Tue, 12 Sep 2023 08:34:53 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Tue, 12 Sep 2023 08:34:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to; s=fm3; t=1694522093; x=1694608493; bh=JZ93IAwtwK
+        p1AQn6xqxrLdOKNEWIml0xz57Snv9BtLY=; b=A6yCQOhBvfzo0XFP71Fr7sJ2pG
+        8QKLOCRLDL1dCfJ3AjK0hPpGoaHc5Krl6ikwRA98J5DXclo8VWTGC8QrvP+ktFsb
+        TWMv7jrUWTDzt+V29B0bnwAk/BSL6l0XIJdGX4E9yHWYY+h5ggC2/BZ08z31fixM
+        vuI+9fk2STlp1qilmUEJAzFCMceiFbMK1tkng/BJa/gDApyJGRroV2JcM0g9z98U
+        KPkGSs3Mjla6gbtdohDYotl2BSO1h8QbHsntLsy4Uj27pCf/DfCsaA33fDqXKXjK
+        cy6ziL6iRdON2JviqpKA5I4pGPDED6o66AJ1rJnzgB8fw3oMxSr4NH6uT3oQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1694522093; x=1694608493; bh=JZ93IAwtwKp1A
+        Qn6xqxrLdOKNEWIml0xz57Snv9BtLY=; b=QyeKgAj2YPGzY1aU4rpOEkH6ru5Kd
+        nC4ACkwFXue5XhAxFY31LlM7u/Qz4YVAoou23EcJYMvKdZI76k4/bwZ/qj2Sc81V
+        FPW9Em6tjHwpppw5YTOliQGHsDiVJapjUno4u3Mg6Azclf4u3l4tIG8wdPXOCf53
+        Pxpt//57fuawcvpArKU1kBGgdRbsrmMX3SV0d65rwL5hnwhGxZ8Vy9j1sKP6/USW
+        1XdJ3QL1Gz+DAeKSh/jnF8XPgS1VUH9EUgbs8yj+pUReox0N7F3jmKx6Y7VQYo4b
+        3Y5NDNDpFt9QtNIBJN3hV6GpBpoQ5e+GR8GFmISUqC28X8kb9d0yuqMsA==
+X-ME-Sender: <xms:7FoAZUwGMFBwC_4pV-rvlLzlgchqw9kRgIRKqXgBoUxAbAdJ1INCmQ>
+    <xme:7FoAZYQSIUgzblZPwxiEMfiBxRN8W2QP1PfwQHN-RE6S_Daj7eKU9icgtpbS71Gb0
+    prrKYkR_uuqYYxweA>
+X-ME-Received: <xmr:7FoAZWXSx-1c6-qda3Xckf0lwdbb84VJFAM19vxaDUJhj1g98LvWGlMU2djtzVF7jYhfTX6Oo55XtTYl8n8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgheegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheptehlhihsshgr
+    ucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepjeekue
+    fhhfejjeetheduveffgeehveduteeffedtiedtfeehkefgheeuhfetgffhnecuffhomhgr
+    ihhnpehfrhgvvgguvghskhhtohhprdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhephhhisegrlhihshhsrgdrihhs
+X-ME-Proxy: <xmx:7FoAZSi_GpX21Mv_X_k32adlryBq3vqrzg9YICMFLNq6AE2OrAuPUw>
+    <xmx:7FoAZWAYRamHtdQfu-t15ge0q6G7joovBa4W1WWVirOstDUAsiROJg>
+    <xmx:7FoAZTI9uF_Xzwb9z9ZFa7_hCVZX9Z-J2cF8kcahwcogkT5VbOr0AA>
+    <xmx:7VoAZX6HS2lu5ZN99ZxJh5XZiDTT8gUWHyCGmR2Dwa2H8z8wyUDtkA>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Sep 2023 08:34:52 -0400 (EDT)
+Received: by x220.qyliss.net (Postfix, from userid 1000)
+        id 2674685F3; Tue, 12 Sep 2023 12:34:50 +0000 (UTC)
+From:   Alyssa Ross <hi@alyssa.is>
 To:     stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, Wei WANG <wei_wang@realsil.com.cn>,
-        Roger Tseng <rogerable@realtek.com>,
-        Ricky WU <ricky_wu@realtek.com>
-Message-Id: <5DHV0S.D0F751ZF65JA1@gmail.com>
-X-Mailer: geary/43.0
+Cc:     Gurchetan Singh <gurchetansingh@chromium.org>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Alyssa Ross <hi@alyssa.is>
+Subject: [PATCH 6.5.y] drm/virtio: Conditionally allocate virtio_gpu_fence
+Date:   Tue, 12 Sep 2023 12:34:34 +0000
+Message-ID: <20230912123433.893380-2-hi@alyssa.is>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi kernel maintainers!
+From: Gurchetan Singh <gurchetansingh@chromium.org>
 
-My computer doesn't boot with kernels newer than 6.1.45.
+We don't want to create a fence for every command submission.  It's
+only necessary when userspace provides a waitable token for submission.
+This could be:
 
-Here's what happens:
-- system boots in initramfs
-- detects my encrypted ZFS pool and asks for password
-- mount system, pivots to it, starts real init
-- before any daemon had time to start, the system hangs and the kernel 
-writes on the console
-"nvme 0000:04:00.0: Unable to change power state from D3cold to D0, 
-device inaccessible"
-- if I reboot directly without powering off (using magic sysrq or 
-panic=10), even the UEFI complains about not finding any storage to 
-boot from.
-- after a real power off, I can boot using a kernel <= 6.1.45.
+1) bo_handles, to be used with VIRTGPU_WAIT
+2) out_fence_fd, to be used with dma_fence apis
+3) a ring_idx provided with VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK
+   + DRM event API
+4) syncobjs in the future
 
-The bug has been discussed here: 
-https://bugzilla.kernel.org/show_bug.cgi?id=217705
+The use case for just submitting a command to the host, and expecting
+no response.  For example, gfxstream has GFXSTREAM_CONTEXT_PING that
+just wakes up the host side worker threads.  There's also
+CROSS_DOMAIN_CMD_SEND which just sends data to the Wayland server.
 
-My laptop is a Dell XPS 15 9560 (Intel 7700hq).
+This prevents the need to signal the automatically created
+virtio_gpu_fence.
 
-I bisected between 6.1.45 and 6.1.46 and found this commit
+In addition, VIRTGPU_EXECBUF_RING_IDX is checked when creating a
+DRM event object.  VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK is
+already defined in terms of per-context rings.  It was theoretically
+possible to create a DRM event on the global timeline (ring_idx == 0),
+if the context enabled DRM event polling.  However, that wouldn't
+work and userspace (Sommelier).  Explicitly disallow it for
+clarity.
 
-commit 8ee39ec479147e29af704639f8e55fce246ed2d9
-Author: Ricky WU <ricky_wu@realtek.com>
-Date:   Tue Jul 25 09:10:54 2023 +0000
+Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # edited coding style
+Link: https://patchwork.freedesktop.org/patch/msgid/20230707213124.494-1-gurchetansingh@chromium.org
+(cherry picked from commit 70d1ace56db6c79d39dbe9c0d5244452b67e2fde)
+Signed-off-by: Alyssa Ross <hi@alyssa.is>
+---
+ drivers/gpu/drm/virtio/virtgpu_submit.c | 30 ++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-    misc: rtsx: judge ASPM Mode to set PETXCFG Reg
+diff --git a/drivers/gpu/drm/virtio/virtgpu_submit.c b/drivers/gpu/drm/virtio/virtgpu_submit.c
+index cf3c04b16a7a..1d010c66910d 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_submit.c
++++ b/drivers/gpu/drm/virtio/virtgpu_submit.c
+@@ -64,13 +64,9 @@ static int virtio_gpu_fence_event_create(struct drm_device *dev,
+ 					 struct virtio_gpu_fence *fence,
+ 					 u32 ring_idx)
+ {
+-	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
+ 	struct virtio_gpu_fence_event *e = NULL;
+ 	int ret;
+ 
+-	if (!(vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
+-		return 0;
+-
+ 	e = kzalloc(sizeof(*e), GFP_KERNEL);
+ 	if (!e)
+ 		return -ENOMEM;
+@@ -164,18 +160,30 @@ static int virtio_gpu_init_submit(struct virtio_gpu_submit *submit,
+ 	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
+ 	struct virtio_gpu_device *vgdev = dev->dev_private;
+ 	struct virtio_gpu_fence *out_fence;
++	bool drm_fence_event;
+ 	int err;
+ 
+ 	memset(submit, 0, sizeof(*submit));
+ 
+-	out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
+-	if (!out_fence)
+-		return -ENOMEM;
++	if ((exbuf->flags & VIRTGPU_EXECBUF_RING_IDX) &&
++	    (vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
++		drm_fence_event = true;
++	else
++		drm_fence_event = false;
+ 
+-	err = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
+-	if (err) {
+-		dma_fence_put(&out_fence->f);
+-		return err;
++	if ((exbuf->flags & VIRTGPU_EXECBUF_FENCE_FD_OUT) ||
++	    exbuf->num_bo_handles ||
++	    drm_fence_event)
++		out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
++	else
++		out_fence = NULL;
++
++	if (drm_fence_event) {
++		err = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
++		if (err) {
++			dma_fence_put(&out_fence->f);
++			return err;
++		}
+ 	}
+ 
+ 	submit->out_fence = out_fence;
 
-    commit 101bd907b4244a726980ee67f95ed9cafab6ff7a upstream.
-
-    ASPM Mode is ASPM_MODE_CFG need to judge the value of clkreq_0
-    to set HIGH or LOW, if the ASPM Mode is ASPM_MODE_REG
-    always set to HIGH during the initialization.
-
-    Cc: stable@vger.kernel.org
-    Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-    Link: 
-https://lore.kernel.org/r/52906c6836374c8cb068225954c5543a@realtek.com
-    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
- drivers/misc/cardreader/rts5227.c  |  2 +-
- drivers/misc/cardreader/rts5228.c  | 18 ------------------
- drivers/misc/cardreader/rts5249.c  |  3 +--
- drivers/misc/cardreader/rts5260.c  | 18 ------------------
- drivers/misc/cardreader/rts5261.c  | 18 ------------------
- drivers/misc/cardreader/rtsx_pcr.c |  5 ++++-
- 6 files changed, 6 insertions(+), 58 deletions(-)
-
-If I build 6.1.51 with this commit reverted, my laptop works again, 
-confirming that this commit is to blame.
-
-Also, blacklisting `rtsx_pci_sdmmc` and `rtsx_pci`, while preventing to 
-use the sd card reading, allows to boot the system.
-
-I can't try 6.4 or 6.5 because my system is dependent on ZFS..
-
-Have a nice day,
-Paul Grandperrin
-
+base-commit: 3766ec12cf894667026786fef355bb998c263f03
+-- 
+2.41.0
 
