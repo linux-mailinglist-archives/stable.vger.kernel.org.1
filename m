@@ -2,99 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F352079CEF7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5139179CF73
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233856AbjILK4L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 06:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53792 "EHLO
+        id S233900AbjILLI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 07:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233819AbjILK4J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:56:09 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F469F;
-        Tue, 12 Sep 2023 03:56:04 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qg13o-00085D-46; Tue, 12 Sep 2023 12:56:00 +0200
-Message-ID: <a85360bf-103e-4080-b9ff-270a98dd8bd2@leemhuis.info>
-Date:   Tue, 12 Sep 2023 12:55:59 +0200
+        with ESMTP id S234538AbjILLIX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:08:23 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5110211F;
+        Tue, 12 Sep 2023 04:07:58 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38C7hWVi022226;
+        Tue, 12 Sep 2023 11:07:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=lImsvjSI/7UiZSfw38oBDU1ONszfOqlUayBGLOImhpQ=;
+ b=F+uzK4i0fCp6YjGxybBgaLacf96jxXYobMaoMcFab2kTFWFt8N58IhOwe+4dL9i1BrbF
+ LrAGvFbdH0gwCTzWYCzAqEOv4YICHbGDVkrtLY3eGvPH846IGdij1gfdRFlnqldoPyRo
+ wEa9wvhkjPKj6S7jeTVsWw1szuIxguSRe+t+s8ywCZODCd0t27Rq10Mr8NDNsWpdadq3
+ rHbtQgvIvuaKsjLkWVL1NSjgpRkm1r1Rp+G9v03anUbQZ9qxMep+7EnYqZoXIiW15QIy
+ UGdzyUXr60aOPZsphGeialF6h0TlFqrQCJfgWpdt0J447MtYWGyf+xsAuSxnZeYt5iJL kA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t29b0hnp6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 11:07:53 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38CB7qu9019449
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 11:07:52 GMT
+Received: from [10.217.219.52] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 12 Sep
+ 2023 04:07:50 -0700
+Message-ID: <21d247d3-83be-ba53-c982-2ab0e2e4ffb3@quicinc.com>
+Date:   Tue, 12 Sep 2023 16:37:47 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "comedi: add HAS_IOPORT dependencies"
-Content-Language: en-US, de-DE
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Arnd Bergmann <arnd@kernel.org>, stable@vger.kernel.org,
-        Ian Abbott <abbotti@mev.co.uk>, linux-kernel@vger.kernel.org
-References: <20230905090922.3314-1-abbotti@mev.co.uk>
- <76acff7e-3959-4193-9531-22a5e5a68221@leemhuis.info>
- <2023091226-foe-reanalyze-b859@gregkh>
- <516005ff-636e-4aa9-9bcb-76902c09f855@leemhuis.info>
- <2023091244-sprung-polio-6a37@gregkh>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2023091244-sprung-polio-6a37@gregkh>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command
+ fails
+Content-Language: en-US
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "# 5 . 16" <stable@vger.kernel.org>
+References: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
+ <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
+From:   Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694516165;9ba3cfca;
-X-HE-SMSGID: 1qg13o-00085D-46
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: nbCVu8xN1FrfUm2npsFAiewR58xiYWSO
+X-Proofpoint-ORIG-GUID: nbCVu8xN1FrfUm2npsFAiewR58xiYWSO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-12_09,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ adultscore=0 impostorscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
+ lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309120092
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 12.09.23 12:48, Greg Kroah-Hartman wrote:
-> On Tue, Sep 12, 2023 at 12:39:28PM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 12.09.23 12:13, Greg Kroah-Hartman wrote:
->>> On Tue, Sep 12, 2023 at 11:44:39AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>> On 05.09.23 11:09, Ian Abbott wrote:
->>>>> This reverts commit b5c75b68b7ded84d4c82118974ce3975a4dcaa74.
->>>>>
->>>>> The commit makes it impossible to select configuration options that
->>>>> depend on COMEDI_8254, COMEDI_DAS08, COMEDI_NI_LABPC, or
->>>>> COMEDI_AMPLC_DIO200 options due to changing 'select' directives to
->>>>> 'depends on' directives and there being no other way to select those
->>>>> codependent configuration options.
->>>>>
->>>>> Fixes: b5c75b68b7de ("comedi: add HAS_IOPORT dependencies")
->>>>> Cc: Niklas Schnelle <schnelle@linux.ibm.com>
->>>>> Cc: Arnd Bergmann <arnd@kernel.org>
->>>>> Cc: <stable@vger.kernel.org> # v6.5+
->>>>> Acked-by: Arnd Bergmann <arnd@kernel.org>
->>>>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
->>>>
->>>> Hmmm, that fix for a regression from the 6.5 cycle was posted a week ago
->>>> but didn't get a single reply afaics and hasn't hit next.
->>>>
->>>> Greg, is this still in your to-review queue and just delayed due to the
->>>> merge window? Or are you waiting for something? A ACK fromn Niklas
->>>> maybe? Or a newer patch to address the kernel test robot report in case
->>>> its relevant?
->>>
->>> The merge window "freeze" ended on Monday, give me a chance to catch up
->>> with patches please, this is part of my very large todo mbox:
->>>
->>> 	$ mdfrm -c ~/mail/todo/
->>> 	1637 messages in /home/gregkh/mail/todo/
+
+
+On 11-09-23 06:19 pm, Heikki Krogerus wrote:
+> On Mon, Sep 11, 2023 at 02:34:15PM +0530, Prashanth K wrote:
+>> Currently if ucsi_send_command() fails, then we bail out without
+>> clearing EVENT_PENDING flag. So when the next connector change
+>> event comes, ucsi_connector_change() won't queue the con->work,
+>> because of which none of the new events will be processed.
 >>
->> Well, I know that you deal with a lot of patches and often wonder how
->> you manage to do all that great work, but nevertheless please allow me
->> to ask:
+>> Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
+>> fails.
 >>
->> I assume that that not all of those 1600+ patches are fixes for
->> regressions, so should a revert for a very recent regression be in a
->> different mbox with a slightly higher priority[1] to get handled before
->> the others?
+>> Cc: <stable@vger.kernel.org> # 5.16
+>> Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
+>> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+>> ---
+>>   drivers/usb/typec/ucsi/ucsi.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+>> index c6dfe3d..509c67c 100644
+>> --- a/drivers/usb/typec/ucsi/ucsi.c
+>> +++ b/drivers/usb/typec/ucsi/ucsi.c
+>> @@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+>>   	if (ret < 0) {
+>>   		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+>>   			__func__, ret);
+>> +		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+>>   		goto out_unlock;
+>>   	}
 > 
-> Nope, I lump them all together into one mbox and then sort them when
-> processing.  Works faster overall for me.  I'll get to it by the end of
-> this week, hopefully :)
+> I think it would be better to just move that label (out_unlock) above
+> the point where clear_bit() is already called instead of separately
+> calling it like that. That way the Connector Change Event will
+> also get acknowledged.
+Do we really need to ACK in this case since we didn't process the 
+current connector change event
+> 
+> If this really can happen, then I think it would be good to also
+> schedule a task for ucsi_check_connection():
+> 
+>          if (ret < 0) {
+>                  dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+>                          __func__, ret);
+> +               ucsi_partner_task(con, ucsi_check_connection, 1, HZ);
+>                  goto out_unlock;
+>          }
+> 
+> thanks,
+> 
+Retrying is a good idea, but ucsi_check_connection() doesn't have the 
+full functionality compared to handle_connector_change. I guess 
+ucsi_check_connection() will send a set_role, but won't handle the 
+connector_change scenarios happening due to PR/DR swap, which will lead 
+to deadlocks (due to wait_for_completion). This is just an example. So 
+its better to bail out and process the next events, because the failure 
+here is from the glink layer.
 
-Okay, many thx. And sorry for prodding and being slightly annoying, but
-it's part of this regression tracker thinghy (at least to my
-understanding of it).
-
-Have a nice day! Ciao, Thorsten
+Thanks
+Prashanth K
