@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CAA79D107
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECDBC79D10D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235292AbjILM2B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 08:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47814 "EHLO
+        id S235278AbjILM2u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 08:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235307AbjILM1W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:27:22 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EFE6170E
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:27:18 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3aa139a0ab2so3913808b6e.2
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:27:18 -0700 (PDT)
+        with ESMTP id S235334AbjILM22 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:28:28 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 855D51992
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:27:53 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6c0c675cb03so2939370a34.1
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:27:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1694521637; x=1695126437; darn=vger.kernel.org;
+        d=linuxtx.org; s=google; t=1694521673; x=1695126473; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6jl06CrRvDgpTNRZmZef/yKV5B26LF5da0hksP8EsMo=;
-        b=OJGkDKOk2/Sb+0GVKOtx2AZv7t7RV8boLRANTRrgIhMwHcH4vAp6KeX3qDvYZ8Eibw
-         11POK9yZXY4pXHxWA4TITCLb5b3Cw7+A00st3bUbtJSpDRSUJCX69afCLYW5/Qon8KyR
-         TxRTs3A+1sHoDO3rjjwogK9GFy0HfxrVAdRNs=
+        bh=LW6egm8EfUZADa4f85G/hF9JcQWbHdUo0uisWQrhFUM=;
+        b=YIzduL8BWfo7AgR38AQeWFOQe35chQxU71S/DSaUErn8Oii6Rb8FsrZL3hOXFn5G98
+         +3BLShwXHmWd1SraYl111kvAlTnNkt0Ug2QKHJfHQhZTe+q+bExFi+ny0TEfYYbpDZ9n
+         St3ugm+DCawskuiriapxPJsIy8su2rDule+0U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694521637; x=1695126437;
+        d=1e100.net; s=20230601; t=1694521673; x=1695126473;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6jl06CrRvDgpTNRZmZef/yKV5B26LF5da0hksP8EsMo=;
-        b=ipQzNRqIwe+jfl3VWspyoowCt/k4rqM486niYjzLlD5Je3IX7AGbnxSeOMESKx0QU3
-         oleT8KRJfMJzSPUWPDdaF8t3IJiv2In86Ag+XoCtnoGl4FPeYOMnNMM30llgZY9iRs9p
-         0tsXs2VJN1BXTD0DZi5mhugfzbCvszafEDABFzzy+d2eYfQgYHpQe9AbNt+uyo+GKMmV
-         v9zt3embm3woE5uGyaku3McKG62ro9HEmsOHRbHZCQlubY8FRBl0uO0Sv0iF0otw4wFC
-         NzZ92icSmaXZ4t3DugFMSps4V6CsbzQCY3887B8z6Q5A2E4uw8n4y75zcrBXzZhcqz4b
-         0s1A==
-X-Gm-Message-State: AOJu0YzlS7eonOJJRVsudMEzsCj6kBvVUJGHfRje3ocP/IXzryt9bqFg
-        qn0nNKTARXdjm1tdQCUEysTFdg==
-X-Google-Smtp-Source: AGHT+IGDfW7lad7Tfz375iAUI2X0OYcP2OBbBnUmiyA1DuosLZBDGCoT7qlc6cqTUVMHaEmrf1dhTA==
-X-Received: by 2002:a05:6808:1141:b0:3a4:3072:e597 with SMTP id u1-20020a056808114100b003a43072e597mr16456320oiu.54.1694521637430;
-        Tue, 12 Sep 2023 05:27:17 -0700 (PDT)
+        bh=LW6egm8EfUZADa4f85G/hF9JcQWbHdUo0uisWQrhFUM=;
+        b=jGc1/C/DklWhZm3SA30PRfpfHg/jHi5mZXakQgHI6SkEuAl5yjiJM0RiGZIkb6PNua
+         B1dy3g76OCuyRVy9CmXE8QIcs7J56PWNL0x30tGH7tFqieK4TRKdCbs3j/r54BiMxUoM
+         Rf8eJ/Lo02xPlCHJdoE8c8r/jJdURAJes+zilnh3GqqZRHKZK8iZXiYiesziVoPvMTz3
+         bHvWTr5tdjVTYl/por8lZILkrMwYckWz9bSvGvJnte/31KvrV8UIzcUB7SsDE9v3r1LU
+         mPzUdlKnjUECZSmlH92ArymGbDVNMnZSJ/n+J0v/JD2/ZFiulzWtZMC9cW4e5rbYuBD3
+         4t4w==
+X-Gm-Message-State: AOJu0Yzw1lp0d5Kv15W4ObplNdQ9Fx1tDlsdIHHEcbjQZqSIBkRLz+rC
+        Pn1vce+UCmBm5KGgQMno1hjHhw==
+X-Google-Smtp-Source: AGHT+IHYhWSb/77EH45rfz5++hlmG6uS2RjCpx31TFlOZp/3hO4QCJww5a7Duz2eTIkBC4CZcJrFgA==
+X-Received: by 2002:a9d:69d8:0:b0:6b9:a192:aaf3 with SMTP id v24-20020a9d69d8000000b006b9a192aaf3mr11865415oto.17.1694521672873;
+        Tue, 12 Sep 2023 05:27:52 -0700 (PDT)
 Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id h17-20020a056808015100b003a7847cf407sm4116228oie.44.2023.09.12.05.27.16
+        by smtp.gmail.com with ESMTPSA id a23-20020a056830101700b006c09291cde6sm3979906otp.0.2023.09.12.05.27.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 05:27:16 -0700 (PDT)
+        Tue, 12 Sep 2023 05:27:52 -0700 (PDT)
 Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Tue, 12 Sep 2023 07:27:15 -0500
+Date:   Tue, 12 Sep 2023 07:27:50 -0500
 From:   Justin Forbes <jforbes@fedoraproject.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -57,20 +57,20 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
-Subject: Re: [PATCH 6.5 000/739] 6.5.3-rc1 review
-Message-ID: <ZQBZI3Byx504+Ys3@fedora64.linuxtx.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+Subject: Re: [PATCH 6.4 000/737] 6.4.16-rc1 review
+Message-ID: <ZQBZRh24I128Tftp@fedora64.linuxtx.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 03:36:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.3 release.
-> There are 739 patches in this series, all will be posted as a response
+On Mon, Sep 11, 2023 at 03:37:39PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.16 release.
+> There are 737 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -78,9 +78,9 @@ On Mon, Sep 11, 2023 at 03:36:39PM +0200, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.3-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.16-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
 > and the diffstat can be found below.
 > 
 > thanks,
