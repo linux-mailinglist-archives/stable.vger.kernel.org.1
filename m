@@ -2,107 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D94CF79CE49
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC8379CE8B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234279AbjILK3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 06:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
+        id S234311AbjILKjI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 06:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234164AbjILK2E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:28:04 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8791198B
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:27:26 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2bb9a063f26so92506671fa.2
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:27:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1694514445; x=1695119245; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9nAtcapW5A2eYCMdDal3WMSIZ7DcndsXa8JTxiNms/o=;
-        b=W9X1AHRTeBsHuk1Cy7eoekhrVE1uIHogv+anFnFJ+mBgsdnU85E7DV0BKWGl/csI6P
-         Ox8laaxHw7LIkP3dvgnuqLvtTkquhlgIWaLXQ2vlNykqXWewGObdzNclLoYm9GI3+Wsi
-         /r3TTKMGg7uIBit+IrjdLZQ7a7xEznEnsu7QjhcExoeWKfHEr38MiGUCEMPb9kPtZjpy
-         wokWMb/DjPym2zeWFWolA6BNPAFjKElGYI9D9NowsA7xt1xPWPEakz6vBGwwdnNBxxQM
-         sVosGL4W7mNaHYGyrj/i9k30hOLX2+d0dTH5V18yagC9Ui8vVRFdiLX4LJXKcWN7A94C
-         GQlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694514445; x=1695119245;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9nAtcapW5A2eYCMdDal3WMSIZ7DcndsXa8JTxiNms/o=;
-        b=mGegv9JWkiWeLR/OswzXmhgEUohlpj/jJMNULYilX/hDr9BDAVLMJoKS2jduIeZsiD
-         PBQvZARhgkkKsfWTS9bWUK4AMGpaLRTMkaJ8nPgBf4sypj8MqCHi23UFdG3av2ysqA+D
-         +0mKT+9xyTRDJd8O3Q+iDnRQm4G7oR8oGikkQOrjick5exdHnoiudjg5UOo9IursBS1O
-         Ljg3tpFEMurDpaicICOAA/8BiS2HM9cm6lDAYuhz3bGPKYt/XrsCl6ztMgAcoqzziac1
-         /gjJETaN0fjjiXzHaEQiF/SeBbFtpaILfg/TJ9TCBs8IdgiaD8VPYn92Qb7LGGMbvkoN
-         p+Ng==
-X-Gm-Message-State: AOJu0YxkAc1YLJ/1HOclhVjmOUKAPGRBaE0NVE1UP7VQxm74UbWuuK4W
-        iIcQ6kFF4vsEh5UfCGJ5I3hLpoQOPlk5YsxWo/PRvg==
-X-Google-Smtp-Source: AGHT+IHWgn+HnM07fBBSXLrHBH2jRmH2HvCWi8b0JAGpmFtkUyfgz0ePS0MBfuPCdDGkJXyz8ESfbJQnECbrn33c6Wo=
-X-Received: by 2002:a2e:8957:0:b0:2bc:d7d6:258f with SMTP id
- b23-20020a2e8957000000b002bcd7d6258fmr11131770ljk.35.1694514444672; Tue, 12
- Sep 2023 03:27:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230911134633.619970489@linuxfoundation.org>
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date:   Tue, 12 Sep 2023 19:27:13 +0900
-Message-ID: <CAKL4bV6JJ5PXVuo=8+8LpdAn7saJN54AtZn_f-UxjH5q7kJ_fA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        with ESMTP id S234224AbjILKjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:39:06 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC921706;
+        Tue, 12 Sep 2023 03:32:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D3AC433CA;
+        Tue, 12 Sep 2023 10:32:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694514733;
+        bh=F+3htaiK86iu0hovTxNnP1IUyQ40FjMrFsKbNvgy7vE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CsLrUrInURChNjSy8XKJOvskoV0IXEGbUr+VcrEoje70b+iqLqquOwaWv4NyhGBJw
+         feCI6nlIHu1MdTWtgq6hfgJMjoxGUsZbG+gTXY0xZ+bY4Fee7RviKTB1v49VwaeugE
+         rTCqJfjeiFe3b07maPXGKH22lWzvBFxwgpOu70yw=
+Date:   Tue, 12 Sep 2023 12:32:10 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     jack@suse.cz, stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        conor@kernel.org,
+        Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
+Message-ID: <2023091233-boots-line-a3d4@gregkh>
+References: <20230911134633.619970489@linuxfoundation.org>
+ <1ffe4f64-f238-859a-ab14-7559d03c4671@linaro.org>
+ <CAEUSe7_XA16yZAHA+YTbJygwaUYkU5gs=FnV9BAmQRYzwgVjvQ@mail.gmail.com>
+ <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Tue, Sep 12, 2023 at 02:19:34PM +0530, Naresh Kamboju wrote:
+> On Tue, 12 Sept 2023 at 07:55, Daniel Díaz <daniel.diaz@linaro.org> wrote:
+> >
+> > Hello!
+> >
+> > On Mon, 11 Sept 2023 at 14:58, Daniel Díaz <daniel.diaz@linaro.org> wrote:
+> > > On 11/09/23 7:40 a. m., Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.1.53 release.
+> > > > There are 600 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.53-rc1.gz
+> > > > or in the git tree and branch at:
+> > > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > > We're seeing this new warning:
+> > > -----8<-----
+> > >    /builds/linux/fs/udf/inode.c:892:6: warning: variable 'newblock' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+> > >      892 |         if (*err < 0)
+> > >          |             ^~~~~~~~
+> > >    /builds/linux/fs/udf/inode.c:914:9: note: uninitialized use occurs here
+> > >      914 |         return newblock;
+> > >          |                ^~~~~~~~
+> > >    /builds/linux/fs/udf/inode.c:892:2: note: remove the 'if' if its condition is always false
+> > >      892 |         if (*err < 0)
+> > >          |         ^~~~~~~~~~~~~
+> > >      893 |                 goto out_free;
+> > >          |                 ~~~~~~~~~~~~~
+> > >    /builds/linux/fs/udf/inode.c:699:34: note: initialize the variable 'newblock' to silence this warning
+> > >      699 |         udf_pblk_t newblocknum, newblock;
+> > >          |                                         ^
+> > >          |                                          = 0
+> > >    1 warning generated.
+> > > ----->8-----
+> > >
+> > > That's with Clang 17 (and nightly) on:
+> > > * arm
+> > > * powerpc
+> > > * s390
+> >
+> > For what it's worth, bisection points to 903b487b5ba6 ("udf: Handle
+> > error when adding extent to a file").
+> 
+> I see the following commit is fixing the reported problem.
+> 
+> commit 6d5ab7c2f7cf90877dab8f2bb06eb5ca8edc73ef
+> Author: Tom Rix <trix@redhat.com>
+> Date:   Fri Dec 30 12:53:41 2022 -0500
+> 
+>     udf: initialize newblock to 0
+> 
+>     The clang build reports this error
+>     fs/udf/inode.c:805:6: error: variable 'newblock' is used
+> uninitialized whenever 'if' condition is true
+> [-Werror,-Wsometimes-uninitialized]
+>             if (*err < 0)
+>                 ^~~~~~~~
+>     newblock is never set before error handling jump.
+>     Initialize newblock to 0 and remove redundant settings.
+> 
+>     Fixes: d8b39db5fab8 ("udf: Handle error when adding extent to a file")
+>     Reported-by: Nathan Chancellor <nathan@kernel.org>
+>     Signed-off-by: Tom Rix <trix@redhat.com>
+>     Signed-off-by: Jan Kara <jack@suse.cz>
+>     Message-Id: <20221230175341.1629734-1-trix@redhat.com>
 
-On Tue, Sep 12, 2023 at 6:17=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.53 release.
-> There are 600 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.53-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+Wait, where is this commit?  I don't see it in Linus's tree either, nor
+in linux-next.  Where did you find it?
 
-6.1.53-rc1 tested.
+confused,
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+greg k-h
