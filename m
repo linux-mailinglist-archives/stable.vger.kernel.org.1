@@ -2,92 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECDBC79D10D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4E8479D11A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235278AbjILM2u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 08:28:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
+        id S235351AbjILMaO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 08:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235334AbjILM22 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:28:28 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 855D51992
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:27:53 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6c0c675cb03so2939370a34.1
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:27:53 -0700 (PDT)
+        with ESMTP id S235192AbjILM3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:29:44 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92149199C
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:29:38 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-31f915c3c42so3013547f8f.0
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:29:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1694521673; x=1695126473; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LW6egm8EfUZADa4f85G/hF9JcQWbHdUo0uisWQrhFUM=;
-        b=YIzduL8BWfo7AgR38AQeWFOQe35chQxU71S/DSaUErn8Oii6Rb8FsrZL3hOXFn5G98
-         +3BLShwXHmWd1SraYl111kvAlTnNkt0Ug2QKHJfHQhZTe+q+bExFi+ny0TEfYYbpDZ9n
-         St3ugm+DCawskuiriapxPJsIy8su2rDule+0U=
+        d=gmail.com; s=20221208; t=1694521777; x=1695126577; darn=vger.kernel.org;
+        h=mime-version:message-id:cc:to:subject:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=R9IuEw4G9LWwDgWkkTsMBJnIy6GFGBJ28aUkaVyc45w=;
+        b=KZYR2sNuf7yww9hvTQkc0i4vyKttxgJwvW/yBlTHlNcSE17IhQuP+NI7dJCxcbeb/Q
+         +ZnabrRFo7JjvKMICjA2zjHhgFzEnLFq/KkeLnVrB9qOEVkPija6gFd+aPsox1m6K1kO
+         loHBXf01s1AncvP/GOqah1ieW7XmrNR7qZnj8n5lnew3W2NmMg5MIOY4X1fpqcXRoXFX
+         WXNOdnnLeTygmY/vJlbO9w3JNTqheY/fr/ySuJYpJ2GmAoti0hJPz3TCU2DRmLTpZlG/
+         u8fIJQSCQXB2qZVehQz4xfq+kZdo9hASzbcpAVq0ik2uq/J10e8eWSf8V6N3dxUW5Yze
+         zyhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694521673; x=1695126473;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LW6egm8EfUZADa4f85G/hF9JcQWbHdUo0uisWQrhFUM=;
-        b=jGc1/C/DklWhZm3SA30PRfpfHg/jHi5mZXakQgHI6SkEuAl5yjiJM0RiGZIkb6PNua
-         B1dy3g76OCuyRVy9CmXE8QIcs7J56PWNL0x30tGH7tFqieK4TRKdCbs3j/r54BiMxUoM
-         Rf8eJ/Lo02xPlCHJdoE8c8r/jJdURAJes+zilnh3GqqZRHKZK8iZXiYiesziVoPvMTz3
-         bHvWTr5tdjVTYl/por8lZILkrMwYckWz9bSvGvJnte/31KvrV8UIzcUB7SsDE9v3r1LU
-         mPzUdlKnjUECZSmlH92ArymGbDVNMnZSJ/n+J0v/JD2/ZFiulzWtZMC9cW4e5rbYuBD3
-         4t4w==
-X-Gm-Message-State: AOJu0Yzw1lp0d5Kv15W4ObplNdQ9Fx1tDlsdIHHEcbjQZqSIBkRLz+rC
-        Pn1vce+UCmBm5KGgQMno1hjHhw==
-X-Google-Smtp-Source: AGHT+IHYhWSb/77EH45rfz5++hlmG6uS2RjCpx31TFlOZp/3hO4QCJww5a7Duz2eTIkBC4CZcJrFgA==
-X-Received: by 2002:a9d:69d8:0:b0:6b9:a192:aaf3 with SMTP id v24-20020a9d69d8000000b006b9a192aaf3mr11865415oto.17.1694521672873;
-        Tue, 12 Sep 2023 05:27:52 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id a23-20020a056830101700b006c09291cde6sm3979906otp.0.2023.09.12.05.27.52
+        d=1e100.net; s=20230601; t=1694521777; x=1695126577;
+        h=mime-version:message-id:cc:to:subject:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R9IuEw4G9LWwDgWkkTsMBJnIy6GFGBJ28aUkaVyc45w=;
+        b=u3l3iT+uZOMxjXWSOPABLMDgk1t+7f5jFZkGOq5vIAfuktCa8dzFwcKsjwiE0ffI6t
+         T35CwlG2TEuIqDCC2H6O27N7t/OGY44hcBngmb1El0K6v4WlVuAVF0KGB1Cepkr/24tB
+         5NgTSg4RzVoyjEXMsl1brdPp7EhzyMLKL9aUfefrHzx8Fu3RkTM/X5d3yn/Yhy6DluU9
+         liwPkK2dcxXCeXIlsmjUqV6E7P9lZvWCgIgsraaMMqaKu/4+QpW77lxNOK64BD3TSy84
+         KnfqUCDl7RGMe9WpmH1XfSo8vEo5Rry5pLlxPPEWUBbNiYLMAsdXjM9LbU2U0+vKxi5p
+         BvIQ==
+X-Gm-Message-State: AOJu0YydP1CWglFGbNtQFLUi+L9M8+5WPKlny5XpAdGIMgyAPw3SS2xY
+        zOr/gTbJgHJFLEd5DrrCTPm22bYuKJjUzg==
+X-Google-Smtp-Source: AGHT+IEzzh91BX3W97ldgbmINVWNcJhn9/xYPrxDri1Hu+B+eA5d2IN7V8Y33pF7Dwo7/aiEVn5ytw==
+X-Received: by 2002:adf:cd0b:0:b0:317:3b13:94c3 with SMTP id w11-20020adfcd0b000000b003173b1394c3mr10518864wrm.41.1694521776281;
+        Tue, 12 Sep 2023 05:29:36 -0700 (PDT)
+Received: from [192.168.1.7] (82-64-78-170.subs.proxad.net. [82.64.78.170])
+        by smtp.gmail.com with ESMTPSA id e12-20020a5d594c000000b0031ad5470f89sm12645807wri.18.2023.09.12.05.29.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 05:27:52 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Tue, 12 Sep 2023 07:27:50 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.4 000/737] 6.4.16-rc1 review
-Message-ID: <ZQBZRh24I128Tftp@fedora64.linuxtx.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+        Tue, 12 Sep 2023 05:29:35 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 14:29:29 +0200
+From:   Paul Grandperrin <paul.grandperrin@gmail.com>
+Subject: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
+ drivers/misc/cardreader breaks NVME power state, preventing system boot
+To:     stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, Wei WANG <wei_wang@realsil.com.cn>,
+        Roger Tseng <rogerable@realtek.com>,
+        Ricky WU <ricky_wu@realtek.com>
+Message-Id: <5DHV0S.D0F751ZF65JA1@gmail.com>
+X-Mailer: geary/43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 03:37:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.16 release.
-> There are 737 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.16-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi kernel maintainers!
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+My computer doesn't boot with kernels newer than 6.1.45.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Here's what happens:
+- system boots in initramfs
+- detects my encrypted ZFS pool and asks for password
+- mount system, pivots to it, starts real init
+- before any daemon had time to start, the system hangs and the kernel 
+writes on the console
+"nvme 0000:04:00.0: Unable to change power state from D3cold to D0, 
+device inaccessible"
+- if I reboot directly without powering off (using magic sysrq or 
+panic=10), even the UEFI complains about not finding any storage to 
+boot from.
+- after a real power off, I can boot using a kernel <= 6.1.45.
+
+The bug has been discussed here: 
+https://bugzilla.kernel.org/show_bug.cgi?id=217705
+
+My laptop is a Dell XPS 15 9560 (Intel 7700hq).
+
+I bisected between 6.1.45 and 6.1.46 and found this commit
+
+commit 8ee39ec479147e29af704639f8e55fce246ed2d9
+Author: Ricky WU <ricky_wu@realtek.com>
+Date:   Tue Jul 25 09:10:54 2023 +0000
+
+    misc: rtsx: judge ASPM Mode to set PETXCFG Reg
+
+    commit 101bd907b4244a726980ee67f95ed9cafab6ff7a upstream.
+
+    ASPM Mode is ASPM_MODE_CFG need to judge the value of clkreq_0
+    to set HIGH or LOW, if the ASPM Mode is ASPM_MODE_REG
+    always set to HIGH during the initialization.
+
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+    Link: 
+https://lore.kernel.org/r/52906c6836374c8cb068225954c5543a@realtek.com
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+ drivers/misc/cardreader/rts5227.c  |  2 +-
+ drivers/misc/cardreader/rts5228.c  | 18 ------------------
+ drivers/misc/cardreader/rts5249.c  |  3 +--
+ drivers/misc/cardreader/rts5260.c  | 18 ------------------
+ drivers/misc/cardreader/rts5261.c  | 18 ------------------
+ drivers/misc/cardreader/rtsx_pcr.c |  5 ++++-
+ 6 files changed, 6 insertions(+), 58 deletions(-)
+
+If I build 6.1.51 with this commit reverted, my laptop works again, 
+confirming that this commit is to blame.
+
+Also, blacklisting `rtsx_pci_sdmmc` and `rtsx_pci`, while preventing to 
+use the sd card reading, allows to boot the system.
+
+I can't try 6.4 or 6.5 because my system is dependent on ZFS..
+
+Have a nice day,
+Paul Grandperrin
+
+
