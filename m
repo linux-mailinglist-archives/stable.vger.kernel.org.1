@@ -2,64 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51CD79D87B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 20:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAC8479D891
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 20:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231517AbjILSPf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 14:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53856 "EHLO
+        id S237232AbjILSW0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 14:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229982AbjILSPe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 14:15:34 -0400
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD588115;
-        Tue, 12 Sep 2023 11:15:28 -0700 (PDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4RlWwC135qz1r1s2;
-        Tue, 12 Sep 2023 20:15:22 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
-        by mail.m-online.net (Postfix) with ESMTP id 4RlWwB50vFz1qqlS;
-        Tue, 12 Sep 2023 20:15:22 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id arhQ5hNygLDL; Tue, 12 Sep 2023 20:15:21 +0200 (CEST)
-X-Auth-Info: LN9l6lzYo3wMMEsRLdqLpHZLr7RgI7m9M4Jqn66rlBUyfCIb+Ct3msFl3Xeza20M
-Received: from igel.home (aftr-62-216-205-103.dynamic.mnet-online.de [62.216.205.103])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Tue, 12 Sep 2023 20:15:21 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-        id 78B1B2C128C; Tue, 12 Sep 2023 20:15:21 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        with ESMTP id S233007AbjILSWZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 14:22:25 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3051510D8;
+        Tue, 12 Sep 2023 11:22:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B27C433C7;
+        Tue, 12 Sep 2023 18:22:21 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qg824-000JRV-16;
+        Tue, 12 Sep 2023 14:22:40 -0400
+Message-ID: <20230912182240.156094298@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Tue, 12 Sep 2023 14:22:14 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-In-Reply-To: <87bkeotin8.fsf@igel.home> (Andreas Schwab's message of "Wed, 30
-        Aug 2023 21:49:47 +0200")
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
-        <20230819004356.1454718-2-Liam.Howlett@oracle.com>
-        <87bkeotin8.fsf@igel.home>
-X-Yow:  Hey!!  Let's watch the' ELEVATOR go UP and DOWN at th' HILTON HOTEL!!
-Date:   Tue, 12 Sep 2023 20:15:21 +0200
-Message-ID: <87edj3b6me.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        stable@vger.kernel.org, Tero Kristo <tero.kristo@linux.intel.com>
+Subject: [for-linus][PATCH 1/3] tracing/synthetic: Print out u64 values properly
+References: <20230912182213.795801173@goodmis.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Any news?  This is still broken.
+From: Tero Kristo <tero.kristo@linux.intel.com>
 
+The synth traces incorrectly print pointer to the synthetic event values
+instead of the actual value when using u64 type. Fix by addressing the
+contents of the union properly.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230911141704.3585965-1-tero.kristo@linux.intel.com
+
+Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tero Kristo <tero.kristo@linux.intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_events_synth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 9897d0bfcab7..14cb275a0bab 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -337,7 +337,7 @@ static void print_synth_event_num_val(struct trace_seq *s,
+ 		break;
+ 
+ 	default:
+-		trace_seq_printf(s, print_fmt, name, val, space);
++		trace_seq_printf(s, print_fmt, name, val->as_u64, space);
+ 		break;
+ 	}
+ }
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.40.1
