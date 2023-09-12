@@ -2,236 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3705B79CAD1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 11:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B85079CADD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 11:01:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbjILJAc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 05:00:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41990 "EHLO
+        id S233257AbjILJB7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 05:01:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233189AbjILJA0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 05:00:26 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4080410C7
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 02:00:21 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-313e742a787so3343062f8f.1
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 02:00:21 -0700 (PDT)
+        with ESMTP id S233507AbjILJBa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 05:01:30 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B471995;
+        Tue, 12 Sep 2023 02:00:56 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-402d499580dso56827885e9.1;
+        Tue, 12 Sep 2023 02:00:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694509220; x=1695114020; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DPuhXIrsoDRwKm2c4doZfBy6UJlqWZcuCP4pbW2cMJU=;
-        b=0eBJ92P6BYnTkFW0+cPbzrWvT42U+FZO2ZI5HfpmEOnYc6XlGdpqGiChXcjooLDxyQ
-         3OwHffrWQUUyvACncs+0v0HOoxrUUFC27rFzupl8j62NlinAHFO4C0yN2Us0U6IpsUBd
-         7TBnjsyHF2xdn/7mv0uLqOAuEEqRr1WdHGG1Mqao9y9JFRoKcozoIHAjBVObZc6FRUZs
-         lF9JUj+zrq+y7StxK+nBlzxvz6bp4qDrFsOLbXYGuAhs3mPneCzRCi028ZUZ7TMHGbk7
-         bCjhdef7Z8roSo5pjKlsBA522t3CM2konVhuFqhXAccjYehxWgSuPllKbaqp2s4AdiaL
-         svJA==
+        d=gmail.com; s=20221208; t=1694509254; x=1695114054; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8rV3D73n/4g0Ho3wzqMSJx0WXLNoTiOvH9lCB8cr9hc=;
+        b=bqwky3fMWfjRx+MeLNXTqZpRpKSu+ML43gx8jsTRPAEEu2gahvJR11zSwP/8T5eRTf
+         FiWHN5XVw20je4p+EW9uXxeGHYig2fyKNfmKnu5uyOw89cwd7K2vzX/pf2Ta/cIgTfIA
+         H7ljqUYQacwUWJmH1ab31PG24Jff+EC2UasiICVnfKrQJFTVxYnlhhHI/LJheRXE16r/
+         hI3DXE0w4xYa2tn12IKDCBq42lJlxNir83TYllz5R2aWkuSbd9avdmmkQPsn6LdqCpCz
+         sWVk3M50lkM9Kn7ZukBIjcuJI98n8PGSgYqAUjEugsCk+YulAvAwlBwQ1KTOgIN7i715
+         +yvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694509220; x=1695114020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DPuhXIrsoDRwKm2c4doZfBy6UJlqWZcuCP4pbW2cMJU=;
-        b=PgDvnXAznVqPN3CL8/uj1HPZ0gKt6QHGz9qbht8Brg3pJI6kFxgyqG2pUCHEjw3VnU
-         1g/qDkMAumY/ysNZwi/qQ3GG9iDT5cAuGKP5ZQlSRnxDuOGbD1ST9+8A0OJSVgLHOZRG
-         tuCRVP2beqgPm9F78Kil0T4EkVQOIlClKOWIuZHOQGlEORF9FDOK9NuvvCnjHRBV1CKx
-         Yd9OtTjDbifjQ5AsPE39JO9q24IClLt96p53qeAc2sQlLMslo5/foqHiPOSREufsN8yq
-         m7VOXt8REBLghLUEQxRc2G2C7t0arOCCGbXHogAjXWdb1lgFGHtUfjCpde2AAPdEx1i0
-         d07A==
-X-Gm-Message-State: AOJu0YzO3FKOFTPBpwt+ntSrJWbU0l+FY+9vb6eMdhr9Z0qNU9zwG9xA
-        yk/5T/b1oYKRL+HkzogkG1CVYBSblR9kNvB6Zdb18w==
-X-Google-Smtp-Source: AGHT+IEruaY/XJBjah+iWq3HcBLI4GKyhigsTj6VWb1ntfR010vgfqEBZKHcesQHRAHWD6nSXOXZYQmhyGeyUOCjYig=
-X-Received: by 2002:a05:6000:1245:b0:319:6b14:555c with SMTP id
- j5-20020a056000124500b003196b14555cmr1373860wrx.3.1694509220233; Tue, 12 Sep
- 2023 02:00:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694509254; x=1695114054;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8rV3D73n/4g0Ho3wzqMSJx0WXLNoTiOvH9lCB8cr9hc=;
+        b=rlxZ/A3hiuCOurcV1gbIjp03gGwKSTuXC5veou1pNG9Na4zvycYejhZlqoLWmP7vn5
+         +C9wihD/t08L4nuiJxD9HneKoV5qIyVcdToj/ZSDniNEleFkWaLvCyqKvCLOJZVELMZS
+         3LCoua0ErfwgAX+jLwAK1SElTIr0k0Svedvjo4oQaqapUqkWVGJSBqc6zXe3wU53s/RZ
+         LtXZAZTIQboV1gVbSOll5aSaU2giKCIQfBpkF16WHk85rxZuYKFLoiC01X5O3TON1yfo
+         rGCh6BhY3lgn6DT0fKQ4SltqR6KqXzfupoiQftkfs3RtHyAM9OGJf70Z23jQ96dLIrSe
+         ekWQ==
+X-Gm-Message-State: AOJu0Yy6s+aFKPbbW6iE6zhHno2B86UXtLS51SempouaPHxVdhqglJ64
+        aRT/I5aoK/ZfL7h19nyMHEg=
+X-Google-Smtp-Source: AGHT+IEvLajAPVV972MBmGyk86DNVPmr1wsQgB8aX54G9X0nBNspdlg6SDntMJpDeko1hwS0KZg0fA==
+X-Received: by 2002:a5d:6812:0:b0:31a:d90d:8d9f with SMTP id w18-20020a5d6812000000b0031ad90d8d9fmr10559533wru.25.1694509254299;
+        Tue, 12 Sep 2023 02:00:54 -0700 (PDT)
+Received: from debian ([63.135.72.41])
+        by smtp.gmail.com with ESMTPSA id g10-20020a5d540a000000b003176c6e87b1sm12186392wrv.81.2023.09.12.02.00.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Sep 2023 02:00:54 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 10:00:52 +0100
+From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
+Message-ID: <ZQAoxIS7sohiB1Vk@debian>
+References: <20230911134633.619970489@linuxfoundation.org>
 MIME-Version: 1.0
-References: <20230906115928.3749928-1-alpic@google.com> <202309090600.NSyo7d2q-lkp@intel.com>
- <CAEjxPJ4GOq3E4zqXbEMKUxqewopyeU5nmUg89rL+P5YsuEBi7A@mail.gmail.com> <CAEjxPJ4uoqkwmbeOOmUHJwoKiK3cnfJP5P2w+hOXr4BZNtQ+JQ@mail.gmail.com>
-In-Reply-To: <CAEjxPJ4uoqkwmbeOOmUHJwoKiK3cnfJP5P2w+hOXr4BZNtQ+JQ@mail.gmail.com>
-From:   Alfred Piccioni <alpic@google.com>
-Date:   Tue, 12 Sep 2023 11:00:07 +0200
-Message-ID: <CALcwBGBPaYh98d+3_3k8o+8WCbYU8cNPoOHaqhUduKZYz7Ntow@mail.gmail.com>
-Subject: Re: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     kernel test robot <lkp@intel.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
-        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        LSM List <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 3:49=E2=80=AFPM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
->
-> On Mon, Sep 11, 2023 at 9:19=E2=80=AFAM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> >
-> > On Fri, Sep 8, 2023 at 6:54=E2=80=AFPM kernel test robot <lkp@intel.com=
-> wrote:
-> > >
-> > > Hi Alfred,
-> > >
-> > > kernel test robot noticed the following build errors:
-> > >
-> > > [auto build test ERROR on 50a510a78287c15cee644f345ef8bac8977986a7]
-> > >
-> > > url:    https://github.com/intel-lab-lkp/linux/commits/Alfred-Piccion=
-i/SELinux-Check-correct-permissions-for-FS_IOC32_/20230906-200131
-> > > base:   50a510a78287c15cee644f345ef8bac8977986a7
-> > > patch link:    https://lore.kernel.org/r/20230906115928.3749928-1-alp=
-ic%40google.com
-> > > patch subject: [PATCH V2] SELinux: Check correct permissions for FS_I=
-OC32_*
-> > > config: i386-debian-10.3 (https://download.01.org/0day-ci/archive/202=
-30909/202309090600.NSyo7d2q-lkp@intel.com/config)
-> > > compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> > > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/a=
-rchive/20230909/202309090600.NSyo7d2q-lkp@intel.com/reproduce)
-> > >
-> > > If you fix the issue in a separate patch/commit (i.e. not just a new =
-version of
-> > > the same patch/commit), kindly add following tags
-> > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202309090600.NSyo7d2q=
--lkp@intel.com/
-> > >
-> > > All errors (new ones prefixed by >>):
-> > >
-> > >    security/selinux/hooks.c: In function 'selinux_file_ioctl':
-> > > >> security/selinux/hooks.c:3647:9: error: duplicate case value
-> > >     3647 |         case FS_IOC32_GETFLAGS:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3645:9: note: previously used here
-> > >     3645 |         case FS_IOC_GETFLAGS:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3648:9: error: duplicate case value
-> > >     3648 |         case FS_IOC32_GETVERSION:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3646:9: note: previously used here
-> > >     3646 |         case FS_IOC_GETVERSION:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3654:9: error: duplicate case value
-> > >     3654 |         case FS_IOC32_SETFLAGS:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3652:9: note: previously used here
-> > >     3652 |         case FS_IOC_SETFLAGS:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3655:9: error: duplicate case value
-> > >     3655 |         case FS_IOC32_SETVERSION:
-> > >          |         ^~~~
-> > >    security/selinux/hooks.c:3653:9: note: previously used here
-> > >     3653 |         case FS_IOC_SETVERSION:
-> > >          |         ^~~~
-> >
-> > Not sure of the right way to fix this while addressing the original
-> > issue that this patch was intended to fix. Looking in fs/ioctl.c, I
-> > see that the some FS_IOC32 values are remapped to the corresponding
-> > FS_IOC values by the compat ioctl syscall entrypoint. Also notice this
-> > comment there:
-> >
-> >         /* RED-PEN how should LSM module know it's handling 32bit? */
-> >         error =3D security_file_ioctl(f.file, cmd, arg);
-> >         if (error)
-> >                 goto out;
-> >
-> > So perhaps this is a defect in LSM that needs to be addressed?
->
-> Note btw that some of the 32-bit ioctl commands are only handled in
-> the fs-specific compat_ioctl routines, e.g. ext4_compat_ioctl()
-> handles EXT4_IOC32_GETVERSION =3D=3D FS_IOC32_GETVERSION and ditto for
-> _SETVERSION.
->
-> >
-> >
-> > >
-> > >
-> > > vim +3647 security/selinux/hooks.c
-> > >
-> > >   3634
-> > >   3635  static int selinux_file_ioctl(struct file *file, unsigned int=
- cmd,
-> > >   3636                                unsigned long arg)
-> > >   3637  {
-> > >   3638          const struct cred *cred =3D current_cred();
-> > >   3639          int error =3D 0;
-> > >   3640
-> > >   3641          switch (cmd) {
-> > >   3642          case FIONREAD:
-> > >   3643          case FIBMAP:
-> > >   3644          case FIGETBSZ:
-> > >   3645          case FS_IOC_GETFLAGS:
-> > >   3646          case FS_IOC_GETVERSION:
-> > > > 3647          case FS_IOC32_GETFLAGS:
-> > >   3648          case FS_IOC32_GETVERSION:
-> > >   3649                  error =3D file_has_perm(cred, file, FILE__GET=
-ATTR);
-> > >   3650                  break;
-> > >   3651
-> > >   3652          case FS_IOC_SETFLAGS:
-> > >   3653          case FS_IOC_SETVERSION:
-> > >   3654          case FS_IOC32_SETFLAGS:
-> > >   3655          case FS_IOC32_SETVERSION:
-> > >   3656                  error =3D file_has_perm(cred, file, FILE__SET=
-ATTR);
-> > >   3657                  break;
-> > >   3658
-> > >   3659          /* sys_ioctl() checks */
-> > >   3660          case FIONBIO:
-> > >   3661          case FIOASYNC:
-> > >   3662                  error =3D file_has_perm(cred, file, 0);
-> > >   3663                  break;
-> > >   3664
-> > >   3665          case KDSKBENT:
-> > >   3666          case KDSKBSENT:
-> > >   3667                  error =3D cred_has_capability(cred, CAP_SYS_T=
-TY_CONFIG,
-> > >   3668                                              CAP_OPT_NONE, tru=
-e);
-> > >   3669                  break;
-> > >   3670
-> > >   3671          case FIOCLEX:
-> > >   3672          case FIONCLEX:
-> > >   3673                  if (!selinux_policycap_ioctl_skip_cloexec())
-> > >   3674                          error =3D ioctl_has_perm(cred, file, =
-FILE__IOCTL, (u16) cmd);
-> > >   3675                  break;
-> > >   3676
-> > >   3677          /* default case assumes that the command will go
-> > >   3678           * to the file's ioctl() function.
-> > >   3679           */
-> > >   3680          default:
-> > >   3681                  error =3D ioctl_has_perm(cred, file, FILE__IO=
-CTL, (u16) cmd);
-> > >   3682          }
-> > >   3683          return error;
-> > >   3684  }
-> > >   3685
+Hi Greg,
 
-Hey Stephen,
+On Mon, Sep 11, 2023 at 03:40:33PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.53 release.
+> There are 600 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks for looking into it a bit deeper! This seems a bit of a pickle.
-I can think of a few somewhat hacky ways to fix this.
+Build test (gcc version 13.2.1 20230827):
+mips: 52 configs -> no failure
+arm: 100 configs -> no failure
+arm64: 3 configs -> no failure
+x86_64: 4 configs -> no failure
+alpha allmodconfig -> no failure
+csky allmodconfig -> no failure
+powerpc allmodconfig -> no failure
+riscv allmodconfig -> no failure
+s390 allmodconfig -> no failure
+xtensa allmodconfig -> no failure
 
-I can just set the flags to check `if FS_IOC32_*; set FS_IOC_*;`,
-which is the quickest but kinda hacky.
+Boot test:
+x86_64: Booted on my test laptop. No regression.
+x86_64: Booted on qemu. No regression. [1]
+arm64: Booted on rpi4b (4GB model). No regression. [2]
+mips: Booted on ci20 board. No regression. [3]
 
-I can go with the other plan of dropping the irrelevant bytes from the
-cmd code, so all codes will be read as u16. This effectively does the
-same thing, but may be unclear.
+[1]. https://openqa.qa.codethink.co.uk/tests/4999
+[2]. https://openqa.qa.codethink.co.uk/tests/5001
+[3]. https://openqa.qa.codethink.co.uk/tests/5000
 
-I can also look into whether this can be solved at the LSM or a higher
-level. Perhaps the filesystems setting `if FS_IOC32_*; set FS_IOC_*;`
-is a hint that something else interesting is going wrong.
+Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
 
-I'll spend a little time thinking and investigating and get back with
-a more concrete solution. I'll also need to do a bit more robust
-testing; it built on my machine!
-
-Thanks!
+-- 
+Regards
+Sudip
