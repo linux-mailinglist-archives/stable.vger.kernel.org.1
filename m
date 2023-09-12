@@ -2,59 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFFE79D316
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 16:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15E4D79D317
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 16:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjILOCk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 10:02:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40244 "EHLO
+        id S235600AbjILOCl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 10:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbjILOCj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 10:02:39 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263CC10D0
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:02:35 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-52e297c7c39so7147278a12.2
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:02:35 -0700 (PDT)
+        with ESMTP id S231161AbjILOCl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 10:02:41 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39EC810CE
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:02:37 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-501cef42bc9so9314081e87.0
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694527353; x=1695132153; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694527355; x=1695132155; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wdtkLoX+w5ob14LhXRy+VOaTCqm0oWjRfcaFxvvYWQI=;
-        b=oRmWSo2iWYcDYTfu/s9d8qawK13ai6hkI7g/1eTclEaOZL3fM4iDsKqspPvH+AYX0P
-         A10x0OQBJvekehXueu+AwveduL+G4Pq1tr2xAgnk16Npiz/j297l3atFpHrAFh09k5n7
-         yzpXfPE32xsadnvwteYgot5cWj1/grIcLIBAKz3lsb2pBjQb9/o03HL/QZDO0XxPoMpY
-         xNMhrrUaUUV0bDygnw9pZuVdZKyb+LzuqipV7L82fKWBNWTraIqVCOeSj097q3HmabBM
-         i87vYFglrKh6/lANTvvlb716P0yY1QMEf9pKiu4N1eXloQ+AG0498hg5XvLB1fhE+oX5
-         a9KA==
+        bh=kQKWmjxlOgD0sFnV2w19yinXyEz+FYaCQSbQXdSTv04=;
+        b=lD3aLPwb2jrZdljn1gnaMIr73eE3oTjfkhb8BiZxt5Uo7vdOYBj2Odm1G5ZfSox6LH
+         qWG/8et8oDfa6wo/sVygGXMFF9Oa1DlBV5UMKFmcSt58qU+2kSNWCT6BXmZtap3GXIiy
+         79CA8Eop1wmBA0x8/+mun/IWL3kSAnBswt3k2XW86y06ymCq5nfxBes1vXCtiNuKUmjz
+         VD95/B+09D14+EFo7YAPl4oTZFIAfZ0ILcnnv28cWDw6j7LwEGybiR2P1X5VQLxMEVTB
+         Rhl1T6WW6WHs1G/nSWtVBy+nHlI5vYI6m9uMPFb7A7efqouWbROc2RXKIBWkFfPk8pOU
+         8iPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694527353; x=1695132153;
+        d=1e100.net; s=20230601; t=1694527355; x=1695132155;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wdtkLoX+w5ob14LhXRy+VOaTCqm0oWjRfcaFxvvYWQI=;
-        b=pmWR2W6ax6WvpeBo1rPyGvnOB6f1igSz8LNm/WmmkosuM5ui31jWbLAPn9maGIKscW
-         YM8TSwxuiL2H3l4LTqdeCZg6qfXvbx3KyMgcvNRk12AlO66h0IZeqY2iB42iH7UYAIXd
-         nHQ88lm0RoSaHCY+1vnYKq/FPVbLEeVzK1ljbL7Ygpy/bntkNgSFrOOeEQ8vWWby4Svc
-         DhPK3CDtYuBr3JwYD49W55pwDAjI1G1rkeggTd1n1Ofobsks6LYUmqIP77w2ZnzbH2d4
-         7nBdYMihUpV7kCpeS5Q3/1DwKU+xkRJGO93KerC+L+6esML5UDyBYgbA5eHwjlpdY5bC
-         Pb4A==
-X-Gm-Message-State: AOJu0YzyvET6b0LSMbgTlAmiZLbQXZFp6HhWORak+IUPP9pDlkEi/4Jb
-        Lo+cSLFDh4YrbImTUFWMUbAcUKAgS0I=
-X-Google-Smtp-Source: AGHT+IF0losri3uQQvcN2bZG37XtzOyrRvKYXtprDXnOFTPJ8PAqTeWxL5KYXlpuoh/fHcSJTbrLww==
-X-Received: by 2002:a17:907:3f99:b0:9a1:d5de:5e3 with SMTP id hr25-20020a1709073f9900b009a1d5de05e3mr12901131ejc.54.1694527353255;
-        Tue, 12 Sep 2023 07:02:33 -0700 (PDT)
+        bh=kQKWmjxlOgD0sFnV2w19yinXyEz+FYaCQSbQXdSTv04=;
+        b=LyNm8hyxcExNop82E743tuFdTdFuSCOZWZmwymwUjbCZPzzPfHJsHCpCPqSsu95x5c
+         kIHwMIu66NlqgIXIYWkdAs74cFJrDkJKZqVoT6Vw8aAnDycUykZEQfmaNjDKnQ2cCCcf
+         uVsMD0NEp4vn1UaMPhhvvG05wZ8CqZpqbhhkklGyIxXMH+kwnOeI0oXgtTjY5sz0m4zs
+         wVAP3gYem2eaozJZb8OtksBXkvdvpRxM3mB/OU9y4H82aasuIbZ33g1BfYI/3iZyAcYw
+         NArGr8Y/7/ANP4ccHfXsIqwI3XX+6eQHVUD7OBShYVrPTw6JjsKoi+HWq07L6XzpVygB
+         3Kcw==
+X-Gm-Message-State: AOJu0Yxh9p4jNClCrpYSpbVxqU8Usib1pADpBuGohEzNZS6+1iTLmk7j
+        TTYtmZJHwDKUvUEYXIrgmPzBjJbAV1M=
+X-Google-Smtp-Source: AGHT+IFtYkc0IQp926ZSy9/mYFLzFLFDfgLb8A0XsYLxCMPlp+1h9Xn5dkOiBl3EwUWMW8qNr05wZA==
+X-Received: by 2002:a05:6512:3c81:b0:502:af38:3413 with SMTP id h1-20020a0565123c8100b00502af383413mr9848052lfv.2.1694527354262;
+        Tue, 12 Sep 2023 07:02:34 -0700 (PDT)
 Received: from 127.0.0.1localhost ([85.255.237.46])
-        by smtp.gmail.com with ESMTPSA id pk24-20020a170906d7b800b0098d2d219649sm6997770ejb.174.2023.09.12.07.02.32
+        by smtp.gmail.com with ESMTPSA id pk24-20020a170906d7b800b0098d2d219649sm6997770ejb.174.2023.09.12.07.02.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 07:02:32 -0700 (PDT)
+        Tue, 12 Sep 2023 07:02:33 -0700 (PDT)
 From:   Pavel Begunkov <asml.silence@gmail.com>
 To:     stable@vger.kernel.org
 Cc:     Jens Axboe <axboe@kernel.dk>, asml.silence@gmail.com
-Subject: [PATCH 2/3] io_uring: break out of iowq iopoll on teardown
-Date:   Tue, 12 Sep 2023 15:02:00 +0100
-Message-ID: <5acefe363814fb8fcfc4426c0bd2f45ae6418921.1694522363.git.asml.silence@gmail.com>
+Subject: [PATCH 3/3] io_uring: break iopolling on signal
+Date:   Tue, 12 Sep 2023 15:02:01 +0100
+Message-ID: <b3b333ddf567f86104ce42708ad8982e561e9f59.1694522363.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1694522363.git.asml.silence@gmail.com>
 References: <cover.1694522363.git.asml.silence@gmail.com>
@@ -64,71 +64,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ upstream commit 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9 ]
+[ upstream commit dc314886cb3d0e4ab2858003e8de2917f8a3ccbd ]
 
-io-wq will retry iopoll even when it failed with -EAGAIN. If that
-races with task exit, which sets TIF_NOTIFY_SIGNAL for all its workers,
-such workers might potentially infinitely spin retrying iopoll again and
-again and each time failing on some allocation / waiting / etc. Don't
-keep spinning if io-wq is dying.
+Don't keep spinning iopoll with a signal set. It'll eventually return
+back, e.g. by virtue of need_resched(), but it's not a nice user
+experience.
 
-Fixes: 561fb04a6a225 ("io_uring: replace workqueue usage with io-wq")
 Cc: stable@vger.kernel.org
+Fixes: def596e9557c9 ("io_uring: support for IO polling")
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/eeba551e82cad12af30c3220125eb6cb244cc94c.1691594339.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- io_uring/io-wq.c    | 10 ++++++++++
- io_uring/io-wq.h    |  1 +
- io_uring/io_uring.c |  3 ++-
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 81485c1a9879..fe8594a0396c 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -176,6 +176,16 @@ static void io_worker_ref_put(struct io_wq *wq)
- 		complete(&wq->worker_done);
- }
- 
-+bool io_wq_worker_stopped(void)
-+{
-+	struct io_worker *worker = current->pf_io_worker;
-+
-+	if (WARN_ON_ONCE(!io_wq_current_is_worker()))
-+		return true;
-+
-+	return test_bit(IO_WQ_BIT_EXIT, &worker->wqe->wq->state);
-+}
-+
- static void io_worker_cancel_cb(struct io_worker *worker)
- {
- 	struct io_wqe_acct *acct = io_wqe_get_acct(worker);
-diff --git a/io_uring/io-wq.h b/io_uring/io-wq.h
-index bf5c4c533760..48721cbd5f40 100644
---- a/io_uring/io-wq.h
-+++ b/io_uring/io-wq.h
-@@ -129,6 +129,7 @@ void io_wq_hash_work(struct io_wq_work *work, void *val);
- 
- int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask);
- int io_wq_max_workers(struct io_wq *wq, int *new_count);
-+bool io_wq_worker_stopped(void);
- 
- static inline bool io_wq_is_hashed(struct io_wq_work *work)
- {
 diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index fec6b6a409e7..077c9527be37 100644
+index 077c9527be37..1519125b9814 100644
 --- a/io_uring/io_uring.c
 +++ b/io_uring/io_uring.c
-@@ -7069,7 +7069,8 @@ static void io_wq_submit_work(struct io_wq_work *work)
- 			 */
- 			if (ret != -EAGAIN || !(req->ctx->flags & IORING_SETUP_IOPOLL))
+@@ -2668,6 +2668,11 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
  				break;
--
-+			if (io_wq_worker_stopped())
-+				break;
- 			/*
- 			 * If REQ_F_NOWAIT is set, then don't wait or retry with
- 			 * poll. -EAGAIN is final for that case.
+ 		}
+ 		ret = io_do_iopoll(ctx, &nr_events, min);
++
++		if (task_sigpending(current)) {
++			ret = -EINTR;
++			goto out;
++		}
+ 	} while (!ret && nr_events < min && !need_resched());
+ out:
+ 	mutex_unlock(&ctx->uring_lock);
 -- 
 2.41.0
 
