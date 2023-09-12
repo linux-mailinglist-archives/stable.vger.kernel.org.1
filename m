@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A55C79CAB5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B77079CAC3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232990AbjILI4D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 04:56:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54680 "EHLO
+        id S232287AbjILI6n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 04:58:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233032AbjILI4C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:56:02 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99BFBAA;
-        Tue, 12 Sep 2023 01:55:58 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3ff1c397405so62590275e9.3;
-        Tue, 12 Sep 2023 01:55:58 -0700 (PDT)
+        with ESMTP id S231563AbjILI6m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:58:42 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3235AA;
+        Tue, 12 Sep 2023 01:58:38 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-31dcf18f9e2so5359218f8f.0;
+        Tue, 12 Sep 2023 01:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694508957; x=1695113757; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694509117; x=1695113917; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ddS0ZkKFz8dmDcsSnwtGwTHKJaIvnEUsLWicZrz9JKY=;
-        b=PqK8XCrF8q3wTOFStHRN2ojmo5JzcTDeOFhcUAFbEXtOJO5NLorkYU+GjzA4iVp6GO
-         dIKqPoqVVP3booYpwk9lwFw5TgK/9WAtRDP9REhL4XXSkG8VKaXTN/nzDeyut4OxO/Bw
-         VZs0EthiXmXhxCcz/ucvDOnW6Ksv9gs0GeZZqdzdtHRYe0pui6pjS1Qp/ePOAKc1wZuL
-         BOJL4Rv3pO1Nmz7Q5VjwVkoiV7AJGtvDTZodxq649kWLdYy+eOslUGsQzmQJMEWSHN/G
-         DO9vzodZFwPK7DqsFwYHlzvNeBcXJKeMDQcCeI9s0d83Kx4az93ibvkI/gymQs1bmZQR
-         Y1tw==
+        bh=OqgrnIE/Nleiv5H2zORysEJ88F6QQ39FuzEgmdDH2Mw=;
+        b=WhKO+PbAFZe3NbQ+BXIqm/nI9xeHGlSjonr/JxZl8g/EqzwmeSVnjjstMPGU0mneX9
+         816UMXTvHPHbNsRMzUeceacZLP4F7JP5ewM6SrqRyECvLsfxTSivxqq6H6ixdBnG6nQw
+         yRbzsOKQ+HuVIs+czy80Ae1HQr6GFSPMbMVD8nG2cvTmH21jw9jt97gwb/coyPkgT4gB
+         +Ow0SU9oltqIgQiI+P7SknqaLiXsq7TNfIeLA5qDe1qPq0s65kRY3mlLxNXhuja+Po4I
+         JXn+972yUsdXuIV5nQ3lEN5/GGcttEG5noHDaoCYIJmCXzlFcssXsrSQQwo4LzPrIqKD
+         yasw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694508957; x=1695113757;
+        d=1e100.net; s=20230601; t=1694509117; x=1695113917;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ddS0ZkKFz8dmDcsSnwtGwTHKJaIvnEUsLWicZrz9JKY=;
-        b=SScj0cjC8nG5lpwASwm6RhjJRu7EXAHSYSoO9KOpa5vSVCPhei3HOTzIpCEntrWAHg
-         s+dsQTchCv++bzFQq2N+J+w3rDv8EYa2vOo8YqIEQ7JoJuCP67G8eJHDFXvDC1ubceGz
-         CqgDO0PrW9ERKsIOhCqt55gpdm2nA1Yfaj+yTOLrX/E5cxzrwmtmCxPrDGphCfzfF2Yg
-         EKceqXoiZmArdqwaEdEXucGNZPHYJ9m4NkE32c0hyZZtho5NlnD8FLAkm8KqoJnODPEO
-         79lRfKY1llC7GrP9LpylldaqBfQKFYgyWpGEo+MwS3alC03Qyhdp7OWY8uvBl13Vprw+
-         wWCA==
-X-Gm-Message-State: AOJu0Yy4WC1JZcT0BTHw8lU4T1PTEFZ/A+gPjaBXVZXJnEhJEQdnk5F+
-        gIKXT2DpCaVsh1RSvpjfJ6u7yGS9jRY=
-X-Google-Smtp-Source: AGHT+IE1E8L1noKwkbnXmhynwzkunFsBvTCSPHqmDk6jy85DHdMD6gSvgYUpjupeFJsK1bNPDAbO4A==
-X-Received: by 2002:adf:fd4d:0:b0:319:67da:ed68 with SMTP id h13-20020adffd4d000000b0031967daed68mr10496784wrs.7.1694508956739;
-        Tue, 12 Sep 2023 01:55:56 -0700 (PDT)
+        bh=OqgrnIE/Nleiv5H2zORysEJ88F6QQ39FuzEgmdDH2Mw=;
+        b=knBvRs/5ozkkRUvGCbDMoHcPCtjlfyjw5Ee0X1hBXt9mCzrrR8lD/xb6R9ChmQg1/7
+         dnvVfViKHY7u0G7bub1YwPy+jEmFVVu44Rz31uQ9YfOf7bwxpmZQufx67BzJ0hhWR910
+         6I0HZsdUXRuBgczTRb2IHRRWDw6c5rltZxOv7VGpWKC6PHvpS4qKHMSIVPIuGinYKfbC
+         7+UbvqKiOOwSN/XlBqJTlkNzyzn+C8G9HbmGZwL45HR0I/S33TYzdgah8/ahf9lsKfZS
+         mh6kMMQ5crAhKkDoIlOe9u3C9AKBjgsT0l1RteGEXCQZXngx/LlaCs5r9Thc5Eu2gQAx
+         vKow==
+X-Gm-Message-State: AOJu0Yz11N1QusBJOd35pZRyD9xLtUhFXgePIfbLkrGsCBnjJhrHBnTr
+        Nu7j3rfu3elr/EhnES3JgmA=
+X-Google-Smtp-Source: AGHT+IG1E3JmKEJWylxvVmRipV3cHZc6eCG3bX4xM89DOWLXXJcx0EYwaTGkXBUJ5VWqopy3YCxO/g==
+X-Received: by 2002:a5d:6510:0:b0:317:ec04:ee0c with SMTP id x16-20020a5d6510000000b00317ec04ee0cmr10090043wru.47.1694509116834;
+        Tue, 12 Sep 2023 01:58:36 -0700 (PDT)
 Received: from debian ([63.135.72.41])
-        by smtp.gmail.com with ESMTPSA id n7-20020a5d67c7000000b0031c56218984sm12231475wrw.104.2023.09.12.01.55.56
+        by smtp.gmail.com with ESMTPSA id a12-20020a5d456c000000b00317afc7949csm12315234wrc.50.2023.09.12.01.58.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 01:55:56 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 09:55:54 +0100
+        Tue, 12 Sep 2023 01:58:36 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 09:58:34 +0100
 From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -57,22 +57,22 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
         rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.5 000/739] 6.5.3-rc1 review
-Message-ID: <ZQAnmlIBrsGlGGRZ@debian>
-References: <20230911134650.921299741@linuxfoundation.org>
+Subject: Re: [PATCH 6.4 000/737] 6.4.16-rc1 review
+Message-ID: <ZQAoOpFsahI9Mt6H@debian>
+References: <20230911134650.286315610@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 Hi Greg,
 
-On Mon, Sep 11, 2023 at 03:36:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.3 release.
-> There are 739 patches in this series, all will be posted as a response
+On Mon, Sep 11, 2023 at 03:37:39PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.16 release.
+> There are 737 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
@@ -94,9 +94,9 @@ x86_64: Booted on qemu. No regression. [1]
 arm64: Booted on rpi4b (4GB model). No regression. [2]
 mips: Booted on ci20 board. No regression. [3]
 
-[1]. https://openqa.qa.codethink.co.uk/tests/5005
-[2]. https://openqa.qa.codethink.co.uk/tests/5007
-[3]. https://openqa.qa.codethink.co.uk/tests/5006
+[1]. https://openqa.qa.codethink.co.uk/tests/5002
+[2]. https://openqa.qa.codethink.co.uk/tests/5004
+[3]. https://openqa.qa.codethink.co.uk/tests/5003
 
 Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
 
