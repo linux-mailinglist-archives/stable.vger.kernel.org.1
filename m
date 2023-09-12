@@ -2,115 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6C779D03C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E726979D050
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234774AbjILLkd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 07:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56430 "EHLO
+        id S234630AbjILLqr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 07:46:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234963AbjILLkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:40:11 -0400
-Received: from dd20004.kasserver.com (dd20004.kasserver.com [85.13.150.92])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6468BBE;
-        Tue, 12 Sep 2023 04:40:02 -0700 (PDT)
-Received: from dd20004.kasserver.com (dd0804.kasserver.com [85.13.146.35])
-        by dd20004.kasserver.com (Postfix) with ESMTPSA id 8F8B26321005;
-        Tue, 12 Sep 2023 13:39:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=silentcreek.de;
-        s=kas202306171005; t=1694518799;
-        bh=UrbQBqd8zMpLmeGK23sKwCxYqAihgygn61K/bBr1bGs=;
-        h=Subject:To:References:Cc:From:In-Reply-To:Date:From;
-        b=cn0C0vw94X2JRKKegIgoHqYuGPWIRMuiFhGrd+8SqrDCQox3OpTxTZQFwTXIB3MPK
-         HvkT1urbRT/uB5BNQ69MNapFhhl36sBoIKx2b+3awAEuQAOKmemGj04Zccp9/SE0tO
-         lei5q2l1Ot5YJ8kRMC5T1T9FV+GNu+zmlMJgXnOMyrWVDJUvvelpHG7r0Xq4GJ5e2g
-         fuzCJ9k59v9mrZJBcczWfooMR7LvDKVIZCAQqN4/3dC6/WmzZe2yIVemL1suWNe8SK
-         apVM6Mlk3MazTsTJx9KFekyr2mwFraGDxypZwcliaaQT6xucOQwg/oLBd0mqknxsLy
-         3bF1pnZQUnzWQ==
-Subject: Re: Regression: Commit "netfilter: nf_tables: disallow rule addition
- to bound chain via NFTA_RULE_CHAIN_ID" breaks ruleset loading in linux-stable
-To:     pablo@netfilter.org
-References: <20230911213750.5B4B663206F5@dd20004.kasserver.com><ZP+bUpxJiFcmTWhy@calendula>
-Cc:     kadlec@netfilter.org, fw@strlen.de, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, regressions@lists.linux.dev,
-        sashal@kernel.org, carnil@debian.org, 1051592@bugs.debian.org
-From:   "Timo Sigurdsson" <public_timo.s@silentcreek.de>
-User-Agent: ALL-INKL Webmail 2.11
-X-SenderIP: 89.246.188.214
+        with ESMTP id S229927AbjILLqq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:46:46 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D427B3
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 04:46:42 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-52e5900cf77so7078466a12.2
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 04:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1694519201; x=1695124001; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QYqPluAProACun9byGSirN6Y7jCfizwxPx9r/p0ZgpQ=;
+        b=V1ePDM9qJrzRh8TgKswM0gnnL8SDX/KLr39JVgomR2NJhaXCvwuzOkkQvsOd6gOiyt
+         VuiWICswoaiODOaxQ8MYtC3bzBByK6i2eUtKZYDtgykWpeF8NnMxY/iRlrgbSbQ6si5K
+         m1FO8So+ZJ5tXUjFSGJ1sg4zUEAA2MjWUaqCliuEikGM8J74GZ+U4rIuQKZ60TaOXLMU
+         az9VgIXBmeUADaC6iwfs+138XCuZk9sn7U+9/cb+L6jSSauwfsCvVfz8lT6URR4OzsZI
+         6qogTgD134/sIzlL9NxYym00mHkDCic6Pn0y/Tc22qimv5PLwRA0bu8Nc0434k0HsqeY
+         NO4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694519201; x=1695124001;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QYqPluAProACun9byGSirN6Y7jCfizwxPx9r/p0ZgpQ=;
+        b=JFmcCtOmYXhvMZC3sktNWexRdJ82/VddH58bqX95W+HYHkoT+bJF3yu6xicH//5Sx+
+         +BPRmAWxA2jUPwd/zuT0e1bHU8Vlg8nNc8AZTKeK7K4o0Phh784ellimgInv/A/BGcbG
+         TY6TQV2O0g40BJtB/BjrVGdNFPN3t+UQGsKXooZjH9ly1FCpuAjo0SwO4KRDvaqdPVNq
+         gAXh/66i2M5cqfJoPbnU/f9nzyj0VtvBKt+hJN7urPdnUNI+ifDNRtg3dh5HbwclDY0h
+         tc6/30xX8dc6P1ilY8gKZFCiYrjLXhNT7Ff5xgBxksBG3lfYCrKz/SV69oTr70EzmmO7
+         XHug==
+X-Gm-Message-State: AOJu0YwOzPj5TyO2SjgfxVYv752wAhXI4q699w7XzadxG4tG2MhAfRVR
+        toE92nBSvy9bmbcVj54CHOeNKZciE1h1I4iEmYubYtbQhcWOUwiXeho=
+X-Google-Smtp-Source: AGHT+IHm92+9I4A7LlXoe1aDLmguowYYDZnCABarOdJ7hLwV/PkntQQLOOYNXeU27gYDV0MX2TG5Iv/xRQSgULoGaPg=
+X-Received: by 2002:a05:6402:b30:b0:52c:a382:e0d5 with SMTP id
+ bo16-20020a0564020b3000b0052ca382e0d5mr9936478edb.34.1694519200795; Tue, 12
+ Sep 2023 04:46:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <ZP+bUpxJiFcmTWhy@calendula>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Message-Id: <20230912113959.8F8B26321005@dd20004.kasserver.com>
-Date:   Tue, 12 Sep 2023 13:39:59 +0200 (CEST)
-X-Spamd-Bar: /
+From:   Jinpu Wang <jinpu.wang@ionos.com>
+Date:   Tue, 12 Sep 2023 13:46:29 +0200
+Message-ID: <CAMGffEmtW+95Hsmf-6sZmS76Mpdt+R6uYQKtjbLup+iX96eVfg@mail.gmail.com>
+Subject: Regression with raid1 in stable 5.15.132-rc1 and 6.1.53-rc1
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Pablo,
+Hi Greg and Stable folks.
 
-Pablo Neira Ayuso schrieb am 12.09.2023 00:57 (GMT +02:00):
+We've noticed regression in raid1 due to following commits:
+79dabfd00a2b ("md/raid1: hold the barrier until handle_read_error() finishes")
+caeed0b9f1ce ("md/raid1: free the r1bio before waiting for blocked rdev")
 
-> Hi Timo,
-> 
-> On Mon, Sep 11, 2023 at 11:37:50PM +0200, Timo Sigurdsson wrote:
->> Hi,
->> 
->> recently, Debian updated their stable kernel from 6.1.38 to 6.1.52
->> which broke nftables ruleset loading on one of my machines with lots
->> of "Operation not supported" errors. I've reported this to the
->> Debian project (see link below) and Salvatore Bonaccorso and I
->> identified "netfilter: nf_tables: disallow rule addition to bound
->> chain via NFTA_RULE_CHAIN_ID" (0ebc1064e487) as the offending commit
->> that introduced the regression. Salvatore also found that this issue
->> affects the 5.10 stable tree as well (observed in 5.10.191), but he
->> cannot reproduce it on 6.4.13 and 6.5.2.
->> 
->> The issue only occurs with some rulesets. While I can't trigger it
->> with simple/minimal rulesets that I use on some machines, it does
->> occur with a more complex ruleset that has been in use for months
->> (if not years, for large parts of it). I'm attaching a somewhat
->> stripped down version of the ruleset from the machine I originally
->> observed this issue on. It's still not a small or simple ruleset,
->> but I'll try to reduce it further when I have more time.
->> 
->> The error messages shown when trying to load the ruleset don't seem
->> to be helpful. Just two simple examples: Just to give two simple
->> examples from the log when nftables fails to start:
->> /etc/nftables.conf:99:4-44: Error: Could not process rule: Operation not
->> supported
->>                         tcp option maxseg size 1-500 counter drop
->>                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->> /etc/nftables.conf:308:4-27: Error: Could not process rule: Operation not
->> supported
->>                         tcp dport sip-tls accept
->>                         ^^^^^^^^^^^^^^^^^^^^^^^^
-> 
-> I can reproduce this issue with 5.10.191 and 6.1.52 and nftables v1.0.6,
-> this is not reproducible with v1.0.7 and v1.0.8.
-> 
->> Since the issue only affects some stable trees, Salvatore thought it
->> might be an incomplete backport that causes this.
->> 
->> If you need further information, please let me know.
-> 
-> Userspace nftables v1.0.6 generates incorrect bytecode that hits a new
-> kernel check that rejects adding rules to bound chains. The incorrect
-> bytecode adds the chain binding, attach it to the rule and it adds the
-> rules to the chain binding. I have cherry-picked these three patches
-> for nftables v1.0.6 userspace and your ruleset restores fine.
+Kernel crash during io tests like below:
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007040] RIP:
+0010:call_bio_endio+0x1a/0x60 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007147] Code: 00 5b e9 d9 79
+b3 f0 66 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 53 48 8b 47 18 48 8b
+5f 30 a8 01 75 04 c6 43 1a 0a 48 8b 53 08 <48> 8b 82 40 02 00 00 48 8b
+40 50 48 8b 40 60 a8 80 74 12 48 8b 47
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007347] RSP:
+0018:ffffb3300f627b90 EFLAGS: 00010202
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007448] RAX:
+0000000000000025 RBX: ffff8d2cab013210 RCX: 0000000000000000
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007582] RDX:
+00000001ab000000 RSI: ffff8d2cab013210 RDI: ffff8cfdb1e1d100
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007688] RBP:
+ffff8d34c2ee2800 R08: 000000000000c0d4 R09: 0000000000073f2c
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007795] R10:
+0000000000073f34 R11: ffff8cfdb1e1d100 R12: ffff8d2cab013200
+Sep 11 23:03:15 ps401a-901 kernel: [  449.007901] R13:
+0000000000000000 R14: 0000000000000000 R15: ffff8d34c2ee2800
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008011] FS:
+0000000000000000(0000) GS:ffff8d3487c40000(0000)
+knlGS:0000000000000000
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008146] CS:  0010 DS: 0000
+ES: 0000 CR0: 0000000080050033
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008248] CR2:
+00000001ab000240 CR3: 000000038360a000 CR4: 00000000000406e0
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008355] Call Trace:
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008448]  <TASK>
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008539]  ? __die_body+0x1a/0x60
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008638]  ? page_fault_oops+0x136/0x2a0
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008754]  ? exc_page_fault+0x5f/0x110
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008853]  ?
+asm_exc_page_fault+0x22/0x30
+Sep 11 23:03:15 ps401a-901 kernel: [  449.008955]  ?
+call_bio_endio+0x1a/0x60 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009055]
+raid_end_bio_io+0x28/0x90 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009158]
+raid1_end_write_request+0x10b/0x340 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009263]  submit_bio_checks+0x84/0x450
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009364]  ? __wake_up_common+0x77/0x140
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009463]  __submit_bio+0x106/0x190
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009560]  ? __queue_work+0x136/0x3b0
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009659]  submit_bio_noacct+0x268/0x2c0
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009758]
+flush_bio_list+0x60/0x100 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009859]
+flush_pending_writes+0x71/0xb0 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.009976]  raid1d+0xa6/0x1280 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010076]  ? psi_task_switch+0xde/0x200
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010175]  ? __switch_to_asm+0x3a/0x60
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010274]  ?
+finish_task_switch+0x7d/0x280
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010373]  ?
+try_to_del_timer_sync+0x4d/0x80
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010475]  ?
+md_thread+0x137/0x170 [md_mod]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010586]  ?
+process_checks+0x4c0/0x4c0 [raid1]
+Sep 11 23:03:15 ps401a-901 kernel: [  449.010688]
+md_thread+0x137/0x170 [md_mod]
 
-hmm, that doesn't explain why Salvatore didn't observe this with more recent kernels.
+Reverting both patches locally I can no longer reproduce the crash.
 
-Salvatore, did you use newer userspace components when you tested your 6.4.13 and 6.5.2 builds?
+Please drop both patches from all the stable queues.
 
-As for the regression and how it be dealt with: Personally, I don't really care whether the regression is solved in the kernel or userspace. If everybody agrees that this is the best or only viable option and Debian decides to push a nftables update to fix this, that works for me. But I do feel the burden to justify this should be high. A kernel change that leaves users without a working packet filter after upgrading their machines is serious, if you ask me. And since it affects several stable/longterm trees, I would assume this will hit other stable (non-rolling) distributions as well, since they will also use older userspace components (unless this is behavior specific to nftables 1.0.6 but not older versions). They probably should get a heads up then.
-
-
-Regards,
-
-Timo
+Thx!
+Jnipu Wang @ IONOS cloud
