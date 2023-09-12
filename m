@@ -2,86 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5519B79CD6E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7DC79CD91
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:13:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233739AbjILKK7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 06:10:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56402 "EHLO
+        id S233752AbjILKNg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 06:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233761AbjILKKp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:10:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4CC411703
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694513320;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=B4FnuU5zFazKzznQKyXClo3vGbnJ76lHN9TmMtGnauo=;
-        b=W5yI7gZbdObItLI5syT/jY8iXa2AI2gQlouCFzir0Le+1vW50T/EmvD4NAJiKI4wRjSJKA
-        4XrlatCVDZctvWIZyPKxXUEWYciBRgBOVK/QbsdVHFPlZdbo1STD89QDiNPsXTKq1gr/7O
-        2zCd7/v50oikWjDRJ8hg0x9XJmv9iPQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-677-vRgriTc5O6-L-OnFEipXgQ-1; Tue, 12 Sep 2023 06:08:37 -0400
-X-MC-Unique: vRgriTc5O6-L-OnFEipXgQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7728101FAA3;
-        Tue, 12 Sep 2023 10:08:36 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.194.220])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1147C2026D4B;
-        Tue, 12 Sep 2023 10:08:35 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA
-Date:   Tue, 12 Sep 2023 12:08:27 +0200
-Message-ID: <20230912100827.303590-1-hdegoede@redhat.com>
+        with ESMTP id S233768AbjILKNf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:13:35 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 773D210E4;
+        Tue, 12 Sep 2023 03:13:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911D1C433CA;
+        Tue, 12 Sep 2023 10:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694513611;
+        bh=tGhelaPFNZuEx0uPoA53JqxqfGlMwrEXqhnIkceP5Qc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=STypyJxFv+PolVK7AM9K42rOjuvdetg84wPOqeGVM0/rI+oH63XkwmDZwJe+rakQr
+         2wiId0RyfwrtR2BExQpEHpc5QFw3Uk5ePJDNw56Y1aQnKb3BeyNs24jdYH7gV0/KPS
+         C7QEVXzFIFb5nSS+IPpFaEJH39dpDWt1wC/jagus=
+Date:   Tue, 12 Sep 2023 12:13:27 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@kernel.org>, stable@vger.kernel.org,
+        Ian Abbott <abbotti@mev.co.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "comedi: add HAS_IOPORT dependencies"
+Message-ID: <2023091226-foe-reanalyze-b859@gregkh>
+References: <20230905090922.3314-1-abbotti@mev.co.uk>
+ <76acff7e-3959-4193-9531-22a5e5a68221@leemhuis.info>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <76acff7e-3959-4193-9531-22a5e5a68221@leemhuis.info>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Like various other ASUS ExpertBook-s, the ASUS ExpertBook B1402CBA
-has an ACPI DSDT table that describes IRQ 1 as ActiveLow while
-the kernel overrides it to EdgeHigh.
+On Tue, Sep 12, 2023 at 11:44:39AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 05.09.23 11:09, Ian Abbott wrote:
+> > This reverts commit b5c75b68b7ded84d4c82118974ce3975a4dcaa74.
+> > 
+> > The commit makes it impossible to select configuration options that
+> > depend on COMEDI_8254, COMEDI_DAS08, COMEDI_NI_LABPC, or
+> > COMEDI_AMPLC_DIO200 options due to changing 'select' directives to
+> > 'depends on' directives and there being no other way to select those
+> > codependent configuration options.
+> > 
+> > Fixes: b5c75b68b7de ("comedi: add HAS_IOPORT dependencies")
+> > Cc: Niklas Schnelle <schnelle@linux.ibm.com>
+> > Cc: Arnd Bergmann <arnd@kernel.org>
+> > Cc: <stable@vger.kernel.org> # v6.5+
+> > Acked-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+> 
+> Hmmm, that fix for a regression from the 6.5 cycle was posted a week ago
+> but didn't get a single reply afaics and hasn't hit next.
+> 
+> Greg, is this still in your to-review queue and just delayed due to the
+> merge window? Or are you waiting for something? A ACK fromn Niklas
+> maybe? Or a newer patch to address the kernel test robot report in case
+> its relevant?
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
+The merge window "freeze" ended on Monday, give me a chance to catch up
+with patches please, this is part of my very large todo mbox:
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217901
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+	$ mdfrm -c ~/mail/todo/
+	1637 messages in /home/gregkh/mail/todo/
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 32cfa3f4efd3..8116b55b6c98 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -439,6 +439,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B1402CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1402CBA"),
-+		},
-+	},
- 	{
- 		.ident = "Asus ExpertBook B1502CBA",
- 		.matches = {
--- 
-2.41.0
+thanks,
 
+greg k-h
