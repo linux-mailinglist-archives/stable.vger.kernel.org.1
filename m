@@ -2,136 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5139179CF73
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D566479CFCA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 13:24:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233900AbjILLI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 07:08:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
+        id S234518AbjILLYr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 07:24:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234538AbjILLIX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:08:23 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5110211F;
-        Tue, 12 Sep 2023 04:07:58 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38C7hWVi022226;
-        Tue, 12 Sep 2023 11:07:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=lImsvjSI/7UiZSfw38oBDU1ONszfOqlUayBGLOImhpQ=;
- b=F+uzK4i0fCp6YjGxybBgaLacf96jxXYobMaoMcFab2kTFWFt8N58IhOwe+4dL9i1BrbF
- LrAGvFbdH0gwCTzWYCzAqEOv4YICHbGDVkrtLY3eGvPH846IGdij1gfdRFlnqldoPyRo
- wEa9wvhkjPKj6S7jeTVsWw1szuIxguSRe+t+s8ywCZODCd0t27Rq10Mr8NDNsWpdadq3
- rHbtQgvIvuaKsjLkWVL1NSjgpRkm1r1Rp+G9v03anUbQZ9qxMep+7EnYqZoXIiW15QIy
- UGdzyUXr60aOPZsphGeialF6h0TlFqrQCJfgWpdt0J447MtYWGyf+xsAuSxnZeYt5iJL kA== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t29b0hnp6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 12 Sep 2023 11:07:53 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38CB7qu9019449
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 12 Sep 2023 11:07:52 GMT
-Received: from [10.217.219.52] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 12 Sep
- 2023 04:07:50 -0700
-Message-ID: <21d247d3-83be-ba53-c982-2ab0e2e4ffb3@quicinc.com>
-Date:   Tue, 12 Sep 2023 16:37:47 +0530
+        with ESMTP id S234696AbjILLYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 07:24:23 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB0D2D5D;
+        Tue, 12 Sep 2023 04:14:41 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qg1Lr-00047D-Rj; Tue, 12 Sep 2023 13:14:39 +0200
+Message-ID: <be21241b-7f59-419b-823f-a6d66adacc87@leemhuis.info>
+Date:   Tue, 12 Sep 2023 13:14:39 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command
- fails
-Content-Language: en-US
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "# 5 . 16" <stable@vger.kernel.org>
-References: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
- <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
-From:   Prashanth K <quic_prashk@quicinc.com>
-In-Reply-To: <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: nbCVu8xN1FrfUm2npsFAiewR58xiYWSO
-X-Proofpoint-ORIG-GUID: nbCVu8xN1FrfUm2npsFAiewR58xiYWSO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_09,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309120092
+User-Agent: Mozilla Thunderbird
+Subject: Re: 6.1.y Regression found on AM3517
+Content-Language: en-US, de-DE
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux OMAP <linux-omap@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+References: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
+ <ZPZ2zTS9loj06u31@debian.me> <20230905061739.GX11676@atomide.com>
+ <CAHCN7xJo=pJkcChHm9AsNQGCJuHXgpRKKRK9ckEwdk3U-41ukw@mail.gmail.com>
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAHCN7xJo=pJkcChHm9AsNQGCJuHXgpRKKRK9ckEwdk3U-41ukw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694517281;6d41b9ee;
+X-HE-SMSGID: 1qg1Lr-00047D-Rj
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
+On 06.09.23 12:59, Adam Ford wrote:
+> On Tue, Sep 5, 2023 at 11:25 AM Tony Lindgren <tony@atomide.com> wrote:
+>> * Bagas Sanjaya <bagasdotme@gmail.com> [230905 00:31]:
+>>> On Mon, Sep 04, 2023 at 11:37:46AM -0500, Adam Ford wrote:
+>>>> I have an AM3517-EVM board that I am trying to use the latest 6.1.y
+>>>> stable, currently 6.1.51.
+>>>>
+>>>> With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 to commit
+>>>> eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
+>>>> consumer links")
+>>>>
+>>>> In the regression, 48002000.scm appears as not ready.  This affects a
+>>>> variety of dependent peripherals making them unavailable:
+> [...]
+> Indeed, it does appear that a patch was missing from the back-ported series.
+> 
+> Applying commit 4a032827daa8 ("of: property: Simplify
+> of_link_to_phandle()") to the 6.1.y branch appears
+> to fix the regression.
+> 
+> Thanks for the pointer to the series.
+> 
+> Stable group,
+> 
+> Do I need to send a separate e-mail requesting the backporting of that
+> commit to the 6.1.y branch?
 
-On 11-09-23 06:19 pm, Heikki Krogerus wrote:
-> On Mon, Sep 11, 2023 at 02:34:15PM +0530, Prashanth K wrote:
->> Currently if ucsi_send_command() fails, then we bail out without
->> clearing EVENT_PENDING flag. So when the next connector change
->> event comes, ucsi_connector_change() won't queue the con->work,
->> because of which none of the new events will be processed.
->>
->> Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
->> fails.
->>
->> Cc: <stable@vger.kernel.org> # 5.16
->> Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
->> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
->> ---
->>   drivers/usb/typec/ucsi/ucsi.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
->> index c6dfe3d..509c67c 100644
->> --- a/drivers/usb/typec/ucsi/ucsi.c
->> +++ b/drivers/usb/typec/ucsi/ucsi.c
->> @@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
->>   	if (ret < 0) {
->>   		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
->>   			__func__, ret);
->> +		clear_bit(EVENT_PENDING, &con->ucsi->flags);
->>   		goto out_unlock;
->>   	}
-> 
-> I think it would be better to just move that label (out_unlock) above
-> the point where clear_bit() is already called instead of separately
-> calling it like that. That way the Connector Change Event will
-> also get acknowledged.
-Do we really need to ACK in this case since we didn't process the 
-current connector change event
-> 
-> If this really can happen, then I think it would be good to also
-> schedule a task for ucsi_check_connection():
-> 
->          if (ret < 0) {
->                  dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
->                          __func__, ret);
-> +               ucsi_partner_task(con, ucsi_check_connection, 1, HZ);
->                  goto out_unlock;
->          }
-> 
-> thanks,
-> 
-Retrying is a good idea, but ucsi_check_connection() doesn't have the 
-full functionality compared to handle_connector_change. I guess 
-ucsi_check_connection() will send a set_role, but won't handle the 
-connector_change scenarios happening due to PR/DR swap, which will lead 
-to deadlocks (due to wait_for_completion). This is just an example. So 
-its better to bail out and process the next events, because the failure 
-here is from the glink layer.
+Stable team picked this up, hence:
 
-Thanks
-Prashanth K
+#regzbot fix: of: property: Simplify of_link_to_phandle()
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
+
