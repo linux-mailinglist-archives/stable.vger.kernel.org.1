@@ -2,55 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C9ED79CE83
+	by mail.lfdr.de (Postfix) with ESMTP id 54F4279CE84
 	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbjILKiQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S233859AbjILKiQ (ORCPT <rfc822;lists+stable@lfdr.de>);
         Tue, 12 Sep 2023 06:38:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38444 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233948AbjILKiQ (ORCPT
+        with ESMTP id S233577AbjILKiQ (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:38:16 -0400
-Received: from mail.slitrig.pl (mail.slitrig.pl [51.38.127.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012C310D1
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:38:11 -0700 (PDT)
-Received: by mail.slitrig.pl (Postfix, from userid 1002)
-        id 58098A5521; Tue, 12 Sep 2023 10:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=slitrig.pl; s=mail;
-        t=1694515046; bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
-        h=Date:From:To:Subject:From;
-        b=nPxEn+xhqSrXTyIJl8D65cuCHYNXfZLbMdK6YhHOd07tSKPfGELdA7a4CUm8ipuTN
-         MTHiTI0fjn1EH2fAJ4hXHlQOJUuyZUdcJoXrMOtRCxStk0GtmgCfFry0fzE4/N/hXz
-         w3DfQsq4FQY/ZzDC/SZB8VV1WB4ZWbKswkr2FIAh2q4KpAYk0+RJ5Z8zrNsxTGYtSM
-         LzaxP53HhN3GKoypfgXLr8aBnH5A0F/g5cRVIb6eOYd7z3lt12YYMq/LeRhPbOe/Ka
-         jTT9Pzx/J0diwVlpHZGO5q6mBj/5t19IpBdxJc2a/t1q1IL+mAjcD3PdytN3ZgykI3
-         FUhT1JWMdekZw==
-Received: by mail.slitrig.pl for <stable@vger.kernel.org>; Tue, 12 Sep 2023 10:35:53 GMT
-Message-ID: <20230912093728-0.1.c0.16mi6.0.lyilscdb53@slitrig.pl>
-Date:   Tue, 12 Sep 2023 10:35:53 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@slitrig.pl>
-To:     <stable@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.slitrig.pl
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A422ACC3
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:38:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED305C433C7;
+        Tue, 12 Sep 2023 10:38:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694515092;
+        bh=dIQVlyP42PolZznaFbAugpHLN9YBTqBzjJDxsh5OtkA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bqYNCVznT0v0Az3+noQuUAtDd4QEztxZrwh6XGd4u9MrjfTLN1tOd9iQIKGcK1S3B
+         CrwgW0FthmtCVqBdzX/jZ+454Xacv3F26zuLpsklEh5q/acYnTrjno7C3FeV5WjEId
+         eUF8C8ld+PBpPfqO5MPOGpZds2kOcCW+Kctb7OVU=
+Date:   Tue, 12 Sep 2023 12:38:09 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Alexander Danilenko <al.b.danilenko@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.5 134/739] spi: tegra114: Remove unnecessary
+ NULL-pointer checks
+Message-ID: <2023091212-dispose-oboe-ba98@gregkh>
+References: <20230911134650.921299741@linuxfoundation.org>
+ <20230911134654.832694547@linuxfoundation.org>
+ <ZP8lHSmZVOvbI3wN@finisterre.sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZP8lHSmZVOvbI3wN@finisterre.sirena.org.uk>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, Sep 11, 2023 at 03:33:01PM +0100, Mark Brown wrote:
+> On Mon, Sep 11, 2023 at 03:38:53PM +0200, Greg Kroah-Hartman wrote:
+> > 6.5-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Alexander Danilenko <al.b.danilenko@gmail.com>
+> > 
+> > [ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
+> > 
+> > cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
+> > so there is no sense in checking them for NULL.
+> > 
+> > Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> This is a code cleanup, why is it a stable candidate?  It's not a
+> warning fix or anything.
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+{sigh}  This is due to the crazy people using SVACE marking stuff as a
+"fix" when it really isn't to try to boost the chance that their patches
+will be accepted :(
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+I'm all but refusing to take their patches now due to all of the
+problems they have caused in the past.  I'll go drop this from all
+stable queues as well, thanks for catching this.
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
-
-
-Pozdrawiam serdecznie
-Wiktor Nurek
+greg k-h
