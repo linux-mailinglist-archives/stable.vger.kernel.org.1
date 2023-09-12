@@ -2,130 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8332379CB14
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 11:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2A1979CB8D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 11:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjILJGX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 05:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50468 "EHLO
+        id S233537AbjILJVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 05:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233121AbjILJF7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 05:05:59 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5691310DE;
-        Tue, 12 Sep 2023 02:03:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7080DC433C7;
-        Tue, 12 Sep 2023 09:03:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694509434;
-        bh=mvXVHwykddISCxjGxd+zXeSEBkkTdccCqUNjt0wXkhk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M3aItyTpPCH0WRFAATLYobcHCumrLbWrZEHwtiVvodGHMsJpMzaSf8aEc+40cJA2L
-         OYWJtJL9QrDtBoYC5UVaeIVoFbIvtEG+a31XZuVLsY832sGU5fhJEtBpcMh0XoEtdm
-         oZksLI0Rm9veRFQqi218uTHCwq048bfiMRxuxoYA=
-Date:   Tue, 12 Sep 2023 11:03:50 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     jack@suse.cz, stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org,
-        Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
-        Tom Rix <trix@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
-Message-ID: <2023091217-reflux-playroom-017a@gregkh>
-References: <20230911134633.619970489@linuxfoundation.org>
- <1ffe4f64-f238-859a-ab14-7559d03c4671@linaro.org>
- <CAEUSe7_XA16yZAHA+YTbJygwaUYkU5gs=FnV9BAmQRYzwgVjvQ@mail.gmail.com>
- <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com>
+        with ESMTP id S234009AbjILJVh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 05:21:37 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1904CA9;
+        Tue, 12 Sep 2023 02:21:34 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id C5BED21857;
+        Tue, 12 Sep 2023 09:21:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1694510492; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3ZhigEvPzFDk/Sf/E+yoI9+eK/zEdWQpWelnYnakpQ4=;
+        b=HJJg6v4NOQuteCXp0om7BO8es5V0N78VWcuVrW+K5+ScI1E3R+g4Fh9SXFzAXP/369Jm9Y
+        Z8SozkqYHHA/9GnIknXo9DKI7Ol+luM5efOjN6uAhxNkWdWR98hk5suJ/8ZS2qucttM+bE
+        FX4M3kYV/6/xxB0Z3RcuaStdWR/wI+M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1694510492;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3ZhigEvPzFDk/Sf/E+yoI9+eK/zEdWQpWelnYnakpQ4=;
+        b=jryCrq1LLCxeBXjNScBRjOT64DUYSmSCcah9U05nshYS8f8ADYkWiMh4/0Qhi2hTzGczih
+        xmNXQK/cAIVwFNDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 48A73139DB;
+        Tue, 12 Sep 2023 09:21:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id nY5cEJwtAGUTNgAAMHmgww
+        (envelope-from <aherrmann@suse.de>); Tue, 12 Sep 2023 09:21:32 +0000
+Date:   Tue, 12 Sep 2023 11:23:00 +0200
+From:   Andreas Herrmann <aherrmann@suse.de>
+To:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc:     x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
+        Radu Rendec <rrendec@redhat.com>,
+        Pierre Gondois <Pierre.Gondois@arm.com>,
+        Pu Wen <puwen@hygon.cn>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        stable@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] x86/cacheinfo: Set the number of leaves per CPU
+Message-ID: <20230912092300.GI603@alberich>
+References: <20230805012421.7002-1-ricardo.neri-calderon@linux.intel.com>
+ <20230901065028.GG8103@alberich>
+ <20230901075254.GH8103@alberich>
+ <20230912032350.GA17008@ranerica-svr.sc.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com>
+In-Reply-To: <20230912032350.GA17008@ranerica-svr.sc.intel.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 02:19:34PM +0530, Naresh Kamboju wrote:
-> On Tue, 12 Sept 2023 at 07:55, Daniel Díaz <daniel.diaz@linaro.org> wrote:
-> >
-> > Hello!
-> >
-> > On Mon, 11 Sept 2023 at 14:58, Daniel Díaz <daniel.diaz@linaro.org> wrote:
-> > > On 11/09/23 7:40 a. m., Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 6.1.53 release.
-> > > > There are 600 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > >
-> > > > Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
-> > > > Anything received after that time might be too late.
-> > > >
-> > > > The whole patch series can be found in one patch at:
-> > > >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.53-rc1.gz
-> > > > or in the git tree and branch at:
-> > > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > > > and the diffstat can be found below.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > >
-> > > We're seeing this new warning:
-> > > -----8<-----
-> > >    /builds/linux/fs/udf/inode.c:892:6: warning: variable 'newblock' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-> > >      892 |         if (*err < 0)
-> > >          |             ^~~~~~~~
-> > >    /builds/linux/fs/udf/inode.c:914:9: note: uninitialized use occurs here
-> > >      914 |         return newblock;
-> > >          |                ^~~~~~~~
-> > >    /builds/linux/fs/udf/inode.c:892:2: note: remove the 'if' if its condition is always false
-> > >      892 |         if (*err < 0)
-> > >          |         ^~~~~~~~~~~~~
-> > >      893 |                 goto out_free;
-> > >          |                 ~~~~~~~~~~~~~
-> > >    /builds/linux/fs/udf/inode.c:699:34: note: initialize the variable 'newblock' to silence this warning
-> > >      699 |         udf_pblk_t newblocknum, newblock;
-> > >          |                                         ^
-> > >          |                                          = 0
-> > >    1 warning generated.
-> > > ----->8-----
-> > >
-> > > That's with Clang 17 (and nightly) on:
-> > > * arm
-> > > * powerpc
-> > > * s390
-> >
-> > For what it's worth, bisection points to 903b487b5ba6 ("udf: Handle
-> > error when adding extent to a file").
+On Mon, Sep 11, 2023 at 08:23:50PM -0700, Ricardo Neri wrote:
+> Hi Andreas,
 > 
-> I see the following commit is fixing the reported problem.
+> Agreed. Testing is important. For the specific case of these patches, I
+> booted CONFIG_PREEMPT_RT and !CONFIG_PREEMPT_RT kernels. Then I
+>   a) Ensured that the splat reported in commit 5944ce092b97
+>      ("arch_topology: Build cacheinfo from primary CPU") was not observed.
 > 
-> commit 6d5ab7c2f7cf90877dab8f2bb06eb5ca8edc73ef
-> Author: Tom Rix <trix@redhat.com>
-> Date:   Fri Dec 30 12:53:41 2022 -0500
+>   b) Ensured that /sys/devices/system/cpu/cpuX/cache is present.
 > 
->     udf: initialize newblock to 0
+>   c) Ensured that the contents /sys/devices/system/cpu/cpuX/cache is the
+>      same before and after my patches.
 > 
->     The clang build reports this error
->     fs/udf/inode.c:805:6: error: variable 'newblock' is used
-> uninitialized whenever 'if' condition is true
-> [-Werror,-Wsometimes-uninitialized]
->             if (*err < 0)
->                 ^~~~~~~~
->     newblock is never set before error handling jump.
->     Initialize newblock to 0 and remove redundant settings.
+> I tested on the following systems: Intel Alder Lake, Intel Meteor
+> Lake, 2-socket Intel Icelake server, 2-socket Intel Cascade Lake server,
+> 2-socket Intel Skylake server, 4-socket Intel Broadwell server, 2-socket
+> Intel Haswell server, 2-socket AMD Rome server, and 2-socket AMD Milan
+> server.
 > 
->     Fixes: d8b39db5fab8 ("udf: Handle error when adding extent to a file")
+> Thanks and BR,
+> Ricardo
 
-Ah, the Fixes: tag lied!  There is no such git id in Linus's tree
-anywhere, so our scripts couldn't match this up at all.
 
-I'll go queue this fix up, thanks for digging it out.
+Thanks for all the tests and info.
 
-greg k-h
+-- 
+Regards,
+Andreas
+
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 NÃ¼rnberg, Germany
+GF: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG NÃ¼rnberg)
