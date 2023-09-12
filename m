@@ -2,83 +2,240 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8343879C98D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1D679C9A2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 10:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232002AbjILIPg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 04:15:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57906 "EHLO
+        id S232228AbjILISh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 04:18:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232389AbjILIP0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:15:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460E410C3
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:15:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D85C433C8;
-        Tue, 12 Sep 2023 08:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694506521;
-        bh=H+7L0I/t4we003ZgFkfZhvCJbbS8rbPE3wprlcWqQy4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Pg1BT/lVKzjZjlsT7YjQzd3bfSH1ZKCxY62nCgzo12PFzAJT48imtcRPjl3HHFWC5
-         V4Qn0ca2z7+y8byAOamJGWaK25F2YJ5/bY8iIStqbU0TYfHZHZGf1710/S/SoBe4Y5
-         F6TFXwaNhlMB62p+BT9vYDpP70OSvDXZXzEUfJyA=
-Date:   Tue, 12 Sep 2023 10:15:18 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Donald Buczek <buczek@molgen.mpg.de>
-Cc:     stable@vger.kernel.org,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        David Ahern <dsahern@kernel.org>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: Re: [PATCH 5.15 052/107] Remove DECnet support from kernel
-Message-ID: <2023091210-irritably-bottle-84cd@gregkh>
-References: <20230619102141.541044823@linuxfoundation.org>
- <20230619102143.987013167@linuxfoundation.org>
- <6084b5fc-577c-468a-a28e-e0ccc530ed9e@molgen.mpg.de>
- <2023091117-unripe-ceremony-c29a@gregkh>
- <1be4b005-edfe-5faa-4907-f1e9738cc43a@molgen.mpg.de>
+        with ESMTP id S231702AbjILISf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 04:18:35 -0400
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08D010C3
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:18:31 -0700 (PDT)
+Received: by mail-vs1-xe2c.google.com with SMTP id ada2fe7eead31-44d4c3fa6a6so2523132137.0
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 01:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694506711; x=1695111511; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wWXNYBL9b31oc1SggDkz4tlCDlhgG4dwgemXcdjOh2U=;
+        b=pChUxCukWOytBQpbzo2/jXLsUcxjKMF+p20VVqYIF7xdv0yz61KTCzaf1A+DwOB8KG
+         +aewmvcBpl+vjrSov2HgcC86IzoCen0x8vnJyRaloVCxg653DK0N030mfNTDYD8cgE0S
+         dulCwtcSC/qGF/Jrs8cO/w70ByT8nMFT7vYEYvBRDQSzse5slDFSLBoONpqeixHxEdE+
+         VbyBv1lzteCbKtSD9fqCl13Gxj9uQ5sFd+WS/qPrTW/snVwejC9BJGbpZfw72F53rg1P
+         zLTYp8XH99T7W9WXezQX2U7/j+qfwnjHBl1BroIkNXpnrjK0L8yE1BB9uUJNnv/qtBx0
+         bNyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694506711; x=1695111511;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wWXNYBL9b31oc1SggDkz4tlCDlhgG4dwgemXcdjOh2U=;
+        b=EtYUKgjtFJnuqcraWAGCSdvUQhL3hRwS74x9FOsfMtMP2wP2hSx6pynoiLevXyB5kF
+         tRO/aUuq0ibsvvO0id8xLbywEIUQCv8/hge+2EfB8aCqbcZYR2YrVL4urKJ98w0gtTcb
+         i451mFUM668nHg7UwcIXHLJSGSTPo9eH6PS7FE84UgoVyEvQ19SSw2qsq6qZMAABRKfs
+         VprM7y3Zq2uJrk9lfyETl3zPsQG2Gy4m1vtJWNonSaH3GVY2ZLohXp//lTekyIUq9cyK
+         gr26vV2EG4LhxXYPIdSnv2eK86dhdx5fEbwm1SVH8/s9vVZ10Q6MPsXH4WsOgRkzEzDU
+         dLwA==
+X-Gm-Message-State: AOJu0YwOZX3Yr0KoqBfumcWuUulrb/yKdF3pyQdB1WF6ged+zdOqBvNf
+        TCCQs9zSP6oGjhFtejupRQ1Ogcf7MnVBMBWsqTOMMA==
+X-Google-Smtp-Source: AGHT+IEX6pcSZJvQvRgvyqsKyvnSAqViInvTbBSBqP12HNwDgj/I0laXg08nOh5hiOvEHo0S3ie9kKEYxcLpVH+QExQ=
+X-Received: by 2002:a05:6102:3166:b0:44e:a2ee:8408 with SMTP id
+ l6-20020a056102316600b0044ea2ee8408mr10634044vsm.23.1694506710926; Tue, 12
+ Sep 2023 01:18:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1be4b005-edfe-5faa-4907-f1e9738cc43a@molgen.mpg.de>
+References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 12 Sep 2023 13:48:19 +0530
+Message-ID: <CA+G9fYvLsuHn2ckfwJRwFU5ZzYq4W_JgeC7LZvMYiQML5ygh+A@mail.gmail.com>
+Subject: Re: [PATCH 6.4 000/737] 6.4.16-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 09:47:40AM +0200, Donald Buczek wrote:
-> On 9/11/23 15:54, Greg Kroah-Hartman wrote:
-> > We have never guaranteed that Kconfig options will never change in
-> > stable kernel releases, sorry.
-> 
-> I didn't want to imply that and I don't expect it.
-> 
-> It's just _if_ stable really gradually opens up to anything (like code
-> removals, backports of new features, heuristically or AI selected
-> patches, performance patches) it IMO loses its function and we could
-> as well follow mainline, which, I think, is what you are recommending
-> anyway.
+On Mon, 11 Sept 2023 at 19:57, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.4.16 release.
+> There are 737 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 13 Sep 2023 13:44:56 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.4.16-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-When code is removed from stable kernel versions, it is usually for very
-good reasons, like what happened here.  Sorry I can't go into details,
-but you really wanted this out of your kernel, this was a bugfix :)
 
-> We've had bad surprises with more or less every mainline releases
-> while updates in a stable series could be trusted to go 99% without
-> thinking. Keeping productions systems on some latest stable gave us
-> the time to identifying and fix problems with newer series before
-> making it the designated series for all systems. This worked well.
-> 
-> If the policy of stable gradually changes, that's tough luck for us. I
-> wouldn't complain but it would be good to know. And maybe
-> Documentation/process/stable-kernel-rules.rs should be reviewed.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-If the policy changes, we will change that document, but for now, we are
-backporting only bugfixes that are found through explicit tagging,
-developer requests, manual patch review, and "compare this commit to
-past commits that were accepted" matching which then gets manual review.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-thanks,
+## Build
+* kernel: 6.4.16-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.4.y
+* git commit: c383978584827c8fe5480bc6c182183dba0e4b92
+* git describe: v6.4.15-738-gc38397858482
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.4.1=
+5-738-gc38397858482
 
-greg k-h
+## Test Regressions (compared to v6.4.15)
+
+## Metric Regressions (compared to v6.4.15)
+
+## Test Fixes (compared to v6.4.15)
+
+## Metric Fixes (compared to v6.4.15)
+
+## Test result summary
+total: 145516, pass: 125575, fail: 1989, skip: 17770, xfail: 182
+
+## Build Summary
+* arc: 4 total, 4 passed, 0 failed
+* arm: 140 total, 138 passed, 2 failed
+* arm64: 51 total, 48 passed, 3 failed
+* i386: 42 total, 40 passed, 2 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 37 total, 35 passed, 2 failed
+* riscv: 25 total, 22 passed, 3 failed
+* s390: 16 total, 14 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 46 total, 42 passed, 4 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
