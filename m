@@ -2,181 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31ACC79D12C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83CA679D12D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 14:37:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235149AbjILMge (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 08:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51352 "EHLO
+        id S235017AbjILMhH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 08:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235141AbjILMgd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:36:33 -0400
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526659F
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 05:36:29 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 918BD32009D6;
-        Tue, 12 Sep 2023 08:36:28 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 12 Sep 2023 08:36:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:message-id:mime-version:reply-to:sender:subject
-        :subject:to:to; s=fm3; t=1694522188; x=1694608588; bh=6tpxg9lFv6
-        ndlucNOLLgETehaZ1cEPRblL0hl0iiHN4=; b=ItGb6yauy7KWSucpm3AOBLABd0
-        fUpjse8hc8gtbZ2IzXbXZz+fHlErah2+cCQiTyVLk2G9RSo5XtOFJ3V4+g58xHMa
-        Y3DoXKQcw8yQ44obGd30KyBENXJOSjwEWco3+iqHElBFNhobK8Jt6iVkGkAwHnh8
-        um5A4OHVxChaKGbLntIhuxQa6+Rd33WyVm8nLNyaKwAbVQLuROhhTJ/4Gec4ujpU
-        fG1pAD2Dn8Gk2wvYaNsHJPuZCkV+0gShOaTy7GwyZFbd0p/NPHFDOPOpl2Og1koa
-        2fq0IadwUzeREROXduvC4mOYE3FvB372z/nbGPW0Bo1ljhHRHzMHvh4qwmhQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:message-id:mime-version:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1694522188; x=1694608588; bh=6tpxg9lFv6ndl
-        ucNOLLgETehaZ1cEPRblL0hl0iiHN4=; b=sfOsai2bAe9RVMqVR6BXITmdVf5kF
-        QuOSD1XF5MEyQPtkKWiDGIPlqKuS8xLPMGvO08qEmUcLpwSVhMDCzghNro0XDOK8
-        LXA3B2sBiI7m/Er+joltBgAY5uxTsnp0KNx5s7zw0mL+uHNNymCMGESqrYt5ZsVJ
-        kjpNDwskrcdqFLZxa3sB44+UXMpBUaGqtYV8JbhmgwS0Y1Zvud8La+mUrQy5abB9
-        rKdWZ1+p1RgUicI9cjHOG77gNv6cRQA49nDIkBFt6hR4QU8Sj68luu1GMommZZYV
-        StI3USq6Vv0W8hT8T6uNWnaoUqAju4Aw5Al+fZhcs6QjNFxT6hlTpm2vQ==
-X-ME-Sender: <xms:S1sAZT7rp3UVs_c3UJbsetc6pwt9OGLDjIz79YMXXpujNM2P-XXdnw>
-    <xme:S1sAZY759t45UqVWaFNmG6eNIiuaF6l-03e6fdV9Glg8p5SHvuE6ZegdxJzacJktG
-    VIgeW0agm91C3dRKg>
-X-ME-Received: <xmr:S1sAZactpv3TJmCLH-Qoobx4N1zdHMFG-OJWHFRodscW7vf2-H2nT-o0bAmav-bZ9iAOX3ZaHehSkMYT1UM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgheegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheptehlhihsshgr
-    ucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepjeekue
-    fhhfejjeetheduveffgeehveduteeffedtiedtfeehkefgheeuhfetgffhnecuffhomhgr
-    ihhnpehfrhgvvgguvghskhhtohhprdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhephhhisegrlhihshhsrgdrihhs
-X-ME-Proxy: <xmx:S1sAZULmnHme3s-a1Yu0IRcEisALVirUtA1Ff2i02HUn74lOpV0lHQ>
-    <xmx:S1sAZXIayXv8A7oKg8OG0xwmonekvb68QA1Y1OAbgimcuLu71YwcBA>
-    <xmx:S1sAZdxKYSB-5HkXwHll_BBn2IU1Iz0mPTvzJVH9KNg05iG-_JStXA>
-    <xmx:TFsAZdi3HYEvVr_CBiYLRVSApWtx0S7LjRIcYOCYA6CvcePFWtQdzA>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Sep 2023 08:36:27 -0400 (EDT)
-Received: by x220.qyliss.net (Postfix, from userid 1000)
-        id 8CB7085F5; Tue, 12 Sep 2023 12:36:26 +0000 (UTC)
-From:   Alyssa Ross <hi@alyssa.is>
-To:     stable@vger.kernel.org
-Cc:     Gurchetan Singh <gurchetansingh@chromium.org>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Alyssa Ross <hi@alyssa.is>
-Subject: [PATCH 6.1.y,6.4.y] drm/virtio: Conditionally allocate virtio_gpu_fence
-Date:   Tue, 12 Sep 2023 12:35:34 +0000
-Message-ID: <20230912123534.893716-1-hi@alyssa.is>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S235141AbjILMhG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 08:37:06 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CE7C4;
+        Tue, 12 Sep 2023 05:37:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1694522222; x=1726058222;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P01cDTSVf7ckurQxFxyjwgb5uJRiP/96u6vP0AxPKWE=;
+  b=Kj2bW/PqFmxRkfe2OWLJvr8dJcThJsOCgAx5/nHIvVmag5WCKs08C7aB
+   gIdzpwzWGZPvQyMeWPAPuUYnRvRvA8s/WaDxztyZXKmtc8Kqyuppv/DtX
+   8FhlhuET7Ymh33LYuNJl/0W/NzPDi+iXeMujOuOV8qAKQqh4dotJdliZ8
+   yqsiBbAo06TwHefJ7EpMtdK6Jt/xQ6ZBJjldwxMYJbZ+Ac0B12WZ8IQ9Z
+   LrzJsVaQg2IOH+WsYVNAsFy31NDEcqh+y7fO73uROYNLmyUyLFE44+BnS
+   E9NV6k31R4XSqDgRLoEzzrgToryIMkhp67rHLs1+sxtjBxhmKVCiNZ1Ty
+   Q==;
+X-CSE-ConnectionGUID: 0sNE4ZAsR22nJG2L44lBOA==
+X-CSE-MsgGUID: 5nIlT3dOTH2q3yTVJBRicw==
+X-ThreatScanner-Verdict: Negative
+X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
+   d="asc'?scan'208";a="171179025"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Sep 2023 05:36:49 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Tue, 12 Sep 2023 05:36:41 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Tue, 12 Sep 2023 05:36:38 -0700
+Date:   Tue, 12 Sep 2023 13:36:22 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>
+Subject: Re: [PATCH 6.4 000/737] 6.4.16-rc1 review
+Message-ID: <20230912-patchy-banknote-0982b6f505c2@wendy>
+References: <20230911134650.286315610@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lqmFod006FlLWkrC"
+Content-Disposition: inline
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gurchetan Singh <gurchetansingh@chromium.org>
+--lqmFod006FlLWkrC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We don't want to create a fence for every command submission.  It's
-only necessary when userspace provides a waitable token for submission.
-This could be:
+On Mon, Sep 11, 2023 at 03:37:39PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.16 release.
+> There are 737 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-1) bo_handles, to be used with VIRTGPU_WAIT
-2) out_fence_fd, to be used with dma_fence apis
-3) a ring_idx provided with VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK
-   + DRM event API
-4) syncobjs in the future
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-The use case for just submitting a command to the host, and expecting
-no response.  For example, gfxstream has GFXSTREAM_CONTEXT_PING that
-just wakes up the host side worker threads.  There's also
-CROSS_DOMAIN_CMD_SEND which just sends data to the Wayland server.
+Thanks.,
+Conor.
 
-This prevents the need to signal the automatically created
-virtio_gpu_fence.
+--lqmFod006FlLWkrC
+Content-Type: application/pgp-signature; name="signature.asc"
 
-In addition, VIRTGPU_EXECBUF_RING_IDX is checked when creating a
-DRM event object.  VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK is
-already defined in terms of per-context rings.  It was theoretically
-possible to create a DRM event on the global timeline (ring_idx == 0),
-if the context enabled DRM event polling.  However, that wouldn't
-work and userspace (Sommelier).  Explicitly disallow it for
-clarity.
+-----BEGIN PGP SIGNATURE-----
 
-Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # edited coding style
-Link: https://patchwork.freedesktop.org/patch/msgid/20230707213124.494-1-gurchetansingh@chromium.org
-(cherry picked from commit 70d1ace56db6c79d39dbe9c0d5244452b67e2fde)
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
----
- drivers/gpu/drm/virtio/virtgpu_ioctl.c | 30 +++++++++++++++-----------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZQBbRgAKCRB4tDGHoIJi
+0k7qAP9LyrhUha+vdg2Rj87nVD/4UPAd7+dYX8wHBH+qPyhUNwEAtkFzqq3VQr8y
+2pdlezoiRm3eVNsCXG/ViFe78qr92QU=
+=altQ
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_ioctl.c b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-index da45215a933d..bc8c1e9a845f 100644
---- a/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-@@ -43,13 +43,9 @@ static int virtio_gpu_fence_event_create(struct drm_device *dev,
- 					 struct virtio_gpu_fence *fence,
- 					 uint32_t ring_idx)
- {
--	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
- 	struct virtio_gpu_fence_event *e = NULL;
- 	int ret;
- 
--	if (!(vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
--		return 0;
--
- 	e = kzalloc(sizeof(*e), GFP_KERNEL);
- 	if (!e)
- 		return -ENOMEM;
-@@ -121,6 +117,7 @@ static int virtio_gpu_execbuffer_ioctl(struct drm_device *dev, void *data,
- 	struct virtio_gpu_device *vgdev = dev->dev_private;
- 	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
- 	struct virtio_gpu_fence *out_fence;
-+	bool drm_fence_event;
- 	int ret;
- 	uint32_t *bo_handles = NULL;
- 	void __user *user_bo_handles = NULL;
-@@ -216,15 +213,24 @@ static int virtio_gpu_execbuffer_ioctl(struct drm_device *dev, void *data,
- 			goto out_memdup;
- 	}
- 
--	out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
--	if(!out_fence) {
--		ret = -ENOMEM;
--		goto out_unresv;
--	}
-+	if ((exbuf->flags & VIRTGPU_EXECBUF_RING_IDX) &&
-+	    (vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
-+		drm_fence_event = true;
-+	else
-+		drm_fence_event = false;
- 
--	ret = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
--	if (ret)
--		goto out_unresv;
-+	if ((exbuf->flags & VIRTGPU_EXECBUF_FENCE_FD_OUT) ||
-+	    exbuf->num_bo_handles ||
-+	    drm_fence_event)
-+		out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
-+	else
-+		out_fence = NULL;
-+
-+	if (drm_fence_event) {
-+		ret = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
-+		if (ret)
-+			goto out_unresv;
-+	}
- 
- 	if (out_fence_fd >= 0) {
- 		sync_file = sync_file_create(&out_fence->f);
-
-base-commit: f60d5fd5e950c89a38578ae6f25877de511bb031
--- 
-2.41.0
-
+--lqmFod006FlLWkrC--
