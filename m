@@ -2,99 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E4D79D317
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 16:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E3D79D31C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 16:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235600AbjILOCl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 10:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40246 "EHLO
+        id S235709AbjILODZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 10:03:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbjILOCl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 10:02:41 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39EC810CE
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:02:37 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-501cef42bc9so9314081e87.0
-        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:02:37 -0700 (PDT)
+        with ESMTP id S234834AbjILODY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 10:03:24 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B371710CE
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:03:20 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99c136ee106so706885866b.1
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 07:03:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694527355; x=1695132155; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kQKWmjxlOgD0sFnV2w19yinXyEz+FYaCQSbQXdSTv04=;
-        b=lD3aLPwb2jrZdljn1gnaMIr73eE3oTjfkhb8BiZxt5Uo7vdOYBj2Odm1G5ZfSox6LH
-         qWG/8et8oDfa6wo/sVygGXMFF9Oa1DlBV5UMKFmcSt58qU+2kSNWCT6BXmZtap3GXIiy
-         79CA8Eop1wmBA0x8/+mun/IWL3kSAnBswt3k2XW86y06ymCq5nfxBes1vXCtiNuKUmjz
-         VD95/B+09D14+EFo7YAPl4oTZFIAfZ0ILcnnv28cWDw6j7LwEGybiR2P1X5VQLxMEVTB
-         Rhl1T6WW6WHs1G/nSWtVBy+nHlI5vYI6m9uMPFb7A7efqouWbROc2RXKIBWkFfPk8pOU
-         8iPQ==
+        d=gmail.com; s=20221208; t=1694527399; x=1695132199; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yo7iXbHy4x2PvD9ozhmBhM2+HNuolyF4QbOeweFSeTQ=;
+        b=qnhQxFtdeI2ufOq5rVWJ4pEdqu2umHGK4s1HHHWI9Ea04apAL0U+9pFK0JwNPwfD1n
+         Ah/Mht8hOGXGr+2Puqw8+ctghwNuGbYu8uDE4uKUYJU/B1VFL5IBxxfOGnBPuhnk6J8n
+         FsZqbyrdP9FnmcCrXCY4fmrVkmP3p+P7mhIGAmDEg/mkmWQfvt1ccZQKh5vhfMfns63Q
+         PC6qgQYdj9Az1kPRozQZ+BIYU/HumA3qhTAREYottNZ3uawtJAj1tN691drB4lGXHues
+         dKQFAYodcSrpRu2kkkHIDFviYjFcYPzGKutXkIt+y+Ghybcon5miAEpT2zTXplcE0yfY
+         s75g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694527355; x=1695132155;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kQKWmjxlOgD0sFnV2w19yinXyEz+FYaCQSbQXdSTv04=;
-        b=LyNm8hyxcExNop82E743tuFdTdFuSCOZWZmwymwUjbCZPzzPfHJsHCpCPqSsu95x5c
-         kIHwMIu66NlqgIXIYWkdAs74cFJrDkJKZqVoT6Vw8aAnDycUykZEQfmaNjDKnQ2cCCcf
-         uVsMD0NEp4vn1UaMPhhvvG05wZ8CqZpqbhhkklGyIxXMH+kwnOeI0oXgtTjY5sz0m4zs
-         wVAP3gYem2eaozJZb8OtksBXkvdvpRxM3mB/OU9y4H82aasuIbZ33g1BfYI/3iZyAcYw
-         NArGr8Y/7/ANP4ccHfXsIqwI3XX+6eQHVUD7OBShYVrPTw6JjsKoi+HWq07L6XzpVygB
-         3Kcw==
-X-Gm-Message-State: AOJu0Yxh9p4jNClCrpYSpbVxqU8Usib1pADpBuGohEzNZS6+1iTLmk7j
-        TTYtmZJHwDKUvUEYXIrgmPzBjJbAV1M=
-X-Google-Smtp-Source: AGHT+IFtYkc0IQp926ZSy9/mYFLzFLFDfgLb8A0XsYLxCMPlp+1h9Xn5dkOiBl3EwUWMW8qNr05wZA==
-X-Received: by 2002:a05:6512:3c81:b0:502:af38:3413 with SMTP id h1-20020a0565123c8100b00502af383413mr9848052lfv.2.1694527354262;
-        Tue, 12 Sep 2023 07:02:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694527399; x=1695132199;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yo7iXbHy4x2PvD9ozhmBhM2+HNuolyF4QbOeweFSeTQ=;
+        b=JTLG+8b3D887Vhq667wAZw1Oc17/jHyg1qQCQaGYUVv1HLBZBY6NTBOMF5kqUnPUWT
+         FAB+Bg83P6PZEFEuAi4WKDCyhrZUOqmmBCJGT5k6Tj7pnMvxqt1LP/dXbULTw42gLe3Q
+         g+ZfbwN/lsvVyKOp+cOWWc3yjFECvv2N8Mic14HFDVHHMIZKKE6BNoudWWRW9AJ0RwRa
+         HXKBtQdi/G+2aqc0PWk9LpO3Nr3rJzlzuxuBPMwGOJq5XGFt43SjD1tAfpuxxyoa9nbF
+         lp9vtkuqjWHoz9ICUBaW0MKJofzZchzTc89+Vo5uBaAc1rsx5ZG62N/HsTxhyR7mNiM/
+         zLfA==
+X-Gm-Message-State: AOJu0Yx7xw9lcd+Y5FgSzYWx/7Y++J/Pivv9W3qatCk68v8zk7SoirZW
+        5DXUnF4C6axY1rpaZfUGpJ9aHN4O9p8=
+X-Google-Smtp-Source: AGHT+IH/woy9V89aKd3RgBiqyyuwgn921h0Gu+mK5p/7x0bawqRuEUKuGSpIr2HAs7WEkRYUVyxNTw==
+X-Received: by 2002:a17:907:762d:b0:9a9:ef41:e5a6 with SMTP id jy13-20020a170907762d00b009a9ef41e5a6mr10868925ejc.1.1694527398969;
+        Tue, 12 Sep 2023 07:03:18 -0700 (PDT)
 Received: from 127.0.0.1localhost ([85.255.237.46])
-        by smtp.gmail.com with ESMTPSA id pk24-20020a170906d7b800b0098d2d219649sm6997770ejb.174.2023.09.12.07.02.33
+        by smtp.gmail.com with ESMTPSA id ib10-20020a1709072c6a00b009ad8d444be4sm751671ejc.43.2023.09.12.07.03.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 07:02:33 -0700 (PDT)
+        Tue, 12 Sep 2023 07:03:18 -0700 (PDT)
 From:   Pavel Begunkov <asml.silence@gmail.com>
 To:     stable@vger.kernel.org
 Cc:     Jens Axboe <axboe@kernel.dk>, asml.silence@gmail.com
-Subject: [PATCH 3/3] io_uring: break iopolling on signal
-Date:   Tue, 12 Sep 2023 15:02:01 +0100
-Message-ID: <b3b333ddf567f86104ce42708ad8982e561e9f59.1694522363.git.asml.silence@gmail.com>
+Subject: [PATCH 0/3] stable-5.10 io_uring patches
+Date:   Tue, 12 Sep 2023 15:02:47 +0100
+Message-ID: <cover.1694524751.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <cover.1694522363.git.asml.silence@gmail.com>
-References: <cover.1694522363.git.asml.silence@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ upstream commit dc314886cb3d0e4ab2858003e8de2917f8a3ccbd ]
+Recently failed to apply io_uring stable-5.10 patches.
 
-Don't keep spinning iopoll with a signal set. It'll eventually return
-back, e.g. by virtue of need_resched(), but it's not a nice user
-experience.
+Dylan Yudaken (1):
+  io_uring: always lock in io_apoll_task_func
 
-Cc: stable@vger.kernel.org
-Fixes: def596e9557c9 ("io_uring: support for IO polling")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/eeba551e82cad12af30c3220125eb6cb244cc94c.1691594339.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
- io_uring/io_uring.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Pavel Begunkov (2):
+  io_uring: break out of iowq iopoll on teardown
+  io_uring: break iopolling on signal
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 077c9527be37..1519125b9814 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2668,6 +2668,11 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
- 				break;
- 		}
- 		ret = io_do_iopoll(ctx, &nr_events, min);
-+
-+		if (task_sigpending(current)) {
-+			ret = -EINTR;
-+			goto out;
-+		}
- 	} while (!ret && nr_events < min && !need_resched());
- out:
- 	mutex_unlock(&ctx->uring_lock);
+ io_uring/io-wq.c    | 10 ++++++++++
+ io_uring/io-wq.h    |  1 +
+ io_uring/io_uring.c |  9 ++++++++-
+ 3 files changed, 19 insertions(+), 1 deletion(-)
+
 -- 
 2.41.0
 
