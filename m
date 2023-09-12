@@ -2,75 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D76E579D9DA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 22:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1700979DA44
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 22:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237766AbjILUBb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 16:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43472 "EHLO
+        id S229704AbjILUuV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 16:50:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjILUBa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 16:01:30 -0400
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1182E4B;
-        Tue, 12 Sep 2023 13:01:25 -0700 (PDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4RlZGT6RWJz1sCHB;
-        Tue, 12 Sep 2023 22:01:21 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
-        by mail.m-online.net (Postfix) with ESMTP id 4RlZGS6ZMTz1qqlW;
-        Tue, 12 Sep 2023 22:01:20 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id 5XmMrTpGkowr; Tue, 12 Sep 2023 22:01:18 +0200 (CEST)
-X-Auth-Info: /CYuj1d8CSY9w7emKuNdoE8IT8M85oBonNI0rYcXkSZzjRPMJKll2vkUZB6/Y2QA
-Received: from igel.home (unknown [62.216.205.103])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Tue, 12 Sep 2023 22:01:18 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-        id DB4D52C12A1; Tue, 12 Sep 2023 22:01:02 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-In-Reply-To: <20230912190929.54kxm7wyws7pgcsv@revolver> (Liam R. Howlett's
-        message of "Tue, 12 Sep 2023 15:09:29 -0400")
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
-        <20230819004356.1454718-2-Liam.Howlett@oracle.com>
-        <87bkeotin8.fsf@igel.home> <87edj3b6me.fsf@igel.home>
-        <20230912190929.54kxm7wyws7pgcsv@revolver>
-X-Yow:  I always have fun because I'm out of my mind!!!
-Date:   Tue, 12 Sep 2023 22:01:02 +0200
-Message-ID: <8734zjb1q9.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        with ESMTP id S229996AbjILUuV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 16:50:21 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58588199;
+        Tue, 12 Sep 2023 13:50:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7B6C433C8;
+        Tue, 12 Sep 2023 20:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694551817;
+        bh=x7nnTrA5RCHsYOnVqf+Mil/a7Ta+GR6SCAIeYqHvIbc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IvTGrqTjYpc66HYNpyca1dKQTqvON4oy3Y5oI1mOmwt4kzgpneZ92CxUSpvK68qBJ
+         MgupqzBA/1myQM61eLotXPDMMGlno4OoCZm8uVuANMaP7K/E4gYekyVe7ljJs/bUw/
+         DNpxVP9/6T+TE/PxrAtUjH3Mf1ugRH1XcoH6Zap+JQwdCnEqjHJQc/kDYszntCOqJ9
+         2PXGfpwDsCvHAmDWZZV5vzfv9WmAH7IEdkKhLWwuytX0Z+gSrY+OgOTFStNy87Mkce
+         AFOV0AFeScKfpB6eDCkZPpTYbJRZ1BoYtCF5mPdt1GcxjvPi4mRKSb0fmf36gIKZT0
+         4mdj6cBp88Y9Q==
+From:   Jaegeuk Kim <jaegeuk@kernel.org>
+To:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] f2fs: set the default compress_level on ioctl
+Date:   Tue, 12 Sep 2023 13:50:15 -0700
+Message-ID: <20230912205015.2582133-1-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sep 12 2023, Liam R. Howlett wrote:
+Otherwise, we'll get a broken inode.
 
-> * Andreas Schwab <schwab@linux-m68k.org> [230912 14:15]:
->> Any news?  This is still broken.
->
-> I have a proposed fix.  I seem to have caused a pre-existing problem to
-> show up.  Please see if the attached works for you, and I'll send it
-> to a lot of people.
+ # touch $FILE
+ # f2fs_io setflags compression $FILE
+ # f2fs_io set_coption 2 8 $FILE
 
-Thanks, it fixes the issue for me (tested both 6.5 and 6.6-rc1).
+[  112.227612] F2FS-fs (dm-51): sanity_check_compress_inode: inode (ino=8d3fe) has unsupported compress level: 0, run fsck to fix
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ fs/f2fs/file.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index ca5904129b16..09716127e107 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4005,6 +4005,15 @@ static int f2fs_ioc_set_compress_option(struct file *filp, unsigned long arg)
+ 	F2FS_I(inode)->i_compress_algorithm = option.algorithm;
+ 	F2FS_I(inode)->i_log_cluster_size = option.log_cluster_size;
+ 	F2FS_I(inode)->i_cluster_size = BIT(option.log_cluster_size);
++	/* Set default level */
++	if (F2FS_I(inode)->i_compress_algorithm == COMPRESS_ZSTD)
++		F2FS_I(inode)->i_compress_level = F2FS_ZSTD_DEFAULT_CLEVEL;
++	else
++		F2FS_I(inode)->i_compress_level = 0;
++	/* Adjust mount option level */
++	if (option.algorithm == F2FS_OPTION(sbi).compress_algorithm &&
++	    F2FS_OPTION(sbi).compress_level)
++		F2FS_I(inode)->i_compress_level = F2FS_OPTION(sbi).compress_level;
+ 	f2fs_mark_inode_dirty_sync(inode, true);
+ 
+ 	if (!f2fs_is_compress_backend_ready(inode))
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.42.0.283.g2d96d420d3-goog
+
