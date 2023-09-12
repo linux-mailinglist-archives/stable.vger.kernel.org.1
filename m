@@ -2,90 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8EFB79CE8D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2B279CEC8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 12:48:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbjILKji (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 12 Sep 2023 06:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58870 "EHLO
+        id S234302AbjILKsg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 12 Sep 2023 06:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230223AbjILKji (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:39:38 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A7DF2;
-        Tue, 12 Sep 2023 03:39:34 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qg0nq-00042X-9f; Tue, 12 Sep 2023 12:39:30 +0200
-Message-ID: <516005ff-636e-4aa9-9bcb-76902c09f855@leemhuis.info>
-Date:   Tue, 12 Sep 2023 12:39:28 +0200
+        with ESMTP id S229912AbjILKsP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 12 Sep 2023 06:48:15 -0400
+X-Greylist: delayed 434 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 12 Sep 2023 03:48:10 PDT
+Received: from tilde.club (tilde.club [142.44.150.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11EB1726
+        for <stable@vger.kernel.org>; Tue, 12 Sep 2023 03:48:10 -0700 (PDT)
+Received: from [IPv6:::1] (unknown [IPv6:2a03:f680:fe00:a8f:f926:df19:473e:6a88])
+        by tilde.club (Postfix) with ESMTPSA id D183222184730;
+        Tue, 12 Sep 2023 10:40:52 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 tilde.club D183222184730
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tilde.club; s=mail;
+        t=1694515253; bh=oCzw4WyOJPJp+50oIJ6IiKmd7r26VfSs05xyf/i5w38=;
+        h=Date:From:To:CC:Subject:From;
+        b=arFjTokM3xO+ua5TlFq7qKmD/HqQoSTCMoazNFETZhLCVAirKdnjkFhxielvbi/IG
+         d0WcGa0kouCGw9/joRhi1Z7ERQY6r87WfSlvlZ9TRE6DrD26x9CAPicGXuDqUKKjY0
+         SLLqbHJC/XvGVdZyqj3YWCI88/H5KnzYcfe2Moeg=
+Date:   Tue, 12 Sep 2023 13:40:47 +0300
+From:   Acid Bong <acidbong@tilde.club>
+To:     gregkh@linuxfoundation.org
+CC:     stable@vger.kernel.org
+Subject: No updates in rolling branches
+Message-ID: <960C7BCB-CB29-40AE-AA82-CCB470A90DBE@tilde.club>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "comedi: add HAS_IOPORT dependencies"
-Content-Language: en-US, de-DE
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Arnd Bergmann <arnd@kernel.org>, stable@vger.kernel.org,
-        Ian Abbott <abbotti@mev.co.uk>, linux-kernel@vger.kernel.org
-References: <20230905090922.3314-1-abbotti@mev.co.uk>
- <76acff7e-3959-4193-9531-22a5e5a68221@leemhuis.info>
- <2023091226-foe-reanalyze-b859@gregkh>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2023091226-foe-reanalyze-b859@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1694515174;6d73b4fc;
-X-HE-SMSGID: 1qg0nq-00042X-9f
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 12.09.23 12:13, Greg Kroah-Hartman wrote:
-> On Tue, Sep 12, 2023 at 11:44:39AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 05.09.23 11:09, Ian Abbott wrote:
->>> This reverts commit b5c75b68b7ded84d4c82118974ce3975a4dcaa74.
->>>
->>> The commit makes it impossible to select configuration options that
->>> depend on COMEDI_8254, COMEDI_DAS08, COMEDI_NI_LABPC, or
->>> COMEDI_AMPLC_DIO200 options due to changing 'select' directives to
->>> 'depends on' directives and there being no other way to select those
->>> codependent configuration options.
->>>
->>> Fixes: b5c75b68b7de ("comedi: add HAS_IOPORT dependencies")
->>> Cc: Niklas Schnelle <schnelle@linux.ibm.com>
->>> Cc: Arnd Bergmann <arnd@kernel.org>
->>> Cc: <stable@vger.kernel.org> # v6.5+
->>> Acked-by: Arnd Bergmann <arnd@kernel.org>
->>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
->>
->> Hmmm, that fix for a regression from the 6.5 cycle was posted a week ago
->> but didn't get a single reply afaics and hasn't hit next.
->>
->> Greg, is this still in your to-review queue and just delayed due to the
->> merge window? Or are you waiting for something? A ACK fromn Niklas
->> maybe? Or a newer patch to address the kernel test robot report in case
->> its relevant?
-> 
-> The merge window "freeze" ended on Monday, give me a chance to catch up
-> with patches please, this is part of my very large todo mbox:
-> 
-> 	$ mdfrm -c ~/mail/todo/
-> 	1637 messages in /home/gregkh/mail/todo/
+Hi there, hello,
 
-Well, I know that you deal with a lot of patches and often wonder how
-you manage to do all that great work, but nevertheless please allow me
-to ask:
+I noticed that v6=2E5=2E2 already has patches that are not passed to v6=2E=
+4=2Ey, but it's still not merged into `rolling-stable`=2E Do you not merge =
+6=2E5=2Ey until 6=2E4=2E15 comes to its EOL? Or haven't pushed the merge?
 
-I assume that that not all of those 1600+ patches are fixes for
-regressions, so should a revert for a very recent regression be in a
-different mbox with a slightly higher priority[1] to get handled before
-the others?
+(re-sent, as suggested by your email bot)
 
-Ciao, Thorsten
-
-[1] for most other developers I would have said "highest priory", but I
-assume in your case there are still more important things
+Regards,
+~acidbong
