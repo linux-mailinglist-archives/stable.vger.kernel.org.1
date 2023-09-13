@@ -2,282 +2,279 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B03D79E8E6
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C6E579E905
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240821AbjIMNPP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 13 Sep 2023 09:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33404 "EHLO
+        id S240829AbjIMNTw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:19:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240825AbjIMNPO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:15:14 -0400
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 692431BC2;
-        Wed, 13 Sep 2023 06:15:10 -0700 (PDT)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-59b50b4556eso56900037b3.1;
-        Wed, 13 Sep 2023 06:15:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694610909; x=1695215709;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fFiAnOhwKs2lmFqJqrAudE7XU8aOsnd0WSox5jtYe4U=;
-        b=DwRis7b9cgzZwKrwWFLgEZC6sTnOy/C9REK5vo9C75anQnLmW+/h/5nbxQ4oH6nyMz
-         BFwW2u8rZtGU1g6xE8VBPXMWn19UlINM9huoaAmDpksaTDYjpUKorJcI07zZ0c0zSRWc
-         NrBO3zWgI2GTa5V1qoYM1TmknP5TcKL7RCZQJqQfJgoaiKQHluK9XjGCXCWqr5I0yqbW
-         oBhGXWzWiI6XH115Ak/AyqHTJpYrVK7keJkoFYUXnn5SHrFW20AJ//61Znlr73ip833q
-         b+cFB0TpzMuWBcCvLAMunQe5PQDLhLPOvo/7l+WiOx5ryKI+7OLpFwWzwSDUgbQxizuz
-         aLRw==
-X-Gm-Message-State: AOJu0YxjlGgYa7Ue7En4fNVdBpgv3M9C3ylLj+AkEvxcCjopYiCbRSEl
-        v3FNmKED5Di19R25UvIg4cJAs9axYzuuJw==
-X-Google-Smtp-Source: AGHT+IGflha2alWW8grcM/dRWkE3vDpe4sjjEHQj0HteC1giqW28s2s3hwp2U+QmH3GWWsKQRqnbrg==
-X-Received: by 2002:a0d:d856:0:b0:579:16e0:b1bf with SMTP id a83-20020a0dd856000000b0057916e0b1bfmr2705614ywe.12.1694610909068;
-        Wed, 13 Sep 2023 06:15:09 -0700 (PDT)
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
-        by smtp.gmail.com with ESMTPSA id u8-20020a814708000000b005869ca8da8esm3099867ywa.146.2023.09.13.06.15.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Sep 2023 06:15:08 -0700 (PDT)
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-d78328bc2abso6486763276.2;
-        Wed, 13 Sep 2023 06:15:08 -0700 (PDT)
-X-Received: by 2002:a25:2d03:0:b0:d47:d267:26fe with SMTP id
- t3-20020a252d03000000b00d47d26726femr2582741ybt.21.1694610908416; Wed, 13 Sep
- 2023 06:15:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
- <20230906152325.dblzauybyoq5kd35@revolver> <ad298077-fca8-437e-b9e3-66e31424afb1@paulmck-laptop>
- <20230906172954.oq4vogeuco25zam7@revolver> <495849d6-1dc6-4f38-bce7-23c50df3a99f@paulmck-laptop>
- <20230911235452.xhtnt7ply7ayr53x@revolver> <33150b55-970c-4607-9015-af0e50e4112d@paulmck-laptop>
- <CAMuHMdWKwdxjRf031aD=Ko7vRdvFW-OR48QAc=ZFy=FP_LNAoA@mail.gmail.com>
- <f9b0a88c-8a64-439f-a488-85d500c9f2aa@paulmck-laptop> <CAMuHMdX89u6wL9W+8ZOn-OTT1FreYjEqYnvEip4Aq3k1gOP0EQ@mail.gmail.com>
- <62936d98-6353-486e-8535-86c9f90bc7f4@paulmck-laptop>
-In-Reply-To: <62936d98-6353-486e-8535-86c9f90bc7f4@paulmck-laptop>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 13 Sep 2023 15:14:54 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVp10=AQDcC31OEvy2LPWSdjvHnbCKVtRtt-Re=7wr=1w@mail.gmail.com>
-Message-ID: <CAMuHMdVp10=AQDcC31OEvy2LPWSdjvHnbCKVtRtt-Re=7wr=1w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-To:     paulmck@kernel.org
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        with ESMTP id S231326AbjIMNTv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:19:51 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDB9F19B1;
+        Wed, 13 Sep 2023 06:19:47 -0700 (PDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38DD55kE005588;
+        Wed, 13 Sep 2023 13:18:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2023-03-30;
+ bh=23rlc4WMNMS7EngHipUSbTTuwMzXa338GiqkhNi2ZKw=;
+ b=oZcA5Xpt13K+3fFGCZbLamRKHEMEelLAXtC1flYBkpjvvJ5xzK7aKY+4hO0b3oII298N
+ PhwrdVQalkBhCI+QJouCpw7uwaKrvnDHeX8aa3hc1DgTMxGg5alvNM8911ZonqTqIqrh
+ PAn/2LCGU+aC15qKR0cY/oN3prP9PFkBJODerzWAj17VI01vIp9QZLWzJ5Zhhgb/DY8N
+ NRxd3USX0L1CJYxAd8nyg33eSLCc5GclmWHOLk9BvLvCUNqMdiFHc85gUdAgAo+wOawZ
+ ImeIY14eNzxCLXjjmm1G9KqSENdms2Os02vdcRI4f+UVt53CO6VlMHPEVjvA1vtNXD0/ Nw== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t2y9ksuh5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 Sep 2023 13:18:38 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38DBbic2033088;
+        Wed, 13 Sep 2023 13:18:36 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3t0wkggd4u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 Sep 2023 13:18:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Vo/DNNOST8dvx5Zn+6vfB0DGEfgXiU6DOd73t0Lj1koGOEwl5I1fx4h8FbWSj+lHnFoP/5ExKMrwSSuYbb6MVEeuH3l0fkdA5eZcBRtc7ZN/o1HuzGd+V7i1CeNMejGZbB7J82P051qSLdAGZjkwUkLFRsNz88poZ9YwEZikMFbnULI91ziWa3e1i2pf6jaNSND4Jxw9vopJiFMpJGYKhc8ibWNvHZebn1vz9nYaZtnWOilIRWe2CrkvYG8amzn0xtzM8y1LNRXUv3P7Oek5DhKZynXjarprLCVUiw2yUlgdFl+8MLQ1SIz24Xtu2GxFciA6v1QxkXkUI1Mp0HT5OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=23rlc4WMNMS7EngHipUSbTTuwMzXa338GiqkhNi2ZKw=;
+ b=iGuPp7ynsrQRnOPZNtezHNmxRNwBMk3uUgpoMhbecRUWLsoDSLzswQ42P+6VJ6/AL8XHdfqi48s1acaP8WuBUJVfjTiNx5Vf32TB5Uii9bT7difLQprjb4/aWU9BFcKdN2RIlLOde0lWzZUQHsMv8nalJC0xwKJESHUGwj71+Cw1sHmQPSy4HdvFroxvAEZZn/u/z3De56qQa6wVIkAPznpWydmo1KpC6Gay75J/vrHezxDcafZDbXfMSB0ngB0Z2xZnbs3P3Z4L/vtN9+NI1//lWZCOPNMuKBzOq/WtbY1NmFOuIXcFiyxZ++PHvq60U7RgJWzgWlyTe4yrr76Wng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=23rlc4WMNMS7EngHipUSbTTuwMzXa338GiqkhNi2ZKw=;
+ b=Zf0jnZmNZ0DrV7t8RtSlSh6x3inH90Fpcz+Wb+RLr5Jsc8fhj+KI8TCy2TzvzgVC5sL25UVxlejWLHPXg+nmex+15q7nb5zkEK4T5yz1+b4ay25nUHg/QSOBkRxhRjr3+lkvDMik0vH89XqVVFa/KRfQ4Iob4FJxuPA9xbGO6lM=
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
+ by DS0PR10MB7522.namprd10.prod.outlook.com (2603:10b6:8:15e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37; Wed, 13 Sep
+ 2023 13:18:32 +0000
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8979:3e3f:c3e0:8dfa]) by SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8979:3e3f:c3e0:8dfa%4]) with mapi id 15.20.6768.036; Wed, 13 Sep 2023
+ 13:18:32 +0000
+Date:   Wed, 13 Sep 2023 09:18:28 -0400
+From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+To:     "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         maple-tree@lists.infradead.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Shanker Donthineni <sdonthineni@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Peng Zhang <zhangpeng.00@bytedance.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH] init/main: Clear boot task idle flag
+Message-ID: <20230913131828.xl7y7lriwyn4fdi4@revolver>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Peng Zhang <zhangpeng.00@bytedance.com>,
+        Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+References: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
+ <20230913110139.GE692@noisy.programming.kicks-ass.net>
+ <14620af6-7315-4de3-ac7f-5bb51f773397@paulmck-laptop>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <14620af6-7315-4de3-ac7f-5bb51f773397@paulmck-laptop>
+User-Agent: NeoMutt/20220429
+X-ClientProxiedBy: YT4PR01CA0285.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::23) To SN6PR10MB3022.namprd10.prod.outlook.com
+ (2603:10b6:805:d8::25)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|DS0PR10MB7522:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80eb2bb6-f4e3-4305-e939-08dbb45bed62
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 5rOsidFijMDR9MiSWt8/6XuIe2U5m4Fw6S33D6EvT5M4g7L0RtzZBgayeOlUEhIcW87bSHVrC8B2eROSbVYB6eoJZWCukZSQ6m2FmzpU1/uFqiK0g+hZTPNur93L2j1KJdxmGthvD9K7elv5r9ThUumZmGfZmKSweNsOqk2zx7Gf2AbYOCE3qdz7TSFAo1frEil036YJsS+ZQc7AxAfuS8CZEoA0y0fBiVylqoWMCiLt7JMt+OMdaqiEmSJCg2JIsvKcjJrcVz7EK9IHpIQPsFilNUZU5koBFM6v6isTMJFIgrajH75+5MsoYEnZR20JCAZT2BQq3kQviKsk3KNDpnbNutLP8KRTfVR4EBVdQOEdtVwuNSpAw+M11mGadST0ePKpdYazCHsMwpydzaqmxwlnqQgtYs9NfytKuY+85g3ahOLLslaQhwUhvyyyUxPf6pCSKYeOVE1ti1vgc4oo3i1VwowscKm0zF/N1qCF8Cr7LrBcEJUriXL7I6gp1+nYIzewI3eWDDp/BmWnoR9hbGCnIyb5vrxPALDdQJwyRTJQk01+zd+j2fmaCdPCKJP3Dk5bYpMhadvSnvTdsjxBTw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(346002)(39860400002)(376002)(366004)(396003)(451199024)(1800799009)(186009)(4326008)(966005)(66946007)(6916009)(8676002)(54906003)(66476007)(5660300002)(8936002)(41300700001)(316002)(66556008)(38100700002)(86362001)(26005)(6506007)(1076003)(6666004)(6486002)(478600001)(83380400001)(7416002)(9686003)(2906002)(33716001)(6512007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RtSADSZjbtBB5KMJnmzmqEkQAXAuuBFiiVBT861XKmpivnSe+087Rf0nCLvd?=
+ =?us-ascii?Q?Dc9UdZV1dQk4dChI2NgtwGvpSDWolYFI9nAs1SbFZtat4kEXkm9346+WleA3?=
+ =?us-ascii?Q?X78DplHlYm6AARy58mEIrAF/XKbwLlvOIdjf+SgwqVHq75MGKjvwLNfxaSb0?=
+ =?us-ascii?Q?B/tDslXxmR9k9WFM4UiLknAMZNCK2cze68/2GrdHRTaSjcMaxpDoaMONkNBF?=
+ =?us-ascii?Q?CUv9dsR/6c4/r6Moru3rkjayYvKZWcxxatVI8M7sf0kGVTPxGQj48uexL+Ly?=
+ =?us-ascii?Q?Bz8sUsld/sK2GfEjrPY5W+KhINf8QHsm8E0TtQDYfyWcVAoxaS2iOTYvUswM?=
+ =?us-ascii?Q?mkZ9syZ+8BoLFSkJqvkao27ZNqJ2oXAZRbIzlD35FQATDHobv3schF04kPGa?=
+ =?us-ascii?Q?ofnyblCf4LcEdp01eQHMOxxstx4z5a6dUubXFfabfhbP2cqBqccDuHwmsFRp?=
+ =?us-ascii?Q?xddO+PND+6D1bFCLx3gl3hk50GC7jnhSqPab9I4+3NThEtk9plyVNbJMLMGe?=
+ =?us-ascii?Q?rtQzolvM1O/xqssBCYOkTE8JzLMgr4UhnbQyoaVnA7rJdQ2ggipE/ltL+o7y?=
+ =?us-ascii?Q?+dhjmq46XP43RvDWOJkaswqEVHo7LT/uiQNaXE4uELf2e/iRfyj1rd93oTV6?=
+ =?us-ascii?Q?iGvthfpGm171DWvGXal3wP05RrzRCbkumdzulbbECyM6a/jk7FHocrLUdD86?=
+ =?us-ascii?Q?OoHq+7PBIk6cmbXqamzJ8zmC6OCpUIA4WgK8U8o7TuLfYfd9UT1ppeEjzB0W?=
+ =?us-ascii?Q?mB16JB84hd6T95UCt1KFszK2lCMpAH5fBmqX4Fz/fZKe68ltXxoprQVvoWdS?=
+ =?us-ascii?Q?nHMhnJlpFqBeLYz+XvFhCENWmzf6/8gimhVLcae8lgyuxzIUmB2T2Dv4r56b?=
+ =?us-ascii?Q?XYRwl2oQI/Zlx+pGQiE2yBRFBHhSMYgBsUoFOgXxxiOR1p0KUn5BA9jlVRiW?=
+ =?us-ascii?Q?UrzH/y3l03Ukm1ld5L6GoSPATGUjIxTdacKAf/8JFcx6Uv9PWHelPFEF8Ozs?=
+ =?us-ascii?Q?x2VQG+Bjk+Yi0c0nORoS2QMjQTPsJg63csX93IZsAURBd3WQwmFRt/V9Wtc4?=
+ =?us-ascii?Q?F3RkS5zfcuI20FGGawwDdR/6MKufK8K0XiWDQ76f451LEbiCk1Dn+W4vlPmF?=
+ =?us-ascii?Q?l10LUgRyj/jtC+FKpLv4tc/BjrBlR7QRjZm3A8Pztmo3pSYQCK/ebAPiZgO6?=
+ =?us-ascii?Q?zbYl6hOcLqEU94+7jJDP7C5finM150CkFVDvB8Y4bP6IQZc6W2E3dt8THgAt?=
+ =?us-ascii?Q?v2vsX/9f8+GIY1V3tsnH+5CCbE1mpRWlNnpYmIMsHAJ+tHmk7JNLebAdw/VH?=
+ =?us-ascii?Q?e1RxX4zhy1q3moWVrc9KrprNjg6pZb8oaRhg87m+cJKSMkD8u0n4J1wSEah9?=
+ =?us-ascii?Q?kwF3j1ZqsbnMuaikNhaU2y/FjyLPgGORvsLO/uPodhwhVsRM7mvsyLL4zLR4?=
+ =?us-ascii?Q?8PR88BGpNKxgHcBpDrIz/+daC26PMsaN3DQ/nnZp3wBXgBCJ+ljooDYtGKba?=
+ =?us-ascii?Q?kDJbTYLZKmD/1U2R5yclTIL6HuhX3Bd8/G+k5HjKJd3CA/VRzxx2HAuIhaJS?=
+ =?us-ascii?Q?FMkssmHJu1T7fjq/fxfHpJLgJFVOCrtLTwWqfWIN?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?Q++3NJhZt9iWnWlLX1Qw1lzQSk4U+oTH0QVuoURGS1Se5Y8WNlIDloAYi524?=
+ =?us-ascii?Q?jxTuJos6oEMg1Sq7DTbPg38RWNRnlCXOLqi8Xg+xy9tBFkdmc5F2m46V+b53?=
+ =?us-ascii?Q?4g86JNWOCYTT6FuzDGfpDGL7X5nm3J6Ua63IyS5WyFPpOPlooMMQ743IAv5/?=
+ =?us-ascii?Q?hIX8nux8QJf5O+bWS7WPXmpqYCVXpKoI0vgn565BS7ki8bGqqKpTpJPaGCLC?=
+ =?us-ascii?Q?NRf2FV/r61QpWXfgxPNvryLwewWkKz3vWF8eBWtifs2f9gKfQEmPGPiqGniM?=
+ =?us-ascii?Q?g953LGS7WOA/4zvfXQZ5i5dW8mBaa9dnvXa/FfyueyQQq2mgXLfaX0OBVU45?=
+ =?us-ascii?Q?CmYO3Mj7LCo+ZJgb2UPgr/f3mAPng1SNlNqstZvolw/nxgkk6p1ZuH+FVXqH?=
+ =?us-ascii?Q?1nTizz+8SOC8pIPUyGy8yQhMtYUIYkTdonQFe/CYE2w8QghpC7JyDiTYis49?=
+ =?us-ascii?Q?aI7EcOj99cY7SiD8iBnuRgCdwvDWIWOep4I40DtdLHwi+WpG2Fo1st5SUQ5k?=
+ =?us-ascii?Q?G3CywZkZxQysOjMqHgwwnQn/ORS4ToFY5nQ4+sQofz3rt495Q5oEe5z/UtXT?=
+ =?us-ascii?Q?jmXn6fDk3+mS78tavBsEQ1fE1dr2eICN1on9szw9bro+IGqYJrZBfoOgGbou?=
+ =?us-ascii?Q?t2G73Qn/XCsDVXSJcueV9UCHwDcD3L2b6BRgnuirAtkoy7dMTeuKj9OLf2Mz?=
+ =?us-ascii?Q?MpUCQX+vkRgx8Lo9nGFDHPafXEyhaWGrQkmR6ovTj7Bhl0kt54xg8CR93rUp?=
+ =?us-ascii?Q?Aaf4g+l67V+dBr4DyamGBoM2BWHjVAn1WeEvb0DtPwQFvC4A34LXnS1KMnjw?=
+ =?us-ascii?Q?/EK5Z8iha8H1KhCc/44FZ7HvxcOPf6hOQAZ7A5wGP/3yp4RTXnGnLyQ8XC1j?=
+ =?us-ascii?Q?k9aiRymIzxPBip/0+AGAWrqt/uuem5wssLhVqxIjUpAhf1NaP/VljsbnJh8N?=
+ =?us-ascii?Q?FnKD9OKJ1MKG/cf9rDa9oTefG6/5kEgLQHF0G9rP2qqohIDTh1kOzrbi7fwO?=
+ =?us-ascii?Q?D/nHMaOAdBVjjVu+gSkviB4Y1uHv6iGyUyKMYaTb/WEW22ULgyV9QFTTvtaM?=
+ =?us-ascii?Q?1jq4atGa1vygD6PXhH8re9In7OmecPTgHd+IBkJukLB4/VWxxH2QbauFo0/K?=
+ =?us-ascii?Q?bAL+1CB1JTA8PbsglzZ2/qlgSotlscXMAg=3D=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80eb2bb6-f4e3-4305-e939-08dbb45bed62
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2023 13:18:32.2187
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TWCPGY9kOYVtngsEkPVYaY+TN+vrhWMtbkF2Vu8uwEuJBzidAKL6n7Vk0hhZlRVxcuVZ9H2fCtKo3ufbZXCtzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7522
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-13_07,2023-09-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 phishscore=0
+ spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309130108
+X-Proofpoint-GUID: 3ejg_IPU9crQgtDsUfL3tx7PvKNoAtG9
+X-Proofpoint-ORIG-GUID: 3ejg_IPU9crQgtDsUfL3tx7PvKNoAtG9
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Paul,
+* Paul E. McKenney <paulmck@kernel.org> [230913 07:28]:
+> On Wed, Sep 13, 2023 at 01:01:39PM +0200, Peter Zijlstra wrote:
+> > On Tue, Sep 12, 2023 at 08:56:47PM -0400, Liam R. Howlett wrote:
+> > > Initial booting is setting the task flag to idle (PF_IDLE) by the call
+> > > path sched_init() -> init_idle().  Having the task idle and calling
+> > > call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
+> > > set.  Subsequent calls to any cond_resched() will enable IRQs,
+> > > potentially earlier than the IRQ setup has completed.  Recent changes
+> > > have caused just this scenario and IRQs have been enabled early.
+> > > 
+> > > This causes a warning later in start_kernel() as interrupts are enabled
+> > > before they are fully set up.
+> > > 
+> > > Fix this issue by clearing the PF_IDLE flag on return from sched_init()
+> > > and restore the flag in rest_init().  Although the boot task was marked
+> > > as idle since (at least) d80e4fda576d, I am not sure that it is wrong to
+> > > do so.  The forced context-switch on idle task was introduced in the
+> > > tiny_rcu update, so I'm going to claim this fixes 5f6130fa52ee.
+> > > 
+> > > Link: https://lore.kernel.org/linux-mm/87v8cv22jh.fsf@mail.lhotse/
+> > > Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
+> > > Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
+> > > Cc: stable@vger.kernel.org
+> > > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> > > Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> > > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > > Cc: Andreas Schwab <schwab@linux-m68k.org>
+> > > Cc: Matthew Wilcox <willy@infradead.org>
+> > > Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+> > > Cc: Peter Zijlstra <peterz@infradead.org>
+> > > Cc: Ingo Molnar <mingo@redhat.com>
+> > > Cc: Juri Lelli <juri.lelli@redhat.com>
+> > > Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > > ---
+> > >  init/main.c | 4 +++-
+> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/init/main.c b/init/main.c
+> > > index ad920fac325c..f74772acf612 100644
+> > > --- a/init/main.c
+> > > +++ b/init/main.c
+> > > @@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
+> > >  	 */
+> > >  	rcu_read_lock();
+> > >  	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
+> > > -	tsk->flags |= PF_NO_SETAFFINITY;
+> > > +	tsk->flags |= PF_NO_SETAFFINITY | PF_IDLE;
+> > >  	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
+> > >  	rcu_read_unlock();
+> > >  
+> > > @@ -938,6 +938,8 @@ void start_kernel(void)
+> > >  	 * time - but meanwhile we still have a functioning scheduler.
+> > >  	 */
+> > >  	sched_init();
+> > > +	/* Avoid early context switch, rest_init() restores PF_IDLE */
+> > > +	current->flags &= ~PF_IDLE;
+> > >  
+> > >  	if (WARN(!irqs_disabled(),
+> > >  		 "Interrupts were enabled *very* early, fixing it\n"))
+> > 
+> > Hurmph... so since this is about IRQs, would it not make sense to have
+> > the | PF_IDLE near 'early_boot_irqs_disabled = false' ?
 
-On Tue, Sep 12, 2023 at 12:00 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> On Tue, Sep 12, 2023 at 10:34:44AM +0200, Geert Uytterhoeven wrote:
-> > On Tue, Sep 12, 2023 at 10:30 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > On Tue, Sep 12, 2023 at 10:23:37AM +0200, Geert Uytterhoeven wrote:
-> > > > On Tue, Sep 12, 2023 at 10:14 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > > > > On Mon, Sep 11, 2023 at 07:54:52PM -0400, Liam R. Howlett wrote:
-> > > > > > * Paul E. McKenney <paulmck@kernel.org> [230906 14:03]:
-> > > > > > > On Wed, Sep 06, 2023 at 01:29:54PM -0400, Liam R. Howlett wrote:
-> > > > > > > > * Paul E. McKenney <paulmck@kernel.org> [230906 13:24]:
-> > > > > > > > > On Wed, Sep 06, 2023 at 11:23:25AM -0400, Liam R. Howlett wrote:
-> > > > > > > > > > (Adding Paul & Shanker to Cc list.. please see below for why)
-> > > > > > > > > >
-> > > > > > > > > > Apologies on the late response, I was away and have been struggling to
-> > > > > > > > > > get a working PPC32 test environment.
-> > > > > > > > > >
-> > > > > > > > > > * Geert Uytterhoeven <geert@linux-m68k.org> [230829 12:42]:
-> > > > > > > > > > >     Hi Liam,
-> > > > > > > > > > >
-> > > > > > > > > > > On Fri, 18 Aug 2023, Liam R. Howlett wrote:
-> > > > > > > > > > > > The current implementation of append may cause duplicate data and/or
-> > > > > > > > > > > > incorrect ranges to be returned to a reader during an update.  Although
-> > > > > > > > > > > > this has not been reported or seen, disable the append write operation
-> > > > > > > > > > > > while the tree is in rcu mode out of an abundance of caution.
-> > > > > > > > > >
-> > > > > > > > > > ...
-> > > > > > > > > > > >
-> > > > > >
-> > > > > > ...
-> > > > > >
-> > > > > > > > > > > RCU-related configs:
-> > > > > > > > > > >
-> > > > > > > > > > >     $ grep RCU .config
-> > > > > > > > > > >     # RCU Subsystem
-> > > > > > > > > > >     CONFIG_TINY_RCU=y
-> > > > >
-> > > > > I must have been asleep last time I looked at this.  I was looking at
-> > > > > Tree RCU.  Please accept my apologies for my lapse.  :-/
-> > > > >
-> > > > > However, Tiny RCU's call_rcu() also avoids enabling IRQs, so I would
-> > > > > have said the same thing, albeit after looking at a lot less RCU code.
-> > > > >
-> > > > > TL;DR:
-> > > > >
-> > > > > 1.      Try making the __setup_irq() function's call to mutex_lock()
-> > > > >         instead be as follows:
-> > > > >
-> > > > >         if (!mutex_trylock(&desc->request_mutex))
-> > > > >                 mutex_lock(&desc->request_mutex);
-> > > > >
-> > > > >         This might fail if __setup_irq() has other dependencies on a
-> > > > >         fully operational scheduler.
-> > > > >
-> > > > > 2.      Move that ppc32 call to __setup_irq() much later, most definitely
-> > > > >         after interrupts have been enabled and the scheduler is fully
-> > > > >         operational.  Invoking mutex_lock() before that time is not a
-> > > > >         good idea.  ;-)
-> > > >
-> > > > There is no call to __setup_irq() from arch/powerpc/?
-> > >
-> > > Glad it is not just me, given that I didn't see a direct call, either.  So
-> > > later in this email, I asked Liam to put a WARN_ON_ONCE(irqs_disabled())
-> > > just before that mutex_lock() in __setup_irq().
-> > >
-> > > Either way, invoking mutex_lock() early in boot before interrupts have
-> > > been enabled is a bad idea.  ;-)
-> >
-> > I'll add that WARN_ON_ONCE() too, and will report back later today...
->
-> Thank you, looking forward to hearing the outcome!
+I was thinking that this isn't an idle thread until the end of boot, so
+leave it set as not idle until the end.
 
-On a typical arm32 system with global or architectured timer, I get:
+> > 
+> > Or, alternatively, make the tinyrcu thing check that variable?
+> 
+> We could do that, but do we really the decidedly non-idle early boot
+> sequence designated as idle?
 
-WARNING: CPU: 0 PID: 0 at kernel/irq/manage.c:1587 __setup_irq+0xcc/0x6d0
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted
-6.6.0-rc1-shmobile-02354-g24e058b77f5a #1655
-Hardware name: Generic R-Car Gen2 (Flattened Device Tree)
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x40/0x4c
- dump_stack_lvl from __warn+0x78/0x10c
- __warn from warn_slowpath_fmt+0x90/0x11c
- warn_slowpath_fmt from __setup_irq+0xcc/0x6d0
- __setup_irq from __request_percpu_irq+0xb8/0xd0
- __request_percpu_irq from set_smp_ipi_range+0x88/0xdc
- set_smp_ipi_range from gic_of_init+0x1a4/0x4d8
- gic_of_init from of_irq_init+0x1f0/0x320
- of_irq_init from init_IRQ+0x74/0x104
- init_IRQ from start_kernel+0x360/0x5d0
- start_kernel from 0x0
+call_rcu() tiny is called more than this code, so unless there is
+another reason we want to check the IRQ status it seemed best to change
+the boot task flag.  I mean, I think the is_idle_task() check is valid
+in every other context, right?
 
-Likewise on arm64 with architectured timer.
-But on these systems I do not see the issue I reported.
+> 
+> What surprises me is that this is just now showing up.  The ingredients
+> for this one have been in place for almost 10 years.
+> 
 
-On RISC-V:
+Am I just that lucky?
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at kernel/irq/manage.c:1587 __setup_irq+0x4e6/0x5ee
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc1-02355-g63165363c6a3 #63
-Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
-epc : __setup_irq+0x4e6/0x5ee
- ra : __setup_irq+0x38/0x5ee
-epc : ffffffff80049472 ra : ffffffff80048fc4 sp : ffffffff81203cd0
- gp : ffffffff812ee760 tp : ffffffff8120d5c0 t0 : ffffffd801854300
- t1 : 0000000000000000 t2 : ffffffff81000ad8 s0 : ffffffff81203d20
- s1 : ffffffd801855000 a0 : 0000000000000001 a1 : ffffffd801855000
- a2 : ffffffd801854280 a3 : 0000000000000001 a4 : 0000000000000000
- a5 : 0000000000000000 a6 : ffffffd801852108 a7 : ffffffd801852100
- s2 : ffffffd801854280 s3 : 0000000000000005 s4 : ffffffff812c54c0
- s5 : 0000000000000005 s6 : ffffffff80dd83a0 s7 : ffffffff805c0cc0
- s8 : ffffffd801855018 s9 : 0000000000000000 s10: 0000000000000000
- s11: 000000007bf638a0 t3 : 0000000000000000 t4 : 0000000000000002
- t5 : ffffffff812882a0 t6 : 0000000000000001
-status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
-[<ffffffff80049472>] __setup_irq+0x4e6/0x5ee
-[<ffffffff800497a8>] __request_percpu_irq+0x98/0xcc
-[<ffffffff8082501e>] riscv_timer_init_dt+0x186/0x22e
-[<ffffffff80824b62>] timer_probe+0x62/0xd2
-[<ffffffff80803c36>] time_init+0x86/0xa6
-[<ffffffff80800ae2>] start_kernel+0x436/0x618
----[ end trace 0000000000000000 ]---
+Cheers,
+Liam
 
-Also, no issue here.
-
-On the affected systems (RZ/A1 and RZ/A2), the WARN_ON_ONCE() did
-not trigger, until I applied Liam's patch ("init/main: Clear boot task
-idle flag"), which got rid of the "Interrupts were enabled early" warning,
-and now tells me, as expected:
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at kernel/irq/manage.c:1587 __setup_irq+0xc8/0x654
-CPU: 0 PID: 0 Comm: swapper Not tainted
-6.6.0-rc1-rskrza1-02357-g237e09fd64b8-dirty #829
-Hardware name: Generic R7S72100 (Flattened Device Tree)
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x24/0x3c
- dump_stack_lvl from __warn+0x74/0xb8
- __warn from warn_slowpath_fmt+0x78/0xb0
- warn_slowpath_fmt from __setup_irq+0xc8/0x654
- __setup_irq from request_threaded_irq+0xac/0x13c
- request_threaded_irq from timer_of_init+0x238/0x2c8
- timer_of_init from ostm_init+0x98/0x208
- ostm_init from timer_probe+0x90/0xe4
- timer_probe from start_kernel+0x2c0/0x488
- start_kernel from 0x0
----[ end trace 0000000000000000 ]---
-
-However, Liam's patch causes lots of warnings on the other systems...
-
-> > > > Note that there are (possibly different) issues seen on ppc32 and on arm32
-> > > > (Renesas RZ/A in particular, but not on other Renesas ARM systems).
-> > > >
-> > > > I saw an issue on arm32 with cfeb6ae8bcb96ccf, but not with cfeb6ae8bcb96ccf^.
-> > > > Other people saw an issue on ppc32 with both cfeb6ae8bcb96ccf and
-> > > > cfeb6ae8bcb96ccf^.
-> > >
-> > > I look forward to hearing what is the issue in both cases.
-> >
-> > For RZ/A, my problem report is
-> > https://lore.kernel.org/all/3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org/
->
-> Thank you, Geert!
->
-> Huh.  Is that patch you reverted causing Maple Tree or related code
-> to attempt to acquire mutexes in early boot before interrupts have
-> been enabled?
->
-> If that added WARN_ON_ONCE() doesn't trigger early, another approach
-> would be to put it at the beginning of mutex_lock().  Or for that matter
-> at the beginning of might_sleep().
-
-With the WARN_ON_ONCE() moved from __setup_irq() to mutex_lock(),
-it does trigger on RZ/A1:
-
- Dentry cache hash table entries: 4096 (order: 2, 16384 bytes, linear)
- Inode-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
- Built 1 zonelists, mobility grouping off.  Total pages: 8128
-+------------[ cut here ]------------
-+WARNING: CPU: 0 PID: 0 at kernel/locking/mutex.c:283 mutex_lock+0x3c/0x68
-+CPU: 0 PID: 0 Comm: swapper Not tainted
-6.6.0-rc1-rskrza1-02360-gd762084b1737-dirty #831
-+Hardware name: Generic R7S72100 (Flattened Device Tree)
-+ unwind_backtrace from show_stack+0x10/0x14
-+ show_stack from dump_stack_lvl+0x24/0x3c
-+ dump_stack_lvl from __warn+0x74/0xb8
-+ __warn from warn_slowpath_fmt+0x78/0xb0
-+ warn_slowpath_fmt from mutex_lock+0x3c/0x68
-+ mutex_lock from __cpuhp_setup_state_cpuslocked+0x44/0x1c0
-+ __cpuhp_setup_state_cpuslocked from page_alloc_init_cpuhp+0x28/0x64
-+ page_alloc_init_cpuhp from mm_core_init+0x18/0x2a4
-+ mm_core_init from start_kernel+0x250/0x47c
-+ start_kernel from 0x0
-+---[ end trace 0000000000000000 ]---
- mem auto-init: stack:off, heap alloc:off, heap free:off
- Memory: 22876K/32768K available (5120K kernel code, 951K rwdata,
-1208K rodata, 1024K init, 321K bss, 9892K reserved, 0K cma-reserved)
- SLUB: HWalign=64, Order=0-1, MinObjects=0, CPUs=1, Nodes=1
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
