@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 582AE79F1A8
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F5179F1A9
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232183AbjIMTEf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33384 "EHLO
+        id S231875AbjIMTEi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:04:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232071AbjIMTEe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:34 -0400
+        with ESMTP id S230311AbjIMTEh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FEF31999
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6BEC433C8;
-        Wed, 13 Sep 2023 19:04:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC75170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40401C433C7;
+        Wed, 13 Sep 2023 19:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631870;
-        bh=DA2bzPFSGo+z/C+r7VZOp0QlLMDO9URnj1oJdR3Yf+k=;
+        s=korg; t=1694631873;
+        bh=CkCFa1Gs14JF+4blwtjFdhUtjgLbbcBmwwEnAqpFBuc=;
         h=Subject:To:Cc:From:Date:From;
-        b=k90BSqdwa+PfOG+coO/UJf80e/FSAiT8xiaRCXKS5Ne9ox5J7U34W2P4rA1C7PPEd
-         1Klb2+wbpM7guFKdk2qs0cnr6k6J2mJQgZ2wjlhgd9OdRLqfpRwbdeAc2R7U/+9Nzt
-         m/L9MyAhgIarjTPJDamfSCapTHPhS3hdfAJzQkvE=
-Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 5.4-stable tree
+        b=Y7FzJNAbNymOLgmOpxqnUWkcFCFOgsdlnMTSTLcEUKZm61vhyoJz+5QUfCUIVi+8r
+         59/gAOpxfUD9Msijz4n+5jiU2OoFxYyhC5r8BhHzAp5iZEZN+pa9D92i6xf3XjrTWH
+         ldoGThKbgTICLHrM0GMyu2cZSy4r0fN7BDw2Hw4Y=
+Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 4.19-stable tree
 To:     krzysztof.kozlowski@linaro.org, andersson@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:04:17 +0200
-Message-ID: <2023091317-constrict-rewind-760c@gregkh>
+Date:   Wed, 13 Sep 2023 21:04:18 +0200
+Message-ID: <2023091318-commend-stiffly-dbd6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -38,19 +38,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 31fba16c19c45b2b3a7c23b0bfef80aed1b29050
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091317-constrict-rewind-760c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091318-commend-stiffly-dbd6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
