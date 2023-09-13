@@ -2,162 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BC979F2DA
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 22:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A4479F319
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 22:47:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbjIMU2k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 16:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58958 "EHLO
+        id S232101AbjIMUr5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 16:47:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231167AbjIMU2k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 16:28:40 -0400
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0DD71BC6
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 13:28:36 -0700 (PDT)
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-        by mx0a-00082601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38DIRYT8030966
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 13:28:36 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=from : to : cc :
- subject : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=s2048-2021-q4;
- bh=7dLqCoT6WQqD17hGiU5LCbKgrBgxInsnOmHnTNHPGqw=;
- b=YhKQBP4kUZn/5OXXL6Mwo1twidUc4EaOGKGYi4hdJFcBPnT0MNx07Jrs2NkBvMuVTudp
- JvfgljUQHN7M2TwqosangTXxEISFFvjXRs6lJnxVKGTqV25o0l5l0siawnT+FyKVV0Cm
- wmy++6VTbo8DiuTcTQlgF6amgNB+8qecTQx/1qCuJirWbalVZqwjU/3ikUaYl1TrvTi4
- 1NFCl569fo1lC2RO0rPDVUgxv1vrnVyWs6cJvRC5lCqoxNZltZNZsLukt9PZTCO1/LGN
- ECNCKxy0nx96QbQ7jOwFE3NjGCHupSFEnGjpCa6QEtEr0Z7Bq02KcWhkOSfv3Xe0CjHh +Q== 
-Received: from mail.thefacebook.com ([163.114.132.120])
-        by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 3t2y8tkyh6-4
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 13:28:36 -0700
-Received: from twshared10465.02.ash9.facebook.com (2620:10d:c085:208::f) by
- mail.thefacebook.com (2620:10d:c085:11d::8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 13 Sep 2023 13:28:34 -0700
-Received: by devbig007.nao1.facebook.com (Postfix, from userid 544533)
-        id 1C9F21E9E7481; Wed, 13 Sep 2023 13:28:23 -0700 (PDT)
-From:   Keith Busch <kbusch@meta.com>
-To:     <linux-nvme@lists.infradead.org>, <hch@lst.de>
-CC:     Keith Busch <kbusch@kernel.org>,
-        =?UTF-8?q?Cl=C3=A1udio=20Sampaio?= <patola@gmail.com>,
-        Felix Yan <felixonmars@archlinux.org>,
-        Sagi Grimberg <sagi@grimberg.me>, <stable@vger.kernel.org>
-Subject: [PATCHv2] nvme: avoid bogus CRTO values
-Date:   Wed, 13 Sep 2023 13:28:10 -0700
-Message-ID: <20230913202810.2631288-1-kbusch@meta.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset="UTF-8"
-X-FB-Internal: Safe
-X-Proofpoint-GUID: 3tfRNYTmqqqRc5fH0UuShtwg6ycUriJZ
-X-Proofpoint-ORIG-GUID: 3tfRNYTmqqqRc5fH0UuShtwg6ycUriJZ
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S231402AbjIMUr4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 16:47:56 -0400
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84EA81BCB
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 13:47:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        sang-engineering.com; h=date:from:to:cc:subject:message-id
+        :references:mime-version:content-type:in-reply-to; s=k1; bh=NXR+
+        PgvUKjcXgRWB0xP/Amy8Pv4iykX+WMhdQpNglaE=; b=RiYWF6VMU2rLP8usYSEX
+        HDPhnc2/jiURiA2xnbiasJemLw+54IxuUUrQehQqBV73eIKcZQPu9BNE4uOKEPfe
+        AbaLYeEvyKTNfKDxPxIUYg2yXMopckUwWjDHluYPE/ZqIDspe52flAzB3ICgk1Tc
+        W1ibHmu40kWEFN0xGg23fvrFLakrW+5Vd7oxKxAMWB8svjJLIvm33L4bj4BzMf3x
+        iNseINfKSj53mYs0K+Vl/MNMMmoUIuNJATlSzW66hZZ6E78zrlCmVKTgNOssOf79
+        AluGP9EYRNRDr4OUzSKd0iFT/VyR/TFTjCTKzScB4KrKgHABhp+2sQzFpktvm/d+
+        4Q==
+Received: (qmail 718964 invoked from network); 13 Sep 2023 22:47:50 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 Sep 2023 22:47:50 +0200
+X-UD-Smtp-Session: l3s3148p1@+6M1rEMF4sEujnuS
+Date:   Wed, 13 Sep 2023 22:47:50 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Maximilian Heyne <mheyne@amazon.de>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        virtualization@lists.linux-foundation.org, stable@vger.kernel.org,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] virtio-mmio: fix memory leak of vm_dev
+Message-ID: <ZQIf9uwjnk7DQUf3@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Maximilian Heyne <mheyne@amazon.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        virtualization@lists.linux-foundation.org, stable@vger.kernel.org,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org
+References: <20230911090328.40538-1-mheyne@amazon.de>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-13_15,2023-09-13_01,2023-05-22_02
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wDMOp1ZdvPgGkrx+"
+Content-Disposition: inline
+In-Reply-To: <20230911090328.40538-1-mheyne@amazon.de>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Keith Busch <kbusch@kernel.org>
 
-Some devices are reporting Controller Ready Modes Supported, but return
-0 for CRTO. These devices require a much higher time to ready than that,
-so they are failing to initialize after the driver started preferring
-that value over CAP.TO.
+--wDMOp1ZdvPgGkrx+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The spec requires CAP.TO match the appropritate CRTO value, or be set to
-0xff if CRTO is larger than that. This means that CAP.TO can be used to
-validate if CRTO is reliable, and provides an appropriate fallback for
-setting the timeout value if not. Use whichever is larger.
+On Mon, Sep 11, 2023 at 09:03:29AM +0000, Maximilian Heyne wrote:
+> With the recent removal of vm_dev from devres its memory is only freed
+> via the callback virtio_mmio_release_dev. However, this only takes
+> effect after device_add is called by register_virtio_device. Until then
+> it's an unmanaged resource and must be explicitly freed on error exit.
+>=20
+> This bug was discovered and resolved using Coverity Static Analysis
+> Security Testing (SAST) by Synopsys, Inc.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Tested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217863
-Reported-by: Cl=C3=A1udio Sampaio <patola@gmail.com>
-Reported-by: Felix Yan <felixonmars@archlinux.org>
-Based-on-a-patch-by: Felix Yan <felixonmars@archlinux.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
----
-v1->v2:
-  Warn once if driver isn't relying on CRTO values
+Sorry for overlooking this in 55c91fedd03d and thanks for fixing it!
 
- drivers/nvme/host/core.c | 54 ++++++++++++++++++++++++++--------------
- 1 file changed, 35 insertions(+), 19 deletions(-)
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 37b6fa7466620..0685ed4f2dc49 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2245,25 +2245,8 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
- 	else
- 		ctrl->ctrl_config =3D NVME_CC_CSS_NVM;
-=20
--	if (ctrl->cap & NVME_CAP_CRMS_CRWMS) {
--		u32 crto;
--
--		ret =3D ctrl->ops->reg_read32(ctrl, NVME_REG_CRTO, &crto);
--		if (ret) {
--			dev_err(ctrl->device, "Reading CRTO failed (%d)\n",
--				ret);
--			return ret;
--		}
--
--		if (ctrl->cap & NVME_CAP_CRMS_CRIMS) {
--			ctrl->ctrl_config |=3D NVME_CC_CRIME;
--			timeout =3D NVME_CRTO_CRIMT(crto);
--		} else {
--			timeout =3D NVME_CRTO_CRWMT(crto);
--		}
--	} else {
--		timeout =3D NVME_CAP_TIMEOUT(ctrl->cap);
--	}
-+	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
-+		ctrl->ctrl_config |=3D NVME_CC_CRIME;
-=20
- 	ctrl->ctrl_config |=3D (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
- 	ctrl->ctrl_config |=3D NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
-@@ -2277,6 +2260,39 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
- 	if (ret)
- 		return ret;
-=20
-+	/* CAP value may change after initial CC write */
-+	ret =3D ctrl->ops->reg_read64(ctrl, NVME_REG_CAP, &ctrl->cap);
-+	if (ret)
-+		return ret;
-+
-+	timeout =3D NVME_CAP_TIMEOUT(ctrl->cap);
-+	if (ctrl->cap & NVME_CAP_CRMS_CRWMS) {
-+		u32 crto, ready_timeout;
-+
-+		ret =3D ctrl->ops->reg_read32(ctrl, NVME_REG_CRTO, &crto);
-+		if (ret) {
-+			dev_err(ctrl->device, "Reading CRTO failed (%d)\n",
-+				ret);
-+			return ret;
-+		}
-+
-+		/*
-+		 * CRTO should always be greater or equal to CAP.TO, but some
-+		 * devices are known to get this wrong. Use the larger of the
-+		 * two values.
-+		 */
-+		if (ctrl->ctrl_config & NVME_CC_CRIME)
-+			ready_timeout =3D NVME_CRTO_CRIMT(crto);
-+		else
-+			ready_timeout =3D NVME_CRTO_CRWMT(crto);
-+
-+		if (ready_timeout < timeout)
-+			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
-+				      crto, ctrl->cap);
-+		else
-+			timeout =3D ready_timeout;
-+	}
-+
- 	ctrl->ctrl_config |=3D NVME_CC_ENABLE;
- 	ret =3D ctrl->ops->reg_write32(ctrl, NVME_REG_CC, ctrl->ctrl_config);
- 	if (ret)
---=20
-2.34.1
 
+--wDMOp1ZdvPgGkrx+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmUCH/EACgkQFA3kzBSg
+KbaqGRAApFfEH92qT8AznnA5HRP2oURDPWolKwozQbtl98b4GWUGOo6EjNGgn97z
+tYqC+hAp18eklFzM/m9byVHllqLUmRH/b8JQVhPDUJuhhjVpUMbDXxltD20+MbVw
+OYkyxD8jJu4zUUQC1yiXCzH2kkcj0zYW3dBIOg21xFKnH5JUFOjQjNb8esTgbZKZ
+JJKzs0W0Y5ZkOIJbveyqbVCBzzsrGjRaovPbEXJ4LRiHanF9Dcrg90sdHpKGYxMQ
+JEZG4sS0+Z1xZkT0kZpSq2Lti09Ku/P41TweZabpgWlEHIlAap4Rkh3WC4wzN3og
+uwzWjJQ3UyzTbpTuBT4c0JDIigr3HAdGJaOXLaBOkHnki8DyLkG117dBiaWOZMJz
+WUP7NM2PPt78vE8l/hgr26E9mtuzNS7XVmMZ2wEVCnHRdYchNI8OuZCJ45067T1q
+srkLIu3+fZt+wIkeQEg8EhO+BjeJbTV4+65z4zwOb2/g/56KMP+bg4zn6ICVKtas
+6V/aohAs76jLjBX219S0aabyGXQqBdnUCgFvQoLUcMfxy8DLYvL1NdEE0Ufn3RQo
+kj4dPJNLnWTiohc66FK0m0vUC7eVdj0I3bGLru+tWFa0UW3K7HQ+lIc7cQZNt+hH
+Rb1IO4u8hxJy44XezL1swxDz0Y7uvMNaOjn8ks1V9hybjUZ2dyg=
+=/HT2
+-----END PGP SIGNATURE-----
+
+--wDMOp1ZdvPgGkrx+--
