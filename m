@@ -2,104 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A01A179E93C
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3BD79E982
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240925AbjIMN1P convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 13 Sep 2023 09:27:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55070 "EHLO
+        id S240944AbjIMNk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240902AbjIMN1O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:27:14 -0400
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F6019B1;
-        Wed, 13 Sep 2023 06:27:10 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-d7cbcfdf137so5985235276.2;
-        Wed, 13 Sep 2023 06:27:10 -0700 (PDT)
+        with ESMTP id S230414AbjIMNk3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:40:29 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE38319BB
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:40:24 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-52a4737a08fso8597775a12.3
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:40:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1694612423; x=1695217223; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yo4ofEftC7xB2oeMsHxl4CJ0Ygnvpy10u7Cmjx4Iado=;
+        b=HZqZBRdfKMkFjnDU8hgY3z8p+oEh4BZhLHfWAbWVWFy8i1VlN9RdlqwIPW6v4hPrVa
+         HPqzqTnUPgeJ63XSIx47OzLxQBwpf6uDAx17+9XIGVxiz44TI0HNVI/GRnji9/wqa4k9
+         r3mII8FZZfJfb9V87IvmN+mVlaCpyPAazdnLG6rgZnrIJLz/03uemxOy9RqQo+XuAeUL
+         O7XF6F+1AbGf6g8DoYyyAz+Lq6NGh6/Z++b0koRJ/SglwyrrEv7z6SdVmwK0SoNP+FLA
+         Qte28eX0/50k6ET1+gIdW4bXSyoX8F7BE9mPWfHouyvZ8FuDuOOEb4iybGryaS2nLl06
+         hsDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694611630; x=1695216430;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1694612423; x=1695217223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hlTO8VUYsx7PmNq9m5A7uTHn55FRtbCGrjx/4WjOV/Q=;
-        b=MR17P+93qmk4MLg7NaW/t6q3MkT3lg2m26lLTDVLz1LKSxPhZYsavova+9U/b/yKQY
-         Xv88PcNMFP/SkX1krJ0cmYw0sKJu5OHMhXCoAMlQ/QNaSl8fRWTXwBZa55AaPP/ohizT
-         7U7XNFXSYPmfJrz5Mj7sfv8bXYt//EFKzaQukjCme/AOtm/GfkRcY90F63PO4ybaJNzG
-         Yxj21Xx2mKFi4gK5km6gFam3/2tyMRv8Di+fQ8f5gEu8ZL26zpTr0+RMnNTmWduSN1Uw
-         Ge6Dny8ukJyi4qPpN6XciBzUbD/akSdvbW9xF8fKXIk4E+0LWZgLBz5PozEGlqWKmGCk
-         w8cA==
-X-Gm-Message-State: AOJu0YyzewrtEcF8G4rOD36CwfiKOucHJ/e3PxB0DgT6xTRJV2fVTofK
-        4FRUj3OltoM1R0m1EKJtMidv4KOsxONy0Q==
-X-Google-Smtp-Source: AGHT+IHrscU5LeqiT5p/6SKLB0CGMJAS87Rhd9ivpNoNymY7CtFjuYUHvztA/hU2VbsUlB05q2fUPg==
-X-Received: by 2002:a25:d045:0:b0:d80:ce33:af5b with SMTP id h66-20020a25d045000000b00d80ce33af5bmr2632718ybg.59.1694611629987;
-        Wed, 13 Sep 2023 06:27:09 -0700 (PDT)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
-        by smtp.gmail.com with ESMTPSA id d11-20020a25888b000000b00d7823cc7d62sm2627504ybl.19.2023.09.13.06.27.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Sep 2023 06:27:09 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-59b53488f7cso57444947b3.0;
-        Wed, 13 Sep 2023 06:27:08 -0700 (PDT)
-X-Received: by 2002:a25:ac4b:0:b0:d81:754a:7cb8 with SMTP id
- r11-20020a25ac4b000000b00d81754a7cb8mr568577ybd.65.1694611628683; Wed, 13 Sep
- 2023 06:27:08 -0700 (PDT)
+        bh=Yo4ofEftC7xB2oeMsHxl4CJ0Ygnvpy10u7Cmjx4Iado=;
+        b=DmDW5v5k8U93kJk6QXWapkg8/xw//Qbyqf9XXLDQsFmRd2o2Xrhouv3VVyGtTc+42G
+         ec72CPUJ8jAjP5oIyV0HnCzrAW7JVbTZC0sZv67GO1mOQVvGVAodgsWXY3SXow72Ox+z
+         33dxLli5KOe1zdOhoYDRQkcjcPyr7wsOgIOiNn9sqIJn1lb/Oj8UUk7oTfaISPpFsYIh
+         g7Fm5BTj3XUdzg5NiBTuv3D2Ze3E73khrrv+uPANEfH8gXAPw+vFvkQXGTGNsmX06UTH
+         XCbQLSr/7xZcZHlbKd0v/GLGIVQsQ8HP54n1OPdjHCLtaB2y7knSBdYINmfDHYOGXhuV
+         UETg==
+X-Gm-Message-State: AOJu0YzqyZMqyBFRnRr8/s2bAatXlmh85PQGsz6Ig9po9kYpLvM0A2wB
+        OMz9Rs+F/WW1BmO8pNo/5C4SNrWOwnylU5hCFnCEz3AuJ4YYrWvR
+X-Google-Smtp-Source: AGHT+IGsCYzYHjxkAG3hTKA5jIY2LLxkgNyXJh00ufUQ6sjdGiwMqkEcD36j6kcvmftjm+TPeBgW38eYGT82w6GvI4E=
+X-Received: by 2002:aa7:d608:0:b0:522:57d9:6553 with SMTP id
+ c8-20020aa7d608000000b0052257d96553mr2562233edr.1.1694612423286; Wed, 13 Sep
+ 2023 06:40:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <ad298077-fca8-437e-b9e3-66e31424afb1@paulmck-laptop>
- <20230906172954.oq4vogeuco25zam7@revolver> <495849d6-1dc6-4f38-bce7-23c50df3a99f@paulmck-laptop>
- <20230911235452.xhtnt7ply7ayr53x@revolver> <33150b55-970c-4607-9015-af0e50e4112d@paulmck-laptop>
- <CAMuHMdWKwdxjRf031aD=Ko7vRdvFW-OR48QAc=ZFy=FP_LNAoA@mail.gmail.com>
- <f9b0a88c-8a64-439f-a488-85d500c9f2aa@paulmck-laptop> <CAMuHMdX89u6wL9W+8ZOn-OTT1FreYjEqYnvEip4Aq3k1gOP0EQ@mail.gmail.com>
- <62936d98-6353-486e-8535-86c9f90bc7f4@paulmck-laptop> <CAMuHMdVp10=AQDcC31OEvy2LPWSdjvHnbCKVtRtt-Re=7wr=1w@mail.gmail.com>
- <20230913132404.wepr7l7o5qegy7hw@revolver>
-In-Reply-To: <20230913132404.wepr7l7o5qegy7hw@revolver>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 13 Sep 2023 15:26:55 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXDqziMK_GUEd5wLR=Yk0=oP0jC-zAE7dGUYkOpGPZ7gg@mail.gmail.com>
-Message-ID: <CAMuHMdXDqziMK_GUEd5wLR=Yk0=oP0jC-zAE7dGUYkOpGPZ7gg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>, paulmck@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Shanker Donthineni <sdonthineni@nvidia.com>
+References: <CAMGffEmtW+95Hsmf-6sZmS76Mpdt+R6uYQKtjbLup+iX96eVfg@mail.gmail.com>
+ <2023091241-ecology-greyhound-4e24@gregkh> <CAMGffEkSQ-d4sHL3tvDvEsf7TE4Bn7yWUraTqw374Leor1CS2Q@mail.gmail.com>
+In-Reply-To: <CAMGffEkSQ-d4sHL3tvDvEsf7TE4Bn7yWUraTqw374Leor1CS2Q@mail.gmail.com>
+From:   Jinpu Wang <jinpu.wang@ionos.com>
+Date:   Wed, 13 Sep 2023 15:40:12 +0200
+Message-ID: <CAMGffEmKy0-Ov2DQ=o+GFgWOdSZ9CaQkK985q9ZiZDnhXr3rFw@mail.gmail.com>
+Subject: Re: Regression with raid1 in stable 5.15.132-rc1 and 6.1.53-rc1
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Liam,
-
-On Wed, Sep 13, 2023 at 3:24 PM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
-> * Geert Uytterhoeven <geert@linux-m68k.org> [230913 09:15]:
-> > On the affected systems (RZ/A1 and RZ/A2), the WARN_ON_ONCE() did
-> > not trigger, until I applied Liam's patch ("init/main: Clear boot task
-> > idle flag"), which got rid of the "Interrupts were enabled early" warning,
-> > and now tells me, as expected:
-
-[...]
-
-> > However, Liam's patch causes lots of warnings on the other systems...
-> >
+On Tue, Sep 12, 2023 at 3:53=E2=80=AFPM Jinpu Wang <jinpu.wang@ionos.com> w=
+rote:
 >
-> What patch?  The "init/main" patch?
-
-Indeed.
-
-> What systems and what are they?
-
-Reported in the thread:
-https://lore.kernel.org/all/CAMuHMdWR68a49=vthdp03stpvaHLS5BRa+rhVdnr7gQDFkNotQ@mail.gmail.com
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> On Tue, Sep 12, 2023 at 2:08=E2=80=AFPM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Sep 12, 2023 at 01:46:29PM +0200, Jinpu Wang wrote:
+> > > Hi Greg and Stable folks.
+> > >
+> > > We've noticed regression in raid1 due to following commits:
+> > > 79dabfd00a2b ("md/raid1: hold the barrier until handle_read_error() f=
+inishes")
+> > > caeed0b9f1ce ("md/raid1: free the r1bio before waiting for blocked rd=
+ev")
+> >
+> > I'll drop them from all queues, but can you test 6.6-rc1 to be sure tha=
+t
+> > all is ok there?
+> Sure, I will test 6.6-rc1.
+I run same tests on 6.6-rc1, and can't reproduce the problem.
+> >
+> > thanks,
+> >
+> > greg k-h
+> Thx
