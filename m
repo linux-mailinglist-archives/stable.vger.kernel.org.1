@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F362079F127
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 20:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947BA79F12A
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 20:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjIMSe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 14:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53506 "EHLO
+        id S229552AbjIMSfw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 14:35:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjIMSe2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 14:34:28 -0400
+        with ESMTP id S229713AbjIMSfw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 14:35:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50061BC3
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 11:34:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB097C433C8;
-        Wed, 13 Sep 2023 18:34:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8437B19BF
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 11:35:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB815C433C8;
+        Wed, 13 Sep 2023 18:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694630064;
-        bh=+8BQWMqmgUeb2WK/HgYDI99VL4wlrH+4ioXS3suOOxg=;
+        s=korg; t=1694630148;
+        bh=zXTL9ECrhWEzbd8oK4IKWHmff7/dxV0tRitF4rWUvnw=;
         h=Subject:To:Cc:From:Date:From;
-        b=izgblRFTU/JwcB7GxwqG8aQFfb+1+jEMEYSApMEiu9nnRVEjjsED/gDcMx6wPuCXl
-         ma6UG6eylMki/ML2+tCGC3Eapf87YAyw6fl8tDdOkVgRxzy3yBqvXQeldMY0V5yTnD
-         c6zIGfpJ74w1BghGGLE+RDavXGKrDdAoV3b5UCYI=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Flush mailbox commands on chip reset" failed to apply to 5.4-stable tree
+        b=Ih0yPu5yCydSzRucuSZUyzNJlnChYPwHP50i5dWalrSaNFVDfknlI0G3jXYYCNh7+
+         qxoosKg9REN9971cuDxdFm+PNjh9reO/DEOlSophOWb/NK7SYb8FFx+vQGkhxwZISO
+         npE5paj18fD94RRVeR0a4N71dW8r86WK9xwXLW1o=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Flush mailbox commands on chip reset" failed to apply to 5.10-stable tree
 To:     qutran@marvell.com, himanshu.madhani@oracle.com,
         martin.petersen@oracle.com, njavali@marvell.com,
         quinn.tran@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 20:34:20 +0200
-Message-ID: <2023091320-phonebook-fifth-11af@gregkh>
+Date:   Wed, 13 Sep 2023 20:35:44 +0200
+Message-ID: <2023091343-rebalance-wheat-f294@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -39,19 +39,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6d0b65569c0a10b27c49bacd8d25bcd406003533
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091320-phonebook-fifth-11af@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091343-rebalance-wheat-f294@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
