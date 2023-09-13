@@ -2,87 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79DFE79E1B0
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 10:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EADC79E1B7
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 10:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235580AbjIMIMX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 04:12:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48866 "EHLO
+        id S234389AbjIMINC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 04:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234389AbjIMIMI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 04:12:08 -0400
+        with ESMTP id S238734AbjIMINB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 04:13:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E7A2691
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 01:11:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715D1C433C8;
-        Wed, 13 Sep 2023 08:11:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C12198E
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 01:12:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C450C433C8;
+        Wed, 13 Sep 2023 08:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694592714;
-        bh=0IeXBFuZy3+Ph/ItGmw42hC8SoQuA0PLj5qYptWmJYc=;
+        s=korg; t=1694592777;
+        bh=1Cm0DFSJ5q1YZBE8VWC6e3Sd/YUQ+lxUtxu0Er8frHs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AgRR8TvW04DCCuZb/sYIdX0shE1SXwbRZO9NpN4iI+v0bSwV9QCpYKFLrLkBTr0Vg
-         gdsyIOSYQx+yfmJi4lFLHaeWN4Y3e1aah5IE2laVhIBcfylON98At5/Bxf4obYrZw5
-         NyWcvyblWu0hBfdojX4dqyNlEmHTV0jZmku/pW6Y=
-Date:   Wed, 13 Sep 2023 10:11:51 +0200
+        b=TnvVZWi555Eg/fqxu1fsleUqDuVTYISHPnjRyRowPy6F8BKplJwTAO29Nz2l+ai1D
+         pmc6TbNJhjqW7Kt6RD4TAKLEBjAGv+1KScRJbW9O5HG2rxfixG5UR/xtoF9i2Wi/yf
+         i8sFxF4s9OdW8Nr0DLRNqLZOtl069pAsrLd8h3AY=
+Date:   Wed, 13 Sep 2023 10:12:55 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kalesh Singh <kaleshsingh@google.com>
-Cc:     akpm@linux-foundation.org, aneesh.kumar@linux.ibm.com,
-        angelogioacchino.delregno@collabora.com, baohua@kernel.org,
-        bgeffon@google.com, heftig@archlinux.org,
-        lecopzer.chen@mediatek.com, matthias.bgg@gmail.com,
-        oleksandr@natalenko.name, quic_charante@quicinc.com,
-        steven@liquorix.net, suleiman@google.com, surenb@google.com,
-        yuzhao@google.com, zhengqi.arch@bytedance.com,
-        stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] Multi-gen LRU: fix per-zone reclaim"
- failed to apply to 6.1-stable tree
-Message-ID: <2023091342-treason-jam-8a17@gregkh>
-References: <2023090959-mothproof-scarf-6195@gregkh>
- <CAC_TJvfS3TWr4NtzU+STAeQQio3PcK=r5sp_NbsW2jEffhHUGQ@mail.gmail.com>
+To:     Kyle Zeng <zengyhkyle@gmail.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: wild pointer access in rsvp classifer in the Linux kernel <= v6.2
+Message-ID: <2023091320-chemist-dragonish-6874@gregkh>
+References: <CADW8OBtkAf+nGokhD9zCFcmiebL1SM8bJp_oo=pE02BknG9qnQ@mail.gmail.com>
+ <2023090826-rabid-cabdriver-37d8@gregkh>
+ <ZP/SOqa0M3RvrVEF@westworld>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAC_TJvfS3TWr4NtzU+STAeQQio3PcK=r5sp_NbsW2jEffhHUGQ@mail.gmail.com>
+In-Reply-To: <ZP/SOqa0M3RvrVEF@westworld>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 10:58:54AM -0700, Kalesh Singh wrote:
-> On Sat, Sep 9, 2023 at 6:04 AM <gregkh@linuxfoundation.org> wrote:
-> >
-> >
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> >
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 669281ee7ef731fb5204df9d948669bf32a5e68d
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090959-mothproof-scarf-6195@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> >
-> > Possible dependencies:
-> >
-> > 669281ee7ef7 ("Multi-gen LRU: fix per-zone reclaim")
-> > 6df1b2212950 ("mm: multi-gen LRU: rename lrugen->lists[] to lrugen->folios[]")
+On Mon, Sep 11, 2023 at 07:51:38PM -0700, Kyle Zeng wrote:
+> On Fri, Sep 08, 2023 at 07:17:12AM +0100, Greg KH wrote:
+> > Great, can you use 'git bisect' to track down the commit that fiexes
+> > this so we can add it to the stable trees?
+> Sorry for the late reply. I think the fix was to completely retire the
+> rsvp classifier and the commit is:
 > 
-> Hi Greg,
-> 
-> Can you apply in this order please:
-> 
-> 1) 6df1b2212950 ("mm: multi-gen LRU: rename lrugen->lists[] to
-> lrugen->folios[]")
-> 2) 669281ee7ef7 ("Multi-gen LRU: fix per-zone reclaim")
-> 
-> With the one rename dependency, I've checked that this applies cleanly
-> and tested it.
-> Or let me know if you prefer I resend both.
+> 265b4da82dbf5df04bee5a5d46b7474b1aaf326a (net/sched: Retire rsvp classifier)
 
-That worked, now queued up, thanks!
+Great, so if we apply this change, all will work properly again?  How
+far back should this be backported to?
+
+thanks,
 
 greg k-h
