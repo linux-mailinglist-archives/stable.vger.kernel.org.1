@@ -2,115 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 277B979E074
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 09:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF6979E0A3
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 09:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238477AbjIMHHx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 03:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53308 "EHLO
+        id S238549AbjIMHQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 03:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238468AbjIMHHw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 03:07:52 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BFB1738;
-        Wed, 13 Sep 2023 00:07:48 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38D6LeuN032357;
-        Wed, 13 Sep 2023 07:07:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=AtULoQJOI/orWb1R9vpylxnI/QhZ91XnJHJFIIByYuE=;
- b=fL5qOsInEerQdiU2GacN+7eTN0KXwNz4W65JK9GU9nEK/3tn/ilKxR8K4lYwKJzCzQuA
- SsDtsHvm2whcULY5wyPQYeArhuXl+FpgGMxWZpteJJkG6gRkP8FuWd+Rjuc82619q527
- 0c2OuApoRfMB4cJrVcd79CLhXsm9/+3H+Ut1zEwW3HlTmLFmSkPfkZW470MP1qY4slbE
- SliJeGKokGbZyjOHSTyucCR5L5GpnwaPa+Tl/mVDT3HxT5VElcgONDEMwSSGiJB3awIN
- YrnsLnjiMniaDzbG1hiIId+lZE5fjA08VGDXVNIiREHgk9JH6Y0jgKrZnwTN+r+rsGJo KA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t2y8jrxa0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 13 Sep 2023 07:07:31 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38D77Ufj022743
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 13 Sep 2023 07:07:30 GMT
-Received: from hyd-lablnx450.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 13 Sep 2023 00:07:23 -0700
-From:   Bibek Kumar Patro <quic_bibekkum@quicinc.com>
-To:     <mani@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
-        <vigneshr@ti.com>
-CC:     <linux-mtd@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@quicinc.com>,
-        <quic_charante@quicinc.com>, <quic_kaushalk@quicinc.com>,
-        <quic_pkondeti@quicinc.com>,
-        Bibek Kumar Patro <quic_bibekkum@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v5] mtd: rawnand: qcom: Unmap the right resource upon probe failure
-Date:   Wed, 13 Sep 2023 12:37:02 +0530
-Message-ID: <20230913070702.12707-1-quic_bibekkum@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S238551AbjIMHQo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 03:16:44 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4BC1982;
+        Wed, 13 Sep 2023 00:16:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B651C433C8;
+        Wed, 13 Sep 2023 07:16:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694589400;
+        bh=jbMSHPEy4vx/r2wm/ygIl/jEIoje24uhM4eGXw0OuRo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oXnH0fp5+9oely5ZhPDGV40JD4mjLCFM54IsFTQ/bghhl7pxnimSDXtcNxLgDCZ6m
+         eRp0QKq3M1goQKez2s+zLM1eKjql9o0Hlz3whDAvdFKNRCoOdeYVoT9kKY8kMvtfc1
+         gx9yxeaT9BXqobZAEpbjKe5zoLmUr0oGDWuAvygM=
+Date:   Wed, 13 Sep 2023 09:16:36 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Prashanth K <quic_prashk@quicinc.com>
+Cc:     Mathias Nyman <mathias.nyman@linux.intel.com>,
+        linux-usb@vger.kernel.org, Hongyu Xie <xy521521@gmail.com>,
+        stable@kernel.org, Hongyu Xie <xiehongyu1@kylinos.cn>,
+        "# 5 . 15" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/4] xhci: Keep interrupt disabled in initialization
+ until host is running.
+Message-ID: <2023091323-splinter-skinless-7c57@gregkh>
+References: <20220623111945.1557702-1-mathias.nyman@linux.intel.com>
+ <20220623111945.1557702-2-mathias.nyman@linux.intel.com>
+ <42bcb910-7748-cf73-a40d-217c39a63dd1@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: oiAv9tXSZ13X51HGY9mUgpjxhZ53p84x
-X-Proofpoint-GUID: oiAv9tXSZ13X51HGY9mUgpjxhZ53p84x
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_24,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- impostorscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
- priorityscore=1501 clxscore=1011 mlxscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309130059
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42bcb910-7748-cf73-a40d-217c39a63dd1@quicinc.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-We currently provide the physical address of the DMA region
-rather than the output of dma_map_resource() which is obviously wrong.
+On Wed, Sep 13, 2023 at 11:30:41AM +0530, Prashanth K wrote:
+> 
+> 
+> On 23-06-22 04:49 pm, Mathias Nyman wrote:
+> > From: Hongyu Xie <xy521521@gmail.com>
+> > 
+> > irq is disabled in xhci_quiesce(called by xhci_halt, with bit:2 cleared
+> > in USBCMD register), but xhci_run(called by usb_add_hcd) re-enable it.
+> > It's possible that you will receive thousands of interrupt requests
+> > after initialization for 2.0 roothub. And you will get a lot of
+> > warning like, "xHCI dying, ignoring interrupt. Shouldn't IRQs be
+> > disabled?". This amount of interrupt requests will cause the entire
+> > system to freeze.
+> > This problem was first found on a device with ASM2142 host controller
+> > on it.
+> > 
+> > [tidy up old code while moving it, reword header -Mathias]
+> > Cc: stable@kernel.org
+> > Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+> > Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+> > ---
+> >   drivers/usb/host/xhci.c | 35 ++++++++++++++++++++++-------------
+> >   1 file changed, 22 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+> > index 9ac56e9ffc64..cb99bed5f755 100644
+> > --- a/drivers/usb/host/xhci.c
+> > +++ b/drivers/usb/host/xhci.c
+> > @@ -611,15 +611,37 @@ static int xhci_init(struct usb_hcd *hcd)
+> >   static int xhci_run_finished(struct xhci_hcd *xhci)
+> >   {
+> > +	unsigned long	flags;
+> > +	u32		temp;
+> > +
+> > +	/*
+> > +	 * Enable interrupts before starting the host (xhci 4.2 and 5.5.2).
+> > +	 * Protect the short window before host is running with a lock
+> > +	 */
+> > +	spin_lock_irqsave(&xhci->lock, flags);
+> > +
+> > +	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Enable interrupts");
+> > +	temp = readl(&xhci->op_regs->command);
+> > +	temp |= (CMD_EIE);
+> > +	writel(temp, &xhci->op_regs->command);
+> > +
+> > +	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Enable primary interrupter");
+> > +	temp = readl(&xhci->ir_set->irq_pending);
+> > +	writel(ER_IRQ_ENABLE(temp), &xhci->ir_set->irq_pending);
+> > +
+> >   	if (xhci_start(xhci)) {
+> >   		xhci_halt(xhci);
+> > +		spin_unlock_irqrestore(&xhci->lock, flags);
+> >   		return -ENODEV;
+> >   	}
+> > +
+> >   	xhci->cmd_ring_state = CMD_RING_STATE_RUNNING;
+> >   	if (xhci->quirks & XHCI_NEC_HOST)
+> >   		xhci_ring_cmd_db(xhci);
+> > +	spin_unlock_irqrestore(&xhci->lock, flags);
+> > +
+> >   	return 0;
+> >   }
+> > @@ -668,19 +690,6 @@ int xhci_run(struct usb_hcd *hcd)
+> >   	temp |= (xhci->imod_interval / 250) & ER_IRQ_INTERVAL_MASK;
+> >   	writel(temp, &xhci->ir_set->irq_control);
+> > -	/* Set the HCD state before we enable the irqs */
+> > -	temp = readl(&xhci->op_regs->command);
+> > -	temp |= (CMD_EIE);
+> > -	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+> > -			"// Enable interrupts, cmd = 0x%x.", temp);
+> > -	writel(temp, &xhci->op_regs->command);
+> > -
+> > -	temp = readl(&xhci->ir_set->irq_pending);
+> > -	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+> > -			"// Enabling event ring interrupter %p by writing 0x%x to irq_pending",
+> > -			xhci->ir_set, (unsigned int) ER_IRQ_ENABLE(temp));
+> > -	writel(ER_IRQ_ENABLE(temp), &xhci->ir_set->irq_pending);
+> > -
+> >   	if (xhci->quirks & XHCI_NEC_HOST) {
+> >   		struct xhci_command *command;
+> This is not available to older kernels [< 5.19]. Can we get this backported
+> to 5.15 as well? Please let me know if there is some other way to do it.
+> 
+> Cc: <stable@vger.kernel.org> # 5.15
 
-Fixes: 7330fc505af4 ("mtd: rawnand: qcom: stop using phys_to_dma()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
----
-v5: Incorporated suggestions from Miquel/Mani
-    - Added tag to automatically include this patch in stable tree.
 
-v4: Incorporated suggestion from Miquel
-    - Modified title and commit description.
-    https://lore.kernel.org/all/20230912115903.1007-1-quic_bibekkum@quicinc.com/
+<formletter>
 
-v3: Incorporated comments from Miquel
-    - Modified the commit message and title as per suggestions.
-    https://lore.kernel.org/all/20230912101814.7748-1-quic_bibekkum@quicinc.com/
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-v2: Incorporated comments from Pavan/Mani.
-    https://lore.kernel.org/all/20230911133026.29868-1-quic_bibekkum@quicinc.com/
-
-v1: https://lore.kernel.org/all/20230907092854.11408-1-quic_bibekkum@quicinc.com/
-
- drivers/mtd/nand/raw/qcom_nandc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index 64499c1b3603..b079605c84d3 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -3444,7 +3444,7 @@ static int qcom_nandc_probe(struct platform_device *pdev)
- err_aon_clk:
- 	clk_disable_unprepare(nandc->core_clk);
- err_core_clk:
--	dma_unmap_resource(dev, res->start, resource_size(res),
-+	dma_unmap_resource(dev, nandc->base_dma, resource_size(res),
- 			   DMA_BIDIRECTIONAL, 0);
- 	return ret;
- }
---
-2.17.1
-
+</formletter>
