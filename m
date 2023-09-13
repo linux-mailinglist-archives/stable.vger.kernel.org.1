@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DBB779F19A
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 008BF79F19B
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbjIMTDP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:03:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37186 "EHLO
+        id S232115AbjIMTD0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:03:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232086AbjIMTDP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:15 -0400
+        with ESMTP id S232086AbjIMTDZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60EB5170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78069C433CA;
-        Wed, 13 Sep 2023 19:03:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0B3D170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186C6C433C8;
+        Wed, 13 Sep 2023 19:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631791;
-        bh=sxBVPVoJTKj+oZS1cdRHD1gP7nJVJCQTPGZiedIBe+k=;
+        s=korg; t=1694631801;
+        bh=D/IJMpJSZpcNm9YBX+owE09wt7PPym1kue1PxwrmAyY=;
         h=Subject:To:Cc:From:Date:From;
-        b=wu4mP5ecTPsg5xEjxSR+jSXkn/Nruyx1O8A4JkmPkX/9s8M5MnvBWdQ/0n/pfeEfz
-         A2DxxacAE3eOmbhfX82SBEmlDSNUxOQqKPDkEvfZc/Zy6e0MrZhFDDjBvnwDLbFgDd
-         gIvMy9P1iHqH+9RlDSZUVHC20q35w/abr1Ojjr3s=
-Subject: FAILED: patch "[PATCH] arm64: tegra: Update AHUB clock parent and rate on Tegra234" failed to apply to 6.1-stable tree
-To:     sheetal@nvidia.com, mkumard@nvidia.com, spujar@nvidia.com,
-        treding@nvidia.com
+        b=LlXKiH3tq19anY6aIeinLWSsTnXn599+cFlQaNxp6imIlE/4TkiL52eg5A7wrIJok
+         C+2U3iYvNDWruONtIYu4IDOBRosnzks9AkZDaVT0r/9ga9CEG9hb2LKrH2KfZEK1Oy
+         sEHfFqpRlQbFwjpxqtuH+sW9fl9NyxTC7UtsQQGk=
+Subject: FAILED: patch "[PATCH] arm64: tegra: Update AHUB clock parent and rate" failed to apply to 6.1-stable tree
+To:     spujar@nvidia.com, treding@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:03:03 +0200
-Message-ID: <2023091303-gossip-dork-5e54@gregkh>
+Date:   Wed, 13 Sep 2023 21:03:17 +0200
+Message-ID: <2023091317-sharpness-reply-55e4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -47,14 +46,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x e483fe34adab3197558b7284044c1b26f5ede20e
+git cherry-pick -x dc6d5d85ed3a3fe566314f388bce4c71a26b1677
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091303-gossip-dork-5e54@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091317-sharpness-reply-55e4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-e483fe34adab ("arm64: tegra: Update AHUB clock parent and rate on Tegra234")
+dc6d5d85ed3a ("arm64: tegra: Update AHUB clock parent and rate")
 2838cfddbc1c ("arm64: tegra: Bump #address-cells and #size-cells")
 132b552cba15 ("arm64: tegra: Fix up compatible string for SDMMC1 on Tegra234")
 b2fbcbe1ae19 ("arm64: tegra: Use correct compatible string for Tegra234 HDA")
@@ -79,39 +78,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e483fe34adab3197558b7284044c1b26f5ede20e Mon Sep 17 00:00:00 2001
-From: Sheetal <sheetal@nvidia.com>
-Date: Thu, 29 Jun 2023 10:42:16 +0530
-Subject: [PATCH] arm64: tegra: Update AHUB clock parent and rate on Tegra234
+From dc6d5d85ed3a3fe566314f388bce4c71a26b1677 Mon Sep 17 00:00:00 2001
+From: Sameer Pujar <spujar@nvidia.com>
+Date: Thu, 29 Jun 2023 10:42:17 +0530
+Subject: [PATCH] arm64: tegra: Update AHUB clock parent and rate
 
-I2S data sanity tests fail beyond a bit clock frequency of 6.144MHz.
-This happens because the AHUB clock rate is too low and it shows
-9.83MHz on boot.
+I2S data sanity test failures are seen at lower AHUB clock rates
+on Tegra234. The Tegra194 uses the same clock relationship for AHUB
+and it is likely that similar issues would be seen. Thus update the
+AHUB clock parent and rates here as well for Tegra194, Tegra186
+and Tegra210.
 
-The maximum rate of PLLA_OUT0 is 49.152MHz and is used to serve I/O
-clocks. It is recommended that AHUB clock operates higher than this.
-Thus fix this by using PLLP_OUT0 as parent clock for AHUB instead of
-PLLA_OUT0 and fix the rate to 81.6MHz.
-
-Fixes: dc94a94daa39 ("arm64: tegra: Add audio devices on Tegra234")
+Fixes: 177208f7b06d ("arm64: tegra: Add DT binding for AHUB components")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sheetal <sheetal@nvidia.com>
 Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-Reviewed-by: Mohan Kumar D <mkumard@nvidia.com>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-index f4974e81dd4b..0f12a8debd8a 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -180,7 +180,8 @@ tegra_ahub: ahub@2900800 {
- 				clocks = <&bpmp TEGRA234_CLK_AHUB>;
+diff --git a/arch/arm64/boot/dts/nvidia/tegra186.dtsi b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
+index 7e4c496fd91c..2b3bb5d0af17 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra186.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
+@@ -135,7 +135,8 @@ tegra_ahub: ahub@2900800 {
+ 			clocks = <&bpmp TEGRA186_CLK_AHUB>;
+ 			clock-names = "ahub";
+ 			assigned-clocks = <&bpmp TEGRA186_CLK_AHUB>;
+-			assigned-clock-parents = <&bpmp TEGRA186_CLK_PLL_A_OUT0>;
++			assigned-clock-parents = <&bpmp TEGRA186_CLK_PLLP_OUT0>;
++			assigned-clock-rates = <81600000>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges = <0x02900800 0x02900800 0x11800>;
+diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+index 154fc8c0eb6d..33f92b77cd9d 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+@@ -231,7 +231,8 @@ tegra_ahub: ahub@2900800 {
+ 				clocks = <&bpmp TEGRA194_CLK_AHUB>;
  				clock-names = "ahub";
- 				assigned-clocks = <&bpmp TEGRA234_CLK_AHUB>;
--				assigned-clock-parents = <&bpmp TEGRA234_CLK_PLLA_OUT0>;
-+				assigned-clock-parents = <&bpmp TEGRA234_CLK_PLLP_OUT0>;
+ 				assigned-clocks = <&bpmp TEGRA194_CLK_AHUB>;
+-				assigned-clock-parents = <&bpmp TEGRA194_CLK_PLLA_OUT0>;
++				assigned-clock-parents = <&bpmp TEGRA194_CLK_PLLP_OUT0>;
 +				assigned-clock-rates = <81600000>;
  				status = "disabled";
  
  				#address-cells = <2>;
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210.dtsi b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
+index 617583ff2736..e7b4e3013964 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
+@@ -1386,7 +1386,8 @@ tegra_ahub: ahub@702d0800 {
+ 			clocks = <&tegra_car TEGRA210_CLK_D_AUDIO>;
+ 			clock-names = "ahub";
+ 			assigned-clocks = <&tegra_car TEGRA210_CLK_D_AUDIO>;
+-			assigned-clock-parents = <&tegra_car TEGRA210_CLK_PLL_A_OUT0>;
++			assigned-clock-parents = <&tegra_car TEGRA210_CLK_PLL_P>;
++			assigned-clock-rates = <81600000>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges = <0x702d0000 0x702d0000 0x0000e400>;
 
