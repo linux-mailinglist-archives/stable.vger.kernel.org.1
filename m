@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 889C779F1AB
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF44879F1AC
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232071AbjIMTEr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:04:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
+        id S230311AbjIMTEu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230311AbjIMTEq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:46 -0400
+        with ESMTP id S232197AbjIMTEu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63BB3170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE20C433CA;
-        Wed, 13 Sep 2023 19:04:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B46019A0
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EE8C433C8;
+        Wed, 13 Sep 2023 19:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631882;
-        bh=8eQVRjT3KEAabEMC857XGiB8ThIv0H3ieoDT4UdxuW0=;
+        s=korg; t=1694631885;
+        bh=/Q1WUdOWOXRFGvtGNymynipWYxyqJZxS/cCffrNA9mM=;
         h=Subject:To:Cc:From:Date:From;
-        b=O7PgGyQNN2tiFQ0tdoFXC9cMEfBaREJwiXt6XqaRRqRoEIVSKRlpCnnTJODGuIdxR
-         8rU/ViF5pHMZBcUkZMq/e274PXadHEOwexefbdG2stTWofix8q5Sq5SB1PIpe4IDDY
-         r4xWwc0aU8xf+7qbrkAYO+ine6RCg+KD3vX8QEEw=
-Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 5.15-stable tree
+        b=SyIeH6d2UtVhiLwaeI98FN1AnvSX0plt/8aJMdyAb0uZdhMoRP2SXnMPJ+OcA9pie
+         LnGZFzF237+jadCCe+SVs73jxyNVJPEnLhGVW2u82EtGQb57WZBS5QRfcDfo97yhck
+         AVxS/Gaag5wL1gRw8EbNgD4j4SeZAVQ/KUJN/ZkE=
+Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 5.10-stable tree
 To:     krzysztof.kozlowski@linaro.org, andersson@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:04:29 +0200
-Message-ID: <2023091329-twenty-cardboard-b45c@gregkh>
+Date:   Wed, 13 Sep 2023 21:04:30 +0200
+Message-ID: <2023091330-blog-morbidly-92f3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -38,19 +38,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7c74379afdfee7b13f1cd8ff1ad6e0f986aec96c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091329-twenty-cardboard-b45c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091330-blog-morbidly-92f3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
