@@ -2,180 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FA8B79E572
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 12:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BC5C79E59E
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 13:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239835AbjIMK46 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 06:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43200 "EHLO
+        id S234271AbjIMLCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 07:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239891AbjIMK45 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 06:56:57 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D0519BD
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 03:56:53 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-d815a5df1feso424514276.3
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 03:56:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694602612; x=1695207412; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SwE1tmf8tdsVndAPixE3ADwa0SejCshFVF56S6gRoMI=;
-        b=WCQXmB1hdPdLx5jg0szCrHGf6etQvVp/GH6OiQhVKWDk2f9gOXz59D4+IX4d0uNBIq
-         JJcWt6f/NKBJViDo66x2f6P8Sank123ToXsHQqw6uztKyDy67lfpHqqnMp2DZLs3VVUc
-         iCZoUR2N/NS7dOvWZfpOreZFTqPuodaZoyG2YbZF34CrXAseZE670N1hvjca/Wu0GhZO
-         hU2xKL1Z5JgW0PqVxJyIh6n0h2xDyi5jzuZaRf5M0b4l/hqJU860bLmmNmHIKbqp2QbE
-         fdUNEL0bR9xTX5+O9f9mdlyWGjPEVa38O+y9nAG9pmZQa81LaIzxaYdzAP0lrRJf8+LK
-         hlNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694602612; x=1695207412;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SwE1tmf8tdsVndAPixE3ADwa0SejCshFVF56S6gRoMI=;
-        b=sFB9oRl1IyquUCCzobkQnQg8HNOkgm44XLDfZzmaP+DM8rb5F6hW2tpXBW5oMxnkpX
-         h5SuOGsPV4WHx/csWIqqc2yTnEC6sj/wh/vjxqnwNXwoirI0VkmPEZJI/KQVYeXFxcMz
-         4E0+lxQYCvcXcndvLv99+8D+v70GZ09tP+r8q7d97qzyqNa1eemnBTQ+GzvKkgwOj7a8
-         LIZN9W6jonCjVEm2VlSbRgutLXvEaIOHUpLkeZre9+CGyAAD1ujISSFnTxm9i1pptDdk
-         ux2h/sgKQOKi42fFfTOk+m5qPouQDLJ6bLZkDxIi/ljhTMCizNsFB3+wrmH2LHHAt+Si
-         Zg6Q==
-X-Gm-Message-State: AOJu0YydGJAsbjlN8rp41hXKQ3TTLN0Jxaw+M1P3NK+I+2pNRR7f+C+D
-        G5T1iri/BnJdKQRqwEDj6MmIy5JnOkw4x9J6rym8NA==
-X-Google-Smtp-Source: AGHT+IHMAuFyyQ4cRNYR0B8xdSCeM68K8IjuOrh8tk9MNlECb4FiuI3ryuFikGYu8jUtCFCGET9Y3RPflWwbyZQSia0=
-X-Received: by 2002:a5b:308:0:b0:d7f:f5e:a2bd with SMTP id j8-20020a5b0308000000b00d7f0f5ea2bdmr1911637ybp.10.1694602612496;
- Wed, 13 Sep 2023 03:56:52 -0700 (PDT)
+        with ESMTP id S231897AbjIMLCP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 07:02:15 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41CE1726;
+        Wed, 13 Sep 2023 04:02:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Ph6IZOjxVfNK0j0D6FBkY/k2VECArBn3iv8gnIxi7NU=; b=LWgmBUtqijN5jZg4OTh3/n7y8S
+        CBGYD5upmZC2bNhP4tUBGRgBf/M14Iy7pfwWf1cgDMqKKCRC/khSGyEVbigMwsZOTds2JZHEEZq+b
+        RH9NQFMYUhSy04YwqbKDJELCZDNHq6Y+rgXMaaz3bhgyQR9e/oj5CAd7cGNT66jhgBj7xdh6d3JhP
+        xzI27FDLWkWJtkgbKZW/TMY5jFuysOyzUYOwZaEASTWhnDRlUwAe2iUrTaxapVtOQ7sv2T6fYkee1
+        knclwk/xz098cfRo3p/puWgRPh3Q/KNPo1bdAzBE117ZOMpSAUXMlNTVTZxZnPsZV4VjQF57m6RrP
+        jfrJ/K+w==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qgNcq-00DQqf-F2; Wed, 13 Sep 2023 11:01:40 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 1CCF4300348; Wed, 13 Sep 2023 13:01:40 +0200 (CEST)
+Date:   Wed, 13 Sep 2023 13:01:39 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Peng Zhang <zhangpeng.00@bytedance.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH] init/main: Clear boot task idle flag
+Message-ID: <20230913110139.GE692@noisy.programming.kicks-ass.net>
+References: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-References: <20230912-msm8909-cpufreq-v1-0-767ce66b544b@kernkonzept.com> <20230912-msm8909-cpufreq-v1-1-767ce66b544b@kernkonzept.com>
-In-Reply-To: <20230912-msm8909-cpufreq-v1-1-767ce66b544b@kernkonzept.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 13 Sep 2023 12:56:16 +0200
-Message-ID: <CAPDyKFq6U-MR4Bd+GmixYseRECDh142RhydtKbiPd3NHV2g6aw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] cpufreq: qcom-nvmem: Enable virtual power domain devices
-To:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 12 Sept 2023 at 11:40, Stephan Gerhold
-<stephan.gerhold@kernkonzept.com> wrote:
->
-> The genpd core ignores performance state votes from devices that are
-> runtime suspended as of commit 5937c3ce2122 ("PM: domains: Drop/restore
-> performance state votes for devices at runtime PM").
-
-I think you are referring to the wrong commit above. Please have a
-look at commit 3c5a272202c2 ("PM: domains: Improve runtime PM
-performance state handling"), instead.
-
-I also suggest rephrasing the above into saying that the performance
-state vote for a device is cached rather than carried out, if
-pm_runtime_suspended() returns true for it.
-
-Another relevant information in the commit message would be to add
-that during device-attach (genpd_dev_pm_attach_by_id()), calls
-pm_runtime_enable() the device.
-
-> However, at the
-> moment nothing ever enables the virtual devices created in
-> qcom-cpufreq-nvmem for the cpufreq power domain scaling, so they are
-> permanently runtime-suspended.
->
-> Fix this by enabling the devices after attaching them and use
-> dev_pm_syscore_device() to ensure the power domain also stays on when
-> going to suspend. Since it supplies the CPU we can never turn it off
-> from Linux. There are other mechanisms to turn it off when needed,
-> usually in the RPM firmware or the cpuidle path.
->
-> Without this fix performance states votes are silently ignored, and the
-> CPU/CPR voltage is never adjusted. This has been broken since 5.14 but
-> for some reason no one noticed this on QCS404 so far.
->
+On Tue, Sep 12, 2023 at 08:56:47PM -0400, Liam R. Howlett wrote:
+> Initial booting is setting the task flag to idle (PF_IDLE) by the call
+> path sched_init() -> init_idle().  Having the task idle and calling
+> call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
+> set.  Subsequent calls to any cond_resched() will enable IRQs,
+> potentially earlier than the IRQ setup has completed.  Recent changes
+> have caused just this scenario and IRQs have been enabled early.
+> 
+> This causes a warning later in start_kernel() as interrupts are enabled
+> before they are fully set up.
+> 
+> Fix this issue by clearing the PF_IDLE flag on return from sched_init()
+> and restore the flag in rest_init().  Although the boot task was marked
+> as idle since (at least) d80e4fda576d, I am not sure that it is wrong to
+> do so.  The forced context-switch on idle task was introduced in the
+> tiny_rcu update, so I'm going to claim this fixes 5f6130fa52ee.
+> 
+> Link: https://lore.kernel.org/linux-mm/87v8cv22jh.fsf@mail.lhotse/
+> Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
+> Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
 > Cc: stable@vger.kernel.org
-> Fixes: 1cb8339ca225 ("cpufreq: qcom: Add support for qcs404 on nvmem driver")
-> Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Andreas Schwab <schwab@linux-m68k.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > ---
->  drivers/cpufreq/qcom-cpufreq-nvmem.c | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> index 84d7033e5efe..17d6ab14c909 100644
-> --- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> +++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> @@ -25,6 +25,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/pm_domain.h>
->  #include <linux/pm_opp.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/slab.h>
->  #include <linux/soc/qcom/smem.h>
->
-> @@ -280,6 +281,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
->         }
->
->         for_each_possible_cpu(cpu) {
-> +               struct device **virt_devs = NULL;
->                 struct dev_pm_opp_config config = {
->                         .supported_hw = NULL,
->                 };
-> @@ -300,7 +302,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
->
->                 if (drv->data->genpd_names) {
->                         config.genpd_names = drv->data->genpd_names;
-> -                       config.virt_devs = NULL;
-> +                       config.virt_devs = &virt_devs;
->                 }
->
->                 if (config.supported_hw || config.genpd_names) {
-> @@ -311,6 +313,23 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
->                                 goto free_opp;
->                         }
->                 }
-> +
-> +               if (virt_devs) {
-> +                       const char * const *name = config.genpd_names;
-> +                       int i;
-> +
-> +                       for (i = 0; *name; i++, name++) {
-> +                               ret = pm_runtime_resume_and_get(virt_devs[i]);
-> +                               if (ret) {
-> +                                       dev_err(cpu_dev, "failed to resume %s: %d\n",
-> +                                               *name, ret);
-> +                                       goto free_opp;
-> +                               }
-
-Shouldn't we restore the usage count at ->remove() too?
-
-> +
-> +                               /* Keep CPU power domain always-on */
-> +                               dev_pm_syscore_device(virt_devs[i], true);
-
-Is this really correct? cpufreq is suspended/resumed by the PM core
-during system wide suspend/resume. See dpm_suspend|resume(). Isn't
-that sufficient?
-
-Moreover, it looks like the cpr genpd provider supports genpd's
-->power_on|off() callbacks. Is there something wrong with this, that I
-am missing?
+>  init/main.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/init/main.c b/init/main.c
+> index ad920fac325c..f74772acf612 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
+>  	 */
+>  	rcu_read_lock();
+>  	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
+> -	tsk->flags |= PF_NO_SETAFFINITY;
+> +	tsk->flags |= PF_NO_SETAFFINITY | PF_IDLE;
+>  	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
+>  	rcu_read_unlock();
+>  
+> @@ -938,6 +938,8 @@ void start_kernel(void)
+>  	 * time - but meanwhile we still have a functioning scheduler.
+>  	 */
+>  	sched_init();
+> +	/* Avoid early context switch, rest_init() restores PF_IDLE */
+> +	current->flags &= ~PF_IDLE;
+>  
+>  	if (WARN(!irqs_disabled(),
+>  		 "Interrupts were enabled *very* early, fixing it\n"))
 
 
-> +                       }
-> +               }
->         }
->
->         cpufreq_dt_pdev = platform_device_register_simple("cpufreq-dt", -1,
->
+Hurmph... so since this is about IRQs, would it not make sense to have
+the | PF_IDLE near 'early_boot_irqs_disabled = false' ?
 
-Kind regards
-Uffe
+Or, alternatively, make the tinyrcu thing check that variable?
