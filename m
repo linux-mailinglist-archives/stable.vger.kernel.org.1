@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B57479F1A3
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61EB579F1A4
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232025AbjIMTEN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
+        id S232176AbjIMTER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232183AbjIMTEM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:12 -0400
+        with ESMTP id S232161AbjIMTEQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E314A199F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A8CC433C8;
-        Wed, 13 Sep 2023 19:04:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E23170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BF5C433C8;
+        Wed, 13 Sep 2023 19:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631848;
-        bh=lBlxk76sxo0wceZBCX8UdAAd1aiUz9FVn6Hs+2XR0n8=;
+        s=korg; t=1694631852;
+        bh=w7Mesu0qUsux757ok5J33FFrP0JgjnjdIRpQaWbu8Wk=;
         h=Subject:To:Cc:From:Date:From;
-        b=GwWoyH77G4ZBEGloqYhamX+VlNc8jZOiPz4Y99yNPRUqHCRQdUVR/JK794oGjaR9c
-         Tjt++4wsFhNGdp4SygpA4joRvypiuku0uWpsY+9pITn3ECzpZRKYt6IU+qPcwc7HF7
-         2B98QvBAGAuW9OADNSLGQdyYwaSTnRR2lHU4xbZU=
-Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct inverted X of" failed to apply to 5.4-stable tree
+        b=QLcq2fmcLhLamEn1MN968htriPsknrqH8Z6uDAGsCZOKF8f1ta/dhbcJk/kgurgWx
+         5BTemuRb9uq+0WTMe782//1IDJ5JFeyDTYIrwAwmvI0/QhqKueNbIfRiVmsp1Q2RwP
+         YPQyzux+CqnB2Nd4IVQ9iLJMb8vdQashFvkubOK0=
+Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct inverted X of" failed to apply to 4.19-stable tree
 To:     krzysztof.kozlowski@linaro.org, andersson@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:03:55 +0200
-Message-ID: <2023091355-brewery-playhouse-5786@gregkh>
+Date:   Wed, 13 Sep 2023 21:03:56 +0200
+Message-ID: <2023091356-suffering-trickily-50f2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -38,19 +38,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 43db69268149049540b1d2bbe8a69e59d5cb43b6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091355-brewery-playhouse-5786@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091356-suffering-trickily-50f2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
