@@ -2,24 +2,24 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 285FD79E8AD
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5BD79E8B0
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240741AbjIMNIB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 09:08:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
+        id S240765AbjIMNID (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:08:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240742AbjIMNIA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:08:00 -0400
+        with ESMTP id S240757AbjIMNIC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:08:02 -0400
 Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021B219BB
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:07:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CFF619B1
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:07:58 -0700 (PDT)
 Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
         (envelope-from <mchehab@linuxtv.org>)
-        id 1qgPaz-003iMY-Mp; Wed, 13 Sep 2023 13:07:53 +0000
+        id 1qgPb0-003iRd-UR; Wed, 13 Sep 2023 13:07:54 +0000
 From:   Mauro Carvalho Chehab <mchehab@kernel.org>
 Date:   Wed, 13 Sep 2023 13:04:03 +0000
-Subject: [git:media_stage/master] media: qcom: camss: Fix vfe_get() error jump
+Subject: [git:media_stage/master] media: qcom: camss: Fix pm_domain_on sequence in probe
 To:     linuxtv-commits@linuxtv.org
 Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
@@ -28,107 +28,67 @@ Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qgPaz-003iMY-Mp@www.linuxtv.org>
+Message-Id: <E1qgPb0-003iRd-UR@www.linuxtv.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: qcom: camss: Fix vfe_get() error jump
+Subject: media: qcom: camss: Fix pm_domain_on sequence in probe
 Author:  Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date:    Wed Aug 30 16:16:09 2023 +0100
+Date:    Wed Aug 30 16:16:06 2023 +0100
 
-Right now it is possible to do a vfe_get() with the internal reference
-count at 1. If vfe_check_clock_rates() returns non-zero then we will
-leave the reference count as-is and
+We need to make sure camss_configure_pd() happens before
+camss_register_entities() as the vfe_get() path relies on the pointer
+provided by camss_configure_pd().
 
-run:
-- pm_runtime_put_sync()
-- vfe->ops->pm_domain_off()
+Fix the ordering sequence in probe to ensure the pointers vfe_get() demands
+are present by the time camss_register_entities() runs.
 
-skip:
-- camss_disable_clocks()
+In order to facilitate backporting to stable kernels I've moved the
+configure_pd() call pretty early on the probe() function so that
+irrespective of the existence of the old error handling jump labels this
+patch should still apply to -next circa Aug 2023 to v5.13 inclusive.
 
-Subsequent vfe_put() calls will when the ref-count is non-zero
-unconditionally run:
-
-- pm_runtime_put_sync()
-- vfe->ops->pm_domain_off()
-- camss_disable_clocks()
-
-vfe_get() should not attempt to roll-back on error when the ref-count is
-non-zero as the upper layers will still do their own vfe_put() operations.
-
-vfe_put() will drop the reference count and do the necessary power
-domain release, the cleanup jumps in vfe_get() should only be run when
-the ref-count is zero.
-
-[   50.095796] CPU: 7 PID: 3075 Comm: cam Not tainted 6.3.2+ #80
-[   50.095798] Hardware name: LENOVO 21BXCTO1WW/21BXCTO1WW, BIOS N3HET82W (1.54 ) 05/26/2023
-[   50.095799] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   50.095802] pc : refcount_warn_saturate+0xf4/0x148
-[   50.095804] lr : refcount_warn_saturate+0xf4/0x148
-[   50.095805] sp : ffff80000c7cb8b0
-[   50.095806] x29: ffff80000c7cb8b0 x28: ffff16ecc0e3fc10 x27: 0000000000000000
-[   50.095810] x26: 0000000000000000 x25: 0000000000020802 x24: 0000000000000000
-[   50.095813] x23: ffff16ecc7360640 x22: 00000000ffffffff x21: 0000000000000005
-[   50.095815] x20: ffff16ed175f4400 x19: ffffb4d9852942a8 x18: ffffffffffffffff
-[   50.095818] x17: ffffb4d9852d4a48 x16: ffffb4d983da5db8 x15: ffff80000c7cb320
-[   50.095821] x14: 0000000000000001 x13: 2e656572662d7265 x12: 7466612d65737520
-[   50.095823] x11: 00000000ffffefff x10: ffffb4d9850cebf0 x9 : ffffb4d9835cf954
-[   50.095826] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 : 0000000000057fa8
-[   50.095829] x5 : ffff16f813fe3d08 x4 : 0000000000000000 x3 : ffff621e8f4d2000
-[   50.095832] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff16ed32119040
-[   50.095835] Call trace:
-[   50.095836]  refcount_warn_saturate+0xf4/0x148
-[   50.095838]  device_link_put_kref+0x84/0xc8
-[   50.095843]  device_link_del+0x38/0x58
-[   50.095846]  vfe_pm_domain_off+0x3c/0x50 [qcom_camss]
-[   50.095860]  vfe_put+0x114/0x140 [qcom_camss]
-[   50.095869]  csid_set_power+0x2c8/0x408 [qcom_camss]
-[   50.095878]  pipeline_pm_power_one+0x164/0x170 [videodev]
-[   50.095896]  pipeline_pm_power+0xc4/0x110 [videodev]
-[   50.095909]  v4l2_pipeline_pm_use+0x5c/0xa0 [videodev]
-[   50.095923]  v4l2_pipeline_pm_get+0x1c/0x30 [videodev]
-[   50.095937]  video_open+0x7c/0x100 [qcom_camss]
-[   50.095945]  v4l2_open+0x84/0x130 [videodev]
-[   50.095960]  chrdev_open+0xc8/0x250
-[   50.095964]  do_dentry_open+0x1bc/0x498
-[   50.095966]  vfs_open+0x34/0x40
-[   50.095968]  path_openat+0xb44/0xf20
-[   50.095971]  do_filp_open+0xa4/0x160
-[   50.095974]  do_sys_openat2+0xc8/0x188
-[   50.095975]  __arm64_sys_openat+0x6c/0xb8
-[   50.095977]  invoke_syscall+0x50/0x128
-[   50.095982]  el0_svc_common.constprop.0+0x4c/0x100
-[   50.095985]  do_el0_svc+0x40/0xa8
-[   50.095988]  el0_svc+0x2c/0x88
-[   50.095991]  el0t_64_sync_handler+0xf4/0x120
-[   50.095994]  el0t_64_sync+0x190/0x198
-[   50.095996] ---[ end trace 0000000000000000 ]---
-
-Fixes: 779096916dae ("media: camss: vfe: Fix runtime PM imbalance on error")
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
 Cc: stable@vger.kernel.org
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/platform/qcom/camss/camss-vfe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 ---
 
-diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
-index 06c95568e5af..5d8462ec0af2 100644
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -611,7 +611,7 @@ int vfe_get(struct vfe_device *vfe)
- 	} else {
- 		ret = vfe_check_clock_rates(vfe);
- 		if (ret < 0)
--			goto error_pm_runtime_get;
-+			goto error_pm_domain;
- 	}
- 	vfe->power_count++;
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index f11dc59135a5..75991d849b57 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1619,6 +1619,12 @@ static int camss_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto err_cleanup;
  
++	ret = camss_configure_pd(camss);
++	if (ret < 0) {
++		dev_err(dev, "Failed to configure power domains: %d\n", ret);
++		goto err_cleanup;
++	}
++
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1678,12 +1684,6 @@ static int camss_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	ret = camss_configure_pd(camss);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
