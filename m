@@ -2,134 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79AC979E6B4
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 13:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFE1F79E709
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 13:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240013AbjIML2d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 07:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
+        id S238945AbjIMLnu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 07:43:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240021AbjIML2c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 07:28:32 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C39B173E;
-        Wed, 13 Sep 2023 04:28:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAC0C433C7;
-        Wed, 13 Sep 2023 11:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694604507;
-        bh=TgkMDTSkKvv4v8TszdJrmsSFRm605JoHp3AjwV4m+9c=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=scWKfvGSzlV8VbrgFExT/iBiV7p7Hm6NS/oiTwWinIkZ9EX3STfSnMhxsJujgFxZe
-         E37E8lYZFibj9+PWgHBsuqs2YPfibAqF3dcIgMwA+SWX1l2E3PQtcBy2C2Sfh8roFs
-         9wO9N/KcqF5zt3T2o8es07/Xx7Qa73nwFd+pVP1xHzcW49Wka47WiKwY2SaQsAg6Dh
-         pvrVBbl7OS8+FepotpWFQDIW7XK3weNVf7u/gEQqUHns8UHeKFslc7zA7g/UOidjNl
-         mDSOpKqbyPolRFeafKOAZ6tXJektNF90u43Wb4odCg/MKdf82eXVuNQwqn0tYWc1Z6
-         jpeowzaDppzOg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id 6AE58CE093C; Wed, 13 Sep 2023 04:28:27 -0700 (PDT)
-Date:   Wed, 13 Sep 2023 04:28:27 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Peng Zhang <zhangpeng.00@bytedance.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH] init/main: Clear boot task idle flag
-Message-ID: <14620af6-7315-4de3-ac7f-5bb51f773397@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
- <20230913110139.GE692@noisy.programming.kicks-ass.net>
+        with ESMTP id S233040AbjIMLnu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 07:43:50 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DAA10E6;
+        Wed, 13 Sep 2023 04:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694605425; x=1726141425;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=Eixnt6GAsbzJFCJyQ84xwHsyzH00SfvTGFmYTKJDaE4=;
+  b=POjNE/ro1IrKARrKn4T8xLidWMg23qRCg/iOU3W+STwJh56NXPXSOL5v
+   7d6KtnLHzJ4vUUqam2w0PdQooQpvk3+ISo1noT0DZBLvZNtTFW2fAMcwb
+   vbmtcjRa7gJN2EabM4jzhZSV7s7QigBtUJx+EPnejnZScvN6Pe1i9QtoG
+   Aq1pqZ4IDBnxCYyDMPYSIhbrLCQ0M80grZozzXWVw4mfxOq8wZEh2xbmg
+   njiOFza4eFnmIedXqmjAnpbV0Qk0PQaZkFl2BHR5/Kp2a2lsVw8yzGLvR
+   +H1kjJzjPDx9n5av5NoYyWNQICLn6f9MkXwoET/N3PIHADmYXudE6HN2h
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="465006384"
+X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
+   d="scan'208";a="465006384"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:43:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="990885974"
+X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
+   d="scan'208";a="990885974"
+Received: from pakurapo-mobl3.ger.corp.intel.com ([10.249.45.213])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:43:42 -0700
+Date:   Wed, 13 Sep 2023 14:43:40 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Reinette Chatre <reinette.chatre@intel.com>
+cc:     Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kselftest@vger.kernel.org,
+        =?ISO-8859-15?Q?Maciej_Wiecz=F3r-Retman?= 
+        <maciej.wieczor-retman@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 5/5] selftests/resctrl: Reduce failures due to outliers
+ in MBA/MBM tests
+In-Reply-To: <cf7439c4-f72c-a145-5a65-84ae15c5d96f@intel.com>
+Message-ID: <c1518af-cc3c-3aa7-a3c-4bbfe8cc6cd@linux.intel.com>
+References: <20230911111930.16088-1-ilpo.jarvinen@linux.intel.com> <20230911111930.16088-6-ilpo.jarvinen@linux.intel.com> <cf7439c4-f72c-a145-5a65-84ae15c5d96f@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230913110139.GE692@noisy.programming.kicks-ass.net>
+Content-Type: multipart/mixed; boundary="8323329-407709756-1694605424=:1849"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 01:01:39PM +0200, Peter Zijlstra wrote:
-> On Tue, Sep 12, 2023 at 08:56:47PM -0400, Liam R. Howlett wrote:
-> > Initial booting is setting the task flag to idle (PF_IDLE) by the call
-> > path sched_init() -> init_idle().  Having the task idle and calling
-> > call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
-> > set.  Subsequent calls to any cond_resched() will enable IRQs,
-> > potentially earlier than the IRQ setup has completed.  Recent changes
-> > have caused just this scenario and IRQs have been enabled early.
-> > 
-> > This causes a warning later in start_kernel() as interrupts are enabled
-> > before they are fully set up.
-> > 
-> > Fix this issue by clearing the PF_IDLE flag on return from sched_init()
-> > and restore the flag in rest_init().  Although the boot task was marked
-> > as idle since (at least) d80e4fda576d, I am not sure that it is wrong to
-> > do so.  The forced context-switch on idle task was introduced in the
-> > tiny_rcu update, so I'm going to claim this fixes 5f6130fa52ee.
-> > 
-> > Link: https://lore.kernel.org/linux-mm/87v8cv22jh.fsf@mail.lhotse/
-> > Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
-> > Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
-> > Cc: stable@vger.kernel.org
-> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Cc: Andreas Schwab <schwab@linux-m68k.org>
-> > Cc: Matthew Wilcox <willy@infradead.org>
-> > Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: Juri Lelli <juri.lelli@redhat.com>
-> > Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > ---
-> >  init/main.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/init/main.c b/init/main.c
-> > index ad920fac325c..f74772acf612 100644
-> > --- a/init/main.c
-> > +++ b/init/main.c
-> > @@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
-> >  	 */
-> >  	rcu_read_lock();
-> >  	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
-> > -	tsk->flags |= PF_NO_SETAFFINITY;
-> > +	tsk->flags |= PF_NO_SETAFFINITY | PF_IDLE;
-> >  	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
-> >  	rcu_read_unlock();
-> >  
-> > @@ -938,6 +938,8 @@ void start_kernel(void)
-> >  	 * time - but meanwhile we still have a functioning scheduler.
-> >  	 */
-> >  	sched_init();
-> > +	/* Avoid early context switch, rest_init() restores PF_IDLE */
-> > +	current->flags &= ~PF_IDLE;
-> >  
-> >  	if (WARN(!irqs_disabled(),
-> >  		 "Interrupts were enabled *very* early, fixing it\n"))
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-407709756-1694605424=:1849
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 12 Sep 2023, Reinette Chatre wrote:
+> On 9/11/2023 4:19 AM, Ilpo Järvinen wrote:
+> > 5% difference upper bound for success is a bit on the low side for the
 > 
-> Hurmph... so since this is about IRQs, would it not make sense to have
-> the | PF_IDLE near 'early_boot_irqs_disabled = false' ?
+> "a bit on the low side" is very vague.
+
+The commit that introduced that 5% bound plainly admitted it's "randomly 
+chosen value". At least that wasn't vague, I guess. :-)
+
+So what I'm trying to do here is to have "randomly chosen value" replaced 
+with a value that seems to work well enough based on measurements on 
+a large set of platforms.
+
+Personally, I don't care much about this, I can just ignore the failures 
+due to outliers (and also reports about failing MBA/MBM test if somebody 
+ever sends one to me), but if I'd be one running automated tests it would 
+be annoying to have a problem like this unaddressed.
+
+> > MBA and MBM tests. Some platforms produce outliers that are slightly
+> > above that, typically 6-7%.
+> > 
+> > Relaxing the MBA/MBM success bound to 8% removes most of the failures
+> > due those frequent outliers.
 > 
-> Or, alternatively, make the tinyrcu thing check that variable?
+> This description needs more context on what issue is being solved here.
+> What does the % difference represent? How was new percentage determined?
+> 
+> Did you investigate why there are differences between platforms? From
+> what I understand these tests measure memory bandwidth using perf and
+> resctrl and then compare the difference. Are there interesting things 
+> about the platforms on which the difference is higher than 5%?
 
-We could do that, but do we really the decidedly non-idle early boot
-sequence designated as idle?
+Not really I think. The number just isn't that stable to always remain 
+below 5% (even if it usually does).
 
-What surprises me is that this is just now showing up.  The ingredients
-for this one have been in place for almost 10 years.
+Only systematic thing I've come across is that if I play with the read 
+pattern for defeating the hw prefetcher (you've seen a patch earlier and 
+it will be among the series I'll send after this one), it has an impact 
+which looks more systematic across all MBM/MBA tests. But it's not what 
+I'm trying now address with this patch.
 
-							Thanx, Paul
+> Could
+> those be systems with multiple sockets (and thus multiple PMUs that need
+> to be setup, reset, and read)? Can the reading of the counters be improved
+> instead of relaxing the success criteria? A quick comparison between
+> get_mem_bw_imc() and get_mem_bw_resctrl() makes me think that a difference
+> is not surprising ... note how the PMU counters are started and reset
+> (potentially on multiple sockets) at every iteration while the resctrl
+> counters keep rolling and new values are just subtracted from previous.
+
+Perhaps, I can try to look into it (add to my todo list so I won't 
+forget). But in the meantime, this new value is picked using a criteria 
+that looks better than "randomly chosen value". If I ever manage to 
+address the outliers, the bound could be lowered again.
+
+I'll update the changelog to explain things better.
+
+
+-- 
+ i.
+
+--8323329-407709756-1694605424=:1849--
