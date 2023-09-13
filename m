@@ -2,71 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7836379F183
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 20:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3794279F197
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231875AbjIMS6N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 14:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33450 "EHLO
+        id S232071AbjIMTC6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:02:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232075AbjIMS6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 14:58:13 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A351985
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 11:58:08 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-501b9f27eb2so1583996e87.0
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 11:58:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=libre.computer; s=google; t=1694631487; x=1695236287; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zBj6p++Qh8jXWGI/WFi0CSgU27ebTJ4j3bK1DZUl5Kw=;
-        b=Se/tZ84Q0N0eL+xp/i7O6m19c1QPQO+FBK2xyuRgJUPjoOy541XaQwOkkVRe0StyXo
-         AoFOc9Ugy/ESlpabLNH3tXLwnMTJnCUlJNRokWLl47mLLmgTNtqCrdyK0/s3F4BGXE3n
-         uqFbWteCM0sRE69O4SZeZ8ayQY89DcIJYnOL8yLojnOj61dXhqISnA4VDdYesfdQ+irq
-         dWfkMcj3bbwGT364k46daIC9S8p8Z6IMe7T6SqO4u/mQ+8OAj/x4pIxpM9UisWpzBcHx
-         nStXlRO/iELaAiryJsrQEGuobKj7TfsdhiszdIfVZ59Dr+2rOpylQ+qV07ALtsWtnT85
-         GWrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694631487; x=1695236287;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zBj6p++Qh8jXWGI/WFi0CSgU27ebTJ4j3bK1DZUl5Kw=;
-        b=GNifskwp2YMjSDZbU/DKQI3DiWEy9sLbzKvC5EmooOawgzPxRbtZbkO6y37Lvso3q8
-         RSH6j6d7GXUeWH32OeTOslsKqIcvH6x+thLlzvhT2TquUvrh6EJGrq3HOLFB/qOeZ+cV
-         mbfsi1T+8IshAR3z+CVunUHp9OoxWvY3tSSC/Uq/OyOnpmpoJoiiSWs+uYXZWnxUbPps
-         dprrVZTBwm3DcBTRuCDprP/Vkd1FqoFO8JKXr3P65zP2s6i/JFMWTZjdQHOhzOP3XN3a
-         B73aNK0YOdo04NF3WF+lyyM6urvXF8QOZQiLTOWs5wHNH85zZ5WQ9yYJIJyPp91uKaBs
-         shTg==
-X-Gm-Message-State: AOJu0YyLs+GpQmsVAUZ+qCj0BELfBj/I0Z1+sUMTPGKpitbaBbSmLPuy
-        6LzwmYXrOqngKwfeLcQxj2v9EDUGm7gop68KxJOw30MDDnr6Vifk9MN9
-X-Google-Smtp-Source: AGHT+IGZ+D5kl00YHI2JJ6DcumX3Ia4Gk29qvxttKtG/Wae63pJv2LYrUq6RpLrHoCOwUoT3JNfEYF4H7ja4ubEBAAU=
-X-Received: by 2002:a05:6512:159e:b0:500:af82:7ddc with SMTP id
- bp30-20020a056512159e00b00500af827ddcmr2618766lfb.28.1694631487079; Wed, 13
- Sep 2023 11:58:07 -0700 (PDT)
+        with ESMTP id S230311AbjIMTC5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:02:57 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41EE1170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:02:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F647C433C7;
+        Wed, 13 Sep 2023 19:02:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694631772;
+        bh=s92MG/8syYClJ4E1nPhXwpUHFMB8lqYPYgPihO/6W0M=;
+        h=Subject:To:Cc:From:Date:From;
+        b=yzt0Wh1+JMrCE1bjFx1j4LsXEE1lZsYxeuURExyERZCXFe+2RTG00k25qeYKCWOdI
+         H2ZXHwkuuy7UzfmBUXJliWEtVFAbVXdxAoc6DRYlO8Lv5VYyJuQ8kHdu8lGpaeNHDF
+         c8AdulxR/aIyVww9rZhiSh5xEH/mLAlu8z9iHyFQ=
+Subject: FAILED: patch "[PATCH] ARM: dts: samsung: exynos4210-i9100: Fix LCD screen's" failed to apply to 6.1-stable tree
+To:     paul@crapouillou.net, krzysztof.kozlowski@linaro.org,
+        sam@ravnborg.org, stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 13 Sep 2023 21:02:49 +0200
+Message-ID: <2023091348-luxury-uninsured-9ed9@gregkh>
 MIME-Version: 1.0
-From:   Da Xue <da@libre.computer>
-Date:   Wed, 13 Sep 2023 14:57:55 -0400
-Message-ID: <CACqvRUb_X14pjaxA0Q7bQf53TAFmk5rjQOSWqx3Tvi4g+vcNMw@mail.gmail.com>
-Subject: linux-stable 6.1.53 kernel crash on COLOR_ID_MULTI handling change
-To:     Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Pavel,
 
-We have running systems that use COLOR_ID_MULTI. The GPIO toggles
-between two colors and we have used the identifier. RGB is not a good
-fit since it is not a RGB LED. Please provide guidance.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This patch causes the system to not start: f741121a2251 leds: Fix
-BUG_ON check for LED_COLOR_ID_MULTI that is always false
+To reproduce the conflict and resubmit, you may use the following commands:
 
-It was also backported to stable causing previously booting systems to
-no longer boot.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x b3f3fc32e5ff1e848555af8616318cc667457f90
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091348-luxury-uninsured-9ed9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Best,
-Da Xue
+Possible dependencies:
+
+b3f3fc32e5ff ("ARM: dts: samsung: exynos4210-i9100: Fix LCD screen's physical size")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b3f3fc32e5ff1e848555af8616318cc667457f90 Mon Sep 17 00:00:00 2001
+From: Paul Cercueil <paul@crapouillou.net>
+Date: Fri, 14 Jul 2023 17:37:20 +0200
+Subject: [PATCH] ARM: dts: samsung: exynos4210-i9100: Fix LCD screen's
+ physical size
+
+The previous values were completely bogus, and resulted in the computed
+DPI ratio being much lower than reality, causing applications and UIs to
+misbehave.
+
+The new values were measured by myself with a ruler.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Cc: <stable@vger.kernel.org> # v5.8+
+Link: https://lore.kernel.org/r/20230714153720.336990-1-paul@crapouillou.net
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+index 37cd4dde53e4..a9ec1f6c1dea 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+@@ -207,8 +207,8 @@ lcd@0 {
+ 			power-on-delay = <10>;
+ 			reset-delay = <10>;
+ 
+-			panel-width-mm = <90>;
+-			panel-height-mm = <154>;
++			panel-width-mm = <56>;
++			panel-height-mm = <93>;
+ 
+ 			display-timings {
+ 				timing {
+
