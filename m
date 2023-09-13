@@ -2,48 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ACB07A88E8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 17:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F9E37A8AE5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 19:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235531AbjITPuc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 11:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55820 "EHLO
+        id S229523AbjITRxX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 13:53:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234802AbjITPub (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 11:50:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE92EB9;
-        Wed, 20 Sep 2023 08:50:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 64451C433CC;
-        Wed, 20 Sep 2023 15:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695225025;
-        bh=LPE6+j2moV2jZAwig9ZRFQxDO5eBHD3zNmuotyL0WyE=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=XbgkrEQ4W4x9NCAJHZAXE5UJATS6dDywBYfa0FZ9s8CmXfjj/kf0I7o1iV4lqcbRb
-         /forzMvEwI4+BBD4iiSgL6gM5XVM3f2eGyoW8v8jXTFb/1fyuKxRjfaLPsOBKDC74B
-         HasL1zloOLxVfYD+rj2LoPHpZHC0Ie8aus/+MtVCeCkmbxpE9e4ysB1KQI20JOQlqr
-         sN4tC++H1VkDYBogFMrqFLj9WE/Z8iXjbHGreQvGr4LbaWL1knQY4r+sx69dgIBfBu
-         sFmr4HiBNTyCR4nPV0/QpNR93PIG+Dtfr5sg247+Pz8oVgljspMVvD18kZD4LH8BL1
-         OBvqf6uk5VZPg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 41A6FE11F4C;
-        Wed, 20 Sep 2023 15:50:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] f2fs: set the default compress_level on ioctl
-From:   patchwork-bot+f2fs@kernel.org
-Message-Id: <169522502526.22557.11170809241417939586.git-patchwork-notify@kernel.org>
-Date:   Wed, 20 Sep 2023 15:50:25 +0000
-References: <20230912205015.2582133-1-jaegeuk@kernel.org>
-In-Reply-To: <20230912205015.2582133-1-jaegeuk@kernel.org>
-To:     Jaegeuk Kim <jaegeuk@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        with ESMTP id S229481AbjITRxW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 13:53:22 -0400
+Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37AAC94
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:53:17 -0700 (PDT)
+Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
+        (envelope-from <mchehab@linuxtv.org>)
+        id 1qj1Ny-009PYo-8t; Wed, 20 Sep 2023 17:53:14 +0000
+From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+Date:   Wed, 13 Sep 2023 13:04:03 +0000
+Subject: [git:media_tree/master] media: qcom: camss: Fix pm_domain_on sequence in probe
+To:     linuxtv-commits@linuxtv.org
+Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        stable@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1qj1Ny-009PYo-8t@www.linuxtv.org>
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_96_XX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,29 +38,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+This is an automatic generated email to let you know that the following patch were queued:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
-by Jaegeuk Kim <jaegeuk@kernel.org>:
+Subject: media: qcom: camss: Fix pm_domain_on sequence in probe
+Author:  Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Date:    Wed Aug 30 16:16:06 2023 +0100
 
-On Tue, 12 Sep 2023 13:50:15 -0700 you wrote:
-> Otherwise, we'll get a broken inode.
-> 
->  # touch $FILE
->  # f2fs_io setflags compression $FILE
->  # f2fs_io set_coption 2 8 $FILE
-> 
-> [  112.227612] F2FS-fs (dm-51): sanity_check_compress_inode: inode (ino=8d3fe) has unsupported compress level: 0, run fsck to fix
-> 
-> [...]
+We need to make sure camss_configure_pd() happens before
+camss_register_entities() as the vfe_get() path relies on the pointer
+provided by camss_configure_pd().
 
-Here is the summary with links:
-  - [f2fs-dev] f2fs: set the default compress_level on ioctl
-    https://git.kernel.org/jaegeuk/f2fs/c/f5f3bd903a5d
+Fix the ordering sequence in probe to ensure the pointers vfe_get() demands
+are present by the time camss_register_entities() runs.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+In order to facilitate backporting to stable kernels I've moved the
+configure_pd() call pretty early on the probe() function so that
+irrespective of the existence of the old error handling jump labels this
+patch should still apply to -next circa Aug 2023 to v5.13 inclusive.
 
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
+ drivers/media/platform/qcom/camss/camss.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+---
+
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index f11dc59135a5..75991d849b57 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1619,6 +1619,12 @@ static int camss_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto err_cleanup;
+ 
++	ret = camss_configure_pd(camss);
++	if (ret < 0) {
++		dev_err(dev, "Failed to configure power domains: %d\n", ret);
++		goto err_cleanup;
++	}
++
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1678,12 +1684,6 @@ static int camss_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	ret = camss_configure_pd(camss);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
