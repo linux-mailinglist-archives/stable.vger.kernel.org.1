@@ -2,107 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD8779EA18
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B9379EA23
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232734AbjIMNxS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 09:53:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
+        id S234159AbjIMNzu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:55:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231433AbjIMNxS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:53:18 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B7A19B6;
-        Wed, 13 Sep 2023 06:53:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=HBGkdRgqPXI4bHcmCrKt82K03JWpt+6ZAQAiRZJ7acE=; b=Mi4UuSRD2ivRV5Q2hqAggIYI1z
-        k3GbBEZ14lnReEsSNnZm9fAYEZ+KIzLh80yw1vsU9aUJjqKk4R0S90mQ5zOT9hXmfJwZNiVkHaTol
-        Shy0DdygOKgcpxDo4AueJUNmxDm2peQ4gGUNLYtX5qjvM0MB/dedxiUR9U+kjNjbXbM0mikAmF/ut
-        JB1BgzgQHXcMH2DKXmbEb0vdOpetaicthLGORK2lwmY3EJNlXHP2iPi7jcAagXpl35oZcoRom77yv
-        y4XWVjuid309Cn25/5+rVLJa3eWYC/ZmzEHxhOOtHxg0IRYyXXdyJXyWOdHCrl8J2/qhJi0LATG5t
-        V1p/5q6Q==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qgQIQ-00EDF7-Jd; Wed, 13 Sep 2023 13:52:46 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 466A9300348; Wed, 13 Sep 2023 15:52:46 +0200 (CEST)
-Date:   Wed, 13 Sep 2023 15:52:46 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Peng Zhang <zhangpeng.00@bytedance.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH] init/main: Clear boot task idle flag
-Message-ID: <20230913135246.GH692@noisy.programming.kicks-ass.net>
-References: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
+        with ESMTP id S230063AbjIMNzu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:55:50 -0400
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE0919B1
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:55:46 -0700 (PDT)
+Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-450f68feee2so169228137.1
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:55:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694613345; x=1695218145; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bHOWKgoMJ5vIrHEwzYhikdH8Nfh2BsBh7d3nokFVIcY=;
+        b=ZhDhUZW+KAOy7nhtesM/OAkVHi6jVsaHK+Lf9pYb5iLIuz7zqOnT8eb05mMv1OazHv
+         O9zwtdABqQAYASIi9OKdfpDbYwousKroJ7QJF2nZURwpF6hD6hemHv88OIe037Irq+L2
+         Dr88e4gsPHzHr0RqiyFefV14m/tVJ8z50rSDLLheOv8eI/akRLmUEqaXxRzMBy8F2Uen
+         9Q72/wtOjYCYs8l6BVoBsCHN3OTZ9Ow0N9KyZjmj9EYbZiso6qah8TXNVp28j9km5Ixu
+         Bs9XPMLFw94lC1xpCgKGBJdFaX4SBd5TOf8BW4tWrk18eCFmkVhzfFD6c+s7jEYjctMu
+         VmMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694613345; x=1695218145;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bHOWKgoMJ5vIrHEwzYhikdH8Nfh2BsBh7d3nokFVIcY=;
+        b=PlGHpvY1cI/ptTznbnE8O3iOszWoOGWlDFGZsvYEucZK02D2qa10cE6d12vRSXXZga
+         ooEcL6gjSSCDm5LGjMoKxUkaqC6YL/HwN79ulbK6J156/P/iv1/4QpLHOq6EAISchJon
+         K/3ZVFlHdrMojWUfaxW5qIoyfUUb6nqGUxqtO21ijIxkZPxTYvp1mtmKm5BYfkM+hg7r
+         9QHHnny1/Erz02wzuHuPlFtSEFJlteWvggK3NB+1AJdjoNIL1TunNhicBOAaS5CbjpdL
+         r1vSYorEqo6EucXhr9hZ/8GYNXtA4P3yTR5t1jS7YF0135qZo+w7VR5VRkcY5OXJV2a3
+         rY+A==
+X-Gm-Message-State: AOJu0YzXMWjextJ0Uga04GEpxKFjVT2WqLShpVBYILvqu0OG2hsHEt1+
+        3HdFM/h6bqHuE0Zte/Uus8kvZxNtGi3OSPYkem6wHg==
+X-Google-Smtp-Source: AGHT+IFf5imTqug/zcRG1beR5iQXSQEFra9TlGRP6+/+gjc5RTxdHFSFJ3q0U7S4Vcw7LNDBmZUTS5F2jEkEzXHOm+M=
+X-Received: by 2002:a67:e203:0:b0:44d:3bc0:f1ba with SMTP id
+ g3-20020a67e203000000b0044d3bc0f1bamr2601874vsa.26.1694613345099; Wed, 13 Sep
+ 2023 06:55:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
+References: <20230911134633.619970489@linuxfoundation.org> <1ffe4f64-f238-859a-ab14-7559d03c4671@linaro.org>
+ <CAEUSe7_XA16yZAHA+YTbJygwaUYkU5gs=FnV9BAmQRYzwgVjvQ@mail.gmail.com>
+ <CA+G9fYsiWEKSV0EeU0cXsJZ3U75fbdGyCmDx07ksFMUW5jouyw@mail.gmail.com>
+ <2023091233-boots-line-a3d4@gregkh> <CA+G9fYt2Jnxwvpzcd66HCqkPi6CNistHfmxQYAzX22OWHUoUSA@mail.gmail.com>
+ <2023091213-awning-driveway-4671@gregkh>
+In-Reply-To: <2023091213-awning-driveway-4671@gregkh>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 13 Sep 2023 19:25:33 +0530
+Message-ID: <CA+G9fYtY7_-JgVizZuVJZ3RX0e3eZ3ri8AxDpkkPdP-uYfZ1ig@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/600] 6.1.53-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     jack@suse.cz, stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
+        Tom Rix <trix@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 08:56:47PM -0400, Liam R. Howlett wrote:
+Hi Greg,
 
-> diff --git a/init/main.c b/init/main.c
-> index ad920fac325c..f74772acf612 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
->  	 */
->  	rcu_read_lock();
->  	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
-> -	tsk->flags |= PF_NO_SETAFFINITY;
-> +	tsk->flags |= PF_NO_SETAFFINITY | PF_IDLE;
->  	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
->  	rcu_read_unlock();
->  
+> > > > > For what it's worth, bisection points to 903b487b5ba6 ("udf: Handle
+> > > > > error when adding extent to a file").
+> > > >
+> > > > I see the following commit is fixing the reported problem.
+> > > >
+> > > > commit 6d5ab7c2f7cf90877dab8f2bb06eb5ca8edc73ef
+> > > > Author: Tom Rix <trix@redhat.com>
+> > > > Date:   Fri Dec 30 12:53:41 2022 -0500
+> > > >
+> > > >     udf: initialize newblock to 0
+> > > >
+> > > >     The clang build reports this error
+> > > >     fs/udf/inode.c:805:6: error: variable 'newblock' is used
+> > > > uninitialized whenever 'if' condition is true
+> > > > [-Werror,-Wsometimes-uninitialized]
+> > > >             if (*err < 0)
+> > > >                 ^~~~~~~~
+> > > >     newblock is never set before error handling jump.
+> > > >     Initialize newblock to 0 and remove redundant settings.
+> > > >
+> > > >     Fixes: d8b39db5fab8 ("udf: Handle error when adding extent to a file")
+> > > >     Reported-by: Nathan Chancellor <nathan@kernel.org>
+> > > >     Signed-off-by: Tom Rix <trix@redhat.com>
+> > > >     Signed-off-by: Jan Kara <jack@suse.cz>
+> > > >     Message-Id: <20221230175341.1629734-1-trix@redhat.com>
+> > >
+> > > Wait, where is this commit?  I don't see it in Linus's tree either, nor
+> > > in linux-next.  Where did you find it?
+> >
+> > Can you find this commit id ?
+> >
+> > Commit id: 23970a1c9475b305770fd37bebfec7a10f263787
+> > subject: ("udf: initialize newblock to 0")
+>
+> Yes, that is in 6.2.  Where did the id you used above come from?
 
-Hmm, isn't that pid-1 you're setting PF_IDLE on?
+While looking around for the fix commit i found this on Linux next,
 
-The task becoming idle is 'current' at this point, see the
-cpu_startup_entry() call below.
+$ git log --oneline next-20221226..next-20230106  -- fs/udf/inode.c
+e86812bfac97e udf: Detect system inodes linked into directory hierarchy
+453bc25de0a55 udf: Preserve link count of system files
+6d5ab7c2f7cf9 udf: initialize newblock to 0
 
-Would not something like so be the right thing?
+>
+> confused,
 
+Sorry for the confusion.
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 2299a5cfbfb9..802551e0009b 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9269,7 +9269,7 @@ void __init init_idle(struct task_struct *idle, int cpu)
- 	 * PF_KTHREAD should already be set at this point; regardless, make it
- 	 * look like a proper per-CPU kthread.
- 	 */
--	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
-+	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
- 	kthread_set_per_cpu(idle, cpu);
- 
- #ifdef CONFIG_SMP
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 342f58a329f5..5007b25c5bc6 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -373,6 +373,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
- 
- void cpu_startup_entry(enum cpuhp_state state)
- {
-+	current->flags |= PF_IDLE;
- 	arch_cpu_idle_prepare();
- 	cpuhp_online_idle(state);
- 	while (1)
+> greg k-h
+
+- Naresh
