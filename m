@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 077F279F1B9
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34BCF79F1BA
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:08:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232086AbjIMTIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33072 "EHLO
+        id S232025AbjIMTIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232025AbjIMTIO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:08:14 -0400
+        with ESMTP id S229975AbjIMTIY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:08:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2ADC1999
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:08:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA48C433C8;
-        Wed, 13 Sep 2023 19:08:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F851999
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:08:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7F4C433C7;
+        Wed, 13 Sep 2023 19:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694632090;
-        bh=uQEeb81G5qINR3r3aYbs5mvOHFhUuxS7hEZaqi88XaA=;
+        s=korg; t=1694632099;
+        bh=1Zpa7MiWkjsTT4qwVnt1LNmo0deFbcUSw5wYzkUX2jM=;
         h=Subject:To:Cc:From:Date:From;
-        b=y+hMMHYF9TsYO4ZSKFyoiPzb/ZO35rcZhgrcp6eLaGjHQ90LRqqV90jxc+BrMgq0U
-         aBalvOx77g5a4ZoClOqv1Q5I9Tr0tevNFS58TFOSC3vctBxi/C44oM5jwEAuBGzcVd
-         e7rkwYOx8N81L2fkNEnunmf5MbBsblZWX0CVIPeg=
-Subject: FAILED: patch "[PATCH] pinctrl: cherryview: fix address_space_handler() argument" failed to apply to 5.4-stable tree
+        b=WmtmAELIeLl4lwPViTsfpwjwJFgqQDngAdqN4sn9ZB60WvCx6XguGGXt9Q9wx5k77
+         KAs3ioec8ueVbH+4J9Hoa4j2cQxDS9BgMoUs+gnuIEHYF+1TwjiF3AsplHYnw0oQDB
+         nTcVWLQxf24kO4JMfaTks8AAE7sBqI3Hirus96ao=
+Subject: FAILED: patch "[PATCH] pinctrl: cherryview: fix address_space_handler() argument" failed to apply to 4.19-stable tree
 To:     raag.jadav@intel.com, andriy.shevchenko@linux.intel.com,
         mika.westerberg@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:08:06 +0200
-Message-ID: <2023091306-alfalfa-reflector-b0cb@gregkh>
+Date:   Wed, 13 Sep 2023 21:08:07 +0200
+Message-ID: <2023091307-reimburse-afraid-436c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -38,19 +38,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d5301c90716a8e20bc961a348182daca00c8e8f0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091306-alfalfa-reflector-b0cb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091307-reimburse-afraid-436c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,7 @@ bd90633a5c54 ("pinctrl: cherryview: Add GPIO <-> pin mapping ranges via callback
 8ae93b5ed9be ("pinctrl: cherryview: Missed type change to unsigned int")
 e58e177392b9 ("pinctrl: cherryview: Allocate IRQ chip dynamic")
 17d49c6258e6 ("pinctrl: cherryview: Fix spelling mistake in the comment")
+3c2edc36a774 ("Merge tag 'pinctrl-v5.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl")
 
 thanks,
 
