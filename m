@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 816E079F198
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 852E379F199
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231875AbjIMTDG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:03:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
+        id S230311AbjIMTDM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:03:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230311AbjIMTDG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:06 -0400
+        with ESMTP id S232086AbjIMTDK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70AA8170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4C5C433C7;
-        Wed, 13 Sep 2023 19:03:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49421986
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4197C433C7;
+        Wed, 13 Sep 2023 19:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631782;
-        bh=ETy5j8VzXuWP8Z6JR4t2q0G/iQRrKDr91oTyUBEJcI8=;
+        s=korg; t=1694631786;
+        bh=qb8QGvEdzXsE6lSiK9PIjY+chUxYvkanX0r/sD3qT+Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=E2z2mrFXR1ufIXZlreSXG1jw/8LR2zpI43JZyG8DiloXyBzLHC/+fAAJgpy42KEu7
-         upzijLyojx7G7MdfMl6fRWLXwAw8jUXek9RBfmbtQU3W2eU4mAZzQ6VrvIzHCNZF1W
-         UC/lQB4P5ueFWt2I5YpnlbFrWUUPX+YV3TUL3mWM=
-Subject: FAILED: patch "[PATCH] ARM: dts: samsung: exynos4210-i9100: Fix LCD screen's" failed to apply to 5.15-stable tree
+        b=JE+UXHSAPKUOpF4mof7BBZ1ndJxXE+rcbx9yu7irbxWTn9GHrNgVyrvk4QCxjgJU5
+         57jJ8zIRR0TxV+EM8s8pQEjIvzQWzXmL6S0hLS23bs0SYGZwX+xZkJkn9lHx6zAqYP
+         HDP0UsPzaG/z+d0NdI4iJ3BzTLametyPMCxKfGe0=
+Subject: FAILED: patch "[PATCH] ARM: dts: samsung: exynos4210-i9100: Fix LCD screen's" failed to apply to 5.10-stable tree
 To:     paul@crapouillou.net, krzysztof.kozlowski@linaro.org,
         sam@ravnborg.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:02:50 +0200
-Message-ID: <2023091350-stretch-subpar-e1a1@gregkh>
+Date:   Wed, 13 Sep 2023 21:02:51 +0200
+Message-ID: <2023091351-senorita-unscrew-4034@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -38,19 +38,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x b3f3fc32e5ff1e848555af8616318cc667457f90
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091350-stretch-subpar-e1a1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091351-senorita-unscrew-4034@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
