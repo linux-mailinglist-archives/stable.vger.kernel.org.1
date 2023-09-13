@@ -2,62 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F1B79F1AE
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2FCF79F1AF
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:05:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232115AbjIMTE6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:04:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49518 "EHLO
+        id S232194AbjIMTFE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:05:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232194AbjIMTE6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:58 -0400
+        with ESMTP id S232193AbjIMTFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:05:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD89199F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5856EC433C8;
-        Wed, 13 Sep 2023 19:04:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43F0170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:05:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66C2C433C7;
+        Wed, 13 Sep 2023 19:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631893;
-        bh=DWvO+c38mGpRn37KqiAgqiMJRg341zF7mkGyHYNzxFA=;
+        s=korg; t=1694631900;
+        bh=PDqAgxHe91exLodXejC4vCoLF9Kc+8zaafUjftEeBtM=;
         h=Subject:To:Cc:From:Date:From;
-        b=IsjyiGPKDUrWs6XzHtlOd0gFBHR8NONh9mAnGlpoLUqwIefytm0H4wlMmGiSlI5eZ
-         AtdlgxQdln+28n3Q/IzjXTPvGcm5Iua+BpdhEygwb6I5SuYbvHg2GL0+qbHqRCv+AU
-         7hffzcdYXusATy/qoXZjko4PH1Ijx+NhJBMdyqPw=
-Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 4.19-stable tree
-To:     krzysztof.kozlowski@linaro.org, andersson@kernel.org,
-        stable@vger.kernel.org
+        b=MaFjwJPazRwhbVmhP6CN+bTp6vVEftp+hI9mRO3MyhdGmo4cKxKLn/PTpgDktxqPc
+         Kd0gII1j6taO/S0o5o2ZBaJ8FvPfJwI6WUc0W5vEzD7CmzLldGW+sEEG0wUgE+mniN
+         kqv331yKXQG1ZDSAvcTE92JOL2/gRR3nG8nSxCOw=
+Subject: FAILED: patch "[PATCH] ARM: dts: BCM5301X: Extend RAM to full 256MB for Linksys" failed to apply to 6.1-stable tree
+To:     alealexpro100@ya.ru, ansuelsmth@gmail.com,
+        florian.fainelli@broadcom.com, rafal@milecki.pl
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:04:32 +0200
-Message-ID: <2023091332-luminance-favoring-097e@gregkh>
+Date:   Wed, 13 Sep 2023 21:04:56 +0200
+Message-ID: <2023091356-hangnail-unmovable-37c8@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7c74379afdfee7b13f1cd8ff1ad6e0f986aec96c
+git cherry-pick -x 91994e59079dcb455783d3f9ea338eea6f671af3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091332-luminance-favoring-097e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091356-hangnail-unmovable-37c8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7c74379afdfe ("ARM: dts: qcom: msm8974pro-castor: correct touchscreen syna,nosleep-mode")
-724ba6751532 ("ARM: dts: Move .dts files to vendor sub-directories")
-86684c2481b6 ("ARM: dts: Add .dts files missing from the build")
-313c22bb3195 ("Merge tag 'arm-soc/for-6.5/devicetree' of https://github.com/Broadcom/stblinux into soc/dt")
+91994e59079d ("ARM: dts: BCM5301X: Extend RAM to full 256MB for Linksys EA6500 V2")
 
 thanks,
 
@@ -65,33 +62,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7c74379afdfee7b13f1cd8ff1ad6e0f986aec96c Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Thu, 20 Jul 2023 13:53:35 +0200
-Subject: [PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen
- syna,nosleep-mode
+From 91994e59079dcb455783d3f9ea338eea6f671af3 Mon Sep 17 00:00:00 2001
+From: Aleksey Nasibulin <alealexpro100@ya.ru>
+Date: Wed, 12 Jul 2023 03:40:17 +0200
+Subject: [PATCH] ARM: dts: BCM5301X: Extend RAM to full 256MB for Linksys
+ EA6500 V2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-There is no syna,nosleep property in Synaptics RMI4 touchscreen:
+Linksys ea6500-v2 have 256MB of ram. Currently we only use 128MB.
+Expand the definition to use all the available RAM.
 
-  qcom-msm8974pro-sony-xperia-shinano-castor.dtb: synaptics@2c: rmi4-f01@1: 'syna,nosleep' does not match any of the regexes: 'pinctrl-[0-9]+'
+Fixes: 03e96644d7a8 ("ARM: dts: BCM5301X: Add basic DT for Linksys EA6500 V2")
+Signed-off-by: Aleksey Nasibulin <alealexpro100@ya.ru>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org
+Acked-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230712014017.28123-1-ansuelsmth@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
-Fixes: ab80661883de ("ARM: dts: qcom: msm8974: Add Sony Xperia Z2 Tablet")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230720115335.137354-6-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-index 726ed67415e1..11468d1409f7 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-@@ -127,7 +127,7 @@ synaptics@2c {
+diff --git a/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts b/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts
+index f1412ba83def..0454423fe166 100644
+--- a/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts
++++ b/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts
+@@ -19,7 +19,8 @@ chosen {
  
- 		rmi4-f01@1 {
- 			reg = <0x1>;
--			syna,nosleep = <1>;
-+			syna,nosleep-mode = <1>;
- 		};
+ 	memory@0 {
+ 		device_type = "memory";
+-		reg = <0x00000000 0x08000000>;
++		reg = <0x00000000 0x08000000>,
++		      <0x88000000 0x08000000>;
+ 	};
  
- 		rmi4-f11@11 {
+ 	gpio-keys {
 
