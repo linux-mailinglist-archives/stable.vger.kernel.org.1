@@ -2,40 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B6F79F1B5
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 077F279F1B9
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232139AbjIMTHD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:07:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58158 "EHLO
+        id S232086AbjIMTIP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:08:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232086AbjIMTHC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:07:02 -0400
+        with ESMTP id S232025AbjIMTIO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:08:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31CC170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:06:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6C4C433C7;
-        Wed, 13 Sep 2023 19:06:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2ADC1999
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:08:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA48C433C8;
+        Wed, 13 Sep 2023 19:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694632018;
-        bh=xU1pWsxABY4YXbOyPOjw40p6xyVAahYm7ilSEqjip3E=;
+        s=korg; t=1694632090;
+        bh=uQEeb81G5qINR3r3aYbs5mvOHFhUuxS7hEZaqi88XaA=;
         h=Subject:To:Cc:From:Date:From;
-        b=NWUP02Qqw/Era6SLBAXDCUZOQMtSEAMaYhzVbQIj5S4avPYqCdpQsyR9P2rk5R+B2
-         COKGWeLcpmwlTikq6dXDq/J6QWD/v7WPlzVCyvwB3kGPK1bB5nzXAYA7FADwjWOrpu
-         06SyHyAGq0K6fSRyxABWsUgQ6iubyPyCNpxx1wF8=
-Subject: FAILED: patch "[PATCH] Multi-gen LRU: avoid race in inc_min_seq()" failed to apply to 6.1-stable tree
-To:     kaleshsingh@google.com, akpm@linux-foundation.org,
-        aneesh.kumar@linux.ibm.com,
-        angelogioacchino.delregno@collabora.com, baohua@kernel.org,
-        bgeffon@google.com, heftig@archlinux.org,
-        lecopzer.chen@mediatek.com, matthias.bgg@gmail.com,
-        oleksandr@natalenko.name, quic_charante@quicinc.com,
-        stable@vger.kernel.org, steven@liquorix.net, suleiman@google.com,
-        surenb@google.com, yuzhao@google.com, zhengqi.arch@bytedance.com
+        b=y+hMMHYF9TsYO4ZSKFyoiPzb/ZO35rcZhgrcp6eLaGjHQ90LRqqV90jxc+BrMgq0U
+         aBalvOx77g5a4ZoClOqv1Q5I9Tr0tevNFS58TFOSC3vctBxi/C44oM5jwEAuBGzcVd
+         e7rkwYOx8N81L2fkNEnunmf5MbBsblZWX0CVIPeg=
+Subject: FAILED: patch "[PATCH] pinctrl: cherryview: fix address_space_handler() argument" failed to apply to 5.4-stable tree
+To:     raag.jadav@intel.com, andriy.shevchenko@linux.intel.com,
+        mika.westerberg@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:06:54 +0200
-Message-ID: <2023091354-atom-tinderbox-b9be@gregkh>
+Date:   Wed, 13 Sep 2023 21:08:06 +0200
+Message-ID: <2023091306-alfalfa-reflector-b0cb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,24 +38,38 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x bb5e7f234eacf34b65be67ebb3613e3b8cf11b87
+git cherry-pick -x d5301c90716a8e20bc961a348182daca00c8e8f0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091354-atom-tinderbox-b9be@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091306-alfalfa-reflector-b0cb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-bb5e7f234eac ("Multi-gen LRU: avoid race in inc_min_seq()")
-391655fe08d1 ("mm: multi-gen LRU: rename lru_gen_struct to lru_gen_folio")
+d5301c90716a ("pinctrl: cherryview: fix address_space_handler() argument")
+3ea2e2cabd2d ("pinctrl: cherryview: Switch to use struct intel_pinctrl")
+8a8285707780 ("pinctrl: cherryview: Move custom community members to separate data struct")
+0e2d769d4b4e ("pinctrl: cherryview: Drop stale comment")
+293428f93260 ("pinctrl: cherryview: Re-use data structures from pinctrl-intel.h (part 3)")
+bfc8a4baec93 ("pinctrl: cherryview: Convert chv_writel() to use chv_padreg()")
+99fd6512278e ("pinctrl: cherryview: Introduce helpers to IO with common registers")
+4e7293e3a2a3 ("pinctrl: cherryview: Introduce chv_readl() helper")
+3dbf1ee6abbb ("pinctrl: cherryview: Add missing spinlock usage in chv_gpio_irq_handler")
+36ad7b24486a ("pinctrl: cherryview: Re-use data structures from pinctrl-intel.h (part 2)")
+b9a19bdbc843 ("pinctrl: cherryview: Pass irqchip when adding gpiochip")
+bd90633a5c54 ("pinctrl: cherryview: Add GPIO <-> pin mapping ranges via callback")
+82d9beb4b7f7 ("pinctrl: cherryview: Split out irq hw-init into a separate helper function")
+8ae93b5ed9be ("pinctrl: cherryview: Missed type change to unsigned int")
+e58e177392b9 ("pinctrl: cherryview: Allocate IRQ chip dynamic")
+17d49c6258e6 ("pinctrl: cherryview: Fix spelling mistake in the comment")
 
 thanks,
 
@@ -69,88 +77,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bb5e7f234eacf34b65be67ebb3613e3b8cf11b87 Mon Sep 17 00:00:00 2001
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Tue, 1 Aug 2023 19:56:03 -0700
-Subject: [PATCH] Multi-gen LRU: avoid race in inc_min_seq()
+From d5301c90716a8e20bc961a348182daca00c8e8f0 Mon Sep 17 00:00:00 2001
+From: Raag Jadav <raag.jadav@intel.com>
+Date: Tue, 22 Aug 2023 12:53:40 +0530
+Subject: [PATCH] pinctrl: cherryview: fix address_space_handler() argument
 
-inc_max_seq() will try to inc_min_seq() if nr_gens == MAX_NR_GENS. This
-is because the generations are reused (the last oldest now empty
-generation will become the next youngest generation).
+First argument of acpi_*_address_space_handler() APIs is acpi_handle of
+the device, which is incorrectly passed in driver ->remove() path here.
+Fix it by passing the appropriate argument and while at it, make both
+API calls consistent using ACPI_HANDLE().
 
-inc_min_seq() is retried until successful, dropping the lru_lock
-and yielding the CPU on each failure, and retaking the lock before
-trying again:
+Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-        while (!inc_min_seq(lruvec, type, can_swap)) {
-                spin_unlock_irq(&lruvec->lru_lock);
-                cond_resched();
-                spin_lock_irq(&lruvec->lru_lock);
-        }
-
-However, the initial condition that required incrementing the min_seq
-(nr_gens == MAX_NR_GENS) is not retested. This can change by another
-call to inc_max_seq() from run_aging() with force_scan=true from the
-debugfs interface.
-
-Since the eviction stalls when the nr_gens == MIN_NR_GENS, avoid
-unnecessarily incrementing the min_seq by rechecking the number of
-generations before each attempt.
-
-This issue was uncovered in previous discussion on the list by Yu Zhao
-and Aneesh Kumar [1].
-
-[1] https://lore.kernel.org/linux-mm/CAOUHufbO7CaVm=xjEb1avDhHVvnC8pJmGyKcFf2iY_dpf+zR3w@mail.gmail.com/
-
-Link: https://lkml.kernel.org/r/20230802025606.346758-2-kaleshsingh@google.com
-Fixes: d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
-Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
-Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Steven Barrett <steven@liquorix.net>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 489a4fc7d9b1..6eecd291756c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4439,7 +4439,7 @@ static void inc_max_seq(struct lruvec *lruvec, bool can_swap, bool force_scan)
- 	int prev, next;
- 	int type, zone;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
--
-+restart:
- 	spin_lock_irq(&lruvec->lru_lock);
+diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
+index 55a42dbf97b6..81ee949b946d 100644
+--- a/drivers/pinctrl/intel/pinctrl-cherryview.c
++++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+@@ -1649,7 +1649,6 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
+ 	struct intel_community_context *cctx;
+ 	struct intel_community *community;
+ 	struct device *dev = &pdev->dev;
+-	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct intel_pinctrl *pctrl;
+ 	acpi_status status;
+ 	unsigned int i;
+@@ -1717,7 +1716,7 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
- 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
-@@ -4450,11 +4450,12 @@ static void inc_max_seq(struct lruvec *lruvec, bool can_swap, bool force_scan)
+-	status = acpi_install_address_space_handler(adev->handle,
++	status = acpi_install_address_space_handler(ACPI_HANDLE(dev),
+ 					community->acpi_space_id,
+ 					chv_pinctrl_mmio_access_handler,
+ 					NULL, pctrl);
+@@ -1734,7 +1733,7 @@ static int chv_pinctrl_remove(struct platform_device *pdev)
+ 	struct intel_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 	const struct intel_community *community = &pctrl->communities[0];
  
- 		VM_WARN_ON_ONCE(!force_scan && (type == LRU_GEN_FILE || can_swap));
+-	acpi_remove_address_space_handler(ACPI_COMPANION(&pdev->dev),
++	acpi_remove_address_space_handler(ACPI_HANDLE(&pdev->dev),
+ 					  community->acpi_space_id,
+ 					  chv_pinctrl_mmio_access_handler);
  
--		while (!inc_min_seq(lruvec, type, can_swap)) {
--			spin_unlock_irq(&lruvec->lru_lock);
--			cond_resched();
--			spin_lock_irq(&lruvec->lru_lock);
--		}
-+		if (inc_min_seq(lruvec, type, can_swap))
-+			continue;
-+
-+		spin_unlock_irq(&lruvec->lru_lock);
-+		cond_resched();
-+		goto restart;
- 	}
- 
- 	/*
 
