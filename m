@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D04EE79F1AD
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F1B79F1AE
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:04:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbjIMTEy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:04:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
+        id S232115AbjIMTE6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232194AbjIMTEy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:54 -0400
+        with ESMTP id S232194AbjIMTE6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:04:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FAFD170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1F3C433C7;
-        Wed, 13 Sep 2023 19:04:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD89199F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:04:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5856EC433C8;
+        Wed, 13 Sep 2023 19:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631889;
-        bh=upKOHKZOCBtRlt7vbesXeUFxdtyWzXJWjiELDzyL9r0=;
+        s=korg; t=1694631893;
+        bh=DWvO+c38mGpRn37KqiAgqiMJRg341zF7mkGyHYNzxFA=;
         h=Subject:To:Cc:From:Date:From;
-        b=FD49K58gAAImYZ1TAdn2fcpq60JF+SoFZ9k/D0l5GjB9EovQX54twPiwpL/gIkcyp
-         s71O79huJ40xg9nru6Z8EFR/bZeZMXrvMvi1/Bi/4veTMmSB3SEjfNWFV75UXeqNa5
-         QuSHo60MOtyzvUSEKDzmdd8V+eOzg2J91u4MjPiQ=
-Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 5.4-stable tree
+        b=IsjyiGPKDUrWs6XzHtlOd0gFBHR8NONh9mAnGlpoLUqwIefytm0H4wlMmGiSlI5eZ
+         AtdlgxQdln+28n3Q/IzjXTPvGcm5Iua+BpdhEygwb6I5SuYbvHg2GL0+qbHqRCv+AU
+         7hffzcdYXusATy/qoXZjko4PH1Ijx+NhJBMdyqPw=
+Subject: FAILED: patch "[PATCH] ARM: dts: qcom: msm8974pro-castor: correct touchscreen" failed to apply to 4.19-stable tree
 To:     krzysztof.kozlowski@linaro.org, andersson@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:04:31 +0200
-Message-ID: <2023091331-garnet-parabola-1d4a@gregkh>
+Date:   Wed, 13 Sep 2023 21:04:32 +0200
+Message-ID: <2023091332-luminance-favoring-097e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -38,19 +38,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7c74379afdfee7b13f1cd8ff1ad6e0f986aec96c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091331-garnet-parabola-1d4a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091332-luminance-favoring-097e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
