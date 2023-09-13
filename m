@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61BFB79F19E
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D08A679F19F
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232132AbjIMTDo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:03:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47428 "EHLO
+        id S232139AbjIMTDr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232126AbjIMTDn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:43 -0400
+        with ESMTP id S232126AbjIMTDq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08A0170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0F3C433C7;
-        Wed, 13 Sep 2023 19:03:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDFC170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E33EC433C9;
+        Wed, 13 Sep 2023 19:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631819;
-        bh=9G849n8TpQBhw6pAmsrKF5iVqX7Q/a29JpEfTS80Dks=;
+        s=korg; t=1694631822;
+        bh=l9+c5knDSZPCm5dL6TEhsWOHUQ3XDzecoFCE1rDDx7w=;
         h=Subject:To:Cc:From:Date:From;
-        b=gtMudNnWVFBpJzB7noVdYzid7tjoYevGUNfS83ZDB4c1VmEB7xttFl7I6VZgQNbJh
-         YR8Rkycn9cG/V2W51QDTowbpdja1mMRy0z+Szx7JE9oVXq4YcWfQL8yM1MThhmkO4N
-         +I9jqcuriDf7oJcWLIr/S8KN3Rjy0bhBuRx9Mfgo=
-Subject: FAILED: patch "[PATCH] clk: qcom: turingcc-qcs404: fix missing resume during probe" failed to apply to 5.10-stable tree
+        b=mnTjUqI+wxlCalQSWvRs2jHKDJpJEuMLwkvPZII/oPWZOrjrAxO/0T76R8bzE8pwB
+         vAixr1UWdq+aD1t8+O5rVJOe9yVbaaCPzQSyIx0xgcVNA3ruMquTTqgg/ONr2Aq6aZ
+         RFDMQLQVKRHnKEN+u3MXSwZL5zRYYt9uTpgylS04=
+Subject: FAILED: patch "[PATCH] clk: qcom: turingcc-qcs404: fix missing resume during probe" failed to apply to 5.4-stable tree
 To:     johan+linaro@kernel.org, andersson@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:03:34 +0200
-Message-ID: <2023091334-skillful-sauciness-f573@gregkh>
+Date:   Wed, 13 Sep 2023 21:03:35 +0200
+Message-ID: <2023091335-rubbed-whole-cf19@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -37,19 +37,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x a9f71a033587c9074059132d34c74eabbe95ef26
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091334-skillful-sauciness-f573@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091335-rubbed-whole-cf19@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -61,6 +61,15 @@ a2d8f507803e ("clk: qcom: Add support to LPASS AUDIO_CC Glitch Free Mux clocks")
 4ee9fe3e292b ("clk: qcom: lpass-sc7180: Disentangle the two clock devices")
 7635622b77b5 ("clk: qcom: lpasscc-sc7810: Use devm in probe")
 15d09e830bbc ("clk: qcom: camcc: Add camera clock controller driver for SC7180")
+d2249bf25c56 ("clk: qcom: lpass: Correct goto target in lpass_core_sc7180_probe()")
+edab812d802d ("clk: qcom: lpass: Add support for LPASS clock controller for SC7180")
+ecd2bacfbbc4 ("clk: qcom: Add ipq apss pll driver")
+8def929c4097 ("clk: qcom: Add modem clock controller driver for SC7180")
+253dc75a0bb8 ("clk: qcom: Add video clock controller driver for SC7180")
+745ff069a49c ("clk: qcom: Add graphics clock controller driver for SC7180")
+dd3d06622138 ("clk: qcom: Add display clock controller driver for SC7180")
+17269568f726 ("clk: qcom: Add Global Clock controller (GCC) driver for SC7180")
+6cdef2738db0 ("clk: qcom: Add Q6SSTOP clock controller for QCS404")
 
 thanks,
 
