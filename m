@@ -2,123 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2DF379E8AA
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 285FD79E8AD
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240684AbjIMNIA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 09:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
+        id S240741AbjIMNIB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240733AbjIMNH7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:07:59 -0400
+        with ESMTP id S240742AbjIMNIA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:08:00 -0400
 Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8824719B9
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021B219BB
         for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:07:55 -0700 (PDT)
 Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
         (envelope-from <mchehab@linuxtv.org>)
-        id 1qgPaz-003iLP-E0; Wed, 13 Sep 2023 13:07:53 +0000
+        id 1qgPaz-003iMY-Mp; Wed, 13 Sep 2023 13:07:53 +0000
 From:   Mauro Carvalho Chehab <mchehab@kernel.org>
 Date:   Wed, 13 Sep 2023 13:04:03 +0000
-Subject: [git:media_stage/master] media: qcom: camss: Fix VFE-17x vfe_disable_output()
+Subject: [git:media_stage/master] media: qcom: camss: Fix vfe_get() error jump
 To:     linuxtv-commits@linuxtv.org
-Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>, stable@vger.kernel.org
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        stable@vger.kernel.org
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qgPaz-003iLP-E0@www.linuxtv.org>
+Message-Id: <E1qgPaz-003iMY-Mp@www.linuxtv.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: qcom: camss: Fix VFE-17x vfe_disable_output()
+Subject: media: qcom: camss: Fix vfe_get() error jump
 Author:  Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date:    Wed Aug 30 16:16:10 2023 +0100
+Date:    Wed Aug 30 16:16:09 2023 +0100
 
-There are two problems with the current vfe_disable_output() routine.
+Right now it is possible to do a vfe_get() with the internal reference
+count at 1. If vfe_check_clock_rates() returns non-zero then we will
+leave the reference count as-is and
 
-Firstly we rightly use a spinlock to protect output->gen2.active_num
-everywhere except for in the IDLE timeout path of vfe_disable_output().
-Even if that is not racy "in practice" somehow it is by happenstance not
-by design.
+run:
+- pm_runtime_put_sync()
+- vfe->ops->pm_domain_off()
 
-Secondly we do not get consistent behaviour from this routine. On
-sc8280xp 50% of the time I get "VFE idle timeout - resetting". In this
-case the subsequent capture will succeed. The other 50% of the time, we
-don't hit the idle timeout, never do the VFE reset and subsequent
-captures stall indefinitely.
+skip:
+- camss_disable_clocks()
 
-Rewrite the vfe_disable_output() routine to
+Subsequent vfe_put() calls will when the ref-count is non-zero
+unconditionally run:
 
-- Quiesce write masters with vfe_wm_stop()
-- Set active_num = 0
+- pm_runtime_put_sync()
+- vfe->ops->pm_domain_off()
+- camss_disable_clocks()
 
-remembering to hold the spinlock when we do so followed by
+vfe_get() should not attempt to roll-back on error when the ref-count is
+non-zero as the upper layers will still do their own vfe_put() operations.
 
-- Reset the VFE
+vfe_put() will drop the reference count and do the necessary power
+domain release, the cleanup jumps in vfe_get() should only be run when
+the ref-count is zero.
 
-Testing on sc8280xp and sdm845 shows this to be a valid fix.
+[   50.095796] CPU: 7 PID: 3075 Comm: cam Not tainted 6.3.2+ #80
+[   50.095798] Hardware name: LENOVO 21BXCTO1WW/21BXCTO1WW, BIOS N3HET82W (1.54 ) 05/26/2023
+[   50.095799] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   50.095802] pc : refcount_warn_saturate+0xf4/0x148
+[   50.095804] lr : refcount_warn_saturate+0xf4/0x148
+[   50.095805] sp : ffff80000c7cb8b0
+[   50.095806] x29: ffff80000c7cb8b0 x28: ffff16ecc0e3fc10 x27: 0000000000000000
+[   50.095810] x26: 0000000000000000 x25: 0000000000020802 x24: 0000000000000000
+[   50.095813] x23: ffff16ecc7360640 x22: 00000000ffffffff x21: 0000000000000005
+[   50.095815] x20: ffff16ed175f4400 x19: ffffb4d9852942a8 x18: ffffffffffffffff
+[   50.095818] x17: ffffb4d9852d4a48 x16: ffffb4d983da5db8 x15: ffff80000c7cb320
+[   50.095821] x14: 0000000000000001 x13: 2e656572662d7265 x12: 7466612d65737520
+[   50.095823] x11: 00000000ffffefff x10: ffffb4d9850cebf0 x9 : ffffb4d9835cf954
+[   50.095826] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 : 0000000000057fa8
+[   50.095829] x5 : ffff16f813fe3d08 x4 : 0000000000000000 x3 : ffff621e8f4d2000
+[   50.095832] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff16ed32119040
+[   50.095835] Call trace:
+[   50.095836]  refcount_warn_saturate+0xf4/0x148
+[   50.095838]  device_link_put_kref+0x84/0xc8
+[   50.095843]  device_link_del+0x38/0x58
+[   50.095846]  vfe_pm_domain_off+0x3c/0x50 [qcom_camss]
+[   50.095860]  vfe_put+0x114/0x140 [qcom_camss]
+[   50.095869]  csid_set_power+0x2c8/0x408 [qcom_camss]
+[   50.095878]  pipeline_pm_power_one+0x164/0x170 [videodev]
+[   50.095896]  pipeline_pm_power+0xc4/0x110 [videodev]
+[   50.095909]  v4l2_pipeline_pm_use+0x5c/0xa0 [videodev]
+[   50.095923]  v4l2_pipeline_pm_get+0x1c/0x30 [videodev]
+[   50.095937]  video_open+0x7c/0x100 [qcom_camss]
+[   50.095945]  v4l2_open+0x84/0x130 [videodev]
+[   50.095960]  chrdev_open+0xc8/0x250
+[   50.095964]  do_dentry_open+0x1bc/0x498
+[   50.095966]  vfs_open+0x34/0x40
+[   50.095968]  path_openat+0xb44/0xf20
+[   50.095971]  do_filp_open+0xa4/0x160
+[   50.095974]  do_sys_openat2+0xc8/0x188
+[   50.095975]  __arm64_sys_openat+0x6c/0xb8
+[   50.095977]  invoke_syscall+0x50/0x128
+[   50.095982]  el0_svc_common.constprop.0+0x4c/0x100
+[   50.095985]  do_el0_svc+0x40/0xa8
+[   50.095988]  el0_svc+0x2c/0x88
+[   50.095991]  el0t_64_sync_handler+0xf4/0x120
+[   50.095994]  el0t_64_sync+0x190/0x198
+[   50.095996] ---[ end trace 0000000000000000 ]---
 
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Fixes: 779096916dae ("media: camss: vfe: Fix runtime PM imbalance on error")
 Cc: stable@vger.kernel.org
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/platform/qcom/camss/camss-vfe-170.c | 22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
+ drivers/media/platform/qcom/camss/camss-vfe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 ---
 
-diff --git a/drivers/media/platform/qcom/camss/camss-vfe-170.c b/drivers/media/platform/qcom/camss/camss-vfe-170.c
-index 02494c89da91..168baaa80d4e 100644
---- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
-@@ -7,7 +7,6 @@
-  * Copyright (C) 2020-2021 Linaro Ltd.
-  */
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
+index 06c95568e5af..5d8462ec0af2 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -611,7 +611,7 @@ int vfe_get(struct vfe_device *vfe)
+ 	} else {
+ 		ret = vfe_check_clock_rates(vfe);
+ 		if (ret < 0)
+-			goto error_pm_runtime_get;
++			goto error_pm_domain;
+ 	}
+ 	vfe->power_count++;
  
--#include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -494,35 +493,20 @@ static int vfe_enable_output(struct vfe_line *line)
- 	return 0;
- }
- 
--static int vfe_disable_output(struct vfe_line *line)
-+static void vfe_disable_output(struct vfe_line *line)
- {
- 	struct vfe_device *vfe = to_vfe(line);
- 	struct vfe_output *output = &line->output;
- 	unsigned long flags;
- 	unsigned int i;
--	bool done;
--	int timeout = 0;
--
--	do {
--		spin_lock_irqsave(&vfe->output_lock, flags);
--		done = !output->gen2.active_num;
--		spin_unlock_irqrestore(&vfe->output_lock, flags);
--		usleep_range(10000, 20000);
--
--		if (timeout++ == 100) {
--			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
--			vfe_reset(vfe);
--			output->gen2.active_num = 0;
--			return 0;
--		}
--	} while (!done);
- 
- 	spin_lock_irqsave(&vfe->output_lock, flags);
- 	for (i = 0; i < output->wm_num; i++)
- 		vfe_wm_stop(vfe, output->wm_idx[i]);
-+	output->gen2.active_num = 0;
- 	spin_unlock_irqrestore(&vfe->output_lock, flags);
- 
--	return 0;
-+	vfe_reset(vfe);
- }
- 
- /*
