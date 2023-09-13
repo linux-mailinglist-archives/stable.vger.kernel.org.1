@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 008BF79F19B
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16BEF79F19C
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 21:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232115AbjIMTD0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 15:03:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34092 "EHLO
+        id S232119AbjIMTDf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 15:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232086AbjIMTDZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:25 -0400
+        with ESMTP id S232086AbjIMTDf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 15:03:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0B3D170F
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186C6C433C8;
-        Wed, 13 Sep 2023 19:03:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58655170F
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 12:03:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809FEC433C7;
+        Wed, 13 Sep 2023 19:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694631801;
-        bh=D/IJMpJSZpcNm9YBX+owE09wt7PPym1kue1PxwrmAyY=;
+        s=korg; t=1694631811;
+        bh=SJlJcIHaSqaaDVxonrBASVhLKZyjdg0Ly/myGMV1ojQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=LlXKiH3tq19anY6aIeinLWSsTnXn599+cFlQaNxp6imIlE/4TkiL52eg5A7wrIJok
-         C+2U3iYvNDWruONtIYu4IDOBRosnzks9AkZDaVT0r/9ga9CEG9hb2LKrH2KfZEK1Oy
-         sEHfFqpRlQbFwjpxqtuH+sW9fl9NyxTC7UtsQQGk=
-Subject: FAILED: patch "[PATCH] arm64: tegra: Update AHUB clock parent and rate" failed to apply to 6.1-stable tree
+        b=tIwTi11kPkd2FaHYvqV6GKe2ROm4FOxCH2D7dIh5ZNmTWolym84wH/nTURP2v6nu4
+         SyJgEynFX04HuncdGlgMaWMJk2WHl+XDLnaS86uBCQ+rskRGjGJmD37sVOJtSfkanl
+         OdW7oJM65zWAeUo2oCgxFhB936sHkjrChihBrVNY=
+Subject: FAILED: patch "[PATCH] arm64: tegra: Update AHUB clock parent and rate" failed to apply to 5.15-stable tree
 To:     spujar@nvidia.com, treding@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 13 Sep 2023 21:03:17 +0200
-Message-ID: <2023091317-sharpness-reply-55e4@gregkh>
+Date:   Wed, 13 Sep 2023 21:03:19 +0200
+Message-ID: <2023091318-angelic-unstuffed-4f14@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -37,19 +37,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x dc6d5d85ed3a3fe566314f388bce4c71a26b1677
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091317-sharpness-reply-55e4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091318-angelic-unstuffed-4f14@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,8 @@ d71b893a119d ("arm64: tegra: Add Tegra234 SDMMC1 device tree node")
 248400656b1c ("arm64: tegra: Fix Prefetchable aperture ranges of Tegra234 PCIe controllers")
 68c31ad01105 ("arm64: tegra: Add NVDEC on Tegra234")
 e25770feb6d6 ("arm64: tegra: Fix ranges for host1x nodes")
+8aec2c17b95e ("arm64: tegra: Enable MGBE on Jetson AGX Orin Developer Kit")
+610cdf3186bc ("arm64: tegra: Add MGBE nodes on Tegra234")
 
 thanks,
 
