@@ -2,141 +2,193 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8987A0FE7
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 23:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0E37A1091
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 00:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbjINVcV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 17:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37342 "EHLO
+        id S229783AbjINWJo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 18:09:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjINVcV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 17:32:21 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F431FD5
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-68fe39555a0so1267044b3a.3
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
+        with ESMTP id S229715AbjINWJn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 18:09:43 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C01270C
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 15:09:39 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d815a5eee40so1442397276.2
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 15:09:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694727117; x=1695331917; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RzuuSbvQBu+IbXhqgSc/Jh1UYlftCrb0q8uG/spw850=;
-        b=JHd7C4CHjojVY6NuvrQbpLPpDuNxTaKWajQQni7xtxPZM7i575U+m6QfjtKI5OtUDu
-         U7S1iYQmUyWz6ZtWHJhIv2FFEXoPPkNXjKgSzv34/LULtMR8vxKjHm0R0PtqvF5+t/9y
-         yfQIqY227ERqh9fVqSLOzcId4pA211TyySUn2zCEi5omiwFwwiqkI6AXFFJVrJyQYpdS
-         F+u3uiGR8qr3hrs11LUsmMantcGyg7Vdxzj9WaDrtHFoUpNUrB+xSJ5CGofjib5bs1iA
-         gujpisWDZ1V8nyu+sMdEzoV829Fw0qwNON+KDr9w5mWhfyJO+6R0EYT2E7svEfnv13EF
-         eI5A==
+        d=linaro.org; s=google; t=1694729379; x=1695334179; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=97JhCG6zT6B7+SMugkJ45haE3nskGaAz9YD6QLxdNWA=;
+        b=zwB2xIEQDSN8CjpndNUnoA7xo3SMnHBbeYp4W/AvH5szeU5tj4Azz3ca8269glqJ/R
+         sC4DEOFUSrhq8FaWA7oe+cAK1ANpxtKTCV7BrQr9bJxzjKYBrRcBVgTzA3viycvFuHJF
+         9eGpAZyM2hgsUSrsNFaPZgQUZSKECjy7aVHz03V3asFd/z2WuTv+X6nLDzWewT5DLD2G
+         sx7MWdlSb3mg0iLWT4zLujyDUxBLeGFo9mJ/Yns0o3fYQPYu05UjeJurBTdUjiUEtQvh
+         5zELfUaYTssSfApYXdctMbrB4qaFkkKuNzwONunyty5y5gvSIbkdkUv+h7tBwfau9pR3
+         WpUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694727117; x=1695331917;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1694729379; x=1695334179;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RzuuSbvQBu+IbXhqgSc/Jh1UYlftCrb0q8uG/spw850=;
-        b=dRnmPhlcn8x+ln6rvHkk5S5hPyKBsPjueDdIkVBF4++ICjQr9Oxlf0fuJv8KLNKgSc
-         PKbt1vWWqAHzn8hSM7qWmYhywDyZ2yJ+XUiDMxg98/r/dFUNwPgADInT+eUj88PaPOqJ
-         vSWZqCcpQmSwtkBcGqZ+9zv7DTBpCCNgumY78fV/MfzOcSCwXRetjMubWOAT8fgJ5C2b
-         pXz1BZtikt/8trDKOUtWtQgcLOKUBFEbFolqVEbOwCjGuueQzJNQk9U4yqT1cJzqzc2U
-         BgqqiT+cemNVsIry0bQhN5zN2RyWsD+gZjtdmguFhwEGdhNLL/Jof1LNDClvPm0+MguZ
-         v2Zg==
-X-Gm-Message-State: AOJu0Yw47btZf2kb5KeyHC9p6/dCd7+qYvBLlivPu/cGSeVRfuV6YUie
-        5GmgISQ5Mgx1vyb2RmTVgOrs7A==
-X-Google-Smtp-Source: AGHT+IGAwnocWxnqqmX/eAgy6D+NNt6gW2WJvtliI2d6JTOWjfa5vFoJOf23AZpuaG1+4OahgtdZGg==
-X-Received: by 2002:a05:6300:808d:b0:153:591b:4101 with SMTP id ap13-20020a056300808d00b00153591b4101mr5564711pzc.49.1694727117223;
-        Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
-Received: from PF2LML5M-SMJ.lan ([49.7.199.134])
-        by smtp.gmail.com with ESMTPSA id em19-20020a17090b015300b00273fc850342sm3590801pjb.20.2023.09.14.14.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 14:31:56 -0700 (PDT)
-From:   Jinhui Guo <guojinhui.liam@bytedance.com>
-To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
-Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jinhui Guo <guojinhui.liam@bytedance.com>,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: [PATCH v5] driver core: platform: set numa_node before platform_add_device()
-Date:   Fri, 15 Sep 2023 05:31:48 +0800
-Message-Id: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.30.2
+        bh=97JhCG6zT6B7+SMugkJ45haE3nskGaAz9YD6QLxdNWA=;
+        b=RvwGx2W6FbV5huIQhKwmJrXljenL1+RehyCTU8yV9N92BgT3yU6ZqCVj34w8LCXetH
+         O4eHcc3Y9ZLZ8mdUck3L1RMDTZoOsqvZNB3TTaFQ++Gpp34ChScSUq5xVjdvGPEcTbP3
+         6Wpuzh3cdDqDWFdi/6gcFuP+0Ym08P1MClIW1e/wyVGOhTQoXhmxUBRN/eefLrC21GHQ
+         M3QIIYBBKAtB3qvsH8onQIpdjXMJsCJmepSFYLo8YOLzw2oeU8AowtEhaWNnvZynx/sf
+         uNRoFIvca0qQVzoxmunACDW8qYuCDEqiY3e3gA0dcQywKbKFbJV7smm0PzCC9aEAQY1i
+         sS0w==
+X-Gm-Message-State: AOJu0YyzbjA6HO3zk+ra/ei1Zbac61MMrNgDa+vDgyZTivknyWpLwuUQ
+        V8mbiWj1vF3cvWPMSSHelnls/4RzRq/+kE9VVyKwMA==
+X-Google-Smtp-Source: AGHT+IEcbGqOpg5LJtzsNrqES8vQmdyxgmljQj8ZCrKtPz48cJO0h9zvdtNGsftBR/rQAtaxzYM27BNlLXN/d+TnDFQ=
+X-Received: by 2002:a25:9d04:0:b0:d78:48b0:21d2 with SMTP id
+ i4-20020a259d04000000b00d7848b021d2mr5894012ybp.3.1694729378893; Thu, 14 Sep
+ 2023 15:09:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230914202749.470100-1-beanhuo@iokpp.de>
+In-Reply-To: <20230914202749.470100-1-beanhuo@iokpp.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 15 Sep 2023 00:09:02 +0200
+Message-ID: <CAPDyKFruYooG4yQ4yqrwEcrvy4xe6hYByF2Q57eQ1g0tiUtcug@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
+ eMMC Q2J54A
+To:     Bean Huo <beanhuo@iokpp.de>
+Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
+        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-platform_add_device() creates the numa_node attribute of sysfs according
-to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-of device before creating numa_node attribute of sysfs.
+On Thu, 14 Sept 2023 at 22:28, Bean Huo <beanhuo@iokpp.de> wrote:
+>
+> From: Bean Huo <beanhuo@micron.com>
+>
+> Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
+> operation be allowed only after a write has occurred. Otherwise, the
+> cache flush command or subsequent commands will time out.
 
-Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
-V4 -> V5: Add Cc: stable line and changes from the previous submited
-patches
-V3 -> V4: Refactor code to be an ACPI function call
-V2 -> V3: Fix Signed-off name
-V1 -> V2: Fix compile error without enabling CONFIG_ACPI
+For my information, more exactly, how can we trigger this problem?
 
- drivers/acpi/acpi_platform.c | 4 +---
- drivers/base/platform.c      | 1 +
- include/linux/acpi.h         | 5 +++++
- 3 files changed, 7 insertions(+), 3 deletions(-)
+>
+> Signed-off-by: Bean Huo <beanhuo@micron.com>
+> Co-developed-by: Rafael Beims <rafael.beims@toradex.com>
+> Tested-by: Rafael Beims <rafael.beims@toradex.com>
+> Cc: stable@vger.kernel.org
+> ---
+> Changelog:
+>
+> v1--v2:
+>     1. Add Rafael's test-tag, and Co-developed-by.
+>     2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
+>
+> ---
+>  drivers/mmc/core/core.c   | 7 +++++++
+>  drivers/mmc/core/mmc.c    | 5 +++++
+>  drivers/mmc/core/quirks.h | 7 ++++---
+>  include/linux/mmc/card.h  | 2 ++
+>  4 files changed, 18 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index 3d3e0ca52614..86a669b35b91 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -259,6 +259,13 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+>                 host->cqe_ops->cqe_off(host);
+>
+>         host->ops->request(host, mrq);
+> +
+> +       if (host->card && host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH &&
+> +           !host->card->written_flag) {
+> +               if (mrq->cmd->opcode == MMC_WRITE_MULTIPLE_BLOCK ||
+> +                   mrq->cmd->opcode == MMC_WRITE_BLOCK)
+> +                       host->card->written_flag = true;
+> +       }
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 48d15dd785f6..adcbfbdc343f 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
- 	if (IS_ERR(pdev))
- 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
- 			PTR_ERR(pdev));
--	else {
--		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+	else
- 		dev_dbg(&adev->dev, "created platform device %s\n",
- 			dev_name(&pdev->dev));
--	}
- 
- 	kfree(resources);
- 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba25003..35c891075d95 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
- 			goto err;
- 	}
- 
-+	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
- 	ret = platform_device_add(pdev);
- 	if (ret) {
- err:
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..6a349d53f19e 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
- 	return 0;
- }
- #endif
-+
-+#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-+	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-+
- extern int pnpacpi_disabled;
- 
- #define PXM_INVAL	(-1)
-@@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
- #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
- #define ACPI_HANDLE(dev)		(NULL)
- #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
-+#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
- 
- #include <acpi/acpi_numa.h>
- 
--- 
-2.20.1
+I don't quite like that we are adding the above code here - as it's
+used for *all* requests.
 
+Seems like the flag is better set from the mmc block device driver
+instead. Somewhere in the path when we serve I/O write requests.
+
+>  }
+>
+>  static void mmc_mrq_pr_debug(struct mmc_host *host, struct mmc_request *mrq,
+> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> index 89cd48fcec79..a2edd065fa1b 100644
+> --- a/drivers/mmc/core/mmc.c
+> +++ b/drivers/mmc/core/mmc.c
+> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
+>         if (!oldcard)
+>                 host->card = card;
+>
+> +       card->written_flag = false;
+> +
+
+According to your earlier reply, it sounds like the problem isn't
+really about the card being re-initialized, but rather that we
+actually need a write request to happen before a flush. No matter
+what, no?
+
+See more about this below.
+
+>         return 0;
+>
+>  free_card:
+> @@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host *host)
+>  {
+>         int err = 0;
+>
+> +       if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH && !host->card->written_flag)
+> +               return err;
+> +
+
+Could an option to the above, be to reset the flag here instead. After
+a successful cache flush has been done.
+
+>         if (_mmc_cache_enabled(host)) {
+>                 err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
+>                                  EXT_CSD_FLUSH_CACHE, 1,
+> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+> index 32b64b564fb1..5e68c8b4cdca 100644
+> --- a/drivers/mmc/core/quirks.h
+> +++ b/drivers/mmc/core/quirks.h
+> @@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+>                   MMC_QUIRK_TRIM_BROKEN),
+>
+>         /*
+> -        * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
+> -        * support being used to offload WRITE_ZEROES.
+> +        * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
+> +        * WRITE_ZEROES offloading. It also supports caching, but the cache can
+> +        * only be flushed after a write has occurred.
+>          */
+>         MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
+> -                 MMC_QUIRK_TRIM_BROKEN),
+> +                 MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
+>
+>         /*
+>          * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
+> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+> index daa2f40d9ce6..7b12eebc5586 100644
+> --- a/include/linux/mmc/card.h
+> +++ b/include/linux/mmc/card.h
+> @@ -295,7 +295,9 @@ struct mmc_card {
+>  #define MMC_QUIRK_BROKEN_HPI   (1<<13)         /* Disable broken HPI support */
+>  #define MMC_QUIRK_BROKEN_SD_DISCARD    (1<<14) /* Disable broken SD discard support */
+>  #define MMC_QUIRK_BROKEN_SD_CACHE      (1<<15) /* Disable broken SD cache support */
+> +#define MMC_QUIRK_BROKEN_CACHE_FLUSH   (1<<16) /* Don't flush cache until the write has occurred */
+>
+> +       bool                    written_flag;   /* Indicates eMMC has been written since power on */
+>         bool                    reenable_cmdq;  /* Re-enable Command Queue */
+>
+>         unsigned int            erase_size;     /* erase size in sectors */
+> --
+> 2.34.1
+>
+
+Kind regards
+Uffe
