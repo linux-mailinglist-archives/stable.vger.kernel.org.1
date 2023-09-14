@@ -2,253 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2D0179F6D1
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 03:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 372BD79F7AE
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 04:11:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234092AbjINB4u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 21:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
+        id S232177AbjINCLv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 22:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234170AbjINB4D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 21:56:03 -0400
+        with ESMTP id S234105AbjINBzz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 21:55:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F9582127;
-        Wed, 13 Sep 2023 18:55:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94BDC433C7;
-        Thu, 14 Sep 2023 01:55:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F481FF9;
+        Wed, 13 Sep 2023 18:55:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A5DC433C8;
+        Thu, 14 Sep 2023 01:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694656546;
-        bh=LZ6DzAt5mVz1QiKYVFmaZ9L+EBTYTuGsjlufbB5PfBc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TNhCUyPMFdmf4ldrxH2gpfnSez5Dxozru0j13G/IqzTtos6IOPc98JhzJV4YRiQla
-         aplc+YwA47KFoi3dnedH1Tgugl+CZCJ9bTOQ7zQ6y4OEFdiIzQGXuZx70J9bgL6B3y
-         nAqvCHfBiUukznAOA7lNXxuOuwOpMOmdNydaqZ68XUmELoWevfdasIh+PsfBP6pdyh
-         kYqHu3+CiMcPRRUKNfxBkr+WixHN+AkJhF0SXrnnHuqoft4jGGyeXkYr0WlmYTqWtz
-         1ksErfHk4Zak435oO1PObnAvt1ULaezzg8WyTEUQoNdt5p3G9dJ87CqYLT9V1Q2I9b
-         wZI0c9g4X6Nyg==
+        s=k20201202; t=1694656541;
+        bh=gXVhJOHHu42wAbkHvrobBuAxMZhcTwxM0j4OPJEY6D0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=qG71OHQbCaL+Ti3zHuIzIPYGVRd66+PjwUbFGa3ApuSX6nVQebACo4fUqJs0KEp4Z
+         k+SkH3r8R4IK5c+6DmKI0Oy8BkmjmALWRqYHgJIctNuxwnDCCkY9PBfvpq/gxwUuYG
+         AiAw1Ko4OfmWKqTy7Z3xvcpEuKiS/wLUa9yQR6HE7Wk9CMcvNbgwDBfi17MVEnnBLd
+         vRjI+C2IFMh27iM4FQCDBZCP9krp8XsWFrYpnjIED2Tmbrqpzm+uGHZ44fBRWf+qVc
+         6FJJDqOs2x5c1GyaaXM2wNhB9WGfmmP5wVdf7QbqdpHzrYPfaWx0aTMQ6f0uqGSxEF
+         B4vsSPIPxQSLA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Rob Clark <robdclark@chromium.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sasha Levin <sashal@kernel.org>, m.szyprowski@samsung.com,
-        iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10] dma-debug: don't call __dma_entry_alloc_check_leak() under free_entries_lock
-Date:   Wed, 13 Sep 2023 21:55:43 -0400
-Message-Id: <20230914015543.52035-1-sashal@kernel.org>
+Cc:     Tobias Schramm <t.schramm@manjaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, wens@csie.org,
+        jernej.skrabec@gmail.com, samuel@sholland.org,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 2/3] spi: sun6i: reduce DMA RX transfer width to single byte
+Date:   Wed, 13 Sep 2023 21:55:35 -0400
+Message-Id: <20230914015536.51984-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230914015536.51984-1-sashal@kernel.org>
+References: <20230914015536.51984-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.194
+X-stable-base: Linux 5.15.131
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Tobias Schramm <t.schramm@manjaro.org>
 
-[ Upstream commit fb5a4315591dae307a65fc246ca80b5159d296e1 ]
+[ Upstream commit 171f8a49f212e87a8b04087568e1b3d132e36a18 ]
 
-__dma_entry_alloc_check_leak() calls into printk -> serial console
-output (qcom geni) and grabs port->lock under free_entries_lock
-spin lock, which is a reverse locking dependency chain as qcom_geni
-IRQ handler can call into dma-debug code and grab free_entries_lock
-under port->lock.
+Through empirical testing it has been determined that sometimes RX SPI
+transfers with DMA enabled return corrupted data. This is down to single
+or even multiple bytes lost during DMA transfer from SPI peripheral to
+memory. It seems the RX FIFO within the SPI peripheral can become
+confused when performing bus read accesses wider than a single byte to it
+during an active SPI transfer.
 
-Move __dma_entry_alloc_check_leak() call out of free_entries_lock
-scope so that we don't acquire serial console's port->lock under it.
+This patch reduces the width of individual DMA read accesses to the
+RX FIFO to a single byte to mitigate that issue.
 
-Trimmed-down lockdep splat:
-
- The existing dependency chain (in reverse order) is:
-
-               -> #2 (free_entries_lock){-.-.}-{2:2}:
-        _raw_spin_lock_irqsave+0x60/0x80
-        dma_entry_alloc+0x38/0x110
-        debug_dma_map_page+0x60/0xf8
-        dma_map_page_attrs+0x1e0/0x230
-        dma_map_single_attrs.constprop.0+0x6c/0xc8
-        geni_se_rx_dma_prep+0x40/0xcc
-        qcom_geni_serial_isr+0x310/0x510
-        __handle_irq_event_percpu+0x110/0x244
-        handle_irq_event_percpu+0x20/0x54
-        handle_irq_event+0x50/0x88
-        handle_fasteoi_irq+0xa4/0xcc
-        handle_irq_desc+0x28/0x40
-        generic_handle_domain_irq+0x24/0x30
-        gic_handle_irq+0xc4/0x148
-        do_interrupt_handler+0xa4/0xb0
-        el1_interrupt+0x34/0x64
-        el1h_64_irq_handler+0x18/0x24
-        el1h_64_irq+0x64/0x68
-        arch_local_irq_enable+0x4/0x8
-        ____do_softirq+0x18/0x24
-        ...
-
-               -> #1 (&port_lock_key){-.-.}-{2:2}:
-        _raw_spin_lock_irqsave+0x60/0x80
-        qcom_geni_serial_console_write+0x184/0x1dc
-        console_flush_all+0x344/0x454
-        console_unlock+0x94/0xf0
-        vprintk_emit+0x238/0x24c
-        vprintk_default+0x3c/0x48
-        vprintk+0xb4/0xbc
-        _printk+0x68/0x90
-        register_console+0x230/0x38c
-        uart_add_one_port+0x338/0x494
-        qcom_geni_serial_probe+0x390/0x424
-        platform_probe+0x70/0xc0
-        really_probe+0x148/0x280
-        __driver_probe_device+0xfc/0x114
-        driver_probe_device+0x44/0x100
-        __device_attach_driver+0x64/0xdc
-        bus_for_each_drv+0xb0/0xd8
-        __device_attach+0xe4/0x140
-        device_initial_probe+0x1c/0x28
-        bus_probe_device+0x44/0xb0
-        device_add+0x538/0x668
-        of_device_add+0x44/0x50
-        of_platform_device_create_pdata+0x94/0xc8
-        of_platform_bus_create+0x270/0x304
-        of_platform_populate+0xac/0xc4
-        devm_of_platform_populate+0x60/0xac
-        geni_se_probe+0x154/0x160
-        platform_probe+0x70/0xc0
-        ...
-
-               -> #0 (console_owner){-...}-{0:0}:
-        __lock_acquire+0xdf8/0x109c
-        lock_acquire+0x234/0x284
-        console_flush_all+0x330/0x454
-        console_unlock+0x94/0xf0
-        vprintk_emit+0x238/0x24c
-        vprintk_default+0x3c/0x48
-        vprintk+0xb4/0xbc
-        _printk+0x68/0x90
-        dma_entry_alloc+0xb4/0x110
-        debug_dma_map_sg+0xdc/0x2f8
-        __dma_map_sg_attrs+0xac/0xe4
-        dma_map_sgtable+0x30/0x4c
-        get_pages+0x1d4/0x1e4 [msm]
-        msm_gem_pin_pages_locked+0x38/0xac [msm]
-        msm_gem_pin_vma_locked+0x58/0x88 [msm]
-        msm_ioctl_gem_submit+0xde4/0x13ac [msm]
-        drm_ioctl_kernel+0xe0/0x15c
-        drm_ioctl+0x2e8/0x3f4
-        vfs_ioctl+0x30/0x50
-        ...
-
- Chain exists of:
-   console_owner --> &port_lock_key --> free_entries_lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(free_entries_lock);
-                                lock(&port_lock_key);
-                                lock(free_entries_lock);
-   lock(console_owner);
-
-                *** DEADLOCK ***
-
- Call trace:
-  dump_backtrace+0xb4/0xf0
-  show_stack+0x20/0x30
-  dump_stack_lvl+0x60/0x84
-  dump_stack+0x18/0x24
-  print_circular_bug+0x1cc/0x234
-  check_noncircular+0x78/0xac
-  __lock_acquire+0xdf8/0x109c
-  lock_acquire+0x234/0x284
-  console_flush_all+0x330/0x454
-  console_unlock+0x94/0xf0
-  vprintk_emit+0x238/0x24c
-  vprintk_default+0x3c/0x48
-  vprintk+0xb4/0xbc
-  _printk+0x68/0x90
-  dma_entry_alloc+0xb4/0x110
-  debug_dma_map_sg+0xdc/0x2f8
-  __dma_map_sg_attrs+0xac/0xe4
-  dma_map_sgtable+0x30/0x4c
-  get_pages+0x1d4/0x1e4 [msm]
-  msm_gem_pin_pages_locked+0x38/0xac [msm]
-  msm_gem_pin_vma_locked+0x58/0x88 [msm]
-  msm_ioctl_gem_submit+0xde4/0x13ac [msm]
-  drm_ioctl_kernel+0xe0/0x15c
-  drm_ioctl+0x2e8/0x3f4
-  vfs_ioctl+0x30/0x50
-  ...
-
-Reported-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+Link: https://lore.kernel.org/r/20230827152558.5368-2-t.schramm@manjaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sun6i.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index ae9fc1ee6d206..0263983089097 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -606,15 +606,19 @@ static struct dma_debug_entry *__dma_entry_alloc(void)
- 	return entry;
- }
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 23ad052528dbe..2bfe87873edb3 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -200,7 +200,7 @@ static int sun6i_spi_prepare_dma(struct sun6i_spi *sspi,
+ 		struct dma_slave_config rxconf = {
+ 			.direction = DMA_DEV_TO_MEM,
+ 			.src_addr = sspi->dma_addr_rx,
+-			.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES,
++			.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE,
+ 			.src_maxburst = 8,
+ 		};
  
--static void __dma_entry_alloc_check_leak(void)
-+/*
-+ * This should be called outside of free_entries_lock scope to avoid potential
-+ * deadlocks with serial consoles that use DMA.
-+ */
-+static void __dma_entry_alloc_check_leak(u32 nr_entries)
- {
--	u32 tmp = nr_total_entries % nr_prealloc_entries;
-+	u32 tmp = nr_entries % nr_prealloc_entries;
- 
- 	/* Shout each time we tick over some multiple of the initial pool */
- 	if (tmp < DMA_DEBUG_DYNAMIC_ENTRIES) {
- 		pr_info("dma_debug_entry pool grown to %u (%u00%%)\n",
--			nr_total_entries,
--			(nr_total_entries / nr_prealloc_entries));
-+			nr_entries,
-+			(nr_entries / nr_prealloc_entries));
- 	}
- }
- 
-@@ -625,8 +629,10 @@ static void __dma_entry_alloc_check_leak(void)
-  */
- static struct dma_debug_entry *dma_entry_alloc(void)
- {
-+	bool alloc_check_leak = false;
- 	struct dma_debug_entry *entry;
- 	unsigned long flags;
-+	u32 nr_entries;
- 
- 	spin_lock_irqsave(&free_entries_lock, flags);
- 	if (num_free_entries == 0) {
-@@ -636,13 +642,17 @@ static struct dma_debug_entry *dma_entry_alloc(void)
- 			pr_err("debugging out of memory - disabling\n");
- 			return NULL;
- 		}
--		__dma_entry_alloc_check_leak();
-+		alloc_check_leak = true;
-+		nr_entries = nr_total_entries;
- 	}
- 
- 	entry = __dma_entry_alloc();
- 
- 	spin_unlock_irqrestore(&free_entries_lock, flags);
- 
-+	if (alloc_check_leak)
-+		__dma_entry_alloc_check_leak(nr_entries);
-+
- #ifdef CONFIG_STACKTRACE
- 	entry->stack_len = stack_trace_save(entry->stack_entries,
- 					    ARRAY_SIZE(entry->stack_entries),
 -- 
 2.40.1
 
