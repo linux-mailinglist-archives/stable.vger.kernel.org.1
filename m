@@ -2,179 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78FC47A0EEE
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 22:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C01437A0EF4
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 22:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbjINU2G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 16:28:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38534 "EHLO
+        id S229516AbjINUaY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 16:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjINU2F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 16:28:05 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54CDA26B2;
-        Thu, 14 Sep 2023 13:28:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1694723278; cv=none;
+        with ESMTP id S229499AbjINUaY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 16:30:24 -0400
+X-Greylist: delayed 1206 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Sep 2023 13:30:19 PDT
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC1E826B2;
+        Thu, 14 Sep 2023 13:30:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1694723417; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=Dfz75ui+4qYiWbAdx/b2gB508EnOEzfr+hACrmm+M9VREKMQfUoFcN7wfp5Az8YHIJ
-    tCeiWoMi7PIwX7hR119PfMA5wRhom5Y45tgljKqjH/D528+k0oabjSReo3BDewTikRY9
-    QLHZgR5x1GLOQWGukO0kYoLDkW2wYZyGNadE6BJw+re99dX6CkaJvrD5TtsscDx8mcz4
-    pDgqkcoR1vO/V/0faCaxWsKS8pyaiq/tgqrpL1BMO4fKySqE+dBH9jRVY+CdWWTe4m19
-    qOMZ+4B4BQDsB7ezy5UHwgdy+f2QfaDLcXgayDvcYM/rLohL0DxRUmtO35PTbEX+CPVr
-    J3rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1694723278;
+    b=W0g/ZLB0LHM9tx+MqAX/wMSrMPKe2YlW4ErmpsO+RU9+/xuFdONuCpFg6PNd3KPPXW
+    gtfhkFoYADd0UTq7yP5419xLg+9aug4CxPQbyUJt6akwVQo6FpKgtKzp/LG5pya0ySY+
+    JFTdJtNvTq0wGBHFb5SR/kDtfNbYdcwG0dc46pQ5v1AU7QAm1BFV6y+hYTgQb2wTjUHq
+    SGYubJySIA8To0MBrCzTGE5452us+KqPhGwQSoIoEIqnmXqwKcmnpNSB3QAJfiSuJAXx
+    AcClkLGFx5qNmhsJoSKB+izHu0UskU2wp6xE32uBNcvG6MBEfoPRyfN8Jqt6ZyH1Ve8Y
+    NfrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1694723417;
     s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=m4iE6KJnkzc7DxuNvxScdnjLzszoDLro5lcUVYr2ojc=;
-    b=L6EnQonLTsNEcoS7C3U6vLTuSefAyMMZXATv4Y/OtQjmZYbHE1cMyhT6xCrLuIv0Ta
-    5rNHfjg8uvyigkqytwuCW70hApNFo8tkASAKq3eolZNtCCO+M0AClZ10IxuqH8UblXwS
-    I6Y9jlVycITAIPOccruW6iy/h7uBvTCMXvjhljQF+2Lrbfv13+ukBRUly7AgqL06rfwV
-    5iCDbhgZpiiroQLoqK9lcW6ZQ14Z8sMe9CTzUFQz8sAi3q8jtFVkNNK4m31iv/BMwvbC
-    WuzU6mIEwayZCF0G6SiV7QdtwbmGHplephZE4dZucxHyfRGGR8wCeVBvUsp5Ft+EZXc5
-    vAxQ==
+    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Qm6cwWzKtshyoFGnpStu0NB/ynnONWUDquxu6ya0YbE=;
+    b=eViYGkG569sjAFNSVhu5QwVYCmjiOHioL1WFoyFPXdRrK8Eu8Ck87xEGKLVORfCuu9
+    csVFV1BcitWnYriyQS0DnBu9gyeE6oswOg25l6Ad4SvPc9yWoXMGMRBvbv/QuI1T7Ka3
+    FuAGuXZUVH59D/BCuHYSDlAm1CmAZiugNFioD9Swuz1mEMg1b/zb3zL4UeTDqhY6MIZz
+    hPJ3Sa25ySLqRqKpluRn1jZiFSKU4ygVN0fxo3/9OkG3HObWDzr55VTuhcK7/xL3cKyj
+    FawHcFu57Olsghn3QHxWkqYwF9qWt89BnjHPBZATKLsaJjaB7Eb+p8wNu0r8+QGDm4pd
+    cfWQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1694723278;
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1694723417;
     s=strato-dkim-0002; d=iokpp.de;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=m4iE6KJnkzc7DxuNvxScdnjLzszoDLro5lcUVYr2ojc=;
-    b=m9+VWFRUhpH3FY8mIhtKKeqhRdMkMbh8U2d2Nq2oUSjQf7FS1E+ud+BejLtLOKIhdI
-    yhIdkfHkdWtIL86S/arUdx7v6K73aiy/dRcdJWC+F1LO6/j6dc9Ph19rI/E4E9jWSINW
-    mwasWOr1vC+v3ZtS688VGfS3XBX2oliZl+gKJVOPj4PkloCEq7G42KCrchPbkNV4U4UP
-    34pNaJ1ewKWiPlXZc0O6DmYhr6RbRECWixT5Z4Asa2qbwpf2lK8xsUSUFezged9bCJZ9
-    pAZvb0DbSRV/8LJBnCVGL+smT9g++lWD0K+bgpdJ75xEDSW2cYjYe5wvlq+ln0jgJjpC
-    Ptgw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1694723278;
+    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Qm6cwWzKtshyoFGnpStu0NB/ynnONWUDquxu6ya0YbE=;
+    b=bjBckR7WgKFXDGMTYAkGocIxWS36sQBPPNHLhTxlyBKlvgS3eThohwLqSwp7PoetDC
+    rYceV9I8EXODAuju3MaSL4VcHMOIPMfakAzPDYHNCticvn29rHG5T1/yqIR/wuRaHxk1
+    rFivUDRUADJ40sqhlH+PTR7HpX35RIw4KXTI2yyqJRsfLQRhMbkWdPRP46z/KxemXJkk
+    w/AJifRjLA7vWsZ0q2iCixeEWJujwDUwWsmnOTzvbEHQKnMMFaAdTw+XaRjqxBa/IKeA
+    rdKEqi7H2xM0i0lYAZIFxVpayq+AXzKVNsgrG8sDEmf6d18Iyazb05gs8Dfmun11EwAL
+    yaEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1694723417;
     s=strato-dkim-0003; d=iokpp.de;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=m4iE6KJnkzc7DxuNvxScdnjLzszoDLro5lcUVYr2ojc=;
-    b=WE4KU2/QrraNeA4qJwf4tPUppronPwuw3wYGF/ORaShLsr+bC9w9DC0D8AUVHbuQTf
-    AT6r6gVb7Y4gtSwp2MCg==
-X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSedrgBzPc9DUyubU4DD1QLj68UeUr1+U1BzWso7brrTnk+qJtuXDXLVLiZPxnvk6DWJlKA=="
-Received: from blinux.speedport.ip
+    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Qm6cwWzKtshyoFGnpStu0NB/ynnONWUDquxu6ya0YbE=;
+    b=L2UO5p2RTTxOd4T4tbiU+x0mUjpoDt3KgVCODRcBkc0BcTZ5uwzvlAL4PLzB7DOaV5
+    xuOJAfim+vdfADJl7PDA==
+X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSeBwhhSxarlUcu05JyMI1zXvWpofGAbhC22VTSyB8cMmLdLpWPYurOsVc7IfjM2CVzE="
+Received: from p200300c58703581babbe27afdf2433f1.dip0.t-ipconnect.de
     by smtp.strato.de (RZmta 49.8.2 AUTH)
-    with ESMTPSA id V04024z8EKRvDZR
+    with ESMTPSA id V04024z8EKUHDZZ
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Thu, 14 Sep 2023 22:27:57 +0200 (CEST)
+    Thu, 14 Sep 2023 22:30:17 +0200 (CEST)
+Message-ID: <03a08d4c9f49287fe2d52862c78b59b6fd02e580.camel@iokpp.de>
+Subject: Re: [PATCH v1] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for
+ Micron eMMC Q2J54A
 From:   Bean Huo <beanhuo@iokpp.de>
-To:     ulf.hansson@linaro.org, adrian.hunter@intel.com,
-        beanhuo@micron.com, jakub.kwapisz@toradex.com,
-        rafael.beims@toradex.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
+        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Subject: [PATCH v2] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron eMMC Q2J54A
-Date:   Thu, 14 Sep 2023 22:27:49 +0200
-Message-Id: <20230914202749.470100-1-beanhuo@iokpp.de>
-X-Mailer: git-send-email 2.34.1
+Date:   Thu, 14 Sep 2023 22:30:17 +0200
+In-Reply-To: <CAPDyKFrt4r88RhCg1XigFtd8xSrLLbHeD31ZAEA0aUDkNzRxGQ@mail.gmail.com>
+References: <20230913185735.459661-1-beanhuo@iokpp.de>
+         <CAPDyKFrt4r88RhCg1XigFtd8xSrLLbHeD31ZAEA0aUDkNzRxGQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bean Huo <beanhuo@micron.com>
+Ulf,=20
 
-Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
-operation be allowed only after a write has occurred. Otherwise, the
-cache flush command or subsequent commands will time out.
+I just updated v2, please have a check, let me know if you need any
+change, and you have the new suggestton, thanks.
 
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Co-developed-by: Rafael Beims <rafael.beims@toradex.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Cc: stable@vger.kernel.org
----
-Changelog:
-
-v1--v2:
-    1. Add Rafael's test-tag, and Co-developed-by.
-    2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
-
----
- drivers/mmc/core/core.c   | 7 +++++++
- drivers/mmc/core/mmc.c    | 5 +++++
- drivers/mmc/core/quirks.h | 7 ++++---
- include/linux/mmc/card.h  | 2 ++
- 4 files changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 3d3e0ca52614..86a669b35b91 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -259,6 +259,13 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
- 		host->cqe_ops->cqe_off(host);
- 
- 	host->ops->request(host, mrq);
-+
-+	if (host->card && host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH &&
-+	    !host->card->written_flag) {
-+		if (mrq->cmd->opcode == MMC_WRITE_MULTIPLE_BLOCK ||
-+		    mrq->cmd->opcode == MMC_WRITE_BLOCK)
-+			host->card->written_flag = true;
-+	}
- }
- 
- static void mmc_mrq_pr_debug(struct mmc_host *host, struct mmc_request *mrq,
-diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-index 89cd48fcec79..a2edd065fa1b 100644
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
- 	if (!oldcard)
- 		host->card = card;
- 
-+	card->written_flag = false;
-+
- 	return 0;
- 
- free_card:
-@@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host *host)
- {
- 	int err = 0;
- 
-+	if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH && !host->card->written_flag)
-+		return err;
-+
- 	if (_mmc_cache_enabled(host)) {
- 		err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
- 				 EXT_CSD_FLUSH_CACHE, 1,
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 32b64b564fb1..5e68c8b4cdca 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
- 	/*
--	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
--	 * support being used to offload WRITE_ZEROES.
-+	 * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
-+	 * WRITE_ZEROES offloading. It also supports caching, but the cache can
-+	 * only be flushed after a write has occurred.
- 	 */
- 	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
--		  MMC_QUIRK_TRIM_BROKEN),
-+		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
- 
- 	/*
- 	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index daa2f40d9ce6..7b12eebc5586 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -295,7 +295,9 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
- #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
- #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
-+#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- 
-+	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
- 
- 	unsigned int		erase_size;	/* erase size in sectors */
--- 
-2.34.1
-
+Kind regards,
+Bean
