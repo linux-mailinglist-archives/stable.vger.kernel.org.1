@@ -2,95 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E5267A0B05
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 18:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 635927A0B08
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 18:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231588AbjINQwo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 12:52:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49736 "EHLO
+        id S230023AbjINQwy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 12:52:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbjINQwo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 12:52:44 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F93CE
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 09:52:40 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c0db66af1bso8971205ad.2
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 09:52:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694710359; x=1695315159; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r0PIFkgAKbrMcVoY24lLipEKJInCl7seVpo3l//wznQ=;
-        b=BJ461dA1fUKAUWLqaFfkW0wq1mkuVcAUOnYtQPQKpOIwfQu8JJaxnj1TQkL0q5OzKm
-         iME5BxFhF3vXxnarUfr+Bnvih7Y66Sw1N0m4rUPLtKaO+C+jYtSTP9+8cwoHgEsexlSq
-         4xnkP3phPTDF+rLbES56cGhdm5Iuq7ubd4Kqk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694710359; x=1695315159;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r0PIFkgAKbrMcVoY24lLipEKJInCl7seVpo3l//wznQ=;
-        b=VhbqconciaAnjJ0prNgF+tlJBW+Z1Af1iNXt+1stpemSozdTOhFAXEo6tdlwpIj62p
-         RxZIgtqW5PmdeUh1bUEic/2I4qpyPNXGi7hsnsu7PoKZynzRlezhkBBXgHnn0KLpcb2J
-         0RMPFyH557jblQHpZJxwyn8Rr8TNtTFb/jy5YXZcyLgxVv6g8XPxbGLl9mIJngFz6Zze
-         nggjCixHnedcx1H5UJUdEqTS8iXEkqluFA2xzD7QdxL30EpKx0sYa9JnjXmRFevkkMwN
-         2Hgs+jAdG1O/rUmnosEEjWE7yeQtdwjQkARcHH71EC8rc4Ee/uuBYBkZZB+5hh+weeKW
-         b1GQ==
-X-Gm-Message-State: AOJu0YwuwSD8+FAWvqwdrHwvEJy9RYceju+ev9YqGv/XuBWuwdfaAIRU
-        7EaF2w2Ve3dalOjClVqqBGqK3Q==
-X-Google-Smtp-Source: AGHT+IH334ra+z6TaPT2K2le+CKl26jjaRaWR5gBvgujVzunOvDx1yIYuftdJvAeTfi6FAe4UebEgQ==
-X-Received: by 2002:a17:902:b281:b0:1b8:7fd7:e022 with SMTP id u1-20020a170902b28100b001b87fd7e022mr6178845plr.28.1694710359638;
-        Thu, 14 Sep 2023 09:52:39 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id f24-20020a170902ab9800b001bb3beb2bc6sm1820038plr.65.2023.09.14.09.52.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 09:52:38 -0700 (PDT)
-Date:   Thu, 14 Sep 2023 09:52:38 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Juerg Haefliger <juerg.haefliger@canonical.com>
-Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
-        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
-        gustavoars@kernel.org, hante.meuleman@broadcom.com,
-        hdegoede@redhat.com, kvalo@kernel.org, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        marcan@marcan.st, ryohei.kondo@cypress.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with
- flexible arrays
-Message-ID: <202309140952.98489A964@keescook>
-References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
- <20230914070227.12028-1-juerg.haefliger@canonical.com>
+        with ESMTP id S238255AbjINQwx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 12:52:53 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729F51BCB
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 09:52:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E15C433C7;
+        Thu, 14 Sep 2023 16:52:47 +0000 (UTC)
+Date:   Thu, 14 Sep 2023 18:52:45 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [STABLE][PATCH] linux/export: fix reference to exported functions
+ for parisc64
+Message-ID: <ZQM6XXX9Sln2SZx2@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230914070227.12028-1-juerg.haefliger@canonical.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 09:02:27AM +0200, Juerg Haefliger wrote:
-> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-> 'element' and 'channel_list' will trigger warnings, so make them proper
-> flexible arrays.
-> 
-> False positive warnings were:
-> 
->   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
->   index 1 is out of range for type '__le32 [1]'
-> 
->   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
->   index 1 is out of range for type '__le16 [1]'
-> 
-> for these lines of code:
-> 
->   6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
-> 
->   1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
-> 
-> Cc: stable@vger.kernel.org # 6.5+
-> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+Hi Greg,
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+could you please cherry-pick this upstream commit:
 
--- 
-Kees Cook
+	08700ec70504 ("linux/export: fix reference to exported functions for parisc64")
+
+to the v6.5 stable kernel series?
+
+Thanks!
+Helge
+
+---
+
+From 08700ec705043eb0cee01b35cf5b9d63f0230d12 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 6 Sep 2023 03:46:57 +0900
+Subject: [PATCH] linux/export: fix reference to exported functions for
+ parisc64
+
+John David Anglin reported parisc has been broken since commit
+ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost").
+
+Like ia64, parisc64 uses a function descriptor. The function
+references must be prefixed with P%.
+
+Also, symbols prefixed $$ from the library have the symbol type
+STT_LOPROC instead of STT_FUNC. They should be handled as functions
+too.
+
+Fixes: ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
+Reported-by: John David Anglin <dave.anglin@bell.net>
+Tested-by: John David Anglin <dave.anglin@bell.net>
+Tested-by: Helge Deller <deller@gmx.de>
+Closes: https://lore.kernel.org/linux-parisc/1901598a-e11d-f7dd-a5d9-9a69d06e6b6e@bell.net/T/#u
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/include/linux/export-internal.h b/include/linux/export-internal.h
+index 1c849db953a5..45fca09b2319 100644
+--- a/include/linux/export-internal.h
++++ b/include/linux/export-internal.h
+@@ -52,6 +52,8 @@
+ 
+ #ifdef CONFIG_IA64
+ #define KSYM_FUNC(name)		@fptr(name)
++#elif defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
++#define KSYM_FUNC(name)		P%name
+ #else
+ #define KSYM_FUNC(name)		name
+ #endif
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index b29b29707f10..ba981f22908a 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1226,6 +1226,15 @@ static void check_export_symbol(struct module *mod, struct elf_info *elf,
+ 	 */
+ 	s->is_func = (ELF_ST_TYPE(sym->st_info) == STT_FUNC);
+ 
++	/*
++	 * For parisc64, symbols prefixed $$ from the library have the symbol type
++	 * STT_LOPROC. They should be handled as functions too.
++	 */
++	if (elf->hdr->e_ident[EI_CLASS] == ELFCLASS64 &&
++	    elf->hdr->e_machine == EM_PARISC &&
++	    ELF_ST_TYPE(sym->st_info) == STT_LOPROC)
++		s->is_func = true;
++
+ 	if (match(secname, PATTERNS(INIT_SECTIONS)))
+ 		warn("%s: %s: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.\n",
+ 		     mod->name, name);
