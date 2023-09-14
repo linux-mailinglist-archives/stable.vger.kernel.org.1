@@ -2,161 +2,254 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2043E79F69F
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 03:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0036F79F6A3
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 03:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233988AbjINBzb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 21:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60478 "EHLO
+        id S233959AbjINBzt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 21:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233860AbjINBzW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 21:55:22 -0400
+        with ESMTP id S234099AbjINBzi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 21:55:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0035E1FC6;
-        Wed, 13 Sep 2023 18:55:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388DFC433CB;
-        Thu, 14 Sep 2023 01:55:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D971FC6;
+        Wed, 13 Sep 2023 18:55:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAFEC433C7;
+        Thu, 14 Sep 2023 01:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694656515;
-        bh=9oR9SSQECGCAQx8w80FvFbcmcZq+svGXSbNFMRRATfQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PyLUmkmy/VGuw7tlaB2ZXto75cXTNGEoH55zSHFzNj23RnFuVCr9+WUhRQtHQ/a+o
-         gI59gvoQ6tC++6aVv5rS/x5cMEMnKSCqYXATROToif0nvlgE9UGXqovhfNoI1tKH78
-         8Pe9tPhpfjJYugDbeXnxu8j81KVb8xxtGjG2C3BltBcVkQ0qLbHqfGlK6jU0W5qMHn
-         LYmjYKn7pNFeh6LXLNAmP6ybuRmR6GyXU8TaQJoROfxAWKDEVayaJ+1K62aXHfsf/G
-         Pw+racipnJzqGqcyySEVESuVm/mZRzr7kHc6GRJ5m9fWTVX2XESlYhcdOmeSJXUdGJ
-         ODSoDRlU1Qs4g==
+        s=k20201202; t=1694656527;
+        bh=3fF0d3lJ52Eg1dPFNiEtJBmMZQ6dkYHYyXCqiLhoh8I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=F1AK9KbBuV80+LauZ/UyCKkovtSBZRUdHbyJ5m1By1DZINz/ke0fCnnV8KLH88XYo
+         oOfs6DMt6oMijH2ebiBzG5cV8yQeYHB3Jry6DlVciPFhsjmqeTOXEKIi+E0tfdgaDd
+         hR+H8P5Q2iFjjk9dVyV0BRmwGfziuW+nw1mSbrImVeZaFK2k/VaoudffIrTcNyJ+gs
+         ERrhKLNDf5cNVIDMAGKFzSoIRIqYj6k65sbfuU1euqIPANMHuWHSLVulYYDJuuo14n
+         n9BNOEiPrbOwMcUNzquJPnE0j0+z1MpIK1EZZbEk2c/un0p+Tes1sK5yldVhNgb+z4
+         ZodfA/RvrIpTg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tobias Schramm <t.schramm@manjaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, wens@csie.org,
-        jernej.skrabec@gmail.com, samuel@sholland.org,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-sunxi@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.5 7/7] spi: sun6i: fix race between DMA RX transfer completion and RX FIFO drain
-Date:   Wed, 13 Sep 2023 21:54:51 -0400
-Message-Id: <20230914015459.51740-7-sashal@kernel.org>
+Cc:     Sean Christopherson <seanjc@google.com>,
+        Andrew Cooper <Andrew.Cooper3@citrix.com>,
+        Sasha Levin <sashal@kernel.org>, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, pbonzini@redhat.com, bhe@redhat.com,
+        akpm@linux-foundation.org, eric.devolder@oracle.com,
+        hbathini@linux.ibm.com, horms@kernel.org, bhelgaas@google.com,
+        kai.huang@intel.com, jpoimboe@kernel.org, peterz@infradead.org,
+        tiwai@suse.de, kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/6] x86/reboot: VMCLEAR active VMCSes before emergency reboot
+Date:   Wed, 13 Sep 2023 21:55:11 -0400
+Message-Id: <20230914015523.51894-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230914015459.51740-1-sashal@kernel.org>
-References: <20230914015459.51740-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.3
+X-stable-base: Linux 6.1.53
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tobias Schramm <t.schramm@manjaro.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 1f11f4202caf5710204d334fe63392052783876d ]
+[ Upstream commit b23c83ad2c638420ec0608a9de354507c41bec29 ]
 
-Previously the transfer complete IRQ immediately drained to RX FIFO to
-read any data remaining in FIFO to the RX buffer. This behaviour is
-correct when dealing with SPI in interrupt mode. However in DMA mode the
-transfer complete interrupt still fires as soon as all bytes to be
-transferred have been stored in the FIFO. At that point data in the FIFO
-still needs to be picked up by the DMA engine. Thus the drain procedure
-and DMA engine end up racing to read from RX FIFO, corrupting any data
-read. Additionally the RX buffer pointer is never adjusted according to
-DMA progress in DMA mode, thus calling the RX FIFO drain procedure in DMA
-mode is a bug.
-Fix corruptions in DMA RX mode by draining RX FIFO only in interrupt mode.
-Also wait for completion of RX DMA when in DMA mode before returning to
-ensure all data has been copied to the supplied memory buffer.
+VMCLEAR active VMCSes before any emergency reboot, not just if the kernel
+may kexec into a new kernel after a crash.  Per Intel's SDM, the VMX
+architecture doesn't require the CPU to flush the VMCS cache on INIT.  If
+an emergency reboot doesn't RESET CPUs, cached VMCSes could theoretically
+be kept and only be written back to memory after the new kernel is booted,
+i.e. could effectively corrupt memory after reboot.
 
-Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
-Link: https://lore.kernel.org/r/20230827152558.5368-3-t.schramm@manjaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Opportunistically remove the setting of the global pointer to NULL to make
+checkpatch happy.
+
+Cc: Andrew Cooper <Andrew.Cooper3@citrix.com>
+Link: https://lore.kernel.org/r/20230721201859.2307736-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sun6i.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/kexec.h  |  2 --
+ arch/x86/include/asm/reboot.h |  2 ++
+ arch/x86/kernel/crash.c       | 31 -------------------------------
+ arch/x86/kernel/reboot.c      | 22 ++++++++++++++++++++++
+ arch/x86/kvm/vmx/vmx.c        | 10 +++-------
+ 5 files changed, 27 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 8fcb2696ec099..57c828e73c446 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -102,6 +102,7 @@ struct sun6i_spi {
- 	struct reset_control	*rstc;
+diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+index a3760ca796aa2..256eee99afc8f 100644
+--- a/arch/x86/include/asm/kexec.h
++++ b/arch/x86/include/asm/kexec.h
+@@ -208,8 +208,6 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image);
+ #endif
+ #endif
  
- 	struct completion	done;
-+	struct completion	dma_rx_done;
+-typedef void crash_vmclear_fn(void);
+-extern crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
+ extern void kdump_nmi_shootdown_cpus(void);
  
- 	const u8		*tx_buf;
- 	u8			*rx_buf;
-@@ -196,6 +197,13 @@ static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
- 	return SUN6I_MAX_XFER_SIZE - 1;
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/x86/include/asm/reboot.h b/arch/x86/include/asm/reboot.h
+index bc5b4d788c08d..2551baec927d2 100644
+--- a/arch/x86/include/asm/reboot.h
++++ b/arch/x86/include/asm/reboot.h
+@@ -25,6 +25,8 @@ void __noreturn machine_real_restart(unsigned int type);
+ #define MRR_BIOS	0
+ #define MRR_APM		1
+ 
++typedef void crash_vmclear_fn(void);
++extern crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
+ void cpu_emergency_disable_virtualization(void);
+ 
+ typedef void (*nmi_shootdown_cb)(int, struct pt_regs*);
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index cdd92ab43cda4..54cd959cb3160 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -48,38 +48,12 @@ struct crash_memmap_data {
+ 	unsigned int type;
+ };
+ 
+-/*
+- * This is used to VMCLEAR all VMCSs loaded on the
+- * processor. And when loading kvm_intel module, the
+- * callback function pointer will be assigned.
+- *
+- * protected by rcu.
+- */
+-crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss = NULL;
+-EXPORT_SYMBOL_GPL(crash_vmclear_loaded_vmcss);
+-
+-static inline void cpu_crash_vmclear_loaded_vmcss(void)
+-{
+-	crash_vmclear_fn *do_vmclear_operation = NULL;
+-
+-	rcu_read_lock();
+-	do_vmclear_operation = rcu_dereference(crash_vmclear_loaded_vmcss);
+-	if (do_vmclear_operation)
+-		do_vmclear_operation();
+-	rcu_read_unlock();
+-}
+-
+ #if defined(CONFIG_SMP) && defined(CONFIG_X86_LOCAL_APIC)
+ 
+ static void kdump_nmi_callback(int cpu, struct pt_regs *regs)
+ {
+ 	crash_save_cpu(regs, cpu);
+ 
+-	/*
+-	 * VMCLEAR VMCSs loaded on all cpus if needed.
+-	 */
+-	cpu_crash_vmclear_loaded_vmcss();
+-
+ 	/*
+ 	 * Disable Intel PT to stop its logging
+ 	 */
+@@ -133,11 +107,6 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
+ 
+ 	crash_smp_send_stop();
+ 
+-	/*
+-	 * VMCLEAR VMCSs loaded on this cpu if needed.
+-	 */
+-	cpu_crash_vmclear_loaded_vmcss();
+-
+ 	cpu_emergency_disable_virtualization();
+ 
+ 	/*
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index d03c551defccf..299b970e5f829 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -787,6 +787,26 @@ void machine_crash_shutdown(struct pt_regs *regs)
+ }
+ #endif
+ 
++/*
++ * This is used to VMCLEAR all VMCSs loaded on the
++ * processor. And when loading kvm_intel module, the
++ * callback function pointer will be assigned.
++ *
++ * protected by rcu.
++ */
++crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
++EXPORT_SYMBOL_GPL(crash_vmclear_loaded_vmcss);
++
++static inline void cpu_crash_vmclear_loaded_vmcss(void)
++{
++	crash_vmclear_fn *do_vmclear_operation = NULL;
++
++	rcu_read_lock();
++	do_vmclear_operation = rcu_dereference(crash_vmclear_loaded_vmcss);
++	if (do_vmclear_operation)
++		do_vmclear_operation();
++	rcu_read_unlock();
++}
+ 
+ /* This is the CPU performing the emergency shutdown work. */
+ int crashing_cpu = -1;
+@@ -798,6 +818,8 @@ int crashing_cpu = -1;
+  */
+ void cpu_emergency_disable_virtualization(void)
+ {
++	cpu_crash_vmclear_loaded_vmcss();
++
+ 	cpu_emergency_vmxoff();
+ 	cpu_emergency_svm_disable();
+ }
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 4e972b9b68e59..31a10d774df6d 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -40,7 +40,7 @@
+ #include <asm/idtentry.h>
+ #include <asm/io.h>
+ #include <asm/irq_remapping.h>
+-#include <asm/kexec.h>
++#include <asm/reboot.h>
+ #include <asm/perf_event.h>
+ #include <asm/mmu_context.h>
+ #include <asm/mshyperv.h>
+@@ -702,7 +702,6 @@ static int vmx_set_guest_uret_msr(struct vcpu_vmx *vmx,
+ 	return ret;
  }
  
-+static void sun6i_spi_dma_rx_cb(void *param)
-+{
-+	struct sun6i_spi *sspi = param;
-+
-+	complete(&sspi->dma_rx_done);
-+}
-+
- static int sun6i_spi_prepare_dma(struct sun6i_spi *sspi,
- 				 struct spi_transfer *tfr)
+-#ifdef CONFIG_KEXEC_CORE
+ static void crash_vmclear_local_loaded_vmcss(void)
  {
-@@ -220,6 +228,8 @@ static int sun6i_spi_prepare_dma(struct sun6i_spi *sspi,
- 						 DMA_PREP_INTERRUPT);
- 		if (!rxdesc)
- 			return -EINVAL;
-+		rxdesc->callback_param = sspi;
-+		rxdesc->callback = sun6i_spi_dma_rx_cb;
- 	}
+ 	int cpu = raw_smp_processor_id();
+@@ -712,7 +711,6 @@ static void crash_vmclear_local_loaded_vmcss(void)
+ 			    loaded_vmcss_on_cpu_link)
+ 		vmcs_clear(v->vmcs);
+ }
+-#endif /* CONFIG_KEXEC_CORE */
  
- 	txdesc = NULL;
-@@ -275,6 +285,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 		return -EINVAL;
+ static void __loaded_vmcs_clear(void *arg)
+ {
+@@ -8522,10 +8520,9 @@ static void __vmx_exit(void)
+ {
+ 	allow_smaller_maxphyaddr = false;
  
- 	reinit_completion(&sspi->done);
-+	reinit_completion(&sspi->dma_rx_done);
- 	sspi->tx_buf = tfr->tx_buf;
- 	sspi->rx_buf = tfr->rx_buf;
- 	sspi->len = tfr->len;
-@@ -459,6 +470,22 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	start = jiffies;
- 	timeout = wait_for_completion_timeout(&sspi->done,
- 					      msecs_to_jiffies(tx_time));
+-#ifdef CONFIG_KEXEC_CORE
+ 	RCU_INIT_POINTER(crash_vmclear_loaded_vmcss, NULL);
+ 	synchronize_rcu();
+-#endif
 +
-+	if (!use_dma) {
-+		sun6i_spi_drain_fifo(sspi);
-+	} else {
-+		if (timeout && rx_len) {
-+			/*
-+			 * Even though RX on the peripheral side has finished
-+			 * RX DMA might still be in flight
-+			 */
-+			timeout = wait_for_completion_timeout(&sspi->dma_rx_done,
-+							      timeout);
-+			if (!timeout)
-+				dev_warn(&master->dev, "RX DMA timeout\n");
-+		}
-+	}
+ 	vmx_cleanup_l1d_flush();
+ }
+ 
+@@ -8598,10 +8595,9 @@ static int __init vmx_init(void)
+ 		pi_init_cpu(cpu);
+ 	}
+ 
+-#ifdef CONFIG_KEXEC_CORE
+ 	rcu_assign_pointer(crash_vmclear_loaded_vmcss,
+ 			   crash_vmclear_local_loaded_vmcss);
+-#endif
 +
- 	end = jiffies;
- 	if (!timeout) {
- 		dev_warn(&master->dev,
-@@ -486,7 +513,6 @@ static irqreturn_t sun6i_spi_handler(int irq, void *dev_id)
- 	/* Transfer complete */
- 	if (status & SUN6I_INT_CTL_TC) {
- 		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_TC);
--		sun6i_spi_drain_fifo(sspi);
- 		complete(&sspi->done);
- 		return IRQ_HANDLED;
- 	}
-@@ -644,6 +670,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
- 	}
+ 	vmx_check_vmcs12_offsets();
  
- 	init_completion(&sspi->done);
-+	init_completion(&sspi->dma_rx_done);
- 
- 	sspi->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(sspi->rstc)) {
+ 	/*
 -- 
 2.40.1
 
