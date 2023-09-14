@@ -2,242 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B46E97A04D4
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D60077A0518
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:11:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237775AbjINNDi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 09:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
+        id S238760AbjINNLz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 09:11:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238644AbjINNDg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:03:36 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE531FEC
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:30 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-58fae4a5285so10846787b3.0
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694696610; x=1695301410; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ob8SQM+bmq/PuBNTw6TcaVLNQ1zeeWO4ZtVc5W6iJRs=;
-        b=IGxQwgySBIzXEcyRinHXjbYkau/6kt7JZpKswkhrbqGd+yJyjwTF4sQPyOKPAmaAdZ
-         9uG/EB9a+UhcsYkWtc7MuF6lvGfLTaOKpF1zjw0y7vnd4cRrmdmShZpXSu1JEEvUn/Px
-         hLUPou0WleMwNJIJkPb7YG2RJsSXa+p4OWcuKQHTBBTuYPvLUmFH9ndkXcZLFMH528Nj
-         Gu5TazHtGOltrxgPa5DuZW8fCbINMFIf1CNd+ch/LXw5/bUy6oFkO9ickYXQfq+ID5xW
-         K5aM/D75MeGWwo6HC2/KTWLStzbndPIpFYG8luJQXfq6A/XRAR0/bx/QxJ+dhuirpawc
-         /uFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694696610; x=1695301410;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ob8SQM+bmq/PuBNTw6TcaVLNQ1zeeWO4ZtVc5W6iJRs=;
-        b=tPTqrJQv2PgHp0aihZOx6ztKOYPn19+uNgGY8OG93+Npaxi4zidmn8neuw7XmJZuI4
-         JBOu4qmOJaOqqQB7JvItbSEduUaxL14JIgCZ9KYNEyiRzHmRT4k0eLmxTqKx7iMPckO5
-         Exec26a+yb1f0MIaXkF7W4ef8Ngr2JS8oLnjPnH24QLixufoG7fLuWmoCuQYWwiZKQwO
-         +HS+1Ho4gdr1/VOoueixoIk4u13B0yRmMb3YynvWMNGQbk1klk/Q/k7RDeToyszChHXj
-         +/WVGiZmiS1O/Sjet2vsa4Nu8UTD3bSY2DmVpZRZY6j8Ig7JcmXAqs5Ykmj4OiEI3+HU
-         7KkA==
-X-Gm-Message-State: AOJu0YxAk7ND0lwSKWyX7fdtvf0viZ01+MWiNtFl/qoMU18OzFSA6CBB
-        np9gbIj3zx1xk3wch0+v1hAet+YKmxQJAaWcZ3AJyg==
-X-Google-Smtp-Source: AGHT+IH6YkWJEN52KxYqwksy7XeIE77ym5oKBBQTAMc1y9A7PSsTbC4UtM+Yk0dnZEGUypdjvCxvkZRxxsrAwVPctng=
-X-Received: by 2002:a25:1607:0:b0:d4c:6b49:fed7 with SMTP id
- 7-20020a251607000000b00d4c6b49fed7mr4697103ybw.45.1694696609708; Thu, 14 Sep
- 2023 06:03:29 -0700 (PDT)
+        with ESMTP id S238983AbjINNLw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:11:52 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4BE1A5
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:11:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694697108; x=1726233108;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9eVtr7Sm2yrP7NrW5lUGQE9mQKVpwxVDMhXgaOG0os0=;
+  b=kjh/cKTmZxxn2Y1kBgRJBjZ4MkGxp+QRja86FZXy5akjCxLcA0uRj0YU
+   iKdlrjgRPxtGwnQmEIEq4YG7nwkZBWgHdsDna95C8WcOT5i95mA0twCVP
+   ONcgpcLW2NKGCXxuVsQK0s+cvc79dPNTV9Keu2NR7ctMAB4YZXeFBuRNt
+   IrmbIhzuqp3LqtnRQO4QUi60iXcs3Xc+cAH4SoolYBXmyP6kRok5B8eP5
+   RodFe4RJsV7BchND1LYvTsdFoc0tN0GvTT8N8Y2zqvbunj4OLaPKV5JeW
+   Uee2duGwbt8ltq2j//DlOSSxZpMg6xf9bQNhzaJhUritsAFzYxZOflidO
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="358366683"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="358366683"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 06:10:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="859696945"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="859696945"
+Received: from jnikula-mobl4.fi.intel.com (HELO localhost) ([10.237.66.162])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 06:10:23 -0700
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     dri-devel@lists.freedesktop.org
+Cc:     jani.nikula@intel.com, Neil Armstrong <narmstrong@baylibre.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: [PATCH] drm/meson: fix memory leak on ->hpd_notify callback
+Date:   Thu, 14 Sep 2023 16:10:15 +0300
+Message-Id: <20230914131015.2472029-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
-In-Reply-To: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Sep 2023 15:02:53 +0200
-Message-ID: <CAPDyKFoAbOjjS9H495mBNMiH6dV8eRsuoio6to5G6hz-sPY8xw@mail.gmail.com>
-Subject: Re: [PATCH v3] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
- SoCs can suspend
-To:     Sven van Ashbrook <svenva@chromium.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>, adrian.hunter@intel.com,
-        ben.chuang@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
-        jasonlai.genesyslogic@gmail.com, skardach@google.com,
-        Renius Chen <reniuschengl@gmail.com>,
-        rafael.j.wysocki@intel.com, linux-mmc@vger.kernel.org,
-        stable@vger.kernel.org, SeanHY.chen@genesyslogic.com.tw,
-        victor.shih@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw
-Content-Type: text/plain; charset="UTF-8"
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 31 Aug 2023 at 18:01, Sven van Ashbrook <svenva@chromium.org> wrote:
->
-> To improve the r/w performance of GL9763E, the current driver inhibits LPM
-> negotiation while the device is active.
->
-> This prevents a large number of SoCs from suspending, notably x86 systems
-> which commonly use S0ix as the suspend mechanism - for example, Intel
-> Alder Lake and Raptor Lake processors.
->
-> Failure description:
-> 1. Userspace initiates s2idle suspend (e.g. via writing to
->    /sys/power/state)
-> 2. This switches the runtime_pm device state to active, which disables
->    LPM negotiation, then calls the "regular" suspend callback
-> 3. With LPM negotiation disabled, the bus cannot enter low-power state
-> 4. On a large number of SoCs, if the bus not in a low-power state, S0ix
->    cannot be entered, which in turn prevents the SoC from entering
->    suspend.
->
-> Fix by re-enabling LPM negotiation in the device's suspend callback.
->
-> Suggested-by: Stanislaw Kardach <skardach@google.com>
-> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
+The EDID returned by drm_bridge_get_edid() needs to be freed.
 
-Applied for fixes, thanks!
+Fixes: 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+Cc: Neil Armstrong <narmstrong@baylibre.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Jerome Brunet <jbrunet@baylibre.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-amlogic@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v5.17+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-Kind regards
-Uffe
+---
 
+UNTESTED
+---
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> ---
->
-> Changes in v3:
-> - applied maintainer feedback from https://lore.kernel.org/lkml/CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com/T/#m7cea7b6b987d1ab1ca95feedf2c6f9da5783da5c
->
-> Changes in v2:
-> - improved symmetry and error path in s2idle suspend callback (internal review)
->
->  drivers/mmc/host/sdhci-pci-gli.c | 104 ++++++++++++++++++++-----------
->  1 file changed, 66 insertions(+), 38 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index 1792665c9494a..a4ccb6c3e27a6 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
->         return value;
->  }
->
-> -#ifdef CONFIG_PM_SLEEP
-> -static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
-> -{
-> -       struct sdhci_pci_slot *slot = chip->slots[0];
-> -
-> -       pci_free_irq_vectors(slot->chip->pdev);
-> -       gli_pcie_enable_msi(slot);
-> -
-> -       return sdhci_pci_resume_host(chip);
-> -}
-> -
-> -static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
-> -{
-> -       struct sdhci_pci_slot *slot = chip->slots[0];
-> -       int ret;
-> -
-> -       ret = sdhci_pci_gli_resume(chip);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return cqhci_resume(slot->host->mmc);
-> -}
-> -
-> -static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
-> -{
-> -       struct sdhci_pci_slot *slot = chip->slots[0];
-> -       int ret;
-> -
-> -       ret = cqhci_suspend(slot->host->mmc);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return sdhci_suspend_host(slot->host);
-> -}
-> -#endif
-> -
->  static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
->                                           struct mmc_ios *ios)
->  {
-> @@ -1029,6 +993,70 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
->  }
->  #endif
->
-> +#ifdef CONFIG_PM_SLEEP
-> +static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
-> +{
-> +       struct sdhci_pci_slot *slot = chip->slots[0];
-> +
-> +       pci_free_irq_vectors(slot->chip->pdev);
-> +       gli_pcie_enable_msi(slot);
-> +
-> +       return sdhci_pci_resume_host(chip);
-> +}
-> +
-> +static int gl9763e_resume(struct sdhci_pci_chip *chip)
-> +{
-> +       struct sdhci_pci_slot *slot = chip->slots[0];
-> +       int ret;
-> +
-> +       ret = sdhci_pci_gli_resume(chip);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = cqhci_resume(slot->host->mmc);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /*
-> +        * Disable LPM negotiation to bring device back in sync
-> +        * with its runtime_pm state.
-> +        */
-> +       gl9763e_set_low_power_negotiation(slot, false);
-> +
-> +       return 0;
-> +}
-> +
-> +static int gl9763e_suspend(struct sdhci_pci_chip *chip)
-> +{
-> +       struct sdhci_pci_slot *slot = chip->slots[0];
-> +       int ret;
-> +
-> +       /*
-> +        * Certain SoCs can suspend only with the bus in low-
-> +        * power state, notably x86 SoCs when using S0ix.
-> +        * Re-enable LPM negotiation to allow entering L1 state
-> +        * and entering system suspend.
-> +        */
-> +       gl9763e_set_low_power_negotiation(slot, true);
-> +
-> +       ret = cqhci_suspend(slot->host->mmc);
-> +       if (ret)
-> +               goto err_suspend;
-> +
-> +       ret = sdhci_suspend_host(slot->host);
-> +       if (ret)
-> +               goto err_suspend_host;
-> +
-> +       return 0;
-> +
-> +err_suspend_host:
-> +       cqhci_resume(slot->host->mmc);
-> +err_suspend:
-> +       gl9763e_set_low_power_negotiation(slot, false);
-> +       return ret;
-> +}
-> +#endif
-> +
->  static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
->  {
->         struct pci_dev *pdev = slot->chip->pdev;
-> @@ -1113,8 +1141,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
->         .probe_slot     = gli_probe_slot_gl9763e,
->         .ops            = &sdhci_gl9763e_ops,
->  #ifdef CONFIG_PM_SLEEP
-> -       .resume         = sdhci_cqhci_gli_resume,
-> -       .suspend        = sdhci_cqhci_gli_suspend,
-> +       .resume         = gl9763e_resume,
-> +       .suspend        = gl9763e_suspend,
->  #endif
->  #ifdef CONFIG_PM
->         .runtime_suspend = gl9763e_runtime_suspend,
-> --
-> 2.42.0.283.g2d96d420d3-goog
->
+diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+index 9913971fa5d2..25ea76558690 100644
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -334,6 +334,8 @@ static void meson_encoder_hdmi_hpd_notify(struct drm_bridge *bridge,
+ 			return;
+ 
+ 		cec_notifier_set_phys_addr_from_edid(encoder_hdmi->cec_notifier, edid);
++
++		kfree(edid);
+ 	} else
+ 		cec_notifier_phys_addr_invalidate(encoder_hdmi->cec_notifier);
+ }
+-- 
+2.39.2
+
