@@ -2,126 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF217A09EE
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 17:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF5B7A0A32
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 18:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241304AbjINP7n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 11:59:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42248 "EHLO
+        id S241679AbjINQCy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 12:02:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240667AbjINP7m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 11:59:42 -0400
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B3B1BDD;
-        Thu, 14 Sep 2023 08:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-        s=mail; t=1694707175;
-        bh=Xy4oeT6FjD8v9CNOFPDcyJo8MblgPr/wtL46w5RATVs=;
-        h=From:Date:Subject:To:Cc:From;
-        b=g2rkURrGUFg0K+EhUVCYp685HNlgScL0D2NzEVczWqYwfzzi/rc6T5Vn9Yby0Xy7r
-         DwYlgXlIhIgLE/VU0l/udDlI59wIy+ytT6mnHylWjJAEBk4lzAjWvAfXxcnoQq13ow
-         CIw5EuBzT+MCNAHJuV7B1xBVr7WC/I4Xz7WsulX0=
-From:   =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date:   Thu, 14 Sep 2023 17:59:21 +0200
-Subject: [PATCH RFC] binfmt_elf: fully allocate bss pages
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIANgtA2UC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2MDS0MT3aTiYt3EnJz8ZN00UyPjtEQzQ3NDi2QloPqCotS0zAqwWdFKQW7
- OSrG1tQBPM4vQYAAAAA==
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>
-Cc:     Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Sebastian Ott <sebott@redhat.com>,
-        stable@vger.kernel.org,
-        =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1694707174; l=2558;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=Xy4oeT6FjD8v9CNOFPDcyJo8MblgPr/wtL46w5RATVs=;
- b=dTmJBTY1kUzVp+M5Za8hnGEaOf2h8wZGp7RZPk+6qvGpvWNyDehekRbLjiD5C3wwkK8yAX1ss
- O3djcKTCYWTBg81Hxaq4IjMd6XfZUwlec4bCQ7Bj9DnYzPrJupLCwi8
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+        with ESMTP id S241556AbjINQCe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 12:02:34 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67A42128;
+        Thu, 14 Sep 2023 09:02:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EE5C433C8;
+        Thu, 14 Sep 2023 16:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1694707332;
+        bh=9S5dEFwze1BwipEEnoaZ0WNJ8rCGVYUJxrrobpl2m2w=;
+        h=Date:To:From:Subject:From;
+        b=QfhcMFk8D6cxIKcJdEQEvZVbpb2CQ7n8MKJRDU8rlJ1ujdc3MJPtbfy1C4/UE57oX
+         JrqAePsTeBKntOAZfhcLzyYevl9MeENsSpogMqafHkaVDMUZwoSyItykJ72qhkkXDK
+         IMGDjs+jitaC30WRmCYu7zAX1UYPmEBkpRGMGQAw=
+Date:   Thu, 14 Sep 2023 09:02:11 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        songmuchun@bytedance.com, shakeelb@google.com,
+        roman.gushchin@linux.dev, mhocko@suse.com, leitao@debian.org,
+        josef@toxicpanda.com, hannes@cmpxchg.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230914160212.71EE5C433C8@smtp.kernel.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When allocating the pages for bss the start address needs to be rounded
-down instead of up.
-Otherwise the start of the bss segment may be unmapped.
 
-The was reported to happen on Aarch64:
+The patch titled
+     Subject: mm: memcontrol: fix GFP_NOFS recursion in memory.high enforcement
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement.patch
 
-Memory allocated by set_brk():
-Before: start=0x420000 end=0x420000
-After:  start=0x41f000 end=0x420000
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement.patch
 
-The triggering binary looks like this:
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-    Elf file type is EXEC (Executable file)
-    Entry point 0x400144
-    There are 4 program headers, starting at offset 64
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-    Program Headers:
-      Type           Offset             VirtAddr           PhysAddr
-                     FileSiz            MemSiz              Flags  Align
-      LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
-                     0x0000000000000178 0x0000000000000178  R E    0x10000
-      LOAD           0x000000000000ffe8 0x000000000041ffe8 0x000000000041ffe8
-                     0x0000000000000000 0x0000000000000008  RW     0x10000
-      NOTE           0x0000000000000120 0x0000000000400120 0x0000000000400120
-                     0x0000000000000024 0x0000000000000024  R      0x4
-      GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
-                     0x0000000000000000 0x0000000000000000  RW     0x10
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-     Section to Segment mapping:
-      Segment Sections...
-       00     .note.gnu.build-id .text .eh_frame
-       01     .bss
-       02     .note.gnu.build-id
-       03
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Reported-by: Sebastian Ott <sebott@redhat.com>
-Closes: https://lore.kernel.org/lkml/5d49767a-fbdc-fbe7-5fb2-d99ece3168cb@redhat.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+------------------------------------------------------
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: mm: memcontrol: fix GFP_NOFS recursion in memory.high enforcement
+Date: Thu, 14 Sep 2023 11:21:39 -0400
+
+Breno and Josef report a deadlock scenario from cgroup reclaim
+re-entering the filesystem:
+
+[  361.546690] ======================================================
+[  361.559210] WARNING: possible circular locking dependency detected
+[  361.571703] 6.5.0-0_fbk700_debug_rc0_kbuilder_13159_gbf787a128001 #1 Tainted: G S          E
+[  361.589704] ------------------------------------------------------
+[  361.602277] find/9315 is trying to acquire lock:
+[  361.611625] ffff88837ba140c0 (&delayed_node->mutex){+.+.}-{4:4}, at: __btrfs_release_delayed_node+0x68/0x4f0
+[  361.631437]
+[  361.631437] but task is already holding lock:
+[  361.643243] ffff8881765b8678 (btrfs-tree-01){++++}-{4:4}, at: btrfs_tree_read_lock+0x1e/0x40
+
+[  362.904457]  mutex_lock_nested+0x1c/0x30
+[  362.912414]  __btrfs_release_delayed_node+0x68/0x4f0
+[  362.922460]  btrfs_evict_inode+0x301/0x770
+[  362.982726]  evict+0x17c/0x380
+[  362.988944]  prune_icache_sb+0x100/0x1d0
+[  363.005559]  super_cache_scan+0x1f8/0x260
+[  363.013695]  do_shrink_slab+0x2a2/0x540
+[  363.021489]  shrink_slab_memcg+0x237/0x3d0
+[  363.050606]  shrink_slab+0xa7/0x240
+[  363.083382]  shrink_node_memcgs+0x262/0x3b0
+[  363.091870]  shrink_node+0x1a4/0x720
+[  363.099150]  shrink_zones+0x1f6/0x5d0
+[  363.148798]  do_try_to_free_pages+0x19b/0x5e0
+[  363.157633]  try_to_free_mem_cgroup_pages+0x266/0x370
+[  363.190575]  reclaim_high+0x16f/0x1f0
+[  363.208409]  mem_cgroup_handle_over_high+0x10b/0x270
+[  363.246678]  try_charge_memcg+0xaf2/0xc70
+[  363.304151]  charge_memcg+0xf0/0x350
+[  363.320070]  __mem_cgroup_charge+0x28/0x40
+[  363.328371]  __filemap_add_folio+0x870/0xd50
+[  363.371303]  filemap_add_folio+0xdd/0x310
+[  363.399696]  __filemap_get_folio+0x2fc/0x7d0
+[  363.419086]  pagecache_get_page+0xe/0x30
+[  363.427048]  alloc_extent_buffer+0x1cd/0x6a0
+[  363.435704]  read_tree_block+0x43/0xc0
+[  363.443316]  read_block_for_search+0x361/0x510
+[  363.466690]  btrfs_search_slot+0xc8c/0x1520
+
+This is caused by the mem_cgroup_handle_over_high() not respecting the
+gfp_mask of the allocation context.  We used to only call this function on
+resume to userspace, where no locks were held.  But c9afe31ec443 ("memcg:
+synchronously enforce memory.high for large overcharges") added a call
+from the allocation context without considering the gfp.
+
+Link: https://lkml.kernel.org/r/20230914152139.100822-1-hannes@cmpxchg.org
+Fixes: c9afe31ec443 ("memcg: synchronously enforce memory.high for large overcharges")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: <stable@vger.kernel.org>	[5.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-I'm not really familiar with the ELF loading process, so putting this
-out as RFC.
+ include/linux/memcontrol.h       |    4 ++--
+ include/linux/resume_user_mode.h |    2 +-
+ mm/memcontrol.c                  |    6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-A example binary compiled with aarch64-linux-gnu-gcc 13.2.0 is available
-at https://test.t-8ch.de/binfmt-bss-repro.bin
----
- fs/binfmt_elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 7b3d2d491407..4008a57d388b 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -112,7 +112,7 @@ static struct linux_binfmt elf_format = {
+--- a/include/linux/memcontrol.h~mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement
++++ a/include/linux/memcontrol.h
+@@ -920,7 +920,7 @@ unsigned long mem_cgroup_get_zone_lru_si
+ 	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
+ }
  
- static int set_brk(unsigned long start, unsigned long end, int prot)
+-void mem_cgroup_handle_over_high(void);
++void mem_cgroup_handle_over_high(gfp_t gfp_mask);
+ 
+ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
+ 
+@@ -1458,7 +1458,7 @@ static inline void mem_cgroup_unlock_pag
+ 	rcu_read_unlock();
+ }
+ 
+-static inline void mem_cgroup_handle_over_high(void)
++static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
  {
--	start = ELF_PAGEALIGN(start);
-+	start = ELF_PAGESTART(start);
- 	end = ELF_PAGEALIGN(end);
- 	if (end > start) {
- 		/*
+ }
+ 
+--- a/include/linux/resume_user_mode.h~mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement
++++ a/include/linux/resume_user_mode.h
+@@ -55,7 +55,7 @@ static inline void resume_user_mode_work
+ 	}
+ #endif
+ 
+-	mem_cgroup_handle_over_high();
++	mem_cgroup_handle_over_high(GFP_KERNEL);
+ 	blkcg_maybe_throttle_current();
+ 
+ 	rseq_handle_notify_resume(NULL, regs);
+--- a/mm/memcontrol.c~mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement
++++ a/mm/memcontrol.c
+@@ -2555,7 +2555,7 @@ static unsigned long calculate_high_dela
+  * Scheduled by try_charge() to be executed from the userland return path
+  * and reclaims memory over the high limit.
+  */
+-void mem_cgroup_handle_over_high(void)
++void mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ {
+ 	unsigned long penalty_jiffies;
+ 	unsigned long pflags;
+@@ -2583,7 +2583,7 @@ retry_reclaim:
+ 	 */
+ 	nr_reclaimed = reclaim_high(memcg,
+ 				    in_retry ? SWAP_CLUSTER_MAX : nr_pages,
+-				    GFP_KERNEL);
++				    gfp_mask);
+ 
+ 	/*
+ 	 * memory.high is breached and reclaim is unable to keep up. Throttle
+@@ -2819,7 +2819,7 @@ done_restock:
+ 	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+ 	    !(current->flags & PF_MEMALLOC) &&
+ 	    gfpflags_allow_blocking(gfp_mask)) {
+-		mem_cgroup_handle_over_high();
++		mem_cgroup_handle_over_high(gfp_mask);
+ 	}
+ 	return 0;
+ }
+_
 
----
-base-commit: aed8aee11130a954356200afa3f1b8753e8a9482
-change-id: 20230914-bss-alloc-f523fa61718c
+Patches currently in -mm which might be from hannes@cmpxchg.org are
 
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
+mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch
+mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement.patch
+mm-page_alloc-remove-pcppage-migratetype-caching.patch
+mm-page_alloc-fix-up-block-types-when-merging-compatible-blocks.patch
+mm-page_alloc-move-free-pages-when-converting-block-during-isolation.patch
+mm-page_alloc-fix-move_freepages_block-range-error.patch
+mm-page_alloc-fix-freelist-movement-during-block-conversion.patch
+mm-page_alloc-consolidate-free-page-accounting.patch
 
