@@ -2,139 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1E479FCB3
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AB1D79FCFC
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232122AbjINHDb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 03:03:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
+        id S235798AbjINHOX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 03:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233607AbjINHD3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:03:29 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A132EE4B
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:03:25 -0700 (PDT)
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3BC9D3F679
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 07:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1694675002;
-        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=WDk8FWMNg5jCyhP66uwB/GzZoWK53265q8Nh/hjEvdwTi4QTZhb/JgAi75PLin8wm
-         vzJFFV0/JfHF7m5U4DM61117z60pWT7oCKUktAFXkBdZUTAGStCOyHPDTu8uk1FQN3
-         roMJ6Aaf7TWs5BSG0zWmMRWFYhsmVNgh3EnaMefNq4OBB4R9h7MzBi9hougcLdPhI1
-         QcGTzbpSXSk92+fmLDo3ddWaDDvo1eYJ2p9KDq0Fxnadcj1dVMY0FODKE4iidExKwz
-         wFZWdm/plh+NKKbf2BSYbEGr+lqXdOgnlN9uiX8zB725I0yof9xFKOcK7OgWWiXOUv
-         oV6on9m27CVdg==
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcc2fd542bso7648671fa.3
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:03:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694675001; x=1695279801;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
-        b=XquvjIGfToI5cLSU3EkIPKBDCFwHGdXwt1W8CvBjxeswmbS//pUmP3T6ZUWkgxRRhx
-         I7oolMO51zdJC3CgDN5U/hrvxpbu9irN9iqdDKvIoIHY+rwQ1soJjDOZmGbp6xCUN2RB
-         Z7Ca/WhooDjW8sWfDMd3MrR9DJ/SnOwvtLobZR5pvZmXqVdn6YRnW99547BP6zrLhj7o
-         dTYVvB6gz/c6mdjGwb1f8tzN5LWjBy4r03WdobbimaFnGaEA2WN0OqVc+CR/RxHjYbY6
-         8hFO5/FDFy5nHe6FXeUfPOP7g/7IXAT2daP5ytJ82bAosaDh7W0gKWrZ95O7KTeux4KJ
-         kFUw==
-X-Gm-Message-State: AOJu0YwGbciOk5sWjfFtGVRJnq1wgvP2rAf+WuhlJGyqPaQmDaHkMXAo
-        yuZ/R6nXKgu1mjVLOJopxVbXa3LvN95zl14+1UgNKG6Me7AfcVjTR17UcnIIPTutRRoKlG0Zk21
-        GexG299Ie1/Y9Yid0GAdeDGjojGUkyuuVow==
-X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263139ljk.9.1694675000782;
-        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2lvudBipBhYKFL0V/AUGrG/NPYxifvLzmEnbyiurqOzZt4iA6jNQCUaoQ+l2QV7FAleBBwA==
-X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263113ljk.9.1694675000394;
-        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
-Received: from localhost ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id y14-20020a7bcd8e000000b004030e8ff964sm3981698wmj.34.2023.09.14.00.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 00:03:19 -0700 (PDT)
-From:   Juerg Haefliger <juerg.haefliger@canonical.com>
-To:     juerg.haefliger@canonical.com
-Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
-        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
-        gustavoars@kernel.org, hante.meuleman@broadcom.com,
-        hdegoede@redhat.com, keescook@chromium.org, kvalo@kernel.org,
-        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, marcan@marcan.st,
-        ryohei.kondo@cypress.com, stable@vger.kernel.org
-Subject: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with flexible arrays
-Date:   Thu, 14 Sep 2023 09:02:27 +0200
-Message-Id: <20230914070227.12028-1-juerg.haefliger@canonical.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com>
-References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
+        with ESMTP id S230141AbjINHOX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:14:23 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B34CCD;
+        Thu, 14 Sep 2023 00:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=tpyNEwfTuAdC2bVWoAh1ZSf7Py2GtvsENTWVWqeeKaU=; b=KvQ0nsXmAW6D0O1+Wxlj+piemx
+        IZf7VMClkW1PF0SNayQK5nU0tVeofjYB1OsOCEIdPY1bUGPu8BqP3PiLqeSaxeP71AZPMxcrUVR82
+        dQmJgmP1G9luTQwDaqjctpBoUE7AyLHd4qTsAVtZGZCpVrX3EwFgTgo9oVnbviCfzsvkl0NFLZl/c
+        RgRwzk+dUn9+eipb8cbq+/3ZSTqdFqbbr1AarSvvoKBX0blQktDo8v8zKjcnruPUMH7cJFYVks22h
+        8tMMjH5/jT+Q3S4CXon51eUayvjB4h6shKBGTZ9pVgn77jgua5d0skFCFsS6Aoez1C5LfPOWT9td1
+        qMvIsaqA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qggXp-007hW1-2E;
+        Thu, 14 Sep 2023 07:13:47 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id C2C9030036C; Thu, 14 Sep 2023 09:13:46 +0200 (CEST)
+Date:   Thu, 14 Sep 2023 09:13:46 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Peng Zhang <zhangpeng.00@bytedance.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH] init/main: Clear boot task idle flag
+Message-ID: <20230914071346.GA16631@noisy.programming.kicks-ass.net>
+References: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
+ <20230913135246.GH692@noisy.programming.kicks-ass.net>
+ <20230913145125.xssion4ygykunzrc@revolver>
+ <20230913161236.GI692@noisy.programming.kicks-ass.net>
+ <20230913173238.h6tj4lwsbdxcuswo@revolver>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230913173238.h6tj4lwsbdxcuswo@revolver>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-'element' and 'channel_list' will trigger warnings, so make them proper
-flexible arrays.
+On Wed, Sep 13, 2023 at 01:32:38PM -0400, Liam R. Howlett wrote:
+> * Peter Zijlstra <peterz@infradead.org> [230913 12:13]:
+> > On Wed, Sep 13, 2023 at 10:51:25AM -0400, Liam R. Howlett wrote:
+> > > * Peter Zijlstra <peterz@infradead.org> [230913 09:53]:
+> > > > On Tue, Sep 12, 2023 at 08:56:47PM -0400, Liam R. Howlett wrote:
+> > > > 
+> > > > > diff --git a/init/main.c b/init/main.c
+> > > > > index ad920fac325c..f74772acf612 100644
+> > > > > --- a/init/main.c
+> > > > > +++ b/init/main.c
+> > > > > @@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
+> > > > >  	 */
+> > > > >  	rcu_read_lock();
+> > > > >  	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
+> > > > > -	tsk->flags |= PF_NO_SETAFFINITY;
+> > > > > +	tsk->flags |= PF_NO_SETAFFINITY | PF_IDLE;
+> > > > >  	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
+> > > > >  	rcu_read_unlock();
+> > > > >  
+> > > > 
+> > > > Hmm, isn't that pid-1 you're setting PF_IDLE on?
+> > > 
+> > > Yes, thanks.  I think that is what Geert is hitting with my patch.
+> > > 
+> > > debug __might_resched() in kernel/sched/core.c is failing to return in
+> > > that first (complex) if statement.  His report says pid 1 so this is
+> > > likely the issue.
+> > > 
+> > > > 
+> > > > The task becoming idle is 'current' at this point, see the
+> > > > cpu_startup_entry() call below.
+> > > > 
+> > > > Would not something like so be the right thing?
+> > > > 
+> > > > 
+> > > > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> > > > index 2299a5cfbfb9..802551e0009b 100644
+> > > > --- a/kernel/sched/core.c
+> > > > +++ b/kernel/sched/core.c
+> > > > @@ -9269,7 +9269,7 @@ void __init init_idle(struct task_struct *idle, int cpu)
+> > > >  	 * PF_KTHREAD should already be set at this point; regardless, make it
+> > > >  	 * look like a proper per-CPU kthread.
+> > > >  	 */
+> > > > -	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
+> > > > +	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
+> > > 
+> > > I am concerned this will alter more than just the current task, which
+> > > would mean more modifications later.  There is a comment about it being
+> > > called 'more than once' and 'per cpu' so I am hesitant to change the
+> > > function itself.
+> > > 
+> > > Although I am unsure of the call path.. fork_idle() -> init_idle() I
+> > > guess?
+> > 
+> > There's only 2 ways to get into do_idle(), through cpu_startup_entry()
+> > and play_idle_precise(). The latter already frobs PF_IDLE since it is
+> > the forced idle path, this then leaves cpu_startup_entry() which is the
+> > regular idle path.
+> > 
+> > All idle threads will end up calling into it, the boot CPU through the
+> > rest_init() and the SMP cpus through arch SMP bringup.
+> > 
+> > IOW, this ensures all idle loops will have PF_IDLE set but not the
+> > pre-idle loop setup code these threads run.
+> 
+> Thanks for the information.  This does leave the init_idle() function in
+> the odd state of not setting PF_IDLE, but I guess that's okay?
 
-False positive warnings were:
-
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
-  index 1 is out of range for type '__le32 [1]'
-
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
-  index 1 is out of range for type '__le16 [1]'
-
-for these lines of code:
-
-  6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
-
-  1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
-
-Cc: stable@vger.kernel.org # 6.5+
-Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-
----
-v2:
-  - Use element[] instead of DFA() in brcmf_chanspec_list.
-  - Add Cc: stable tag
----
- .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index bece26741d3a..611d1a6aabb9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
- 				 * fixed parameter portion is assumed, otherwise
- 				 * ssid in the fixed portion is ignored
- 				 */
--	__le16 channel_list[1];	/* list of chanspecs */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack brcmf_scan_params_v2_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
- };
- 
- struct brcmf_scan_results {
-@@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
- 
- struct brcmf_chanspec_list {
- 	__le32	count;		/* # of entries */
--	__le32	element[1];	/* variable length uint32 list */
-+	__le32  element[];	/* variable length uint32 list */
- };
- 
- /*
--- 
-2.39.2
+Yep, the few things that care about PF_IDLE seem to really only care
+about do_idle() and very much not (per the rcutiny thing) any code that
+comes before it.
 
