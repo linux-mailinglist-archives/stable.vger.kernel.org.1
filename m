@@ -2,175 +2,172 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 951CE7A0641
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96FD67A06B9
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239031AbjINNkj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 09:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48536 "EHLO
+        id S239455AbjINN7v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 09:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239730AbjINNk3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:40:29 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2062.outbound.protection.outlook.com [40.107.93.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169EE26B0
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:40:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V2YWpbA3JU7fiZGNu5SitE1e8VQzwz9/579APCmwU4TADI9hXXTzaQklbfwuBhEKQd9I6piHHYTqv+iHbCJhYsqfLOZPPuoQbahyWZSbAqtscpBZd971Df5JONLfIZxk7pQBE0MPMPkjb3vFWFCkZbTer5/hgSZ4opEBVOSSk7x5NwGIq9sm2LEBsgHfXbI2mh/jWAe9k1Qtr18TlWUqkOZfOs3u5QHn8p4PShFhrGOY/wFW0vbC5sQOgp9hep9s1GW/e2vUtuFWp1xa2RnnmSMmhsTyM0a547urmfj1Jtq7/rJzj3WS4ej9GxWxJOdNLIG/z3MNeBWP+tONJSwBgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5esnbIAU1ID8ldAw3SiWhWZkP5WXwXO30oc82rBgAg0=;
- b=APRufkHLMX6hyiY7UiWxCPgjKeyu+DbYXsHz+PwIES8W0BseCaTi2pj397SI3peUf3FJ4MVMTJlqEJ2VEfZoDltX2E0zihbNc+ZS0Z6QclbQCvcyifVdx20nxmdF24y6OXJwYs2a0KCovcX7Tgf9kDcB5nrpz5mK01L9aj838yeESbKwdB91GK0AJBzqExs7zMsGd6Lyb2CHgbL4I1CULy1E1pBC/GLAlxXkImvqggRB+XEbj7vNGgT+69K8PRvSJFFfAt+gXb4Ethnm0+lBfQHybOnJZGW2XEL87zg89J2Q6yqFxBd+9alheK4fFH7MQU6FTIWa7eIa6PwYnQD+cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5esnbIAU1ID8ldAw3SiWhWZkP5WXwXO30oc82rBgAg0=;
- b=vAtfn0nR59rIrvYSpY2wLaPZiKXBI4+ZjJOk6ytmo2qP7/Nw8DPUj/VogyKAiF6jjpK4Uylo1DdOF1aA1AgUltq4amZDtDLtzPlrSelUhQ00vLTlgcvlro1a8w7DDsurnaDph5WtuQ/IZIrfJjtHz0yH1GWqB1HzeS71DdePGUw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN8PR12MB3587.namprd12.prod.outlook.com (2603:10b6:408:43::13)
- by BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Thu, 14 Sep
- 2023 13:40:07 +0000
-Received: from BN8PR12MB3587.namprd12.prod.outlook.com
- ([fe80::55cb:215b:389e:eced]) by BN8PR12MB3587.namprd12.prod.outlook.com
- ([fe80::55cb:215b:389e:eced%5]) with mapi id 15.20.6792.019; Thu, 14 Sep 2023
- 13:40:06 +0000
-Message-ID: <40c096af-6c59-ce6d-af26-5cce7bceab83@amd.com>
-Date:   Thu, 14 Sep 2023 15:39:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2] drm/amdgpu: always use legacy tlb flush on
- cyan_skilfish
-Content-Language: en-US
-To:     Lang Yu <Lang.Yu@amd.com>, amd-gfx@lists.freedesktop.org,
-        "Kuehling, Felix" <Felix.Kuehling@amd.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Yifan Zhang <yifan1.zhang@amd.com>, stable@vger.kernel.org
-References: <20230914092350.3512016-1-Lang.Yu@amd.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20230914092350.3512016-1-Lang.Yu@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0039.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::10) To BN8PR12MB3587.namprd12.prod.outlook.com
- (2603:10b6:408:43::13)
+        with ESMTP id S239407AbjINN7v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:59:51 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5397F1FC8
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:59:47 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d81a4b96a86so423778276.1
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694699986; x=1695304786; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QLk/UIhbEWHcOxkr8dOZqvdg6nN0C0eDPfAyjrTnPMc=;
+        b=LbBUX8YiRxKogPXtT1ixaB0lX1o52ymH/hbBjmi3ooD9FHzPvu0pWzSHJR3gVQO0Rw
+         O3EbVM1+xBYLcb8wJnd+VuOI8U8QGVWsFAg+0cnpQCHFY8Vm0IbTpfLEzZNFNNJI4gbY
+         435dkVPUl96vxTQCEzh/S+MosCitgsDU5mMAeTOfyRSA1FVrDZ3v17a+7ob56kxv+7wo
+         L0A1OwFRy7rfuNcDTVHaiWvnAx6xtFtK4rfrCu2FdZqIVGxVkqXJccw4FFiVEda9JlEk
+         0bvQc/q3mB5jd1OtmWTXL9t6F2TOxc04YT0pxQS9NFddFNpHnAvMxTNa6O7xMIAkHz85
+         BpdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694699986; x=1695304786;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QLk/UIhbEWHcOxkr8dOZqvdg6nN0C0eDPfAyjrTnPMc=;
+        b=ATap811xpMbD2SCsvuXZTMSb6cdnqS+V9FOHlHrhBS1pzM+dAU+9dtI0LaZ98c2buS
+         DkgjMMcbRRNC4apbazjHsvBeurrLCABRmi58VL0p7nv94ZuH1tB5PPdGR3mAMLy51iXo
+         E1+R6eey703bzMDinG8O9WvGoQ7a1vpZYFN7fXTGF9XhM4ofrZK46NmN22Xtih6ct6qp
+         6w/bgv4BZysjgwQuhVq/YuYL+F985CgxXkw2ixUgbBrWLNEyK9xrxhFpMLBEdhNpEYS5
+         QhTZM+NyohM3e8AqqQQDvDTfdnc21EECPBINDKvl4HMoV9WW4tdAhE57QkOV+HqwnZSy
+         hPbQ==
+X-Gm-Message-State: AOJu0YwMt8VOXXL0T7zvClJPTgh1787sWfDz131WctCFIDClg2nM7BBD
+        qFtedrcpDg7rUfNHmYVW35EHbjc7htORfbuN0cTpwA==
+X-Google-Smtp-Source: AGHT+IEav7dN4J1tbxq270gQr21OUdOI/OzhRL/Fj+MO9+aGIUvI0pmuomVUy01V4Pm1AgAu/Z5uFjwYOSVEBvNYfZE=
+X-Received: by 2002:a25:ad4a:0:b0:d81:b9f0:455e with SMTP id
+ l10-20020a25ad4a000000b00d81b9f0455emr163134ybe.51.1694699986474; Thu, 14 Sep
+ 2023 06:59:46 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3587:EE_|BL3PR12MB9049:EE_
-X-MS-Office365-Filtering-Correlation-Id: 851f335b-5a8e-4268-8ff8-08dbb5281b63
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5Ap5hB4dJGneVgOLRP9TVgEPHug8ttc+pe5pSzV+9MuT9Jl1+HkIe3ApNWMTYKSghMYsdG7QAlrJxWyT1DrSKe3e6LoySfI0B8pZ6tqdUPqe5qeBj8bMOE7LT51R1jfIYodZF2L4Gcrhz5yDfBxncSZwzR5VoXU7vKGwlzoGr3O/AKiSWR9IqTmjcKBwhEeSRbnXjcYahSzltgsfyBe2cx38fztKUvLD+6QWCEm9jdIrGNkHlsOyGYOB7NbxPx95BIlrQjcXi75KDX5DiUxHNImlVWOsNi6Pg4oLz/aJEdajvNOu7/ARXe+kvHIgFklyZ0TR7g2L9zcSAf5Sa0Aoa0NLxs/DLnmjbWHehl72qisStxltLzKOxavhF+rqyx7AHdMe5XJWbxdPuGnwRYT3ePKseyb7zycHMiV+ZyOXaVFKCF+iHLY5d6E9Rnbp+LvaGiiJyzgAznRbg9tG3MwHUd4D5h2FAzuBdyTRAgyKLwJTT2Kr3cQwfBodRAET8+gBM+1K0HeCjrqV67k8+ZIPwK0gKdBaqet4DTgMy4NMK94eNY9VCB2IyoGJChOZSpHrfM7+DoF3NdkfhhX7mjrcPulJ1b6+jHgpMl86PoRCa7baEGsCIqTw6f+grTbUJ4zopmeUuMczwZCTCxNHZkUg1Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3587.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(39860400002)(396003)(346002)(366004)(1800799009)(186009)(451199024)(31696002)(86362001)(5660300002)(8936002)(8676002)(4326008)(2906002)(36756003)(6506007)(6666004)(6486002)(6512007)(26005)(38100700002)(478600001)(2616005)(83380400001)(31686004)(110136005)(66946007)(66556008)(41300700001)(66476007)(54906003)(6636002)(316002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UDhLK3JPNE1QMHUvU3lLVTNVaDNrUFRkT3JqTFhCQlk4cVMyQy8wMjJ0U2tH?=
- =?utf-8?B?bDFwWkl4bTVkRm9KMWxwRUVnN25RaWowbHpDaFlxRGgwWXFOdmpwR1JsVlhW?=
- =?utf-8?B?QXBWKzRIcEtkY25SdlNZZmx6cnhUYnRqVkQvRDF2bjdSbVZaYWlCYzArdkJw?=
- =?utf-8?B?Z3VNNEFjTXRoWkh0UHc2Qnl6Q1k1L1pWblg1cFpRcmY2OTJPbW9kdFF4SzlV?=
- =?utf-8?B?bjMwb3daUWFiSTlIZGZtWVJtSm05dnlQMjVMemcvMWZwemNRa0RvQStKWTRW?=
- =?utf-8?B?MFhUb0pDcFdqMzJ3STR6a0JzTTg2Q0YzdklvTnVSYU1yVUR2TC9aNDZldkpR?=
- =?utf-8?B?RjcxanJZYTEvVGNZUGpsL0g3ek9DTUZSbHRtdWtCdllaZG0wcVJ3czgvUm0y?=
- =?utf-8?B?S0RvQXlKOE0zTTd4NFprVkk3WmxkaDRaUTFRdDNWWjJ6bVV0RnNIWExCaXdy?=
- =?utf-8?B?a1ZaWlI5WDdPWFRmL28rcDNlayt5clEzZXV6bnhpa1FPbWp4SUlLMzBiVzUw?=
- =?utf-8?B?WkxYMmNrVGNDOGNlTHl5NWE0dE9VQ0VQamlZbFBiL0R5TlZtVTg0M3M0QU95?=
- =?utf-8?B?ZmZXaW1OajU2MlRVZHBUL05pTHR1ZmtyS0pHZE1lVittK0k3eDNHVkJpZHZs?=
- =?utf-8?B?NnJrM1psQzVnMUd1SXlvTjdBdUxKVGpmMVV4RENsdm85Ulh6aXFuS3VLNUZZ?=
- =?utf-8?B?MHlkSmxUcE96VktFT013c1ZDSnhCRi9KQlF1YVROemtaL0p4L3VPY2JxRGh2?=
- =?utf-8?B?eVU3cUYyc0RrS0FlSG1aVkNtamhwWFV2azdRVjFCWDRYdjhPc1FNRE1CMSsv?=
- =?utf-8?B?enN1YkNuSWVQNDMzVnNKTytTUlNPNE5tdVZMbXVLdDFxMmJva3Q1N2FITXU2?=
- =?utf-8?B?KzFid3N1bEFhK01jWnlZcXk3T0dvektOR3R1YUFNZHRjYmRIRFBUdHFSOEZJ?=
- =?utf-8?B?RVArVmlMVmVCVEV6VGU0Ry9USkRSbEZydGdCS2tlVGZzc1dYajFCczhjaXFN?=
- =?utf-8?B?am9WRnYvbzBFRElOT3VqNzV0aXF5alZlODE2RWNJMzVCV2lqaDFzajVLMGZI?=
- =?utf-8?B?YzNFN1pPZzdWQmRmeXBDRlJmbjhjNTFHR05zaVlMUXdYOE9CYzdQdWlSUTFB?=
- =?utf-8?B?NzYyVjBFZkk5MmhxOTJOYnlHcFM4aXBraEJ2Um5mVThBRSs3c3ZOYkJ4dStq?=
- =?utf-8?B?OXB4SmRNZHNEZnQzNmRTNCtuWFFqV1YyVjhyOC81ZGRkaXROeitOcDVDVWNL?=
- =?utf-8?B?NlcyNkE1aUdKeEJDM1VDR3Fzc3ppcXdPTEVHcHZra2EzYTFUL2hMK3hNREpp?=
- =?utf-8?B?SUU4dTlSaFNORDM3L1U0QTVFWkEwMm5GN0laREt1WXdnNjk2WlJhV0Vkdm4r?=
- =?utf-8?B?dE1MOG52UDRiRXZzTTZ6d3J1ck54VmlPVTd1M2xyeEN3cldLTnpaT1MveXVa?=
- =?utf-8?B?VzNsQTRUYXRYTXFzcGtTeEs0b1FZSytyWUhBWXBudmpYK3lpUDhqV1dDWmxl?=
- =?utf-8?B?MzQ1K0JIMnMvTkdsNmV5VkYvbGc3RlMveHR5dE5iWUxtNWFjczE0Y0RqSTRQ?=
- =?utf-8?B?OXBCUS9pOTd5cG5nckoyWTZoK1hHdUp6aVpGWnptMVYvMEIvekdjVGtaM0Zr?=
- =?utf-8?B?ckdrNCtuSCtZOS9GN3lnbktHbis1alpkQTFqZ1NUVEpZTnNUYUYwZTJzK09i?=
- =?utf-8?B?U2dXcHk0dGxoOVROR3JJMm13Q2tmb1FvM29IaU1ITWlhUGRwcDg3S1RFdXhS?=
- =?utf-8?B?M0RXeFpKRWtOT0RJcTVyUGkzaE91S0VKUjdNQ1ZSZWgxK2Z2V2xzUzhIMFVJ?=
- =?utf-8?B?NDZ3aUNYTUJXb2FUSVVVM3d5RFRWT1VLb3VPdHByK3VMdnpsZjBaY1cwcHRy?=
- =?utf-8?B?eTlxSmhvL29YMmUrSEVkeTBld3VObG9MRERQQmJ4Vmg5WnRKaWpQMmd1VitJ?=
- =?utf-8?B?ZjBLbTVqVEMzY2h3NnhFUlVZeGVRZnJwajh3ZW0rU2w4ZUFJUU9EWS9ZaitN?=
- =?utf-8?B?MHZBejlhUVE3OG16QVpOZjdSQjNxRWRqNTZVRWx3blB1M29UcHVXcWpOVFI2?=
- =?utf-8?B?U0ZtQUs4NHNNdXlnYWF3bGNDV1E2NGw2Zk8zMTZZQUQ0QW5jNTFiNmdNeDVn?=
- =?utf-8?Q?7Pn3Y0dDPZea+0bwtauGAzval?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 851f335b-5a8e-4268-8ff8-08dbb5281b63
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3587.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 13:40:06.8353
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p8vbZuWixkkKMhlQV2cSER1M7LtVQDuVFAPXnoVmyQyWEGQcV8n2qjG+PoNO+FXO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB9049
+References: <20230913185735.459661-1-beanhuo@iokpp.de>
+In-Reply-To: <20230913185735.459661-1-beanhuo@iokpp.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 14 Sep 2023 15:59:10 +0200
+Message-ID: <CAPDyKFrt4r88RhCg1XigFtd8xSrLLbHeD31ZAEA0aUDkNzRxGQ@mail.gmail.com>
+Subject: Re: [PATCH v1] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
+ eMMC Q2J54A
+To:     Bean Huo <beanhuo@iokpp.de>
+Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
+        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Is a single legacy flush sufficient to emulate an heavyweight flush as well?
-
-On previous generations we needed to issue at least two legacy flushes 
-for this.
-
-And please don't push before getting an rb from Felix as well.
-
-Regards,
-Christian.
-
-
-Am 14.09.23 um 11:23 schrieb Lang Yu:
-> cyan_skilfish has problems with other flush types.
+On Wed, 13 Sept 2023 at 20:57, Bean Huo <beanhuo@iokpp.de> wrote:
 >
-> v2: fix incorrect ternary conditional operator usage.(Yifan)
+> From: Bean Huo <beanhuo@micron.com>
 >
-> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> Cc: <stable@vger.kernel.org> # v5.15+
+> Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
+> operation be allowed only after a write has occurred. Otherwise, the
+> cache flush command or subsequent commands will time out.
+
+This needs some more explanation I think. What does "after a write" really mean?
+
+According to the changes below, we are tracking only whether a write
+has been done and then we set host->card->written_flag = true - keep
+it like that forever.
+
+What happens beyond a power cycle for example? Like in the recovery
+path or in the system wide suspend/resume path? Does the flag need to
+be reset in those cases too?
+
+Kind regards
+Uffe
+
+>
+> Signed-off-by: Bean Huo <beanhuo@micron.com>
+> Cc: stable@vger.kernel.org
 > ---
->   drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
+>  drivers/mmc/core/core.c   | 6 ++++++
+>  drivers/mmc/core/mmc.c    | 5 +++++
+>  drivers/mmc/core/quirks.h | 7 ++++---
+>  include/linux/mmc/card.h  | 2 ++
+>  4 files changed, 17 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-> index d3da13f4c80e..c6d11047169a 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-> @@ -236,7 +236,8 @@ static void gmc_v10_0_flush_vm_hub(struct amdgpu_device *adev, uint32_t vmid,
->   {
->   	bool use_semaphore = gmc_v10_0_use_invalidate_semaphore(adev, vmhub);
->   	struct amdgpu_vmhub *hub = &adev->vmhub[vmhub];
-> -	u32 inv_req = hub->vmhub_funcs->get_invalidate_req(vmid, flush_type);
-> +	u32 inv_req = hub->vmhub_funcs->get_invalidate_req(vmid,
-> +		      (adev->asic_type != CHIP_CYAN_SKILLFISH) ? flush_type : 0);
->   	u32 tmp;
->   	/* Use register 17 for GART */
->   	const unsigned int eng = 17;
-> @@ -331,6 +332,8 @@ static void gmc_v10_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
->   
->   	int r;
->   
-> +	flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH) ? flush_type : 0;
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index 3d3e0ca52614..5f858eb5f62c 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -259,6 +259,12 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+>                 host->cqe_ops->cqe_off(host);
+>
+>         host->ops->request(host, mrq);
 > +
->   	/* flush hdp cache */
->   	adev->hdp.funcs->flush_hdp(adev, NULL);
->   
-> @@ -426,6 +429,8 @@ static int gmc_v10_0_flush_gpu_tlb_pasid(struct amdgpu_device *adev,
->   	struct amdgpu_ring *ring = &adev->gfx.kiq[0].ring;
->   	struct amdgpu_kiq *kiq = &adev->gfx.kiq[0];
->   
-> +	flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH) ? flush_type : 0;
+> +       if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH && !host->card->written_flag) {
+> +               if (mrq->cmd->opcode == MMC_WRITE_MULTIPLE_BLOCK ||
+> +                   mrq->cmd->opcode == MMC_WRITE_BLOCK)
+> +                       host->card->written_flag = true;
+> +       }
+>  }
+>
+>  static void mmc_mrq_pr_debug(struct mmc_host *host, struct mmc_request *mrq,
+> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> index 89cd48fcec79..a2edd065fa1b 100644
+> --- a/drivers/mmc/core/mmc.c
+> +++ b/drivers/mmc/core/mmc.c
+> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
+>         if (!oldcard)
+>                 host->card = card;
+>
+> +       card->written_flag = false;
 > +
->   	if (amdgpu_emu_mode == 0 && ring->sched.ready) {
->   		spin_lock(&adev->gfx.kiq[0].ring_lock);
->   		/* 2 dwords flush + 8 dwords fence */
-
+>         return 0;
+>
+>  free_card:
+> @@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host *host)
+>  {
+>         int err = 0;
+>
+> +       if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH && !host->card->written_flag)
+> +               return err;
+> +
+>         if (_mmc_cache_enabled(host)) {
+>                 err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
+>                                  EXT_CSD_FLUSH_CACHE, 1,
+> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+> index 32b64b564fb1..5e68c8b4cdca 100644
+> --- a/drivers/mmc/core/quirks.h
+> +++ b/drivers/mmc/core/quirks.h
+> @@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+>                   MMC_QUIRK_TRIM_BROKEN),
+>
+>         /*
+> -        * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
+> -        * support being used to offload WRITE_ZEROES.
+> +        * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
+> +        * WRITE_ZEROES offloading. It also supports caching, but the cache can
+> +        * only be flushed after a write has occurred.
+>          */
+>         MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
+> -                 MMC_QUIRK_TRIM_BROKEN),
+> +                 MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
+>
+>         /*
+>          * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
+> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+> index daa2f40d9ce6..7b12eebc5586 100644
+> --- a/include/linux/mmc/card.h
+> +++ b/include/linux/mmc/card.h
+> @@ -295,7 +295,9 @@ struct mmc_card {
+>  #define MMC_QUIRK_BROKEN_HPI   (1<<13)         /* Disable broken HPI support */
+>  #define MMC_QUIRK_BROKEN_SD_DISCARD    (1<<14) /* Disable broken SD discard support */
+>  #define MMC_QUIRK_BROKEN_SD_CACHE      (1<<15) /* Disable broken SD cache support */
+> +#define MMC_QUIRK_BROKEN_CACHE_FLUSH   (1<<16) /* Don't flush cache until the write has occurred */
+>
+> +       bool                    written_flag;   /* Indicates eMMC has been written since power on */
+>         bool                    reenable_cmdq;  /* Re-enable Command Queue */
+>
+>         unsigned int            erase_size;     /* erase size in sectors */
+> --
+> 2.34.1
+>
