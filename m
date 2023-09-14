@@ -2,238 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FCA279F98B
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 06:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F5179FC72
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231486AbjINEUu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 00:20:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44986 "EHLO
+        id S231839AbjINHAI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 03:00:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231181AbjINEUt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 00:20:49 -0400
-Received: from rcdn-iport-2.cisco.com (rcdn-iport-2.cisco.com [173.37.86.73])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625B4E69
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 21:20:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=1819; q=dns/txt; s=iport;
-  t=1694665245; x=1695874845;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=UfpRJvqs/QdrBIIbuyC+aeaWNDcg6meDfgFEQIRBTQ8=;
-  b=ZtlIZFECJ7sl7iHf7XkDybUBsT1JqapmbZITJOLnb7hzyPDV4qcysgk0
-   D2pSdS77TffsegSxVCBtEK/w6Oyyg44Fag5cOM8AgwXNNIFjQu1/Gw9Z1
-   Cro3jbE1WOEwRAo9rvLa1+TTMw2VaF9IOcNxK6QzcytH3uOasRHp5PW3W
-   U=;
-X-CSE-ConnectionGUID: Tp/OJrf/Sdy5uIDHEXDeHQ==
-X-CSE-MsgGUID: j8Rb48v/Q9ae2tFEltHRUA==
-X-IPAS-Result: =?us-ascii?q?A0AlAAC9iQJlmIENJK1aHAEBAQEBAQcBARIBAQQEAQFAJ?=
- =?us-ascii?q?YEWBwEBCwGBZFJ2AlkqEkeIHgOETl+IY5d8KIVaFIERA1YPAQEBDQEBOQsEA?=
- =?us-ascii?q?QGFBwKGdwImNAkOAQICAgEBAQEDAgMBAQEBAQEBAgEBBQEBAQIBBwQUAQEBA?=
- =?us-ascii?q?QEBAQEeGQUOECeFaAEMhhMWKAYBATcBEQEcIQFCJgEEDgUIGoJcAYJeAwEQB?=
- =?us-ascii?q?qF6AYFAAoooeIE0gQGCCQEBBgQFsmwDBoFIAYgIAYU5FoQ3JxuCDYFYgmg+a?=
- =?us-ascii?q?xoBgVwCgSsBEgEIG4QSgi6JR4VDBzKCJoM1Kol9KoEICF6Baj0CDVQLCzcmg?=
- =?us-ascii?q?RFvgVYCAhEeGxRHcRsDBwOBAhArBwQyIgYJFi0lBlEELSQJExI+BIM4CoEGP?=
- =?us-ascii?q?xEOEYJFIgIHNjYZS4JgCRUMNU52ECsEFBhsJ24fFR43ERIZDQMIdh0CESM6A?=
- =?us-ascii?q?gMFAwQ2ChUECQshBRRDA0gGTAsDAhwFAwMEgTYFDx4CEC4rAwMZUQIRFAM2A?=
- =?us-ascii?q?0QdQAMLbT0UIRQbBQSBPwWgNm6CPjaBIgIhLyGBIgEeAZNCsTcKhAsFi3uVO?=
- =?us-ascii?q?xeEAYxumHBEl2kgjUGVPoR9AgQCBAUCDgEBBoFjOmtwcBWDIhM/GQ+OIAwNC?=
- =?us-ascii?q?RaDQIUUimV2AgE4AgcLAQEDCYtIAQE?=
-IronPort-PHdr: A9a23:GnS77Rfw7KSkSyTwGmrBNCC0lGM/fYqcDmcuAtIPgrZKdOGk55v9e
- RWZ7vR2h1iPVoLeuLpIiOvT5rjpQndIoY2Av3YLbIFWWlcbhN8XkQ0tDI/NCUDyIPPwKS1vN
- M9DT1RiuXq8NBsdA97wMmXbuWb69jsOAlP6PAtxKP7yH9vRht6r1uS7+LXYYh5Dg3y2ZrYhZ
- BmzpB/a49EfmpAqar5k0wbAuHJOZ+VQyCtkJEnGmRH664b48Mto8j9bvLQq8MsobA==
-IronPort-Data: A9a23:W9IXDa5O5VswLEzpItQdIQxRtBHHchMFZxGqfqrLsTDasY5as4F+v
- mMWWm2Ea6yKamX3fYhzbom08EpV7JPQmoBkGgdr+SEyZn8b8sCt6fZ1gavT04J+CuWZESqLO
- u1HMoGowPgcFyKa/lH1dOG58RGQ7InQLpLkEunIJyttcgFtTSYlmHpLlvUw6mJSqYDR7zil5
- 5Wq+aUzBHf/g2QvajNNt/rZwP9SlK2aVA0w7wRWic9j5Dcyp1FNZLoDKKe4KWfPQ4U8NoZWk
- M6akdlVVkuAl/scIovNfoTTKyXmcZaOVeS6sUe6boD56vR0SoPe5Y5gXBYUQR8/ZzxkBLmdw
- v0V3XC7YV9B0qEhBI3xXjEAexySM5Gq95f7OT+Yk9adiHbKYibx4tlOIXEaMK0hr7Mf7WFmr
- ZT0KRgEahSFwumx2r/+G69nh98oK4/gO4Z3VnNIlG6CS614B8mYBfyQtLe03x9o7ixKNfXXf
- dYYbTNsRB/BeBZIfFwQDfrSmc/x3yWvLmIA9Qn9Sawf4TjpxlAhzv/UYdPYIMCkaMFJvnylj
- zeTl4j+KkhKaIPAodafyVq3mubFmS7TRo0fDvu7++RsjVnVwXYcYCD6TnOypf2/z0W5Qd8ae
- gof+zElqu4580nDosTBswOQnGbDmTwGVZ1rH/xn9SCh6ofkzwu5Pz1RJtJeU+AOuMgzTD0s8
- 1aGmdL1GDBi2IF5r1rAqt94ShvvZEAowX8+iTwsFlBdsoOzyG0npleeEIg/TfLdYsjdRGmY/
- tyckMQpa1z/Z+Yi06G2+zgraBrz+8CRFGbZCugrN19JAytwYIqjIoev81WevLBLLZ2SSR+Ku
- 31sdymiAAImU8rleM+lGbpl8FSVCxCta2S0bblHQ8NJythV0yT/Fb28GRknTKuTDu4KeCXyf
- GjYsh5L6ZlYMROCNPEmP9zrWpRxlvm5SLwJs8w4iPIQOvCdkyfZpElTibK4gwgBbWB1y/hkY
- MfHGSpSJS9FVv8PIMWKqxc1iO93mX9WKZL7TpHgxBPvyquFeHOQUt843KimMIgEAFe/iFyNq
- b53bpLSoz0GCbGWSneMq+Y7cwtVRUXX8Lir8aS7gMbZfFo/cIzgYteMqY4cl3tNxPoIyb6Zr
- yjjASe1CjPX3BX6FOlDUVg6AJvHVpdkpnV9NispVWtEEVB6PO5DMI93m0MLQIQa
-IronPort-HdrOrdr: A9a23:Utjjq6CdV0gm30blHejlsseALOsnbusQ8zAXPh9KOH9om52j9/
- xGws576fatskdvZJhBo7y90KnpewKkyXcH2/huAV7EZnirhILIFvAu0WKG+UyDJ8SQzJ8h6U
- 4NSdkYNDSSNyk0sS+Z2njFLz9I+rDum87Y4Ja7854Hd3ATV0gU1XYCNu/tKDwMeOApP+teKL
- OsouB8i36Lf3MRYs6nBn8DcdTiirTw/q7OUFotPTJizBOBow+JxdfBfiRw2C1wbxp/hZMZtU
- TVmQ3w4auu99uhzAXH6mPV55NK3PP819pqHqW3+4koAwSprjztSJVqWrWEsjxwivqo8kwWnN
- 7FpAplF9hv6knWYnq+rXLWqkndOXcVmjzfIG2j8D7eSP/CNXYH4g169MVkmy7imggdVRdHoe
- R2NiyixsNq5Fj77VXADpDzJmFXfwyP0DQfeSp5tQ0FbWPYA4Uh9bA37QdbFowNEzn9751iGO
- 5yDNvE7PITal+CaWvF11MfiOBEc05DaCtueHJy8/C9wnxThjR03kEYzMsQkjMJ8488UYBN46
- DBPr5znL9DQ8cKZeYlbd1xC/efGyjIW1bBIWiSKVPoGOUOPG/MsYf+5PEw6PuxcJIFwZMukN
- DKUU9et2Q1Z0XyYPf+l6Fj41TIWiGwTD7twsZR69xwvaD9XqPiNWmZRFUng6Kb0oIi6w3gKo
- KO0b5tcorexDHVaPV0NiXFKutvFUU=
-X-Talos-CUID: 9a23:nP/XjWPDadzjRu5DZDEg02wOFIcefmyA0Vb8A2KIJWtJcejA
-X-Talos-MUID: =?us-ascii?q?9a23=3Any4LTg26Umc6C4/yTifynRBEADUj4fSUAhxdj9I?=
- =?us-ascii?q?/6sCJbzBeFjOBrA6Ka9py?=
-X-IronPort-Anti-Spam-Filtered: true
-Received: from alln-core-9.cisco.com ([173.36.13.129])
-  by rcdn-iport-2.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 04:20:26 +0000
-Received: from alln-opgw-1.cisco.com (alln-opgw-1.cisco.com [173.37.147.229])
-        by alln-core-9.cisco.com (8.15.2/8.15.2) with ESMTPS id 38E4KQS8019485
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 04:20:26 GMT
-X-CSE-ConnectionGUID: zvQyuugOQO2xQOrQK+7DeQ==
-X-CSE-MsgGUID: D/VALttGRwycxb/U8TaVZA==
-Authentication-Results: alln-opgw-1.cisco.com; dkim=pass (signature verified) header.i=@cisco.com; spf=Pass smtp.mailfrom=kartilak@cisco.com; dmarc=pass (p=quarantine dis=none) d=cisco.com
-X-IronPort-AV: E=Sophos;i="6.02,144,1688428800"; 
-   d="scan'208";a="1477043"
-Received: from mail-bn8nam12lp2175.outbound.protection.outlook.com (HELO NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.175])
-  by alln-opgw-1.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 04:20:26 +0000
+        with ESMTP id S229460AbjINHAH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:00:07 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2049.outbound.protection.outlook.com [40.107.93.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E8FCD8
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:00:02 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BB4KXNuCegW03m5wlffyW7P4ps3QxArH/+Ce5ru66TyOCy6kEQU5nfwpE5FpVzQNOFfRSq2uPwLXdlkRVmtmlFfrsTUhpRxqMqe9oBHY6uwClo/wnsHjWMIg6qsYh+oFEX4CTHmPtuLfenrcerEjSyw4LmdlxkBHh8CT0KtXfHhU5ctTBsdTQBPqFWHJfjJEBhmmO8VEv5ERmeSB8+7/g7iYIlGOq4nWz1SdhIY8fS3PM3Rv3l2+wZMmWb7G6PN+LePK/R21HG/KAs6JLaeKccMWXIouy/b13Ro4LiUJ68gzRB+9PBnmBZ8kMJBzQnwCIluEagYqP2lCvOdBOhzGoA==
+ b=buYX6QWfkuVzdXcPm73iPjNNR27m3ADlNuAYxbFDr7vUSfHPpjYHyqM8d3aeRaDwuLFTPyxUqyKQLiZZEVd97I9zyvBZnOZfTJUaOwUeaYcc/YduemPtDIp24yqsFMRMjCujs82iYQphCOeQoUj0DXjV7eo2p1t15aQhAgsur7bVMOibjoPUIkTRn+M6v/osgKrTwyZ3Sxzi2RzxgrZNuLh2bts3XEYcFEOKivsA/UUrAAuGtrqjbqqyZsmgomFqw+L8dNVqDe+7eT7XFHbKxba9YC7D8VJL4gQgU//+XLQZBUn60ADlqH6dvirNSs2wbt2WSucraVwIyHxdKRQ8fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c+E06CTrqMLewEinkfTKC9SRzbZSPrnKnL8dGK925GM=;
- b=SlEdq3DKmI+KxDbU7YnM2D6Q+wndUyB3iQ57111TZq3Zulo+YkdgETCDTDCnHQwFV01WRFUbo2vVWeRTuU25T/upE3VRT0IgW0yN2noFKs40DxQgf9zxTXq5XrW6PqX9m2v0ih+QXM8LzFZszPyj4j/avcEWQMnrcQwixbuxnF64CvQGpqFY51IJjt7bpmt1VHZ9kQ0GZdI4QpjdGxQMuvKidzcrEHbVBgYChuBr+rxp7/5ZCs4xLiDzGZ5XOq4hcWRVK7x9mMXXCfI2jp9cPqgYkhGN5HVVMF+y2sUGXITnmj9SSaS3QM2ZMCL32S/UGDK9DSVvY8y/kRM3xS2zLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
- dkim=pass header.d=cisco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.com;
- s=selector1;
+ bh=q6onXFTNkr4j82FH66/cjprmjkY/Zola5dfjGL+BtM4=;
+ b=VrBMtYNpC7NK86K0BBKn8U7HSArs4gBjTEtifm92UO4ECVRuiDSMw6vs7k4LtC3TPy9wl3NA4bq3Zw64hoTKZDpn0OGgydysjEad9RDj7NWBhMDTrPAkbS8IT8taF4ZQekFF2WNrJw2VHphx1JymSqLxIN7XykewluNJCBJ+VUQmGO2HioWe66wApZ0g2j9YTd+r6Qo9yV733eV5C5HViE4NnoXhnMt5P+j07YCnEMqTnh6xOF2GqWMHFqogLD3VmfmX+a5jZITZcCLxk9jJ14QPKBG7BAcZlQpeIA8Wxg9i7tFxTJDXlmdir0GcaDc1AOjtvchIMNuZqSWRZk+N/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c+E06CTrqMLewEinkfTKC9SRzbZSPrnKnL8dGK925GM=;
- b=gftP/wwzHBtzQmX2hulWlpQUKRYvfeSf1HOcVE+yPdCcNZCshSMcyn0/Tcd8iTEqMxz3NygYyV4cmMtw1QKPcgG+HdPiwaV6V6ILvafsyxXyP9bBF0gpm+1R+fKirQQiRJvWpczEZ22bv+1l/U32kEVxzwwB7U0MRhigEPRlZFo=
-Received: from SJ0PR11MB5896.namprd11.prod.outlook.com (2603:10b6:a03:42c::19)
- by PH0PR11MB5580.namprd11.prod.outlook.com (2603:10b6:510:e5::10) with
+ bh=q6onXFTNkr4j82FH66/cjprmjkY/Zola5dfjGL+BtM4=;
+ b=ezcQP5tMiRS2UarhcLT73yqKlbDh8yF2r/fhqZ8meWUeEHSKFhYY91feZVCHCS1DvveBkoCwNUCevSFlyVs9ICLR+86jKe8Jb3tdOkJPfi0syhmzijPB4bSoBupAHfZlVb1GGLtMB0vKK44vvqdPreuMGSytCBRP0UTBf6ubI8U=
+Received: from SA1P222CA0194.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c4::19)
+ by SJ0PR12MB6967.namprd12.prod.outlook.com (2603:10b6:a03:44b::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.38; Thu, 14 Sep
- 2023 04:20:24 +0000
-Received: from SJ0PR11MB5896.namprd11.prod.outlook.com
- ([fe80::4877:8f0b:4cfc:d4f8]) by SJ0PR11MB5896.namprd11.prod.outlook.com
- ([fe80::4877:8f0b:4cfc:d4f8%3]) with mapi id 15.20.6792.019; Thu, 14 Sep 2023
- 04:20:24 +0000
-From:   "Karan Tilak Kumar (kartilak)" <kartilak@cisco.com>
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     "Arulprabhu Ponnusamy (arulponn)" <arulponn@cisco.com>,
-        "Sesidhar Baddela (sebaddel)" <sebaddel@cisco.com>,
-        "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-Subject: Request to backport commit id:
- 15924b0503630016dee4dbb945a8df4df659070b to 6.5/scsi-fixes
-Thread-Topic: Request to backport commit id:
- 15924b0503630016dee4dbb945a8df4df659070b to 6.5/scsi-fixes
-Thread-Index: AdnmwqZNdeSFb8WnQiCx9WZDyFMKyQ==
-Date:   Thu, 14 Sep 2023 04:20:24 +0000
-Message-ID: <SJ0PR11MB58965FCA74A2B0DD13E965A8C3F7A@SJ0PR11MB5896.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB5896:EE_|PH0PR11MB5580:EE_
-x-ms-office365-filtering-correlation-id: 2dec8e84-45b4-4c5b-76df-08dbb4d9eac7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Nb9xZ4FCk3WexZqWS6lZwmZs+5WZMf+k5yG2lRmdqiuIXebNWQcfQGskDVuDduf9CifwoV7z9AUxG6rG4gdDwmYlv58NzPvqQWCINBY9Bm7n/EoxXdnBVf20iozYHcZcjSS4ytzNlsCtspO741yvZnXUnEP+1BRzWduECj79O+EjQJbLVVkZqxURyEc/GARt10lWY7frDmPME/1Lq6TRJgKF6OnR/yrxueegkwTPaEJU2emGc5OsLGx27fXXWvEKfCSXGzDV3xJiwJ4P875Z+AERkhsuwmCtdT3yOVbKUd6G9ArKPn22TlA1dBCVG4RZw0ETKdyYmALqvB52SqhXOl98+ysabiSOk3g/D++RuM1jZTelj3TJztOUpNMhzeA7SY6zBEUoFraW+c17S1A3IaFkwyOeKlA0g0AMiXeNrUpB4gFy6oK+lckPAc2xEvVkqxRXFrOOSg1jzEA7JpZJVuTofajCoV2BlXueqwgzFKUDSkIGrMVtlcSf47eTSDtV+eM+KSh5Pvwt+dgGQ4nJz+PEoujdtYrBa9gVv1O8eyC1Mna91wQtOr4gpiYUBGrkuMeZLgLoDkaIFgTv3UbVVTBWXpKpxWcbNWx4aj1VDZ4=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5896.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(39860400002)(376002)(366004)(136003)(451199024)(1800799009)(186009)(38070700005)(38100700002)(122000001)(33656002)(55016003)(86362001)(66946007)(7696005)(478600001)(5660300002)(6506007)(66476007)(8676002)(54906003)(66556008)(8936002)(66446008)(64756008)(52536014)(71200400001)(2906002)(4326008)(76116006)(966005)(83380400001)(9686003)(41300700001)(6916009)(316002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?V90vZT1PGSRpeZvsQIbM4U8b4cIVpIFrbr2zj0q85/o+AoELNtYAn1LFTPi1?=
- =?us-ascii?Q?uhcQoY41QDiZGXajAeBAFvixUmmlv+DR7xdZZLpMt98kuEWfpTSaFP6X5GHF?=
- =?us-ascii?Q?ux8Fg/3/o1JhCXv3ZvgwumGmOPBMsLRMByLEoN4znhRqSpOzo+mlyimATTME?=
- =?us-ascii?Q?/yEomEAhDHtoQ56hqPgJH/6Z6UzURwHFiLI4Zl9wrg+SaCoLOFsmXHHBzghp?=
- =?us-ascii?Q?yk/pMP3aQ7+1F20ZGxHeww+VHQ6GOQnnECLmGvipJL30NYa6wUpLl7SVqr5H?=
- =?us-ascii?Q?IUUZyH5WGHGnKEZnhOso/2uZTHXfX/aqqDDoR2DVhBHG8wsRxlOdHX/gge+X?=
- =?us-ascii?Q?jqMYr4vBAti2H7COhhFBh7y8dlLbtw7ijRZmrUY4PInH+Zhqn9yowamDml+6?=
- =?us-ascii?Q?TdG9zqHZvg/NhILj9IRurDDCGEOcYm02p1FLhLxeyOxyu2C2vMpkc+ZkGx6g?=
- =?us-ascii?Q?5zPjnKEaA44SS0GlxoiJHVacGSGZAAspSqd4QE+nmwcCHuMJBCFi9oaYib7b?=
- =?us-ascii?Q?bdmopaYI8dFdKUkKLYCnGzCAOY2KOG7nqP9Lp7s7SwACb2kCjqcZS2JWbK3p?=
- =?us-ascii?Q?P/Zpk5YA3BeCquCJ6PPUs75KcWPWJiLkfgrdnig+iwJTqrabLa0DW/Odb8mr?=
- =?us-ascii?Q?r1uEkqIgP1BRhsRpMgzxep/0cSs43iVJX/SqcYzNWOAsx2y0mViCpoARM+7J?=
- =?us-ascii?Q?d2Dnqk7A/yyANwyRe/sgxxIDCFL7vixiWBtYxLcsXHAkLrGoSv0m9PkN4mou?=
- =?us-ascii?Q?UdVRwMntqnc9s306CvCaHGsrcYjGMN9zezmZg1PxB+LIYPTMCZQdXNuq47HV?=
- =?us-ascii?Q?rBAV5tq9rgX9j63ukwv7ygs1CphPdnTslY6JBt2qGJmUDFKwyPsEa+F/Xn9F?=
- =?us-ascii?Q?rvV83dLGLAHCwuSMwUSmAf5tuCaNh46sfSPBPwOSk3cpGtAMvGzvnyts0gJp?=
- =?us-ascii?Q?LMDndHD00uLjuAPusIf1StERO5B7rmu39+M/no5Yg44+ErMWzwYckV+d0qZC?=
- =?us-ascii?Q?kvlagDM++js6gos8uZGMXQOGcgLpH0MjBPMhPFIoQFC8ifqAleV+8k0WkE57?=
- =?us-ascii?Q?PsM4W/Q+eNplWju3H7E4fS2mDnEgiNl+YLxjvp+XSEt3yNIZeU7OJ2K5XsFI?=
- =?us-ascii?Q?E1h4ChrOQfUmDHRw6JgtqX8vuG7SDjVkiaXFfUU1htdS6iya8dI85yvwDmy/?=
- =?us-ascii?Q?NMChgAQDYphS6++jA2Bfg+OewnpRO2wlmzFXwdslKdFBCRh6uEDHrOrd8i/q?=
- =?us-ascii?Q?rFEK9CAbQtauOMV+8DNDX8j5XMpDMN/T+m3wMukjgmXViK8SjYyWl8qLmWU/?=
- =?us-ascii?Q?dj6Qdf7ECBell7MKEfqtB6E4fipzfoA5njEO8iAGRKS7rh8LRiCNOPPLzybE?=
- =?us-ascii?Q?YmcP4dGYhrF30hCyWFmd1DXzzVIV716MID20oHW2Qxo/lEXvbWCoNatOC48z?=
- =?us-ascii?Q?p/7BYpGaCpXbF6fU8rYQAZknikDnKw7Rtrdhrk1LssMVrK1n5wo5+IfT1XLO?=
- =?us-ascii?Q?hyzbZbnpKJpX5OcvRs5o4I/gMu4D1fRPVYkkY7jqBDUfjeWNxQsqk9NwOgHh?=
- =?us-ascii?Q?hzk8ZvVGYOPzq7G3UCikLHRhlwioXrdG7wRWICqgY3Y7LW5Ec12IGY56AZOA?=
- =?us-ascii?Q?vzAK4M4ZgqY26fBia4UJxedQtBi0dvKNqCD/TdzholVr?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.19; Thu, 14 Sep
+ 2023 07:00:00 +0000
+Received: from SN1PEPF00026369.namprd02.prod.outlook.com
+ (2603:10b6:806:3c4:cafe::10) by SA1P222CA0194.outlook.office365.com
+ (2603:10b6:806:3c4::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20 via Frontend
+ Transport; Thu, 14 Sep 2023 07:00:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF00026369.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6792.19 via Frontend Transport; Thu, 14 Sep 2023 07:00:00 +0000
+Received: from lang-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 14 Sep
+ 2023 01:59:58 -0500
+From:   Lang Yu <Lang.Yu@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>
+CC:     Alex Deucher <alexander.deucher@amd.com>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Lang Yu <Lang.Yu@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH] drm/amdgpu: always use legacy tlb flush on cyan_skilfish
+Date:   Thu, 14 Sep 2023 14:59:45 +0800
+Message-ID: <20230914065945.3508261-1-Lang.Yu@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-OriginatorOrg: cisco.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5896.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2dec8e84-45b4-4c5b-76df-08dbb4d9eac7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2023 04:20:24.2584
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00026369:EE_|SJ0PR12MB6967:EE_
+X-MS-Office365-Filtering-Correlation-Id: 035e957d-f7a7-4a31-3aac-08dbb4f03683
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VxhtB3DKR0ufsrfeY2+EEvbXs94y+MVEeWaH/wAcupy7oWoaAUmosifIpe9q+ceKRDz603tQrTa2dOPa25IQkYONm9Ho1e6/YGTYUtB6TLbRdvVZbdMQaMyKN6iE87tvQYQV6uiTvAmDYo2iX/YMALYoAs1/YDWtEmDAAc7lbz4M6xRBWX8XozQXTwGBnrJpZufoWGq3mFS79IPa8aJA5yPN9I8xbOUTDmeo0dukoVy/a/MMYIl7Wyxx/VhdQlOr1Z6J51PgDSTNzxTQ4ddv861L1d3+Fu5y+0PYHSZ2H7DF97rmhVncr10lzbAp7NEoeuior7G/D3ZmPkqr7/6y4MW7BuYAYCzph5yXhE/7SdeKdgU/3lCkvm3uajOuFdfS5Yi4tigFSaNGdge3AOLc9o3DAJzXw2Xx6HTsHGeXCd702SObbs0QU/co2L3jsFBBYJ78TyDAOTkXj1VH2rRMtIdJ9s4RNuLIAluUNfiAEjrx9QvRa2zwzP+BHXAu7vc0hs80cjgF+vAbMFZSFIfgvFrElsqdDgimvCcysugH9S1qYx5Ksy4iPFT0KrRJc93utPkAEGWguYlY0+J+3PIvbSHk8VgqxxzBnTgnMVIlucAcT8ohLwfdJfI7SlBAp5tT+lv2AuHlOTV5kle81XDohJPwL0MtTsivdCaTDmqFsPUxuFn+C2mcoeB6v2XfPu23gUMBvWeA26s5cAHYSxSw/7zNbOASA07i92t+risT06F2nySmql0oC4C84AGpZbPFQHiL4h6RPi3sEj1kSDK8vA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(376002)(396003)(136003)(82310400011)(1800799009)(186009)(451199024)(40470700004)(46966006)(36840700001)(40460700003)(70206006)(336012)(26005)(83380400001)(2616005)(16526019)(1076003)(426003)(47076005)(6916009)(36860700001)(41300700001)(316002)(70586007)(5660300002)(8936002)(8676002)(7696005)(54906003)(2906002)(478600001)(6666004)(4326008)(40480700001)(86362001)(81166007)(36756003)(356005)(82740400003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 07:00:00.2152
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gZo4V7VN6qNPwUWaA9q6CePfs3c3dSU6MXxSzmveUUGvoeBKwRVQM1fooisCA6mjOqCIGArvGUGzuK2nZdnpGg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5580
-X-Outbound-SMTP-Client: 173.37.147.229, alln-opgw-1.cisco.com
-X-Outbound-Node: alln-core-9.cisco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 035e957d-f7a7-4a31-3aac-08dbb4f03683
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF00026369.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6967
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-(Re-sending email since the previous email was undeliverable due to HTML co=
-ntent)
+cyan_skilfish has problems with other flush types.
 
-Hi Team,
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Cc: <stable@vger.kernel.org> # v5.15+
+---
+ drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-This is a request to backport the following fix to 6.5/scsi-fixes. This was=
- merged into Linus' tree.=20
-
-This fix fixes a crash due to a null pointer exception when a lun reset is =
-issued from sgreset for a lun.=20
-With this fix, there is no longer a crash.
-
-I have another fix, which I have tested, dependent on this fix. It is curre=
-ntly in the pipeline.
-I'll send out a patch for that fix when the internal review is complete.
-
-Please let me know if you need any more information to backport this fix.
-
-commit 15924b0503630016dee4dbb945a8df4df659070b
-Author: Karan Tilak Kumar kartilak@cisco.com
-Date:   Thu Aug 17 11:21:46 2023 -0700
-
-    scsi: fnic: Replace sgreset tag with max_tag_id
-
-    sgreset is issued with a SCSI command pointer. The device reset code
-    assumes that it was issued on a hardware queue, and calls block multiqu=
-eue
-    layer. However, the assumption is broken, and there is no hardware queu=
-e
-    associated with the sgreset, and this leads to a crash due to a null
-    pointer exception.
-
-    Fix the code to use the max_tag_id as a tag which does not overlap with=
- the
-    other tags issued by mid layer.
-
-    Tested by running FC traffic for a few minutes, and by issuing sgreset =
-on
-    the device in parallel.  Without the fix, the crash is observed right a=
-way.
-    With this fix, no crash is observed.
-
-    Reviewed-by: Sesidhar Baddela sebaddel@cisco.com
-    Tested-by: Karan Tilak Kumar kartilak@cisco.com
-    Signed-off-by: Karan Tilak Kumar kartilak@cisco.com
-    Link: https://lore.kernel.org/r/20230817182146.229059-1-kartilak@cisco.=
-com
-    Signed-off-by: Martin K. Petersen martin.petersen@oracle.com
-
-
-Thanks,
-Karan
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+index d3da13f4c80e..27504ac21653 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+@@ -236,7 +236,8 @@ static void gmc_v10_0_flush_vm_hub(struct amdgpu_device *adev, uint32_t vmid,
+ {
+ 	bool use_semaphore = gmc_v10_0_use_invalidate_semaphore(adev, vmhub);
+ 	struct amdgpu_vmhub *hub = &adev->vmhub[vmhub];
+-	u32 inv_req = hub->vmhub_funcs->get_invalidate_req(vmid, flush_type);
++	u32 inv_req = hub->vmhub_funcs->get_invalidate_req(vmid,
++		      (adev->asic_type != CHIP_CYAN_SKILLFISH) ? flush_type : 0);
+ 	u32 tmp;
+ 	/* Use register 17 for GART */
+ 	const unsigned int eng = 17;
+@@ -331,6 +332,8 @@ static void gmc_v10_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
+ 
+ 	int r;
+ 
++	flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH) ? : 0;
++
+ 	/* flush hdp cache */
+ 	adev->hdp.funcs->flush_hdp(adev, NULL);
+ 
+@@ -426,6 +429,8 @@ static int gmc_v10_0_flush_gpu_tlb_pasid(struct amdgpu_device *adev,
+ 	struct amdgpu_ring *ring = &adev->gfx.kiq[0].ring;
+ 	struct amdgpu_kiq *kiq = &adev->gfx.kiq[0];
+ 
++	flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH) ? : 0;
++
+ 	if (amdgpu_emu_mode == 0 && ring->sched.ready) {
+ 		spin_lock(&adev->gfx.kiq[0].ring_lock);
+ 		/* 2 dwords flush + 8 dwords fence */
+-- 
+2.25.1
 
