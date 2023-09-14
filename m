@@ -2,82 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D09BD7A00A1
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 11:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 615C27A00B0
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 11:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235292AbjINJqp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 05:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57724 "EHLO
+        id S237518AbjINJst (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 05:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237761AbjINJq0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 05:46:26 -0400
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 907201FC6;
-        Thu, 14 Sep 2023 02:46:20 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id B0F9F1864859;
-        Thu, 14 Sep 2023 12:46:16 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 21PzqHuNWfIK; Thu, 14 Sep 2023 12:46:16 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 6A54A186337A;
-        Thu, 14 Sep 2023 12:46:16 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Bf6bOSsUcO7o; Thu, 14 Sep 2023 12:46:16 +0300 (MSK)
-Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.13.132])
-        by mail.astralinux.ru (Postfix) with ESMTPSA id 34B591864965;
-        Thu, 14 Sep 2023 12:46:15 +0300 (MSK)
-From:   Anastasia Belova <abelova@astralinux.ru>
-To:     Chris Mason <clm@fb.com>
-Cc:     Anastasia Belova <abelova@astralinux.ru>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Dennis Zhou <dennis@kernel.org>, linux-btrfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 5.10] btrfs: fix region size in count_bitmap_extents
-Date:   Thu, 14 Sep 2023 12:45:55 +0300
-Message-Id: <20230914094555.25657-1-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S231668AbjINJss (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 05:48:48 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F69E3
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 02:48:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694684924; x=1726220924;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=4p3zvVbNlEdTy4rKe0/r+q90zwKbdyf+gPaB+VColSI=;
+  b=UNG5xAt9DUC2TZHa9S+hX1+k4AvUg8bF000BRPEyYZYtj1fANURr2tsS
+   Baq3Su7AI3GRNVjUOEfmyCZ9d8QtkfaPUSnmz/yT6lA9A17jIoKD12ZVQ
+   YWmCUvBI4GZjvIlcukwLFkZmROVvLlTVuQFJnPQPqAmZdHBJtXPUh4Jz+
+   n0lXhVVPqsIe5ZRCm/xcM6J/HC4nDhkz3+Ipu2y/3bbQDwdpEN8f3qQnr
+   aKp539dG6jHNAUWST3xMeZHEzEKQBXDXrGJIcETregVD6wmMSzu1ZshGI
+   oPGygv6hbDhuBv/FQzmpTJPOVufn+BZs2gSV1alAPb+Q0UOHa89DRg0+m
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381591157"
+X-IronPort-AV: E=Sophos;i="6.02,145,1688454000"; 
+   d="scan'208";a="381591157"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 02:48:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="721185753"
+X-IronPort-AV: E=Sophos;i="6.02,145,1688454000"; 
+   d="scan'208";a="721185753"
+Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 14 Sep 2023 02:48:43 -0700
+Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qgixl-0001Sh-0y;
+        Thu, 14 Sep 2023 09:48:41 +0000
+Date:   Thu, 14 Sep 2023 17:47:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Anastasia Belova <abelova@astralinux.ru>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 5.10] btrfs: fix region size in count_bitmap_extents
+Message-ID: <ZQLWykRVfQf/0jxh@6fe19fc45f19>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230914094555.25657-1-abelova@astralinux.ru>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-count_bitmap_extents was deleted in version 5.11, but
-there is possible mistake in versions 5.6-5.10.
+Hi,
 
-Region size should be calculated by subtracting
-the end from the beginning.
+Thanks for your patch.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: dfb79ddb130e ("btrfs: track discardable extents for async discard"=
-)
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
- fs/btrfs/free-space-cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-3
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 4989c60b1df9..a34e266a0969 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -1930,7 +1930,7 @@ static int count_bitmap_extents(struct btrfs_free_s=
-pace_ctl *ctl,
-=20
- 	bitmap_for_each_set_region(bitmap_info->bitmap, rs, re, 0,
- 				   BITS_PER_BITMAP) {
--		bytes -=3D (rs - re) * ctl->unit;
-+		bytes -=3D (re - rs) * ctl->unit;
- 		count++;
-=20
- 		if (!bytes)
---=20
-2.30.2
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 5.10] btrfs: fix region size in count_bitmap_extents
+Link: https://lore.kernel.org/stable/20230914094555.25657-1-abelova%40astralinux.ru
+
+Please ignore this mail if the patch is not relevant for upstream.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
