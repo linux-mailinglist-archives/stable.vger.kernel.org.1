@@ -2,135 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB1D79FCFC
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3478179FD0E
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235798AbjINHOX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 03:14:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
+        id S230120AbjINHQ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 03:16:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230141AbjINHOX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:14:23 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B34CCD;
-        Thu, 14 Sep 2023 00:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=tpyNEwfTuAdC2bVWoAh1ZSf7Py2GtvsENTWVWqeeKaU=; b=KvQ0nsXmAW6D0O1+Wxlj+piemx
-        IZf7VMClkW1PF0SNayQK5nU0tVeofjYB1OsOCEIdPY1bUGPu8BqP3PiLqeSaxeP71AZPMxcrUVR82
-        dQmJgmP1G9luTQwDaqjctpBoUE7AyLHd4qTsAVtZGZCpVrX3EwFgTgo9oVnbviCfzsvkl0NFLZl/c
-        RgRwzk+dUn9+eipb8cbq+/3ZSTqdFqbbr1AarSvvoKBX0blQktDo8v8zKjcnruPUMH7cJFYVks22h
-        8tMMjH5/jT+Q3S4CXon51eUayvjB4h6shKBGTZ9pVgn77jgua5d0skFCFsS6Aoez1C5LfPOWT9td1
-        qMvIsaqA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qggXp-007hW1-2E;
-        Thu, 14 Sep 2023 07:13:47 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id C2C9030036C; Thu, 14 Sep 2023 09:13:46 +0200 (CEST)
-Date:   Thu, 14 Sep 2023 09:13:46 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Peng Zhang <zhangpeng.00@bytedance.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH] init/main: Clear boot task idle flag
-Message-ID: <20230914071346.GA16631@noisy.programming.kicks-ass.net>
-References: <20230913005647.1534747-1-Liam.Howlett@oracle.com>
- <20230913135246.GH692@noisy.programming.kicks-ass.net>
- <20230913145125.xssion4ygykunzrc@revolver>
- <20230913161236.GI692@noisy.programming.kicks-ass.net>
- <20230913173238.h6tj4lwsbdxcuswo@revolver>
+        with ESMTP id S231857AbjINHQ5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:16:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4390CCE5
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:16:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694675764;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=eC3Q4tzSYTsbLn58OTI918IEI3Pmjt2ebY6pz298m/8=;
+        b=OYdcSxpGdzHZkypaZKMxt5jIPYVhFVLHxQ/RdMk3PP80yf+nikmWoVynQnseRXjXx8SX3Z
+        dj9ltr/oKp1yOriIjvwNnRxrywuui9eFgVOaP+MdvT1z2hXbq4ycSUdNefFHyo6N2/kwUJ
+        swnI11Xv0p0MuwImgJS9sR8IJ9tzkN8=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660-fTg-F0WANpiCkyS_Yh0iog-1; Thu, 14 Sep 2023 03:16:02 -0400
+X-MC-Unique: fTg-F0WANpiCkyS_Yh0iog-1
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3ab7fb11711so956460b6e.2
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:16:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694675762; x=1695280562;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eC3Q4tzSYTsbLn58OTI918IEI3Pmjt2ebY6pz298m/8=;
+        b=mz7GyUh5N6h9wXYzn+rYkT5y+MVHBKaceDaIxw/9YaPoTxyRr4J6D+9jEItwdRhwO7
+         8BDzlVO6xqLObdK5GdtbdRgIg4L+EQ8yWYeb6yIbLmxN+YmtRP6Z5HHuJxCvFCV6nrh+
+         vOroShk1Qe1cXCD996RQBgFPZfG66Y9dxRGDX/PiQOIbc1nKpwZH0VHTmANRm4x7KCma
+         SfwXJpoaJY2MGsMHErmihi7+sCAWXSyW51LK2I1gCjHJgJ7jEo+Gth7YP8I6jopUZgWc
+         TICryvZTAIXZ/MctYNsdj4YFggWmi1nyIC75TP1UNUdbYLR4NX/xAy3IrlDVUANCH+U5
+         8oHQ==
+X-Gm-Message-State: AOJu0YzqqJAvQPdGwwXBkXh/K+/aV1Bx260rxJ3y1eF0VnGobjaX5pFS
+        hlNYwsw7pCFS31C0PT/Yg7xS+v77VmjwQ+kMad/0GEOysD8AtBXXiVn/71c6YswE9ap3UgPytBD
+        0/s/8rGpXXMX+1fcQ
+X-Received: by 2002:a05:6808:23c9:b0:3a8:4903:5688 with SMTP id bq9-20020a05680823c900b003a849035688mr5939018oib.34.1694675762029;
+        Thu, 14 Sep 2023 00:16:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1dHblLDCutO1e4SrBBOXVzPFTKh/pwI1PBXkNsyUyD3N+1Zj3QTMPNbg93xvLyuk+507vxw==
+X-Received: by 2002:a05:6808:23c9:b0:3a8:4903:5688 with SMTP id bq9-20020a05680823c900b003a849035688mr5939012oib.34.1694675761799;
+        Thu, 14 Sep 2023 00:16:01 -0700 (PDT)
+Received: from redhat.com ([2804:1b3:a803:4ff9:7c29:fe41:6aa7:43df])
+        by smtp.gmail.com with ESMTPSA id t25-20020a9d66d9000000b006b9a98b9659sm423555otm.19.2023.09.14.00.15.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Sep 2023 00:16:01 -0700 (PDT)
+Date:   Thu, 14 Sep 2023 04:15:54 -0300
+From:   Leonardo Bras <leobras@redhat.com>
+To:     Tyler Stachecki <stachecki.tyler@gmail.com>
+Cc:     kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
+        dgilbert@redhat.com, tglx@linutronix.de, mingo@redhat.com,
+        dave.hansen@linux.intel.com, bp@alien8.de,
+        Tyler Stachecki <tstachecki@bloomberg.net>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] x86/kvm: Account for fpstate->user_xfeatures changes
+Message-ID: <ZQKzKkDEsY1n9dB1@redhat.com>
+References: <20230914010003.358162-1-tstachecki@bloomberg.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230913173238.h6tj4lwsbdxcuswo@revolver>
+In-Reply-To: <20230914010003.358162-1-tstachecki@bloomberg.net>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 01:32:38PM -0400, Liam R. Howlett wrote:
-> * Peter Zijlstra <peterz@infradead.org> [230913 12:13]:
-> > On Wed, Sep 13, 2023 at 10:51:25AM -0400, Liam R. Howlett wrote:
-> > > * Peter Zijlstra <peterz@infradead.org> [230913 09:53]:
-> > > > On Tue, Sep 12, 2023 at 08:56:47PM -0400, Liam R. Howlett wrote:
-> > > > 
-> > > > > diff --git a/init/main.c b/init/main.c
-> > > > > index ad920fac325c..f74772acf612 100644
-> > > > > --- a/init/main.c
-> > > > > +++ b/init/main.c
-> > > > > @@ -696,7 +696,7 @@ noinline void __ref __noreturn rest_init(void)
-> > > > >  	 */
-> > > > >  	rcu_read_lock();
-> > > > >  	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
-> > > > > -	tsk->flags |= PF_NO_SETAFFINITY;
-> > > > > +	tsk->flags |= PF_NO_SETAFFINITY | PF_IDLE;
-> > > > >  	set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
-> > > > >  	rcu_read_unlock();
-> > > > >  
-> > > > 
-> > > > Hmm, isn't that pid-1 you're setting PF_IDLE on?
-> > > 
-> > > Yes, thanks.  I think that is what Geert is hitting with my patch.
-> > > 
-> > > debug __might_resched() in kernel/sched/core.c is failing to return in
-> > > that first (complex) if statement.  His report says pid 1 so this is
-> > > likely the issue.
-> > > 
-> > > > 
-> > > > The task becoming idle is 'current' at this point, see the
-> > > > cpu_startup_entry() call below.
-> > > > 
-> > > > Would not something like so be the right thing?
-> > > > 
-> > > > 
-> > > > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> > > > index 2299a5cfbfb9..802551e0009b 100644
-> > > > --- a/kernel/sched/core.c
-> > > > +++ b/kernel/sched/core.c
-> > > > @@ -9269,7 +9269,7 @@ void __init init_idle(struct task_struct *idle, int cpu)
-> > > >  	 * PF_KTHREAD should already be set at this point; regardless, make it
-> > > >  	 * look like a proper per-CPU kthread.
-> > > >  	 */
-> > > > -	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
-> > > > +	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
-> > > 
-> > > I am concerned this will alter more than just the current task, which
-> > > would mean more modifications later.  There is a comment about it being
-> > > called 'more than once' and 'per cpu' so I am hesitant to change the
-> > > function itself.
-> > > 
-> > > Although I am unsure of the call path.. fork_idle() -> init_idle() I
-> > > guess?
-> > 
-> > There's only 2 ways to get into do_idle(), through cpu_startup_entry()
-> > and play_idle_precise(). The latter already frobs PF_IDLE since it is
-> > the forced idle path, this then leaves cpu_startup_entry() which is the
-> > regular idle path.
-> > 
-> > All idle threads will end up calling into it, the boot CPU through the
-> > rest_init() and the SMP cpus through arch SMP bringup.
-> > 
-> > IOW, this ensures all idle loops will have PF_IDLE set but not the
-> > pre-idle loop setup code these threads run.
+On Wed, Sep 13, 2023 at 09:00:03PM -0400, Tyler Stachecki wrote:
+> Live-migrations under qemu result in guest corruption when
+> the following three conditions are all met:
 > 
-> Thanks for the information.  This does leave the init_idle() function in
-> the odd state of not setting PF_IDLE, but I guess that's okay?
+>   * The source host CPU has capabilities that itself
+>     extend that of the guest CPU fpstate->user_xfeatures
+> 
+>   * The source kernel emits guest_fpu->user_xfeatures
+>     with respect to the host CPU (i.e. it *does not* have
+>     the "Fixes:" commit)
+> 
+>   * The destination kernel enforces that the xfeatures
+>     in the buffer given to KVM_SET_IOCTL are compatible
+>     with the guest CPU (i.e., it *does* have the "Fixes:"
+>     commit)
+> 
+> When these conditions are met, the semantical changes to
+> fpstate->user_features trigger a subtle bug in qemu that
+> results in qemu failing to put the XSAVE architectural
+> state into KVM.
+> 
+> qemu then both ceases to put the remaining (non-XSAVE) x86
+> architectural state into KVM and makes the fateful mistake
+> of resuming the guest anyways. This usually results in
+> immediate guest corruption, silent or not.
+> 
+> Due to the grave nature of this qemu bug, attempt to
+> retain behavior of old kernels by clamping the xfeatures
+> specified in the buffer given to KVM_SET_IOCTL such that
+> it aligns with the guests fpstate->user_xfeatures instead
+> of returning an error.
 
-Yep, the few things that care about PF_IDLE seem to really only care
-about do_idle() and very much not (per the rcutiny thing) any code that
-comes before it.
+So, IIUC, the xfeatures from the source guest will be different than the 
+xfeatures of the target (destination) guest. Is that correct?
+
+It does not seem right to me. I mean, from the guest viewpoint, some 
+features will simply vanish during execution, and this could lead to major 
+issues in the guest.
+
+The idea here is that if the target (destination) host can't provide those 
+features for the guest, then migration should fail.
+
+I mean, qemu should fail the migration, and that's correct behavior.
+Is it what is happening?
+
+Regards,
+Leo
+
+> 
+> Fixes: ad856280ddea ("x86/kvm/fpu: Limit guest user_xfeatures to supported bits of XCR0")
+> Cc: stable@vger.kernel.org
+> Cc: Leonardo Bras <leobras@redhat.com>
+> Signed-off-by: Tyler Stachecki <tstachecki@bloomberg.net>
+> ---
+>  arch/x86/kvm/x86.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 6c9c81e82e65..baad160b592f 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5407,11 +5407,21 @@ static void kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
+>  static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+>  					struct kvm_xsave *guest_xsave)
+>  {
+> +	union fpregs_state *ustate = (union fpregs_state *) guest_xsave->region;
+> +	u64 user_xfeatures = vcpu->arch.guest_fpu.fpstate->user_xfeatures;
+> +
+>  	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
+>  		return 0;
+>  
+> -	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
+> -					      guest_xsave->region,
+> +	/*
+> +	 * In previous kernels, kvm_arch_vcpu_create() set the guest's fpstate
+> +	 * based on what the host CPU supported. Recent kernels changed this
+> +	 * and only accept ustate containing xfeatures that the guest CPU is
+> +	 * capable of supporting.
+> +	 */
+> +	ustate->xsave.header.xfeatures &= user_xfeatures;
+> +
+> +	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu, ustate,
+>  					      kvm_caps.supported_xcr0,
+>  					      &vcpu->arch.pkru);
+>  }
+> -- 
+> 2.30.2
+> 
 
