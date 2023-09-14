@@ -2,70 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 952497A03E5
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 14:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EA567A04C8
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236188AbjINMbn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 08:31:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56710 "EHLO
+        id S233970AbjINNDW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 09:03:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230120AbjINMbm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 08:31:42 -0400
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0BA1FC8
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 05:31:37 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id EA6D8186555D;
-        Thu, 14 Sep 2023 15:31:34 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id LjUIgLVK1RQt; Thu, 14 Sep 2023 15:31:34 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 11BDE1863792;
-        Thu, 14 Sep 2023 15:31:34 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id zZDO0oB3hcqP; Thu, 14 Sep 2023 15:31:33 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.177.181.102])
-        by mail.astralinux.ru (Postfix) with ESMTPS id 8C73E186378A;
-        Thu, 14 Sep 2023 15:31:33 +0300 (MSK)
-Received: from [10.177.13.132] (unknown [10.177.13.132])
-        by new-mail.astralinux.ru (Postfix) with ESMTPA id 4RmcBX6Xd5zlVsN;
-        Thu, 14 Sep 2023 15:31:32 +0300 (MSK)
-Message-ID: <7526ff3d-0b89-1e3a-12c6-8b64b7705705@astralinux.ru>
-Date:   Thu, 14 Sep 2023 15:30:57 +0300
+        with ESMTP id S238444AbjINNDV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:03:21 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D59D1FD0
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:17 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d7e387c33f3so979831276.1
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694696597; x=1695301397; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aCsgoVc5MdDS0OEMSd5NVyJPQJml3xjCRjHmB8pQyQU=;
+        b=UmE2vFAwharNvYSJfAL72mxudS2a4wmMf/TkC49VsGZd89aOhrQvypUzbF7VHtx+5a
+         YC0BViG1cIGoWdpq0Wk1WSpeJL+12Xh2uJyvSYm4SC027sk8+3R+pbPXDyFh0sgVh+zq
+         +toHzyaCDhS2DVcf+VzvePK3BfVZmovOBVq2KdwMDfy5PAWy12EcC9/a0poZjYvQyi/L
+         CNS44n8C13mCfK+ICsZayqr9N842nE3AoEGju5c4BBD/ulhQAdP6J0AO99JNrOrCt24I
+         Ayvd+SP0ciP7DovwVIQLwsp++nn1D6dz0sQPsuh3QoBcK5aT0bUCOLTT6cWsXl9M78IH
+         b8MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694696597; x=1695301397;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aCsgoVc5MdDS0OEMSd5NVyJPQJml3xjCRjHmB8pQyQU=;
+        b=d7nJjYuYWf6VdV7H7r/bmMS2uV4Ja+lut4YxZuoi29B165ZWPC/Qt1u9zd20GsnyGa
+         4G/oCaUjRTReQeSWuyrLUCV5laqDnrboNoAnxB2y7j1JqrEYzoBC7/xGNTkqPuVQ28QD
+         Jh6H6rsbv+sPeY0ifdYen211aQ1z6nEyKPp3lmEO3ZeUxdr3qbrEpDqegwdOJ+QWGi3P
+         wxp+uSVPNhNp/gTWw/Y9KtWKByZyoU04Fnokd5BnwlP7KX81oJZ1pY3D2x3XYzE+X7xY
+         NAK+8V1roojK5c1+Ta1Dazks5FsYuvaQhOffTkSRoiMfvxpmdRZvsYuYyl8mVVHAfmBy
+         WSug==
+X-Gm-Message-State: AOJu0Yz2DWKVi6/S6ndA9Yey5eBinHm+P5979+dqT8mHI9/RhhiFvgtR
+        ZBgNyjthoFXReUvvnPcV9rs3179Pj48rTKbmoGsJlQ==
+X-Google-Smtp-Source: AGHT+IHtq67DZntMzVUKa/tcZfvAY9V5Pu2y+pL8a0RH0Ax2Jq7NeiRTvdNMEGDNeImVEaPGukeWC05mKHKjfg4DqmE=
+X-Received: by 2002:a5b:449:0:b0:d54:b34c:1c7b with SMTP id
+ s9-20020a5b0449000000b00d54b34c1c7bmr4766279ybp.59.1694696596656; Thu, 14 Sep
+ 2023 06:03:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: RuPost Desktop
-Subject: Re: [PATCH 5.10] btrfs: fix region size in count_bitmap_extents
-To:     kernel test robot <lkp@intel.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-References: <ZQLWykRVfQf/0jxh@6fe19fc45f19>
-Content-Language: ru
-From:   =?UTF-8?B?0JDQvdCw0YHRgtCw0YHQuNGPINCb0Y7QsdC40LzQvtCy0LA=?= 
-        <abelova@astralinux.ru>
-In-Reply-To: <ZQLWykRVfQf/0jxh@6fe19fc45f19>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230825135503.282135-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230825135503.282135-1-krzysztof.kozlowski@linaro.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 14 Sep 2023 15:02:40 +0200
+Message-ID: <CAPDyKFpZnoVnZt-WN_5YdqesoT_Xcbs56tJunwS5oNZSJySxgg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: mmc: sdhci-msm: correct minimum number
+ of clocks
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-14/09/23 12:47, kernel test:
-> Hi,
+On Fri, 25 Aug 2023 at 15:55, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 >
-> Thanks for your patch.
+> In the TXT binding before conversion, the "xo" clock was listed as
+> optional.  Conversion kept it optional in "clock-names", but not in
+> "clocks".  This fixes dbts_check warnings like:
 >
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+>   qcom-sdx65-mtp.dtb: mmc@8804000: clocks: [[13, 59], [13, 58]] is too short
 >
-> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-3
->
-> Rule: The upstream commit ID must be specified with a separate line above the commit text.
-> Subject: [PATCH 5.10] btrfs: fix region size in count_bitmap_extents
-> Link: https://lore.kernel.org/stable/20230914094555.25657-1-abelova%40astralinux.ru
->
-> Please ignore this mail if the patch is not relevant for upstream.
-Right, this patch can not be applied to upstream because this part of 
-code was deleted in version 5.11.
-However there is still a possible typo.
+> Cc: <stable@vger.kernel.org>
+> Fixes: a45537723f4b ("dt-bindings: mmc: sdhci-msm: Convert bindings to yaml")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+Applied for fixes, thanks!
+
+Kind regards
+Uffe
+
+
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> index 80141eb7fc6b..10f34aa8ba8a 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> @@ -69,7 +69,7 @@ properties:
+>      maxItems: 4
+>
+>    clocks:
+> -    minItems: 3
+> +    minItems: 2
+>      items:
+>        - description: Main peripheral bus clock, PCLK/HCLK - AHB Bus clock
+>        - description: SDC MMC clock, MCLK
+> --
+> 2.34.1
+>
