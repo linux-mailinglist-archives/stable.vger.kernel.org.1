@@ -2,60 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 210457A0532
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FB27A055E
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:19:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238667AbjINNNi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 09:13:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
+        id S238993AbjINNTW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 09:19:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238623AbjINNNh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:13:37 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E111A5;
-        Thu, 14 Sep 2023 06:13:33 -0700 (PDT)
+        with ESMTP id S239050AbjINNST (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:18:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D29210D
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:18:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694697213; x=1726233213;
+  t=1694697495; x=1726233495;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=7XDGJ0Ht6oXKb4r3a9CM/U+PgCZCGhp2zPWfhO1jsQk=;
-  b=j6J0doqN7lPllJRVcBw/dc6idl1a2xJ+DnZpbsJvCkKCd59Rwxj+1ZUg
-   bVz5l2Ex7YeGsg0Ts4yRokrGKIRhZwf9Fp81S/CnpOOw7Cu14OwtdvG9A
-   7SdtkzIJKle1rodaDCM+1rcxw8WeGlG/4ARi0MZ5w0gTp+Avyv+nc2Qyj
-   Ym/LMszqCfErlBJGBb7x1EkjdLw0UO1EPoO6B3HYdPR/zvdp1r23zOnfd
-   IipUJLck8TtzxlcOuZZT//Q7PJImlPecGCH29tN8AZBkbrWP1cD7ymNLh
-   7b2Ybycj0LxWiQWhlVZRek+zXoPjaKXf2sosgktsrrtWv5fGGwSRkrBmE
+  bh=CyfAwXIGzlI10RnfLvRO0I9qqTFdV9kGEZ5Hpj5bsLA=;
+  b=JXy4yHb7Gwj81jIp2flEN/wkU0mLIXPH8swfiKLIVf2EzOHegN2D8O9d
+   b/OH5zroeyMX+YAq2wTB1jGNw381xOlfKZMklVig8eQjAFtJGE0RGcLb5
+   1PGjiFhPXYuJb9wnutzV6TaPTsYPxTeotGxvIBpBrWNeogyT484U/jwSs
+   ljl+gEkkYNeBht6To86Wq7RxwZLDR7s5M1HXS2Y47SZtIdSsqgfTtpm1R
+   T7pqYBWb5xOVJRIATohmbDoZZt2WJzJw+ZPsRIS4JTYM3NoNMvOSfHZq4
+   35lQcQlMuDT6WZIyQ7nkYubCwxiE149Q0CYMFeUuARYznXMmEZXVSSqLS
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="376281301"
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="442977291"
 X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
-   d="scan'208";a="376281301"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 06:11:07 -0700
+   d="scan'208";a="442977291"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 06:12:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="887801992"
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="918246568"
 X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
-   d="scan'208";a="887801992"
+   d="scan'208";a="918246568"
 Received: from jnikula-mobl4.fi.intel.com (HELO localhost) ([10.237.66.162])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 06:10:31 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 06:12:08 -0700
 From:   Jani Nikula <jani.nikula@intel.com>
 To:     dri-devel@lists.freedesktop.org
-Cc:     jani.nikula@intel.com,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        Guillaume Ranquet <granquet@baylibre.com>,
-        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback error path
-Date:   Thu, 14 Sep 2023 16:10:58 +0300
-Message-Id: <20230914131058.2472260-1-jani.nikula@intel.com>
+Cc:     jani.nikula@intel.com, Paul Cercueil <paul@crapouillou.net>,
+        Robert Foss <robert.foss@linaro.org>,
+        Phong LE <ple@baylibre.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] drm: bridge: it66121: ->get_edid callback must not return err pointers
+Date:   Thu, 14 Sep 2023 16:11:59 +0300
+Message-Id: <20230914131159.2472513-1-jani.nikula@intel.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
@@ -64,42 +61,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Setting new_edid to NULL leaks the buffer.
+The drm stack does not expect error valued pointers for EDID anywhere.
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-Cc: Guillaume Ranquet <granquet@baylibre.com>
-Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Cc: CK Hu <ck.hu@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v6.1+
+Fixes: e66856508746 ("drm: bridge: it66121: Set DDC preamble only once before reading EDID")
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: Robert Foss <robert.foss@linaro.org>
+Cc: Phong LE <ple@baylibre.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Robert Foss <rfoss@kernel.org>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Jonas Karlman <jonas@kwiboo.se>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: <stable@vger.kernel.org> # v6.3+
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
 ---
 
 UNTESTED
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/ite-it66121.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 2cb47f663756..8fc6eff68e30 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2049,6 +2049,7 @@ static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
- 	 */
- 	if (mtk_dp_parse_capabilities(mtk_dp)) {
- 		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
-+		kfree(new_edid);
- 		new_edid = NULL;
+diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
+index 3c9b42c9d2ee..1cf3fb1f13dc 100644
+--- a/drivers/gpu/drm/bridge/ite-it66121.c
++++ b/drivers/gpu/drm/bridge/ite-it66121.c
+@@ -884,14 +884,14 @@ static struct edid *it66121_bridge_get_edid(struct drm_bridge *bridge,
+ 	mutex_lock(&ctx->lock);
+ 	ret = it66121_preamble_ddc(ctx);
+ 	if (ret) {
+-		edid = ERR_PTR(ret);
++		edid = NULL;
+ 		goto out_unlock;
+ 	}
+ 
+ 	ret = regmap_write(ctx->regmap, IT66121_DDC_HEADER_REG,
+ 			   IT66121_DDC_HEADER_EDID);
+ 	if (ret) {
+-		edid = ERR_PTR(ret);
++		edid = NULL;
+ 		goto out_unlock;
  	}
  
 -- 
