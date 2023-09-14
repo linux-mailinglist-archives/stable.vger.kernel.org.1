@@ -2,62 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4164F7A08F0
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 17:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187737A09C9
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 17:53:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239524AbjINPVK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 11:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47250 "EHLO
+        id S241065AbjINPxc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 11:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240687AbjINPVJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 11:21:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76AC3C1
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 08:21:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6972C433C7;
-        Thu, 14 Sep 2023 15:21:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694704865;
-        bh=QGHJ2MNASWncSpG/BYyl2uUv2mHWKg/N0FO6GxQIbhU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IV6B23whsnV+DoLjsUOgS5+7KaxKB643M5/We8Sha1Dshz1aABavs6gQdzm7pfC7U
-         SAwK/Y6ZBnaNTHiSA+CT2TEUgGChj/tVoTkUOvCud8ORvz7eksrBmUVv7GGi/cVAUD
-         5m6No5RLICrBZ4egNPdSMMOFf9uxYSAq9EBoYm7YkrCIdfgSNxMtUVGbWKfNoYIUaw
-         ov///X6EcBX5uT8EuzVdGyGRNIAFhj3MR/dgibx4c38Or73BuaC5IQ1u9nkSIBa7c1
-         j/H2kOkghuFMkQ2PdDRN1QABJ/IMy7QBXwCuREuz1LRXTxnz2QRuFeOhwZ5UPjSeeS
-         M1laz2o1+H4YQ==
-Date:   Thu, 14 Sep 2023 08:21:03 -0700
-From:   Keith Busch <kbusch@kernel.org>
-To:     Keith Busch <kbusch@meta.com>
-Cc:     linux-nvme@lists.infradead.org, hch@lst.de,
-        =?iso-8859-1?Q?Cl=E1udio?= Sampaio <patola@gmail.com>,
-        Felix Yan <felixonmars@archlinux.org>,
-        Sagi Grimberg <sagi@grimberg.me>, stable@vger.kernel.org
-Subject: Re: [PATCHv2] nvme: avoid bogus CRTO values
-Message-ID: <ZQMk38DogqopZLeo@kbusch-mbp>
-References: <20230913202810.2631288-1-kbusch@meta.com>
+        with ESMTP id S241019AbjINPxb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 11:53:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0191BDD;
+        Thu, 14 Sep 2023 08:53:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694706807; x=1726242807;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+Iq4mvDCPkc5NX/TTMSnD5WIVQgpzL/9/gki1RmIoCo=;
+  b=kv/Om4kGfPmxvQO5jd41RRf6lnzI/h9NFFeFRjJDR+zeub7wy/2MIDSN
+   zKHQ3lnuSEJljkPWWbbvtFW8QWRRKOt3gfohTDDnqWlXhU9SPhP0c7FJp
+   FiE+rzIVs7zTsLxfxjZE3NHDm/NCaOcKHISX22Ftj/3dp+/Rhi2PO8doB
+   8FfF7SsZHYTy/xCnIWcclpjKfXaccQohCJvO7tP57Ts1NGvZ2fmRE+a0a
+   4QijMe2SHedzU9AzvoPON3VjP+6vfaq2oH5+eeF5ut0PWm2YTy11LjDdV
+   IQWXLPtdVe0zZZPimEDnHnxZRR62LiuK0xJXUcqLk83bMczITJ5tK3h0G
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="382809810"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="382809810"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 08:53:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="991445022"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="991445022"
+Received: from jnikula-mobl4.fi.intel.com (HELO localhost) ([10.237.66.162])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 08:53:23 -0700
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     Jani Nikula <jani.nikula@intel.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Guillaume Ranquet <granquet@baylibre.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+        linux-mediatek@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+Subject: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback audio detection
+Date:   Thu, 14 Sep 2023 18:53:17 +0300
+Message-Id: <20230914155317.2511876-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230914131058.2472260-1-jani.nikula@intel.com>
+References: <20230914131058.2472260-1-jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230913202810.2631288-1-kbusch@meta.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 01:28:10PM -0700, Keith Busch wrote:
-> From: Keith Busch <kbusch@kernel.org>
-> 
-> Some devices are reporting Controller Ready Modes Supported, but return
-> 0 for CRTO. These devices require a much higher time to ready than that,
-> so they are failing to initialize after the driver started preferring
-> that value over CAP.TO.
-> 
-> The spec requires CAP.TO match the appropritate CRTO value, or be set to
-> 0xff if CRTO is larger than that. This means that CAP.TO can be used to
-> validate if CRTO is reliable, and provides an appropriate fallback for
-> setting the timeout value if not. Use whichever is larger.
+The sads returned by drm_edid_to_sad() needs to be freed.
 
-I need to send a pull request out today since we're quite a bit behind
-as it is. I've applied this for nvme-6.6 now since it fixes a regression
-that apparently quite a few people are encountering. If there are any
-objections, please let me know by EOD and I'll remove it from the queue.
+Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
+Cc: Guillaume Ranquet <granquet@baylibre.com>
+Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+---
+
+Found another one. UNTESTED.
+---
+ drivers/gpu/drm/mediatek/mtk_dp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index 8fc6eff68e30..0e285df6577e 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2034,7 +2034,6 @@ static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+ 	bool enabled = mtk_dp->enabled;
+ 	struct edid *new_edid = NULL;
+ 	struct mtk_dp_audio_cfg *audio_caps = &mtk_dp->info.audio_cur_cfg;
+-	struct cea_sad *sads;
+ 
+ 	if (!enabled) {
+ 		drm_atomic_bridge_chain_pre_enable(bridge, connector->state->state);
+@@ -2054,7 +2053,11 @@ static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+ 	}
+ 
+ 	if (new_edid) {
++		struct cea_sad *sads;
++
+ 		audio_caps->sad_count = drm_edid_to_sad(new_edid, &sads);
++		kfree(sads);
++
+ 		audio_caps->detect_monitor = drm_detect_monitor_audio(new_edid);
+ 	}
+ 
+-- 
+2.39.2
+
