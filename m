@@ -2,193 +2,221 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0E37A1091
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 00:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B327A10D5
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 00:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbjINWJo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 18:09:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
+        id S229582AbjINWTA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 18:19:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjINWJn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 18:09:43 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C01270C
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 15:09:39 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d815a5eee40so1442397276.2
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 15:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694729379; x=1695334179; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=97JhCG6zT6B7+SMugkJ45haE3nskGaAz9YD6QLxdNWA=;
-        b=zwB2xIEQDSN8CjpndNUnoA7xo3SMnHBbeYp4W/AvH5szeU5tj4Azz3ca8269glqJ/R
-         sC4DEOFUSrhq8FaWA7oe+cAK1ANpxtKTCV7BrQr9bJxzjKYBrRcBVgTzA3viycvFuHJF
-         9eGpAZyM2hgsUSrsNFaPZgQUZSKECjy7aVHz03V3asFd/z2WuTv+X6nLDzWewT5DLD2G
-         sx7MWdlSb3mg0iLWT4zLujyDUxBLeGFo9mJ/Yns0o3fYQPYu05UjeJurBTdUjiUEtQvh
-         5zELfUaYTssSfApYXdctMbrB4qaFkkKuNzwONunyty5y5gvSIbkdkUv+h7tBwfau9pR3
-         WpUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694729379; x=1695334179;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=97JhCG6zT6B7+SMugkJ45haE3nskGaAz9YD6QLxdNWA=;
-        b=RvwGx2W6FbV5huIQhKwmJrXljenL1+RehyCTU8yV9N92BgT3yU6ZqCVj34w8LCXetH
-         O4eHcc3Y9ZLZ8mdUck3L1RMDTZoOsqvZNB3TTaFQ++Gpp34ChScSUq5xVjdvGPEcTbP3
-         6Wpuzh3cdDqDWFdi/6gcFuP+0Ym08P1MClIW1e/wyVGOhTQoXhmxUBRN/eefLrC21GHQ
-         M3QIIYBBKAtB3qvsH8onQIpdjXMJsCJmepSFYLo8YOLzw2oeU8AowtEhaWNnvZynx/sf
-         uNRoFIvca0qQVzoxmunACDW8qYuCDEqiY3e3gA0dcQywKbKFbJV7smm0PzCC9aEAQY1i
-         sS0w==
-X-Gm-Message-State: AOJu0YyzbjA6HO3zk+ra/ei1Zbac61MMrNgDa+vDgyZTivknyWpLwuUQ
-        V8mbiWj1vF3cvWPMSSHelnls/4RzRq/+kE9VVyKwMA==
-X-Google-Smtp-Source: AGHT+IEcbGqOpg5LJtzsNrqES8vQmdyxgmljQj8ZCrKtPz48cJO0h9zvdtNGsftBR/rQAtaxzYM27BNlLXN/d+TnDFQ=
-X-Received: by 2002:a25:9d04:0:b0:d78:48b0:21d2 with SMTP id
- i4-20020a259d04000000b00d7848b021d2mr5894012ybp.3.1694729378893; Thu, 14 Sep
- 2023 15:09:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230914202749.470100-1-beanhuo@iokpp.de>
-In-Reply-To: <20230914202749.470100-1-beanhuo@iokpp.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 15 Sep 2023 00:09:02 +0200
-Message-ID: <CAPDyKFruYooG4yQ4yqrwEcrvy4xe6hYByF2Q57eQ1g0tiUtcug@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
- eMMC Q2J54A
-To:     Bean Huo <beanhuo@iokpp.de>
-Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
-        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S229931AbjINWS7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 18:18:59 -0400
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DC2270C;
+        Thu, 14 Sep 2023 15:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+        s=mail; t=1694729933;
+        bh=ieuN4WSdOASjW7MZ8fQhKTc4SOBYccYW/PVLNRhj/Fg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hauFyTQ4E7g6eXOFjEGMXUugXelOejX8zOEc4aH3EtYsQhWnuxL6f4h5//V5qxFIj
+         k65ZspkDzckwSREnCWmmgkSXq7GFYSn9WUETOX1B3XMTORZ2HtJJ8p0DlDsG04CNVW
+         R0Oi5GNm1GsFogs1IcEixwTvcFrgI5ygGf5y+QFo=
+Date:   Fri, 15 Sep 2023 00:18:52 +0200
+From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Sebastian Ott <sebott@redhat.com>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH RFC] binfmt_elf: fully allocate bss pages
+Message-ID: <987fb5f4-416f-482a-9564-b12f7423e19a@t-8ch.de>
+References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
+ <87fs3gwn53.fsf@email.froward.int.ebiederm.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87fs3gwn53.fsf@email.froward.int.ebiederm.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 14 Sept 2023 at 22:28, Bean Huo <beanhuo@iokpp.de> wrote:
->
-> From: Bean Huo <beanhuo@micron.com>
->
-> Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
-> operation be allowed only after a write has occurred. Otherwise, the
-> cache flush command or subsequent commands will time out.
+On 2023-09-14 14:49:44-0500, Eric W. Biederman wrote:
+> Thomas Weißschuh <linux@weissschuh.net> writes:
+> 
+> > When allocating the pages for bss the start address needs to be rounded
+> > down instead of up.
+> > Otherwise the start of the bss segment may be unmapped.
+> >
+> > The was reported to happen on Aarch64:
+> 
+> Those program headers you quote look corrupt.
 
-For my information, more exactly, how can we trigger this problem?
+To reproduce:
 
->
-> Signed-off-by: Bean Huo <beanhuo@micron.com>
-> Co-developed-by: Rafael Beims <rafael.beims@toradex.com>
-> Tested-by: Rafael Beims <rafael.beims@toradex.com>
-> Cc: stable@vger.kernel.org
-> ---
-> Changelog:
->
-> v1--v2:
->     1. Add Rafael's test-tag, and Co-developed-by.
->     2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
->
-> ---
->  drivers/mmc/core/core.c   | 7 +++++++
->  drivers/mmc/core/mmc.c    | 5 +++++
->  drivers/mmc/core/quirks.h | 7 ++++---
->  include/linux/mmc/card.h  | 2 ++
->  4 files changed, 18 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> index 3d3e0ca52614..86a669b35b91 100644
-> --- a/drivers/mmc/core/core.c
-> +++ b/drivers/mmc/core/core.c
-> @@ -259,6 +259,13 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
->                 host->cqe_ops->cqe_off(host);
->
->         host->ops->request(host, mrq);
-> +
-> +       if (host->card && host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH &&
-> +           !host->card->written_flag) {
-> +               if (mrq->cmd->opcode == MMC_WRITE_MULTIPLE_BLOCK ||
-> +                   mrq->cmd->opcode == MMC_WRITE_BLOCK)
-> +                       host->card->written_flag = true;
-> +       }
+$ cat test.c
+char foo[1];
 
-I don't quite like that we are adding the above code here - as it's
-used for *all* requests.
+void __attribute__((weak, noreturn, optimize("Os", "omit-frame-pointer"))) _start(void)
+{
+	__asm__ volatile (
+		"mov x0, 123\n"
+		"mov x8, 93\n"       /* NR_exit == 93 */
+		"svc #0\n"
+	);
+	__builtin_unreachable();
+}
 
-Seems like the flag is better set from the mmc block device driver
-instead. Somewhere in the path when we serve I/O write requests.
+$ aarch64-linux-gnu-gcc -fno-stack-protector -o nolibc-test -nostdlib -static test.c
 
->  }
->
->  static void mmc_mrq_pr_debug(struct mmc_host *host, struct mmc_request *mrq,
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> index 89cd48fcec79..a2edd065fa1b 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
->         if (!oldcard)
->                 host->card = card;
->
-> +       card->written_flag = false;
-> +
+Note:
+it works in qemu-user, newer versions need the workaround from
+https://gitlab.com/qemu-project/qemu/-/issues/1854
+The issue in qemu-user seems to be related to the question at hand.
 
-According to your earlier reply, it sounds like the problem isn't
-really about the card being re-initialized, but rather that we
-actually need a write request to happen before a flush. No matter
-what, no?
+> The address 0x41ffe8 is not 0x10000 aligned.
+> 
+> I don't think anything in the elf specification allows that.
+> 
+> The most common way to have bss is for a elf segment to have a larger
+> memsize than filesize.  In which case rounding up is the correct way to
+> handle things.
+> 
+> We definitely need to verify the appended bss case works, before
+> taking this patch, or we will get random application failures
+> because parts of the data segment are being zeroed, or the binaries
+> won't load because the bss won't be able to map over the initialized data.
 
-See more about this below.
+My hope in posting this patch was also for the bots to uncover any
+obvious breakage. So far there were no reports.
 
->         return 0;
->
->  free_card:
-> @@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host *host)
->  {
->         int err = 0;
->
-> +       if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH && !host->card->written_flag)
-> +               return err;
-> +
+> The note segment living at a conflicting virtual address also looks
+> suspicious.   It is probably harmless, as note segments are not
+> loaded.
+> 
+> 
+> Are you by any chance using an experimental linker?
 
-Could an option to the above, be to reset the flag here instead. After
-a successful cache flush has been done.
+I'm using GNU ld 2.41 as supplied by my distro.
+(ArchLinux, aarch64-linux-gnu-binutils 2.41-2)
 
->         if (_mmc_cache_enabled(host)) {
->                 err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
->                                  EXT_CSD_FLUSH_CACHE, 1,
-> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-> index 32b64b564fb1..5e68c8b4cdca 100644
-> --- a/drivers/mmc/core/quirks.h
-> +++ b/drivers/mmc/core/quirks.h
-> @@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
->                   MMC_QUIRK_TRIM_BROKEN),
->
->         /*
-> -        * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
-> -        * support being used to offload WRITE_ZEROES.
-> +        * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
-> +        * WRITE_ZEROES offloading. It also supports caching, but the cache can
-> +        * only be flushed after a write has occurred.
->          */
->         MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
-> -                 MMC_QUIRK_TRIM_BROKEN),
-> +                 MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
->
->         /*
->          * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
-> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-> index daa2f40d9ce6..7b12eebc5586 100644
-> --- a/include/linux/mmc/card.h
-> +++ b/include/linux/mmc/card.h
-> @@ -295,7 +295,9 @@ struct mmc_card {
->  #define MMC_QUIRK_BROKEN_HPI   (1<<13)         /* Disable broken HPI support */
->  #define MMC_QUIRK_BROKEN_SD_DISCARD    (1<<14) /* Disable broken SD discard support */
->  #define MMC_QUIRK_BROKEN_SD_CACHE      (1<<15) /* Disable broken SD cache support */
-> +#define MMC_QUIRK_BROKEN_CACHE_FLUSH   (1<<16) /* Don't flush cache until the write has occurred */
->
-> +       bool                    written_flag;   /* Indicates eMMC has been written since power on */
->         bool                    reenable_cmdq;  /* Re-enable Command Queue */
->
->         unsigned int            erase_size;     /* erase size in sectors */
-> --
-> 2.34.1
->
+> In general every segment in an elf executable needs to be aligned to the
+> SYSVABI's architecture page size.  I think that is 64k on ARM.  Which it
+> looks like the linker tried to implement by setting the alignment to
+> 0x10000, and then ignored by putting a byte offset beginning to the
+> page.
 
-Kind regards
-Uffe
+Looking at Figure A-5 of [0] this seems not to be the case.
+It shows p_vaddr=0x8048100 and p_align=0x1000.
+(On x86_64 with PAGE_SIZE=0x1000)
+
+> At a minimum someone needs to sort through what the elf specification
+> says needs to happen is a weird case like this where the start address
+> of a load segment does not match the alignment of the segment.
+
+I'll take a look.
+
+> To see how common this is I looked at a binary known to be working, and
+> my /usr/bin/ls binary has one segment that has one of these unaligned
+> starts as well.
+
+Same for my /usr/bin/busybox, also the .data and .bss segment.
+
+> So it must be defined to work somewhere but I need to see the definition
+> to even have a good opinion on the nonsense of saying an unaligned value
+> should be aligned.
+
+Figure 2-1 from [0]:
+
+p_align:
+
+Loadable process segments must have congruent values for p_vaddr and
+p_offset, modulo the page size.This member gives the value to which the
+segments are aligned in memory and in the file. Values 0 and 1 mean that no
+alignment is required. Otherwise, p_align should be a positive, integral power of
+2, and p_addr should equal p_offset, modulo p_align.
+
+0x41ffe8 (p_vaddr)  % 0x1000 = 0xfe8
+0x00ffe8 (p_offset) % 0x1000 = 0xfe8
+
+0x41ffe8 (p_addr)   % 0x10000 = 0xffe8
+0x00ffe8 (p_offset) % 0x10000 = 0xffe8
+
+So this seems to be satisfied.
+
+> All I know is that we need to limit our support to what memory mapping
+> pieces from the elf executable can support.  Which at a minimum requires:
+> 	virt_addr % ELF_MIN_ALIGN == file_offset % ELF_MIN_ALIGN
+
+Aarch64 can also handle 4k pages so this invariant should be satisfied.
+4k pages seems to be the default for the kernel, too.
+
+[0] https://refspecs.linuxfoundation.org/elf/elf.pdf
+
+> > Memory allocated by set_brk():
+> > Before: start=0x420000 end=0x420000
+> > After:  start=0x41f000 end=0x420000
+> >
+> > The triggering binary looks like this:
+> >
+> >     Elf file type is EXEC (Executable file)
+> >     Entry point 0x400144
+> >     There are 4 program headers, starting at offset 64
+> >
+> >     Program Headers:
+> >       Type           Offset             VirtAddr           PhysAddr
+> >                      FileSiz            MemSiz              Flags  Align
+> >       LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+> >                      0x0000000000000178 0x0000000000000178  R E    0x10000
+> >       LOAD           0x000000000000ffe8 0x000000000041ffe8 0x000000000041ffe8
+> >                      0x0000000000000000 0x0000000000000008  RW     0x10000
+> >       NOTE           0x0000000000000120 0x0000000000400120 0x0000000000400120
+> >                      0x0000000000000024 0x0000000000000024  R      0x4
+> >       GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+> >                      0x0000000000000000 0x0000000000000000  RW     0x10
+> >
+> >      Section to Segment mapping:
+> >       Segment Sections...
+> >        00     .note.gnu.build-id .text .eh_frame
+> >        01     .bss
+> >        02     .note.gnu.build-id
+> >        03
+> >
+> > Reported-by: Sebastian Ott <sebott@redhat.com>
+> > Closes: https://lore.kernel.org/lkml/5d49767a-fbdc-fbe7-5fb2-d99ece3168cb@redhat.com/
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> > ---
+> >
+> > I'm not really familiar with the ELF loading process, so putting this
+> > out as RFC.
+> >
+> > A example binary compiled with aarch64-linux-gnu-gcc 13.2.0 is available
+> > at https://test.t-8ch.de/binfmt-bss-repro.bin
+> > ---
+> >  fs/binfmt_elf.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> > index 7b3d2d491407..4008a57d388b 100644
+> > --- a/fs/binfmt_elf.c
+> > +++ b/fs/binfmt_elf.c
+> > @@ -112,7 +112,7 @@ static struct linux_binfmt elf_format = {
+> >  
+> >  static int set_brk(unsigned long start, unsigned long end, int prot)
+> >  {
+> > -	start = ELF_PAGEALIGN(start);
+> > +	start = ELF_PAGESTART(start);
+> >  	end = ELF_PAGEALIGN(end);
+> >  	if (end > start) {
+> >  		/*
+> >
+> > ---
+> > base-commit: aed8aee11130a954356200afa3f1b8753e8a9482
+> > change-id: 20230914-bss-alloc-f523fa61718c
+> >
+> > Best regards,
