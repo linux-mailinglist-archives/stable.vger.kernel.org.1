@@ -2,117 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC8E7A0F49
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 22:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABCE67A0F6A
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 23:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229719AbjINUu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 16:50:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41734 "EHLO
+        id S229537AbjINVE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 17:04:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjINUu5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 16:50:57 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF641BEF;
-        Thu, 14 Sep 2023 13:50:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2556EC433C7;
-        Thu, 14 Sep 2023 20:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1694724653;
-        bh=6uWjCkw79Wk9qj9XdMCDRYtywt5R0OOkGKX9ov+zHuE=;
-        h=Date:To:From:Subject:From;
-        b=vOFXAn7UwOkVjjs02KUr6GAg++YO5IQQxUXzo6p6uecnUympTRlIrcDRWnPqOzN3r
-         MFb3lS7ZecnR5+pKD4nktZNIJcZUXlAu3YIorsq7heZD+l632yzQnYrWjrXIwkCcGA
-         kbQzuEaOhzLwKukMluUdnbQz9YsxjHXAOVOB/2zs=
-Date:   Thu, 14 Sep 2023 13:50:52 -0700
-To:     mm-commits@vger.kernel.org, vincenzo.frascino@arm.com,
-        stable@vger.kernel.org, ryabinin.a.a@gmail.com,
-        matthias.bgg@gmail.com, glider@google.com, dvyukov@google.com,
-        angelogioacchino.delregno@collabora.com, andreyknvl@gmail.com,
-        haibo.li@mediatek.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] kasan-fix-access-invalid-shadow-address-when-input-is-illegal.patch removed from -mm tree
-Message-Id: <20230914205053.2556EC433C7@smtp.kernel.org>
+        with ESMTP id S229436AbjINVE3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 17:04:29 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2056.outbound.protection.outlook.com [40.107.223.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CB32698;
+        Thu, 14 Sep 2023 14:04:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EJV/lFRHDjetRX1fv2Oc5h2hEQj8SBkpkgIROioEKqkjwIYm5ihxMXa78x/LFd/7hKD2Jg/WQjnu1O8FMd6+PMmImkLY/ILAb3O3CgEZ0jULMuBUNl+A51SsGwtXKoOsEgQHH8VZ61t2LDwsAONaBYSwyOvqXjxHXaxO0hJe4/0J2tBn8kEWbZ4xUr8k4ussc3nV6T3ZXw3pw2eE0S2KFMZNfKLeKmy/wZNEs5NjOea2SlxiIWL3PszHH/tIZ5led6nYxkzUxZyLkT+C/8OFh1OkEWjuVjHXlFirZkJSPjNQeFFjcxC2lGo9m40Xy1Ap3duyvlU76z6XGL6PhJuIjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gQiaT2cL+mY4v3QsOnP2GHhIR4Hwbh4zC7IUcJ2MNss=;
+ b=fJlPplry6dbNejdufzwV0vD7EXPXicXS8DdHZAtTp+zmqtcWH/I+qV5580RHnVzx7mixL4i5svsSYKF9lXcHt6/+jRACN3KnnQ+tq7+zPL8uXpOcUXfygito2lifFZ5CGsgBOVHz7oUSe/0ETISiEnChnwOYADiinwjQ4CRRHdPGmkDQUzVHwZNMsW577We4NsV0dmjdAJ4NbAahfR47JwsYRVEDxf09+pZAE9+nlwuSpZiwRTjZAuhhN9HAnOhiCW2XnzAQq/W2PmMigjGpK7xv18KBBrGZpu0Vlmjz4LDH/TeV9J922UmcVQTyN9DO+qJn2ByS8mGhSuI+U88o0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gQiaT2cL+mY4v3QsOnP2GHhIR4Hwbh4zC7IUcJ2MNss=;
+ b=GjIzbB6QTAc/Y7Luo6+L+OW2q7OvFGDYZie6GzM8t7rBg5SeGuoYe15OIfEzOZ40SXGIIu/bE4XuFtQZoBsL++lIR/P6uwp08sUR7IF8VEt3IjNhAZ2OYjLVH9mwodltK9vC8cEy/Y9f0lMyrFi6mmygaEX4IhY0zQMtHrwTWOI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6270.namprd12.prod.outlook.com (2603:10b6:208:3c2::20)
+ by BN9PR12MB5129.namprd12.prod.outlook.com (2603:10b6:408:136::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.19; Thu, 14 Sep
+ 2023 21:04:22 +0000
+Received: from MN0PR12MB6270.namprd12.prod.outlook.com
+ ([fe80::dfbb:d644:5eda:83f8]) by MN0PR12MB6270.namprd12.prod.outlook.com
+ ([fe80::dfbb:d644:5eda:83f8%4]) with mapi id 15.20.6768.029; Thu, 14 Sep 2023
+ 21:04:22 +0000
+Message-ID: <290648a9-4882-4228-bdbd-1045e20b71f7@amd.com>
+Date:   Thu, 14 Sep 2023 17:04:18 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: fix the ability to use lower resolution
+ modes on eDP
+To:     Harry Wentland <harry.wentland@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     stable@vger.kernel.org, Leo Li <sunpeng.li@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Wayne Lin <wayne.lin@amd.com>, Alan Liu <haoping.liu@amd.com>,
+        Joshua Ashton <joshua@froggi.es>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20230914175354.102709-1-hamza.mahfooz@amd.com>
+ <3630bc42-c04c-4c22-99f2-5dc6bd5d8e2f@amd.com>
+Content-Language: en-US
+From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
+In-Reply-To: <3630bc42-c04c-4c22-99f2-5dc6bd5d8e2f@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQXP288CA0020.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c00:41::49) To MN0PR12MB6270.namprd12.prod.outlook.com
+ (2603:10b6:208:3c2::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6270:EE_|BN9PR12MB5129:EE_
+X-MS-Office365-Filtering-Correlation-Id: b357ab35-cf29-45e5-954c-08dbb5662b08
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0IPNRAGOzkwDmrypjXPQM4pToLlSY8mGNq8eeBHMDX4wqfO4cMb6ow9U0CWsoiKoTX43Lid01TwlXdVmUsMtSiGpyUqupiD09RNiY/czwffL3Wcf/C+6nSy32NV7VB/tYKOyNoIxTWutbSYFiYkxrE97Nyf3aeit36pJVwj3hEt+UnAcGhKciw7Etjd8DaKq8GKdmtUP+NvvhvrKwvY3Ilxj8KREPU04hNNW13OafAjxDTME4i712vBiJ6bDn8VY1wj35H6H/UpIZrok/UVjgwoo1IReN1hujBT02DDwy+fiZeYM8g+Lo/i8AoEsm74YGN7quERRMIEGHVgzNIwo7hpk/XaxXvwEVaiVjgemzhr07RUJWrhxXsvsEEWUGpfCSKUofbX/3HhfSTmSJbTIrGoIczs3EdOGQd82fMa2hlfbJC5XUXXQkddzT7EfUb3MLiEjpwJc8IuHZuNJgZDwWlkNyu2zHoqpDZ1iF+Y+zI5wD9ppoU6UzfEEkf0ASHkF6QRIl7g8C+D8sXrC/BWxdBvevHIchmZzRtgT8b4b43OGoLlJjEeKPQnZyjTEyNwxfDyeoAmhx32OTPB6yHr6OPiRw1C60xZti/WYJzIBVhb5HO+X63ht2zPZKlsgdnkJ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6270.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(136003)(376002)(346002)(366004)(396003)(1800799009)(451199024)(186009)(31686004)(6506007)(6486002)(6666004)(53546011)(478600001)(86362001)(36756003)(31696002)(966005)(38100700002)(83380400001)(2906002)(44832011)(2616005)(6512007)(26005)(4326008)(5660300002)(8676002)(41300700001)(8936002)(66556008)(316002)(66946007)(66476007)(54906003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZDNRdzJYbzZVNkZmb2lNbFpQeFVYRkNtS3BCTWgxSU1aMmZIRFJRKzVaakNp?=
+ =?utf-8?B?OHBtQ2pEZ2JWbFFUdjA2eThrcG5ORUxnSFBzUnNKTGNVQi93TG50MzZxOXBQ?=
+ =?utf-8?B?ZElwdGt5QkNWN01jSlNETVZHK2pQbnZrU2pvcmp4RGtJalZKeU02bUxjemwr?=
+ =?utf-8?B?c1FmYm5uRWVQeEk5Nk81Y0JVa09raDd3RGtmRXJuOC93dEY4cWJkV0tGenF6?=
+ =?utf-8?B?bmJacGRJRWhnKzlaS0FPQkdaaVM5RU1pVVBjSjJaTllQVUVLVFRxMTdxSzFR?=
+ =?utf-8?B?OW0rQzhQYUMzYUMvMVdDQjlSczBmMXllY0kxN3NuMElzZXV4NnFnaTdqNjNY?=
+ =?utf-8?B?ZXNGV1B5RTllY0VuK2lldWZkaTNEUnFNMjgzckVsWlNBVEpPR054dFhkclpQ?=
+ =?utf-8?B?NjBsdE13R0lNZ0x6R0U2cnFPMHFUaUtZWGdmeHdzOWhlWC9LaHZuQ054eXdv?=
+ =?utf-8?B?V3NaelRhNitYZitvRldndktFYXNVVER2ZVVEOTNyS0xhNVdaMEVJdlovdVk4?=
+ =?utf-8?B?Tkg2eWx6cjMwNWExcUN2VUp3R3VzaHYvRUNFdzF6dXJUMTdpREtPZzZrVVdy?=
+ =?utf-8?B?NTM4eWxZY2JsWUhKNXVLRkhsaThidWNIK1VJU1pDZmJyQkRzdUxFRU8yei83?=
+ =?utf-8?B?Vzc5R3cyd1VPck1TbnZjYU1yYWx1cUs1UDV3cDF4SmFHbTdyTFVRZExTbFB5?=
+ =?utf-8?B?bytwNkU5OG04aWRJSHhuSzcrSmx5Q3Q4RzdXejV0SkJETTBZVVBUTmsxWll3?=
+ =?utf-8?B?dE5uNmZ2NC8reWZWeis1L2FRaGM4b3lXbThSR0hLSXIxUG10WTFhbEt0UmNO?=
+ =?utf-8?B?bkh6Ylc3VTdWNk1pMkN0VGhUR3VrNnVwR0M2T1BSekFaUUl2ZU9oMU5xUXNq?=
+ =?utf-8?B?SUlmLy9DbUxMbHBYbDhBTHVPU0FJQThYbElNOTN0NDBtMUhqUFE3N0xzSmMx?=
+ =?utf-8?B?THl5bFNvWUFHVGJwM1FtKzhGVFY1cEtVZVcrc2RnTG1VOWFENVNGazRkV1px?=
+ =?utf-8?B?aDFRcDlXcjJCTDFnT3NXWWwwV1Q2UGR3b05HSmhHVWgyMEVCNktFTjN6QWhm?=
+ =?utf-8?B?U0JYQTlXZ1E2cElZa2pITkgrNEt2cmc3VFozb1puQUlpSEdJRTZ3c1VyMWFr?=
+ =?utf-8?B?M2wxZzlTNWx4MjR6bmNOWGsrZWF2UVFxalB0SE1XaHhJV1p2a3l1TUxadGcz?=
+ =?utf-8?B?Q21idXV0SHVKblQrR0dMblhIbXlibDQwZXd4b3BEQWRSZ1NUT3FhODBzMGtR?=
+ =?utf-8?B?UEsybEIrZUhPa0FOSmwyOXV1UGRJZVJCRkFpVXp2RlVUUjVscmZqNjJMb0py?=
+ =?utf-8?B?MVVUQjJzT1JBM01xR09UTC9CdVdQdGNPNTczVzV4RVNBdWVpQmx2T3BGNmVj?=
+ =?utf-8?B?eUFqa3ZhOWtxZlQyTUpQUktxVEFMc0hiS083Q3pKTkdRclVQR0Y2MkxLOVR0?=
+ =?utf-8?B?djJLaTBtS0hWZythYXZSbkp2MDRHWGdnMzVoakNzanVzd2hzZnFjWVM2UFVJ?=
+ =?utf-8?B?bHJkeXloTzRXZ0hOMTg3djVyTUEwclhoTCtLUTVUQTV0ZXJ0bTVXRkxINGJG?=
+ =?utf-8?B?MUVaOU5ZZmdnMVdHc1MxUXpTWXFMczhpLzFGZS9sNW5sOVNPZzN2Vk9mODRz?=
+ =?utf-8?B?ZjJGNTVBL2wyY3AwMVk4ZjhsaldYQ0gvMWM2dVdqMldHTTdWc3NhY1JNYk5Q?=
+ =?utf-8?B?L1ZoTVp5WnIyZ1dGOW1PZGg3alRlN3ZQcFlYbitwangrU2I4WW44bHNpUEFa?=
+ =?utf-8?B?djdwRXF3T3k3MFgxOVZtRkxFS1E1Z1pkTVhEQmw2UllhcUxZNkQvaFp4L2lD?=
+ =?utf-8?B?b0lZblYxa0d3V3BDUEQ5MFZsdm1ISEpQUFpKNk1zYXliSlJudGVKUG11YUx4?=
+ =?utf-8?B?MTZkcGprVWpuUjAva2krVEpOaWRleG1JcHhudDJkcXNCTjErL1QrMzdYUGw4?=
+ =?utf-8?B?SjhUekJ5b1JCbGVBczFwVGhtMTVNSTJFVHBPYzVsR1RVbkltVHkwSFVBOThP?=
+ =?utf-8?B?RWtjaTB6bXRIN20yNDgyMVBaQms4WHMwUTdjZDZjdFFWOXVlLysvbWp5Z0h5?=
+ =?utf-8?B?THpySjc2UFFVSVZ2U3VvUUVsUjB3VlBaRDlGTWZwa0FIMUVQdFVhc2NSZXdp?=
+ =?utf-8?Q?lQKI6KZg6go+3QHVQeDnpNuDN?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b357ab35-cf29-45e5-954c-08dbb5662b08
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6270.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 21:04:21.8436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qIcoPyBmw6EXsECzzXu1ekpMw71wNla6PPqzZVWO/h77oOKMHsdhY9rEp0KPIbv9ZW8fbNGLzy22gwwWfkeRpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5129
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The quilt patch titled
-     Subject: kasan: fix access invalid shadow address when input is illegal
-has been removed from the -mm tree.  Its filename was
-     kasan-fix-access-invalid-shadow-address-when-input-is-illegal.patch
+On 9/14/23 16:40, Harry Wentland wrote:
+> On 2023-09-14 13:53, Hamza Mahfooz wrote:
+>> On eDP we can receive invalid modes from dm_update_crtc_state() for
+>> entirely new streams for which drm_mode_set_crtcinfo() shouldn't be
+>> called on. So, instead of calling drm_mode_set_crtcinfo() from within
+>> create_stream_for_sink() we can instead call it from
+>> amdgpu_dm_connector_mode_valid(). Since, we are guaranteed to only call
+>> drm_mode_set_crtcinfo() for valid modes from that function (invalid
+>> modes are rejected by that callback) and that is the only user
+>> of create_validate_stream_for_sink() that we need to call
+>> drm_mode_set_crtcinfo() for (as before commit cb841d27b876
+>> ("drm/amd/display: Always pass connector_state to stream validation"),
+>> that is the only place where create_validate_stream_for_sink()'s
+>> dm_state was NULL).
+>>
+> 
+> I don't seem to see how a NULL dm_state in
+> create_validate_stream_for_sink() (or create_stream_for_sink() for that
+> matter) has an impact on the drm_mode_set_crtcinfo() call. That one depends
+> on !old_stream and &mode.
 
-This patch was dropped because an updated version will be merged
+If we look back to commit 4a2df0d1f28e ("drm/amd/display: Fixed
+non-native modes not lighting up") it seems like the intent was to only
+have drm_mode_set_crtcinfo() called for
+amdgpu_dm_connector_mode_valid(). Since, even if we go that far back
+create_stream_for_sink()'s dm_state was only NULL when it was called
+from amdgpu_dm_connector_mode_valid().
 
-------------------------------------------------------
-From: Haibo Li <haibo.li@mediatek.com>
-Subject: kasan: fix access invalid shadow address when input is illegal
-Date: Thu, 14 Sep 2023 16:08:33 +0800
+> 
+> It does look like &mode is an empty mode if we can't find a preferred_mode,
+> though. Not sure if that can cause an issue.
 
-when the input address is illegal,the corresponding shadow address from
-kasan_mem_to_shadow may have no mapping in mmu table.  Access such shadow
-address causes kernel oops.  Here is a sample about oops on arm64(VA
-39bit) with KASAN_SW_TAGS on:
+I don't think it should be an issue, since before commit 4a2df0d1f28e
+("drm/amd/display: Fixed non-native modes not lighting up") we always
+called drm_mode_set_crtcinfo() in the aforementioned case (and only for 
+that case).
 
-[ffffffb80aaaaaaa] pgd=000000005d3ce003, p4d=000000005d3ce003,
-    pud=000000005d3ce003, pmd=0000000000000000
-Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 3 PID: 100 Comm: sh Not tainted 6.6.0-rc1-dirty #43
-Hardware name: linux,dummy-virt (DT)
-pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __hwasan_load8_noabort+0x5c/0x90
-lr : do_ib_ob+0xf4/0x110
-ffffffb80aaaaaaa is the shadow address for efffff80aaaaaaaa.
-The problem is reading invalid shadow in kasan_check_range.
-
-The generic kasan also has similar oops.
-
-To fix it,check shadow address by reading it with no fault.
-
-After this patch,KASAN is able to report invalid memory access
-for this case.
-
-Link: https://lkml.kernel.org/r/20230914080833.50026-1-haibo.li@mediatek.com
-Signed-off-by: Haibo Li <haibo.li@mediatek.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/kasan.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
---- a/mm/kasan/kasan.h~kasan-fix-access-invalid-shadow-address-when-input-is-illegal
-+++ a/mm/kasan/kasan.h
-@@ -304,8 +304,17 @@ static __always_inline bool addr_has_met
- #ifdef __HAVE_ARCH_SHADOW_MAP
- 	return (kasan_mem_to_shadow((void *)addr) != NULL);
- #else
--	return (kasan_reset_tag(addr) >=
--		kasan_shadow_to_mem((void *)KASAN_SHADOW_START));
-+	u8 *shadow, shadow_val;
-+
-+	if (kasan_reset_tag(addr) <
-+		kasan_shadow_to_mem((void *)KASAN_SHADOW_START))
-+		return false;
-+	/* use read with nofault to check whether the shadow is accessible */
-+	shadow = kasan_mem_to_shadow((void *)addr);
-+	__get_kernel_nofault(&shadow_val, shadow, u8, fault);
-+	return true;
-+fault:
-+	return false;
- #endif
- }
- 
-_
-
-Patches currently in -mm which might be from haibo.li@mediatek.com are
-
+> 
+> Harry
+> 
+>> Cc: stable@vger.kernel.org
+>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2693
+>> Fixes: cb841d27b876 ("drm/amd/display: Always pass connector_state to stream validation")
+>> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+>> ---
+>>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>> index 933c9b5d5252..beef4fef7338 100644
+>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>> @@ -6128,8 +6128,6 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+>>   
+>>   	if (recalculate_timing)
+>>   		drm_mode_set_crtcinfo(&saved_mode, 0);
+>> -	else if (!old_stream)
+>> -		drm_mode_set_crtcinfo(&mode, 0);
+>>   
+>>   	/*
+>>   	 * If scaling is enabled and refresh rate didn't change
+>> @@ -6691,6 +6689,8 @@ enum drm_mode_status amdgpu_dm_connector_mode_valid(struct drm_connector *connec
+>>   		goto fail;
+>>   	}
+>>   
+>> +	drm_mode_set_crtcinfo(mode, 0);
+>> +
+>>   	stream = create_validate_stream_for_sink(aconnector, mode,
+>>   						 to_dm_connector_state(connector->state),
+>>   						 NULL);
+> 
+-- 
+Hamza
 
