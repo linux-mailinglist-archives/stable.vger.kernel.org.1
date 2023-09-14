@@ -2,81 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA567A04C8
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B46E97A04D4
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 15:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233970AbjINNDW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 09:03:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
+        id S237775AbjINNDi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 09:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238444AbjINNDV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:03:21 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D59D1FD0
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:17 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d7e387c33f3so979831276.1
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:17 -0700 (PDT)
+        with ESMTP id S238644AbjINNDg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 09:03:36 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE531FEC
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:30 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-58fae4a5285so10846787b3.0
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 06:03:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694696597; x=1695301397; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1694696610; x=1695301410; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aCsgoVc5MdDS0OEMSd5NVyJPQJml3xjCRjHmB8pQyQU=;
-        b=UmE2vFAwharNvYSJfAL72mxudS2a4wmMf/TkC49VsGZd89aOhrQvypUzbF7VHtx+5a
-         YC0BViG1cIGoWdpq0Wk1WSpeJL+12Xh2uJyvSYm4SC027sk8+3R+pbPXDyFh0sgVh+zq
-         +toHzyaCDhS2DVcf+VzvePK3BfVZmovOBVq2KdwMDfy5PAWy12EcC9/a0poZjYvQyi/L
-         CNS44n8C13mCfK+ICsZayqr9N842nE3AoEGju5c4BBD/ulhQAdP6J0AO99JNrOrCt24I
-         Ayvd+SP0ciP7DovwVIQLwsp++nn1D6dz0sQPsuh3QoBcK5aT0bUCOLTT6cWsXl9M78IH
-         b8MA==
+        bh=ob8SQM+bmq/PuBNTw6TcaVLNQ1zeeWO4ZtVc5W6iJRs=;
+        b=IGxQwgySBIzXEcyRinHXjbYkau/6kt7JZpKswkhrbqGd+yJyjwTF4sQPyOKPAmaAdZ
+         9uG/EB9a+UhcsYkWtc7MuF6lvGfLTaOKpF1zjw0y7vnd4cRrmdmShZpXSu1JEEvUn/Px
+         hLUPou0WleMwNJIJkPb7YG2RJsSXa+p4OWcuKQHTBBTuYPvLUmFH9ndkXcZLFMH528Nj
+         Gu5TazHtGOltrxgPa5DuZW8fCbINMFIf1CNd+ch/LXw5/bUy6oFkO9ickYXQfq+ID5xW
+         K5aM/D75MeGWwo6HC2/KTWLStzbndPIpFYG8luJQXfq6A/XRAR0/bx/QxJ+dhuirpawc
+         /uFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694696597; x=1695301397;
+        d=1e100.net; s=20230601; t=1694696610; x=1695301410;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aCsgoVc5MdDS0OEMSd5NVyJPQJml3xjCRjHmB8pQyQU=;
-        b=d7nJjYuYWf6VdV7H7r/bmMS2uV4Ja+lut4YxZuoi29B165ZWPC/Qt1u9zd20GsnyGa
-         4G/oCaUjRTReQeSWuyrLUCV5laqDnrboNoAnxB2y7j1JqrEYzoBC7/xGNTkqPuVQ28QD
-         Jh6H6rsbv+sPeY0ifdYen211aQ1z6nEyKPp3lmEO3ZeUxdr3qbrEpDqegwdOJ+QWGi3P
-         wxp+uSVPNhNp/gTWw/Y9KtWKByZyoU04Fnokd5BnwlP7KX81oJZ1pY3D2x3XYzE+X7xY
-         NAK+8V1roojK5c1+Ta1Dazks5FsYuvaQhOffTkSRoiMfvxpmdRZvsYuYyl8mVVHAfmBy
-         WSug==
-X-Gm-Message-State: AOJu0Yz2DWKVi6/S6ndA9Yey5eBinHm+P5979+dqT8mHI9/RhhiFvgtR
-        ZBgNyjthoFXReUvvnPcV9rs3179Pj48rTKbmoGsJlQ==
-X-Google-Smtp-Source: AGHT+IHtq67DZntMzVUKa/tcZfvAY9V5Pu2y+pL8a0RH0Ax2Jq7NeiRTvdNMEGDNeImVEaPGukeWC05mKHKjfg4DqmE=
-X-Received: by 2002:a5b:449:0:b0:d54:b34c:1c7b with SMTP id
- s9-20020a5b0449000000b00d54b34c1c7bmr4766279ybp.59.1694696596656; Thu, 14 Sep
- 2023 06:03:16 -0700 (PDT)
+        bh=ob8SQM+bmq/PuBNTw6TcaVLNQ1zeeWO4ZtVc5W6iJRs=;
+        b=tPTqrJQv2PgHp0aihZOx6ztKOYPn19+uNgGY8OG93+Npaxi4zidmn8neuw7XmJZuI4
+         JBOu4qmOJaOqqQB7JvItbSEduUaxL14JIgCZ9KYNEyiRzHmRT4k0eLmxTqKx7iMPckO5
+         Exec26a+yb1f0MIaXkF7W4ef8Ngr2JS8oLnjPnH24QLixufoG7fLuWmoCuQYWwiZKQwO
+         +HS+1Ho4gdr1/VOoueixoIk4u13B0yRmMb3YynvWMNGQbk1klk/Q/k7RDeToyszChHXj
+         +/WVGiZmiS1O/Sjet2vsa4Nu8UTD3bSY2DmVpZRZY6j8Ig7JcmXAqs5Ykmj4OiEI3+HU
+         7KkA==
+X-Gm-Message-State: AOJu0YxAk7ND0lwSKWyX7fdtvf0viZ01+MWiNtFl/qoMU18OzFSA6CBB
+        np9gbIj3zx1xk3wch0+v1hAet+YKmxQJAaWcZ3AJyg==
+X-Google-Smtp-Source: AGHT+IH6YkWJEN52KxYqwksy7XeIE77ym5oKBBQTAMc1y9A7PSsTbC4UtM+Yk0dnZEGUypdjvCxvkZRxxsrAwVPctng=
+X-Received: by 2002:a25:1607:0:b0:d4c:6b49:fed7 with SMTP id
+ 7-20020a251607000000b00d4c6b49fed7mr4697103ybw.45.1694696609708; Thu, 14 Sep
+ 2023 06:03:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230825135503.282135-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230825135503.282135-1-krzysztof.kozlowski@linaro.org>
+References: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+In-Reply-To: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Sep 2023 15:02:40 +0200
-Message-ID: <CAPDyKFpZnoVnZt-WN_5YdqesoT_Xcbs56tJunwS5oNZSJySxgg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: mmc: sdhci-msm: correct minimum number
- of clocks
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date:   Thu, 14 Sep 2023 15:02:53 +0200
+Message-ID: <CAPDyKFoAbOjjS9H495mBNMiH6dV8eRsuoio6to5G6hz-sPY8xw@mail.gmail.com>
+Subject: Re: [PATCH v3] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+To:     Sven van Ashbrook <svenva@chromium.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>, adrian.hunter@intel.com,
+        ben.chuang@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, skardach@google.com,
+        Renius Chen <reniuschengl@gmail.com>,
+        rafael.j.wysocki@intel.com, linux-mmc@vger.kernel.org,
+        stable@vger.kernel.org, SeanHY.chen@genesyslogic.com.tw,
+        victor.shih@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 25 Aug 2023 at 15:55, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+On Thu, 31 Aug 2023 at 18:01, Sven van Ashbrook <svenva@chromium.org> wrote:
 >
-> In the TXT binding before conversion, the "xo" clock was listed as
-> optional.  Conversion kept it optional in "clock-names", but not in
-> "clocks".  This fixes dbts_check warnings like:
+> To improve the r/w performance of GL9763E, the current driver inhibits LPM
+> negotiation while the device is active.
 >
->   qcom-sdx65-mtp.dtb: mmc@8804000: clocks: [[13, 59], [13, 58]] is too short
+> This prevents a large number of SoCs from suspending, notably x86 systems
+> which commonly use S0ix as the suspend mechanism - for example, Intel
+> Alder Lake and Raptor Lake processors.
 >
-> Cc: <stable@vger.kernel.org>
-> Fixes: a45537723f4b ("dt-bindings: mmc: sdhci-msm: Convert bindings to yaml")
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Failure description:
+> 1. Userspace initiates s2idle suspend (e.g. via writing to
+>    /sys/power/state)
+> 2. This switches the runtime_pm device state to active, which disables
+>    LPM negotiation, then calls the "regular" suspend callback
+> 3. With LPM negotiation disabled, the bus cannot enter low-power state
+> 4. On a large number of SoCs, if the bus not in a low-power state, S0ix
+>    cannot be entered, which in turn prevents the SoC from entering
+>    suspend.
+>
+> Fix by re-enabling LPM negotiation in the device's suspend callback.
+>
+> Suggested-by: Stanislaw Kardach <skardach@google.com>
+> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
 
 Applied for fixes, thanks!
 
@@ -85,22 +99,145 @@ Uffe
 
 
 > ---
->  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> index 80141eb7fc6b..10f34aa8ba8a 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> @@ -69,7 +69,7 @@ properties:
->      maxItems: 4
+> Changes in v3:
+> - applied maintainer feedback from https://lore.kernel.org/lkml/CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com/T/#m7cea7b6b987d1ab1ca95feedf2c6f9da5783da5c
 >
->    clocks:
-> -    minItems: 3
-> +    minItems: 2
->      items:
->        - description: Main peripheral bus clock, PCLK/HCLK - AHB Bus clock
->        - description: SDC MMC clock, MCLK
+> Changes in v2:
+> - improved symmetry and error path in s2idle suspend callback (internal review)
+>
+>  drivers/mmc/host/sdhci-pci-gli.c | 104 ++++++++++++++++++++-----------
+>  1 file changed, 66 insertions(+), 38 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+> index 1792665c9494a..a4ccb6c3e27a6 100644
+> --- a/drivers/mmc/host/sdhci-pci-gli.c
+> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+> @@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+>         return value;
+>  }
+>
+> -#ifdef CONFIG_PM_SLEEP
+> -static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+> -{
+> -       struct sdhci_pci_slot *slot = chip->slots[0];
+> -
+> -       pci_free_irq_vectors(slot->chip->pdev);
+> -       gli_pcie_enable_msi(slot);
+> -
+> -       return sdhci_pci_resume_host(chip);
+> -}
+> -
+> -static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
+> -{
+> -       struct sdhci_pci_slot *slot = chip->slots[0];
+> -       int ret;
+> -
+> -       ret = sdhci_pci_gli_resume(chip);
+> -       if (ret)
+> -               return ret;
+> -
+> -       return cqhci_resume(slot->host->mmc);
+> -}
+> -
+> -static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
+> -{
+> -       struct sdhci_pci_slot *slot = chip->slots[0];
+> -       int ret;
+> -
+> -       ret = cqhci_suspend(slot->host->mmc);
+> -       if (ret)
+> -               return ret;
+> -
+> -       return sdhci_suspend_host(slot->host);
+> -}
+> -#endif
+> -
+>  static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+>                                           struct mmc_ios *ios)
+>  {
+> @@ -1029,6 +993,70 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+>  }
+>  #endif
+>
+> +#ifdef CONFIG_PM_SLEEP
+> +static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+> +{
+> +       struct sdhci_pci_slot *slot = chip->slots[0];
+> +
+> +       pci_free_irq_vectors(slot->chip->pdev);
+> +       gli_pcie_enable_msi(slot);
+> +
+> +       return sdhci_pci_resume_host(chip);
+> +}
+> +
+> +static int gl9763e_resume(struct sdhci_pci_chip *chip)
+> +{
+> +       struct sdhci_pci_slot *slot = chip->slots[0];
+> +       int ret;
+> +
+> +       ret = sdhci_pci_gli_resume(chip);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = cqhci_resume(slot->host->mmc);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /*
+> +        * Disable LPM negotiation to bring device back in sync
+> +        * with its runtime_pm state.
+> +        */
+> +       gl9763e_set_low_power_negotiation(slot, false);
+> +
+> +       return 0;
+> +}
+> +
+> +static int gl9763e_suspend(struct sdhci_pci_chip *chip)
+> +{
+> +       struct sdhci_pci_slot *slot = chip->slots[0];
+> +       int ret;
+> +
+> +       /*
+> +        * Certain SoCs can suspend only with the bus in low-
+> +        * power state, notably x86 SoCs when using S0ix.
+> +        * Re-enable LPM negotiation to allow entering L1 state
+> +        * and entering system suspend.
+> +        */
+> +       gl9763e_set_low_power_negotiation(slot, true);
+> +
+> +       ret = cqhci_suspend(slot->host->mmc);
+> +       if (ret)
+> +               goto err_suspend;
+> +
+> +       ret = sdhci_suspend_host(slot->host);
+> +       if (ret)
+> +               goto err_suspend_host;
+> +
+> +       return 0;
+> +
+> +err_suspend_host:
+> +       cqhci_resume(slot->host->mmc);
+> +err_suspend:
+> +       gl9763e_set_low_power_negotiation(slot, false);
+> +       return ret;
+> +}
+> +#endif
+> +
+>  static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+>  {
+>         struct pci_dev *pdev = slot->chip->pdev;
+> @@ -1113,8 +1141,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
+>         .probe_slot     = gli_probe_slot_gl9763e,
+>         .ops            = &sdhci_gl9763e_ops,
+>  #ifdef CONFIG_PM_SLEEP
+> -       .resume         = sdhci_cqhci_gli_resume,
+> -       .suspend        = sdhci_cqhci_gli_suspend,
+> +       .resume         = gl9763e_resume,
+> +       .suspend        = gl9763e_suspend,
+>  #endif
+>  #ifdef CONFIG_PM
+>         .runtime_suspend = gl9763e_runtime_suspend,
 > --
-> 2.34.1
+> 2.42.0.283.g2d96d420d3-goog
 >
