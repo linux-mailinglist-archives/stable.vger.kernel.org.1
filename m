@@ -2,167 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F56379FC80
-	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA1E479FCB3
+	for <lists+stable@lfdr.de>; Thu, 14 Sep 2023 09:03:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234722AbjINHAt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 03:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
+        id S232122AbjINHDb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 14 Sep 2023 03:03:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjINHAq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:00:46 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 477DDE59;
-        Thu, 14 Sep 2023 00:00:42 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38E6kkY5020141;
-        Thu, 14 Sep 2023 07:00:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : references : in-reply-to : to : cc; s=qcppdkim1;
- bh=IYUUi4irMTzpChiOLnaWeP34/o4DxcOkgDEagseKg+4=;
- b=FLuw2MAOXTK1FRbScss1U7rmLd9fyFo1L/URfk8yIdkeej8wcAnARCMo0XJ3OiijW3bV
- yYHfmejIi5UqcRqFR28bqAHG19/BQEdXdZTLaQxmr+lj0cuA/wiW91fvRCObZQ/omWba
- 2uLxq8Jn8fCK0KHSUPnEXndtlBA25+m9j4yRHec8hYiesIXxdvBlpUBRTQ2QdRty8QOi
- 9JbfpZvYAoqoFq+jsr/HPfGxT3E+R5X0l6+fUJTDbsALZVDGHdaHurRe5k783GAt8txy
- uWuPRkzHoKvwxXSa0JIEbEBKAH0MJGK18kObbAxfBcqPCkc9R1r5XJcNr5AxWCNZTuHa QA== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3ds427fs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 07:00:29 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38E70S2h024534
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 07:00:28 GMT
-Received: from hu-kathirav-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Thu, 14 Sep 2023 00:00:22 -0700
-From:   Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Date:   Thu, 14 Sep 2023 12:29:52 +0530
-Subject: [PATCH v2 02/11] clk: qcom: ipq6018: drop the CLK_SET_RATE_PARENT
- flag from PLL clocks
+        with ESMTP id S233607AbjINHD3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 03:03:29 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A132EE4B
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:03:25 -0700 (PDT)
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3BC9D3F679
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 07:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1694675002;
+        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version;
+        b=WDk8FWMNg5jCyhP66uwB/GzZoWK53265q8Nh/hjEvdwTi4QTZhb/JgAi75PLin8wm
+         vzJFFV0/JfHF7m5U4DM61117z60pWT7oCKUktAFXkBdZUTAGStCOyHPDTu8uk1FQN3
+         roMJ6Aaf7TWs5BSG0zWmMRWFYhsmVNgh3EnaMefNq4OBB4R9h7MzBi9hougcLdPhI1
+         QcGTzbpSXSk92+fmLDo3ddWaDDvo1eYJ2p9KDq0Fxnadcj1dVMY0FODKE4iidExKwz
+         wFZWdm/plh+NKKbf2BSYbEGr+lqXdOgnlN9uiX8zB725I0yof9xFKOcK7OgWWiXOUv
+         oV6on9m27CVdg==
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcc2fd542bso7648671fa.3
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 00:03:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694675001; x=1695279801;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
+        b=XquvjIGfToI5cLSU3EkIPKBDCFwHGdXwt1W8CvBjxeswmbS//pUmP3T6ZUWkgxRRhx
+         I7oolMO51zdJC3CgDN5U/hrvxpbu9irN9iqdDKvIoIHY+rwQ1soJjDOZmGbp6xCUN2RB
+         Z7Ca/WhooDjW8sWfDMd3MrR9DJ/SnOwvtLobZR5pvZmXqVdn6YRnW99547BP6zrLhj7o
+         dTYVvB6gz/c6mdjGwb1f8tzN5LWjBy4r03WdobbimaFnGaEA2WN0OqVc+CR/RxHjYbY6
+         8hFO5/FDFy5nHe6FXeUfPOP7g/7IXAT2daP5ytJ82bAosaDh7W0gKWrZ95O7KTeux4KJ
+         kFUw==
+X-Gm-Message-State: AOJu0YwGbciOk5sWjfFtGVRJnq1wgvP2rAf+WuhlJGyqPaQmDaHkMXAo
+        yuZ/R6nXKgu1mjVLOJopxVbXa3LvN95zl14+1UgNKG6Me7AfcVjTR17UcnIIPTutRRoKlG0Zk21
+        GexG299Ie1/Y9Yid0GAdeDGjojGUkyuuVow==
+X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263139ljk.9.1694675000782;
+        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2lvudBipBhYKFL0V/AUGrG/NPYxifvLzmEnbyiurqOzZt4iA6jNQCUaoQ+l2QV7FAleBBwA==
+X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263113ljk.9.1694675000394;
+        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
+Received: from localhost ([194.191.244.86])
+        by smtp.gmail.com with ESMTPSA id y14-20020a7bcd8e000000b004030e8ff964sm3981698wmj.34.2023.09.14.00.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Sep 2023 00:03:19 -0700 (PDT)
+From:   Juerg Haefliger <juerg.haefliger@canonical.com>
+To:     juerg.haefliger@canonical.com
+Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
+        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
+        gustavoars@kernel.org, hante.meuleman@broadcom.com,
+        hdegoede@redhat.com, keescook@chromium.org, kvalo@kernel.org,
+        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, marcan@marcan.st,
+        ryohei.kondo@cypress.com, stable@vger.kernel.org
+Subject: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with flexible arrays
+Date:   Thu, 14 Sep 2023 09:02:27 +0200
+Message-Id: <20230914070227.12028-1-juerg.haefliger@canonical.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com>
+References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20230913-gpll_cleanup-v2-2-c8ceb1a37680@quicinc.com>
-References: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com>
-In-Reply-To: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        "Sricharan Ramabadhran" <quic_srichara@quicinc.com>,
-        Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
-        Varadarajan Narayanan <quic_varada@quicinc.com>,
-        Anusha Rao <quic_anusha@quicinc.com>,
-        Devi Priya <quic_devipriy@quicinc.com>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC:     <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        "Kathiravan Thirumoorthy" <quic_kathirav@quicinc.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1694674810; l=2133;
- i=quic_kathirav@quicinc.com; s=20230906; h=from:subject:message-id;
- bh=rsIYjMjr7l4hRP/TaRaz8xhUIe4rolVSZ1qvNyYYjEQ=;
- b=t/1AQcU7XZaufByt68IBdPr9TvzKEdidvZ2yTtqo4bdwmmYBU+2MRE81GEWdZGnCDwkgccbl/
- gHFtBwGUn/ZAjQeWm09BvG2KAxEtGtr0F5XcGpfAXx0g2o6H5j38j5n
-X-Developer-Key: i=quic_kathirav@quicinc.com; a=ed25519;
- pk=xWsR7pL6ch+vdZ9MoFGEaP61JUaRf0XaZYWztbQsIiM=
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: D-JTW6z4TJi9HkgY__X_DeTFlIsGMnVy
-X-Proofpoint-GUID: D-JTW6z4TJi9HkgY__X_DeTFlIsGMnVy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-14_03,2023-09-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=889 spamscore=0
- lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0 mlxscore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309140062
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
+UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
+'element' and 'channel_list' will trigger warnings, so make them proper
+flexible arrays.
 
-Cc: stable@vger.kernel.org
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+False positive warnings were:
+
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
+  index 1 is out of range for type '__le32 [1]'
+
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
+  index 1 is out of range for type '__le16 [1]'
+
+for these lines of code:
+
+  6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
+
+  1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
+
+Cc: stable@vger.kernel.org # 6.5+
+Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+
 ---
-Changes in V2:
-	- Include the stable mailing list
-	- Keep the CLK_SET_RATE_PARENT in UBI32 PLL, looks like these
-	  PLL rates can be changed. So don't drop the flag.
+v2:
+  - Use element[] instead of DFA() in brcmf_chanspec_list.
+  - Add Cc: stable tag
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 6 ------
- 1 file changed, 6 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index 6120fbbc5de0..f9494fa1b871 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -72,7 +72,6 @@ static struct clk_fixed_factor gpll0_out_main_div2 = {
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index bece26741d3a..611d1a6aabb9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
+ 				 * fixed parameter portion is assumed, otherwise
+ 				 * ssid in the fixed portion is ignored
+ 				 */
+-	__le16 channel_list[1];	/* list of chanspecs */
++	union {
++		__le16 padding;	/* Reserve space for at least 1 entry for abort
++				 * which uses an on stack brcmf_scan_params_v2_le
++				 */
++		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
++	};
  };
  
-@@ -86,7 +85,6 @@ static struct clk_alpha_pll_postdiv gpll0 = {
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
+ struct brcmf_scan_results {
+@@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
+ 
+ struct brcmf_chanspec_list {
+ 	__le32	count;		/* # of entries */
+-	__le32	element[1];	/* variable length uint32 list */
++	__le32  element[];	/* variable length uint32 list */
  };
  
-@@ -161,7 +159,6 @@ static struct clk_alpha_pll_postdiv gpll6 = {
- 				&gpll6_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -192,7 +189,6 @@ static struct clk_alpha_pll_postdiv gpll4 = {
- 				&gpll4_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -243,7 +239,6 @@ static struct clk_alpha_pll_postdiv gpll2 = {
- 				&gpll2_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -274,7 +269,6 @@ static struct clk_alpha_pll_postdiv nss_crypto_pll = {
- 				&nss_crypto_pll_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-
+ /*
 -- 
-2.34.1
+2.39.2
 
