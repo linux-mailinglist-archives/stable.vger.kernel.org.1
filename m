@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36EC27A20F6
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F967A20F8
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235716AbjIOOaL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 10:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46830 "EHLO
+        id S235713AbjIOOaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 10:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235770AbjIOOaJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:30:09 -0400
+        with ESMTP id S235710AbjIOOaM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:30:12 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A042D51;
-        Fri, 15 Sep 2023 07:29:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8622D56;
+        Fri, 15 Sep 2023 07:29:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694788192; x=1726324192;
+  t=1694788194; x=1726324194;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0ide3LOGeSX/B+vTfryAk8Wp8gp5a+c2QV6Y6fkhxhw=;
-  b=V63K8mLQ6C3xucWH7rB+AVVrf39S33OzYPe6+hzQrbqOtnxTWgv85l84
-   OP/pLZxuWfTJzTjQhAy1zSf5AxX232ly2d2l+YQi7Fo1TZU2AqJy3VpCX
-   Oo+qM0x3t4v8UoL8urE2UOF6Yq9DyA8/MXWerIN4o7kWMgismtM5Gii/W
-   IfJrf47r33uWWeRgcWL4eOGy+SBmx7UMC5acuUJmoONt7gcsBUiRGwaLK
-   bBDWw6tdrLP+UtoEx6uaOxHfM3RIiWvwKtPKP1TGg/eK2+WW8uVTgfUiY
-   swkdzcwsdmULz9QRVbBlfoaGjrm7g8uARAysIttJQ+4GIn0D1cua8SrW+
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="378171601"
+  bh=bsQ7q4o1Qdn80c1cGcQTu1ALabaJeD3XlJAXBUwwmFs=;
+  b=U0QYKbmnv23QAGKwOJCRXjC3x2Ms5eDiDZJiOxWIU+78Jjr1tXiziATF
+   HrAISjcUGZNA2EOshgCxhAtZHwvad/guTL/N0Mt58S7oggGUVKw7UokXT
+   7JrXWIRJsup/lPoso5eNECpjX0qxKaRgOAEGuyaIcD94wX1HmoVoiy6ky
+   Jc+wkxsPbuEsTqMgwryRs+488pKxmh8wvZhi+7sqbIe+rdCMOn4YJN/3W
+   KKAibdCHNdAVI1UBVcoz4X2XttdeN81d6WbioNzHCP4nPITqVbi9EvjMV
+   /c+Nc3DcI9YejusbyR8qzYHcqS1tpKRl1mq5Zh6uAFzDruh39IWeoyLsB
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="378171608"
 X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
-   d="scan'208";a="378171601"
+   d="scan'208";a="378171608"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 07:29:52 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 07:29:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="888252658"
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="888252660"
 X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
-   d="scan'208";a="888252658"
+   d="scan'208";a="888252660"
 Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Sep 2023 07:29:15 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 15 Sep 2023 07:29:17 -0700
 From:   Mathias Nyman <mathias.nyman@linux.intel.com>
 To:     <gregkh@linuxfoundation.org>
 Cc:     <linux-usb@vger.kernel.org>,
-        Wesley Cheng <quic_wcheng@quicinc.com>, stable@vger.kernel.org,
-        Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 1/4] usb: xhci: xhci-ring: Use sysdev for mapping bounce buffer
-Date:   Fri, 15 Sep 2023 17:31:05 +0300
-Message-Id: <20230915143108.1532163-2-mathias.nyman@linux.intel.com>
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        stable@vger.kernel.org, Wesley Cheng <quic_wcheng@quicinc.com>
+Subject: [PATCH 2/4] xhci: track port suspend state correctly in unsuccessful resume cases
+Date:   Fri, 15 Sep 2023 17:31:06 +0300
+Message-Id: <20230915143108.1532163-3-mathias.nyman@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230915143108.1532163-1-mathias.nyman@linux.intel.com>
 References: <20230915143108.1532163-1-mathias.nyman@linux.intel.com>
@@ -60,53 +60,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+xhci-hub.c tracks suspended ports in a suspended_port bitfield.
+This is checked when responding to a Get_Status(PORT) request to see if a
+port in running U0 state was recently resumed, and adds the required
+USB_PORT_STAT_C_SUSPEND change bit in those cases.
 
-As mentioned in:
-  commit 474ed23a6257 ("xhci: align the last trb before link if it is
-easily splittable.")
+The suspended_port bit was left uncleared if a device is disconnected
+during suspend. The bit remained set even when a new device was connected
+and enumerated. The set bit resulted in a incorrect Get_Status(PORT)
+response with a bogus USB_PORT_STAT_C_SUSPEND change
+bit set once the new device reached U0 link state.
 
-A bounce buffer is utilized for ensuring that transfers that span across
-ring segments are aligned to the EP's max packet size.  However, the device
-that is used to map the DMA buffer to is currently using the XHCI HCD,
-which does not carry any DMA operations in certain configrations.
-Migration to using the sysdev entry was introduced for DWC3 based
-implementations where the IOMMU operations are present.
+USB_PORT_STAT_C_SUSPEND change bit is only used for USB2 ports, but
+xhci-hub keeps track of both USB2 and USB3 suspended ports.
 
-Replace the reference to the controller device to sysdev instead.  This
-allows the bounce buffer to be properly mapped to any implementations that
-have an IOMMU involved.
-
-cc: <stable@vger.kernel.org>
-Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Cc: stable@vger.kernel.org
+Reported-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Closes: https://lore.kernel.org/linux-usb/d68aa806-b26a-0e43-42fb-b8067325e967@quicinc.com/
+Fixes: 1d5810b6923c ("xhci: Rework port suspend structures for limited ports.")
+Tested-by: Wesley Cheng <quic_wcheng@quicinc.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/usb/host/xhci-ring.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-hub.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 1dde53f6eb31..98389b568633 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -798,7 +798,7 @@ static void xhci_giveback_urb_in_irq(struct xhci_hcd *xhci,
- static void xhci_unmap_td_bounce_buffer(struct xhci_hcd *xhci,
- 		struct xhci_ring *ring, struct xhci_td *td)
- {
--	struct device *dev = xhci_to_hcd(xhci)->self.controller;
-+	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	struct xhci_segment *seg = td->bounce_seg;
- 	struct urb *urb = td->urb;
- 	size_t len;
-@@ -3469,7 +3469,7 @@ static u32 xhci_td_remainder(struct xhci_hcd *xhci, int transferred,
- static int xhci_align_td(struct xhci_hcd *xhci, struct urb *urb, u32 enqd_len,
- 			 u32 *trb_buff_len, struct xhci_segment *seg)
- {
--	struct device *dev = xhci_to_hcd(xhci)->self.controller;
-+	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	unsigned int unalign;
- 	unsigned int max_pkt;
- 	u32 new_buff_len;
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index 0054d02239e2..0df5d807a77e 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1062,19 +1062,19 @@ static void xhci_get_usb3_port_status(struct xhci_port *port, u32 *status,
+ 		*status |= USB_PORT_STAT_C_CONFIG_ERROR << 16;
+ 
+ 	/* USB3 specific wPortStatus bits */
+-	if (portsc & PORT_POWER) {
++	if (portsc & PORT_POWER)
+ 		*status |= USB_SS_PORT_STAT_POWER;
+-		/* link state handling */
+-		if (link_state == XDEV_U0)
+-			bus_state->suspended_ports &= ~(1 << portnum);
+-	}
+ 
+-	/* remote wake resume signaling complete */
+-	if (bus_state->port_remote_wakeup & (1 << portnum) &&
++	/* no longer suspended or resuming */
++	if (link_state != XDEV_U3 &&
+ 	    link_state != XDEV_RESUME &&
+ 	    link_state != XDEV_RECOVERY) {
+-		bus_state->port_remote_wakeup &= ~(1 << portnum);
+-		usb_hcd_end_port_resume(&hcd->self, portnum);
++		/* remote wake resume signaling complete */
++		if (bus_state->port_remote_wakeup & (1 << portnum)) {
++			bus_state->port_remote_wakeup &= ~(1 << portnum);
++			usb_hcd_end_port_resume(&hcd->self, portnum);
++		}
++		bus_state->suspended_ports &= ~(1 << portnum);
+ 	}
+ 
+ 	xhci_hub_report_usb3_link_state(xhci, status, portsc);
+@@ -1131,6 +1131,7 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
+ 			usb_hcd_end_port_resume(&port->rhub->hcd->self, portnum);
+ 		}
+ 		port->rexit_active = 0;
++		bus_state->suspended_ports &= ~(1 << portnum);
+ 	}
+ }
+ 
 -- 
 2.25.1
 
