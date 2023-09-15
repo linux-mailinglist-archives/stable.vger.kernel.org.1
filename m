@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF2F7A20FC
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B127A20FE
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235677AbjIOOaa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 10:30:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43856 "EHLO
+        id S235698AbjIOOah (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 10:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235773AbjIOOa2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:30:28 -0400
+        with ESMTP id S234635AbjIOOaa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:30:30 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A96271F;
-        Fri, 15 Sep 2023 07:30:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B42271D;
+        Fri, 15 Sep 2023 07:30:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694788203; x=1726324203;
+  t=1694788205; x=1726324205;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hYT/wFfgL4rUSc86aqp91j+a/zBCoSKf1rrAxxAZDg4=;
-  b=NlmUKEyEbzq2kmgk9K5PLX2UpkSjmYtCsZ1ZiZBA3kAgnbv3WepX/4xk
-   9Fql07MtBR5q4+RfJcu2bhOsbJBVwu31dJihwgqrDn5cO614USS1Z2dcL
-   3sAUTsQ7wClNw3m3w09LiD3dABABJ8kNpEacdox4qHoQ2p1EgDBW5Q6rB
-   AuFmLKyJs44PGpWY8bNI70Kr1yCffLxgh6B+5q0lgvwb0fm2OS/kM0pLr
-   cTiY8l6oe4OEoCjCgb472xErOrE2aJauvWGa8ErHX7TxcU2K2czQFqqlA
-   oNwiARemNDN+DAPLdI+u5m7JJLUU0uEi6DDf/6d75m2PGj8RCQVsSviu1
+  bh=4Twaa+I9J7E+qi1waH9WvJrsoz3TE/A+bOsXnZ0lAD0=;
+  b=BfiKHJ5OzN2A6nExLqaJpb2W2YkDw5MaHf7aZMKuqv36Zj2sBirId1v3
+   C+I4jXA+hoXQmMDzhey83fYx8OcsEznA6v/69FKq/cjGO4W8CevdODAZl
+   /7JtRS/a5o1zWR6r1Al6FmtRWdk4tmeO4u52bthYeKmLNyQKimsZSz09Z
+   8QMj87PwbKbbpaw5kqUoucnRCGfBW6wT5fL9o+cwLHYM66Q+iKMe3u5Nj
+   mT0kaGJjtPs7W2F/E64oUPdfNRqeSAll1jRThe1jK+PpG/nx2jwcRNwxO
+   iDQcQRw66tIgu88ZR9HzN4BpBbNj9sOh2GcDw+xW98bms8zJhabSi0srQ
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="378171614"
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="378171624"
 X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
-   d="scan'208";a="378171614"
+   d="scan'208";a="378171624"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 07:29:56 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 07:29:58 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="888252662"
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="888252663"
 X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
-   d="scan'208";a="888252662"
+   d="scan'208";a="888252663"
 Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Sep 2023 07:29:19 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 15 Sep 2023 07:29:21 -0700
 From:   Mathias Nyman <mathias.nyman@linux.intel.com>
 To:     <gregkh@linuxfoundation.org>
 Cc:     <linux-usb@vger.kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        stable@vger.kernel.org, Peter Chen <peter.chen@kernel.org>,
+        stable@vger.kernel.org,
         Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 3/4] xhci: Clear EHB bit only at end of interrupt handler
-Date:   Fri, 15 Sep 2023 17:31:07 +0300
-Message-Id: <20230915143108.1532163-4-mathias.nyman@linux.intel.com>
+Subject: [PATCH 4/4] xhci: Preserve RsvdP bits in ERSTBA register correctly
+Date:   Fri, 15 Sep 2023 17:31:08 +0300
+Message-Id: <20230915143108.1532163-5-mathias.nyman@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230915143108.1532163-1-mathias.nyman@linux.intel.com>
 References: <20230915143108.1532163-1-mathias.nyman@linux.intel.com>
@@ -62,85 +62,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Lukas Wunner <lukas@wunner.de>
 
-The Event Handler Busy bit shall be cleared by software when the Event
-Ring is empty.  The xHC is thereby informed that it may raise another
-interrupt once it has enqueued new events (sec 4.17.2).
+xhci_add_interrupter() erroneously preserves only the lowest 4 bits when
+writing the ERSTBA register, not the lowest 6 bits.  Fix it.
 
-However since commit dc0ffbea5729 ("usb: host: xhci: update event ring
-dequeue pointer on purpose"), the EHB bit is already cleared after half
-a segment has been processed.
+Migrate the ERST_BASE_RSVDP macro to the modern GENMASK_ULL() syntax to
+avoid a u64 cast.
 
-As a result, spurious interrupts may occur:
+This was previously fixed by commit 8c1cbec9db1a ("xhci: fix event ring
+segment table related masks and variables in header"), but immediately
+undone by commit b17a57f89f69 ("xhci: Refactor interrupter code for
+initial multi interrupter support.").
 
-- xhci_irq() processes half a segment, clears EHB, continues processing
-  remaining events.
-- xHC enqueues new events.  Because EHB has been cleared, xHC sets
-  Interrupt Pending bit.  Interrupt moderation countdown begins.
-- Meanwhile xhci_irq() continues processing events.  Interrupt
-  moderation countdown reaches zero, so an MSI interrupt is signaled.
-- xhci_irq() empties the Event Ring, clears EHB again and is done.
-- Because an MSI interrupt has been signaled, xhci_irq() is run again.
-  It discovers there's nothing to do and returns IRQ_NONE.
-
-Avoid by clearing the EHB bit only at the end of xhci_irq().
-
-Fixes: dc0ffbea5729 ("usb: host: xhci: update event ring dequeue pointer on purpose")
+Fixes: b17a57f89f69 ("xhci: Refactor interrupter code for initial multi interrupter support.")
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v5.5+
-Cc: Peter Chen <peter.chen@kernel.org>
+Cc: stable@vger.kernel.org # v6.3+
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/usb/host/xhci-ring.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-mem.c | 4 ++--
+ drivers/usb/host/xhci.h     | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 98389b568633..3e5dc0723a8f 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2996,7 +2996,8 @@ static int xhci_handle_event(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
-  */
- static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
- 				     struct xhci_interrupter *ir,
--				     union xhci_trb *event_ring_deq)
-+				     union xhci_trb *event_ring_deq,
-+				     bool clear_ehb)
- {
- 	u64 temp_64;
- 	dma_addr_t deq;
-@@ -3017,12 +3018,13 @@ static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
- 			return;
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 8714ab5bf04d..0a37f0d511cf 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2285,8 +2285,8 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
+ 	writel(erst_size, &ir->ir_set->erst_size);
  
- 		/* Update HC event ring dequeue pointer */
--		temp_64 &= ERST_PTR_MASK;
-+		temp_64 &= ERST_DESI_MASK;
- 		temp_64 |= ((u64) deq & (u64) ~ERST_PTR_MASK);
- 	}
+ 	erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
+-	erst_base &= ERST_PTR_MASK;
+-	erst_base |= (ir->erst.erst_dma_addr & (u64) ~ERST_PTR_MASK);
++	erst_base &= ERST_BASE_RSVDP;
++	erst_base |= ir->erst.erst_dma_addr & ~ERST_BASE_RSVDP;
+ 	xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
  
- 	/* Clear the event handler busy flag (RW1C) */
--	temp_64 |= ERST_EHB;
-+	if (clear_ehb)
-+		temp_64 |= ERST_EHB;
- 	xhci_write_64(xhci, temp_64, &ir->ir_set->erst_dequeue);
- }
+ 	/* Set the event ring dequeue address of this interrupter */
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 7e282b4522c0..5df370482521 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -514,7 +514,7 @@ struct xhci_intr_reg {
+ #define	ERST_SIZE_MASK		(0xffff << 16)
  
-@@ -3103,7 +3105,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	while (xhci_handle_event(xhci, ir) > 0) {
- 		if (event_loop++ < TRBS_PER_SEGMENT / 2)
- 			continue;
--		xhci_update_erst_dequeue(xhci, ir, event_ring_deq);
-+		xhci_update_erst_dequeue(xhci, ir, event_ring_deq, false);
- 		event_ring_deq = ir->event_ring->dequeue;
+ /* erst_base bitmasks */
+-#define ERST_BASE_RSVDP		(0x3f)
++#define ERST_BASE_RSVDP		(GENMASK_ULL(5, 0))
  
- 		/* ring is half-full, force isoc trbs to interrupt more often */
-@@ -3113,7 +3115,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 		event_loop = 0;
- 	}
- 
--	xhci_update_erst_dequeue(xhci, ir, event_ring_deq);
-+	xhci_update_erst_dequeue(xhci, ir, event_ring_deq, true);
- 	ret = IRQ_HANDLED;
- 
- out:
+ /* erst_dequeue bitmasks */
+ /* Dequeue ERST Segment Index (DESI) - Segment number (or alias)
 -- 
 2.25.1
 
