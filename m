@@ -2,99 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BAAD7A156A
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 07:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E8017A15CF
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 08:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230479AbjIOF2p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 01:28:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
+        id S231616AbjIOGBL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 02:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjIOF2o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 01:28:44 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE56B2D54
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 22:28:17 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-502e7d66c1eso2517886e87.1
-        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 22:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694755696; x=1695360496; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xn9oFhHLAknaWRf3uArqHTLA9prBJhnE4LW7Dd164uA=;
-        b=dK+HDjyZaIzzWjOpKGliaqyaq/IuzoIhWNmB8yFOe3y4+beIdkyiw3y4C+DO86gi5Z
-         AQEBqzuRuIB+l5fp3AsZavt6Lz/jrs3lfLVPhX4ZEpJm1WJvceXX/P831J+WFK8f1/it
-         eIQBvIggVMaXhLBOOAxyvA/w4SoUn970h/sCw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694755696; x=1695360496;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xn9oFhHLAknaWRf3uArqHTLA9prBJhnE4LW7Dd164uA=;
-        b=Ar6lmdgLQ9y+PKOTmR5w+Zt2ANlDlCXBJwCN8iOpdDOpGF/zAEsY+0wILC053nDmGN
-         6YTfX8rgcTNEEL+jKc++z4tfP1e5xhWlo9yJ7KxlGsdYkWATHvLY2QVAyeHq5NR+hF2l
-         z64JdPgXfVPCt7sKizY19BFh7X1d4fFmdaCeeehHWArRYxrGxelKTPhRGMgrHNSKXzDI
-         Ig1Q5zgEJdG2FqynnshYPwI0VOGN91o75Mc2uoNdtYDfurSX9brV6KEKZiHVsi6NpRUq
-         xz96ace0YnbM4LmT/skVd3hntRH/mGeha5AZVU5YdXPOt64RMKUgZvnLrq3LVpVuiWk/
-         zB7g==
-X-Gm-Message-State: AOJu0YzC0RXCXjwwItdXOyvPDKNTsKVtr+3q7EJDneXk5yJx19E276jB
-        7Cxyb6cc24apcadPRBkbsD2IvKQQ1Zq3jdzO8J1s3w==
-X-Google-Smtp-Source: AGHT+IHBF/LZiSOCHbF9PK/ZZsZw9DLkRfLiviBg8ZInp/Df/pEH0sQClGR3SSNslHwvIhnE/oLD3Fo+uCtKqC7O+9w=
-X-Received: by 2002:a05:6512:48c9:b0:502:d639:22ed with SMTP id
- er9-20020a05651248c900b00502d63922edmr518597lfb.48.1694755696091; Thu, 14 Sep
- 2023 22:28:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230914131058.2472260-1-jani.nikula@intel.com> <20230914155317.2511876-1-jani.nikula@intel.com>
-In-Reply-To: <20230914155317.2511876-1-jani.nikula@intel.com>
-From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Fri, 15 Sep 2023 13:28:04 +0800
-Message-ID: <CAGXv+5GJxEobJKKWuc_UN+Gf_z8g6eb6KWTz-L+RqtyLYKK3Jg@mail.gmail.com>
-Subject: Re: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback
- audio detection
-To:     Jani Nikula <jani.nikula@intel.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Guillaume Ranquet <granquet@baylibre.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-        linux-mediatek@lists.infradead.org,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230097AbjIOGBL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 02:01:11 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F0C41BD0;
+        Thu, 14 Sep 2023 23:01:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A575C433C7;
+        Fri, 15 Sep 2023 06:01:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694757665;
+        bh=9MYU2c3p+u08BaUZwHdx5A80Jm0GHT65ymH8UGQeY2o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=t98NC91cmHcY2SIHVVWfBpFXff3XcWNRQW00nQC8kmgcs4HPMKoaaqmsM/803h9lC
+         ZY/z/TUXMzAIj9YY5CADvBElL7X4wq/HQVs2ha3mtHcTf7BXj5dY/4AT8Ptn/E4MG9
+         KC4BlOh0zegW3Vsk4ljI4HIshSYvbLwuLeRNe/ZZ5rpPLZzdBhablGaYahVZGvaMsq
+         7wVAjueW1tum0REjgugpz10dKYl57+QySnUYfC5NlbCABkWMzo+vwBLn0JI71HGVkT
+         bnyXWj8BBNICyVOjs8Wn+Yb5yqaL6x2OAvD5bo8Yd6XEhasx9pIno5suVvuOSumsSc
+         sSnyg/tL0W6Jg==
+Date:   Fri, 15 Sep 2023 15:01:01 +0900
+From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To:     Tero Kristo <tero.kristo@linux.intel.com>
+Cc:     rostedt@goodmis.org, artem.bityutskiy@linux.intel.com,
+        linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] tracing/synthetic: Print out u64 values properly
+Message-Id: <20230915150101.ef50c4774ab85aa2ff7431ec@kernel.org>
+In-Reply-To: <20230911141704.3585965-1-tero.kristo@linux.intel.com>
+References: <20230911141704.3585965-1-tero.kristo@linux.intel.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 11:53=E2=80=AFPM Jani Nikula <jani.nikula@intel.com=
-> wrote:
->
-> The sads returned by drm_edid_to_sad() needs to be freed.
->
-> Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
-> Cc: Guillaume Ranquet <granquet@baylibre.com>
-> Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Matthias Brugger <matthias.bgg@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-mediatek@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: <stable@vger.kernel.org> # v6.1+
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Hi Tero,
 
-Looks correct to me.
+On Mon, 11 Sep 2023 17:17:04 +0300
+Tero Kristo <tero.kristo@linux.intel.com> wrote:
 
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+> The synth traces incorrectly print pointer to the synthetic event values
+> instead of the actual value when using u64 type. Fix by addressing the
+> contents of the union properly.
+
+Thanks for pointing it out.
+But I would like to see a new "case 8:" print code instead of changing
+"default". Can you keep the default as it is and add "case 8:" case there?
+
+Thanks,
+
+> 
+> Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tero Kristo <tero.kristo@linux.intel.com>
+> ---
+>  kernel/trace/trace_events_synth.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+> index 7fff8235075f..070365959c0a 100644
+> --- a/kernel/trace/trace_events_synth.c
+> +++ b/kernel/trace/trace_events_synth.c
+> @@ -337,7 +337,7 @@ static void print_synth_event_num_val(struct trace_seq *s,
+>  		break;
+>  
+>  	default:
+> -		trace_seq_printf(s, print_fmt, name, val, space);
+> +		trace_seq_printf(s, print_fmt, name, val->as_u64, space);
+>  		break;
+>  	}
+>  }
+> -- 
+> 2.40.1
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
