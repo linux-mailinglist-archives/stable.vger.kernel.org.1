@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7F77A258C
+	by mail.lfdr.de (Postfix) with ESMTP id D639E7A258D
 	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 20:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231775AbjIOSWq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 14:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
+        id S233822AbjIOSWr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 14:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236303AbjIOSWR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 14:22:17 -0400
-Received: from DM4PR02CU002.outbound.protection.outlook.com (mail-centralusazon11013008.outbound.protection.outlook.com [52.101.64.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B5F1FF5;
-        Fri, 15 Sep 2023 11:22:06 -0700 (PDT)
+        with ESMTP id S236489AbjIOSWh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 14:22:37 -0400
+Received: from MW2PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012001.outbound.protection.outlook.com [52.101.48.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD57E2130;
+        Fri, 15 Sep 2023 11:22:29 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ipUP4KQafOaRjYRz1vPJ7HdsTbgboDbT813AjW1pdlGGMkyUm0W9J5RQZ/O4Cj2VKzTDwbMQ2F6QwZHhcPJo6/THN79TUyqX9PZ4hw91xN/IE8PgPaGKdDsQDPrZTIV62oCLaE5mIRVQLKrQb6Z71ZktNfxvD6egkLTHNUD/ogs9VCDKISheX5VWFE+kHVgWvwGN5WeeITxKVdsuoCQf5xW/CCaCngl4UOfgstgx1BvyEDbI3v+pfn4Gtde1om9xYMRKFr2HZNi++EEAIZyXSFkHktn1X2r0ULaO21YOtOmrRNfQDnwgu2+YgYwGhQw3umWd4gRwzzfdPAp+Pn0WqA==
+ b=g3bmuE9szAsB9bU42yepnD3bt3+cQbNfRUSyYvqxV8hrMS/ZCCpZP5Cp+J2dThnUgrM5SXHbC2NmduaioDIwbclgWZKwv0NQKkfknx4OdG2by2k6nd1fJv1gGVzDpU6VNRgUxM3WZ5aNvjwoNwiFIY4P+W4gHZvuVfV/1e/dWAd9S1wyCm5pU70ufq8RRKJaYf+6lLmV2qDbkCmNBaqdO5BTC3D1b0PN+yRu/WXkiJwH58TySxOgjCC69M9EElayKo/zmN4dAaHXP8nfeYuFO7C6GcYyPlTVzhdLt/DbcJUQZH61DcJCW4jLLtUHVdLk6rZ2JEwARM5kJQSMoJIMEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nL23yudCxp5H9cLbs3EOICK63clnf5mHeA3+GoydjTI=;
- b=X1JqWBu7vPDXRwaXzlsoCBVwx+3KAHL83QCaPr0994MF9mwwNBWM7HERg9Xt0cORjIzdPF5mKMPCh4RqO7fX/IqmovniQABoPkEVsAA3FfNBVcyC8Aod/6V4ye1NZpQ9tuBs0MhWoWwkpFZuco9kzDP3LhOqX4gX+czAatbeDl7KKHWoa0xR758b/uzu7fx+gKYc67BPvxsUaN64WGblR3J5lnHBUnRuDU0j6mv12FdbzJ2K3eekudwSuHHwN3h2q6UmxjYK6NAuKZZDGapDiGUR4kiFfvVaGgKXRiEzpA/uCXm2JYyIfbioaLJh+yqx6e80QXT863vFd/t+soxpBw==
+ bh=FETbCyXS9wjBtDZXo5BwM6xKdayPA71pB1MDIFkX1pg=;
+ b=Fj8uZ+aSPnbKBhzr5dxz+Y2JPZ0FiVfuV9wyssc5bhqoy7PpBykUMoV9MUz0V4pranrnATtazSD8ldy2ySk86/p9aaLDDlqwG3fBn4i/6IkCLWTADgdS8540+yQtl983TEptee6d9fjgPRN9FgoLPvWcYZG9C6Cy7+7KVALDGd0sRSVrrfDkvPfwBt1d9/NiaSedi+BGWc4Wjk+xLmurVbBKGRUeoWhXflk9dq5MHTRU2qqqOSkaO0sfdERFxvmkFZny6X+SEKM5WA58YGvfKbq/tN5YiuErUvhsiqYyXmfAx4Xg5y0udDt3JbzT5fw7EjHZTz4jXennWnv1pdVrvg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vmware.com; dmarc=pass action=none header.from=vmware.com;
  dkim=pass header.d=vmware.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nL23yudCxp5H9cLbs3EOICK63clnf5mHeA3+GoydjTI=;
- b=aK8U1TByZ+tNFY+WblCsDNtmoyfLZSRrCU1kIjtSQsiYD24mWvUWgRwtoDUVGIzYuVbG+/hZtOCplhlOBifEvNR0eyOsa8/7d6RwjsJbEaKGD9XPOU0cBNEm2fgQMSiXuiHi8nQxtkKC1/jQqQHtOTVYT5j5weCEVGBlFz6Seek=
+ bh=FETbCyXS9wjBtDZXo5BwM6xKdayPA71pB1MDIFkX1pg=;
+ b=osbXXZ0ogGp/a3bj8FH1LSWnvM6Y1uemjEueQiEn3nmgRIYkGXmVEW/H9hCNjhvtj0s63gAjZ29H+H1FUtvAAInfXK49X3yjM4ak9fHaKIX0NhwPXtddnIvNbAZC46iA5DPbEW9gXtbj0/Jg1/gQQ1Pt0epx+ay2N/GWzL9hS9I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=vmware.com;
 Received: from PH0PR05MB8703.namprd05.prod.outlook.com (2603:10b6:510:bd::5)
- by MN6PR05MB10209.namprd05.prod.outlook.com (2603:10b6:208:46e::13) with
+ by MW4PR05MB8524.namprd05.prod.outlook.com (2603:10b6:303:123::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Fri, 15 Sep
- 2023 18:22:04 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.38; Fri, 15 Sep
+ 2023 18:22:27 +0000
 Received: from PH0PR05MB8703.namprd05.prod.outlook.com
  ([fe80::f06:95fa:1a2b:9c4c]) by PH0PR05MB8703.namprd05.prod.outlook.com
  ([fe80::f06:95fa:1a2b:9c4c%5]) with mapi id 15.20.6792.020; Fri, 15 Sep 2023
- 18:22:04 +0000
+ 18:22:26 +0000
 From:   Ajay Kaher <akaher@vmware.com>
 To:     stable@vger.kernel.org
 Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com, alexanderduyck@fb.com, soheil@google.com,
         netdev@vger.kernel.org, namit@vmware.com, amakhalov@vmware.com,
         vsirnapalli@vmware.com, er.ajay.kaher@gmail.com, akaher@vmware.com
-Subject: [PATCH v6.1.y 1/4] net: add SKB_HEAD_ALIGN() helper
-Date:   Fri, 15 Sep 2023 23:51:02 +0530
-Message-Id: <1694802065-1821-2-git-send-email-akaher@vmware.com>
+Subject: [PATCH v6.1.y 2/4] net: remove osize variable in __alloc_skb()
+Date:   Fri, 15 Sep 2023 23:51:03 +0530
+Message-Id: <1694802065-1821-3-git-send-email-akaher@vmware.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1694802065-1821-1-git-send-email-akaher@vmware.com>
 References: <1694802065-1821-1-git-send-email-akaher@vmware.com>
@@ -58,52 +58,52 @@ X-ClientProxiedBy: BYAPR08CA0001.namprd08.prod.outlook.com
  (2603:10b6:510:bd::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR05MB8703:EE_|MN6PR05MB10209:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09523f12-caab-4be2-8bb0-08dbb618a980
+X-MS-TrafficTypeDiagnostic: PH0PR05MB8703:EE_|MW4PR05MB8524:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03a2c66c-f15a-4630-522f-08dbb618b6f0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cWCea4zBwoKSC7qbKUhgLI9ZLdJwfwjajV4u7ppgP01UOKroBB5CU18ziWyK5m52RRiUSezHQcriRJKenNHP/CVbZUSqePp7POXiZAmNB9/Kql4xZNx8mTGesOiK+oJmTFE5EIdFyCLljPg6w3dP6Ymq6+xlb1ZUgytLbZ+BM7meAqSnKSW6hPBP3CB78eSRF4Z/7nh/A1kCh3F776h4Wiyvstv5LHGtkuxICPZPEs+xA4hXflK3IJ7FPfkHUqmfyj/C3m3Y+TKDTlI5oT56Ph7uY/uHqDNTk0yVQDvFjvxs3ihp8+VXMOJ42OOL2CMTOEDJFbWYKG2yv2MmVag3LQDSoAyyBYaFz3OFLjrV/0//YcIYuoyJPL47oDMbvTgKwtq7GA6Wy4Ryeb9G8tRZKX/n1JY8Yz8LVDsqjzff3QTQ0Y/xfKGi+aR8d6d7ZZDiQJIhVF0P6GszaIDQyaEl/hHyFMa9P0jORWoSNC0ryU5RtsZGFuu+GZSQqcLoI+OUOjKLdcCN6joHzvqW/DSvx/5oPSXqkSk/O1Fb+M0bRgUs+kVnA/3+kYuUqHt0kbvKlvdOUCvZEPCoiSJUimxI4U7FwJRS70vbniD1QPJees2x3OatkLHiD/EattWi9R9Tb5yB8Zp6Km+ndAQq6LA21IqqKvPn7aqe5L3MBFqFx3E=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR05MB8703.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(376002)(136003)(366004)(39860400002)(1800799009)(186009)(451199024)(86362001)(5660300002)(2906002)(8676002)(8936002)(4326008)(6512007)(36756003)(6506007)(6486002)(2616005)(26005)(107886003)(38350700002)(52116002)(478600001)(38100700002)(83380400001)(66946007)(41300700001)(66556008)(316002)(6916009)(66476007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 6zUHH/qbA5G/iVJeqoXcEo+n0baP/ldoDap54CDn1dgS3ISxAuB0canLGAMRb/PU3w4Iy76nnyqujJVhd6L2EGitF2dnF1FCU3cAAO2mctcSnA+ce4lyUl537O0AIIPHV2rLDmUTP3ORX8bZAGgPH+RZvMVrwh3wrRmyaXhgipqZSsYhVmaEUHPuine4kFROkmu0EGp0rg6qv4aQ2SZ5q+j9bc2WCh1SCfeif71DsdDJpYV3Oz3IdyNiEjhu4ZrEJZwKlY9N4TmR4DeKnvPy2Uzg8oi4abbFHbI+e6suPBeEGxzbRXsISIkTJ7+N72SYmN80B0VQ3+lsE4IksOal9tuXmFpmKSh7H1c0qaLHV0EQZdWE6tAjg9ng/gkTR58yCkRxgNhVaxxKgMV0kh8Bi0aFGRk2DKGEWy7m2pHCE47YtkiC6iOhqIhvp7R18w65zCD/hZvq/OfKoSKvPIa/X3YXYfKfo3qPEgoLs/kQ+NTN5IegfMXXkEVCA439ObRZuDpNrq8F7eeXQOdmw3NmaIoHBJsm1l4ffTjnthKiyUzM+/o8UuG1sehACROkKS/iv69HgajbxGhvYu6kJXbrniY8ahvavqhYeiT7sUsna6JS0/kE0JDJWFn2K+0sfdM2qY9WOwGGqYuVVvcTEQJH6nzmQ/oKt2I1OPcZ0ACA8uw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR05MB8703.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(376002)(136003)(39860400002)(346002)(451199024)(1800799009)(186009)(36756003)(86362001)(38350700002)(38100700002)(6486002)(478600001)(5660300002)(52116002)(6506007)(66556008)(6666004)(8936002)(4326008)(2906002)(66946007)(8676002)(66476007)(6512007)(83380400001)(316002)(107886003)(26005)(6916009)(41300700001)(2616005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IbcO618SWgPAh911jF3mwqbB8AqTBYCLieuyFBzp+kd+MY937pmzX6caEG4y?=
- =?us-ascii?Q?d9CBH52UtVJ09zx/h06p7HME8gVHkrTlA1UkFGY0cI2YyfpLlRmqQg7FE7nc?=
- =?us-ascii?Q?NUtC0VnDbeOO3CyRqLzzh5NkhyQpSVxayqm/Rco0cPKji+wQFKRAlL3rkii5?=
- =?us-ascii?Q?o8puZ3bsrHkmz0s2zMoPsH7v0PCiPX9x+yb3LnnuHAF+Hl2ZakJtHxuuSZ+z?=
- =?us-ascii?Q?InRjDFYqwRe0FEDlDTw67Y0ndVNQTE5h+0pqeda4l+eOEXUYLTNLdR+mnGts?=
- =?us-ascii?Q?+U9hPqXZEMTk1R+Ss0PnLuF6i9HT9an5v2o0JMVv7O3mC+aIvHLLbR+bCOvn?=
- =?us-ascii?Q?FX6RFycaeM3g6REAEs+nGyh/tJiCccDVdGLmRA5cMOLf2KHX5ZOetAn8qLL2?=
- =?us-ascii?Q?dajHnTz2uRpNj3nlI+Ig3aqVAmR/QJZ1OJFs9DEZsou15NLO/NkD3UghOtJM?=
- =?us-ascii?Q?uQli94TNSUHyYwEskOmEL9ytJ2pVTADjIT5qAsjeasWZrEF0/40bQcDunZBM?=
- =?us-ascii?Q?km7AEawGXM5nPkB0qxMYE7D6Z62DvH925opjVSSPBTO4fKdQRSf72SzEScX4?=
- =?us-ascii?Q?4HNydQkLHIxDY2YxX2d21WMmhSo8Ere0wSdq6dVgpkFQrBm53mb7RBFjhffE?=
- =?us-ascii?Q?jWRhynCeRnvngpvZUEjc+TA7tKBZizSjZlTygWfR9r9Ble7LET+K9QT7D8vD?=
- =?us-ascii?Q?fu01SDWbrXy1ZRa0yBqiFD8UB+srFP8w8H1+H1FmRXRtbldZdgfQrJTynmIa?=
- =?us-ascii?Q?1/BGSv0yJhvzZsaZYvTfmbG3baDHR2LwfNOqmkIh34GnDEPjVgxizMMb183Y?=
- =?us-ascii?Q?ddyRPFEzkWmcy9xi4B3+HDW9fQEQpviFVc4xhfD8TJvaOmS+VtbuQlQ9U5Ic?=
- =?us-ascii?Q?TOQ3NBZfh3O0nKf5cnpmpraFmAcR66CREFg/6tlJBYiLPtiWcz4UuKOV5t3C?=
- =?us-ascii?Q?tlAb17M45XMVtvilJnF3gJNnD/KYeqdLskLZ6SrWIl/EYTs+xYyR+yI7Xq5a?=
- =?us-ascii?Q?SghQYblIeZcCCW2WVfZlD4R+giYAIgfsCRMcAKMAYlxrZ8spCpXU/hLSHLv9?=
- =?us-ascii?Q?+KPXGkpzVpFxowZDQ1eb6zRU/ha+7zIL3/bEjDBxgaNt/dZ6ZaXURs0/I3m0?=
- =?us-ascii?Q?5+jEmY040pwX3miD/5e+/G1ah8N19wIsh6QADd2lStmy0/PWKYO+cOMSkIru?=
- =?us-ascii?Q?RZRv+OXqrkLUBpTtbIAkSpG2MWFHlAaz4JrWQUEATXVOOwV/stbTP9cWYIaU?=
- =?us-ascii?Q?pv6pulEUowZmVKQf/+eoXoha4jzd+c4iOjhvr9cjpKedIb55OhbhAZJhw6Jn?=
- =?us-ascii?Q?oT31zfRKvn5wBZpusaLOoJONGaT8DV9Po2DCi4J/iv97PEppCwhPf8Px/o0z?=
- =?us-ascii?Q?xvL+5IcnReDM93vR+CxRtY1ZPXGYD3tJjiXeZBVrcd3GgN4FTDU1Izhfwz4X?=
- =?us-ascii?Q?CJnz6rJejeBzeCxTh17RkbCl8C0guvpPxVr2fewEtTSPvqpsQAvIZgL2yqVO?=
- =?us-ascii?Q?0Z8PcwiTM8NWfM0/6pmaYpsWVc54IotHcav+FB9HA1lGE1x8nAN0NPk1Xg9w?=
- =?us-ascii?Q?93JdoJRbqyZ5p3UBQZKGgfmq7vCjRugiw0iIz2d4?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ioTa0rLVhP6y61Tq5eTJnet5vvNKb1L9HE1bzFHuTvuDP530p63oP1Cv/P4x?=
+ =?us-ascii?Q?saZzcEZ5y5Zjq708GwU/+I5Wuk71pDZ6jwgSXzU0vA81K7Gt99dYA8wkBIaI?=
+ =?us-ascii?Q?AbQImGxQhESVon7cs5KAL1x/SAEEgF3mUvmzX7aFPhgmInbiwYlHA69Hrozr?=
+ =?us-ascii?Q?sU1bFp9tI2rXJM2euVlTxOarU/uExMLmXBMXxI+8BLXYOel2DTScpocpOG99?=
+ =?us-ascii?Q?gKc1kYHCPnQfaRJ9Vd3TvEh8ro7EquB6o8waFfm24Q+8RpDOtmEkhyIcpMRz?=
+ =?us-ascii?Q?9i6Rfp0qS0x5rWU8NVvqpIIAbKlQ7GNpPgQMuzJnoHKBYjyoV+jes3q5Tkq3?=
+ =?us-ascii?Q?F8xonPzaNmUIpDx4KlMxfPpUEMbdtRz5efbIFoyQLSfpGUaYmFHWeEMFIClN?=
+ =?us-ascii?Q?A41Y1/avCVVeoGwyMKXJhfvxGk07zCxwa1ff/8l2vcsL+6Ss5/awmVjw/+Pd?=
+ =?us-ascii?Q?IUcJnCX5m3TzWgDe9ilATOVDiONTpemTLOGrnX4lQGd/cmakfat+yzXCvlYJ?=
+ =?us-ascii?Q?9Rx07u9SmxmJvKn3WoW4ReJrB0Vlxd6mEh3crDZWebdpOSwRd0KYMvnD4nZZ?=
+ =?us-ascii?Q?o0lzDZr9q+QaQ5y5fVvRerMQhCJ3WF0vDpwCon6rYI/hfls16GdtmnfwkO8i?=
+ =?us-ascii?Q?D7Fdu0IvDLBGvZjEwP3m6NKuHkcy13+CXcNlqk87BnQqOmtPKbId/OqAJAYz?=
+ =?us-ascii?Q?+LkcfoYMjsE5pKSX3e+JRtXjAmezdbx4eMx9oKj60b8RH9gcFGEvbW/kpbEz?=
+ =?us-ascii?Q?/Qbjj3WlXoDFt/XxD8XDKESsS1YTlGXIO5HmHR6mrMrKPpjdosxi4OGOWzzF?=
+ =?us-ascii?Q?OJjUewRbAyyY5MT8vqHZcvCogoRFOZRQf7sz8wugefsamTg4NDfJT4Sp4FSb?=
+ =?us-ascii?Q?UB3ZdBvxlw5mH8tAPENPI6+B2zaAkwNkZSWCuuU2OOBAU55pM5Sb6OY15d58?=
+ =?us-ascii?Q?kAL9FDhy7HtPrGuVr6Zbr0O9SLBYS6WQ3hCwO+TB8RewYKVzBNvATIclVElZ?=
+ =?us-ascii?Q?VaAf0kgug9RLOm08T93xwPnuAokHNO4zt8nMLrQpMTTImwsj8oJQ76Xs7s2m?=
+ =?us-ascii?Q?4N+QMu6OrfTFS8IZncDGzFWS1S8nlymcf6FUa0LNkMHwfG2uRv2jh1l8RvHp?=
+ =?us-ascii?Q?woXXq0CuJYNOhe0SD337RMPn/iVjoRugZE92sqVAZuzXBKyfBHeYXNlcCJTf?=
+ =?us-ascii?Q?jatn5NMn1zVjihqyGB7MTIuTsSrxrxATT3YyTOzhma0v7N6C4kHebce/3XpM?=
+ =?us-ascii?Q?L2276Uot1FqQ3VLWpRC+7l2cvg41MaN193WyepI3D1a3fOz2Pp7jdPeVojbr?=
+ =?us-ascii?Q?76d4l5vv8RxOg2j5XWXY9ikJl560XtkmTiN8nLofEr0LNq+k0EEfv1c35Xml?=
+ =?us-ascii?Q?JAmdlbfKraJsYVy5mpluoV8G8yPpUyOm1ufJrEPrVK1JsdGxVS7Jotj2QSfc?=
+ =?us-ascii?Q?JMSAcUD1nhO55EBDfWhPozWAyCP0tfHLJ1q3S8FKoZ7fNzVgjsC5N4Z8GZ1K?=
+ =?us-ascii?Q?kbvTsGav4NJpH00U8EdqS1qIGFYtF/dC80GRshAHzdiUT9yu4PJlDtgKjjmL?=
+ =?us-ascii?Q?IzISHScBVIuv0wtHQLjrB9XOFx9Qr1y+q2codKhx?=
 X-OriginatorOrg: vmware.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09523f12-caab-4be2-8bb0-08dbb618a980
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03a2c66c-f15a-4630-522f-08dbb618b6f0
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR05MB8703.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2023 18:22:04.3751
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2023 18:22:26.9410
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yyO3MqXroToSkVz29w5d/++F7fB+rVwyoqD/xohdSsfiymrXmkPg1ALXnn3v68hSIDNEBGWHg+rxK/kxdFvCHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR05MB10209
+X-MS-Exchange-CrossTenant-UserPrincipalName: XGhfs/j9sVb6Pb/t76nebmMTGe1zHgpH7+Q/vrr59R7lgcV/jEnjKHOCqVjrW/ZiM3Tycxju0IRP7hxmSaYmjQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR05MB8524
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
@@ -116,13 +116,9 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-commit 115f1a5c42bdad9a9ea356fc0b4a39ec7537947f upstream.
+commit 65998d2bf857b9ae5acc1f3b70892bd1b429ccab upstream.
 
-We have many places using this expression:
-
- SKB_DATA_ALIGN(sizeof(struct skb_shared_info))
-
-Use of SKB_HEAD_ALIGN() will allow to clean them.
+This is a cleanup patch, to prepare following change.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
@@ -132,93 +128,50 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 [Ajay: Regenerated the patch for v6.1.y]
 Signed-off-by: Ajay Kaher <akaher@vmware.com>
 ---
- include/linux/skbuff.h |  8 ++++++++
- net/core/skbuff.c      | 18 ++++++------------
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ net/core/skbuff.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index cc5ed2c..2feee14 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -261,6 +261,14 @@
- #define SKB_DATA_ALIGN(X)	ALIGN(X, SMP_CACHE_BYTES)
- #define SKB_WITH_OVERHEAD(X)	\
- 	((X) - SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+
-+/* For X bytes available in skb->head, what is the minimal
-+ * allocation needed, knowing struct skb_shared_info needs
-+ * to be aligned.
-+ */
-+#define SKB_HEAD_ALIGN(X) (SKB_DATA_ALIGN(X) + \
-+	SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+
- #define SKB_MAX_ORDER(X, ORDER) \
- 	SKB_WITH_OVERHEAD((PAGE_SIZE << (ORDER)) - (X))
- #define SKB_MAX_HEAD(X)		(SKB_MAX_ORDER((X), 0))
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 24bf4aa..4aea8f5 100644
+index 4aea8f5..1c059b6 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -504,8 +504,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
- 	 * aligned memory blocks, unless SLUB/SLAB debug is enabled.
+@@ -479,7 +479,6 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
+ {
+ 	struct kmem_cache *cache;
+ 	struct sk_buff *skb;
+-	unsigned int osize;
+ 	bool pfmemalloc;
+ 	u8 *data;
+ 
+@@ -505,16 +504,15 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
  	 * Both skb->head and skb_shared_info are cache line aligned.
  	 */
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	osize = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(osize, gfp_mask, node, &pfmemalloc);
+ 	size = SKB_HEAD_ALIGN(size);
+-	osize = kmalloc_size_roundup(size);
+-	data = kmalloc_reserve(osize, gfp_mask, node, &pfmemalloc);
++	size = kmalloc_size_roundup(size);
++	data = kmalloc_reserve(size, gfp_mask, node, &pfmemalloc);
  	if (unlikely(!data))
-@@ -578,8 +577,7 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
- 		goto skb_success;
- 	}
+ 		goto nodata;
+ 	/* kmalloc_size_roundup() might give us more room than requested.
+ 	 * Put skb_shared_info exactly at the end of allocated zone,
+ 	 * to allow max possible filling before reallocation.
+ 	 */
+-	size = SKB_WITH_OVERHEAD(osize);
+-	prefetchw(data + size);
++	prefetchw(data + SKB_WITH_OVERHEAD(size));
  
--	len += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--	len = SKB_DATA_ALIGN(len);
-+	len = SKB_HEAD_ALIGN(len);
+ 	/*
+ 	 * Only clear those fields we need to clear, not those that we will
+@@ -522,7 +520,7 @@ struct sk_buff *__alloc_skb(unsigned int size, gfp_t gfp_mask,
+ 	 * the tail pointer in struct sk_buff!
+ 	 */
+ 	memset(skb, 0, offsetof(struct sk_buff, tail));
+-	__build_skb_around(skb, data, osize);
++	__build_skb_around(skb, data, size);
+ 	skb->pfmemalloc = pfmemalloc;
  
- 	if (sk_memalloc_socks())
- 		gfp_mask |= __GFP_MEMALLOC;
-@@ -678,8 +676,7 @@ struct sk_buff *__napi_alloc_skb(struct napi_struct *napi, unsigned int len,
- 		data = page_frag_alloc_1k(&nc->page_small, gfp_mask);
- 		pfmemalloc = NAPI_SMALL_PAGE_PFMEMALLOC(nc->page_small);
- 	} else {
--		len += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--		len = SKB_DATA_ALIGN(len);
-+		len = SKB_HEAD_ALIGN(len);
- 
- 		data = page_frag_alloc(&nc->page, len, gfp_mask);
- 		pfmemalloc = nc->page.pfmemalloc;
-@@ -1837,8 +1834,7 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	size = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
-@@ -6204,8 +6200,7 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	size = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
-@@ -6323,8 +6318,7 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	size = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
+ 	if (flags & SKB_ALLOC_FCLONE) {
 -- 
 2.7.4
 
