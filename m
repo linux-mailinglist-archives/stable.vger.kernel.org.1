@@ -2,248 +2,226 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE1B7A250C
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220127A255E
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 20:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235871AbjIORqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 13:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56294 "EHLO
+        id S234172AbjIOSL0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 14:11:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235889AbjIORps (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:45:48 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D626DC6;
-        Fri, 15 Sep 2023 10:45:42 -0700 (PDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38FHNtmu006078;
-        Fri, 15 Sep 2023 17:45:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=corp-2023-03-30;
- bh=rpYOy7EF8qJBo7gF1TEbg1iCIabk7Cyk6ccYH1VL0ng=;
- b=MBn21bZ8Ybht2FcTgWS5NvyR7cg7tS9cMYtNbjh4+nRoFRpG9Ursuz3UMgQX6eCKbi3U
- gohL4ma5x243hHEQxulrtQEcNqvwJYv/MUIdsQKKeGI9wpT+WiEkDf/6NoDk2SpVtUz1
- 0fAQigt06XJyaNchFlz6F0oVPfi3LM4XUCu1TBSF/9JOuuyGl+ni5QD75ieXe4S6cyUY
- I2buyYFfnZGYHTHOQtfxE0a+puzd5mczapImlFg3j9GbHPZuch3ba3SNumso2rlHArGZ
- uyhe8B2qpOOWWAnHlX9z3ME0Te9+xOO6pLxmw40s3A6diALHN1aQL+S9m9HYrky/AKc0 TQ== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t2y7kgadx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 Sep 2023 17:45:01 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38FGe30R003091;
-        Fri, 15 Sep 2023 17:45:00 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
-        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3t0f5acwrr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 Sep 2023 17:44:59 +0000
+        with ESMTP id S236321AbjIOSLG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 14:11:06 -0400
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2059.outbound.protection.outlook.com [40.107.101.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8031FD6;
+        Fri, 15 Sep 2023 11:11:01 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PO4kvckbkbAV2BIabFS2NsnxgrHc7q170LOWNvO8Vv7PpGdk658nawa61PbC7UJFAn1vkYR8kft/WRSYps/M9oiEFv3lnYKWX3KCEqEbSrYWCqz+RtWS0etjOJlqkuem7hzPScdMDDYpgrXT5hL8/PTuODPdmVWks9FPWT7Lu9SQJ1eJtrWsy+K3/FeeKHpTlw36Ab8yMVY6IgMXR/QrfaECM2beuMc/YxYdcHJ6lvE2h40k71O2L7fJrSsYA600HnTCdnQERQib7aWKB8szmPIdZcu2xxpAdF/xRDrkwa6ix57XkjTKa2ZdmbrvI6FS/qk8Q1SGeBtmKtt01fFOgw==
+ b=F1v13VKAPc+Txzxgo2Hv1PvRH9yGFCXkEj6yeAb93b9X010o5/k5OKuPJ5Ap9wHAcTl8Na56IrJFgnwqC6wyFTMsuG93U8u+YGn2r9eGnvEmVF10EYXPEHa5qGR/vuiFxw+wta3dyKiLpZ5h3yHJhvFLPn/iEiH4IHamy+8cbiFmdGJYCFxWW6ZtJuMeT7qW2y6FiNhEuziOzwt+PXCkJjLmF9Zeet3snZPiW+3UKRK26RUbZ516wE76bVMYVR4J0Zs6TpkNm8qScAevdu5KbPcu63JMRimWnZHdp+ZQc8RlJBZWGJDT3/ezZq7shRBhlIyjvRYuiIe1+zMKiHPSTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rpYOy7EF8qJBo7gF1TEbg1iCIabk7Cyk6ccYH1VL0ng=;
- b=YYszLzMsWRUZssgGb5SEpzpIlbB1EmOysRfzg4I6zTY6DWfbg4TO4R1SM9Nz3c6mFIDTN6Jf23zCrYG8aD3XHp4RKMaldBoQupLsjsr7LuNbgcxCmenMXC0gvLR1rIEC0kg7iXPX4X0EyM76cQzSVUYOwJM9GbGa41dzW+ojB3jePNLaGwIq4fWG3ijdIrz6ojHQEG8v10VI4V9b0qShDqr9HqPGLqmWADxZv7qw8vLmYyqkMINwGC49PrvjfiTfskockrkTPH+CzleplrU4FsK+BEnnEoOk+hmnCEFk4DofFsCT6csFI4eyO7cVB2v4911lc28m5nw+yH2Nj7WR6A==
+ bh=M7GKTeesLukhp0emuGe/ao4XZWmhl0e24sIAHlaCGlE=;
+ b=HTMGJBPLo3bJI5zuocp73jrZ59dBfuczKfLmjamwYFf7vQhr9KmIVeYsj6Hpn/PzqLwMRH6lP3K0wbtOSW/cECphXnHp9zrjyPjTOBUzYydkbB6qjamHupyZ3q9It6MtujmTZJ9c/U4u5VRg+J8t8LStGf7IBg+3dTV9xuHKkBPZSQgeoPl2m22vx/Mnprmm2xUrj3JG7WtOIJGOGWume0tiWTfz45JH2Wx+JxK+e5trOQ9OMadrXtTe3hgvN+ePZRZ2dMYfE29YA9SZ0683ctwis4JJkGmf3EqnCnneXoNlF8HM3qwiW7n9dXx/GJbQHPkultMTNLug9o0EulKwug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rpYOy7EF8qJBo7gF1TEbg1iCIabk7Cyk6ccYH1VL0ng=;
- b=TVyleGzd8MsRlcmSO+GpykeHVtuPKKuqgSFh+hcAxlzJmlXWCaR6JnadpLrjhzbRY3TbzpFa8Tn/d8cB7C2LbybpjyzLshIi7JNB/k+wGPdkKjk438pJUUi3BqlqvREFEJ2LQtlraz4hymuj93u3lerLHGaCKcYR24ofCIbtBsI=
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
- by IA1PR10MB6243.namprd10.prod.outlook.com (2603:10b6:208:3a1::15) with
+ bh=M7GKTeesLukhp0emuGe/ao4XZWmhl0e24sIAHlaCGlE=;
+ b=OYILhAv9tCPqSeJYdIdNWMesx16uGM5z6zwwwlsazTyQP0x9X0AIhIUt+8IPspzl99BlpCyffqg0s2kveNMS05cYR5LidqN2p53FtavadcvVatxdaThviXYyI5iVR+8hzNO4DWgS2PzMvqqhcpXML2dOZFikshQ1OUNw7K//G9Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
+ by MW4PR12MB6778.namprd12.prod.outlook.com (2603:10b6:303:1e8::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.38; Fri, 15 Sep
- 2023 17:44:57 +0000
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8979:3e3f:c3e0:8dfa]) by SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8979:3e3f:c3e0:8dfa%4]) with mapi id 15.20.6792.020; Fri, 15 Sep 2023
- 17:44:57 +0000
-From:   "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        stable@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Peng Zhang <zhangpeng.00@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH v2] kernel/sched: Modify initial boot task idle setup
-Date:   Fri, 15 Sep 2023 13:44:44 -0400
-Message-Id: <20230915174444.2835306-1-Liam.Howlett@oracle.com>
-X-Mailer: git-send-email 2.39.2
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Fri, 15 Sep
+ 2023 18:10:59 +0000
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::121e:5e68:c78a:1f2f]) by CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::121e:5e68:c78a:1f2f%3]) with mapi id 15.20.6792.020; Fri, 15 Sep 2023
+ 18:10:59 +0000
+Message-ID: <5536b749-4db2-467d-875f-410c4a4a0e9c@amd.com>
+Date:   Fri, 15 Sep 2023 14:10:54 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: fix the ability to use lower resolution
+ modes on eDP
+Content-Language: en-US
+To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     Stylon Wang <stylon.wang@amd.com>, Alan Liu <haoping.liu@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>,
+        dri-devel@lists.freedesktop.org, Wayne Lin <wayne.lin@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Joshua Ashton <joshua@froggi.es>
+References: <20230914175354.102709-1-hamza.mahfooz@amd.com>
+ <3630bc42-c04c-4c22-99f2-5dc6bd5d8e2f@amd.com>
+ <290648a9-4882-4228-bdbd-1045e20b71f7@amd.com>
+ <e44d8385-1137-4f41-a3db-9af88ff87bb9@amd.com>
+From:   Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <e44d8385-1137-4f41-a3db-9af88ff87bb9@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: YT2PR01CA0026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:38::31) To SN6PR10MB3022.namprd10.prod.outlook.com
- (2603:10b6:805:d8::25)
+X-ClientProxiedBy: YT4P288CA0044.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d3::26) To CO6PR12MB5427.namprd12.prod.outlook.com
+ (2603:10b6:5:358::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|IA1PR10MB6243:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bd6aa0c-66d9-4d0f-f035-08dbb6137a39
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|MW4PR12MB6778:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30002e78-2fa5-42a8-e106-08dbb6171ceb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YoDY3p35NO4JJvZ1zjaFyt0rsSSSFhSTid93NAwtmbpfWpiPE48VUJybM18vrUuPJjZf8Ks2MYUDGVRVYxSF3O6dVn6dTtrNkF2plJjsOLHlgf1/YE2qHodUL2A5py1CQh7HoKgBQC5kkncACGMeId06M+nqk2e1ef7NFnID/x1K4oyBO+lf7j/TvoxIp5iIbfIPIm2w/oyg+ZUhFf5jEKvsFY0LTH2+ENTaPEBQg9wVWl7a8sK2f9hU4ozFp+TNUwLBkOeswqGpGNXHNIbyyeTwaZ60TS9H6KGDQlXvaKCdyU7PJ3f15UlZZv+OSBblAA6DteYq13vuVyNpk4C7DQeHCxUmTgWdl5qyAs3WaWfnFs2uNj8EaFrbWZwKS81wg56Qa0CL+kjlWzWS9xR0PKa56PCbkyvgqkOJ16zDvzHSC+9nPtZkWoLsN4Xn7/gO0iQfZV6Z4pHQ6WKTw5qGnmekdPp+XHla4cujToJ0oSoU7An6SH1BJkU3nD3y4Gbhr6VLX/fQOXexe1fgWlx0c+uvuj3g3eWtFx7UfmQ72S+Az2ANou+oLTuJ4ONKMm4NBySw1ktmVk7tbk7gl4fg6w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(366004)(346002)(376002)(39860400002)(186009)(1800799009)(451199024)(6512007)(54906003)(6666004)(6506007)(66476007)(1076003)(2616005)(41300700001)(66946007)(6916009)(8676002)(316002)(66556008)(966005)(8936002)(4326008)(5660300002)(478600001)(38100700002)(26005)(83380400001)(6486002)(86362001)(36756003)(7416002)(2906002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: QGIG+S3aCEsqEpq3okUgv/p97aLWs2boP3xCN9DX8RcHAM+UD47yTX5/tv2/In+/CfaNyBlZQwocpwD5z/NhJCsBoTdVDZ3svXAivH2kTYKsASEEHMNRvszCPIGgOwFQ/zZEHJw+TCmdwnAKMQ4mzq+YILK8HdRXmALkODaofW1qNrrSLa0G/4rTP1pbrHaQSxVj13GAO4Isq2jX/1XO5RHnLjLSFG/R9AscrtfC2IL/c/iSp292+EpUfms38MlXeAhK7B42LE0g9PnGeUAhpyb2UdBRpUt6OHLB5Tuq/NAc+XGf8PhFwDIsli6P12jnYHFXEdotsB5TK0PTwzh1VLCXJzaiGpC+VTjL1c/odESp3TaLT3BJx5VFWupezanMIB2B/tmvQcPDkrUqm+MobRkXztUp2CygAlEQxiFWdS+AvsbhBmG/5BLIX5zZtKLMo5pF2FTRMObuw+UhacJs8lsVWZEieKJbn6PVMdt8Uh4JYUbeEJrYT0YQqtgMfZjTY0CFe1pEM0iLpVTTYlqwnt1l5GAk7ZVOrMbrZqj8AjFI7uDnBkSxEmzb+z0dHMsqYLbjC7TzhFpW3SHNSZxMWutPyv6kLG2VJFwjvHuVLZK/zIe2JxVzdH5WVNasNEoX
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(346002)(39860400002)(396003)(136003)(451199024)(186009)(1800799009)(31686004)(6666004)(6486002)(53546011)(41300700001)(38100700002)(6512007)(6506007)(83380400001)(36756003)(31696002)(66556008)(86362001)(4326008)(478600001)(2906002)(26005)(8936002)(2616005)(966005)(54906003)(5660300002)(44832011)(66476007)(316002)(8676002)(66946007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4sueTJ5WgYSetS1pxMjU9LJ7kJ88cHeiitvwXzlCmAKBKkHySXLM/1YTpIVD?=
- =?us-ascii?Q?dIwPDJPlwWrcsw7cfTpmz6vNyRGYa5TPo3tnmKhxmRc2yRAcgzj6z6wAW/1S?=
- =?us-ascii?Q?1900pKJj4m8xuqQSU3qXIPO9ax8hwvaEBL6pc8nqhlFhpM9bzGGEoJReTN4X?=
- =?us-ascii?Q?LH/89CTgqwl4JN9R8ZI2I/4DsQPiFd+wu2ZiZluGJCK/mIZvJoKJdSvu5CXE?=
- =?us-ascii?Q?ohzQY4Dxh4dSfq/AyhyC0Y47O/opXq+K/Kb4PPFw6B517WliO1JwArx61OpP?=
- =?us-ascii?Q?nlPfGdazdtVE+g+xkBVjdOxJy+3I0kgsPmUvr5nU2ugbM1ThovKYgNEjR+ay?=
- =?us-ascii?Q?oBFQCtmVwjG3Ey8L/B6wY+dwIV1d0793a6TiUWUsui38I6198VYk1u7CWVMU?=
- =?us-ascii?Q?OKsME+2bPHBpEZZ+8mX9ZD5rOv3tjHoK/bFYQjfK3KYWHCltyUcFjF2YygY5?=
- =?us-ascii?Q?9zulysKKNltKYhuAl/aGL0bOalzV97NYD4S1iUbiao5zkPXCjInCWiBf8edn?=
- =?us-ascii?Q?UW+nOipABNstGm7pLLWEHU9FrSfraG0oIuq4VobUzsKPQ5seP41TzVXStYV2?=
- =?us-ascii?Q?8l00YuQ/SAvAzxeGsXJPngn2CyhUKvUrptH5PnDKorv+n3EVehdcbaZa6Xna?=
- =?us-ascii?Q?maAjNti//SqpOgoOFW4FnEfKUk3fxS69hIj0UpWxLvGnNTd2/pKP7smKiJpL?=
- =?us-ascii?Q?loXrqlh9i9BQ8eCGu1rstLW6vcK3ItK+WwatiqBR4l5SB2RwiyQkTH32CxJc?=
- =?us-ascii?Q?syxCtm15N23r2F46tePSs33ZV/xh+QYEDrp6lk0e8PAjNLcM9NzH7+WnoLlv?=
- =?us-ascii?Q?qJFnrzjZrClHhzB8QkJCQ+gasksdqDs0DkDUohhyfhEyLcw1QNHCmueCxcrM?=
- =?us-ascii?Q?9IL8pvjoCiHeTjS6Q99hPFZHFAFDH9CBWgzbrJnS7F4FGpmZ9Cd1ZSogi4gG?=
- =?us-ascii?Q?mtfDCkCFBQPXIVVmxASIp/oISH33UWsr4znmyb2z4Dh+oYyGNKWgE3DHZUrV?=
- =?us-ascii?Q?3F76PvJbRYtJqOaBMzC5B8m5sCg0pLalylWwwnElzgt7H7wjO6KE9HqoqECV?=
- =?us-ascii?Q?1IBGhMOU3V0UXkPcxD7sruUOycmto1SPkRpdLlLK8JPZzPtFr5a+kiSqI86J?=
- =?us-ascii?Q?879PrG74D+iIdrjOF4Aq9rBmu7eJ+afxzpDc43wXitFRDM56D7Nkba846iMp?=
- =?us-ascii?Q?U6Iyyy3IfBefEvowoLjszdH0JZJIw747yoHPXakNIiVjJuaTXCOmJP/s/Wu2?=
- =?us-ascii?Q?c9c8GYPLLPP7BKhvVUYRu+gwFX4DiE45Hn3s4djDIEwSBdL9ZZbx9Y1AUZGf?=
- =?us-ascii?Q?gk9u6IDi5pBrZ6G+lf7+Nn/GnkuQBGh06aoEx4Wmb0kmkH/quoPZV7KhxO2i?=
- =?us-ascii?Q?PNJ+hCMLVNSTJb1b/E/4uzghGt/S0gp0x7+mqHSqxk17wizwU/SU+WeVlDHZ?=
- =?us-ascii?Q?InJ4XwUcWhSg/YZDH/LTp952S0+SL8sS1jkshZ/MZsQR6Mm8o6Vv2JWliR6k?=
- =?us-ascii?Q?3ZWkyN4ADXASd4OFnBLD3LCfLDY96bcToj3cYdGdRVEF54cWL9CVdee1jbG4?=
- =?us-ascii?Q?RofRIBSUQOXZywEhDPyxfW8i66yibJBoPmA6d/BP+5i5IoQv6/dN+Vl/XCAL?=
- =?us-ascii?Q?Zw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?FQ1bF9CPIxP8igUDHYMfSUYhURni3rAP1FQneG1hvPXprfko0E4tqVlep8Vg?=
- =?us-ascii?Q?RUYZzVDTtPiOEC5botwrJbznIPdauy+Gz3Z3ou4G/0ceEkW1qBhBpO2GBUUL?=
- =?us-ascii?Q?ztYGtf6UUA5RwQcJKwsuKKaCLCot0Cdpa64taihsvDvTdtv/PVMjTaS5ao7f?=
- =?us-ascii?Q?VMRHRpzx5RmqoYALGPA46QGYsW87YQhwHs7oRWoKtz7G45gLpLl1wqvYDm9y?=
- =?us-ascii?Q?uSeAA/0jXPUNvVAZ/+DHg6wfR3EN4dlk5HqBiTwbvtUOcHoXdiMMc8K6z6sH?=
- =?us-ascii?Q?oCNQ7eoxji6xtoiXzvC3DAr6PjSYBChCKFa/VI0f3L1OZmiaS63dPMp5W/O6?=
- =?us-ascii?Q?0tzJGk6/u1M/OYf/TVlJdrRz5ZuJN4u/I0EHG+UIAhzcVhv0MXBuFRpKjgro?=
- =?us-ascii?Q?VWUBZ3w1DLFQS9V+VkDz55U80UCwDmnkIp3ZIcyPltMb1LGccUVsjpgD05v4?=
- =?us-ascii?Q?PTKWT0M50RPmnZKsAfKDvNGXzxuo0NQlIaE2xwV1M7l5hKF1C6k0+OaWPVlm?=
- =?us-ascii?Q?VUUsnUF1AY/mdP7u0wcjcXN/SodSoK2edEtVjVZCiysQllr4+aHifWFzBzIf?=
- =?us-ascii?Q?LbAjgNVDwOd5x3kMQ6CifdFI6DvovFp+8CHuatppWIJl4k4J3loxK9W688+Q?=
- =?us-ascii?Q?liCAy5ad8f/Oosj8FG2Tg1ThYmobPGqz0f7hJ5riCGpE48MOYvMgBro2I8nD?=
- =?us-ascii?Q?IXGhwBCyxS4ZmRl+ggQZ8IcmA8SHJvBH7JtWmLnV5HMhMHtQNJ1lGIqrM3Na?=
- =?us-ascii?Q?cYIg9HNDKToILqXsk5VmGDbLDhoV/i7MUIaqdZtmtQ8N+GuwJjwTyeuCt1R7?=
- =?us-ascii?Q?/XVCJ+qpwxYrcH4z0Lj8btNttvNy6cHxStO4StUl5cpvdcRo1Z28vRluQ3zG?=
- =?us-ascii?Q?a7U/1kzWn8ZsbW1pTaVWFNb77U5snlVxrCkqudKB3J59F7nVovMOwNv6CYBp?=
- =?us-ascii?Q?ISl7vD+TQEkPKAM/P7i+uWxPsJ1ADUbylVRBeVHl2iwo5OnDpS+xKn+K4aJE?=
- =?us-ascii?Q?iJXigq+WGqi51BCYsuXOce8HhGOWK8wz51Qemh9MfDyxHQLEBLDK4TVHlMmE?=
- =?us-ascii?Q?1MijsBrV4Cn7swQw4vQYhSQ5yOV+5Jv5ClU6ZvalWu1vFxV8a2CcY50ONAt6?=
- =?us-ascii?Q?FOIzLtZ0ooBsfJTN1qwJBJdUtJbpOGarcw=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bd6aa0c-66d9-4d0f-f035-08dbb6137a39
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RnJUTzhRNGRBNDBXanFYY2lzdnYxN3BEUWhOa2VQU0dBZEI0YkRwK0VDeGlw?=
+ =?utf-8?B?SzRHeVF2aFRMb1pybzU0WTAzL2FQRUpxUW1McndneWNPT0RZZVBMUEw0OHA0?=
+ =?utf-8?B?dmRNcWxrUkhUNjNkaUF2TmFWUlZaVzExeXpCNmZrOHBVWkVuZW4rU0xZc1Vq?=
+ =?utf-8?B?dWJxUWRxOGJjZFNEVGtlS1k0UHQ4RThnOHdoVzZKd216R0g5SmN5cnk2QUR0?=
+ =?utf-8?B?eVVmOVBQZERydmVBOWd3MU1YaE5YemtxaXBRZWpLSVFlcEd4eCs0L1ZYWXNz?=
+ =?utf-8?B?YTdsRWlWQVBkM3Bqa2Z6V05WZnZpQ0lLaGt3dE1NNWFrRzhkeVRTcHVWWDdo?=
+ =?utf-8?B?TEJTcFg2cERJdHg4SUlFU3BGeFU1aDhTUnc2TEZObUt0QUJQb05RcGlMemFF?=
+ =?utf-8?B?RHhQSnhiQmRGNnlDK3R0YVBOVlhuMDFObW9yZkF4d21tOFFCK2YyUjdTeTVv?=
+ =?utf-8?B?YW9GSUlwM3N0RHNLS2hxUzEyOElwNjJ0aGE3am0yUWJXVTBaUG9GcFRVaGdS?=
+ =?utf-8?B?bFNmeEZiQkZXUmlGOFlXZmFsQ0lqVDZTaVY2RVNVcmg0Y0pyZ3N3WXM3aE56?=
+ =?utf-8?B?V0I1eExlOTFwTnJQaHRUTzhMb3M5NkVTTG81Y0RVT0UwSkhkSDREdkI1bDl2?=
+ =?utf-8?B?anMvZWszNUQwOWdHRFpkc2ppS0NRU3lJQllKVUJKclVCNHJ2QXRyWUl3bHJ0?=
+ =?utf-8?B?bnZtN1MwZ1piSklMbGkvZ0NmN20xTXRYVi9uc2QxWWdLNzB5WEljSmxjMzEw?=
+ =?utf-8?B?djVCTkxSb3FMaFc2Vkoxc3krTWo4YVQvYXh3NzdOVGNGaVRGRldCYjNsNWlO?=
+ =?utf-8?B?Ty9ZY2tUTTd1U0dndVQ3dThyYU40b1MxcllkOTVMa0MrZVhlWlUwSmJyRitK?=
+ =?utf-8?B?cVpOYkZISW1iUUNJUEJDZGlBRllzSlpsTHVjR2czanMrWWV4ZW0vUXduZmJH?=
+ =?utf-8?B?Sis1Y2FxL2dqTlN6dEhINnlYODZQanJGVnRVcXJtUTJHSHp4MGE1bG1MTGZt?=
+ =?utf-8?B?enkzNmgzR2hXSzVib09NTTRmTXZNK29JWjI3UXBFVFpxM0d2WStqbUJZcWZJ?=
+ =?utf-8?B?SktqTVNxWWUwWEk2Y0YwRVRuZDVndURpSXhqU3NLamV0RUhnWGgxdDY1S0k3?=
+ =?utf-8?B?RjdCeUdkeG9ic3ovalljWmxMSXFGcno0dWN1eU9xb3d3K1lCOGd6SUxHcDVC?=
+ =?utf-8?B?bkRaL0ZYcnZUS0JNM0NrOTRjNFR1NTNpUHE1TVlrbk42bFBmSU5XRGtpT0xN?=
+ =?utf-8?B?VEF5czE0cWJ4bWVpTjRuVzZyWGkrZEI3eFpwSTBQYlJMMkswc1B0VUJYaWY0?=
+ =?utf-8?B?MjN3NlR1NE1BNHJWZWlZY2Q5V0pEWG1zVDB4OWNPK0lpQStuT1N5cTE2Yi82?=
+ =?utf-8?B?YjB2RnExcmllUnlSQnBEc0I1YjFmYmNEeGo0ZytnTUtRRlc2QmZ2elkxdUx3?=
+ =?utf-8?B?S3QvL09BWFZIWlVmY0JYeGdkc3kyZUdYdTdqR2xRTlhYS0lnUi9OeUhTd0hz?=
+ =?utf-8?B?VVM4dW9zdVNXVWQ4THUwSWQyM0JzV3p6dFl0dkw2KyswR2hYSGY5ZFNnRDJ2?=
+ =?utf-8?B?R2t4a2dadFBYMDlZZzYvMDRxLzk0T085V3h1ZGxoMWdlZHpUYWZDeGJEUWhS?=
+ =?utf-8?B?WkFrZ3I3VHE0QkpEcC9WS040WUlMc1p0Y1Bieis1Y1NEVm5kVXh0cko2TnRP?=
+ =?utf-8?B?dnVER0lkb2hhSmRqUDhITzYxeW9RUFV1WDExVThuTGhQUlVMQXhoY2FPKys2?=
+ =?utf-8?B?OHNqRlRCQlJuVkZBUy84Ym83MlhpOUhLRDZSSjRnZTM4ZldOemswUlc3aS9j?=
+ =?utf-8?B?M1hUZ1FYWm9qbHR3QUtqTjB5SE4rcVZoN1FXR0U2MXVmM05SSjZxOUxaL21q?=
+ =?utf-8?B?YWhuNDc5UDR0VnJQdjM2U2pkWHZ6SWtnVCtuQmFqVkdhM1hsNjZSVWRGWFNR?=
+ =?utf-8?B?eXNuL1ZCNDduNlhmOHI4dk5SdU4ydUc4OS9SQ1hEcjUrdlc4SGlYYzc4Lzc3?=
+ =?utf-8?B?eURQd1RBakRYNUxGQ1RiU1VZRlUyMUdyVVdyREVwWmgvVnEwektaTUoyTzZz?=
+ =?utf-8?B?WkR3YlRPWEVCVll0SDUzdzVnQndOcmpzdEhzRGhHVlIwaU03UEpxc3pCQUl3?=
+ =?utf-8?Q?nVp8/3e4+AwW0E+8IHscEYQ1K?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30002e78-2fa5-42a8-e106-08dbb6171ceb
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2023 17:44:57.5264
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2023 18:10:59.0893
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FSqqBKIjrEnBjImaR3REJxyh/QadaxWvnGVF63AZEF5FJHQeJY38wvAehP9nsBXDuNOtP6hgLL6GLN4qVAtRYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6243
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-15_14,2023-09-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- spamscore=0 mlxscore=0 mlxlogscore=999 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309150159
-X-Proofpoint-GUID: TCLnCxuw_HOsrkz8WkNiqECUKa0iEXpy
-X-Proofpoint-ORIG-GUID: TCLnCxuw_HOsrkz8WkNiqECUKa0iEXpy
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: /epAu+FJfZkYujyeQSrkuU7GKefU/SMC81+46KUQvLejCrQI+0VHADbUq7q9aDnK7lYeBoVVmTKL+CJ82uqzIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6778
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Initial booting is setting the task flag to idle (PF_IDLE) by the call
-path sched_init() -> init_idle().  Having the task idle and calling
-call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
-set.  Subsequent calls to any cond_resched() will enable IRQs,
-potentially earlier than the IRQ setup has completed.  Recent changes
-have caused just this scenario and IRQs have been enabled early.
 
-This causes a warning later in start_kernel() as interrupts are enabled
-before they are fully set up.
 
-Fix this issue by setting the PF_IDLE flag later in the boot sequence.
+On 2023-09-14 17:12, Hamza Mahfooz wrote:
+> 
+> On 9/14/23 17:04, Hamza Mahfooz wrote:
+>>
+>> On 9/14/23 16:40, Harry Wentland wrote:
+>>> On 2023-09-14 13:53, Hamza Mahfooz wrote:
+>>>> On eDP we can receive invalid modes from dm_update_crtc_state() for
+>>>> entirely new streams for which drm_mode_set_crtcinfo() shouldn't be
+>>>> called on. So, instead of calling drm_mode_set_crtcinfo() from within
+>>>> create_stream_for_sink() we can instead call it from
+>>>> amdgpu_dm_connector_mode_valid(). Since, we are guaranteed to only call
+>>>> drm_mode_set_crtcinfo() for valid modes from that function (invalid
+>>>> modes are rejected by that callback) and that is the only user
+>>>> of create_validate_stream_for_sink() that we need to call
+>>>> drm_mode_set_crtcinfo() for (as before commit cb841d27b876
+>>>> ("drm/amd/display: Always pass connector_state to stream validation"),
+>>>> that is the only place where create_validate_stream_for_sink()'s
+>>>> dm_state was NULL).
+>>>>
+>>>
+>>> I don't seem to see how a NULL dm_state in
+>>> create_validate_stream_for_sink() (or create_stream_for_sink() for that
+>>> matter) has an impact on the drm_mode_set_crtcinfo() call. That one depends
+>>> on !old_stream and &mode.
+>>
+>> If we look back to commit 4a2df0d1f28e ("drm/amd/display: Fixed
+>> non-native modes not lighting up") it seems like the intent was to only
+>> have drm_mode_set_crtcinfo() called for
+>> amdgpu_dm_connector_mode_valid(). Since, even if we go that far back
+>> create_stream_for_sink()'s dm_state was only NULL when it was called
+>> from amdgpu_dm_connector_mode_valid().
+>>
+>>>
+>>> It does look like &mode is an empty mode if we can't find a preferred_mode,
+>>> though. Not sure if that can cause an issue.
+>>
+>> I don't think it should be an issue, since before commit 4a2df0d1f28e
+>> ("drm/amd/display: Fixed non-native modes not lighting up") we always
+> 
+> I meant to refer to commit bd49f19039c1 ("drm/amd/display: Always set
+> crtcinfo from create_stream_for_sink") here.
+> 
+>> called drm_mode_set_crtcinfo() in the aforementioned case (and only for that case).
+>>
 
-Although the boot task was marked as idle since (at least) d80e4fda576d,
-I am not sure that it is wrong to do so.  The forced context-switch on
-idle task was introduced in the tiny_rcu update, so I'm going to claim
-this fixes 5f6130fa52ee.
+That's quite the tale of patches upon patches making things slightly
+worse until it no longer works right. Thanks for untangling this all
+the way back to 2018. It makes sense now.
 
-Link: https://lore.kernel.org/linux-mm/87v8cv22jh.fsf@mail.lhotse/
-Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
-Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
-Cc: stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Andreas Schwab <schwab@linux-m68k.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
----
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 
-v1: https://lore.kernel.org/linux-mm/20230913005647.1534747-1-Liam.Howlett@oracle.com/
+Harry
 
- kernel/sched/core.c | 2 +-
- kernel/sched/idle.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c52c2eba7c73..e8f73ff12126 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9271,7 +9271,7 @@ void __init init_idle(struct task_struct *idle, int cpu)
- 	 * PF_KTHREAD should already be set at this point; regardless, make it
- 	 * look like a proper per-CPU kthread.
- 	 */
--	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
-+	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
- 	kthread_set_per_cpu(idle, cpu);
- 
- #ifdef CONFIG_SMP
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 342f58a329f5..5007b25c5bc6 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -373,6 +373,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
- 
- void cpu_startup_entry(enum cpuhp_state state)
- {
-+	current->flags |= PF_IDLE;
- 	arch_cpu_idle_prepare();
- 	cpuhp_online_idle(state);
- 	while (1)
--- 
-2.39.2
+>>>
+>>> Harry
+>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2693
+>>>> Fixes: cb841d27b876 ("drm/amd/display: Always pass connector_state to stream validation")
+>>>> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+>>>> ---
+>>>>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
+>>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>>>> index 933c9b5d5252..beef4fef7338 100644
+>>>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>>>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>>>> @@ -6128,8 +6128,6 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+>>>>       if (recalculate_timing)
+>>>>           drm_mode_set_crtcinfo(&saved_mode, 0);
+>>>> -    else if (!old_stream)
+>>>> -        drm_mode_set_crtcinfo(&mode, 0);
+>>>>       /*
+>>>>        * If scaling is enabled and refresh rate didn't change
+>>>> @@ -6691,6 +6689,8 @@ enum drm_mode_status amdgpu_dm_connector_mode_valid(struct drm_connector *connec
+>>>>           goto fail;
+>>>>       }
+>>>> +    drm_mode_set_crtcinfo(mode, 0);
+>>>> +
+>>>>       stream = create_validate_stream_for_sink(aconnector, mode,
+>>>>                            to_dm_connector_state(connector->state),
+>>>>                            NULL);
+>>>
 
