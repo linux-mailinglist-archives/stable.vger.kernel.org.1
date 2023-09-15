@@ -2,96 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D375F7A24EC
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 852397A24F3
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235340AbjIORgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 13:36:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37472 "EHLO
+        id S235952AbjIORgl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 13:36:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236306AbjIORfy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:35:54 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69CC83AA4
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:07 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-770ef96aa01so154640485a.2
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:07 -0700 (PDT)
+        with ESMTP id S236540AbjIORg2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:36:28 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08572D79
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:35 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59b59e1ac70so31984717b3.1
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694799246; x=1695404046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B0w0jftHrCKOLI2sub5u/VeO/32jPwYn8o9L7rrDhT8=;
-        b=C3YzfpQnPRTWEN7YloNioiOpM10fq1DthdYTNZZ0GNMh/ulir/zHT00Fg6QNfrT3sn
-         /eswteh+WFfHjQx5ww8hPcY+XbjR/2OfxI4ytHJTwllf0OwqslAPmzN/Vh3YvYDnyXNO
-         pE9bqrY3ausXGLEwyt+821845V6vigVY4JpkedDbFCNMLqxkFj2J8bKZJCPM0iUyMz88
-         2mq2cOwuSLRkxpdV4SvPKTfkiu3LLdJ27PODERWkoax51UatP+4ZwmqpoC8tTSz0KyxN
-         LgYqX8nXLJV3fMYLgcoCctPXktq3ngzuXP5RvDNvkF5R2jOWehV9ZjVvwGh/q3kIyyHb
-         a5Pg==
+        d=google.com; s=20230601; t=1694799275; x=1695404075; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8CEOaleRfmVWxu+aHRyiNpWZbJifyuSx+uIjLiDWCm0=;
+        b=nPF2LtGZqBGsepshfqQ06vgVug/Orws9Xw6tEl7DC4ka7trRIDOgrtP80M2P6ssxgD
+         cg+XvCXwaQuvajAKyA5KowA5EYpK9jBrkjYy0oDmpK8ZRTakZD8eppLDlUQEBHt3fYFh
+         msJ9oMEIpNzSc+UIm9gYAn8t5hdKMEfuvav2jMGL5DNVusNJqFwPIyoKaNJ8X258hoBR
+         dFLIiTzGbHnLazRiIuG1jOqTHvcba97F8lUdWUAy/+qFsCs1xrI7emYvKclCLhs6cSJL
+         wnwz76YKUyVuE6di/tZZ9bhiYFYzLgqd373RCdBPa01rbpxzIeZVGfWOGN1Y5QaDpEAM
+         /7Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694799246; x=1695404046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B0w0jftHrCKOLI2sub5u/VeO/32jPwYn8o9L7rrDhT8=;
-        b=DryH9ZjeNw6TuCcIhtSAfn9thciGn5zuvj2Sx4O2uIumup952dJoTJPwK/jVka7OQw
-         c/BVLwFq4kDw6OhpEBKANDyKFnREdSvD8U45xetAUlruFLgVvfywlJc2Bo4cjY2okVwW
-         OUMI4g2A2Z4P6S0/0PsoAw+ohEuThr4IAZL6LkNOBj+bPNn2eDARNBsLO3Jz3o/L/3FL
-         90QCi46xMvvd0ll77PzBwTr9RWN0IWsBnyfdugHJLqi5zjHZJEdMlSKvb4c5j2KdciZ8
-         yInurnhITMxvb1BjDFin7xGmdWzuyKxpcKf2PskPYtv/I7FMuTknJU5zJIIeFYhmoHgd
-         smKA==
-X-Gm-Message-State: AOJu0YzlYjkme90YMTuI8TlhFaO2glygcuSNGaCk8/h5BVtzza/k7QLs
-        URLLWtX7syk5PJ5fWIocwGaIj2WcVFsAuBw6M6fpPA==
-X-Google-Smtp-Source: AGHT+IEZ/WDxzF/O9gB4A+40qEo3bPuHJhEt/xOjx6Re1kZpnRTINetruNrbaRwq/pC5z/EudhBlcPg80BxynPtATiE=
-X-Received: by 2002:a0c:e094:0:b0:653:5961:f005 with SMTP id
- l20-20020a0ce094000000b006535961f005mr2596649qvk.26.1694799246336; Fri, 15
- Sep 2023 10:34:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230915-bpf_collision-v2-1-027670d38bdf@google.com>
- <20230915171814.GA1721473@dev-arch.thelio-3990X> <CAADnVQJVL7yo5ZrBZ99xO-MWHHg8L-SuSJrCTf-eUd-k5UO75g@mail.gmail.com>
- <CAKwvOdkbqHFTvRNWG==0FjOPHgnA-zqE2Gn_nB4ys6qvKR2+HA@mail.gmail.com>
- <CAADnVQLfdMuxWVGKSF+COp8Q7DnKxYL0w5crN19vPkSd0Gh7mg@mail.gmail.com> <CAADnVQKJbTM-1n8YKvpC9XN7=tZuJi9mhnmmZSTVFOeBDv+SGA@mail.gmail.com>
-In-Reply-To: <CAADnVQKJbTM-1n8YKvpC9XN7=tZuJi9mhnmmZSTVFOeBDv+SGA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1694799275; x=1695404075;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8CEOaleRfmVWxu+aHRyiNpWZbJifyuSx+uIjLiDWCm0=;
+        b=dCs2zLTuULbsBiOq4CUbSY81/gY59nFcDhNMjnk4Gp511UBwxqAir2Xo6sLZCA59LH
+         i1UAOV4lzwDCWsaHRdtNmFbERvwfxp+/mFkVlgM8iElFGj1CwDq1HF3Pkb5peHHjyuBb
+         siS3enPSfZz7u/HlCLKNu5yYe/g1oVLfqdjuKVdzjYMwMynlb1u6/Rm/HDewoaJD7Umr
+         6faQQk9dQtAQVAKgkBQ8kp8wMjJf2WPewrYo0RjoQnLnS9qsd2X4FUhem+Fn0pIjo942
+         xIQQoIkeLq3AQHUWXD0jY04yMtTcJxoH3xqXte4s6FvGrHDJuvgCQVhqR0rkt3FIaJoc
+         FnBw==
+X-Gm-Message-State: AOJu0YwwWbGNTJWNSB3/eGVSv9t/071AxJjgtCv7+JzYmezftWi0URGE
+        ZABmhv2lg7R9GnDROGsXKSLVGSoUcHCEMa4QriU=
+X-Google-Smtp-Source: AGHT+IFBiU/ZCcBisMOL23Ew9xLGlAsZyNiAQBseIuvEQJu6APv2wfjEyjUavA3eiZwGcb97xAwMjmNNJozwXDw6BJo=
+X-Received: from ndesaulniers-desktop.svl.corp.google.com ([2620:15c:2d1:203:7f04:6b3:b482:dd2c])
+ (user=ndesaulniers job=sendgmr) by 2002:a81:ac5f:0:b0:579:f832:74b with SMTP
+ id z31-20020a81ac5f000000b00579f832074bmr64518ywj.10.1694799274896; Fri, 15
+ Sep 2023 10:34:34 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 10:34:26 -0700
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAKKVBGUC/3WNSwrDIBiEryL/uhajaaJZ9R4llMRXBBuDFmkJ3
+ r3ivsuZ+WbmhKSj0wkmdELU2SUX9irYBYHclt1q7FTVQAllRHQ3vB7mKYP3jcRs4FwsTHSq76F
+ 2jqiN+7S9B6DKIpirvbn0DvHbXjJt4Z/BTHGHCR2HkSjGV2XuNgTr9VWGF8yllB/0GbpwsgAAA A==
+X-Developer-Key: i=ndesaulniers@google.com; a=ed25519; pk=eMOZeIQ4DYNKvsNmDNzVbQZqpdex34Aww3b8Ah957X4=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1694799273; l=772;
+ i=ndesaulniers@google.com; s=20230823; h=from:subject:message-id;
+ bh=Su0VeWzLLW5m4JW7phmTjSjouMb7pr+oMSGtFqqroBs=; b=scxlJ85JlEGMgwbKW/xcGhuMTeJcbrDquF6+4ucCQh3voJj9Abvx6TkbueYcg7QcRH/LcaNrJ
+ mX0JcNwT9T+AW4+NSmsF0uUr7OgKV5U9TpTdeb9hSdnz5v+sgu6TQxI
+X-Mailer: b4 0.12.3
+Message-ID: <20230915-bpf_collision-v3-0-263fc519c21f@google.com>
+Subject: [PATCH bpf v3 0/2] link to v1: https://lore.kernel.org/bpf/20230915103228.1196234-1-jolsa@kernel.org/
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Fri, 15 Sep 2023 10:33:54 -0700
-Message-ID: <CAKwvOd=1X+2m2ZRUft9y+j8H0WBLWbM=VEiS+O0FfywnfpRYyA@mail.gmail.com>
-Subject: Re: [PATCH v2] bpf: Fix BTF_ID symbol generation collision
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+To:     Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Andrii Nakryiko <andrii@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
         Martin KaFai Lau <kafai@fb.com>,
         Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
         John Fastabend <john.fastabend@gmail.com>,
         KP Singh <kpsingh@chromium.org>,
         Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, stable <stable@vger.kernel.org>,
+        Hao Luo <haoluo@google.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        stable@vger.kernel.org,
         Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
         Marcus Seyfarth <m.seyfarth@gmail.com>,
-        Jiri Olsa <jolsa@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 15, 2023 at 10:28=E2=80=AFAM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> And please use [PATCH bpf v3] in subject, so that BPF CI can test it prop=
-erly.
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+Changes in v3:
+- combine v1 and v2 into a series; I didn't recognize that this macro
+  appeared twice in the kernel sources.
+- Use __PASTE twice.
+- Link to v2: https://lore.kernel.org/r/20230915-bpf_collision-v2-1-027670d38bdf@google.com
 
-Testing `b4 prep --set-prefixes "PATCH bpf "`
+---
+Jiri Olsa (1):
+      bpf: Fix BTF_ID symbol generation collision
 
---=20
-Thanks,
-~Nick Desaulniers
+Nick Desaulniers (1):
+      bpf: Fix BTF_ID symbol generation collision in tools/
+
+ include/linux/btf_ids.h       | 2 +-
+ tools/include/linux/btf_ids.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: 9fdfb15a3dbf818e06be514f4abbfc071004cbe7
+change-id: 20230915-bpf_collision-36889a391d44
+
+Best regards,
+-- 
+Nick Desaulniers <ndesaulniers@google.com>
+
