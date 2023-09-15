@@ -2,113 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E7917A25C8
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 20:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC267A26F7
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 21:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236368AbjIOSat (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 14:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
+        id S232230AbjIOTK5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 15:10:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236582AbjIOSaR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 14:30:17 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07A921FD7;
-        Fri, 15 Sep 2023 11:30:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76465C433C8;
-        Fri, 15 Sep 2023 18:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694802611;
-        bh=wbnJo8rFizU3HAyVmJkb5mTxsQnJcT5sgSZwMnt/Su8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=d/72teB7kMJ3Y5PTQUPYA1iDWaFjQn4n7PQkMSnEaeNmM2HvymvFNd7VWLnGwpqhS
-         WWFLON3vKsiU6RBXxBtrB5BX57qhAFgWwzRj2Op/p6zl4VIf/1xbLvcBaKgTchc21R
-         phqhYJ4IbejtsSu9yvB76uBvPpnoYaAfKp2NdIZpbsBjDJPcJ12w2IVcJje3kRRtR/
-         ILQ2S27EB9WVv3QbBIUUqHmn+xwEjgZpZD4hfKTvpXz45r4/uZGr1yqyE3leBGt+6f
-         6Usxkzu2JDe3//pzWURqJph/X5gHxkpgcv41uu6e3yQAXJfHO+z79+9xOxK8SgmL17
-         yfvlEBniTNh9Q==
-Date:   Fri, 15 Sep 2023 11:30:08 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        KP Singh <kpsingh@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, stable@vger.kernel.org,
-        Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
-        Marcus Seyfarth <m.seyfarth@gmail.com>
-Subject: Re: [PATCH  bpf  v3 1/2] bpf: Fix BTF_ID symbol generation collision
-Message-ID: <20230915183008.GA17653@dev-arch.thelio-3990X>
-References: <20230915-bpf_collision-v3-0-263fc519c21f@google.com>
- <20230915-bpf_collision-v3-1-263fc519c21f@google.com>
+        with ESMTP id S237072AbjIOTKt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 15:10:49 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AF57E7
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 12:10:44 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d7820f9449bso2441049276.1
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 12:10:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694805043; x=1695409843; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=t6Jy9kUIu2DIIzGv4f0XPwXh3BxzxnRtd2YRKiqx28g=;
+        b=OZxwhH5VUt4XRyl1wQQPpAAwK6XyCAOE8PteVePIRNM1g5+Lkat5taGgULlraJiY8Q
+         JXCyPwn9+h4zVjt6GfPKtBfyQihcAFl6UkWt/YcOSUjHrGXBCZhsBi/o1y+crpi/fnf+
+         d8l+9NnaP2Xaa03cLL+MYRuqzZ2k0PB/0Phthbv3Njw83e5UQ2FYKtNUTXW+jFid8uwV
+         V0TaUQJHYnhIiJvO+eAEnjr8ziHOad8bd+7y+tO1/UPH+eu0F5MOK0va1fJ//rdfWCRW
+         PKzSi+U5e7QomCbIf1VqK1BJOLlZ/6u/GasVjLVRd92qaJYfMC+w99VoqGGduZJ4nKL5
+         wUhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694805043; x=1695409843;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t6Jy9kUIu2DIIzGv4f0XPwXh3BxzxnRtd2YRKiqx28g=;
+        b=bOi4yYss4j0FwlEm6UL+mqMnqFPWjLO5GioIPVIkZSeltPcTjlOluPgr7skOJvCR8k
+         GdE3V2N8sgXK2MiGa5jMyXeJI0/l8uDuAu39/tFQAd8hTFMgecbxuA74qt4X7GZIxygR
+         HSbx49W0rWm0Wp72qs/Q27HXi28ryrQjlvpGw21X545ai9XReFgBSfQvKpTdNyO1H35g
+         mxkRPIwmVaI0+VuOItnnH3D8dEsaT9GVje0MrqZlIe8MvaLedVzJ+kfnhvFEqh2sW4Ec
+         3bi98/VdXSqKndHhBKKdkteLWQDn4sJkPhCTpSaQfkbyacdR6zQ4PfK3RtrhlWrZLeGt
+         fkQA==
+X-Gm-Message-State: AOJu0YypL+kq0FKbGT3eM+ExJxD3B9YKxeiquFZCWuOkNAylEpk+hzFA
+        93THT3ph3TF5urm7C3D502AMA4K0sod9uAYjbBycdQ==
+X-Google-Smtp-Source: AGHT+IFuczj9yuZz9ftZW2btw7mlFe/+y+3qOVlsqeBJ+2RnoZHP30asBXJFzxiczp4dPPSlVOjCo2KBkT1ZdT3gSjA=
+X-Received: by 2002:a25:585:0:b0:d78:3f9c:138e with SMTP id
+ 127-20020a250585000000b00d783f9c138emr2468180ybf.37.1694805043192; Fri, 15
+ Sep 2023 12:10:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230915-bpf_collision-v3-1-263fc519c21f@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230607045345.25049-1-quic_kathirav@quicinc.com> <rzxxoofebcyuoktsl72diwv575md62bxqse4uizfns247gyklp@tdoixme3qrjq>
+In-Reply-To: <rzxxoofebcyuoktsl72diwv575md62bxqse4uizfns247gyklp@tdoixme3qrjq>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Fri, 15 Sep 2023 22:10:32 +0300
+Message-ID: <CAA8EJprVQZXXVnNCULDYeUha0-mSyLZr1r6axbmw1MUiP_O9zg@mail.gmail.com>
+Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
+ ARM / ARM64
+To:     Bjorn Andersson <andersson@kernel.org>
+Cc:     Kathiravan T <quic_kathirav@quicinc.com>,
+        Elliot Berman <quic_eberman@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 15, 2023 at 10:34:27AM -0700, Nick Desaulniers wrote:
-> From: Jiri Olsa <jolsa@kernel.org>
-> 
-> Marcus and Satya reported an issue where BTF_ID macro generates same
-> symbol in separate objects and that breaks final vmlinux link.
-> 
-> ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
-> '__BTF_ID__struct__cgroup__624' is already defined
-> 
-> This can be triggered under specific configs when __COUNTER__ happens to
-> be the same for the same symbol in two different translation units,
-> which is already quite unlikely to happen.
-> 
-> Add __LINE__ number suffix to make BTF_ID symbol more unique, which is
-> not a complete fix, but it would help for now and meanwhile we can work
-> on better solution as suggested by Andrii.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
-> Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
-> Debugged-by: Nathan Chancellor <nathan@kernel.org>
-> Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUasQOfQKaOd0nQ51tw@mail.gmail.com/
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+On Fri, 15 Sept 2023 at 18:17, Bjorn Andersson <andersson@kernel.org> wrote:
+>
+> On Wed, Jun 07, 2023 at 10:23:45AM +0530, Kathiravan T wrote:
+> > During SCM probe, to identify the SCM convention, scm call is made with
+> > SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
+> > result what convention to be used is decided.
+> >
+> > IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
+> > variants, however TZ firmware runs in 64bit mode. When running on 32bit
+> > kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
+> > system crash, due to the difference in the register sets between ARM and
+> > AARCH64, which is accessed by the TZ.
+> >
+> > To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+> >
+>
+> My memory of this is cloudy, but I feel the logic is complicated because
+> early 64-bit boards all used 32-bit TZ. So, I really would like Elliot's
+> input before picking this change.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+But this codepath is not changed by this patch. Only the 32-bit
+codepath is altered.
 
-> ---
->  include/linux/btf_ids.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/btf_ids.h b/include/linux/btf_ids.h
-> index a3462a9b8e18..a9cb10b0e2e9 100644
-> --- a/include/linux/btf_ids.h
-> +++ b/include/linux/btf_ids.h
-> @@ -49,7 +49,7 @@ word							\
->  	____BTF_ID(symbol, word)
->  
->  #define __ID(prefix) \
-> -	__PASTE(prefix, __COUNTER__)
-> +	__PASTE(__PASTE(prefix, __COUNTER__), __LINE__)
->  
->  /*
->   * The BTF_ID defines unique symbol for each ID pointing
-> 
-> -- 
-> 2.42.0.459.ge4e396fd5e-goog
-> 
+>
+> Regards,
+> Bjorn
+>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
+> > Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+> > ---
+> > Changes in V2:
+> >       - Added the Fixes tag and cc'd stable mailing list
+> >
+> >  drivers/firmware/qcom_scm.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+> > index fde33acd46b7..db6754db48a0 100644
+> > --- a/drivers/firmware/qcom_scm.c
+> > +++ b/drivers/firmware/qcom_scm.c
+> > @@ -171,6 +171,7 @@ static enum qcom_scm_convention __get_convention(void)
+> >       if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
+> >               return qcom_scm_convention;
+> >
+> > +#if IS_ENABLED(CONFIG_ARM64)
+> >       /*
+> >        * Device isn't required as there is only one argument - no device
+> >        * needed to dma_map_single to secure world
+> > @@ -191,6 +192,7 @@ static enum qcom_scm_convention __get_convention(void)
+> >               forced = true;
+> >               goto found;
+> >       }
+> > +#endif
+> >
+> >       probed_convention = SMC_CONVENTION_ARM_32;
+> >       ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+> > --
+> > 2.17.1
+> >
+
+
+
+-- 
+With best wishes
+Dmitry
