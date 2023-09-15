@@ -2,152 +2,232 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F4FA7A17A7
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 09:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6DE7A17B2
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 09:44:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232553AbjIOHmg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 03:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46034 "EHLO
+        id S232321AbjIOHoF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 03:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232125AbjIOHmg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 03:42:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CF4872126
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 00:41:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694763688;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ovJMK9GrilbjwX/0y7+mnCgJGmzw3Nr5NlskEa/lZDc=;
-        b=Pm2fwBW07tuvk98NyQrmqHlqmzj3kdwmkw0VAQBNlJNwaDCoTN/35HKMBdYlBrSGj9aw7p
-        YMWbkEZ/2pC6P4N+3J42H3wq62c9pqqJPZcKw7oVakHQd3GQ3sCQt0Y6OAiB9xhAyZIuau
-        Ct6ou6jfrPqI4n4sq3dpXLyRjgBPeyQ=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-VF-xkYlVM1mBcBKqgPmUGA-1; Fri, 15 Sep 2023 03:41:27 -0400
-X-MC-Unique: VF-xkYlVM1mBcBKqgPmUGA-1
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-57698a90356so2440619eaf.0
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 00:41:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694763686; x=1695368486;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ovJMK9GrilbjwX/0y7+mnCgJGmzw3Nr5NlskEa/lZDc=;
-        b=X5H0VQalzgG4Kcq/utn2DrINdeyr150bRUQq1Rd2M3sIkqwneQw6l5TrREf2cGro60
-         IoAnrc9Y3g9AFLm/z7lqAqY5dqboUCK+o/+jcEeSyKNC118tyWKuWzwZBdBLKVgfzU2I
-         F6Od204pcwq4VBIthg5gwri97z5vUjhpcEptjx24Sg8pPRbylsNHfXnz7fkbWrg1wWzP
-         cyJcUPSAH99sePr9i8+F7/baXma/qeIoFYfZxkNKtKLX1jf1bXAjn7ED8XME9o26BwOp
-         RSnuWqsUzl9O+x/1PVEhdz5OaWZP/m5AevPmdX6CIB9TnsdXLotJIgoYoYuUf+IZHCa6
-         G7uQ==
-X-Gm-Message-State: AOJu0Yz/qHZVD6kt9W4m1+PEikxtF3TkSczFtisBDLpzHzPlioTFr/tr
-        Aum0jg7nyx+PaI+0vUFmQSeGwX0bz50BJoo++w/IbW1z6icFmN/ZKhw4wZ+Lw4x91r5MOy7Kz26
-        qrrNRMeF1FdZjYrLM
-X-Received: by 2002:a4a:7652:0:b0:573:f620:ec80 with SMTP id w18-20020a4a7652000000b00573f620ec80mr921810ooe.2.1694763686662;
-        Fri, 15 Sep 2023 00:41:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZ36StU+OLLbiTLn2e1HMORaLyCJT5Ubwlj6Yrdptj0Bnukx6gd9OIIFfyZaGbk53Jz3ZDiQ==
-X-Received: by 2002:a4a:7652:0:b0:573:f620:ec80 with SMTP id w18-20020a4a7652000000b00573f620ec80mr921799ooe.2.1694763686457;
-        Fri, 15 Sep 2023 00:41:26 -0700 (PDT)
-Received: from redhat.com ([2804:1b3:a803:4ff9:7c29:fe41:6aa7:43df])
-        by smtp.gmail.com with ESMTPSA id v6-20020a9d7d06000000b006b9cbad68a8sm1399416otn.30.2023.09.15.00.41.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Sep 2023 00:41:25 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 04:41:20 -0300
-From:   Leonardo Bras <leobras@redhat.com>
-To:     Tyler Stachecki <stachecki.tyler@gmail.com>
-Cc:     Dongli Zhang <dongli.zhang@oracle.com>, kvm@vger.kernel.org,
-        seanjc@google.com, pbonzini@redhat.com, dgilbert@redhat.com,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        bp@alien8.de, Tyler Stachecki <tstachecki@bloomberg.net>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] x86/kvm: Account for fpstate->user_xfeatures changes
-Message-ID: <ZQQKoIEgFki0KzxB@redhat.com>
-References: <20230914010003.358162-1-tstachecki@bloomberg.net>
- <ZQKzKkDEsY1n9dB1@redhat.com>
- <ZQLOVjLtFnGESG0S@luigi.stachecki.net>
- <93592292-ab7e-71ac-dd72-74cc76e97c74@oracle.com>
- <ZQOsQjsa4bEfB28H@luigi.stachecki.net>
+        with ESMTP id S232315AbjIOHoE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 03:44:04 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEFC98;
+        Fri, 15 Sep 2023 00:43:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kr4ppbqvQZdkmpgBrJBE7hTytVywd/S/3RDFk9K+0X/MQFaRQKZTCo2+l+cANxvBxrgvh7PFE8wSB98GenCj8/Gg1KehAFshVKNiQ8uKjrN91AYrQa7y/mMRfZqSnbrXMOr3Y7BlPTtjXUQt9GrZ9jbf4CSm6BbpOSVU0CPrWBwInzfOvehjsph4ayaGoDaDTiQlN4aUmk2X53KanVE7uxSiLB0MZ3XI6YUrsuBX9LNws2rDACUsCGbh+Rtuh+cP/K0Cen6p+WO1RMUR/WqefMKFJCu3GMqWhK9aB9t1ZUj3D/oubSUWGZsq02iy2GUQPPnffe3j/hQyK7MiM4QdCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZLRlaseHNfvFqAUPP1xqLvAociwLP7WPJuxWRONT/kw=;
+ b=CQ5MSHBxuZ7HPMAKZfDbmZC8RAc7OHR6r+IemiIMqRXNwtzW9GxtcSKcHJpg5gshgACVcp1tyoAU7peNi5H0OD82wYgZdFNdsja6qqwnIAhVzglz9Q40R/ARePIkCnmF+KTk8+sLimr06bba42CkjDXUDoqESpLZRF4m9Nb1F1/1zR2nMBF7zkFlKWJrnA91nSBFqPOxOkCP2VGxtKY1fHabCf4Y+dFCxLSvuh1f1ZHSvP+WIEsrrefMADapma2/+idRbUIHePvsJA8C5g5lqxXywk2ixgxJ9grG8iJee/rNnSyDaG2nZCvH+puap4A9iK+LNG925tQDU4zROwgxXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZLRlaseHNfvFqAUPP1xqLvAociwLP7WPJuxWRONT/kw=;
+ b=VlWjsBRkaFKC+0eWwHqKfUH8CHoZOMb8PFH3koju5l3KX6FykFc3U3vW/v7xpZtK0hnUywv/tnNgQWDyaqrKYApr3DdRVAKLrdEPwwQ7wwWHE7osRaPobz810ulMrJFmZoUjhFSelvQG7tvGJQzKZm2kuSC6LRDVrgTJcb0Ou4i3kUzDUAA+TzUvvg7w6ollW5knmkO2dgMPBCgyvt21CENRf9YNwZNcJ5mWMoVU2n0Whq98oQpVDUVcWoio54ucznse3msERoyvvCriELS6dXO9nVqS60bWZLWpIymmf6POlsb5uiYjkEuyntVMWrIhF8Oqds4FB7sj84o613JB7A==
+Received: from MW2PR16CA0011.namprd16.prod.outlook.com (2603:10b6:907::24) by
+ PH0PR12MB7815.namprd12.prod.outlook.com (2603:10b6:510:28a::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Fri, 15 Sep
+ 2023 07:43:56 +0000
+Received: from MWH0EPF000989EC.namprd02.prod.outlook.com
+ (2603:10b6:907:0:cafe::b) by MW2PR16CA0011.outlook.office365.com
+ (2603:10b6:907::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21 via Frontend
+ Transport; Fri, 15 Sep 2023 07:43:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ MWH0EPF000989EC.mail.protection.outlook.com (10.167.241.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6792.19 via Frontend Transport; Fri, 15 Sep 2023 07:43:56 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 15 Sep
+ 2023 00:43:53 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 15 Sep
+ 2023 00:43:52 -0700
+Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Fri, 15 Sep 2023 00:43:51 -0700
+Date:   Fri, 15 Sep 2023 00:43:50 -0700
+From:   Nicolin Chen <nicolinc@nvidia.com>
+To:     <will@kernel.org>, <robin.murphy@arm.com>
+CC:     <joro@8bytes.org>, <jgg@nvidia.com>, <jean-philippe@linaro.org>,
+        <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] iommu/arm-smmu-v3: Fix soft lockup triggered by
+ arm_smmu_mm_invalidate_range
+Message-ID: <ZQQLNmmAOsNmvtDs@Asurada-Nvidia>
+References: <20230901203904.4073-1-nicolinc@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <ZQOsQjsa4bEfB28H@luigi.stachecki.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230901203904.4073-1-nicolinc@nvidia.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989EC:EE_|PH0PR12MB7815:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e8ab1e6-37d7-4d34-b612-08dbb5bf8452
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3MAuxDwagh1DDI5VtckgUF9rp8/QEi5GZimdpGQQKuwByT4lHSNR58RlG2wLEEILWR8hiAvYpWVdrqAQ2IzRXBm6OehfCStRjh0sVJXqScSfVrv3IGQ99Ib0k5LA1wVFlfjB1+Z9n/h+oCSu84cV+szG+5Do/VVzCRFMMsRslEB4eatL7NaAOSZw7a2xrnmStrt1YoqNkoH4Q84ZKGllvyKZeQTqmmYv+psSIvs4vNBIrbtycpIAItiAvYjUWTR7LzPFNWAcsUQmUinnHfaYm5LaNEEonzSfJ6ANSOzB1EAN381QZfU3APwn1XoJ/m45gmyLPFngLfHZ4YgcQfPw+qsEdLayjHzksbq8GqzooyxFWMZzjs+6oqBgbdJNg/FBs3d91g6oEZBQRFb3QSD3xGgoJ/L3eAqrBQ0q839GVwtGmUNQduxVLYPXoFvA1pVBC3A6QVQ6DqeBTXv9itd+sxfCI65N+Xs/FgZt1yAhUmhmNY4R4r0U0GJmsKJvY5Bl46SEANj7yT8xqdn/AYgUKhBkyRcGGxBZ7lOt+sX8hbqKYzSfK3+Ee+UgZ4x8p2DvxrTFV8HbQdeI/RRCqnCSrgH6hMrJn8FtqlCd5vvfSCZk2FvswvUev2bQF+bpNOlEx3gwgCIS0nSKh4uOai5usCYln8QJ8w4xF4bei0UBD3NUY7m0ZaSWGQrUwd7z7Gqs0laJO+C1tXWrhfZ2nNM9q6QGoJCbIB6d1zwJBceYKLJJjmGxqgfYeaby+7yzGeuC
+X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(136003)(396003)(346002)(376002)(39860400002)(82310400011)(186009)(451199024)(1800799009)(40470700004)(46966006)(36840700001)(83380400001)(336012)(426003)(4326008)(8936002)(5660300002)(8676002)(26005)(82740400003)(47076005)(9686003)(36860700001)(7636003)(356005)(478600001)(55016003)(110136005)(316002)(40480700001)(41300700001)(54906003)(70206006)(70586007)(86362001)(33716001)(2906002)(40460700003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2023 07:43:56.5357
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e8ab1e6-37d7-4d34-b612-08dbb5bf8452
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989EC.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7815
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 08:58:42PM -0400, Tyler Stachecki wrote:
-> On Thu, Sep 14, 2023 at 10:05:57AM -0700, Dongli Zhang wrote:
-> > That is:
-> > 
-> > 1. Without the commit (src and dst), something bad may happen.
-> > 
-> > 2. With the commit on src, issue is fixed.
-> > 
-> > 3. With the commit only dst, it is expected that issue is not fixed.
-> > 
-> > Therefore, from administrator's perspective, the bugfix should always be applied
-> > no the source server, in order to succeed the migration.
+I found this patch cannot be applied to v6.6-rc1 due to conflicts
+with some new commits that were merged during the previous cycle.
+
+I can redo a version rebasing on the v6.6-rc1, yet the new version
+won't apply to earlier kernel stable trees. Is there a way to make
+it happen that both mainline and earlier trees can have this fix?
+
+Thanks
+Nicolin
+
+On Fri, Sep 01, 2023 at 01:39:04PM -0700, Nicolin Chen wrote:
+> When running an SVA case, the following soft lockup is triggered:
+> --------------------------------------------------------------------
+> watchdog: BUG: soft lockup - CPU#244 stuck for 26s!
+> pstate: 83400009 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+> pc : arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
+> lr : arm_smmu_cmdq_issue_cmdlist+0x150/0xa50
+> sp : ffff8000d83ef290
+> x29: ffff8000d83ef290 x28: 000000003b9aca00 x27: 0000000000000000
+> x26: ffff8000d83ef3c0 x25: da86c0812194a0e8 x24: 0000000000000000
+> x23: 0000000000000040 x22: ffff8000d83ef340 x21: ffff0000c63980c0
+> x20: 0000000000000001 x19: ffff0000c6398080 x18: 0000000000000000
+> x17: 0000000000000000 x16: 0000000000000000 x15: ffff3000b4a3bbb0
+> x14: ffff3000b4a30888 x13: ffff3000b4a3cf60 x12: 0000000000000000
+> x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc08120e4d6bc
+> x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000048cfa
+> x5 : 0000000000000000 x4 : 0000000000000001 x3 : 000000000000000a
+> x2 : 0000000080000000 x1 : 0000000000000000 x0 : 0000000000000001
+> Call trace:
+>  arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
+>  __arm_smmu_tlb_inv_range+0x118/0x254
+>  arm_smmu_tlb_inv_range_asid+0x6c/0x130
+>  arm_smmu_mm_invalidate_range+0xa0/0xa4
+>  __mmu_notifier_invalidate_range_end+0x88/0x120
+>  unmap_vmas+0x194/0x1e0
+>  unmap_region+0xb4/0x144
+>  do_mas_align_munmap+0x290/0x490
+>  do_mas_munmap+0xbc/0x124
+>  __vm_munmap+0xa8/0x19c
+>  __arm64_sys_munmap+0x28/0x50
+>  invoke_syscall+0x78/0x11c
+>  el0_svc_common.constprop.0+0x58/0x1c0
+>  do_el0_svc+0x34/0x60
+>  el0_svc+0x2c/0xd4
+>  el0t_64_sync_handler+0x114/0x140
+>  el0t_64_sync+0x1a4/0x1a8
+> --------------------------------------------------------------------
 > 
-> I fully agree. Though, I think this boils down to:
-> The commit must be on the source or something bad may happen.
+> The commit 06ff87bae8d3 ("arm64: mm: remove unused functions and variable
+> protoypes") fixed a similar lockup on the CPU MMU side. Yet, it can occur
+> to SMMU too since arm_smmu_mm_invalidate_range() is typically called next
+> to MMU tlb flush function, e.g.
+>         tlb_flush_mmu_tlbonly {
+>                 tlb_flush {
+>                         __flush_tlb_range {
+>                                 // check MAX_TLBI_OPS
+>                         }
+>                 }
+>                 mmu_notifier_invalidate_range {
+>                         arm_smmu_mm_invalidate_range {
+>                                 // does not check MAX_TLBI_OPS
+>                         }
+>                 }
+>         }
 > 
-> It then follows that you cannot live-migrate guests off the source to patch it
-> without potentially corrupting the guests currently running on that source...
-
-Well, the bug was a real bad issue, and even the solution does not solve 
-all problems.
-
-As we discussed, there is no way of safely removing any feature from the 
-guest without potential issues. One potential solution would be having 
-hosts that implement the missing guest features needed for the VMs, but 
-this may be far from easy depending on the missing feature.
-
-Other than that, all I can think of is removing the features from guest:
-
-As you commented, there may be some features that would not be a problem 
-to be removed, and also there may be features which are not used by the 
-workload, and could be removed. But this would depend on the feature, and 
-the workload, beind a custom solution for every case.
-
-For this (removing guest features), from kernel side, I would suggest using 
-SystemTap (and eBPF, IIRC). The procedures should be something like:
-- Try to migrate VM from host with older kernel: fail
-- Look at qemu error, which features are missing?
-- Are those features safely removable from guest ? 
-  - If so, get an SystemTap / eBPF script masking out the undesired bits.
-  - Try the migration again, it should succeed.
-
-IIRC, this could also be done in qemu side, with a custom qemu:
-- Try to migrate VM from host with older kernel: fail
-- Look at qemu error, which features are missing?
-- Are those features safely removable from guest ?
-  - If so, get a custom qemu which mask-out the desired flags before the VM 
-    starts
-  - Live migrate (can be inside the source host) to the custom qemu
-  - Live migrate from custom qemu to target host.
-- The custom qemu could be on a auxiliary host, and used only for this
-
-Yes, it's hard, takes time, and may not solve every case, but it gets a 
-higher chance of the VM surviving in the long run.
-
-But keep in mind this is a hack.
-Taking features from a live guest is not supported in any way, and has a 
-high chance of crashing the VM.
-
-
-Best regards,
-Leo
-
+> Clone a CMDQ_MAX_TLBI_OPS from the MAX_TLBI_OPS in tlbflush.h, since in an
+> SVA case SMMU uses the CPU page table, so it makes sense to align with the
+> tlbflush code. Then, replace per-page TLBI commands with a single per-asid
+> TLBI command, if the request size hits this threshold.
 > 
-> Regards,
-> Tyler
+> Fixes: 51d113c3be09 ("iommu/arm-smmu-v3: Make BTM optional for SVA")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> ---
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c | 11 ++++++++---
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h     |  9 +++++++++
+>  2 files changed, 17 insertions(+), 3 deletions(-)
 > 
-
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+> index a5a63b1c947e..7ec3f5219250 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+> @@ -201,9 +201,14 @@ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
+>          */
+>         size = end - start;
+> 
+> -       if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM))
+> -               arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
+> -                                           PAGE_SIZE, false, smmu_domain);
+> +       if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM)) {
+> +               if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_RANGE_INV) &&
+> +                   size >= CMDQ_MAX_TLBI_OPS * PAGE_SIZE)
+> +                       arm_smmu_tlb_inv_asid(smmu_domain->smmu, smmu_mn->cd->asid);
+> +               else
+> +                       arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
+> +                                                   PAGE_SIZE, false, smmu_domain);
+> +       }
+>         arm_smmu_atc_inv_domain(smmu_domain, mm->pasid, start, size);
+>  }
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> index dcab85698a4e..79a81eed1dcc 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> @@ -326,6 +326,15 @@
+>   */
+>  #define CMDQ_BATCH_ENTRIES             BITS_PER_LONG
+> 
+> +/*
+> + * Cloned from the MAX_TLBI_OPS in arch/arm64/include/asm/tlbflush.h, this
+> + * is used as a threshold to replace per-page TLBI commands to issue in the
+> + * command queue with an address-space TLBI command, when SMMU w/o a range
+> + * invalidation feature handles too many per-page TLBI commands, which will
+> + * otherwise result in a soft lockup.
+> + */
+> +#define CMDQ_MAX_TLBI_OPS              (1 << (PAGE_SHIFT - 3))
+> +
+>  #define CMDQ_0_OP                      GENMASK_ULL(7, 0)
+>  #define CMDQ_0_SSV                     (1UL << 11)
+> 
+> --
+> 2.42.0
+> 
+> 
