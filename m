@@ -2,91 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86C5D7A12A2
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 02:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAAD7A156A
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 07:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbjIOA6S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 14 Sep 2023 20:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46890 "EHLO
+        id S230479AbjIOF2p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 01:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbjIOA6R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 14 Sep 2023 20:58:17 -0400
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D4CA1FE8;
-        Thu, 14 Sep 2023 17:58:13 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-411f5dd7912so9189961cf.3;
-        Thu, 14 Sep 2023 17:58:13 -0700 (PDT)
+        with ESMTP id S229554AbjIOF2o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 01:28:44 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE56B2D54
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 22:28:17 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-502e7d66c1eso2517886e87.1
+        for <stable@vger.kernel.org>; Thu, 14 Sep 2023 22:28:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694739492; x=1695344292; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aurhsUY805CR/jmu+UYpsE7OM+pAilUc0Fmf5u1fkxM=;
-        b=gpUcyKbOuVtxmqM1dX9lmt9NcgLdszJ9CRe7kGFLSPuIBASVLOR5vGsJTmRJydkMm1
-         BFQkakG0ClslqkHaPEJpStTmf2MGrYAtbfo4bN3vW7JsDWtEZ26aE3PRWUNEkw43kYcT
-         FunXB0mTjrB2g+Ny8YQbTLjjieH3RzauLZd0tZMMaujq+rEXji9nr92xNrku6s58A7J1
-         4csmhpKePrqbzL5sX+wYuuIh/leyyLLPK/+5FVh3TXroYDikpjPIcwrIIaI1Y97wUSrz
-         sGVyfNxerFZSBqHhA5NQ+G7i6UanCmH+cRCsGRMrIohFqvYRbuLU7BY8RgCt4gZn34WV
-         NSGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694739492; x=1695344292;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1694755696; x=1695360496; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aurhsUY805CR/jmu+UYpsE7OM+pAilUc0Fmf5u1fkxM=;
-        b=BzJ7A82cltuVJJdxqLbIN8tRjNZUzPpjs1e1gHTi7quTNWJiIGaHj89cCfUF2SpERK
-         z8iPce1p9Vr2/Ue/OF/gltbaweqqhHrHFTCB+QvejjKIETSk2GCRaYmh79FSmaEB9eJD
-         LLir7LS/zJVgqCBIzHh+kzyKt/PWyg/z3EBB7P38o985JQWogtJ4dKU2uTGH+psqJdwt
-         LAoeBdvc+eStB1oGolJEIPJSvM5oZ+V1NhprVtgqO9nCNbApTqFH3hWSISIzWSCp1mik
-         i3jYt+Efybvv5Ary2ePC2f08jkCIyAHjYrExO4hIteRy0AJrRala2odKudEWP96zBjWA
-         nZ2Q==
-X-Gm-Message-State: AOJu0YzeURQbu1iig9fu81mTiBhfCuBMT5TO11gXSiDex2psjlUvJIBs
-        I+UUZLWfp8eikju24zJIkQw=
-X-Google-Smtp-Source: AGHT+IE8pQJc168AEGZqrMedTNa29B6IXR094f598Az5cy6AMU58LoQSq4tNHNYyYtK/31h8LuGNXA==
-X-Received: by 2002:a05:622a:120b:b0:416:5e11:f7ec with SMTP id y11-20020a05622a120b00b004165e11f7ecmr291078qtx.52.1694739491756;
-        Thu, 14 Sep 2023 17:58:11 -0700 (PDT)
-Received: from luigi.stachecki.net (pool-108-14-234-238.nycmny.fios.verizon.net. [108.14.234.238])
-        by smtp.gmail.com with ESMTPSA id g3-20020ac84803000000b0040331a24f16sm829847qtq.3.2023.09.14.17.58.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 17:58:11 -0700 (PDT)
-Date:   Thu, 14 Sep 2023 20:58:42 -0400
-From:   Tyler Stachecki <stachecki.tyler@gmail.com>
-To:     Dongli Zhang <dongli.zhang@oracle.com>
-Cc:     Leonardo Bras <leobras@redhat.com>, kvm@vger.kernel.org,
-        seanjc@google.com, pbonzini@redhat.com, dgilbert@redhat.com,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        bp@alien8.de, Tyler Stachecki <tstachecki@bloomberg.net>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] x86/kvm: Account for fpstate->user_xfeatures changes
-Message-ID: <ZQOsQjsa4bEfB28H@luigi.stachecki.net>
-References: <20230914010003.358162-1-tstachecki@bloomberg.net>
- <ZQKzKkDEsY1n9dB1@redhat.com>
- <ZQLOVjLtFnGESG0S@luigi.stachecki.net>
- <93592292-ab7e-71ac-dd72-74cc76e97c74@oracle.com>
+        bh=xn9oFhHLAknaWRf3uArqHTLA9prBJhnE4LW7Dd164uA=;
+        b=dK+HDjyZaIzzWjOpKGliaqyaq/IuzoIhWNmB8yFOe3y4+beIdkyiw3y4C+DO86gi5Z
+         AQEBqzuRuIB+l5fp3AsZavt6Lz/jrs3lfLVPhX4ZEpJm1WJvceXX/P831J+WFK8f1/it
+         eIQBvIggVMaXhLBOOAxyvA/w4SoUn970h/sCw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694755696; x=1695360496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xn9oFhHLAknaWRf3uArqHTLA9prBJhnE4LW7Dd164uA=;
+        b=Ar6lmdgLQ9y+PKOTmR5w+Zt2ANlDlCXBJwCN8iOpdDOpGF/zAEsY+0wILC053nDmGN
+         6YTfX8rgcTNEEL+jKc++z4tfP1e5xhWlo9yJ7KxlGsdYkWATHvLY2QVAyeHq5NR+hF2l
+         z64JdPgXfVPCt7sKizY19BFh7X1d4fFmdaCeeehHWArRYxrGxelKTPhRGMgrHNSKXzDI
+         Ig1Q5zgEJdG2FqynnshYPwI0VOGN91o75Mc2uoNdtYDfurSX9brV6KEKZiHVsi6NpRUq
+         xz96ace0YnbM4LmT/skVd3hntRH/mGeha5AZVU5YdXPOt64RMKUgZvnLrq3LVpVuiWk/
+         zB7g==
+X-Gm-Message-State: AOJu0YzC0RXCXjwwItdXOyvPDKNTsKVtr+3q7EJDneXk5yJx19E276jB
+        7Cxyb6cc24apcadPRBkbsD2IvKQQ1Zq3jdzO8J1s3w==
+X-Google-Smtp-Source: AGHT+IHBF/LZiSOCHbF9PK/ZZsZw9DLkRfLiviBg8ZInp/Df/pEH0sQClGR3SSNslHwvIhnE/oLD3Fo+uCtKqC7O+9w=
+X-Received: by 2002:a05:6512:48c9:b0:502:d639:22ed with SMTP id
+ er9-20020a05651248c900b00502d63922edmr518597lfb.48.1694755696091; Thu, 14 Sep
+ 2023 22:28:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93592292-ab7e-71ac-dd72-74cc76e97c74@oracle.com>
+References: <20230914131058.2472260-1-jani.nikula@intel.com> <20230914155317.2511876-1-jani.nikula@intel.com>
+In-Reply-To: <20230914155317.2511876-1-jani.nikula@intel.com>
+From:   Chen-Yu Tsai <wenst@chromium.org>
+Date:   Fri, 15 Sep 2023 13:28:04 +0800
+Message-ID: <CAGXv+5GJxEobJKKWuc_UN+Gf_z8g6eb6KWTz-L+RqtyLYKK3Jg@mail.gmail.com>
+Subject: Re: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback
+ audio detection
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Guillaume Ranquet <granquet@baylibre.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+        linux-mediatek@lists.infradead.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 10:05:57AM -0700, Dongli Zhang wrote:
-> That is:
-> 
-> 1. Without the commit (src and dst), something bad may happen.
-> 
-> 2. With the commit on src, issue is fixed.
-> 
-> 3. With the commit only dst, it is expected that issue is not fixed.
-> 
-> Therefore, from administrator's perspective, the bugfix should always be applied
-> no the source server, in order to succeed the migration.
+On Thu, Sep 14, 2023 at 11:53=E2=80=AFPM Jani Nikula <jani.nikula@intel.com=
+> wrote:
+>
+> The sads returned by drm_edid_to_sad() needs to be freed.
+>
+> Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
+> Cc: Guillaume Ranquet <granquet@baylibre.com>
+> Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-mediatek@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: <stable@vger.kernel.org> # v6.1+
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-I fully agree. Though, I think this boils down to:
-The commit must be on the source or something bad may happen.
+Looks correct to me.
 
-It then follows that you cannot live-migrate guests off the source to patch it
-without potentially corrupting the guests currently running on that source...
-
-Regards,
-Tyler
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
