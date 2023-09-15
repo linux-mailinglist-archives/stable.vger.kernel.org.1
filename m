@@ -2,184 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07DB17A1FF7
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 15:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4FC7A204C
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 15:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235407AbjIONlb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 09:41:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58340 "EHLO
+        id S234806AbjION6G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 09:58:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235414AbjIONl3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 09:41:29 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4C0268F
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 06:41:16 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-401c90ed2ecso24281065e9.0
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 06:41:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694785274; x=1695390074; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wv8Y2fP2K5WCa0INuyWVFSOISCclzZT+NqBxqdIpJYM=;
-        b=hwGhkCVvu79ZXRq6KpI1fekjm+AcywWSM5IFifbu1dQduKxBD6JPP/uHC31ef59L35
-         kUo2VBPgsEHrbXwxgz/WmkkllDwiPAOCg9tyUi5CFOCxj4CVs+RK3VbwIoKp86OI6/66
-         j5KzRmQ+XnR/GiQzSfwx7AvJoXAqeogUliu9zdqiPYBwMoQkvCtSOZavnYE1lY9bOzyy
-         8lGRdYZ+Ghx3CBkYF8AOV9GHTOwtKoqcPzgRYCwqllWkeTMUYUtis5anbMh3PAkLb9EO
-         ISx5RJQfIQBPudVYBgTfdViS5plFfNGLstFSCns3Vk2eBKPO1MRhIdTm4Twin8MDkGrs
-         59AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694785274; x=1695390074;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wv8Y2fP2K5WCa0INuyWVFSOISCclzZT+NqBxqdIpJYM=;
-        b=KpFc/sLliWWNqtzqeZ3xcpyLBKL7iLkh1oh90UIn7XZ2yriRWblaKGuqDasL7rkBaq
-         TNmi5V/qCJeSG+tra38umIR/IfIs0ZQ0eBZimYNvBaZDIoQNZpSuKMihA0orO/fUHLIZ
-         rvCpbybEx5Kfl0dcVvY/P+o8LGlcGOYHrPlm4cH4k27WEl5/lP6ijUvGisgmuQoF/icz
-         lsyOkpMHme0rmxPTapDZxZQGTSTXe8o+g17iIEiAHl9fGVtJnWGhMiX9N8mwQuizpLaO
-         bWccAos4Z4fQg2Lo6a3pQZv4/c17lgNiEpMig1I91Eq7jAqUX4HIABTxaieEfTQyIfl7
-         gUZg==
-X-Gm-Message-State: AOJu0YzyX5/9/7ZltF34mbV1aqzl3mpW+y2vKUzb7TNCtLsZN30LIBHV
-        45o5zeI/s3qnMem2CKIduxA6BLFNsbbV1yG/
-X-Google-Smtp-Source: AGHT+IEzR0J3rUyni6GDf/pWByiZarPAEMmN/6SJyGTUUtNzeiC75v6RbECHUNWn7L7+QsOEQMTCxg==
-X-Received: by 2002:a05:600c:211:b0:401:b7e0:a43c with SMTP id 17-20020a05600c021100b00401b7e0a43cmr1440112wmi.24.1694785274341;
-        Fri, 15 Sep 2023 06:41:14 -0700 (PDT)
-Received: from orchid.. ([2a01:cb14:499:e600:1a5e:fff:fe3d:95be])
-        by smtp.gmail.com with ESMTPSA id m13-20020a7bca4d000000b003fe4548188bsm7567751wml.48.2023.09.15.06.41.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Sep 2023 06:41:13 -0700 (PDT)
-From:   mathieu.tortuyaux@gmail.com
-To:     stable@vger.kernel.org
-Cc:     jpiotrowski@linux.microsoft.com,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-Subject: [PATCH 5.15.y] net/mlx5: Free IRQ rmap and notifier on kernel shutdown
-Date:   Fri, 15 Sep 2023 15:41:02 +0200
-Message-ID: <20230915134102.102742-1-mathieu.tortuyaux@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023080708-livable-distress-7173@gregkh>
-References: <2023080708-livable-distress-7173@gregkh>
+        with ESMTP id S234618AbjION6E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 09:58:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E411FCC;
+        Fri, 15 Sep 2023 06:57:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694786279; x=1726322279;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=51q7+p6dAkVEPA2ULlkDzpUZ/83tyHXQyFDeaZwHaSE=;
+  b=Ktz7RrvsbrYDxigFOw5mW5bF6Nc4e/6ZkVqYc6ci6yEATFqzg/9ysQPA
+   bTsUprueaJdkTJBcKBRmt0jOssKqrlNzT++F43RCGsAtG6XEd3gVxEMTl
+   wBkDyYgaQCmvxtme321CAqF5kCY6th88mmmYvzbaxpDH3LmVhvPwkGu1T
+   gkpJP7/lIo7XkJ3YJHSg0nlREzKovmrg6d+yggx6q68Dt6MHmoFoFO1Y5
+   HXjFJZG2DvpTA5Bag4aPNX1pZSaDbuJEGAkk/CBg37iu91nyPBqmakDlQ
+   khmK+Fy/3yEH1U9fZv3mBu8OGSZfa0Npr0pp71TKLu38Y3Hq1QwzMgLkk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="378165579"
+X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
+   d="scan'208";a="378165579"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 06:57:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="738332618"
+X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
+   d="scan'208";a="738332618"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by orsmga007.jf.intel.com with SMTP; 15 Sep 2023 06:57:48 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 15 Sep 2023 16:57:47 +0300
+Date:   Fri, 15 Sep 2023 16:57:47 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Prashanth K <quic_prashk@quicinc.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "# 5 . 16" <stable@vger.kernel.org>
+Subject: Re: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command
+ fails
+Message-ID: <ZQRi20nC0j5c4LGI@kuha.fi.intel.com>
+References: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
+ <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
+ <21d247d3-83be-ba53-c982-2ab0e2e4ffb3@quicinc.com>
+ <ZQROzNqr7fbmJC87@kuha.fi.intel.com>
+ <4e876097-aed1-2b0d-ecb4-6434add4ef26@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4e876097-aed1-2b0d-ecb4-6434add4ef26@quicinc.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+Hi Prashanth,
 
-commit 314ded538e5f22e7610b1bf621402024a180ec80 upstream
+On Fri, Sep 15, 2023 at 07:10:25PM +0530, Prashanth K wrote:
+> On 15-09-23 06:02 pm, Heikki Krogerus wrote:
+> > On Tue, Sep 12, 2023 at 04:37:47PM +0530, Prashanth K wrote:
+> > > 
+> > > 
+> > > On 11-09-23 06:19 pm, Heikki Krogerus wrote:
+> > > > On Mon, Sep 11, 2023 at 02:34:15PM +0530, Prashanth K wrote:
+> > > > > Currently if ucsi_send_command() fails, then we bail out without
+> > > > > clearing EVENT_PENDING flag. So when the next connector change
+> > > > > event comes, ucsi_connector_change() won't queue the con->work,
+> > > > > because of which none of the new events will be processed.
+> > > > > 
+> > > > > Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
+> > > > > fails.
+> > > > > 
+> > > > > Cc: <stable@vger.kernel.org> # 5.16
+> > > > > Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
+> > > > > Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+> > > > > ---
+> > > > >    drivers/usb/typec/ucsi/ucsi.c | 1 +
+> > > > >    1 file changed, 1 insertion(+)
+> > > > > 
+> > > > > diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> > > > > index c6dfe3d..509c67c 100644
+> > > > > --- a/drivers/usb/typec/ucsi/ucsi.c
+> > > > > +++ b/drivers/usb/typec/ucsi/ucsi.c
+> > > > > @@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+> > > > >    	if (ret < 0) {
+> > > > >    		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+> > > > >    			__func__, ret);
+> > > > > +		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+> > > > >    		goto out_unlock;
+> > > > >    	}
+> > > > 
+> > > > I think it would be better to just move that label (out_unlock) above
+> > > > the point where clear_bit() is already called instead of separately
+> > > > calling it like that. That way the Connector Change Event will
+> > > > also get acknowledged.
+> > > Do we really need to ACK in this case since we didn't process the current
+> > > connector change event
+> > 
+> > You won't get the next event before the first one was ACK'd, right?
+> > 
+> 
+> The spec says that we need to ACK if we received AND processed a CCI
+> 
+> "4.5.4 Acknowledge Command Completion and/or Change Indication (R)
+> This command is used to acknowledge to the PPM that the OPM received and
+> processed a Command Completion and/or a Connector Change Indication."
+> 
+> And here in this case, we have received, but not processed the event.
+> So I'm not really sure what to do here in this case. If we don't send an
+> ACK, then would the PPM think that OPM is not responding and reset it?
+> OR would it resend the previous event again since we didn't ACK?
 
-The kernel IRQ system needs the irq affinity notifier to be clear
-before attempting to free the irq, see WARN_ON log below.
+Every PPM behaves differently.
 
-On a normal driver unload we don't have this issue since we do the
-complete cleanup of the irq resources.
+Did you actually see that happening - GET_CONNECTOR_STATUS failed? Can
+you reproduce it?
 
-To fix this, put the important resources cleanup in a helper function
-and use it in both normal driver unload and shutdown flows.
+thanks,
 
-[ 4497.498434] ------------[ cut here ]------------
-[ 4497.498726] WARNING: CPU: 0 PID: 9 at kernel/irq/manage.c:2034 free_irq+0x295/0x340
-[ 4497.499193] Modules linked in:
-[ 4497.499386] CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W          6.4.0-rc4+ #10
-[ 4497.499876] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
-[ 4497.500518] Workqueue: events do_poweroff
-[ 4497.500849] RIP: 0010:free_irq+0x295/0x340
-[ 4497.501132] Code: 85 c0 0f 84 1d ff ff ff 48 89 ef ff d0 0f 1f 00 e9 10 ff ff ff 0f 0b e9 72 ff ff ff 49 8d 7f 28 ff d0 0f 1f 00 e9 df fd ff ff <0f> 0b 48 c7 80 c0 008
-[ 4497.502269] RSP: 0018:ffffc90000053da0 EFLAGS: 00010282
-[ 4497.502589] RAX: ffff888100949600 RBX: ffff88810330b948 RCX: 0000000000000000
-[ 4497.503035] RDX: ffff888100949600 RSI: ffff888100400490 RDI: 0000000000000023
-[ 4497.503472] RBP: ffff88810330c7e0 R08: ffff8881004005d0 R09: ffffffff8273a260
-[ 4497.503923] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881009ae000
-[ 4497.504359] R13: ffff8881009ae148 R14: 0000000000000000 R15: ffff888100949600
-[ 4497.504804] FS:  0000000000000000(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-[ 4497.505302] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 4497.505671] CR2: 00007fce98806298 CR3: 000000000262e005 CR4: 0000000000370ef0
-[ 4497.506104] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 4497.506540] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 4497.507002] Call Trace:
-[ 4497.507158]  <TASK>
-[ 4497.507299]  ? free_irq+0x295/0x340
-[ 4497.507522]  ? __warn+0x7c/0x130
-[ 4497.507740]  ? free_irq+0x295/0x340
-[ 4497.507963]  ? report_bug+0x171/0x1a0
-[ 4497.508197]  ? handle_bug+0x3c/0x70
-[ 4497.508417]  ? exc_invalid_op+0x17/0x70
-[ 4497.508662]  ? asm_exc_invalid_op+0x1a/0x20
-[ 4497.508926]  ? free_irq+0x295/0x340
-[ 4497.509146]  mlx5_irq_pool_free_irqs+0x48/0x90
-[ 4497.509421]  mlx5_irq_table_free_irqs+0x38/0x50
-[ 4497.509714]  mlx5_core_eq_free_irqs+0x27/0x40
-[ 4497.509984]  shutdown+0x7b/0x100
-[ 4497.510184]  pci_device_shutdown+0x30/0x60
-[ 4497.510440]  device_shutdown+0x14d/0x240
-[ 4497.510698]  kernel_power_off+0x30/0x70
-[ 4497.510938]  process_one_work+0x1e6/0x3e0
-[ 4497.511183]  worker_thread+0x49/0x3b0
-[ 4497.511407]  ? __pfx_worker_thread+0x10/0x10
-[ 4497.511679]  kthread+0xe0/0x110
-[ 4497.511879]  ? __pfx_kthread+0x10/0x10
-[ 4497.512114]  ret_from_fork+0x29/0x50
-[ 4497.512342]  </TASK>
-
-Fixes: 9c2d08010963 ("net/mlx5: Free irqs only on shutdown callback")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
----
- .../net/ethernet/mellanox/mlx5/core/pci_irq.c   | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index df16dc35bb04..2fa84556bc20 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -138,18 +138,23 @@ int mlx5_set_msix_vec_count(struct mlx5_core_dev *dev, int function_id,
- 	return ret;
- }
- 
--static void irq_release(struct mlx5_irq *irq)
-+static void mlx5_system_free_irq(struct mlx5_irq *irq)
- {
--	struct mlx5_irq_pool *pool = irq->pool;
--
--	xa_erase(&pool->irqs, irq->index);
- 	/* free_irq requires that affinity and rmap will be cleared
- 	 * before calling it. This is why there is asymmetry with set_rmap
- 	 * which should be called after alloc_irq but before request_irq.
- 	 */
- 	irq_set_affinity_hint(irq->irqn, NULL);
--	free_cpumask_var(irq->mask);
- 	free_irq(irq->irqn, &irq->nh);
-+}
-+
-+static void irq_release(struct mlx5_irq *irq)
-+{
-+	struct mlx5_irq_pool *pool = irq->pool;
-+
-+	xa_erase(&pool->irqs, irq->index);
-+	mlx5_system_free_irq(irq);
-+	free_cpumask_var(irq->mask);
- 	kfree(irq);
- }
- 
-@@ -556,7 +561,7 @@ static void mlx5_irq_pool_free_irqs(struct mlx5_irq_pool *pool)
- 	unsigned long index;
- 
- 	xa_for_each(&pool->irqs, index, irq)
--		free_irq(irq->irqn, &irq->nh);
-+		mlx5_system_free_irq(irq);
- }
- 
- static void mlx5_irq_pools_free_irqs(struct mlx5_irq_table *table)
 -- 
-2.41.0
-
+heikki
