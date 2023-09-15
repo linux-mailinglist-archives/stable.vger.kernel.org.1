@@ -2,211 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B2D7A1BE5
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 12:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9137A1C4C
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 12:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234225AbjIOKTZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 06:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39372 "EHLO
+        id S229646AbjIOKdG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 06:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbjIOKTY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 06:19:24 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266AEEB
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:19:19 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-401da71b85eso21249705e9.1
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:19:19 -0700 (PDT)
+        with ESMTP id S234324AbjIOKcw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 06:32:52 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C4581B8
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:32:30 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-400a087b0bfso21241615e9.2
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:32:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694773157; x=1695377957; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sK9Eyjty3WcSPQgzQfhXSPOXZAdD5UkhlLQAAi98pcA=;
-        b=X561EBz1kAJNnpe9IBhxsMGxWsy5qWD4wnyplh9GbcvD4d1DZvhkJ9hCGwcGy0mecp
-         IcCSDRLZekpkzeSlMJKW5peTz4w8cT8rNPfbBv3hfiFYhKwnRC/QKdOrwcwXFPstsXUj
-         fOu3gwEeD8bKyOMdXiPbwZFF+3LUodLXYKURgUe6K7LCD01hG31lcx0g9ZFyx0wPZIOc
-         C6JU+R6mN4sL0nWlTXFTkonpKXT8Nls179KfFaFiQigZTOwHB2fUWi+vT6uz8qv7wtE+
-         ALNtFpqjFsnt1Ge0yXn0KFtixF7QIAm/HM85ucmXPSfif5QhgQ1pcn1gnqujNTIO13mo
-         HdDA==
+        d=linaro.org; s=google; t=1694773948; x=1695378748; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :references:cc:to:content-language:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V0aca7PnmjAHHqfJ62cWuej3CDSoPPa06Inr7vVa8Ts=;
+        b=e9OhE0I3Kkc9q6UjaorqCJs6BXaYo8c83UOQRUBVIcpWPkeKuF+SSHglyw8B1ZGeNu
+         xTQRAX25v9kawrh1cYAu34YjHf32kXQUd/W5Vl6nixbGukrChCrzQtFC8YLg9SlXIG+r
+         r1KTnZz/QSbb+j40U23S7HPClH+z4aSg2kWtDT2gxyFhz+FsSXd8q51sC0SvmOlk7r4u
+         4B6HrD8dHQVcJLpOFfufzDyULXyY9HRadwy2/aMEI5e7hQrJ9y9PJ0jbVqpFi58HYORs
+         8JqNvOYSjUR+yxtA1mHdy3go38yDDgMLq92OqTK36mCS/tp3T/FmcVs7qYxt91+sN659
+         QO8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694773157; x=1695377957;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sK9Eyjty3WcSPQgzQfhXSPOXZAdD5UkhlLQAAi98pcA=;
-        b=rb2/Wyna7fMNAgmfr4Cz6jhCQhH9wiVyBFf1r/03laudV8t0cnQ9Syc8bry7lkcqYL
-         WBoiaTtQsh0FTTTHRRfLc6vc0T3BzRw57kytlX0GqLFskTq1zvqfBSMEv9prnoFUI25K
-         RA7LXU6F96Z/3+u+E+59Kq9M2gXDTvlKndRvR8X5bkzVU19jDveQkSwzmQnaNC0AcVVX
-         MF/MFm0rmoN1GaC5Q70U3sJlJA19DlbYw6wV9sZMDfoGQOa+0bGgZu3tHLveI5a0NA0M
-         /mJMMHcyKOakfNjzToWl3M2EJvzajJ2TzuZbE2XikoUeeyKxdRoWLOTi/fqCmvcQlj8O
-         74HQ==
-X-Gm-Message-State: AOJu0YxdYKgUBo3rDHIJL0xvo6bJ5glYR8fk8YwUVTpAMJcRlV+/hfko
-        QHeFpXgxBlx/sujLSrQls3DygBrH1tHz9A==
-X-Google-Smtp-Source: AGHT+IHB2R8E1JJhdEyHIDzJJv9xzmQEjZsoALFdszxJJyova8my7tMp6WkYUw4nrIO1rC9lZYwwlg==
-X-Received: by 2002:a5d:6309:0:b0:315:9e1b:4ea6 with SMTP id i9-20020a5d6309000000b003159e1b4ea6mr846507wru.58.1694773157085;
-        Fri, 15 Sep 2023 03:19:17 -0700 (PDT)
-Received: from [10.254.108.106] (munvpn.amd.com. [165.204.72.6])
-        by smtp.gmail.com with ESMTPSA id q5-20020a5d6585000000b0031accc7228asm4101670wru.34.2023.09.15.03.19.15
+        d=1e100.net; s=20230601; t=1694773948; x=1695378748;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :references:cc:to:content-language:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=V0aca7PnmjAHHqfJ62cWuej3CDSoPPa06Inr7vVa8Ts=;
+        b=fq+C0XltCNXYH3fDeNJX323rBqD2J10xcSvJ8Ih50auN6aHH1JMwVCwuW7OEjEhGcj
+         8yaZdWqGiul3k4+S5d5IAMJ3aVqkwovia/fkGQ0Nm8BIax4vX6pD6wrz4Ak4Mxv4QVTC
+         h9NvU9KI3ACHyQNLrqMu7z9r5xx7cnqdro7+ZMsDhtydmv5W+e9dEq3o/lvWiheSgcm7
+         qlUQqhEfYuKYl8E2Ckj3hsBLQvGNIfDT6vgyMi0yva/tbXkICvKu6j4DMsytsKax3HGY
+         ueiTqht/kpEbIwQZ0nDLtkX6ciFrzwlFnUXHiUPLV0f4AR44vLxtm+cwrWqBoH7As7d8
+         cNlQ==
+X-Gm-Message-State: AOJu0YwupjWLm5M3DVBf5eBc9A7ytKNe4Mn5HIxx7nLfTTvoBXHZqosG
+        9evUIhbuEoseX9rHX5XaDsh0Sg==
+X-Google-Smtp-Source: AGHT+IFybQKfEBpNlItCVpee/8rq+0HFpuzq/V78nKm58xypS5dbiUu0yQcIrVjidKY6MOBSpi12bg==
+X-Received: by 2002:a05:6000:1f89:b0:31f:f72c:df95 with SMTP id bw9-20020a0560001f8900b0031ff72cdf95mr754975wrb.21.1694773948559;
+        Fri, 15 Sep 2023 03:32:28 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:990a:74e6:266e:2294? ([2a01:e0a:982:cbb0:990a:74e6:266e:2294])
+        by smtp.gmail.com with ESMTPSA id n7-20020adffe07000000b003140f47224csm4046204wrr.15.2023.09.15.03.32.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Sep 2023 03:19:16 -0700 (PDT)
-Message-ID: <39f0c4d9-0959-73ed-9bca-43a342fb906a@gmail.com>
-Date:   Fri, 15 Sep 2023 12:19:13 +0200
+        Fri, 15 Sep 2023 03:32:27 -0700 (PDT)
+Message-ID: <4de57018-e7fd-488d-b564-a79176b79fc6@linaro.org>
+Date:   Fri, 15 Sep 2023 12:32:26 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2] drm/amdgpu: always use legacy tlb flush on
- cyan_skilfish
-Content-Language: en-US
-To:     Lang Yu <Lang.Yu@amd.com>, Felix Kuehling <felix.kuehling@amd.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Yifan Zhang <yifan1.zhang@amd.com>, stable@vger.kernel.org,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        amd-gfx@lists.freedesktop.org
-References: <20230914092350.3512016-1-Lang.Yu@amd.com>
- <40c096af-6c59-ce6d-af26-5cce7bceab83@amd.com>
- <1317e1a5-b1c0-2c3d-6082-b628fde5ab4d@amd.com>
- <745145aa-76fb-bb17-6065-c5e29c37f3c6@amd.com>
- <e7913001-ff45-169d-7110-3f2bef86208a@amd.com>
- <ZQQbmfuivo/F+b9o@lang-desktop>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <ZQQbmfuivo/F+b9o@lang-desktop>
+User-Agent: Mozilla Thunderbird
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH] drm: bridge: it66121: ->get_edid callback must not return
+ err pointers
+Content-Language: en-US, fr
+To:     Jani Nikula <jani.nikula@intel.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Robert Foss <robert.foss@linaro.org>,
+        Phong LE <ple@baylibre.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        stable@vger.kernel.org
+References: <20230914131159.2472513-1-jani.nikula@intel.com>
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro Developer Services
+In-Reply-To: <20230914131159.2472513-1-jani.nikula@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am 15.09.23 um 10:53 schrieb Lang Yu:
-> On 09/14/ , Felix Kuehling wrote:
->> On 2023-09-14 10:02, Christian König wrote:
-> Do we still need to use legacy flush to emulate heavyweight flush
-> if we don't use SVM? And can I push this now?
+On 14/09/2023 15:11, Jani Nikula wrote:
+> The drm stack does not expect error valued pointers for EDID anywhere.
+> 
+> Fixes: e66856508746 ("drm: bridge: it66121: Set DDC preamble only once before reading EDID")
+> Cc: Paul Cercueil <paul@crapouillou.net>
+> Cc: Robert Foss <robert.foss@linaro.org>
+> Cc: Phong LE <ple@baylibre.com>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Robert Foss <rfoss@kernel.org>
+> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> Cc: Jonas Karlman <jonas@kwiboo.se>
+> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> Cc: <stable@vger.kernel.org> # v6.3+
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> 
+> ---
+> 
+> UNTESTED
+> ---
+>   drivers/gpu/drm/bridge/ite-it66121.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
+> index 3c9b42c9d2ee..1cf3fb1f13dc 100644
+> --- a/drivers/gpu/drm/bridge/ite-it66121.c
+> +++ b/drivers/gpu/drm/bridge/ite-it66121.c
+> @@ -884,14 +884,14 @@ static struct edid *it66121_bridge_get_edid(struct drm_bridge *bridge,
+>   	mutex_lock(&ctx->lock);
+>   	ret = it66121_preamble_ddc(ctx);
+>   	if (ret) {
+> -		edid = ERR_PTR(ret);
+> +		edid = NULL;
+>   		goto out_unlock;
+>   	}
+>   
+>   	ret = regmap_write(ctx->regmap, IT66121_DDC_HEADER_REG,
+>   			   IT66121_DDC_HEADER_EDID);
+>   	if (ret) {
+> -		edid = ERR_PTR(ret);
+> +		edid = NULL;
+>   		goto out_unlock;
+>   	}
+>   
 
-Felix needs to decide that. From what I understand the KFD needs 
-heavyweight flushes for secure SVM operation.
-
-If heavyweight flushes are buggy papering over that by using legacy 
-flushes is only a mediocre workaround.
-
-Regards,
-Christian.
-
->
-> Regards,
-> Lang
->
->
->>> Am 14.09.23 um 15:59 schrieb Felix Kuehling:
->>>> On 2023-09-14 9:39, Christian König wrote:
->>>>> Is a single legacy flush sufficient to emulate an heavyweight
->>>>> flush as well?
->>>>>
->>>>> On previous generations we needed to issue at least two legacy
->>>>> flushes for this.
->>>> I assume you are referring to the Vega20 XGMI workaround. That is a
->>>> very different issue. Because PTEs would be cached in L2, we had to
->>>> always use a heavy-weight flush that would also flush the L2 cache
->>>> as well, and follow that with another legacy flush to deal with race
->>>> conditions where stale PTEs could be re-fetched from L2 before the
->>>> L2 flush was complete.
->>> No, we also have another (badly documented) workaround which issues a
->>> legacy flush before each heavy weight on some hw generations. See the my
->>> TLB flush cleanup patches.
->>>
->>>> A heavy-weight flush guarantees that there are no more possible
->>>> memory accesses using the old PTEs. With physically addressed caches
->>>> on GFXv9 that includes a cache flush because the address translation
->>>> happened before putting data into the cache. I think the address
->>>> translation and cache architecture works differently on GFXv10. So
->>>> maybe the cache-flush is not required here.
->>>>
->>>> But even then a legacy flush probably allows for in-flight memory
->>>> accesses with old physical addresses to complete after the TLB
->>>> flush. So there is a small risk of memory corruption that was
->>>> assumed to not be accessed by the GPU any more. Or when using IOMMU
->>>> device isolation it would result in IOMMU faults if the DMA mappings
->>>> are invalidated slightly too early.
->>> Mhm, that's quite bad. Any idea how to avoid that?
->> A few ideas
->>
->>   * Add an arbitrary delay and hope that it is longer than the FIFOs in
->>     the HW
->>   * Execute an atomic operation to memory on some GPU engine that could
->>     act as a fence, maybe just a RELEASE_MEM on the CP to some writeback
->>     location would do the job
->>   * If needed, RELEASE_MEM could also perform a cache flush
->>
->> Regards,
->>    Felix
->>
->>
->>> Regards,
->>> Christian.
->>>
->>>> Regards,
->>>>    Felix
->>>>
->>>>
->>>>> And please don't push before getting an rb from Felix as well.
->>>>>
->>>>> Regards,
->>>>> Christian.
->>>>>
->>>>>
->>>>> Am 14.09.23 um 11:23 schrieb Lang Yu:
->>>>>> cyan_skilfish has problems with other flush types.
->>>>>>
->>>>>> v2: fix incorrect ternary conditional operator usage.(Yifan)
->>>>>>
->>>>>> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
->>>>>> Cc: <stable@vger.kernel.org> # v5.15+
->>>>>> ---
->>>>>>    drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c | 7 ++++++-
->>>>>>    1 file changed, 6 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
->>>>>> b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
->>>>>> index d3da13f4c80e..c6d11047169a 100644
->>>>>> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
->>>>>> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
->>>>>> @@ -236,7 +236,8 @@ static void
->>>>>> gmc_v10_0_flush_vm_hub(struct amdgpu_device *adev, uint32_t
->>>>>> vmid,
->>>>>>    {
->>>>>>        bool use_semaphore =
->>>>>> gmc_v10_0_use_invalidate_semaphore(adev, vmhub);
->>>>>>        struct amdgpu_vmhub *hub = &adev->vmhub[vmhub];
->>>>>> -    u32 inv_req =
->>>>>> hub->vmhub_funcs->get_invalidate_req(vmid, flush_type);
->>>>>> +    u32 inv_req = hub->vmhub_funcs->get_invalidate_req(vmid,
->>>>>> +              (adev->asic_type != CHIP_CYAN_SKILLFISH) ?
->>>>>> flush_type : 0);
->>>>>>        u32 tmp;
->>>>>>        /* Use register 17 for GART */
->>>>>>        const unsigned int eng = 17;
->>>>>> @@ -331,6 +332,8 @@ static void
->>>>>> gmc_v10_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t
->>>>>> vmid,
->>>>>>          int r;
->>>>>>    +    flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH)
->>>>>> ? flush_type : 0;
->>>>>> +
->>>>>>        /* flush hdp cache */
->>>>>>        adev->hdp.funcs->flush_hdp(adev, NULL);
->>>>>>    @@ -426,6 +429,8 @@ static int
->>>>>> gmc_v10_0_flush_gpu_tlb_pasid(struct amdgpu_device *adev,
->>>>>>        struct amdgpu_ring *ring = &adev->gfx.kiq[0].ring;
->>>>>>        struct amdgpu_kiq *kiq = &adev->gfx.kiq[0];
->>>>>>    +    flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH)
->>>>>> ? flush_type : 0;
->>>>>> +
->>>>>>        if (amdgpu_emu_mode == 0 && ring->sched.ready) {
->>>>>>            spin_lock(&adev->gfx.kiq[0].ring_lock);
->>>>>>            /* 2 dwords flush + 8 dwords fence */
-
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
