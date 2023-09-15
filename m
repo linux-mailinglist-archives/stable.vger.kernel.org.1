@@ -2,59 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2FE37A248F
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC217A249D
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbjIORWn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 13:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
+        id S230179AbjIORYv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 13:24:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235746AbjIORWQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:22:16 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30410272D;
-        Fri, 15 Sep 2023 10:22:02 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-502e6d632b6so3480965e87.0;
-        Fri, 15 Sep 2023 10:22:02 -0700 (PDT)
+        with ESMTP id S236138AbjIORYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:24:20 -0400
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFFB1FDF
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:24:14 -0700 (PDT)
+Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-76f08e302a1so154128485a.1
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694798520; x=1695403320; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1694798653; x=1695403453; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IwqMPyk1AnxpjwxRb2+p36Q5q6u/BphSF/nccRVsaQw=;
-        b=Sy1stqEIuNlpAj20ugkHzO5umd5iOCAqQ4jGa1iE2H6df5epGhHk2ATWrtdNIN0gsE
-         cfV9IhHSFnBD7KF526M6TOUN3EJ5y1Sa7rPEiRsfw+/jcf6DuoVDnl2xCFSngqYVGCfh
-         mAusWgx39QOab96mDwoNQt1GVknSx9/8R1v+8hUCoySen9+MaQ+ZSlzLA9tUar99cOzS
-         akJtN1w8yW5pxJJwgPaYvgLjXWG2LSxX3P8so5dOtx1K+Na7lFG81/PSgaIG9ySMCla5
-         /mJu2myDL8a2U6WJcGsETj0uaP8horBF9Gm9j2p7b2RbTs4vOvvFOlkYal+WTtmPsqMq
-         KRyg==
+        bh=toHSI7NrOZgvx0uzvA9KNtopi40O1OvJSkD1oOvtykg=;
+        b=akl055b2yJA6KXRK4fYvi5V5+idBqAZL3RwcI70DuhN7nOrfBkFDh66D3+nGmDDcxD
+         rVo9p/kMhh2iHlL9DI3A4ttqR9Tpy2AOuiYfWz5ncpy3mMXKCkgOMzCjJUm2S0MrtMjW
+         fnHjJp7SMXrsWg+xmBH/deTnRRGb5yGwPufGk7CfiCadwjrzMJEglC5iNeYtUPHnZKGb
+         zMJYxDO7ESDqyZa8RMcOolixcgVXoLFm/Uqh2XD8LWe03kW2Wjy/fCxVIzeOZmap4Mzy
+         edLeJpaLlYNb2cWeZ5MHmCuMMBtJMIBHnqy+dL8iuhikbkgtlwrWQesYabmP5whlzjNu
+         GziQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694798520; x=1695403320;
+        d=1e100.net; s=20230601; t=1694798653; x=1695403453;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IwqMPyk1AnxpjwxRb2+p36Q5q6u/BphSF/nccRVsaQw=;
-        b=oyofJXWkPhZfqYkVcKx41hjHobBLCKGukaOj3djqSbkGWprp5fF38h3Id4oUw9R0SG
-         g/Q8IbTk/0Ls0YGJ7ZIvZInQtO06VQQ4yNHEwpGo/66vOaeOC4de3dN1ESEJEysfqmd7
-         tg/b0RCSGydT2z7fSZ+PPTyMZ82LffjWgt62Lnb44bDjf6mMOs85qiF1bWaE1WKEA1uC
-         POIPwum/UZ6B2gdKpgBy1WqSCNO8rx5jKM+8D5HDiYX+QjzwyRkS/Pp3fPRZaSWs8c6G
-         nUuGE6dil8VcuPkXkVKcYRBdS9yQvn0jI1uK0HFviYgd63ku53rDOLgzJpgfQFAxq3cb
-         qh+Q==
-X-Gm-Message-State: AOJu0YwnUhhOIwPnCQ9pyv9XFb3dXFJGwAV/BRme3xgsFVgpYVGfa49x
-        Sx93OHK4x75wfaVDzfCnjgbXiGgEeg9TfsHgOTQIGIp7
-X-Google-Smtp-Source: AGHT+IEFU0H+UxH+0Ujr+mm0Oef8nG89b0jB+ZJij1UsOsw6TqtVH4QpoYmOlFD4Hp81Nk+nRwRKXDlPFobcVzceP/c=
-X-Received: by 2002:ac2:4c85:0:b0:500:adbd:43e9 with SMTP id
- d5-20020ac24c85000000b00500adbd43e9mr1720618lfl.15.1694798520011; Fri, 15 Sep
- 2023 10:22:00 -0700 (PDT)
+        bh=toHSI7NrOZgvx0uzvA9KNtopi40O1OvJSkD1oOvtykg=;
+        b=khrP9TgV7RQSXGSgxgZZEPS+lizr0iMvmWzx9OAosZihXEV1V8kr1CTX/q6TdkcYug
+         pm8Aebsg5CG2YooZtTF3U+P5Eaceq7A7UZDRedRonWv3eDvatNF21bvXRPC5ty0iN5+J
+         dn0u9Uv6CE2416Ne4+RxHVRGibjmfuznW9lNiaVHa69kJ3Y1uvqILfh3nhG1ZYgSnL01
+         qAVVbSla8xXiNJgcnlmvHnvYZEEf4X1ysikfGq0lkyVCjUXGB3PPSzbVkbfXDhk5Zbdw
+         WI2ubrXk2TeosqSUioK6Qd2sNPLVJN1TSwPyn73yqre/8860fkXtX9k6uxSpJuKrhOiR
+         Tg6A==
+X-Gm-Message-State: AOJu0YxNShPJQaw1kjb4eciN3MseJ+2uqUPuDB1TciW64HmFCoRCyMug
+        DrtJtHXpnsG1SBLPU/BHm2tW/Xw6frWVmr+hxe5jxA==
+X-Google-Smtp-Source: AGHT+IF2Sqc2tmS+8WGl+/J1WlqNUpcQABVxRc1oTvG4gXsw6rD8FwkkIRylabiACJxG6xJxc0STnldicD344sEoExI=
+X-Received: by 2002:a0c:d990:0:b0:64a:6858:f9fb with SMTP id
+ y16-20020a0cd990000000b0064a6858f9fbmr2309178qvj.49.1694798652855; Fri, 15
+ Sep 2023 10:24:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230915-bpf_collision-v2-1-027670d38bdf@google.com> <20230915171814.GA1721473@dev-arch.thelio-3990X>
-In-Reply-To: <20230915171814.GA1721473@dev-arch.thelio-3990X>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Fri, 15 Sep 2023 10:21:48 -0700
-Message-ID: <CAADnVQJVL7yo5ZrBZ99xO-MWHHg8L-SuSJrCTf-eUd-k5UO75g@mail.gmail.com>
+References: <20230915-bpf_collision-v2-1-027670d38bdf@google.com>
+ <20230915171814.GA1721473@dev-arch.thelio-3990X> <CAADnVQJVL7yo5ZrBZ99xO-MWHHg8L-SuSJrCTf-eUd-k5UO75g@mail.gmail.com>
+In-Reply-To: <CAADnVQJVL7yo5ZrBZ99xO-MWHHg8L-SuSJrCTf-eUd-k5UO75g@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 15 Sep 2023 10:24:00 -0700
+Message-ID: <CAKwvOdkbqHFTvRNWG==0FjOPHgnA-zqE2Gn_nB4ys6qvKR2+HA@mail.gmail.com>
 Subject: Re: [PATCH v2] bpf: Fix BTF_ID symbol generation collision
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Andrii Nakryiko <andrii@kernel.org>,
@@ -70,9 +71,10 @@ Cc:     Nick Desaulniers <ndesaulniers@google.com>,
         Jiri Olsa <jolsa@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,41 +82,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 15, 2023 at 10:18=E2=80=AFAM Nathan Chancellor <nathan@kernel.o=
-rg> wrote:
+On Fri, Sep 15, 2023 at 10:22=E2=80=AFAM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
 >
-> On Fri, Sep 15, 2023 at 09:42:20AM -0700, Nick Desaulniers wrote:
-> > Marcus and Satya reported an issue where BTF_ID macro generates same
-> > symbol in separate objects and that breaks final vmlinux link.
+> On Fri, Sep 15, 2023 at 10:18=E2=80=AFAM Nathan Chancellor <nathan@kernel=
+.org> wrote:
 > >
-> >   ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
-> >   '__BTF_ID__struct__cgroup__624' is already defined
+> > On Fri, Sep 15, 2023 at 09:42:20AM -0700, Nick Desaulniers wrote:
+> > > Marcus and Satya reported an issue where BTF_ID macro generates same
+> > > symbol in separate objects and that breaks final vmlinux link.
+> > >
+> > >   ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
+> > >   '__BTF_ID__struct__cgroup__624' is already defined
+> > >
+> > > This can be triggered under specific configs when __COUNTER__ happens=
+ to
+> > > be the same for the same symbol in two different translation units,
+> > > which is already quite unlikely to happen.
+> > >
+> > > Add __LINE__ number suffix to make BTF_ID symbol more unique, which i=
+s
+> > > not a complete fix, but it would help for now and meanwhile we can wo=
+rk
+> > > on better solution as suggested by Andrii.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
+> > > Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+> > > Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
+> > > Tested-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+> > > Debugged-by: Nathan Chancellor <nathan@kernel.org>
+> > > Co-developed-by: Jiri Olsa <jolsa@kernel.org>
+> > > Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUa=
+sQOfQKaOd0nQ51tw@mail.gmail.com/
+> > > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> > > ---
+> > >  tools/include/linux/btf_ids.h | 2 +-
 > >
-> > This can be triggered under specific configs when __COUNTER__ happens t=
-o
-> > be the same for the same symbol in two different translation units,
-> > which is already quite unlikely to happen.
-> >
-> > Add __LINE__ number suffix to make BTF_ID symbol more unique, which is
-> > not a complete fix, but it would help for now and meanwhile we can work
-> > on better solution as suggested by Andrii.
-> >
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
-> > Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
-> > Tested-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-> > Debugged-by: Nathan Chancellor <nathan@kernel.org>
-> > Co-developed-by: Jiri Olsa <jolsa@kernel.org>
-> > Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUasQ=
-OfQKaOd0nQ51tw@mail.gmail.com/
-> > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> > ---
-> >  tools/include/linux/btf_ids.h | 2 +-
->
-> Shouldn't this diff be in include/linux/btf_ids.h as well? Otherwise, I
-> don't think it will be used by the kernel build.
+> > Shouldn't this diff be in include/linux/btf_ids.h as well? Otherwise, I
+> > don't think it will be used by the kernel build.
 
-argh.
-Let's do this patch as-is and another patch to update everything
-in tools/../btf_ids.h, since it got out of sync quite a bit.
+D'oh!
+
+>
+> argh.
+> Let's do this patch as-is and another patch to update everything
+> in tools/../btf_ids.h, since it got out of sync quite a bit.
+
+I think I can do both in a v3? I don't see the issue (in mainline, are
+they out of sync in -next?)
+
+--=20
+Thanks,
+~Nick Desaulniers
