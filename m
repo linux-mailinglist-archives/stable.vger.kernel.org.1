@@ -2,89 +2,140 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C75EE7A1D0F
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 13:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB8597A1E77
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 14:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232147AbjIOLEX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 07:04:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57242 "EHLO
+        id S234741AbjIOMUh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 08:20:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233843AbjIOLEW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 07:04:22 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E0E630FD
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 04:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1694775711;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pgqvvVn/6dCIhXw29WugfytAKiTjkJ56RVwcLGYEqn8=;
-        b=NWLkophElwmTJGffxn/hJuSZuUHEjVKzcpXzWqedY1ty1baxXnbtGcgyTkYvr4f+GIEZPR
-        yMZV9inditckvKxSOmSGkgpGC/cHkrwtP3gnHik9pPVzgrtEyx0Ou3tR7Dm3UoDmqRfJvT
-        xFfffgnDSl9H1NqqjRTbgiBLshvJGK0=
-Message-ID: <3dff2bfa521a03cd652a65d44ddd77c53f190f23.camel@crapouillou.net>
-Subject: Re: [PATCH] drm: bridge: it66121: ->get_edid callback must not
- return err pointers
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Jani Nikula <jani.nikula@intel.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     Robert Foss <robert.foss@linaro.org>, Phong LE <ple@baylibre.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        stable@vger.kernel.org
-Date:   Fri, 15 Sep 2023 13:01:50 +0200
-In-Reply-To: <20230914131159.2472513-1-jani.nikula@intel.com>
-References: <20230914131159.2472513-1-jani.nikula@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S234747AbjIOMUd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 08:20:33 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B3B2700
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 05:20:06 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2bfcc35ef7bso26447401fa.2
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 05:20:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694780405; x=1695385205; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=52tjejpvxnE8EVFiMbyAusvH4BJALwybD9Pcm4LTKkU=;
+        b=oPX4L/hHHkRvPGad9Q1rYbcez0sv5sc/Q8IXU5t9YF2q/OMWHDS96L9AXIYxiVXl1j
+         d4IISqFLxHvdtvBHQEDRxYfblAmqnaiBNvll7hBHV6BoX6SY7LszjiH0gEq3U8Hqgt88
+         Wh0TrcP8ez7MivCMYSFKrXRWrJBpOLcxKBCnlbw38VKzZYhPF9VA2bRXiH6nHiRfEEDy
+         BBLCdQ8bU2wdpM/PjvsrKbIiH/kDhD4lR9rQHyOyTjq3+62xM9Vglk/MRSuoYhdPPe8B
+         u17WKgO4BZ9RVKFnRjBySYhVNd4hLlb3KWoU5OvaAnv4w4hhRCfZAPlg/yOmdGeGshq/
+         DypA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694780405; x=1695385205;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=52tjejpvxnE8EVFiMbyAusvH4BJALwybD9Pcm4LTKkU=;
+        b=rdv6eTOUXJVmX3Gh8uMnPQsI0ToJ1x0Y8jffpW03vMf3jncLDfnAtYxQ/8ZweM3acQ
+         OrGv5aZyze170valNpaAwq+rQ6jSdTfK5rWwekMT6EQtCcGfVYxsMGZu/AhJvrDS2PF/
+         ebKx53lnF3S0QfGZNQ6YkDFobrjdRDUNuny8wuvxz9Z0Np/AUsLrShzsVPiW4qNKwiUx
+         ucZZzLFlbS58dWin36Yc1AZbFRdbElCQPsm3Ufo1xBIvU5nF4vc5K9TJp+T8lLFUZ++P
+         +B0z7Peq9Y9h9wHaXmw/uiJextFc6jBtCWxwAFbiga6s56Vh2n6+LpjJ20AyVUhaFKDM
+         sgzQ==
+X-Gm-Message-State: AOJu0YzGdae6okCvDohOec/KQUULsqgIOzw+VktFVziKBrb2ZcGq/SyR
+        y6Rq4VFw6GICLJqim2cS0K+twQ==
+X-Google-Smtp-Source: AGHT+IEuaLoRu6BfkkK0RfPqU4MzcognEb/aFkTu1WQhdb96RMqVBnMjoxxbgnJqGTaec9hd0t0CDA==
+X-Received: by 2002:a2e:9f0a:0:b0:2bc:be3c:9080 with SMTP id u10-20020a2e9f0a000000b002bcbe3c9080mr1318797ljk.27.1694780404833;
+        Fri, 15 Sep 2023 05:20:04 -0700 (PDT)
+Received: from ?IPV6:2a00:f41:cbe:bc7d:62a6:5d09:5ba7:be5b? ([2a00:f41:cbe:bc7d:62a6:5d09:5ba7:be5b])
+        by smtp.gmail.com with ESMTPSA id y15-20020a2e978f000000b002bce38190a3sm696858lji.34.2023.09.15.05.19.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Sep 2023 05:20:04 -0700 (PDT)
+Message-ID: <76f3bc23-8677-42bd-a3a5-43b17cbe552e@linaro.org>
+Date:   Fri, 15 Sep 2023 14:19:56 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/11] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT
+ flag from PLL clocks
+Content-Language: en-US
+To:     Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+        Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
+        Varadarajan Narayanan <quic_varada@quicinc.com>,
+        Anusha Rao <quic_anusha@quicinc.com>,
+        Devi Priya <quic_devipriy@quicinc.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com>
+ <20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-SGkgSmFuaSwKCkxlIGpldWRpIDE0IHNlcHRlbWJyZSAyMDIzIMOgIDE2OjExICswMzAwLCBKYW5p
-IE5pa3VsYSBhIMOpY3JpdMKgOgo+IFRoZSBkcm0gc3RhY2sgZG9lcyBub3QgZXhwZWN0IGVycm9y
-IHZhbHVlZCBwb2ludGVycyBmb3IgRURJRAo+IGFueXdoZXJlLgo+IAo+IEZpeGVzOiBlNjY4NTY1
-MDg3NDYgKCJkcm06IGJyaWRnZTogaXQ2NjEyMTogU2V0IEREQyBwcmVhbWJsZSBvbmx5Cj4gb25j
-ZSBiZWZvcmUgcmVhZGluZyBFRElEIikKPiBDYzogUGF1bCBDZXJjdWVpbCA8cGF1bEBjcmFwb3Vp
-bGxvdS5uZXQ+Cj4gQ2M6IFJvYmVydCBGb3NzIDxyb2JlcnQuZm9zc0BsaW5hcm8ub3JnPgo+IENj
-OiBQaG9uZyBMRSA8cGxlQGJheWxpYnJlLmNvbT4KPiBDYzogTmVpbCBBcm1zdHJvbmcgPG5laWwu
-YXJtc3Ryb25nQGxpbmFyby5vcmc+Cj4gQ2M6IEFuZHJ6ZWogSGFqZGEgPGFuZHJ6ZWouaGFqZGFA
-aW50ZWwuY29tPgo+IENjOiBSb2JlcnQgRm9zcyA8cmZvc3NAa2VybmVsLm9yZz4KPiBDYzogTGF1
-cmVudCBQaW5jaGFydCA8TGF1cmVudC5waW5jaGFydEBpZGVhc29uYm9hcmQuY29tPgo+IENjOiBK
-b25hcyBLYXJsbWFuIDxqb25hc0Brd2lib28uc2U+Cj4gQ2M6IEplcm5laiBTa3JhYmVjIDxqZXJu
-ZWouc2tyYWJlY0BnbWFpbC5jb20+Cj4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPiAjIHY2
-LjMrCj4gU2lnbmVkLW9mZi1ieTogSmFuaSBOaWt1bGEgPGphbmkubmlrdWxhQGludGVsLmNvbT4K
-CkFwcGxpZWQgdG8gZHJtLW1pc2MtbmV4dCwgdGhhbmtzLgoKQ2hlZXJzLAotUGF1bAoKPiAKPiAt
-LS0KPiAKPiBVTlRFU1RFRAo+IC0tLQo+IMKgZHJpdmVycy9ncHUvZHJtL2JyaWRnZS9pdGUtaXQ2
-NjEyMS5jIHwgNCArKy0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vYnJpZGdlL2l0ZS1p
-dDY2MTIxLmMKPiBiL2RyaXZlcnMvZ3B1L2RybS9icmlkZ2UvaXRlLWl0NjYxMjEuYwo+IGluZGV4
-IDNjOWI0MmM5ZDJlZS4uMWNmM2ZiMWYxM2RjIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvZ3B1L2Ry
-bS9icmlkZ2UvaXRlLWl0NjYxMjEuYwo+ICsrKyBiL2RyaXZlcnMvZ3B1L2RybS9icmlkZ2UvaXRl
-LWl0NjYxMjEuYwo+IEBAIC04ODQsMTQgKzg4NCwxNCBAQCBzdGF0aWMgc3RydWN0IGVkaWQKPiAq
-aXQ2NjEyMV9icmlkZ2VfZ2V0X2VkaWQoc3RydWN0IGRybV9icmlkZ2UgKmJyaWRnZSwKPiDCoMKg
-wqDCoMKgwqDCoMKgbXV0ZXhfbG9jaygmY3R4LT5sb2NrKTsKPiDCoMKgwqDCoMKgwqDCoMKgcmV0
-ID0gaXQ2NjEyMV9wcmVhbWJsZV9kZGMoY3R4KTsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKHJldCkg
-ewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlZGlkID0gRVJSX1BUUihyZXQpOwo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlZGlkID0gTlVMTDsKPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGdvdG8gb3V0X3VubG9jazsKPiDCoMKgwqDCoMKgwqDCoMKg
-fQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHJldCA9IHJlZ21hcF93cml0ZShjdHgtPnJlZ21hcCwg
-SVQ2NjEyMV9ERENfSEVBREVSX1JFRywKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIElUNjYxMjFfRERDX0hFQURFUl9FRElEKTsKPiDCoMKgwqDC
-oMKgwqDCoMKgaWYgKHJldCkgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlZGlk
-ID0gRVJSX1BUUihyZXQpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlZGlkID0g
-TlVMTDsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGdvdG8gb3V0X3VubG9jazsK
-PiDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgCgo=
+On 14.09.2023 08:59, Kathiravan Thirumoorthy wrote:
+> GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+> on the request from dependent clocks. Doing so will result in the
+> unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+> clocks.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
+> Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+> ---
+Stephen, do you think there should be some sort of error
+or at least warning thrown when SET_RATE_PARENT is used with
+RO ops?
 
+Konrad
