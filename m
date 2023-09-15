@@ -2,62 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 852397A24F3
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A787A24EB
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 19:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235952AbjIORgl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 13:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
+        id S236463AbjIORgI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 13:36:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236540AbjIORg2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:36:28 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08572D79
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:35 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59b59e1ac70so31984717b3.1
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:35 -0700 (PDT)
+        with ESMTP id S236452AbjIORff (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 13:35:35 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64FE30C4
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:37 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d81c02bf2beso1279835276.2
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 10:34:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694799275; x=1695404075; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8CEOaleRfmVWxu+aHRyiNpWZbJifyuSx+uIjLiDWCm0=;
-        b=nPF2LtGZqBGsepshfqQ06vgVug/Orws9Xw6tEl7DC4ka7trRIDOgrtP80M2P6ssxgD
-         cg+XvCXwaQuvajAKyA5KowA5EYpK9jBrkjYy0oDmpK8ZRTakZD8eppLDlUQEBHt3fYFh
-         msJ9oMEIpNzSc+UIm9gYAn8t5hdKMEfuvav2jMGL5DNVusNJqFwPIyoKaNJ8X258hoBR
-         dFLIiTzGbHnLazRiIuG1jOqTHvcba97F8lUdWUAy/+qFsCs1xrI7emYvKclCLhs6cSJL
-         wnwz76YKUyVuE6di/tZZ9bhiYFYzLgqd373RCdBPa01rbpxzIeZVGfWOGN1Y5QaDpEAM
-         /7Iw==
+        d=google.com; s=20230601; t=1694799277; x=1695404077; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XJJJkdYQoV+TuxyICMmymuiRvcaqdo/oW6N/B153WLE=;
+        b=Hz8jyX9trB5SbK12NzI2q1kW8Cf/npNWwmFvDkY+H9qRrI4zEJ2hTZqhmA6ki3V85n
+         gXXHSCi2mR3seK/b7NF9GXcCvkBZT1vhiPcmsYvx8iV7+e8YxV0IHvgJ3/jsNS1wlAUH
+         FPJpwifjOuHdQeHeMefLGDqcd232Ad/3yDAsvsDN4fuFZ65t6EAe2bHH4gmoXDiobC4A
+         LZSQsAS5O+bN2wRTQEJRzD0NNUE6nbimgOFZQv+DEs+5J4TP32JEPrtAksm2kKShh+b1
+         Sf4EPVxAV7c8ln1fa25+5xJ5k1ZWRtsw8QTGo8uUVOP6hRvBd10dfC0sx46izelumbaU
+         bCIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694799275; x=1695404075;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8CEOaleRfmVWxu+aHRyiNpWZbJifyuSx+uIjLiDWCm0=;
-        b=dCs2zLTuULbsBiOq4CUbSY81/gY59nFcDhNMjnk4Gp511UBwxqAir2Xo6sLZCA59LH
-         i1UAOV4lzwDCWsaHRdtNmFbERvwfxp+/mFkVlgM8iElFGj1CwDq1HF3Pkb5peHHjyuBb
-         siS3enPSfZz7u/HlCLKNu5yYe/g1oVLfqdjuKVdzjYMwMynlb1u6/Rm/HDewoaJD7Umr
-         6faQQk9dQtAQVAKgkBQ8kp8wMjJf2WPewrYo0RjoQnLnS9qsd2X4FUhem+Fn0pIjo942
-         xIQQoIkeLq3AQHUWXD0jY04yMtTcJxoH3xqXte4s6FvGrHDJuvgCQVhqR0rkt3FIaJoc
-         FnBw==
-X-Gm-Message-State: AOJu0YwwWbGNTJWNSB3/eGVSv9t/071AxJjgtCv7+JzYmezftWi0URGE
-        ZABmhv2lg7R9GnDROGsXKSLVGSoUcHCEMa4QriU=
-X-Google-Smtp-Source: AGHT+IFBiU/ZCcBisMOL23Ew9xLGlAsZyNiAQBseIuvEQJu6APv2wfjEyjUavA3eiZwGcb97xAwMjmNNJozwXDw6BJo=
+        d=1e100.net; s=20230601; t=1694799277; x=1695404077;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XJJJkdYQoV+TuxyICMmymuiRvcaqdo/oW6N/B153WLE=;
+        b=MHrT8MBjd6RqP3TCH7/jmiF1L7Pc+p1dSG2TY/gMUF9TGzlPvLy+AEDSWlkLuL3HT5
+         TRgGC3fd8uB+us0WcAqui8Zc+MM7wcScPbInm8xoxw1m/ba9JZP9M0qbFL+QsirlZfDb
+         pwz7m4gycM707gJ6zh5rc/bD8GeIgm2zMKdfCmLVPG9r018WcvZPIrjcAVxFcQANg/Vy
+         R+Mziujm/6RacvMnWs+35eWJNBSROWABaBXMTfOwz6NlaOlv+MgqrT6HlzWSOKP4tIu9
+         lAT67fJYe+UUQsEHJutHMHFkmGZGS2io4/7CWprCPO7th77KCCIr+lsRA3RRtwBoRNDj
+         z27A==
+X-Gm-Message-State: AOJu0Ywg9beO72T6q/PHAV0YYLoxd61psrHa6B6UwNPUOggD+8HFCiRj
+        ViwzOUuXemonkEiRQOBy2LGrlCmNmDayI5TgfW4=
+X-Google-Smtp-Source: AGHT+IEAHmjL5dTMrhswiFhjsYks3tmeFWHVYfPFl5tpcAmcDOUwNVDZ9Oub8FCz1WrA9lAgdMaDDhBi7ijkvR//Z9s=
 X-Received: from ndesaulniers-desktop.svl.corp.google.com ([2620:15c:2d1:203:7f04:6b3:b482:dd2c])
- (user=ndesaulniers job=sendgmr) by 2002:a81:ac5f:0:b0:579:f832:74b with SMTP
- id z31-20020a81ac5f000000b00579f832074bmr64518ywj.10.1694799274896; Fri, 15
- Sep 2023 10:34:34 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 10:34:26 -0700
+ (user=ndesaulniers job=sendgmr) by 2002:a25:804f:0:b0:d81:7f38:6d69 with SMTP
+ id a15-20020a25804f000000b00d817f386d69mr56369ybn.0.1694799276916; Fri, 15
+ Sep 2023 10:34:36 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 10:34:27 -0700
+In-Reply-To: <20230915-bpf_collision-v3-0-263fc519c21f@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAKKVBGUC/3WNSwrDIBiEryL/uhajaaJZ9R4llMRXBBuDFmkJ3
- r3ivsuZ+WbmhKSj0wkmdELU2SUX9irYBYHclt1q7FTVQAllRHQ3vB7mKYP3jcRs4FwsTHSq76F
- 2jqiN+7S9B6DKIpirvbn0DvHbXjJt4Z/BTHGHCR2HkSjGV2XuNgTr9VWGF8yllB/0GbpwsgAAA A==
+References: <20230915-bpf_collision-v3-0-263fc519c21f@google.com>
 X-Developer-Key: i=ndesaulniers@google.com; a=ed25519; pk=eMOZeIQ4DYNKvsNmDNzVbQZqpdex34Aww3b8Ah957X4=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1694799273; l=772;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1694799273; l=1627;
  i=ndesaulniers@google.com; s=20230823; h=from:subject:message-id;
- bh=Su0VeWzLLW5m4JW7phmTjSjouMb7pr+oMSGtFqqroBs=; b=scxlJ85JlEGMgwbKW/xcGhuMTeJcbrDquF6+4ucCQh3voJj9Abvx6TkbueYcg7QcRH/LcaNrJ
- mX0JcNwT9T+AW4+NSmsF0uUr7OgKV5U9TpTdeb9hSdnz5v+sgu6TQxI
+ bh=Un0BK6Kn/Y9x5wHtdOd6qUrWjso13vQumzj2rjmjBdg=; b=5rueaC75pOHuA1brjat1Uh1IHpP8UpGk090yWGibirzkwVfVTSK3QKijrRtvJGvRfelm2Ou2H
+ XSO66QfARkFC4DnKw4VJgK1+C1hdJdgOulmLsUL76zhBZiawI1HpDVv
 X-Mailer: b4 0.12.3
-Message-ID: <20230915-bpf_collision-v3-0-263fc519c21f@google.com>
-Subject: [PATCH bpf v3 0/2] link to v1: https://lore.kernel.org/bpf/20230915103228.1196234-1-jolsa@kernel.org/
+Message-ID: <20230915-bpf_collision-v3-1-263fc519c21f@google.com>
+Subject: [PATCH  bpf  v3 1/2] bpf: Fix BTF_ID symbol generation collision
 From:   Nick Desaulniers <ndesaulniers@google.com>
 To:     Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
@@ -89,29 +88,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Jiri Olsa <jolsa@kernel.org>
+
+Marcus and Satya reported an issue where BTF_ID macro generates same
+symbol in separate objects and that breaks final vmlinux link.
+
+ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
+'__BTF_ID__struct__cgroup__624' is already defined
+
+This can be triggered under specific configs when __COUNTER__ happens to
+be the same for the same symbol in two different translation units,
+which is already quite unlikely to happen.
+
+Add __LINE__ number suffix to make BTF_ID symbol more unique, which is
+not a complete fix, but it would help for now and meanwhile we can work
+on better solution as suggested by Andrii.
+
+Cc: stable@vger.kernel.org
+Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
+Debugged-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUasQOfQKaOd0nQ51tw@mail.gmail.com/
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 ---
-Changes in v3:
-- combine v1 and v2 into a series; I didn't recognize that this macro
-  appeared twice in the kernel sources.
-- Use __PASTE twice.
-- Link to v2: https://lore.kernel.org/r/20230915-bpf_collision-v2-1-027670d38bdf@google.com
+ include/linux/btf_ids.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Jiri Olsa (1):
-      bpf: Fix BTF_ID symbol generation collision
+diff --git a/include/linux/btf_ids.h b/include/linux/btf_ids.h
+index a3462a9b8e18..a9cb10b0e2e9 100644
+--- a/include/linux/btf_ids.h
++++ b/include/linux/btf_ids.h
+@@ -49,7 +49,7 @@ word							\
+ 	____BTF_ID(symbol, word)
+ 
+ #define __ID(prefix) \
+-	__PASTE(prefix, __COUNTER__)
++	__PASTE(__PASTE(prefix, __COUNTER__), __LINE__)
+ 
+ /*
+  * The BTF_ID defines unique symbol for each ID pointing
 
-Nick Desaulniers (1):
-      bpf: Fix BTF_ID symbol generation collision in tools/
-
- include/linux/btf_ids.h       | 2 +-
- tools/include/linux/btf_ids.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
----
-base-commit: 9fdfb15a3dbf818e06be514f4abbfc071004cbe7
-change-id: 20230915-bpf_collision-36889a391d44
-
-Best regards,
 -- 
-Nick Desaulniers <ndesaulniers@google.com>
+2.42.0.459.ge4e396fd5e-goog
 
