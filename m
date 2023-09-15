@@ -2,109 +2,211 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F697A1BD9
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 12:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4B2D7A1BE5
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 12:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234095AbjIOKPJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 06:15:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35422 "EHLO
+        id S234225AbjIOKTZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 06:19:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbjIOKPI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 06:15:08 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A40B8
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:15:02 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-53fa455cd94so1448958a12.2
-        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:15:02 -0700 (PDT)
+        with ESMTP id S231341AbjIOKTY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 06:19:24 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266AEEB
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:19:19 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-401da71b85eso21249705e9.1
+        for <stable@vger.kernel.org>; Fri, 15 Sep 2023 03:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694772900; x=1695377700; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V1tpyTCtTPNKY2KN67ZSUlhE60Ex/RUBHK+l7PSItCA=;
-        b=Y+wpYnQObJUmC7Fi8QdHP50SIyH2k0pXc5bC+lU5h1W0ve+qn58MOq/spBBzCPz8nA
-         4ZV96nNa9aB7am4DYCHhRLG/TGkk6l+AA9j+Twt8NfvUHk4KQdOheSiYcJDwVn0lD8ZX
-         +1O9m86ZCVHLR+ewBcSSc4O8+lnlWOhwtKuhfpceZtD0A5tAlAw4M1rs6lB0Oego+KUe
-         e+5Ixm58b9wPkm9+oUIiT1qhR3iAPjAShvk3FXG6G3D0ghKJMB9MWbVZPla8Gev52r6C
-         +HTC3a4Sj/z6/fF5XDt/G878wx+S7+oZUZ57swxrcJRZ/Sm2lU/OQQsBksVGt4Owe+3A
-         svuQ==
+        d=gmail.com; s=20230601; t=1694773157; x=1695377957; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sK9Eyjty3WcSPQgzQfhXSPOXZAdD5UkhlLQAAi98pcA=;
+        b=X561EBz1kAJNnpe9IBhxsMGxWsy5qWD4wnyplh9GbcvD4d1DZvhkJ9hCGwcGy0mecp
+         IcCSDRLZekpkzeSlMJKW5peTz4w8cT8rNPfbBv3hfiFYhKwnRC/QKdOrwcwXFPstsXUj
+         fOu3gwEeD8bKyOMdXiPbwZFF+3LUodLXYKURgUe6K7LCD01hG31lcx0g9ZFyx0wPZIOc
+         C6JU+R6mN4sL0nWlTXFTkonpKXT8Nls179KfFaFiQigZTOwHB2fUWi+vT6uz8qv7wtE+
+         ALNtFpqjFsnt1Ge0yXn0KFtixF7QIAm/HM85ucmXPSfif5QhgQ1pcn1gnqujNTIO13mo
+         HdDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694772900; x=1695377700;
-        h=to:subject:message-id:date:from:sender:mime-version
+        d=1e100.net; s=20230601; t=1694773157; x=1695377957;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V1tpyTCtTPNKY2KN67ZSUlhE60Ex/RUBHK+l7PSItCA=;
-        b=X1H7pKseG+3xGqdP/aCcq5Y90L7X9MUQdjDBJQ7aM8Wr4RR5AqpNd6oYWEjCVPWPJj
-         V2QB+lS3y+sPjsUQCKcLhqjbeVl9LN9LkXnFKg3oO6/Rqsz5i+AIZ7888qfPn/7JOTO3
-         XdAFKq3ZNf0ZA9/5QZc2AYJ1cyemw8+hAEjyWAncO2bpifTo3tzUlO/e+/I2iQ61JnrB
-         Rqrd6DQbXqNp6Jd4f5FhT5yJe5SHq5wnDkkRCXzbLzK5ap6vHp65bs7tRLPFRUZZmwel
-         q1In/4zOjnoGDFzqzzd8UuKTBXiw396PnzkiUcKUbaHQJu53sf+ZM7UzeD9jn2hQEHuq
-         HlRg==
-X-Gm-Message-State: AOJu0YyhAxKU9X/TNp6b7PB2FbRiRg0B8NfB2RiZnPiJ4sTmuzLxJO9B
-        uvsD1yRIPhAmLdW5rv/w+bwtAS69/PcycST6+iY=
-X-Google-Smtp-Source: AGHT+IEGg7Pc0AebSA/9E+oQlCecE4MPEj5tGzmPAy1ijeMw4jKu+QV5fGSTG7DYl11erZ93TedA7lfnCJPxOoDkkh0=
-X-Received: by 2002:a17:90a:d906:b0:26d:2fab:1e51 with SMTP id
- c6-20020a17090ad90600b0026d2fab1e51mr957233pjv.21.1694772900329; Fri, 15 Sep
- 2023 03:15:00 -0700 (PDT)
+        bh=sK9Eyjty3WcSPQgzQfhXSPOXZAdD5UkhlLQAAi98pcA=;
+        b=rb2/Wyna7fMNAgmfr4Cz6jhCQhH9wiVyBFf1r/03laudV8t0cnQ9Syc8bry7lkcqYL
+         WBoiaTtQsh0FTTTHRRfLc6vc0T3BzRw57kytlX0GqLFskTq1zvqfBSMEv9prnoFUI25K
+         RA7LXU6F96Z/3+u+E+59Kq9M2gXDTvlKndRvR8X5bkzVU19jDveQkSwzmQnaNC0AcVVX
+         MF/MFm0rmoN1GaC5Q70U3sJlJA19DlbYw6wV9sZMDfoGQOa+0bGgZu3tHLveI5a0NA0M
+         /mJMMHcyKOakfNjzToWl3M2EJvzajJ2TzuZbE2XikoUeeyKxdRoWLOTi/fqCmvcQlj8O
+         74HQ==
+X-Gm-Message-State: AOJu0YxdYKgUBo3rDHIJL0xvo6bJ5glYR8fk8YwUVTpAMJcRlV+/hfko
+        QHeFpXgxBlx/sujLSrQls3DygBrH1tHz9A==
+X-Google-Smtp-Source: AGHT+IHB2R8E1JJhdEyHIDzJJv9xzmQEjZsoALFdszxJJyova8my7tMp6WkYUw4nrIO1rC9lZYwwlg==
+X-Received: by 2002:a5d:6309:0:b0:315:9e1b:4ea6 with SMTP id i9-20020a5d6309000000b003159e1b4ea6mr846507wru.58.1694773157085;
+        Fri, 15 Sep 2023 03:19:17 -0700 (PDT)
+Received: from [10.254.108.106] (munvpn.amd.com. [165.204.72.6])
+        by smtp.gmail.com with ESMTPSA id q5-20020a5d6585000000b0031accc7228asm4101670wru.34.2023.09.15.03.19.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Sep 2023 03:19:16 -0700 (PDT)
+Message-ID: <39f0c4d9-0959-73ed-9bca-43a342fb906a@gmail.com>
+Date:   Fri, 15 Sep 2023 12:19:13 +0200
 MIME-Version: 1.0
-Sender: uba.uba.atmcenter.bank@gmail.com
-Received: by 2002:a05:7300:6d09:b0:ec:a604:33e1 with HTTP; Fri, 15 Sep 2023
- 03:14:59 -0700 (PDT)
-From:   Mr Psacal Yembiline <mrpascalyembline123@gmail.com>
-Date:   Fri, 15 Sep 2023 11:14:59 +0100
-X-Google-Sender-Auth: bpWAwhdKyr3MmQZrIUmN_bWLUec
-Message-ID: <CALSdegqk49cbx=zDeXtaFOXVVeLXnycAfMvcV-WaNUEr7nHPPw@mail.gmail.com>
-Subject: Do Contact me for more details
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MONEY_NOHTML,NA_DOLLARS,RCVD_IN_DNSWL_BLOCKED,RISK_FREE,SPF_HELO_NONE,
-        SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY,URG_BIZ autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2] drm/amdgpu: always use legacy tlb flush on
+ cyan_skilfish
+Content-Language: en-US
+To:     Lang Yu <Lang.Yu@amd.com>, Felix Kuehling <felix.kuehling@amd.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        Yifan Zhang <yifan1.zhang@amd.com>, stable@vger.kernel.org,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        amd-gfx@lists.freedesktop.org
+References: <20230914092350.3512016-1-Lang.Yu@amd.com>
+ <40c096af-6c59-ce6d-af26-5cce7bceab83@amd.com>
+ <1317e1a5-b1c0-2c3d-6082-b628fde5ab4d@amd.com>
+ <745145aa-76fb-bb17-6065-c5e29c37f3c6@amd.com>
+ <e7913001-ff45-169d-7110-3f2bef86208a@amd.com>
+ <ZQQbmfuivo/F+b9o@lang-desktop>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <ZQQbmfuivo/F+b9o@lang-desktop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [2607:f8b0:4864:20:0:0:0:533 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mrpascalyembline123[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  1.5 NA_DOLLARS BODY: Talks about a million North American dollars
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.6 URG_BIZ Contains urgent matter
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 MONEY_NOHTML Lots of money in plain text
-        *  0.0 RISK_FREE No risk!
-        *  2.8 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi friend I am a banker in ADB BANK. I want to transfer an abandoned
-$18.5Million to your Bank account. 50/percent will be your share.
-No risk involved but keep it as secret. Contact me for more details.
+Am 15.09.23 um 10:53 schrieb Lang Yu:
+> On 09/14/ , Felix Kuehling wrote:
+>> On 2023-09-14 10:02, Christian König wrote:
+> Do we still need to use legacy flush to emulate heavyweight flush
+> if we don't use SVM? And can I push this now?
 
-I am requesting for your urgent assistance to collaborate with you to
-move the balance sum of $18.5 Million US Dollars and 950kg of gold
-bars, this is a very genuine business that need full concentration,
-corporation and transparency between the both of us and its %100 free
-from any risk.  I agreed to share the funds and gold bars with you in
-ratio of %50 %50.
+Felix needs to decide that. From what I understand the KFD needs 
+heavyweight flushes for secure SVM operation.
 
-Yours
+If heavyweight flushes are buggy papering over that by using legacy 
+flushes is only a mediocre workaround.
 
- Mr Pascal Yembiline
+Regards,
+Christian.
+
+>
+> Regards,
+> Lang
+>
+>
+>>> Am 14.09.23 um 15:59 schrieb Felix Kuehling:
+>>>> On 2023-09-14 9:39, Christian König wrote:
+>>>>> Is a single legacy flush sufficient to emulate an heavyweight
+>>>>> flush as well?
+>>>>>
+>>>>> On previous generations we needed to issue at least two legacy
+>>>>> flushes for this.
+>>>> I assume you are referring to the Vega20 XGMI workaround. That is a
+>>>> very different issue. Because PTEs would be cached in L2, we had to
+>>>> always use a heavy-weight flush that would also flush the L2 cache
+>>>> as well, and follow that with another legacy flush to deal with race
+>>>> conditions where stale PTEs could be re-fetched from L2 before the
+>>>> L2 flush was complete.
+>>> No, we also have another (badly documented) workaround which issues a
+>>> legacy flush before each heavy weight on some hw generations. See the my
+>>> TLB flush cleanup patches.
+>>>
+>>>> A heavy-weight flush guarantees that there are no more possible
+>>>> memory accesses using the old PTEs. With physically addressed caches
+>>>> on GFXv9 that includes a cache flush because the address translation
+>>>> happened before putting data into the cache. I think the address
+>>>> translation and cache architecture works differently on GFXv10. So
+>>>> maybe the cache-flush is not required here.
+>>>>
+>>>> But even then a legacy flush probably allows for in-flight memory
+>>>> accesses with old physical addresses to complete after the TLB
+>>>> flush. So there is a small risk of memory corruption that was
+>>>> assumed to not be accessed by the GPU any more. Or when using IOMMU
+>>>> device isolation it would result in IOMMU faults if the DMA mappings
+>>>> are invalidated slightly too early.
+>>> Mhm, that's quite bad. Any idea how to avoid that?
+>> A few ideas
+>>
+>>   * Add an arbitrary delay and hope that it is longer than the FIFOs in
+>>     the HW
+>>   * Execute an atomic operation to memory on some GPU engine that could
+>>     act as a fence, maybe just a RELEASE_MEM on the CP to some writeback
+>>     location would do the job
+>>   * If needed, RELEASE_MEM could also perform a cache flush
+>>
+>> Regards,
+>>    Felix
+>>
+>>
+>>> Regards,
+>>> Christian.
+>>>
+>>>> Regards,
+>>>>    Felix
+>>>>
+>>>>
+>>>>> And please don't push before getting an rb from Felix as well.
+>>>>>
+>>>>> Regards,
+>>>>> Christian.
+>>>>>
+>>>>>
+>>>>> Am 14.09.23 um 11:23 schrieb Lang Yu:
+>>>>>> cyan_skilfish has problems with other flush types.
+>>>>>>
+>>>>>> v2: fix incorrect ternary conditional operator usage.(Yifan)
+>>>>>>
+>>>>>> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+>>>>>> Cc: <stable@vger.kernel.org> # v5.15+
+>>>>>> ---
+>>>>>>    drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c | 7 ++++++-
+>>>>>>    1 file changed, 6 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+>>>>>> b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+>>>>>> index d3da13f4c80e..c6d11047169a 100644
+>>>>>> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+>>>>>> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
+>>>>>> @@ -236,7 +236,8 @@ static void
+>>>>>> gmc_v10_0_flush_vm_hub(struct amdgpu_device *adev, uint32_t
+>>>>>> vmid,
+>>>>>>    {
+>>>>>>        bool use_semaphore =
+>>>>>> gmc_v10_0_use_invalidate_semaphore(adev, vmhub);
+>>>>>>        struct amdgpu_vmhub *hub = &adev->vmhub[vmhub];
+>>>>>> -    u32 inv_req =
+>>>>>> hub->vmhub_funcs->get_invalidate_req(vmid, flush_type);
+>>>>>> +    u32 inv_req = hub->vmhub_funcs->get_invalidate_req(vmid,
+>>>>>> +              (adev->asic_type != CHIP_CYAN_SKILLFISH) ?
+>>>>>> flush_type : 0);
+>>>>>>        u32 tmp;
+>>>>>>        /* Use register 17 for GART */
+>>>>>>        const unsigned int eng = 17;
+>>>>>> @@ -331,6 +332,8 @@ static void
+>>>>>> gmc_v10_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t
+>>>>>> vmid,
+>>>>>>          int r;
+>>>>>>    +    flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH)
+>>>>>> ? flush_type : 0;
+>>>>>> +
+>>>>>>        /* flush hdp cache */
+>>>>>>        adev->hdp.funcs->flush_hdp(adev, NULL);
+>>>>>>    @@ -426,6 +429,8 @@ static int
+>>>>>> gmc_v10_0_flush_gpu_tlb_pasid(struct amdgpu_device *adev,
+>>>>>>        struct amdgpu_ring *ring = &adev->gfx.kiq[0].ring;
+>>>>>>        struct amdgpu_kiq *kiq = &adev->gfx.kiq[0];
+>>>>>>    +    flush_type = (adev->asic_type != CHIP_CYAN_SKILLFISH)
+>>>>>> ? flush_type : 0;
+>>>>>> +
+>>>>>>        if (amdgpu_emu_mode == 0 && ring->sched.ready) {
+>>>>>>            spin_lock(&adev->gfx.kiq[0].ring_lock);
+>>>>>>            /* 2 dwords flush + 8 dwords fence */
+
