@@ -2,55 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB497A212A
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 066087A2226
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 17:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235671AbjIOOiP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 10:38:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49570 "EHLO
+        id S235994AbjIOPR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 11:17:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235633AbjIOOiP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:38:15 -0400
+        with ESMTP id S235992AbjIOPRf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 11:17:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A331AC;
-        Fri, 15 Sep 2023 07:38:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605D0C433C7;
-        Fri, 15 Sep 2023 14:38:09 +0000 (UTC)
-Date:   Fri, 15 Sep 2023 10:38:33 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc:     Tero Kristo <tero.kristo@linux.intel.com>,
-        artem.bityutskiy@linux.intel.com,
-        linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] tracing/synthetic: Print out u64 values properly
-Message-ID: <20230915103833.22bf4fc8@gandalf.local.home>
-In-Reply-To: <20230915231613.6cb9372d9304c313dab462ea@kernel.org>
-References: <20230911141704.3585965-1-tero.kristo@linux.intel.com>
-        <20230915150101.ef50c4774ab85aa2ff7431ec@kernel.org>
-        <11672c6d-e021-eeda-5907-3fefb307ce9d@linux.intel.com>
-        <20230915231613.6cb9372d9304c313dab462ea@kernel.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE77E6A;
+        Fri, 15 Sep 2023 08:17:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D5BC433C7;
+        Fri, 15 Sep 2023 15:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694791049;
+        bh=TPHKnv6db0a6xw1+xArvSG1rxIzxtQZwKrUHA2vOqak=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VS53YwKyC45jVv8cxTqITtzN4aMPex3Kowb0nPZL/iwXu56eSPi1Qzy7l7DDrzSFV
+         PU2eInHPR2bn/M4W/7BitgLePLEt/5CvQEphwFBBuk4eQV4ndh1PjCxPIz159DIM0h
+         Y5K1/SPWImejGYZIPV7fFgr+Qf1pxHHlcGKsw8idOvWKR+Ecr70s+QcCLnF4MJ44Te
+         XaXh4dQ7y/Ln2W7q+YKKVjogAEq551SfM9l87fPZVBfzEgmho8hbEN2FDAl+m/c1rL
+         KN+tMXo0YPNFhe4XtDi9iasDqiWWI4E1bKTnUphiqtayzsmEHuJBw85iP24yoOWyFB
+         YSSK6n1SAOlHg==
+Date:   Fri, 15 Sep 2023 08:21:43 -0700
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Kathiravan T <quic_kathirav@quicinc.com>,
+        Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_eberman@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
+ ARM / ARM64
+Message-ID: <rzxxoofebcyuoktsl72diwv575md62bxqse4uizfns247gyklp@tdoixme3qrjq>
+References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 15 Sep 2023 23:16:13 +0900
-Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
-
-> > Anyways, that requires a new patch to be created on top as this has hit 
-> > the mainline as a fix already.  
+On Wed, Jun 07, 2023 at 10:23:45AM +0530, Kathiravan T wrote:
+> During SCM probe, to identify the SCM convention, scm call is made with
+> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
+> result what convention to be used is decided.
 > 
-> Oops, I missed that.
+> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
+> variants, however TZ firmware runs in 64bit mode. When running on 32bit
+> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
+> system crash, due to the difference in the register sets between ARM and
+> AARCH64, which is accessed by the TZ.
+> 
+> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+> 
 
-Yeah, I took that because it matched the original case, which was it being u64.
+My memory of this is cloudy, but I feel the logic is complicated because
+early 64-bit boards all used 32-bit TZ. So, I really would like Elliot's
+input before picking this change.
 
--- Steve
+Regards,
+Bjorn
+
+> Cc: stable@vger.kernel.org
+> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
+> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+> ---
+> Changes in V2:
+> 	- Added the Fixes tag and cc'd stable mailing list
+> 
+>  drivers/firmware/qcom_scm.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+> index fde33acd46b7..db6754db48a0 100644
+> --- a/drivers/firmware/qcom_scm.c
+> +++ b/drivers/firmware/qcom_scm.c
+> @@ -171,6 +171,7 @@ static enum qcom_scm_convention __get_convention(void)
+>  	if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
+>  		return qcom_scm_convention;
+>  
+> +#if IS_ENABLED(CONFIG_ARM64)
+>  	/*
+>  	 * Device isn't required as there is only one argument - no device
+>  	 * needed to dma_map_single to secure world
+> @@ -191,6 +192,7 @@ static enum qcom_scm_convention __get_convention(void)
+>  		forced = true;
+>  		goto found;
+>  	}
+> +#endif
+>  
+>  	probed_convention = SMC_CONVENTION_ARM_32;
+>  	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+> -- 
+> 2.17.1
+> 
