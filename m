@@ -2,106 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 066087A2226
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 17:17:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F4697A22C4
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 17:45:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235994AbjIOPR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 11:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45558 "EHLO
+        id S236213AbjIOPpS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 11:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235992AbjIOPRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 11:17:35 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE77E6A;
-        Fri, 15 Sep 2023 08:17:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D5BC433C7;
-        Fri, 15 Sep 2023 15:17:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694791049;
-        bh=TPHKnv6db0a6xw1+xArvSG1rxIzxtQZwKrUHA2vOqak=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VS53YwKyC45jVv8cxTqITtzN4aMPex3Kowb0nPZL/iwXu56eSPi1Qzy7l7DDrzSFV
-         PU2eInHPR2bn/M4W/7BitgLePLEt/5CvQEphwFBBuk4eQV4ndh1PjCxPIz159DIM0h
-         Y5K1/SPWImejGYZIPV7fFgr+Qf1pxHHlcGKsw8idOvWKR+Ecr70s+QcCLnF4MJ44Te
-         XaXh4dQ7y/Ln2W7q+YKKVjogAEq551SfM9l87fPZVBfzEgmho8hbEN2FDAl+m/c1rL
-         KN+tMXo0YPNFhe4XtDi9iasDqiWWI4E1bKTnUphiqtayzsmEHuJBw85iP24yoOWyFB
-         YSSK6n1SAOlHg==
-Date:   Fri, 15 Sep 2023 08:21:43 -0700
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Kathiravan T <quic_kathirav@quicinc.com>,
-        Elliot Berman <quic_eberman@quicinc.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_eberman@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
- ARM / ARM64
-Message-ID: <rzxxoofebcyuoktsl72diwv575md62bxqse4uizfns247gyklp@tdoixme3qrjq>
-References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+        with ESMTP id S236280AbjIOPo6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 11:44:58 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B572111;
+        Fri, 15 Sep 2023 08:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694792689; x=1726328689;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0I3gOLEsvDq3zuYI7Z/tbZQWwODKHgfdCF3R0YJN0/I=;
+  b=X7NXvZL5DC5sFAak6Zk402jXKJqXiZD6haG6UzdZmI68XaBJLvdEeSwj
+   YAP0z2KreaeacPi4v10CsgULVahRyHwTAVm9EhcoGTIOu3gEp34z1uqSG
+   WyKtWXXVviKBtBrep1aEZRk77AaSwPiyUl8HdVCJh7Ww8lFnI9utxdtZp
+   Oe6YbGHFSg4nxmd6E67yyodmFObtPoS5Z1AUj+kBNcpvaMGclQn6FbUM9
+   OPo5fWv/+LWZwbyKSum3jjEt/kBrtOaitOF6OisOLou1NRfSl3uc7RZq/
+   aimneskU/ZJHEjwfoBZS/csM7SrVZmLS7NRelJZu/j5fwc0Zrcf13l0o2
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="410217227"
+X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
+   d="scan'208";a="410217227"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 08:44:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10834"; a="991878516"
+X-IronPort-AV: E=Sophos;i="6.02,149,1688454000"; 
+   d="scan'208";a="991878516"
+Received: from srdoo-mobl1.ger.corp.intel.com (HELO ijarvine-mobl2.ger.corp.intel.com) ([10.252.38.99])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 08:44:44 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kselftest@vger.kernel.org,
+        =?UTF-8?q?Maciej=20Wiecz=C3=B3r-Retman?= 
+        <maciej.wieczor-retman@intel.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+        stable@vger.kernel.org,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v2 0/6] selftests/resctrl: Fixes to failing tests
+Date:   Fri, 15 Sep 2023 18:44:32 +0300
+Message-Id: <20230915154438.82931-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230607045345.25049-1-quic_kathirav@quicinc.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 10:23:45AM +0530, Kathiravan T wrote:
-> During SCM probe, to identify the SCM convention, scm call is made with
-> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
-> result what convention to be used is decided.
-> 
-> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
-> variants, however TZ firmware runs in 64bit mode. When running on 32bit
-> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
-> system crash, due to the difference in the register sets between ARM and
-> AARCH64, which is accessed by the TZ.
-> 
-> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
-> 
+Fix three issues with resctrl selftests.
 
-My memory of this is cloudy, but I feel the logic is complicated because
-early 64-bit boards all used 32-bit TZ. So, I really would like Elliot's
-input before picking this change.
+The signal handling fix became necessary after the mount/umount fixes.
 
-Regards,
-Bjorn
+The other two came up when I ran resctrl selftests across the server
+fleet in our lab to validate the upcoming CAT test rewrite (the rewrite
+is not part of this series).
 
-> Cc: stable@vger.kernel.org
-> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
-> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
-> ---
-> Changes in V2:
-> 	- Added the Fixes tag and cc'd stable mailing list
-> 
->  drivers/firmware/qcom_scm.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-> index fde33acd46b7..db6754db48a0 100644
-> --- a/drivers/firmware/qcom_scm.c
-> +++ b/drivers/firmware/qcom_scm.c
-> @@ -171,6 +171,7 @@ static enum qcom_scm_convention __get_convention(void)
->  	if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
->  		return qcom_scm_convention;
->  
-> +#if IS_ENABLED(CONFIG_ARM64)
->  	/*
->  	 * Device isn't required as there is only one argument - no device
->  	 * needed to dma_map_single to secure world
-> @@ -191,6 +192,7 @@ static enum qcom_scm_convention __get_convention(void)
->  		forced = true;
->  		goto found;
->  	}
-> +#endif
->  
->  	probed_convention = SMC_CONVENTION_ARM_32;
->  	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
-> -- 
-> 2.17.1
-> 
+These are developed and should apply cleanly at least on top the
+benchmark cleanup series (might apply cleanly also w/o the benchmark
+series, I didn't test).
+
+v2:
+- Include patch to move _GNU_SOURCE to Makefile to allow normal #include
+  placement
+- Rework the signal register/unregister into patch to use helpers
+- Fixed incorrect function parameter description
+- Use return !!res to avoid confusing implicit boolean conversion
+- Improve MBA/MBM success bound patch's changelog
+- Tweak Cc: stable dependencies (make it a chain).
+
+Ilpo Järvinen (6):
+  selftests/resctrl: Extend signal handler coverage to unmount on
+    receiving signal
+  selftests/resctrl: Remove duplicate feature check from CMT test
+  selftests/resctrl: Move _GNU_SOURCE define into Makefile
+  selftests/resctrl: Refactor feature check to use resource and feature
+    name
+  selftests/resctrl: Fix feature checks
+  selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
+
+ tools/testing/selftests/resctrl/Makefile      |  2 +-
+ tools/testing/selftests/resctrl/cat_test.c    |  8 --
+ tools/testing/selftests/resctrl/cmt_test.c    |  3 -
+ tools/testing/selftests/resctrl/mba_test.c    |  2 +-
+ tools/testing/selftests/resctrl/mbm_test.c    |  2 +-
+ tools/testing/selftests/resctrl/resctrl.h     |  7 +-
+ .../testing/selftests/resctrl/resctrl_tests.c | 78 +++++++++++--------
+ tools/testing/selftests/resctrl/resctrl_val.c | 22 +++---
+ tools/testing/selftests/resctrl/resctrlfs.c   | 69 +++++++---------
+ 9 files changed, 88 insertions(+), 105 deletions(-)
+
+-- 
+2.30.2
+
