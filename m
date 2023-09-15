@@ -2,124 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A487A20A3
-	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 322137A20BB
+	for <lists+stable@lfdr.de>; Fri, 15 Sep 2023 16:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235671AbjIOOQk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 15 Sep 2023 10:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40338 "EHLO
+        id S235554AbjIOOV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 15 Sep 2023 10:21:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235554AbjIOOQk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:16:40 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF2AD273A;
-        Fri, 15 Sep 2023 07:16:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E48C433CA;
-        Fri, 15 Sep 2023 14:16:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694787377;
-        bh=ru8tGJUMG8yYiEDFTkvWeohG0fXAiA5ifieOx/juvSk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LTyhGJTl74L4dnnRMIcnpe2zU4OBFkM/FjRbjzCJG+llEOnFGKu4Zh1dQEiUdre5G
-         pTWah8V3sT2Fzk92srjN9nTHAz383Pgy06d7VxtT1A8IQE4ucRptGb11ObdsDXnzoY
-         +0eu/l0RVcP6wBxTCrMhAP7BDPxxQUdPdvjurTS97bquQayvhuTzFIIUJliTaNfyZl
-         EW3UxFNmLB3xV0+uN+KIZviuWyKt60/jznSmVr07wvXYG/tHyNVy2m6ob9dFR2OBX4
-         Bfe6jlOSijvNBa6ONrnzHgnRAvbFbwwUGIwf/ZGRisiz7hUHKBjUB/Jd7IA5rOTjyg
-         r8R6i1EHgZ9Bg==
-Date:   Fri, 15 Sep 2023 23:16:13 +0900
-From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To:     Tero Kristo <tero.kristo@linux.intel.com>
-Cc:     rostedt@goodmis.org, artem.bityutskiy@linux.intel.com,
-        linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] tracing/synthetic: Print out u64 values properly
-Message-Id: <20230915231613.6cb9372d9304c313dab462ea@kernel.org>
-In-Reply-To: <11672c6d-e021-eeda-5907-3fefb307ce9d@linux.intel.com>
-References: <20230911141704.3585965-1-tero.kristo@linux.intel.com>
-        <20230915150101.ef50c4774ab85aa2ff7431ec@kernel.org>
-        <11672c6d-e021-eeda-5907-3fefb307ce9d@linux.intel.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S235323AbjIOOVZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 15 Sep 2023 10:21:25 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BAEEF3;
+        Fri, 15 Sep 2023 07:21:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=HhqRWnfOFQmhtzhnv8gfqh6lm+Imi8Fsr7KKLz7N0CA=; b=ZAFN3W4nMASD2f9xgs7ZQX6ljK
+        ZE54cWK5jw2+Sxw46PIOJA0UT2U5uUkdTZr2k8KtDrXX41eNaAyPpkouQr6gf2KB8iRM8JlWgsjPq
+        t5J8O6xrgRo4ZmbpLLDrG0qoZub5CnCxyF7xiWItr/5duXyu508Qh+WsEzlNdenRG20Q1ZqBJGjrT
+        P3pHnkskJkhMaKdgyszIiS2taMgR4RYA9tvPdRy46Qyos8b+Pf1/YITWhln/UD8jr6YsVX77kS86O
+        Jfgys6odI16/xcwKtGf2mj3NH9cxT2EOf0oVU6upGq60J67ibRP5ZTz6zAZLmzeIzhKi8c1Z+62nx
+        ZyxDzIsg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qh9h3-00ACmq-G6; Fri, 15 Sep 2023 14:21:13 +0000
+Date:   Fri, 15 Sep 2023 15:21:13 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Hugh Dickins <hughd@google.com>
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Hannes Reineke <hare@suse.de>, linux-mm@kvack.org,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] block: Remove special-casing of compound pages
+Message-ID: <ZQRoWVntO22VWL8K@casper.infradead.org>
+References: <20230814144100.596749-1-willy@infradead.org>
+ <94635da5-ce28-a8fb-84e3-7a9f5240fe6a@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <94635da5-ce28-a8fb-84e3-7a9f5240fe6a@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Tero,
-
-On Fri, 15 Sep 2023 13:46:45 +0300
-Tero Kristo <tero.kristo@linux.intel.com> wrote:
-
-> Hi Masami,
+On Wed, Aug 16, 2023 at 01:27:17PM -0700, Hugh Dickins wrote:
+> > This problem predates the folio work; it could for example have been
+> > triggered by mmaping a THP in tmpfs and using that as the target of an
+> > O_DIRECT read.
+> > 
+> > Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
 > 
-> On 15/09/2023 09:01, Masami Hiramatsu (Google) wrote:
-> > Hi Tero,
-> >
-> > On Mon, 11 Sep 2023 17:17:04 +0300
-> > Tero Kristo <tero.kristo@linux.intel.com> wrote:
-> >
-> >> The synth traces incorrectly print pointer to the synthetic event values
-> >> instead of the actual value when using u64 type. Fix by addressing the
-> >> contents of the union properly.
-> > Thanks for pointing it out.
-> > But I would like to see a new "case 8:" print code instead of changing
-> > "default". Can you keep the default as it is and add "case 8:" case there?
+> No. It's a good catch, but bug looks specific to the folio work to me.
 > 
-> Are you sure about that? I think keeping the default as is would just 
-> print out a useless pointer value to the synth event itself (which is 
-> what happened with u64 type.)
-
-Yeah, I think the "default" here means no correct way to show the value
-in it. So anyway, if we know the size is 8 and there is val->as_u64,
-there should be "case 8:".
-
+> Almost all shmem pages are dirty from birth, even as soon as they are
+> brought back from swap; so it is not necessary to re-mark them dirty.
 > 
-> Anyways, that requires a new patch to be created on top as this has hit 
-> the mainline as a fix already.
-
-Oops, I missed that.
-
-Thank you!
-
+> The exceptions are pages allocated to holes when faulted: so you did
+> get me worried as to whether khugepaged could collapse a pmd-ful of
+> those into a THP without marking the result as dirty.
 > 
-> -Tero
+> But no, in v6.5-rc6 the collapse_file() success path has
+> 	if (is_shmem)
+> 		folio_mark_dirty(folio);
+> and in v5.10 the same appears as
+> 		if (is_shmem)
+> 			set_page_dirty(new_page);
 > 
+> (IIRC, that or marking pmd dirty was missed from early shmem THP
+> support, but fairly soon corrected, and backported to stable then.
+> I have a faint memory of versions which assembled pmd_dirty from
+> collected pte_dirtys.)
 > 
-> >
-> > Thanks,
-> >
-> >> Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Tero Kristo <tero.kristo@linux.intel.com>
-> >> ---
-> >>   kernel/trace/trace_events_synth.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-> >> index 7fff8235075f..070365959c0a 100644
-> >> --- a/kernel/trace/trace_events_synth.c
-> >> +++ b/kernel/trace/trace_events_synth.c
-> >> @@ -337,7 +337,7 @@ static void print_synth_event_num_val(struct trace_seq *s,
-> >>   		break;
-> >>   
-> >>   	default:
-> >> -		trace_seq_printf(s, print_fmt, name, val, space);
-> >> +		trace_seq_printf(s, print_fmt, name, val->as_u64, space);
-> >>   		break;
-> >>   	}
-> >>   }
-> >> -- 
-> >> 2.40.1
-> >>
-> >
+> And the !is_shmem case is for CONFIG_READ_ONLY_THP_FOR_FS: writing
+> into those pages, by direct IO or whatever, is already prohibited.
+> 
+> It's dem dirty (or not dirty) folios dat's the trouble!
 
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Thanks for the correction!  Could it happen with anon THP?
+They're not kept dirty from birth ... are they?
