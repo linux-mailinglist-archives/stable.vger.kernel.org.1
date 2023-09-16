@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F89C7A3027
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D95E07A3028
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231897AbjIPMgg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43112 "EHLO
+        id S232421AbjIPMiM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239111AbjIPMgZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:36:25 -0400
+        with ESMTP id S239030AbjIPMhl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:37:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12FE519A
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:36:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C7EC433C8;
-        Sat, 16 Sep 2023 12:36:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2726319A
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:37:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C2AC433C7;
+        Sat, 16 Sep 2023 12:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867779;
-        bh=LL3jKpu5Iw7IxJ3Pm/uIqh+pFBVrxWk7XV/OeRlX4Uc=;
+        s=korg; t=1694867856;
+        bh=kQ8E5KpkmWuOxOYbp7T5Vw95/W/g0yqrUhhfDVFKjbo=;
         h=Subject:To:Cc:From:Date:From;
-        b=ILN4rD+KGoH83wTwR+11hsootlOFQE3vEX94+5Qy6cYc3Db/BgjLlUsigdl+OpXQ7
-         0IV6tTGybSxkxIzBn9sIUtq95GalczsBHx6qdOjRuLRWKCoWi46JpeTNovYDjlFvEu
-         czEvnN6Q8pEj6ASsUEa5dOPgM5AIht1Jzxsg9lKE=
-Subject: FAILED: patch "[PATCH] btrfs: compare the correct fsid/metadata_uuid in" failed to apply to 6.1-stable tree
+        b=mIxomtLqAKuVn1iLi2EsjZ85+mTmDutOtYmNPo3iOrSrLJUhGQmLHlJq072n8Vgjy
+         x7FbL7Gj4Gf57+KnrAIuaO2DU3twXsRLF9HgIy01m4nMNOyUimIc4yfBp/+hRt08no
+         nM7F4rkeYkhQTxvStw8H1yZvR0kW4zPnxKo/amOA=
+Subject: FAILED: patch "[PATCH] btrfs: compare the correct fsid/metadata_uuid in" failed to apply to 6.5-stable tree
 To:     anand.jain@oracle.com, dsterba@suse.com, gpiccoli@igalia.com,
         johannes.thumshirn@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:36:16 +0200
-Message-ID: <2023091616-alumni-depose-cd8b@gregkh>
+Date:   Sat, 16 Sep 2023 14:37:30 +0200
+Message-ID: <2023091629-presuming-concrete-30ca@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6bfe3959b0e7a526f5c64747801a8613f002f05a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091616-alumni-depose-cd8b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091629-presuming-concrete-30ca@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
