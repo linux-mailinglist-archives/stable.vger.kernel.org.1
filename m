@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F350D7A3025
+	by mail.lfdr.de (Postfix) with ESMTP id A8F297A3024
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239216AbjIPMfB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239217AbjIPMfB (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:35:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239238AbjIPMel (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:34:41 -0400
+        with ESMTP id S239250AbjIPMen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:34:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB1419A
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:34:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342F1C433C7;
-        Sat, 16 Sep 2023 12:34:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1BE619A
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:34:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07673C433C8;
+        Sat, 16 Sep 2023 12:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867675;
-        bh=ZQUb+fJToVziYg/3GXLNBmrWtIjUV0qc2Q1T8vqoso8=;
+        s=korg; t=1694867678;
+        bh=VHMR7zNayRfTMwEEa65dtI4etyMuPWC0fxAV9RJ1eBc=;
         h=Subject:To:Cc:From:Date:From;
-        b=nfYq1thek/rZgCohHE6rVoozDSLc9vsEMch6rOueq4f5iMnjYAZjnE/eK8fsinWrL
-         XVuGOq9dxx3e+b7Wp79ni6YSzrddqYiFIJwFXmNEXeaEuOQYCKjohrROCk6Ka5+BD1
-         YrOFigXuvdiBQ50RCgAcjI5f/ppcf0A1qvIy+bDw=
-Subject: FAILED: patch "[PATCH] btrfs: fix start transaction qgroup rsv double free" failed to apply to 5.15-stable tree
-To:     boris@bur.io, dsterba@suse.com, josef@toxicpanda.com
+        b=BPnkbVsTA+9Z6/Ix55ToNBR8T8UEXVXC2OGRmFF0Fp0NqJkE+16CyJkHslFgyWtHd
+         bf+duAysWuzLKl01IQcYvlWKQhQ5BlNHNx69giOr7h8VAqzRKTnYQPFqk8zJPnJZHP
+         02vWk1rSHo7hFYdfXV4yjKJFSBnCeGyFlzkXTH1w=
+Subject: FAILED: patch "[PATCH] btrfs: compare the correct fsid/metadata_uuid in" failed to apply to 5.15-stable tree
+To:     anand.jain@oracle.com, dsterba@suse.com, gpiccoli@igalia.com,
+        johannes.thumshirn@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:33:23 +0200
-Message-ID: <2023091623-platform-greedily-f4d0@gregkh>
+Date:   Sat, 16 Sep 2023 14:34:02 +0200
+Message-ID: <2023091602-electable-stench-1002@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -52,14 +53,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a6496849671a5bc9218ecec25a983253b34351b1
+git cherry-pick -x 6bfe3959b0e7a526f5c64747801a8613f002f05a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091623-platform-greedily-f4d0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091602-electable-stench-1002@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-a6496849671a ("btrfs: fix start transaction qgroup rsv double free")
+6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
 
 thanks,
 
@@ -67,95 +68,60 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a6496849671a5bc9218ecec25a983253b34351b1 Mon Sep 17 00:00:00 2001
-From: Boris Burkov <boris@bur.io>
-Date: Fri, 21 Jul 2023 09:02:07 -0700
-Subject: [PATCH] btrfs: fix start transaction qgroup rsv double free
+From 6bfe3959b0e7a526f5c64747801a8613f002f05a Mon Sep 17 00:00:00 2001
+From: Anand Jain <anand.jain@oracle.com>
+Date: Mon, 31 Jul 2023 19:16:35 +0800
+Subject: [PATCH] btrfs: compare the correct fsid/metadata_uuid in
+ btrfs_validate_super
 
-btrfs_start_transaction reserves metadata space of the PERTRANS type
-before it identifies a transaction to start/join. This allows flushing
-when reserving that space without a deadlock. However, it results in a
-race which temporarily breaks qgroup rsv accounting.
+The function btrfs_validate_super() should verify the metadata_uuid in
+the provided superblock argument. Because, all its callers expect it to
+do that.
 
-T1                                              T2
-start_transaction
-do_stuff
-                                            start_transaction
-                                                qgroup_reserve_meta_pertrans
-commit_transaction
-    qgroup_free_meta_all_pertrans
-                                            hit an error starting txn
-                                            goto reserve_fail
-                                            qgroup_free_meta_pertrans (already freed!)
+Such as in the following stacks:
 
-The basic issue is that there is nothing preventing another commit from
-committing before start_transaction finishes (in fact sometimes we
-intentionally wait for it) so any error path that frees the reserve is
-at risk of this race.
+  write_all_supers()
+   sb = fs_info->super_for_commit;
+   btrfs_validate_write_super(.., sb)
+     btrfs_validate_super(.., sb, ..)
 
-While this exact space was getting freed anyway, and it's not a huge
-deal to double free it (just a warning, the free code catches this), it
-can result in incorrectly freeing some other pertrans reservation in
-this same reservation, which could then lead to spuriously granting
-reservations we might not have the space for. Therefore, I do believe it
-is worth fixing.
+  scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
 
-To fix it, use the existing prealloc->pertrans conversion mechanism.
-When we first reserve the space, we reserve prealloc space and only when
-we are sure we have a transaction do we convert it to pertrans. This way
-any racing commits do not blow away our reservation, but we still get a
-pertrans reservation that is freed when _this_ transaction gets committed.
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
 
-This issue can be reproduced by running generic/269 with either qgroups
-or squotas enabled via mkfs on the scratch device.
+However, it currently verifies the fs_info::super_copy::metadata_uuid
+instead.  Fix this using the correct metadata_uuid in the superblock
+argument.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-CC: stable@vger.kernel.org # 5.10+
-Signed-off-by: Boris Burkov <boris@bur.io>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 4bb9716ad24a..815f61d6b506 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -591,8 +591,13 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
- 		u64 delayed_refs_bytes = 0;
- 
- 		qgroup_reserved = num_items * fs_info->nodesize;
--		ret = btrfs_qgroup_reserve_meta_pertrans(root, qgroup_reserved,
--				enforce_qgroups);
-+		/*
-+		 * Use prealloc for now, as there might be a currently running
-+		 * transaction that could free this reserved space prematurely
-+		 * by committing.
-+		 */
-+		ret = btrfs_qgroup_reserve_meta_prealloc(root, qgroup_reserved,
-+							 enforce_qgroups, false);
- 		if (ret)
- 			return ERR_PTR(ret);
- 
-@@ -705,6 +710,14 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
- 		h->reloc_reserved = reloc_reserved;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 49f405495e34..32ec651c570f 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2391,13 +2391,11 @@ int btrfs_validate_super(struct btrfs_fs_info *fs_info,
+ 		ret = -EINVAL;
  	}
  
-+	/*
-+	 * Now that we have found a transaction to be a part of, convert the
-+	 * qgroup reservation from prealloc to pertrans. A different transaction
-+	 * can't race in and free our pertrans out from under us.
-+	 */
-+	if (qgroup_reserved)
-+		btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
-+
- got_it:
- 	if (!current->journal_info)
- 		current->journal_info = h;
-@@ -752,7 +765,7 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
- 		btrfs_block_rsv_release(fs_info, &fs_info->trans_block_rsv,
- 					num_bytes, NULL);
- reserve_fail:
--	btrfs_qgroup_free_meta_pertrans(root, qgroup_reserved);
-+	btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
- 	return ERR_PTR(ret);
- }
+-	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
+-	    memcmp(fs_info->fs_devices->metadata_uuid,
+-		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
++		   BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->metadata_uuid,
+-			fs_info->fs_devices->metadata_uuid);
++			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
+ 		ret = -EINVAL;
+ 	}
  
 
