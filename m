@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F40C7A2FB4
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 13:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 493717A2FB7
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 13:34:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjIPLao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 07:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
+        id S232870AbjIPLe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 07:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233372AbjIPLal (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 07:30:41 -0400
+        with ESMTP id S238894AbjIPLeM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 07:34:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50BF6CC0
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 04:30:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846A0C433C8;
-        Sat, 16 Sep 2023 11:30:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDBECC4
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 04:34:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509B4C433C8;
+        Sat, 16 Sep 2023 11:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694863835;
-        bh=tb+xo4fSb2SK2auJNGK/z1wJlI5Gm2K/RpR33D1BATs=;
+        s=korg; t=1694864046;
+        bh=7Eqg0f0BI1e740+fFbCOjnG90x/EolLazUtPHV1leWs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VGQMC0Ox58Vgmg3+ioBFg0bugTtas2Yo/HziA7VXJv7+Y7RDAHLkW774S3K9c6Ka1
-         AmxjLqDPpbVDYVI6XMoKBTzszdjmnfFb4SOQ3pG9enVCSOSU4Cpvd5DawMRkGzMUND
-         /qYJJv9ygWxEkNv17GiewZFDdsBKRS0rBIbfzF3w=
-Date:   Sat, 16 Sep 2023 13:30:33 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Ajay Kaher <akaher@vmware.com>
-Cc:     stable@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alexanderduyck@fb.com,
-        soheil@google.com, netdev@vger.kernel.org, namit@vmware.com,
-        amakhalov@vmware.com, vsirnapalli@vmware.com,
-        er.ajay.kaher@gmail.com
-Subject: Re: [PATCH 0/4 v6.1.y] net: fix roundup issue in kmalloc_reserve()
-Message-ID: <2023091600-activate-moody-bd24@gregkh>
-References: <1694802065-1821-1-git-send-email-akaher@vmware.com>
+        b=obcG4/BQ4zviQVAtxhMY64w1RY+Sa0yJWg12BOs74sDHppiN9NcCkKAEfsT2KN1Fj
+         /M/4n/32ki3TTBDqTS50+vodWb3VQG4ddasRcO+tklC4nWSndKeB2UGER5pJF0R/jV
+         MENMquXDT1qNo+DpatfbtybxsXq1xQMoVEbwxDPI=
+Date:   Sat, 16 Sep 2023 13:34:03 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     stable@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: Re: [STABLE][PATCH] linux/export: fix reference to exported
+ functions for parisc64
+Message-ID: <2023091656-posted-poking-c78c@gregkh>
+References: <ZQM6XXX9Sln2SZx2@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1694802065-1821-1-git-send-email-akaher@vmware.com>
+In-Reply-To: <ZQM6XXX9Sln2SZx2@p100>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -48,18 +46,15 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 15, 2023 at 11:51:01PM +0530, Ajay Kaher wrote:
-> From: Eric Dumazet <edumazet@google.com>
+On Thu, Sep 14, 2023 at 06:52:45PM +0200, Helge Deller wrote:
+> Hi Greg,
 > 
-> This patch series is to backport upstream commit:
-> 915d975b2ffa: net: deal with integer overflows in kmalloc_reserve()
+> could you please cherry-pick this upstream commit:
 > 
-> patch 1-3/4 backport requires to apply patch 4/4 to fix roundup issue
-> in kmalloc_reserve()
+> 	08700ec70504 ("linux/export: fix reference to exported functions for parisc64")
+> 
+> to the v6.5 stable kernel series?
 
-Thanks so much for these backports.  I attempted it but couldn't figure
-it out myself.
-
-all now queued up,
+Now queued up, thanks.
 
 greg k-h
