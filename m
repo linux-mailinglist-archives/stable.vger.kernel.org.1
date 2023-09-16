@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 697A17A300D
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B277B7A3011
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239316AbjIPM1e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239318AbjIPM1e (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54398 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239335AbjIPM1O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:27:14 -0400
+        with ESMTP id S239337AbjIPM1S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:27:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB25194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:27:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE90EC433C8;
-        Sat, 16 Sep 2023 12:27:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF2F194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:27:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADABC433C8;
+        Sat, 16 Sep 2023 12:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867229;
-        bh=sW525CvZPkLh7f+s1dRriiMV45LdXxOSucop7Rp6BtM=;
+        s=korg; t=1694867232;
+        bh=IRCI8kNMGe4NcFiYaFNl6NP8v1qbmp5Zy9cgdveartE=;
         h=Subject:To:Cc:From:Date:From;
-        b=lqWP8tHGASM9YWQgL/rwHJIck8o4mabjQFawNMsLUrzloH3wywIBSjHwIvkQnYBcA
-         qVm/04OtswFf5daT3m0nutl0JxEoXfK9QKQMze98YIPzukK3vBF8dbLyRGeHFVi94K
-         omBex8SpaRAAXKchbW7/RGlCUqlsik+NS0GbDQfk=
-Subject: FAILED: patch "[PATCH] perf build: Update build rule for generated files" failed to apply to 4.19-stable tree
+        b=OCoiWZhjUa7wgyg96op1nLrfoAtmthwtqZzoMN01kVYJSoESfb5H5wt0ZQPB5B/I8
+         98moFYpUu7yI01L8VAGpmBOyABc/RRN92Cd4MgvBySpyBRtLrUgSb2xjlX0m/jSokl
+         8MSMrfYTTgzGUCfgjxeKIYvvZCBTrzyym0/cCzyM=
+Subject: FAILED: patch "[PATCH] perf build: Update build rule for generated files" failed to apply to 4.14-stable tree
 To:     namhyung@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
         ak@linux.intel.com, anupnewsmail@gmail.com, irogers@google.com,
         jolsa@kernel.org, mingo@kernel.org, peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:27:00 +0200
-Message-ID: <2023091600-retention-manlike-1192@gregkh>
+Date:   Sat, 16 Sep 2023 14:27:01 +0200
+Message-ID: <2023091601-concerned-refurbish-854c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7822a8913f4c51c7d1aff793b525d60c3384fb5b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091600-retention-manlike-1192@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091601-concerned-refurbish-854c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,8 @@ a96c03e8cdcf ("tools build: Add test-reallocarray.c to test-all.c to fix the bui
 aa8f9c517ebc ("tools build: Add -lrt to FEATURE_CHECK_LDFLAGS-libaio")
 14541b1e7e72 ("perf build: Don't unconditionally link the libbfd feature test to -liberty and -lz")
 2a07d814747b ("tools build feature: Check if libaio is available")
+531b014e7a2f ("tools: bpf: make use of reallocarray")
+174e719439b8 ("Merge branch 'perf-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
