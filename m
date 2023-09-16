@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BECB47A2FFC
+	by mail.lfdr.de (Postfix) with ESMTP id 73D0A7A2FFB
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239282AbjIPMXt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239285AbjIPMXt (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:23:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36938 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239285AbjIPMX0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:26 -0400
+        with ESMTP id S239288AbjIPMX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 441F1CED
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8172BC433C7;
-        Sat, 16 Sep 2023 12:23:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26287194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B210C433C8;
+        Sat, 16 Sep 2023 12:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694866999;
-        bh=4Oyq6JNp79Q0NMLin76+i/rZTW1U/C7OOkIkA0eiw1E=;
+        s=korg; t=1694867002;
+        bh=9UAcrJcVaeAfzdgnI1xpIg6gdvbJ9icabXA+D9gWMuw=;
         h=Subject:To:Cc:From:Date:From;
-        b=hsQgb1G+ib61LIwCkqWHg9huYdSgladTO21+PFFudMAe/6j33QKspD2GR2XANhhsy
-         fsETCJjho1fZU2oHfixqxFhW8bSoC+KePy1axvytbmwjkY/HWKIqTEKugXwrGFNNR2
-         uyMusx5fKpbUHqf8Ey9xSIVNcppMvfslHIhTXXDI=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in" failed to apply to 4.14-stable tree
-To:     william.zhang@broadcom.com, florian.fainelli@broadcom.com,
-        miquel.raynal@bootlin.com
+        b=UagYJVxaJqY/S8fPeJVb5VTXpZlpeMhzGlWlr/2eflrSKd52f6BbTmW02P7lApbx9
+         jQxgKwHQ1uZLfqCZDUqyH2B+OJlpU4BYb48EsiOD5YIe5gTidg0mt1l3V3eJr3jRww
+         KT6WCbc6Ev4TKiEuNwoDVKge79f1jI0BgozfLEUg=
+Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT" failed to apply to 6.5-stable tree
+To:     Takahiro.Kuwano@infineon.com, tudor.ambarus@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:22:32 +0200
-Message-ID: <2023091632-marauding-viable-2fad@gregkh>
+Date:   Sat, 16 Sep 2023 14:22:58 +0200
+Message-ID: <2023091658-glare-spinster-90d6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,23 +43,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5d53244186c9ac58cb88d76a0958ca55b83a15cd
+git cherry-pick -x 1e611e104b9acb6310b8c684d5acee0e11ca7bd1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091632-marauding-viable-2fad@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091658-glare-spinster-90d6@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
-5d53244186c9 ("mtd: rawnand: brcmnand: Fix potential out-of-bounds access in oob write")
+1e611e104b9a ("mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT")
+d534fd9787d5 ("mtd: spi-nor: spansion: use CLPEF as an alternative to CLSR")
 
 thanks,
 
@@ -68,63 +68,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5d53244186c9ac58cb88d76a0958ca55b83a15cd Mon Sep 17 00:00:00 2001
-From: William Zhang <william.zhang@broadcom.com>
-Date: Thu, 6 Jul 2023 11:29:08 -0700
-Subject: [PATCH] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in
- oob write
+From 1e611e104b9acb6310b8c684d5acee0e11ca7bd1 Mon Sep 17 00:00:00 2001
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Date: Wed, 26 Jul 2023 10:52:48 +0300
+Subject: [PATCH] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT
 
-When the oob buffer length is not in multiple of words, the oob write
-function does out-of-bounds read on the oob source buffer at the last
-iteration. Fix that by always checking length limit on the oob buffer
-read and fill with 0xff when reaching the end of the buffer to the oob
-registers.
+CFR2V[7] is assigned to Flash's address mode (3- or 4-ybte) and must not
+be changed when writing MEMLAT (CFR2V[3:0]). CFR2V shall be used in a read,
+update, write back fashion.
 
-Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-5-william.zhang@broadcom.com
+Link: https://lore.kernel.org/r/20230726075257.12985-3-tudor.ambarus@linaro.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index b2c6396060db..71d0ba652bee 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -1477,19 +1477,33 @@ static int write_oob_to_regs(struct brcmnand_controller *ctrl, int i,
- 			     const u8 *oob, int sas, int sector_1k)
- {
- 	int tbytes = sas << sector_1k;
--	int j;
-+	int j, k = 0;
-+	u32 last = 0xffffffff;
-+	u8 *plast = (u8 *)&last;
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 6b2532ed053c..6460d2247bdf 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2014, Freescale Semiconductor, Inc.
+  */
  
- 	/* Adjust OOB values for 1K sector size */
- 	if (sector_1k && (i & 0x01))
- 		tbytes = max(0, tbytes - (int)ctrl->max_oob);
- 	tbytes = min_t(int, tbytes, ctrl->max_oob);
++#include <linux/bitfield.h>
+ #include <linux/device.h>
+ #include <linux/mtd/spi-nor.h>
  
--	for (j = 0; j < tbytes; j += 4)
-+	/*
-+	 * tbytes may not be multiple of words. Make sure we don't read out of
-+	 * the boundary and stop at last word.
-+	 */
-+	for (j = 0; (j + 3) < tbytes; j += 4)
- 		oob_reg_write(ctrl, j,
- 				(oob[j + 0] << 24) |
- 				(oob[j + 1] << 16) |
- 				(oob[j + 2] <<  8) |
- 				(oob[j + 3] <<  0));
-+
-+	/* handle the remaing bytes */
-+	while (j < tbytes)
-+		plast[k++] = oob[j++];
-+
-+	if (tbytes & 0x3)
-+		oob_reg_write(ctrl, (tbytes & ~0x3), (__force u32)cpu_to_be32(last));
-+
- 	return tbytes;
- }
+@@ -28,6 +29,7 @@
+ #define SPINOR_REG_CYPRESS_CFR2			0x3
+ #define SPINOR_REG_CYPRESS_CFR2V					\
+ 	(SPINOR_REG_CYPRESS_VREG + SPINOR_REG_CYPRESS_CFR2)
++#define SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK	GENMASK(3, 0)
+ #define SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24	0xb
+ #define SPINOR_REG_CYPRESS_CFR2_ADRBYT		BIT(7)
+ #define SPINOR_REG_CYPRESS_CFR3			0x4
+@@ -161,8 +163,18 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
+ 	int ret;
+ 	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
  
++	op = (struct spi_mem_op)
++		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
++					  SPINOR_REG_CYPRESS_CFR2V, 0, buf);
++
++	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
++	if (ret)
++		return ret;
++
+ 	/* Use 24 dummy cycles for memory array reads. */
+-	*buf = SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24;
++	*buf &= ~SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK;
++	*buf |= FIELD_PREP(SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK,
++			   SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24);
+ 	op = (struct spi_mem_op)
+ 		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
+ 					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
 
