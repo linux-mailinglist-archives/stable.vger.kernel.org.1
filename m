@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BAA17A3003
+	by mail.lfdr.de (Postfix) with ESMTP id 107547A3002
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239297AbjIPMYU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239283AbjIPMYU (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239283AbjIPMXt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:49 -0400
+        with ESMTP id S239295AbjIPMXw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32415194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A97C433C7;
-        Sat, 16 Sep 2023 12:23:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4040A194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8509BC433C7;
+        Sat, 16 Sep 2023 12:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867023;
-        bh=4tV7sCIKLxbW40IPFYLJOvjseJ5rUvYF5qe0VxzHWro=;
+        s=korg; t=1694867026;
+        bh=vwrMB2tZ2qCtYSDyXEamaJOcRwnxEtGaLyUnxPHWnp0=;
         h=Subject:To:Cc:From:Date:From;
-        b=h5BPi6MVpuXnlzp2Mj7y+kAzo/NLNUUiPFU+I3PC+rjmy4mSRuK2Jtyc6bM/traa+
-         59+QSNVoUBHre9N/6f5N0C5Am5VTf8LG0yh1bc4OrISDXZYkWgBk73Dd30Bk0ShsUH
-         fG3VqUUJlGesGRqQK17kWDhNktyoSZMgk/02aSwA=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 4.14-stable tree
+        b=JxsF9I7VtpInvzYYxVFor47zf2O53pbdMd08cIKwmFiT8WBk1zITOWoDMB1uW5r9W
+         2uH5P81DSzpwMpjIFgZmYhIP90E6fpO8pS+9Icbpu86tz9Q+ty6dHddmzXjXwEADVF
+         2HVUlUsCWsTXVR/lla23iXEk0ss7xUEA1X/m1AvY=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 4.19-stable tree
 To:     william.zhang@broadcom.com, florian.fainelli@broadcom.com,
         miquel.raynal@bootlin.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sat, 16 Sep 2023 14:23:34 +0200
-Message-ID: <2023091634-mustang-cameo-dcc5@gregkh>
+Message-ID: <2023091634-friday-olive-b032@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091634-mustang-cameo-dcc5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091634-friday-olive-b032@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -79,7 +79,6 @@ c0739d85723a ("mtd: rawnand: Pass a nand_chip object to chip->write_xxx() hooks"
 7e534323c416 ("mtd: rawnand: Pass a nand_chip object to chip->read_xxx() hooks")
 47bd59e538d4 ("mtd: rawnand: plat_nand: Pass a nand_chip object to all platform_nand_ctrl hooks")
 7525c9518ea6 ("mtd: rawnand: Get rid of the ->read_word() hook")
-d03af162bb09 ("mtd: rawnand: denali: convert to nand_scan()")
 
 thanks,
 
