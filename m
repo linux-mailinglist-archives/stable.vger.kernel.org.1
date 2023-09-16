@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 107547A3002
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A19DA7A3004
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239283AbjIPMYU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
+        id S235068AbjIPMYw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239295AbjIPMXw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:52 -0400
+        with ESMTP id S239300AbjIPMYb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:24:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4040A194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8509BC433C7;
-        Sat, 16 Sep 2023 12:23:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5341B194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:24:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949D2C433CA;
+        Sat, 16 Sep 2023 12:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867026;
-        bh=vwrMB2tZ2qCtYSDyXEamaJOcRwnxEtGaLyUnxPHWnp0=;
+        s=korg; t=1694867066;
+        bh=hgYJ6RumKYcy/LlSXor7/JSvvXeivr9fPZlUUQIWhXI=;
         h=Subject:To:Cc:From:Date:From;
-        b=JxsF9I7VtpInvzYYxVFor47zf2O53pbdMd08cIKwmFiT8WBk1zITOWoDMB1uW5r9W
-         2uH5P81DSzpwMpjIFgZmYhIP90E6fpO8pS+9Icbpu86tz9Q+ty6dHddmzXjXwEADVF
-         2HVUlUsCWsTXVR/lla23iXEk0ss7xUEA1X/m1AvY=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 4.19-stable tree
-To:     william.zhang@broadcom.com, florian.fainelli@broadcom.com,
-        miquel.raynal@bootlin.com
+        b=KGA5PTr6lzOYHfNxu5dHcrFkix0uXQffsXpmZwIHfzdWSKnuvQzSNv9aaDtZoVdeW
+         u49v7LxcZlW5wa2fU7hbcm0aoNynbFrCmvmmWpQe6wYNTsGYiedJ9yfKIP6AG4g3A/
+         PlWN0l6HuuquRmK0oE5Pwh1hA3yUoz74OuDbWwr8=
+Subject: FAILED: patch "[PATCH] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy" failed to apply to 5.10-stable tree
+To:     mwen@igalia.com, alexander.deucher@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:23:34 +0200
-Message-ID: <2023091634-friday-olive-b032@gregkh>
+Date:   Sat, 16 Sep 2023 14:24:22 +0200
+Message-ID: <2023091622-outpost-audio-2222@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,41 +43,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b
+git cherry-pick -x 57a943ebfcdb4a97fbb409640234bdb44bfa1953
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091634-friday-olive-b032@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091622-outpost-audio-2222@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-2ec2839a9062 ("mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller")
-25f97138f8c2 ("mtd: rawnand: brcmnand: Allow SoC to provide I/O operations")
-7e7c7df5d50f ("mtd: rawnand: brcmnand: support v2.1-v2.2 controllers")
-eeeac9cbc4ca ("mtd: rawnand: brcmnand: rename page sizes")
-4fd639092b17 ("mtd: rawnand: brcmnand: rename v4 registers")
-a5d53ad26a8b ("mtd: rawnand: brcmnand: Add support for flash-edu for dma transfers")
-0c06da5788be ("mtd: rawnand: brcmnand: Add support for v7.3 controller")
-3c7c1e4594ef ("mtd: rawnand: brcmnand: Refactored code to introduce helper functions")
-c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
-f1d46942e823 ("mtd: rawnand: Pass a nand_chip object to chip->waitfunc()")
-5295cf2e047c ("mtd: rawnand: Pass a nand_chip object to chip->cmdfunc()")
-50a487e7719c ("mtd: rawnand: Pass a nand_chip object to chip->dev_ready()")
-0f808c1602bc ("mtd: rawnand: Pass a nand_chip object to chip->cmd_ctrl()")
-c17556f545c0 ("mtd: rawnand: Pass a nand_chip object to chip->block_xxx() hooks")
-758b56f58b66 ("mtd: rawnand: Pass a nand_chip object to chip->select_chip()")
-c0739d85723a ("mtd: rawnand: Pass a nand_chip object to chip->write_xxx() hooks")
-7e534323c416 ("mtd: rawnand: Pass a nand_chip object to chip->read_xxx() hooks")
-47bd59e538d4 ("mtd: rawnand: plat_nand: Pass a nand_chip object to all platform_nand_ctrl hooks")
-7525c9518ea6 ("mtd: rawnand: Get rid of the ->read_word() hook")
+57a943ebfcdb ("drm/amd/display: enable cursor degamma for DCN3+ DRM legacy gamma")
+5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
+60693e3a3890 ("Merge tag 'amd-drm-next-5.20-2022-07-14' of https://gitlab.freedesktop.org/agd5f/linux into drm-next")
 
 thanks,
 
@@ -86,154 +69,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b Mon Sep 17 00:00:00 2001
-From: William Zhang <william.zhang@broadcom.com>
-Date: Thu, 6 Jul 2023 11:29:05 -0700
-Subject: [PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2
- controller
+From 57a943ebfcdb4a97fbb409640234bdb44bfa1953 Mon Sep 17 00:00:00 2001
+From: Melissa Wen <mwen@igalia.com>
+Date: Thu, 31 Aug 2023 15:12:28 -0100
+Subject: [PATCH] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy
+ gamma
 
-v7.2 controller has different ECC level field size and shift in the acc
-control register than its predecessor and successor controller. It needs
-to be set specifically.
+For DRM legacy gamma, AMD display manager applies implicit sRGB degamma
+using a pre-defined sRGB transfer function. It works fine for DCN2
+family where degamma ROM and custom curves go to the same color block.
+But, on DCN3+, degamma is split into two blocks: degamma ROM for
+pre-defined TFs and `gamma correction` for user/custom curves and
+degamma ROM settings doesn't apply to cursor plane. To get DRM legacy
+gamma working as expected, enable cursor degamma ROM for implict sRGB
+degamma on HW with this configuration.
 
-Fixes: decba6d47869 ("mtd: brcmnand: Add v7.2 controller support")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
+Fixes: 96b020e2163f ("drm/amd/display: check attr flag before set cursor degamma on DCN3+")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 2e9c2e2d9c9f..9ea96911d16b 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -272,6 +272,7 @@ struct brcmnand_controller {
- 	const unsigned int	*page_sizes;
- 	unsigned int		page_size_shift;
- 	unsigned int		max_oob;
-+	u32			ecc_level_shift;
- 	u32			features;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 2198df96ed6f..cc74dd69acf2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1269,6 +1269,13 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	attributes.rotation_angle    = 0;
+ 	attributes.attribute_flags.value = 0;
  
- 	/* for low-power standby/resume only */
-@@ -596,6 +597,34 @@ enum {
- 	INTFC_CTLR_READY		= BIT(31),
- };
- 
-+/***********************************************************************
-+ * NAND ACC CONTROL bitfield
-+ *
-+ * Some bits have remained constant throughout hardware revision, while
-+ * others have shifted around.
-+ ***********************************************************************/
++	/* Enable cursor degamma ROM on DCN3+ for implicit sRGB degamma in DRM
++	 * legacy gamma setup.
++	 */
++	if (crtc_state->cm_is_degamma_srgb &&
++	    adev->dm.dc->caps.color.dpp.gamma_corr)
++		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
 +
-+/* Constant for all versions (where supported) */
-+enum {
-+	/* See BRCMNAND_HAS_CACHE_MODE */
-+	ACC_CONTROL_CACHE_MODE				= BIT(22),
-+
-+	/* See BRCMNAND_HAS_PREFETCH */
-+	ACC_CONTROL_PREFETCH				= BIT(23),
-+
-+	ACC_CONTROL_PAGE_HIT				= BIT(24),
-+	ACC_CONTROL_WR_PREEMPT				= BIT(25),
-+	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
-+	ACC_CONTROL_RD_ERASED				= BIT(27),
-+	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
-+	ACC_CONTROL_WR_ECC				= BIT(30),
-+	ACC_CONTROL_RD_ECC				= BIT(31),
-+};
-+
-+#define	ACC_CONTROL_ECC_SHIFT			16
-+/* Only for v7.2 */
-+#define	ACC_CONTROL_ECC_EXT_SHIFT		13
-+
- static inline bool brcmnand_non_mmio_ops(struct brcmnand_controller *ctrl)
- {
- #if IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA)
-@@ -737,6 +766,12 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
- 	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
- 		ctrl->features |= BRCMNAND_HAS_WP;
+ 	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
  
-+	/* v7.2 has different ecc level shift in the acc register */
-+	if (ctrl->nand_version == 0x0702)
-+		ctrl->ecc_level_shift = ACC_CONTROL_ECC_EXT_SHIFT;
-+	else
-+		ctrl->ecc_level_shift = ACC_CONTROL_ECC_SHIFT;
-+
- 	return 0;
- }
- 
-@@ -931,30 +966,6 @@ static inline int brcmnand_cmd_shift(struct brcmnand_controller *ctrl)
- 	return 0;
- }
- 
--/***********************************************************************
-- * NAND ACC CONTROL bitfield
-- *
-- * Some bits have remained constant throughout hardware revision, while
-- * others have shifted around.
-- ***********************************************************************/
--
--/* Constant for all versions (where supported) */
--enum {
--	/* See BRCMNAND_HAS_CACHE_MODE */
--	ACC_CONTROL_CACHE_MODE				= BIT(22),
--
--	/* See BRCMNAND_HAS_PREFETCH */
--	ACC_CONTROL_PREFETCH				= BIT(23),
--
--	ACC_CONTROL_PAGE_HIT				= BIT(24),
--	ACC_CONTROL_WR_PREEMPT				= BIT(25),
--	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
--	ACC_CONTROL_RD_ERASED				= BIT(27),
--	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
--	ACC_CONTROL_WR_ECC				= BIT(30),
--	ACC_CONTROL_RD_ECC				= BIT(31),
--};
--
- static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
- {
- 	if (ctrl->nand_version == 0x0702)
-@@ -967,18 +978,15 @@ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
- 		return GENMASK(4, 0);
- }
- 
--#define NAND_ACC_CONTROL_ECC_SHIFT	16
--#define NAND_ACC_CONTROL_ECC_EXT_SHIFT	13
--
- static inline u32 brcmnand_ecc_level_mask(struct brcmnand_controller *ctrl)
- {
- 	u32 mask = (ctrl->nand_version >= 0x0600) ? 0x1f : 0x0f;
- 
--	mask <<= NAND_ACC_CONTROL_ECC_SHIFT;
-+	mask <<= ACC_CONTROL_ECC_SHIFT;
- 
- 	/* v7.2 includes additional ECC levels */
--	if (ctrl->nand_version >= 0x0702)
--		mask |= 0x7 << NAND_ACC_CONTROL_ECC_EXT_SHIFT;
-+	if (ctrl->nand_version == 0x0702)
-+		mask |= 0x7 << ACC_CONTROL_ECC_EXT_SHIFT;
- 
- 	return mask;
- }
-@@ -992,8 +1000,8 @@ static void brcmnand_set_ecc_enabled(struct brcmnand_host *host, int en)
- 
- 	if (en) {
- 		acc_control |= ecc_flags; /* enable RD/WR ECC */
--		acc_control |= host->hwcfg.ecc_level
--			       << NAND_ACC_CONTROL_ECC_SHIFT;
-+		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-+		acc_control |= host->hwcfg.ecc_level << ctrl->ecc_level_shift;
- 	} else {
- 		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
- 		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-@@ -2561,7 +2569,7 @@ static int brcmnand_set_cfg(struct brcmnand_host *host,
- 	tmp &= ~brcmnand_ecc_level_mask(ctrl);
- 	tmp &= ~brcmnand_spare_area_mask(ctrl);
- 	if (ctrl->nand_version >= 0x0302) {
--		tmp |= cfg->ecc_level << NAND_ACC_CONTROL_ECC_SHIFT;
-+		tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
- 		tmp |= cfg->spare_area_size;
- 	}
- 	nand_writereg(ctrl, acc_control_offs, tmp);
+ 	if (crtc_state->stream) {
 
