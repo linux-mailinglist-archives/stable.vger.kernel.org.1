@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA297A301D
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD58E7A301C
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239190AbjIPM2h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239192AbjIPM2h (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239240AbjIPM2N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:28:13 -0400
+        with ESMTP id S239171AbjIPM2Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:28:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0992CEF
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:28:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D90C433C7;
-        Sat, 16 Sep 2023 12:28:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A347CEF
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:28:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4726C433C7;
+        Sat, 16 Sep 2023 12:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867287;
-        bh=xECTHz0xS4VVa+PW+hi1MvNfSXp3vqeOH1dQf2XtqU0=;
+        s=korg; t=1694867290;
+        bh=hlx+uVPztBBXY7MyIlJHGVBQKq46roA8XnsXnmXzFfs=;
         h=Subject:To:Cc:From:Date:From;
-        b=EJT0nnRoJ3JFQp45cuquz6gVC+AGkyF+vqwjCZXIrR+C6nDmk0TRm0tW5XTViZdZu
-         BhDreWmsm1r6sg4SO5yfeAm6r74ykIp8lNkbM70V/f4ii+yigLxehPTEpO1Fk4w4zW
-         VaGKzWhXomGWr6P42EDLI7vj4Ojmv0DoHfmvoLqw=
-Subject: FAILED: patch "[PATCH] perf hists browser: Fix the number of entries for 'e' key" failed to apply to 5.4-stable tree
+        b=eB4a5ZCYKmsEDs8+23lQJ8+fupHZieWihEzLTUjfBBqsLhWAxsDUxKFGuEYljw+l2
+         kqPhKA55zqcTNtZKHf9boch1S+MP2Yr7HiTwguLQrKop7fVQHwNTQR7jbekZ+UqXWl
+         2WlQv/XMF9EZdps9WgM0HNTHwtKfFkEPCI3Cfvm8=
+Subject: FAILED: patch "[PATCH] perf hists browser: Fix the number of entries for 'e' key" failed to apply to 4.19-stable tree
 To:     namhyung@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
         irogers@google.com, jolsa@kernel.org, mingo@kernel.org,
         peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:28:03 +0200
-Message-ID: <2023091603-cabbage-tipoff-5d59@gregkh>
+Date:   Sat, 16 Sep 2023 14:28:04 +0200
+Message-ID: <2023091604-finicky-penknife-7537@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x f6b8436bede3e80226e8b2100279c4450c73806a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091603-cabbage-tipoff-5d59@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091604-finicky-penknife-7537@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,19 @@ bdc633fec50b ("perf report/top: Improve toggle callchain menu option")
 d5a599d9890f ("perf report/top: Add menu entry for toggling callchain expansion")
 9218a9132f83 ("perf report/top: Make ENTER consistently bring up menu")
 5cb456af99f5 ("perf util: Move block TUI function to ui browsers")
+7fa46cbf20d3 ("perf report: Sort by sampled cycles percent per block for tui")
+6f7164fa231a ("perf report: Sort by sampled cycles percent per block for stdio")
+b65a7d372b1a ("perf hist: Support block formats with compare/sort/display")
+7841f40aed93 ("perf hist: Count the total cycles of all samples")
+6041441870ab ("perf block: Cleanup and refactor block info functions")
+cebf7d51a6c3 ("perf diff: Report noisy for cycles diff")
+6ef81c55a2b6 ("perf session: Return error code for perf_session__new() function on failure")
+fb71c86cc804 ("perf tools: Remove util.h from where it is not needed")
+4a903c2e1514 ("perf tools: Remove debug.h from places where it is not needed")
+b22bb139dcb3 ("perf debug: No need to include ui/util.h")
+d3300a3c4e76 ("perf symbols: Move mem_info and branch_info out of symbol.h")
+f2a39fe84901 ("perf auxtrace: Uninline functions that touch perf_session")
+fa0d98462fae ("perf tools: Remove needless evlist.h include directives")
 
 thanks,
 
