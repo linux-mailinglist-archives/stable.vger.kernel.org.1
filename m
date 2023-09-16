@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59B3D7A3014
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F1B37A3017
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239330AbjIPM2G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239332AbjIPM2G (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:28:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239334AbjIPM15 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:27:57 -0400
+        with ESMTP id S239335AbjIPM2A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:28:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61CFDCEF
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:27:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89CEC433C7;
-        Sat, 16 Sep 2023 12:27:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AEBCCED
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:27:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F1AC433C7;
+        Sat, 16 Sep 2023 12:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867272;
-        bh=/EiuX4jasXzgT2XYCfwpVsJvltGY6AsMXV2nli9F2Xg=;
+        s=korg; t=1694867274;
+        bh=FSatI2QvWLclCRpocG0k/y8+vot5DzWQKEZpyZ39h3I=;
         h=Subject:To:Cc:From:Date:From;
-        b=OTYgJURZ3Kl+rxboDW2+0tJ70ovz/5GocjNwPBEcgfFaS9cmLOEmILM836Ch/zeVO
-         ArU9zNMen7JQx3WkhefAi5rco6bpcx/vxGuFmLTMcLTMovXVJCEbkOJTgKEKu1zNhp
-         CgznoCTGd0EWRPqexB40fJddJlxnoynjVCagZkW8=
-Subject: FAILED: patch "[PATCH] perf build: Include generated header files properly" failed to apply to 5.10-stable tree
+        b=fsNCtsntIvBqxKJmAxBCu4mGHaxvjgxs/o1Ssfbc5ukM5OgUzGjlu8DfB7+Ml7JE9
+         7Ys7G9HyyK8lVn13C0GreTl928dOWRYypyLSV6T3uAzDf2RCu8QpCvtPDv5t7zvuac
+         JcedQvImqo8XlB49m90qv78NokhLEPB1l9PQflc4=
+Subject: FAILED: patch "[PATCH] perf build: Include generated header files properly" failed to apply to 5.4-stable tree
 To:     namhyung@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
         ak@linux.intel.com, anupnewsmail@gmail.com, irogers@google.com,
         jolsa@kernel.org, mingo@kernel.org, peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:27:45 +0200
-Message-ID: <2023091645-chubby-mountable-3c2d@gregkh>
+Date:   Sat, 16 Sep 2023 14:27:46 +0200
+Message-ID: <2023091646-think-prognosis-8417@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x c7e97f215a4ad634b746804679f5937d25f77e29
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091645-chubby-mountable-3c2d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091646-think-prognosis-8417@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
