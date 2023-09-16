@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 305B07A2FF7
+	by mail.lfdr.de (Postfix) with ESMTP id C6B3A7A2FF9
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239317AbjIPMXs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239264AbjIPMXs (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46248 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239264AbjIPMXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:16 -0400
+        with ESMTP id S239279AbjIPMXT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA99194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22F2C433C8;
-        Sat, 16 Sep 2023 12:23:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912A1194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5D2C433C7;
+        Sat, 16 Sep 2023 12:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694866991;
-        bh=VH15Z7mKVfmNjBnTDwfeoFC/CE2In+iawJAP2jBiR7c=;
+        s=korg; t=1694866994;
+        bh=zKhiOiffAHlIpys4DPyhHfEScT/atuhX5Lmke+Gx0Ng=;
         h=Subject:To:Cc:From:Date:From;
-        b=Su7+B4EPf2/0wMw8xPVK4iM26CvsSWULKvAUjMcOdiUfD5d56pKSSw6vXbiE3SmdN
-         I3tbjPaG2YGmoOt45VnxFpB8nN2cYX2FX7RsOmWJw2M0Lr6Cf4lpl9Vl9SIBf/206l
-         KjtSYgks1IDGIUOhZU7VOT9TgYj+dz+BtMFhCehY=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: activate metadata block group on write time" failed to apply to 6.5-stable tree
+        b=LgbOW73hMdS5nNm0IhZg9v7Gbtho5HVr1BpZTY9PPAd9p86JJxxrXy550bEnvfivg
+         s8Xoi0aBRT9JrT0P9L0fKD6N9vKupm1rLvw6FjDQs4eMktwyRtyP5zdY691V++6e9l
+         zgUpuJbSUpyBb+is/LLbPGF4sT1wQ6rXr2BX9wcA=
+Subject: FAILED: patch "[PATCH] btrfs: zoned: activate metadata block group on write time" failed to apply to 6.1-stable tree
 To:     naohiro.aota@wdc.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:21:39 +0200
-Message-ID: <2023091639-mundane-justice-4caa@gregkh>
+Date:   Sat, 16 Sep 2023 14:21:40 +0200
+Message-ID: <2023091640-upstroke-gopher-c666@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 13bb483d32abb6f8ebd40141d87eb68f11cc2dd2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091639-mundane-justice-4caa@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091640-upstroke-gopher-c666@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -64,6 +64,21 @@ Possible dependencies:
 2ad8c0510a96 ("btrfs: zoned: return int from btrfs_check_meta_write_pointer")
 7db94301a980 ("btrfs: zoned: introduce block group context to btrfs_eb_write_context")
 861093eff4f0 ("btrfs: introduce struct to consolidate extent buffer write context")
+71df088c1cc0 ("btrfs: defer splitting of ordered extents until I/O completion")
+a6f3e205e491 ("btrfs: move split_extent_map to extent_map.c")
+cbfce4c7fbde ("btrfs: optimize the logical to physical mapping for zoned writes")
+5cfe76f846d5 ("btrfs: rename the bytenr field in struct btrfs_ordered_sum to logical")
+6e4b2479ab38 ("btrfs: mark the len field in struct btrfs_ordered_sum as unsigned")
+50b21d7a066f ("btrfs: submit a writeback bio per extent_buffer")
+9fdd160160f0 ("btrfs: return bool from lock_extent_buffer_for_io")
+adbe7e388e42 ("btrfs: use SECTOR_SHIFT to convert LBA to physical offset")
+7edd339c8a41 ("btrfs: pass an ordered_extent to btrfs_extract_ordered_extent")
+2e38a84bc6ab ("btrfs: simplify extent map splitting and rename split_zoned_em")
+11d33ab6c1f3 ("btrfs: simplify splitting logic in btrfs_extract_ordered_extent")
+e44ca71cfe07 ("btrfs: move ordered_extent internal sanity checks into btrfs_split_ordered_extent")
+2cef0c79bb81 ("btrfs: make btrfs_split_bio work on struct btrfs_bio")
+ae42a154ca89 ("btrfs: pass a btrfs_bio to btrfs_submit_bio")
+34f888ce3a35 ("btrfs: cleanup main loop in btrfs_encoded_read_regular_fill_pages")
 
 thanks,
 
