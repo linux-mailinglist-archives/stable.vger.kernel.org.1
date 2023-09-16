@@ -2,42 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E40C7A2FC1
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 13:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1084A7A2FDF
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238665AbjIPLl5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 07:41:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50868 "EHLO
+        id S231226AbjIPMME (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:12:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239076AbjIPLlm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 07:41:42 -0400
+        with ESMTP id S231897AbjIPMLo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:11:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 420F9CC9
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 04:41:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B976C433C9;
-        Sat, 16 Sep 2023 11:41:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF1ACEB
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:11:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BA1C433C8;
+        Sat, 16 Sep 2023 12:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694864495;
-        bh=gVgH+ZGSVNC0Q1+KP/e3ynmqQl9xDc6CPJs+OmaDlT4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lpGXYZ+BiJ2wCeVpMOkVtSuDKd6RJuUt6zPqBQWjy3pkvV1N5ZRkHQcLjcMpv4SiK
-         wWFypGrjs/HedueSenlo3sTYQfwMH6xFrNd6rPAr1rwiC0sb88lCOlfe8spfUpN3qL
-         DdYav/9oHjMP3FSyBRckKUKULtCVYPcZof+ksgOQ=
-Date:   Sat, 16 Sep 2023 13:41:33 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kyle Zeng <zengyhkyle@gmail.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: wild pointer access in rsvp classifer in the Linux kernel <= v6.2
-Message-ID: <2023091612-fretful-premium-b38d@gregkh>
-References: <CADW8OBtkAf+nGokhD9zCFcmiebL1SM8bJp_oo=pE02BknG9qnQ@mail.gmail.com>
- <2023090826-rabid-cabdriver-37d8@gregkh>
- <ZP/SOqa0M3RvrVEF@westworld>
- <2023091320-chemist-dragonish-6874@gregkh>
- <ZQJOAAu0QvKGjDXC@westworld>
+        s=korg; t=1694866298;
+        bh=TDq/2KwDXgG5aKR4hx7HyGqu3D+8sEXoYUxRptOgHjM=;
+        h=Subject:To:Cc:From:Date:From;
+        b=otT9kisl7ggG+CVv9KFEkwlTLvome2Prd39dgc241FVa8Nty/NPS6oiKpedUta0Kd
+         SY7iye2Alx/VFFnDQNNgMaUAq43b/Gu297L7mUJv7kaeS9ECNvCgydXoCXU1jfvGHh
+         qBiAaOAnTPkyGw4WHh77rhH+OrnYDsPAQ+ZvxRGI=
+Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix incorrect DMA mapping unmap request" failed to apply to 6.1-stable tree
+To:     quic_ekangupt@quicinc.com, gregkh@linuxfoundation.org,
+        srinivas.kandagatla@linaro.org, stable@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 16 Sep 2023 14:11:36 +0200
+Message-ID: <2023091636-perceive-unabashed-178b@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZQJOAAu0QvKGjDXC@westworld>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -48,39 +43,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 05:04:16PM -0700, Kyle Zeng wrote:
-> On Wed, Sep 13, 2023 at 10:12:55AM +0200, Greg KH wrote:
-> > On Mon, Sep 11, 2023 at 07:51:38PM -0700, Kyle Zeng wrote:
-> > > On Fri, Sep 08, 2023 at 07:17:12AM +0100, Greg KH wrote:
-> > > > Great, can you use 'git bisect' to track down the commit that fiexes
-> > > > this so we can add it to the stable trees?
-> > > Sorry for the late reply. I think the fix was to completely retire the
-> > > rsvp classifier and the commit is:
-> > > 
-> > > 265b4da82dbf5df04bee5a5d46b7474b1aaf326a (net/sched: Retire rsvp classifier)
-> > 
-> > Great, so if we apply this change, all will work properly again?  How
-> > far back should this be backported to?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> > Great, so if we apply this change, all will work properly again?
-> Yes, after applying the patch (which is to retire the rsvp classifier),
-> it is no longer possible to trigger the crash.
-> However, you might want to decide whether it is OK to retire the
-> classifier in stable releases.
-> 
-> > How far back should this be backported to?
-> I tested all the stable releases today, namely, v6.1.y, v5.15.y,
-> v5.10.y, v5.4.y, v4.19.y, and v4.14.y. They are all affected by this
-> bug. I think the best approach is to apply the patch to all the stable
-> trees.
 
-Great, can you provide backported patches to those trees so that we can
-queue this up for them?
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x a2cb9cd6a3949a3804ad9fd7da234892ce6719ec
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091636-perceive-unabashed-178b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+a2cb9cd6a394 ("misc: fastrpc: Fix incorrect DMA mapping unmap request")
+791da5c7fedb ("misc: fastrpc: Prepare to dynamic dma-buf locking specification")
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a2cb9cd6a3949a3804ad9fd7da234892ce6719ec Mon Sep 17 00:00:00 2001
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Date: Fri, 11 Aug 2023 12:56:42 +0100
+Subject: [PATCH] misc: fastrpc: Fix incorrect DMA mapping unmap request
+
+Scatterlist table is obtained during map create request and the same
+table is used for DMA mapping unmap. In case there is any failure
+while getting the sg_table, ERR_PTR is returned instead of sg_table.
+
+When the map is getting freed, there is only a non-NULL check of
+sg_table which will also be true in case failure was returned instead
+of sg_table. This would result in improper unmap request. Add proper
+check before setting map table to avoid bad unmap request.
+
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230811115643.38578-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index 7d8818a4089f..0b376d9a2744 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -757,6 +757,7 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+ {
+ 	struct fastrpc_session_ctx *sess = fl->sctx;
+ 	struct fastrpc_map *map = NULL;
++	struct sg_table *table;
+ 	int err = 0;
+ 
+ 	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
+@@ -784,11 +785,12 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+ 		goto attach_err;
+ 	}
+ 
+-	map->table = dma_buf_map_attachment_unlocked(map->attach, DMA_BIDIRECTIONAL);
+-	if (IS_ERR(map->table)) {
+-		err = PTR_ERR(map->table);
++	table = dma_buf_map_attachment_unlocked(map->attach, DMA_BIDIRECTIONAL);
++	if (IS_ERR(table)) {
++		err = PTR_ERR(table);
+ 		goto map_err;
+ 	}
++	map->table = table;
+ 
+ 	if (attr & FASTRPC_ATTR_SECUREMAP) {
+ 		map->phys = sg_phys(map->table->sgl);
+
