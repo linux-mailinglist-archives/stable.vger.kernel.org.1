@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFAB7A3018
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DA297A301D
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239111AbjIPM2h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239190AbjIPM2h (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239334AbjIPM2K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:28:10 -0400
+        with ESMTP id S239240AbjIPM2N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:28:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6B1CED
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:28:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC02C433C8;
-        Sat, 16 Sep 2023 12:28:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0992CEF
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:28:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D90C433C7;
+        Sat, 16 Sep 2023 12:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867284;
-        bh=TaFa48J5A4O5SyM4Ss+hXcf8GayOHb7UEon1+7uxjzs=;
+        s=korg; t=1694867287;
+        bh=xECTHz0xS4VVa+PW+hi1MvNfSXp3vqeOH1dQf2XtqU0=;
         h=Subject:To:Cc:From:Date:From;
-        b=nI5v63bi8Jmc5ADlfqgghGX2zGU9AoVFP2yDcpFPisSSDKD3zX3DypKcSL9GA5VH5
-         WmyYAT5CJ9ojit0PVOezbKi6gj8nbRKg3FPLiapzVgqPWCZ8vaYwkN9od+lh8LzH2X
-         dLbWrRLcQNLEwXpC0pD3F7A91p0mreEJAenkRG0Y=
-Subject: FAILED: patch "[PATCH] perf hists browser: Fix the number of entries for 'e' key" failed to apply to 5.10-stable tree
+        b=EJT0nnRoJ3JFQp45cuquz6gVC+AGkyF+vqwjCZXIrR+C6nDmk0TRm0tW5XTViZdZu
+         BhDreWmsm1r6sg4SO5yfeAm6r74ykIp8lNkbM70V/f4ii+yigLxehPTEpO1Fk4w4zW
+         VaGKzWhXomGWr6P42EDLI7vj4Ojmv0DoHfmvoLqw=
+Subject: FAILED: patch "[PATCH] perf hists browser: Fix the number of entries for 'e' key" failed to apply to 5.4-stable tree
 To:     namhyung@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
         irogers@google.com, jolsa@kernel.org, mingo@kernel.org,
         peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:28:01 +0200
-Message-ID: <2023091601-nearest-overspend-e08c@gregkh>
+Date:   Sat, 16 Sep 2023 14:28:03 +0200
+Message-ID: <2023091603-cabbage-tipoff-5d59@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,23 +45,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x f6b8436bede3e80226e8b2100279c4450c73806a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091601-nearest-overspend-e08c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091603-cabbage-tipoff-5d59@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 f6b8436bede3 ("perf hists browser: Fix the number of entries for 'e' key")
+e6d6abfc447a ("perf report/top: Make 'e' visible in the help and make it toggle showing callchains")
+d10ec006dcd7 ("perf hists browser: Allow passing an initial hotkey")
+bdc633fec50b ("perf report/top: Improve toggle callchain menu option")
+d5a599d9890f ("perf report/top: Add menu entry for toggling callchain expansion")
+9218a9132f83 ("perf report/top: Make ENTER consistently bring up menu")
+5cb456af99f5 ("perf util: Move block TUI function to ui browsers")
 
 thanks,
 
