@@ -2,40 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B48557A305F
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 15:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D07487A3110
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 17:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231226AbjIPM7d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:59:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40064 "EHLO
+        id S229905AbjIPPUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 11:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239295AbjIPM7N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:59:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39CEECF0
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:59:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AC1C433C8;
-        Sat, 16 Sep 2023 12:59:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694869147;
-        bh=HqK7zc30OM8iKRPK1XX+aqHJFSpvIJ8gR5ZqQ44m/xQ=;
-        h=Subject:To:Cc:From:Date:From;
-        b=MhjtCe1SD+UBdmcX1tpgWw4orw3Wl5Jk/Kft1GCClMq0LCiF/V2a8ijGnFtSWpPnd
-         OtLvTJXpxDv8CEf+tH4Mmqk1QQyzzasFiDpz3VW4mwGKSPVgPScr2+zk+7g3L34kZH
-         d/Z3Ig0RbdkbW89bZEHTxmJH2KBbwgRd0v/7FcfA=
-Subject: FAILED: patch "[PATCH] btrfs: compare the correct fsid/metadata_uuid in" failed to apply to 5.4-stable tree
-To:     anand.jain@oracle.com, dsterba@suse.com, gpiccoli@igalia.com,
-        johannes.thumshirn@wdc.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:59:05 +0200
-Message-ID: <2023091605-gargle-tweet-b0a7@gregkh>
+        with ESMTP id S229750AbjIPPTs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 11:19:48 -0400
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [IPv6:2001:4190:8020::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0C42CCE7
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 08:19:43 -0700 (PDT)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+        id 3E30792009C; Sat, 16 Sep 2023 17:19:40 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by angie.orcam.me.uk (Postfix) with ESMTP id 306D292009B
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 16:19:40 +0100 (BST)
+Date:   Sat, 16 Sep 2023 16:19:40 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@orcam.me.uk>
+To:     stable@vger.kernel.org
+Subject: [PATCH] MIPS: Only fiddle with CHECKFLAGS if `need-compiler'
+Message-ID: <alpine.DEB.2.21.2309161613540.57368@angie.orcam.me.uk>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,86 +36,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+commit 4fe4a6374c4db9ae2b849b61e84b58685dca565a upstream.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+We have originally guarded fiddling with CHECKFLAGS in our arch Makefile
+by checking for the CONFIG_MIPS variable, not set for targets such as
+`distclean', etc. that neither include `.config' nor use the compiler.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Starting from commit 805b2e1d427a ("kbuild: include Makefile.compiler
+only when compiler is needed") we have had a generic `need-compiler'
+variable explicitly telling us if the compiler will be used and thus its
+capabilities need to be checked and expressed in the form of compilation
+flags.  If this variable is not set, then `make' functions such as
+`cc-option' are undefined, causing all kinds of weirdness to happen if
+we expect specific results to be returned, most recently:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6bfe3959b0e7a526f5c64747801a8613f002f05a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091605-gargle-tweet-b0a7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+cc1: error: '-mloongson-mmi' must be used with '-mhard-float'
 
-Possible dependencies:
+messages with configurations such as `fuloong2e_defconfig' and the
+`modules_install' target, which does include `.config' and yet does not
+use the compiler.
 
-6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
-aefd7f706556 ("btrfs: promote debugging asserts to full-fledged checks in validate_super")
+Replace the check for CONFIG_MIPS with one for `need-compiler' instead,
+so as to prevent the compiler from being ever called for CHECKFLAGS when
+not needed.
 
-thanks,
+Reported-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+Closes: https://lore.kernel.org/r/85031c0c-d981-031e-8a50-bc4fad2ddcd8@collabora.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 805b2e1d427a ("kbuild: include Makefile.compiler only when compiler is needed")
+Cc: stable@vger.kernel.org # v5.13+
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+Hi,
 
-greg k-h
+ This is a version of commit 4fe4a6374c4d for 6.1-stable and before, 
+resolving a conflict due to a change in how $(CHECKFLAGS) is set.
 
------------------- original commit in Linus's tree ------------------
+ No functional change, just a mechanical update.  Please apply.
 
-From 6bfe3959b0e7a526f5c64747801a8613f002f05a Mon Sep 17 00:00:00 2001
-From: Anand Jain <anand.jain@oracle.com>
-Date: Mon, 31 Jul 2023 19:16:35 +0800
-Subject: [PATCH] btrfs: compare the correct fsid/metadata_uuid in
- btrfs_validate_super
+  Maciej
+---
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The function btrfs_validate_super() should verify the metadata_uuid in
-the provided superblock argument. Because, all its callers expect it to
-do that.
-
-Such as in the following stacks:
-
-  write_all_supers()
-   sb = fs_info->super_for_commit;
-   btrfs_validate_write_super(.., sb)
-     btrfs_validate_super(.., sb, ..)
-
-  scrub_one_super()
-	btrfs_validate_super(.., sb, ..)
-
-And
-   check_dev_super()
-	btrfs_validate_super(.., sb, ..)
-
-However, it currently verifies the fs_info::super_copy::metadata_uuid
-instead.  Fix this using the correct metadata_uuid in the superblock
-argument.
-
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 49f405495e34..32ec651c570f 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2391,13 +2391,11 @@ int btrfs_validate_super(struct btrfs_fs_info *fs_info,
- 		ret = -EINVAL;
- 	}
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index fe64ad43ba88..745d8ddd1fb3 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -350,7 +350,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
  
--	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
--	    memcmp(fs_info->fs_devices->metadata_uuid,
--		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
-+	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
-+		   BTRFS_FSID_SIZE) != 0) {
- 		btrfs_err(fs_info,
- "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
--			fs_info->super_copy->metadata_uuid,
--			fs_info->fs_devices->metadata_uuid);
-+			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
- 		ret = -EINVAL;
- 	}
+ KBUILD_LDFLAGS		+= -m $(ld-emul)
  
-
+-ifdef CONFIG_MIPS
++ifdef need-compiler
+ CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
+ 	egrep -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
+ 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
+-- 
+2.20.1
