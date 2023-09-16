@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1856F7A3000
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B72017A2FFF
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239291AbjIPMXv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45666 "EHLO
+        id S239294AbjIPMXw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:23:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239314AbjIPMXn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:43 -0400
+        with ESMTP id S239316AbjIPMXq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA45194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA3CC433C7;
-        Sat, 16 Sep 2023 12:23:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46548194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916C0C433C8;
+        Sat, 16 Sep 2023 12:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867018;
-        bh=pK7tVZxOFYjmHDk+h9apQgIHRxVL591st+ogXIk2DN0=;
+        s=korg; t=1694867020;
+        bh=Lyirvh0XiY3pBH5NDd01QNPwxppCRwizYSf0FfUaWic=;
         h=Subject:To:Cc:From:Date:From;
-        b=M47j3zt8XtTiT/Ynwf4TLxxTlq0UYejwdtfeHBUniK6CU/dtISdGUXzHR52mJC7SL
-         /JKUoyh2fFSx4wPIWLN/BBOZiwO1En3ICfXsUUmRHfc0DFa6o78a10NLToqc+1APbY
-         S4MOHaqMDFFgOJnPQOu9ynS3c3FVCOD1cDlHTKBk=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 5.10-stable tree
+        b=HOQbTQICqBfHd3t8/K9iXrUi+THMo4QwvsYsj9VUDusmB0DXS7QsVNhT7Wo9K/Y1L
+         T+dUY1JEO+sgovOUFm0mTjPZ717fFZyAXLjOrFX4yXlBvJqxvLgJkzR1mIxSiogaUH
+         V7M59pjo7WUebMqlMZZIRvSLqvlu6nEYTks18BqI=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 5.4-stable tree
 To:     william.zhang@broadcom.com, florian.fainelli@broadcom.com,
         miquel.raynal@bootlin.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:23:32 +0200
-Message-ID: <2023091632-safeguard-unveiling-5090@gregkh>
+Date:   Sat, 16 Sep 2023 14:23:33 +0200
+Message-ID: <2023091633-negative-unashamed-87b9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,24 +44,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091632-safeguard-unveiling-5090@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091633-negative-unashamed-87b9@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 2ec2839a9062 ("mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller")
 25f97138f8c2 ("mtd: rawnand: brcmnand: Allow SoC to provide I/O operations")
+7e7c7df5d50f ("mtd: rawnand: brcmnand: support v2.1-v2.2 controllers")
+eeeac9cbc4ca ("mtd: rawnand: brcmnand: rename page sizes")
+4fd639092b17 ("mtd: rawnand: brcmnand: rename v4 registers")
+a5d53ad26a8b ("mtd: rawnand: brcmnand: Add support for flash-edu for dma transfers")
 
 thanks,
 
