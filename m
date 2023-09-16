@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACB47A2FE0
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95DFD7A2FE4
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232576AbjIPMMG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:12:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
+        id S235068AbjIPMOo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:14:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235068AbjIPMLw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:11:52 -0400
+        with ESMTP id S238089AbjIPMO2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:14:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBAAECEB
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:11:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3CAC433C8;
-        Sat, 16 Sep 2023 12:11:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A06FCEB
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:14:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D90FC433C8;
+        Sat, 16 Sep 2023 12:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694866307;
-        bh=ODYpTM//u3GEw8r2T5++4caBx6IllExdc4lQj1+f/wo=;
+        s=korg; t=1694866462;
+        bh=xdDcqosfFkSIlebuXRTHB03p4ks+bMhuKplTrM0BHP4=;
         h=Subject:To:Cc:From:Date:From;
-        b=cPhh/69KYgzCgv1vmN8didTBbPD2QQNszlZiDBprHkkj7c8+FNsAdFKnv2LTOP589
-         IB8wf3WGxONQPqOF/PMZtthrOuzjr4td2f6cCGlf59CsH1FW4+yi7otgE9oeW16vu6
-         TG0zcQObg8QRgtszno++MxUM+38LzG/6/dm3nU/U=
-Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix incorrect DMA mapping unmap request" failed to apply to 5.4-stable tree
-To:     quic_ekangupt@quicinc.com, gregkh@linuxfoundation.org,
-        srinivas.kandagatla@linaro.org, stable@kernel.org
+        b=jhjfC/n/i7PpXaBkfaNhkrTqDumrDaCWd+VwD/cD4MnZDU18566RhKZLvlRFa5oGJ
+         /oDbv9p5tmYLcxYP+21g2A2Ig9ew9dCXwnLJNgm4JZTUKKu3liJms2UdxdL+7DHVLa
+         nxUcpF1O0kGu5L/C0kAVtCz6WYScz4nbp+qx+1J8=
+Subject: FAILED: patch "[PATCH] jbd2: correct the end of the journal recovery scan range" failed to apply to 5.15-stable tree
+To:     yi.zhang@huawei.com, jack@suse.cz, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:11:39 +0200
-Message-ID: <2023091639-gallantly-pellet-e738@gregkh>
+Date:   Sat, 16 Sep 2023 14:14:20 +0200
+Message-ID: <2023091620-stage-racoon-f926@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,37 +43,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a2cb9cd6a3949a3804ad9fd7da234892ce6719ec
+git cherry-pick -x 2dfba3bb40ad8536b9fa802364f2d40da31aa88e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091639-gallantly-pellet-e738@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091620-stage-racoon-f926@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-a2cb9cd6a394 ("misc: fastrpc: Fix incorrect DMA mapping unmap request")
-791da5c7fedb ("misc: fastrpc: Prepare to dynamic dma-buf locking specification")
-e90d91190619 ("misc: fastrpc: Add support to secure memory map")
-7f1f481263c3 ("misc: fastrpc: check before loading process to the DSP")
-3abe3ab3cdab ("misc: fastrpc: add secure domain support")
-6c16fd8bdd40 ("misc: fastrpc: Add support to get DSP capabilities")
-5c1b97c7d7b7 ("misc: fastrpc: add support for FASTRPC_IOCTL_MEM_MAP/UNMAP")
-965602eabb57 ("misc: fastrpc: separate fastrpc device from channel context")
-304b0ba0a21b ("misc: fastrpc: Update number of max fastrpc sessions")
-6010d9befc8d ("misc: fastrpc: add ioctl for attaching to sensors pd")
-84195d206e1f ("misc: fastrpc: define names for protection domain ids")
-7c920da30e04 ("misc: fastrpc: fix indentation error in uapi header")
-0978de9fc733 ("misc: fastrpc: Fix an incomplete memory release in fastrpc_rpmsg_probe()")
-2d10d2d17072 ("misc: fastrpc: fix memory leak from miscdev->name")
-2419e55e532d ("misc: fastrpc: add mmap/unmap support")
+2dfba3bb40ad ("jbd2: correct the end of the journal recovery scan range")
+cb3b3bf22cf3 ("jbd2: rename jbd_debug() to jbd2_debug()")
+f7f497cb7024 ("jbd2: kill t_handle_lock transaction spinlock")
+cc16eecae687 ("jbd2: fix use-after-free of transaction_t race")
+4f9818684870 ("jbd2: refactor wait logic for transaction updates into a common function")
 
 thanks,
 
@@ -82,53 +71,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a2cb9cd6a3949a3804ad9fd7da234892ce6719ec Mon Sep 17 00:00:00 2001
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Date: Fri, 11 Aug 2023 12:56:42 +0100
-Subject: [PATCH] misc: fastrpc: Fix incorrect DMA mapping unmap request
+From 2dfba3bb40ad8536b9fa802364f2d40da31aa88e Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Mon, 26 Jun 2023 15:33:22 +0800
+Subject: [PATCH] jbd2: correct the end of the journal recovery scan range
 
-Scatterlist table is obtained during map create request and the same
-table is used for DMA mapping unmap. In case there is any failure
-while getting the sg_table, ERR_PTR is returned instead of sg_table.
+We got a filesystem inconsistency issue below while running generic/475
+I/O failure pressure test with fast_commit feature enabled.
 
-When the map is getting freed, there is only a non-NULL check of
-sg_table which will also be true in case failure was returned instead
-of sg_table. This would result in improper unmap request. Add proper
-check before setting map table to avoid bad unmap request.
+ Symlink /p3/d3/d1c/d6c/dd6/dce/l101 (inode #132605) is invalid.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230811115643.38578-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If fast_commit feature is enabled, a special fast_commit journal area is
+appended to the end of the normal journal area. The journal->j_last
+point to the first unused block behind the normal journal area instead
+of the whole log area, and the journal->j_fc_last point to the first
+unused block behind the fast_commit journal area. While doing journal
+recovery, do_one_pass(PASS_SCAN) should first scan the normal journal
+area and turn around to the first block once it meet journal->j_last,
+but the wrap() macro misuse the journal->j_fc_last, so the recovering
+could not read the next magic block (commit block perhaps) and would end
+early mistakenly and missing tN and every transaction after it in the
+following example. Finally, it could lead to filesystem inconsistency.
 
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 7d8818a4089f..0b376d9a2744 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -757,6 +757,7 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- {
- 	struct fastrpc_session_ctx *sess = fl->sctx;
- 	struct fastrpc_map *map = NULL;
-+	struct sg_table *table;
- 	int err = 0;
+ | normal journal area                             | fast commit area |
+ +-------------------------------------------------+------------------+
+ | tN(rere) | tN+1 |~| tN-x |...| tN-1 | tN(front) |       ....       |
+ +-------------------------------------------------+------------------+
+                     /                             /                  /
+                start               journal->j_last journal->j_fc_last
+
+This patch fix it by use the correct ending journal->j_last.
+
+Fixes: 5b849b5f96b4 ("jbd2: fast commit recovery path")
+Cc: stable@kernel.org
+Reported-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/linux-ext4/20230613043120.GB1584772@mit.edu/
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230626073322.3956567-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index 0184931d47f7..c269a7d29a46 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -230,12 +230,8 @@ static int count_tags(journal_t *journal, struct buffer_head *bh)
+ /* Make sure we wrap around the log correctly! */
+ #define wrap(journal, var)						\
+ do {									\
+-	unsigned long _wrap_last =					\
+-		jbd2_has_feature_fast_commit(journal) ?			\
+-			(journal)->j_fc_last : (journal)->j_last;	\
+-									\
+-	if (var >= _wrap_last)						\
+-		var -= (_wrap_last - (journal)->j_first);		\
++	if (var >= (journal)->j_last)					\
++		var -= ((journal)->j_last - (journal)->j_first);	\
+ } while (0)
  
- 	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
-@@ -784,11 +785,12 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		goto attach_err;
- 	}
+ static int fc_do_one_pass(journal_t *journal,
+@@ -524,9 +520,7 @@ static int do_one_pass(journal_t *journal,
+ 				break;
  
--	map->table = dma_buf_map_attachment_unlocked(map->attach, DMA_BIDIRECTIONAL);
--	if (IS_ERR(map->table)) {
--		err = PTR_ERR(map->table);
-+	table = dma_buf_map_attachment_unlocked(map->attach, DMA_BIDIRECTIONAL);
-+	if (IS_ERR(table)) {
-+		err = PTR_ERR(table);
- 		goto map_err;
- 	}
-+	map->table = table;
+ 		jbd2_debug(2, "Scanning for sequence ID %u at %lu/%lu\n",
+-			  next_commit_ID, next_log_block,
+-			  jbd2_has_feature_fast_commit(journal) ?
+-			  journal->j_fc_last : journal->j_last);
++			  next_commit_ID, next_log_block, journal->j_last);
  
- 	if (attr & FASTRPC_ATTR_SECUREMAP) {
- 		map->phys = sg_phys(map->table->sgl);
+ 		/* Skip over each chunk of the transaction looking
+ 		 * either the next descriptor block or the final commit
 
