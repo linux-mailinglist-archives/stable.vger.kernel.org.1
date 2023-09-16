@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 284797A2FFA
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8067A2FFE
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239287AbjIPMXu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239288AbjIPMXu (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36992 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239294AbjIPMXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:31 -0400
+        with ESMTP id S239299AbjIPMXf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3738CCC1
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB07C433C7;
-        Sat, 16 Sep 2023 12:23:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EBDCF0
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B9C433C7;
+        Sat, 16 Sep 2023 12:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867005;
-        bh=z5pQCgQT7euzrcTHNwC4KjtrqzA6KhFhxIA/fQq7CFA=;
+        s=korg; t=1694867008;
+        bh=bze/xEM+a6Q1K64IA2ZJS4f+pQxuzakoeAL9ISeXeIs=;
         h=Subject:To:Cc:From:Date:From;
-        b=nQR04V4mIJeep5IIZBuemlIDrcJ6xPUjvbJ26tUhmLVxrGPtnd+9msQwFcIEPKkCa
-         BOFkgCTYzcyzFoEuglBfg9X5o/1j/ZhSSUgKnajAhLFdd+WrsOwI+6/Qi3hFVKhUdX
-         KM7wZQe6y1HUMF3gHn+8PRR4n8ChcUg6ZdfKR7KA=
-Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT" failed to apply to 6.1-stable tree
+        b=Uf98U8fnKdqV3wz67yeOC01KiQyDoyXzR28oR80eS2VfkBDyI//NyW0k8iVgwdQ5O
+         /aXot2STfqgHLfCpZjIHIxuUit1R2I0+QmoRzlWsL5knYb6VoS853bDPyL8FIjk8Lt
+         RCu95IF2zvjqVoygn9Uv1JkfwlPNz1HJal05H0/Q=
+Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT" failed to apply to 5.15-stable tree
 To:     Takahiro.Kuwano@infineon.com, tudor.ambarus@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:22:59 +0200
-Message-ID: <2023091659-unguarded-greeting-7dbb@gregkh>
+Date:   Sat, 16 Sep 2023 14:23:00 +0200
+Message-ID: <2023091600-powdered-lanky-892a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1e611e104b9acb6310b8c684d5acee0e11ca7bd1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091659-unguarded-greeting-7dbb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091600-powdered-lanky-892a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
