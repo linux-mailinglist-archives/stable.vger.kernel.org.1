@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 639737A3001
+	by mail.lfdr.de (Postfix) with ESMTP id 1856F7A3000
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239290AbjIPMXv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239291AbjIPMXv (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51910 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239305AbjIPMXk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:40 -0400
+        with ESMTP id S239314AbjIPMXn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88909194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29B8C433C7;
-        Sat, 16 Sep 2023 12:23:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA45194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA3CC433C7;
+        Sat, 16 Sep 2023 12:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867015;
-        bh=gmxWkEW0mkyzrrLqTc916mZ0HicDa2nmYKk9G39dfoo=;
+        s=korg; t=1694867018;
+        bh=pK7tVZxOFYjmHDk+h9apQgIHRxVL591st+ogXIk2DN0=;
         h=Subject:To:Cc:From:Date:From;
-        b=lVpQjBB4WTMsHsD6U1PuOIDB+4HyQzDrNg488vyPN93B2fexhoGBEaV/5L7h/d5gj
-         W/Zxszok7XQufIi7cxoljp+Kd5VD/ao5yRYbgH0GMMXNjHq1Q8Lp2/XtF9A9GjZ/TB
-         J/dVJ+tH1OwEKmXbnKcFNZs5eL0kljfcAGAv8Usw=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 5.15-stable tree
+        b=M47j3zt8XtTiT/Ynwf4TLxxTlq0UYejwdtfeHBUniK6CU/dtISdGUXzHR52mJC7SL
+         /JKUoyh2fFSx4wPIWLN/BBOZiwO1En3ICfXsUUmRHfc0DFa6o78a10NLToqc+1APbY
+         S4MOHaqMDFFgOJnPQOu9ynS3c3FVCOD1cDlHTKBk=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2" failed to apply to 5.10-stable tree
 To:     william.zhang@broadcom.com, florian.fainelli@broadcom.com,
         miquel.raynal@bootlin.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:23:31 +0200
-Message-ID: <2023091631-footwear-unclip-740c@gregkh>
+Date:   Sat, 16 Sep 2023 14:23:32 +0200
+Message-ID: <2023091632-safeguard-unveiling-5090@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091631-footwear-unclip-740c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091632-safeguard-unveiling-5090@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
