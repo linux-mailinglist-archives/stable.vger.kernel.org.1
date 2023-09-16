@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B15F07A301F
+	by mail.lfdr.de (Postfix) with ESMTP id 66E6E7A301E
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:30:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236593AbjIPM3k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S235068AbjIPM3k (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59666 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239240AbjIPM3c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:29:32 -0400
+        with ESMTP id S239236AbjIPM3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:29:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37EF4CF0
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:29:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E6CC433C8;
-        Sat, 16 Sep 2023 12:29:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631A0194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:29:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F96AC433C7;
+        Sat, 16 Sep 2023 12:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867366;
-        bh=3lKtxfKHP/xmZ8pwjkZtyNPxZG0au7CCRXS0nPBjl8g=;
+        s=korg; t=1694867358;
+        bh=e9oKWmZvEMSCev/icou4v11MoGvgWZ7XdaV7dVmMlN8=;
         h=Subject:To:Cc:From:Date:From;
-        b=tmDO05Ewiym6J7MUcaQBotSdmmIN3nfrLgwzcawEY+hImXMUlPysXqDuhN0ErBkf2
-         vbHr6vEbsEhGznRFgsRJ0KsSy/yLCT3cBP5Oa7WMO4S1CNGldwx3v4PyHZEgYm3k1x
-         GOzYshq07NbgTEY1mPU1BX8aIN2E1lMPDYdLimBU=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: fix amdgpu_cs_p1_user_fence" failed to apply to 6.1-stable tree
+        b=KAnWdzswbYJUD+x7yDtvbdycPBQOyAlJR3OBTSkdvEoM60iifVDWY9ZMtCEAxl7O8
+         GhRccfT5TxvpZ+xpU1lbH1NUk3N8nbEWsd1SWqQcPihEF5UmPKyLgMVlbNSVXgn/UU
+         nTqQq/Tei6OlZyEWgVzWdZuGokayLBgC3ZQwG/e0=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix amdgpu_cs_p1_user_fence" failed to apply to 6.5-stable tree
 To:     christian.koenig@amd.com, alexander.deucher@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sat, 16 Sep 2023 14:29:15 +0200
-Message-ID: <2023091615-moodiness-twelve-b779@gregkh>
+Message-ID: <2023091615-wick-punch-6c68@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -43,29 +43,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x 35588314e963938dfdcdb792c9170108399377d6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091615-moodiness-twelve-b779@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091615-wick-punch-6c68@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
 35588314e963 ("drm/amdgpu: fix amdgpu_cs_p1_user_fence")
 ca6c1e210aa7 ("drm/amdgpu: use the new drm_exec object for CS v3")
 8abc1eb2987a ("drm/amdkfd: switch over to using drm_exec v3")
-f2cd6b26922e ("drm/amdkfd: fix stack size in svm_range_validate_and_map")
-3af470cbcc9f ("drm/amdkfd: Fix an issue at userptr buffer validation process.")
-c103a23f2f29 ("drm/amd: Convert amdgpu to use suballocation helper.")
-aebd8f0c6f82 ("Merge v6.2-rc6 into drm-next")
 
 thanks,
 
