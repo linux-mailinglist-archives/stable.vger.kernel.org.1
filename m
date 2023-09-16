@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C7857A2FEA
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5907A2FF0
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239030AbjIPMQV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239057AbjIPMQV (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:16:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41870 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239217AbjIPMQC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:16:02 -0400
+        with ESMTP id S239244AbjIPMQE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:16:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E30ACF8
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:15:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05AEC433C8;
-        Sat, 16 Sep 2023 12:15:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 500C2CEF
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:15:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D11EC433C7;
+        Sat, 16 Sep 2023 12:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694866555;
-        bh=cTNggA240yCyWjW7LVLm0pcULMP/4/5vUQGMszD2rrY=;
+        s=korg; t=1694866559;
+        bh=swKrE0DH+Zhb5wXjrmKd1DbyVJPts1DBb2ZQ0IHEdzA=;
         h=Subject:To:Cc:From:Date:From;
-        b=f55SmFSp0bfcfS4edJzCQAsizJZyyNYu23+YX2VoEpVzBz/ON6QhUWuTBrNR5SbIr
-         7A425OmdinkQ3IleJgUNvyE1V6eY40tCaAP64Y6tGXB8dHL0ZLfcM+pZ6j/lPVUG8Y
-         UCEj6xuMYI2ybZDpv2eyn7pbsDh0pITw7o5wYW/A=
-Subject: FAILED: patch "[PATCH] ext4: fix BUG in ext4_mb_new_inode_pa() due to overflow" failed to apply to 5.4-stable tree
+        b=CbBQnyqdxPTtSesYDNFuOB0bXUrQa9rPm75vYKwkr0TsvrikcgStymLCm4ZOHAAbA
+         duw54N6ZqVW2VOuxW/KBKpNpfGTIywNr3VszDhLcB4ibaRzA1yfMhmDwgx7wCW7djS
+         233ms5EbBtOc/cszFtL2D8/He9GqWuOLQ51Tt/hI=
+Subject: FAILED: patch "[PATCH] ext4: fix BUG in ext4_mb_new_inode_pa() due to overflow" failed to apply to 4.19-stable tree
 To:     libaokun1@huawei.com, ritesh.list@gmail.com, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:15:46 +0200
-Message-ID: <2023091646-safely-preflight-9684@gregkh>
+Date:   Sat, 16 Sep 2023 14:15:48 +0200
+Message-ID: <2023091648-dinginess-legacy-08ce@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x bc056e7163ac7db945366de219745cf94f32a3e6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091646-safely-preflight-9684@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091648-dinginess-legacy-08ce@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
