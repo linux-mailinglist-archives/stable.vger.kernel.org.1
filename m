@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEE407A2FE1
+	by mail.lfdr.de (Postfix) with ESMTP id 5ACB47A2FE0
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232421AbjIPMMF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:12:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48262 "EHLO
+        id S232576AbjIPMMG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:12:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232576AbjIPMLu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:11:50 -0400
+        with ESMTP id S235068AbjIPMLw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:11:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC6CCEB
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:11:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A3AC433C7;
-        Sat, 16 Sep 2023 12:11:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBAAECEB
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:11:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3CAC433C8;
+        Sat, 16 Sep 2023 12:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694866304;
-        bh=r/FBfm0Rk7qG9v6bDtt41cfjkut35bt3RNnkYMY7qg4=;
+        s=korg; t=1694866307;
+        bh=ODYpTM//u3GEw8r2T5++4caBx6IllExdc4lQj1+f/wo=;
         h=Subject:To:Cc:From:Date:From;
-        b=kNxBwtC95Q8vn07lU5DaT2n40zQfrdv5zwRVfloyvyyoneKBucghDIQlWpfHASRu2
-         lt9X0IIDiB5y+rGK2h+HdmTFnjms0wlD0Dslh0Gv6jVIki0IK1+856cyBss7m08oFJ
-         EScSAIK84sUdReAdqX1pVpjFlPzHCbLZjF/lICyg=
-Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix incorrect DMA mapping unmap request" failed to apply to 5.10-stable tree
+        b=cPhh/69KYgzCgv1vmN8didTBbPD2QQNszlZiDBprHkkj7c8+FNsAdFKnv2LTOP589
+         IB8wf3WGxONQPqOF/PMZtthrOuzjr4td2f6cCGlf59CsH1FW4+yi7otgE9oeW16vu6
+         TG0zcQObg8QRgtszno++MxUM+38LzG/6/dm3nU/U=
+Subject: FAILED: patch "[PATCH] misc: fastrpc: Fix incorrect DMA mapping unmap request" failed to apply to 5.4-stable tree
 To:     quic_ekangupt@quicinc.com, gregkh@linuxfoundation.org,
         srinivas.kandagatla@linaro.org, stable@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:11:38 +0200
-Message-ID: <2023091638-hamstring-rocky-cf79@gregkh>
+Date:   Sat, 16 Sep 2023 14:11:39 +0200
+Message-ID: <2023091639-gallantly-pellet-e738@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x a2cb9cd6a3949a3804ad9fd7da234892ce6719ec
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091638-hamstring-rocky-cf79@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091639-gallantly-pellet-e738@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,6 +69,12 @@ e90d91190619 ("misc: fastrpc: Add support to secure memory map")
 5c1b97c7d7b7 ("misc: fastrpc: add support for FASTRPC_IOCTL_MEM_MAP/UNMAP")
 965602eabb57 ("misc: fastrpc: separate fastrpc device from channel context")
 304b0ba0a21b ("misc: fastrpc: Update number of max fastrpc sessions")
+6010d9befc8d ("misc: fastrpc: add ioctl for attaching to sensors pd")
+84195d206e1f ("misc: fastrpc: define names for protection domain ids")
+7c920da30e04 ("misc: fastrpc: fix indentation error in uapi header")
+0978de9fc733 ("misc: fastrpc: Fix an incomplete memory release in fastrpc_rpmsg_probe()")
+2d10d2d17072 ("misc: fastrpc: fix memory leak from miscdev->name")
+2419e55e532d ("misc: fastrpc: add mmap/unmap support")
 
 thanks,
 
