@@ -2,33 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6B3A7A2FF9
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB397A2FF8
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239264AbjIPMXs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
+        id S239279AbjIPMXt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:23:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239279AbjIPMXT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:19 -0400
+        with ESMTP id S239282AbjIPMXW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:23:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912A1194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5D2C433C7;
-        Sat, 16 Sep 2023 12:23:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A67E194
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:23:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA054C433C7;
+        Sat, 16 Sep 2023 12:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694866994;
-        bh=zKhiOiffAHlIpys4DPyhHfEScT/atuhX5Lmke+Gx0Ng=;
+        s=korg; t=1694866997;
+        bh=x2hr1qPMfCf381fqZQJopvZpum0dt5xxWuQIeumvp3o=;
         h=Subject:To:Cc:From:Date:From;
-        b=LgbOW73hMdS5nNm0IhZg9v7Gbtho5HVr1BpZTY9PPAd9p86JJxxrXy550bEnvfivg
-         s8Xoi0aBRT9JrT0P9L0fKD6N9vKupm1rLvw6FjDQs4eMktwyRtyP5zdY691V++6e9l
-         zgUpuJbSUpyBb+is/LLbPGF4sT1wQ6rXr2BX9wcA=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: activate metadata block group on write time" failed to apply to 6.1-stable tree
-To:     naohiro.aota@wdc.com, dsterba@suse.com
+        b=DL6HbUcHWS/BnjEnA+HIhYPpF8TYzH8m2bryqMe8RgBJs2bpGLSH8MdT9A55hv/xJ
+         5IpFB34kX4UOLvZpVO+gH7Ij6utMzIUcEe1hKhSl4wzPPc/FqLmSae+Hw1KG2lR+qy
+         323RigYIFqf1UnMMG+QNcF62smDOANX8b0JgRxS0=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: brcmnand: Fix crash during the panic_write" failed to apply to 4.14-stable tree
+To:     william.zhang@broadcom.com, florian.fainelli@broadcom.com,
+        kamal.dasu@broadcom.com, kursad.oney@broadcom.com,
+        miquel.raynal@bootlin.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:21:40 +0200
-Message-ID: <2023091640-upstroke-gopher-c666@gregkh>
+Date:   Sat, 16 Sep 2023 14:22:16 +0200
+Message-ID: <2023091616-collapse-uncrown-ad3a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,42 +45,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 13bb483d32abb6f8ebd40141d87eb68f11cc2dd2
+git cherry-pick -x e66dd317194daae0475fe9e5577c80aa97f16cb9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091640-upstroke-gopher-c666@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091616-collapse-uncrown-ad3a@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
-13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
-0356ad41e0dd ("btrfs: zoned: defer advancing meta write pointer")
-2ad8c0510a96 ("btrfs: zoned: return int from btrfs_check_meta_write_pointer")
-7db94301a980 ("btrfs: zoned: introduce block group context to btrfs_eb_write_context")
-861093eff4f0 ("btrfs: introduce struct to consolidate extent buffer write context")
-71df088c1cc0 ("btrfs: defer splitting of ordered extents until I/O completion")
-a6f3e205e491 ("btrfs: move split_extent_map to extent_map.c")
-cbfce4c7fbde ("btrfs: optimize the logical to physical mapping for zoned writes")
-5cfe76f846d5 ("btrfs: rename the bytenr field in struct btrfs_ordered_sum to logical")
-6e4b2479ab38 ("btrfs: mark the len field in struct btrfs_ordered_sum as unsigned")
-50b21d7a066f ("btrfs: submit a writeback bio per extent_buffer")
-9fdd160160f0 ("btrfs: return bool from lock_extent_buffer_for_io")
-adbe7e388e42 ("btrfs: use SECTOR_SHIFT to convert LBA to physical offset")
-7edd339c8a41 ("btrfs: pass an ordered_extent to btrfs_extract_ordered_extent")
-2e38a84bc6ab ("btrfs: simplify extent map splitting and rename split_zoned_em")
-11d33ab6c1f3 ("btrfs: simplify splitting logic in btrfs_extract_ordered_extent")
-e44ca71cfe07 ("btrfs: move ordered_extent internal sanity checks into btrfs_split_ordered_extent")
-2cef0c79bb81 ("btrfs: make btrfs_split_bio work on struct btrfs_bio")
-ae42a154ca89 ("btrfs: pass a btrfs_bio to btrfs_submit_bio")
-34f888ce3a35 ("btrfs: cleanup main loop in btrfs_encoded_read_regular_fill_pages")
+e66dd317194d ("mtd: rawnand: brcmnand: Fix crash during the panic_write")
+3c7c1e4594ef ("mtd: rawnand: brcmnand: Refactored code to introduce helper functions")
 
 thanks,
 
@@ -86,176 +70,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 13bb483d32abb6f8ebd40141d87eb68f11cc2dd2 Mon Sep 17 00:00:00 2001
-From: Naohiro Aota <naohiro.aota@wdc.com>
-Date: Tue, 8 Aug 2023 01:12:37 +0900
-Subject: [PATCH] btrfs: zoned: activate metadata block group on write time
+From e66dd317194daae0475fe9e5577c80aa97f16cb9 Mon Sep 17 00:00:00 2001
+From: William Zhang <william.zhang@broadcom.com>
+Date: Thu, 6 Jul 2023 11:29:07 -0700
+Subject: [PATCH] mtd: rawnand: brcmnand: Fix crash during the panic_write
 
-In the current implementation, block groups are activated at reservation
-time to ensure that all reserved bytes can be written to an active metadata
-block group. However, this approach has proven to be less efficient, as it
-activates block groups more frequently than necessary, putting pressure on
-the active zone resource and leading to potential issues such as early
-ENOSPC or hung_task.
+When executing a NAND command within the panic write path, wait for any
+pending command instead of calling BUG_ON to avoid crashing while
+already crashing.
 
-Another drawback of the current method is that it hampers metadata
-over-commit, and necessitates additional flush operations and block group
-allocations, resulting in decreased overall performance.
+Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Kursad Oney <kursad.oney@broadcom.com>
+Reviewed-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-4-william.zhang@broadcom.com
 
-To address these issues, this commit introduces a write-time activation of
-metadata and system block group. This involves reserving at least one
-active block group specifically for a metadata and system block group.
-
-Since metadata write-out is always allocated sequentially, when we need to
-write to a non-active block group, we can wait for the ongoing IOs to
-complete, activate a new block group, and then proceed with writing to the
-new block group.
-
-Fixes: b09315139136 ("btrfs: zoned: activate metadata block group on flush_space")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index a127865f49f9..b0e432c30e1d 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -4287,6 +4287,17 @@ int btrfs_free_block_groups(struct btrfs_fs_info *info)
- 	struct btrfs_caching_control *caching_ctl;
- 	struct rb_node *n;
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 9a373a10304d..b2c6396060db 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -1608,7 +1608,17 @@ static void brcmnand_send_cmd(struct brcmnand_host *host, int cmd)
  
-+	if (btrfs_is_zoned(info)) {
-+		if (info->active_meta_bg) {
-+			btrfs_put_block_group(info->active_meta_bg);
-+			info->active_meta_bg = NULL;
-+		}
-+		if (info->active_system_bg) {
-+			btrfs_put_block_group(info->active_system_bg);
-+			info->active_system_bg = NULL;
-+		}
-+	}
-+
- 	write_lock(&info->block_group_cache_lock);
- 	while (!list_empty(&info->caching_block_groups)) {
- 		caching_ctl = list_entry(info->caching_block_groups.next,
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index ef07c6c252d8..a523d64d5491 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -770,6 +770,9 @@ struct btrfs_fs_info {
- 	u64 data_reloc_bg;
- 	struct mutex zoned_data_reloc_io_lock;
+ 	dev_dbg(ctrl->dev, "send native cmd %d addr 0x%llx\n", cmd, cmd_addr);
  
-+	struct btrfs_block_group *active_meta_bg;
-+	struct btrfs_block_group *active_system_bg;
-+
- 	u64 nr_global_roots;
- 
- 	spinlock_t zone_active_bgs_lock;
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index fc69041bb6b4..099cb6a6d3b3 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -65,6 +65,9 @@
- 
- #define SUPER_INFO_SECTORS	((u64)BTRFS_SUPER_INFO_SIZE >> SECTOR_SHIFT)
- 
-+static void wait_eb_writebacks(struct btrfs_block_group *block_group);
-+static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_written);
-+
- static inline bool sb_zone_is_full(const struct blk_zone *zone)
- {
- 	return (zone->cond == BLK_ZONE_COND_FULL) ||
-@@ -1747,6 +1750,62 @@ void btrfs_finish_ordered_zoned(struct btrfs_ordered_extent *ordered)
- 	}
- }
- 
-+static bool check_bg_is_active(struct btrfs_eb_write_context *ctx,
-+			       struct btrfs_block_group **active_bg)
-+{
-+	const struct writeback_control *wbc = ctx->wbc;
-+	struct btrfs_block_group *block_group = ctx->zoned_bg;
-+	struct btrfs_fs_info *fs_info = block_group->fs_info;
-+
-+	if (test_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags))
-+		return true;
-+
-+	if (fs_info->treelog_bg == block_group->start) {
-+		if (!btrfs_zone_activate(block_group)) {
-+			int ret_fin = btrfs_zone_finish_one_bg(fs_info);
-+
-+			if (ret_fin != 1 || !btrfs_zone_activate(block_group))
-+				return false;
-+		}
-+	} else if (*active_bg != block_group) {
-+		struct btrfs_block_group *tgt = *active_bg;
-+
-+		/* zoned_meta_io_lock protects fs_info->active_{meta,system}_bg. */
-+		lockdep_assert_held(&fs_info->zoned_meta_io_lock);
-+
-+		if (tgt) {
-+			/*
-+			 * If there is an unsent IO left in the allocated area,
-+			 * we cannot wait for them as it may cause a deadlock.
-+			 */
-+			if (tgt->meta_write_pointer < tgt->start + tgt->alloc_offset) {
-+				if (wbc->sync_mode == WB_SYNC_NONE ||
-+				    (wbc->sync_mode == WB_SYNC_ALL && !wbc->for_sync))
-+					return false;
-+			}
-+
-+			/* Pivot active metadata/system block group. */
-+			btrfs_zoned_meta_io_unlock(fs_info);
-+			wait_eb_writebacks(tgt);
-+			do_zone_finish(tgt, true);
-+			btrfs_zoned_meta_io_lock(fs_info);
-+			if (*active_bg == tgt) {
-+				btrfs_put_block_group(tgt);
-+				*active_bg = NULL;
-+			}
-+		}
-+		if (!btrfs_zone_activate(block_group))
-+			return false;
-+		if (*active_bg != block_group) {
-+			ASSERT(*active_bg == NULL);
-+			*active_bg = block_group;
-+			btrfs_get_block_group(block_group);
-+		}
-+	}
-+
-+	return true;
-+}
-+
- /*
-  * Check if @ctx->eb is aligned to the write pointer.
-  *
-@@ -1781,8 +1840,26 @@ int btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
- 		ctx->zoned_bg = block_group;
- 	}
- 
--	if (block_group->meta_write_pointer == eb->start)
--		return 0;
-+	if (block_group->meta_write_pointer == eb->start) {
-+		struct btrfs_block_group **tgt;
-+
-+		if (!test_bit(BTRFS_FS_ACTIVE_ZONE_TRACKING, &fs_info->flags))
-+			return 0;
-+
-+		if (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM)
-+			tgt = &fs_info->active_system_bg;
-+		else
-+			tgt = &fs_info->active_meta_bg;
-+		if (check_bg_is_active(ctx, tgt))
-+			return 0;
-+	}
-+
+-	BUG_ON(ctrl->cmd_pending != 0);
 +	/*
-+	 * Since we may release fs_info->zoned_meta_io_lock, someone can already
-+	 * start writing this eb. In that case, we can just bail out.
++	 * If we came here through _panic_write and there is a pending
++	 * command, try to wait for it. If it times out, rather than
++	 * hitting BUG_ON, just return so we don't crash while crashing.
 +	 */
-+	if (block_group->meta_write_pointer > eb->start)
-+		return -EBUSY;
++	if (oops_in_progress) {
++		if (ctrl->cmd_pending &&
++			bcmnand_ctrl_poll_status(ctrl, NAND_CTRL_RDY, NAND_CTRL_RDY, 0))
++			return;
++	} else
++		BUG_ON(ctrl->cmd_pending != 0);
+ 	ctrl->cmd_pending = cmd;
  
- 	/* If for_sync, this hole will be filled with trasnsaction commit. */
- 	if (wbc->sync_mode == WB_SYNC_ALL && !wbc->for_sync)
+ 	ret = bcmnand_ctrl_poll_status(ctrl, NAND_CTRL_RDY, NAND_CTRL_RDY, 0);
 
