@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7CDD7A3006
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 008DF7A300A
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239298AbjIPM02 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239299AbjIPM02 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43862 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239303AbjIPM0I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:26:08 -0400
+        with ESMTP id S239318AbjIPM0L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:26:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A862ECF1
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:26:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD39C433C7;
-        Sat, 16 Sep 2023 12:26:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836B2CF1
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:26:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD84EC433C8;
+        Sat, 16 Sep 2023 12:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867162;
-        bh=RMlJ6Wo4bonK5Am/3etMlELh8SmzeYrpHUIHmY/+kM0=;
+        s=korg; t=1694867165;
+        bh=rJSvJ8nmBPPPqF6jQ5BLZpTG1NodjaPoEe2iQLOZip4=;
         h=Subject:To:Cc:From:Date:From;
-        b=2icR5shB7cuRLjD0/Rz4eBPXcvyt961Y/6W+99GzC8TaZ+ONSQcvRg1vatmauOpzP
-         f2K4KWeW4Yw9glDlA6mgOR0t0y1b2X+wY+MvbtaELUyf5gKvTK/bZ8mxvZPwf7q3Fc
-         n6jbX4DpvKDgS+NCcxCSzwYqCZ2jhnVSE9vikIwM=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Set target pCPU during IRTE update if target vCPU" failed to apply to 5.10-stable tree
+        b=Wwx78fnHNIbahqiMLxXu6N5kc67uqq44z5HjYt2rN1oaB4SWds5n7VNzPvz+dFt7E
+         cwJHje5W5ZIeVrk0qwq+wX4CXC4B0T9g/OtCIkjHo+gl1WumRv2YZIZyt3zeme7eIR
+         PCiEu7dzrLHyuEZZRAnlIfTiAcRfsqUN/5YXqKE8=
+Subject: FAILED: patch "[PATCH] KVM: SVM: Set target pCPU during IRTE update if target vCPU" failed to apply to 5.4-stable tree
 To:     seanjc@google.com, alejandro.j.jimenez@oracle.com,
         dengqiao.joey@bytedance.com, joao.m.martins@oracle.com,
         mlevitsk@redhat.com, suravee.suthikulpanit@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:25:57 +0200
-Message-ID: <2023091657-decidable-garbage-b5fa@gregkh>
+Date:   Sat, 16 Sep 2023 14:25:58 +0200
+Message-ID: <2023091658-ardently-stony-3b87@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x f3cebc75e7425d6949d726bb8e937095b0aef025
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091657-decidable-garbage-b5fa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091658-ardently-stony-3b87@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
