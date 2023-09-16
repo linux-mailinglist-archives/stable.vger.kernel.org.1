@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF597A3005
+	by mail.lfdr.de (Postfix) with ESMTP id A7CDD7A3006
 	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239295AbjIPM02 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239298AbjIPM02 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 16 Sep 2023 08:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43822 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239298AbjIPM0E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:26:04 -0400
+        with ESMTP id S239303AbjIPM0I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:26:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2203ECED
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:25:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C006C433C7;
-        Sat, 16 Sep 2023 12:25:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A862ECF1
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:26:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD39C433C7;
+        Sat, 16 Sep 2023 12:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867158;
-        bh=s4VBkNjjJ24yTfxWYrn7NmLCXaIdH7a1o9n+/lFfAF8=;
+        s=korg; t=1694867162;
+        bh=RMlJ6Wo4bonK5Am/3etMlELh8SmzeYrpHUIHmY/+kM0=;
         h=Subject:To:Cc:From:Date:From;
-        b=qqXRwnyos3euk5ikEPUjy90FWjE2TLDn5RkWoKCczcwFM7XfzbNYXs5DUldCdyv+6
-         NIn7qYvaPoabYbtJaaUz6T4ITsA+56OlSPaMoNN3eMbpGm2rbU6nmgY+FXNvYYhnRD
-         YUbBwqHjK83BFwMaKfvcdyWQzJRFLKxJaBYQUVOo=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Set target pCPU during IRTE update if target vCPU" failed to apply to 5.15-stable tree
+        b=2icR5shB7cuRLjD0/Rz4eBPXcvyt961Y/6W+99GzC8TaZ+ONSQcvRg1vatmauOpzP
+         f2K4KWeW4Yw9glDlA6mgOR0t0y1b2X+wY+MvbtaELUyf5gKvTK/bZ8mxvZPwf7q3Fc
+         n6jbX4DpvKDgS+NCcxCSzwYqCZ2jhnVSE9vikIwM=
+Subject: FAILED: patch "[PATCH] KVM: SVM: Set target pCPU during IRTE update if target vCPU" failed to apply to 5.10-stable tree
 To:     seanjc@google.com, alejandro.j.jimenez@oracle.com,
         dengqiao.joey@bytedance.com, joao.m.martins@oracle.com,
         mlevitsk@redhat.com, suravee.suthikulpanit@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:25:56 +0200
-Message-ID: <2023091655-resize-playmate-ac62@gregkh>
+Date:   Sat, 16 Sep 2023 14:25:57 +0200
+Message-ID: <2023091657-decidable-garbage-b5fa@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f3cebc75e7425d6949d726bb8e937095b0aef025
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091655-resize-playmate-ac62@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091657-decidable-garbage-b5fa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,19 @@ f3cebc75e742 ("KVM: SVM: Set target pCPU during IRTE update if target vCPU is ru
 af52f5aa5c1b ("KVM: SVM: Use kvm_vcpu_is_blocking() in AVIC load to handle preemption")
 e422b8896948 ("KVM: SVM: Remove unnecessary APICv/AVIC update in vCPU unblocking path")
 7cfc5c653b07 ("KVM: fix avic_set_running for preemptable kernels")
+bf5f6b9d7ad6 ("KVM: SVM: move check for kvm_vcpu_apicv_active outside of avic_vcpu_{put|load}")
+02ffbe6351f5 ("KVM: SVM: fix doc warnings")
+a7fc06dd2f14 ("KVM: SVM: use .prepare_guest_switch() to handle CPU register save/setup")
+553cc15f6e8d ("KVM: SVM: remove uneeded fields from host_save_users_msrs")
+e79b91bb3c91 ("KVM: SVM: use vmsave/vmload for saving/restoring additional host state")
+35a7831912f4 ("KVM: SVM: Use asm goto to handle unexpected #UD on SVM instructions")
+647daca25d24 ("KVM: SVM: Add support for booting APs in an SEV-ES guest")
+f65cf84ee769 ("KVM: SVM: Add register operand to vmsave call in sev_es_vcpu_load")
+8640ca588b03 ("KVM: SVM: Add AP_JUMP_TABLE support in prep for AP booting")
+16809ecdc1e8 ("KVM: SVM: Provide an updated VMRUN invocation for SEV-ES guests")
+861377730aa9 ("KVM: SVM: Provide support for SEV-ES vCPU loading")
+376c6d285017 ("KVM: SVM: Provide support for SEV-ES vCPU creation/loading")
+85ca8be938c0 ("KVM: SVM: Set the encryption mask for the SVM host save area")
 
 thanks,
 
