@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13ECA7A300F
-	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDC077A300E
+	for <lists+stable@lfdr.de>; Sat, 16 Sep 2023 14:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239305AbjIPM1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 16 Sep 2023 08:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58646 "EHLO
+        id S239314AbjIPM1e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 16 Sep 2023 08:27:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239326AbjIPM1I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:27:08 -0400
+        with ESMTP id S239333AbjIPM1M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 16 Sep 2023 08:27:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF64194
-        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:27:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9248C433C7;
-        Sat, 16 Sep 2023 12:27:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6024CF2
+        for <stable@vger.kernel.org>; Sat, 16 Sep 2023 05:27:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEE3C433C7;
+        Sat, 16 Sep 2023 12:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694867223;
-        bh=ztaRcjUhdtRmUBCGJ1D2GgbwgdcOQNSthGn5y4NuyLo=;
+        s=korg; t=1694867226;
+        bh=BpQP2iKb4pJSrgd9/Gx9Pk3FMMNOB18++O6dAxcpsu0=;
         h=Subject:To:Cc:From:Date:From;
-        b=f4xt1iYnyZN3NRrTpqyDISz0EWn6pDOHxP/JR3TfGgTGfrI/ezFPV/k/5R7PhyvG4
-         X5u4wPmNeYvDfSRGXXk6Hz2TM+2vkxlGfSfxnr4tj4k7aeO7Ed7DmGyIlQ7y0kn8wR
-         5zgEY60REWuSXCCF73aM54WGZtYwyeW90cweQCrY=
-Subject: FAILED: patch "[PATCH] perf build: Update build rule for generated files" failed to apply to 5.10-stable tree
+        b=2UqW+L4x2jyaZkHJjEs8S04k6Rq8+2EBvLdlX6FlJHSFqS09mM3p0io0fCNzC6Ox8
+         298rjos+vUClcMmquSZy5rpLWkzbXM6XFvtW9ZJrzUiyNaLp0f82jJAftYJjZw/Aov
+         yOiwm94/rhvTkPM/ciA8h2BkD/Pi83CR55n8wbeQ=
+Subject: FAILED: patch "[PATCH] perf build: Update build rule for generated files" failed to apply to 5.4-stable tree
 To:     namhyung@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
         ak@linux.intel.com, anupnewsmail@gmail.com, irogers@google.com,
         jolsa@kernel.org, mingo@kernel.org, peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 16 Sep 2023 14:26:57 +0200
-Message-ID: <2023091657-festival-verbalize-6981@gregkh>
+Date:   Sat, 16 Sep 2023 14:26:59 +0200
+Message-ID: <2023091659-apricot-cartel-9e93@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7822a8913f4c51c7d1aff793b525d60c3384fb5b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091657-festival-verbalize-6981@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091659-apricot-cartel-9e93@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,6 +65,7 @@ Possible dependencies:
 00facc760903 ("perf jevents: Switch build to use jevents.py")
 0d1c50ac488e ("perf tools: Add an option to build without libbfd")
 517db3b59537 ("perf jevents: Make build dependency on test JSONs")
+e71e19a9ea70 ("tools features: Add feature test to check if libbfd has buildid support")
 
 thanks,
 
