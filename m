@@ -2,54 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04BED7A3D34
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E4877A3B32
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241209AbjIQUkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45554 "EHLO
+        id S240571AbjIQUO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239713AbjIQUja (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:30 -0400
+        with ESMTP id S240620AbjIQUOA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61FD510E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E67C433C7;
-        Sun, 17 Sep 2023 20:39:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451E2F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F81C433C8;
+        Sun, 17 Sep 2023 20:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983165;
-        bh=WEfK55I44bJ0+aLOHQucIGF4vP6kB/UM/LzZ1xmE31U=;
+        s=korg; t=1694981633;
+        bh=W+no1Kn/rOq2myDNYLUrnOBz3xAB+subx0v1n7O0FEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zn8q7ezxtbrBfxtkkZFQN4bnnrhRSZQRx9QFR7mcpUeNzS0zWZB5HdrDNzPdDUjOI
-         qYNfKLt8acf79bh6x6g51n2lEWB5e4tervpHxmCHzKxeGJ5o0GT9AlLTAnD3ujM5E7
-         9GGLHWg0U0KFSNBrcLHIw5I1aybPweKswSJ4ju/A=
+        b=dqejJUHS0QSTEOacmeqcRabxyZybFrYaMBX4689bh42U1c0JIGC58xgHx1aEIaIz/
+         JcqDEFv9Yirna193PVEex4YXsLGwAAekB0yjAvXDLgg8Pm9NDKo0ztjsj0GihKHo+i
+         Svj5SvYhsz1imivpv5zOv5XnbQJMgCRcB0EJwSkw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Jeremie Galarneau <jeremie.galarneau@efficios.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Shawn Landden <shawn@git.icu>,
-        Song Liu <songliubraving@fb.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 423/511] perf top: Dont pass an ERR_PTR() directly to perf_session__delete()
+Subject: [PATCH 6.1 123/219] net: dsa: sja1105: complete tc-cbs offload support on SJA1110
 Date:   Sun, 17 Sep 2023 21:14:10 +0200
-Message-ID: <20230917191123.988288256@linuxfoundation.org>
+Message-ID: <20230917191045.422989628@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +50,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit ef23cb593304bde0cc046fd4cc83ae7ea2e24f16 ]
+[ Upstream commit 180a7419fe4adc8d9c8e0ef0fd17bcdd0cf78acd ]
 
-While debugging a segfault on 'perf lock contention' without an
-available perf.data file I noticed that it was basically calling:
+The blamed commit left this delta behind:
 
-	perf_session__delete(ERR_PTR(-1))
+  struct sja1105_cbs_entry {
+ -	u64 port;
+ -	u64 prio;
+ +	u64 port; /* Not used for SJA1110 */
+ +	u64 prio; /* Not used for SJA1110 */
+  	u64 credit_hi;
+  	u64 credit_lo;
+  	u64 send_slope;
+  	u64 idle_slope;
+  };
 
-Resulting in:
+but did not actually implement tc-cbs offload fully for the new switch.
+The offload is accepted, but it doesn't work.
 
-  (gdb) run lock contention
-  Starting program: /root/bin/perf lock contention
-  [Thread debugging using libthread_db enabled]
-  Using host libthread_db library "/lib64/libthread_db.so.1".
-  failed to open perf.data: No such file or directory  (try 'perf record' first)
-  Initializing perf session failed
+The difference compared to earlier switch generations is that now, the
+table of CBS shapers is sparse, because there are many more shapers, so
+the mapping between a {port, prio} and a table index is static, rather
+than requiring us to store the port and prio into the sja1105_cbs_entry.
 
-  Program received signal SIGSEGV, Segmentation fault.
-  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
-  2858		if (!session->auxtrace)
-  (gdb) p session
-  $1 = (struct perf_session *) 0xffffffffffffffff
-  (gdb) bt
-  #0  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
-  #1  0x000000000057bb4d in perf_session__delete (session=0xffffffffffffffff) at util/session.c:300
-  #2  0x000000000047c421 in __cmd_contention (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2161
-  #3  0x000000000047dc95 in cmd_lock (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2604
-  #4  0x0000000000501466 in run_builtin (p=0xe597a8 <commands+552>, argc=2, argv=0x7fffffffe200) at perf.c:322
-  #5  0x00000000005016d5 in handle_internal_command (argc=2, argv=0x7fffffffe200) at perf.c:375
-  #6  0x0000000000501824 in run_argv (argcp=0x7fffffffe02c, argv=0x7fffffffe020) at perf.c:419
-  #7  0x0000000000501b11 in main (argc=2, argv=0x7fffffffe200) at perf.c:535
-  (gdb)
+So, the problem is that the code programs the CBS shaper parameters at a
+dynamic table index which is incorrect.
 
-So just set it to NULL after using PTR_ERR(session) to decode the error
-as perf_session__delete(NULL) is supported.
+All that needs to be done for SJA1110 CBS shapers to work is to bypass
+the logic which allocates shapers in a dense manner, as for SJA1105, and
+use the fixed mapping instead.
 
-The same problem was found in 'perf top' after an audit of all
-perf_session__new() failure handling.
-
-Fixes: 6ef81c55a2b6584c ("perf session: Return error code for perf_session__new() function on failure")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jeremie Galarneau <jeremie.galarneau@efficios.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>
-Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
-Cc: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Shawn Landden <shawn@git.icu>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Link: https://lore.kernel.org/lkml/ZN4Q2rxxsL08A8rd@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 3e77e59bf8cf ("net: dsa: sja1105: add support for the SJA1110 switch family")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/sja1105/sja1105.h      |  2 ++
+ drivers/net/dsa/sja1105/sja1105_main.c | 13 +++++++++++++
+ drivers/net/dsa/sja1105/sja1105_spi.c  |  4 ++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index a3ae9176a83e2..6fdd401ec9c56 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1743,6 +1743,7 @@ int cmd_top(int argc, const char **argv)
- 	top.session = perf_session__new(NULL, NULL);
- 	if (IS_ERR(top.session)) {
- 		status = PTR_ERR(top.session);
-+		top.session = NULL;
- 		goto out_delete_evlist;
- 	}
+diff --git a/drivers/net/dsa/sja1105/sja1105.h b/drivers/net/dsa/sja1105/sja1105.h
+index fb3cd4c78faa8..a831bb0a52074 100644
+--- a/drivers/net/dsa/sja1105/sja1105.h
++++ b/drivers/net/dsa/sja1105/sja1105.h
+@@ -132,6 +132,8 @@ struct sja1105_info {
+ 	int max_frame_mem;
+ 	int num_ports;
+ 	bool multiple_cascade_ports;
++	/* Every {port, TXQ} has its own CBS shaper */
++	bool fixed_cbs_mapping;
+ 	enum dsa_tag_protocol tag_proto;
+ 	const struct sja1105_dynamic_table_ops *dyn_ops;
+ 	const struct sja1105_table_ops *static_ops;
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 9dd5cdcda2843..ff94c5996fafb 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2122,12 +2122,22 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+ }
  
+ #define BYTES_PER_KBIT (1000LL / 8)
++/* Port 0 (the uC port) does not have CBS shapers */
++#define SJA1110_FIXED_CBS(port, prio) ((((port) - 1) * SJA1105_NUM_TC) + (prio))
+ 
+ static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
+ 				   int port, int prio)
+ {
+ 	int i;
+ 
++	if (priv->info->fixed_cbs_mapping) {
++		i = SJA1110_FIXED_CBS(port, prio);
++		if (i >= 0 && i < priv->info->num_cbs_shapers)
++			return i;
++
++		return -1;
++	}
++
+ 	for (i = 0; i < priv->info->num_cbs_shapers; i++)
+ 		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
+ 			return i;
+@@ -2139,6 +2149,9 @@ static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
+ {
+ 	int i;
+ 
++	if (priv->info->fixed_cbs_mapping)
++		return -1;
++
+ 	for (i = 0; i < priv->info->num_cbs_shapers; i++)
+ 		if (!priv->cbs[i].idle_slope && !priv->cbs[i].send_slope)
+ 			return i;
+diff --git a/drivers/net/dsa/sja1105/sja1105_spi.c b/drivers/net/dsa/sja1105/sja1105_spi.c
+index d3c9ad6d39d46..e6b61aef4127c 100644
+--- a/drivers/net/dsa/sja1105/sja1105_spi.c
++++ b/drivers/net/dsa/sja1105/sja1105_spi.c
+@@ -781,6 +781,7 @@ const struct sja1105_info sja1110a_info = {
+ 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
+ 	.can_limit_mcast_flood	= true,
+ 	.multiple_cascade_ports	= true,
++	.fixed_cbs_mapping	= true,
+ 	.ptp_ts_bits		= 32,
+ 	.ptpegr_ts_bytes	= 8,
+ 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
+@@ -831,6 +832,7 @@ const struct sja1105_info sja1110b_info = {
+ 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
+ 	.can_limit_mcast_flood	= true,
+ 	.multiple_cascade_ports	= true,
++	.fixed_cbs_mapping	= true,
+ 	.ptp_ts_bits		= 32,
+ 	.ptpegr_ts_bytes	= 8,
+ 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
+@@ -881,6 +883,7 @@ const struct sja1105_info sja1110c_info = {
+ 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
+ 	.can_limit_mcast_flood	= true,
+ 	.multiple_cascade_ports	= true,
++	.fixed_cbs_mapping	= true,
+ 	.ptp_ts_bits		= 32,
+ 	.ptpegr_ts_bytes	= 8,
+ 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
+@@ -931,6 +934,7 @@ const struct sja1105_info sja1110d_info = {
+ 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
+ 	.can_limit_mcast_flood	= true,
+ 	.multiple_cascade_ports	= true,
++	.fixed_cbs_mapping	= true,
+ 	.ptp_ts_bits		= 32,
+ 	.ptpegr_ts_bytes	= 8,
+ 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
 -- 
 2.40.1
 
