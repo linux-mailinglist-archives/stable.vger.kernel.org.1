@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7A57A3D23
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2C397A3B34
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238770AbjIQUja (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:39:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44104 "EHLO
+        id S240606AbjIQUO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241216AbjIQUi5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:57 -0400
+        with ESMTP id S240647AbjIQUOK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EEC138
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23912C433C9;
-        Sun, 17 Sep 2023 20:38:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9718BF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DADC433C8;
+        Sun, 17 Sep 2023 20:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983126;
-        bh=A9m1xlijCZ/Xny+q9fnDhLkyF3v7MbcTBGY78WIAraQ=;
+        s=korg; t=1694981644;
+        bh=xfS1fajin8YFvcTHNkJ7WYSUR96wHn9RFpzySxRIVE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hj8JKCQM/GGZOAMj1AOoIC1fASqkoNmsgVP1Yi9K9ayWOrhyWpcqyGVHPwptTzDVl
-         UfzihBAIqNe4ogWmuNYuYqM/9Y/yq1KedIj2T0m5GONvyijXDucWniR908EbKF0rQM
-         Nb/2BmDFJfj3B811YQaxd5rOfQIj+oVu/xnzSdOI=
+        b=y7ymCdAzqUD7hy31wnd/yQ09cR2nkan0jiXK0rbhjHKMvAkEIjS2oVdA9XR+dy/oD
+         XMD549djeFPYE012dl57E5xp3O6zkIdnGSe6jtoyfNfHTPgn7LwqImusxkVCx+FG99
+         5wx5JFPWHe4wcCwtAbWqVIFHvD83NZFrOYfA1pvA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 451/511] ip_tunnels: use DEV_STATS_INC()
+        patches@lists.linux.dev,
+        William R Sowerbutts <will@sowerbutts.com>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.1 151/219] ata: pata_falcon: fix IO base selection for Q40
 Date:   Sun, 17 Sep 2023 21:14:38 +0200
-Message-ID: <20230917191124.650340370@linuxfoundation.org>
+Message-ID: <20230917191046.474722539@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,132 +54,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit 9b271ebaf9a2c5c566a54bc6cd915962e8241130 ]
+commit 8a1f00b753ecfdb117dc1a07e68c46d80e7923ea upstream.
 
-syzbot/KCSAN reported data-races in iptunnel_xmit_stats() [1]
+With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
+with pata_falcon and falconide"), the Q40 IDE driver was
+replaced by pata_falcon.c.
 
-This can run from multiple cpus without mutual exclusion.
+Both IO and memory resources were defined for the Q40 IDE
+platform device, but definition of the IDE register addresses
+was modeled after the Falcon case, both in use of the memory
+resources and in including register shift and byte vs. word
+offset in the address.
 
-Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
+This was correct for the Falcon case, which does not apply
+any address translation to the register addresses. In the
+Q40 case, all of device base address, byte access offset
+and register shift is included in the platform specific
+ISA access translation (in asm/mm_io.h).
 
-[1]
-BUG: KCSAN: data-race in iptunnel_xmit / iptunnel_xmit
+As a consequence, such address translation gets applied
+twice, and register addresses are mangled.
 
-read-write to 0xffff8881353df170 of 8 bytes by task 30263 on cpu 1:
-iptunnel_xmit_stats include/net/ip_tunnels.h:493 [inline]
-iptunnel_xmit+0x432/0x4a0 net/ipv4/ip_tunnel_core.c:87
-ip_tunnel_xmit+0x1477/0x1750 net/ipv4/ip_tunnel.c:831
-__gre_xmit net/ipv4/ip_gre.c:469 [inline]
-ipgre_xmit+0x516/0x570 net/ipv4/ip_gre.c:662
-__netdev_start_xmit include/linux/netdevice.h:4889 [inline]
-netdev_start_xmit include/linux/netdevice.h:4903 [inline]
-xmit_one net/core/dev.c:3544 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3560
-__dev_queue_xmit+0xeee/0x1de0 net/core/dev.c:4340
-dev_queue_xmit include/linux/netdevice.h:3082 [inline]
-__bpf_tx_skb net/core/filter.c:2129 [inline]
-__bpf_redirect_no_mac net/core/filter.c:2159 [inline]
-__bpf_redirect+0x723/0x9c0 net/core/filter.c:2182
-____bpf_clone_redirect net/core/filter.c:2453 [inline]
-bpf_clone_redirect+0x16c/0x1d0 net/core/filter.c:2425
-___bpf_prog_run+0xd7d/0x41e0 kernel/bpf/core.c:1954
-__bpf_prog_run512+0x74/0xa0 kernel/bpf/core.c:2195
-bpf_dispatcher_nop_func include/linux/bpf.h:1181 [inline]
-__bpf_prog_run include/linux/filter.h:609 [inline]
-bpf_prog_run include/linux/filter.h:616 [inline]
-bpf_test_run+0x15d/0x3d0 net/bpf/test_run.c:423
-bpf_prog_test_run_skb+0x77b/0xa00 net/bpf/test_run.c:1045
-bpf_prog_test_run+0x265/0x3d0 kernel/bpf/syscall.c:3996
-__sys_bpf+0x3af/0x780 kernel/bpf/syscall.c:5353
-__do_sys_bpf kernel/bpf/syscall.c:5439 [inline]
-__se_sys_bpf kernel/bpf/syscall.c:5437 [inline]
-__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5437
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Use the device base address from the platform IO resource
+for Q40 (the IO address translation will then add the correct
+ISA window base address and byte access offset), with register
+shift 1. Use MMIO base address and register shift 2 as before
+for Falcon.
 
-read-write to 0xffff8881353df170 of 8 bytes by task 30249 on cpu 0:
-iptunnel_xmit_stats include/net/ip_tunnels.h:493 [inline]
-iptunnel_xmit+0x432/0x4a0 net/ipv4/ip_tunnel_core.c:87
-ip_tunnel_xmit+0x1477/0x1750 net/ipv4/ip_tunnel.c:831
-__gre_xmit net/ipv4/ip_gre.c:469 [inline]
-ipgre_xmit+0x516/0x570 net/ipv4/ip_gre.c:662
-__netdev_start_xmit include/linux/netdevice.h:4889 [inline]
-netdev_start_xmit include/linux/netdevice.h:4903 [inline]
-xmit_one net/core/dev.c:3544 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3560
-__dev_queue_xmit+0xeee/0x1de0 net/core/dev.c:4340
-dev_queue_xmit include/linux/netdevice.h:3082 [inline]
-__bpf_tx_skb net/core/filter.c:2129 [inline]
-__bpf_redirect_no_mac net/core/filter.c:2159 [inline]
-__bpf_redirect+0x723/0x9c0 net/core/filter.c:2182
-____bpf_clone_redirect net/core/filter.c:2453 [inline]
-bpf_clone_redirect+0x16c/0x1d0 net/core/filter.c:2425
-___bpf_prog_run+0xd7d/0x41e0 kernel/bpf/core.c:1954
-__bpf_prog_run512+0x74/0xa0 kernel/bpf/core.c:2195
-bpf_dispatcher_nop_func include/linux/bpf.h:1181 [inline]
-__bpf_prog_run include/linux/filter.h:609 [inline]
-bpf_prog_run include/linux/filter.h:616 [inline]
-bpf_test_run+0x15d/0x3d0 net/bpf/test_run.c:423
-bpf_prog_test_run_skb+0x77b/0xa00 net/bpf/test_run.c:1045
-bpf_prog_test_run+0x265/0x3d0 kernel/bpf/syscall.c:3996
-__sys_bpf+0x3af/0x780 kernel/bpf/syscall.c:5353
-__do_sys_bpf kernel/bpf/syscall.c:5439 [inline]
-__se_sys_bpf kernel/bpf/syscall.c:5437 [inline]
-__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5437
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Encode PIO_OFFSET into IO port addresses for all registers
+for Q40 except the data transfer register. Encode the MMIO
+offset there (pata_falcon_data_xfer() directly uses raw IO
+with no address translation).
 
-value changed: 0x0000000000018830 -> 0x0000000000018831
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 30249 Comm: syz-executor.4 Not tainted 6.5.0-syzkaller-11704-g3f86ed6ec0b3 #0
-
-Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: William R Sowerbutts <will@sowerbutts.com>
+Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
+Cc: stable@vger.kernel.org
+Cc: Finn Thain <fthain@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: William R Sowerbutts <will@sowerbutts.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip_tunnels.h | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/ata/pata_falcon.c |   50 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 4eb0edc6640d9..17ec652e8f124 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -454,15 +454,14 @@ static inline void iptunnel_xmit_stats(struct net_device *dev, int pkt_len)
- 		tstats->tx_packets++;
- 		u64_stats_update_end(&tstats->syncp);
- 		put_cpu_ptr(tstats);
-+		return;
+--- a/drivers/ata/pata_falcon.c
++++ b/drivers/ata/pata_falcon.c
+@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(s
+ 	struct resource *base_res, *ctl_res, *irq_res;
+ 	struct ata_host *host;
+ 	struct ata_port *ap;
+-	void __iomem *base;
+-	int irq = 0;
++	void __iomem *base, *ctl_base;
++	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
+ 
+ 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
+ 
+@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(s
+ 	ap->pio_mask = ATA_PIO4;
+ 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
+ 
+-	base = (void __iomem *)base_mem_res->start;
+ 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
+-	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
+-	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
+-	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
+-	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
+-	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
+-	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
+-	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
+-	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
+-
+-	base = (void __iomem *)ctl_mem_res->start;
+-	ap->ioaddr.altstatus_addr	= base + 1;
+-	ap->ioaddr.ctl_addr		= base + 1;
+-
+-	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
+-		      (unsigned long)base_mem_res->start,
+-		      (unsigned long)ctl_mem_res->start);
++	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
++
++	if (base_res) {		/* only Q40 has IO resources */
++		io_offset = 0x10000;
++		reg_shift = 0;
++		base = (void __iomem *)base_res->start;
++		ctl_base = (void __iomem *)ctl_res->start;
++	} else {
++		base = (void __iomem *)base_mem_res->start;
++		ctl_base = (void __iomem *)ctl_mem_res->start;
 +	}
 +
-+	if (pkt_len < 0) {
-+		DEV_STATS_INC(dev, tx_errors);
-+		DEV_STATS_INC(dev, tx_aborted_errors);
- 	} else {
--		struct net_device_stats *err_stats = &dev->stats;
--
--		if (pkt_len < 0) {
--			err_stats->tx_errors++;
--			err_stats->tx_aborted_errors++;
--		} else {
--			err_stats->tx_dropped++;
--		}
-+		DEV_STATS_INC(dev, tx_dropped);
- 	}
- }
++	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
++	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
++	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
++	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
++	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
++	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
++	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
++
++	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
++	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
++
++	ata_port_desc(ap, "cmd %px ctl %px data %px",
++		      base, ctl_base, ap->ioaddr.data_addr);
  
--- 
-2.40.1
-
+ 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+ 	if (irq_res && irq_res->start > 0) {
 
 
