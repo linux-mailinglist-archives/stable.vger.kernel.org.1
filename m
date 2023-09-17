@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E312E7A382D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D7B7A3964
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbjIQTcq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:32:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
+        id S240051AbjIQTst (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239653AbjIQTcP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:15 -0400
+        with ESMTP id S240076AbjIQTsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCAF9CD6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD851C433CA;
-        Sun, 17 Sep 2023 19:31:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550C29F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B603C433C8;
+        Sun, 17 Sep 2023 19:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979109;
-        bh=vjGAaPlODyblqKv7O6BAoBVTNOFavrad1Urj/sZDz7A=;
+        s=korg; t=1694980098;
+        bh=Vau5G+CBgokjMKhd6RpkfPAFS5dcdLP8y20J3yJG6WQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YB2I6ZpNdREaQZawosT2F/yzgMbV+1EGLFp0I7E10AhRp/xqn4/2OFH81u5xTDpkV
-         E4XsKrWx+dS12MRU/mAyp/Qbj2kHjNmGQxZKjiY1e03pXL1UTXKgRux5xC+PMtm2Ch
-         os0yIMzV42IEJjJ1P1W/jRcbOrR20qfe9JUJETiY=
+        b=G7O0EkGtYTJCRyBYVpc0H6L+PAETRRATuCtF1Si+9ROtyLKJAFIET5QmFXky0UCvd
+         3nCErCB0zsPewuSt7aMxpSv148QEAV6624qwElpe0D/wDfARVhyv+7/tDx5v5wlDgg
+         q7HsUbxtqcfd+DS+lXAhTkJ8OBkwejJxr38HfCfY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 216/406] usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()
+        patches@lists.linux.dev, Liu Ying <victor.liu@nxp.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 070/285] backlight: gpio_backlight: Drop output GPIO direction check for initial power state
 Date:   Sun, 17 Sep 2023 21:11:10 +0200
-Message-ID: <20230917191106.888334981@linuxfoundation.org>
+Message-ID: <20230917191054.143520915@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Ying Liu <victor.liu@nxp.com>
 
-[ Upstream commit 5eda42aebb7668b4dcff025cd3ccb0d3d7c53da6 ]
+[ Upstream commit fe1328b5b2a087221e31da77e617f4c2b70f3b7f ]
 
-The function mxs_phy_is_otg_host() will return true if OTG_ID_VALUE is
-0 at USBPHY_CTRL register. However, OTG_ID_VALUE will not reflect the real
-state if the ID pin is float, such as Host-only or Type-C cases. The value
-of OTG_ID_VALUE is always 1 which means device mode.
-This patch will fix the issue by judging the current mode based on
-last_event. The controller will update last_event in time.
+So, let's drop output GPIO direction check and only check GPIO value to set
+the initial power state.
 
-Fixes: 7b09e67639d6 ("usb: phy: mxs: refine mxs_phy_disconnect_line")
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230627110353.1879477-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 706dc68102bc ("backlight: gpio: Explicitly set the direction of the GPIO")
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20230721093342.1532531-1-victor.liu@nxp.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/video/backlight/gpio_backlight.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-index 67b39dc62b373..70e23334b27f9 100644
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,14 +388,8 @@ static void __mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool disconnect)
- 
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	void __iomem *base = mxs_phy->phy.io_priv;
--	u32 phyctrl = readl(base + HW_USBPHY_CTRL);
--
--	if (IS_ENABLED(CONFIG_USB_OTG) &&
--			!(phyctrl & BM_USBPHY_CTRL_OTG_ID_VALUE))
--		return true;
--
--	return false;
-+	return IS_ENABLED(CONFIG_USB_OTG) &&
-+		mxs_phy->phy.last_event == USB_EVENT_ID;
- }
- 
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+index 5c5c99f7979e3..30ec5b6845335 100644
+--- a/drivers/video/backlight/gpio_backlight.c
++++ b/drivers/video/backlight/gpio_backlight.c
+@@ -87,8 +87,7 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 		/* Not booted with device tree or no phandle link to the node */
+ 		bl->props.power = def_value ? FB_BLANK_UNBLANK
+ 					    : FB_BLANK_POWERDOWN;
+-	else if (gpiod_get_direction(gbl->gpiod) == 0 &&
+-		 gpiod_get_value_cansleep(gbl->gpiod) == 0)
++	else if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
+ 		bl->props.power = FB_BLANK_POWERDOWN;
+ 	else
+ 		bl->props.power = FB_BLANK_UNBLANK;
 -- 
 2.40.1
 
