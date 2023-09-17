@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B10B7A3965
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02BC47A3946
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240073AbjIQTsv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:48:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55680 "EHLO
+        id S240014AbjIQTrQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240153AbjIQTso (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:44 -0400
+        with ESMTP id S240080AbjIQTq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFAA189
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1666C433C7;
-        Sun, 17 Sep 2023 19:48:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37569F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2948C433C7;
+        Sun, 17 Sep 2023 19:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980110;
-        bh=IFK0CWamUz1bH+HfxUv1NDI9JlSix+HSjGjtywd7gtk=;
+        s=korg; t=1694980011;
+        bh=XDFDxLm7EzVJ9QXdjFO+R2i3u5qiTT3+MZw3Z2Ayxos=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IQ11yP43nXSfzm0Wt2Jic4uCETRDBTRglg6VuO9r9xx/aE36xFJjCxNmgOvb+uC9d
-         iRlptCgTn61If3w14Y8pCm74jPt5jJ7RLhJ86RuaGLsZbOxl0F2L0tveeT/5wQZwDb
-         G36N21hMS03jVio27663/VOTprQkbroxzHcdzi1o=
+        b=YEqG83jsN2wS6qSGF5YO0kifzYxjnD9iKuQzY3h/L6GYojRPSs7zyO8XnHY6+52cZ
+         nl32RiObn4WpgOC/u5fuhWeelUXDTYhjMlqdbcCmFwf18tkMEiKlofHMg+U7bP/FE4
+         UeP6nHdjKGmuIt/hUnoQVnpgNt2ZYUyCH8ROAieA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 6.5 063/285] kconfig: fix possible buffer overflow
-Date:   Sun, 17 Sep 2023 21:11:03 +0200
-Message-ID: <20230917191053.890593865@linuxfoundation.org>
+        patches@lists.linux.dev, Xie XiuQi <xiexiuqi@huawei.com>,
+        Ian Rogers <irogers@google.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 064/285] tools/mm: fix undefined reference to pthread_once
+Date:   Sun, 17 Sep 2023 21:11:04 +0200
+Message-ID: <20230917191053.923872590@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -56,36 +56,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Xie XiuQi <xiexiuqi@huawei.com>
 
-[ Upstream commit a3b7039bb2b22fcd2ad20d59c00ed4e606ce3754 ]
+[ Upstream commit 7f33105cdd59a99d068d3d147723a865d10e2260 ]
 
-Buffer 'new_argv' is accessed without bound check after accessing with
-bound check via 'new_argc' index.
+Commit 97d5f2e9ee12 ("tools api fs: More thread safety for global
+filesystem variables") introduces pthread_once, so the libpthread
+should be added at link time, or we'll meet the following compile
+error when 'make -C tools/mm':
 
-Fixes: e298f3b49def ("kconfig: add built-in function support")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+  gcc -Wall -Wextra -I../lib/ -o page-types page-types.c ../lib/api/libapi.a
+  ~/linux/tools/lib/api/fs/fs.c:146: undefined reference to `pthread_once'
+  ~/linux/tools/lib/api/fs/fs.c:147: undefined reference to `pthread_once'
+  ~/linux/tools/lib/api/fs/fs.c:148: undefined reference to `pthread_once'
+  ~/linux/tools/lib/api/fs/fs.c:149: undefined reference to `pthread_once'
+  ~/linux/tools/lib/api/fs/fs.c:150: undefined reference to `pthread_once'
+  /usr/bin/ld: ../lib/api/libapi.a(libapi-in.o):~/linux/tools/lib/api/fs/fs.c:151:
+  more undefined references to `pthread_once' follow
+  collect2: error: ld returned 1 exit status
+  make: *** [Makefile:22: page-types] Error 1
+
+Link: https://lkml.kernel.org/r/20230831034205.2376653-1-xiexiuqi@huaweicloud.com
+Fixes: 97d5f2e9ee12 ("tools api fs: More thread safety for global filesystem variables")
+Signed-off-by: Xie XiuQi <xiexiuqi@huawei.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/preprocess.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/mm/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/preprocess.c b/scripts/kconfig/preprocess.c
-index 748da578b418c..d1f5bcff4b62d 100644
---- a/scripts/kconfig/preprocess.c
-+++ b/scripts/kconfig/preprocess.c
-@@ -396,6 +396,9 @@ static char *eval_clause(const char *str, size_t len, int argc, char *argv[])
+diff --git a/tools/mm/Makefile b/tools/mm/Makefile
+index 6c1da51f4177c..1c5606cc33346 100644
+--- a/tools/mm/Makefile
++++ b/tools/mm/Makefile
+@@ -8,8 +8,8 @@ TARGETS=page-types slabinfo page_owner_sort
+ LIB_DIR = ../lib/api
+ LIBS = $(LIB_DIR)/libapi.a
  
- 		p++;
- 	}
-+
-+	if (new_argc >= FUNCTION_MAX_ARGS)
-+		pperror("too many function arguments");
- 	new_argv[new_argc++] = prev;
+-CFLAGS += -Wall -Wextra -I../lib/
+-LDFLAGS += $(LIBS)
++CFLAGS += -Wall -Wextra -I../lib/ -pthread
++LDFLAGS += $(LIBS) -pthread
  
- 	/*
+ all: $(TARGETS)
+ 
 -- 
 2.40.1
 
