@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F547A3C64
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADD747A3C68
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241016AbjIQUa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41734 "EHLO
+        id S241024AbjIQUa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241087AbjIQUaV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:30:21 -0400
+        with ESMTP id S239679AbjIQUaf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:30:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9599710C
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:30:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C355BC433C7;
-        Sun, 17 Sep 2023 20:30:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD1010B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:30:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E51FC433C9;
+        Sun, 17 Sep 2023 20:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982616;
-        bh=aqBYPpuR4WgpuL4SYatFjh2jKPjDZ0nRhAThDJPXt68=;
+        s=korg; t=1694982629;
+        bh=/+nX8+GJy4HODrREw66mN3OhhcACy+UPE+GsGu7wK+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1hx/nEmAA+bOBFwaXcSTdmOp5bBF0WbqLXATbVTvJtF+edbAaAmUo72QAruOTPJ+x
-         GVRAzq1CfECt2sKW4Al6B0DTbOj0UxJx+FhqkBIecsbPTkqngxRJQKcSoSdIaABGju
-         Z4xVSUyDQh7WX3y3bvCFwHNkbY7JV3evP8e2jLaE=
+        b=USarMYlAjuOpa1vyT+4nTM7KuSMxZdC+1/7Xc/JxGG/qHCyK7Jm55HmE4p6bw4IP8
+         Dg8n8Zf4NBNhl2ErHFZWdDiUAufbf7LcJEwuNvVASk1XttEyzzkhmRz7majI/imr4B
+         s6Z9lLGLmVK8oD/OdQlHtCsV0B/aD5BK0KQyWzXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 275/511] platform/x86: dell-sysman: Fix reference leak
-Date:   Sun, 17 Sep 2023 21:11:42 +0200
-Message-ID: <20230917191120.478981811@linuxfoundation.org>
+Subject: [PATCH 5.15 276/511] media: go7007: Remove redundant if statement
+Date:   Sun, 17 Sep 2023 21:11:43 +0200
+Message-ID: <20230917191120.501921296@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,54 +54,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 7295a996fdab7bf83dc3d4078fa8b139b8e0a1bf ]
+[ Upstream commit f33cb49081da0ec5af0888f8ecbd566bd326eed1 ]
 
-If a duplicate attribute is found using kset_find_obj(),
-a reference to that attribute is returned. This means
-that we need to dispose it accordingly. Use kobject_put()
-to dispose the duplicate attribute in such a case.
+The if statement that compares msgs[i].len != 3 is always false because
+it is in a code block where msg[i].len is equal to 3. The check is
+redundant and can be removed.
 
-Compile-tested only.
+As detected by cppcheck static analysis:
+drivers/media/usb/go7007/go7007-i2c.c:168:20: warning: Opposite inner
+'if' condition leads to a dead code block. [oppositeInnerCondition]
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20230805053610.7106-1-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/linux-media/20230727174007.635572-1-colin.i.king@gmail.com
+
+Fixes: 866b8695d67e ("Staging: add the go7007 video driver")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/usb/go7007/go7007-i2c.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index 636bdfa83284d..907fde53e95c4 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -396,6 +396,7 @@ static int init_bios_attributes(int attr_type, const char *guid)
- 	struct kobject *attr_name_kobj; //individual attribute names
- 	union acpi_object *obj = NULL;
- 	union acpi_object *elements;
-+	struct kobject *duplicate;
- 	struct kset *tmp_set;
- 	int min_elements;
- 
-@@ -454,9 +455,11 @@ static int init_bios_attributes(int attr_type, const char *guid)
- 		else
- 			tmp_set = wmi_priv.main_dir_kset;
- 
--		if (kset_find_obj(tmp_set, elements[ATTR_NAME].string.pointer)) {
--			pr_debug("duplicate attribute name found - %s\n",
--				elements[ATTR_NAME].string.pointer);
-+		duplicate = kset_find_obj(tmp_set, elements[ATTR_NAME].string.pointer);
-+		if (duplicate) {
-+			pr_debug("Duplicate attribute name found - %s\n",
-+				 elements[ATTR_NAME].string.pointer);
-+			kobject_put(duplicate);
- 			goto nextobj;
- 		}
- 
+diff --git a/drivers/media/usb/go7007/go7007-i2c.c b/drivers/media/usb/go7007/go7007-i2c.c
+index 38339dd2f83f7..2880370e45c8b 100644
+--- a/drivers/media/usb/go7007/go7007-i2c.c
++++ b/drivers/media/usb/go7007/go7007-i2c.c
+@@ -165,8 +165,6 @@ static int go7007_i2c_master_xfer(struct i2c_adapter *adapter,
+ 		} else if (msgs[i].len == 3) {
+ 			if (msgs[i].flags & I2C_M_RD)
+ 				return -EIO;
+-			if (msgs[i].len != 3)
+-				return -EIO;
+ 			if (go7007_i2c_xfer(go, msgs[i].addr, 0,
+ 					(msgs[i].buf[0] << 8) | msgs[i].buf[1],
+ 					0x01, &msgs[i].buf[2]) < 0)
 -- 
 2.40.1
 
