@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C380E7A39AD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65D77A3A53
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240122AbjIQTxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
+        id S240393AbjIQUCV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240203AbjIQTwt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:49 -0400
+        with ESMTP id S240349AbjIQUBn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A33199
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB57C433C8;
-        Sun, 17 Sep 2023 19:52:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD1D1B9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93249C433D9;
+        Sun, 17 Sep 2023 20:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980330;
-        bh=yVaKkPkwCVsTqwb831qlrnZeaQe6OIOW/Sl6STJLClM=;
+        s=korg; t=1694980872;
+        bh=fheggj1bHESoSWOMU6fK3HWTw//kdpMm8Odx12UGc+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KsSwHEV/Uacf7V0uhRnSJLBUHxXvkRlCyBOvhjfHnxutRcPxqFyiPim8V4CNs+qlZ
-         F/u6L6gItJ8zleviC3dB49cs2C+PNK702hJpjg2zaAPNpN3CpbWplfJzrHnshkJqys
-         OXDzXmr/baeig+WKY++VNgl+BdMNEz4YZ73YmTHM=
+        b=wDjvK4Ht9smyqXF7sMT37oBKwCkqqIheYrurFlas/JK4LJEUaTFowI9ivDiu3H7qY
+         Pzk344krvpiqQ2ERnRD3KEfvaA83PMJ7zbKGcpOZ9NejRUs4wfe3poOW6bimC/et1L
+         TfHr7xbmmKEV5awnB7YzQHaZGoyCV9mY2E9RNxKs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 160/285] bpf: bpf_sk_storage: Fix invalid wait context lockdep report
+        patches@lists.linux.dev, Michal Hocko <mhocko@suse.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 033/219] memcg: drop kmem.limit_in_bytes
 Date:   Sun, 17 Sep 2023 21:12:40 +0200
-Message-ID: <20230917191057.210302227@linuxfoundation.org>
+Message-ID: <20230917191042.204185566@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,202 +53,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Michal Hocko <mhocko@suse.com>
 
-[ Upstream commit a96a44aba556c42b432929d37d60158aca21ad4c ]
+commit 86327e8eb94c52eca4f93cfece2e29d1bf52acbf upstream.
 
-'./test_progs -t test_local_storage' reported a splat:
+kmem.limit_in_bytes (v1 way to limit kernel memory usage) has been
+deprecated since 58056f77502f ("memcg, kmem: further deprecate
+kmem.limit_in_bytes") merged in 5.16.  We haven't heard about any serious
+users since then but it seems that the mere presence of the file is
+causing more harm thatn good.  We (SUSE) have had several bug reports from
+customers where Docker based containers started to fail because a write to
+kmem.limit_in_bytes has failed.
 
-[   27.137569] =============================
-[   27.138122] [ BUG: Invalid wait context ]
-[   27.138650] 6.5.0-03980-gd11ae1b16b0a #247 Tainted: G           O
-[   27.139542] -----------------------------
-[   27.140106] test_progs/1729 is trying to lock:
-[   27.140713] ffff8883ef047b88 (stock_lock){-.-.}-{3:3}, at: local_lock_acquire+0x9/0x130
-[   27.141834] other info that might help us debug this:
-[   27.142437] context-{5:5}
-[   27.142856] 2 locks held by test_progs/1729:
-[   27.143352]  #0: ffffffff84bcd9c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x40
-[   27.144492]  #1: ffff888107deb2c0 (&storage->lock){..-.}-{2:2}, at: bpf_local_storage_update+0x39e/0x8e0
-[   27.145855] stack backtrace:
-[   27.146274] CPU: 0 PID: 1729 Comm: test_progs Tainted: G           O       6.5.0-03980-gd11ae1b16b0a #247
-[   27.147550] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-[   27.149127] Call Trace:
-[   27.149490]  <TASK>
-[   27.149867]  dump_stack_lvl+0x130/0x1d0
-[   27.152609]  dump_stack+0x14/0x20
-[   27.153131]  __lock_acquire+0x1657/0x2220
-[   27.153677]  lock_acquire+0x1b8/0x510
-[   27.157908]  local_lock_acquire+0x29/0x130
-[   27.159048]  obj_cgroup_charge+0xf4/0x3c0
-[   27.160794]  slab_pre_alloc_hook+0x28e/0x2b0
-[   27.161931]  __kmem_cache_alloc_node+0x51/0x210
-[   27.163557]  __kmalloc+0xaa/0x210
-[   27.164593]  bpf_map_kzalloc+0xbc/0x170
-[   27.165147]  bpf_selem_alloc+0x130/0x510
-[   27.166295]  bpf_local_storage_update+0x5aa/0x8e0
-[   27.167042]  bpf_fd_sk_storage_update_elem+0xdb/0x1a0
-[   27.169199]  bpf_map_update_value+0x415/0x4f0
-[   27.169871]  map_update_elem+0x413/0x550
-[   27.170330]  __sys_bpf+0x5e9/0x640
-[   27.174065]  __x64_sys_bpf+0x80/0x90
-[   27.174568]  do_syscall_64+0x48/0xa0
-[   27.175201]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[   27.175932] RIP: 0033:0x7effb40e41ad
-[   27.176357] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d8
-[   27.179028] RSP: 002b:00007ffe64c21fc8 EFLAGS: 00000202 ORIG_RAX: 0000000000000141
-[   27.180088] RAX: ffffffffffffffda RBX: 00007ffe64c22768 RCX: 00007effb40e41ad
-[   27.181082] RDX: 0000000000000020 RSI: 00007ffe64c22008 RDI: 0000000000000002
-[   27.182030] RBP: 00007ffe64c21ff0 R08: 0000000000000000 R09: 00007ffe64c22788
-[   27.183038] R10: 0000000000000064 R11: 0000000000000202 R12: 0000000000000000
-[   27.184006] R13: 00007ffe64c22788 R14: 00007effb42a1000 R15: 0000000000000000
-[   27.184958]  </TASK>
+This was unexpected because runc code only expects ENOENT (kmem disabled)
+or EBUSY (tasks already running within cgroup).  So a new error code was
+unexpected and the whole container startup failed.  This has been later
+addressed by
+https://github.com/opencontainers/runc/commit/52390d68040637dfc77f9fda6bbe70952423d380
+so current Docker runtimes do not suffer from the problem anymore.  There
+are still older version of Docker in use and likely hard to get rid of
+completely.
 
-It complains about acquiring a local_lock while holding a raw_spin_lock.
-It means it should not allocate memory while holding a raw_spin_lock
-since it is not safe for RT.
+Address this by wiping out the file completely and effectively get back to
+pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
 
-raw_spin_lock is needed because bpf_local_storage supports tracing
-context. In particular for task local storage, it is easy to
-get a "current" task PTR_TO_BTF_ID in tracing bpf prog.
-However, task (and cgroup) local storage has already been moved to
-bpf mem allocator which can be used after raw_spin_lock.
+I would recommend backporting to stable trees which have picked up
+58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes").
 
-The splat is for the sk storage. For sk (and inode) storage,
-it has not been moved to bpf mem allocator. Using raw_spin_lock or not,
-kzalloc(GFP_ATOMIC) could theoretically be unsafe in tracing context.
-However, the local storage helper requires a verifier accepted
-sk pointer (PTR_TO_BTF_ID), it is hypothetical if that (mean running
-a bpf prog in a kzalloc unsafe context and also able to hold a verifier
-accepted sk pointer) could happen.
-
-This patch avoids kzalloc after raw_spin_lock to silent the splat.
-There is an existing kzalloc before the raw_spin_lock. At that point,
-a kzalloc is very likely required because a lookup has just been done
-before. Thus, this patch always does the kzalloc before acquiring
-the raw_spin_lock and remove the later kzalloc usage after the
-raw_spin_lock. After this change, it will have a charge and then
-uncharge during the syscall bpf_map_update_elem() code path.
-This patch opts for simplicity and not continue the old
-optimization to save one charge and uncharge.
-
-This issue is dated back to the very first commit of bpf_sk_storage
-which had been refactored multiple times to create task, inode, and
-cgroup storage. This patch uses a Fixes tag with a more recent
-commit that should be easier to do backport.
-
-Fixes: b00fa38a9c1c ("bpf: Enable non-atomic allocations in local storage")
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230901231129.578493-2-martin.lau@linux.dev
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[mhocko@suse.com: restore _KMEM switch case]
+  Link: https://lkml.kernel.org/r/ZKe5wxdbvPi5Cwd7@dhcp22.suse.cz
+Link: https://lkml.kernel.org/r/20230704115240.14672-1-mhocko@kernel.org
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_local_storage.c | 47 ++++++++++------------------------
- 1 file changed, 14 insertions(+), 33 deletions(-)
+ Documentation/admin-guide/cgroup-v1/memory.rst |    2 --
+ mm/memcontrol.c                                |   10 ----------
+ 2 files changed, 12 deletions(-)
 
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index b5149cfce7d4d..37ad47d52dc55 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -553,7 +553,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 			 void *value, u64 map_flags, gfp_t gfp_flags)
- {
- 	struct bpf_local_storage_data *old_sdata = NULL;
--	struct bpf_local_storage_elem *selem = NULL;
-+	struct bpf_local_storage_elem *alloc_selem, *selem = NULL;
- 	struct bpf_local_storage *local_storage;
- 	unsigned long flags;
- 	int err;
-@@ -607,11 +607,12 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		}
- 	}
- 
--	if (gfp_flags == GFP_KERNEL) {
--		selem = bpf_selem_alloc(smap, owner, value, true, gfp_flags);
--		if (!selem)
--			return ERR_PTR(-ENOMEM);
--	}
-+	/* A lookup has just been done before and concluded a new selem is
-+	 * needed. The chance of an unnecessary alloc is unlikely.
-+	 */
-+	alloc_selem = selem = bpf_selem_alloc(smap, owner, value, true, gfp_flags);
-+	if (!alloc_selem)
-+		return ERR_PTR(-ENOMEM);
- 
- 	raw_spin_lock_irqsave(&local_storage->lock, flags);
- 
-@@ -623,13 +624,13 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		 * simple.
- 		 */
- 		err = -EAGAIN;
--		goto unlock_err;
-+		goto unlock;
- 	}
- 
- 	old_sdata = bpf_local_storage_lookup(local_storage, smap, false);
- 	err = check_flags(old_sdata, map_flags);
- 	if (err)
--		goto unlock_err;
-+		goto unlock;
- 
- 	if (old_sdata && (map_flags & BPF_F_LOCK)) {
- 		copy_map_value_locked(&smap->map, old_sdata->data, value,
-@@ -638,23 +639,7 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		goto unlock;
- 	}
- 
--	if (gfp_flags != GFP_KERNEL) {
--		/* local_storage->lock is held.  Hence, we are sure
--		 * we can unlink and uncharge the old_sdata successfully
--		 * later.  Hence, instead of charging the new selem now
--		 * and then uncharge the old selem later (which may cause
--		 * a potential but unnecessary charge failure),  avoid taking
--		 * a charge at all here (the "!old_sdata" check) and the
--		 * old_sdata will not be uncharged later during
--		 * bpf_selem_unlink_storage_nolock().
--		 */
--		selem = bpf_selem_alloc(smap, owner, value, !old_sdata, gfp_flags);
--		if (!selem) {
--			err = -ENOMEM;
--			goto unlock_err;
--		}
--	}
--
-+	alloc_selem = NULL;
- 	/* First, link the new selem to the map */
- 	bpf_selem_link_map(smap, selem);
- 
-@@ -665,20 +650,16 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 	if (old_sdata) {
- 		bpf_selem_unlink_map(SELEM(old_sdata));
- 		bpf_selem_unlink_storage_nolock(local_storage, SELEM(old_sdata),
--						false, false);
-+						true, false);
- 	}
- 
- unlock:
- 	raw_spin_unlock_irqrestore(&local_storage->lock, flags);
--	return SDATA(selem);
--
--unlock_err:
--	raw_spin_unlock_irqrestore(&local_storage->lock, flags);
--	if (selem) {
-+	if (alloc_selem) {
- 		mem_uncharge(smap, owner, smap->elem_size);
--		bpf_selem_free(selem, smap, true);
-+		bpf_selem_free(alloc_selem, smap, true);
- 	}
--	return ERR_PTR(err);
-+	return err ? ERR_PTR(err) : SDATA(selem);
- }
- 
- static u16 bpf_local_storage_cache_idx_get(struct bpf_local_storage_cache *cache)
--- 
-2.40.1
-
+--- a/Documentation/admin-guide/cgroup-v1/memory.rst
++++ b/Documentation/admin-guide/cgroup-v1/memory.rst
+@@ -91,8 +91,6 @@ Brief summary of control files.
+  memory.oom_control		     set/show oom controls.
+  memory.numa_stat		     show the number of memory usage per numa
+ 				     node
+- memory.kmem.limit_in_bytes          This knob is deprecated and writing to
+-                                     it will return -ENOTSUPP.
+  memory.kmem.usage_in_bytes          show current kernel memory allocation
+  memory.kmem.failcnt                 show the number of kernel memory usage
+ 				     hits limits
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3841,10 +3841,6 @@ static ssize_t mem_cgroup_write(struct k
+ 		case _MEMSWAP:
+ 			ret = mem_cgroup_resize_max(memcg, nr_pages, true);
+ 			break;
+-		case _KMEM:
+-			/* kmem.limit_in_bytes is deprecated. */
+-			ret = -EOPNOTSUPP;
+-			break;
+ 		case _TCP:
+ 			ret = memcg_update_tcp_max(memcg, nr_pages);
+ 			break;
+@@ -5056,12 +5052,6 @@ static struct cftype mem_cgroup_legacy_f
+ 	},
+ #endif
+ 	{
+-		.name = "kmem.limit_in_bytes",
+-		.private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
+-		.write = mem_cgroup_write,
+-		.read_u64 = mem_cgroup_read_u64,
+-	},
+-	{
+ 		.name = "kmem.usage_in_bytes",
+ 		.private = MEMFILE_PRIVATE(_KMEM, RES_USAGE),
+ 		.read_u64 = mem_cgroup_read_u64,
 
 
