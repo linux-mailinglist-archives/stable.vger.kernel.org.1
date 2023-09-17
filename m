@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9837A38BE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A6B77A39F5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239789AbjIQTjp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58606 "EHLO
+        id S240214AbjIQT4t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239857AbjIQTjX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:23 -0400
+        with ESMTP id S240250AbjIQT40 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8786DD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9EEC433C9;
-        Sun, 17 Sep 2023 19:39:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7019F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A833C433C7;
+        Sun, 17 Sep 2023 19:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979558;
-        bh=asg/qFzeIsOCUq55Q/gR9tOBfE6X5ODf4+0ExMT7w78=;
+        s=korg; t=1694980580;
+        bh=85QHQLH9ykH1BK1k+SKFqT7ndvWwwjQ1OLGFwKU2WZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oZsaPkCG63t4VGq5ZO2k+WzPci+p4lUqQsoLmXGJ+jAah7oQfaijIql5BeZmeHO0B
-         UCK1727JmDhjxrZPUyWuSQYgXm1fzTu0flqUf4eVUBVbuClyBvveoBeH5mqDME8WX7
-         31Rdyb8Iu3yE+HVHFvugOYIP2k/WFBtdclkXV598=
+        b=N0yBBsLXkWthrad0rpZKmMia3/GP/rl+EIrSBvqjCAIR+XjuJho1I8H/nGIbmo3PZ
+         AMwy/BnehFt1KWMXHF/hcyMp7dv28CMpXsOB3JxZQBnkaMvJC+A9Rbym6cukOCrTCD
+         XoNp/wibvWonahrMZdNpzqFrgccAS7+kWdsD4dMs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Corinna Vinschen <vinschen@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 348/406] igb: disable virtualization features on 82580
-Date:   Sun, 17 Sep 2023 21:13:22 +0200
-Message-ID: <20230917191110.463382539@linuxfoundation.org>
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 203/285] btrfs: fix start transaction qgroup rsv double free
+Date:   Sun, 17 Sep 2023 21:13:23 +0200
+Message-ID: <20230917191058.603731703@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corinna Vinschen <vinschen@redhat.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit fa09bc40b21a33937872c4c4cf0f266ec9fa4869 ]
+commit a6496849671a5bc9218ecec25a983253b34351b1 upstream.
 
-Disable virtualization features on 82580 just as on i210/i211.
-This avoids that virt functions are acidentally called on 82850.
+btrfs_start_transaction reserves metadata space of the PERTRANS type
+before it identifies a transaction to start/join. This allows flushing
+when reserving that space without a deadlock. However, it results in a
+race which temporarily breaks qgroup rsv accounting.
 
-Fixes: 55cac248caa4 ("igb: Add full support for 82580 devices")
-Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T1                                              T2
+start_transaction
+do_stuff
+                                            start_transaction
+                                                qgroup_reserve_meta_pertrans
+commit_transaction
+    qgroup_free_meta_all_pertrans
+                                            hit an error starting txn
+                                            goto reserve_fail
+                                            qgroup_free_meta_pertrans (already freed!)
+
+The basic issue is that there is nothing preventing another commit from
+committing before start_transaction finishes (in fact sometimes we
+intentionally wait for it) so any error path that frees the reserve is
+at risk of this race.
+
+While this exact space was getting freed anyway, and it's not a huge
+deal to double free it (just a warning, the free code catches this), it
+can result in incorrectly freeing some other pertrans reservation in
+this same reservation, which could then lead to spuriously granting
+reservations we might not have the space for. Therefore, I do believe it
+is worth fixing.
+
+To fix it, use the existing prealloc->pertrans conversion mechanism.
+When we first reserve the space, we reserve prealloc space and only when
+we are sure we have a transaction do we convert it to pertrans. This way
+any racing commits do not blow away our reservation, but we still get a
+pertrans reservation that is freed when _this_ transaction gets committed.
+
+This issue can be reproduced by running generic/269 with either qgroups
+or squotas enabled via mkfs on the scratch device.
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+CC: stable@vger.kernel.org # 5.10+
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/transaction.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 1143800c889ac..01176c86be125 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -3857,8 +3857,9 @@ static void igb_probe_vfs(struct igb_adapter *adapter)
- 	struct pci_dev *pdev = adapter->pdev;
- 	struct e1000_hw *hw = &adapter->hw;
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -591,8 +591,13 @@ start_transaction(struct btrfs_root *roo
+ 		u64 delayed_refs_bytes = 0;
  
--	/* Virtualization features not supported on i210 family. */
--	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211))
-+	/* Virtualization features not supported on i210 and 82580 family. */
-+	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211) ||
-+	    (hw->mac.type == e1000_82580))
- 		return;
+ 		qgroup_reserved = num_items * fs_info->nodesize;
+-		ret = btrfs_qgroup_reserve_meta_pertrans(root, qgroup_reserved,
+-				enforce_qgroups);
++		/*
++		 * Use prealloc for now, as there might be a currently running
++		 * transaction that could free this reserved space prematurely
++		 * by committing.
++		 */
++		ret = btrfs_qgroup_reserve_meta_prealloc(root, qgroup_reserved,
++							 enforce_qgroups, false);
+ 		if (ret)
+ 			return ERR_PTR(ret);
  
- 	/* Of the below we really only want the effect of getting
--- 
-2.40.1
-
+@@ -705,6 +710,14 @@ again:
+ 		h->reloc_reserved = reloc_reserved;
+ 	}
+ 
++	/*
++	 * Now that we have found a transaction to be a part of, convert the
++	 * qgroup reservation from prealloc to pertrans. A different transaction
++	 * can't race in and free our pertrans out from under us.
++	 */
++	if (qgroup_reserved)
++		btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
++
+ got_it:
+ 	if (!current->journal_info)
+ 		current->journal_info = h;
+@@ -752,7 +765,7 @@ alloc_fail:
+ 		btrfs_block_rsv_release(fs_info, &fs_info->trans_block_rsv,
+ 					num_bytes, NULL);
+ reserve_fail:
+-	btrfs_qgroup_free_meta_pertrans(root, qgroup_reserved);
++	btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
+ 	return ERR_PTR(ret);
+ }
+ 
 
 
