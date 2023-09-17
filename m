@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65ED97A3877
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 021757A3997
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239752AbjIQTge (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44666 "EHLO
+        id S240095AbjIQTva (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:51:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239747AbjIQTgB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:01 -0400
+        with ESMTP id S240131AbjIQTvK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A0A12B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF82C433C9;
-        Sun, 17 Sep 2023 19:35:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC13132
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C30C433C7;
+        Sun, 17 Sep 2023 19:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979353;
-        bh=f6nZeCjZ4BNTKRE5EmJogPnxQOtMpRTwZs7E5VY2wyY=;
+        s=korg; t=1694980265;
+        bh=+T3n6YfKiPO3t0PzUzmL8XDQcscfNBafcfwaJDjkFcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JShghRM8D/Jqz/rrUQDBUvhxv+1yjiuwmf9KjLZZdOzJ9IVnPWTfr4mHFYEGAB1sE
-         7hXpB9U5PBimCyfGAsaanremE8acFuf8qFEJ1rJEwQho1cjDwzYtFl03kvzTZrbPFM
-         8ol19X+af7DUZEqM4+8R+vMzjbcqK5yCaumEHquM=
+        b=dryEacxp8zWLMy/l7PaYvisbMhru5BqMB9mTS9Qa72HmJLYczp20PM7Mh1ou54j/P
+         STbtWzPbC9jiQ1r/3saebnPmDZC4TqBDjr7rbEKPTXZKIx622x/Nyt/jnvV7xg1fvl
+         +7oSFPdjZLf1J75RR3wLqmQdmZQvEtLZ84WscvXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 5.10 288/406] ntb: Drop packets when qp link is down
+        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 142/285] igbvf: Change IGBVF_MIN to allow set rx/tx value between 64 and 80
 Date:   Sun, 17 Sep 2023 21:12:22 +0200
-Message-ID: <20230917191108.911170522@linuxfoundation.org>
+Message-ID: <20230917191056.587007151@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Olga Zaborska <olga.zaborska@intel.com>
 
-commit f195a1a6fe416882984f8bd6c61afc1383171860 upstream.
+[ Upstream commit 8360717524a24a421c36ef8eb512406dbd42160a ]
 
-Currently when the transport receive packets after netdev has closed the
-transport returns error and triggers tx errors to be incremented and
-carrier to be stopped. There is no reason to return error if the device is
-already closed. Drop the packet and return 0.
+Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
+value between 64 and 80. All igbvf devices can use as low as 64 descriptors.
+This change will unify igbvf with other drivers.
+Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
 
-Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
-Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d4e0fe01a38a ("igbvf: add new driver to support 82576 virtual functions")
+Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igbvf/igbvf.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -2278,9 +2278,13 @@ int ntb_transport_tx_enqueue(struct ntb_
- 	struct ntb_queue_entry *entry;
- 	int rc;
+diff --git a/drivers/net/ethernet/intel/igbvf/igbvf.h b/drivers/net/ethernet/intel/igbvf/igbvf.h
+index 57d39ee00b585..7b83678ba83a6 100644
+--- a/drivers/net/ethernet/intel/igbvf/igbvf.h
++++ b/drivers/net/ethernet/intel/igbvf/igbvf.h
+@@ -39,11 +39,11 @@ enum latency_range {
+ /* Tx/Rx descriptor defines */
+ #define IGBVF_DEFAULT_TXD	256
+ #define IGBVF_MAX_TXD		4096
+-#define IGBVF_MIN_TXD		80
++#define IGBVF_MIN_TXD		64
  
--	if (!qp || !qp->link_is_up || !len)
-+	if (!qp || !len)
- 		return -EINVAL;
+ #define IGBVF_DEFAULT_RXD	256
+ #define IGBVF_MAX_RXD		4096
+-#define IGBVF_MIN_RXD		80
++#define IGBVF_MIN_RXD		64
  
-+	/* If the qp link is down already, just ignore. */
-+	if (!qp->link_is_up)
-+		return 0;
-+
- 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
- 	if (!entry) {
- 		qp->tx_err_no_buf++;
+ #define IGBVF_MIN_ITR_USECS	10 /* 100000 irq/sec */
+ #define IGBVF_MAX_ITR_USECS	10000 /* 100    irq/sec */
+-- 
+2.40.1
+
 
 
