@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD07D7A3CDC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53AD77A3CDE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241145AbjIQUgS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36562 "EHLO
+        id S241153AbjIQUgT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241153AbjIQUfz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:55 -0400
+        with ESMTP id S239697AbjIQUgB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB748123
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06073C433C8;
-        Sun, 17 Sep 2023 20:35:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9C710E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CAAC433C7;
+        Sun, 17 Sep 2023 20:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982949;
-        bh=fnlPCh6ZFNY/oe3agZbtdrIIjfmq9rgK9vW1odpEFaY=;
+        s=korg; t=1694982956;
+        bh=TLGVOp9sbTw3pLKGUBOgg9Ean2G0gK6rj1rjyN6UayM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nMw/pUVOOC3+GdmsYiMivmcqVf0BWzaVfQa8NDdZsxJPHUKim7Z1n6zAHPm2Fj+h7
-         ZQ/8C8SUE+Xmytd5WD+jTCzhraOn4wuay0njUToN+TNUYFDHl34FjhU8+s0bMV76ov
-         xqCsbzukH3hnTJ+fo83TnjMgnn7nT6H4H6wJQMFA=
+        b=tkC77W99Nm4kCPH/qqTVFL1LJehNweSTWYcgDUcoKvijJHS50VoBD/n87nv8c18NH
+         xBEEV+4i+iH9vShcYlz1yZtdkxeq+YqRNr5C0jrTMWfHDjtGWhD9Zfdjlo82X+soDO
+         BHfJVmEBlgtvUL1AR2VktbQDdgACATi5b/TilYTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev, Chris Lew <quic_clew@quicinc.com>,
+        Praveenkumar I <quic_ipkumar@quicinc.com>,
         Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 400/511] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
-Date:   Sun, 17 Sep 2023 21:13:47 +0200
-Message-ID: <20230917191123.450043409@linuxfoundation.org>
+Subject: [PATCH 5.15 401/511] soc: qcom: qmi_encdec: Restrict string length in decode
+Date:   Sun, 17 Sep 2023 21:13:48 +0200
+Message-ID: <20230917191123.473665756@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,35 +54,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Chris Lew <quic_clew@quicinc.com>
 
-commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
+commit 8d207400fd6b79c92aeb2f33bb79f62dff904ea2 upstream.
 
-The pll0_vote clock definitely should have pll0 as a parent (instead of
-pll8).
+The QMI TLV value for strings in a lot of qmi element info structures
+account for null terminated strings with MAX_LEN + 1. If a string is
+actually MAX_LEN + 1 length, this will cause an out of bounds access
+when the NULL character is appended in decoding.
 
-Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
-Cc: stable@kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
+Fixes: 9b8a11e82615 ("soc: qcom: Introduce QMI encoder/decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Signed-off-by: Praveenkumar I <quic_ipkumar@quicinc.com>
+Link: https://lore.kernel.org/r/20230801064712.3590128-1-quic_ipkumar@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-mdm9615.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/qmi_encdec.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/gcc-mdm9615.c
-+++ b/drivers/clk/qcom/gcc-mdm9615.c
-@@ -58,7 +58,7 @@ static struct clk_regmap pll0_vote = {
- 	.enable_mask = BIT(0),
- 	.hw.init = &(struct clk_init_data){
- 		.name = "pll0_vote",
--		.parent_names = (const char *[]){ "pll8" },
-+		.parent_names = (const char *[]){ "pll0" },
- 		.num_parents = 1,
- 		.ops = &clk_pll_vote_ops,
- 	},
+--- a/drivers/soc/qcom/qmi_encdec.c
++++ b/drivers/soc/qcom/qmi_encdec.c
+@@ -534,8 +534,8 @@ static int qmi_decode_string_elem(struct
+ 		decoded_bytes += rc;
+ 	}
+ 
+-	if (string_len > temp_ei->elem_len) {
+-		pr_err("%s: String len %d > Max Len %d\n",
++	if (string_len >= temp_ei->elem_len) {
++		pr_err("%s: String len %d >= Max Len %d\n",
+ 		       __func__, string_len, temp_ei->elem_len);
+ 		return -ETOOSMALL;
+ 	} else if (string_len > tlv_len) {
 
 
