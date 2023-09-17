@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6957A3825
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E947A3952
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239695AbjIQTbq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:31:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
+        id S240040AbjIQTrq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239723AbjIQTbh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:37 -0400
+        with ESMTP id S240058AbjIQTrf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37ED6122
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6784EC433C8;
-        Sun, 17 Sep 2023 19:31:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A349F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63040C433C8;
+        Sun, 17 Sep 2023 19:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979091;
-        bh=VClQ+zO5a/196HwspQVQE3MI6wH1n1+tmg+6cjF510Q=;
+        s=korg; t=1694980050;
+        bh=Q3DCeK2kvcPxCwd6LumxgU9PslARSOG8lJL7N4HG5iA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bZnnXKYlTu4W6ARi1ldLXnHigTS5iQ3TREB1vwYAGKpALp3YbSLnS+w3ZUZRd0oQV
-         0KaIgDgYaBAg9Bz6LOYRgxYfqrlb1RAMolp74Ei7SsYtdnHpXI+hU+2xzIp2JcnfNI
-         Dpr4BcjSh6MduK15DnYrd2cvgdzm2hh+yAcE9k8I=
+        b=y71aR8/Nf/2zBGVu2EcySnqR5WduG9VcL5M+Vp0Q4yGTzg5VljwQNYdiKv5jGJNH2
+         gcNuxEPttg0KH3nPR4R5ainSgk8WqMxfQO74hFdCRdeddPe8uxqZuJDkGa+fxVFUX9
+         bQExWGA+Uez9OouiUeooCXaLVxE2hGTaYUH++JDY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        John Garry <john.garry@huawei.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Jeff LaBundy <jeff@labundy.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 211/406] scsi: hisi_sas: Modify v3 HW SATA completion error processing
+Subject: [PATCH 6.5 065/285] Input: iqs7222 - configure power mode before triggering ATI
 Date:   Sun, 17 Sep 2023 21:11:05 +0200
-Message-ID: <20230917191106.762230583@linuxfoundation.org>
+Message-ID: <20230917191053.962355317@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +50,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Jeff LaBundy <jeff@labundy.com>
 
-[ Upstream commit 7e15334f5d256367fb4c77f4ee0003e1e3d9bf9d ]
+[ Upstream commit 2e00b8bf5624767f6be7427b6eb532524793463e ]
 
-If the I/O completion response frame returned by the target device has been
-written to the host memory and the err bit in the status field of the
-received fis is 1, ts->stat should set to SAS_PROTO_RESPONSE, and this will
-let EH analyze and further determine cause of failure.
+If the device drops into ultra-low-power mode before being placed
+into normal-power mode as part of ATI being triggered, the device
+does not assert any interrupts until the ATI routine is restarted
+two seconds later.
 
-Link: https://lore.kernel.org/r/1657823002-139010-5-git-send-email-john.garry@huawei.com
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: f5393a5602ca ("scsi: hisi_sas: Fix normally completed I/O analysed as failed")
+Solve this problem by adopting the vendor's recommendation, which
+calls for the device to be placed into normal-power mode prior to
+being configured and ATI being triggered.
+
+The original implementation followed this sequence, but the order
+was inadvertently changed as part of the resolution of a separate
+erratum.
+
+Fixes: 1e4189d8af27 ("Input: iqs7222 - protect volatile registers")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Link: https://lore.kernel.org/r/ZKrpHc2Ji9qR25r2@nixie71
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/input/misc/iqs7222.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 937e4ba46134e..f3b53eb2cbefe 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -467,6 +467,9 @@ struct hisi_sas_err_record_v3 {
- #define RX_DATA_LEN_UNDERFLOW_OFF	6
- #define RX_DATA_LEN_UNDERFLOW_MSK	(1 << RX_DATA_LEN_UNDERFLOW_OFF)
+diff --git a/drivers/input/misc/iqs7222.c b/drivers/input/misc/iqs7222.c
+index 096b0925f41ba..acb95048e8230 100644
+--- a/drivers/input/misc/iqs7222.c
++++ b/drivers/input/misc/iqs7222.c
+@@ -1381,9 +1381,6 @@ static int iqs7222_ati_trigger(struct iqs7222_private *iqs7222)
+ 	if (error)
+ 		return error;
  
-+#define RX_FIS_STATUS_ERR_OFF		0
-+#define RX_FIS_STATUS_ERR_MSK		(1 << RX_FIS_STATUS_ERR_OFF)
-+
- #define HISI_SAS_COMMAND_ENTRIES_V3_HW 4096
- #define HISI_SAS_MSI_COUNT_V3_HW 32
+-	sys_setup &= ~IQS7222_SYS_SETUP_INTF_MODE_MASK;
+-	sys_setup &= ~IQS7222_SYS_SETUP_PWR_MODE_MASK;
+-
+ 	for (i = 0; i < IQS7222_NUM_RETRIES; i++) {
+ 		/*
+ 		 * Trigger ATI from streaming and normal-power modes so that
+@@ -1561,8 +1558,11 @@ static int iqs7222_dev_init(struct iqs7222_private *iqs7222, int dir)
+ 			return error;
+ 	}
  
-@@ -2130,6 +2133,7 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
- 			hisi_sas_status_buf_addr_mem(slot);
- 	u32 dma_rx_err_type = le32_to_cpu(record->dma_rx_err_type);
- 	u32 trans_tx_fail_type = le32_to_cpu(record->trans_tx_fail_type);
-+	u16 sipc_rx_err_type = le16_to_cpu(record->sipc_rx_err_type);
- 	u32 dw3 = le32_to_cpu(complete_hdr->dw3);
+-	if (dir == READ)
++	if (dir == READ) {
++		iqs7222->sys_setup[0] &= ~IQS7222_SYS_SETUP_INTF_MODE_MASK;
++		iqs7222->sys_setup[0] &= ~IQS7222_SYS_SETUP_PWR_MODE_MASK;
+ 		return 0;
++	}
  
- 	switch (task->task_proto) {
-@@ -2157,7 +2161,10 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
- 	case SAS_PROTOCOL_SATA:
- 	case SAS_PROTOCOL_STP:
- 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
--		if (dma_rx_err_type & RX_DATA_LEN_UNDERFLOW_MSK) {
-+		if ((complete_hdr->dw0 & CMPLT_HDR_RSPNS_XFRD_MSK) &&
-+		    (sipc_rx_err_type & RX_FIS_STATUS_ERR_MSK)) {
-+			ts->stat = SAS_PROTO_RESPONSE;
-+		} else if (dma_rx_err_type & RX_DATA_LEN_UNDERFLOW_MSK) {
- 			ts->residual = trans_tx_fail_type;
- 			ts->stat = SAS_DATA_UNDERRUN;
- 		} else if (dw3 & CMPLT_HDR_IO_IN_TARGET_MSK) {
+ 	return iqs7222_ati_trigger(iqs7222);
+ }
 -- 
 2.40.1
 
