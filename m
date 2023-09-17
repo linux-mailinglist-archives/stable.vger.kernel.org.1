@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06EB77A3A51
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A62B7A38AF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240357AbjIQUCU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59238 "EHLO
+        id S239821AbjIQTin (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240344AbjIQUBn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:43 -0400
+        with ESMTP id S239840AbjIQTif (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315FECD4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93539C43391;
-        Sun, 17 Sep 2023 20:01:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D513103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A57C433C8;
+        Sun, 17 Sep 2023 19:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980879;
-        bh=jP8+75Mp9EN0e9ULRb288nhFON7ZNDK1rXgT+gUsRTg=;
+        s=korg; t=1694979510;
+        bh=mITIfvHFFy+vmceEMRebARytbL8AURZoqlgZnDXFkPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oBzyCf8KK/nDlIIJFEFZkWX+HcydVygxTzyJfhbBoBkahzUetQvOa8zyrks14e75e
-         2OlqSZOwsvsiw5FnCI7jxFlP3AfNup4lMqKChda87Q6AQdlyf5tUyYS+CqrIK3tzaw
-         lbwt/MgkDDDiEzLy4wv5Hi7fwlAyug2Jsldu4Hjw=
+        b=HB9UrcZQfr1memsM15GD0WVIq8Et396YzdiYz9VvOd7TLXEnQjVf97qjV9ZedDGuN
+         aB3Yl95oztIlUm0bdDMLKAhPKnVDbEE6Q9ame9X5Vvh1UNkCIVWpYwaZAG3VhVzcKU
+         lWzHQA84x/hRUXWM1T8reTmYawEF++tocCJZzHU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Donnellan <ajd@linux.ibm.com>,
-        Alexander Potapenko <glider@google.com>,
-        Xiaoke Wang <xkernel.wang@foxmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 035/219] lib/test_meminit: allocate pages up to order MAX_ORDER
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 308/406] USB: core: Fix oversight in SuperSpeed initialization
 Date:   Sun, 17 Sep 2023 21:12:42 +0200
-Message-ID: <20230917191042.273642938@linuxfoundation.org>
+Message-ID: <20230917191109.438542342@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +49,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Donnellan <ajd@linux.ibm.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit efb78fa86e95832b78ca0ba60f3706788a818938 upstream.
+commit 59cf445754566984fd55af19ba7146c76e6627bc upstream.
 
-test_pages() tests the page allocator by calling alloc_pages() with
-different orders up to order 10.
+Commit 85d07c556216 ("USB: core: Unite old scheme and new scheme
+descriptor reads") altered the way USB devices are enumerated
+following detection, and in the process it messed up the
+initialization of SuperSpeed (or faster) devices:
 
-However, different architectures and platforms support different maximum
-contiguous allocation sizes.  The default maximum allocation order
-(MAX_ORDER) is 10, but architectures can use CONFIG_ARCH_FORCE_MAX_ORDER
-to override this.  On platforms where this is less than 10, test_meminit()
-will blow up with a WARN().  This is expected, so let's not do that.
+[   31.650759] usb 2-1: new SuperSpeed Plus Gen 2x1 USB device number 2 using xhci_hcd
+[   31.663107] usb 2-1: device descriptor read/8, error -71
+[   31.952697] usb 2-1: new SuperSpeed Plus Gen 2x1 USB device number 3 using xhci_hcd
+[   31.965122] usb 2-1: device descriptor read/8, error -71
+[   32.080991] usb usb2-port1: attempt power cycle
+...
 
-Replace the hardcoded "10" with the MAX_ORDER macro so that we test
-allocations up to the expected platform limit.
+The problem was caused by the commit forgetting that in SuperSpeed or
+faster devices, the device descriptor uses a logarithmic encoding of
+the bMaxPacketSize0 value.  (For some reason I thought the 255 case in
+the switch statement was meant for these devices, but it isn't -- it
+was meant for Wireless USB and is no longer needed.)
 
-Link: https://lkml.kernel.org/r/20230714015238.47931-1-ajd@linux.ibm.com
-Fixes: 5015a300a522 ("lib: introduce test_meminit module")
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Xiaoke Wang <xkernel.wang@foxmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+We can fix the oversight by testing for buf->bMaxPacketSize0 = 9
+(meaning 512, the actual maxpacket size for ep0 on all SuperSpeed
+devices) and straightening out the logic that checks and adjusts our
+initial guesses of the maxpacket value.
+
+Reported-and-tested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Closes: https://lore.kernel.org/linux-usb/20230810002257.nadxmfmrobkaxgnz@synopsys.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 85d07c556216 ("USB: core: Unite old scheme and new scheme descriptor reads")
+Link: https://lore.kernel.org/r/8809e6c5-59d5-4d2d-ac8f-6d106658ad73@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_meminit.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/hub.c |   36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
---- a/lib/test_meminit.c
-+++ b/lib/test_meminit.c
-@@ -93,7 +93,7 @@ static int __init test_pages(int *total_
- 	int failures = 0, num_tests = 0;
- 	int i;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -4633,7 +4633,7 @@ static int get_bMaxPacketSize0(struct us
+ 				buf, size,
+ 				initial_descriptor_timeout);
+ 		switch (buf->bMaxPacketSize0) {
+-		case 8: case 16: case 32: case 64: case 255:
++		case 8: case 16: case 32: case 64: case 9:
+ 			if (buf->bDescriptorType == USB_DT_DEVICE) {
+ 				rc = buf->bMaxPacketSize0;
+ 				break;
+@@ -4923,23 +4923,35 @@ hub_port_init(struct usb_hub *hub, struc
+ 	if (retval)
+ 		goto fail;
  
--	for (i = 0; i < 10; i++)
-+	for (i = 0; i <= MAX_ORDER; i++)
- 		num_tests += do_alloc_pages_order(i, &failures);
+-	if (maxp0 == 0xff || udev->speed >= USB_SPEED_SUPER)
+-		i = 512;
+-	else
+-		i = maxp0;
+-	if (usb_endpoint_maxp(&udev->ep0.desc) != i) {
+-		if (udev->speed == USB_SPEED_LOW ||
+-				!(i == 8 || i == 16 || i == 32 || i == 64)) {
+-			dev_err(&udev->dev, "Invalid ep0 maxpacket: %d\n", i);
+-			retval = -EMSGSIZE;
+-			goto fail;
+-		}
++	/*
++	 * Check the ep0 maxpacket guess and correct it if necessary.
++	 * maxp0 is the value stored in the device descriptor;
++	 * i is the value it encodes (logarithmic for SuperSpeed or greater).
++	 */
++	i = maxp0;
++	if (udev->speed >= USB_SPEED_SUPER) {
++		if (maxp0 <= 16)
++			i = 1 << maxp0;
++		else
++			i = 0;		/* Invalid */
++	}
++	if (usb_endpoint_maxp(&udev->ep0.desc) == i) {
++		;	/* Initial ep0 maxpacket guess is right */
++	} else if ((udev->speed == USB_SPEED_FULL ||
++				udev->speed == USB_SPEED_HIGH) &&
++			(i == 8 || i == 16 || i == 32 || i == 64)) {
++		/* Initial guess is wrong; use the descriptor's value */
+ 		if (udev->speed == USB_SPEED_FULL)
+ 			dev_dbg(&udev->dev, "ep0 maxpacket = %d\n", i);
+ 		else
+ 			dev_warn(&udev->dev, "Using ep0 maxpacket: %d\n", i);
+ 		udev->ep0.desc.wMaxPacketSize = cpu_to_le16(i);
+ 		usb_ep0_reinit(udev);
++	} else {
++		/* Initial guess is wrong and descriptor's value is invalid */
++		dev_err(&udev->dev, "Invalid ep0 maxpacket: %d\n", maxp0);
++		retval = -EMSGSIZE;
++		goto fail;
+ 	}
  
- 	REPORT_FAILURES_IN_FN();
+ 	descr = usb_get_device_descriptor(udev);
 
 
