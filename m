@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6B17A387B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE27F7A3A40
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239747AbjIQTgf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44678 "EHLO
+        id S240366AbjIQUBc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239758AbjIQTgC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:02 -0400
+        with ESMTP id S239529AbjIQUAd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:00:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF2B11C
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F69C433C8;
-        Sun, 17 Sep 2023 19:35:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59591A4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D92BC433C8;
+        Sun, 17 Sep 2023 20:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979356;
-        bh=aQ5n/VVPtwqy9hJg4kI2nkUECggeWNzM2R5XTRbVIWg=;
+        s=korg; t=1694980814;
+        bh=yRo4v57t/KoTVuvefG0/CYzYGYq5DDdyUKDC+QSH6o8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wpHpultlIfQJ4IqiFRV73yU00sJ5m9SzcTMrVKlOJDVooOXZtdT2qffjXxHDADqJ+
-         bNzEXsy71dBMtkchwgMlKfGPY/L9RnfRciBy7KrD1LgkRsaASBM+hpFD++53CwF9uI
-         m+0J+Svv0PvmYbrrSoO9TxXkuhmq/US0G/qVSMnQ=
+        b=F84/wMjgfoofjc52w4lrNBOH4Sba7qiAsl7XBlClahEp7lJswMeFkNYm4aCjP1hQa
+         /rzTwZOhJaxyWvBxdhnRRMFJI91tBPh7JSr7JIWVoB9nHdP8Xic7hMWzPlpp/CTpA+
+         s4W2afItYylHBafwuOzGmPmpHHH4Ti/YM6OIyMos=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 5.10 289/406] ntb: Clean up tx tail index on link down
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 016/219] scsi: qla2xxx: Fix erroneous link up failure
 Date:   Sun, 17 Sep 2023 21:12:23 +0200
-Message-ID: <20230917191108.937677225@linuxfoundation.org>
+Message-ID: <20230917191041.571446795@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit cc79bd2738c2d40aba58b2be6ce47dc0e471df0e upstream.
+commit 5b51f35d127e7bef55fa869d2465e2bca4636454 upstream.
 
-The tx tail index is not reset when the link goes down. This causes the
-tail index to go out of sync when the link goes down and comes back up.
-Refactor the ntb_qp_link_down_reset() and reset the tail index as well.
+Link up failure occurred where driver failed to see certain events from FW
+indicating link up (AEN 8011) and fabric login completion (AEN 8014).
+Without these 2 events, driver would not proceed forward to scan the
+fabric. The cause of this is due to delay in the receive of interrupt for
+Mailbox 60 that causes qla to set the fw_started flag late.  The late
+setting of this flag causes other interrupts to be dropped.  These dropped
+interrupts happen to be the link up (AEN 8011) and fabric login completion
+(AEN 8014).
 
-Fixes: 2849b5d70641 ("NTB: Reset transport QP link stats on down")
-Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Set fw_started flag early to prevent interrupts being dropped.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/ntb_transport.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    3 ++-
+ drivers/scsi/qla2xxx/qla_isr.c  |    6 +++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -911,7 +911,7 @@ static int ntb_set_mw(struct ntb_transpo
- 	return 0;
- }
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -4816,15 +4816,16 @@ qla2x00_init_rings(scsi_qla_host_t *vha)
+ 	if (ha->flags.edif_enabled)
+ 		mid_init_cb->init_cb.frame_payload_size = cpu_to_le16(ELS_MAX_PAYLOAD);
  
--static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-+static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
- {
- 	qp->link_is_up = false;
- 	qp->active = false;
-@@ -934,6 +934,13 @@ static void ntb_qp_link_down_reset(struc
- 	qp->tx_async = 0;
- }
++	QLA_FW_STARTED(ha);
+ 	rval = qla2x00_init_firmware(vha, ha->init_cb_size);
+ next_check:
+ 	if (rval) {
++		QLA_FW_STOPPED(ha);
+ 		ql_log(ql_log_fatal, vha, 0x00d2,
+ 		    "Init Firmware **** FAILED ****.\n");
+ 	} else {
+ 		ql_dbg(ql_dbg_init, vha, 0x00d3,
+ 		    "Init Firmware -- success.\n");
+-		QLA_FW_STARTED(ha);
+ 		vha->u_ql2xexchoffld = vha->u_ql2xiniexchg = 0;
+ 	}
  
-+static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-+{
-+	ntb_qp_link_context_reset(qp);
-+	if (qp->remote_rx_info)
-+		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
-+}
-+
- static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
- {
- 	struct ntb_transport_ctx *nt = qp->transport;
-@@ -1176,7 +1183,7 @@ static int ntb_transport_init_queue(stru
- 	qp->ndev = nt->ndev;
- 	qp->client_ready = false;
- 	qp->event_handler = NULL;
--	ntb_qp_link_down_reset(qp);
-+	ntb_qp_link_context_reset(qp);
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -1121,8 +1121,12 @@ qla2x00_async_event(scsi_qla_host_t *vha
+ 	unsigned long	flags;
+ 	fc_port_t	*fcport = NULL;
  
- 	if (mw_num < qp_count % mw_count)
- 		num_qps_mw = qp_count / mw_count + 1;
+-	if (!vha->hw->flags.fw_started)
++	if (!vha->hw->flags.fw_started) {
++		ql_log(ql_log_warn, vha, 0x50ff,
++		    "Dropping AEN - %04x %04x %04x %04x.\n",
++		    mb[0], mb[1], mb[2], mb[3]);
+ 		return;
++	}
+ 
+ 	/* Setup to process RIO completion. */
+ 	handle_cnt = 0;
 
 
