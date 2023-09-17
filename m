@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DED77A3D48
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BC917A3B7B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241260AbjIQUlG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39956 "EHLO
+        id S240709AbjIQUSN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241267AbjIQUkn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:43 -0400
+        with ESMTP id S240743AbjIQUSF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F702101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF45CC433C9;
-        Sun, 17 Sep 2023 20:40:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7958F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E50C433C8;
+        Sun, 17 Sep 2023 20:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983237;
-        bh=0qbdonscsnn4D9pd+Jd+UNziaLJAvZZit9ufjHHQrVM=;
+        s=korg; t=1694981879;
+        bh=SehNVzGmva21IZADFw45mq7V8Uw4oIweINHjbD2mdjM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r8qs5zWula2ruGcOjE/BTAtFqMNxJ7qAIOhnpad/pEMHwSpI4CGZPKNQCJTaEzPj5
-         Uy5aLjEMnOHfOM9UaAK2JQxgc78RJUn1tgapyhD9BueQ9WSsxT9MVaR9vGNdZX8ZtV
-         aOPGBcz3XVwP/TZxSK+cA6nscu6QKx28qt+W4Ntg=
+        b=ItqTo3BsaHJN3OFS5d8Ma/Y6jYMKuwq64c1SACk+8Geky24puVRF3paGiVD7RMQ0S
+         uzO1nFsfzI+zjbVPSvPanaFgR7sm1ysiTnXsae+3xvGt2nKHjDJnCWPikw7Y5FxDMI
+         TEwE+uMckV4cFSK+z7WKuPlf+GlLUQNzL1ZTg1CY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.15 484/511] perf hists browser: Fix the number of entries for e key
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 184/219] drm/amdgpu: register a dirty framebuffer callback for fbcon
 Date:   Sun, 17 Sep 2023 21:15:11 +0200
-Message-ID: <20230917191125.425292314@linuxfoundation.org>
+Message-ID: <20230917191047.603461873@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,154 +52,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-commit f6b8436bede3e80226e8b2100279c4450c73806a upstream.
+commit 0a611560f53bfd489e33f4a718c915f1a6123d03 upstream.
 
-The 'e' key is to toggle expand/collapse the selected entry only.  But
-the current code has a bug that it only increases the number of entries
-by 1 in the hierarchy mode so users cannot move under the current entry
-after the key stroke.  This is due to a wrong assumption in the
-hist_entry__set_folding().
+fbcon requires that we implement &drm_framebuffer_funcs.dirty.
+Otherwise, the framebuffer might take a while to flush (which would
+manifest as noticeable lag). However, we can't enable this callback for
+non-fbcon cases since it may cause too many atomic commits to be made at
+once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
+framebuffers (we can use the "struct drm_file file" parameter in the
+callback to check for this since it is only NULL when called by fbcon,
+at least in the mainline kernel) on devices that support atomic KMS.
 
-The commit b33f922651011eff ("perf hists browser: Put hist_entry folding
-logic into single function") factored out the code, but actually it
-should be handled separately.  The hist_browser__set_folding() is to
-update fold state for each entry so it needs to traverse all (child)
-entries regardless of the current fold state.  So it increases the
-number of entries by 1.
-
-But the hist_entry__set_folding() only cares the currently selected
-entry and its all children.  So it should count all unfolded child
-entries.  This code is implemented in hist_browser__toggle_fold()
-already so we can just call it.
-
-Fixes: b33f922651011eff ("perf hists browser: Put hist_entry folding logic into single function")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230731094934.1616495-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org # 6.1+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browsers/hists.c |   58 ++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c |   26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_
- 	return container_of(ms, struct callchain_list, ms)->has_children;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -38,6 +38,8 @@
+ #include <linux/pci.h>
+ #include <linux/pm_runtime.h>
+ #include <drm/drm_crtc_helper.h>
++#include <drm/drm_damage_helper.h>
++#include <drm/drm_drv.h>
+ #include <drm/drm_edid.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_fb_helper.h>
+@@ -493,11 +495,29 @@ bool amdgpu_display_ddc_probe(struct amd
+ 	return true;
  }
  
--static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
--{
--	return browser->he_selection ? browser->he_selection->unfolded : false;
--}
--
- static bool hist_browser__selection_unfolded(struct hist_browser *browser)
- {
- 	struct hist_entry *he = browser->he_selection;
-@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct
- 	return n;
- }
- 
--static void __hist_entry__set_folding(struct hist_entry *he,
--				      struct hist_browser *hb, bool unfold)
-+static void hist_entry__set_folding(struct hist_entry *he,
-+				    struct hist_browser *hb, bool unfold)
- {
- 	hist_entry__init_have_children(he);
- 	he->unfolded = unfold ? he->has_children : false;
-@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(st
- 		he->nr_rows = 0;
- }
- 
--static void hist_entry__set_folding(struct hist_entry *he,
--				    struct hist_browser *browser, bool unfold)
--{
--	double percent;
--
--	percent = hist_entry__get_percent_limit(he);
--	if (he->filtered || percent < browser->min_pcnt)
--		return;
--
--	__hist_entry__set_folding(he, browser, unfold);
--
--	if (!he->depth || unfold)
--		browser->nr_hierarchy_entries++;
--	if (he->leaf)
--		browser->nr_callchain_rows += he->nr_rows;
--	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
--		browser->nr_hierarchy_entries++;
--		he->has_no_entry = true;
--		he->nr_rows = 1;
--	} else
--		he->has_no_entry = false;
--}
--
- static void
- __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
- {
- 	struct rb_node *nd;
- 	struct hist_entry *he;
-+	double percent;
- 
- 	nd = rb_first_cached(&browser->hists->entries);
- 	while (nd) {
-@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_
- 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
- 
- 		hist_entry__set_folding(he, browser, unfold);
++static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct drm_file *file,
++			  unsigned int flags, unsigned int color,
++			  struct drm_clip_rect *clips, unsigned int num_clips)
++{
 +
-+		percent = hist_entry__get_percent_limit(he);
-+		if (he->filtered || percent < browser->min_pcnt)
-+			continue;
++	if (file)
++		return -ENOSYS;
 +
-+		if (!he->depth || unfold)
-+			browser->nr_hierarchy_entries++;
-+		if (he->leaf)
-+			browser->nr_callchain_rows += he->nr_rows;
-+		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
-+			browser->nr_hierarchy_entries++;
-+			he->has_no_entry = true;
-+			he->nr_rows = 1;
-+		} else
-+			he->has_no_entry = false;
- 	}
- }
- 
-@@ -659,8 +647,10 @@ static void hist_browser__set_folding_se
- 	if (!browser->he_selection)
- 		return;
- 
--	hist_entry__set_folding(browser->he_selection, browser, unfold);
--	browser->b.nr_entries = hist_browser__nr_entries(browser);
-+	if (unfold == browser->he_selection->unfolded)
-+		return;
++	return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
++					 num_clips);
++}
 +
-+	hist_browser__toggle_fold(browser);
- }
+ static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
+ 	.destroy = drm_gem_fb_destroy,
+ 	.create_handle = drm_gem_fb_create_handle,
+ };
  
- static void ui_browser__warn_lost_events(struct ui_browser *browser)
-@@ -732,8 +722,8 @@ static int hist_browser__handle_hotkey(s
- 		hist_browser__set_folding(browser, true);
- 		break;
- 	case 'e':
--		/* Expand the selected entry. */
--		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
-+		/* Toggle expand/collapse the selected entry. */
-+		hist_browser__toggle_fold(browser);
- 		break;
- 	case 'H':
- 		browser->show_headers = !browser->show_headers;
++static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
++	.destroy = drm_gem_fb_destroy,
++	.create_handle = drm_gem_fb_create_handle,
++	.dirty = amdgpu_dirtyfb
++};
++
+ uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
+ 					  uint64_t bo_flags)
+ {
+@@ -1100,7 +1120,11 @@ static int amdgpu_display_gem_fb_verify_
+ 	if (ret)
+ 		goto err;
+ 
+-	ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
++	if (drm_drv_uses_atomic_modeset(dev))
++		ret = drm_framebuffer_init(dev, &rfb->base,
++					   &amdgpu_fb_funcs_atomic);
++	else
++		ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
+ 
+ 	if (ret)
+ 		goto err;
 
 
