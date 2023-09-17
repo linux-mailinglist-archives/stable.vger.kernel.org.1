@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E409C7A3C09
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF0B7A3BEF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239619AbjIQUZl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:25:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59518 "EHLO
+        id S240780AbjIQUYd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240925AbjIQUZf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:25:35 -0400
+        with ESMTP id S240857AbjIQUYF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:24:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3B510A
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:25:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6409C433C7;
-        Sun, 17 Sep 2023 20:25:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518FE10B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:24:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA50C433C8;
+        Sun, 17 Sep 2023 20:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982328;
-        bh=RtoZU1E/LlG33wwvvPiN51TYGiEQceaDSYbYwsVPgKE=;
+        s=korg; t=1694982240;
+        bh=wlgbcoC9w7KL3CY1ae5nit3CoQFYc5LqtnoWGrTz6Rc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ev2yNnbwb2Qo84t57KRcQ2kXB/K4TxOmAxM4yfrS7R9gmHZPQ9H5qvdp7335e5orZ
-         e6gCOgB9ymeDDV29rTYK4bNPJ2TYMAQ0b3SBro36vKyI5i+5r8e+FsF2eZajbo/xh6
-         OIODkcaiMJ6zE7KKh+ORaQGPCrTLCqFBKoT4feTg=
+        b=FCoOOpP4H70+VZhoIxuq7mQdX1B/N030r22/xExbRhiNl2XjvaN5S9559zwZpTSsH
+         5j3xYUOYrqa+Q0K1P+D208mOIOC4XiOntek25ApEZ57innplvLXRBeok+8Ci2WKnqf
+         pNcUunzqMgTpqPLvLUDmuLRTqFrtTu5vGoBs2zb0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Su Hui <suhui@nfschina.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Corey Minyard <minyard@acm.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/511] ALSA: ac97: Fix possible error value of *rac97
-Date:   Sun, 17 Sep 2023 21:10:19 +0200
-Message-ID: <20230917191118.458477967@linuxfoundation.org>
+Subject: [PATCH 5.15 193/511] ipmi:ssif: Add check for kstrdup
+Date:   Sun, 17 Sep 2023 21:10:20 +0200
+Message-ID: <20230917191118.481520022@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,50 +54,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 67de40c9df94037769967ba28c7d951afb45b7fb ]
+[ Upstream commit c5586d0f711e9744d0cade39b0c4a2d116a333ca ]
 
-Before committing 79597c8bf64c, *rac97 always be NULL if there is
-an error. When error happens, make sure *rac97 is NULL is safer.
+Add check for the return value of kstrdup() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-For examble, in snd_vortex_mixer():
-	err = snd_ac97_mixer(pbus, &ac97, &vortex->codec);
-	vortex->isquad = ((vortex->codec == NULL) ?
-		0 : (vortex->codec->ext_id&0x80));
-If error happened but vortex->codec isn't NULL, this may cause some
-problems.
-
-Move the judgement order to be clearer and better.
-
-Fixes: 79597c8bf64c ("ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20230823025212.1000961-1-suhui@nfschina.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c4436c9149c5 ("ipmi_ssif: avoid registering duplicate ssif interface")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Message-Id: <20230619092802.35384-1-jiasheng@iscas.ac.cn>
+Signed-off-by: Corey Minyard <minyard@acm.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/ac97/ac97_codec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
-index 58ae0c3ce1e49..b81b3c1f76499 100644
---- a/sound/pci/ac97/ac97_codec.c
-+++ b/sound/pci/ac97/ac97_codec.c
-@@ -2070,10 +2070,9 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
- 		.dev_disconnect =	snd_ac97_dev_disconnect,
- 	};
- 
--	if (!rac97)
--		return -EINVAL;
--	if (snd_BUG_ON(!bus || !template))
-+	if (snd_BUG_ON(!bus || !template || !rac97))
- 		return -EINVAL;
-+	*rac97 = NULL;
- 	if (snd_BUG_ON(template->num >= 4))
- 		return -EINVAL;
- 	if (bus->codec[template->num])
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index a3745fa643f3b..87aa12ab8c66f 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1614,6 +1614,11 @@ static int ssif_add_infos(struct i2c_client *client)
+ 	info->addr_src = SI_ACPI;
+ 	info->client = client;
+ 	info->adapter_name = kstrdup(client->adapter->name, GFP_KERNEL);
++	if (!info->adapter_name) {
++		kfree(info);
++		return -ENOMEM;
++	}
++
+ 	info->binfo.addr = client->addr;
+ 	list_add_tail(&info->link, &ssif_infos);
+ 	return 0;
 -- 
 2.40.1
 
