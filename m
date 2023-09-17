@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4C37A39D6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B61F7A38C1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240168AbjIQTzN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40832 "EHLO
+        id S239215AbjIQTkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:40:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240188AbjIQTyu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:50 -0400
+        with ESMTP id S239924AbjIQTjl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E3279F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A27AC433C7;
-        Sun, 17 Sep 2023 19:54:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEF6113E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96B4C433C9;
+        Sun, 17 Sep 2023 19:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980484;
-        bh=4subH2Gkn5jc7akX48FKXvWC2lyQJxi13NOtw5M2KXs=;
+        s=korg; t=1694979571;
+        bh=BycRv6mFuDyR6WUG1/qdtdgp3usBkVD+AEQcrBWx1uA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=covYjwqj7Ris9i+ahS6pAWa6alVRP4PuhrbAHkAKQ00kKs7YSC9uB0o/k++uqqfbX
-         vyCul9Z0obdSANyrRu57WsZz/iefjs1DxcZup1zq5XRiOy2qmDAo0p4FnPboNbJV0z
-         xRafJJOajLbZqRO8F7duKY5l4l9aodLt9DLP2d2M=
+        b=Xkcpkpp0y5ZftgcaDhOc4+Y70YLr0Q8ykJCO0ze0N9Rd3bI6lhcH/QqshrQkKVySC
+         gVSue+R21FEaRfh133PAb9s7XrDWQM+cyvJdKnaq2x0sUmLE8W5hEocdE4dZ/VgpRb
+         +r5nr9jVk+/kZSm4jvQ/xnIqSNnoD7gaToG29/Fo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 206/285] btrfs: set page extent mapped after read_folio in relocate_one_page
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 352/406] af_unix: Fix data-race around unix_tot_inflight.
 Date:   Sun, 17 Sep 2023 21:13:26 +0200
-Message-ID: <20230917191058.702058453@linuxfoundation.org>
+Message-ID: <20230917191110.566367080@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,104 +52,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit e7f1326cc24e22b38afc3acd328480a1183f9e79 upstream.
+[ Upstream commit ade32bd8a738d7497ffe9743c46728db26740f78 ]
 
-One of the CI runs triggered the following panic
+unix_tot_inflight is changed under spin_lock(unix_gc_lock), but
+unix_release_sock() reads it locklessly.
 
-  assertion failed: PagePrivate(page) && page->private, in fs/btrfs/subpage.c:229
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/subpage.c:229!
-  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-  CPU: 0 PID: 923660 Comm: btrfs Not tainted 6.5.0-rc3+ #1
-  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-  pc : btrfs_subpage_assert+0xbc/0xf0
-  lr : btrfs_subpage_assert+0xbc/0xf0
-  sp : ffff800093213720
-  x29: ffff800093213720 x28: ffff8000932138b4 x27: 000000000c280000
-  x26: 00000001b5d00000 x25: 000000000c281000 x24: 000000000c281fff
-  x23: 0000000000001000 x22: 0000000000000000 x21: ffffff42b95bf880
-  x20: ffff42b9528e0000 x19: 0000000000001000 x18: ffffffffffffffff
-  x17: 667274622f736620 x16: 6e69202c65746176 x15: 0000000000000028
-  x14: 0000000000000003 x13: 00000000002672d7 x12: 0000000000000000
-  x11: ffffcd3f0ccd9204 x10: ffffcd3f0554ae50 x9 : ffffcd3f0379528c
-  x8 : ffff800093213428 x7 : 0000000000000000 x6 : ffffcd3f091771e8
-  x5 : ffff42b97f333948 x4 : 0000000000000000 x3 : 0000000000000000
-  x2 : 0000000000000000 x1 : ffff42b9556cde80 x0 : 000000000000004f
-  Call trace:
-   btrfs_subpage_assert+0xbc/0xf0
-   btrfs_subpage_set_dirty+0x38/0xa0
-   btrfs_page_set_dirty+0x58/0x88
-   relocate_one_page+0x204/0x5f0
-   relocate_file_extent_cluster+0x11c/0x180
-   relocate_data_extent+0xd0/0xf8
-   relocate_block_group+0x3d0/0x4e8
-   btrfs_relocate_block_group+0x2d8/0x490
-   btrfs_relocate_chunk+0x54/0x1a8
-   btrfs_balance+0x7f4/0x1150
-   btrfs_ioctl+0x10f0/0x20b8
-   __arm64_sys_ioctl+0x120/0x11d8
-   invoke_syscall.constprop.0+0x80/0xd8
-   do_el0_svc+0x6c/0x158
-   el0_svc+0x50/0x1b0
-   el0t_64_sync_handler+0x120/0x130
-   el0t_64_sync+0x194/0x198
-  Code: 91098021 b0007fa0 91346000 97e9c6d2 (d4210000)
+Let's use READ_ONCE() for unix_tot_inflight.
 
-This is the same problem outlined in 17b17fcd6d44 ("btrfs:
-set_page_extent_mapped after read_folio in btrfs_cont_expand") , and the
-fix is the same.  I originally looked for the same pattern elsewhere in
-our code, but mistakenly skipped over this code because I saw the page
-cache readahead before we set_page_extent_mapped, not realizing that
-this was only in the !page case, that we can still end up with a
-!uptodate page and then do the btrfs_read_folio further down.
+Note that the writer side was marked by commit 9d6d7f1cb67c ("af_unix:
+annote lockless accesses to unix_tot_inflight & gc_in_progress")
 
-The fix here is the same as the above mentioned patch, move the
-set_page_extent_mapped call to after the btrfs_read_folio() block to
-make sure that we have the subpage blocksize stuff setup properly before
-using the page.
+BUG: KCSAN: data-race in unix_inflight / unix_release_sock
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+write (marked) to 0xffffffff871852b8 of 4 bytes by task 123 on cpu 1:
+ unix_inflight+0x130/0x180 net/unix/scm.c:64
+ unix_attach_fds+0x137/0x1b0 net/unix/scm.c:123
+ unix_scm_to_skb net/unix/af_unix.c:1832 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1955
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:747
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2493
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2547
+ __sys_sendmsg+0x94/0x140 net/socket.c:2576
+ __do_sys_sendmsg net/socket.c:2585 [inline]
+ __se_sys_sendmsg net/socket.c:2583 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2583
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+read to 0xffffffff871852b8 of 4 bytes by task 4891 on cpu 0:
+ unix_release_sock+0x608/0x910 net/unix/af_unix.c:671
+ unix_release+0x59/0x80 net/unix/af_unix.c:1058
+ __sock_release+0x7d/0x170 net/socket.c:653
+ sock_close+0x19/0x30 net/socket.c:1385
+ __fput+0x179/0x5e0 fs/file_table.c:321
+ ____fput+0x15/0x20 fs/file_table.c:349
+ task_work_run+0x116/0x1a0 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
+ do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+value changed: 0x00000000 -> 0x00000001
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 4891 Comm: systemd-coredum Not tainted 6.4.0-rc5-01219-gfa0e21fa4443 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 9305cfa4443d ("[AF_UNIX]: Make unix_tot_inflight counter non-atomic")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -3006,9 +3006,6 @@ static int relocate_one_page(struct inod
- 		if (!page)
- 			return -ENOMEM;
- 	}
--	ret = set_page_extent_mapped(page);
--	if (ret < 0)
--		goto release_page;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 8d941cbba5cb7..237488b1b58b6 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -587,7 +587,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 	 *	  What the above comment does talk about? --ANK(980817)
+ 	 */
  
- 	if (PageReadahead(page))
- 		page_cache_async_readahead(inode->i_mapping, ra, NULL,
-@@ -3024,6 +3021,15 @@ static int relocate_one_page(struct inod
- 		}
- 	}
+-	if (unix_tot_inflight)
++	if (READ_ONCE(unix_tot_inflight))
+ 		unix_gc();		/* Garbage collect fds */
+ }
  
-+	/*
-+	 * We could have lost page private when we dropped the lock to read the
-+	 * page above, make sure we set_page_extent_mapped here so we have any
-+	 * of the subpage blocksize stuff we need in place.
-+	 */
-+	ret = set_page_extent_mapped(page);
-+	if (ret < 0)
-+		goto release_page;
-+
- 	page_start = page_offset(page);
- 	page_end = page_start + PAGE_SIZE - 1;
- 
+-- 
+2.40.1
+
 
 
