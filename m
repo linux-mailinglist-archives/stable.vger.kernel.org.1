@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA217A384E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB3087A3951
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239531AbjIQTeX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:34:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40614 "EHLO
+        id S240027AbjIQTrp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239710AbjIQTdy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:54 -0400
+        with ESMTP id S240033AbjIQTrX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF1BD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D06FC433CC;
-        Sun, 17 Sep 2023 19:33:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBD1103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB3C433C9;
+        Sun, 17 Sep 2023 19:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979228;
-        bh=WPcJe60uoYDrB3oFc/0GDfwwebFx0LiukOTOENe2HfU=;
+        s=korg; t=1694980036;
+        bh=P05KiN+n5wotkSJPiE3/G3Ak/kue4sz0UKdaGNQ0YIw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tflfzm4pSEsfd0vZ5XnUcRzMx4+efS8QrZ5k179tTmSFCHqic0PKIBeaBmmIAAzJg
-         tiCEeiDfaxetkxjw7g/YXZgXc7s6NHYFxEfxs8rBiLIDg/GxoUngZek5XBcKodqGMw
-         ELESXPZnnIFc0XmHZ4Z4jjhZaXpkPJ9aSpQN0lF4=
+        b=FJ+P4Td+q9GOLcGRJfsA+0ZkqBtD4sgi1TdMS8YzierbM7qn0M5Fxza5T1wvk6BPJ
+         CPHl8yxZf+13gUbKErRe4wV+xOB1GSLUUI7JQO0ny9vECyJzySoxX8BX5j3BUt5C4k
+         Bupxg0W65TMVldLmD5wYJTX7Mfg4S+4iIcx/23FM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Kosina <jikos@kernel.org>, x86@kernel.org,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 225/406] x86/APM: drop the duplicate APM_MINOR_DEV macro
+Subject: [PATCH 6.5 079/285] x86/virt: Drop unnecessary check on extended CPUID level in cpu_has_svm()
 Date:   Sun, 17 Sep 2023 21:11:19 +0200
-Message-ID: <20230917191107.117447755@linuxfoundation.org>
+Message-ID: <20230917191054.447364165@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +49,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 4ba2909638a29630a346d6c4907a3105409bee7d ]
+[ Upstream commit 5df8ecfe3632d5879d1f154f7aa8de441b5d1c89 ]
 
-This source file already includes <linux/miscdevice.h>, which contains
-the same macro. It doesn't need to be defined here again.
+Drop the explicit check on the extended CPUID level in cpu_has_svm(), the
+kernel's cached CPUID info will leave the entire SVM leaf unset if said
+leaf is not supported by hardware.  Prior to using cached information,
+the check was needed to avoid false positives due to Intel's rather crazy
+CPUID behavior of returning the values of the maximum supported leaf if
+the specified leaf is unsupported.
 
-Fixes: 874bcd00f520 ("apm-emulation: move APM_MINOR_DEV to include/linux/miscdevice.h")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: x86@kernel.org
-Cc: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/r/20230728011120.759-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 682a8108872f ("x86/kvm/svm: Simplify cpu_has_svm()")
+Link: https://lore.kernel.org/r/20230721201859.2307736-13-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apm_32.c | 6 ------
+ arch/x86/include/asm/virtext.h | 6 ------
  1 file changed, 6 deletions(-)
 
-diff --git a/arch/x86/kernel/apm_32.c b/arch/x86/kernel/apm_32.c
-index 660270359d393..166d9991e7111 100644
---- a/arch/x86/kernel/apm_32.c
-+++ b/arch/x86/kernel/apm_32.c
-@@ -237,12 +237,6 @@
- extern int (*console_blank_hook)(int);
- #endif
+diff --git a/arch/x86/include/asm/virtext.h b/arch/x86/include/asm/virtext.h
+index 3b12e6b994123..6c2e3ff3cb28f 100644
+--- a/arch/x86/include/asm/virtext.h
++++ b/arch/x86/include/asm/virtext.h
+@@ -101,12 +101,6 @@ static inline int cpu_has_svm(const char **msg)
+ 		return 0;
+ 	}
  
--/*
-- * The apm_bios device is one of the misc char devices.
-- * This is its minor number.
-- */
--#define	APM_MINOR_DEV	134
+-	if (boot_cpu_data.extended_cpuid_level < SVM_CPUID_FUNC) {
+-		if (msg)
+-			*msg = "can't execute cpuid_8000000a";
+-		return 0;
+-	}
 -
- /*
-  * Various options can be changed at boot time as follows:
-  * (We allow underscores for compatibility with the modules code)
+ 	if (!boot_cpu_has(X86_FEATURE_SVM)) {
+ 		if (msg)
+ 			*msg = "svm not available";
 -- 
 2.40.1
 
