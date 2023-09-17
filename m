@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1933D7A37B1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A9047A37B4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:24:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239495AbjIQTXr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:23:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55802 "EHLO
+        id S232943AbjIQTYO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239538AbjIQTXk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:23:40 -0400
+        with ESMTP id S239543AbjIQTXm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:23:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DDF118
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:23:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3309DC433C7;
-        Sun, 17 Sep 2023 19:23:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83FB9D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:23:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F54C433C7;
+        Sun, 17 Sep 2023 19:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978613;
-        bh=eOMiWgP5zF1XSiJCHa6sk/eeOd8r44tLjlr+X3ecFww=;
+        s=korg; t=1694978617;
+        bh=tT6hcY/P9FvXOH6QsQOtneTbudLAKI29/Nm2XuJk0yQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xd8V01Bzv6Ul3iFKGsbUqW2A8f9JVlDV3wy8jRBJjT+FJ9VF8NQeCTDJHTrsEC/P7
-         EdG97svTWlGbTAKBaM0QDeCDJlJboav6kdWwuRnruYrc8wCJlc9phdt8xODkZIWf02
-         mfkgZkDjMwG4wKzz5KaenkaTG7iuwnmpFTiJQLdk=
+        b=kR6ScxQM9yp2a1ghi7FkRiVs7wyGqp4Q2WMDsV4oIRbd4yzx3nFq9+C9rDYI6CUBJ
+         hVxYA4OomstSJppfWXCMKZQ1wTG2KrS6r7RHmvyDJpVtXO9JGpY93R3eUhoczw+0LY
+         l9zwOXHBXrtqr+mhWVHAAdTtPB0eNLBzbGjTWZdc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikel Rychliski <mikel@mikelr.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/406] x86/efistub: Fix PCI ROM preservation in mixed mode
-Date:   Sun, 17 Sep 2023 21:08:54 +0200
-Message-ID: <20230917191103.243547117@linuxfoundation.org>
+Subject: [PATCH 5.10 081/406] cpufreq: powernow-k8: Use related_cpus instead of cpus in driver.exit()
+Date:   Sun, 17 Sep 2023 21:08:55 +0200
+Message-ID: <20230917191103.271267500@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,36 +54,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Mikel Rychliski <mikel@mikelr.com>
+From: Liao Chang <liaochang1@huawei.com>
 
-[ Upstream commit 8b94da92559f7e403dc7ab81937cc50f949ee2fd ]
+[ Upstream commit 03997da042dac73c69e60d91942c727c76828b65 ]
 
-preserve_pci_rom_image() was accessing the romsize field in
-efi_pci_io_protocol_t directly instead of using the efi_table_attr()
-helper. This prevents the ROM image from being saved correctly during a
-mixed mode boot.
+Since the 'cpus' field of policy structure will become empty in the
+cpufreq core API, it is better to use 'related_cpus' in the exit()
+callback of driver.
 
-Fixes: 2c3625cb9fa2 ("efi/x86: Fold __setup_efi_pci32() and __setup_efi_pci64() into one function")
-Signed-off-by: Mikel Rychliski <mikel@mikelr.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: c3274763bfc3 ("cpufreq: powernow-k8: Initialize per-cpu data-structures properly")
+Signed-off-by: Liao Chang <liaochang1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/powernow-k8.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 5d0f1b1966fc6..9f998e6bff957 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -60,7 +60,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
- 	rom->data.type	= SETUP_PCI;
- 	rom->data.len	= size - sizeof(struct setup_data);
- 	rom->data.next	= 0;
--	rom->pcilen	= pci->romsize;
-+	rom->pcilen	= romsize;
- 	*__rom = rom;
+diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
+index b9ccb6a3dad98..22d4c639d71db 100644
+--- a/drivers/cpufreq/powernow-k8.c
++++ b/drivers/cpufreq/powernow-k8.c
+@@ -1101,7 +1101,8 @@ static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
  
- 	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
+ 	kfree(data->powernow_table);
+ 	kfree(data);
+-	for_each_cpu(cpu, pol->cpus)
++	/* pol->cpus will be empty here, use related_cpus instead. */
++	for_each_cpu(cpu, pol->related_cpus)
+ 		per_cpu(powernow_data, cpu) = NULL;
+ 
+ 	return 0;
 -- 
 2.40.1
 
