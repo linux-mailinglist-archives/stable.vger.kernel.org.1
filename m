@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9147A3984
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F517A3866
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240075AbjIQTu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48428 "EHLO
+        id S238870AbjIQTf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240122AbjIQTuR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:17 -0400
+        with ESMTP id S239763AbjIQTfC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2A2C6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E5EC433C8;
-        Sun, 17 Sep 2023 19:50:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2BD187
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9D5C433CA;
+        Sun, 17 Sep 2023 19:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980212;
-        bh=WIrxuUFB3E5sxeyiqb+dAE8dMIS1mvxSddUnuOxb5nQ=;
+        s=korg; t=1694979294;
+        bh=oYBs3yF9q0z4kIXw+TtxtQtXGeDHKJQ1GNvp+WXAXLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gZN+8rotW26HFvNI84mBDrK6b+Y9Mzr+NPmpFtLcGMYnSN+kv0WOUzsw6qLh/3sRR
-         XSHflepdeN/P+l4oG0LLzC5Mb2M54vAsP9MDmG2Ze1Mk16bywMRWlZVPV5kYcQ2Z4J
-         +C1IuFqsg2tfiolAEq5mchzXyxjjpU1XUduHOYyo=
+        b=TvgJlXnxY5ti0rR23zcJD/fpUUdde7nerILeLWw0S6codDErH+/7GxZQl3o0HhDT5
+         GaJtX2KPTGlykIHc7ekxD4I1xePlA8iZHxQ9a0AnUWKS7Q6cE9aphmktSiEWeMOJ0+
+         0Xi6jqVHz/aheLJI5KrUex3NxF0xf94j8vWGzJtA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 124/285] ipv4: ignore dst hint for multipath routes
+        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 270/406] netfilter: xt_u32: validate user space input
 Date:   Sun, 17 Sep 2023 21:12:04 +0200
-Message-ID: <20230917191055.954859680@linuxfoundation.org>
+Message-ID: <20230917191108.376558739@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +49,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 6ac66cb03ae306c2e288a9be18226310529f5b25 ]
+commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
 
-Route hints when the nexthop is part of a multipath group causes packets
-in the same receive batch to be sent to the same nexthop irrespective of
-the multipath hash of the packet. So, do not extract route hint for
-packets whose destination is part of a multipath group.
+The xt_u32 module doesn't validate the fields in the xt_u32 structure.
+An attacker may take advantage of this to trigger an OOB read by setting
+the size fields with a value beyond the arrays boundaries.
 
-A new SKB flag IPSKB_MULTIPATH is introduced for this purpose, set the
-flag when route is looked up in ip_mkroute_input() and use it in
-ip_extract_route_hint() to check for the existence of the flag.
+Add a checkentry function to validate the structure.
 
-Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
-Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was originally reported by the ZDI project (ZDI-CAN-18408).
+
+Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip.h    | 1 +
- net/ipv4/ip_input.c | 3 ++-
- net/ipv4/route.c    | 1 +
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 9276cea775cc2..3489a1cca5e7b 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -57,6 +57,7 @@ struct inet_skb_parm {
- #define IPSKB_FRAG_PMTU		BIT(6)
- #define IPSKB_L3SLAVE		BIT(7)
- #define IPSKB_NOPOLICY		BIT(8)
-+#define IPSKB_MULTIPATH		BIT(9)
+--- a/net/netfilter/xt_u32.c
++++ b/net/netfilter/xt_u32.c
+@@ -96,11 +96,32 @@ static bool u32_mt(const struct sk_buff
+ 	return ret ^ data->invert;
+ }
  
- 	u16			frag_max_size;
++static int u32_mt_checkentry(const struct xt_mtchk_param *par)
++{
++	const struct xt_u32 *data = par->matchinfo;
++	const struct xt_u32_test *ct;
++	unsigned int i;
++
++	if (data->ntests > ARRAY_SIZE(data->tests))
++		return -EINVAL;
++
++	for (i = 0; i < data->ntests; ++i) {
++		ct = &data->tests[i];
++
++		if (ct->nnums > ARRAY_SIZE(ct->location) ||
++		    ct->nvalues > ARRAY_SIZE(ct->value))
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static struct xt_match xt_u32_mt_reg __read_mostly = {
+ 	.name       = "u32",
+ 	.revision   = 0,
+ 	.family     = NFPROTO_UNSPEC,
+ 	.match      = u32_mt,
++	.checkentry = u32_mt_checkentry,
+ 	.matchsize  = sizeof(struct xt_u32),
+ 	.me         = THIS_MODULE,
  };
-diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-index fe9ead9ee863d..5e9c8156656a7 100644
---- a/net/ipv4/ip_input.c
-+++ b/net/ipv4/ip_input.c
-@@ -584,7 +584,8 @@ static void ip_sublist_rcv_finish(struct list_head *head)
- static struct sk_buff *ip_extract_route_hint(const struct net *net,
- 					     struct sk_buff *skb, int rt_type)
- {
--	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST)
-+	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
-+	    IPCB(skb)->flags & IPSKB_MULTIPATH)
- 		return NULL;
- 
- 	return skb;
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 92fede388d520..33626619aee79 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2144,6 +2144,7 @@ static int ip_mkroute_input(struct sk_buff *skb,
- 		int h = fib_multipath_hash(res->fi->fib_net, NULL, skb, hkeys);
- 
- 		fib_select_multipath(res, h);
-+		IPCB(skb)->flags |= IPSKB_MULTIPATH;
- 	}
- #endif
- 
--- 
-2.40.1
-
 
 
