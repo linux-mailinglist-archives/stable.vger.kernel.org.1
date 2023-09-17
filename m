@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38E0C7A38D0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6BEF7A39F9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239415AbjIQTkt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35852 "EHLO
+        id S240219AbjIQT4u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239874AbjIQTk0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:26 -0400
+        with ESMTP id S240267AbjIQT4e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCF4D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A2EC433CD;
-        Sun, 17 Sep 2023 19:40:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE9C812F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE60C433C8;
+        Sun, 17 Sep 2023 19:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979620;
-        bh=f+w3APbWLUsGeJKcPOHvNBGRYpqIkB71ux9dbsnnfvY=;
+        s=korg; t=1694980587;
+        bh=W0oEmUM3Eg/m4RcBuAghDz29QYQX6m4FsadyLS08IaE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gfUosRBX9Mxb+2SZhg6rPgmLEDLLgUc5kKObJUWxCGqbGcoRDinzan7px/5FNeHQm
-         YMYuPn+s2vVqwpKpO/hCDUqW/YEPWUaTVMgPAx0URv+mNV/OzMWuzuSO66d//KnXz4
-         a3hcZtshSSjN+AnCCQuv3vt6Sj490zNuBO6P2KOA=
+        b=x4Meb2mqkEeg4n+jr2m6cBkg1kG6FszHOXnbYe8MmhmlbAI8/AOxPlrQ31xTbB1o9
+         XFdsHxSajD8cfzWhbHL9+uubpm8IiYOSn5Dbcu6u4Aa6VDl47XRLrzxgsUC2Cn5UnV
+         BdX5ttG8yFO+W5JXeQrBS4oTR7oBZP5RGTc6cbL4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+e46fbd5289363464bc13@syzkaller.appspotmail.com,
-        Eric Dumazet <edumazet@google.com>,
-        Michal Kubiak <michal.kubiak@intel.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 341/406] net/sched: fq_pie: avoid stalls in fq_pie_timer()
+        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 195/285] hwspinlock: qcom: add missing regmap config for SFPB MMIO implementation
 Date:   Sun, 17 Sep 2023 21:13:15 +0200
-Message-ID: <20230917191110.284806145@linuxfoundation.org>
+Message-ID: <20230917191058.341427456@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,119 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 8c21ab1bae945686c602c5bfa4e3f3352c2452c5 ]
+commit 23316be8a9d450f33a21f1efe7d89570becbec58 upstream.
 
-When setting a high number of flows (limit being 65536),
-fq_pie_timer() is currently using too much time as syzbot reported.
+Commit 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older
+SoCs") introduced and made regmap_config mandatory in the of_data struct
+but didn't add the regmap_config for sfpb based devices.
 
-Add logic to yield the cpu every 2048 flows (less than 150 usec
-on debug kernels).
-It should also help by not blocking qdisc fast paths for too long.
-Worst case (65536 flows) would need 31 jiffies for a complete scan.
+SFPB based devices can both use the legacy syscon way to probe or the
+new MMIO way and currently device that use the MMIO way are broken as
+they lack the definition of the now required regmap_config and always
+return -EINVAL (and indirectly makes fail probing everything that
+depends on it, smem, nandc with smem-parser...)
 
-Relevant extract from syzbot report:
+Fix this by correctly adding the missing regmap_config and restore
+function of hwspinlock on SFPB based devices with MMIO implementation.
 
-rcu: INFO: rcu_preempt detected expedited stalls on CPUs/tasks: { 0-.... } 2663 jiffies s: 873 root: 0x1/.
-rcu: blocking rcu_node structures (internal RCU debug):
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 PID: 5177 Comm: syz-executor273 Not tainted 6.5.0-syzkaller-00453-g727dbda16b83 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-RIP: 0010:check_kcov_mode kernel/kcov.c:173 [inline]
-RIP: 0010:write_comp_data+0x21/0x90 kernel/kcov.c:236
-Code: 2e 0f 1f 84 00 00 00 00 00 65 8b 05 01 b2 7d 7e 49 89 f1 89 c6 49 89 d2 81 e6 00 01 00 00 49 89 f8 65 48 8b 14 25 80 b9 03 00 <a9> 00 01 ff 00 74 0e 85 f6 74 59 8b 82 04 16 00 00 85 c0 74 4f 8b
-RSP: 0018:ffffc90000007bb8 EFLAGS: 00000206
-RAX: 0000000000000101 RBX: ffffc9000dc0d140 RCX: ffffffff885893b0
-RDX: ffff88807c075940 RSI: 0000000000000100 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffc9000dc0d178
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000555555d54380(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6b442f6130 CR3: 000000006fe1c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <IRQ>
- pie_calculate_probability+0x480/0x850 net/sched/sch_pie.c:415
- fq_pie_timer+0x1da/0x4f0 net/sched/sch_fq_pie.c:387
- call_timer_fn+0x1a0/0x580 kernel/time/timer.c:1700
-
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Link: https://lore.kernel.org/lkml/00000000000017ad3f06040bf394@google.com/
-Reported-by: syzbot+e46fbd5289363464bc13@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230829123541.3745013-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older SoCs")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Link: https://lore.kernel.org/r/20230716022804.21239-1-ansuelsmth@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_fq_pie.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/hwspinlock/qcom_hwspinlock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 4f6b5b6fba3ed..a5b63158f081c 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -61,6 +61,7 @@ struct fq_pie_sched_data {
- 	struct pie_params p_params;
- 	u32 ecn_prob;
- 	u32 flows_cnt;
-+	u32 flows_cursor;
- 	u32 quantum;
- 	u32 memory_limit;
- 	u32 new_flow_count;
-@@ -378,21 +379,31 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
- static void fq_pie_timer(struct timer_list *t)
- {
- 	struct fq_pie_sched_data *q = from_timer(q, t, adapt_timer);
-+	unsigned long next, tupdate;
- 	struct Qdisc *sch = q->sch;
- 	spinlock_t *root_lock; /* to lock qdisc for probability calculations */
--	u32 idx;
-+	int max_cnt, i;
+--- a/drivers/hwspinlock/qcom_hwspinlock.c
++++ b/drivers/hwspinlock/qcom_hwspinlock.c
+@@ -69,9 +69,18 @@ static const struct hwspinlock_ops qcom_
+ 	.unlock		= qcom_hwspinlock_unlock,
+ };
  
- 	root_lock = qdisc_lock(qdisc_root_sleeping(sch));
- 	spin_lock(root_lock);
++static const struct regmap_config sfpb_mutex_config = {
++	.reg_bits		= 32,
++	.reg_stride		= 4,
++	.val_bits		= 32,
++	.max_register		= 0x100,
++	.fast_io		= true,
++};
++
+ static const struct qcom_hwspinlock_of_data of_sfpb_mutex = {
+ 	.offset = 0x4,
+ 	.stride = 0x4,
++	.regmap_config = &sfpb_mutex_config,
+ };
  
--	for (idx = 0; idx < q->flows_cnt; idx++)
--		pie_calculate_probability(&q->p_params, &q->flows[idx].vars,
--					  q->flows[idx].backlog);
--
--	/* reset the timer to fire after 'tupdate' jiffies. */
--	if (q->p_params.tupdate)
--		mod_timer(&q->adapt_timer, jiffies + q->p_params.tupdate);
-+	/* Limit this expensive loop to 2048 flows per round. */
-+	max_cnt = min_t(int, q->flows_cnt - q->flows_cursor, 2048);
-+	for (i = 0; i < max_cnt; i++) {
-+		pie_calculate_probability(&q->p_params,
-+					  &q->flows[q->flows_cursor].vars,
-+					  q->flows[q->flows_cursor].backlog);
-+		q->flows_cursor++;
-+	}
- 
-+	tupdate = q->p_params.tupdate;
-+	next = 0;
-+	if (q->flows_cursor >= q->flows_cnt) {
-+		q->flows_cursor = 0;
-+		next = tupdate;
-+	}
-+	if (tupdate)
-+		mod_timer(&q->adapt_timer, jiffies + next);
- 	spin_unlock(root_lock);
- }
- 
--- 
-2.40.1
-
+ static const struct regmap_config tcsr_msm8226_mutex_config = {
 
 
