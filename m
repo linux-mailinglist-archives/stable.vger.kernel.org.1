@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82A3C7A395A
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26ED47A383E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239465AbjIQTsS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:48:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
+        id S239689AbjIQTdW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240076AbjIQTr5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:57 -0400
+        with ESMTP id S239763AbjIQTc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A406C6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E26C433C8;
-        Sun, 17 Sep 2023 19:47:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D1711C
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76538C433CA;
+        Sun, 17 Sep 2023 19:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980071;
-        bh=CAGdkPGWsMEpYXlokznD6ISLGy/gfriiqr63WthGK5k=;
+        s=korg; t=1694979166;
+        bh=eNBTk6/WFkU19ynWNAFQKCtUuka8DgTBJyhhnXzIJz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YSWLEe2zvqoGH0pKA1SpE2R80/LJbplgUkylyhv+ymJWzVtcxOGiU3ji9luIwkD1/
-         jKNHmtYFqNIjpOwRm2eFlszsTloyrR4sB3xpSszC7P7JoAKGPI1odU4Rj6tS67f0DA
-         5gs6O68kOolGMMwuHChhBRkg9Ppqe3mlSIAzBNI0=
+        b=EIVtSjXaKejkisiltiezc0dd6eb0Xyem4pH7BKTlVL3aj+iRpyRMjhXcZ1b3BmUMx
+         eoQlcC5tSDqQpccvdfoha2WPN+pZJci+1ylb6ovbtIvF4ySE2pm/JPihqaX/Og8VWQ
+         +Cm5pVOqzSI4QBEanJ6ZItGys/bkJcI9xTLU7h6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kajol Jain <kjain@linux.ibm.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 088/285] perf vendor events: Update metric event names for power10 platform
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 234/406] iommu/qcom: Disable and reset context bank before programming
 Date:   Sun, 17 Sep 2023 21:11:28 +0200
-Message-ID: <20230917191054.752496408@linuxfoundation.org>
+Message-ID: <20230917191107.346797313@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,218 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit edd65d2bc55fb84d7b80c2ffe3b74d9b11ac4e2f ]
+[ Upstream commit 9f3fef23d9b5a858a6e6d5f478bb1b6b76265e76 ]
 
-Update metric event name for some of the JSON/metric events for
-power10 platform.
+Writing	the new	TTBRs, TCRs and MAIRs on a previously enabled
+context bank may trigger a context fault, resulting in firmware
+driven AP resets: change the domain initialization programming
+sequence to disable the context bank(s) and to also clear the
+related fault address (CB_FAR) and fault status (CB_FSR)
+registers before writing new values to TTBR0/1, TCR/TCR2, MAIR0/1.
 
-Fixes: 3ca3af7d1f230d1f ("perf vendor events power10: Add metric events JSON file for power10 platform")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230814112803.1508296-6-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230622092742.74819-4-angelogioacchino.delregno@collabora.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/powerpc/power10/metrics.json         | 50 +++++++++----------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-index e3087eb1ccff8..182369076d956 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-@@ -16,133 +16,133 @@
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled for any reason",
-         "MetricExpr": "PM_DISP_STALL_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI;CPI_STALL_RATIO",
--        "MetricName": "DISPATCHED_CPI"
-+        "MetricName": "DISPATCH_STALL_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled because there was a flush",
-         "MetricExpr": "PM_DISP_STALL_FLUSH / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_FLUSH_CPI"
-+        "MetricName": "DISPATCH_STALL_FLUSH_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled because the MMU was handling a translation miss",
-         "MetricExpr": "PM_DISP_STALL_TRANSLATION / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_TRANSLATION_CPI"
-+        "MetricName": "DISPATCH_STALL_TRANSLATION_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled waiting to resolve an instruction ERAT miss",
-         "MetricExpr": "PM_DISP_STALL_IERAT_ONLY_MISS / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_IERAT_ONLY_MISS_CPI"
-+        "MetricName": "DISPATCH_STALL_IERAT_ONLY_MISS_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled waiting to resolve an instruction TLB miss",
-         "MetricExpr": "PM_DISP_STALL_ITLB_MISS / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_ITLB_MISS_CPI"
-+        "MetricName": "DISPATCH_STALL_ITLB_MISS_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled due to an icache miss",
-         "MetricExpr": "PM_DISP_STALL_IC_MISS / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_IC_MISS_CPI"
-+        "MetricName": "DISPATCH_STALL_IC_MISS_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled while the instruction was fetched from the local L2",
-         "MetricExpr": "PM_DISP_STALL_IC_L2 / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_IC_L2_CPI"
-+        "MetricName": "DISPATCH_STALL_IC_L2_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled while the instruction was fetched from the local L3",
-         "MetricExpr": "PM_DISP_STALL_IC_L3 / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_IC_L3_CPI"
-+        "MetricName": "DISPATCH_STALL_IC_L3_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled while the instruction was fetched from any source beyond the local L3",
-         "MetricExpr": "PM_DISP_STALL_IC_L3MISS / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_IC_L3MISS_CPI"
-+        "MetricName": "DISPATCH_STALL_IC_L3MISS_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled due to an icache miss after a branch mispredict",
-         "MetricExpr": "PM_DISP_STALL_BR_MPRED_ICMISS / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_BR_MPRED_ICMISS_CPI"
-+        "MetricName": "DISPATCH_STALL_BR_MPRED_ICMISS_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled while instruction was fetched from the local L2 after suffering a branch mispredict",
-         "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L2 / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_BR_MPRED_IC_L2_CPI"
-+        "MetricName": "DISPATCH_STALL_BR_MPRED_IC_L2_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled while instruction was fetched from the local L3 after suffering a branch mispredict",
-         "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L3 / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_BR_MPRED_IC_L3_CPI"
-+        "MetricName": "DISPATCH_STALL_BR_MPRED_IC_L3_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled while instruction was fetched from any source beyond the local L3 after suffering a branch mispredict",
-         "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L3MISS / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_BR_MPRED_IC_L3MISS_CPI"
-+        "MetricName": "DISPATCH_STALL_BR_MPRED_IC_L3MISS_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled due to a branch mispredict",
-         "MetricExpr": "PM_DISP_STALL_BR_MPRED / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_BR_MPRED_CPI"
-+        "MetricName": "DISPATCH_STALL_BR_MPRED_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch for any reason",
-         "MetricExpr": "PM_DISP_STALL_HELD_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_HELD_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch because of a synchronizing instruction that requires the ICT to be empty before dispatch",
-         "MetricExpr": "PM_DISP_STALL_HELD_SYNC_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISP_HELD_STALL_SYNC_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_SYNC_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch while waiting on the scoreboard",
-         "MetricExpr": "PM_DISP_STALL_HELD_SCOREBOARD_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISP_HELD_STALL_SCOREBOARD_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_SCOREBOARD_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch due to issue queue full",
-         "MetricExpr": "PM_DISP_STALL_HELD_ISSQ_FULL_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISP_HELD_STALL_ISSQ_FULL_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_ISSQ_FULL_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch because the mapper/SRB was full",
-         "MetricExpr": "PM_DISP_STALL_HELD_RENAME_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_HELD_RENAME_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_RENAME_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch because the STF mapper/SRB was full",
-         "MetricExpr": "PM_DISP_STALL_HELD_STF_MAPPER_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_HELD_STF_MAPPER_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_STF_MAPPER_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch because the XVFC mapper/SRB was full",
-         "MetricExpr": "PM_DISP_STALL_HELD_XVFC_MAPPER_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_HELD_XVFC_MAPPER_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_XVFC_MAPPER_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch for any other reason",
-         "MetricExpr": "PM_DISP_STALL_HELD_OTHER_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_HELD_OTHER_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_OTHER_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction has been dispatched but not issued for any reason",
-@@ -352,13 +352,13 @@
-         "BriefDescription": "Average cycles per completed instruction when dispatch was stalled because fetch was being held, so there was nothing in the pipeline for this thread",
-         "MetricExpr": "PM_DISP_STALL_FETCH / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_FETCH_CPI"
-+        "MetricName": "DISPATCH_STALL_FETCH_CPI"
-     },
-     {
-         "BriefDescription": "Average cycles per completed instruction when the NTC instruction was held at dispatch because of power management",
-         "MetricExpr": "PM_DISP_STALL_HELD_HALT_CYC / PM_RUN_INST_CMPL",
-         "MetricGroup": "CPI",
--        "MetricName": "DISPATCHED_HELD_HALT_CPI"
-+        "MetricName": "DISPATCH_STALL_HELD_HALT_CPI"
-     },
-     {
-         "BriefDescription": "Percentage of flushes per completed instruction",
-@@ -560,7 +560,7 @@
-         "BriefDescription": "Average number of STCX instructions finshed per completed instruction",
-         "MetricExpr": "PM_STCX_FIN / PM_RUN_INST_CMPL",
-         "MetricGroup": "General",
--        "MetricName": "STXC_PER_INST"
-+        "MetricName": "STCX_PER_INST"
-     },
-     {
-         "BriefDescription": "Average number of LARX instructions finshed per completed instruction",
+diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+index a24390c548a91..37c8f75a35801 100644
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -283,6 +283,13 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
+ 			ctx->secure_init = true;
+ 		}
+ 
++		/* Disable context bank before programming */
++		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
++
++		/* Clear context bank fault address fault status registers */
++		iommu_writel(ctx, ARM_SMMU_CB_FAR, 0);
++		iommu_writel(ctx, ARM_SMMU_CB_FSR, ARM_SMMU_FSR_FAULT);
++
+ 		/* TTBRs */
+ 		iommu_writeq(ctx, ARM_SMMU_CB_TTBR0,
+ 				pgtbl_cfg.arm_lpae_s1_cfg.ttbr |
 -- 
 2.40.1
 
