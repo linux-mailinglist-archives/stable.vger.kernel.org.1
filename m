@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 318FB7A3991
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6907A3880
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240088AbjIQTv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54318 "EHLO
+        id S239783AbjIQTgi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:36:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240100AbjIQTvF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:05 -0400
+        with ESMTP id S239891AbjIQTgZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509E49F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D536C433CB;
-        Sun, 17 Sep 2023 19:50:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E26103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7517DC433C9;
+        Sun, 17 Sep 2023 19:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980258;
-        bh=tUeDs9cb/KIJ8kTxA+67nXlKhf6NEjDmhzvmeeN968Q=;
+        s=korg; t=1694979379;
+        bh=F3t9gfMv4WMlRM5BciFH4OEyJAp/L1hdnE8yNOCKnvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gh183kxN6Ot9aTDUpLQUUjwySnZoTS97/0vm394UxbLr4jrdAXyMJU7QW8oIkdQTw
-         VXv+1t2nfzng8vIeNebkeWkZreRF25C1L0hdharxwcNJFECRCNa0HfiwfRc5f5qIhL
-         nBGcCoqwIdOCDyxl+V2BEc3zqIQF357rIiE4IwUQ=
+        b=KtvwobLDJ5Yor40hj7gg2eeYSifTtCrXe6cxjnRhtHxpeMLclKZOhW59Qnucfayoy
+         PHxZrLz6rICZV54F64UUvwB0tZR8Z7UaSwvWUZ8MQfoxFfBQDt4puPr2m4aEUsYwu5
+         y2kNNMab/vJ+vf75ZD4Zhwtbw6x1dIV7b4/dx85Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Olsa <jolsa@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Xu Kuohai <xukuohai@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 132/285] bpf, sockmap: Fix skb refcnt race after locking changes
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
+        "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
+        Corey Minyard <minyard@acm.org>, GONG@vger.kernel.org
+Subject: [PATCH 5.10 278/406] ipmi_si: fix a memleak in try_smi_init()
 Date:   Sun, 17 Sep 2023 21:12:12 +0200
-Message-ID: <20230917191056.230761383@linuxfoundation.org>
+Message-ID: <20230917191108.622123562@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,128 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit a454d84ee20baf7bd7be90721b9821f73c7d23d9 ]
+commit 6cf1a126de2992b4efe1c3c4d398f8de4aed6e3f upstream.
 
-There is a race where skb's from the sk_psock_backlog can be referenced
-after userspace side has already skb_consumed() the sk_buff and its refcnt
-dropped to zer0 causing use after free.
+Kmemleak reported the following leak info in try_smi_init():
 
-The flow is the following:
+unreferenced object 0xffff00018ecf9400 (size 1024):
+  comm "modprobe", pid 2707763, jiffies 4300851415 (age 773.308s)
+  backtrace:
+    [<000000004ca5b312>] __kmalloc+0x4b8/0x7b0
+    [<00000000953b1072>] try_smi_init+0x148/0x5dc [ipmi_si]
+    [<000000006460d325>] 0xffff800081b10148
+    [<0000000039206ea5>] do_one_initcall+0x64/0x2a4
+    [<00000000601399ce>] do_init_module+0x50/0x300
+    [<000000003c12ba3c>] load_module+0x7a8/0x9e0
+    [<00000000c246fffe>] __se_sys_init_module+0x104/0x180
+    [<00000000eea99093>] __arm64_sys_init_module+0x24/0x30
+    [<0000000021b1ef87>] el0_svc_common.constprop.0+0x94/0x250
+    [<0000000070f4f8b7>] do_el0_svc+0x48/0xe0
+    [<000000005a05337f>] el0_svc+0x24/0x3c
+    [<000000005eb248d6>] el0_sync_handler+0x160/0x164
+    [<0000000030a59039>] el0_sync+0x160/0x180
 
-  while ((skb = skb_peek(&psock->ingress_skb))
-    sk_psock_handle_Skb(psock, skb, ..., ingress)
-    if (!ingress) ...
-    sk_psock_skb_ingress
-       sk_psock_skb_ingress_enqueue(skb)
-          msg->skb = skb
-          sk_psock_queue_msg(psock, msg)
-    skb_dequeue(&psock->ingress_skb)
+The problem was that when an error occurred before handlers registration
+and after allocating `new_smi->si_sm`, the variable wouldn't be freed in
+the error handling afterwards since `shutdown_smi()` hadn't been
+registered yet. Fix it by adding a `kfree()` in the error handling path
+in `try_smi_init()`.
 
-The sk_psock_queue_msg() puts the msg on the ingress_msg queue. This is
-what the application reads when recvmsg() is called. An application can
-read this anytime after the msg is placed on the queue. The recvmsg hook
-will also read msg->skb and then after user space reads the msg will call
-consume_skb(skb) on it effectively free'ing it.
-
-But, the race is in above where backlog queue still has a reference to
-the skb and calls skb_dequeue(). If the skb_dequeue happens after the
-user reads and free's the skb we have a use after free.
-
-The !ingress case does not suffer from this problem because it uses
-sendmsg_*(sk, msg) which does not pass the sk_buff further down the
-stack.
-
-The following splat was observed with 'test_progs -t sockmap_listen':
-
-  [ 1022.710250][ T2556] general protection fault, ...
-  [...]
-  [ 1022.712830][ T2556] Workqueue: events sk_psock_backlog
-  [ 1022.713262][ T2556] RIP: 0010:skb_dequeue+0x4c/0x80
-  [ 1022.713653][ T2556] Code: ...
-  [...]
-  [ 1022.720699][ T2556] Call Trace:
-  [ 1022.720984][ T2556]  <TASK>
-  [ 1022.721254][ T2556]  ? die_addr+0x32/0x80^M
-  [ 1022.721589][ T2556]  ? exc_general_protection+0x25a/0x4b0
-  [ 1022.722026][ T2556]  ? asm_exc_general_protection+0x22/0x30
-  [ 1022.722489][ T2556]  ? skb_dequeue+0x4c/0x80
-  [ 1022.722854][ T2556]  sk_psock_backlog+0x27a/0x300
-  [ 1022.723243][ T2556]  process_one_work+0x2a7/0x5b0
-  [ 1022.723633][ T2556]  worker_thread+0x4f/0x3a0
-  [ 1022.723998][ T2556]  ? __pfx_worker_thread+0x10/0x10
-  [ 1022.724386][ T2556]  kthread+0xfd/0x130
-  [ 1022.724709][ T2556]  ? __pfx_kthread+0x10/0x10
-  [ 1022.725066][ T2556]  ret_from_fork+0x2d/0x50
-  [ 1022.725409][ T2556]  ? __pfx_kthread+0x10/0x10
-  [ 1022.725799][ T2556]  ret_from_fork_asm+0x1b/0x30
-  [ 1022.726201][ T2556]  </TASK>
-
-To fix we add an skb_get() before passing the skb to be enqueued in the
-engress queue. This bumps the skb->users refcnt so that consume_skb()
-and kfree_skb will not immediately free the sk_buff. With this we can
-be sure the skb is still around when we do the dequeue. Then we just
-need to decrement the refcnt or free the skb in the backlog case which
-we do by calling kfree_skb() on the ingress case as well as the sendmsg
-case.
-
-Before locking change from fixes tag we had the sock locked so we
-couldn't race with user and there was no issue here.
-
-Fixes: 799aa7f98d53e ("skmsg: Avoid lock_sock() in sk_psock_backlog()")
-Reported-by: Jiri Olsa  <jolsa@kernel.org>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Xu Kuohai <xukuohai@huawei.com>
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20230901202137.214666-1-john.fastabend@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 4.19+
+Fixes: 7960f18a5647 ("ipmi_si: Convert over to a shutdown handler")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Co-developed-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
+Signed-off-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
+Message-Id: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
+Signed-off-by: Corey Minyard <minyard@acm.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/char/ipmi/ipmi_si_intf.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index ef1a2eb6520bf..a746dbc2f8877 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -612,12 +612,18 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
- static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
- 			       u32 off, u32 len, bool ingress)
- {
-+	int err = 0;
-+
- 	if (!ingress) {
- 		if (!sock_writeable(psock->sk))
- 			return -EAGAIN;
- 		return skb_send_sock(psock->sk, skb, off, len);
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -2089,6 +2089,11 @@ static int try_smi_init(struct smi_info
+ 		new_smi->io.io_cleanup = NULL;
  	}
--	return sk_psock_skb_ingress(psock, skb, off, len);
-+	skb_get(skb);
-+	err = sk_psock_skb_ingress(psock, skb, off, len);
-+	if (err < 0)
-+		kfree_skb(skb);
-+	return err;
+ 
++	if (rv && new_smi->si_sm) {
++		kfree(new_smi->si_sm);
++		new_smi->si_sm = NULL;
++	}
++
+ 	return rv;
  }
  
- static void sk_psock_skb_state(struct sk_psock *psock,
-@@ -685,9 +691,7 @@ static void sk_psock_backlog(struct work_struct *work)
- 		} while (len);
- 
- 		skb = skb_dequeue(&psock->ingress_skb);
--		if (!ingress) {
--			kfree_skb(skb);
--		}
-+		kfree_skb(skb);
- 	}
- end:
- 	mutex_unlock(&psock->work_mutex);
--- 
-2.40.1
-
 
 
