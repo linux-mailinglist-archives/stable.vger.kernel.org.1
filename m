@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7A17A3BA8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7951B7A3BAC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240766AbjIQUUt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:20:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
+        id S240790AbjIQUUv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240780AbjIQUUY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:24 -0400
+        with ESMTP id S240821AbjIQUUa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D716A10F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14E2C433C8;
-        Sun, 17 Sep 2023 20:20:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E7D418F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF577C433C7;
+        Sun, 17 Sep 2023 20:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982016;
-        bh=gzCOzBRmgP41oHoDFU2KJM+9G7vE2EJS0VLeTgqK63o=;
+        s=korg; t=1694982023;
+        bh=3/9DWdZuXhmRbxbukpCJjjWzB203sUAzyLsJex0tJSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ar5sZn1xIHkqRQj36LLI7iIfTLAoOFGc9Vtl472pMK+/j9sWw4VFqEUQKnj8i8Es9
-         rjWhq1buJIS1KTEirJYkHKugqT7r8MHQoRPE+7Pmqihb/adVVTR/oPsLJD+Gg3Q7h/
-         3R+jCLTZYAxyCd1Dxeds8XyJKAzjjiyB3F9cMpg8=
+        b=ieP/R7yroodM9pAPYQrh2IBGfRpkDoTpauuDjaH7bqw+I8x3HHQknATUDEH4+Up4k
+         xp+on5Ru1oM8eAQrRtQPZzCGZLR+oBrg/NRaEMuiAcBSVw2Hysq5k/5DUuchBL6g8s
+         d0p8cZButtyS0pQagnfJpkEwfHHL2WpmhOkkmE5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/511] arm64: dts: qcom: sm8250: Mark PCIe hosts as DMA coherent
-Date:   Sun, 17 Sep 2023 21:09:26 +0200
-Message-ID: <20230917191117.218419579@linuxfoundation.org>
+Subject: [PATCH 5.15 140/511] drm/amdgpu: avoid integer overflow warning in amdgpu_device_resize_fb_bar()
+Date:   Sun, 17 Sep 2023 21:09:27 +0200
+Message-ID: <20230917191117.241450136@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -39,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,49 +57,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 339d38a436f30d0f874815eafc7de2257346bf26 ]
+[ Upstream commit 822130b5e8834ab30ad410cf19a582e5014b9a85 ]
 
-The PCIe hosts on SM8250 are cache-coherent. Mark them as such.
+On 32-bit architectures comparing a resource against a value larger than
+U32_MAX can cause a warning:
 
-Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230704-topic-8250_pcie_dmac-v1-1-799603a980b0@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1344:18: error: result of comparison of constant 4294967296 with expression of type 'resource_size_t' (aka 'unsigned int') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+                    res->start > 0x100000000ull)
+                    ~~~~~~~~~~ ^ ~~~~~~~~~~~~~~
+
+As gcc does not warn about this in dead code, add an IS_ENABLED() check at
+the start of the function. This will always return success but not actually resize
+the BAR on 32-bit architectures without high memory, which is exactly what
+we want here, as the driver can fall back to bank switching the VRAM
+access.
+
+Fixes: 31b8adab3247 ("drm/amdgpu: require a root bus window above 4GB for BAR resize")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 3 +++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 005e75dc6919e..5d6551e1fcd8d 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -1439,6 +1439,7 @@ pcie0: pci@1c00000 {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 2b5766d3789b2..8b6b47fd9b880 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1195,6 +1195,9 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
+ 	u16 cmd;
+ 	int r;
  
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie0_default_state>;
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -1545,6 +1546,7 @@ pcie1: pci@1c08000 {
- 
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie1_default_state>;
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -1653,6 +1655,7 @@ pcie2: pci@1c10000 {
- 
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie2_default_state>;
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
++	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
++		return 0;
++
+ 	/* Bypass for VF */
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
 -- 
 2.40.1
 
