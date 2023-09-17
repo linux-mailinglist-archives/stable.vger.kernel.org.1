@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B6187A394F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8A07A3836
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240034AbjIQTrq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56322 "EHLO
+        id S239674AbjIQTdU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240048AbjIQTr2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:28 -0400
+        with ESMTP id S239723AbjIQTcv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 703649F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DBCC433C8;
-        Sun, 17 Sep 2023 19:47:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF9712F;
+        Sun, 17 Sep 2023 12:32:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F74CC43395;
+        Sun, 17 Sep 2023 19:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980043;
-        bh=F8HshgyubaPnrlF1S2BeA+ZyoPTGAZuHqTqDCl9JvxQ=;
+        s=korg; t=1694979146;
+        bh=4cNyQCn6JE2KLqh0q+P5vUXGY9sqMY0xT23jNH8kzE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BX7BP12JfQQp/BqKPRlx3k5JqXODZqcVzF0blwvxq6Ytd9RHv6YkPDReC0lj7qGWZ
-         dDH6MXo9oDBvS2vkzbmpEZf9ubSMbZTD1Q3hgyuuyNTRIvYCRMeP1NnvE4CIBkspBZ
-         H8yE23gAVY1KADkCLMJyLLNvfx6JIgP9nz8BBMYk=
+        b=Vl+3RxLae/3crWy+mQz/YQEeOkkkhp8AfFZDyHRVVITUG1o/M3hJtvbk/8x6TJj4k
+         wcrKW9yrAYEHLye9QtwFCJjnEW+iUg3N7xkYNZ8qBoq2b06KZxJgkvD+giv7MVw54H
+         7Mc2XsFaHTw/f05/t0y3lY1ufaihpjvsuFyXcWgE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 081/285] perf bpf-filter: Fix sample flag check with ||
-Date:   Sun, 17 Sep 2023 21:11:21 +0200
-Message-ID: <20230917191054.514408126@linuxfoundation.org>
+Subject: [PATCH 5.10 228/406] scsi: qedf: Do not touch __user pointer in qedf_dbg_fp_int_cmd_read() directly
+Date:   Sun, 17 Sep 2023 21:11:22 +0200
+Message-ID: <20230917191107.194541043@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,64 +59,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit dc7f01f1bceca38839992b3371e0be8a3c9d5acf ]
+[ Upstream commit 25dbc20deab5165f847b4eb42f376f725a986ee8 ]
 
-For logical OR operator, the actual sample_flags are in the 'groups'
-list so it needs to check entries in the list instead.  Otherwise it
-would show the following error message.
+The qedf_dbg_fp_int_cmd_read() function invokes sprintf() directly on a
+__user pointer, which may crash the kernel.
 
-  $ sudo perf record -a -e cycles:p --filter 'period > 100 || weight > 0' sleep 1
-  Error: cycles:p event does not have sample flags 0
-  failed to set filter "BPF" on event cycles:p with 2 (No such file or directory)
+Avoid doing that by vmalloc()'ating a buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
 
-Actually it should warn on 'weight' is used without WEIGHT flag.
-
-  Error: cycles:p event does not have PERF_SAMPLE_WEIGHT
-   Hint: please add -W option to perf record
-  failed to set filter "BPF" on event cycles:p with 2 (No such file or directory)
-
-Fixes: 4310551b76e0d676 ("perf bpf filter: Show warning for missing sample flags")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230811025822.3859771-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-4-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf-filter.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/scsi/qedf/qedf_dbg.h     |  2 ++
+ drivers/scsi/qedf/qedf_debugfs.c | 21 +++++++++++++++------
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/bpf-filter.c b/tools/perf/util/bpf-filter.c
-index 0b30688d78a7f..a1f076ef653d3 100644
---- a/tools/perf/util/bpf-filter.c
-+++ b/tools/perf/util/bpf-filter.c
-@@ -62,6 +62,16 @@ static int check_sample_flags(struct evsel *evsel, struct perf_bpf_filter_expr *
- 	if (evsel->core.attr.sample_type & expr->sample_flags)
- 		return 0;
+diff --git a/drivers/scsi/qedf/qedf_dbg.h b/drivers/scsi/qedf/qedf_dbg.h
+index 2386bfb73c461..4a536c8377081 100644
+--- a/drivers/scsi/qedf/qedf_dbg.h
++++ b/drivers/scsi/qedf/qedf_dbg.h
+@@ -60,6 +60,8 @@ extern uint qedf_debug;
+ #define QEDF_LOG_NOTICE	0x40000000	/* Notice logs */
+ #define QEDF_LOG_WARN		0x80000000	/* Warning logs */
  
-+	if (expr->op == PBF_OP_GROUP_BEGIN) {
-+		struct perf_bpf_filter_expr *group;
++#define QEDF_DEBUGFS_LOG_LEN (2 * PAGE_SIZE)
 +
-+		list_for_each_entry(group, &expr->groups, list) {
-+			if (check_sample_flags(evsel, group) < 0)
-+				return -1;
-+		}
+ /* Debug context structure */
+ struct qedf_dbg_ctx {
+ 	unsigned int host_no;
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 1c5716540e465..451fd236bfd05 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -8,6 +8,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/debugfs.h>
+ #include <linux/module.h>
++#include <linux/vmalloc.h>
+ 
+ #include "qedf.h"
+ #include "qedf_dbg.h"
+@@ -98,7 +99,9 @@ static ssize_t
+ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 			 loff_t *ppos)
+ {
++	ssize_t ret;
+ 	size_t cnt = 0;
++	char *cbuf;
+ 	int id;
+ 	struct qedf_fastpath *fp = NULL;
+ 	struct qedf_dbg_ctx *qedf_dbg =
+@@ -108,19 +111,25 @@ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
+ 
+-	cnt = sprintf(buffer, "\nFastpath I/O completions\n\n");
++	cbuf = vmalloc(QEDF_DEBUGFS_LOG_LEN);
++	if (!cbuf)
 +		return 0;
-+	}
 +
- 	info = get_sample_info(expr->sample_flags);
- 	if (info == NULL) {
- 		pr_err("Error: %s event does not have sample flags %lx\n",
++	cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt, "\nFastpath I/O completions\n\n");
+ 
+ 	for (id = 0; id < qedf->num_queues; id++) {
+ 		fp = &(qedf->fp_array[id]);
+ 		if (fp->sb_id == QEDF_SB_ID_NULL)
+ 			continue;
+-		cnt += sprintf((buffer + cnt), "#%d: %lu\n", id,
+-			       fp->completions);
++		cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt,
++				 "#%d: %lu\n", id, fp->completions);
+ 	}
+ 
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	ret = simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
++
++	vfree(cbuf);
++
++	return ret;
+ }
+ 
+ static ssize_t
 -- 
 2.40.1
 
