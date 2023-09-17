@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E737A3CA2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 191DE7A3A85
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241056AbjIQUdi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
+        id S240372AbjIQUF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241098AbjIQUdM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:12 -0400
+        with ESMTP id S240440AbjIQUFI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA39C10F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02C8C433C7;
-        Sun, 17 Sep 2023 20:33:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B100CEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB77FC433C7;
+        Sun, 17 Sep 2023 20:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982786;
-        bh=xiFftyu+Oc18rpCNVTWNd49TTDCIAON+ByVjudvIB5g=;
+        s=korg; t=1694981102;
+        bh=szUOsgoyGnld9wPzHnMT2Xj9OSq9XJDlCdNQ3KaVsH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ULgF8M+VRJMOOLGgzW9jtEY/GJtHffViZ7G6ZvlURwn81rmcmtJJilTdhslQst7ol
-         KAt4fvcXEGqSPpDGfJ7kl1K5hta36hvtRfpDt0GgOpE7Y0EB8OtZcF1uc1Jw+jATB3
-         wz0572tsB+t2Lvz+Oa24PInqobNWWOowBB/c+TWs=
+        b=F2HGKbLNRi3NQvrq5RT7kL0q/oMu8Y5HS6CtSPp7eH3BclEAG5Bsoml1En4mwldkf
+         BIINddt1a2AkBn2I/JooF+ib/DxWtaGdJAIsaLqbSFamMDR/pMzu1p9w4ZyoIWblxg
+         ovAs8MjnZFCSwpdm1G6zVYFWO6WOzPg7SeMmIbmM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
-        Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 5.15 353/511] fsverity: skip PKCS#7 parser when keyring is empty
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Soheil Hassas Yeganeh <soheil@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ajay Kaher <akaher@vmware.com>
+Subject: [PATCH 6.1 053/219] net: remove osize variable in __alloc_skb()
 Date:   Sun, 17 Sep 2023 21:13:00 +0200
-Message-ID: <20230917191122.328146125@linuxfoundation.org>
+Message-ID: <20230917191042.922231265@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,56 +53,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 919dc320956ea353a7fb2d84265195ad5ef525ac upstream.
+commit 65998d2bf857b9ae5acc1f3b70892bd1b429ccab upstream.
 
-If an fsverity builtin signature is given for a file but the
-".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
-parser.  Skip this to avoid the PKCS#7 attack surface when builtin
-signature support is configured into the kernel but is not being used.
+This is a cleanup patch, to prepare following change.
 
-This is a hardening improvement, not a fix per se, but I've added
-Fixes and Cc stable to get it out to more users.
-
-Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/20230820173237.2579-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Ajay: Regenerated the patch for v6.1.y]
+Signed-off-by: Ajay Kaher <akaher@vmware.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/verity/signature.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/core/skbuff.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/fs/verity/signature.c
-+++ b/fs/verity/signature.c
-@@ -54,6 +54,22 @@ int fsverity_verify_signature(const stru
- 		return 0;
- 	}
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -479,7 +479,6 @@ struct sk_buff *__alloc_skb(unsigned int
+ {
+ 	struct kmem_cache *cache;
+ 	struct sk_buff *skb;
+-	unsigned int osize;
+ 	bool pfmemalloc;
+ 	u8 *data;
  
-+	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
-+		/*
-+		 * The ".fs-verity" keyring is empty, due to builtin signatures
-+		 * being supported by the kernel but not actually being used.
-+		 * In this case, verify_pkcs7_signature() would always return an
-+		 * error, usually ENOKEY.  It could also be EBADMSG if the
-+		 * PKCS#7 is malformed, but that isn't very important to
-+		 * distinguish.  So, just skip to ENOKEY to avoid the attack
-+		 * surface of the PKCS#7 parser, which would otherwise be
-+		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
-+		 */
-+		fsverity_err(inode,
-+			     "fs-verity keyring is empty, rejecting signed file!");
-+		return -ENOKEY;
-+	}
-+
- 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
- 	if (!d)
- 		return -ENOMEM;
+@@ -505,16 +504,15 @@ struct sk_buff *__alloc_skb(unsigned int
+ 	 * Both skb->head and skb_shared_info are cache line aligned.
+ 	 */
+ 	size = SKB_HEAD_ALIGN(size);
+-	osize = kmalloc_size_roundup(size);
+-	data = kmalloc_reserve(osize, gfp_mask, node, &pfmemalloc);
++	size = kmalloc_size_roundup(size);
++	data = kmalloc_reserve(size, gfp_mask, node, &pfmemalloc);
+ 	if (unlikely(!data))
+ 		goto nodata;
+ 	/* kmalloc_size_roundup() might give us more room than requested.
+ 	 * Put skb_shared_info exactly at the end of allocated zone,
+ 	 * to allow max possible filling before reallocation.
+ 	 */
+-	size = SKB_WITH_OVERHEAD(osize);
+-	prefetchw(data + size);
++	prefetchw(data + SKB_WITH_OVERHEAD(size));
+ 
+ 	/*
+ 	 * Only clear those fields we need to clear, not those that we will
+@@ -522,7 +520,7 @@ struct sk_buff *__alloc_skb(unsigned int
+ 	 * the tail pointer in struct sk_buff!
+ 	 */
+ 	memset(skb, 0, offsetof(struct sk_buff, tail));
+-	__build_skb_around(skb, data, osize);
++	__build_skb_around(skb, data, size);
+ 	skb->pfmemalloc = pfmemalloc;
+ 
+ 	if (flags & SKB_ALLOC_FCLONE) {
 
 
