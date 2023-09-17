@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5557A3A48
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F24A7A39AC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240347AbjIQUCO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
+        id S240126AbjIQTxI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240320AbjIQUBm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:42 -0400
+        with ESMTP id S240248AbjIQTwu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0495194
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59943C43395;
-        Sun, 17 Sep 2023 20:01:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563C9186
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9DCC433CA;
+        Sun, 17 Sep 2023 19:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980868;
-        bh=hTJYDOlhv5R3Prt02gFTAcEnfK6PNWMHvIx96xUye4M=;
+        s=korg; t=1694980327;
+        bh=kMdnKKDQXJ7aurRM+b2SZzRwItfKGRxWM676bBBn6CQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YTuiNOLk4wSTGaI3sMrjsWoxQSsm/3CmCzkgZoazpOKUCR/mGJ/cflG/My/2OAjYP
-         k69mFQQnZCxae2mEpdV2PnenlQAKhoy6ORJ8lDlQqNCEY3pqSqQc5UTxNIHTw5DEmX
-         g6QhBWJzDQHhgyvbIv05qnh1TQpxIPsvxnoYnewA=
+        b=bRz8Ia984mV15ic3bLlXLOXZrAVbG1IAZzdEViWizz8tx35OkV7Gr5lzRMDux3Grs
+         iRE45rPAbpsED3bWExuruYEPCRDQqE9lKNcCFD/myVyM4gMyNLjfC/08Adf2evyyXy
+         hPhyKBkSipRBYJAMT+omHPPd8gnYgyZehP+rz8Lg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 032/219] [SMB3] send channel sequence number in SMB3 requests after reconnects
+        patches@lists.linux.dev, Leon Hwang <hffilwlqm@gmail.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 159/285] s390/bpf: Pass through tail call counter in trampolines
 Date:   Sun, 17 Sep 2023 21:12:39 +0200
-Message-ID: <20230917191042.165230578@linuxfoundation.org>
+Message-ID: <20230917191057.178544391@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,128 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit 09ee7a3bf866c0fa5ee1914d2c65958559eb5b4c upstream.
+[ Upstream commit a192103a11465e9d517975c50f9944dc80e44d61 ]
 
-The ChannelSequence field in the SMB3 header is supposed to be
-increased after reconnect to allow the server to distinguish
-requests from before and after the reconnect.  We had always
-been setting it to zero.  There are cases where incrementing
-ChannelSequence on requests after network reconnects can reduce
-the chance of data corruptions.
+s390x eBPF programs use the following extension to the s390x calling
+convention: tail call counter is passed on stack at offset
+STK_OFF_TCCNT, which callees otherwise use as scratch space.
 
-See MS-SMB2 3.2.4.1 and 3.2.7.1
+Currently trampoline does not respect this and clobbers tail call
+counter. This breaks enforcing tail call limits in eBPF programs, which
+have trampolines attached to them.
 
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Cc: stable@vger.kernel.org # 5.16+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by forwarding a copy of the tail call counter to the original eBPF
+program in the trampoline (for fexit), and by restoring it at the end
+of the trampoline (for fentry).
+
+Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
+Reported-by: Leon Hwang <hffilwlqm@gmail.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230906004448.111674-1-iii@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h |    1 +
- fs/smb/client/connect.c  |    1 +
- fs/smb/client/smb2ops.c  |   11 ++++++++++-
- fs/smb/client/smb2pdu.c  |   11 +++++++++++
- fs/smb/common/smb2pdu.h  |   22 ++++++++++++++++++++++
- 5 files changed, 45 insertions(+), 1 deletion(-)
+ arch/s390/net/bpf_jit_comp.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -734,6 +734,7 @@ struct TCP_Server_Info {
- 	 */
- #define CIFS_SERVER_IS_CHAN(server)	(!!(server)->primary_server)
- 	struct TCP_Server_Info *primary_server;
-+	__u16 channel_sequence_num;  /* incremented on primary channel on each chan reconnect */
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 5e9371fbf3d5f..de2fb12120d2e 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -2088,6 +2088,7 @@ struct bpf_tramp_jit {
+ 				 */
+ 	int r14_off;		/* Offset of saved %r14 */
+ 	int run_ctx_off;	/* Offset of struct bpf_tramp_run_ctx */
++	int tccnt_off;		/* Offset of saved tailcall counter */
+ 	int do_fexit;		/* do_fexit: label */
+ };
  
- #ifdef CONFIG_CIFS_SWN_UPCALL
- 	bool use_swn_dstaddr;
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1725,6 +1725,7 @@ cifs_get_tcp_session(struct smb3_fs_cont
- 		ctx->target_rfc1001_name, RFC1001_NAME_LEN_WITH_NULL);
- 	tcp_ses->session_estab = false;
- 	tcp_ses->sequence_number = 0;
-+	tcp_ses->channel_sequence_num = 0; /* only tracked for primary channel */
- 	tcp_ses->reconnect_instance = 1;
- 	tcp_ses->lstrp = jiffies;
- 	tcp_ses->compress_algorithm = cpu_to_le16(ctx->compression);
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -167,8 +167,17 @@ smb2_set_credits(struct TCP_Server_Info
+@@ -2258,12 +2259,16 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
+ 	tjit->r14_off = alloc_stack(tjit, sizeof(u64));
+ 	tjit->run_ctx_off = alloc_stack(tjit,
+ 					sizeof(struct bpf_tramp_run_ctx));
++	tjit->tccnt_off = alloc_stack(tjit, sizeof(u64));
+ 	/* The caller has already reserved STACK_FRAME_OVERHEAD bytes. */
+ 	tjit->stack_size -= STACK_FRAME_OVERHEAD;
+ 	tjit->orig_stack_args_off = tjit->stack_size + STACK_FRAME_OVERHEAD;
  
- 	spin_lock(&server->req_lock);
- 	server->credits = val;
--	if (val == 1)
-+	if (val == 1) {
- 		server->reconnect_instance++;
-+		/*
-+		 * ChannelSequence updated for all channels in primary channel so that consistent
-+		 * across SMB3 requests sent on any channel. See MS-SMB2 3.2.4.1 and 3.2.7.1
-+		 */
-+		if (CIFS_SERVER_IS_CHAN(server))
-+			server->primary_server->channel_sequence_num++;
-+		else
-+			server->channel_sequence_num++;
-+	}
- 	scredits = server->credits;
- 	in_flight = server->in_flight;
- 	spin_unlock(&server->req_lock);
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -88,9 +88,20 @@ smb2_hdr_assemble(struct smb2_hdr *shdr,
- 		  const struct cifs_tcon *tcon,
- 		  struct TCP_Server_Info *server)
- {
-+	struct smb3_hdr_req *smb3_hdr;
- 	shdr->ProtocolId = SMB2_PROTO_NUMBER;
- 	shdr->StructureSize = cpu_to_le16(64);
- 	shdr->Command = smb2_cmd;
-+	if (server->dialect >= SMB30_PROT_ID) {
-+		/* After reconnect SMB3 must set ChannelSequence on subsequent reqs */
-+		smb3_hdr = (struct smb3_hdr_req *)shdr;
-+		/* if primary channel is not set yet, use default channel for chan sequence num */
-+		if (CIFS_SERVER_IS_CHAN(server))
-+			smb3_hdr->ChannelSequence =
-+				cpu_to_le16(server->primary_server->channel_sequence_num);
-+		else
-+			smb3_hdr->ChannelSequence = cpu_to_le16(server->channel_sequence_num);
-+	}
- 	if (server) {
- 		spin_lock(&server->req_lock);
- 		/* Request up to 10 credits but don't go over the limit. */
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -153,6 +153,28 @@ struct smb2_hdr {
- 	__u8   Signature[16];
- } __packed;
- 
-+struct smb3_hdr_req {
-+	__le32 ProtocolId;	/* 0xFE 'S' 'M' 'B' */
-+	__le16 StructureSize;	/* 64 */
-+	__le16 CreditCharge;	/* MBZ */
-+	__le16 ChannelSequence; /* See MS-SMB2 3.2.4.1 and 3.2.7.1 */
-+	__le16 Reserved;
-+	__le16 Command;
-+	__le16 CreditRequest;	/* CreditResponse */
-+	__le32 Flags;
-+	__le32 NextCommand;
-+	__le64 MessageId;
-+	union {
-+		struct {
-+			__le32 ProcessId;
-+			__le32  TreeId;
-+		} __packed SyncId;
-+		__le64  AsyncId;
-+	} __packed Id;
-+	__le64  SessionId;
-+	__u8   Signature[16];
-+} __packed;
-+
- struct smb2_pdu {
- 	struct smb2_hdr hdr;
- 	__le16 StructureSize2; /* size of wct area (varies, request specific) */
+ 	/* aghi %r15,-stack_size */
+ 	EMIT4_IMM(0xa70b0000, REG_15, -tjit->stack_size);
++	/* mvc tccnt_off(4,%r15),stack_size+STK_OFF_TCCNT(%r15) */
++	_EMIT6(0xd203f000 | tjit->tccnt_off,
++	       0xf000 | (tjit->stack_size + STK_OFF_TCCNT));
+ 	/* stmg %r2,%rN,fwd_reg_args_off(%r15) */
+ 	if (nr_reg_args)
+ 		EMIT6_DISP_LH(0xeb000000, 0x0024, REG_2,
+@@ -2400,6 +2405,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
+ 				       (nr_stack_args * sizeof(u64) - 1) << 16 |
+ 				       tjit->stack_args_off,
+ 			       0xf000 | tjit->orig_stack_args_off);
++		/* mvc STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
++		_EMIT6(0xd203f000 | STK_OFF_TCCNT, 0xf000 | tjit->tccnt_off);
+ 		/* lgr %r1,%r8 */
+ 		EMIT4(0xb9040000, REG_1, REG_8);
+ 		/* %r1() */
+@@ -2456,6 +2463,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
+ 	if (flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET))
+ 		EMIT6_DISP_LH(0xe3000000, 0x0004, REG_2, REG_0, REG_15,
+ 			      tjit->retval_off);
++	/* mvc stack_size+STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
++	_EMIT6(0xd203f000 | (tjit->stack_size + STK_OFF_TCCNT),
++	       0xf000 | tjit->tccnt_off);
+ 	/* aghi %r15,stack_size */
+ 	EMIT4_IMM(0xa70b0000, REG_15, tjit->stack_size);
+ 	/* Emit an expoline for the following indirect jump. */
+-- 
+2.40.1
+
 
 
