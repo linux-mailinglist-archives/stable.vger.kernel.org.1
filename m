@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0487A39AA
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 666927A3A4C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240112AbjIQTxG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
+        id S240360AbjIQUCT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240141AbjIQTwr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:47 -0400
+        with ESMTP id S240345AbjIQUBn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCD1CC9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C28C43395;
-        Sun, 17 Sep 2023 19:52:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3261BB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FE5C433CA;
+        Sun, 17 Sep 2023 20:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980344;
-        bh=c/Pq3ONvogiTewuMHzVqvi9Tku0vxISGyTeqNah8ANc=;
+        s=korg; t=1694980844;
+        bh=9RgGhV07ktGNpqqY6xQkN6F8LbUe6TYFgZxsFu3T2zc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wcrHaK2C1+q2aaM7L7bMFIFHj/r2kiMIb+LzSZJmJt3jzibOjWfyuZkw3xIf0nFTG
-         NBiuDm5PUWQ8It51aEn3DvbyERxF+W29qSny6WU0LXs1g35vPCnuTr3am/R9LGYjJ0
-         wpKZOrk6j4t000ejdyXvShKLmfzXHQ3ie72a2m+s=
+        b=RyvsRg1VoEUPDYCWsUgtq8ZIqHQ2B95a936Wmc1LguFtW/crZdedU4A4ELZZmSpSr
+         73All09okvzeWIwf60mSo39PYjTn1JNk++AA9sHiCgDWwHXDPIStM1Itom3CO0YUkJ
+         HRClStFJBB7u0O8sjV2XxE7J+rX/3RLYCEl3WZ9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 136/285] af_unix: Fix data-races around sk->sk_shutdown.
+        patches@lists.linux.dev,
+        syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com,
+        Gabriel Krisman Bertazi <krisman@suse.de>,
+        Jens Axboe <axboe@kernel.dk>,
+        Pavel Begunkov <asml.silence@gmail.com>
+Subject: [PATCH 6.1 009/219] io_uring: Dont set affinity on a dying sqpoll thread
 Date:   Sun, 17 Sep 2023 21:12:16 +0200
-Message-ID: <20230917191056.371564164@linuxfoundation.org>
+Message-ID: <20230917191041.311875005@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,100 +52,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-sk->sk_shutdown is changed under unix_state_lock(sk), but
-unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
+[ upstream commit bd6fc5da4c51107e1e0cec4a3a07963d1dae2c84 ]
 
-  sock_alloc_send_pskb
-  `- sock_wait_for_wmem
+Syzbot reported a null-ptr-deref of sqd->thread inside
+io_sqpoll_wq_cpu_affinity.  It turns out the sqd->thread can go away
+from under us during io_uring_register, in case the process gets a
+fatal signal during io_uring_register.
 
-Let's use READ_ONCE() there.
+It is not particularly hard to hit the race, and while I am not sure
+this is the exact case hit by syzbot, it solves it.  Finally, checking
+->thread is enough to close the race because we locked sqd while
+"parking" the thread, thus preventing it from going away.
 
-Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
-Fix data races around sk->sk_shutdown.").
+I reproduced it fairly consistently with a program that does:
 
-BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
+int main(void) {
+  ...
+  io_uring_queue_init(RING_LEN, &ring1, IORING_SETUP_SQPOLL);
+  while (1) {
+    io_uring_register_iowq_aff(ring, 1, &mask);
+  }
+}
 
-write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
- unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
- unix_release+0x59/0x80 net/unix/af_unix.c:1053
- __sock_release+0x7d/0x170 net/socket.c:654
- sock_close+0x19/0x30 net/socket.c:1386
- __fput+0x2a3/0x680 fs/file_table.c:384
- ____fput+0x15/0x20 fs/file_table.c:412
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+Executed in a loop with timeout to trigger SIGTERM:
+  while true; do timeout 1 /a.out ; done
+
+This will hit the following BUG() in very few attempts.
+
+BUG: kernel NULL pointer dereference, address: 00000000000007a8
+PGD 800000010e949067 P4D 800000010e949067 PUD 10e46e067 PMD 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 15715 Comm: dead-sqpoll Not tainted 6.5.0-rc7-next-20230825-g193296236fa0-dirty #23
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+RIP: 0010:io_sqpoll_wq_cpu_affinity+0x27/0x70
+Code: 90 90 90 0f 1f 44 00 00 55 53 48 8b 9f 98 03 00 00 48 85 db 74 4f
+48 89 df 48 89 f5 e8 e2 f8 ff ff 48 8b 43 38 48 85 c0 74 22 <48> 8b b8
+a8 07 00 00 48 89 ee e8 ba b1 00 00 48 89 df 89 c5 e8 70
+RSP: 0018:ffffb04040ea7e70 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff93c010749e40 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffffffa7653331 RDI: 00000000ffffffff
+RBP: ffffb04040ea7eb8 R08: 0000000000000000 R09: c0000000ffffdfff
+R10: ffff93c01141b600 R11: ffffb04040ea7d18 R12: ffff93c00ea74840
+R13: 0000000000000011 R14: 0000000000000000 R15: ffff93c00ea74800
+FS:  00007fb7c276ab80(0000) GS:ffff93c36f200000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000007a8 CR3: 0000000111634003 CR4: 0000000000370ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x154/0x440
+ ? do_user_addr_fault+0x174/0x7b0
+ ? exc_page_fault+0x63/0x140
+ ? asm_exc_page_fault+0x22/0x30
+ ? io_sqpoll_wq_cpu_affinity+0x27/0x70
+ __io_register_iowq_aff+0x2b/0x60
+ __io_uring_register+0x614/0xa70
+ __x64_sys_io_uring_register+0xaa/0x1a0
+ do_syscall_64+0x3a/0x90
  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+RIP: 0033:0x7fb7c226fec9
+Code: 2e 00 b8 ca 00 00 00 0f 05 eb a5 66 0f 1f 44 00 00 48 89 f8 48 89
+f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+f0 ff ff 73 01 c3 48 8b 0d 97 7f 2d 00 f7 d8 64 89 01 48
+RSP: 002b:00007ffe2c0674f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb7c226fec9
+RDX: 00007ffe2c067530 RSI: 0000000000000011 RDI: 0000000000000003
+RBP: 00007ffe2c0675d0 R08: 00007ffe2c067550 R09: 00007ffe2c067550
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe2c067750 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+CR2: 00000000000007a8
+---[ end trace 0000000000000000 ]---
 
-read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
- sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
- unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x00 -> 0x03
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com
+Fixes: ebdfefc09c6d ("io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/87v8cybuo6.fsf@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/sqpoll.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 0a687c8fbed7f..2a78e47f76dba 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2746,7 +2746,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
- 			break;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			break;
- 		if (sk->sk_err)
- 			break;
-@@ -2776,7 +2776,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
- 			goto failure;
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -432,7 +432,9 @@ __cold int io_sqpoll_wq_cpu_affinity(str
  
- 		err = -EPIPE;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			goto failure;
+ 	if (sqd) {
+ 		io_sq_thread_park(sqd);
+-		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
++		/* Don't set affinity for a dying thread */
++		if (sqd->thread)
++			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
+ 		io_sq_thread_unpark(sqd);
+ 	}
  
- 		if (sk_wmem_alloc_get(sk) < READ_ONCE(sk->sk_sndbuf))
--- 
-2.40.1
-
 
 
