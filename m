@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28CF87A3765
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A34C27A376F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238617AbjIQTSz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45798 "EHLO
+        id S230509AbjIQTUa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238654AbjIQTS1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:18:27 -0400
+        with ESMTP id S239029AbjIQTUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:20:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15829115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:18:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DF7C433C8;
-        Sun, 17 Sep 2023 19:18:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F5C6FA
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:20:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25567C433C7;
+        Sun, 17 Sep 2023 19:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978301;
-        bh=yHdOV15fsdCbdFGRjYMaoaHbU6kRU5Ix56Z7Dg8encU=;
+        s=korg; t=1694978399;
+        bh=tJexeGi2D1GkDw7yWjWw3Amm+74IbY8D0oEx82ZINyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IB0wQky1UNO7L8afBBioasVc/BzM2w9OM0iL5ROEnfZdxQuczqjbMZxmKekt9nI5X
-         Zz6ysSlZsDhUh+nq8lLrmgMc/rViS5JY/sxVoXaxAOqyKP4dhH8zeuESkKy9b+TPGa
-         jJHXXHTfKwwLJMLwWddI+9037b/I9LfMIHNn7dvU=
+        b=vCpFKfLbmFa4VeQthSeNRUo8aXdayWtdGjr4nSrqNINR2GEgQ8aGZnLDwp3laT/2y
+         LCRqGk7A73kx5tsRMjxGOkU7bmObwVKB+xxyYS9z+EHECMv02omswb3kWOBB9OA5NW
+         e2pzuaYgC8xJ8XQm5+FdNChXbyP5XvXSKfUVlPak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.10 022/406] pinctrl: amd: Dont show `Invalid config param` errors
-Date:   Sun, 17 Sep 2023 21:07:56 +0200
-Message-ID: <20230917191101.740695193@linuxfoundation.org>
+        patches@lists.linux.dev, Bard Liao <bard.liao@intel.com>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 5.10 023/406] ASoC: rt5682: Fix a problem with error handling in the io init function of the soundwire
+Date:   Sun, 17 Sep 2023 21:07:57 +0200
+Message-ID: <20230917191101.767915786@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,46 +56,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Oder Chiou <oder_chiou@realtek.com>
 
-commit 87b549efcb0f7934b0916d2a00607a878b6f1e0f upstream.
+commit 9266d95405ae0c078f188ec8bca3a004631be429 upstream.
 
-On some systems amd_pinconf_set() is called with parameters
-0x8 (PIN_CONFIG_DRIVE_PUSH_PULL) or 0x14 (PIN_CONFIG_PERSIST_STATE)
-which are not supported by pinctrl-amd.
+The device checking error should be a jump to pm_runtime_put_autosuspend()
+as done before returning value.
 
-Don't show an err message when called with an invalid parameter,
-downgrade this to debug instead.
-
-Cc: stable@vger.kernel.org # 6.1
-Fixes: 635a750d958e1 ("pinctrl: amd: Use amd_pinconf_set() for all config options")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230717201652.17168-1-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 867f8d18df4f ('ASoC: rt5682: fix getting the wrong device id when the suspend_stress_test')
+Reviewed-by: Bard Liao <bard.liao@intel.com>
+Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20210607222239.582139-13-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5682-sdw.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -653,7 +653,7 @@ static int amd_pinconf_get(struct pinctr
- 		break;
- 
- 	default:
--		dev_err(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
-+		dev_dbg(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
- 			param);
- 		return -ENOTSUPP;
+--- a/sound/soc/codecs/rt5682-sdw.c
++++ b/sound/soc/codecs/rt5682-sdw.c
+@@ -413,9 +413,11 @@ static int rt5682_io_init(struct device
+ 		usleep_range(30000, 30005);
+ 		loop--;
  	}
-@@ -706,7 +706,7 @@ static int amd_pinconf_set(struct pinctr
- 			break;
++
+ 	if (val != DEVICE_ID) {
+ 		dev_err(dev, "Device with ID register %x is not rt5682\n", val);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_nodev;
+ 	}
  
- 		default:
--			dev_err(&gpio_dev->pdev->dev,
-+			dev_dbg(&gpio_dev->pdev->dev,
- 				"Invalid config param %04x\n", param);
- 			ret = -ENOTSUPP;
- 		}
+ 	rt5682_calibrate(rt5682);
+@@ -486,10 +488,11 @@ reinit:
+ 	rt5682->hw_init = true;
+ 	rt5682->first_hw_init = true;
+ 
++err_nodev:
+ 	pm_runtime_mark_last_busy(&slave->dev);
+ 	pm_runtime_put_autosuspend(&slave->dev);
+ 
+-	dev_dbg(&slave->dev, "%s hw_init complete\n", __func__);
++	dev_dbg(&slave->dev, "%s hw_init complete: %d\n", __func__, ret);
+ 
+ 	return ret;
+ }
 
 
