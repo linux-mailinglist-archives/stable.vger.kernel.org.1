@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0337A39D9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492EC7A38C7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240175AbjIQTzO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
+        id S239842AbjIQTkT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:40:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240225AbjIQTzB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:01 -0400
+        with ESMTP id S239864AbjIQTjy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF49103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690E7C433C8;
-        Sun, 17 Sep 2023 19:54:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E165A103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F22DC433C8;
+        Sun, 17 Sep 2023 19:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980494;
-        bh=InQwO+an6PriVyx20EoSkB1WhajxKdwF3HV6Sy8v6bk=;
+        s=korg; t=1694979588;
+        bh=8TP2iaUc9cTKXkntsWmM5rP48P+nXWlRUj7X35WoNIU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2uS0TLPcp3s1xByZmOqZYs+6WMKneCfZSMo+mXdWysgotUF4L7tnGYCSKDBfYzqVG
-         SN6AjB/rXnvC2SETUCCEXfaCp+J0ByGuVpd05ij4nJ7prT+qEwptXB6jFEXd0f0n3S
-         QaJEGhOtoFglOI7MN2JSnLglXp6qAefQ+xYl1OoI=
+        b=zJiHYDwLLqTX9u6kqszO0SMCWrGlMhqpjZd/+1GcDtWAwVZ2ePjyR6febHx6ge4rP
+         lnFxqi4sKdHoHIA15oIN9x1d+DL5tc1rgIwgRjd8gtyrxUcd2NKG6Zbdh+/IRsZjFv
+         dtzOfBb3K2F0S1ePuecp75et8vanLaIbmpdw2diA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 209/285] btrfs: scrub: avoid unnecessary extent tree search preparing stripes
-Date:   Sun, 17 Sep 2023 21:13:29 +0200
-Message-ID: <20230917191058.803978787@linuxfoundation.org>
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 356/406] kcm: Destroy mutex in kcm_exit_net()
+Date:   Sun, 17 Sep 2023 21:13:30 +0200
+Message-ID: <20230917191110.678554902@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,196 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 1dc4888e725dc748b82858984f2a5bd41efc5201 upstream.
+[ Upstream commit 6ad40b36cd3b04209e2d6c89d252c873d8082a59 ]
 
-Since commit e02ee89baa66 ("btrfs: scrub: switch scrub_simple_mirror()
-to scrub_stripe infrastructure"), scrub no longer re-use the same path
-for extent tree search.
+kcm_exit_net() should call mutex_destroy() on knet->mutex. This is especially
+needed if CONFIG_DEBUG_MUTEXES is enabled.
 
-This can lead to unnecessary extent tree search, especially for the new
-stripe based scrub, as we have way more stripes to prepare.
-
-This patch would re-introduce a shared path for extent tree search, and
-properly release it when the block group is scrubbed.
-
-This change alone can improve scrub performance slightly by reducing the
-time spend preparing the stripe thus improving the queue depth.
-
-Before (with regression):
-
- Device         r/s      rkB/s   rrqm/s  %rrqm r_await rareq-sz aqu-sz  %util
- nvme0n1p3 15578.00  993616.00     5.00   0.03    0.09    63.78   1.32 100.00
-
-After (with this patch):
-
- nvme0n1p3 15875.00 1013328.00    12.00   0.08    0.08    63.83   1.35 100.00
-
-Fixes: e02ee89baa66 ("btrfs: scrub: switch scrub_simple_mirror() to scrub_stripe infrastructure")
-CC: stable@vger.kernel.org # 6.4+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Link: https://lore.kernel.org/r/20230902170708.1727999-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c |   41 +++++++++++++++++++++++++++++------------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ net/kcm/kcmsock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -175,6 +175,7 @@ struct scrub_ctx {
- 	struct scrub_stripe	stripes[SCRUB_STRIPES_PER_SCTX];
- 	struct scrub_stripe	*raid56_data_stripes;
- 	struct btrfs_fs_info	*fs_info;
-+	struct btrfs_path	extent_path;
- 	int			first_free;
- 	int			cur_stripe;
- 	atomic_t		cancel_req;
-@@ -339,6 +340,8 @@ static noinline_for_stack struct scrub_c
- 	refcount_set(&sctx->refs, 1);
- 	sctx->is_dev_replace = is_dev_replace;
- 	sctx->fs_info = fs_info;
-+	sctx->extent_path.search_commit_root = 1;
-+	sctx->extent_path.skip_locking = 1;
- 	for (i = 0; i < SCRUB_STRIPES_PER_SCTX; i++) {
- 		int ret;
- 
-@@ -1468,6 +1471,7 @@ static void scrub_stripe_reset_bitmaps(s
-  * Return <0 for error.
-  */
- static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
-+					struct btrfs_path *extent_path,
- 					struct btrfs_device *dev, u64 physical,
- 					int mirror_num, u64 logical_start,
- 					u32 logical_len,
-@@ -1477,7 +1481,6 @@ static int scrub_find_fill_first_stripe(
- 	struct btrfs_root *extent_root = btrfs_extent_root(fs_info, bg->start);
- 	struct btrfs_root *csum_root = btrfs_csum_root(fs_info, bg->start);
- 	const u64 logical_end = logical_start + logical_len;
--	struct btrfs_path path = { 0 };
- 	u64 cur_logical = logical_start;
- 	u64 stripe_end;
- 	u64 extent_start;
-@@ -1493,14 +1496,13 @@ static int scrub_find_fill_first_stripe(
- 	/* The range must be inside the bg. */
- 	ASSERT(logical_start >= bg->start && logical_end <= bg->start + bg->length);
- 
--	path.search_commit_root = 1;
--	path.skip_locking = 1;
--
--	ret = find_first_extent_item(extent_root, &path, logical_start, logical_len);
-+	ret = find_first_extent_item(extent_root, extent_path, logical_start,
-+				     logical_len);
- 	/* Either error or not found. */
- 	if (ret)
- 		goto out;
--	get_extent_info(&path, &extent_start, &extent_len, &extent_flags, &extent_gen);
-+	get_extent_info(extent_path, &extent_start, &extent_len, &extent_flags,
-+			&extent_gen);
- 	if (extent_flags & BTRFS_EXTENT_FLAG_TREE_BLOCK)
- 		stripe->nr_meta_extents++;
- 	if (extent_flags & BTRFS_EXTENT_FLAG_DATA)
-@@ -1528,7 +1530,7 @@ static int scrub_find_fill_first_stripe(
- 
- 	/* Fill the extent info for the remaining sectors. */
- 	while (cur_logical <= stripe_end) {
--		ret = find_first_extent_item(extent_root, &path, cur_logical,
-+		ret = find_first_extent_item(extent_root, extent_path, cur_logical,
- 					     stripe_end - cur_logical + 1);
- 		if (ret < 0)
- 			goto out;
-@@ -1536,7 +1538,7 @@ static int scrub_find_fill_first_stripe(
- 			ret = 0;
- 			break;
- 		}
--		get_extent_info(&path, &extent_start, &extent_len,
-+		get_extent_info(extent_path, &extent_start, &extent_len,
- 				&extent_flags, &extent_gen);
- 		if (extent_flags & BTRFS_EXTENT_FLAG_TREE_BLOCK)
- 			stripe->nr_meta_extents++;
-@@ -1576,7 +1578,6 @@ static int scrub_find_fill_first_stripe(
- 	}
- 	set_bit(SCRUB_STRIPE_FLAG_INITIALIZED, &stripe->state);
- out:
--	btrfs_release_path(&path);
- 	return ret;
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index 32b516ab9c475..71608a6def988 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -1982,6 +1982,8 @@ static __net_exit void kcm_exit_net(struct net *net)
+ 	 * that all multiplexors and psocks have been destroyed.
+ 	 */
+ 	WARN_ON(!list_empty(&knet->mux_list));
++
++	mutex_destroy(&knet->mutex);
  }
  
-@@ -1766,8 +1767,9 @@ static int queue_scrub_stripe(struct scr
- 
- 	/* We can queue one stripe using the remaining slot. */
- 	scrub_reset_stripe(stripe);
--	ret = scrub_find_fill_first_stripe(bg, dev, physical, mirror_num,
--					   logical, length, stripe);
-+	ret = scrub_find_fill_first_stripe(bg, &sctx->extent_path, dev,
-+					   physical, mirror_num, logical,
-+					   length, stripe);
- 	/* Either >0 as no more extents or <0 for error. */
- 	if (ret)
- 		return ret;
-@@ -1785,6 +1787,7 @@ static int scrub_raid56_parity_stripe(st
- 	struct btrfs_fs_info *fs_info = sctx->fs_info;
- 	struct btrfs_raid_bio *rbio;
- 	struct btrfs_io_context *bioc = NULL;
-+	struct btrfs_path extent_path = { 0 };
- 	struct bio *bio;
- 	struct scrub_stripe *stripe;
- 	bool all_empty = true;
-@@ -1795,6 +1798,14 @@ static int scrub_raid56_parity_stripe(st
- 
- 	ASSERT(sctx->raid56_data_stripes);
- 
-+	/*
-+	 * For data stripe search, we cannot re-use the same extent path, as
-+	 * the data stripe bytenr may be smaller than previous extent.  Thus we
-+	 * have to use our own extent path.
-+	 */
-+	extent_path.search_commit_root = 1;
-+	extent_path.skip_locking = 1;
-+
- 	for (int i = 0; i < data_stripes; i++) {
- 		int stripe_index;
- 		int rot;
-@@ -1809,7 +1820,7 @@ static int scrub_raid56_parity_stripe(st
- 
- 		scrub_reset_stripe(stripe);
- 		set_bit(SCRUB_STRIPE_FLAG_NO_REPORT, &stripe->state);
--		ret = scrub_find_fill_first_stripe(bg,
-+		ret = scrub_find_fill_first_stripe(bg, &extent_path,
- 				map->stripes[stripe_index].dev, physical, 1,
- 				full_stripe_start + btrfs_stripe_nr_to_offset(i),
- 				BTRFS_STRIPE_LEN, stripe);
-@@ -1937,6 +1948,7 @@ static int scrub_raid56_parity_stripe(st
- 	bio_put(bio);
- 	btrfs_bio_counter_dec(fs_info);
- 
-+	btrfs_release_path(&extent_path);
- out:
- 	return ret;
- }
-@@ -2109,6 +2121,9 @@ static noinline_for_stack int scrub_stri
- 	u64 stripe_logical;
- 	int stop_loop = 0;
- 
-+	/* Extent_path should be released by now. */
-+	ASSERT(sctx->extent_path.nodes[0] == NULL);
-+
- 	scrub_blocked_if_needed(fs_info);
- 
- 	if (sctx->is_dev_replace &&
-@@ -2227,6 +2242,8 @@ out:
- 	ret2 = flush_scrub_stripes(sctx);
- 	if (!ret)
- 		ret = ret2;
-+	btrfs_release_path(&sctx->extent_path);
-+
- 	if (sctx->raid56_data_stripes) {
- 		for (int i = 0; i < nr_data_stripes(map); i++)
- 			release_scrub_stripe(&sctx->raid56_data_stripes[i]);
+ static struct pernet_operations kcm_net_ops = {
+-- 
+2.40.1
+
 
 
