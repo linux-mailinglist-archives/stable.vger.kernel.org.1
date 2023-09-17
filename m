@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DE667A3A70
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1039A7A39C2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240336AbjIQUDS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43962 "EHLO
+        id S240131AbjIQTyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240413AbjIQUCy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:54 -0400
+        with ESMTP id S240157AbjIQTxs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54491B0
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF4BC433CD;
-        Sun, 17 Sep 2023 20:02:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC1C9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77031C433C9;
+        Sun, 17 Sep 2023 19:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980964;
-        bh=LM8EGF63NkVrYoX1+nV/BTtZd9+/WdQzmXe68CrgLqU=;
+        s=korg; t=1694980422;
+        bh=EQ9pktDE7+lLm00YJ3KwzztnmjM4cwLBqFy2Q/o8xQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DuPAE9GEa8FkAANBrunzicn9ZEHpnYtpx/8OyZwkXJjAKVi2T1kqOtpu4kbl/T33s
-         ddgk5widYBVjVRqi0Ijsidv2K4K7zy5JZhgug20oHj6SI/pLfuRetOmf0cSUrG7B0a
-         WlP0iXpcvQfcy1bwTmO3V10jmc8QhFIchxnyjCqw=
+        b=YPMMzjMrM4NHCTzknjdZoCyO6M6HEyLVAlPRd1H2Egbe9xcYiO0phKOADueL2D1EW
+         TbNaz+J9xwEom0EKa34m0bAWYfQTL2c+kIYWiSiwTiHlYhn4Dp4RshGpvD0E8uasJ3
+         /9ber5xRcrDGQcB5reHf4q1Hn+pDBHXwWOA7yFjQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Gruenbacher <agruenba@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/219] gfs2: low-memory forced flush fixes
+        patches@lists.linux.dev, Yikebaer Aizezi <yikebaer61@gmail.com>,
+        stable@kernel.org, Baokun Li <libaokun1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.5 187/285] ext4: fix slab-use-after-free in ext4_es_insert_extent()
 Date:   Sun, 17 Sep 2023 21:13:07 +0200
-Message-ID: <20230917191043.180404155@linuxfoundation.org>
+Message-ID: <20230917191058.083977809@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,93 +50,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit b74cd55aa9a9d0aca760028a51343ec79812e410 ]
+commit 768d612f79822d30a1e7d132a4d4b05337ce42ec upstream.
 
-First, function gfs2_ail_flush_reqd checks the SDF_FORCE_AIL_FLUSH flag
-to determine if an AIL flush should be forced in low-memory situations.
-However, it also immediately clears the flag, and when called repeatedly
-as in function gfs2_logd, the flag will be lost.  Fix that by pulling
-the SDF_FORCE_AIL_FLUSH flag check out of gfs2_ail_flush_reqd.
+Yikebaer reported an issue:
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_es_insert_extent+0xc68/0xcb0
+fs/ext4/extents_status.c:894
+Read of size 4 at addr ffff888112ecc1a4 by task syz-executor/8438
 
-Second, function gfs2_writepages sets the SDF_FORCE_AIL_FLUSH flag
-whether or not enough pages were written.  If enough pages could be
-written, flushing the AIL is unnecessary, though.
+CPU: 1 PID: 8438 Comm: syz-executor Not tainted 6.5.0-rc5 #1
+Call Trace:
+ [...]
+ kasan_report+0xba/0xf0 mm/kasan/report.c:588
+ ext4_es_insert_extent+0xc68/0xcb0 fs/ext4/extents_status.c:894
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
 
-Third, gfs2_writepages doesn't wake up logd after setting the
-SDF_FORCE_AIL_FLUSH flag, so it can take a long time for logd to react.
-It would be preferable to wake up logd, but that hurts the performance
-of some workloads and we don't quite understand why so far, so don't
-wake up logd so far.
+Allocated by task 8438:
+ [...]
+ kmem_cache_zalloc include/linux/slab.h:693 [inline]
+ __es_alloc_extent fs/ext4/extents_status.c:469 [inline]
+ ext4_es_insert_extent+0x672/0xcb0 fs/ext4/extents_status.c:873
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
 
-Fixes: b066a4eebd4f ("gfs2: forcibly flush ail to relieve memory pressure")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Freed by task 8438:
+ [...]
+ kmem_cache_free+0xec/0x490 mm/slub.c:3823
+ ext4_es_try_to_merge_right fs/ext4/extents_status.c:593 [inline]
+ __es_insert_extent+0x9f4/0x1440 fs/ext4/extents_status.c:802
+ ext4_es_insert_extent+0x2ca/0xcb0 fs/ext4/extents_status.c:882
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
+==================================================================
+
+The flow of issue triggering is as follows:
+1. remove es
+      raw es               es  removed  es1
+|-------------------| -> |----|.......|------|
+
+2. insert es
+  es   insert   es1      merge with es  es1     merge with es and free es1
+|----|.......|------| -> |------------|------| -> |-------------------|
+
+es merges with newes, then merges with es1, frees es1, then determines
+if es1->es_len is 0 and triggers a UAF.
+
+The code flow is as follows:
+ext4_es_insert_extent
+  es1 = __es_alloc_extent(true);
+  es2 = __es_alloc_extent(true);
+  __es_remove_extent(inode, lblk, end, NULL, es1)
+    __es_insert_extent(inode, &newes, es1) ---> insert es1 to es tree
+  __es_insert_extent(inode, &newes, es2)
+    ext4_es_try_to_merge_right
+      ext4_es_free_extent(inode, es1) --->  es1 is freed
+  if (es1 && !es1->es_len)
+    // Trigger UAF by determining if es1 is used.
+
+We determine whether es1 or es2 is used immediately after calling
+__es_remove_extent() or __es_insert_extent() to avoid triggering a
+UAF if es1 or es2 is freed.
+
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
+Closes: https://lore.kernel.org/lkml/CALcu4raD4h9coiyEBL4Bm0zjDwxC2CyPiTwsP3zFuhot6y9Beg@mail.gmail.com
+Fixes: 2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230815070808.3377171-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/aops.c | 4 ++--
- fs/gfs2/log.c  | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/ext4/extents_status.c | 44 +++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-index 2f04c0ff7470b..1e9fa26f04fe1 100644
---- a/fs/gfs2/aops.c
-+++ b/fs/gfs2/aops.c
-@@ -182,13 +182,13 @@ static int gfs2_writepages(struct address_space *mapping,
- 	int ret;
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 9b5b8951afb4..6f7de14c0fa8 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -878,23 +878,29 @@ void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
  
- 	/*
--	 * Even if we didn't write any pages here, we might still be holding
-+	 * Even if we didn't write enough pages here, we might still be holding
- 	 * dirty pages in the ail. We forcibly flush the ail because we don't
- 	 * want balance_dirty_pages() to loop indefinitely trying to write out
- 	 * pages held in the ail that it can't find.
- 	 */
- 	ret = iomap_writepages(mapping, wbc, &wpc, &gfs2_writeback_ops);
--	if (ret == 0)
-+	if (ret == 0 && wbc->nr_to_write > 0)
- 		set_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
- 	return ret;
- }
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 69c3facfcbef4..e021d5f50c231 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1285,9 +1285,6 @@ static inline int gfs2_ail_flush_reqd(struct gfs2_sbd *sdp)
- {
- 	unsigned int used_blocks = sdp->sd_jdesc->jd_blocks - atomic_read(&sdp->sd_log_blks_free);
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
+ 		err2 = 0;
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
  
--	if (test_and_clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags))
--		return 1;
+ 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
+ 	    (status & EXTENT_STATUS_WRITTEN ||
+ 	     status & EXTENT_STATUS_UNWRITTEN))
+ 		__revise_pending(inode, lblk, len);
 -
- 	return used_blocks + atomic_read(&sdp->sd_log_blks_needed) >=
- 		atomic_read(&sdp->sd_log_thresh2);
- }
-@@ -1328,7 +1325,9 @@ int gfs2_logd(void *data)
- 						  GFS2_LFC_LOGD_JFLUSH_REQD);
- 		}
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
+@@ -1491,8 +1497,12 @@ void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	 */
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 	err = __es_remove_extent(inode, lblk, end, &reserved, es);
+-	if (es && !es->es_len)
+-		__es_free_extent(es);
++	/* Free preallocated extent if it didn't get used. */
++	if (es) {
++		if (!es->es_len)
++			__es_free_extent(es);
++		es = NULL;
++	}
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err)
+ 		goto retry;
+@@ -2047,19 +2057,25 @@ void ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
  
--		if (gfs2_ail_flush_reqd(sdp)) {
-+		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
-+		    gfs2_ail_flush_reqd(sdp)) {
-+			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
- 			gfs2_ail1_start(sdp);
- 			gfs2_ail1_wait(sdp);
- 			gfs2_ail1_empty(sdp, 0);
-@@ -1341,6 +1340,7 @@ int gfs2_logd(void *data)
- 		try_to_freeze();
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
  
- 		t = wait_event_interruptible_timeout(sdp->sd_logd_waitq,
-+				test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
- 				gfs2_ail_flush_reqd(sdp) ||
- 				gfs2_jrnl_flush_reqd(sdp) ||
- 				kthread_should_stop(),
+ 	if (allocated)
+ 		__insert_pending(inode, lblk);
+-
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
 -- 
-2.40.1
+2.42.0
 
 
 
