@@ -2,50 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5415B7A3D26
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD887A3B3A
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241227AbjIQUjc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34322 "EHLO
+        id S240620AbjIQUO6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241273AbjIQUjG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:06 -0400
+        with ESMTP id S240662AbjIQUOg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C23B115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46881C433C9;
-        Sun, 17 Sep 2023 20:39:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C92A7F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E0CC433C8;
+        Sun, 17 Sep 2023 20:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983140;
-        bh=k5SC0DZnJyiRb+4K+usbP3nppkQwimrd8cTWxJoFBoc=;
+        s=korg; t=1694981671;
+        bh=pkJmraR0tRsuj1r/VF9+k9GRgfwQy7lB1GxGn1jKGQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PNUNggkwaptishtbqv5Dhm0BvjyCdBkG1sKlQtGrNKIWNH7rjjrgTW83Do9hMZ0wl
-         hiiDtaqh/bRJPoi2YOE43iDUAryyCPzcP0SjgYjpFC4uOAGdbAJO9PR3zKxBxIfz6C
-         9e0uiL5ahN9LD0iPsGsoa2weETfiS/CgebM38gEg=
+        b=QOFlsHIIyeq7ozy2LJDSV5niNnI3UUMFGoWUokiIzAqXNch36p6crVGE71xLzzO10
+         xxw2GaVljYNgQJwrCQnus34j6Vfk/EtYufDTZYGcr3Wu7H184yyremJn8Ey4m29ZU7
+         MXYmGmWGrWYuCbhW6xpHLet+IFUAFv3MW/iDeteo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mohamed Mahmoud <mmahmoud@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Dave Tucker <datucker@redhat.com>,
-        Derek Barbosa <debarbos@redhat.com>,
-        Song Liu <songliubraving@fb.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Ariel Marcovitch <arielmarcovitch@gmail.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 419/511] perf annotate bpf: Dont enclose non-debug code with an assert()
+Subject: [PATCH 6.1 119/219] idr: fix param name in idr_alloc_cyclic() doc
 Date:   Sun, 17 Sep 2023 21:14:06 +0200
-Message-ID: <20230917191123.895500274@linuxfoundation.org>
+Message-ID: <20230917191045.276096503@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,113 +51,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Ariel Marcovitch <arielmarcovitch@gmail.com>
 
-[ Upstream commit 979e9c9fc9c2a761303585e07fe2699bdd88182f ]
+[ Upstream commit 2a15de80dd0f7e04a823291aa9eb49c5294f56af ]
 
-In 616b14b47a86d880 ("perf build: Conditionally define NDEBUG") we
-started using NDEBUG=1 when DEBUG=1 isn't present, so code that is
-enclosed with assert() is not called.
+The relevant parameter is 'start' and not 'nextid'
 
-In dd317df072071903 ("perf build: Make binutil libraries opt in") we
-stopped linking against binutils-devel, for licensing reasons.
-
-Recently people asked me why annotation of BPF programs wasn't working,
-i.e. this:
-
-  $ perf annotate bpf_prog_5280546344e3f45c_kfree_skb
-
-was returning:
-
-  case SYMBOL_ANNOTATE_ERRNO__NO_LIBOPCODES_FOR_BPF:
-     scnprintf(buf, buflen, "Please link with binutils's libopcode to enable BPF annotation");
-
-This was on a fedora rpm, so its new enough that I had to try to test by
-rebuilding using BUILD_NONDISTRO=1, only to get it segfaulting on me.
-
-This combination made this libopcode function not to be called:
-
-        assert(bfd_check_format(bfdf, bfd_object));
-
-Changing it to:
-
-	if (!bfd_check_format(bfdf, bfd_object))
-		abort();
-
-Made it work, looking at this "check" function made me realize it
-changes the 'bfdf' internal state, i.e. we better call it.
-
-So stop using assert() on it, just call it and abort if it fails.
-
-Probably it is better to propagate the error, etc, but it seems it is
-unlikely to fail from the usage done so far and we really need to stop
-using libopcodes, so do the quick fix above and move on.
-
-With it we have BPF annotation back working when built with
-BUILD_NONDISTRO=1:
-
-  ⬢[acme@toolbox perf-tools-next]$ perf annotate --stdio2 bpf_prog_5280546344e3f45c_kfree_skb   | head
-  No kallsyms or vmlinux with build-id 939bc71a1a51cdc434e60af93c7e734f7d5c0e7e was found
-  Samples: 12  of event 'cpu-clock:ppp', 4000 Hz, Event count (approx.): 3000000, [percent: local period]
-  bpf_prog_5280546344e3f45c_kfree_skb() bpf_prog_5280546344e3f45c_kfree_skb
-  Percent      int kfree_skb(struct trace_event_raw_kfree_skb *args) {
-                 nop
-   33.33         xchg   %ax,%ax
-                 push   %rbp
-                 mov    %rsp,%rbp
-                 sub    $0x180,%rsp
-                 push   %rbx
-                 push   %r13
-  ⬢[acme@toolbox perf-tools-next]$
-
-Fixes: 6987561c9e86eace ("perf annotate: Enable annotation of BPF programs")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mohamed Mahmoud <mmahmoud@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Dave Tucker <datucker@redhat.com>
-Cc: Derek Barbosa <debarbos@redhat.com>
-Cc: Song Liu <songliubraving@fb.com>
-Link: https://lore.kernel.org/lkml/ZMrMzoQBe0yqMek1@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 460488c58ca8 ("idr: Remove idr_alloc_ext")
+Signed-off-by: Ariel Marcovitch <arielmarcovitch@gmail.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/annotate.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ lib/idr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index a5e87c7f4f4eb..60b232eba5c82 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -1729,8 +1729,11 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	perf_exe(tpath, sizeof(tpath));
- 
- 	bfdf = bfd_openr(tpath, NULL);
--	assert(bfdf);
--	assert(bfd_check_format(bfdf, bfd_object));
-+	if (bfdf == NULL)
-+		abort();
-+
-+	if (!bfd_check_format(bfdf, bfd_object))
-+		abort();
- 
- 	s = open_memstream(&buf, &buf_size);
- 	if (!s) {
-@@ -1778,7 +1781,8 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- #else
- 	disassemble = disassembler(bfdf);
- #endif
--	assert(disassemble);
-+	if (disassemble == NULL)
-+		abort();
- 
- 	fflush(s);
- 	do {
+diff --git a/lib/idr.c b/lib/idr.c
+index 7ecdfdb5309e7..13f2758c23773 100644
+--- a/lib/idr.c
++++ b/lib/idr.c
+@@ -100,7 +100,7 @@ EXPORT_SYMBOL_GPL(idr_alloc);
+  * @end: The maximum ID (exclusive).
+  * @gfp: Memory allocation flags.
+  *
+- * Allocates an unused ID in the range specified by @nextid and @end.  If
++ * Allocates an unused ID in the range specified by @start and @end.  If
+  * @end is <= 0, it is treated as one larger than %INT_MAX.  This allows
+  * callers to use @start + N as @end as long as N is within integer range.
+  * The search for an unused ID will start at the last ID allocated and will
 -- 
 2.40.1
 
