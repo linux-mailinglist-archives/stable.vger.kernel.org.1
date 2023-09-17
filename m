@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F087A3A62
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F6D7A38A1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240307AbjIQUCn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40728 "EHLO
+        id S239791AbjIQTiK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:38:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240500AbjIQUCf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:35 -0400
+        with ESMTP id S239799AbjIQThr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C99196
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FBFC433CD;
-        Sun, 17 Sep 2023 20:02:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 134B6D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4739FC433C7;
+        Sun, 17 Sep 2023 19:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980923;
-        bh=NONz4Gk+JbhjOEia+Ro1v1YRrVqAhS/3M+M6zmp8zsc=;
+        s=korg; t=1694979461;
+        bh=+L4S0+c+OeVlrAnp8KzVW2adp4v2wDrBYQomqfOHANU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BuYfljZjxyX4H4dgh9sJhEtfZ4rYW7uFB2/xTVVkPHCD3t3dSvEyzGspo9a5iiujM
-         zoFMluCjaqtK+Mabaadf72eDnubZX/8QhP8vkSX8HjU+SN3/YVie21buki6LC+JgpZ
-         JCijeKIns6mPNwz643TX9hoMjj4EdT983NGsdF8Q=
+        b=Bpy5Un+vYWDlnDurFQHNOLpej02ZXjkHpZgYVpBn4ldpYXVpvlraRa7A+93IjYr+D
+         r26Ej91arrF6D+sqZ4Cwhu4wvEdeLMOovzmyXSZ8dVkmAmBxCPthiSIUT9+8wUMT6r
+         mSHcNc75/ggkpoVtEnv464ahrWE1mz2KWl+bxCoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 047/219] clk: qcom: q6sstop-qcs404: fix missing resume during probe
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 320/406] scsi: qla2xxx: Turn off noisy message log
 Date:   Sun, 17 Sep 2023 21:12:54 +0200
-Message-ID: <20230917191042.704984009@linuxfoundation.org>
+Message-ID: <20230917191109.746585314@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,64 +51,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 97112c83f4671a4a722f99a53be4e91fac4091bc upstream.
+commit 8ebaa45163a3fedc885c1dc7d43ea987a2f00a06 upstream.
 
-Drivers that enable runtime PM must make sure that the controller is
-runtime resumed before accessing its registers to prevent the power
-domain from being disabled.
+Some consider noisy log as test failure.  Turn off noisy message log.
 
-Fixes: 6cdef2738db0 ("clk: qcom: Add Q6SSTOP clock controller for QCS404")
-Cc: stable@vger.kernel.org      # 5.5
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-7-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/q6sstop-qcs404.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/q6sstop-qcs404.c
-+++ b/drivers/clk/qcom/q6sstop-qcs404.c
-@@ -174,21 +174,32 @@ static int q6sstopcc_qcs404_probe(struct
- 		return ret;
- 	}
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -604,7 +604,7 @@ static int qla_nvme_post_cmd(struct nvme
  
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	q6sstop_regmap_config.name = "q6sstop_tcsr";
- 	desc = &tcsr_qcs404_desc;
- 
- 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
- 	if (ret)
--		return ret;
-+		goto err_put_rpm;
- 
- 	q6sstop_regmap_config.name = "q6sstop_cc";
- 	desc = &q6sstop_qcs404_desc;
- 
- 	ret = qcom_cc_probe_by_index(pdev, 0, desc);
- 	if (ret)
--		return ret;
-+		goto err_put_rpm;
-+
-+	pm_runtime_put(&pdev->dev);
- 
- 	return 0;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops q6sstopcc_pm_ops = {
+ 	rval = qla2x00_start_nvme_mq(sp);
+ 	if (rval != QLA_SUCCESS) {
+-		ql_log(ql_log_warn, vha, 0x212d,
++		ql_dbg(ql_dbg_io + ql_dbg_verbose, vha, 0x212d,
+ 		    "qla2x00_start_nvme_mq failed = %d\n", rval);
+ 		sp->priv = NULL;
+ 		priv->sp = NULL;
 
 
