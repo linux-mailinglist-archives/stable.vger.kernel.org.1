@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AF317A37BA
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DAD17A3799
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239433AbjIQTYP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:24:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
+        id S239228AbjIQTWk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239533AbjIQTX4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:23:56 -0400
+        with ESMTP id S239500AbjIQTWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:22:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA18D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:23:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B7BC433C9;
-        Sun, 17 Sep 2023 19:23:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01037D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:22:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE99C433CB;
+        Sun, 17 Sep 2023 19:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978631;
-        bh=ttceEakJVDmU0sMHFIN9sAg7p2ZrldTsO2VtG3MlzwY=;
+        s=korg; t=1694978531;
+        bh=5mGizzpgxKLVnC+RwtJ8v7xI+KO34jzoH5Oe/0aIRXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1vjEVtxJmYAms0mykz5Xsd2nCxSQD+0fKp2NYU4VArhlXQISSOxq1KddKZsaCYfmL
-         ZvaFEBK7/qjq8Z77krDzQCv8132En3711mZrfB9aiEesrnWRTBxSyUBwSmrYwpQrvU
-         hHai8IIa5TcX4d8tr4KsWH5UHuOmWv+BO9BuHfWU=
+        b=RxPBEsbfgYOvtiNuVRcgyuajOIQ58bgTTFHb0r279PBtoWDKWLZAbJdkgcg1dTxpQ
+         Xm+PHAmEE2Wl1EPosRkfZ1fgz6S7c5mpVeyc1faIOAETg1NKt4z6fwXSwRVNrn4Eq1
+         cpB9OVbCwTRD/x7GhknjedF/aYGB8fY5eAm879Pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/406] hwrng: nomadik - keep clock enabled while hwrng is registered
-Date:   Sun, 17 Sep 2023 21:08:59 +0200
-Message-ID: <20230917191103.375998717@linuxfoundation.org>
+Subject: [PATCH 5.10 086/406] regmap: rbtree: Use alloc_flags for memory allocations
+Date:   Sun, 17 Sep 2023 21:09:00 +0200
+Message-ID: <20230917191103.401478185@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,84 +55,96 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 039980de89dc9dd757418d6f296e4126cc3f86c3 ]
+[ Upstream commit 0c8b0bf42c8cef56f7cd9cd876fbb7ece9217064 ]
 
-The nomadik driver uses devres to register itself with the hwrng core,
-the driver will be unregistered from hwrng when its device goes out of
-scope. This happens after the driver's remove function is called.
+The kunit tests discovered a sleeping in atomic bug.  The allocations
+in the regcache-rbtree code should use the map->alloc_flags instead of
+GFP_KERNEL.
 
-However, nomadik's clock is disabled in the remove function. There's a
-short timeframe where nomadik is still registered with the hwrng core
-although its clock is disabled. I suppose the clock must be active to
-access the hardware and serve requests from the hwrng core.
+[    5.005510] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
+[    5.005960] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 117, name: kunit_try_catch
+[    5.006219] preempt_count: 1, expected: 0
+[    5.006414] 1 lock held by kunit_try_catch/117:
+[    5.006590]  #0: 833b9010 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
+[    5.007493] irq event stamp: 162
+[    5.007627] hardirqs last  enabled at (161): [<80786738>] crng_make_state+0x1a0/0x294
+[    5.007871] hardirqs last disabled at (162): [<80c531ec>] _raw_spin_lock_irqsave+0x7c/0x80
+[    5.008119] softirqs last  enabled at (0): [<801110ac>] copy_process+0x810/0x2138
+[    5.008356] softirqs last disabled at (0): [<00000000>] 0x0
+[    5.008688] CPU: 0 PID: 117 Comm: kunit_try_catch Tainted: G                 N 6.4.4-rc3-g0e8d2fdfb188 #1
+[    5.009011] Hardware name: Generic DT based system
+[    5.009277]  unwind_backtrace from show_stack+0x18/0x1c
+[    5.009497]  show_stack from dump_stack_lvl+0x38/0x5c
+[    5.009676]  dump_stack_lvl from __might_resched+0x188/0x2d0
+[    5.009860]  __might_resched from __kmem_cache_alloc_node+0x1dc/0x25c
+[    5.010061]  __kmem_cache_alloc_node from kmalloc_trace+0x30/0xc8
+[    5.010254]  kmalloc_trace from regcache_rbtree_write+0x26c/0x468
+[    5.010446]  regcache_rbtree_write from _regmap_write+0x88/0x140
+[    5.010634]  _regmap_write from regmap_write+0x44/0x68
+[    5.010803]  regmap_write from basic_read_write+0x8c/0x270
+[    5.010980]  basic_read_write from kunit_try_run_case+0x48/0xa0
 
-Switch to devm_clk_get_enabled and let devres disable the clock and
-unregister the hwrng. This avoids the race condition.
-
-Fixes: 3e75241be808 ("hwrng: drivers - Use device-managed registration API")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 28644c809f44 ("regmap: Add the rbtree cache support")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/ee59d128-413c-48ad-a3aa-d9d350c80042@roeck-us.net/
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/58f12a07-5f4b-4a8f-ab84-0a42d1908cb9@moroto.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/nomadik-rng.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/base/regmap/regcache-rbtree.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/char/hw_random/nomadik-rng.c b/drivers/char/hw_random/nomadik-rng.c
-index e8f9621e79541..3774adf903a83 100644
---- a/drivers/char/hw_random/nomadik-rng.c
-+++ b/drivers/char/hw_random/nomadik-rng.c
-@@ -13,8 +13,6 @@
- #include <linux/clk.h>
- #include <linux/err.h>
+diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
+index fabf87058d80b..ae6b8788d5f3f 100644
+--- a/drivers/base/regmap/regcache-rbtree.c
++++ b/drivers/base/regmap/regcache-rbtree.c
+@@ -277,7 +277,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
  
--static struct clk *rng_clk;
--
- static int nmk_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- {
- 	void __iomem *base = (void __iomem *)rng->priv;
-@@ -36,21 +34,20 @@ static struct hwrng nmk_rng = {
+ 	blk = krealloc(rbnode->block,
+ 		       blklen * map->cache_word_size,
+-		       GFP_KERNEL);
++		       map->alloc_flags);
+ 	if (!blk)
+ 		return -ENOMEM;
  
- static int nmk_rng_probe(struct amba_device *dev, const struct amba_id *id)
- {
-+	struct clk *rng_clk;
- 	void __iomem *base;
- 	int ret;
+@@ -286,7 +286,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
+ 	if (BITS_TO_LONGS(blklen) > BITS_TO_LONGS(rbnode->blklen)) {
+ 		present = krealloc(rbnode->cache_present,
+ 				   BITS_TO_LONGS(blklen) * sizeof(*present),
+-				   GFP_KERNEL);
++				   map->alloc_flags);
+ 		if (!present)
+ 			return -ENOMEM;
  
--	rng_clk = devm_clk_get(&dev->dev, NULL);
-+	rng_clk = devm_clk_get_enabled(&dev->dev, NULL);
- 	if (IS_ERR(rng_clk)) {
- 		dev_err(&dev->dev, "could not get rng clock\n");
- 		ret = PTR_ERR(rng_clk);
- 		return ret;
+@@ -320,7 +320,7 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
+ 	const struct regmap_range *range;
+ 	int i;
+ 
+-	rbnode = kzalloc(sizeof(*rbnode), GFP_KERNEL);
++	rbnode = kzalloc(sizeof(*rbnode), map->alloc_flags);
+ 	if (!rbnode)
+ 		return NULL;
+ 
+@@ -346,13 +346,13 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
  	}
  
--	clk_prepare_enable(rng_clk);
--
- 	ret = amba_request_regions(dev, dev->dev.init_name);
- 	if (ret)
--		goto out_clk;
-+		return ret;
- 	ret = -ENOMEM;
- 	base = devm_ioremap(&dev->dev, dev->res.start,
- 			    resource_size(&dev->res));
-@@ -64,15 +61,12 @@ static int nmk_rng_probe(struct amba_device *dev, const struct amba_id *id)
+ 	rbnode->block = kmalloc_array(rbnode->blklen, map->cache_word_size,
+-				      GFP_KERNEL);
++				      map->alloc_flags);
+ 	if (!rbnode->block)
+ 		goto err_free;
  
- out_release:
- 	amba_release_regions(dev);
--out_clk:
--	clk_disable_unprepare(rng_clk);
- 	return ret;
- }
+ 	rbnode->cache_present = kcalloc(BITS_TO_LONGS(rbnode->blklen),
+ 					sizeof(*rbnode->cache_present),
+-					GFP_KERNEL);
++					map->alloc_flags);
+ 	if (!rbnode->cache_present)
+ 		goto err_free_block;
  
- static void nmk_rng_remove(struct amba_device *dev)
- {
- 	amba_release_regions(dev);
--	clk_disable_unprepare(rng_clk);
- }
- 
- static const struct amba_id nmk_rng_ids[] = {
 -- 
 2.40.1
 
