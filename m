@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6237A38F1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C8377A3A0D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239900AbjIQTnB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
+        id S240253AbjIQT5y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239995AbjIQTmg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:36 -0400
+        with ESMTP id S240264AbjIQT5e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35AB0196
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA4FC433CD;
-        Sun, 17 Sep 2023 19:42:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEA6EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD69C433C7;
+        Sun, 17 Sep 2023 19:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979731;
-        bh=AIxl1nel51xCxSXTC+pkw4dKGzihcA3EbqdzsdYplHo=;
+        s=korg; t=1694980649;
+        bh=FUFNArSybQxnqddbYf1LD/u79YnQHc1Eck/M4pdREUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KusAuyU3bSnP6tvUIb0e+zFugfz0fhlt7VRDVUkBKu5FyxHNkcPUuC70HjYwK+8EG
-         a1Tfaazo6Z3MiRn8FSi2i556GyZ/bep9LcKnPq9v/iP1WxnwI8ADogw9ffsxPU7l/p
-         rGM4FoZflUMqxH3XuEWyHKVfNieJIV+BYx0s2KPY=
+        b=ScG0WfO/gNdREZxpDB6WAJpqX1su0lVKxJxy98FqdTCvCj32kMTanMgphX3TBPWRg
+         J8FKp9xtztWPV902GF1u2ER3mtD4dfnm5YyaGCvTK1Xqa3tLoIKo0lTHB1v9RVXCvm
+         3+7uVwsPVL2A4YrCI0DmEMgoAV2SZ2jhy8pHjEkk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        patches@lists.linux.dev,
+        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+6f98de741f7dbbfc4ccb@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 398/406] kcm: Fix memory leak in error path of kcm_sendmsg()
-Date:   Sun, 17 Sep 2023 21:14:12 +0200
-Message-ID: <20230917191111.771413618@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 253/285] net/smc: use smc_lgr_list.lock to protect smc_lgr_list.list iterate in smcr_port_add
+Date:   Sun, 17 Sep 2023 21:14:13 +0200
+Message-ID: <20230917191100.051049200@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit c821a88bd720b0046433173185fd841a100d44ad ]
+[ Upstream commit f5146e3ef0a9eea405874b36178c19a4863b8989 ]
 
-syzbot reported a memory leak like below:
+While doing smcr_port_add, there maybe linkgroup add into or delete
+from smc_lgr_list.list at the same time, which may result kernel crash.
+So, use smc_lgr_list.lock to protect smc_lgr_list.list iterate in
+smcr_port_add.
 
-BUG: memory leak
-unreferenced object 0xffff88810b088c00 (size 240):
-  comm "syz-executor186", pid 5012, jiffies 4294943306 (age 13.680s)
-  hex dump (first 32 bytes):
-    00 89 08 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff83e5d5ff>] __alloc_skb+0x1ef/0x230 net/core/skbuff.c:634
-    [<ffffffff84606e59>] alloc_skb include/linux/skbuff.h:1289 [inline]
-    [<ffffffff84606e59>] kcm_sendmsg+0x269/0x1050 net/kcm/kcmsock.c:815
-    [<ffffffff83e479c6>] sock_sendmsg_nosec net/socket.c:725 [inline]
-    [<ffffffff83e479c6>] sock_sendmsg+0x56/0xb0 net/socket.c:748
-    [<ffffffff83e47f55>] ____sys_sendmsg+0x365/0x470 net/socket.c:2494
-    [<ffffffff83e4c389>] ___sys_sendmsg+0xc9/0x130 net/socket.c:2548
-    [<ffffffff83e4c536>] __sys_sendmsg+0xa6/0x120 net/socket.c:2577
-    [<ffffffff84ad7bb8>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84ad7bb8>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+The crash calltrace show below:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 0 P4D 0
+Oops: 0000 [#1] SMP NOPTI
+CPU: 0 PID: 559726 Comm: kworker/0:92 Kdump: loaded Tainted: G
+Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014
+Workqueue: events smc_ib_port_event_work [smc]
+RIP: 0010:smcr_port_add+0xa6/0xf0 [smc]
+RSP: 0000:ffffa5a2c8f67de0 EFLAGS: 00010297
+RAX: 0000000000000001 RBX: ffff9935e0650000 RCX: 0000000000000000
+RDX: 0000000000000010 RSI: ffff9935e0654290 RDI: ffff9935c8560000
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9934c0401918
+R10: 0000000000000000 R11: ffffffffb4a5c278 R12: ffff99364029aae4
+R13: ffff99364029aa00 R14: 00000000ffffffed R15: ffff99364029ab08
+FS:  0000000000000000(0000) GS:ffff994380600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000f06a10003 CR4: 0000000002770ef0
+PKRU: 55555554
+Call Trace:
+ smc_ib_port_event_work+0x18f/0x380 [smc]
+ process_one_work+0x19b/0x340
+ worker_thread+0x30/0x370
+ ? process_one_work+0x340/0x340
+ kthread+0x114/0x130
+ ? __kthread_cancel_work+0x50/0x50
+ ret_from_fork+0x1f/0x30
 
-In kcm_sendmsg(), kcm_tx_msg(head)->last_skb is used as a cursor to append
-newly allocated skbs to 'head'. If some bytes are copied, an error occurred,
-and jumped to out_error label, 'last_skb' is left unmodified. A later
-kcm_sendmsg() will use an obsoleted 'last_skb' reference, corrupting the
-'head' frag_list and causing the leak.
-
-This patch fixes this issue by properly updating the last allocated skb in
-'last_skb'.
-
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Reported-and-tested-by: syzbot+6f98de741f7dbbfc4ccb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6f98de741f7dbbfc4ccb
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Fixes: 1f90a05d9ff9 ("net/smc: add smcr_port_add() and smcr_link_up() processing")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 2 ++
+ net/smc/smc_core.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 71608a6def988..fb025406ea567 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1073,6 +1073,8 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 6b78075404d7d..3e89bb9b7c56c 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1654,6 +1654,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
+ {
+ 	struct smc_link_group *lgr, *n;
  
- 	if (head != kcm->seq_skb)
- 		kfree_skb(head);
-+	else if (copied)
-+		kcm_tx_msg(head)->last_skb = skb;
++	spin_lock_bh(&smc_lgr_list.lock);
+ 	list_for_each_entry_safe(lgr, n, &smc_lgr_list.list, list) {
+ 		struct smc_link *link;
  
- 	err = sk_stream_error(sk, msg->msg_flags, err);
+@@ -1669,6 +1670,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
+ 		if (link)
+ 			smc_llc_add_link_local(link);
+ 	}
++	spin_unlock_bh(&smc_lgr_list.lock);
+ }
  
+ /* link is down - switch connections to alternate link,
 -- 
 2.40.1
 
