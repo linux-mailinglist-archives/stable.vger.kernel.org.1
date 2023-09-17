@@ -2,45 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFED7A3990
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051377A384B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240091AbjIQTu7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59668 "EHLO
+        id S239708AbjIQTdx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240018AbjIQTus (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:48 -0400
+        with ESMTP id S239531AbjIQTde (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C44E7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB9BC433C7;
-        Sun, 17 Sep 2023 19:50:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AEBD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72A6C433C7;
+        Sun, 17 Sep 2023 19:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980242;
-        bh=TL5uGRPSlix/ndO/M0HMo92jlRjJNlfepNBLwacbjnY=;
+        s=korg; t=1694979208;
+        bh=1LsCL/msTmiKaqM4n7+Jiu5ElDgkcmIjFlS40wouz0M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IZtxHZ7BkoivIBMG+zw9uJaLRztJxh15x2nyKv6+Qd+ZPr+FKaXnToDupuXC/XVa5
-         vwBYwyUD5gOWqZIX+2P2uF/7k31WhgO/7XKxZl3rrDnVZD17fdgTpO0FDYchv5JW9Z
-         EjeHjTaSNHAsWRj3aYulFjZFSg78Zsvtp9ZAZ/6w=
+        b=c4b+mulcn8cK7WEWoB9uYqXsuvEs0ngkNVIdXGw9wQHU5uCaV9lEOzZxZqp7BW5q1
+         2uCZC2uaf1FtP/BvzDKtqjrLAz6CMJx0PgUZ5XAdcpLRLzKsyr9EHY8D6XL3Lj4CfJ
+         zuPjjuNwGJ+ZZQhLIFM4rSgX282TsPKnVOHwKLsM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 098/285] perf test stat_bpf_counters_cgrp: Enhance perf stat cgroup BPF counter test
-Date:   Sun, 17 Sep 2023 21:11:38 +0200
-Message-ID: <20230917191055.077701876@linuxfoundation.org>
+Subject: [PATCH 5.10 245/406] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
+Date:   Sun, 17 Sep 2023 21:11:39 +0200
+Message-ID: <20230917191107.628883483@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,52 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit a84260e314029e6dc9904fd6eabf8d9fd7965351 ]
+[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
 
-It has system-wide test and cpu-list test but the cpu-list test fails
-sometimes.  It runs sleep command on CPU1 and measure both user.slice
-and system.slice cgroups by default (on systemd-based systems).
+Change scsi_host_lookup() hostnum argument type from unsigned short to
+unsigned int to match the type used everywhere else.
 
-But if the system was idle enough, sometime the system.slice gets no
-count and it makes the test failing.  Maybe that's because it only looks
-at the CPU1, let's add CPU0 to increase the chance it finds some tasks.
-
-Fixes: 7901086014bbaa3a ("perf test: Add a new test for perf stat cgroup BPF counter")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: bpf@vger.kernel.org
-Link: https://lore.kernel.org/r/20230825164152.165610-3-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/stat_bpf_counters_cgrp.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/hosts.c     | 4 ++--
+ include/scsi/scsi_host.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-index a74440a00b6b6..e75d0780dc788 100755
---- a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-+++ b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-@@ -60,7 +60,7 @@ check_system_wide_counted()
- 
- check_cpu_list_counted()
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index 18321cf9db5d6..59eb6c2969860 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -522,7 +522,7 @@ EXPORT_SYMBOL(scsi_host_alloc);
+ static int __scsi_host_match(struct device *dev, const void *data)
  {
--	check_cpu_list_counted_output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
-+	check_cpu_list_counted_output=$(perf stat -C 0,1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
- 	if echo ${check_cpu_list_counted_output} | grep -q -F "<not "; then
- 		echo "Some CPU events are not counted"
- 		if [ "${verbose}" = "1" ]; then
+ 	struct Scsi_Host *p;
+-	const unsigned short *hostnum = data;
++	const unsigned int *hostnum = data;
+ 
+ 	p = class_to_shost(dev);
+ 	return p->host_no == *hostnum;
+@@ -539,7 +539,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
+  *	that scsi_host_get() took. The put_device() below dropped
+  *	the reference from class_find_device().
+  **/
+-struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
++struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
+ {
+ 	struct device *cdev;
+ 	struct Scsi_Host *shost = NULL;
+diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
+index 701f178b20aee..4a9f1e6e3aaca 100644
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -745,7 +745,7 @@ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
+ extern int scsi_host_busy(struct Scsi_Host *shost);
+ extern void scsi_host_put(struct Scsi_Host *t);
+-extern struct Scsi_Host *scsi_host_lookup(unsigned short);
++extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
+ extern const char *scsi_host_state_name(enum scsi_host_state);
+ extern void scsi_host_complete_all_commands(struct Scsi_Host *shost,
+ 					    int status);
 -- 
 2.40.1
 
