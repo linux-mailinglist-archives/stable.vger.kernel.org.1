@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5FBE7A38BF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA907A39D7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239836AbjIQTjq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
+        id S240157AbjIQTzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239909AbjIQTjj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:39 -0400
+        with ESMTP id S240183AbjIQTyr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523FE193
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D46C433C7;
-        Sun, 17 Sep 2023 19:39:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C3DEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B559C433C8;
+        Sun, 17 Sep 2023 19:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979567;
-        bh=/Kl08M3xHNWC5BI7WceiZqt4ZhCP5ib0gaRBhwaGgIo=;
+        s=korg; t=1694980481;
+        bh=R319RyPyS26RBAlcChmTcoVvQ63P9L1u9oKIz/Bmk+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VWuaVzmsC70FRfVvmlzKrMAXjHpiJU46UAWV6amVB/0MCHoWGHUkiet0ZynOreMcw
-         27jsgXemZsiYZ93JV43SgSB1BlyRvUfIKGyZK4ycQQKN7a2rqFDZuVU1lTEC8p9GOm
-         z8H73+mx/INuJI427NwJ0D2KGhbJVBNxAWMsU+/U=
+        b=MWRSpIlHQCdjlJlu0Yi8YcReqvF/+uPxOro1A/OY7ai6Jg8L7Z8YNIGYD+7ekDLnt
+         2AOG/3oL/NukiFSCiNZZGlEHOqi9/ndIoV1CL4qiDmAJnykG0k1bzxzyOE8oQdNd6r
+         V16vlbCHenJN8vubH+iXMy1VId6q6myDTDnN9gAc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 351/406] af_unix: Fix data-races around user->unix_inflight.
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 205/285] btrfs: dont start transaction when joining with TRANS_JOIN_NOSTART
 Date:   Sun, 17 Sep 2023 21:13:25 +0200
-Message-ID: <20230917191110.540775001@linuxfoundation.org>
+Message-ID: <20230917191058.669956635@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,109 +49,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 0bc36c0650b21df36fbec8136add83936eaf0607 ]
+commit 4490e803e1fe9fab8db5025e44e23b55df54078b upstream.
 
-user->unix_inflight is changed under spin_lock(unix_gc_lock),
-but too_many_unix_fds() reads it locklessly.
+When joining a transaction with TRANS_JOIN_NOSTART, if we don't find a
+running transaction we end up creating one. This goes against the purpose
+of TRANS_JOIN_NOSTART which is to join a running transaction if its state
+is at or below the state TRANS_STATE_COMMIT_START, otherwise return an
+-ENOENT error and don't start a new transaction. So fix this to not create
+a new transaction if there's no running transaction at or below that
+state.
 
-Let's annotate the write/read accesses to user->unix_inflight.
-
-BUG: KCSAN: data-race in unix_attach_fds / unix_inflight
-
-write to 0xffffffff8546f2d0 of 8 bytes by task 44798 on cpu 1:
- unix_inflight+0x157/0x180 net/unix/scm.c:66
- unix_attach_fds+0x147/0x1e0 net/unix/scm.c:123
- unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-read to 0xffffffff8546f2d0 of 8 bytes by task 44814 on cpu 0:
- too_many_unix_fds net/unix/scm.c:101 [inline]
- unix_attach_fds+0x54/0x1e0 net/unix/scm.c:110
- unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x000000000000000c -> 0x000000000000000d
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 44814 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 712f4aad406b ("unix: properly account for FDs passed over unix sockets")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.14+
+Fixes: a6d155d2e363 ("Btrfs: fix deadlock between fiemap and transaction commits")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/scm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/transaction.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/unix/scm.c b/net/unix/scm.c
-index aa27a02478dc1..e8e2a00bb0f58 100644
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -63,7 +63,7 @@ void unix_inflight(struct user_struct *user, struct file *fp)
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
- 	}
--	user->unix_inflight++;
-+	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
- 	spin_unlock(&unix_gc_lock);
- }
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -292,10 +292,11 @@ loop:
+ 	spin_unlock(&fs_info->trans_lock);
  
-@@ -84,7 +84,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
- 	}
--	user->unix_inflight--;
-+	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
- 	spin_unlock(&unix_gc_lock);
- }
+ 	/*
+-	 * If we are ATTACH, we just want to catch the current transaction,
+-	 * and commit it. If there is no transaction, just return ENOENT.
++	 * If we are ATTACH or TRANS_JOIN_NOSTART, we just want to catch the
++	 * current transaction, and commit it. If there is no transaction, just
++	 * return ENOENT.
+ 	 */
+-	if (type == TRANS_ATTACH)
++	if (type == TRANS_ATTACH || type == TRANS_JOIN_NOSTART)
+ 		return -ENOENT;
  
-@@ -98,7 +98,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
- {
- 	struct user_struct *user = current_user();
- 
--	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
-+	if (unlikely(READ_ONCE(user->unix_inflight) > task_rlimit(p, RLIMIT_NOFILE)))
- 		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
- 	return false;
- }
--- 
-2.40.1
-
+ 	/*
 
 
