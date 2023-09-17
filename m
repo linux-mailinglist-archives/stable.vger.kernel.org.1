@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B84987A3983
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97BAF7A3867
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240082AbjIQTu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48448 "EHLO
+        id S238860AbjIQTf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240123AbjIQTuU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:20 -0400
+        with ESMTP id S239770AbjIQTfD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B076AC6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD512C433C9;
-        Sun, 17 Sep 2023 19:50:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75338D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD3BC433C9;
+        Sun, 17 Sep 2023 19:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980215;
-        bh=xISA6xyRw5FxX2IDrEiApsbDZU95zBpq9gBj5b7LfKM=;
+        s=korg; t=1694979298;
+        bh=k106QJsspmkvP4FnuT2MhKjz5O5CzuZFs/mVoGkTpSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gr6rM4Js8WTID3yRK+39DqbM4x42DtZ0+xRxukkOd+n9kYf7OPt8VlSAQ2ri7I8tS
-         VViS2Pl3ANXjMJK7p7S2KYNwdL98d3c21eWO5XnkX0Jpyz8smBYF7GTU+S7moLt7nQ
-         awwudsxmfi4l0ep4nlBFXGCJeEUdkaErirKobnlE=
+        b=d0291dlyKvSpiPKVJhIix5eyREWIZ6GDnQIx26K/KcFTT5TluznilqJKDBclWMWFw
+         jtzumFjM8A4VSPpl5SxfCaqnr1Mw+muSVBrynHeDtzpYDrVDohgOvu5Ef9Wb1Wdtye
+         mtFCGCuKCHkxWcronoPVTyr22rx5NpDvkKPIt5D4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 125/285] ipv6: ignore dst hint for multipath routes
+        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
+        Wander Lairson Costa <wander@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 271/406] netfilter: xt_sctp: validate the flag_info count
 Date:   Sun, 17 Sep 2023 21:12:05 +0200
-Message-ID: <20230917191055.991957669@linuxfoundation.org>
+Message-ID: <20230917191108.406514963@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,77 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 8423be8926aa82cd2e28bba5cc96ccb72c7ce6be ]
+commit e99476497687ef9e850748fe6d232264f30bc8f9 upstream.
 
-Route hints when the nexthop is part of a multipath group causes packets
-in the same receive batch to be sent to the same nexthop irrespective of
-the multipath hash of the packet. So, do not extract route hint for
-packets whose destination is part of a multipath group.
+sctp_mt_check doesn't validate the flag_count field. An attacker can
+take advantage of that to trigger a OOB read and leak memory
+information.
 
-A new SKB flag IP6SKB_MULTIPATH is introduced for this purpose, set the
-flag when route is looked up in fib6_select_path() and use it in
-ip6_can_use_hint() to check for the existence of the flag.
+Add the field validation in the checkentry function.
 
-Fixes: 197dbf24e360 ("ipv6: introduce and uses route look hints for list input.")
-Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2e4e6a17af35 ("[NETFILTER] x_tables: Abstraction layer for {ip,ip6,arp}_tables")
+Cc: stable@vger.kernel.org
+Reported-by: Lucas Leong <wmliang@infosec.exchange>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/ipv6.h | 1 +
- net/ipv6/ip6_input.c | 3 ++-
- net/ipv6/route.c     | 3 +++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/xt_sctp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index 660012997f54c..644e69354cba6 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -146,6 +146,7 @@ struct inet6_skb_parm {
- #define IP6SKB_JUMBOGRAM      128
- #define IP6SKB_SEG6	      256
- #define IP6SKB_FAKEJUMBO      512
-+#define IP6SKB_MULTIPATH      1024
- };
- 
- #if defined(CONFIG_NET_L3_MASTER_DEV)
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index d94041bb42872..b8378814532ce 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -99,7 +99,8 @@ static bool ip6_can_use_hint(const struct sk_buff *skb,
- static struct sk_buff *ip6_extract_route_hint(const struct net *net,
- 					      struct sk_buff *skb)
+--- a/net/netfilter/xt_sctp.c
++++ b/net/netfilter/xt_sctp.c
+@@ -150,6 +150,8 @@ static int sctp_mt_check(const struct xt
  {
--	if (fib6_routes_require_src(net) || fib6_has_custom_rules(net))
-+	if (fib6_routes_require_src(net) || fib6_has_custom_rules(net) ||
-+	    IP6CB(skb)->flags & IP6SKB_MULTIPATH)
- 		return NULL;
+ 	const struct xt_sctp_info *info = par->matchinfo;
  
- 	return skb;
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 56a55585eb798..a02328c93a537 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -424,6 +424,9 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 	if (match->nh && have_oif_match && res->nh)
- 		return;
- 
-+	if (skb)
-+		IP6CB(skb)->flags |= IP6SKB_MULTIPATH;
-+
- 	/* We might have already computed the hash for ICMPv6 errors. In such
- 	 * case it will always be non-zero. Otherwise now is the time to do it.
- 	 */
--- 
-2.40.1
-
++	if (info->flag_count > ARRAY_SIZE(info->flag_info))
++		return -EINVAL;
+ 	if (info->flags & ~XT_SCTP_VALID_FLAGS)
+ 		return -EINVAL;
+ 	if (info->invflags & ~XT_SCTP_VALID_FLAGS)
 
 
