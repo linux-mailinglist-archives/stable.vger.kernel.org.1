@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE5007A3BB1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7937A3BB2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240743AbjIQUVW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
+        id S240757AbjIQUVX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240780AbjIQUUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:50 -0400
+        with ESMTP id S240819AbjIQUUx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED5D186
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24353C433C8;
-        Sun, 17 Sep 2023 20:20:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA91410C
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A99C43395;
+        Sun, 17 Sep 2023 20:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982040;
-        bh=l7uAbJLNv5VMvZpJIxuMKIvRG0NyjozB0cFeYKLFcmw=;
+        s=korg; t=1694982047;
+        bh=us/Z7j9BKAP9zsxzrgucXlnLIICC+8xE7rslnRBdIpk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ja1OMQfNcSrEQu06BDVz4buBw8mwEeentt2xpLRS+uRv6dwuFRvex04odlpszSovc
-         QAirO6pynFdLAX3ekW2lpHupggmLsrpxUVW9d7GKqMKo065uc1BmAGUq7U0wFtGtEV
-         2GcNpwePZe79w2Y8iU0bgzxcwdVUkw7WhL4x3vKo=
+        b=Zzp0RfTvl281cNW6+T0DOBqW1j22Fk7Qv74cQho3vlX6ef7QyOS+id3iMPPbebgZS
+         kSYf+A8vXqp7XILeH3qDvXnYKnOa9Ovnf1K/242JFU0hLoJaA1Ga6RlDXI5BuJLmH1
+         Vi7KxxKWC11x9wtEW7vDnoajY6rUWiZISUvP+XSI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Harini Katakam <harini.katakam@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/219] net: macb: Enable PTP unicast
-Date:   Sun, 17 Sep 2023 21:15:36 +0200
-Message-ID: <20230917191048.488595561@linuxfoundation.org>
+Subject: [PATCH 6.1 210/219] net: macb: fix sleep inside spinlock
+Date:   Sun, 17 Sep 2023 21:15:37 +0200
+Message-ID: <20230917191048.523066573@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -57,78 +54,95 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Harini Katakam <harini.katakam@xilinx.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit ee4e92c26c60b7344b7261035683a37da5a6119b ]
+[ Upstream commit 403f0e771457e2b8811dc280719d11b9bacf10f4 ]
 
-Enable transmission and reception of PTP unicast packets by
-updating PTP unicast config bit and setting current HW mac
-address as allowed address in PTP unicast filter registers.
+macb_set_tx_clk() is called under a spinlock but itself calls clk_set_rate()
+which can sleep. This results in:
 
-Signed-off-by: Harini Katakam <harini.katakam@xilinx.com>
-Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 403f0e771457 ("net: macb: fix sleep inside spinlock")
+| BUG: sleeping function called from invalid context at kernel/locking/mutex.c:580
+| pps pps1: new PPS source ptp1
+| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 40, name: kworker/u4:3
+| preempt_count: 1, expected: 0
+| RCU nest depth: 0, expected: 0
+| 4 locks held by kworker/u4:3/40:
+|  #0: ffff000003409148
+| macb ff0c0000.ethernet: gem-ptp-timer ptp clock registered.
+|  ((wq_completion)events_power_efficient){+.+.}-{0:0}, at: process_one_work+0x14c/0x51c
+|  #1: ffff8000833cbdd8 ((work_completion)(&pl->resolve)){+.+.}-{0:0}, at: process_one_work+0x14c/0x51c
+|  #2: ffff000004f01578 (&pl->state_mutex){+.+.}-{4:4}, at: phylink_resolve+0x44/0x4e8
+|  #3: ffff000004f06f50 (&bp->lock){....}-{3:3}, at: macb_mac_link_up+0x40/0x2ac
+| irq event stamp: 113998
+| hardirqs last  enabled at (113997): [<ffff800080e8503c>] _raw_spin_unlock_irq+0x30/0x64
+| hardirqs last disabled at (113998): [<ffff800080e84478>] _raw_spin_lock_irqsave+0xac/0xc8
+| softirqs last  enabled at (113608): [<ffff800080010630>] __do_softirq+0x430/0x4e4
+| softirqs last disabled at (113597): [<ffff80008001614c>] ____do_softirq+0x10/0x1c
+| CPU: 0 PID: 40 Comm: kworker/u4:3 Not tainted 6.5.0-11717-g9355ce8b2f50-dirty #368
+| Hardware name: ... ZynqMP ... (DT)
+| Workqueue: events_power_efficient phylink_resolve
+| Call trace:
+|  dump_backtrace+0x98/0xf0
+|  show_stack+0x18/0x24
+|  dump_stack_lvl+0x60/0xac
+|  dump_stack+0x18/0x24
+|  __might_resched+0x144/0x24c
+|  __might_sleep+0x48/0x98
+|  __mutex_lock+0x58/0x7b0
+|  mutex_lock_nested+0x24/0x30
+|  clk_prepare_lock+0x4c/0xa8
+|  clk_set_rate+0x24/0x8c
+|  macb_mac_link_up+0x25c/0x2ac
+|  phylink_resolve+0x178/0x4e8
+|  process_one_work+0x1ec/0x51c
+|  worker_thread+0x1ec/0x3e4
+|  kthread+0x120/0x124
+|  ret_from_fork+0x10/0x20
+
+The obvious fix is to move the call to macb_set_tx_clk() out of the
+protected area. This seems safe as rx and tx are both disabled anyway at
+this point.
+It is however not entirely clear what the spinlock shall protect. It
+could be the read-modify-write access to the NCFGR register, but this
+is accessed in macb_set_rx_mode() and macb_set_rxcsum_feature() as well
+without holding the spinlock. It could also be the register accesses
+done in mog_init_rings() or macb_init_buffers(), but again these
+functions are called without holding the spinlock in macb_hresp_error_task().
+The locking seems fishy in this driver and it might deserve another look
+before this patch is applied.
+
+Fixes: 633e98a711ac0 ("net: macb: use resolved link config in mac_link_up()")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/r/20230908112913.1701766-1-s.hauer@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb.h      |  4 ++++
- drivers/net/ethernet/cadence/macb_main.c | 13 +++++++++++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 9c410f93a1039..1aa578c1ca4ad 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -95,6 +95,8 @@
- #define GEM_SA4B		0x00A0 /* Specific4 Bottom */
- #define GEM_SA4T		0x00A4 /* Specific4 Top */
- #define GEM_WOL			0x00b8 /* Wake on LAN */
-+#define GEM_RXPTPUNI		0x00D4 /* PTP RX Unicast address */
-+#define GEM_TXPTPUNI		0x00D8 /* PTP TX Unicast address */
- #define GEM_EFTSH		0x00e8 /* PTP Event Frame Transmitted Seconds Register 47:32 */
- #define GEM_EFRSH		0x00ec /* PTP Event Frame Received Seconds Register 47:32 */
- #define GEM_PEFTSH		0x00f0 /* PTP Peer Event Frame Transmitted Seconds Register 47:32 */
-@@ -245,6 +247,8 @@
- #define MACB_TZQ_OFFSET		12 /* Transmit zero quantum pause frame */
- #define MACB_TZQ_SIZE		1
- #define MACB_SRTSM_OFFSET	15 /* Store Receive Timestamp to Memory */
-+#define MACB_PTPUNI_OFFSET	20 /* PTP Unicast packet enable */
-+#define MACB_PTPUNI_SIZE	1
- #define MACB_OSSMODE_OFFSET	24 /* Enable One Step Synchro Mode */
- #define MACB_OSSMODE_SIZE	1
- #define MACB_MIIONRGMII_OFFSET	28 /* MII Usage on RGMII Interface */
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 5fb991835078a..9470e895591e5 100644
+index 9470e895591e5..54b032a46b48a 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -288,6 +288,11 @@ static void macb_set_hwaddr(struct macb *bp)
- 	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
- 	macb_or_gem_writel(bp, SA1T, top);
+@@ -705,8 +705,6 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 		if (rx_pause)
+ 			ctrl |= MACB_BIT(PAE);
  
-+	if (gem_has_ptp(bp)) {
-+		gem_writel(bp, RXPTPUNI, bottom);
-+		gem_writel(bp, TXPTPUNI, bottom);
-+	}
-+
- 	/* Clear unused address register sets */
- 	macb_or_gem_writel(bp, SA2B, 0);
- 	macb_or_gem_writel(bp, SA2T, 0);
-@@ -721,8 +726,12 @@ static void macb_mac_link_up(struct phylink_config *config,
+-		macb_set_tx_clk(bp, speed);
+-
+ 		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
+ 		 * cleared the pipeline and control registers.
+ 		 */
+@@ -726,6 +724,9 @@ static void macb_mac_link_up(struct phylink_config *config,
  
  	spin_unlock_irqrestore(&bp->lock, flags);
  
--	/* Enable Rx and Tx */
--	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(RE) | MACB_BIT(TE));
-+	/* Enable Rx and Tx; Enable PTP unicast */
-+	ctrl = macb_readl(bp, NCR);
-+	if (gem_has_ptp(bp))
-+		ctrl |= MACB_BIT(PTPUNI);
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++		macb_set_tx_clk(bp, speed);
 +
-+	macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
- 
- 	netif_tx_wake_all_queues(ndev);
- }
+ 	/* Enable Rx and Tx; Enable PTP unicast */
+ 	ctrl = macb_readl(bp, NCR);
+ 	if (gem_has_ptp(bp))
 -- 
 2.40.1
 
