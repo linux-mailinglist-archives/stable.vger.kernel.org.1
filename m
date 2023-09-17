@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 462F57A3A69
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B1E7A3887
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239219AbjIQUDO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57820 "EHLO
+        id S229949AbjIQThE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240343AbjIQUCw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
+        with ESMTP id S239755AbjIQTgf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0AAEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F6CC433C7;
-        Sun, 17 Sep 2023 20:02:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2266F103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52608C433CB;
+        Sun, 17 Sep 2023 19:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980947;
-        bh=g5exPWYRD7INzpOL3dozARgSY8fBdIf6fnA8V81nSzE=;
+        s=korg; t=1694979389;
+        bh=Je4uhglKv30pU6VywX9Vn0VgfAB6negreCtqznoAQbU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ORlAgnfD0yzR122sP8m7kvP+UspnuNPgVRiGB+h4nuG8qsdERYEn/Woi7aQHZlfPQ
-         DbrphIF9WGx3eN4OpKB0tJZBaNxpab/1Me5/1mZSbMXuO11ZHKKSVMFpWlSaMm9JyI
-         5XQl/koyKxWr9o1ZR30Vh1j/F16AC2QNEW6Ujwtw=
+        b=1SZPYgKozKrk8CewogbGYHnQBzn6Pi8JEW7+Hum3QkWN9v1pSdGToI851xjLAUhNo
+         mVpia854UK965ewIkWNNFdfHnOC8MthngDhEXGJbH/MGZOwMBXHbdaz21SC6Gdisjp
+         NLJjLqqrprjuJt64jYhyrOXMHGcGrySMnfcJAmMI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 025/219] null_blk: fix poll request timeout handling
+        patches@lists.linux.dev,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Siwar Zitouni <siwar.zitouni@6wind.com>,
+        Guillaume Nault <gnault@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 298/406] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
 Date:   Sun, 17 Sep 2023 21:12:32 +0200
-Message-ID: <20230917191041.907917456@linuxfoundation.org>
+Message-ID: <20230917191109.180901036@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,113 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-commit 5a26e45edb4690d58406178b5a9ea4c6dcf2c105 upstream.
+commit a4f39c9f14a634e4cd35fcd338c239d11fcc73fc upstream.
 
-When doing io_uring benchmark on /dev/nullb0, it's easy to crash the
-kernel if poll requests timeout triggered, as reported by David. [1]
+The goal is to support a bpf_redirect() from an ethernet device (ingress)
+to a ppp device (egress).
+The l2 header is added automatically by the ppp driver, thus the ethernet
+header should be removed.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000008
-Workqueue: kblockd blk_mq_timeout_work
-RIP: 0010:null_timeout_rq+0x4e/0x91
-Call Trace:
- ? null_timeout_rq+0x4e/0x91
- blk_mq_handle_expired+0x31/0x4b
- bt_iter+0x68/0x84
- ? bt_tags_iter+0x81/0x81
- __sbitmap_for_each_set.constprop.0+0xb0/0xf2
- ? __blk_mq_complete_request_remote+0xf/0xf
- bt_for_each+0x46/0x64
- ? __blk_mq_complete_request_remote+0xf/0xf
- ? percpu_ref_get_many+0xc/0x2a
- blk_mq_queue_tag_busy_iter+0x14d/0x18e
- blk_mq_timeout_work+0x95/0x127
- process_one_work+0x185/0x263
- worker_thread+0x1b5/0x227
-
-This is indeed a race problem between null_timeout_rq() and null_poll().
-
-null_poll()				null_timeout_rq()
-  spin_lock(&nq->poll_lock)
-  list_splice_init(&nq->poll_list, &list)
-  spin_unlock(&nq->poll_lock)
-
-  while (!list_empty(&list))
-    req = list_first_entry()
-    list_del_init()
-    ...
-    blk_mq_add_to_batch()
-    // req->rq_next = NULL
-					spin_lock(&nq->poll_lock)
-
-					// rq->queuelist->next == NULL
-					list_del_init(&rq->queuelist)
-
-					spin_unlock(&nq->poll_lock)
-
-Fix these problems by setting requests state to MQ_RQ_COMPLETE under
-nq->poll_lock protection, in which null_timeout_rq() can safely detect
-this race and early return.
-
-Note this patch just fix the kernel panic when request timeout happen.
-
-[1] https://lore.kernel.org/all/3893581.1691785261@warthog.procyon.org.uk/
-
-Fixes: 0a593fbbc245 ("null_blk: poll queue support")
-Reported-by: David Howells <dhowells@redhat.com>
-Tested-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Link: https://lore.kernel.org/r/20230901120306.170520-2-chengming.zhou@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+CC: stable@vger.kernel.org
+Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/null_blk/main.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/linux/if_arp.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1585,9 +1585,12 @@ static int null_poll(struct blk_mq_hw_ct
- 	struct nullb_queue *nq = hctx->driver_data;
- 	LIST_HEAD(list);
- 	int nr = 0;
-+	struct request *rq;
- 
- 	spin_lock(&nq->poll_lock);
- 	list_splice_init(&nq->poll_list, &list);
-+	list_for_each_entry(rq, &list, queuelist)
-+		blk_mq_set_request_complete(rq);
- 	spin_unlock(&nq->poll_lock);
- 
- 	while (!list_empty(&list)) {
-@@ -1613,16 +1616,21 @@ static enum blk_eh_timer_return null_tim
- 	struct blk_mq_hw_ctx *hctx = rq->mq_hctx;
- 	struct nullb_cmd *cmd = blk_mq_rq_to_pdu(rq);
- 
--	pr_info("rq %p timed out\n", rq);
--
- 	if (hctx->type == HCTX_TYPE_POLL) {
- 		struct nullb_queue *nq = hctx->driver_data;
- 
- 		spin_lock(&nq->poll_lock);
-+		/* The request may have completed meanwhile. */
-+		if (blk_mq_request_completed(rq)) {
-+			spin_unlock(&nq->poll_lock);
-+			return BLK_EH_DONE;
-+		}
- 		list_del_init(&rq->queuelist);
- 		spin_unlock(&nq->poll_lock);
- 	}
- 
-+	pr_info("rq %p timed out\n", rq);
-+
- 	/*
- 	 * If the device is marked as blocking (i.e. memory backed or zoned
- 	 * device), the submission path may be blocked waiting for resources
+--- a/include/linux/if_arp.h
++++ b/include/linux/if_arp.h
+@@ -52,6 +52,10 @@ static inline bool dev_is_mac_header_xmi
+ 	case ARPHRD_NONE:
+ 	case ARPHRD_RAWIP:
+ 	case ARPHRD_PIMREG:
++	/* PPP adds its l2 header automatically in ppp_start_xmit().
++	 * This makes it look like an l3 device to __bpf_redirect() and tcf_mirred_init().
++	 */
++	case ARPHRD_PPP:
+ 		return false;
+ 	default:
+ 		return true;
 
 
