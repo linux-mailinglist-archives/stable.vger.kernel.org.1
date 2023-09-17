@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A068B7A3D41
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 946527A3B6F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241255AbjIQUkh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58784 "EHLO
+        id S240682AbjIQURk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:17:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241271AbjIQUkZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:25 -0400
+        with ESMTP id S240720AbjIQUR2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0277E10E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C33C433C7;
-        Sun, 17 Sep 2023 20:40:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EDDF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013DFC433C7;
+        Sun, 17 Sep 2023 20:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983219;
-        bh=nkmGMN498GnSjNSVX+oRAn4qY/e14DaxST6A8ekLYxE=;
+        s=korg; t=1694981842;
+        bh=lqtlD4Sd7Jf+dw3QdzIoNx7dZ9JDJJgQn88aQL7tsN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hfBH794y4BXJ72uRKCfPzxzuIiUFt2qF9pnSTzlKW76goLkFdLYaiiy0h7OjlWt9j
-         S1QpctebR09a4zmyQG/p/rqufSojjMjpWQ5U9u64rLfG10nwCW7UtNuYya1w77N32N
-         dSGNdLuotwJz7YRAPgsgb+tDkm6NFsyZfV/eco70=
+        b=ehMdvi4VDs/p+Hu3YeQtQK39US8Y0/12LaTPWBJ/nnRRUJRFodf9VXCSEH/Rgo9FJ
+         r2UpIhmhfdVpMmVOa+JYwc//V/yrINHpYvuNMcyJm6mSD5al0gqVHZSFDvUZOeFJZf
+         qCWsc1zoenAO4c0/PLX8mxobC+cKnQXg54OqbphA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 479/511] mtd: rawnand: brcmnand: Fix potential false time out warning
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.1 179/219] perf test shell stat_bpf_counters: Fix test on Intel
 Date:   Sun, 17 Sep 2023 21:15:06 +0200
-Message-ID: <20230917191125.308405510@linuxfoundation.org>
+Message-ID: <20230917191047.429834924@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 9cc0a598b944816f2968baf2631757f22721b996 upstream.
+commit 68ca249c964f520af7f8763e22f12bd26b57b870 upstream.
 
-If system is busy during the command status polling function, the driver
-may not get the chance to poll the status register till the end of time
-out and return the premature status.  Do a final check after time out
-happens to ensure reading the correct status.
+As of now, bpf counters (bperf) don't support event groups.  But the
+default perf stat includes topdown metrics if supported (on recent Intel
+machines) which require groups.  That makes perf stat exiting.
 
-Fixes: 9d2ee0a60b8b ("mtd: nand: brcmnand: Check flash #WP pin status before nand erase/program")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+  $ sudo perf stat --bpf-counter true
+  bpf managed perf events do not yet support groups.
+
+Actually the test explicitly uses cycles event only, but it missed to
+pass the option when it checks the availability of the command.
+
+Fixes: 2c0cb9f56020d2ea ("perf test: Add a shell test for 'perf stat --bpf-counters' new option")
+Reviewed-by: Song Liu <song@kernel.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-3-william.zhang@broadcom.com
+Link: https://lore.kernel.org/r/20230825164152.165610-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/tests/shell/stat_bpf_counters.sh |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -1043,6 +1043,14 @@ static int bcmnand_ctrl_poll_status(stru
- 		cpu_relax();
- 	} while (time_after(limit, jiffies));
+--- a/tools/perf/tests/shell/stat_bpf_counters.sh
++++ b/tools/perf/tests/shell/stat_bpf_counters.sh
+@@ -22,10 +22,10 @@ compare_number()
+ }
  
-+	/*
-+	 * do a final check after time out in case the CPU was busy and the driver
-+	 * did not get enough time to perform the polling to avoid false alarms
-+	 */
-+	val = brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS);
-+	if ((val & mask) == expected_val)
-+		return 0;
-+
- 	dev_warn(ctrl->dev, "timeout on status poll (expected %x got %x)\n",
- 		 expected_val, val & mask);
- 
+ # skip if --bpf-counters is not supported
+-if ! perf stat --bpf-counters true > /dev/null 2>&1; then
++if ! perf stat -e cycles --bpf-counters true > /dev/null 2>&1; then
+ 	if [ "$1" = "-v" ]; then
+ 		echo "Skipping: --bpf-counters not supported"
+-		perf --no-pager stat --bpf-counters true || true
++		perf --no-pager stat -e cycles --bpf-counters true || true
+ 	fi
+ 	exit 2
+ fi
 
 
