@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 074367A39CE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D9A7A3A5B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240160AbjIQTyl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:54:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
+        id S240431AbjIQUCZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240183AbjIQTyW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:22 -0400
+        with ESMTP id S240501AbjIQUCD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90FAEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1B0C433C8;
-        Sun, 17 Sep 2023 19:54:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC671AE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F89AC433CA;
+        Sun, 17 Sep 2023 20:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980457;
-        bh=S0zqokmRPlr3UoQkRLDvQt+xA6D03M85IfXHQl7w7ug=;
+        s=korg; t=1694980902;
+        bh=XMR3j6uXeIJAtyCLPwYCzi9wVYfEfefUcY7cMNtKGTw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v5uhT6DkeN8Cd1MfQZLL3NWDoJ/1/WTyciio8OQ05jeskgOLS0i/xDcIgfrgZkT5e
-         xMgdLLJcMTcU6j1X7mo47i4CnEufyMIQl3F1xes6kdnKLbsgd0Ij1BryoBnxlEyLjA
-         2FC17H+nQ7ZYpUJz4MiEEqmeRukxkEJScIC9F5DU=
+        b=tPvSDJqEIzaKGJQ/h/SV5VWlmLz3KjyKgA8OIeknLyjI6LTpeNiA1jZs2GImO48hD
+         5btpvu5NDR0DTbt3Ybc115TDD3Lq2rKulEj4QVTKcIn2mHGV+gJ2ktfEs6nY/AEgFV
+         vrroihUZHuk4X9PWVuOT9hANRi7ojb/8oRBPDTAM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 167/285] net: hns3: fix tx timeout issue
-Date:   Sun, 17 Sep 2023 21:12:47 +0200
-Message-ID: <20230917191057.431684481@linuxfoundation.org>
+        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Abel Vesa <abel.vesa@linaro.org>
+Subject: [PATCH 6.1 041/219] clk: imx: pll14xx: dynamically configure PLL for 393216000/361267200Hz
+Date:   Sun, 17 Sep 2023 21:12:48 +0200
+Message-ID: <20230917191042.486906133@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,83 +50,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit 61a1deacc3d4fd3d57d7fda4d935f7f7503e8440 ]
+commit 72d00e560d10665e6139c9431956a87ded6e9880 upstream.
 
-Currently, the driver knocks the ring doorbell before updating
-the ring->last_to_use in tx flow. if the hardware transmiting
-packet and napi poll scheduling are fast enough, it may get
-the old ring->last_to_use in drivers' napi poll.
-In this case, the driver will think the tx is not completed, and
-return directly without clear the flag __QUEUE_STATE_STACK_XOFF,
-which may cause tx timeout.
+Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates"),
+the driver has the ability to dynamically compute PLL parameters to
+approximate the requested rates. This is not always used, because the
+logic is as follows:
 
-Fixes: 20d06ca2679c ("net: hns3: optimize the tx clean process")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - Check if the target rate is hardcoded in the frequency table
+  - Check if varying only kdiv is possible, so switch over is glitch free
+  - Compute rate dynamically by iterating over pdiv range
+
+If we skip the frequency table for the 1443x PLL, we find that the
+computed values differ to the hardcoded ones. This can be valid if the
+hardcoded values guarantee for example an earlier lock-in or if the
+divisors are chosen, so that other important rates are more likely to
+be reached glitch-free.
+
+For rates (393216000 and 361267200, this doesn't seem to be the case:
+They are only approximated by existing parameters (393215995 and
+361267196 Hz, respectively) and they aren't reachable glitch-free from
+other hardcoded frequencies. Dropping them from the table allows us
+to lock-in to these frequencies exactly.
+
+This is immediately noticeable because they are the assigned-clock-rates
+for IMX8MN_AUDIO_PLL1 and IMX8MN_AUDIO_PLL2, respectively and a look
+into clk_summary so far showed that they were a few Hz short of the target:
+
+imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
+audio_pll2_out           0        0        0   361267196 0     0  50000   N
+audio_pll1_out           1        1        0   393215995 0     0  50000   Y
+
+and afterwards:
+
+imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
+audio_pll2_out           0        0        0   361267200 0     0  50000   N
+audio_pll1_out           1        1        0   393216000 0     0  50000   Y
+
+This change is equivalent to adding following hardcoded values:
+
+  /*               rate     mdiv  pdiv  sdiv   kdiv */
+  PLL_1443X_RATE(393216000, 655,    5,    3,  23593),
+  PLL_1443X_RATE(361267200, 497,   33,    0, -16882),
+
+Fixes: 053a4ffe2988 ("clk: imx: imx8mm: fix audio pll setting")
+Cc: stable@vger.kernel.org # v5.18+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20230807084744.1184791-2-m.felsch@pengutronix.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/clk/imx/clk-pll14xx.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index b7b51e56b0308..71772213b4448 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -2102,8 +2102,12 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
- 	 */
- 	if (test_bit(HNS3_NIC_STATE_TX_PUSH_ENABLE, &priv->state) && num &&
- 	    !ring->pending_buf && num <= HNS3_MAX_PUSH_BD_NUM && doorbell) {
-+		/* This smp_store_release() pairs with smp_load_aquire() in
-+		 * hns3_nic_reclaim_desc(). Ensure that the BD valid bit
-+		 * is updated.
-+		 */
-+		smp_store_release(&ring->last_to_use, ring->next_to_use);
- 		hns3_tx_push_bd(ring, num);
--		WRITE_ONCE(ring->last_to_use, ring->next_to_use);
- 		return;
- 	}
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -62,8 +62,6 @@ static const struct imx_pll14xx_rate_tab
+ 	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+ 	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
+ 	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
+-	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
+-	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
+ };
  
-@@ -2114,6 +2118,11 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
- 		return;
- 	}
- 
-+	/* This smp_store_release() pairs with smp_load_aquire() in
-+	 * hns3_nic_reclaim_desc(). Ensure that the BD valid bit is updated.
-+	 */
-+	smp_store_release(&ring->last_to_use, ring->next_to_use);
-+
- 	if (ring->tqp->mem_base)
- 		hns3_tx_mem_doorbell(ring);
- 	else
-@@ -2121,7 +2130,6 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
- 		       ring->tqp->io_base + HNS3_RING_TX_RING_TAIL_REG);
- 
- 	ring->pending_buf = 0;
--	WRITE_ONCE(ring->last_to_use, ring->next_to_use);
- }
- 
- static void hns3_tsyn(struct net_device *netdev, struct sk_buff *skb,
-@@ -3562,9 +3570,8 @@ static void hns3_reuse_buffer(struct hns3_enet_ring *ring, int i)
- static bool hns3_nic_reclaim_desc(struct hns3_enet_ring *ring,
- 				  int *bytes, int *pkts, int budget)
- {
--	/* pair with ring->last_to_use update in hns3_tx_doorbell(),
--	 * smp_store_release() is not used in hns3_tx_doorbell() because
--	 * the doorbell operation already have the needed barrier operation.
-+	/* This smp_load_acquire() pairs with smp_store_release() in
-+	 * hns3_tx_doorbell().
- 	 */
- 	int ltu = smp_load_acquire(&ring->last_to_use);
- 	int ntc = ring->next_to_clean;
--- 
-2.40.1
-
+ struct imx_pll14xx_clk imx_1443x_pll = {
 
 
