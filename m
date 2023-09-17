@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B0B67A3A39
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96D087A3898
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239604AbjIQUAc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:00:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36176 "EHLO
+        id S239756AbjIQThj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240360AbjIQUAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:00:00 -0400
+        with ESMTP id S239838AbjIQThQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFADF3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:59:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D692C433C8;
-        Sun, 17 Sep 2023 19:59:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125CB126
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45458C4339A;
+        Sun, 17 Sep 2023 19:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980795;
-        bh=7z1yttt3Z9Md1fPQ0S6gH/nJ9oulVBhVpYBPhPUuKLM=;
+        s=korg; t=1694979430;
+        bh=Fq+ekuXbBQBIvkOpzcvaQK0Bj1nhcHaDY9oJDgbua2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jXDIa0X3h1sJO1rM7IPZX/WYLjsUiN6xLtjqII0xFcF4QyVa/5klaB9IoRNzRjCtP
-         GLb3i9IhWu+bxvnCrB7GlMbHBetjMKJ8karWiRVDIXS8BuMMdsTHKmJZBh/BHcvwCx
-         LptBAR24WsU77Vapaduj7zacEMqv3mBeNQl3hmkw=
+        b=CwPBQnsNRDHS1Ck6uALMtr4j5dFN+HqKGAZH3gKDproTDIS4XzyHeCB4/uVdIDvI4
+         pzPpv0Hxh437ArdipyZs0RetQRLT04WxBHisXgAHTYulcBk5XibIawYVndCL8NKirp
+         wPxayEUx4fuvcFxwSLPw4BguM1bwEAC3aid3lC+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gurchetan Singh <gurchetansingh@chromium.org>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Alyssa Ross <hi@alyssa.is>
-Subject: [PATCH 6.1 010/219] drm/virtio: Conditionally allocate virtio_gpu_fence
-Date:   Sun, 17 Sep 2023 21:12:17 +0200
-Message-ID: <20230917191041.349158410@linuxfoundation.org>
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 284/406] arm64: csum: Fix OoB access in IP checksum code for negative lengths
+Date:   Sun, 17 Sep 2023 21:12:18 +0200
+Message-ID: <20230917191108.799799766@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,107 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gurchetan Singh <gurchetansingh@chromium.org>
+From: Will Deacon <will@kernel.org>
 
-commit 70d1ace56db6c79d39dbe9c0d5244452b67e2fde upstream.
+commit 8bd795fedb8450ecbef18eeadbd23ed8fc7630f5 upstream.
 
-We don't want to create a fence for every command submission.  It's
-only necessary when userspace provides a waitable token for submission.
-This could be:
+Although commit c2c24edb1d9c ("arm64: csum: Fix pathological zero-length
+calls") added an early return for zero-length input, syzkaller has
+popped up with an example of a _negative_ length which causes an
+undefined shift and an out-of-bounds read:
 
-1) bo_handles, to be used with VIRTGPU_WAIT
-2) out_fence_fd, to be used with dma_fence apis
-3) a ring_idx provided with VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK
-   + DRM event API
-4) syncobjs in the future
+ | BUG: KASAN: slab-out-of-bounds in do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
+ | Read of size 4294966928 at addr ffff0000d7ac0170 by task syz-executor412/5975
+ |
+ | CPU: 0 PID: 5975 Comm: syz-executor412 Not tainted 6.4.0-rc4-syzkaller-g908f31f2a05b #0
+ | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+ | Call trace:
+ |  dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
+ |  show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
+ |  __dump_stack lib/dump_stack.c:88 [inline]
+ |  dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
+ |  print_address_description mm/kasan/report.c:351 [inline]
+ |  print_report+0x174/0x514 mm/kasan/report.c:462
+ |  kasan_report+0xd4/0x130 mm/kasan/report.c:572
+ |  kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
+ |  __kasan_check_read+0x20/0x30 mm/kasan/shadow.c:31
+ |  do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
+ |  csum_partial+0x30/0x58 lib/checksum.c:128
+ |  gso_make_checksum include/linux/skbuff.h:4928 [inline]
+ |  __udp_gso_segment+0xaf4/0x1bc4 net/ipv4/udp_offload.c:332
+ |  udp6_ufo_fragment+0x540/0xca0 net/ipv6/udp_offload.c:47
+ |  ipv6_gso_segment+0x5cc/0x1760 net/ipv6/ip6_offload.c:119
+ |  skb_mac_gso_segment+0x2b4/0x5b0 net/core/gro.c:141
+ |  __skb_gso_segment+0x250/0x3d0 net/core/dev.c:3401
+ |  skb_gso_segment include/linux/netdevice.h:4859 [inline]
+ |  validate_xmit_skb+0x364/0xdbc net/core/dev.c:3659
+ |  validate_xmit_skb_list+0x94/0x130 net/core/dev.c:3709
+ |  sch_direct_xmit+0xe8/0x548 net/sched/sch_generic.c:327
+ |  __dev_xmit_skb net/core/dev.c:3805 [inline]
+ |  __dev_queue_xmit+0x147c/0x3318 net/core/dev.c:4210
+ |  dev_queue_xmit include/linux/netdevice.h:3085 [inline]
+ |  packet_xmit+0x6c/0x318 net/packet/af_packet.c:276
+ |  packet_snd net/packet/af_packet.c:3081 [inline]
+ |  packet_sendmsg+0x376c/0x4c98 net/packet/af_packet.c:3113
+ |  sock_sendmsg_nosec net/socket.c:724 [inline]
+ |  sock_sendmsg net/socket.c:747 [inline]
+ |  __sys_sendto+0x3b4/0x538 net/socket.c:2144
 
-The use case for just submitting a command to the host, and expecting
-no response.  For example, gfxstream has GFXSTREAM_CONTEXT_PING that
-just wakes up the host side worker threads.  There's also
-CROSS_DOMAIN_CMD_SEND which just sends data to the Wayland server.
+Extend the early return to reject negative lengths as well, aligning our
+implementation with the generic code in lib/checksum.c
 
-This prevents the need to signal the automatically created
-virtio_gpu_fence.
-
-In addition, VIRTGPU_EXECBUF_RING_IDX is checked when creating a
-DRM event object.  VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK is
-already defined in terms of per-context rings.  It was theoretically
-possible to create a DRM event on the global timeline (ring_idx == 0),
-if the context enabled DRM event polling.  However, that wouldn't
-work and userspace (Sommelier).  Explicitly disallow it for
-clarity.
-
-Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # edited coding style
-Link: https://patchwork.freedesktop.org/patch/msgid/20230707213124.494-1-gurchetansingh@chromium.org
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Fixes: 5777eaed566a ("arm64: Implement optimised checksum routine")
+Reported-by: syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/000000000000e0e94c0603f8d213@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_ioctl.c |   30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ arch/arm64/lib/csum.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-@@ -43,13 +43,9 @@ static int virtio_gpu_fence_event_create
- 					 struct virtio_gpu_fence *fence,
- 					 uint32_t ring_idx)
- {
--	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
- 	struct virtio_gpu_fence_event *e = NULL;
- 	int ret;
+--- a/arch/arm64/lib/csum.c
++++ b/arch/arm64/lib/csum.c
+@@ -24,7 +24,7 @@ unsigned int __no_sanitize_address do_cs
+ 	const u64 *ptr;
+ 	u64 data, sum64 = 0;
  
--	if (!(vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
--		return 0;
--
- 	e = kzalloc(sizeof(*e), GFP_KERNEL);
- 	if (!e)
- 		return -ENOMEM;
-@@ -121,6 +117,7 @@ static int virtio_gpu_execbuffer_ioctl(s
- 	struct virtio_gpu_device *vgdev = dev->dev_private;
- 	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
- 	struct virtio_gpu_fence *out_fence;
-+	bool drm_fence_event;
- 	int ret;
- 	uint32_t *bo_handles = NULL;
- 	void __user *user_bo_handles = NULL;
-@@ -216,15 +213,24 @@ static int virtio_gpu_execbuffer_ioctl(s
- 			goto out_memdup;
- 	}
+-	if (unlikely(len == 0))
++	if (unlikely(len <= 0))
+ 		return 0;
  
--	out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
--	if(!out_fence) {
--		ret = -ENOMEM;
--		goto out_unresv;
--	}
-+	if ((exbuf->flags & VIRTGPU_EXECBUF_RING_IDX) &&
-+	    (vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
-+		drm_fence_event = true;
-+	else
-+		drm_fence_event = false;
-+
-+	if ((exbuf->flags & VIRTGPU_EXECBUF_FENCE_FD_OUT) ||
-+	    exbuf->num_bo_handles ||
-+	    drm_fence_event)
-+		out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
-+	else
-+		out_fence = NULL;
- 
--	ret = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
--	if (ret)
--		goto out_unresv;
-+	if (drm_fence_event) {
-+		ret = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
-+		if (ret)
-+			goto out_unresv;
-+	}
- 
- 	if (out_fence_fd >= 0) {
- 		sync_file = sync_file_create(&out_fence->f);
+ 	offset = (unsigned long)buff & 7;
 
 
