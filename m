@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 961A77A37D7
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9A47A37D6
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239547AbjIQTZy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239560AbjIQTZy (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41066 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239574AbjIQTZa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:25:30 -0400
+        with ESMTP id S239585AbjIQTZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:25:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00F3121
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:25:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF2FC433C7;
-        Sun, 17 Sep 2023 19:25:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B8812A
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:25:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0365EC433C9;
+        Sun, 17 Sep 2023 19:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978723;
-        bh=NN4lHcxXuJ64yZnY0INnK/Y4gnVUuwxBD/Ekvvart74=;
+        s=korg; t=1694978726;
+        bh=oJMtQK76tx7ZMLmRpRhnVNSQlDFAJjzfhpyS9QOkdAU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IhCNh8uScA0c/uiCby/qhV49fJ0aPHzCef/uXm+ZWjjSEA363m3ic+Iu+0uUhf7Ar
-         0NL+xUCeU5eK658T4GVKTmz65FP6l5A2DQO9sTBmlWwzvZOVW0SY4bfP9jrXeEuYWV
-         vAtsHnKT9XtViFiY/UnFmTby0QZavyDZtnrSibTM=
+        b=bfBrWEYSTshSt1v8zI5bCZ9hsVtwq5FZir3OmuiF4ifTrCLCGQ8tkvjgvBpBzz2i6
+         GHiz9nGCdpxcS0Ui3m59+WHbo7Xrod3ZJhSPKU0Ve3LDRi4r1aiWx3k89aCDITPwKV
+         ORjKeeuNQD1FE6UriunwPH7KhaahmXmVa3waYbx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/406] net: arcnet: Do not call kfree_skb() under local_irq_disable()
-Date:   Sun, 17 Sep 2023 21:09:30 +0200
-Message-ID: <20230917191104.196044547@linuxfoundation.org>
+Subject: [PATCH 5.10 117/406] mlxsw: i2c: Fix chunk size setting in output mailbox buffer
+Date:   Sun, 17 Sep 2023 21:09:31 +0200
+Message-ID: <20230917191104.223607008@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,36 +56,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit 786c96e92fb9e854cb8b0cb7399bb2fb28e15c4b ]
+[ Upstream commit 146c7c330507c0384bf29d567186632bfe975927 ]
 
-It is not allowed to call kfree_skb() from hardware interrupt
-context or with hardware interrupts being disabled.
-So replace kfree_skb() with dev_kfree_skb_irq() under
-local_irq_disable(). Compile tested only.
+The driver reads commands output from the output mailbox. If the size
+of the output mailbox is not a multiple of the transaction /
+block size, then the driver will not issue enough read transactions
+to read the entire output, which can result in driver initialization
+errors.
 
-Fixes: 05fcd31cc472 ("arcnet: add err_skb package for package status feedback")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Fix by determining the number of transactions using DIV_ROUND_UP().
+
+Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/arcnet.c | 2 +-
+ drivers/net/ethernet/mellanox/mlxsw/i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/arcnet/arcnet.c b/drivers/net/arcnet/arcnet.c
-index d76dd7d14299e..a7899405a51a5 100644
---- a/drivers/net/arcnet/arcnet.c
-+++ b/drivers/net/arcnet/arcnet.c
-@@ -468,7 +468,7 @@ static void arcnet_reply_tasklet(unsigned long data)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+index ce843ea914646..f20dca41424c9 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+@@ -428,7 +428,7 @@ mlxsw_i2c_cmd(struct device *dev, u16 opcode, u32 in_mod, size_t in_mbox_size,
+ 	} else {
+ 		/* No input mailbox is case of initialization query command. */
+ 		reg_size = MLXSW_I2C_MAX_DATA_SIZE;
+-		num = reg_size / mlxsw_i2c->block_size;
++		num = DIV_ROUND_UP(reg_size, mlxsw_i2c->block_size);
  
- 	ret = sock_queue_err_skb(sk, ackskb);
- 	if (ret)
--		kfree_skb(ackskb);
-+		dev_kfree_skb_irq(ackskb);
- 
- 	local_irq_enable();
- };
+ 		if (mutex_lock_interruptible(&mlxsw_i2c->cmd.lock) < 0) {
+ 			dev_err(&client->dev, "Could not acquire lock");
 -- 
 2.40.1
 
