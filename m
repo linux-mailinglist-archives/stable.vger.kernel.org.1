@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 896797A3B72
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C40D57A3D46
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240686AbjIQURk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45704 "EHLO
+        id S241257AbjIQUki (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240725AbjIQURf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:35 -0400
+        with ESMTP id S241275AbjIQUk2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A6BF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC418C433C7;
-        Sun, 17 Sep 2023 20:17:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5127D115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520EC433C8;
+        Sun, 17 Sep 2023 20:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981849;
-        bh=nV+olbpluTlkhnMzUvXkYmqB9mWX8A5iWfdBmQN6htI=;
+        s=korg; t=1694983223;
+        bh=LHhjhT46J8hTMZgenklHGDzAHgwiBQE0Gsu0ymtoIY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AlrGVwgxiqCIyp5H+Kdaa8MC4rxdpeHsoQgg2hvPVoi3ftNKZB2qpcCcxrlnEqIxU
-         to1qLwo/XuZ4mem5ji/EPOOfJlV3AjxXER40FwK9yWBkrjHo1sRd8iOU3UIupK+jQU
-         veq3fprn/kDud0CXxSlPwTet1CxTWCzW+mKY9vYM=
+        b=fbqOB89+u27YITtQ0t/tuyaOmCB54dE3utIPHQryMbLgEOedfcT185FCWxxncuy+t
+         tmVbykRd8tArIfVHzC8QMTWef8oIpEYxNGlAHcj1aOwOY5eFSbA8sP7qTrNIy4bKfk
+         S6QFHRaFoh4PMlNJ5FJ3fw3CA+P2FNc3Ve1kJ6gQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.1 180/219] perf tools: Handle old data in PERF_RECORD_ATTR
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 480/511] drm/amd/display: prevent potential division by zero errors
 Date:   Sun, 17 Sep 2023 21:15:07 +0200
-Message-ID: <20230917191047.463907746@linuxfoundation.org>
+Message-ID: <20230917191125.331619624@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,94 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-commit 9bf63282ea77a531ea58acb42fb3f40d2d1e4497 upstream.
+commit 07e388aab042774f284a2ad75a70a194517cdad4 upstream.
 
-The PERF_RECORD_ATTR is used for a pipe mode to describe an event with
-attribute and IDs.  The ID table comes after the attr and it calculate
-size of the table using the total record size and the attr size.
+There are two places in apply_below_the_range() where it's possible for
+a divide by zero error to occur. So, to fix this make sure the divisor
+is non-zero before attempting the computation in both cases.
 
-  n_ids = (total_record_size - end_of_the_attr_field) / sizeof(u64)
-
-This is fine for most use cases, but sometimes it saves the pipe output
-in a file and then process it later.  And it becomes a problem if there
-is a change in attr size between the record and report.
-
-  $ perf record -o- > perf-pipe.data  # old version
-  $ perf report -i- < perf-pipe.data  # new version
-
-For example, if the attr size is 128 and it has 4 IDs, then it would
-save them in 168 byte like below:
-
-   8 byte: perf event header { .type = PERF_RECORD_ATTR, .size = 168 },
- 128 byte: perf event attr { .size = 128, ... },
-  32 byte: event IDs [] = { 1234, 1235, 1236, 1237 },
-
-But when report later, it thinks the attr size is 136 then it only read
-the last 3 entries as ID.
-
-   8 byte: perf event header { .type = PERF_RECORD_ATTR, .size = 168 },
- 136 byte: perf event attr { .size = 136, ... },
-  24 byte: event IDs [] = { 1235, 1236, 1237 },  // 1234 is missing
-
-So it should use the recorded version of the attr.  The attr has the
-size field already then it should honor the size when reading data.
-
-Fixes: 2c46dbb517a10b18 ("perf: Convert perf header attrs into attr events")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tom Zanussi <zanussi@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230825152552.112913-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2637
+Fixes: a463b263032f ("drm/amd/display: Fix frames_to_insert math")
+Fixes: ded6119e825a ("drm/amd/display: Reinstate LFC optimization")
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/header.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -4331,7 +4331,8 @@ int perf_event__process_attr(struct perf
- 			     union perf_event *event,
- 			     struct evlist **pevlist)
- {
--	u32 i, ids, n_ids;
-+	u32 i, n_ids;
-+	u64 *ids;
- 	struct evsel *evsel;
- 	struct evlist *evlist = *pevlist;
- 
-@@ -4347,9 +4348,8 @@ int perf_event__process_attr(struct perf
- 
- 	evlist__add(evlist, evsel);
- 
--	ids = event->header.size;
--	ids -= (void *)&event->attr.id - (void *)event;
--	n_ids = ids / sizeof(u64);
-+	n_ids = event->header.size - sizeof(event->header) - event->attr.attr.size;
-+	n_ids = n_ids / sizeof(u64);
- 	/*
- 	 * We don't have the cpu and thread maps on the header, so
- 	 * for allocating the perf_sample_id table we fake 1 cpu and
-@@ -4358,8 +4358,9 @@ int perf_event__process_attr(struct perf
- 	if (perf_evsel__alloc_id(&evsel->core, 1, n_ids))
- 		return -ENOMEM;
- 
-+	ids = (void *)&event->attr.attr + event->attr.attr.size;
- 	for (i = 0; i < n_ids; i++) {
--		perf_evlist__id_add(&evlist->core, &evsel->core, 0, i, event->attr.id[i]);
-+		perf_evlist__id_add(&evlist->core, &evsel->core, 0, i, ids[i]);
- 	}
- 
- 	return 0;
+--- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
++++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+@@ -327,7 +327,9 @@ static void apply_below_the_range(struct
+ 		 *  - Delta for CEIL: delta_from_mid_point_in_us_1
+ 		 *  - Delta for FLOOR: delta_from_mid_point_in_us_2
+ 		 */
+-		if ((last_render_time_in_us / mid_point_frames_ceil) < in_out_vrr->min_duration_in_us) {
++		if (mid_point_frames_ceil &&
++		    (last_render_time_in_us / mid_point_frames_ceil) <
++		    in_out_vrr->min_duration_in_us) {
+ 			/* Check for out of range.
+ 			 * If using CEIL produces a value that is out of range,
+ 			 * then we are forced to use FLOOR.
+@@ -374,8 +376,9 @@ static void apply_below_the_range(struct
+ 		/* Either we've calculated the number of frames to insert,
+ 		 * or we need to insert min duration frames
+ 		 */
+-		if (last_render_time_in_us / frames_to_insert <
+-				in_out_vrr->min_duration_in_us){
++		if (frames_to_insert &&
++		    (last_render_time_in_us / frames_to_insert) <
++		    in_out_vrr->min_duration_in_us){
+ 			frames_to_insert -= (frames_to_insert > 1) ?
+ 					1 : 0;
+ 		}
 
 
