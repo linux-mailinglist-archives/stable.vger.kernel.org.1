@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7FEA7A3854
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C157A3975
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238429AbjIQTeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:34:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40622 "EHLO
+        id S237657AbjIQTtw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:49:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239756AbjIQTeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:34:12 -0400
+        with ESMTP id S239472AbjIQTtV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0970DDB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD1CC433C7;
-        Sun, 17 Sep 2023 19:34:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FFDC6
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C08FC433C8;
+        Sun, 17 Sep 2023 19:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979246;
-        bh=uVExRrAanT2fyP/zNDJrQJ9plTXAr7vDOkjS1GeFXVk=;
+        s=korg; t=1694980155;
+        bh=hMEletprRqEIdeMQWJ2ikzpmvq7A/K03EOMTNoEhL4U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Drlv0CcwCGL83MSxVV/fvJG1/bZNxZhMo8FZDyGZZJswosyNWY7TV6NBlUvT3bk+l
-         Qc0j6OHQ7Zf4ddomDX3B5cH8vPiL7A4lrcihF/SbY9/RSPJ/PEYNiDuu4/7dP4M3Vi
-         +ut0DRfuCSud+bgS1WJe/qXnU+LB+7yCmDzq5vjM=
+        b=oSexr2C1onfpREVCHoT0O6EL//OSukMSxO2hofbpPkO/CCaW+c5ore7TBxu91v3dE
+         IpCCJOk9dUpZ9OUpoW0g92mqLBgZTJB50g9DSrP/5T1hLoBvd09oSLXV1yMhRZttF9
+         a54peUxq7C1Re6T6uzKOGKzIAN5dNMp6hjJDzfxg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 257/406] phy/rockchip: inno-hdmi: use correct vco_div_5 macro on rk3328
+        patches@lists.linux.dev, Stanislav Fomichev <sdf@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Florian Westphal <fw@strlen.de>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 111/285] net: fib: avoid warn splat in flow dissector
 Date:   Sun, 17 Sep 2023 21:11:51 +0200
-Message-ID: <20230917191107.972753795@linuxfoundation.org>
+Message-ID: <20230917191055.501113839@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +53,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 644c06dfbd0da713f772abf0a8f8581ac78e6264 ]
+[ Upstream commit 8aae7625ff3f0bd5484d01f1b8d5af82e44bec2d ]
 
-inno_hdmi_phy_rk3328_clk_set_rate() is using the RK3228 macro
-when configuring vco_div_5 on RK3328.
+New skbs allocated via nf_send_reset() have skb->dev == NULL.
 
-Fix this by using correct vco_div_5 macro for RK3328.
+fib*_rules_early_flow_dissect helpers already have a 'struct net'
+argument but its not passed down to the flow dissector core, which
+will then WARN as it can't derive a net namespace to use:
 
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-2-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+ WARNING: CPU: 0 PID: 0 at net/core/flow_dissector.c:1016 __skb_flow_dissect+0xa91/0x1cd0
+ [..]
+  ip_route_me_harder+0x143/0x330
+  nf_send_reset+0x17c/0x2d0 [nf_reject_ipv4]
+  nft_reject_inet_eval+0xa9/0xf2 [nft_reject_inet]
+  nft_do_chain+0x198/0x5d0 [nf_tables]
+  nft_do_chain_inet+0xa4/0x110 [nf_tables]
+  nf_hook_slow+0x41/0xc0
+  ip_local_deliver+0xce/0x110
+  ..
+
+Cc: Stanislav Fomichev <sdf@google.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Fixes: 812fa71f0d96 ("netfilter: Dissect flow after packet mangling")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217826
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230830110043.30497-1-fw@strlen.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/ip6_fib.h | 5 ++++-
+ include/net/ip_fib.h  | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index 9ca20c947283d..b0ac1d3ee3905 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -790,8 +790,8 @@ static int inno_hdmi_phy_rk3328_clk_set_rate(struct clk_hw *hw,
- 			 RK3328_PRE_PLL_POWER_DOWN);
+diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
+index 05e6f756feafe..9ba6413fd2e3e 100644
+--- a/include/net/ip6_fib.h
++++ b/include/net/ip6_fib.h
+@@ -604,7 +604,10 @@ static inline bool fib6_rules_early_flow_dissect(struct net *net,
+ 	if (!net->ipv6.fib6_rules_require_fldissect)
+ 		return false;
  
- 	/* Configure pre-pll */
--	inno_update_bits(inno, 0xa0, RK3228_PCLK_VCO_DIV_5_MASK,
--			 RK3228_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
-+	inno_update_bits(inno, 0xa0, RK3328_PCLK_VCO_DIV_5_MASK,
-+			 RK3328_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
- 	inno_write(inno, 0xa1, RK3328_PRE_PLL_PRE_DIV(cfg->prediv));
+-	skb_flow_dissect_flow_keys(skb, flkeys, flag);
++	memset(flkeys, 0, sizeof(*flkeys));
++	__skb_flow_dissect(net, skb, &flow_keys_dissector,
++			   flkeys, NULL, 0, 0, 0, flag);
++
+ 	fl6->fl6_sport = flkeys->ports.src;
+ 	fl6->fl6_dport = flkeys->ports.dst;
+ 	fl6->flowi6_proto = flkeys->basic.ip_proto;
+diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
+index a378eff827c74..f0c13864180e2 100644
+--- a/include/net/ip_fib.h
++++ b/include/net/ip_fib.h
+@@ -418,7 +418,10 @@ static inline bool fib4_rules_early_flow_dissect(struct net *net,
+ 	if (!net->ipv4.fib_rules_require_fldissect)
+ 		return false;
  
- 	val = RK3328_SPREAD_SPECTRUM_MOD_DISABLE;
+-	skb_flow_dissect_flow_keys(skb, flkeys, flag);
++	memset(flkeys, 0, sizeof(*flkeys));
++	__skb_flow_dissect(net, skb, &flow_keys_dissector,
++			   flkeys, NULL, 0, 0, 0, flag);
++
+ 	fl4->fl4_sport = flkeys->ports.src;
+ 	fl4->fl4_dport = flkeys->ports.dst;
+ 	fl4->flowi4_proto = flkeys->basic.ip_proto;
 -- 
 2.40.1
 
