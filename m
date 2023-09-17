@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E957A39BC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A827A39C0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240128AbjIQTxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S233811AbjIQTxi (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240159AbjIQTxX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:23 -0400
+        with ESMTP id S240160AbjIQTxa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7259F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DFAC433C8;
-        Sun, 17 Sep 2023 19:53:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8549A9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C3EC433C8;
+        Sun, 17 Sep 2023 19:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980398;
-        bh=hTSWi3AxUUk85WviqmtlCT/65DuhQdzwCf/05swxAnY=;
+        s=korg; t=1694980405;
+        bh=6IFN7eBNzdgsiyIOaxSkAzdOdB2GcfDlBlORgjQoKuQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z5NJ0qyw+vMsisu8O1EnGd5bGktE2qGROEirBuNSZ8P7st5kMgytj42NKU3Fg9ecM
-         G6DyUi/Te69QhdrWvWDM3T4heSCEk1aOql/98pz8N/YXbXtFwKMTQDmZnaRof4A7Fr
-         f1tmyhxtX1UIgKgOAD1OA2CJ9DUZgzTQk/T9kXZg=
+        b=SQNygI5KLeq5BGpCqUWuNiQ5RuTfI3JWZ8zmo10VDHgLEyNvZNwRqF1sCv+kXx3FJ
+         DOEp2y6wdgw7LfA77FcTRwiAe0d3je+AOchD1DvraRas3B6ShrPWPAv5x8wL8KJus6
+         POwfUka/Y+hWatX2M7UOQYYUEVOS5vGcIn+6C7zE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Hien Huynh <hien.huynh.px@renesas.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.5 181/285] dmaengine: sh: rz-dmac: Fix destination and source data size setting
-Date:   Sun, 17 Sep 2023 21:13:01 +0200
-Message-ID: <20230917191057.893555579@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ekansh Gupta <quic_ekangupt@quicinc.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.5 182/285] misc: fastrpc: Fix remote heap allocation request
+Date:   Sun, 17 Sep 2023 21:13:02 +0200
+Message-ID: <20230917191057.924572130@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -56,64 +54,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hien Huynh <hien.huynh.px@renesas.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit c6ec8c83a29fb3aec3efa6fabbf5344498f57c7f upstream.
+commit ada6c2d99aedd1eac2f633d03c652e070bc2ea74 upstream.
 
-Before setting DDS and SDS values, we need to clear its value first
-otherwise, we get incorrect results when we change/update the DMA bus
-width several times due to the 'OR' expression.
+Remote heap is used by DSP audioPD on need basis. This memory is
+allocated from reserved CMA memory region and is then shared with
+audioPD to use it for it's functionality.
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
-Cc: stable@kernel.org
-Signed-off-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230706112150.198941-3-biju.das.jz@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Current implementation of remote heap is not allocating the memory
+from CMA region, instead it is allocating the memory from SMMU
+context bank. The arguments passed to scm call for the reassignment
+of ownership is also not correct. Added changes to allocate CMA
+memory and have a proper ownership reassignment.
+
+Fixes: 532ad70c6d44 ("misc: fastrpc: Add mmap request assigning for static PD pool")
+Cc: stable <stable@kernel.org>
+Tested-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230811115643.38578-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/rz-dmac.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/misc/fastrpc.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -9,6 +9,7 @@
-  * Copyright 2012 Javier Martin, Vista Silicon <javier.martin@vista-silicon.com>
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
- #include <linux/interrupt.h>
-@@ -145,8 +146,8 @@ struct rz_dmac {
- #define CHCFG_REQD			BIT(3)
- #define CHCFG_SEL(bits)			((bits) & 0x07)
- #define CHCFG_MEM_COPY			(0x80400008)
--#define CHCFG_FILL_DDS(a)		(((a) << 16) & GENMASK(19, 16))
--#define CHCFG_FILL_SDS(a)		(((a) << 12) & GENMASK(15, 12))
-+#define CHCFG_FILL_DDS_MASK		GENMASK(19, 16)
-+#define CHCFG_FILL_SDS_MASK		GENMASK(15, 12)
- #define CHCFG_FILL_TM(a)		(((a) & BIT(5)) << 22)
- #define CHCFG_FILL_AM(a)		(((a) & GENMASK(4, 2)) << 6)
- #define CHCFG_FILL_LVL(a)		(((a) & BIT(1)) << 5)
-@@ -607,13 +608,15 @@ static int rz_dmac_config(struct dma_cha
- 	if (val == CHCFG_DS_INVALID)
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1871,7 +1871,11 @@ static int fastrpc_req_mmap(struct fastr
  		return -EINVAL;
+ 	}
  
--	channel->chcfg |= CHCFG_FILL_DDS(val);
-+	channel->chcfg &= ~CHCFG_FILL_DDS_MASK;
-+	channel->chcfg |= FIELD_PREP(CHCFG_FILL_DDS_MASK, val);
+-	err = fastrpc_buf_alloc(fl, fl->sctx->dev, req.size, &buf);
++	if (req.flags == ADSP_MMAP_REMOTE_HEAP_ADDR)
++		err = fastrpc_remote_heap_alloc(fl, dev, req.size, &buf);
++	else
++		err = fastrpc_buf_alloc(fl, dev, req.size, &buf);
++
+ 	if (err) {
+ 		dev_err(dev, "failed to allocate buffer\n");
+ 		return err;
+@@ -1910,12 +1914,8 @@ static int fastrpc_req_mmap(struct fastr
  
- 	val = rz_dmac_ds_to_val_mapping(config->src_addr_width);
- 	if (val == CHCFG_DS_INVALID)
- 		return -EINVAL;
- 
--	channel->chcfg |= CHCFG_FILL_SDS(val);
-+	channel->chcfg &= ~CHCFG_FILL_SDS_MASK;
-+	channel->chcfg |= FIELD_PREP(CHCFG_FILL_SDS_MASK, val);
- 
- 	return 0;
- }
+ 	/* Add memory to static PD pool, protection thru hypervisor */
+ 	if (req.flags == ADSP_MMAP_REMOTE_HEAP_ADDR && fl->cctx->vmcount) {
+-		struct qcom_scm_vmperm perm;
+-
+-		perm.vmid = QCOM_SCM_VMID_HLOS;
+-		perm.perm = QCOM_SCM_PERM_RWX;
+-		err = qcom_scm_assign_mem(buf->phys, buf->size,
+-			&fl->cctx->perms, &perm, 1);
++		err = qcom_scm_assign_mem(buf->phys, (u64)buf->size,
++			&fl->cctx->perms, fl->cctx->vmperms, fl->cctx->vmcount);
+ 		if (err) {
+ 			dev_err(fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
+ 					buf->phys, buf->size, err);
 
 
