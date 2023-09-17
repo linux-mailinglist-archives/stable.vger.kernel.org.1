@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B84F7A3A68
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61A887A399C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239529AbjIQUDP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
+        id S239447AbjIQTwC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240338AbjIQUCw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
+        with ESMTP id S240109AbjIQTvi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502D21AC
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5A2C433CC;
-        Sun, 17 Sep 2023 20:02:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F63EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35ECFC433C9;
+        Sun, 17 Sep 2023 19:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980940;
-        bh=97eQxU2/CPhj49e/Ihl5fJxv5iqhT8EYavOOSrb1zkw=;
+        s=korg; t=1694980292;
+        bh=MyeElyos/gJfIy/td5kL8NWCdul7FK0+RIHonk36q04=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v5Zmf6YRJbItx0b0a+PHwGg9yXtpwVd82EqpOoz7FCEaZNkdJeAGPlkZkpQIl10EJ
-         BOG16Zo3nyfPiYPlAnwucYwKVq2PqkDR8HpQ2gPQQ3rHdbg+dXJnnCr5CAshpEAl1i
-         JzVjdtWIDR6HaNOrMsfwZZ7yqu9YRxzsoSuJY+WQ=
+        b=x7sIUMUTBm0sL9RYzzbLlBTddwaVa8IP+9k6UBP02I6MXbCr9coWkOW+ySr/h+bUe
+         EFoLMU9xTtlG40qsdulSbNXdJKMyt47HKR33rCWy+U+0l5g7NtxkcQFgcAp8wdEKnK
+         939oF3DPWJHuByq5laBnBQ512IJydTtQF1R6czKM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 023/219] scsi: qla2xxx: Error code did not return to upper layer
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+        Shay Drory <shayd@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 150/285] net/mlx5: Rework devlink port alloc/free into init/cleanup
 Date:   Sun, 17 Sep 2023 21:12:30 +0200
-Message-ID: <20230917191041.832254254@linuxfoundation.org>
+Message-ID: <20230917191056.880714565@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +51,164 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-commit 0ba0b018f94525a6b32f5930f980ce9b62b72e6f upstream.
+[ Upstream commit 4c0dac1ef8abc6295a91197884f5ceb5d11c2bd9 ]
 
-TMF was returned with an error code. The error code was not preserved to be
-returned to upper layer. Instead, the error code from the Marker was
-returned.
+In order to prepare the devlink port registration function to be common
+for PFs/VFs and SFs, change the existing devlink port allocation and
+free functions into PF/VF init and cleanup, so similar helpers could be
+later on introduced for SFs. Make the init/cleanup helpers responsible
+for setting/clearing the vport->dl_port pointer.
 
-Preserve error code from TMF and return it to upper layer.
-
-Cc: stable@vger.kernel.org
-Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 344134609a56 ("mlx5/core: E-Switch, Create ACL FT for eswitch manager in switchdev mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    2 ++
- 1 file changed, 2 insertions(+)
+ .../mellanox/mlx5/core/esw/devlink_port.c     | 65 ++++++++++++-------
+ 1 file changed, 43 insertions(+), 22 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2224,6 +2224,8 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
- 			rval = QLA_FUNCTION_FAILED;
- 		}
- 	}
-+	if (tm_iocb->u.tmf.data)
-+		rval = tm_iocb->u.tmf.data;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
+index fdf2be548e855..463bde802e45e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
+@@ -22,20 +22,17 @@ static bool mlx5_esw_devlink_port_supported(struct mlx5_eswitch *esw, u16 vport_
+ 	       mlx5_core_is_ec_vf_vport(esw->dev, vport_num);
+ }
  
- done_free_sp:
- 	/* ref: INIT */
+-static struct devlink_port *mlx5_esw_dl_port_alloc(struct mlx5_eswitch *esw, u16 vport_num)
++static void mlx5_esw_offloads_pf_vf_devlink_port_attrs_set(struct mlx5_eswitch *esw,
++							   u16 vport_num,
++							   struct devlink_port *dl_port)
+ {
+ 	struct mlx5_core_dev *dev = esw->dev;
+ 	struct devlink_port_attrs attrs = {};
+ 	struct netdev_phys_item_id ppid = {};
+-	struct devlink_port *dl_port;
+ 	u32 controller_num = 0;
+ 	bool external;
+ 	u16 pfnum;
+ 
+-	dl_port = kzalloc(sizeof(*dl_port), GFP_KERNEL);
+-	if (!dl_port)
+-		return NULL;
+-
+ 	mlx5_esw_get_port_parent_id(dev, &ppid);
+ 	pfnum = mlx5_get_dev_index(dev);
+ 	external = mlx5_core_is_ecpf_esw_manager(dev);
+@@ -63,12 +60,40 @@ static struct devlink_port *mlx5_esw_dl_port_alloc(struct mlx5_eswitch *esw, u16
+ 		devlink_port_attrs_pci_vf_set(dl_port, 0, pfnum,
+ 					      vport_num - 1, false);
+ 	}
+-	return dl_port;
+ }
+ 
+-static void mlx5_esw_dl_port_free(struct devlink_port *dl_port)
++static int mlx5_esw_offloads_pf_vf_devlink_port_init(struct mlx5_eswitch *esw, u16 vport_num)
++{
++	struct devlink_port *dl_port;
++	struct mlx5_vport *vport;
++
++	if (!mlx5_esw_devlink_port_supported(esw, vport_num))
++		return 0;
++
++	vport = mlx5_eswitch_get_vport(esw, vport_num);
++	if (IS_ERR(vport))
++		return PTR_ERR(vport);
++
++	dl_port = kzalloc(sizeof(*dl_port), GFP_KERNEL);
++	if (!dl_port)
++		return -ENOMEM;
++
++	mlx5_esw_offloads_pf_vf_devlink_port_attrs_set(esw, vport_num, dl_port);
++
++	vport->dl_port = dl_port;
++	return 0;
++}
++
++static void mlx5_esw_offloads_pf_vf_devlink_port_cleanup(struct mlx5_eswitch *esw, u16 vport_num)
+ {
+-	kfree(dl_port);
++	struct mlx5_vport *vport;
++
++	vport = mlx5_eswitch_get_vport(esw, vport_num);
++	if (IS_ERR(vport) || !vport->dl_port)
++		return;
++
++	kfree(vport->dl_port);
++	vport->dl_port = NULL;
+ }
+ 
+ static const struct devlink_port_ops mlx5_esw_dl_port_ops = {
+@@ -89,16 +114,17 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_
+ 	struct devlink *devlink;
+ 	int err;
+ 
+-	if (!mlx5_esw_devlink_port_supported(esw, vport_num))
+-		return 0;
+-
+ 	vport = mlx5_eswitch_get_vport(esw, vport_num);
+ 	if (IS_ERR(vport))
+ 		return PTR_ERR(vport);
+ 
+-	dl_port = mlx5_esw_dl_port_alloc(esw, vport_num);
++	err = mlx5_esw_offloads_pf_vf_devlink_port_init(esw, vport_num);
++	if (err)
++		return err;
++
++	dl_port = vport->dl_port;
+ 	if (!dl_port)
+-		return -ENOMEM;
++		return 0;
+ 
+ 	devlink = priv_to_devlink(dev);
+ 	dl_port_index = mlx5_esw_vport_to_devlink_port_index(dev, vport_num);
+@@ -111,13 +137,12 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_
+ 	if (err)
+ 		goto rate_err;
+ 
+-	vport->dl_port = dl_port;
+ 	return 0;
+ 
+ rate_err:
+ 	devl_port_unregister(dl_port);
+ reg_err:
+-	mlx5_esw_dl_port_free(dl_port);
++	mlx5_esw_offloads_pf_vf_devlink_port_cleanup(esw, vport_num);
+ 	return err;
+ }
+ 
+@@ -125,11 +150,8 @@ void mlx5_esw_offloads_devlink_port_unregister(struct mlx5_eswitch *esw, u16 vpo
+ {
+ 	struct mlx5_vport *vport;
+ 
+-	if (!mlx5_esw_devlink_port_supported(esw, vport_num))
+-		return;
+-
+ 	vport = mlx5_eswitch_get_vport(esw, vport_num);
+-	if (IS_ERR(vport))
++	if (IS_ERR(vport) || !vport->dl_port)
+ 		return;
+ 
+ 	if (vport->dl_port->devlink_rate) {
+@@ -138,8 +160,7 @@ void mlx5_esw_offloads_devlink_port_unregister(struct mlx5_eswitch *esw, u16 vpo
+ 	}
+ 
+ 	devl_port_unregister(vport->dl_port);
+-	mlx5_esw_dl_port_free(vport->dl_port);
+-	vport->dl_port = NULL;
++	mlx5_esw_offloads_pf_vf_devlink_port_cleanup(esw, vport_num);
+ }
+ 
+ struct devlink_port *mlx5_esw_offloads_devlink_port(struct mlx5_eswitch *esw, u16 vport_num)
+-- 
+2.40.1
+
 
 
