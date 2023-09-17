@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00CDB7A37F8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C3407A390D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:44:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239580AbjIQT3g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
+        id S239937AbjIQToF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239608AbjIQT3T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:29:19 -0400
+        with ESMTP id S239977AbjIQTnx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A720AD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:29:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AD8C433C8;
-        Sun, 17 Sep 2023 19:29:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E1012F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45B4C433C7;
+        Sun, 17 Sep 2023 19:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978954;
-        bh=hGycoti6tL6EY2KIsB4VzxY+YVXQk4ELpV/qDk2C2eM=;
+        s=korg; t=1694979826;
+        bh=Ld02Ds3jm/Wk4lwqSSgz53HDOWM1g99adN0XGpXDhD4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cb9FzkXSJUJ255K5GdRuN9Zuzd6lA+ewqrmIa/TgBLny2tPOxVnEJJCulzxcvtOjW
-         EU5YO3QvehHJWROEnlitOkXinO0Ejn0QyZvTaUSWmrGj/vjyMVCB9ZPbYLRIcGLF7/
-         VVIuKDiDS8TZgeuPPMWJ3+dELfLUemE6wH+AGsAE=
+        b=XT654LP2t+1wcTBcCZd/h0+FF4/Al1XHe5wfRKxCVVnhcm1dtaIk6xXE8ii2ISnp6
+         0mWeJoJToAWOqoGgVkEnYFPlNSATwIB4h43Z/hOLcFdXJfhDgBssEw0wHzV0RqRZZn
+         ZkqhWH3ZF8eFUhwD+EuHleIgPyCnA/u1/WyhmGso=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 164/406] bus: ti-sysc: Fix build warning for 64-bit build
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        Chengming Zhou <zhouchengming@bytedance.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 018/285] null_blk: fix poll request timeout handling
 Date:   Sun, 17 Sep 2023 21:10:18 +0200
-Message-ID: <20230917191105.511204399@linuxfoundation.org>
+Message-ID: <20230917191052.257552455@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +51,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit e1e1e9bb9d943ec690670a609a5f660ca10eaf85 ]
+commit 5a26e45edb4690d58406178b5a9ea4c6dcf2c105 upstream.
 
-Fix "warning: cast from pointer to integer of different size" on 64-bit
-builds.
+When doing io_uring benchmark on /dev/nullb0, it's easy to crash the
+kernel if poll requests timeout triggered, as reported by David. [1]
 
-Note that this is a cosmetic fix at this point as the driver is not yet
-used for 64-bit systems.
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+Workqueue: kblockd blk_mq_timeout_work
+RIP: 0010:null_timeout_rq+0x4e/0x91
+Call Trace:
+ ? null_timeout_rq+0x4e/0x91
+ blk_mq_handle_expired+0x31/0x4b
+ bt_iter+0x68/0x84
+ ? bt_tags_iter+0x81/0x81
+ __sbitmap_for_each_set.constprop.0+0xb0/0xf2
+ ? __blk_mq_complete_request_remote+0xf/0xf
+ bt_for_each+0x46/0x64
+ ? __blk_mq_complete_request_remote+0xf/0xf
+ ? percpu_ref_get_many+0xc/0x2a
+ blk_mq_queue_tag_busy_iter+0x14d/0x18e
+ blk_mq_timeout_work+0x95/0x127
+ process_one_work+0x185/0x263
+ worker_thread+0x1b5/0x227
 
-Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Reviewed-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is indeed a race problem between null_timeout_rq() and null_poll().
+
+null_poll()				null_timeout_rq()
+  spin_lock(&nq->poll_lock)
+  list_splice_init(&nq->poll_list, &list)
+  spin_unlock(&nq->poll_lock)
+
+  while (!list_empty(&list))
+    req = list_first_entry()
+    list_del_init()
+    ...
+    blk_mq_add_to_batch()
+    // req->rq_next = NULL
+					spin_lock(&nq->poll_lock)
+
+					// rq->queuelist->next == NULL
+					list_del_init(&rq->queuelist)
+
+					spin_unlock(&nq->poll_lock)
+
+Fix these problems by setting requests state to MQ_RQ_COMPLETE under
+nq->poll_lock protection, in which null_timeout_rq() can safely detect
+this race and early return.
+
+Note this patch just fix the kernel panic when request timeout happen.
+
+[1] https://lore.kernel.org/all/3893581.1691785261@warthog.procyon.org.uk/
+
+Fixes: 0a593fbbc245 ("null_blk: poll queue support")
+Reported-by: David Howells <dhowells@redhat.com>
+Tested-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Link: https://lore.kernel.org/r/20230901120306.170520-2-chengming.zhou@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/null_blk/main.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index fcfe4d16cc149..fa7894cab2152 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3041,7 +3041,7 @@ static int sysc_init_static_data(struct sysc *ddata)
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1643,9 +1643,12 @@ static int null_poll(struct blk_mq_hw_ct
+ 	struct nullb_queue *nq = hctx->driver_data;
+ 	LIST_HEAD(list);
+ 	int nr = 0;
++	struct request *rq;
  
- 	match = soc_device_match(sysc_soc_match);
- 	if (match && match->data)
--		sysc_soc->soc = (int)match->data;
-+		sysc_soc->soc = (enum sysc_soc)match->data;
+ 	spin_lock(&nq->poll_lock);
+ 	list_splice_init(&nq->poll_list, &list);
++	list_for_each_entry(rq, &list, queuelist)
++		blk_mq_set_request_complete(rq);
+ 	spin_unlock(&nq->poll_lock);
  
- 	/* Ignore devices that are not available on HS and EMU SoCs */
- 	if (!sysc_soc->general_purpose) {
--- 
-2.40.1
-
+ 	while (!list_empty(&list)) {
+@@ -1671,16 +1674,21 @@ static enum blk_eh_timer_return null_tim
+ 	struct blk_mq_hw_ctx *hctx = rq->mq_hctx;
+ 	struct nullb_cmd *cmd = blk_mq_rq_to_pdu(rq);
+ 
+-	pr_info("rq %p timed out\n", rq);
+-
+ 	if (hctx->type == HCTX_TYPE_POLL) {
+ 		struct nullb_queue *nq = hctx->driver_data;
+ 
+ 		spin_lock(&nq->poll_lock);
++		/* The request may have completed meanwhile. */
++		if (blk_mq_request_completed(rq)) {
++			spin_unlock(&nq->poll_lock);
++			return BLK_EH_DONE;
++		}
+ 		list_del_init(&rq->queuelist);
+ 		spin_unlock(&nq->poll_lock);
+ 	}
+ 
++	pr_info("rq %p timed out\n", rq);
++
+ 	/*
+ 	 * If the device is marked as blocking (i.e. memory backed or zoned
+ 	 * device), the submission path may be blocked waiting for resources
 
 
