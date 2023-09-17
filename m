@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A867A398A
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2147A3897
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240080AbjIQTu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S239776AbjIQThk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240095AbjIQTuh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:37 -0400
+        with ESMTP id S239852AbjIQThX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2FC9F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF97C433C9;
-        Sun, 17 Sep 2023 19:50:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C5E126
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EF4C433CC;
+        Sun, 17 Sep 2023 19:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980232;
-        bh=WFp/Htj9drhhTZcS6ilwi2aeOZOVlNESir9+LKKWPoM=;
+        s=korg; t=1694979437;
+        bh=V+kG6wcBH4YI6FkQ+wBDconbAVb6NKoscB3oeRnF3n8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V+a0iG4O4oBqjFJp1Bsz3POJgaTMIOHAf/Zym6IZ++tW5uy0nPvUL0xoTySPJcSed
-         k/xclwtjeGvRHoiUm1VEOYWLX2XSBgVGm4S1LGc2afdRCXlkkG+TsrkHw8IU9Zikxe
-         bMg1ZtuVKW0wn67tr1BYB6PaRZ7e9Ov+eUha1/bk=
+        b=QoQPFRr/sYdTtjITlZAA8oAF+PnMOeIXTk5xR7aNAIPrxmJ/wdGejIiohaLXi//Dw
+         fgLRFuyh1FCgYY0fJHBjQdl6XMd5K26Z2XikZ2epfTcPqypYdmT4Z8pcfD7rme7fC6
+         VqsuXLKwqpOXBj61A+9REskZNR/TI1k0XLJN8Jgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 130/285] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
+        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        John Ogness <john.ogness@linutronix.de>,
+        Vijay Balakrishna <vijayb@linux.microsoft.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Tyler Hicks (Microsoft)" <code@tyhicks.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Subject: [PATCH 5.10 276/406] printk: ringbuffer: Fix truncating buffer size min_t cast
 Date:   Sun, 17 Sep 2023 21:12:10 +0200
-Message-ID: <20230917191056.163988404@linuxfoundation.org>
+Message-ID: <20230917191108.562283285@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
+commit 53e9e33ede37a247d926db5e4a9e56b55204e66c upstream.
 
-The existing code incorrectly casted a negative value (the result of a
-subtraction) to an unsigned value without checking. For example, if
-/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
-lifetime would jump to 4 billion seconds. On my machine and network the
-shortest lifetime that avoided underflow was 3 seconds.
+If an output buffer size exceeded U16_MAX, the min_t(u16, ...) cast in
+copy_data() was causing writes to truncate. This manifested as output
+bytes being skipped, seen as %NUL bytes in pstore dumps when the available
+record size was larger than 65536. Fix the cast to no longer truncate
+the calculation.
 
-Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: John Ogness <john.ogness@linutronix.de>
+Reported-by: Vijay Balakrishna <vijayb@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/d8bb1ec7-a4c5-43a2-9de0-9643a70b899f@linux.microsoft.com/
+Fixes: b6cf8b3f3312 ("printk: add lockless ringbuffer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Tested-by: Vijay Balakrishna <vijayb@linux.microsoft.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
+Reviewed-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
+Tested-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230811054528.never.165-kees@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 2 +-
+ kernel/printk/printk_ringbuffer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 94cec2075eee8..c93a2b9a91723 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1368,7 +1368,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
- 	 * idev->desync_factor if it's larger
- 	 */
- 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
--	max_desync_factor = min_t(__u32,
-+	max_desync_factor = min_t(long,
- 				  idev->cnf.max_desync_factor,
- 				  cnf_temp_preferred_lft - regen_advance);
+--- a/kernel/printk/printk_ringbuffer.c
++++ b/kernel/printk/printk_ringbuffer.c
+@@ -1726,7 +1726,7 @@ static bool copy_data(struct prb_data_ri
+ 	if (!buf || !buf_size)
+ 		return true;
  
--- 
-2.40.1
-
+-	data_size = min_t(u16, buf_size, len);
++	data_size = min_t(unsigned int, buf_size, len);
+ 
+ 	memcpy(&buf[0], data, data_size); /* LMM(copy_data:A) */
+ 	return true;
 
 
