@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 367BE7A3A5E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3AF7A389E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239532AbjIQUCm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46482 "EHLO
+        id S239761AbjIQTiJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:38:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240473AbjIQUCb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:31 -0400
+        with ESMTP id S239791AbjIQThn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E6C101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE3BC433C7;
-        Sun, 17 Sep 2023 20:01:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB3A103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D007AC433CB;
+        Sun, 17 Sep 2023 19:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980916;
-        bh=5Nh7GdhbZ+FDoz7i3707jjPjHB3RVISB1Ali4HcFezo=;
+        s=korg; t=1694979458;
+        bh=7BfA+JjrJ6l5Ei3qn9iueBr/bKg91pX4CGH4+xSlhog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iv0E1QMkzgrV84y+NOnAZVk8+DeLhLvrKUURszw8MnV8Z8lzu+1e4l/FmKOcyr4+G
-         Vona0c761yVnn6oxgsKO29ciO2oRCUaf8f6VX0iDN8eGPHPZ6niSt8xYtntB4kNHed
-         2xRZYFtLLfNPk243ZK6GLxXytqik0z7Mtc/PV6QM=
+        b=jDxUaKrt/A+hnQKmGgj8blwvQ11KltFBjgBiAINjiez4r+QHb8LPzHJxVSM/p6frx
+         6aqPJkZpWa1Fyf5e/S2SjZGkikkJKnxZcJckrG0SRmBwhH2Ewkyh8BSqguYRCCguIh
+         OHGTESwKSlevXMv6NDff7l63ebhEj50qQj/wt3gA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 045/219] clk: qcom: dispcc-sm8450: fix runtime PM imbalance on probe errors
-Date:   Sun, 17 Sep 2023 21:12:52 +0200
-Message-ID: <20230917191042.630354457@linuxfoundation.org>
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 319/406] scsi: qla2xxx: Fix erroneous link up failure
+Date:   Sun, 17 Sep 2023 21:12:53 +0200
+Message-ID: <20230917191109.721287312@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Quinn Tran <qutran@marvell.com>
 
-commit b0f3d01bda6c3f6f811e70f76d2040ae81f64565 upstream.
+commit 5b51f35d127e7bef55fa869d2465e2bca4636454 upstream.
 
-Make sure to decrement the runtime PM usage count before returning in
-case regmap initialisation fails.
+Link up failure occurred where driver failed to see certain events from FW
+indicating link up (AEN 8011) and fabric login completion (AEN 8014).
+Without these 2 events, driver would not proceed forward to scan the
+fabric. The cause of this is due to delay in the receive of interrupt for
+Mailbox 60 that causes qla to set the fw_started flag late.  The late
+setting of this flag causes other interrupts to be dropped.  These dropped
+interrupts happen to be the link up (AEN 8011) and fabric login completion
+(AEN 8014).
 
-Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
-Cc: stable@vger.kernel.org      # 6.1
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-3-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Set fw_started flag early to prevent interrupts being dropped.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/dispcc-sm8450.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    3 ++-
+ drivers/scsi/qla2xxx/qla_isr.c  |    6 +++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/dispcc-sm8450.c
-+++ b/drivers/clk/qcom/dispcc-sm8450.c
-@@ -1783,8 +1783,10 @@ static int disp_cc_sm8450_probe(struct p
- 		return ret;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -4342,15 +4342,16 @@ qla2x00_init_rings(scsi_qla_host_t *vha)
+ 		memcpy(ha->port_name, ha->init_cb->port_name, WWN_SIZE);
+ 	}
  
- 	regmap = qcom_cc_map(pdev, &disp_cc_sm8450_desc);
--	if (IS_ERR(regmap))
--		return PTR_ERR(regmap);
-+	if (IS_ERR(regmap)) {
-+		ret = PTR_ERR(regmap);
-+		goto err_put_rpm;
++	QLA_FW_STARTED(ha);
+ 	rval = qla2x00_init_firmware(vha, ha->init_cb_size);
+ next_check:
+ 	if (rval) {
++		QLA_FW_STOPPED(ha);
+ 		ql_log(ql_log_fatal, vha, 0x00d2,
+ 		    "Init Firmware **** FAILED ****.\n");
+ 	} else {
+ 		ql_dbg(ql_dbg_init, vha, 0x00d3,
+ 		    "Init Firmware -- success.\n");
+-		QLA_FW_STARTED(ha);
+ 		vha->u_ql2xexchoffld = vha->u_ql2xiniexchg = 0;
+ 	}
+ 
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -982,8 +982,12 @@ qla2x00_async_event(scsi_qla_host_t *vha
+ 	unsigned long	flags;
+ 	fc_port_t	*fcport = NULL;
+ 
+-	if (!vha->hw->flags.fw_started)
++	if (!vha->hw->flags.fw_started) {
++		ql_log(ql_log_warn, vha, 0x50ff,
++		    "Dropping AEN - %04x %04x %04x %04x.\n",
++		    mb[0], mb[1], mb[2], mb[3]);
+ 		return;
 +	}
  
- 	clk_lucid_evo_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
- 	clk_lucid_evo_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
-@@ -1799,9 +1801,16 @@ static int disp_cc_sm8450_probe(struct p
- 	regmap_update_bits(regmap, 0xe05c, BIT(0), BIT(0));
- 
- 	ret = qcom_cc_really_probe(pdev, &disp_cc_sm8450_desc, regmap);
-+	if (ret)
-+		goto err_put_rpm;
- 
- 	pm_runtime_put(&pdev->dev);
- 
-+	return 0;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+
- 	return ret;
- }
- 
+ 	/* Setup to process RIO completion. */
+ 	handle_cnt = 0;
 
 
