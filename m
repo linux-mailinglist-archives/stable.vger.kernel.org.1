@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 040657A3D76
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3A8A7A3BB7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239653AbjIQUnO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:43:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49642 "EHLO
+        id S240786AbjIQUVZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241369AbjIQUmy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:54 -0400
+        with ESMTP id S240853AbjIQUVD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC411AD
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:42:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B9AC433CB;
-        Sun, 17 Sep 2023 20:42:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12651101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F379C433C7;
+        Sun, 17 Sep 2023 20:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983352;
-        bh=ra8cHCyIfERjbMFCgpmxZMhARfBoK8XzV0Hcn8xA768=;
+        s=korg; t=1694982057;
+        bh=+AxiysUv+DiW0tn5Ps9w3I0lRhwutkSeUoo6qha8VoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e1v6tiTPSZIMy1KpOlubim+j300PpIEzA2ujkQVajgj8G7PPOEZa2eWqyzW85gGtj
-         sFAjhCqZVUA0/pbA3o+inWlqyxMLwe8bInmgjR7KiDqittD2lRzWl03vDIt2SMmMON
-         /inGjswQXWn68+05c1vnFGG5SFc2Doa5Nm14voWU=
+        b=reREw/+OEO/FLXXR2CWhjzvNWvrQqJdibiiS2ywvKnLwDGVXca0QEMGXrgWnow37T
+         5DEXrtlxeHCQvvXudWOezOCB9q5JQyxTQFyVvqKxICEWMdIAQT+n70NwLcDtAVEWc7
+         RRIxKGbFuxPMsDEVTEFZAjX0bzWBnXxfA1WmqCZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Jun Lei <jun.lei@amd.com>, Tom Chung <chiahsuan.chung@amd.com>,
-        Wesley Chalmers <wesley.chalmers@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.15 511/511] drm/amd/display: Fix a bug when searching for insert_above_mpcc
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 211/219] ipv6: fix ip6_sock_set_addr_preferences() typo
 Date:   Sun, 17 Sep 2023 21:15:38 +0200
-Message-ID: <20230917191126.055908642@linuxfoundation.org>
+Message-ID: <20230917191048.556355586@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Chalmers <wesley.chalmers@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 3d028d5d60d516c536de1ddd3ebf3d55f3f8983b upstream.
+[ Upstream commit 8cdd9f1aaedf823006449faa4e540026c692ac43 ]
 
-[WHY]
-Currently, when insert_plane is called with insert_above_mpcc
-parameter that is equal to tree->opp_list, the function returns NULL.
+ip6_sock_set_addr_preferences() second argument should be an integer.
 
-[HOW]
-Instead, the function should insert the plane at the top of the tree.
+SUNRPC attempts to set IPV6_PREFER_SRC_PUBLIC were
+translated to IPV6_PREFER_SRC_TMP
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Wesley Chalmers <wesley.chalmers@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 18d5ad623275 ("ipv6: add ip6_sock_set_addr_preferences")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230911154213.713941-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/net/ipv6.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c
-@@ -207,8 +207,9 @@ struct mpcc *mpc1_insert_plane(
- 		/* check insert_above_mpcc exist in tree->opp_list */
- 		struct mpcc *temp_mpcc = tree->opp_list;
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index e4ceef687c1c2..8ced112167599 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -1322,7 +1322,7 @@ static inline int __ip6_sock_set_addr_preferences(struct sock *sk, int val)
+ 	return 0;
+ }
  
--		while (temp_mpcc && temp_mpcc->mpcc_bot != insert_above_mpcc)
--			temp_mpcc = temp_mpcc->mpcc_bot;
-+		if (temp_mpcc != insert_above_mpcc)
-+			while (temp_mpcc && temp_mpcc->mpcc_bot != insert_above_mpcc)
-+				temp_mpcc = temp_mpcc->mpcc_bot;
- 		if (temp_mpcc == NULL)
- 			return NULL;
- 	}
+-static inline int ip6_sock_set_addr_preferences(struct sock *sk, bool val)
++static inline int ip6_sock_set_addr_preferences(struct sock *sk, int val)
+ {
+ 	int ret;
+ 
+-- 
+2.40.1
+
 
 
