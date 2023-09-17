@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB127A3B25
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D962F7A3D18
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240605AbjIQUN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36252 "EHLO
+        id S241228AbjIQUi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240712AbjIQUNj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:39 -0400
+        with ESMTP id S241221AbjIQUic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8C21BB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71053C433CD;
-        Sun, 17 Sep 2023 20:13:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB88101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A1C433C7;
+        Sun, 17 Sep 2023 20:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981588;
-        bh=5/SZgLsMvf+ShrBhYDUAid2l/X2OZbZZvgCMipiyxyI=;
+        s=korg; t=1694983106;
+        bh=KLbXH025VcgDvA/WVICERBy+GTDxxNTba8DDR2wQUuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fMFbXwuqpb4rrbsd/QX2KqPs1SMspLo9c0ZAxivOTWCHZznA7h81NWhOgBXTKBBiR
-         /6WQ8vNc45tZbTH1aTE/nDp3dDKu7XQryyjNO4r+yCSKYGDpwtZer2tX8uMFOzj5Ul
-         /gIYPSWAIfI8VNsdwzI7tN4gaMun9cY6OdqRhVkA=
+        b=LDBDBReX72Jns0TKM1Z9dExLxS/LQ65vHBnyfPrRDvEtc+TzBTsURUacWSTbhJSom
+         Na+ESSqcxGQ81L+0RNCrw4x3Vj78Iy3l3EIObAvkOmJnenEL303JaKkwUOyRqNNQtN
+         tCpB3UpDOGRy94Pq4ZIjNgCxGWE3DUnYCKX4pr5E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Wang Jianjian <wangjianjian0@foxmail.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 144/219] ext4: add correct group descriptors and reserved GDT blocks to system zone
-Date:   Sun, 17 Sep 2023 21:14:31 +0200
-Message-ID: <20230917191046.211481649@linuxfoundation.org>
+        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 445/511] octeontx2-af: Fix truncation of smq in CN10K NIX AQ enqueue mbox handler
+Date:   Sun, 17 Sep 2023 21:14:32 +0200
+Message-ID: <20230917191124.497820910@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,105 +51,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jianjian <wangjianjian0@foxmail.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit 68228da51c9a436872a4ef4b5a7692e29f7e5bc7 upstream.
+[ Upstream commit 29fe7a1b62717d58f033009874554d99d71f7d37 ]
 
-When setup_system_zone, flex_bg is not initialized so it is always 1.
-Use a new helper function, ext4_num_base_meta_blocks() which does not
-depend on sbi->s_log_groups_per_flex being initialized.
+The smq value used in the CN10K NIX AQ instruction enqueue mailbox
+handler was truncated to 9-bit value from 10-bit value because of
+typecasting the CN10K mbox request structure to the CN9K structure.
+Though this hasn't caused any problems when programming the NIX SQ
+context to the HW because the context structure is the same size.
+However, this causes a problem when accessing the structure parameters.
+This patch reads the right smq value for each platform.
 
-[ Squashed two patches in the Link URL's below together into a single
-  commit, which is simpler to review/understand.  Also fix checkpatch
-  warnings. --TYT ]
-
-Cc: stable@kernel.org
-Signed-off-by: Wang Jianjian <wangjianjian0@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_21AF0D446A9916ED5C51492CC6C9A0A77B05@qq.com
-Link: https://lore.kernel.org/r/tencent_D744D1450CC169AEA77FCF0A64719909ED05@qq.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 30077d210c83 ("octeontx2-af: cn10k: Update NIX/NPA context structure")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c         |   15 +++++++++++----
- fs/ext4/block_validity.c |    8 ++++----
- fs/ext4/ext4.h           |    2 ++
- 3 files changed, 17 insertions(+), 8 deletions(-)
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 21 +++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -910,11 +910,11 @@ unsigned long ext4_bg_num_gdb(struct sup
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index f5922d63e33e4..1593efc4502b5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -841,6 +841,21 @@ static int nix_aq_enqueue_wait(struct rvu *rvu, struct rvu_block *block,
+ 	return 0;
  }
  
- /*
-- * This function returns the number of file system metadata clusters at
-+ * This function returns the number of file system metadata blocks at
-  * the beginning of a block group, including the reserved gdt blocks.
-  */
--static unsigned ext4_num_base_meta_clusters(struct super_block *sb,
--				     ext4_group_t block_group)
-+unsigned int ext4_num_base_meta_blocks(struct super_block *sb,
-+				       ext4_group_t block_group)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	unsigned num;
-@@ -932,8 +932,15 @@ static unsigned ext4_num_base_meta_clust
- 	} else { /* For META_BG_BLOCK_GROUPS */
- 		num += ext4_bg_num_gdb(sb, block_group);
- 	}
--	return EXT4_NUM_B2C(sbi, num);
-+	return num;
- }
-+
-+static unsigned int ext4_num_base_meta_clusters(struct super_block *sb,
-+						ext4_group_t block_group)
++static void nix_get_aq_req_smq(struct rvu *rvu, struct nix_aq_enq_req *req,
++			       u16 *smq, u16 *smq_mask)
 +{
-+	return EXT4_NUM_B2C(EXT4_SB(sb), ext4_num_base_meta_blocks(sb, block_group));
++	struct nix_cn10k_aq_enq_req *aq_req;
++
++	if (!is_rvu_otx2(rvu)) {
++		aq_req = (struct nix_cn10k_aq_enq_req *)req;
++		*smq = aq_req->sq.smq;
++		*smq_mask = aq_req->sq_mask.smq;
++	} else {
++		*smq = req->sq.smq;
++		*smq_mask = req->sq_mask.smq;
++	}
 +}
 +
- /**
-  *	ext4_inode_to_goal_block - return a hint for block allocation
-  *	@inode: inode for block allocation
---- a/fs/ext4/block_validity.c
-+++ b/fs/ext4/block_validity.c
-@@ -215,7 +215,6 @@ int ext4_setup_system_zone(struct super_
- 	struct ext4_system_blocks *system_blks;
- 	struct ext4_group_desc *gdp;
- 	ext4_group_t i;
--	int flex_size = ext4_flex_bg_size(sbi);
- 	int ret;
+ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
+ 				   struct nix_aq_enq_req *req,
+ 				   struct nix_aq_enq_rsp *rsp)
+@@ -852,6 +867,7 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
+ 	struct rvu_block *block;
+ 	struct admin_queue *aq;
+ 	struct rvu_pfvf *pfvf;
++	u16 smq, smq_mask;
+ 	void *ctx, *mask;
+ 	bool ena;
+ 	u64 cfg;
+@@ -923,13 +939,14 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
+ 	if (rc)
+ 		return rc;
  
- 	system_blks = kzalloc(sizeof(*system_blks), GFP_KERNEL);
-@@ -223,12 +222,13 @@ int ext4_setup_system_zone(struct super_
- 		return -ENOMEM;
++	nix_get_aq_req_smq(rvu, req, &smq, &smq_mask);
+ 	/* Check if SQ pointed SMQ belongs to this PF/VF or not */
+ 	if (req->ctype == NIX_AQ_CTYPE_SQ &&
+ 	    ((req->op == NIX_AQ_INSTOP_INIT && req->sq.ena) ||
+ 	     (req->op == NIX_AQ_INSTOP_WRITE &&
+-	      req->sq_mask.ena && req->sq_mask.smq && req->sq.ena))) {
++	      req->sq_mask.ena && req->sq.ena && smq_mask))) {
+ 		if (!is_valid_txschq(rvu, blkaddr, NIX_TXSCH_LVL_SMQ,
+-				     pcifunc, req->sq.smq))
++				     pcifunc, smq))
+ 			return NIX_AF_ERR_AQ_ENQUEUE;
+ 	}
  
- 	for (i=0; i < ngroups; i++) {
-+		unsigned int meta_blks = ext4_num_base_meta_blocks(sb, i);
-+
- 		cond_resched();
--		if (ext4_bg_has_super(sb, i) &&
--		    ((i < 5) || ((i % flex_size) == 0))) {
-+		if (meta_blks != 0) {
- 			ret = add_system_zone(system_blks,
- 					ext4_group_first_block_no(sb, i),
--					ext4_bg_num_gdb(sb, i) + 1, 0);
-+					meta_blks, 0);
- 			if (ret)
- 				goto err;
- 		}
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3096,6 +3096,8 @@ extern const char *ext4_decode_error(str
- extern void ext4_mark_group_bitmap_corrupted(struct super_block *sb,
- 					     ext4_group_t block_group,
- 					     unsigned int flags);
-+extern unsigned int ext4_num_base_meta_blocks(struct super_block *sb,
-+					      ext4_group_t block_group);
- 
- extern __printf(7, 8)
- void __ext4_error(struct super_block *, const char *, unsigned int, bool,
+-- 
+2.40.1
+
 
 
