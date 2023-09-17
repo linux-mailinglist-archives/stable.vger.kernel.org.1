@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 523B67A3B16
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 647CA7A3B18
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240599AbjIQUMx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50638 "EHLO
+        id S240530AbjIQUNW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:13:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240744AbjIQUMr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:47 -0400
+        with ESMTP id S240664AbjIQUNL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BE52CE3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2040BC116A1;
-        Sun, 17 Sep 2023 20:12:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD929E61
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBF3C433CD;
+        Sun, 17 Sep 2023 20:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981541;
-        bh=94em+2BDGlriAe3FyMNVbtEuUYTf5gzHm7ZHnHSvaJc=;
+        s=korg; t=1694981548;
+        bh=Ha3xfXUkmZXCZUoMls+K4BscGLWHzQF1ubdO89c5q/U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O1rdRIHsDVCcPmEqgiMda0i4VRfWBwD4Zw2kXjGXXxdrdbofxQ8UyM/+HasFZGQWy
-         NEN+UQeGXckOhS7Mb/LRJ8SCaLvVXWpJRWUW21DudItOtuynWr2XA75z2emCNzB67E
-         hBzoX5/SjF3iiBgKAZjxfOrympS22BLfkeFoY7kU=
+        b=BdYHM8RBeC1kBsP0Yivj+2tQuWi7gswov/NnvzZKvO5aLzh8g1F3R17Et+gD0p6ty
+         X9Bmqhtb1rplubZyFEXppyx/ozq9JwD+TQpacdKvHSf9XJYjme/AFBATO1GjDzGCH+
+         o6CqM+fkcUV7xmAqY8yZKNFTMUCkUChzCIHMNvzk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Babu Moger <babu.moger@amd.com>,
-        "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/511] selftests/resctrl: Close perf value read fd on errors
-Date:   Sun, 17 Sep 2023 21:08:16 +0200
-Message-ID: <20230917191115.547174684@linuxfoundation.org>
+Subject: [PATCH 5.15 070/511] x86/decompressor: Dont rely on upper 32 bits of GPRs being preserved
+Date:   Sun, 17 Sep 2023 21:08:17 +0200
+Message-ID: <20230917191115.571153085@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -58,82 +55,108 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 51a0c3b7f028169e40db930575dd01fe81c3e765 ]
+[ Upstream commit 264b82fdb4989cf6a44a2bcd0c6ea05e8026b2ac ]
 
-Perf event fd (fd_lm) is not closed when run_fill_buf() returns error.
+The 4-to-5 level mode switch trampoline disables long mode and paging in
+order to be able to flick the LA57 bit. According to section 3.4.1.1 of
+the x86 architecture manual [0], 64-bit GPRs might not retain the upper
+32 bits of their contents across such a mode switch.
 
-Close fd_lm only in cat_val() to make it easier to track it is always
-closed.
+Given that RBP, RBX and RSI are live at this point, preserve them on the
+stack, along with the return address that might be above 4G as well.
 
-Fixes: 790bf585b0ee ("selftests/resctrl: Add Cache Allocation Technology (CAT) selftest")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Babu Moger <babu.moger@amd.com>
-Tested-by: Shaopeng Tan (Fujitsu) <tan.shaopeng@fujitsu.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+[0] Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1: Basic Architecture
+
+  "Because the upper 32 bits of 64-bit general-purpose registers are
+   undefined in 32-bit modes, the upper 32 bits of any general-purpose
+   register are not preserved when switching from 64-bit mode to a 32-bit
+   mode (to protected mode or compatibility mode). Software must not
+   depend on these bits to maintain a value after a 64-bit to 32-bit
+   mode switch."
+
+Fixes: 194a9749c73d650c ("x86/boot/compressed/64: Handle 5-level paging boot if kernel is above 4G")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230807162720.545787-2-ardb@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/cache.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/cache.c b/tools/testing/selftests/resctrl/cache.c
-index 0485863a169f2..338f714453935 100644
---- a/tools/testing/selftests/resctrl/cache.c
-+++ b/tools/testing/selftests/resctrl/cache.c
-@@ -89,21 +89,19 @@ static int reset_enable_llc_perf(pid_t pid, int cpu_no)
- static int get_llc_perf(unsigned long *llc_perf_miss)
- {
- 	__u64 total_misses;
-+	int ret;
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index fd9441f404570..c3d427c817c73 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -468,11 +468,25 @@ SYM_CODE_START(startup_64)
+ 	/* Save the trampoline address in RCX */
+ 	movq	%rax, %rcx
  
- 	/* Stop counters after one span to get miss rate */
- 
- 	ioctl(fd_lm, PERF_EVENT_IOC_DISABLE, 0);
- 
--	if (read(fd_lm, &rf_cqm, sizeof(struct read_format)) == -1) {
-+	ret = read(fd_lm, &rf_cqm, sizeof(struct read_format));
-+	if (ret == -1) {
- 		perror("Could not get llc misses through perf");
--
- 		return -1;
- 	}
- 
- 	total_misses = rf_cqm.values[0].value;
--
--	close(fd_lm);
--
- 	*llc_perf_miss = total_misses;
- 
- 	return 0;
-@@ -258,19 +256,25 @@ int cat_val(struct resctrl_val_param *param)
- 					 memflush, operation, resctrl_val)) {
- 				fprintf(stderr, "Error-running fill buffer\n");
- 				ret = -1;
--				break;
-+				goto pe_close;
- 			}
- 
- 			sleep(1);
- 			ret = measure_cache_vals(param, bm_pid);
- 			if (ret)
--				break;
-+				goto pe_close;
++	/* Set up 32-bit addressable stack */
++	leaq	TRAMPOLINE_32BIT_STACK_END(%rcx), %rsp
 +
-+			close(fd_lm);
- 		} else {
- 			break;
- 		}
- 	}
- 
- 	return ret;
++	/*
++	 * Preserve live 64-bit registers on the stack: this is necessary
++	 * because the architecture does not guarantee that GPRs will retain
++	 * their full 64-bit values across a 32-bit mode switch.
++	 */
++	pushq	%rbp
++	pushq	%rbx
++	pushq	%rsi
 +
-+pe_close:
-+	close(fd_lm);
-+	return ret;
- }
+ 	/*
+-	 * Load the address of trampoline_return() into RDI.
+-	 * It will be used by the trampoline to return to the main code.
++	 * Push the 64-bit address of trampoline_return() onto the new stack.
++	 * It will be used by the trampoline to return to the main code. Due to
++	 * the 32-bit mode switch, it cannot be kept it in a register either.
+ 	 */
+ 	leaq	trampoline_return(%rip), %rdi
++	pushq	%rdi
  
+ 	/* Switch to compatibility mode (CS.L = 0 CS.D = 1) via far return */
+ 	pushq	$__KERNEL32_CS
+@@ -480,6 +494,11 @@ SYM_CODE_START(startup_64)
+ 	pushq	%rax
+ 	lretq
+ trampoline_return:
++	/* Restore live 64-bit registers */
++	popq	%rsi
++	popq	%rbx
++	popq	%rbp
++
+ 	/* Restore the stack, the 32-bit trampoline uses its own stack */
+ 	leaq	rva(boot_stack_end)(%rbx), %rsp
+ 
+@@ -600,7 +619,7 @@ SYM_FUNC_END(.Lrelocated)
  /*
+  * This is the 32-bit trampoline that will be copied over to low memory.
+  *
+- * RDI contains the return address (might be above 4G).
++ * Return address is at the top of the stack (might be above 4G).
+  * ECX contains the base address of the trampoline memory.
+  * Non zero RDX means trampoline needs to enable 5-level paging.
+  */
+@@ -610,9 +629,6 @@ SYM_CODE_START(trampoline_32bit_src)
+ 	movl	%eax, %ds
+ 	movl	%eax, %ss
+ 
+-	/* Set up new stack */
+-	leal	TRAMPOLINE_32BIT_STACK_END(%ecx), %esp
+-
+ 	/* Disable paging */
+ 	movl	%cr0, %eax
+ 	btrl	$X86_CR0_PG_BIT, %eax
+@@ -672,7 +688,7 @@ SYM_CODE_END(trampoline_32bit_src)
+ 	.code64
+ SYM_FUNC_START_LOCAL_NOALIGN(.Lpaging_enabled)
+ 	/* Return from the trampoline */
+-	jmp	*%rdi
++	retq
+ SYM_FUNC_END(.Lpaging_enabled)
+ 
+ 	/*
 -- 
 2.40.1
 
