@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 977D77A38A9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E957A39BC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239798AbjIQTil (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54956 "EHLO
+        id S240128AbjIQTxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239056AbjIQTiP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:15 -0400
+        with ESMTP id S240159AbjIQTxX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B771FD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6205C433C8;
-        Sun, 17 Sep 2023 19:38:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7259F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DFAC433C8;
+        Sun, 17 Sep 2023 19:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979489;
-        bh=Qb4hT307EWXO405y2jaP733m7PyCmSd16DG3mp/NCnc=;
+        s=korg; t=1694980398;
+        bh=hTSWi3AxUUk85WviqmtlCT/65DuhQdzwCf/05swxAnY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Di0m7gOH21NFzCw1IyQX6qGhwc0ciptclES50R3YcIH16ejEaZreYtYspP1eV5VQp
-         aE3cNk5OMwSX3FXvEw0KGBk/Yy5tS4hPzTljfEmKcIR5uarPVK72Dqai1+minaC5bV
-         MWm+rbny0hXXjJG93qqMniNPCY/5U85QgzwjGRYg=
+        b=z5NJ0qyw+vMsisu8O1EnGd5bGktE2qGROEirBuNSZ8P7st5kMgytj42NKU3Fg9ecM
+         G6DyUi/Te69QhdrWvWDM3T4heSCEk1aOql/98pz8N/YXbXtFwKMTQDmZnaRof4A7Fr
+         f1tmyhxtX1UIgKgOAD1OA2CJ9DUZgzTQk/T9kXZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.10 327/406] pinctrl: cherryview: fix address_space_handler() argument
+        patches@lists.linux.dev, stable@kernel.org,
+        Hien Huynh <hien.huynh.px@renesas.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.5 181/285] dmaengine: sh: rz-dmac: Fix destination and source data size setting
 Date:   Sun, 17 Sep 2023 21:13:01 +0200
-Message-ID: <20230917191109.926573660@linuxfoundation.org>
+Message-ID: <20230917191057.893555579@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Hien Huynh <hien.huynh.px@renesas.com>
 
-commit d5301c90716a8e20bc961a348182daca00c8e8f0 upstream.
+commit c6ec8c83a29fb3aec3efa6fabbf5344498f57c7f upstream.
 
-First argument of acpi_*_address_space_handler() APIs is acpi_handle of
-the device, which is incorrectly passed in driver ->remove() path here.
-Fix it by passing the appropriate argument and while at it, make both
-API calls consistent using ACPI_HANDLE().
+Before setting DDS and SDS values, we need to clear its value first
+otherwise, we get incorrect results when we change/update the DMA bus
+width several times due to the 'OR' expression.
 
-Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@kernel.org
+Signed-off-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230706112150.198941-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/intel/pinctrl-cherryview.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/dma/sh/rz-dmac.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1625,7 +1625,6 @@ static int chv_pinctrl_probe(struct plat
- 	const struct intel_pinctrl_soc_data *soc_data;
- 	struct intel_community *community;
- 	struct device *dev = &pdev->dev;
--	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct intel_pinctrl *pctrl;
- 	acpi_status status;
- 	int ret, irq;
-@@ -1688,7 +1687,7 @@ static int chv_pinctrl_probe(struct plat
- 	if (ret)
- 		return ret;
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -9,6 +9,7 @@
+  * Copyright 2012 Javier Martin, Vista Silicon <javier.martin@vista-silicon.com>
+  */
  
--	status = acpi_install_address_space_handler(adev->handle,
-+	status = acpi_install_address_space_handler(ACPI_HANDLE(dev),
- 					community->acpi_space_id,
- 					chv_pinctrl_mmio_access_handler,
- 					NULL, pctrl);
-@@ -1705,7 +1704,7 @@ static int chv_pinctrl_remove(struct pla
- 	struct intel_pinctrl *pctrl = platform_get_drvdata(pdev);
- 	const struct intel_community *community = &pctrl->communities[0];
++#include <linux/bitfield.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+ #include <linux/interrupt.h>
+@@ -145,8 +146,8 @@ struct rz_dmac {
+ #define CHCFG_REQD			BIT(3)
+ #define CHCFG_SEL(bits)			((bits) & 0x07)
+ #define CHCFG_MEM_COPY			(0x80400008)
+-#define CHCFG_FILL_DDS(a)		(((a) << 16) & GENMASK(19, 16))
+-#define CHCFG_FILL_SDS(a)		(((a) << 12) & GENMASK(15, 12))
++#define CHCFG_FILL_DDS_MASK		GENMASK(19, 16)
++#define CHCFG_FILL_SDS_MASK		GENMASK(15, 12)
+ #define CHCFG_FILL_TM(a)		(((a) & BIT(5)) << 22)
+ #define CHCFG_FILL_AM(a)		(((a) & GENMASK(4, 2)) << 6)
+ #define CHCFG_FILL_LVL(a)		(((a) & BIT(1)) << 5)
+@@ -607,13 +608,15 @@ static int rz_dmac_config(struct dma_cha
+ 	if (val == CHCFG_DS_INVALID)
+ 		return -EINVAL;
  
--	acpi_remove_address_space_handler(ACPI_COMPANION(&pdev->dev),
-+	acpi_remove_address_space_handler(ACPI_HANDLE(&pdev->dev),
- 					  community->acpi_space_id,
- 					  chv_pinctrl_mmio_access_handler);
+-	channel->chcfg |= CHCFG_FILL_DDS(val);
++	channel->chcfg &= ~CHCFG_FILL_DDS_MASK;
++	channel->chcfg |= FIELD_PREP(CHCFG_FILL_DDS_MASK, val);
  
+ 	val = rz_dmac_ds_to_val_mapping(config->src_addr_width);
+ 	if (val == CHCFG_DS_INVALID)
+ 		return -EINVAL;
+ 
+-	channel->chcfg |= CHCFG_FILL_SDS(val);
++	channel->chcfg &= ~CHCFG_FILL_SDS_MASK;
++	channel->chcfg |= FIELD_PREP(CHCFG_FILL_SDS_MASK, val);
+ 
+ 	return 0;
+ }
 
 
