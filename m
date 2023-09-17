@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E89E7A3889
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58CA87A39A3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239029AbjIQThF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34320 "EHLO
+        id S240097AbjIQTwj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239784AbjIQTgi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:38 -0400
+        with ESMTP id S240159AbjIQTwK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9943012F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AE4C433C9;
-        Sun, 17 Sep 2023 19:36:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575F6194
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285FBC433C8;
+        Sun, 17 Sep 2023 19:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979393;
-        bh=6xG5K7B8vJ8lVlp1lFNORIztkhXDvRkj5f07odaHvLE=;
+        s=korg; t=1694980309;
+        bh=+KQDJPNUmqldDjAsgE6GGFKbWBLRZT4B/NSW6rtLaLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qSTR54Z4ot8AlcMgI0QOkxo75iZYMEYxIQFs5jsNHbkhmBqDaMD3PRfrE3yRt+ty7
-         3a+sg5FMXy2L18J+UqqU0SA4ahsuGkKxFU2nSQ79JCEjspaQQeufGs2MCTK3s9Tss4
-         mcfgxumhk4UrqEmnZSWz0QtvaOZXeaLrco79VFLM=
+        b=EHhZwNaxHyFKh/zPQxGg57M85dW40AOq+HMLNonuKqSCcam6cQUntKF+gxAZLuWfn
+         6xC3sXVojbdWtTYk4+wIx+XlVNxVnzYHzLfVDqSRAZRiRKWOZwQ4gRyierFH/GN4Uo
+         LwJEWTJr/Te3+MEIspDzCr/R0I0zhcXoCCnomKUw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
-        Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 5.10 299/406] fsverity: skip PKCS#7 parser when keyring is empty
-Date:   Sun, 17 Sep 2023 21:12:33 +0200
-Message-ID: <20230917191109.207523272@linuxfoundation.org>
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 154/285] net: dsa: sja1105: fix -ENOSPC when replacing the same tc-cbs too many times
+Date:   Sun, 17 Sep 2023 21:12:34 +0200
+Message-ID: <20230917191057.015813198@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,56 +50,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 919dc320956ea353a7fb2d84265195ad5ef525ac upstream.
+[ Upstream commit 894cafc5c62ccced758077bd4e970dc714c42637 ]
 
-If an fsverity builtin signature is given for a file but the
-".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
-parser.  Skip this to avoid the PKCS#7 attack surface when builtin
-signature support is configured into the kernel but is not being used.
+After running command [2] too many times in a row:
 
-This is a hardening improvement, not a fix per se, but I've added
-Fixes and Cc stable to get it out to more users.
+[1] $ tc qdisc add dev sw2p0 root handle 1: mqprio num_tc 8 \
+	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 hw 0
+[2] $ tc qdisc replace dev sw2p0 parent 1:1 cbs offload 1 \
+	idleslope 120000 sendslope -880000 locredit -1320 hicredit 180
 
-Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/20230820173237.2579-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(aka more than priv->info->num_cbs_shapers times)
+
+we start seeing the following error message:
+
+Error: Specified device failed to setup cbs hardware offload.
+
+This comes from the fact that ndo_setup_tc(TC_SETUP_QDISC_CBS) presents
+the same API for the qdisc create and replace cases, and the sja1105
+driver fails to distinguish between the 2. Thus, it always thinks that
+it must allocate the same shaper for a {port, queue} pair, when it may
+instead have to replace an existing one.
+
+Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/verity/signature.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/dsa/sja1105/sja1105_main.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
---- a/fs/verity/signature.c
-+++ b/fs/verity/signature.c
-@@ -61,6 +61,22 @@ int fsverity_verify_signature(const stru
- 		return -EBADMSG;
- 	}
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index fe7f09519653a..e6d82ac106bee 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2123,6 +2123,18 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
  
-+	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
-+		/*
-+		 * The ".fs-verity" keyring is empty, due to builtin signatures
-+		 * being supported by the kernel but not actually being used.
-+		 * In this case, verify_pkcs7_signature() would always return an
-+		 * error, usually ENOKEY.  It could also be EBADMSG if the
-+		 * PKCS#7 is malformed, but that isn't very important to
-+		 * distinguish.  So, just skip to ENOKEY to avoid the attack
-+		 * surface of the PKCS#7 parser, which would otherwise be
-+		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
-+		 */
-+		fsverity_err(inode,
-+			     "fs-verity keyring is empty, rejecting signed file!");
-+		return -ENOKEY;
-+	}
+ #define BYTES_PER_KBIT (1000LL / 8)
+ 
++static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
++				   int port, int prio)
++{
++	int i;
 +
- 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
- 	if (!d)
- 		return -ENOMEM;
++	for (i = 0; i < priv->info->num_cbs_shapers; i++)
++		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
++			return i;
++
++	return -1;
++}
++
+ static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
+ {
+ 	int i;
+@@ -2163,9 +2175,14 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
+ 	if (!offload->enable)
+ 		return sja1105_delete_cbs_shaper(priv, port, offload->queue);
+ 
+-	index = sja1105_find_unused_cbs_shaper(priv);
+-	if (index < 0)
+-		return -ENOSPC;
++	/* The user may be replacing an existing shaper */
++	index = sja1105_find_cbs_shaper(priv, port, offload->queue);
++	if (index < 0) {
++		/* That isn't the case - see if we can allocate a new one */
++		index = sja1105_find_unused_cbs_shaper(priv);
++		if (index < 0)
++			return -ENOSPC;
++	}
+ 
+ 	cbs = &priv->cbs[index];
+ 	cbs->port = port;
+-- 
+2.40.1
+
 
 
