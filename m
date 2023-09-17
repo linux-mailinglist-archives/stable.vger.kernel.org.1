@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D217A39E8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E027A38E9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239500AbjIQT4Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36286 "EHLO
+        id S239890AbjIQTm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240184AbjIQTzp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:45 -0400
+        with ESMTP id S240040AbjIQTmS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F7DEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7A6C433C7;
-        Sun, 17 Sep 2023 19:55:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00CD1CE7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101DAC433C7;
+        Sun, 17 Sep 2023 19:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980539;
-        bh=UZo5ZGbLwCgMMBQAqUVR/6DtO3SjelcQCZg/oBdUQ/E=;
+        s=korg; t=1694979711;
+        bh=NtFbxlpEwQvRv9XiUFERGFjAT502ZTTtyDUwtEyR+xs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SU0eoLR+VwbYn6iIx3qLkzzQkld9D/VWuX0lI8KMsURbrgMszCJObtMqkeWLjyrCI
-         kebzyjibquXIwP7RKvQde85XtUlCRYXHZGVinDeyekMdQl9EJUBwEn8VJJT1N8aPhs
-         f/5+SPWRst7UieGPp/x2oS3Ioigc8ZumeU3bqW04=
+        b=1600say7MxH6RIuHpna5+s2wqw+hGYnqw8wMPHoqxSRG9uV7cDtM9B/HFfCObDFvc
+         8xECw1Mj45mXhwcmf88+Oav1NSWs8caVW3HbGbRM5ZqxZcJiSDvmp4WmZbyvgSzres
+         iIGygbOdVqoZeQpvWP3jPTnzoKEQr+M3NUc0rW6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 221/285] drm/amd/display: prevent potential division by zero errors
+        Petr Tesarik <petr.tesarik.ext@huawei.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 367/406] sh: boards: Fix CEU buffer size passed to dma_declare_coherent_memory()
 Date:   Sun, 17 Sep 2023 21:13:41 +0200
-Message-ID: <20230917191059.151085230@linuxfoundation.org>
+Message-ID: <20230917191110.958029613@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +54,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Petr Tesarik <petr.tesarik.ext@huawei.com>
 
-commit 07e388aab042774f284a2ad75a70a194517cdad4 upstream.
+[ Upstream commit fb60211f377b69acffead3147578f86d0092a7a5 ]
 
-There are two places in apply_below_the_range() where it's possible for
-a divide by zero error to occur. So, to fix this make sure the divisor
-is non-zero before attempting the computation in both cases.
+In all these cases, the last argument to dma_declare_coherent_memory() is
+the buffer end address, but the expected value should be the size of the
+reserved region.
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2637
-Fixes: a463b263032f ("drm/amd/display: Fix frames_to_insert math")
-Fixes: ded6119e825a ("drm/amd/display: Reinstate LFC optimization")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39fb993038e1 ("media: arch: sh: ap325rxa: Use new renesas-ceu camera driver")
+Fixes: c2f9b05fd5c1 ("media: arch: sh: ecovec: Use new renesas-ceu camera driver")
+Fixes: f3590dc32974 ("media: arch: sh: kfr2r09: Use new renesas-ceu camera driver")
+Fixes: 186c446f4b84 ("media: arch: sh: migor: Use new renesas-ceu camera driver")
+Fixes: 1a3c230b4151 ("media: arch: sh: ms7724se: Use new renesas-ceu camera driver")
+Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20230724120742.2187-1-petrtesarik@huaweicloud.com
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/sh/boards/mach-ap325rxa/setup.c | 2 +-
+ arch/sh/boards/mach-ecovec24/setup.c | 6 ++----
+ arch/sh/boards/mach-kfr2r09/setup.c  | 2 +-
+ arch/sh/boards/mach-migor/setup.c    | 2 +-
+ arch/sh/boards/mach-se/7724/setup.c  | 6 ++----
+ 5 files changed, 7 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-+++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-@@ -338,7 +338,9 @@ static void apply_below_the_range(struct
- 		 *  - Delta for CEIL: delta_from_mid_point_in_us_1
- 		 *  - Delta for FLOOR: delta_from_mid_point_in_us_2
- 		 */
--		if ((last_render_time_in_us / mid_point_frames_ceil) < in_out_vrr->min_duration_in_us) {
-+		if (mid_point_frames_ceil &&
-+		    (last_render_time_in_us / mid_point_frames_ceil) <
-+		    in_out_vrr->min_duration_in_us) {
- 			/* Check for out of range.
- 			 * If using CEIL produces a value that is out of range,
- 			 * then we are forced to use FLOOR.
-@@ -385,8 +387,9 @@ static void apply_below_the_range(struct
- 		/* Either we've calculated the number of frames to insert,
- 		 * or we need to insert min duration frames
- 		 */
--		if (last_render_time_in_us / frames_to_insert <
--				in_out_vrr->min_duration_in_us){
-+		if (frames_to_insert &&
-+		    (last_render_time_in_us / frames_to_insert) <
-+		    in_out_vrr->min_duration_in_us){
- 			frames_to_insert -= (frames_to_insert > 1) ?
- 					1 : 0;
- 		}
+diff --git a/arch/sh/boards/mach-ap325rxa/setup.c b/arch/sh/boards/mach-ap325rxa/setup.c
+index bac8a058ebd7c..05bd42dde107b 100644
+--- a/arch/sh/boards/mach-ap325rxa/setup.c
++++ b/arch/sh/boards/mach-ap325rxa/setup.c
+@@ -530,7 +530,7 @@ static int __init ap325rxa_devices_setup(void)
+ 	device_initialize(&ap325rxa_ceu_device.dev);
+ 	dma_declare_coherent_memory(&ap325rxa_ceu_device.dev,
+ 			ceu_dma_membase, ceu_dma_membase,
+-			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
++			CEU_BUFFER_MEMORY_SIZE);
+ 
+ 	platform_device_add(&ap325rxa_ceu_device);
+ 
+diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
+index bab91a99124e1..9730a992dab33 100644
+--- a/arch/sh/boards/mach-ecovec24/setup.c
++++ b/arch/sh/boards/mach-ecovec24/setup.c
+@@ -1454,15 +1454,13 @@ static int __init arch_setup(void)
+ 	device_initialize(&ecovec_ceu_devices[0]->dev);
+ 	dma_declare_coherent_memory(&ecovec_ceu_devices[0]->dev,
+ 				    ceu0_dma_membase, ceu0_dma_membase,
+-				    ceu0_dma_membase +
+-				    CEU_BUFFER_MEMORY_SIZE - 1);
++				    CEU_BUFFER_MEMORY_SIZE);
+ 	platform_device_add(ecovec_ceu_devices[0]);
+ 
+ 	device_initialize(&ecovec_ceu_devices[1]->dev);
+ 	dma_declare_coherent_memory(&ecovec_ceu_devices[1]->dev,
+ 				    ceu1_dma_membase, ceu1_dma_membase,
+-				    ceu1_dma_membase +
+-				    CEU_BUFFER_MEMORY_SIZE - 1);
++				    CEU_BUFFER_MEMORY_SIZE);
+ 	platform_device_add(ecovec_ceu_devices[1]);
+ 
+ 	gpiod_add_lookup_table(&cn12_power_gpiod_table);
+diff --git a/arch/sh/boards/mach-kfr2r09/setup.c b/arch/sh/boards/mach-kfr2r09/setup.c
+index eeb5ce341efdd..4a1caa3e7cf5a 100644
+--- a/arch/sh/boards/mach-kfr2r09/setup.c
++++ b/arch/sh/boards/mach-kfr2r09/setup.c
+@@ -603,7 +603,7 @@ static int __init kfr2r09_devices_setup(void)
+ 	device_initialize(&kfr2r09_ceu_device.dev);
+ 	dma_declare_coherent_memory(&kfr2r09_ceu_device.dev,
+ 			ceu_dma_membase, ceu_dma_membase,
+-			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
++			CEU_BUFFER_MEMORY_SIZE);
+ 
+ 	platform_device_add(&kfr2r09_ceu_device);
+ 
+diff --git a/arch/sh/boards/mach-migor/setup.c b/arch/sh/boards/mach-migor/setup.c
+index 6703a2122c0d6..bd4ccd9f8dd06 100644
+--- a/arch/sh/boards/mach-migor/setup.c
++++ b/arch/sh/boards/mach-migor/setup.c
+@@ -604,7 +604,7 @@ static int __init migor_devices_setup(void)
+ 	device_initialize(&migor_ceu_device.dev);
+ 	dma_declare_coherent_memory(&migor_ceu_device.dev,
+ 			ceu_dma_membase, ceu_dma_membase,
+-			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
++			CEU_BUFFER_MEMORY_SIZE);
+ 
+ 	platform_device_add(&migor_ceu_device);
+ 
+diff --git a/arch/sh/boards/mach-se/7724/setup.c b/arch/sh/boards/mach-se/7724/setup.c
+index 8d6541ba01865..edc7712e4a804 100644
+--- a/arch/sh/boards/mach-se/7724/setup.c
++++ b/arch/sh/boards/mach-se/7724/setup.c
+@@ -940,15 +940,13 @@ static int __init devices_setup(void)
+ 	device_initialize(&ms7724se_ceu_devices[0]->dev);
+ 	dma_declare_coherent_memory(&ms7724se_ceu_devices[0]->dev,
+ 				    ceu0_dma_membase, ceu0_dma_membase,
+-				    ceu0_dma_membase +
+-				    CEU_BUFFER_MEMORY_SIZE - 1);
++				    CEU_BUFFER_MEMORY_SIZE);
+ 	platform_device_add(ms7724se_ceu_devices[0]);
+ 
+ 	device_initialize(&ms7724se_ceu_devices[1]->dev);
+ 	dma_declare_coherent_memory(&ms7724se_ceu_devices[1]->dev,
+ 				    ceu1_dma_membase, ceu1_dma_membase,
+-				    ceu1_dma_membase +
+-				    CEU_BUFFER_MEMORY_SIZE - 1);
++				    CEU_BUFFER_MEMORY_SIZE);
+ 	platform_device_add(ms7724se_ceu_devices[1]);
+ 
+ 	return platform_add_devices(ms7724se_devices,
+-- 
+2.40.1
+
 
 
