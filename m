@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD64F7A378D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14ED77A378E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239331AbjIQTWI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:22:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
+        id S239092AbjIQTWH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:22:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239215AbjIQTVf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:21:35 -0400
+        with ESMTP id S239336AbjIQTVg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:21:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37853121
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:21:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C976C433CA;
-        Sun, 17 Sep 2023 19:21:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5D0127
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:21:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33A2C433C8;
+        Sun, 17 Sep 2023 19:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978482;
-        bh=7Ag7NWEfq0QVHfuPVFVxVBuFntRl6y5Jds8nMixXlbs=;
+        s=korg; t=1694978486;
+        bh=yMRSArmOJSCvEXivSFHiMxcglaMoQJp78UjJhWbzv9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lwS5DMo7BCFJPqMKcTpMk1VhsWVmwnSj/q9WNogb56Rr9mmoztPz2S9fc6ZtqkHuo
-         +uKQPUClT2ISrPV+Pv6E8uOm96zR+LNn4zOHa6grexpeDxqfxmy7+XAXR3yHPq9p93
-         Org6eoCiCp8hnuuRN3ektum/b01L9TyyrPzUIGsI=
+        b=zj2cTnUKW58V0LGI5uyPlWy3psOzzgFSZs9stPniST0DDTcS3vytiVAMurA3z0Igd
+         oA1gspOYC61usI+25gummr2KTYI+uhoohdSRPgPKu8a8jTFiV9xAZze/o+fcrTwRBW
+         Rjqu1TG6ynyFkGP9QAYtov0zq6PD/btsF0CjDtHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/406] refscale: Fix uninitalized use of wait_queue_head_t
-Date:   Sun, 17 Sep 2023 21:08:45 +0200
-Message-ID: <20230917191103.012187196@linuxfoundation.org>
+Subject: [PATCH 5.10 072/406] OPP: Fix passing 0 to PTR_ERR in _opp_attach_genpd()
+Date:   Sun, 17 Sep 2023 21:08:46 +0200
+Message-ID: <20230917191103.037338241@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -57,81 +55,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit f5063e8948dad7f31adb007284a5d5038ae31bb8 ]
+[ Upstream commit d920920f85a82c1c806a4143871a0e8f534732f2 ]
 
-Running the refscale test occasionally crashes the kernel with the
-following error:
+If dev_pm_domain_attach_by_name() returns NULL, then 0 will be passed to
+PTR_ERR() as reported by the smatch warning below:
 
-[ 8569.952896] BUG: unable to handle page fault for address: ffffffffffffffe8
-[ 8569.952900] #PF: supervisor read access in kernel mode
-[ 8569.952902] #PF: error_code(0x0000) - not-present page
-[ 8569.952904] PGD c4b048067 P4D c4b049067 PUD c4b04b067 PMD 0
-[ 8569.952910] Oops: 0000 [#1] PREEMPT_RT SMP NOPTI
-[ 8569.952916] Hardware name: Dell Inc. PowerEdge R750/0WMWCR, BIOS 1.2.4 05/28/2021
-[ 8569.952917] RIP: 0010:prepare_to_wait_event+0x101/0x190
-  :
-[ 8569.952940] Call Trace:
-[ 8569.952941]  <TASK>
-[ 8569.952944]  ref_scale_reader+0x380/0x4a0 [refscale]
-[ 8569.952959]  kthread+0x10e/0x130
-[ 8569.952966]  ret_from_fork+0x1f/0x30
-[ 8569.952973]  </TASK>
+drivers/opp/core.c:2456 _opp_attach_genpd() warn: passing zero to 'PTR_ERR'
 
-The likely cause is that init_waitqueue_head() is called after the call to
-the torture_create_kthread() function that creates the ref_scale_reader
-kthread.  Although this init_waitqueue_head() call will very likely
-complete before this kthread is created and starts running, it is
-possible that the calling kthread will be delayed between the calls to
-torture_create_kthread() and init_waitqueue_head().  In this case, the
-new kthread will use the waitqueue head before it is properly initialized,
-which is not good for the kernel's health and well-being.
+Fix it by checking for the non-NULL virt_dev pointer before passing it to
+PTR_ERR. Otherwise return -ENODEV.
 
-The above crash happened here:
-
-	static inline void __add_wait_queue(...)
-	{
-		:
-		if (!(wq->flags & WQ_FLAG_PRIORITY)) <=== Crash here
-
-The offset of flags from list_head entry in wait_queue_entry is
--0x18. If reader_tasks[i].wq.head.next is NULL as allocated reader_task
-structure is zero initialized, the instruction will try to access address
-0xffffffffffffffe8, which is exactly the fault address listed above.
-
-This commit therefore invokes init_waitqueue_head() before creating
-the kthread.
-
-Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: 4ea9496cbc95 ("opp: Fix error check in dev_pm_opp_attach_genpd()")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/refscale.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/opp/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
-index 4e419ca6d6114..dbd670376c42e 100644
---- a/kernel/rcu/refscale.c
-+++ b/kernel/rcu/refscale.c
-@@ -692,12 +692,11 @@ ref_scale_init(void)
- 	VERBOSE_SCALEOUT("Starting %d reader threads\n", nreaders);
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 7ed605ffb7171..7999baa075b0e 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2053,7 +2053,7 @@ struct opp_table *dev_pm_opp_attach_genpd(struct device *dev,
  
- 	for (i = 0; i < nreaders; i++) {
-+		init_waitqueue_head(&reader_tasks[i].wq);
- 		firsterr = torture_create_kthread(ref_scale_reader, (void *)i,
- 						  reader_tasks[i].task);
- 		if (firsterr)
- 			goto unwind;
--
--		init_waitqueue_head(&(reader_tasks[i].wq));
- 	}
- 
- 	// Main Task
+ 		virt_dev = dev_pm_domain_attach_by_name(dev, *name);
+ 		if (IS_ERR_OR_NULL(virt_dev)) {
+-			ret = PTR_ERR(virt_dev) ? : -ENODEV;
++			ret = virt_dev ? PTR_ERR(virt_dev) : -ENODEV;
+ 			dev_err(dev, "Couldn't attach to pm_domain: %d\n", ret);
+ 			goto err;
+ 		}
 -- 
 2.40.1
 
