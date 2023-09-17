@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 413E97A3AEE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 150727A3D15
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240518AbjIQUKs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:10:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38364 "EHLO
+        id S241219AbjIQUi6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:38:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240605AbjIQUKa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:30 -0400
+        with ESMTP id S241209AbjIQUi2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03681B5
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30574C433C7;
-        Sun, 17 Sep 2023 20:10:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789E0101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC73C433CB;
+        Sun, 17 Sep 2023 20:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981424;
-        bh=QvB7/ixnFpFddpoqFvDuuLR0rGAbL4hRfKkzWe8aQcs=;
+        s=korg; t=1694983103;
+        bh=MzY9aITqwwp9wanPtmK2rsmq16UwSymQmGswlrbXVkg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MYb7rF47na566Pu8qL73+zUvYUGvZj9+bXlXg9vmsHfYWBD8yCVHjMU0Rkhjs39Y1
-         rizHmT+hpL/Hu5D6MxYdDzzXCxzM57kgw9rU4p+OLr/hek3s2K92lnMatkn40TBZI4
-         w3wIpjewjHcEsY3lo8vbm5lvp9yCX9WPwI6rIQJU=
+        b=zf7/O9Bdhfx5aTQ7Q6xpaYLuhJsoPZZtGqrfl2/A7Ox85c76yBqFHzGRcCQ3VIzY4
+         B322klHH02qoC5vvkk2xi81CXPMLOTUVZK8L3Up+MPYiAqg13g29I3WFI1kGf2q10O
+         1JQGyofv/WmHQpkLlZKR75EEckA8AScgjjr6FH/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/219] s390/zcrypt: dont leak memory if dev_set_name() fails
+Subject: [PATCH 5.15 418/511] Input: tca6416-keypad - fix interrupt enable disbalance
 Date:   Sun, 17 Sep 2023 21:14:05 +0200
-Message-ID: <20230917191045.244441206@linuxfoundation.org>
+Message-ID: <20230917191123.872695120@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 6252f47b78031979ad919f971dc8468b893488bd ]
+[ Upstream commit cc141c35af873c6796e043adcb820833bd8ef8c5 ]
 
-When dev_set_name() fails, zcdn_create() doesn't free the newly
-allocated resources. Do it.
+The driver has been switched to use IRQF_NO_AUTOEN, but in the error
+unwinding and remove paths calls to enable_irq() were left in place, which
+will lead to an incorrect enable counter value.
 
-Fixes: 00fab2350e6b ("s390/zcrypt: multiple zcrypt device nodes support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230831110000.24279-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: bcd9730a04a1 ("Input: move to use request_irq by IRQF_NO_AUTOEN flag")
+Link: https://lore.kernel.org/r/20230724053024.352054-3-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/zcrypt_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/keyboard/tca6416-keypad.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
-index f94b43ce9a658..28e34d155334b 100644
---- a/drivers/s390/crypto/zcrypt_api.c
-+++ b/drivers/s390/crypto/zcrypt_api.c
-@@ -441,6 +441,7 @@ static int zcdn_create(const char *name)
- 			 ZCRYPT_NAME "_%d", (int)MINOR(devt));
- 	nodename[sizeof(nodename) - 1] = '\0';
- 	if (dev_set_name(&zcdndev->device, nodename)) {
-+		kfree(zcdndev);
- 		rc = -EINVAL;
- 		goto unlockout;
- 	}
+diff --git a/drivers/input/keyboard/tca6416-keypad.c b/drivers/input/keyboard/tca6416-keypad.c
+index d65afa25c2405..508d84f6d00cb 100644
+--- a/drivers/input/keyboard/tca6416-keypad.c
++++ b/drivers/input/keyboard/tca6416-keypad.c
+@@ -292,10 +292,8 @@ static int tca6416_keypad_probe(struct i2c_client *client,
+ 	return 0;
+ 
+ fail2:
+-	if (!chip->use_polling) {
++	if (!chip->use_polling)
+ 		free_irq(client->irq, chip);
+-		enable_irq(client->irq);
+-	}
+ fail1:
+ 	input_free_device(input);
+ 	kfree(chip);
+@@ -306,10 +304,8 @@ static int tca6416_keypad_remove(struct i2c_client *client)
+ {
+ 	struct tca6416_keypad_chip *chip = i2c_get_clientdata(client);
+ 
+-	if (!chip->use_polling) {
++	if (!chip->use_polling)
+ 		free_irq(client->irq, chip);
+-		enable_irq(client->irq);
+-	}
+ 
+ 	input_unregister_device(chip->input);
+ 	kfree(chip);
 -- 
 2.40.1
 
