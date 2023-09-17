@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB427A39EC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA8C7A38B8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240200AbjIQT4S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46970 "EHLO
+        id S239835AbjIQTjP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240250AbjIQTz6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:58 -0400
+        with ESMTP id S239891AbjIQTjK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB11133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D80C433CB;
-        Sun, 17 Sep 2023 19:55:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBA1126
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96655C433C8;
+        Sun, 17 Sep 2023 19:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980553;
-        bh=RgNh2LVJxOuyJeU27TuKyV+rz9RGRrzzf4eFVBA/PZQ=;
+        s=korg; t=1694979544;
+        bh=ieyQsGSs6+0LpZ4aPBLP4zINCP5zCvV9ufkLAa25aTE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O6BolJk+FuP3Aju8j7UfgH6Xobrp7WsSXqRJSDnR5Elk8yYKEXZp5yhqcpjLpj64a
-         Q/yRObSr+1/hUHAs1WJSeVVjdBfGvpbXJJktKA731p2NHcojdu12XXyIoRFtE4kGKs
-         D7yMbsMjM3JV3Ne5WkQ90CZ30MEmnPcF/eI4jMs0=
+        b=cxLYXIOdzy7Xbwas9dhxJBKANREYgp+1zf5Opr5XecLguhO90Ox4i8PdoaW9Y//aa
+         voLKfkRYrpnODdzBf0Prlr+Wc8R80JNm2Jy0pvFn56y9pxLj2SqetxtY9wM1mK+MiB
+         2tL2rQ4+YapQEgceFLPVG8A+cdByJ/RV0m9IaV+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William R Sowerbutts <will@sowerbutts.com>,
-        Finn Thain <fthain@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.5 198/285] ata: pata_falcon: fix IO base selection for Q40
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 344/406] net: read sk->sk_family once in sk_mc_loop()
 Date:   Sun, 17 Sep 2023 21:13:18 +0200
-Message-ID: <20230917191058.442164997@linuxfoundation.org>
+Message-ID: <20230917191110.361086353@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,127 +52,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 8a1f00b753ecfdb117dc1a07e68c46d80e7923ea upstream.
+[ Upstream commit a3e0fdf71bbe031de845e8e08ed7fba49f9c702c ]
 
-With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
-with pata_falcon and falconide"), the Q40 IDE driver was
-replaced by pata_falcon.c.
+syzbot is playing with IPV6_ADDRFORM quite a lot these days,
+and managed to hit the WARN_ON_ONCE(1) in sk_mc_loop()
 
-Both IO and memory resources were defined for the Q40 IDE
-platform device, but definition of the IDE register addresses
-was modeled after the Falcon case, both in use of the memory
-resources and in including register shift and byte vs. word
-offset in the address.
+We have many more similar issues to fix.
 
-This was correct for the Falcon case, which does not apply
-any address translation to the register addresses. In the
-Q40 case, all of device base address, byte access offset
-and register shift is included in the platform specific
-ISA access translation (in asm/mm_io.h).
+WARNING: CPU: 1 PID: 1593 at net/core/sock.c:782 sk_mc_loop+0x165/0x260
+Modules linked in:
+CPU: 1 PID: 1593 Comm: kworker/1:3 Not tainted 6.1.40-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+Workqueue: events_power_efficient gc_worker
+RIP: 0010:sk_mc_loop+0x165/0x260 net/core/sock.c:782
+Code: 34 1b fd 49 81 c7 18 05 00 00 4c 89 f8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ff e8 25 36 6d fd 4d 8b 37 eb 13 e8 db 33 1b fd <0f> 0b b3 01 eb 34 e8 d0 33 1b fd 45 31 f6 49 83 c6 38 4c 89 f0 48
+RSP: 0018:ffffc90000388530 EFLAGS: 00010246
+RAX: ffffffff846d9b55 RBX: 0000000000000011 RCX: ffff88814f884980
+RDX: 0000000000000102 RSI: ffffffff87ae5160 RDI: 0000000000000011
+RBP: ffffc90000388550 R08: 0000000000000003 R09: ffffffff846d9a65
+R10: 0000000000000002 R11: ffff88814f884980 R12: dffffc0000000000
+R13: ffff88810dbee000 R14: 0000000000000010 R15: ffff888150084000
+FS: 0000000000000000(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000180 CR3: 000000014ee5b000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<IRQ>
+[<ffffffff8507734f>] ip6_finish_output2+0x33f/0x1ae0 net/ipv6/ip6_output.c:83
+[<ffffffff85062766>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff85062766>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff85061f8c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff85061f8c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff852071cf>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff852071cf>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff83618fb4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff83618fb4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff83618fb4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff83618fb4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff8361ddd9>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84763fc0>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
+[<ffffffff84763fc0>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84763fc0>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff8494c650>] sch_direct_xmit+0x2a0/0x9c0 net/sched/sch_generic.c:342
+[<ffffffff8494d883>] qdisc_restart net/sched/sch_generic.c:407 [inline]
+[<ffffffff8494d883>] __qdisc_run+0xb13/0x1e70 net/sched/sch_generic.c:415
+[<ffffffff8478c426>] qdisc_run+0xd6/0x260 include/net/pkt_sched.h:125
+[<ffffffff84796eac>] net_tx_action+0x7ac/0x940 net/core/dev.c:5247
+[<ffffffff858002bd>] __do_softirq+0x2bd/0x9bd kernel/softirq.c:599
+[<ffffffff814c3fe8>] invoke_softirq kernel/softirq.c:430 [inline]
+[<ffffffff814c3fe8>] __irq_exit_rcu+0xc8/0x170 kernel/softirq.c:683
+[<ffffffff814c3f09>] irq_exit_rcu+0x9/0x20 kernel/softirq.c:695
 
-As a consequence, such address translation gets applied
-twice, and register addresses are mangled.
-
-Use the device base address from the platform IO resource
-for Q40 (the IO address translation will then add the correct
-ISA window base address and byte access offset), with register
-shift 1. Use MMIO base address and register shift 2 as before
-for Falcon.
-
-Encode PIO_OFFSET into IO port addresses for all registers
-for Q40 except the data transfer register. Encode the MMIO
-offset there (pata_falcon_data_xfer() directly uses raw IO
-with no address translation).
-
-Reported-by: William R Sowerbutts <will@sowerbutts.com>
-Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
-Cc: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ad6848c7e81 ("ip: fix mc_loop checks for tunnels with multicast outer addresses")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230830101244.1146934-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_falcon.c |   50 ++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
+ net/core/sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(s
- 	struct resource *base_res, *ctl_res, *irq_res;
- 	struct ata_host *host;
- 	struct ata_port *ap;
--	void __iomem *base;
--	int irq = 0;
-+	void __iomem *base, *ctl_base;
-+	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
- 
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
- 
-@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(s
- 	ap->pio_mask = ATA_PIO4;
- 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
- 
--	base = (void __iomem *)base_mem_res->start;
- 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
--	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
--	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
--	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
--	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
--	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
--	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
--	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
--	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
--
--	base = (void __iomem *)ctl_mem_res->start;
--	ap->ioaddr.altstatus_addr	= base + 1;
--	ap->ioaddr.ctl_addr		= base + 1;
--
--	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
--		      (unsigned long)base_mem_res->start,
--		      (unsigned long)ctl_mem_res->start);
-+	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
-+
-+	if (base_res) {		/* only Q40 has IO resources */
-+		io_offset = 0x10000;
-+		reg_shift = 0;
-+		base = (void __iomem *)base_res->start;
-+		ctl_base = (void __iomem *)ctl_res->start;
-+	} else {
-+		base = (void __iomem *)base_mem_res->start;
-+		ctl_base = (void __iomem *)ctl_mem_res->start;
-+	}
-+
-+	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
-+	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
-+	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
-+	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
-+	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
-+	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
-+	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
-+
-+	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
-+	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
-+
-+	ata_port_desc(ap, "cmd %px ctl %px data %px",
-+		      base, ctl_base, ap->ioaddr.data_addr);
- 
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 742356cfd07c4..e2d45631c15d7 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -690,7 +690,8 @@ bool sk_mc_loop(struct sock *sk)
+ 		return false;
+ 	if (!sk)
+ 		return true;
+-	switch (sk->sk_family) {
++	/* IPV6_ADDRFORM can change sk->sk_family under us. */
++	switch (READ_ONCE(sk->sk_family)) {
+ 	case AF_INET:
+ 		return inet_sk(sk)->mc_loop;
+ #if IS_ENABLED(CONFIG_IPV6)
+-- 
+2.40.1
+
 
 
