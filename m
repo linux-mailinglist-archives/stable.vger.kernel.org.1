@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FADA7A3B9C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E659F7A3D4D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240767AbjIQUTs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52984 "EHLO
+        id S230509AbjIQUlH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240776AbjIQUTl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:41 -0400
+        with ESMTP id S241299AbjIQUkw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A886F4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EDFC433C7;
-        Sun, 17 Sep 2023 20:19:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BA710E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D730DC433C8;
+        Sun, 17 Sep 2023 20:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981975;
-        bh=lD1Gf/UAwUgi6BCmURQ6ngoMx6ULJ4Xs5n/IfpGVCeY=;
+        s=korg; t=1694983247;
+        bh=kRmihp+Cgs/nZ1FbwlB+WoGxupWJB+2A10LA8mfTX2Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PruzooP5v3JUoF+DJhY93tOAYtnnCwOEkKf19t52XEdkqM1iF0BEk6PiQfJ5axFRY
-         Rg8IaeLInsi6cnqTEJeMObkvAX2XnEbBYL7MHmsMZdYwpzH8E8257f8ijVsabOc8e1
-         NNcAOz5V0M/QpMTTuxE16/AH8cc5lu9fEq12ESZs=
+        b=dxZwdqTcMx4oHg2PmxOQ8AvLUp3QGN0ElI12iAeP7kF64riSKV8pe76YjggZ4z1yK
+         VPRzXkqHC05rUFjZteNQAW6tupxxI3and6YbNLlSkFkYbVRKAQdOKLYfYtRvJv5GqQ
+         ZIXhXAA2yCnP94KEiw+u8UI01N5kH7ROJ2sBk+Sc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/219] kselftest/runner.sh: Propagate SIGTERM to runner child
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 487/511] block: move GENHD_FL_NATIVE_CAPACITY to disk->state
 Date:   Sun, 17 Sep 2023 21:15:14 +0200
-Message-ID: <20230917191047.707727101@linuxfoundation.org>
+Message-ID: <20230917191125.495788417@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,53 +49,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 9616cb34b08ec86642b162eae75c5a7ca8debe3c ]
+[ Upstream commit 86416916466514e4ae0b7296d20133b6427c4c1f ]
 
-Timeouts in kselftest are done using the "timeout" command with the
-"--foreground" option. Without the "foreground" option, it is not
-possible for a user to cancel the runner using SIGINT, because the
-signal is not propagated to timeout which is running in a different
-process group. The "forground" options places the timeout in the same
-process group as its parent, but only sends the SIGTERM (on timeout)
-signal to the forked process. Unfortunately, this does not play nice
-with all kselftests, e.g. "net:fcnal-test.sh", where the child
-processes will linger because timeout does not send SIGTERM to the
-group.
+The flag to indicate an unlocked native capacity is dynamic state,
+not a driver capability flag, so move it to disk->state.
 
-Some users have noted these hangs [1].
-
-Fix this by nesting the timeout with an additional timeout without the
-foreground option.
-
-Link: https://lore.kernel.org/all/7650b2eb-0aee-a2b0-2e64-c9bc63210f67@alu.unizg.hr/ # [1]
-Fixes: 651e0d881461 ("kselftest/runner: allow to properly deliver signals to tests")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20211122130625.1136848-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest/runner.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ block/partitions/core.c | 15 ++++++---------
+ include/linux/genhd.h   |  8 +-------
+ 2 files changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
-index 294619ade49fe..1333ab1eda708 100644
---- a/tools/testing/selftests/kselftest/runner.sh
-+++ b/tools/testing/selftests/kselftest/runner.sh
-@@ -35,7 +35,8 @@ tap_timeout()
+diff --git a/block/partitions/core.c b/block/partitions/core.c
+index b9e9af84f5188..1ead8c0015616 100644
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -526,18 +526,15 @@ int bdev_resize_partition(struct gendisk *disk, int partno, sector_t start,
+ 
+ static bool disk_unlock_native_capacity(struct gendisk *disk)
  {
- 	# Make sure tests will time out if utility is available.
- 	if [ -x /usr/bin/timeout ] ; then
--		/usr/bin/timeout --foreground "$kselftest_timeout" $1
-+		/usr/bin/timeout --foreground "$kselftest_timeout" \
-+			/usr/bin/timeout "$kselftest_timeout" $1
- 	else
- 		$1
- 	fi
+-	const struct block_device_operations *bdops = disk->fops;
+-
+-	if (bdops->unlock_native_capacity &&
+-	    !(disk->flags & GENHD_FL_NATIVE_CAPACITY)) {
+-		printk(KERN_CONT "enabling native capacity\n");
+-		bdops->unlock_native_capacity(disk);
+-		disk->flags |= GENHD_FL_NATIVE_CAPACITY;
+-		return true;
+-	} else {
++	if (!disk->fops->unlock_native_capacity ||
++	    test_and_set_bit(GD_NATIVE_CAPACITY, &disk->state)) {
+ 		printk(KERN_CONT "truncated\n");
+ 		return false;
+ 	}
++
++	printk(KERN_CONT "enabling native capacity\n");
++	disk->fops->unlock_native_capacity(disk);
++	return true;
+ }
+ 
+ void blk_drop_partitions(struct gendisk *disk)
+diff --git a/include/linux/genhd.h b/include/linux/genhd.h
+index 0b48a0cf42624..3234b43fefb5c 100644
+--- a/include/linux/genhd.h
++++ b/include/linux/genhd.h
+@@ -60,12 +60,6 @@ struct partition_meta_info {
+  * (``BLOCK_EXT_MAJOR``).
+  * This affects the maximum number of partitions.
+  *
+- * ``GENHD_FL_NATIVE_CAPACITY`` (0x0080): based on information in the
+- * partition table, the device's capacity has been extended to its
+- * native capacity; i.e. the device has hidden capacity used by one
+- * of the partitions (this is a flag used so that native capacity is
+- * only ever unlocked once).
+- *
+  * ``GENHD_FL_BLOCK_EVENTS_ON_EXCL_WRITE`` (0x0100): event polling is
+  * blocked whenever a writer holds an exclusive lock.
+  *
+@@ -86,7 +80,6 @@ struct partition_meta_info {
+ #define GENHD_FL_CD				0x0008
+ #define GENHD_FL_SUPPRESS_PARTITION_INFO	0x0020
+ #define GENHD_FL_EXT_DEVT			0x0040
+-#define GENHD_FL_NATIVE_CAPACITY		0x0080
+ #define GENHD_FL_BLOCK_EVENTS_ON_EXCL_WRITE	0x0100
+ #define GENHD_FL_NO_PART_SCAN			0x0200
+ #define GENHD_FL_HIDDEN				0x0400
+@@ -140,6 +133,7 @@ struct gendisk {
+ #define GD_NEED_PART_SCAN		0
+ #define GD_READ_ONLY			1
+ #define GD_DEAD				2
++#define GD_NATIVE_CAPACITY		3
+ 
+ 	struct mutex open_mutex;	/* open/close mutex */
+ 	unsigned open_partitions;	/* number of open partitions */
 -- 
 2.40.1
 
