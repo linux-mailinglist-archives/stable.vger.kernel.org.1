@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 492EC7A38C7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49BBC7A39DE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239842AbjIQTkT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
+        id S240179AbjIQTzO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239864AbjIQTjy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:54 -0400
+        with ESMTP id S240249AbjIQTzE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E165A103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F22DC433C8;
-        Sun, 17 Sep 2023 19:39:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04B3137
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D43C433C7;
+        Sun, 17 Sep 2023 19:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979588;
-        bh=8TP2iaUc9cTKXkntsWmM5rP48P+nXWlRUj7X35WoNIU=;
+        s=korg; t=1694980498;
+        bh=GzeTNBL/nlMt+TNWsg7NRSTNqHxgav3bbsz+IwrZxJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zJiHYDwLLqTX9u6kqszO0SMCWrGlMhqpjZd/+1GcDtWAwVZ2ePjyR6febHx6ge4rP
-         lnFxqi4sKdHoHIA15oIN9x1d+DL5tc1rgIwgRjd8gtyrxUcd2NKG6Zbdh+/IRsZjFv
-         dtzOfBb3K2F0S1ePuecp75et8vanLaIbmpdw2diA=
+        b=f7UiH0XYtKm6u6YZspzmPkEvQUAFporJq/Z5IT5t0T3HXIClW4H0PFRvrMK08Amqo
+         sEnJDxpMo6OTp0SAIzsZMaju6UxvCoMpV/ER9VueXLCptf4xqF4LqX5U75DYNgor8f
+         nbaJQCASrfmhnc4iYVp4iQyQL8hGJO2B+H40iU60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 356/406] kcm: Destroy mutex in kcm_exit_net()
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 210/285] btrfs: scrub: avoid unnecessary csum tree search preparing stripes
 Date:   Sun, 17 Sep 2023 21:13:30 +0200
-Message-ID: <20230917191110.678554902@linuxfoundation.org>
+Message-ID: <20230917191058.835215222@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +49,255 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 6ad40b36cd3b04209e2d6c89d252c873d8082a59 ]
+commit 3c771c194402ffe20d4de68d9fc21e703179a9ce upstream.
 
-kcm_exit_net() should call mutex_destroy() on knet->mutex. This is especially
-needed if CONFIG_DEBUG_MUTEXES is enabled.
+One of the bottleneck of the new scrub code is the extra csum tree
+search.
 
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Link: https://lore.kernel.org/r/20230902170708.1727999-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The old code would only do the csum tree search for each scrub bio,
+which can be as large as 512KiB, thus they can afford to allocate a new
+path each time.
+
+But the new scrub code is doing csum tree search for each stripe, which
+is only 64KiB, this means we'd better re-use the same csum path during
+each search.
+
+This patch would introduce a per-sctx path for csum tree search, as we
+don't need to re-allocate the path every time we need to do a csum tree
+search.
+
+With this change we can further improve the queue depth and improve the
+scrub read performance:
+
+Before (with regression and cached extent tree path):
+
+ Device         r/s      rkB/s   rrqm/s  %rrqm r_await rareq-sz aqu-sz  %util
+ nvme0n1p3 15875.00 1013328.00    12.00   0.08    0.08    63.83   1.35 100.00
+
+After (with both cached extent/csum tree path):
+
+ nvme0n1p3 17759.00 1133280.00    10.00   0.06    0.08    63.81   1.50 100.00
+
+Fixes: e02ee89baa66 ("btrfs: scrub: switch scrub_simple_mirror() to scrub_stripe infrastructure")
+CC: stable@vger.kernel.org # 6.4+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/kcm/kcmsock.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/file-item.c |   36 +++++++++++++++++++++++-------------
+ fs/btrfs/file-item.h |    6 +++---
+ fs/btrfs/raid56.c    |    4 ++--
+ fs/btrfs/scrub.c     |   29 +++++++++++++++++++----------
+ 4 files changed, 47 insertions(+), 28 deletions(-)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 32b516ab9c475..71608a6def988 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1982,6 +1982,8 @@ static __net_exit void kcm_exit_net(struct net *net)
- 	 * that all multiplexors and psocks have been destroyed.
- 	 */
- 	WARN_ON(!list_empty(&knet->mux_list));
+--- a/fs/btrfs/file-item.c
++++ b/fs/btrfs/file-item.c
+@@ -597,29 +597,37 @@ fail:
+  * Each bit represents a sector. Thus caller should ensure @csum_buf passed
+  * in is large enough to contain all csums.
+  */
+-int btrfs_lookup_csums_bitmap(struct btrfs_root *root, u64 start, u64 end,
+-			      u8 *csum_buf, unsigned long *csum_bitmap,
+-			      bool search_commit)
++int btrfs_lookup_csums_bitmap(struct btrfs_root *root, struct btrfs_path *path,
++			      u64 start, u64 end, u8 *csum_buf,
++			      unsigned long *csum_bitmap)
+ {
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct btrfs_key key;
+-	struct btrfs_path *path;
+ 	struct extent_buffer *leaf;
+ 	struct btrfs_csum_item *item;
+ 	const u64 orig_start = start;
++	bool free_path = false;
+ 	int ret;
+ 
+ 	ASSERT(IS_ALIGNED(start, fs_info->sectorsize) &&
+ 	       IS_ALIGNED(end + 1, fs_info->sectorsize));
+ 
+-	path = btrfs_alloc_path();
+-	if (!path)
+-		return -ENOMEM;
+-
+-	if (search_commit) {
+-		path->skip_locking = 1;
+-		path->reada = READA_FORWARD;
+-		path->search_commit_root = 1;
++	if (!path) {
++		path = btrfs_alloc_path();
++		if (!path)
++			return -ENOMEM;
++		free_path = true;
++	}
 +
-+	mutex_destroy(&knet->mutex);
++	/* Check if we can reuse the previous path. */
++	if (path->nodes[0]) {
++		btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0]);
++
++		if (key.objectid == BTRFS_EXTENT_CSUM_OBJECTID &&
++		    key.type == BTRFS_EXTENT_CSUM_KEY &&
++		    key.offset <= start)
++			goto search_forward;
++		btrfs_release_path(path);
+ 	}
+ 
+ 	key.objectid = BTRFS_EXTENT_CSUM_OBJECTID;
+@@ -656,6 +664,7 @@ int btrfs_lookup_csums_bitmap(struct btr
+ 		}
+ 	}
+ 
++search_forward:
+ 	while (start <= end) {
+ 		u64 csum_end;
+ 
+@@ -712,7 +721,8 @@ int btrfs_lookup_csums_bitmap(struct btr
+ 	}
+ 	ret = 0;
+ fail:
+-	btrfs_free_path(path);
++	if (free_path)
++		btrfs_free_path(path);
+ 	return ret;
  }
  
- static struct pernet_operations kcm_net_ops = {
--- 
-2.40.1
-
+--- a/fs/btrfs/file-item.h
++++ b/fs/btrfs/file-item.h
+@@ -57,9 +57,9 @@ int btrfs_lookup_csums_range(struct btrf
+ int btrfs_lookup_csums_list(struct btrfs_root *root, u64 start, u64 end,
+ 			    struct list_head *list, int search_commit,
+ 			    bool nowait);
+-int btrfs_lookup_csums_bitmap(struct btrfs_root *root, u64 start, u64 end,
+-			      u8 *csum_buf, unsigned long *csum_bitmap,
+-			      bool search_commit);
++int btrfs_lookup_csums_bitmap(struct btrfs_root *root, struct btrfs_path *path,
++			      u64 start, u64 end, u8 *csum_buf,
++			      unsigned long *csum_bitmap);
+ void btrfs_extent_item_to_extent_map(struct btrfs_inode *inode,
+ 				     const struct btrfs_path *path,
+ 				     struct btrfs_file_extent_item *fi,
+--- a/fs/btrfs/raid56.c
++++ b/fs/btrfs/raid56.c
+@@ -2112,8 +2112,8 @@ static void fill_data_csums(struct btrfs
+ 		goto error;
+ 	}
+ 
+-	ret = btrfs_lookup_csums_bitmap(csum_root, start, start + len - 1,
+-					rbio->csum_buf, rbio->csum_bitmap, false);
++	ret = btrfs_lookup_csums_bitmap(csum_root, NULL, start, start + len - 1,
++					rbio->csum_buf, rbio->csum_bitmap);
+ 	if (ret < 0)
+ 		goto error;
+ 	if (bitmap_empty(rbio->csum_bitmap, len >> fs_info->sectorsize_bits))
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -176,6 +176,7 @@ struct scrub_ctx {
+ 	struct scrub_stripe	*raid56_data_stripes;
+ 	struct btrfs_fs_info	*fs_info;
+ 	struct btrfs_path	extent_path;
++	struct btrfs_path	csum_path;
+ 	int			first_free;
+ 	int			cur_stripe;
+ 	atomic_t		cancel_req;
+@@ -342,6 +343,8 @@ static noinline_for_stack struct scrub_c
+ 	sctx->fs_info = fs_info;
+ 	sctx->extent_path.search_commit_root = 1;
+ 	sctx->extent_path.skip_locking = 1;
++	sctx->csum_path.search_commit_root = 1;
++	sctx->csum_path.skip_locking = 1;
+ 	for (i = 0; i < SCRUB_STRIPES_PER_SCTX; i++) {
+ 		int ret;
+ 
+@@ -1472,6 +1475,7 @@ static void scrub_stripe_reset_bitmaps(s
+  */
+ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
+ 					struct btrfs_path *extent_path,
++					struct btrfs_path *csum_path,
+ 					struct btrfs_device *dev, u64 physical,
+ 					int mirror_num, u64 logical_start,
+ 					u32 logical_len,
+@@ -1563,9 +1567,9 @@ static int scrub_find_fill_first_stripe(
+ 		 */
+ 		ASSERT(BITS_PER_LONG >= BTRFS_STRIPE_LEN >> fs_info->sectorsize_bits);
+ 
+-		ret = btrfs_lookup_csums_bitmap(csum_root, stripe->logical,
+-						stripe_end, stripe->csums,
+-						&csum_bitmap, true);
++		ret = btrfs_lookup_csums_bitmap(csum_root, csum_path,
++						stripe->logical, stripe_end,
++						stripe->csums, &csum_bitmap);
+ 		if (ret < 0)
+ 			goto out;
+ 		if (ret > 0)
+@@ -1767,9 +1771,9 @@ static int queue_scrub_stripe(struct scr
+ 
+ 	/* We can queue one stripe using the remaining slot. */
+ 	scrub_reset_stripe(stripe);
+-	ret = scrub_find_fill_first_stripe(bg, &sctx->extent_path, dev,
+-					   physical, mirror_num, logical,
+-					   length, stripe);
++	ret = scrub_find_fill_first_stripe(bg, &sctx->extent_path,
++					   &sctx->csum_path, dev, physical,
++					   mirror_num, logical, length, stripe);
+ 	/* Either >0 as no more extents or <0 for error. */
+ 	if (ret)
+ 		return ret;
+@@ -1788,6 +1792,7 @@ static int scrub_raid56_parity_stripe(st
+ 	struct btrfs_raid_bio *rbio;
+ 	struct btrfs_io_context *bioc = NULL;
+ 	struct btrfs_path extent_path = { 0 };
++	struct btrfs_path csum_path = { 0 };
+ 	struct bio *bio;
+ 	struct scrub_stripe *stripe;
+ 	bool all_empty = true;
+@@ -1799,12 +1804,14 @@ static int scrub_raid56_parity_stripe(st
+ 	ASSERT(sctx->raid56_data_stripes);
+ 
+ 	/*
+-	 * For data stripe search, we cannot re-use the same extent path, as
+-	 * the data stripe bytenr may be smaller than previous extent.  Thus we
+-	 * have to use our own extent path.
++	 * For data stripe search, we cannot re-use the same extent/csum paths,
++	 * as the data stripe bytenr may be smaller than previous extent.  Thus
++	 * we have to use our own extent/csum paths.
+ 	 */
+ 	extent_path.search_commit_root = 1;
+ 	extent_path.skip_locking = 1;
++	csum_path.search_commit_root = 1;
++	csum_path.skip_locking = 1;
+ 
+ 	for (int i = 0; i < data_stripes; i++) {
+ 		int stripe_index;
+@@ -1820,7 +1827,7 @@ static int scrub_raid56_parity_stripe(st
+ 
+ 		scrub_reset_stripe(stripe);
+ 		set_bit(SCRUB_STRIPE_FLAG_NO_REPORT, &stripe->state);
+-		ret = scrub_find_fill_first_stripe(bg, &extent_path,
++		ret = scrub_find_fill_first_stripe(bg, &extent_path, &csum_path,
+ 				map->stripes[stripe_index].dev, physical, 1,
+ 				full_stripe_start + btrfs_stripe_nr_to_offset(i),
+ 				BTRFS_STRIPE_LEN, stripe);
+@@ -1949,6 +1956,7 @@ static int scrub_raid56_parity_stripe(st
+ 	btrfs_bio_counter_dec(fs_info);
+ 
+ 	btrfs_release_path(&extent_path);
++	btrfs_release_path(&csum_path);
+ out:
+ 	return ret;
+ }
+@@ -2243,6 +2251,7 @@ out:
+ 	if (!ret)
+ 		ret = ret2;
+ 	btrfs_release_path(&sctx->extent_path);
++	btrfs_release_path(&sctx->csum_path);
+ 
+ 	if (sctx->raid56_data_stripes) {
+ 		for (int i = 0; i < nr_data_stripes(map); i++)
 
 
