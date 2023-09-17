@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 074B57A387D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B088F7A3A50
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239763AbjIQTgg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49444 "EHLO
+        id S240345AbjIQUCT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239837AbjIQTgL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:11 -0400
+        with ESMTP id S240352AbjIQUBo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1BE103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867D3C433CD;
-        Sun, 17 Sep 2023 19:36:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E1C4CC7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B57FC433C7;
+        Sun, 17 Sep 2023 20:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979366;
-        bh=3HLgnHEYZMVuLmXH8qVk52i/esYebW4/1qCEqjysS34=;
+        s=korg; t=1694980851;
+        bh=3BuIeEZ+h1AZRxxHCLICoaIOcEjWLb/9ZH3tT+COXtM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gpCotHJ3I1QbD0didDC8Gdc7AjRFn8XX8DWySGZi1FzYM2PYHJZaVLrzJpFciqyy2
-         FLrsVhrGHwBK2m+m11WjOdfCOKpKr0JN2eW8HKU/8U8GJoJO9nRth+9ex9wn22d14M
-         7GwegqmzZnVVDRKkGPibTfvB4psFtTPXXP2HAuEU=
+        b=YD5eDvpLD+YnuUtuJy6NRCNy1QCLE2Ot0HBAYb786tBcwB6YxVo3t+CkRVIOhqdxN
+         X+BymY47uVgtIJzhhOyWYT+LLsmMYs9HElGyhyOzRfprBf6yIJJCRvBl8s5KgnKnpr
+         /XGsINVhnToLLcUu1lC8XvET9yVo4LWXJiDB3jXM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 292/406] procfs: block chmod on /proc/thread-self/comm
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 019/219] scsi: qla2xxx: Fix TMF leak through
 Date:   Sun, 17 Sep 2023 21:12:26 +0200
-Message-ID: <20230917191109.019393758@linuxfoundation.org>
+Message-ID: <20230917191041.691321661@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,46 +51,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit ccf61486fe1e1a48e18c638d1813cda77b3c0737 upstream.
+commit 5d3148d8e8b05f084e607ac3bd55a4c317a9f934 upstream.
 
-Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
-cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
-chmod operations on /proc/thread-self/comm were no longer blocked as
-they are on almost all other procfs files.
+Task management can retry up to 5 times when FW resource becomes bottle
+neck. Between the retries, there is a short sleep.  Current code assumes
+the chip has not reset or session has not changed.
 
-A very similar situation with /proc/self/environ was used to as a root
-exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
-correctness issue.
+Check for chip reset or session change before sending Task management.
 
-Ref: https://lwn.net/Articles/191954/
-Ref: 6d76fa58b050 ("Don't allow chmod() on the /proc/<pid>/ files")
-Fixes: 1b3044e39a89 ("procfs: fix pthread cross-thread naming if !PR_DUMPABLE")
-Cc: stable@vger.kernel.org # v4.7+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Message-Id: <20230713141001.27046-1-cyphar@cyphar.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-9-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/base.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_init.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -3506,7 +3506,8 @@ static int proc_tid_comm_permission(stru
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2039,10 +2039,14 @@ static void qla_marker_sp_done(srb_t *sp
+ 	complete(&tmf->u.tmf.comp);
  }
  
- static const struct inode_operations proc_tid_comm_inode_operations = {
--		.permission = proc_tid_comm_permission,
-+		.setattr	= proc_setattr,
-+		.permission	= proc_tid_comm_permission,
- };
+-#define  START_SP_W_RETRIES(_sp, _rval) \
++#define  START_SP_W_RETRIES(_sp, _rval, _chip_gen, _login_gen) \
+ {\
+ 	int cnt = 5; \
+ 	do { \
++		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
++			_rval = EINVAL; \
++			break; \
++		} \
+ 		_rval = qla2x00_start_sp(_sp); \
+ 		if (_rval == EAGAIN) \
+ 			msleep(1); \
+@@ -2065,6 +2069,7 @@ qla26xx_marker(struct tmf_arg *arg)
+ 	srb_t *sp;
+ 	int rval = QLA_FUNCTION_FAILED;
+ 	fc_port_t *fcport = arg->fcport;
++	u32 chip_gen, login_gen;
  
- /*
+ 	if (TMF_NOT_READY(arg->fcport)) {
+ 		ql_dbg(ql_dbg_taskm, vha, 0x8039,
+@@ -2074,6 +2079,9 @@ qla26xx_marker(struct tmf_arg *arg)
+ 		return QLA_SUSPENDED;
+ 	}
+ 
++	chip_gen = vha->hw->chip_reset;
++	login_gen = fcport->login_gen;
++
+ 	/* ref: INIT */
+ 	sp = qla2xxx_get_qpair_sp(vha, arg->qpair, fcport, GFP_KERNEL);
+ 	if (!sp)
+@@ -2091,7 +2099,7 @@ qla26xx_marker(struct tmf_arg *arg)
+ 	tm_iocb->u.tmf.loop_id = fcport->loop_id;
+ 	tm_iocb->u.tmf.vp_index = vha->vp_idx;
+ 
+-	START_SP_W_RETRIES(sp, rval);
++	START_SP_W_RETRIES(sp, rval, chip_gen, login_gen);
+ 
+ 	ql_dbg(ql_dbg_taskm, vha, 0x8006,
+ 	    "Async-marker hdl=%x loop-id=%x portid=%06x modifier=%x lun=%lld qp=%d rval %d.\n",
+@@ -2160,6 +2168,9 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
+ 		return QLA_SUSPENDED;
+ 	}
+ 
++	chip_gen = vha->hw->chip_reset;
++	login_gen = fcport->login_gen;
++
+ 	/* ref: INIT */
+ 	sp = qla2xxx_get_qpair_sp(vha, arg->qpair, fcport, GFP_KERNEL);
+ 	if (!sp)
+@@ -2177,7 +2188,7 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
+ 	tm_iocb->u.tmf.flags = arg->flags;
+ 	tm_iocb->u.tmf.lun = arg->lun;
+ 
+-	START_SP_W_RETRIES(sp, rval);
++	START_SP_W_RETRIES(sp, rval, chip_gen, login_gen);
+ 
+ 	ql_dbg(ql_dbg_taskm, vha, 0x802f,
+ 	    "Async-tmf hdl=%x loop-id=%x portid=%06x ctrl=%x lun=%lld qp=%d rval=%x.\n",
+@@ -2196,9 +2207,6 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
+ 	}
+ 
+ 	if (!test_bit(UNLOADING, &vha->dpc_flags) && !IS_QLAFX00(vha->hw)) {
+-		chip_gen = vha->hw->chip_reset;
+-		login_gen = fcport->login_gen;
+-
+ 		jif = jiffies;
+ 		if (qla_tmf_wait(arg)) {
+ 			ql_log(ql_log_info, vha, 0x803e,
 
 
