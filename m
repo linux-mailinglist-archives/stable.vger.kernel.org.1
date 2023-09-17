@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 423A17A3D43
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7766F7A3B45
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241246AbjIQUkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41534 "EHLO
+        id S240634AbjIQUPb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241266AbjIQUkS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:18 -0400
+        with ESMTP id S240670AbjIQUPL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2FD101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2A9C433C7;
-        Sun, 17 Sep 2023 20:40:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E29F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 525F1C433C8;
+        Sun, 17 Sep 2023 20:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983212;
-        bh=mt20ImDg5irwEfu8rqJVGj0V4y+LHqm4P8E5lrNR/jI=;
+        s=korg; t=1694981705;
+        bh=fxYVeOYJzPyT3HEhgsntd6Vzf6DXqWdsQaaUTBdlpBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c9SWbkFp5E2OCPjZX42rrCJmHvmAFa9vYFoWhQejQx1py1dHg8DytLCFNTp9eooG2
-         htny2K65U4QtJpTFehUtgg9im/qEBNg2oQEZOBG40oS9A0C+IaBlB2bKvZKWkhBzao
-         wHhsqfOPITWReNQm+kE6wKHrno6IUiNRgPVbNW1k=
+        b=t4NjnJH1m4Y3/RgItbaY+2XT+yvXnDrnu+eVULATbgrgm+bO1+iCgtXxMag1gVGWE
+         yZ4Yej2f5O42v1RLlbjqQ1tO4aRp86s/DmkFbQ5adU/ZU1tVu6cxEowvluBI3L5RH4
+         H7NDO5QUOzLFTAwyDXyej/VNhp4j/BH1OoWyDPbo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 460/511] net: hns3: fix the port information display when sfp is absent
-Date:   Sun, 17 Sep 2023 21:14:47 +0200
-Message-ID: <20230917191124.861039290@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 161/219] btrfs: use the correct superblock to compare fsid in btrfs_validate_super
+Date:   Sun, 17 Sep 2023 21:14:48 +0200
+Message-ID: <20230917191046.864193038@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +52,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yisen Zhuang <yisen.zhuang@huawei.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit 674d9591a32d01df75d6b5fffed4ef942a294376 ]
+commit d167aa76dc0683828588c25767da07fb549e4f48 upstream.
 
-When sfp is absent or unidentified, the port type should be
-displayed as PORT_OTHERS, rather than PORT_FIBRE.
+The function btrfs_validate_super() should verify the fsid in the provided
+superblock argument. Because, all its callers expect it to do that.
 
-Fixes: 88d10bd6f730 ("net: hns3: add support for multiple media type")
-Signed-off-by: Yisen Zhuang <yisen.zhuang@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Such as in the following stack:
+
+   write_all_supers()
+       sb = fs_info->super_for_commit;
+       btrfs_validate_write_super(.., sb)
+         btrfs_validate_super(.., sb, ..)
+
+   scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
+
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
+
+However, it currently verifies the fs_info::super_copy::fsid instead,
+which is not correct.  Fix this using the correct fsid in the superblock
+argument.
+
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/disk-io.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 526fb56c84f24..17fa4e7684cd2 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -739,7 +739,9 @@ static int hns3_get_link_ksettings(struct net_device *netdev,
- 		hns3_get_ksettings(h, cmd);
- 		break;
- 	case HNAE3_MEDIA_TYPE_FIBER:
--		if (module_type == HNAE3_MODULE_TYPE_CR)
-+		if (module_type == HNAE3_MODULE_TYPE_UNKNOWN)
-+			cmd->base.port = PORT_OTHER;
-+		else if (module_type == HNAE3_MODULE_TYPE_CR)
- 			cmd->base.port = PORT_DA;
- 		else
- 			cmd->base.port = PORT_FIBRE;
--- 
-2.40.1
-
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2721,11 +2721,10 @@ int btrfs_validate_super(struct btrfs_fs
+ 		ret = -EINVAL;
+ 	}
+ 
+-	if (memcmp(fs_info->fs_devices->fsid, fs_info->super_copy->fsid,
+-		   BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ 		"superblock fsid doesn't match fsid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->fsid, fs_info->fs_devices->fsid);
++			  sb->fsid, fs_info->fs_devices->fsid);
+ 		ret = -EINVAL;
+ 	}
+ 
 
 
