@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41AC17A3B6B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67F797A3B7F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240670AbjIQURi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54054 "EHLO
+        id S239486AbjIQUSl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240699AbjIQURK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:10 -0400
+        with ESMTP id S240699AbjIQUSM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE6BF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679F8C433C8;
-        Sun, 17 Sep 2023 20:17:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8AC10B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECEFC433C9;
+        Sun, 17 Sep 2023 20:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981824;
-        bh=Rv5+4Hu4o6hMQKQso2xi1EOpY5KH2xgatV6rPa0hSPM=;
+        s=korg; t=1694981886;
+        bh=zkkY760X1gjJPc74LEZBIREv/7Hicw10U67v/zKDGVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mnNkVuhCztzMGNb+r/49VOLpdSG56P67hRyJZMINcaOMErs6i/H/RYGWuunKNMYn6
-         mZwLjSjinQw5opPPw74uiQNfD53YWhsTdNP/aSB624lN6R2STGY5foIArdp5e4EgBA
-         o/pPdLLdtbctdPecF8kOiFnUCmkKJ8HW1tmhzeaY=
+        b=oDBYXmh8SnQI4eeUli2sX5gt1KFZfFEH2kaofrFovzne0yxsUuaNps/MgTiVGG1my
+         jEfMealWRm4Kjb/Mss3E9FmHBis+g1O5eqy8anmxja9XWRlogYYmT1sOcozMVZ3GF0
+         cBZp3N7QgsUZ0/A0f+nDjLKuDoqsZIH6bUFu25nE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/511] spi: tegra20-sflash: fix to check return value of platform_get_irq() in tegra_sflash_probe()
-Date:   Sun, 17 Sep 2023 21:08:36 +0200
-Message-ID: <20230917191116.020723781@linuxfoundation.org>
+Subject: [PATCH 5.15 090/511] can: gs_usb: gs_usb_receive_bulk_callback(): count RX overflow errors also in case of OOM
+Date:   Sun, 17 Sep 2023 21:08:37 +0200
+Message-ID: <20230917191116.044457055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,41 +53,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 29a449e765ff70a5bd533be94babb6d36985d096 ]
+[ Upstream commit 6c8bc15f02b85bc8f47074110d8fd8caf7a1e42d ]
 
-The platform_get_irq might be failed and return a negative result. So
-there should have an error handling code.
+In case of an RX overflow error from the CAN controller and an OOM
+where no skb can be allocated, the error counters are not incremented.
 
-Fixed this by adding an error handling code.
+Fix this by first incrementing the error counters and then allocate
+the skb.
 
-Fixes: 8528547bcc33 ("spi: tegra: add spi driver for sflash controller")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_71FC162D589E4788C2152AAC84CD8D5C6D06@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-7-c3b9154ec605@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 2888d8a8dc6d5..6915451cc93e2 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -455,7 +455,11 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		goto exit_free_master;
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 5d6062fbebfcc..7dc4fb574e459 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -382,6 +382,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
  	}
  
--	tsd->irq = platform_get_irq(pdev, 0);
-+	ret = platform_get_irq(pdev, 0);
-+	if (ret < 0)
-+		goto exit_free_master;
-+	tsd->irq = ret;
+ 	if (hf->flags & GS_CAN_FLAG_OVERFLOW) {
++		stats->rx_over_errors++;
++		stats->rx_errors++;
 +
- 	ret = request_irq(tsd->irq, tegra_sflash_isr, 0,
- 			dev_name(&pdev->dev), tsd);
- 	if (ret < 0) {
+ 		skb = alloc_can_err_skb(netdev, &cf);
+ 		if (!skb)
+ 			goto resubmit_urb;
+@@ -389,8 +392,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		cf->can_id |= CAN_ERR_CRTL;
+ 		cf->len = CAN_ERR_DLC;
+ 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
+-		stats->rx_over_errors++;
+-		stats->rx_errors++;
+ 		netif_rx(skb);
+ 	}
+ 
 -- 
 2.40.1
 
