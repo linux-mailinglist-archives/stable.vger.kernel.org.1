@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F797A3B7F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154167A3B81
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239486AbjIQUSl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46522 "EHLO
+        id S240690AbjIQUSm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240699AbjIQUSM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:12 -0400
+        with ESMTP id S240724AbjIQUSS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8AC10B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECEFC433C9;
-        Sun, 17 Sep 2023 20:18:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E8DF4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8BAC433C8;
+        Sun, 17 Sep 2023 20:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981886;
-        bh=zkkY760X1gjJPc74LEZBIREv/7Hicw10U67v/zKDGVA=;
+        s=korg; t=1694981892;
+        bh=o/ZVIrgLUUr7lIW8utgRGf3xcye5To6rGi2uHe/P8Z4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oDBYXmh8SnQI4eeUli2sX5gt1KFZfFEH2kaofrFovzne0yxsUuaNps/MgTiVGG1my
-         jEfMealWRm4Kjb/Mss3E9FmHBis+g1O5eqy8anmxja9XWRlogYYmT1sOcozMVZ3GF0
-         cBZp3N7QgsUZ0/A0f+nDjLKuDoqsZIH6bUFu25nE=
+        b=VXaSXCj645Hl0QK3Qie1Fft1bwRX/V/zttOFBDYbYtSaDJ1tTUQkEzmtm/UYMrMbZ
+         owCWt7HZ/bWICpSRHZjfTKKBdnvD4iI8KsTzGIFln8+8jeFyYHzOkw6X55fZr7VFe0
+         HXhahd40lcELvTDoEoBX5m2mi9Sdk9SFxNq90SgY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/511] can: gs_usb: gs_usb_receive_bulk_callback(): count RX overflow errors also in case of OOM
-Date:   Sun, 17 Sep 2023 21:08:37 +0200
-Message-ID: <20230917191116.044457055@linuxfoundation.org>
+        patches@lists.linux.dev, Chad Monroe <chad.monroe@smartrg.com>,
+        Allen Ye <allen.ye@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 091/511] wifi: mt76: mt7915: fix power-limits while chan_switch
+Date:   Sun, 17 Sep 2023 21:08:38 +0200
+Message-ID: <20230917191116.068011249@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -53,47 +55,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 6c8bc15f02b85bc8f47074110d8fd8caf7a1e42d ]
+[ Upstream commit 6c0570bc21ec2073890aa252c8420ca7bec402e4 ]
 
-In case of an RX overflow error from the CAN controller and an OOM
-where no skb can be allocated, the error counters are not incremented.
+If user changes the channel without completely disabling the interface the
+txpower_sku values reported track the old channel the device was operating on.
+If user bounces the interface the correct power tables are applied.
 
-Fix this by first incrementing the error counters and then allocate
-the skb.
+mt7915_sku_group_len array gets updated before the channel switch happens so it
+uses data from the old channel.
 
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-7-c3b9154ec605@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: ecb187a74e18 ("mt76: mt7915: rework the flow of txpower setting")
+Fixes: f1d962369d56 ("mt76: mt7915: implement HE per-rate tx power support")
+Reported-By: Chad Monroe <chad.monroe@smartrg.com>
+Tested-by: Chad Monroe <chad.monroe@smartrg.com>
+Signed-off-by: Allen Ye <allen.ye@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 5d6062fbebfcc..7dc4fb574e459 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -382,6 +382,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 7a4f277a16223..09ea97a81fb4f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -441,7 +441,8 @@ static int mt7915_config(struct ieee80211_hw *hw, u32 changed)
+ 		ieee80211_wake_queues(hw);
  	}
  
- 	if (hf->flags & GS_CAN_FLAG_OVERFLOW) {
-+		stats->rx_over_errors++;
-+		stats->rx_errors++;
-+
- 		skb = alloc_can_err_skb(netdev, &cf);
- 		if (!skb)
- 			goto resubmit_urb;
-@@ -389,8 +392,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 		cf->can_id |= CAN_ERR_CRTL;
- 		cf->len = CAN_ERR_DLC;
- 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
--		stats->rx_over_errors++;
--		stats->rx_errors++;
- 		netif_rx(skb);
- 	}
- 
+-	if (changed & IEEE80211_CONF_CHANGE_POWER) {
++	if (changed & (IEEE80211_CONF_CHANGE_POWER |
++		       IEEE80211_CONF_CHANGE_CHANNEL)) {
+ 		ret = mt7915_mcu_set_txpower_sku(phy);
+ 		if (ret)
+ 			return ret;
 -- 
 2.40.1
 
