@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D51F7A381E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B2FA7A393C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238011AbjIQTbm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:31:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
+        id S239967AbjIQTqm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239653AbjIQTbP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:15 -0400
+        with ESMTP id S240014AbjIQTqT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D3811D
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A961BC433CD;
-        Sun, 17 Sep 2023 19:31:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CAE9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A37C433C8;
+        Sun, 17 Sep 2023 19:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979068;
-        bh=EEBaC1bReGpcPXGURcV/U5ykUTv2Bq2j/TJlUcELHzI=;
+        s=korg; t=1694979973;
+        bh=b6+Teqn3MsVkiRvhqsl4jTNsMlG9qFqCXKY7cPWT8Rk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rUjaQKaSXDC/3dF0S86999oOfmNGCzBAVo9gPUTGG1cDtxCm2oSgmhdao5xYh+Nx0
-         qnhAF0IHCvGliqJidnheWi3J/e7pmMZSLAW5W70fZK8/FFwHjrPrGKIvdIj6nj/Tv4
-         q7MSG3s/p43uFxAR5vmHLuLWnfeIOJ7+csbx0vHM=
+        b=vPkBYt7EhxfYPwsbfpRFGC3hQC9SwIAyLld3fElpOSMjDX20x/WUGFiwmR4qkU6fQ
+         //6jIWsEwVZwaVqRv4Nq4cDw9iKBPLk+nijCPvjUguSyag4BaitcBV+mDXgiKa0vV4
+         hbpbJcwyDb9cbJtDQwUTQpjDNVH5QJ+ERL41E6TU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Andreas Gruenbacher <agruenba@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/406] media: dib7000p: Fix potential division by zero
-Date:   Sun, 17 Sep 2023 21:10:59 +0200
-Message-ID: <20230917191106.602111890@linuxfoundation.org>
+Subject: [PATCH 6.5 060/285] gfs2: Switch to wait_event in gfs2_logd
+Date:   Sun, 17 Sep 2023 21:11:00 +0200
+Message-ID: <20230917191053.784057107@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit a1db7b2c5533fc67e2681eb5efc921a67bc7d5b8 ]
+[ Upstream commit 6df373b09b1dcf2f7d579f515f653f89a896d417 ]
 
-Variable loopdiv can be assigned 0, then it is used as a denominator,
-without checking it for 0.
+In gfs2_logd(), switch from an open-coded wait loop to
+wait_event_interruptible_timeout().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 713d54a8bd81 ("[media] DiB7090: add support for the dib7090 based")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: (bw != NULL) -> bw]
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: b74cd55aa9a9 ("gfs2: low-memory forced flush fixes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/log.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index 55bee50aa8716..1f0b0690198ef 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -497,7 +497,7 @@ static int dib7000p_update_pll(struct dvb_frontend *fe, struct dibx000_bandwidth
- 	prediv = reg_1856 & 0x3f;
- 	loopdiv = (reg_1856 >> 6) & 0x3f;
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index aa568796207c0..d3da259820e30 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1301,7 +1301,6 @@ int gfs2_logd(void *data)
+ {
+ 	struct gfs2_sbd *sdp = data;
+ 	unsigned long t = 1;
+-	DEFINE_WAIT(wait);
  
--	if ((bw != NULL) && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
-+	if (loopdiv && bw && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
- 		dprintk("Updating pll (prediv: old =  %d new = %d ; loopdiv : old = %d new = %d)\n", prediv, bw->pll_prediv, loopdiv, bw->pll_ratio);
- 		reg_1856 &= 0xf000;
- 		reg_1857 = dib7000p_read_word(state, 1857);
+ 	while (!kthread_should_stop()) {
+ 
+@@ -1338,17 +1337,11 @@ int gfs2_logd(void *data)
+ 
+ 		try_to_freeze();
+ 
+-		do {
+-			prepare_to_wait(&sdp->sd_logd_waitq, &wait,
+-					TASK_INTERRUPTIBLE);
+-			if (!gfs2_ail_flush_reqd(sdp) &&
+-			    !gfs2_jrnl_flush_reqd(sdp) &&
+-			    !kthread_should_stop())
+-				t = schedule_timeout(t);
+-		} while(t && !gfs2_ail_flush_reqd(sdp) &&
+-			!gfs2_jrnl_flush_reqd(sdp) &&
+-			!kthread_should_stop());
+-		finish_wait(&sdp->sd_logd_waitq, &wait);
++		t = wait_event_interruptible_timeout(sdp->sd_logd_waitq,
++				gfs2_ail_flush_reqd(sdp) ||
++				gfs2_jrnl_flush_reqd(sdp) ||
++				kthread_should_stop(),
++				t);
+ 	}
+ 
+ 	return 0;
 -- 
 2.40.1
 
