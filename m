@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809DA7A3CD1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DEF7A3AB2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241131AbjIQUfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51320 "EHLO
+        id S240440AbjIQUHd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:07:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241181AbjIQUf3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:29 -0400
+        with ESMTP id S240467AbjIQUHV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:07:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D01B111B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B81FC433C8;
-        Sun, 17 Sep 2023 20:35:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F3097
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:07:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A8FC433C8;
+        Sun, 17 Sep 2023 20:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982922;
-        bh=IuuvXkU85syQpWnEaOkvlNYW+SheGPbW7JcWrcqi0+0=;
+        s=korg; t=1694981236;
+        bh=xT/47CTBSe2/Ve7nx8ddM7CbtVNpAiUjmQi6uRWSn/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AnlEXVUXYtFrboEfIm2/odNb5KdzAxUMlaiFOYyDJI8/hVpCnDchtnbfsO8p8lEga
-         u0BQztpOxu6NwGx9FD77PhYJ4pXUKgy3DZivXp2u2Ere61qurGkjhu23Vn6Pq2iXEA
-         N1BLmgxTR0//l8KOqXHHNa4GOS0N/5qf5EtUN5bA=
+        b=MbqZrKk2vOvaNDtuy3Pp6Q480DxyXCEsI+prpD2LNsDDvDNtfFNUFd5eNPhgw66+t
+         BlbIysSMazyCS1kM7snDUvq5nPlAOgJCt66hcn9FP2YauttC/EpxVL+26MpTEylSnu
+         zddLC1UOmrmD+Xwlk805ptvL8JiaxW+AFVL5/ZhQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Dave Airlie <airlied@redhat.com>,
-        dri-devel@lists.freedesktop.org,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH 5.15 392/511] drm/ast: Fix DRAM init on AST2200
-Date:   Sun, 17 Sep 2023 21:13:39 +0200
-Message-ID: <20230917191123.259362426@linuxfoundation.org>
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 093/219] ceph: make members in struct ceph_mds_request_args_ext a union
+Date:   Sun, 17 Sep 2023 21:13:40 +0200
+Message-ID: <20230917191044.342474661@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 4cfe75f0f14f044dae66ad0e6eea812d038465d9 upstream.
+[ Upstream commit 3af5ae22030cb59fab4fba35f5a2b62f47e14df9 ]
 
-Fix the test for the AST2200 in the DRAM initialization. The value
-in ast->chip has to be compared against an enum constant instead of
-a numerical value.
+In ceph mainline it will allow to set the btime in the setattr request
+and just add a 'btime' member in the union 'ceph_mds_request_args' and
+then bump up the header version to 4. That means the total size of union
+'ceph_mds_request_args' will increase sizeof(struct ceph_timespec) bytes,
+but in kclient it will increase the sizeof(setattr_ext) bytes for each
+request.
 
-This bug got introduced when the driver was first imported into the
-kernel.
+Since the MDS will always depend on the header's vesion and front_len
+members to decode the 'ceph_mds_request_head' struct, at the same time
+kclient hasn't supported the 'btime' feature yet in setattr request,
+so it's safe to do this change here.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Tested-by: Jocelyn Falempe <jfalempe@redhat.com> # AST2600
-Link: https://patchwork.freedesktop.org/patch/msgid/20230621130032.3568-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This will save 48 bytes memories for each request.
+
+Fixes: 4f1ddb1ea874 ("ceph: implement updated ceph_mds_request_head structure")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_post.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ceph/ceph_fs.h | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_post.c
-+++ b/drivers/gpu/drm/ast/ast_post.c
-@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm
- 				;
- 			} while (ast_read32(ast, 0x10100) != 0xa8);
- 		} else {/* AST2100/1100 */
--			if (ast->chip == AST2100 || ast->chip == 2200)
-+			if (ast->chip == AST2100 || ast->chip == AST2200)
- 				dram_reg_info = ast2100_dram_table_data;
- 			else
- 				dram_reg_info = ast1100_dram_table_data;
+diff --git a/include/linux/ceph/ceph_fs.h b/include/linux/ceph/ceph_fs.h
+index 49586ff261520..b4fa2a25b7d95 100644
+--- a/include/linux/ceph/ceph_fs.h
++++ b/include/linux/ceph/ceph_fs.h
+@@ -462,17 +462,19 @@ union ceph_mds_request_args {
+ } __attribute__ ((packed));
+ 
+ union ceph_mds_request_args_ext {
+-	union ceph_mds_request_args old;
+-	struct {
+-		__le32 mode;
+-		__le32 uid;
+-		__le32 gid;
+-		struct ceph_timespec mtime;
+-		struct ceph_timespec atime;
+-		__le64 size, old_size;       /* old_size needed by truncate */
+-		__le32 mask;                 /* CEPH_SETATTR_* */
+-		struct ceph_timespec btime;
+-	} __attribute__ ((packed)) setattr_ext;
++	union {
++		union ceph_mds_request_args old;
++		struct {
++			__le32 mode;
++			__le32 uid;
++			__le32 gid;
++			struct ceph_timespec mtime;
++			struct ceph_timespec atime;
++			__le64 size, old_size;       /* old_size needed by truncate */
++			__le32 mask;                 /* CEPH_SETATTR_* */
++			struct ceph_timespec btime;
++		} __attribute__ ((packed)) setattr_ext;
++	};
+ };
+ 
+ #define CEPH_MDS_FLAG_REPLAY		1 /* this is a replayed op */
+-- 
+2.40.1
+
 
 
