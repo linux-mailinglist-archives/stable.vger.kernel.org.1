@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C397A3B34
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7657A3D24
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240606AbjIQUO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
+        id S239698AbjIQUj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240647AbjIQUOK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:10 -0400
+        with ESMTP id S241227AbjIQUi7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9718BF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DADC433C8;
-        Sun, 17 Sep 2023 20:14:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6006123
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E23C433C7;
+        Sun, 17 Sep 2023 20:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981644;
-        bh=xfS1fajin8YFvcTHNkJ7WYSUR96wHn9RFpzySxRIVE8=;
+        s=korg; t=1694983130;
+        bh=4qceMZuBcjhBqr64+cxnyBocfSBChFTDpnjMAeOd8qo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y7ymCdAzqUD7hy31wnd/yQ09cR2nkan0jiXK0rbhjHKMvAkEIjS2oVdA9XR+dy/oD
-         XMD549djeFPYE012dl57E5xp3O6zkIdnGSe6jtoyfNfHTPgn7LwqImusxkVCx+FG99
-         5wx5JFPWHe4wcCwtAbWqVIFHvD83NZFrOYfA1pvA=
+        b=A324NgcvfbIEKD3OpqqGUdaJwKKTyY8nfuDojq/h9lYJgOwDf63E3QAJePVcBXiYv
+         Xij5XqETWc/KlVFYRdpjminVdfYa3asPVt8if/lxrJbUj8WdNjSArXUsda2IX03WaJ
+         qxlzMLsV8yuBb0YdWTqmD4gP+GOubVy7B7rnEeNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William R Sowerbutts <will@sowerbutts.com>,
-        Finn Thain <fthain@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.1 151/219] ata: pata_falcon: fix IO base selection for Q40
-Date:   Sun, 17 Sep 2023 21:14:38 +0200
-Message-ID: <20230917191046.474722539@linuxfoundation.org>
+        patches@lists.linux.dev, Yanan Yang <yanan.yang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 452/511] net: dsa: sja1105: fix bandwidth discrepancy between tc-cbs software and offload
+Date:   Sun, 17 Sep 2023 21:14:39 +0200
+Message-ID: <20230917191124.674508225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,127 +51,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 8a1f00b753ecfdb117dc1a07e68c46d80e7923ea upstream.
+[ Upstream commit 954ad9bf13c4f95a4958b5f8433301f2ab99e1f5 ]
 
-With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
-with pata_falcon and falconide"), the Q40 IDE driver was
-replaced by pata_falcon.c.
+More careful measurement of the tc-cbs bandwidth shows that the stream
+bandwidth (effectively idleslope) increases, there is a larger and
+larger discrepancy between the rate limit obtained by the software
+Qdisc, and the rate limit obtained by its offloaded counterpart.
 
-Both IO and memory resources were defined for the Q40 IDE
-platform device, but definition of the IDE register addresses
-was modeled after the Falcon case, both in use of the memory
-resources and in including register shift and byte vs. word
-offset in the address.
+The discrepancy becomes so large, that e.g. at an idleslope of 40000
+(40Mbps), the offloaded cbs does not actually rate limit anything, and
+traffic will pass at line rate through a 100 Mbps port.
 
-This was correct for the Falcon case, which does not apply
-any address translation to the register addresses. In the
-Q40 case, all of device base address, byte access offset
-and register shift is included in the platform specific
-ISA access translation (in asm/mm_io.h).
+The reason for the discrepancy is that the hardware documentation I've
+been following is incorrect. UM11040.pdf (for SJA1105P/Q/R/S) states
+about IDLE_SLOPE that it is "the rate (in unit of bytes/sec) at which
+the credit counter is increased".
 
-As a consequence, such address translation gets applied
-twice, and register addresses are mangled.
+Cross-checking with UM10944.pdf (for SJA1105E/T) and UM11107.pdf
+(for SJA1110), the wording is different: "This field specifies the
+value, in bytes per second times link speed, by which the credit counter
+is increased".
 
-Use the device base address from the platform IO resource
-for Q40 (the IO address translation will then add the correct
-ISA window base address and byte access offset), with register
-shift 1. Use MMIO base address and register shift 2 as before
-for Falcon.
+So there's an extra scaling for link speed that the driver is currently
+not accounting for, and apparently (empirically), that link speed is
+expressed in Kbps.
 
-Encode PIO_OFFSET into IO port addresses for all registers
-for Q40 except the data transfer register. Encode the MMIO
-offset there (pata_falcon_data_xfer() directly uses raw IO
-with no address translation).
+I've pondered whether to pollute the sja1105_mac_link_up()
+implementation with CBS shaper reprogramming, but I don't think it is
+worth it. IMO, the UAPI exposed by tc-cbs requires user space to
+recalculate the sendslope anyway, since the formula for that depends on
+port_transmit_rate (see man tc-cbs), which is not an invariant from tc's
+perspective.
 
-Reported-by: William R Sowerbutts <will@sowerbutts.com>
-Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
-Cc: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So we use the offload->sendslope and offload->idleslope to deduce the
+original port_transmit_rate from the CBS formula, and use that value to
+scale the offload->sendslope and offload->idleslope to values that the
+hardware understands.
+
+Some numerical data points:
+
+ 40Mbps stream, max interfering frame size 1500, port speed 100M
+ ---------------------------------------------------------------
+
+ tc-cbs parameters:
+ idleslope 40000 sendslope -60000 locredit -900 hicredit 600
+
+ which result in hardware values:
+
+ Before (doesn't work)           After (works)
+ credit_hi    600                600
+ credit_lo    900                900
+ send_slope   7500000            75
+ idle_slope   5000000            50
+
+ 40Mbps stream, max interfering frame size 1500, port speed 1G
+ -------------------------------------------------------------
+
+ tc-cbs parameters:
+ idleslope 40000 sendslope -960000 locredit -1440 hicredit 60
+
+ which result in hardware values:
+
+ Before (doesn't work)           After (works)
+ credit_hi    60                 60
+ credit_lo    1440               1440
+ send_slope   120000000          120
+ idle_slope   5000000            5
+
+ 5.12Mbps stream, max interfering frame size 1522, port speed 100M
+ -----------------------------------------------------------------
+
+ tc-cbs parameters:
+ idleslope 5120 sendslope -94880 locredit -1444 hicredit 77
+
+ which result in hardware values:
+
+ Before (doesn't work)           After (works)
+ credit_hi    77                 77
+ credit_lo    1444               1444
+ send_slope   11860000           118
+ idle_slope   640000             6
+
+Tested on SJA1105T, SJA1105S and SJA1110A, at 1Gbps and 100Mbps.
+
+Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
+Reported-by: Yanan Yang <yanan.yang@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_falcon.c |   50 ++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(s
- 	struct resource *base_res, *ctl_res, *irq_res;
- 	struct ata_host *host;
- 	struct ata_port *ap;
--	void __iomem *base;
--	int irq = 0;
-+	void __iomem *base, *ctl_base;
-+	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index ef4d8d6c2bd7a..5f70773fa8201 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2049,6 +2049,7 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
+ {
+ 	struct sja1105_private *priv = ds->priv;
+ 	struct sja1105_cbs_entry *cbs;
++	s64 port_transmit_rate_kbps;
+ 	int index;
  
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
- 
-@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(s
- 	ap->pio_mask = ATA_PIO4;
- 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
- 
--	base = (void __iomem *)base_mem_res->start;
- 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
--	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
--	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
--	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
--	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
--	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
--	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
--	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
--	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
--
--	base = (void __iomem *)ctl_mem_res->start;
--	ap->ioaddr.altstatus_addr	= base + 1;
--	ap->ioaddr.ctl_addr		= base + 1;
--
--	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
--		      (unsigned long)base_mem_res->start,
--		      (unsigned long)ctl_mem_res->start);
-+	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
-+
-+	if (base_res) {		/* only Q40 has IO resources */
-+		io_offset = 0x10000;
-+		reg_shift = 0;
-+		base = (void __iomem *)base_res->start;
-+		ctl_base = (void __iomem *)ctl_res->start;
-+	} else {
-+		base = (void __iomem *)base_mem_res->start;
-+		ctl_base = (void __iomem *)ctl_mem_res->start;
-+	}
-+
-+	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
-+	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
-+	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
-+	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
-+	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
-+	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
-+	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
-+
-+	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
-+	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
-+
-+	ata_port_desc(ap, "cmd %px ctl %px data %px",
-+		      base, ctl_base, ap->ioaddr.data_addr);
- 
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
+ 	if (!offload->enable)
+@@ -2066,9 +2067,17 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
+ 	 */
+ 	cbs->credit_hi = offload->hicredit;
+ 	cbs->credit_lo = abs(offload->locredit);
+-	/* User space is in kbits/sec, hardware in bytes/sec */
+-	cbs->idle_slope = offload->idleslope * BYTES_PER_KBIT;
+-	cbs->send_slope = abs(offload->sendslope * BYTES_PER_KBIT);
++	/* User space is in kbits/sec, while the hardware in bytes/sec times
++	 * link speed. Since the given offload->sendslope is good only for the
++	 * current link speed anyway, and user space is likely to reprogram it
++	 * when that changes, don't even bother to track the port's link speed,
++	 * but deduce the port transmit rate from idleslope - sendslope.
++	 */
++	port_transmit_rate_kbps = offload->idleslope - offload->sendslope;
++	cbs->idle_slope = div_s64(offload->idleslope * BYTES_PER_KBIT,
++				  port_transmit_rate_kbps);
++	cbs->send_slope = div_s64(abs(offload->sendslope * BYTES_PER_KBIT),
++				  port_transmit_rate_kbps);
+ 	/* Convert the negative values from 64-bit 2's complement
+ 	 * to 32-bit 2's complement (for the case of 0x80000000 whose
+ 	 * negative is still negative).
+-- 
+2.40.1
+
 
 
