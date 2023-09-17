@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C4F7A38A6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3951D7A39BD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239413AbjIQTil (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58498 "EHLO
+        id S240127AbjIQTxh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:53:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239811AbjIQTiL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:11 -0400
+        with ESMTP id S240157AbjIQTxU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45FB8D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795B8C433C9;
-        Sun, 17 Sep 2023 19:38:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC8B9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EDDC433C8;
+        Sun, 17 Sep 2023 19:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979485;
-        bh=ClUBMDGOBnvDbbsmWPCUPA+nUwBx6fZPjzC7mH9plTo=;
+        s=korg; t=1694980394;
+        bh=l6MUDYFxAPPd4qUPaiSmClt5O45iMhT3e/BuS6jejHU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=msMnlk6bjZuvLjqFXG2DoUcp6Dnv2C6YbZZfQpxaUl4X86tBzTfN6RH+hKUZ3lLuh
-         lY7l1Hmr9HSsU38A9e/KueT36LzDZIfr1A55jETAFObhBm3nebeFHHEH7D8PFQw4Zo
-         vzW+L8Vf5JcC71sYu9wE+XFYeDs9SJ2IVQ0Nl7d4=
+        b=1pFbAbQNQ91YOTohsaue3b0Th2WMUzojTUVig37ZwkCoh/ezXrxShnTx4zQ5ILBBw
+         09ZgbjE7r2abilJnH/PdWhEwqGxyNuGyUSLXLaa8bT7hhgRsvlgHtivJ3ACvmGPYNA
+         7+DvJp0L/LMjdsHkoeig1xYVCS2aCZ7SX6DFWgtE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 326/406] parisc: led: Reduce CPU overhead for disk & lan LED computation
+        patches@lists.linux.dev, Walter Chang <walter.chang@mediatek.com>,
+        Marc Zyngier <maz@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.5 180/285] clocksource/drivers/arm_arch_timer: Disable timer before programming CVAL
 Date:   Sun, 17 Sep 2023 21:13:00 +0200
-Message-ID: <20230917191109.901469964@linuxfoundation.org>
+Message-ID: <20230917191057.857648153@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,42 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Walter Chang <walter.chang@mediatek.com>
 
-commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
+commit e7d65e40ab5a5940785c5922f317602d0268caaf upstream.
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+Due to the fact that the use of `writeq_relaxed()` to program CVAL is
+not guaranteed to be atomic, it is necessary to disable the timer before
+programming CVAL.
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
+However, if the MMIO timer is already enabled and has not yet expired,
+there is a possibility of unexpected behavior occurring: when the CPU
+enters the idle state during this period, and if the CPU's local event
+is earlier than the broadcast event, the following process occurs:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
+tick_broadcast_enter()
+  tick_broadcast_oneshot_control(TICK_BROADCAST_ENTER)
+    __tick_broadcast_oneshot_control()
+      ___tick_broadcast_oneshot_control()
+        tick_broadcast_set_event()
+          clockevents_program_event()
+            set_next_event_mem()
+
+During this process, the MMIO timer remains enabled while programming
+CVAL. To prevent such behavior, disable timer explicitly prior to
+programming CVAL.
+
+Fixes: 8b82c4f883a7 ("clocksource/drivers/arm_arch_timer: Move MMIO timer programming over to CVAL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Walter Chang <walter.chang@mediatek.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230717090735.19370-1-walter.chang@mediatek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/led.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clocksource/arm_arch_timer.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -56,8 +56,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -792,6 +792,13 @@ static __always_inline void set_next_eve
+ 	u64 cnt;
+ 
+ 	ctrl = arch_timer_reg_read(access, ARCH_TIMER_REG_CTRL, clk);
++
++	/* Timer must be disabled before programming CVAL */
++	if (ctrl & ARCH_TIMER_CTRL_ENABLE) {
++		ctrl &= ~ARCH_TIMER_CTRL_ENABLE;
++		arch_timer_reg_write(access, ARCH_TIMER_REG_CTRL, ctrl, clk);
++	}
++
+ 	ctrl |= ARCH_TIMER_CTRL_ENABLE;
+ 	ctrl &= ~ARCH_TIMER_CTRL_IT_MASK;
+ 
 
 
