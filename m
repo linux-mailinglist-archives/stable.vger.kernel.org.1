@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE4F7A3AB4
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A33997A3AB8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:08:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239562AbjIQUIB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:08:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60916 "EHLO
+        id S240427AbjIQUIC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:08:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240430AbjIQUHc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:07:32 -0400
+        with ESMTP id S240455AbjIQUHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:07:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC211EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:07:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BEAC433C7;
-        Sun, 17 Sep 2023 20:07:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A7697
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:07:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4558FC433C7;
+        Sun, 17 Sep 2023 20:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981246;
-        bh=b+V31BBjD3CwwNhml09pQHdTAJzNUr50Y2ienUkZMWU=;
+        s=korg; t=1694981256;
+        bh=f2kRI87FnxpVeL1rCWrAUGa8UkJUDoI5Jy4jSIcnyRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nEla88/NLm+N7NEbUINd8DInP9DSl24meObPMa6e7FAqTgxrLcseTJ1OqfetVRW0t
-         OjE6YT7agqrutOqHmJziaUsqRbj8mnDcSv8/2U8fIX1zyiXyt875Y3TGHelR94CUuC
-         4KtfPwNCIMbN9PHDPFDXqmPk5AWYd86EPrIz/M+o=
+        b=0/0UyrbLP/lS2uQzRUcCHl/wU1V209mr7xYbgwlR+fj/cch0k0kfBQ9TFt5ugcq6z
+         q56DJ2m9YhLCQm4VN6Et7yawNryZ6nTdK54tTbWt4ajXW8mFj67pBvYiiSAC3hyGGC
+         2HDer/XbEhCHtVu7v/9M9vSfMvj6JzQ13kDkBfcc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Snowberg <eric.snowberg@oracle.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, Minjie Du <duminjie@vivo.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/511] ovl: Always reevaluate the file signature for IMA
-Date:   Sun, 17 Sep 2023 21:07:35 +0200
-Message-ID: <20230917191114.507146954@linuxfoundation.org>
+Subject: [PATCH 5.15 029/511] ata: pata_arasan_cf: Use dev_err_probe() instead dev_err() in data_xfer()
+Date:   Sun, 17 Sep 2023 21:07:36 +0200
+Message-ID: <20230917191114.533215374@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,42 +56,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Snowberg <eric.snowberg@oracle.com>
+From: Minjie Du <duminjie@vivo.com>
 
-[ Upstream commit 18b44bc5a67275641fb26f2c54ba7eef80ac5950 ]
+[ Upstream commit 4139f992c49356391fb086c0c8ce51f66c26d623 ]
 
-Commit db1d1e8b9867 ("IMA: use vfs_getattr_nosec to get the i_version")
-partially closed an IMA integrity issue when directly modifying a file
-on the lower filesystem.  If the overlay file is first opened by a user
-and later the lower backing file is modified by root, but the extended
-attribute is NOT updated, the signature validation succeeds with the old
-original signature.
+It is possible for dma_request_chan() to return EPROBE_DEFER, which
+means acdev->host->dev is not ready yet. At this point dev_err() will
+have no output. Use dev_err_probe() instead.
 
-Update the super_block s_iflags to SB_I_IMA_UNVERIFIABLE_SIGNATURE to
-force signature reevaluation on every file access until a fine grained
-solution can be found.
-
-Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Minjie Du <duminjie@vivo.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_arasan_cf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 5310271cf2e38..e18025b5c8872 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -2140,7 +2140,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
- 		ovl_trusted_xattr_handlers;
- 	sb->s_fs_info = ofs;
- 	sb->s_flags |= SB_POSIXACL;
--	sb->s_iflags |= SB_I_SKIP_SYNC;
-+	sb->s_iflags |= SB_I_SKIP_SYNC | SB_I_IMA_UNVERIFIABLE_SIGNATURE;
- 
- 	err = -ENOMEM;
- 	root_dentry = ovl_get_root(sb, upperpath.dentry, oe);
+diff --git a/drivers/ata/pata_arasan_cf.c b/drivers/ata/pata_arasan_cf.c
+index 63f39440a9b42..4ba02f082f962 100644
+--- a/drivers/ata/pata_arasan_cf.c
++++ b/drivers/ata/pata_arasan_cf.c
+@@ -528,7 +528,8 @@ static void data_xfer(struct work_struct *work)
+ 	/* dma_request_channel may sleep, so calling from process context */
+ 	acdev->dma_chan = dma_request_chan(acdev->host->dev, "data");
+ 	if (IS_ERR(acdev->dma_chan)) {
+-		dev_err(acdev->host->dev, "Unable to get dma_chan\n");
++		dev_err_probe(acdev->host->dev, PTR_ERR(acdev->dma_chan),
++			      "Unable to get dma_chan\n");
+ 		acdev->dma_chan = NULL;
+ 		goto chan_request_fail;
+ 	}
 -- 
 2.40.1
 
