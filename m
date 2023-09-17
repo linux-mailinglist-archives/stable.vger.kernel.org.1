@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C847A3D08
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFE2B7A3B19
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241195AbjIQUi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50706 "EHLO
+        id S234032AbjIQUNV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241226AbjIQUiB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:01 -0400
+        with ESMTP id S240619AbjIQUM7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B76112F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D36C433C7;
-        Sun, 17 Sep 2023 20:37:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB060E4B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EBCC433D9;
+        Sun, 17 Sep 2023 20:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983075;
-        bh=5mmG88hO5VSaPsHgwtUzAFpNNHhWPg9jvgKl2p0NVoo=;
+        s=korg; t=1694981544;
+        bh=LAL75a4BUGuVd4UwNul30KXDiBrVcL419ANdBzGMi9w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7njAn2OPqqHvtMPykpUGYVxNiDflUzGz16i1lJRI4orNHQPlr/HcSbgvswr2h6k1
-         8GcoLgYMEUdpXZbsmmVcNZrxqa/znNcWDDRizsTWYOSHk7m9xYlq8NVu1UWpOeUOXZ
-         3zx2wg0KGvGcv7YGV34nruwWrETzdHkKYNW9JItg=
+        b=jZKNPwXKpA1zQE8zcjkG25fGi1PAsXLj1HdCbSLb6egug+HVaTj33IeCW4eccOtSO
+         0oKKZJZ10ZnB6RfiFncM6kFS+qvwqz8fnuBrDqD5+E2r0x7gObC4//BuEfQV0LbUkv
+         D7xAZaF7+JyJg5VhTmqoS0Eb/i77gJKbFzodqP0I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 437/511] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
-Date:   Sun, 17 Sep 2023 21:14:24 +0200
-Message-ID: <20230917191124.312038914@linuxfoundation.org>
+        patches@lists.linux.dev, Pavel Kozlov <pavel.kozlov@synopsys.com>,
+        Vineet Gupta <vgupta@kernel.org>
+Subject: [PATCH 6.1 138/219] ARC: atomics: Add compiler barrier to atomic operations...
+Date:   Sun, 17 Sep 2023 21:14:25 +0200
+Message-ID: <20230917191045.982074382@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Pavel Kozlov <pavel.kozlov@synopsys.com>
 
-[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
+commit 42f51fb24fd39cc547c086ab3d8a314cc603a91c upstream.
 
-The existing code incorrectly casted a negative value (the result of a
-subtraction) to an unsigned value without checking. For example, if
-/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
-lifetime would jump to 4 billion seconds. On my machine and network the
-shortest lifetime that avoided underflow was 3 seconds.
+... to avoid unwanted gcc optimizations
 
-Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+SMP kernels fail to boot with commit 596ff4a09b89
+("cpumask: re-introduce constant-sized cpumask optimizations").
+
+|
+| percpu: BUG: failure at mm/percpu.c:2981/pcpu_build_alloc_info()!
+|
+
+The write operation performed by the SCOND instruction in the atomic
+inline asm code is not properly passed to the compiler. The compiler
+cannot correctly optimize a nested loop that runs through the cpumask
+in the pcpu_build_alloc_info() function.
+
+Fix this by add a compiler barrier (memory clobber in inline asm).
+
+Apparently atomic ops used to have memory clobber implicitly via
+surrounding smp_mb(). However commit b64be6836993c431e
+("ARC: atomics: implement relaxed variants") removed the smp_mb() for
+the relaxed variants, but failed to add the explicit compiler barrier.
+
+Link: https://github.com/foss-for-synopsys-dwc-arc-processors/linux/issues/135
+Cc: <stable@vger.kernel.org> # v6.3+
+Fixes: b64be6836993c43 ("ARC: atomics: implement relaxed variants")
+Signed-off-by: Pavel Kozlov <pavel.kozlov@synopsys.com>
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+[vgupta: tweaked the changelog and added Fixes tag]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arc/include/asm/atomic-llsc.h    |    6 +++---
+ arch/arc/include/asm/atomic64-arcv2.h |    6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 0c0b7969840f5..6572174e2115f 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1368,7 +1368,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
- 	 * idev->desync_factor if it's larger
- 	 */
- 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
--	max_desync_factor = min_t(__u32,
-+	max_desync_factor = min_t(long,
- 				  idev->cnf.max_desync_factor,
- 				  cnf_temp_preferred_lft - regen_advance);
+--- a/arch/arc/include/asm/atomic-llsc.h
++++ b/arch/arc/include/asm/atomic-llsc.h
+@@ -18,7 +18,7 @@ static inline void arch_atomic_##op(int
+ 	: [val]	"=&r"	(val) /* Early clobber to prevent reg reuse */	\
+ 	: [ctr]	"r"	(&v->counter), /* Not "m": llock only supports reg direct addr mode */	\
+ 	  [i]	"ir"	(i)						\
+-	: "cc");							\
++	: "cc", "memory");						\
+ }									\
  
--- 
-2.40.1
-
+ #define ATOMIC_OP_RETURN(op, asm_op)				\
+@@ -34,7 +34,7 @@ static inline int arch_atomic_##op##_ret
+ 	: [val]	"=&r"	(val)						\
+ 	: [ctr]	"r"	(&v->counter),					\
+ 	  [i]	"ir"	(i)						\
+-	: "cc");							\
++	: "cc", "memory");						\
+ 									\
+ 	return val;							\
+ }
+@@ -56,7 +56,7 @@ static inline int arch_atomic_fetch_##op
+ 	  [orig] "=&r" (orig)						\
+ 	: [ctr]	"r"	(&v->counter),					\
+ 	  [i]	"ir"	(i)						\
+-	: "cc");							\
++	: "cc", "memory");						\
+ 									\
+ 	return orig;							\
+ }
+--- a/arch/arc/include/asm/atomic64-arcv2.h
++++ b/arch/arc/include/asm/atomic64-arcv2.h
+@@ -60,7 +60,7 @@ static inline void arch_atomic64_##op(s6
+ 	"	bnz     1b		\n"				\
+ 	: "=&r"(val)							\
+ 	: "r"(&v->counter), "ir"(a)					\
+-	: "cc");							\
++	: "cc", "memory");						\
+ }									\
+ 
+ #define ATOMIC64_OP_RETURN(op, op1, op2)		        	\
+@@ -77,7 +77,7 @@ static inline s64 arch_atomic64_##op##_r
+ 	"	bnz     1b		\n"				\
+ 	: [val] "=&r"(val)						\
+ 	: "r"(&v->counter), "ir"(a)					\
+-	: "cc");	/* memory clobber comes from smp_mb() */	\
++	: "cc", "memory");						\
+ 									\
+ 	return val;							\
+ }
+@@ -99,7 +99,7 @@ static inline s64 arch_atomic64_fetch_##
+ 	"	bnz     1b		\n"				\
+ 	: "=&r"(orig), "=&r"(val)					\
+ 	: "r"(&v->counter), "ir"(a)					\
+-	: "cc");	/* memory clobber comes from smp_mb() */	\
++	: "cc", "memory");						\
+ 									\
+ 	return orig;							\
+ }
 
 
