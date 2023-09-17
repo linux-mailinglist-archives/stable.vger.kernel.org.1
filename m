@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95BF87A3BCC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 389F17A3D58
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239628AbjIQUW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
+        id S241183AbjIQUlh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240830AbjIQUWb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:22:31 -0400
+        with ESMTP id S241266AbjIQUlG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C8C1B3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:22:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76726C433C7;
-        Sun, 17 Sep 2023 20:21:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625A5115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E95C433C8;
+        Sun, 17 Sep 2023 20:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982119;
-        bh=EYeHAULtVdrV2D512WBx4tlco+xwkC+kfcGPe3m1wCw=;
+        s=korg; t=1694983261;
+        bh=+3LqHfeYc0G8S+v7qTEAtLr0U2PV67a3ot8IdKitMLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qF8Jfm9a31rwfymMLjWxZsnsoyaReW7LPx4fQBRxCKbqpbWyvcFodV0OqhjLbAQbD
-         9o/NDrnC6NElZFkARTyfO+y9XgtdkuEwsqJPEscgfM3ISQ1tYuw0qACDNoD85+vw5t
-         U2NEp4x9yM7qdW/cVF5dInuSer6G+u0931piJp3I=
+        b=IxCdw4kWeC9Uxt5HVZJNc6TBRLz8gcpEDuA1cc4pgu9/sQePB/oo6PRivIGPY8RrN
+         1Yuns1hrZFwnpmrjc8bc+au/Da4Z6YjCkMvVSUwzewUvDdn60HDooLjsvK8D3FhUWX
+         a3TXQdJU/PXYqETNZ2tXVxBdkRtzpHO2VNU71nxo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/219] net/smc: use smc_lgr_list.lock to protect smc_lgr_list.list iterate in smcr_port_add
-Date:   Sun, 17 Sep 2023 21:15:16 +0200
-Message-ID: <20230917191047.775142178@linuxfoundation.org>
+Subject: [PATCH 5.15 490/511] block: dont add or resize partition on the disk with GENHD_FL_NO_PART
+Date:   Sun, 17 Sep 2023 21:15:17 +0200
+Message-ID: <20230917191125.565021706@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit f5146e3ef0a9eea405874b36178c19a4863b8989 ]
+[ Upstream commit 1a721de8489fa559ff4471f73c58bb74ac5580d3 ]
 
-While doing smcr_port_add, there maybe linkgroup add into or delete
-from smc_lgr_list.list at the same time, which may result kernel crash.
-So, use smc_lgr_list.lock to protect smc_lgr_list.list iterate in
-smcr_port_add.
+Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
+disk_expand_part_tbl() in add_partition(), which means all kinds of
+devices will support extended dynamic `dev_t`.
+However, some devices with GENHD_FL_NO_PART are not expected to add or
+resize partition.
+Fix this by adding check of GENHD_FL_NO_PART before add or resize
+partition.
 
-The crash calltrace show below:
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 0 P4D 0
-Oops: 0000 [#1] SMP NOPTI
-CPU: 0 PID: 559726 Comm: kworker/0:92 Kdump: loaded Tainted: G
-Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014
-Workqueue: events smc_ib_port_event_work [smc]
-RIP: 0010:smcr_port_add+0xa6/0xf0 [smc]
-RSP: 0000:ffffa5a2c8f67de0 EFLAGS: 00010297
-RAX: 0000000000000001 RBX: ffff9935e0650000 RCX: 0000000000000000
-RDX: 0000000000000010 RSI: ffff9935e0654290 RDI: ffff9935c8560000
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9934c0401918
-R10: 0000000000000000 R11: ffffffffb4a5c278 R12: ffff99364029aae4
-R13: ffff99364029aa00 R14: 00000000ffffffed R15: ffff99364029ab08
-FS:  0000000000000000(0000) GS:ffff994380600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000f06a10003 CR4: 0000000002770ef0
-PKRU: 55555554
-Call Trace:
- smc_ib_port_event_work+0x18f/0x380 [smc]
- process_one_work+0x19b/0x340
- worker_thread+0x30/0x370
- ? process_one_work+0x340/0x340
- kthread+0x114/0x130
- ? __kthread_cancel_work+0x50/0x50
- ret_from_fork+0x1f/0x30
-
-Fixes: 1f90a05d9ff9 ("net/smc: add smcr_port_add() and smcr_link_up() processing")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_core.c | 2 ++
+ block/ioctl.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index c676d92af7b7d..64b6dd439938e 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1650,6 +1650,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
- {
- 	struct smc_link_group *lgr, *n;
+diff --git a/block/ioctl.c b/block/ioctl.c
+index cd506a9029630..8f39e413f12a3 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	struct blkpg_partition p;
+ 	long long start, length;
  
-+	spin_lock_bh(&smc_lgr_list.lock);
- 	list_for_each_entry_safe(lgr, n, &smc_lgr_list.list, list) {
- 		struct smc_link *link;
- 
-@@ -1665,6 +1666,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
- 		if (link)
- 			smc_llc_add_link_local(link);
- 	}
-+	spin_unlock_bh(&smc_lgr_list.lock);
- }
- 
- /* link is down - switch connections to alternate link,
++	if (disk->flags & GENHD_FL_NO_PART)
++		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
 -- 
 2.40.1
 
