@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F5F7A3CD3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5D77A3CDF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241128AbjIQUfp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53732 "EHLO
+        id S241151AbjIQUgT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239689AbjIQUfV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:21 -0400
+        with ESMTP id S241166AbjIQUf6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 291B8101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5526CC433CA;
-        Sun, 17 Sep 2023 20:35:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3820E10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697B0C433C7;
+        Sun, 17 Sep 2023 20:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982915;
-        bh=uWiKhEhj8TZEepOH4/tkUof6npJRh1T3M7j6hUI4hVM=;
+        s=korg; t=1694982952;
+        bh=Gq68qaohMe6KfSkcGzNwGpAaA9eK1ZyG8NQ63rlUU3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sQ3Puk35wZuZAk1PTjb37FuYxNfKNt41NEvqZf3VuqiyxCerxAf74WD9Yyangyc/M
-         Eh7LRm6qzeO0ZIr+cTFl/bvV2KAgTe36/3Pw5nc1m1Hp8frSa1o2m3mhbOo9w4oWtC
-         do+7lUYKv+LKfkVDC2berWoRG7RdZWwVYW9H6DoM=
+        b=VPDspKWOHYHZ8j1vxkKLQTHlau4E2o4NOoMWt+qAKLzc8XKG9GT79/Z8gycfIG9fc
+         eT8GLNaAG6eEG5vHzUdf3j43y1sG7Q/A1+OyorXvNwm46Ii+MmQPqqOyYiCe2W6bTD
+         juGKAcBO4IO/GU+9m202LCihs3naW9apbwur7MRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dylan Yudaken <dylany@meta.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 5.15 373/511] io_uring: always lock in io_apoll_task_func
-Date:   Sun, 17 Sep 2023 21:13:20 +0200
-Message-ID: <20230917191122.811671478@linuxfoundation.org>
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 374/511] io_uring: break out of iowq iopoll on teardown
+Date:   Sun, 17 Sep 2023 21:13:21 +0200
+Message-ID: <20230917191122.835361506@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,40 +55,65 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Pavel Begunkov <asml.silence@gmail.com>
 
-From: Dylan Yudaken <dylany@meta.com>
+[ upstream commit 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9 ]
 
-[ upstream commit c06c6c5d276707e04cedbcc55625e984922118aa ]
+io-wq will retry iopoll even when it failed with -EAGAIN. If that
+races with task exit, which sets TIF_NOTIFY_SIGNAL for all its workers,
+such workers might potentially infinitely spin retrying iopoll again and
+again and each time failing on some allocation / waiting / etc. Don't
+keep spinning if io-wq is dying.
 
-This is required for the failure case (io_req_complete_failed) and is
-missing.
-
-The alternative would be to only lock in the failure path, however all of
-the non-error paths in io_poll_check_events that do not do not return
-IOU_POLL_NO_ACTION end up locking anyway. The only extraneous lock would
-be for the multishot poll overflowing the CQE ring, however multishot poll
-would probably benefit from being locked as it will allow completions to
-be batched.
-
-So it seems reasonable to lock always.
-
-Signed-off-by: Dylan Yudaken <dylany@meta.com>
-Link: https://lore.kernel.org/r/20221124093559.3780686-3-dylany@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 561fb04a6a225 ("io_uring: replace workqueue usage with io-wq")
+Cc: stable@vger.kernel.org
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io-wq.c    |   10 ++++++++++
+ io_uring/io-wq.h    |    1 +
+ io_uring/io_uring.c |    3 ++-
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -176,6 +176,16 @@ static void io_worker_ref_put(struct io_
+ 		complete(&wq->worker_done);
+ }
+ 
++bool io_wq_worker_stopped(void)
++{
++	struct io_worker *worker = current->pf_io_worker;
++
++	if (WARN_ON_ONCE(!io_wq_current_is_worker()))
++		return true;
++
++	return test_bit(IO_WQ_BIT_EXIT, &worker->wqe->wq->state);
++}
++
+ static void io_worker_cancel_cb(struct io_worker *worker)
+ {
+ 	struct io_wqe_acct *acct = io_wqe_get_acct(worker);
+--- a/io_uring/io-wq.h
++++ b/io_uring/io-wq.h
+@@ -129,6 +129,7 @@ void io_wq_hash_work(struct io_wq_work *
+ 
+ int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask);
+ int io_wq_max_workers(struct io_wq *wq, int *new_count);
++bool io_wq_worker_stopped(void);
+ 
+ static inline bool io_wq_is_hashed(struct io_wq_work *work)
+ {
 --- a/io_uring/io_uring.c
 +++ b/io_uring/io_uring.c
-@@ -5716,6 +5716,7 @@ static void io_apoll_task_func(struct io
- 	if (ret > 0)
- 		return;
- 
-+	io_tw_lock(req->ctx, locked);
- 	io_poll_remove_entries(req);
- 	spin_lock(&ctx->completion_lock);
- 	hash_del(&req->hash_node);
+@@ -7069,7 +7069,8 @@ static void io_wq_submit_work(struct io_
+ 			 */
+ 			if (ret != -EAGAIN || !(req->ctx->flags & IORING_SETUP_IOPOLL))
+ 				break;
+-
++			if (io_wq_worker_stopped())
++				break;
+ 			/*
+ 			 * If REQ_F_NOWAIT is set, then don't wait or retry with
+ 			 * poll. -EAGAIN is final for that case.
 
 
