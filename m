@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E979D7A3AC6
+	by mail.lfdr.de (Postfix) with ESMTP id 4C6B57A3AC4
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240457AbjIQUIh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:08:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
+        id S240459AbjIQUIi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239572AbjIQUIV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:21 -0400
+        with ESMTP id S240466AbjIQUI2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0958F97
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C85C433C8;
-        Sun, 17 Sep 2023 20:08:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F207B97
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A114C433C8;
+        Sun, 17 Sep 2023 20:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981295;
-        bh=Ioo8fHVGgVXHP06uxeQShqXpXEf2KZExHNqYEDlhZWw=;
+        s=korg; t=1694981302;
+        bh=s4Btkso1Crq2Y8zV77jR27nGSFGpEWxK6EsBPIxBUno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gjRge0D0s+PeHL3I2Y2YhA4ntEhlLjGXee+0QicB0T+Tqk3GqZnsF35F5rFSZwe8G
-         h/KWUSZHECPDhOzGZ7lm0rUFho0qqzNaLMbxA9lLxbnmetgUbPxeHHznbmo5H6pGj9
-         wgGJ7XTBmGCLkZp2p8llYeUlnlA9O+aeUdVZI21Y=
+        b=k15K7ONHfX2R62l71F1YWynhHaWWqyuf+JVeOEnM+8qpjLCA/PdYL3uvL2WMzcZ9x
+         UtdZr/yQX8HdFGb5K6mly9SxbTsBTaAoQ4ZpQhSosLFPyrvbNfm46dgPAstkfdYSSP
+         QP1px3NJyek9QGTCKWf67DT0Uz4nQK/ee5uo3j38=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/511] net: usb: qmi_wwan: add Quectel EM05GV2
-Date:   Sun, 17 Sep 2023 21:07:41 +0200
-Message-ID: <20230917191114.672637175@linuxfoundation.org>
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 035/511] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
+Date:   Sun, 17 Sep 2023 21:07:42 +0200
+Message-ID: <20230917191114.699293441@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,62 +55,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Martin Kohn <m.kohn@welotec.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d4480c9bb9258db9ddf2e632f6ef81e96b41089c ]
+[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
 
-Add support for Quectel EM05GV2 (G=global) with vendor ID
-0x2c7c and product ID 0x030e
+Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
+a backtrace caused by the following field-spanning warning:
 
-Enabling DTR on this modem was necessary to ensure stable operation.
-Patch for usb: serial: option: is also in progress.
+memcpy: detected field-spanning write (size 120) of single field
+  "&params_le->channel_list[0]" at
+  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=030e Rev= 3.18
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM05-G
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The driver still works after this warning. The warning was introduced by the
+new field-spanning write checks which were enabled recently.
 
-Signed-off-by: Martin Kohn <m.kohn@welotec.com>
-Link: https://lore.kernel.org/r/AM0PR04MB57648219DE893EE04FA6CC759701A@AM0PR04MB5764.eurprd04.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by replacing the channel_list[1] declaration at the end of
+the struct with a flexible array declaration.
+
+Most users of struct brcmf_scan_params_le calculate the size to alloc
+using the size of the non flex-array part of the struct + needed extra
+space, so they do not care about sizeof(struct brcmf_scan_params_le).
+
+brcmf_notify_escan_complete() however uses the struct on the stack,
+expecting there to be room for at least 1 entry in the channel-list
+to store the special -1 abort channel-id.
+
+To make this work use an anonymous union with a padding member
+added + the actual channel_list flexible array.
+
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 9dde1f8358e3f..5c516bf4d3a5f 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1412,6 +1412,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
-+	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index ff2ef557f0ead..2a1590cc73ab2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -383,7 +383,12 @@ struct brcmf_scan_params_le {
+ 				 * fixed parameter portion is assumed, otherwise
+ 				 * ssid in the fixed portion is ignored
+ 				 */
+-	__le16 channel_list[1];	/* list of chanspecs */
++	union {
++		__le16 padding;	/* Reserve space for at least 1 entry for abort
++				 * which uses an on stack brcmf_scan_params_le
++				 */
++		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
++	};
+ };
+ 
+ struct brcmf_scan_results {
 -- 
 2.40.1
 
