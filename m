@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC827A39A1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 462F57A3A69
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240125AbjIQTwD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35464 "EHLO
+        id S239219AbjIQUDO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240177AbjIQTvw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:52 -0400
+        with ESMTP id S240343AbjIQUCw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17196191
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C311C433C7;
-        Sun, 17 Sep 2023 19:51:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0AAEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F6CC433C7;
+        Sun, 17 Sep 2023 20:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980302;
-        bh=ayTrQ1NoHQKL+3H+hDVVhkkUrJvtqbPoT9lLQjBL1vo=;
+        s=korg; t=1694980947;
+        bh=g5exPWYRD7INzpOL3dozARgSY8fBdIf6fnA8V81nSzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hGctXBGxUieMD0fVI+qa6WH8GZUTpUGjOAqRZzYuTagI12xiDU8gIPMJHFxDg+KAq
-         K0aLrfgdW/p5ousOg4K+acNDsTycUOACGuAx4R2ohd60uFBIcdSVJsWdoyL6lwiVKC
-         7YYHJcqVfDLcPn+nolZ+r9KJIa/2gm7NRy1NBOJE=
+        b=ORlAgnfD0yzR122sP8m7kvP+UspnuNPgVRiGB+h4nuG8qsdERYEn/Woi7aQHZlfPQ
+         DbrphIF9WGx3eN4OpKB0tJZBaNxpab/1Me5/1mZSbMXuO11ZHKKSVMFpWlSaMm9JyI
+         5XQl/koyKxWr9o1ZR30Vh1j/F16AC2QNEW6Ujwtw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bodong Wang <bodong@nvidia.com>,
-        Mark Bloch <mbloch@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 152/285] mlx5/core: E-Switch, Create ACL FT for eswitch manager in switchdev mode
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        Chengming Zhou <zhouchengming@bytedance.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 025/219] null_blk: fix poll request timeout handling
 Date:   Sun, 17 Sep 2023 21:12:32 +0200
-Message-ID: <20230917191056.945483055@linuxfoundation.org>
+Message-ID: <20230917191041.907917456@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,181 +51,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bodong Wang <bodong@nvidia.com>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit 344134609a564f28b3cc81ca6650319ccd5d8961 ]
+commit 5a26e45edb4690d58406178b5a9ea4c6dcf2c105 upstream.
 
-ACL flow table is required in switchdev mode when metadata is enabled,
-driver creates such table when loading each vport. However, not every
-vport is loaded in switchdev mode. Such as ECPF if it's the eswitch manager.
-In this case, ACL flow table is still needed.
+When doing io_uring benchmark on /dev/nullb0, it's easy to crash the
+kernel if poll requests timeout triggered, as reported by David. [1]
 
-To make it modularized, create ACL flow table for eswitch manager as
-default and skip such operations when loading manager vport.
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+Workqueue: kblockd blk_mq_timeout_work
+RIP: 0010:null_timeout_rq+0x4e/0x91
+Call Trace:
+ ? null_timeout_rq+0x4e/0x91
+ blk_mq_handle_expired+0x31/0x4b
+ bt_iter+0x68/0x84
+ ? bt_tags_iter+0x81/0x81
+ __sbitmap_for_each_set.constprop.0+0xb0/0xf2
+ ? __blk_mq_complete_request_remote+0xf/0xf
+ bt_for_each+0x46/0x64
+ ? __blk_mq_complete_request_remote+0xf/0xf
+ ? percpu_ref_get_many+0xc/0x2a
+ blk_mq_queue_tag_busy_iter+0x14d/0x18e
+ blk_mq_timeout_work+0x95/0x127
+ process_one_work+0x185/0x263
+ worker_thread+0x1b5/0x227
 
-Also, there is no need to load the eswitch manager vport in switchdev mode.
-This means there is no need to load it on regular connect-x HCAs where
-the PF is the eswitch manager. This will avoid creating duplicate ACL
-flow table for host PF vport.
+This is indeed a race problem between null_timeout_rq() and null_poll().
 
-Fixes: 29bcb6e4fe70 ("net/mlx5e: E-Switch, Use metadata for vport matching in send-to-vport rules")
-Fixes: eb8e9fae0a22 ("mlx5/core: E-Switch, Allocate ECPF vport if it's an eswitch manager")
-Fixes: 5019833d661f ("net/mlx5: E-switch, Introduce helper function to enable/disable vports")
-Signed-off-by: Bodong Wang <bodong@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+null_poll()				null_timeout_rq()
+  spin_lock(&nq->poll_lock)
+  list_splice_init(&nq->poll_list, &list)
+  spin_unlock(&nq->poll_lock)
+
+  while (!list_empty(&list))
+    req = list_first_entry()
+    list_del_init()
+    ...
+    blk_mq_add_to_batch()
+    // req->rq_next = NULL
+					spin_lock(&nq->poll_lock)
+
+					// rq->queuelist->next == NULL
+					list_del_init(&rq->queuelist)
+
+					spin_unlock(&nq->poll_lock)
+
+Fix these problems by setting requests state to MQ_RQ_COMPLETE under
+nq->poll_lock protection, in which null_timeout_rq() can safely detect
+this race and early return.
+
+Note this patch just fix the kernel panic when request timeout happen.
+
+[1] https://lore.kernel.org/all/3893581.1691785261@warthog.procyon.org.uk/
+
+Fixes: 0a593fbbc245 ("null_blk: poll queue support")
+Reported-by: David Howells <dhowells@redhat.com>
+Tested-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Link: https://lore.kernel.org/r/20230901120306.170520-2-chengming.zhou@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 21 ++++++--
- .../mellanox/mlx5/core/eswitch_offloads.c     | 49 +++++++++++++------
- 2 files changed, 51 insertions(+), 19 deletions(-)
+ drivers/block/null_blk/main.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 591184d892af6..6e9b1b183190d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1212,12 +1212,19 @@ int
- mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
- 				 enum mlx5_eswitch_vport_event enabled_events)
- {
-+	bool pf_needed;
- 	int ret;
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1585,9 +1585,12 @@ static int null_poll(struct blk_mq_hw_ct
+ 	struct nullb_queue *nq = hctx->driver_data;
+ 	LIST_HEAD(list);
+ 	int nr = 0;
++	struct request *rq;
  
-+	pf_needed = mlx5_core_is_ecpf_esw_manager(esw->dev) ||
-+		    esw->mode == MLX5_ESWITCH_LEGACY;
-+
- 	/* Enable PF vport */
--	ret = mlx5_eswitch_load_pf_vf_vport(esw, MLX5_VPORT_PF, enabled_events);
--	if (ret)
--		return ret;
-+	if (pf_needed) {
-+		ret = mlx5_eswitch_load_pf_vf_vport(esw, MLX5_VPORT_PF,
-+						    enabled_events);
-+		if (ret)
-+			return ret;
-+	}
+ 	spin_lock(&nq->poll_lock);
+ 	list_splice_init(&nq->poll_list, &list);
++	list_for_each_entry(rq, &list, queuelist)
++		blk_mq_set_request_complete(rq);
+ 	spin_unlock(&nq->poll_lock);
  
- 	/* Enable external host PF HCA */
- 	ret = host_pf_enable_hca(esw->dev);
-@@ -1253,7 +1260,8 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
- ecpf_err:
- 	host_pf_disable_hca(esw->dev);
- pf_hca_err:
--	mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_PF);
-+	if (pf_needed)
-+		mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_PF);
- 	return ret;
- }
+ 	while (!list_empty(&list)) {
+@@ -1613,16 +1616,21 @@ static enum blk_eh_timer_return null_tim
+ 	struct blk_mq_hw_ctx *hctx = rq->mq_hctx;
+ 	struct nullb_cmd *cmd = blk_mq_rq_to_pdu(rq);
  
-@@ -1271,7 +1279,10 @@ void mlx5_eswitch_disable_pf_vf_vports(struct mlx5_eswitch *esw)
+-	pr_info("rq %p timed out\n", rq);
+-
+ 	if (hctx->type == HCTX_TYPE_POLL) {
+ 		struct nullb_queue *nq = hctx->driver_data;
+ 
+ 		spin_lock(&nq->poll_lock);
++		/* The request may have completed meanwhile. */
++		if (blk_mq_request_completed(rq)) {
++			spin_unlock(&nq->poll_lock);
++			return BLK_EH_DONE;
++		}
+ 		list_del_init(&rq->queuelist);
+ 		spin_unlock(&nq->poll_lock);
  	}
  
- 	host_pf_disable_hca(esw->dev);
--	mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_PF);
++	pr_info("rq %p timed out\n", rq);
 +
-+	if (mlx5_core_is_ecpf_esw_manager(esw->dev) ||
-+	    esw->mode == MLX5_ESWITCH_LEGACY)
-+		mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_PF);
- }
- 
- static void mlx5_eswitch_get_devlink_param(struct mlx5_eswitch *esw)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 2f8bab73643e2..1ad5a72dcc3fd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3092,26 +3092,47 @@ esw_vport_destroy_offloads_acl_tables(struct mlx5_eswitch *esw,
- 	esw_acl_ingress_ofld_cleanup(esw, vport);
- }
- 
--static int esw_create_uplink_offloads_acl_tables(struct mlx5_eswitch *esw)
-+static int esw_create_offloads_acl_tables(struct mlx5_eswitch *esw)
- {
--	struct mlx5_vport *vport;
-+	struct mlx5_vport *uplink, *manager;
-+	int ret;
- 
--	vport = mlx5_eswitch_get_vport(esw, MLX5_VPORT_UPLINK);
--	if (IS_ERR(vport))
--		return PTR_ERR(vport);
-+	uplink = mlx5_eswitch_get_vport(esw, MLX5_VPORT_UPLINK);
-+	if (IS_ERR(uplink))
-+		return PTR_ERR(uplink);
-+
-+	ret = esw_vport_create_offloads_acl_tables(esw, uplink);
-+	if (ret)
-+		return ret;
-+
-+	manager = mlx5_eswitch_get_vport(esw, esw->manager_vport);
-+	if (IS_ERR(manager)) {
-+		ret = PTR_ERR(manager);
-+		goto err_manager;
-+	}
- 
--	return esw_vport_create_offloads_acl_tables(esw, vport);
-+	ret = esw_vport_create_offloads_acl_tables(esw, manager);
-+	if (ret)
-+		goto err_manager;
-+
-+	return 0;
-+
-+err_manager:
-+	esw_vport_destroy_offloads_acl_tables(esw, uplink);
-+	return ret;
- }
- 
--static void esw_destroy_uplink_offloads_acl_tables(struct mlx5_eswitch *esw)
-+static void esw_destroy_offloads_acl_tables(struct mlx5_eswitch *esw)
- {
- 	struct mlx5_vport *vport;
- 
--	vport = mlx5_eswitch_get_vport(esw, MLX5_VPORT_UPLINK);
--	if (IS_ERR(vport))
--		return;
-+	vport = mlx5_eswitch_get_vport(esw, esw->manager_vport);
-+	if (!IS_ERR(vport))
-+		esw_vport_destroy_offloads_acl_tables(esw, vport);
- 
--	esw_vport_destroy_offloads_acl_tables(esw, vport);
-+	vport = mlx5_eswitch_get_vport(esw, MLX5_VPORT_UPLINK);
-+	if (!IS_ERR(vport))
-+		esw_vport_destroy_offloads_acl_tables(esw, vport);
- }
- 
- int mlx5_eswitch_reload_reps(struct mlx5_eswitch *esw)
-@@ -3156,7 +3177,7 @@ static int esw_offloads_steering_init(struct mlx5_eswitch *esw)
- 	}
- 	esw->fdb_table.offloads.indir = indir;
- 
--	err = esw_create_uplink_offloads_acl_tables(esw);
-+	err = esw_create_offloads_acl_tables(esw);
- 	if (err)
- 		goto create_acl_err;
- 
-@@ -3197,7 +3218,7 @@ static int esw_offloads_steering_init(struct mlx5_eswitch *esw)
- create_restore_err:
- 	esw_destroy_offloads_table(esw);
- create_offloads_err:
--	esw_destroy_uplink_offloads_acl_tables(esw);
-+	esw_destroy_offloads_acl_tables(esw);
- create_acl_err:
- 	mlx5_esw_indir_table_destroy(esw->fdb_table.offloads.indir);
- create_indir_err:
-@@ -3213,7 +3234,7 @@ static void esw_offloads_steering_cleanup(struct mlx5_eswitch *esw)
- 	esw_destroy_offloads_fdb_tables(esw);
- 	esw_destroy_restore_table(esw);
- 	esw_destroy_offloads_table(esw);
--	esw_destroy_uplink_offloads_acl_tables(esw);
-+	esw_destroy_offloads_acl_tables(esw);
- 	mlx5_esw_indir_table_destroy(esw->fdb_table.offloads.indir);
- 	mutex_destroy(&esw->fdb_table.offloads.vports.lock);
- }
--- 
-2.40.1
-
+ 	/*
+ 	 * If the device is marked as blocking (i.e. memory backed or zoned
+ 	 * device), the submission path may be blocked waiting for resources
 
 
