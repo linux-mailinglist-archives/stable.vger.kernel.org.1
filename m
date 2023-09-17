@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B0CB7A3A76
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 623887A3CB8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239577AbjIQUEu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:04:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
+        id S239676AbjIQUel (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:34:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240342AbjIQUE0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:04:26 -0400
+        with ESMTP id S241102AbjIQUeK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:34:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F50F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:04:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1E4C433C9;
-        Sun, 17 Sep 2023 20:04:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEFB101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:34:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8DEC433C7;
+        Sun, 17 Sep 2023 20:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981060;
-        bh=phhe5laKqx6LASxCxHDK51e+orCxnxM/X6fQ0Xe5KKA=;
+        s=korg; t=1694982844;
+        bh=nG1sf7xy5VLJwTCf7wsfU4P7NjafTI83FTKZgOEgOW0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w82tkHXbLzxwi/H/jK0xrE1dhvHyzTCGPGabr7XuKAvecWJOnIlRxFixk0RXY3XxA
-         v1KeHZSh8oObiGUCwF5dIiuvD//tHIOqDG16a65vQU4lWXXY5GV+wgJHfJmfPhdqrO
-         azZu5QdiE5gHj8Y5FRcifH8iC11F/ApuVlbuVYy0=
+        b=jTrjVHPYp8mKY9hsCEOB+JysQVOdwO7G7PbHRAWr32IEuVzRVR3oyw/jmIJqgCmAP
+         EiexK+P5JlnBe2315qfGPz3qgYg/cSQAuI5sFCLSn1tjTpEWCrPZ4oDIskWbMEaAVr
+         2b1Y8SZaA0T20F0hCNOP4540pa5VUF5AGIbl3NUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/219] pwm: atmel-tcb: Fix resource freeing in error path and remove
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Brian Foster <bfoster@redhat.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 368/511] tracing: Zero the pipe cpumask on alloc to avoid spurious -EBUSY
 Date:   Sun, 17 Sep 2023 21:13:15 +0200
-Message-ID: <20230917191043.454185817@linuxfoundation.org>
+Message-ID: <20230917191122.695827324@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,91 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit c11622324c023415fb69196c5fc3782d2b8cced0 ]
+commit 3d07fa1dd19035eb0b13ae6697efd5caa9033e74 upstream.
 
-Several resources were not freed in the error path and the remove
-function. Add the forgotten items.
+The pipe cpumask used to serialize opens between the main and percpu
+trace pipes is not zeroed or initialized. This can result in
+spurious -EBUSY returns if underlying memory is not fully zeroed.
+This has been observed by immediate failure to read the main
+trace_pipe file on an otherwise newly booted and idle system:
 
-Fixes: 34cbcd72588f ("pwm: atmel-tcb: Add sama5d2 support")
-Fixes: 061f8572a31c ("pwm: atmel-tcb: Switch to new binding")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ # cat /sys/kernel/debug/tracing/trace_pipe
+ cat: /sys/kernel/debug/tracing/trace_pipe: Device or resource busy
+
+Zero the allocation of pipe_cpumask to avoid the problem.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230831125500.986862-1-bfoster@redhat.com
+
+Cc: stable@vger.kernel.org
+Fixes: c2489bb7e6be ("tracing: Introduce pipe_cpumask to avoid race on trace_pipes")
+Reviewed-by: Zheng Yejian <zhengyejian1@huawei.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ kernel/trace/trace.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index 613dd1810fb53..2826fc216d291 100644
---- a/drivers/pwm/pwm-atmel-tcb.c
-+++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -450,16 +450,20 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
- 	tcbpwm->clk = of_clk_get_by_name(np->parent, clk_name);
- 	if (IS_ERR(tcbpwm->clk))
- 		tcbpwm->clk = of_clk_get_by_name(np->parent, "t0_clk");
--	if (IS_ERR(tcbpwm->clk))
--		return PTR_ERR(tcbpwm->clk);
-+	if (IS_ERR(tcbpwm->clk)) {
-+		err = PTR_ERR(tcbpwm->clk);
-+		goto err_slow_clk;
-+	}
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -9350,7 +9350,7 @@ static struct trace_array *trace_array_c
+ 	if (!alloc_cpumask_var(&tr->tracing_cpumask, GFP_KERNEL))
+ 		goto out_free_tr;
  
- 	match = of_match_node(atmel_tcb_of_match, np->parent);
- 	config = match->data;
+-	if (!alloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
++	if (!zalloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
+ 		goto out_free_tr;
  
- 	if (config->has_gclk) {
- 		tcbpwm->gclk = of_clk_get_by_name(np->parent, "gclk");
--		if (IS_ERR(tcbpwm->gclk))
--			return PTR_ERR(tcbpwm->gclk);
-+		if (IS_ERR(tcbpwm->gclk)) {
-+			err = PTR_ERR(tcbpwm->gclk);
-+			goto err_clk;
-+		}
- 	}
+ 	tr->trace_flags = global_trace.trace_flags & ~ZEROED_TRACE_FLAGS;
+@@ -10208,7 +10208,7 @@ __init static int tracer_alloc_buffers(v
+ 	if (trace_create_savedcmd() < 0)
+ 		goto out_free_temp_buffer;
  
- 	tcbpwm->chip.dev = &pdev->dev;
-@@ -470,7 +474,7 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+-	if (!alloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
++	if (!zalloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
+ 		goto out_free_savedcmd;
  
- 	err = clk_prepare_enable(tcbpwm->slow_clk);
- 	if (err)
--		goto err_slow_clk;
-+		goto err_gclk;
- 
- 	spin_lock_init(&tcbpwm->lock);
- 
-@@ -485,6 +489,12 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
- err_disable_clk:
- 	clk_disable_unprepare(tcbpwm->slow_clk);
- 
-+err_gclk:
-+	clk_put(tcbpwm->gclk);
-+
-+err_clk:
-+	clk_put(tcbpwm->clk);
-+
- err_slow_clk:
- 	clk_put(tcbpwm->slow_clk);
- 
-@@ -498,8 +508,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
- 	pwmchip_remove(&tcbpwm->chip);
- 
- 	clk_disable_unprepare(tcbpwm->slow_clk);
--	clk_put(tcbpwm->slow_clk);
-+	clk_put(tcbpwm->gclk);
- 	clk_put(tcbpwm->clk);
-+	clk_put(tcbpwm->slow_clk);
- }
- 
- static const struct of_device_id atmel_tcb_pwm_dt_ids[] = {
--- 
-2.40.1
-
+ 	/* TODO: make the number of buffers hot pluggable with CPUS */
 
 
