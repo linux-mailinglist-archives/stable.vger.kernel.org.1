@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D2FC7A39F8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD6C7A38D7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240222AbjIQT4u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35346 "EHLO
+        id S239543AbjIQTlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240275AbjIQT4g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:36 -0400
+        with ESMTP id S239887AbjIQTk5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13ABB101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467F1C433C8;
-        Sun, 17 Sep 2023 19:56:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D20FD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633FFC433CC;
+        Sun, 17 Sep 2023 19:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980590;
-        bh=7HPwspJXkMXx4qSiri/iKKhuVjQ3UPFC0fU3gwFcAdc=;
+        s=korg; t=1694979651;
+        bh=H2KXyaicWicLbg+E+OLXapuBESPhgUX0wgXxKospghk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wZE/quHjbmh2Qg8Iblu3NkEc759QrwMLd1ZFDu4bt403QcS7uoFnBnXzeZ2FJRJOo
-         dM5Hxp2mf0+kG+x04oPHs4A39uRP8+nh0i4l31xZhs34AxSnaWr2AUr41BK5h1lC1K
-         TkNHt7NOnnXVi89H5zrHdBROOUcBmHWMLLlqFZ2g=
+        b=CVuGXrm320BW0epwhdZaQWtd+a+h4InXLH99lnJmaVCVL06i5MKxfppLdz6+fkenu
+         SNY2BsCGjC+yjEXXZDlTqGtNyp8rD7zkm7S3U+TuENUnyYZV92GcjO5bAlxlXagnXf
+         M2r5yd+61UubalMcJyvPN2IrNrn7YYCfrbw1+cLA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Gonda <pgonda@google.com>,
-        Pankaj Gupta <pankaj.gupta@amd.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.5 229/285] KVM: SVM: Skip VMSA init in sev_es_init_vmcb() if pointer is NULL
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 375/406] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in oob write
 Date:   Sun, 17 Sep 2023 21:13:49 +0200
-Message-ID: <20230917191059.376715796@linuxfoundation.org>
+Message-ID: <20230917191111.171968122@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: William Zhang <william.zhang@broadcom.com>
 
-commit 1952e74da96fb3e48b72a2d0ece78c688a5848c1 upstream.
+commit 5d53244186c9ac58cb88d76a0958ca55b83a15cd upstream.
 
-Skip initializing the VMSA physical address in the VMCB if the VMSA is
-NULL, which occurs during intrahost migration as KVM initializes the VMCB
-before copying over state from the source to the destination (including
-the VMSA and its physical address).
+When the oob buffer length is not in multiple of words, the oob write
+function does out-of-bounds read on the oob source buffer at the last
+iteration. Fix that by always checking length limit on the oob buffer
+read and fill with 0xff when reaching the end of the buffer to the oob
+registers.
 
-In normal builds, __pa() is just math, so the bug isn't fatal, but with
-CONFIG_DEBUG_VIRTUAL=y, the validity of the virtual address is verified
-and passing in NULL will make the kernel unhappy.
-
-Fixes: 6defa24d3b12 ("KVM: SEV: Init target VMCBs in sev_migrate_from")
+Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Cc: stable@vger.kernel.org
-Cc: Peter Gonda <pgonda@google.com>
-Reviewed-by: Peter Gonda <pgonda@google.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Link: https://lore.kernel.org/r/20230825022357.2852133-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-5-william.zhang@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2955,9 +2955,12 @@ static void sev_es_init_vmcb(struct vcpu
- 	/*
- 	 * An SEV-ES guest requires a VMSA area that is a separate from the
- 	 * VMCB page. Do not include the encryption mask on the VMSA physical
--	 * address since hardware will access it using the guest key.
-+	 * address since hardware will access it using the guest key.  Note,
-+	 * the VMSA will be NULL if this vCPU is the destination for intrahost
-+	 * migration, and will be copied later.
- 	 */
--	svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
-+	if (svm->sev_es.vmsa)
-+		svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -1429,19 +1429,33 @@ static int write_oob_to_regs(struct brcm
+ 			     const u8 *oob, int sas, int sector_1k)
+ {
+ 	int tbytes = sas << sector_1k;
+-	int j;
++	int j, k = 0;
++	u32 last = 0xffffffff;
++	u8 *plast = (u8 *)&last;
  
- 	/* Can't intercept CR register access, HV can't modify CR registers */
- 	svm_clr_intercept(svm, INTERCEPT_CR0_READ);
+ 	/* Adjust OOB values for 1K sector size */
+ 	if (sector_1k && (i & 0x01))
+ 		tbytes = max(0, tbytes - (int)ctrl->max_oob);
+ 	tbytes = min_t(int, tbytes, ctrl->max_oob);
+ 
+-	for (j = 0; j < tbytes; j += 4)
++	/*
++	 * tbytes may not be multiple of words. Make sure we don't read out of
++	 * the boundary and stop at last word.
++	 */
++	for (j = 0; (j + 3) < tbytes; j += 4)
+ 		oob_reg_write(ctrl, j,
+ 				(oob[j + 0] << 24) |
+ 				(oob[j + 1] << 16) |
+ 				(oob[j + 2] <<  8) |
+ 				(oob[j + 3] <<  0));
++
++	/* handle the remaing bytes */
++	while (j < tbytes)
++		plast[k++] = oob[j++];
++
++	if (tbytes & 0x3)
++		oob_reg_write(ctrl, (tbytes & ~0x3), (__force u32)cpu_to_be32(last));
++
+ 	return tbytes;
+ }
+ 
 
 
