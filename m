@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8CF7A379B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B74527A37A6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239126AbjIQTWj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:22:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
+        id S239447AbjIQTXM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239485AbjIQTWN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:22:13 -0400
+        with ESMTP id S239487AbjIQTWy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:22:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D479D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:22:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CE6C433C8;
-        Sun, 17 Sep 2023 19:22:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3661119
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:22:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58BAC433C8;
+        Sun, 17 Sep 2023 19:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978528;
-        bh=TcuPoGiBL3LlXCcDTivm6XhNkwK+WIQWFzxhQNP5A0Q=;
+        s=korg; t=1694978566;
+        bh=fyvBnvOtzaXpfOgrQ8PoWWw2Ocp/pmX2Uj4hRrKUOXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mGIKUlgGkmGWrCRbjGeFXx0PQCT8TLHrPMYUBtlzVpSmQjd7kf2+H0skA3Dez/8KI
-         Y++E14uuImBAY1GigFGxNClYL+agoilmHV0HidT9xiCbLKD9vL6lDjseAnMgWpwMKY
-         kGXiSLwg57WIooGUHSdivvPmORfHqS9a/G4xZQPI=
+        b=z+gkejZkilfw3vPJezp6FovZeMHb1Z61kG+junocxsloaW+2sKqRUVLfvy0QbHP0P
+         nCTF1cYe/A4Of6HoED7xdF5pfXY8KzkjuwoAqT7u1uP9Eu/iGC72t2hJgBXrpDWjjW
+         4A/bxUaElqrnqPKVxkLGUl3Erh5fFuYGbEbGPZtA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Frank Li <Frank.Li@nxp.com>, Will Deacon <will@kernel.org>,
+        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
+        Ingo Franzki <ifranzki@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/406] perf/imx_ddr: dont enable counter0 if none of 4 counters are used
-Date:   Sun, 17 Sep 2023 21:08:51 +0200
-Message-ID: <20230917191103.166215324@linuxfoundation.org>
+Subject: [PATCH 5.10 078/406] s390/pkey: fix/harmonize internal keyblob headers
+Date:   Sun, 17 Sep 2023 21:08:52 +0200
+Message-ID: <20230917191103.191834329@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,88 +55,87 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit f4e2bd91ddf5e8543cbe7ad80b3fba3d2dc63fa3 ]
+[ Upstream commit 37a08f010b7c423b5e4c9ed3b187d21166553007 ]
 
-In current driver, counter0 will be enabled after ddr_perf_pmu_enable()
-is called even though none of the 4 counters are used. This will cause
-counter0 continue to count until ddr_perf_pmu_disabled() is called. If
-pmu is not disabled all the time, the pmu interrupt will be asserted
-from time to time due to counter0 will overflow and irq handler will
-clear it. It's not an expected behavior. This patch will not enable
-counter0 if none of 4 counters are used.
+Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
+private keys")' introduced PKEY_TYPE_EP11_AES as a supplement to
+PKEY_TYPE_EP11. All pkeys have an internal header/payload structure,
+which is opaque to the userspace. The header structures for
+PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES are nearly identical and there
+is no reason, why different structures are used. In preparation to fix
+the keyversion handling in the broken PKEY IOCTLs, the same header
+structure is used for PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES. This
+reduces the number of different code paths and increases the
+readability.
 
-Fixes: 9a66d36cc7ac ("drivers/perf: imx_ddr: Add DDR performance counter support to perf")
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230811015438.1999307-2-xu.yang_2@nxp.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/fsl_imx8_ddr_perf.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/s390/crypto/pkey_api.c        | 2 +-
+ drivers/s390/crypto/zcrypt_ep11misc.c | 4 ++--
+ drivers/s390/crypto/zcrypt_ep11misc.h | 9 +--------
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
-index e09bbf3890c49..8dfb67530d6bc 100644
---- a/drivers/perf/fsl_imx8_ddr_perf.c
-+++ b/drivers/perf/fsl_imx8_ddr_perf.c
-@@ -82,6 +82,7 @@ struct ddr_pmu {
- 	const struct fsl_ddr_devtype_data *devtype_data;
- 	int irq;
- 	int id;
-+	int active_counter;
- };
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index 870e00effe439..69882ff4db107 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -735,7 +735,7 @@ static int pkey_verifykey2(const u8 *key, size_t keylen,
+ 		if (ktype)
+ 			*ktype = PKEY_TYPE_EP11;
+ 		if (ksize)
+-			*ksize = kb->head.keybitlen;
++			*ksize = kb->head.bitlen;
  
- enum ddr_perf_filter_capabilities {
-@@ -414,6 +415,10 @@ static void ddr_perf_event_start(struct perf_event *event, int flags)
+ 		rc = ep11_findcard2(&_apqns, &_nr_apqns, *cardnr, *domain,
+ 				    ZCRYPT_CEX7, EP11_API_V, kb->wkvp);
+diff --git a/drivers/s390/crypto/zcrypt_ep11misc.c b/drivers/s390/crypto/zcrypt_ep11misc.c
+index 9ce5a71da69b8..3daf259ba10e7 100644
+--- a/drivers/s390/crypto/zcrypt_ep11misc.c
++++ b/drivers/s390/crypto/zcrypt_ep11misc.c
+@@ -788,7 +788,7 @@ int ep11_genaeskey(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
+ 	kb->head.type = TOKTYPE_NON_CCA;
+ 	kb->head.len = rep_pl->data_len;
+ 	kb->head.version = TOKVER_EP11_AES;
+-	kb->head.keybitlen = keybitsize;
++	kb->head.bitlen = keybitsize;
  
- 	ddr_perf_counter_enable(pmu, event->attr.config, counter, true);
+ out:
+ 	kfree(req);
+@@ -1056,7 +1056,7 @@ static int ep11_unwrapkey(u16 card, u16 domain,
+ 	kb->head.type = TOKTYPE_NON_CCA;
+ 	kb->head.len = rep_pl->data_len;
+ 	kb->head.version = TOKVER_EP11_AES;
+-	kb->head.keybitlen = keybitsize;
++	kb->head.bitlen = keybitsize;
  
-+	if (!pmu->active_counter++)
-+		ddr_perf_counter_enable(pmu, EVENT_CYCLES_ID,
-+			EVENT_CYCLES_COUNTER, true);
-+
- 	hwc->state = 0;
- }
- 
-@@ -468,6 +473,10 @@ static void ddr_perf_event_stop(struct perf_event *event, int flags)
- 	ddr_perf_counter_enable(pmu, event->attr.config, counter, false);
- 	ddr_perf_event_update(event);
- 
-+	if (!--pmu->active_counter)
-+		ddr_perf_counter_enable(pmu, EVENT_CYCLES_ID,
-+			EVENT_CYCLES_COUNTER, false);
-+
- 	hwc->state |= PERF_HES_STOPPED;
- }
- 
-@@ -486,25 +495,10 @@ static void ddr_perf_event_del(struct perf_event *event, int flags)
- 
- static void ddr_perf_pmu_enable(struct pmu *pmu)
- {
--	struct ddr_pmu *ddr_pmu = to_ddr_pmu(pmu);
--
--	/* enable cycle counter if cycle is not active event list */
--	if (ddr_pmu->events[EVENT_CYCLES_COUNTER] == NULL)
--		ddr_perf_counter_enable(ddr_pmu,
--				      EVENT_CYCLES_ID,
--				      EVENT_CYCLES_COUNTER,
--				      true);
- }
- 
- static void ddr_perf_pmu_disable(struct pmu *pmu)
- {
--	struct ddr_pmu *ddr_pmu = to_ddr_pmu(pmu);
--
--	if (ddr_pmu->events[EVENT_CYCLES_COUNTER] == NULL)
--		ddr_perf_counter_enable(ddr_pmu,
--				      EVENT_CYCLES_ID,
--				      EVENT_CYCLES_COUNTER,
--				      false);
- }
- 
- static int ddr_perf_init(struct ddr_pmu *pmu, void __iomem *base,
+ out:
+ 	kfree(req);
+diff --git a/drivers/s390/crypto/zcrypt_ep11misc.h b/drivers/s390/crypto/zcrypt_ep11misc.h
+index 1e02b197c0035..d424fa901f1b0 100644
+--- a/drivers/s390/crypto/zcrypt_ep11misc.h
++++ b/drivers/s390/crypto/zcrypt_ep11misc.h
+@@ -29,14 +29,7 @@ struct ep11keyblob {
+ 	union {
+ 		u8 session[32];
+ 		/* only used for PKEY_TYPE_EP11: */
+-		struct {
+-			u8  type;      /* 0x00 (TOKTYPE_NON_CCA) */
+-			u8  res0;      /* unused */
+-			u16 len;       /* total length in bytes of this blob */
+-			u8  version;   /* 0x03 (TOKVER_EP11_AES) */
+-			u8  res1;      /* unused */
+-			u16 keybitlen; /* clear key bit len, 0 for unknown */
+-		} head;
++		struct ep11kblob_header head;
+ 	};
+ 	u8  wkvp[16];  /* wrapping key verification pattern */
+ 	u64 attr;      /* boolean key attributes */
 -- 
 2.40.1
 
