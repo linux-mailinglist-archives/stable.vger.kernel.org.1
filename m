@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0107C7A3AB0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 809DA7A3CD1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240432AbjIQUHc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59334 "EHLO
+        id S241131AbjIQUfq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240455AbjIQUHP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:07:15 -0400
+        with ESMTP id S241181AbjIQUf3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F6297
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:07:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB27C433C7;
-        Sun, 17 Sep 2023 20:07:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D01B111B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B81FC433C8;
+        Sun, 17 Sep 2023 20:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981229;
-        bh=KCnLHpdhl/bnzhYeyFM+6nEh5KzTgdIkG17FjZ9zyhY=;
+        s=korg; t=1694982922;
+        bh=IuuvXkU85syQpWnEaOkvlNYW+SheGPbW7JcWrcqi0+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q5sc97o3KmM9G1P8pOdcr7+m15ogXBhmo4Qk24OC06EAPX3yiRaqT5L7AIsq+4Udt
-         e7KHZQyXJrCJkvaSJ+FQ8ceAp/eJCqOuoKiw2xAShOsYkuIKD4ohCtoptPGR6l4gZt
-         mpiZewip4quSyykGO2i1qsjQb1qveenLyogmAoa4=
+        b=AnlEXVUXYtFrboEfIm2/odNb5KdzAxUMlaiFOYyDJI8/hVpCnDchtnbfsO8p8lEga
+         u0BQztpOxu6NwGx9FD77PhYJ4pXUKgy3DZivXp2u2Ere61qurGkjhu23Vn6Pq2iXEA
+         N1BLmgxTR0//l8KOqXHHNa4GOS0N/5qf5EtUN5bA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+822d1359297e2694f873@syzkaller.appspotmail.com,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/219] xsk: Fix xsk_diag use-after-free error during socket cleanup
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Dave Airlie <airlied@redhat.com>,
+        dri-devel@lists.freedesktop.org,
+        Sui Jingfeng <suijingfeng@loongson.cn>,
+        Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 5.15 392/511] drm/ast: Fix DRAM init on AST2200
 Date:   Sun, 17 Sep 2023 21:13:39 +0200
-Message-ID: <20230917191044.305597788@linuxfoundation.org>
+Message-ID: <20230917191123.259362426@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Karlsson <magnus.karlsson@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 3e019d8a05a38abb5c85d4f1e85fda964610aa14 ]
+commit 4cfe75f0f14f044dae66ad0e6eea812d038465d9 upstream.
 
-Fix a use-after-free error that is possible if the xsk_diag interface
-is used after the socket has been unbound from the device. This can
-happen either due to the socket being closed or the device
-disappearing. In the early days of AF_XDP, the way we tested that a
-socket was not bound to a device was to simply check if the netdevice
-pointer in the xsk socket structure was NULL. Later, a better system
-was introduced by having an explicit state variable in the xsk socket
-struct. For example, the state of a socket that is on the way to being
-closed and has been unbound from the device is XSK_UNBOUND.
+Fix the test for the AST2200 in the DRAM initialization. The value
+in ast->chip has to be compared against an enum constant instead of
+a numerical value.
 
-The commit in the Fixes tag below deleted the old way of signalling
-that a socket is unbound, setting dev to NULL. This in the belief that
-all code using the old way had been exterminated. That was
-unfortunately not true as the xsk diagnostics code was still using the
-old way and thus does not work as intended when a socket is going
-down. Fix this by introducing a test against the state variable. If
-the socket is in the state XSK_UNBOUND, simply abort the diagnostic's
-netlink operation.
+This bug got introduced when the driver was first imported into the
+kernel.
 
-Fixes: 18b1ab7aa76b ("xsk: Fix race at socket teardown")
-Reported-by: syzbot+822d1359297e2694f873@syzkaller.appspotmail.com
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+822d1359297e2694f873@syzkaller.appspotmail.com
-Tested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20230831100119.17408-1-magnus.karlsson@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.5+
+Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Tested-by: Jocelyn Falempe <jfalempe@redhat.com> # AST2600
+Link: https://patchwork.freedesktop.org/patch/msgid/20230621130032.3568-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk_diag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/ast/ast_post.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xdp/xsk_diag.c b/net/xdp/xsk_diag.c
-index c014217f5fa7d..22b36c8143cfd 100644
---- a/net/xdp/xsk_diag.c
-+++ b/net/xdp/xsk_diag.c
-@@ -111,6 +111,9 @@ static int xsk_diag_fill(struct sock *sk, struct sk_buff *nlskb,
- 	sock_diag_save_cookie(sk, msg->xdiag_cookie);
- 
- 	mutex_lock(&xs->mutex);
-+	if (READ_ONCE(xs->state) == XSK_UNBOUND)
-+		goto out_nlmsg_trim;
-+
- 	if ((req->xdiag_show & XDP_SHOW_INFO) && xsk_diag_put_info(xs, nlskb))
- 		goto out_nlmsg_trim;
- 
--- 
-2.40.1
-
+--- a/drivers/gpu/drm/ast/ast_post.c
++++ b/drivers/gpu/drm/ast/ast_post.c
+@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm
+ 				;
+ 			} while (ast_read32(ast, 0x10100) != 0xa8);
+ 		} else {/* AST2100/1100 */
+-			if (ast->chip == AST2100 || ast->chip == 2200)
++			if (ast->chip == AST2100 || ast->chip == AST2200)
+ 				dram_reg_info = ast2100_dram_table_data;
+ 			else
+ 				dram_reg_info = ast1100_dram_table_data;
 
 
