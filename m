@@ -2,39 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B09A27A39CD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486C57A38CB
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239433AbjIQTyk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:54:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57480 "EHLO
+        id S239857AbjIQTkW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240141AbjIQTyJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:09 -0400
+        with ESMTP id S239945AbjIQTkP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B749EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718E6C433C7;
-        Sun, 17 Sep 2023 19:54:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8126DD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CA9C433C7;
+        Sun, 17 Sep 2023 19:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980444;
-        bh=oJprzHnLoRnf1LaL1ddoPS8s1NhzPIexuxyRZg3OAFg=;
+        s=korg; t=1694979609;
+        bh=o48EqMlfIXFVaImhYipgBxT/5hzopEd7FMMDyq3jZTI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ISmDo0avOt43NgBZ6Q3D1BuMP5VYUD1fiqQGVzSVOkefsfYrtg5Pf+wV7zksh0/tn
-         2/AAv7hDmYvFdlAPaWETwDkY5SjHS1ZGaIWkQtFwXPSqw+O/Hbn38grxkpIF6JqaPU
-         coBJPUYK6OMS+tkgjwpvnOQyDkgcSnaivy7J1E/s=
+        b=O6E7CzMyyWt/LUEuJAhWGZ6GSpVl2fT5m6wo19jkwn7o/s0MLpm1YwDDcy8jGV1YD
+         s/jRyttQ/aSFzSDzn3ZmwHUxJdRnol4oeMe5a0hJzZAiHKZvk2VOsxOVZH8JEDifU2
+         8TTL8U+xBylvBzVCJAtIPPsLWkYmkm/5zI+JPZdg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        syzbot+e1246909d526a9d470fa@syzkaller.appspotmail.com
-Subject: [PATCH 6.5 192/285] f2fs: flush inode if atomic file is aborted
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Jeremie Galarneau <jeremie.galarneau@efficios.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Shawn Landden <shawn@git.icu>,
+        Song Liu <songliubraving@fb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 338/406] perf top: Dont pass an ERR_PTR() directly to perf_session__delete()
 Date:   Sun, 17 Sep 2023 21:13:12 +0200
-Message-ID: <20230917191058.246686095@linuxfoundation.org>
+Message-ID: <20230917191110.207009186@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,122 +65,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit a3ab55746612247ce3dcaac6de66f5ffc055b9df upstream.
+[ Upstream commit ef23cb593304bde0cc046fd4cc83ae7ea2e24f16 ]
 
-Let's flush the inode being aborted atomic operation to avoid stale dirty
-inode during eviction in this call stack:
+While debugging a segfault on 'perf lock contention' without an
+available perf.data file I noticed that it was basically calling:
 
-  f2fs_mark_inode_dirty_sync+0x22/0x40 [f2fs]
-  f2fs_abort_atomic_write+0xc4/0xf0 [f2fs]
-  f2fs_evict_inode+0x3f/0x690 [f2fs]
-  ? sugov_start+0x140/0x140
-  evict+0xc3/0x1c0
-  evict_inodes+0x17b/0x210
-  generic_shutdown_super+0x32/0x120
-  kill_block_super+0x21/0x50
-  deactivate_locked_super+0x31/0x90
-  cleanup_mnt+0x100/0x160
-  task_work_run+0x59/0x90
-  do_exit+0x33b/0xa50
-  do_group_exit+0x2d/0x80
-  __x64_sys_exit_group+0x14/0x20
-  do_syscall_64+0x3b/0x90
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+	perf_session__delete(ERR_PTR(-1))
 
-This triggers f2fs_bug_on() in f2fs_evict_inode:
- f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE));
+Resulting in:
 
-This fixes the syzbot report:
+  (gdb) run lock contention
+  Starting program: /root/bin/perf lock contention
+  [Thread debugging using libthread_db enabled]
+  Using host libthread_db library "/lib64/libthread_db.so.1".
+  failed to open perf.data: No such file or directory  (try 'perf record' first)
+  Initializing perf session failed
 
-loop0: detected capacity change from 0 to 131072
-F2FS-fs (loop0): invalid crc value
-F2FS-fs (loop0): Found nat_bits in checkpoint
-F2FS-fs (loop0): Mounted with checkpoint version = 48b305e4
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inode.c:869!
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN
-CPU: 0 PID: 5014 Comm: syz-executor220 Not tainted 6.4.0-syzkaller-11479-g6cd06ab12d1a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
-RIP: 0010:f2fs_evict_inode+0x172d/0x1e00 fs/f2fs/inode.c:869
-Code: ff df 48 c1 ea 03 80 3c 02 00 0f 85 6a 06 00 00 8b 75 40 ba 01 00 00 00 4c 89 e7 e8 6d ce 06 00 e9 aa fc ff ff e8 63 22 e2 fd <0f> 0b e8 5c 22 e2 fd 48 c7 c0 a8 3a 18 8d 48 ba 00 00 00 00 00 fc
-RSP: 0018:ffffc90003a6fa00 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff8880273b8000 RSI: ffffffff83a2bd0d RDI: 0000000000000007
-RBP: ffff888077db91b0 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888029a3c000
-R13: ffff888077db9660 R14: ffff888029a3c0b8 R15: ffff888077db9c50
-FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1909bb9000 CR3: 00000000276a9000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- evict+0x2ed/0x6b0 fs/inode.c:665
- dispose_list+0x117/0x1e0 fs/inode.c:698
- evict_inodes+0x345/0x440 fs/inode.c:748
- generic_shutdown_super+0xaf/0x480 fs/super.c:478
- kill_block_super+0x64/0xb0 fs/super.c:1417
- kill_f2fs_super+0x2af/0x3c0 fs/f2fs/super.c:4704
- deactivate_locked_super+0x98/0x160 fs/super.c:330
- deactivate_super+0xb1/0xd0 fs/super.c:361
- cleanup_mnt+0x2ae/0x3d0 fs/namespace.c:1254
- task_work_run+0x16f/0x270 kernel/task_work.c:179
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0xa9a/0x29a0 kernel/exit.c:874
- do_group_exit+0xd4/0x2a0 kernel/exit.c:1024
- __do_sys_exit_group kernel/exit.c:1035 [inline]
- __se_sys_exit_group kernel/exit.c:1033 [inline]
- __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1033
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f309be71a09
-Code: Unable to access opcode bytes at 0x7f309be719df.
-RSP: 002b:00007fff171df518 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 00007f309bef7330 RCX: 00007f309be71a09
-RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000001
-RBP: 0000000000000001 R08: ffffffffffffffc0 R09: 00007f309bef1e40
-R10: 0000000000010600 R11: 0000000000000246 R12: 00007f309bef7330
-R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:f2fs_evict_inode+0x172d/0x1e00 fs/f2fs/inode.c:869
-Code: ff df 48 c1 ea 03 80 3c 02 00 0f 85 6a 06 00 00 8b 75 40 ba 01 00 00 00 4c 89 e7 e8 6d ce 06 00 e9 aa fc ff ff e8 63 22 e2 fd <0f> 0b e8 5c 22 e2 fd 48 c7 c0 a8 3a 18 8d 48 ba 00 00 00 00 00 fc
-RSP: 0018:ffffc90003a6fa00 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff8880273b8000 RSI: ffffffff83a2bd0d RDI: 0000000000000007
-RBP: ffff888077db91b0 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888029a3c000
-R13: ffff888077db9660 R14: ffff888029a3c0b8 R15: ffff888077db9c50
-FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1909bb9000 CR3: 00000000276a9000 CR4: 0000000000350ef0
+  Program received signal SIGSEGV, Segmentation fault.
+  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
+  2858		if (!session->auxtrace)
+  (gdb) p session
+  $1 = (struct perf_session *) 0xffffffffffffffff
+  (gdb) bt
+  #0  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
+  #1  0x000000000057bb4d in perf_session__delete (session=0xffffffffffffffff) at util/session.c:300
+  #2  0x000000000047c421 in __cmd_contention (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2161
+  #3  0x000000000047dc95 in cmd_lock (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2604
+  #4  0x0000000000501466 in run_builtin (p=0xe597a8 <commands+552>, argc=2, argv=0x7fffffffe200) at perf.c:322
+  #5  0x00000000005016d5 in handle_internal_command (argc=2, argv=0x7fffffffe200) at perf.c:375
+  #6  0x0000000000501824 in run_argv (argcp=0x7fffffffe02c, argv=0x7fffffffe020) at perf.c:419
+  #7  0x0000000000501b11 in main (argc=2, argv=0x7fffffffe200) at perf.c:535
+  (gdb)
 
-Cc: <stable@vger.kernel.org>
-Reported-and-tested-by: syzbot+e1246909d526a9d470fa@syzkaller.appspotmail.com
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So just set it to NULL after using PTR_ERR(session) to decode the error
+as perf_session__delete(NULL) is supported.
+
+The same problem was found in 'perf top' after an audit of all
+perf_session__new() failure handling.
+
+Fixes: 6ef81c55a2b6584c ("perf session: Return error code for perf_session__new() function on failure")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jeremie Galarneau <jeremie.galarneau@efficios.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>
+Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
+Cc: Mukesh Ojha <mojha@codeaurora.org>
+Cc: Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Shawn Landden <shawn@git.icu>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Link: https://lore.kernel.org/lkml/ZN4Q2rxxsL08A8rd@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/builtin-top.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -205,6 +205,8 @@ void f2fs_abort_atomic_write(struct inod
- 		f2fs_i_size_write(inode, fi->original_i_size);
- 		fi->original_i_size = 0;
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 7c64134472c77..ee30372f77133 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -1743,6 +1743,7 @@ int cmd_top(int argc, const char **argv)
+ 	top.session = perf_session__new(NULL, false, NULL);
+ 	if (IS_ERR(top.session)) {
+ 		status = PTR_ERR(top.session);
++		top.session = NULL;
+ 		goto out_delete_evlist;
  	}
-+	/* avoid stale dirty inode during eviction */
-+	sync_inode_metadata(inode, 0);
- }
  
- static int __replace_atomic_write_block(struct inode *inode, pgoff_t index,
+-- 
+2.40.1
+
 
 
