@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 058137A38D4
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0047A39EE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238276AbjIQTkv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41280 "EHLO
+        id S240211AbjIQT4T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238066AbjIQTkq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:46 -0400
+        with ESMTP id S240273AbjIQT4F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2DD2D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D310C433C7;
-        Sun, 17 Sep 2023 19:40:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2324DEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A30FC433C8;
+        Sun, 17 Sep 2023 19:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979640;
-        bh=7BJJkVw6qMYRT9cCpgR4kx4t4RvZuSr25OcLn1r3Eck=;
+        s=korg; t=1694980559;
+        bh=qxLrSLDlJZfoxdtXjBYxj+k4090HCFnNSeHQODBvEWc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HYSik943Br9U+Q7Vlrd67ikon3D5AguzGERYr+VmVNda4z0BxmH+BFcZiuNamF2zN
-         QP+ayGDktV6DNeHZcngFFSgNUf7L1z2i3rDt/KQT25qZEY4OYjtvp6AwwNHvJ/ZR57
-         7kwkUUQsNh4WNsx5Zjl3ELgstzqCMAJnXDBob+rU=
+        b=XthQswGu0Z5KGqZ1wrWI89zjevzfsHHskLtc98UDz2hJszeYBQlly+2t3y1s/VgUI
+         2wVHWymjTmIC6BWgIghgAwyx7Bx0ijDIo2flw3VL9evabjNub1UGgJAc7rK8b3++Ig
+         zb43oapD2xFEFWLyPci2bQ9fgtcVOTAEAo3rOJRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 372/406] btrfs: dont start transaction when joining with TRANS_JOIN_NOSTART
+        patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.5 226/285] KVM: nSVM: Check instead of asserting on nested TSC scaling support
 Date:   Sun, 17 Sep 2023 21:13:46 +0200
-Message-ID: <20230917191111.091639084@linuxfoundation.org>
+Message-ID: <20230917191059.295226908@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 4490e803e1fe9fab8db5025e44e23b55df54078b upstream.
+commit 7cafe9b8e22bb3d77f130c461aedf6868c4aaf58 upstream.
 
-When joining a transaction with TRANS_JOIN_NOSTART, if we don't find a
-running transaction we end up creating one. This goes against the purpose
-of TRANS_JOIN_NOSTART which is to join a running transaction if its state
-is at or below the state TRANS_STATE_COMMIT_START, otherwise return an
--ENOENT error and don't start a new transaction. So fix this to not create
-a new transaction if there's no running transaction at or below that
-state.
+Check for nested TSC scaling support on nested SVM VMRUN instead of
+asserting that TSC scaling is exposed to L1 if L1's MSR_AMD64_TSC_RATIO
+has diverged from KVM's default.  Userspace can trigger the WARN at will
+by writing the MSR and then updating guest CPUID to hide the feature
+(modifying guest CPUID is allowed anytime before KVM_RUN).  E.g. hacking
+KVM's state_test selftest to do
 
-CC: stable@vger.kernel.org # 4.14+
-Fixes: a6d155d2e363 ("Btrfs: fix deadlock between fiemap and transaction commits")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+		vcpu_set_msr(vcpu, MSR_AMD64_TSC_RATIO, 0);
+		vcpu_clear_cpuid_feature(vcpu, X86_FEATURE_TSCRATEMSR);
+
+after restoring state in a new VM+vCPU yields an endless supply of:
+
+  ------------[ cut here ]------------
+  WARNING: CPU: 164 PID: 62565 at arch/x86/kvm/svm/nested.c:699
+           nested_vmcb02_prepare_control+0x3d6/0x3f0 [kvm_amd]
+  Call Trace:
+   <TASK>
+   enter_svm_guest_mode+0x114/0x560 [kvm_amd]
+   nested_svm_vmrun+0x260/0x330 [kvm_amd]
+   vmrun_interception+0x29/0x30 [kvm_amd]
+   svm_invoke_exit_handler+0x35/0x100 [kvm_amd]
+   svm_handle_exit+0xe7/0x180 [kvm_amd]
+   kvm_arch_vcpu_ioctl_run+0x1eab/0x2570 [kvm]
+   kvm_vcpu_ioctl+0x4c9/0x5b0 [kvm]
+   __se_sys_ioctl+0x7a/0xc0
+   __x64_sys_ioctl+0x21/0x30
+   do_syscall_64+0x41/0x90
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  RIP: 0033:0x45ca1b
+
+Note, the nested #VMEXIT path has the same flaw, but needs a different
+fix and will be handled separately.
+
+Fixes: 5228eb96a487 ("KVM: x86: nSVM: implement nested TSC scaling")
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230729011608.1065019-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/transaction.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/nested.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -301,10 +301,11 @@ loop:
- 	spin_unlock(&fs_info->trans_lock);
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -695,10 +695,9 @@ static void nested_vmcb02_prepare_contro
  
- 	/*
--	 * If we are ATTACH, we just want to catch the current transaction,
--	 * and commit it. If there is no transaction, just return ENOENT.
-+	 * If we are ATTACH or TRANS_JOIN_NOSTART, we just want to catch the
-+	 * current transaction, and commit it. If there is no transaction, just
-+	 * return ENOENT.
- 	 */
--	if (type == TRANS_ATTACH)
-+	if (type == TRANS_ATTACH || type == TRANS_JOIN_NOSTART)
- 		return -ENOENT;
+ 	vmcb02->control.tsc_offset = vcpu->arch.tsc_offset;
  
- 	/*
+-	if (svm->tsc_ratio_msr != kvm_caps.default_tsc_scaling_ratio) {
+-		WARN_ON(!svm->tsc_scaling_enabled);
++	if (svm->tsc_scaling_enabled &&
++	    svm->tsc_ratio_msr != kvm_caps.default_tsc_scaling_ratio)
+ 		nested_svm_update_tsc_ratio_msr(vcpu);
+-	}
+ 
+ 	vmcb02->control.int_ctl             =
+ 		(svm->nested.ctl.int_ctl & int_ctl_vmcb12_bits) |
 
 
