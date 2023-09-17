@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A187A38BC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C727A39F4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238442AbjIQTjq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58660 "EHLO
+        id S240218AbjIQT4t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239880AbjIQTj3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:29 -0400
+        with ESMTP id S239523AbjIQT43 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04E5ED9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D65EC433C7;
-        Sun, 17 Sep 2023 19:39:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5152D9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81499C433C8;
+        Sun, 17 Sep 2023 19:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979564;
-        bh=dgEmA6LrNJYeIPd4Ims83BkoEL11arIoPxpo0KyhUM4=;
+        s=korg; t=1694980583;
+        bh=sxP0u0aAuwARE1w7sOLZKzhsfCeZjAl6VPpjewzs3O8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=njKyiXlqZlhAySIvsMXIna2kBy7chCyqJrHfnuvXHwQdKCzFzh32RTN2b4JJskHC7
-         UozfXGRkOeqgCI6YitFbuNEwz0Mx+nUecNTu8R6R1lAvSgVQKkDi2TIBGJxsAialr2
-         6jqjApFGFQzOYiEZSU5JIt+AZqi7lvQiLOySzsZI=
+        b=gpEEfISqEwiFkbO/I5KI+cR6mxLKG3jklcLWRfi+3ZyuLdKZyzZ4UEVf99WZ+wk8+
+         nVOVpKPZWQ6lzVHAPlhKD7VZyclZshIYnd6ZYy1vRiSIIRWzhIoP4Ttum+qcXYVLgG
+         BVRzS0adE3o0f0qKPWN2/3omMHfqf17qFucU9swE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 350/406] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 204/285] btrfs: free qgroup rsv on io failure
 Date:   Sun, 17 Sep 2023 21:13:24 +0200
-Message-ID: <20230917191110.514407937@linuxfoundation.org>
+Message-ID: <20230917191058.635269659@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
+commit e28b02118b94e42be3355458a2406c6861e2dd32 upstream.
 
-The existing code incorrectly casted a negative value (the result of a
-subtraction) to an unsigned value without checking. For example, if
-/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
-lifetime would jump to 4 billion seconds. On my machine and network the
-shortest lifetime that avoided underflow was 3 seconds.
+If we do a write whose bio suffers an error, we will never reclaim the
+qgroup reserved space for it. We allocate the space in the write_iter
+codepath, then release the reservation as we allocate the ordered
+extent, but we only create a delayed ref if the ordered extent finishes.
+If it has an error, we simply leak the rsv. This is apparent in running
+any error injecting (dmerror) fstests like btrfs/146 or btrfs/160. Such
+tests fail due to dmesg on umount complaining about the leaked qgroup
+data space.
 
-Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When we clean up other aspects of space on failed ordered_extents, also
+free the qgroup rsv.
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+CC: stable@vger.kernel.org # 5.10+
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 9b414681500a5..0eafe26c05f77 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1359,7 +1359,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
- 	 * idev->desync_factor if it's larger
- 	 */
- 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
--	max_desync_factor = min_t(__u32,
-+	max_desync_factor = min_t(long,
- 				  idev->cnf.max_desync_factor,
- 				  cnf_temp_preferred_lft - regen_advance);
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3359,6 +3359,13 @@ out:
+ 			btrfs_free_reserved_extent(fs_info,
+ 					ordered_extent->disk_bytenr,
+ 					ordered_extent->disk_num_bytes, 1);
++			/*
++			 * Actually free the qgroup rsv which was released when
++			 * the ordered extent was created.
++			 */
++			btrfs_qgroup_free_refroot(fs_info, inode->root->root_key.objectid,
++						  ordered_extent->qgroup_rsv,
++						  BTRFS_QGROUP_RSV_DATA);
+ 		}
+ 	}
  
--- 
-2.40.1
-
 
 
