@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E777F7A3B4F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F1B7A3D65
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240617AbjIQUQD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:16:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
+        id S241279AbjIQUmL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240673AbjIQUPm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:42 -0400
+        with ESMTP id S241355AbjIQUl5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FACCF3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567BBC433C9;
-        Sun, 17 Sep 2023 20:15:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C218910F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037EEC433C8;
+        Sun, 17 Sep 2023 20:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981736;
-        bh=6ND9a70dH+GDLjXXoa7UJMmpMC6QveJePCmP3oC6yd8=;
+        s=korg; t=1694983311;
+        bh=ebMbN/xwSpPHOUl3EL+rJRF0wtCLmSAXwETay895pjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hnlgnLFXgn9ndq3ld5uq6/qYN/+WDwg+/dFGDR7jFAu6e1ygc7toUczJiHc4nvwDk
-         BZrjqVdjd8YSbZ6BeMTqAAtB4U92pX00T4LFUC2LWdxRAlcHyQ1HpOjobc+yEeY/IL
-         4SWbjmimJPoiC6xWPur7FscAmiGXV7RPdU1RujQE=
+        b=XOpC6aFukgDMPVeSK5vr9RFrOta+oqxDwgdZeKFdRlIUL2o3wcDjoKjPF9ZwmV+8k
+         Q1V7RZxfJCKFd2S8/NzTcfOjRRWVDpefrITLOHHYQZvocUBQUwq8VgTYJNlMo8y/6S
+         XK7MLUZGLn0lBDqzAdgC2zZppvFffVF9UUV7MJqs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Walle <michael@walle.cc>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: [PATCH 6.1 165/219] mtd: spi-nor: Correct flags for Winbond w25q128
+        patches@lists.linux.dev, stable@kernel.org,
+        Hien Huynh <hien.huynh.px@renesas.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 465/511] dmaengine: sh: rz-dmac: Fix destination and source data size setting
 Date:   Sun, 17 Sep 2023 21:14:52 +0200
-Message-ID: <20230917191046.998884716@linuxfoundation.org>
+Message-ID: <20230917191124.980095911@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,93 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Hien Huynh <hien.huynh.px@renesas.com>
 
-commit 83e824a4a595132f9bd7ac4f5afff857bfc5991e upstream.
+commit c6ec8c83a29fb3aec3efa6fabbf5344498f57c7f upstream.
 
-The Winbond "w25q128" (actual vendor name W25Q128JV) has
-exactly the same flags as the sibling device "w25q128jv".
-The devices both require unlocking to enable write access.
+Before setting DDS and SDS values, we need to clear its value first
+otherwise, we get incorrect results when we change/update the DMA bus
+width several times due to the 'OR' expression.
 
-The actual product naming between devices vs the Linux
-strings in winbond.c:
-
-0xef4018: "w25q128"   W25Q128JV-IN/IQ/JQ
-0xef7018: "w25q128jv" W25Q128JV-IM/JM
-
-The latter device, "w25q128jv" supports features named DTQ
-and QPI, otherwise it is the same.
-
-Not having the right flags has the annoying side effect
-that write access does not work.
-
-After this patch I can write to the flash on the Inteno
-XG6846 router.
-
-The flash memory also supports dual and quad SPI modes.
-This does not currently manifest, but by turning on SFDP
-parsing, the right SPI modes are emitted in
-/sys/kernel/debug/spi-nor/spi1.0/capabilities
-for this chip, so we also turn on this.
-
-Since we now have determined that SFDP parsing works on
-the device, we also detect the geometry using SFDP.
-
-After this dmesg and sysfs says:
-[    1.062401] spi-nor spi1.0: w25q128 (16384 Kbytes)
-cat erasesize
-65536
-(16384*1024)/65536 = 256 sectors
-
-spi-nor sysfs:
-cat jedec_id
-ef4018
-cat manufacturer
-winbond
-cat partname
-w25q128
-hexdump -v -C sfdp
-00000000  53 46 44 50 05 01 00 ff  00 05 01 10 80 00 00 ff
-00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000020  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000030  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000040  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000050  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000060  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000070  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
-00000080  e5 20 f9 ff ff ff ff 07  44 eb 08 6b 08 3b 42 bb
-00000090  fe ff ff ff ff ff 00 00  ff ff 40 eb 0c 20 0f 52
-000000a0  10 d8 00 00 36 02 a6 00  82 ea 14 c9 e9 63 76 33
-000000b0  7a 75 7a 75 f7 a2 d5 5c  19 f7 4d ff e9 30 f8 80
-
-Cc: stable@vger.kernel.org
-Suggested-by: Michael Walle <michael@walle.cc>
-Reviewed-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@kernel.org
+Signed-off-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230706112150.198941-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/winbond.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/dma/sh/rz-dmac.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/mtd/spi-nor/winbond.c
-+++ b/drivers/mtd/spi-nor/winbond.c
-@@ -120,8 +120,9 @@ static const struct flash_info winbond_n
- 		NO_SFDP_FLAGS(SECT_4K) },
- 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
- 		NO_SFDP_FLAGS(SECT_4K) },
--	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
--		NO_SFDP_FLAGS(SECT_4K) },
-+	{ "w25q128", INFO(0xef4018, 0, 0, 0)
-+		PARSE_SFDP
-+		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
- 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
- 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
- 		.fixups = &w25q256_fixups },
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -9,6 +9,7 @@
+  * Copyright 2012 Javier Martin, Vista Silicon <javier.martin@vista-silicon.com>
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+ #include <linux/interrupt.h>
+@@ -143,8 +144,8 @@ struct rz_dmac {
+ #define CHCFG_REQD			BIT(3)
+ #define CHCFG_SEL(bits)			((bits) & 0x07)
+ #define CHCFG_MEM_COPY			(0x80400008)
+-#define CHCFG_FILL_DDS(a)		(((a) << 16) & GENMASK(19, 16))
+-#define CHCFG_FILL_SDS(a)		(((a) << 12) & GENMASK(15, 12))
++#define CHCFG_FILL_DDS_MASK		GENMASK(19, 16)
++#define CHCFG_FILL_SDS_MASK		GENMASK(15, 12)
+ #define CHCFG_FILL_TM(a)		(((a) & BIT(5)) << 22)
+ #define CHCFG_FILL_AM(a)		(((a) & GENMASK(4, 2)) << 6)
+ #define CHCFG_FILL_LVL(a)		(((a) & BIT(1)) << 5)
+@@ -607,13 +608,15 @@ static int rz_dmac_config(struct dma_cha
+ 	if (val == CHCFG_DS_INVALID)
+ 		return -EINVAL;
+ 
+-	channel->chcfg |= CHCFG_FILL_DDS(val);
++	channel->chcfg &= ~CHCFG_FILL_DDS_MASK;
++	channel->chcfg |= FIELD_PREP(CHCFG_FILL_DDS_MASK, val);
+ 
+ 	val = rz_dmac_ds_to_val_mapping(config->src_addr_width);
+ 	if (val == CHCFG_DS_INVALID)
+ 		return -EINVAL;
+ 
+-	channel->chcfg |= CHCFG_FILL_SDS(val);
++	channel->chcfg &= ~CHCFG_FILL_SDS_MASK;
++	channel->chcfg |= FIELD_PREP(CHCFG_FILL_SDS_MASK, val);
+ 
+ 	return 0;
+ }
 
 
