@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 969637A37ED
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40EEB7A37EF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239573AbjIQT05 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:26:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41368 "EHLO
+        id S239574AbjIQT06 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239591AbjIQT0c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:32 -0400
+        with ESMTP id S239611AbjIQT0i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 117AD11D
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:26:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1628CC433CB;
-        Sun, 17 Sep 2023 19:26:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55DC611F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:26:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892FEC433C7;
+        Sun, 17 Sep 2023 19:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978787;
-        bh=URsDg96MxUBkOZKJkq1pNys/RAj/vCXYDW02WEwSHfU=;
+        s=korg; t=1694978791;
+        bh=rjj9M66l4mGAPc86oFGNHu36YK6r5lccf2Yf8Lo36k8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Onjkl4nnohkPV+YV2wKLNZ8YJH54VisZmSf9JVimcvzfMCUM2Non1BXYfQc34OShF
-         djz6Xi/Ow93TfyL29YKx7MqWxdQz7M7uUYIkbny9V027qMXRrk5TF2zUgKHvGimpxa
-         CNgtd0g59PFiqhsP32iXdsYYxh5XhuTbwZ/sQS8E=
+        b=vyvrUl5QG0GbSfswGW+0mc3UwCjIO3d0mRss+EXRYl28BsawnLNAf8eWderQ/+CVZ
+         +mABQHONh6AsrZlhohfMukAcEKFXY4pahD+5EH3jlArXGqdXWgQhse0Tprb3ROgyfg
+         gjvXynwUxhoF2czCEQ+32AJA4kvhP+GKy9GqpHTQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
+        Yang Wang <kevinyang.wang@amd.com>,
+        Kenneth Feng <kenneth.feng@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/406] smackfs: Prevent underflow in smk_set_cipso()
-Date:   Sun, 17 Sep 2023 21:10:14 +0200
-Message-ID: <20230917191105.402927083@linuxfoundation.org>
+Subject: [PATCH 5.10 161/406] drm/amd/pm: fix variable dereferenced issue in amdgpu_device_attr_create()
+Date:   Sun, 17 Sep 2023 21:10:15 +0200
+Message-ID: <20230917191105.430220822@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,35 +56,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 3ad49d37cf5759c3b8b68d02e3563f633d9c1aee ]
+[ Upstream commit 25e6373a5b8efc623443f2699d2b929bf3067d76 ]
 
-There is a upper bound to "catlen" but no lower bound to prevent
-negatives.  I don't see that this necessarily causes a problem but we
-may as well be safe.
+- fix variable ('attr') dereferenced issue.
+- using condition check instead of BUG_ON().
 
-Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Fixes: 4e01847c38f7 ("drm/amdgpu: optimize amdgpu device attribute code")
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index 3eabcc469669e..8403c91a6b297 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -895,7 +895,7 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index 5abb68017f6ed..d58a59cf4f853 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -2115,15 +2115,19 @@ static int amdgpu_device_attr_create(struct amdgpu_device *adev,
+ 				     uint32_t mask, struct list_head *attr_list)
+ {
+ 	int ret = 0;
+-	struct device_attribute *dev_attr = &attr->dev_attr;
+-	const char *name = dev_attr->attr.name;
+ 	enum amdgpu_device_attr_states attr_states = ATTR_STATE_SUPPORTED;
+ 	struct amdgpu_device_attr_entry *attr_entry;
++	struct device_attribute *dev_attr;
++	const char *name;
  
- 	ret = sscanf(rule, "%d", &catlen);
--	if (ret != 1 || catlen > SMACK_CIPSO_MAXCATNUM)
-+	if (ret != 1 || catlen < 0 || catlen > SMACK_CIPSO_MAXCATNUM)
- 		goto out;
+ 	int (*attr_update)(struct amdgpu_device *adev, struct amdgpu_device_attr *attr,
+ 			   uint32_t mask, enum amdgpu_device_attr_states *states) = default_attr_update;
  
- 	if (format == SMK_FIXED24_FMT &&
+-	BUG_ON(!attr);
++	if (!attr)
++		return -EINVAL;
++
++	dev_attr = &attr->dev_attr;
++	name = dev_attr->attr.name;
+ 
+ 	attr_update = attr->attr_update ? attr_update : default_attr_update;
+ 
 -- 
 2.40.1
 
