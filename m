@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 388857A39A5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F306F7A3893
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239482AbjIQTxE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49670 "EHLO
+        id S239090AbjIQThg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240138AbjIQTwr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:47 -0400
+        with ESMTP id S239761AbjIQThG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F1BCC7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5029BC433C7;
-        Sun, 17 Sep 2023 19:52:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0ADFD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A77C433C8;
+        Sun, 17 Sep 2023 19:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980340;
-        bh=b1XpzCuzpMdNsnfkophq/r5FYrwAYhWDU/csypi/02E=;
+        s=korg; t=1694979420;
+        bh=I2DNOQtSVVZhykhtpRMImzUCfsJ2iAa9uceqKQJzO/Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u/iX4kUisv6U8ssHICdGBAUfIErjA1kdi1RKiqLJW1tX+Ar1fyWxAIyQ+xyrl94fL
-         TC72+hRZKkMi4X4gHJR/uGIgyDGLhDE/z1kiTazIfcwM+N9lWdvo1cLdCB6B/pkLzP
-         /is0l+soidpso6xIWRcSnbBMnseoUEpDY1jyYMFs=
+        b=F7JJYjm06DwUgB+y4pc8/Y3igVtUYp0lUihGr6qiUH5/GC4DiiEpt59EwbYHxPgA6
+         Ac1XI7KsF7iQfeYQuWletkXpqW21eKV39knGxzWurHRxQTgvizRWKpGZZOcJXaj6D6
+         HGccK6FSvzw5ZpUn9LpsU1GnAT5zgJ7MOsq6oyMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 135/285] af_unix: Fix data-race around unix_tot_inflight.
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 5.10 281/406] backlight/bd6107: Compare against struct fb_info.device
 Date:   Sun, 17 Sep 2023 21:12:15 +0200
-Message-ID: <20230917191056.334548836@linuxfoundation.org>
+Message-ID: <20230917191108.713416179@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,88 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit ade32bd8a738d7497ffe9743c46728db26740f78 ]
+commit 992bdddaabfba19bdc77c1c7a4977b2aa41ec891 upstream.
 
-unix_tot_inflight is changed under spin_lock(unix_gc_lock), but
-unix_release_sock() reads it locklessly.
+Struct bd6107_platform_data refers to a platform device within
+the Linux device hierarchy. The test in bd6107_backlight_check_fb()
+compares it against the fbdev device in struct fb_info.dev, which
+is different. Fix the test by comparing to struct fb_info.device.
 
-Let's use READ_ONCE() for unix_tot_inflight.
+Fixes a bug in the backlight driver and prepares fbdev for making
+struct fb_info.dev optional.
 
-Note that the writer side was marked by commit 9d6d7f1cb67c ("af_unix:
-annote lockless accesses to unix_tot_inflight & gc_in_progress")
+v2:
+	* move renames into separate patch (Javier, Sam, Michael)
 
-BUG: KCSAN: data-race in unix_inflight / unix_release_sock
-
-write (marked) to 0xffffffff871852b8 of 4 bytes by task 123 on cpu 1:
- unix_inflight+0x130/0x180 net/unix/scm.c:64
- unix_attach_fds+0x137/0x1b0 net/unix/scm.c:123
- unix_scm_to_skb net/unix/af_unix.c:1832 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1955
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:747
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2493
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2547
- __sys_sendmsg+0x94/0x140 net/socket.c:2576
- __do_sys_sendmsg net/socket.c:2585 [inline]
- __se_sys_sendmsg net/socket.c:2583 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2583
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffffffff871852b8 of 4 bytes by task 4891 on cpu 0:
- unix_release_sock+0x608/0x910 net/unix/af_unix.c:671
- unix_release+0x59/0x80 net/unix/af_unix.c:1058
- __sock_release+0x7d/0x170 net/socket.c:653
- sock_close+0x19/0x30 net/socket.c:1385
- __fput+0x179/0x5e0 fs/file_table.c:321
- ____fput+0x15/0x20 fs/file_table.c:349
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0x00000000 -> 0x00000001
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 4891 Comm: systemd-coredum Not tainted 6.4.0-rc5-01219-gfa0e21fa4443 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 9305cfa4443d ("[AF_UNIX]: Make unix_tot_inflight counter non-atomic")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 67b43e590415 ("backlight: Add ROHM BD6107 backlight driver")
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.12+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 2 +-
+ drivers/video/backlight/bd6107.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 86930a8ed012b..3e8a04a136688 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -680,7 +680,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	 *	  What the above comment does talk about? --ANK(980817)
- 	 */
+--- a/drivers/video/backlight/bd6107.c
++++ b/drivers/video/backlight/bd6107.c
+@@ -104,7 +104,7 @@ static int bd6107_backlight_check_fb(str
+ {
+ 	struct bd6107 *bd = bl_get_data(backlight);
  
--	if (unix_tot_inflight)
-+	if (READ_ONCE(unix_tot_inflight))
- 		unix_gc();		/* Garbage collect fds */
+-	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->dev;
++	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->device;
  }
  
--- 
-2.40.1
-
+ static const struct backlight_ops bd6107_backlight_ops = {
 
 
