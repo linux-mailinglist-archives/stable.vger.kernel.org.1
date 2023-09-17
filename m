@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3E27A3A15
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C407A39F7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240264AbjIQT62 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59544 "EHLO
+        id S240224AbjIQT4v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240320AbjIQT6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:58:13 -0400
+        with ESMTP id S240284AbjIQT4j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3978EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:58:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C213C433C8;
-        Sun, 17 Sep 2023 19:58:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB41F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DF8C433C8;
+        Sun, 17 Sep 2023 19:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980687;
-        bh=YZSisbruAH/vvDY24lyHyKFC7mSWT4fNCzPqqkeivoU=;
+        s=korg; t=1694980594;
+        bh=/NjWOCnx9kQugUiLJWtVegaaRP9CrH+fZiNDh6rHtKs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YLRvK0H2WayXZTUerTk95oapsvUWw8pZsoGdWMU0fwWiioNJXexbLOi901ff25GBb
-         WsrQXcHlme4e9RYeL0ZaPoFkpTa32OEmy1QVeSVMpbR7PHDkMGv+Olu4HPsER46oJa
-         FAxbvsxpRQNb1b4b6xSBxBOJ5Xju73C6OVY8CH/k=
+        b=E4odR902xhd4Iuro8Fu+8jGYA6V7RDHPCKZXzBhsLHcWT+af/+D052JpZjwC2ajbZ
+         lzpVbdry77iSslkz/PylYxOf2LcVfB2Wnkp4oMCPg+71f1TrP2nP4GsuSZT1QINr2i
+         NTHGTqEPkS6pjcALoXKqY7TK4rBt6ePFb6Aic0HI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.5 237/285] perf hists browser: Fix the number of entries for e key
-Date:   Sun, 17 Sep 2023 21:13:57 +0200
-Message-ID: <20230917191059.601057358@linuxfoundation.org>
+        patches@lists.linux.dev, Dillon Varone <dillon.varone@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Wenjing Liu <wenjing.liu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 238/285] drm/amd/display: always switch off ODM before committing more streams
+Date:   Sun, 17 Sep 2023 21:13:58 +0200
+Message-ID: <20230917191059.629110657@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -57,150 +55,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-commit f6b8436bede3e80226e8b2100279c4450c73806a upstream.
+commit 49a30c3d1a2258fc93cfe6eea8e4951dabadc824 upstream.
 
-The 'e' key is to toggle expand/collapse the selected entry only.  But
-the current code has a bug that it only increases the number of entries
-by 1 in the hierarchy mode so users cannot move under the current entry
-after the key stroke.  This is due to a wrong assumption in the
-hist_entry__set_folding().
+ODM power optimization is only supported with single stream. When ODM
+power optimization is enabled, we might not have enough free pipes for
+enabling other stream. So when we are committing more than 1 stream we
+should first switch off ODM power optimization to make room for new
+stream and then allocating pipe resource for the new stream.
 
-The commit b33f922651011eff ("perf hists browser: Put hist_entry folding
-logic into single function") factored out the code, but actually it
-should be handled separately.  The hist_browser__set_folding() is to
-update fold state for each entry so it needs to traverse all (child)
-entries regardless of the current fold state.  So it increases the
-number of entries by 1.
-
-But the hist_entry__set_folding() only cares the currently selected
-entry and its all children.  So it should count all unfolded child
-entries.  This code is implemented in hist_browser__toggle_fold()
-already so we can just call it.
-
-Fixes: b33f922651011eff ("perf hists browser: Put hist_entry folding logic into single function")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230731094934.1616495-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 59de751e3845 ("drm/amd/display: add ODM case when looking for first split pipe")
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browsers/hists.c |   58 ++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_
- 	return container_of(ms, struct callchain_list, ms)->has_children;
- }
- 
--static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
--{
--	return browser->he_selection ? browser->he_selection->unfolded : false;
--}
--
- static bool hist_browser__selection_unfolded(struct hist_browser *browser)
- {
- 	struct hist_entry *he = browser->he_selection;
-@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct
- 	return n;
- }
- 
--static void __hist_entry__set_folding(struct hist_entry *he,
--				      struct hist_browser *hb, bool unfold)
-+static void hist_entry__set_folding(struct hist_entry *he,
-+				    struct hist_browser *hb, bool unfold)
- {
- 	hist_entry__init_have_children(he);
- 	he->unfolded = unfold ? he->has_children : false;
-@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(st
- 		he->nr_rows = 0;
- }
- 
--static void hist_entry__set_folding(struct hist_entry *he,
--				    struct hist_browser *browser, bool unfold)
--{
--	double percent;
--
--	percent = hist_entry__get_percent_limit(he);
--	if (he->filtered || percent < browser->min_pcnt)
--		return;
--
--	__hist_entry__set_folding(he, browser, unfold);
--
--	if (!he->depth || unfold)
--		browser->nr_hierarchy_entries++;
--	if (he->leaf)
--		browser->nr_callchain_rows += he->nr_rows;
--	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
--		browser->nr_hierarchy_entries++;
--		he->has_no_entry = true;
--		he->nr_rows = 1;
--	} else
--		he->has_no_entry = false;
--}
--
- static void
- __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
- {
- 	struct rb_node *nd;
- 	struct hist_entry *he;
-+	double percent;
- 
- 	nd = rb_first_cached(&browser->hists->entries);
- 	while (nd) {
-@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_
- 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
- 
- 		hist_entry__set_folding(he, browser, unfold);
-+
-+		percent = hist_entry__get_percent_limit(he);
-+		if (he->filtered || percent < browser->min_pcnt)
-+			continue;
-+
-+		if (!he->depth || unfold)
-+			browser->nr_hierarchy_entries++;
-+		if (he->leaf)
-+			browser->nr_callchain_rows += he->nr_rows;
-+		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
-+			browser->nr_hierarchy_entries++;
-+			he->has_no_entry = true;
-+			he->nr_rows = 1;
-+		} else
-+			he->has_no_entry = false;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -2061,12 +2061,12 @@ enum dc_status dc_commit_streams(struct
+ 		}
  	}
- }
  
-@@ -659,8 +647,10 @@ static void hist_browser__set_folding_se
- 	if (!browser->he_selection)
- 		return;
- 
--	hist_entry__set_folding(browser->he_selection, browser, unfold);
--	browser->b.nr_entries = hist_browser__nr_entries(browser);
-+	if (unfold == browser->he_selection->unfolded)
-+		return;
-+
-+	hist_browser__toggle_fold(browser);
- }
- 
- static void ui_browser__warn_lost_events(struct ui_browser *browser)
-@@ -732,8 +722,8 @@ static int hist_browser__handle_hotkey(s
- 		hist_browser__set_folding(browser, true);
- 		break;
- 	case 'e':
--		/* Expand the selected entry. */
--		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
-+		/* Toggle expand/collapse the selected entry. */
-+		hist_browser__toggle_fold(browser);
- 		break;
- 	case 'H':
- 		browser->show_headers = !browser->show_headers;
+-	/* Check for case where we are going from odm 2:1 to max
+-	 *  pipe scenario.  For these cases, we will call
+-	 *  commit_minimal_transition_state() to exit out of odm 2:1
+-	 *  first before processing new streams
++	/* ODM Combine 2:1 power optimization is only applied for single stream
++	 * scenario, it uses extra pipes than needed to reduce power consumption
++	 * We need to switch off this feature to make room for new streams.
+ 	 */
+-	if (stream_count == dc->res_pool->pipe_count) {
++	if (stream_count > dc->current_state->stream_count &&
++			dc->current_state->stream_count == 1) {
+ 		for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 			pipe = &dc->current_state->res_ctx.pipe_ctx[i];
+ 			if (pipe->next_odm_pipe)
 
 
