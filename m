@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B10137A3BB4
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A1CD7A3BB6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240779AbjIQUVY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33092 "EHLO
+        id S240787AbjIQUVZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240842AbjIQUVA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:00 -0400
+        with ESMTP id S239622AbjIQUVG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7601E10B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DFFC433C7;
-        Sun, 17 Sep 2023 20:20:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3BBF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA40C433C7;
+        Sun, 17 Sep 2023 20:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982054;
-        bh=p/L8CC7oO5FkzZbuPJWCjLq5yOslQKgPJugYNVbH3Ag=;
+        s=korg; t=1694982061;
+        bh=v+87mFBZhhIIN0WJkgXM9L5ZsAWqPMuRWGiqg2iA6nU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AwCeaC4KE4+AYEU+UlYiRTLJ1s06g6xh3xRQTGwl/nFNFaK5EKaDNeBhVrbAVCwcA
-         AzZSQoNcUsWEHbCHGIhUFjCbBWc9i8JlLhbiZSqQ+MORdj8XF3FS6ZIig/Q8q41z4c
-         gv/QsbwTMRADP4PWTuB2f2pkJFj/rw7SXxkPU1fg=
+        b=mNmEZoe5xZ9ztsQZ976h5M4+T/07STYVrWib1MJA5DnLvKmUTqNQafkdONZX2P789
+         P4WwgQA5PHKTcYJY1YZroR2As0+xO7unNfrAiuhc+QPmc+JNAnGj8L2JvB/9v+OmH4
+         AVYsAsoojoWY9/NOfwVewwPr2p0m6yE6Jx88xo/w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 144/511] arm64: dts: qcom: pmi8998: Add node for WLED
-Date:   Sun, 17 Sep 2023 21:09:31 +0200
-Message-ID: <20230917191117.335283336@linuxfoundation.org>
+Subject: [PATCH 5.15 145/511] arm64: dts: qcom: correct SPMI WLED register range encoding
+Date:   Sun, 17 Sep 2023 21:09:32 +0200
+Message-ID: <20230917191117.358471812@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,50 +55,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 17d32c10a2880ae7702d8e56128a542d9c6e9c75 ]
+[ Upstream commit d66b1d2e4afc0c8a9eb267740825240b67f6b1d1 ]
 
-The PMI8998 PMIC has a WLED backlight controller, which is used on
-most MSM8998 and SDM845 based devices: add a base configuration for
-it and keep it disabled.
+On PM660L, PMI8994 and PMI8998, the WLED has two address spaces and with
+size-cells=0, they should be encoded as two separate items.
 
-This contains only the PMIC specific configuration that does not
-change across boards; parameters like number of strings, OVP and
-current limits are product specific and shall be specified in the
-product DT in order to achieve functionality.
-
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/20210909123628.365968-1-angelogioacchino.delregno@somainline.org
+Link: https://lore.kernel.org/r/20220505154702.422108-2-krzysztof.kozlowski@linaro.org
 Stable-dep-of: 9a4ac09db3c7 ("arm64: dts: qcom: pm660l: Add missing short interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/pmi8998.dtsi | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm64/boot/dts/qcom/pm660l.dtsi  | 2 +-
+ arch/arm64/boot/dts/qcom/pmi8994.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/qcom/pm660l.dtsi b/arch/arm64/boot/dts/qcom/pm660l.dtsi
+index 05086cbe573be..536bf9920fa92 100644
+--- a/arch/arm64/boot/dts/qcom/pm660l.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm660l.dtsi
+@@ -67,7 +67,7 @@ pmic@3 {
+ 
+ 		pm660l_wled: leds@d800 {
+ 			compatible = "qcom,pm660l-wled";
+-			reg = <0xd800 0xd900>;
++			reg = <0xd800>, <0xd900>;
+ 			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "ovp";
+ 			label = "backlight";
+diff --git a/arch/arm64/boot/dts/qcom/pmi8994.dtsi b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
+index a06ea9adae810..7b41c1ed464ac 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8994.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
+@@ -35,7 +35,7 @@ pmi8994_spmi_regulators: regulators {
+ 
+ 		pmi8994_wled: wled@d800 {
+ 			compatible = "qcom,pmi8994-wled";
+-			reg = <0xd800 0xd900>;
++			reg = <0xd800>, <0xd900>;
+ 			interrupts = <3 0xd8 0x02 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "short";
+ 			qcom,num-strings = <3>;
 diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-index d230c510d4b7d..0fef5f113f05e 100644
+index 0fef5f113f05e..ef29e80c442c7 100644
 --- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
 +++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-@@ -41,5 +41,17 @@ lab: lab {
- 				interrupt-names = "sc-err", "ocp";
- 			};
- 		};
-+
-+		pmi8998_wled: leds@d800 {
-+			compatible = "qcom,pmi8998-wled";
-+			reg = <0xd800 0xd900>;
-+			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
-+				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "ovp", "short";
-+			label = "backlight";
-+
-+			status = "disabled";
-+		};
-+
- 	};
- };
+@@ -44,7 +44,7 @@ lab: lab {
+ 
+ 		pmi8998_wled: leds@d800 {
+ 			compatible = "qcom,pmi8998-wled";
+-			reg = <0xd800 0xd900>;
++			reg = <0xd800>, <0xd900>;
+ 			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
+ 				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "ovp", "short";
 -- 
 2.40.1
 
