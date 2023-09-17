@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4A127A3D36
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23AB17A3B44
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241217AbjIQUkD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58252 "EHLO
+        id S239575AbjIQUP3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241261AbjIQUjl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:41 -0400
+        with ESMTP id S240617AbjIQUO5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91A1115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E63C433C8;
-        Sun, 17 Sep 2023 20:39:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D542F4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FE0C433C7;
+        Sun, 17 Sep 2023 20:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983175;
-        bh=RhH9SAjMcJOMLwFi9dAja4Y1YwTY1fJxpRqkO0MRHX8=;
+        s=korg; t=1694981691;
+        bh=I8afsS/pROh/H5mCsYYnSTpOg1pn90Q3A5sq6f4rXF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nZrt9yjZ2nZd6pMoIg4pGOr982NWCS7z8GB0OvivhunghBhBK3U1NFBpnLp0IUpdv
-         ITiIBHpq6X4tgmxzM4/dDF0jFWUmus5j0yiVp+OHesSYoNwGlLogStzX85T4imfn8E
-         97GwfgjMLYG7n2OF7332KCOZFc7gn4vTA0R8jQZE=
+        b=o2JasBnnIUWRaJ2+BvY6m2K26KE3IqfXwioa1i73rkPX3eaaKadAVKHIKOYZD1Jbs
+         /fkOrXGu+3sanqQ7T/z6cM9M6gPIqhKh3blTx+eIAVn1Wu33/2mbGrDFhvgh23p9Yg
+         e0WOVU35DWX9a/OCVzxRl1vMa8Kh4h2gA8XqyWpU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 459/511] net: hns3: fix invalid mutex between tc qdisc and dcb ets command issue
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 159/219] btrfs: set page extent mapped after read_folio in relocate_one_page
 Date:   Sun, 17 Sep 2023 21:14:46 +0200
-Message-ID: <20230917191124.837928507@linuxfoundation.org>
+Message-ID: <20230917191046.798232302@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,156 +50,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit fa5564945f7d15ae2390b00c08b6abaef0165cda ]
+commit e7f1326cc24e22b38afc3acd328480a1183f9e79 upstream.
 
-We hope that tc qdisc and dcb ets commands can not be used crosswise.
-If we want to use any of the commands to configure tc,
-We must use the other command to clear the existing configuration.
+One of the CI runs triggered the following panic
 
-However, when we configure a single tc with tc qdisc,
-we can still configure it with dcb ets.
-Because we use mqprio_active as the tag of tc qdisc configuration,
-but with dcb ets, we do not check mqprio_active.
+  assertion failed: PagePrivate(page) && page->private, in fs/btrfs/subpage.c:229
+  ------------[ cut here ]------------
+  kernel BUG at fs/btrfs/subpage.c:229!
+  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+  CPU: 0 PID: 923660 Comm: btrfs Not tainted 6.5.0-rc3+ #1
+  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+  pc : btrfs_subpage_assert+0xbc/0xf0
+  lr : btrfs_subpage_assert+0xbc/0xf0
+  sp : ffff800093213720
+  x29: ffff800093213720 x28: ffff8000932138b4 x27: 000000000c280000
+  x26: 00000001b5d00000 x25: 000000000c281000 x24: 000000000c281fff
+  x23: 0000000000001000 x22: 0000000000000000 x21: ffffff42b95bf880
+  x20: ffff42b9528e0000 x19: 0000000000001000 x18: ffffffffffffffff
+  x17: 667274622f736620 x16: 6e69202c65746176 x15: 0000000000000028
+  x14: 0000000000000003 x13: 00000000002672d7 x12: 0000000000000000
+  x11: ffffcd3f0ccd9204 x10: ffffcd3f0554ae50 x9 : ffffcd3f0379528c
+  x8 : ffff800093213428 x7 : 0000000000000000 x6 : ffffcd3f091771e8
+  x5 : ffff42b97f333948 x4 : 0000000000000000 x3 : 0000000000000000
+  x2 : 0000000000000000 x1 : ffff42b9556cde80 x0 : 000000000000004f
+  Call trace:
+   btrfs_subpage_assert+0xbc/0xf0
+   btrfs_subpage_set_dirty+0x38/0xa0
+   btrfs_page_set_dirty+0x58/0x88
+   relocate_one_page+0x204/0x5f0
+   relocate_file_extent_cluster+0x11c/0x180
+   relocate_data_extent+0xd0/0xf8
+   relocate_block_group+0x3d0/0x4e8
+   btrfs_relocate_block_group+0x2d8/0x490
+   btrfs_relocate_chunk+0x54/0x1a8
+   btrfs_balance+0x7f4/0x1150
+   btrfs_ioctl+0x10f0/0x20b8
+   __arm64_sys_ioctl+0x120/0x11d8
+   invoke_syscall.constprop.0+0x80/0xd8
+   do_el0_svc+0x6c/0x158
+   el0_svc+0x50/0x1b0
+   el0t_64_sync_handler+0x120/0x130
+   el0t_64_sync+0x194/0x198
+  Code: 91098021 b0007fa0 91346000 97e9c6d2 (d4210000)
 
-This patch fix this issue by check mqprio_active before
-executing the dcb ets command. and add dcb_ets_active to
-replace HCLGE_FLAG_DCB_ENABLE and HCLGE_FLAG_MQPRIO_ENABLE
-at the hclge layer,
+This is the same problem outlined in 17b17fcd6d44 ("btrfs:
+set_page_extent_mapped after read_folio in btrfs_cont_expand") , and the
+fix is the same.  I originally looked for the same pattern elsewhere in
+our code, but mistakenly skipped over this code because I saw the page
+cache readahead before we set_page_extent_mapped, not realizing that
+this was only in the !page case, that we can still end up with a
+!uptodate page and then do the btrfs_read_folio further down.
 
-Fixes: cacde272dd00 ("net: hns3: Add hclge_dcb module for the support of DCB feature")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix here is the same as the above mentioned patch, move the
+set_page_extent_mapped call to after the btrfs_read_folio() block to
+make sure that we have the subpage blocksize stuff setup properly before
+using the page.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  1 +
- .../hisilicon/hns3/hns3pf/hclge_dcb.c         | 20 +++++--------------
- .../hisilicon/hns3/hns3pf/hclge_main.c        |  5 +++--
- .../hisilicon/hns3/hns3pf/hclge_main.h        |  2 --
- 4 files changed, 9 insertions(+), 19 deletions(-)
+ fs/btrfs/relocation.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index 9204f5ecd4151..695e299f534d5 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -757,6 +757,7 @@ struct hnae3_tc_info {
- 	u16 tqp_offset[HNAE3_MAX_TC];
- 	u8 num_tc; /* Total number of enabled TCs */
- 	bool mqprio_active;
-+	bool dcb_ets_active;
- };
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2985,9 +2985,6 @@ static int relocate_one_page(struct inod
+ 		if (!page)
+ 			return -ENOMEM;
+ 	}
+-	ret = set_page_extent_mapped(page);
+-	if (ret < 0)
+-		goto release_page;
  
- struct hnae3_knic_private_info {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-index 87640a2e1794b..a15f2ed268a8d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-@@ -251,7 +251,7 @@ static int hclge_ieee_setets(struct hnae3_handle *h, struct ieee_ets *ets)
- 	int ret;
- 
- 	if (!(hdev->dcbx_cap & DCB_CAP_DCBX_VER_IEEE) ||
--	    hdev->flag & HCLGE_FLAG_MQPRIO_ENABLE)
-+	    h->kinfo.tc_info.mqprio_active)
- 		return -EINVAL;
- 
- 	ret = hclge_ets_validate(hdev, ets, &num_tc, &map_changed);
-@@ -267,10 +267,7 @@ static int hclge_ieee_setets(struct hnae3_handle *h, struct ieee_ets *ets)
+ 	if (PageReadahead(page))
+ 		page_cache_async_readahead(inode->i_mapping, ra, NULL,
+@@ -3003,6 +3000,15 @@ static int relocate_one_page(struct inod
+ 		}
  	}
  
- 	hclge_tm_schd_info_update(hdev, num_tc);
--	if (num_tc > 1)
--		hdev->flag |= HCLGE_FLAG_DCB_ENABLE;
--	else
--		hdev->flag &= ~HCLGE_FLAG_DCB_ENABLE;
-+	h->kinfo.tc_info.dcb_ets_active = num_tc > 1;
++	/*
++	 * We could have lost page private when we dropped the lock to read the
++	 * page above, make sure we set_page_extent_mapped here so we have any
++	 * of the subpage blocksize stuff we need in place.
++	 */
++	ret = set_page_extent_mapped(page);
++	if (ret < 0)
++		goto release_page;
++
+ 	page_start = page_offset(page);
+ 	page_end = page_start + PAGE_SIZE - 1;
  
- 	ret = hclge_ieee_ets_to_tm_info(hdev, ets);
- 	if (ret)
-@@ -376,7 +373,7 @@ static u8 hclge_getdcbx(struct hnae3_handle *h)
- 	struct hclge_vport *vport = hclge_get_vport(h);
- 	struct hclge_dev *hdev = vport->back;
- 
--	if (hdev->flag & HCLGE_FLAG_MQPRIO_ENABLE)
-+	if (h->kinfo.tc_info.mqprio_active)
- 		return 0;
- 
- 	return hdev->dcbx_cap;
-@@ -500,7 +497,8 @@ static int hclge_setup_tc(struct hnae3_handle *h,
- 	if (!test_bit(HCLGE_STATE_NIC_REGISTERED, &hdev->state))
- 		return -EBUSY;
- 
--	if (hdev->flag & HCLGE_FLAG_DCB_ENABLE)
-+	kinfo = &vport->nic.kinfo;
-+	if (kinfo->tc_info.dcb_ets_active)
- 		return -EINVAL;
- 
- 	ret = hclge_mqprio_qopt_check(hdev, mqprio_qopt);
-@@ -514,7 +512,6 @@ static int hclge_setup_tc(struct hnae3_handle *h,
- 	if (ret)
- 		return ret;
- 
--	kinfo = &vport->nic.kinfo;
- 	memcpy(&old_tc_info, &kinfo->tc_info, sizeof(old_tc_info));
- 	hclge_sync_mqprio_qopt(&kinfo->tc_info, mqprio_qopt);
- 	kinfo->tc_info.mqprio_active = tc > 0;
-@@ -523,13 +520,6 @@ static int hclge_setup_tc(struct hnae3_handle *h,
- 	if (ret)
- 		goto err_out;
- 
--	hdev->flag &= ~HCLGE_FLAG_DCB_ENABLE;
--
--	if (tc > 1)
--		hdev->flag |= HCLGE_FLAG_MQPRIO_ENABLE;
--	else
--		hdev->flag &= ~HCLGE_FLAG_MQPRIO_ENABLE;
--
- 	return hclge_notify_init_up(hdev);
- 
- err_out:
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 1d424b1ee6cd3..a415760505ab4 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11187,6 +11187,7 @@ static void hclge_get_mdix_mode(struct hnae3_handle *handle,
- 
- static void hclge_info_show(struct hclge_dev *hdev)
- {
-+	struct hnae3_handle *handle = &hdev->vport->nic;
- 	struct device *dev = &hdev->pdev->dev;
- 
- 	dev_info(dev, "PF info begin:\n");
-@@ -11203,9 +11204,9 @@ static void hclge_info_show(struct hclge_dev *hdev)
- 	dev_info(dev, "This is %s PF\n",
- 		 hdev->flag & HCLGE_FLAG_MAIN ? "main" : "not main");
- 	dev_info(dev, "DCB %s\n",
--		 hdev->flag & HCLGE_FLAG_DCB_ENABLE ? "enable" : "disable");
-+		 handle->kinfo.tc_info.dcb_ets_active ? "enable" : "disable");
- 	dev_info(dev, "MQPRIO %s\n",
--		 hdev->flag & HCLGE_FLAG_MQPRIO_ENABLE ? "enable" : "disable");
-+		 handle->kinfo.tc_info.mqprio_active ? "enable" : "disable");
- 	dev_info(dev, "Default tx spare buffer size: %u\n",
- 		 hdev->tx_spare_buf_size);
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-index 4d6dbfe0be7a2..a716027df0ed1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-@@ -902,8 +902,6 @@ struct hclge_dev {
- 
- #define HCLGE_FLAG_MAIN			BIT(0)
- #define HCLGE_FLAG_DCB_CAPABLE		BIT(1)
--#define HCLGE_FLAG_DCB_ENABLE		BIT(2)
--#define HCLGE_FLAG_MQPRIO_ENABLE	BIT(3)
- 	u32 flag;
- 
- 	u32 pkt_buf_size; /* Total pf buf size for tx/rx */
--- 
-2.40.1
-
 
 
