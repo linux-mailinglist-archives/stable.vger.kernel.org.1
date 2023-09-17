@@ -2,45 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DBE57A3D31
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 458207A3B1D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241177AbjIQUkB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45554 "EHLO
+        id S239550AbjIQUNy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:13:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241330AbjIQUj1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:27 -0400
+        with ESMTP id S240606AbjIQUNZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FBB115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EB5C433C9;
-        Sun, 17 Sep 2023 20:39:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49481197
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8036AC433C9;
+        Sun, 17 Sep 2023 20:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983161;
-        bh=Ic4I248YwH676AjREz0MjYhDcUHg4J3jXSV+p38T/yo=;
+        s=korg; t=1694981557;
+        bh=2NnO2pLOzToTkxrJytKxraV2QfcI5DQqP1RgHN0kczM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IXsxl80LKGd9+CGrKxeZwqElHtT8kP+3TD20NCJxzEWaj6MhXm0z1Iw95sIRsR4l6
-         rFbD8Kddn48+fLmbB6f0KlemQtWCFqTa6MAPM8AeiPjB9fqpw0QvLwP5aiJUxOHfu5
-         EK9c6XZW5Axy3Yf7VNI5CyN6RrXImygc+QQMVzLc=
+        b=htQHDNyaZ0KxmRRHs/9/Dl4jEsii8Rv9MB4G7BhtHcjs7M+M9rt4QhiAvbPXfeiI5
+         HlSM8iULOs8ohyrlNYgptwBWF1SwLJeRQ+oSVvnVZ6p4iqghfvsQ+lecCoKHjH8ryo
+         5umIoOW+L2Xr2/EKL38Z+a1eF401aCfmqPl5Brfo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kajol Jain <kjain@linux.ibm.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 422/511] perf vendor events: Drop some of the JSON/events for power10 platform
+Subject: [PATCH 6.1 122/219] net: dsa: sja1105: fix -ENOSPC when replacing the same tc-cbs too many times
 Date:   Sun, 17 Sep 2023 21:14:09 +0200
-Message-ID: <20230917191123.965168646@linuxfoundation.org>
+Message-ID: <20230917191045.387863974@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,139 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit e104df97b8dcfbab2e42de634b99bf03f0805d85 ]
+[ Upstream commit 894cafc5c62ccced758077bd4e970dc714c42637 ]
 
-Drop some of the JSON/events for power10 platform due to counter
-data mismatch.
+After running command [2] too many times in a row:
 
-Fixes: 32daa5d7899e0343 ("perf vendor events: Initial JSON/events list for power10 platform")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230814112803.1508296-2-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+[1] $ tc qdisc add dev sw2p0 root handle 1: mqprio num_tc 8 \
+	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 hw 0
+[2] $ tc qdisc replace dev sw2p0 parent 1:1 cbs offload 1 \
+	idleslope 120000 sendslope -880000 locredit -1320 hicredit 180
+
+(aka more than priv->info->num_cbs_shapers times)
+
+we start seeing the following error message:
+
+Error: Specified device failed to setup cbs hardware offload.
+
+This comes from the fact that ndo_setup_tc(TC_SETUP_QDISC_CBS) presents
+the same API for the qdisc create and replace cases, and the sja1105
+driver fails to distinguish between the 2. Thus, it always thinks that
+it must allocate the same shaper for a {port, queue} pair, when it may
+instead have to replace an existing one.
+
+Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/powerpc/power10/floating_point.json           |  7 -------
- tools/perf/pmu-events/arch/powerpc/power10/marked.json | 10 ----------
- tools/perf/pmu-events/arch/powerpc/power10/others.json |  5 -----
- .../perf/pmu-events/arch/powerpc/power10/pipeline.json | 10 ----------
- .../pmu-events/arch/powerpc/power10/translation.json   |  5 -----
- 5 files changed, 37 deletions(-)
- delete mode 100644 tools/perf/pmu-events/arch/powerpc/power10/floating_point.json
+ drivers/net/dsa/sja1105/sja1105_main.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/floating_point.json b/tools/perf/pmu-events/arch/powerpc/power10/floating_point.json
-deleted file mode 100644
-index 54acb55e2c8c6..0000000000000
---- a/tools/perf/pmu-events/arch/powerpc/power10/floating_point.json
-+++ /dev/null
-@@ -1,7 +0,0 @@
--[
--  {
--    "EventCode": "0x4016E",
--    "EventName": "PM_THRESH_NOT_MET",
--    "BriefDescription": "Threshold counter did not meet threshold."
--  }
--]
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/marked.json b/tools/perf/pmu-events/arch/powerpc/power10/marked.json
-index 131f8d0e88317..f2436fc5537ce 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/marked.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/marked.json
-@@ -19,11 +19,6 @@
-     "EventName": "PM_MRK_BR_TAKEN_CMPL",
-     "BriefDescription": "Marked Branch Taken instruction completed."
-   },
--  {
--    "EventCode": "0x20112",
--    "EventName": "PM_MRK_NTF_FIN",
--    "BriefDescription": "The marked instruction became the oldest in the pipeline before it finished. It excludes instructions that finish at dispatch."
--  },
-   {
-     "EventCode": "0x2C01C",
-     "EventName": "PM_EXEC_STALL_DMISS_OFF_CHIP",
-@@ -64,11 +59,6 @@
-     "EventName": "PM_L1_ICACHE_MISS",
-     "BriefDescription": "Demand instruction cache miss."
-   },
--  {
--    "EventCode": "0x30130",
--    "EventName": "PM_MRK_INST_FIN",
--    "BriefDescription": "marked instruction finished. Excludes instructions that finish at dispatch. Note that stores always finish twice since the address gets issued to the LSU and the data gets issued to the VSU."
--  },
-   {
-     "EventCode": "0x34146",
-     "EventName": "PM_MRK_LD_CMPL",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/others.json b/tools/perf/pmu-events/arch/powerpc/power10/others.json
-index e691041ee8678..36c5bbc64c3be 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/others.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/others.json
-@@ -29,11 +29,6 @@
-     "EventName": "PM_DISP_SS0_2_INSTR_CYC",
-     "BriefDescription": "Cycles in which Superslice 0 dispatches either 1 or 2 instructions."
-   },
--  {
--    "EventCode": "0x1F15C",
--    "EventName": "PM_MRK_STCX_L2_CYC",
--    "BriefDescription": "Cycles spent in the nest portion of a marked Stcx instruction. It starts counting when the operation starts to drain to the L2 and it stops counting when the instruction retires from the Instruction Completion Table (ICT) in the Instruction Sequencing Unit (ISU)."
--  },
-   {
-     "EventCode": "0x10066",
-     "EventName": "PM_ADJUNCT_CYC",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json
-index 449f57e8ba6af..799893c56f32b 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json
-@@ -194,11 +194,6 @@
-     "EventName": "PM_TLBIE_FIN",
-     "BriefDescription": "TLBIE instruction finished in the LSU. Two TLBIEs can finish each cycle. All will be counted."
-   },
--  {
--    "EventCode": "0x3D058",
--    "EventName": "PM_SCALAR_FSQRT_FDIV_ISSUE",
--    "BriefDescription": "Scalar versions of four floating point operations: fdiv,fsqrt (xvdivdp, xvdivsp, xvsqrtdp, xvsqrtsp)."
--  },
-   {
-     "EventCode": "0x30066",
-     "EventName": "PM_LSU_FIN",
-@@ -269,11 +264,6 @@
-     "EventName": "PM_IC_MISS_CMPL",
-     "BriefDescription": "Non-speculative instruction cache miss, counted at completion."
-   },
--  {
--    "EventCode": "0x4D050",
--    "EventName": "PM_VSU_NON_FLOP_CMPL",
--    "BriefDescription": "Non-floating point VSU instructions completed."
--  },
-   {
-     "EventCode": "0x4D052",
-     "EventName": "PM_2FLOP_CMPL",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/translation.json b/tools/perf/pmu-events/arch/powerpc/power10/translation.json
-index 3e47b804a0a8f..961e2491e73f6 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/translation.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/translation.json
-@@ -4,11 +4,6 @@
-     "EventName": "PM_MRK_START_PROBE_NOP_CMPL",
-     "BriefDescription": "Marked Start probe nop (AND R0,R0,R0) completed."
-   },
--  {
--    "EventCode": "0x20016",
--    "EventName": "PM_ST_FIN",
--    "BriefDescription": "Store finish count. Includes speculative activity."
--  },
-   {
-     "EventCode": "0x20018",
-     "EventName": "PM_ST_FWD",
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 377f177502003..9dd5cdcda2843 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2123,6 +2123,18 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+ 
+ #define BYTES_PER_KBIT (1000LL / 8)
+ 
++static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
++				   int port, int prio)
++{
++	int i;
++
++	for (i = 0; i < priv->info->num_cbs_shapers; i++)
++		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
++			return i;
++
++	return -1;
++}
++
+ static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
+ {
+ 	int i;
+@@ -2163,9 +2175,14 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
+ 	if (!offload->enable)
+ 		return sja1105_delete_cbs_shaper(priv, port, offload->queue);
+ 
+-	index = sja1105_find_unused_cbs_shaper(priv);
+-	if (index < 0)
+-		return -ENOSPC;
++	/* The user may be replacing an existing shaper */
++	index = sja1105_find_cbs_shaper(priv, port, offload->queue);
++	if (index < 0) {
++		/* That isn't the case - see if we can allocate a new one */
++		index = sja1105_find_unused_cbs_shaper(priv);
++		if (index < 0)
++			return -ENOSPC;
++	}
+ 
+ 	cbs = &priv->cbs[index];
+ 	cbs->port = port;
 -- 
 2.40.1
 
