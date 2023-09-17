@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276097A394C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA217A384E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240020AbjIQTro (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55514 "EHLO
+        id S239531AbjIQTeX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240018AbjIQTrS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:18 -0400
+        with ESMTP id S239710AbjIQTdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3D5B9F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DF8C433C8;
-        Sun, 17 Sep 2023 19:47:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF1BD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D06FC433CC;
+        Sun, 17 Sep 2023 19:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980032;
-        bh=4RzKRA7bhnJMf5sP0LLX0+v1qZc9xNw7MlDSr0PT03E=;
+        s=korg; t=1694979228;
+        bh=WPcJe60uoYDrB3oFc/0GDfwwebFx0LiukOTOENe2HfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ys4Xp2o+8eypHmKTujBAzNJTSxyIIRZ3kre39SNIRid78i0X65RDvWyr5v8kL9gVJ
-         H9zc0+AVaX4eYm+wnwVfd1WkrjxbJXX1+puimDFDw62iWXlAg5z5SruDwDKjiK/3zN
-         uRPQobsP+BTSuitkshvPytS5c+epPtZoHCTkCjas=
+        b=tflfzm4pSEsfd0vZ5XnUcRzMx4+efS8QrZ5k179tTmSFCHqic0PKIBeaBmmIAAzJg
+         tiCEeiDfaxetkxjw7g/YXZgXc7s6NHYFxEfxs8rBiLIDg/GxoUngZek5XBcKodqGMw
+         ELESXPZnnIFc0XmHZ4Z4jjhZaXpkPJ9aSpQN0lF4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mohamed Mahmoud <mmahmoud@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Dave Tucker <datucker@redhat.com>,
-        Derek Barbosa <debarbos@redhat.com>,
-        Song Liu <songliubraving@fb.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Jiri Kosina <jikos@kernel.org>, x86@kernel.org,
+        Sohil Mehta <sohil.mehta@intel.com>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 078/285] perf annotate bpf: Dont enclose non-debug code with an assert()
-Date:   Sun, 17 Sep 2023 21:11:18 +0200
-Message-ID: <20230917191054.415823345@linuxfoundation.org>
+Subject: [PATCH 5.10 225/406] x86/APM: drop the duplicate APM_MINOR_DEV macro
+Date:   Sun, 17 Sep 2023 21:11:19 +0200
+Message-ID: <20230917191107.117447755@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,113 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 979e9c9fc9c2a761303585e07fe2699bdd88182f ]
+[ Upstream commit 4ba2909638a29630a346d6c4907a3105409bee7d ]
 
-In 616b14b47a86d880 ("perf build: Conditionally define NDEBUG") we
-started using NDEBUG=1 when DEBUG=1 isn't present, so code that is
-enclosed with assert() is not called.
+This source file already includes <linux/miscdevice.h>, which contains
+the same macro. It doesn't need to be defined here again.
 
-In dd317df072071903 ("perf build: Make binutil libraries opt in") we
-stopped linking against binutils-devel, for licensing reasons.
-
-Recently people asked me why annotation of BPF programs wasn't working,
-i.e. this:
-
-  $ perf annotate bpf_prog_5280546344e3f45c_kfree_skb
-
-was returning:
-
-  case SYMBOL_ANNOTATE_ERRNO__NO_LIBOPCODES_FOR_BPF:
-     scnprintf(buf, buflen, "Please link with binutils's libopcode to enable BPF annotation");
-
-This was on a fedora rpm, so its new enough that I had to try to test by
-rebuilding using BUILD_NONDISTRO=1, only to get it segfaulting on me.
-
-This combination made this libopcode function not to be called:
-
-        assert(bfd_check_format(bfdf, bfd_object));
-
-Changing it to:
-
-	if (!bfd_check_format(bfdf, bfd_object))
-		abort();
-
-Made it work, looking at this "check" function made me realize it
-changes the 'bfdf' internal state, i.e. we better call it.
-
-So stop using assert() on it, just call it and abort if it fails.
-
-Probably it is better to propagate the error, etc, but it seems it is
-unlikely to fail from the usage done so far and we really need to stop
-using libopcodes, so do the quick fix above and move on.
-
-With it we have BPF annotation back working when built with
-BUILD_NONDISTRO=1:
-
-  ⬢[acme@toolbox perf-tools-next]$ perf annotate --stdio2 bpf_prog_5280546344e3f45c_kfree_skb   | head
-  No kallsyms or vmlinux with build-id 939bc71a1a51cdc434e60af93c7e734f7d5c0e7e was found
-  Samples: 12  of event 'cpu-clock:ppp', 4000 Hz, Event count (approx.): 3000000, [percent: local period]
-  bpf_prog_5280546344e3f45c_kfree_skb() bpf_prog_5280546344e3f45c_kfree_skb
-  Percent      int kfree_skb(struct trace_event_raw_kfree_skb *args) {
-                 nop
-   33.33         xchg   %ax,%ax
-                 push   %rbp
-                 mov    %rsp,%rbp
-                 sub    $0x180,%rsp
-                 push   %rbx
-                 push   %r13
-  ⬢[acme@toolbox perf-tools-next]$
-
-Fixes: 6987561c9e86eace ("perf annotate: Enable annotation of BPF programs")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mohamed Mahmoud <mmahmoud@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Dave Tucker <datucker@redhat.com>
-Cc: Derek Barbosa <debarbos@redhat.com>
-Cc: Song Liu <songliubraving@fb.com>
-Link: https://lore.kernel.org/lkml/ZMrMzoQBe0yqMek1@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 874bcd00f520 ("apm-emulation: move APM_MINOR_DEV to include/linux/miscdevice.h")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: x86@kernel.org
+Cc: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://lore.kernel.org/r/20230728011120.759-1-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/annotate.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/kernel/apm_32.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index ba988a13dacb6..82956adf99632 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -1846,8 +1846,11 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	perf_exe(tpath, sizeof(tpath));
- 
- 	bfdf = bfd_openr(tpath, NULL);
--	assert(bfdf);
--	assert(bfd_check_format(bfdf, bfd_object));
-+	if (bfdf == NULL)
-+		abort();
-+
-+	if (!bfd_check_format(bfdf, bfd_object))
-+		abort();
- 
- 	s = open_memstream(&buf, &buf_size);
- 	if (!s) {
-@@ -1895,7 +1898,8 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- #else
- 	disassemble = disassembler(bfdf);
+diff --git a/arch/x86/kernel/apm_32.c b/arch/x86/kernel/apm_32.c
+index 660270359d393..166d9991e7111 100644
+--- a/arch/x86/kernel/apm_32.c
++++ b/arch/x86/kernel/apm_32.c
+@@ -237,12 +237,6 @@
+ extern int (*console_blank_hook)(int);
  #endif
--	assert(disassemble);
-+	if (disassemble == NULL)
-+		abort();
  
- 	fflush(s);
- 	do {
+-/*
+- * The apm_bios device is one of the misc char devices.
+- * This is its minor number.
+- */
+-#define	APM_MINOR_DEV	134
+-
+ /*
+  * Various options can be changed at boot time as follows:
+  * (We allow underscores for compatibility with the modules code)
 -- 
 2.40.1
 
