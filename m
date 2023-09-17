@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A7657A3D24
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DA9D7A3B36
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239698AbjIQUj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:39:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44110 "EHLO
+        id S240625AbjIQUOa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241227AbjIQUi7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:59 -0400
+        with ESMTP id S240660AbjIQUOQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6006123
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E23C433C7;
-        Sun, 17 Sep 2023 20:38:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427F3F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7587BC433C7;
+        Sun, 17 Sep 2023 20:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983130;
-        bh=4qceMZuBcjhBqr64+cxnyBocfSBChFTDpnjMAeOd8qo=;
+        s=korg; t=1694981650;
+        bh=CVIwwutxgDHdkJ8nD3HtEkv+2oJhrxQXGwSEiMlMeoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A324NgcvfbIEKD3OpqqGUdaJwKKTyY8nfuDojq/h9lYJgOwDf63E3QAJePVcBXiYv
-         Xij5XqETWc/KlVFYRdpjminVdfYa3asPVt8if/lxrJbUj8WdNjSArXUsda2IX03WaJ
-         qxlzMLsV8yuBb0YdWTqmD4gP+GOubVy7B7rnEeNg=
+        b=nrkACxKr8d5075k1P6HGfVXiJMpLLln2zDmusyaFuX8nEzAT6hB2Qk26EDKMcvw1l
+         88GiDYrkZZ3H9DC9xixNxe7RRbFFA/WHAAV1PTGwODklDkfbs2sMFNXIZM/Dk3sM0b
+         ZIXHIpSX1S9fzPDvGBz3Jf1+M5cXqNeZQhk8VyO0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yanan Yang <yanan.yang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 452/511] net: dsa: sja1105: fix bandwidth discrepancy between tc-cbs software and offload
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 152/219] ata: sata_gemini: Add missing MODULE_DESCRIPTION
 Date:   Sun, 17 Sep 2023 21:14:39 +0200
-Message-ID: <20230917191124.674508225@linuxfoundation.org>
+Message-ID: <20230917191046.509823543@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,139 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 954ad9bf13c4f95a4958b5f8433301f2ab99e1f5 ]
+commit 8566572bf3b4d6e416a4bf2110dbb4817d11ba59 upstream.
 
-More careful measurement of the tc-cbs bandwidth shows that the stream
-bandwidth (effectively idleslope) increases, there is a larger and
-larger discrepancy between the rate limit obtained by the software
-Qdisc, and the rate limit obtained by its offloaded counterpart.
+Add the missing MODULE_DESCRIPTION() to avoid warnings such as:
 
-The discrepancy becomes so large, that e.g. at an idleslope of 40000
-(40Mbps), the offloaded cbs does not actually rate limit anything, and
-traffic will pass at line rate through a 100 Mbps port.
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/ata/sata_gemini.o
 
-The reason for the discrepancy is that the hardware documentation I've
-been following is incorrect. UM11040.pdf (for SJA1105P/Q/R/S) states
-about IDLE_SLOPE that it is "the rate (in unit of bytes/sec) at which
-the credit counter is increased".
+when compiling with W=1.
 
-Cross-checking with UM10944.pdf (for SJA1105E/T) and UM11107.pdf
-(for SJA1110), the wording is different: "This field specifies the
-value, in bytes per second times link speed, by which the credit counter
-is increased".
-
-So there's an extra scaling for link speed that the driver is currently
-not accounting for, and apparently (empirically), that link speed is
-expressed in Kbps.
-
-I've pondered whether to pollute the sja1105_mac_link_up()
-implementation with CBS shaper reprogramming, but I don't think it is
-worth it. IMO, the UAPI exposed by tc-cbs requires user space to
-recalculate the sendslope anyway, since the formula for that depends on
-port_transmit_rate (see man tc-cbs), which is not an invariant from tc's
-perspective.
-
-So we use the offload->sendslope and offload->idleslope to deduce the
-original port_transmit_rate from the CBS formula, and use that value to
-scale the offload->sendslope and offload->idleslope to values that the
-hardware understands.
-
-Some numerical data points:
-
- 40Mbps stream, max interfering frame size 1500, port speed 100M
- ---------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 40000 sendslope -60000 locredit -900 hicredit 600
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    600                600
- credit_lo    900                900
- send_slope   7500000            75
- idle_slope   5000000            50
-
- 40Mbps stream, max interfering frame size 1500, port speed 1G
- -------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 40000 sendslope -960000 locredit -1440 hicredit 60
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    60                 60
- credit_lo    1440               1440
- send_slope   120000000          120
- idle_slope   5000000            5
-
- 5.12Mbps stream, max interfering frame size 1522, port speed 100M
- -----------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 5120 sendslope -94880 locredit -1444 hicredit 77
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    77                 77
- credit_lo    1444               1444
- send_slope   11860000           118
- idle_slope   640000             6
-
-Tested on SJA1105T, SJA1105S and SJA1110A, at 1Gbps and 100Mbps.
-
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Reported-by: Yanan Yang <yanan.yang@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/ata/sata_gemini.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index ef4d8d6c2bd7a..5f70773fa8201 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2049,6 +2049,7 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- {
- 	struct sja1105_private *priv = ds->priv;
- 	struct sja1105_cbs_entry *cbs;
-+	s64 port_transmit_rate_kbps;
- 	int index;
+--- a/drivers/ata/sata_gemini.c
++++ b/drivers/ata/sata_gemini.c
+@@ -428,6 +428,7 @@ static struct platform_driver gemini_sat
+ };
+ module_platform_driver(gemini_sata_driver);
  
- 	if (!offload->enable)
-@@ -2066,9 +2067,17 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	 */
- 	cbs->credit_hi = offload->hicredit;
- 	cbs->credit_lo = abs(offload->locredit);
--	/* User space is in kbits/sec, hardware in bytes/sec */
--	cbs->idle_slope = offload->idleslope * BYTES_PER_KBIT;
--	cbs->send_slope = abs(offload->sendslope * BYTES_PER_KBIT);
-+	/* User space is in kbits/sec, while the hardware in bytes/sec times
-+	 * link speed. Since the given offload->sendslope is good only for the
-+	 * current link speed anyway, and user space is likely to reprogram it
-+	 * when that changes, don't even bother to track the port's link speed,
-+	 * but deduce the port transmit rate from idleslope - sendslope.
-+	 */
-+	port_transmit_rate_kbps = offload->idleslope - offload->sendslope;
-+	cbs->idle_slope = div_s64(offload->idleslope * BYTES_PER_KBIT,
-+				  port_transmit_rate_kbps);
-+	cbs->send_slope = div_s64(abs(offload->sendslope * BYTES_PER_KBIT),
-+				  port_transmit_rate_kbps);
- 	/* Convert the negative values from 64-bit 2's complement
- 	 * to 32-bit 2's complement (for the case of 0x80000000 whose
- 	 * negative is still negative).
--- 
-2.40.1
-
++MODULE_DESCRIPTION("low level driver for Cortina Systems Gemini SATA bridge");
+ MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("platform:" DRV_NAME);
 
 
