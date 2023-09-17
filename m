@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE2B7A3B19
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB237A3D0D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234032AbjIQUNV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54070 "EHLO
+        id S241205AbjIQUi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240619AbjIQUM7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:59 -0400
+        with ESMTP id S241227AbjIQUiE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB060E4B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EBCC433D9;
-        Sun, 17 Sep 2023 20:12:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A16AF101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D309FC433C8;
+        Sun, 17 Sep 2023 20:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981544;
-        bh=LAL75a4BUGuVd4UwNul30KXDiBrVcL419ANdBzGMi9w=;
+        s=korg; t=1694983079;
+        bh=Ae3+TLlr799thsg+fXj7tR8NUZg6lwgQWbMtWMZIhGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jZKNPwXKpA1zQE8zcjkG25fGi1PAsXLj1HdCbSLb6egug+HVaTj33IeCW4eccOtSO
-         0oKKZJZ10ZnB6RfiFncM6kFS+qvwqz8fnuBrDqD5+E2r0x7gObC4//BuEfQV0LbUkv
-         D7xAZaF7+JyJg5VhTmqoS0Eb/i77gJKbFzodqP0I=
+        b=pKGgWon5qiQEM/MrZgdYNOk45K+ToGLFkBMp66+I46if5ExCwEgQGniICegMzO2Eg
+         JGgjrJgXHeexGPCue4Zc7Sxl+Oc9iB6tay1ECaJ7M6rXRjZcrQTE+LKyooJymz5I/W
+         Vj7OXj/pdtzAiXA9dH3nvKIQANyOai6Qbs2W/wbo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Kozlov <pavel.kozlov@synopsys.com>,
-        Vineet Gupta <vgupta@kernel.org>
-Subject: [PATCH 6.1 138/219] ARC: atomics: Add compiler barrier to atomic operations...
+        patches@lists.linux.dev, Oleksij Rempel <o.rempel@pengutronix.de>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 438/511] net: phy: micrel: Correct bit assignments for phy_device flags
 Date:   Sun, 17 Sep 2023 21:14:25 +0200
-Message-ID: <20230917191045.982074382@linuxfoundation.org>
+Message-ID: <20230917191124.334752248@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,104 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Kozlov <pavel.kozlov@synopsys.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 42f51fb24fd39cc547c086ab3d8a314cc603a91c upstream.
+[ Upstream commit 719c5e37e99d2fd588d1c994284d17650a66354c ]
 
-... to avoid unwanted gcc optimizations
+Previously, the defines for phy_device flags in the Micrel driver were
+ambiguous in their representation. They were intended to be bit masks
+but were mistakenly defined as bit positions. This led to the following
+issues:
 
-SMP kernels fail to boot with commit 596ff4a09b89
-("cpumask: re-introduce constant-sized cpumask optimizations").
+- MICREL_KSZ8_P1_ERRATA, designated for KSZ88xx switches, overlapped
+  with MICREL_PHY_FXEN and MICREL_PHY_50MHZ_CLK.
+- Due to this overlap, the code path for MICREL_PHY_FXEN, tailored for
+  the KSZ8041 PHY, was not executed for KSZ88xx PHYs.
+- Similarly, the code associated with MICREL_PHY_50MHZ_CLK wasn't
+  triggered for KSZ88xx.
 
-|
-| percpu: BUG: failure at mm/percpu.c:2981/pcpu_build_alloc_info()!
-|
+To rectify this, all three flags have now been explicitly converted to
+use the `BIT()` macro, ensuring they are defined as bit masks and
+preventing potential overlaps in the future.
 
-The write operation performed by the SCOND instruction in the atomic
-inline asm code is not properly passed to the compiler. The compiler
-cannot correctly optimize a nested loop that runs through the cpumask
-in the pcpu_build_alloc_info() function.
-
-Fix this by add a compiler barrier (memory clobber in inline asm).
-
-Apparently atomic ops used to have memory clobber implicitly via
-surrounding smp_mb(). However commit b64be6836993c431e
-("ARC: atomics: implement relaxed variants") removed the smp_mb() for
-the relaxed variants, but failed to add the explicit compiler barrier.
-
-Link: https://github.com/foss-for-synopsys-dwc-arc-processors/linux/issues/135
-Cc: <stable@vger.kernel.org> # v6.3+
-Fixes: b64be6836993c43 ("ARC: atomics: implement relaxed variants")
-Signed-off-by: Pavel Kozlov <pavel.kozlov@synopsys.com>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
-[vgupta: tweaked the changelog and added Fixes tag]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 49011e0c1555 ("net: phy: micrel: ksz886x/ksz8081: add cabletest support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/include/asm/atomic-llsc.h    |    6 +++---
- arch/arc/include/asm/atomic64-arcv2.h |    6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ include/linux/micrel_phy.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arc/include/asm/atomic-llsc.h
-+++ b/arch/arc/include/asm/atomic-llsc.h
-@@ -18,7 +18,7 @@ static inline void arch_atomic_##op(int
- 	: [val]	"=&r"	(val) /* Early clobber to prevent reg reuse */	\
- 	: [ctr]	"r"	(&v->counter), /* Not "m": llock only supports reg direct addr mode */	\
- 	  [i]	"ir"	(i)						\
--	: "cc");							\
-+	: "cc", "memory");						\
- }									\
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index 3d43c60b49fa8..2d0f75ffa3233 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -37,9 +37,9 @@
+ #define	PHY_ID_KSZ9477		0x00221631
  
- #define ATOMIC_OP_RETURN(op, asm_op)				\
-@@ -34,7 +34,7 @@ static inline int arch_atomic_##op##_ret
- 	: [val]	"=&r"	(val)						\
- 	: [ctr]	"r"	(&v->counter),					\
- 	  [i]	"ir"	(i)						\
--	: "cc");							\
-+	: "cc", "memory");						\
- 									\
- 	return val;							\
- }
-@@ -56,7 +56,7 @@ static inline int arch_atomic_fetch_##op
- 	  [orig] "=&r" (orig)						\
- 	: [ctr]	"r"	(&v->counter),					\
- 	  [i]	"ir"	(i)						\
--	: "cc");							\
-+	: "cc", "memory");						\
- 									\
- 	return orig;							\
- }
---- a/arch/arc/include/asm/atomic64-arcv2.h
-+++ b/arch/arc/include/asm/atomic64-arcv2.h
-@@ -60,7 +60,7 @@ static inline void arch_atomic64_##op(s6
- 	"	bnz     1b		\n"				\
- 	: "=&r"(val)							\
- 	: "r"(&v->counter), "ir"(a)					\
--	: "cc");							\
-+	: "cc", "memory");						\
- }									\
+ /* struct phy_device dev_flags definitions */
+-#define MICREL_PHY_50MHZ_CLK	0x00000001
+-#define MICREL_PHY_FXEN		0x00000002
+-#define MICREL_KSZ8_P1_ERRATA	0x00000003
++#define MICREL_PHY_50MHZ_CLK	BIT(0)
++#define MICREL_PHY_FXEN		BIT(1)
++#define MICREL_KSZ8_P1_ERRATA	BIT(2)
  
- #define ATOMIC64_OP_RETURN(op, op1, op2)		        	\
-@@ -77,7 +77,7 @@ static inline s64 arch_atomic64_##op##_r
- 	"	bnz     1b		\n"				\
- 	: [val] "=&r"(val)						\
- 	: "r"(&v->counter), "ir"(a)					\
--	: "cc");	/* memory clobber comes from smp_mb() */	\
-+	: "cc", "memory");						\
- 									\
- 	return val;							\
- }
-@@ -99,7 +99,7 @@ static inline s64 arch_atomic64_fetch_##
- 	"	bnz     1b		\n"				\
- 	: "=&r"(orig), "=&r"(val)					\
- 	: "r"(&v->counter), "ir"(a)					\
--	: "cc");	/* memory clobber comes from smp_mb() */	\
-+	: "cc", "memory");						\
- 									\
- 	return orig;							\
- }
+ #define MICREL_KSZ9021_EXTREG_CTRL	0xB
+ #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+-- 
+2.40.1
+
 
 
