@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE7D7A37DF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2CA67A3903
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239533AbjIQT0X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:26:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
+        id S239899AbjIQTnb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239549AbjIQTZy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:25:54 -0400
+        with ESMTP id S239965AbjIQTnY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BBA8118
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:25:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6352DC433C7;
-        Sun, 17 Sep 2023 19:25:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A89DB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF683C433C8;
+        Sun, 17 Sep 2023 19:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978742;
-        bh=dUFuWKVOBng+GA+8gj9hzRgPYY5ve8VI2Z3ndRmuTj8=;
+        s=korg; t=1694979798;
+        bh=OHhIjsq5DZ5CiLnY2b5dOpyQx0bDbaG0ctTVoen3850=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GhRh8UNsa4ufRibCVKNFz9cYIgMRBus4abVNEg4maT4QA11CkP1YxHcFK/c5lRTOJ
-         CjXsVwwGxbUQmA5c/BY9jXOkIdlrdWfbrVnVOSJD1h4eywv4r1kRXq5xkce02EGihA
-         aERHrLms8ktQGz5tbFj+oLnHSuZJhPT0pNvErtKQ=
+        b=MlhGr8Pf8nYmC5YRT20YVaTkXvN/c0oVQsAgpolRjQ15REi669NTXRrp6J7t15a+Q
+         rmSoyraLu/KviAQruZ7/QKRq7oMMT4dMDKwI/F5zcqlLaqM/IF4JER1Im3qFGaKigp
+         K++ajDWbwfbTNzepQ5oVWWJf1ZYSy2ZOXMRrs9D0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/406] drm/amdgpu: Update min() to min_t() in amdgpu_info_ioctl
+        Gurchetan Singh <gurchetansingh@chromium.org>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Alyssa Ross <hi@alyssa.is>
+Subject: [PATCH 6.5 002/285] drm/virtio: Conditionally allocate virtio_gpu_fence
 Date:   Sun, 17 Sep 2023 21:10:02 +0200
-Message-ID: <20230917191105.072653253@linuxfoundation.org>
+Message-ID: <20230917191051.721819704@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,89 +51,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
 
-[ Upstream commit a0cc8e1512ad72c9f97cdcb76d42715730adaf62 ]
+commit 70d1ace56db6c79d39dbe9c0d5244452b67e2fde upstream.
 
-Fixes the following:
+We don't want to create a fence for every command submission.  It's
+only necessary when userspace provides a waitable token for submission.
+This could be:
 
-WARNING: min() should probably be min_t(size_t, size, sizeof(ip))
-+               ret = copy_to_user(out, &ip, min((size_t)size, sizeof(ip)));
+1) bo_handles, to be used with VIRTGPU_WAIT
+2) out_fence_fd, to be used with dma_fence apis
+3) a ring_idx provided with VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK
+   + DRM event API
+4) syncobjs in the future
 
-And other style fixes:
+The use case for just submitting a command to the host, and expecting
+no response.  For example, gfxstream has GFXSTREAM_CONTEXT_PING that
+just wakes up the host side worker threads.  There's also
+CROSS_DOMAIN_CMD_SEND which just sends data to the Wayland server.
 
-WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-WARNING: Missing a blank line after declarations
+This prevents the need to signal the automatically created
+virtio_gpu_fence.
 
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In addition, VIRTGPU_EXECBUF_RING_IDX is checked when creating a
+DRM event object.  VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK is
+already defined in terms of per-context rings.  It was theoretically
+possible to create a DRM event on the global timeline (ring_idx == 0),
+if the context enabled DRM event polling.  However, that wouldn't
+work and userspace (Sommelier).  Explicitly disallow it for
+clarity.
+
+Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com> # edited coding style
+Link: https://patchwork.freedesktop.org/patch/msgid/20230707213124.494-1-gurchetansingh@chromium.org
+Signed-off-by: Alyssa Ross <hi@alyssa.is>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/virtio/virtgpu_submit.c |   32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 917b94002f4b7..93a4b52f4a73b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -505,6 +505,7 @@ static int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file
- 			crtc = (struct drm_crtc *)minfo->crtcs[i];
- 			if (crtc && crtc->base.id == info->mode_crtc.id) {
- 				struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
+--- a/drivers/gpu/drm/virtio/virtgpu_submit.c
++++ b/drivers/gpu/drm/virtio/virtgpu_submit.c
+@@ -64,13 +64,9 @@ static int virtio_gpu_fence_event_create
+ 					 struct virtio_gpu_fence *fence,
+ 					 u32 ring_idx)
+ {
+-	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
+ 	struct virtio_gpu_fence_event *e = NULL;
+ 	int ret;
+ 
+-	if (!(vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
+-		return 0;
+-
+ 	e = kzalloc(sizeof(*e), GFP_KERNEL);
+ 	if (!e)
+ 		return -ENOMEM;
+@@ -164,18 +160,30 @@ static int virtio_gpu_init_submit(struct
+ 	struct virtio_gpu_fpriv *vfpriv = file->driver_priv;
+ 	struct virtio_gpu_device *vgdev = dev->dev_private;
+ 	struct virtio_gpu_fence *out_fence;
++	bool drm_fence_event;
+ 	int err;
+ 
+ 	memset(submit, 0, sizeof(*submit));
+ 
+-	out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
+-	if (!out_fence)
+-		return -ENOMEM;
+-
+-	err = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
+-	if (err) {
+-		dma_fence_put(&out_fence->f);
+-		return err;
++	if ((exbuf->flags & VIRTGPU_EXECBUF_RING_IDX) &&
++	    (vfpriv->ring_idx_mask & BIT_ULL(ring_idx)))
++		drm_fence_event = true;
++	else
++		drm_fence_event = false;
 +
- 				ui32 = amdgpu_crtc->crtc_id;
- 				found = 1;
- 				break;
-@@ -523,7 +524,7 @@ static int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file
- 		if (ret)
- 			return ret;
- 
--		ret = copy_to_user(out, &ip, min((size_t)size, sizeof(ip)));
-+		ret = copy_to_user(out, &ip, min_t(size_t, size, sizeof(ip)));
- 		return ret ? -EFAULT : 0;
++	if ((exbuf->flags & VIRTGPU_EXECBUF_FENCE_FD_OUT) ||
++	    exbuf->num_bo_handles ||
++	    drm_fence_event)
++		out_fence = virtio_gpu_fence_alloc(vgdev, fence_ctx, ring_idx);
++	else
++		out_fence = NULL;
++
++	if (drm_fence_event) {
++		err = virtio_gpu_fence_event_create(dev, file, out_fence, ring_idx);
++		if (err) {
++			dma_fence_put(&out_fence->f);
++			return err;
++		}
  	}
- 	case AMDGPU_INFO_HW_IP_COUNT: {
-@@ -671,17 +672,18 @@ static int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file
- 				    ? -EFAULT : 0;
- 	}
- 	case AMDGPU_INFO_READ_MMR_REG: {
--		unsigned n, alloc_size;
-+		unsigned int n, alloc_size;
- 		uint32_t *regs;
--		unsigned se_num = (info->read_mmr_reg.instance >>
-+		unsigned int se_num = (info->read_mmr_reg.instance >>
- 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
- 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
--		unsigned sh_num = (info->read_mmr_reg.instance >>
-+		unsigned int sh_num = (info->read_mmr_reg.instance >>
- 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
- 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
  
- 		/* set full masks if the userspace set all bits
--		 * in the bitfields */
-+		 * in the bitfields
-+		 */
- 		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
- 			se_num = 0xffffffff;
- 		else if (se_num >= AMDGPU_GFX_MAX_SE)
-@@ -799,7 +801,7 @@ static int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file
- 				    min((size_t)size, sizeof(dev_info))) ? -EFAULT : 0;
- 	}
- 	case AMDGPU_INFO_VCE_CLOCK_TABLE: {
--		unsigned i;
-+		unsigned int i;
- 		struct drm_amdgpu_info_vce_clock_table vce_clk_table = {};
- 		struct amd_vce_state *vce_state;
- 
--- 
-2.40.1
-
+ 	submit->out_fence = out_fence;
 
 
