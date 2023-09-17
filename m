@@ -2,38 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03FCF7A3CE1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9A717A3ACE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239697AbjIQUgU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:36:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
+        id S240453AbjIQUJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241174AbjIQUgF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:05 -0400
+        with ESMTP id S240466AbjIQUIj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A2B101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C492C433C8;
-        Sun, 17 Sep 2023 20:35:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99685F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCA0C433C7;
+        Sun, 17 Sep 2023 20:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982959;
-        bh=zJJc7Z4X4cr0S0sB+e/L2f3x5JeBd6JGMhl/mun95aU=;
+        s=korg; t=1694981313;
+        bh=K8KrHRdsxFwL4pfgrjiSryfFCQfpWURuXwAiL6cb2aA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T8hZp0p+f/wUjKqnWOJBruksCuhTTbYAvrdnSnCxdE4TW0FpLzVODgU5i3V7wNCpH
-         v94QqU+1+fcBMA8uQqGamY4FNbrZMWkRRjthtM6AgmTGcufFJoUTi4F8iyp1vITU5x
-         OBOEeX4iFLfCy6XAkyktcxvacCVvi4RVnFrB7dRk=
+        b=ti5kUqVU27KRpqfTj1DQ6ujza7GOjVUFd10IFEH7bLIm2IXXQQBvVHEnnYHcjNZq3
+         Q95+6cDnaUZbl4hVkzkBl+e+VmHXwanzYCrQ1Dvr9c3B1yLD1Wskv+cHeoyoz1i5HV
+         Imt2kFI5Aw2J5Lz8dIaAWj4OLoX11TlKhgbo9sps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 402/511] clk: qcom: q6sstop-qcs404: fix missing resume during probe
-Date:   Sun, 17 Sep 2023 21:13:49 +0200
-Message-ID: <20230917191123.496821414@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Bailey Forrest <bcf@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Catherine Sullivan <csully@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 103/219] gve: fix frag_list chaining
+Date:   Sun, 17 Sep 2023 21:13:50 +0200
+Message-ID: <20230917191044.718469345@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,64 +54,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 97112c83f4671a4a722f99a53be4e91fac4091bc upstream.
+[ Upstream commit 817c7cd2043a83a3d8147f40eea1505ac7300b62 ]
 
-Drivers that enable runtime PM must make sure that the controller is
-runtime resumed before accessing its registers to prevent the power
-domain from being disabled.
+gve_rx_append_frags() is able to build skbs chained with frag_list,
+like GRO engine.
 
-Fixes: 6cdef2738db0 ("clk: qcom: Add Q6SSTOP clock controller for QCS404")
-Cc: stable@vger.kernel.org      # 5.5
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-7-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Problem is that shinfo->frag_list should only be used
+for the head of the chain.
+
+All other links should use skb->next pointer.
+
+Otherwise, built skbs are not valid and can cause crashes.
+
+Equivalent code in GRO (skb_gro_receive()) is:
+
+    if (NAPI_GRO_CB(p)->last == p)
+        skb_shinfo(p)->frag_list = skb;
+    else
+        NAPI_GRO_CB(p)->last->next = skb;
+    NAPI_GRO_CB(p)->last = skb;
+
+Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Bailey Forrest <bcf@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Catherine Sullivan <csully@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/q6sstop-qcs404.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/q6sstop-qcs404.c
-+++ b/drivers/clk/qcom/q6sstop-qcs404.c
-@@ -173,21 +173,32 @@ static int q6sstopcc_qcs404_probe(struct
- 		return ret;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index 2e6461b0ea8bc..a9409e3721ad7 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -492,7 +492,10 @@ static int gve_rx_append_frags(struct napi_struct *napi,
+ 		if (!skb)
+ 			return -1;
+ 
+-		skb_shinfo(rx->ctx.skb_tail)->frag_list = skb;
++		if (rx->ctx.skb_tail == rx->ctx.skb_head)
++			skb_shinfo(rx->ctx.skb_head)->frag_list = skb;
++		else
++			rx->ctx.skb_tail->next = skb;
+ 		rx->ctx.skb_tail = skb;
+ 		num_frags = 0;
  	}
- 
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	q6sstop_regmap_config.name = "q6sstop_tcsr";
- 	desc = &tcsr_qcs404_desc;
- 
- 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
- 	if (ret)
--		return ret;
-+		goto err_put_rpm;
- 
- 	q6sstop_regmap_config.name = "q6sstop_cc";
- 	desc = &q6sstop_qcs404_desc;
- 
- 	ret = qcom_cc_probe_by_index(pdev, 0, desc);
- 	if (ret)
--		return ret;
-+		goto err_put_rpm;
-+
-+	pm_runtime_put(&pdev->dev);
- 
- 	return 0;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops q6sstopcc_pm_ops = {
+-- 
+2.40.1
+
 
 
