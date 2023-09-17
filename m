@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B0D7A3834
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F256E7A3929
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232615AbjIQTdT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:33:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34630 "EHLO
+        id S239964AbjIQTqI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239714AbjIQTcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:50 -0400
+        with ESMTP id S240089AbjIQTpf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0256A189
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FEDC433C7;
-        Sun, 17 Sep 2023 19:32:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C7F8195
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81255C433C8;
+        Sun, 17 Sep 2023 19:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979139;
-        bh=cJzMHJvMZ18j6BBxWshHjXdcxA9L9Dto8tIPthwyFfs=;
+        s=korg; t=1694979918;
+        bh=S9SVBmdwFvEBCnoh7dU4+LOSzYNYT8aH33Kf5gF9uuU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DXWlL4fjMG4bZyTt6FYBARjJL0YxGvN1J6P1+2NjHwh9VHbdwhEfTJsFwa3O3wcLt
-         0PFb42EnhpDleUWPrI0E4Dxn3O96tBi5v0nzCmkbd+f8H2/qIIbnsl+9qPb7QGtQnD
-         NimfMIwzl2SAsw4Y9mjEcm9ja5ZyUzIzV3ErXwtM=
+        b=DabyCZbYKdf61XFO7Six16To2ztJFRzV5gPXUMlUMlu3nzlk6uUP/s59m90VaMGQw
+         NxS+NVhifcMuTF9mps53sNfp++vHZNIqHkQCU/DcZeeSA8VN5qlTkPlF1nV87LG/0G
+         ka6pesA1LDU48ovuiAJKwi3bXFMnp6V8k/8BXWwM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 190/406] net/mlx5: Use RMW accessors for changing LNKCTL
-Date:   Sun, 17 Sep 2023 21:10:44 +0200
-Message-ID: <20230917191106.219829687@linuxfoundation.org>
+        patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Adam Ford <aford173@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH 6.5 045/285] clk: imx: pll14xx: align pdiv with reference manual
+Date:   Sun, 17 Sep 2023 21:10:45 +0200
+Message-ID: <20230917191053.234397493@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,58 +53,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 30de872537bda526664d7a20b646adfb3e7ce6e6 ]
+commit 37cfd5e457cbdcd030f378127ff2d62776f641e7 upstream.
 
-Don't assume that only the driver would be accessing LNKCTL of the upstream
-bridge. ASPM policy changes can trigger write to LNKCTL outside of driver's
-control.
+The PLL14xx hardware can be found on i.MX8M{M,N,P} SoCs and always come
+with a 6-bit pre-divider. Neither the reference manuals nor the
+datasheets of these SoCs do mention any restrictions. Furthermore the
+current code doesn't respect the restrictions from the comment too.
 
-Use RMW capability accessors which do proper locking to avoid losing
-concurrent updates to the register value.
+Therefore drop the restriction and align the max pre-divider (pdiv)
+value to 63 to get more accurate frequencies.
 
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: eabe8e5e88f5 ("net/mlx5: Handle sync reset now event")
-Link: https://lore.kernel.org/r/20230717120503.15276-8-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20230807084744.1184791-1-m.felsch@pengutronix.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/clk/imx/clk-pll14xx.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-index e29db4c39b37f..a2d9904e10492 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-@@ -279,16 +279,11 @@ static int mlx5_pci_link_toggle(struct mlx5_core_dev *dev)
- 		pci_cfg_access_lock(sdev);
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -137,11 +137,10 @@ static void imx_pll14xx_calc_settings(st
+ 	/*
+ 	 * Fractional PLL constrains:
+ 	 *
+-	 * a) 6MHz <= prate <= 25MHz
+-	 * b) 1 <= p <= 63 (1 <= p <= 4 prate = 24MHz)
+-	 * c) 64 <= m <= 1023
+-	 * d) 0 <= s <= 6
+-	 * e) -32768 <= k <= 32767
++	 * a) 1 <= p <= 63
++	 * b) 64 <= m <= 1023
++	 * c) 0 <= s <= 6
++	 * d) -32768 <= k <= 32767
+ 	 *
+ 	 * fvco = (m * 65536 + k) * prate / (p * 65536)
+ 	 */
+@@ -184,7 +183,7 @@ static void imx_pll14xx_calc_settings(st
  	}
- 	/* PCI link toggle */
--	err = pci_read_config_word(bridge, cap + PCI_EXP_LNKCTL, &reg16);
--	if (err)
--		return err;
--	reg16 |= PCI_EXP_LNKCTL_LD;
--	err = pci_write_config_word(bridge, cap + PCI_EXP_LNKCTL, reg16);
-+	err = pcie_capability_set_word(bridge, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_LD);
- 	if (err)
- 		return err;
- 	msleep(500);
--	reg16 &= ~PCI_EXP_LNKCTL_LD;
--	err = pci_write_config_word(bridge, cap + PCI_EXP_LNKCTL, reg16);
-+	err = pcie_capability_clear_word(bridge, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_LD);
- 	if (err)
- 		return err;
  
--- 
-2.40.1
-
+ 	/* Finally calculate best values */
+-	for (pdiv = 1; pdiv <= 7; pdiv++) {
++	for (pdiv = 1; pdiv <= 63; pdiv++) {
+ 		for (sdiv = 0; sdiv <= 6; sdiv++) {
+ 			/* calc mdiv = round(rate * pdiv * 2^sdiv) / prate) */
+ 			mdiv = DIV_ROUND_CLOSEST(rate * (pdiv << sdiv), prate);
 
 
