@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 797C27A39A9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC137A388E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240114AbjIQTxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45792 "EHLO
+        id S239794AbjIQThI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240182AbjIQTws (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:48 -0400
+        with ESMTP id S239880AbjIQTg4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09031195
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A900C433C9;
-        Sun, 17 Sep 2023 19:52:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1565912F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9D0C433C8;
+        Sun, 17 Sep 2023 19:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980323;
-        bh=59OISQo5yJm9nwZ+bUhiSNP5EokUGs98oC78DXua8lc=;
+        s=korg; t=1694979410;
+        bh=VO4WN7iS17w7MTqfu5J3rI432xG5e16RW9/vai78OkE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FipLwws+gCT8JLqBFked0Z0xCdt5giztplJSFS4ff+nAI/99Mp1huE7wJTFz2q87I
-         /AyEAr08m/BrrFCUpngbhSEwfcUWGluA/6uKG1Lvv5eyktCvhCxkhSK+urJbBNYlp8
-         rQP7cJ5UB++NVgDzDs7A86WsC0DTUvvbO/kN8aQc=
+        b=WCC3IOtSwY6fWAMH4GLRBOPLkvMAkg71DbBjvl/LuemvkEmyYY6aE2mha5E6bw8cY
+         3O++JyEEc0j9vswCP4o4lfLAkBvIYX1xRc+LhFzSHNZiwsF0ncGG3gyKCiaFuW55mJ
+         ZKfAR+Z/YyA1C3QoEGxXunDMhZ8Mx0EuMdGlGAww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 158/285] bpf: Assign bpf_tramp_run_ctx::saved_run_ctx before recursion check.
+        patches@lists.linux.dev, RD Babiera <rdbabiera@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 304/406] usb: typec: bus: verify partner exists in typec_altmode_attention
 Date:   Sun, 17 Sep 2023 21:12:38 +0200
-Message-ID: <20230917191057.146769732@linuxfoundation.org>
+Message-ID: <20230917191109.335142835@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,75 +50,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 6764e767f4af1e35f87f3497e1182d945de37f93 ]
+commit f23643306430f86e2f413ee2b986e0773e79da31 upstream.
 
-__bpf_prog_enter_recur() assigns bpf_tramp_run_ctx::saved_run_ctx before
-performing the recursion check which means in case of a recursion
-__bpf_prog_exit_recur() uses the previously set bpf_tramp_run_ctx::saved_run_ctx
-value.
+Some usb hubs will negotiate DisplayPort Alt mode with the device
+but will then negotiate a data role swap after entering the alt
+mode. The data role swap causes the device to unregister all alt
+modes, however the usb hub will still send Attention messages
+even after failing to reregister the Alt Mode. type_altmode_attention
+currently does not verify whether or not a device's altmode partner
+exists, which results in a NULL pointer error when dereferencing
+the typec_altmode and typec_altmode_ops belonging to the altmode
+partner.
 
-__bpf_prog_enter_sleepable_recur() assigns bpf_tramp_run_ctx::saved_run_ctx
-after the recursion check which means in case of a recursion
-__bpf_prog_exit_sleepable_recur() uses an uninitialized value. This does not
-look right. If I read the entry trampoline code right, then bpf_tramp_run_ctx
-isn't initialized upfront.
+Verify the presence of a device's altmode partner before sending
+the Attention message to the Alt Mode driver.
 
-Align __bpf_prog_enter_sleepable_recur() with __bpf_prog_enter_recur() and
-set bpf_tramp_run_ctx::saved_run_ctx before the recursion check is made.
-Remove the assignment of saved_run_ctx in kern_sys_bpf() since it happens
-a few cycles later.
-
-Fixes: e384c7b7b46d0 ("bpf, x86: Create bpf_tramp_run_ctx on the caller thread's stack")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20230830080405.251926-3-bigeasy@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230814180559.923475-1-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/syscall.c    | 1 -
- kernel/bpf/trampoline.c | 5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/usb/typec/bus.c           |   12 ++++++++++--
+ drivers/usb/typec/tcpm/tcpm.c     |    3 ++-
+ include/linux/usb/typec_altmode.h |    2 +-
+ 3 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index c925c270ed8b4..1480b6cf12f06 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -5304,7 +5304,6 @@ int kern_sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
- 		}
- 
- 		run_ctx.bpf_cookie = 0;
--		run_ctx.saved_run_ctx = NULL;
- 		if (!__bpf_prog_enter_sleepable_recur(prog, &run_ctx)) {
- 			/* recursion detected */
- 			__bpf_prog_exit_sleepable_recur(prog, 0, &run_ctx);
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 78acf28d48732..53ff50cac61ea 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -926,13 +926,12 @@ u64 notrace __bpf_prog_enter_sleepable_recur(struct bpf_prog *prog,
- 	migrate_disable();
- 	might_fault();
- 
-+	run_ctx->saved_run_ctx = bpf_set_run_ctx(&run_ctx->run_ctx);
+--- a/drivers/usb/typec/bus.c
++++ b/drivers/usb/typec/bus.c
+@@ -152,12 +152,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
+  *
+  * Notifies the partner of @adev about Attention command.
+  */
+-void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
++int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+ {
+-	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
++	struct altmode *partner = to_altmode(adev)->partner;
++	struct typec_altmode *pdev;
 +
- 	if (unlikely(this_cpu_inc_return(*(prog->active)) != 1)) {
- 		bpf_prog_inc_misses_counter(prog);
- 		return 0;
- 	}
--
--	run_ctx->saved_run_ctx = bpf_set_run_ctx(&run_ctx->run_ctx);
--
- 	return bpf_prog_start_time();
- }
++	if (!partner)
++		return -ENODEV;
++
++	pdev = &partner->adev;
  
--- 
-2.40.1
-
+ 	if (pdev->ops && pdev->ops->attention)
+ 		pdev->ops->attention(pdev, vdo);
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(typec_altmode_attention);
+ 
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1395,7 +1395,8 @@ static void tcpm_handle_vdm_request(stru
+ 			}
+ 			break;
+ 		case ADEV_ATTENTION:
+-			typec_altmode_attention(adev, p[1]);
++			if (typec_altmode_attention(adev, p[1]))
++				tcpm_log(port, "typec_altmode_attention no port partner altmode");
+ 			break;
+ 		}
+ 	}
+--- a/include/linux/usb/typec_altmode.h
++++ b/include/linux/usb/typec_altmode.h
+@@ -67,7 +67,7 @@ struct typec_altmode_ops {
+ 
+ int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
+ int typec_altmode_exit(struct typec_altmode *altmode);
+-void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
++int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
+ int typec_altmode_vdm(struct typec_altmode *altmode,
+ 		      const u32 header, const u32 *vdo, int count);
+ int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
 
 
