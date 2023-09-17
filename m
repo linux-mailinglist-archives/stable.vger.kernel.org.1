@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0C87A3963
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8F07A3962
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231801AbjIQTss (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240022AbjIQTss (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35602 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240030AbjIQTsR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:17 -0400
+        with ESMTP id S240074AbjIQTsV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E194103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B7BC433C8;
-        Sun, 17 Sep 2023 19:48:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF99A13E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8E2C433CB;
+        Sun, 17 Sep 2023 19:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980092;
-        bh=8spf1Z7nStUcyCQubNjmZn9yNMCKC2ROjDyovcJwQBw=;
+        s=korg; t=1694980095;
+        bh=hTOAsfiY43lOyOlS24RxzyU7xwTUPzYWIHy0q4+sDzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h4ZEy9Rn7J14ong1lAshrN3v+sgYyL5E80igLUvgxtC525gQyAtfSXToUWvu5RHoi
-         JrOvxaShX1oe1ztN3VX6nS0yl1hQpFLgehm+Lf0SN1N5oDZobIoZQp1e6ZZE2iWxtw
-         tHb/GSDGcbxqwEG1cnq/QLu0VWk09CRqpAAIcn4s=
+        b=AYbQJ29nzHOTub0jtA//oqyFIPI5N8YelI0CTZVKbFh1cEpeIxnNFowqjDOIeMNAa
+         gF8AAGHDkqkFukIHMyfAqF/di/kn+d4VYM2Stfawv+2ESf9IwTTMz2/nUf6yhcuzP4
+         AYTIZiw2pSYgzupV1egY/A4B8tH3VU1e3MzDUpyM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 068/285] pwm: atmel-tcb: Fix resource freeing in error path and remove
-Date:   Sun, 17 Sep 2023 21:11:08 +0200
-Message-ID: <20230917191054.073666441@linuxfoundation.org>
+        patches@lists.linux.dev, Artur Weber <aweber.kernel@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 069/285] backlight: lp855x: Initialize PWM state on first brightness change
+Date:   Sun, 17 Sep 2023 21:11:09 +0200
+Message-ID: <20230917191054.111835571@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -58,85 +55,89 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit c11622324c023415fb69196c5fc3782d2b8cced0 ]
+[ Upstream commit 4c09e20b3c85f60353ace21092e34f35f5e3ab00 ]
 
-Several resources were not freed in the error path and the remove
-function. Add the forgotten items.
+As pointed out by Uwe Kleine-König[1], the changes introduced in
+commit c1ff7da03e16 ("video: backlight: lp855x: Get PWM for PWM mode
+during probe") caused the PWM state set up by the bootloader to be
+re-set when the driver is probed. This differs from the behavior from
+before that patch, where the PWM state would be initialized on the
+first brightness change.
 
-Fixes: 34cbcd72588f ("pwm: atmel-tcb: Add sama5d2 support")
-Fixes: 061f8572a31c ("pwm: atmel-tcb: Switch to new binding")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Fix this by moving the PWM state initialization into the PWM control
+function. Add a new variable, needs_pwm_init, to the device info struct
+to allow us to check whether we need the initialization, or whether it
+has already been done.
+
+[1] https://lore.kernel.org/lkml/20230614083953.e4kkweddjz7wztby@pengutronix.de/
+
+Fixes: c1ff7da03e16 ("video: backlight: lp855x: Get PWM for PWM mode during probe")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://lore.kernel.org/r/20230714121440.7717-2-aweber.kernel@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/video/backlight/lp855x_bl.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index 613dd1810fb53..2826fc216d291 100644
---- a/drivers/pwm/pwm-atmel-tcb.c
-+++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -450,16 +450,20 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
- 	tcbpwm->clk = of_clk_get_by_name(np->parent, clk_name);
- 	if (IS_ERR(tcbpwm->clk))
- 		tcbpwm->clk = of_clk_get_by_name(np->parent, "t0_clk");
--	if (IS_ERR(tcbpwm->clk))
--		return PTR_ERR(tcbpwm->clk);
-+	if (IS_ERR(tcbpwm->clk)) {
-+		err = PTR_ERR(tcbpwm->clk);
-+		goto err_slow_clk;
+diff --git a/drivers/video/backlight/lp855x_bl.c b/drivers/video/backlight/lp855x_bl.c
+index 1c9e921bca14a..349ec324bc1ea 100644
+--- a/drivers/video/backlight/lp855x_bl.c
++++ b/drivers/video/backlight/lp855x_bl.c
+@@ -71,6 +71,7 @@ struct lp855x {
+ 	struct device *dev;
+ 	struct lp855x_platform_data *pdata;
+ 	struct pwm_device *pwm;
++	bool needs_pwm_init;
+ 	struct regulator *supply;	/* regulator for VDD input */
+ 	struct regulator *enable;	/* regulator for EN/VDDIO input */
+ };
+@@ -220,7 +221,15 @@ static void lp855x_pwm_ctrl(struct lp855x *lp, int br, int max_br)
+ {
+ 	struct pwm_state state;
+ 
+-	pwm_get_state(lp->pwm, &state);
++	if (lp->needs_pwm_init) {
++		pwm_init_state(lp->pwm, &state);
++		/* Legacy platform data compatibility */
++		if (lp->pdata->period_ns > 0)
++			state.period = lp->pdata->period_ns;
++		lp->needs_pwm_init = false;
++	} else {
++		pwm_get_state(lp->pwm, &state);
 +	}
  
- 	match = of_match_node(atmel_tcb_of_match, np->parent);
- 	config = match->data;
+ 	state.duty_cycle = div_u64(br * state.period, max_br);
+ 	state.enabled = state.duty_cycle;
+@@ -387,7 +396,6 @@ static int lp855x_probe(struct i2c_client *cl)
+ 	const struct i2c_device_id *id = i2c_client_get_device_id(cl);
+ 	const struct acpi_device_id *acpi_id = NULL;
+ 	struct device *dev = &cl->dev;
+-	struct pwm_state pwmstate;
+ 	struct lp855x *lp;
+ 	int ret;
  
- 	if (config->has_gclk) {
- 		tcbpwm->gclk = of_clk_get_by_name(np->parent, "gclk");
--		if (IS_ERR(tcbpwm->gclk))
--			return PTR_ERR(tcbpwm->gclk);
-+		if (IS_ERR(tcbpwm->gclk)) {
-+			err = PTR_ERR(tcbpwm->gclk);
-+			goto err_clk;
-+		}
+@@ -470,15 +478,11 @@ static int lp855x_probe(struct i2c_client *cl)
+ 		else
+ 			return dev_err_probe(dev, ret, "getting PWM\n");
+ 
++		lp->needs_pwm_init = false;
+ 		lp->mode = REGISTER_BASED;
+ 		dev_dbg(dev, "mode: register based\n");
+ 	} else {
+-		pwm_init_state(lp->pwm, &pwmstate);
+-		/* Legacy platform data compatibility */
+-		if (lp->pdata->period_ns > 0)
+-			pwmstate.period = lp->pdata->period_ns;
+-		pwm_apply_state(lp->pwm, &pwmstate);
+-
++		lp->needs_pwm_init = true;
+ 		lp->mode = PWM_BASED;
+ 		dev_dbg(dev, "mode: PWM based\n");
  	}
- 
- 	tcbpwm->chip.dev = &pdev->dev;
-@@ -470,7 +474,7 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
- 
- 	err = clk_prepare_enable(tcbpwm->slow_clk);
- 	if (err)
--		goto err_slow_clk;
-+		goto err_gclk;
- 
- 	spin_lock_init(&tcbpwm->lock);
- 
-@@ -485,6 +489,12 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
- err_disable_clk:
- 	clk_disable_unprepare(tcbpwm->slow_clk);
- 
-+err_gclk:
-+	clk_put(tcbpwm->gclk);
-+
-+err_clk:
-+	clk_put(tcbpwm->clk);
-+
- err_slow_clk:
- 	clk_put(tcbpwm->slow_clk);
- 
-@@ -498,8 +508,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
- 	pwmchip_remove(&tcbpwm->chip);
- 
- 	clk_disable_unprepare(tcbpwm->slow_clk);
--	clk_put(tcbpwm->slow_clk);
-+	clk_put(tcbpwm->gclk);
- 	clk_put(tcbpwm->clk);
-+	clk_put(tcbpwm->slow_clk);
- }
- 
- static const struct of_device_id atmel_tcb_pwm_dt_ids[] = {
 -- 
 2.40.1
 
