@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4787B7A38B5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5F07A39E0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239834AbjIQTjP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57024 "EHLO
+        id S240177AbjIQTzp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239885AbjIQTjG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:06 -0400
+        with ESMTP id S240211AbjIQTzU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80DA9103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE50BC433C8;
-        Sun, 17 Sep 2023 19:38:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B33EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF453C433CA;
+        Sun, 17 Sep 2023 19:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979540;
-        bh=RJFIzkRUrCmpEcAQHiP/V1ejHKDyYaKgq7yeiJhTQQY=;
+        s=korg; t=1694980515;
+        bh=lzsh/iWyxPdIxUZ4801aGLJJEoa2VsjQWVD9sfVhbmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hhhaGz3UDHu8g2OAvygCFcTRxpUNaB/GuSl/5OQ+hK96uVTIPJab9ZUgsTHuK1GlB
-         oiD7MGRihaCuxbG15yZiagi5n/qdhUPQzpPjRyv84nM01RdSZqIw52e6nsSOnnCc3f
-         zj5PX5lsEpnY9opK1Lf3eYH1XPTpzGMYTJmiAxp0=
+        b=Fo4ksa1lMe1GVCpsdcQZcN9DEXrkTsyqth8GiQh4I81fNKZfYpZPLKWAx0GNjlznO
+         5kE/zW+M9d/qaj5/EkkQ32RqiOkZJO2LCSpGW/coUix7EMr8bdRDm+tSfnN2NfD92b
+         heUJdfdOfIM09OnMH+SXNQZd78AQawJ/dFs5AsMs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 343/406] ipv4: annotate data-races around fi->fib_dead
+        patches@lists.linux.dev, Werner Fischer <devlists@wefi.net>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.5 197/285] ata: ahci: Add Elkhart Lake AHCI controller
 Date:   Sun, 17 Sep 2023 21:13:17 +0200
-Message-ID: <20230917191110.335461820@linuxfoundation.org>
+Message-ID: <20230917191058.405406596@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,140 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Werner Fischer <devlists@wefi.net>
 
-[ Upstream commit fce92af1c29d90184dfec638b5738831097d66e9 ]
+commit 2a2df98ec592667927b5c1351afa6493ea125c9f upstream.
 
-syzbot complained about a data-race in fib_table_lookup() [1]
+Elkhart Lake is the successor of Apollo Lake and Gemini Lake. These
+CPUs and their PCHs are used in mobile and embedded environments.
 
-Add appropriate annotations to document it.
+With this patch I suggest that Elkhart Lake SATA controllers [1] should
+use the default LPM policy for mobile chipsets.
+The disadvantage of missing hot-plug support with this setting should
+not be an issue, as those CPUs are used in embedded environments and
+not in servers with hot-plug backplanes.
 
-[1]
-BUG: KCSAN: data-race in fib_release_info / fib_table_lookup
+We discovered that the Elkhart Lake SATA controllers have been missing
+in ahci.c after a customer reported the throttling of his SATA SSD
+after a short period of higher I/O. We determined the high temperature
+of the SSD controller in idle mode as the root cause for that.
 
-write to 0xffff888150f31744 of 1 bytes by task 1189 on cpu 0:
-fib_release_info+0x3a0/0x460 net/ipv4/fib_semantics.c:281
-fib_table_delete+0x8d2/0x900 net/ipv4/fib_trie.c:1777
-fib_magic+0x1c1/0x1f0 net/ipv4/fib_frontend.c:1106
-fib_del_ifaddr+0x8cf/0xa60 net/ipv4/fib_frontend.c:1317
-fib_inetaddr_event+0x77/0x200 net/ipv4/fib_frontend.c:1448
-notifier_call_chain kernel/notifier.c:93 [inline]
-blocking_notifier_call_chain+0x90/0x200 kernel/notifier.c:388
-__inet_del_ifa+0x4df/0x800 net/ipv4/devinet.c:432
-inet_del_ifa net/ipv4/devinet.c:469 [inline]
-inetdev_destroy net/ipv4/devinet.c:322 [inline]
-inetdev_event+0x553/0xaf0 net/ipv4/devinet.c:1606
-notifier_call_chain kernel/notifier.c:93 [inline]
-raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1962 [inline]
-call_netdevice_notifiers_mtu+0xd2/0x130 net/core/dev.c:2037
-dev_set_mtu_ext+0x30b/0x3e0 net/core/dev.c:8673
-do_setlink+0x5be/0x2430 net/core/rtnetlink.c:2837
-rtnl_setlink+0x255/0x300 net/core/rtnetlink.c:3177
-rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6445
-netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2549
-rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6463
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1914
-sock_sendmsg_nosec net/socket.c:725 [inline]
-sock_sendmsg net/socket.c:748 [inline]
-sock_write_iter+0x1aa/0x230 net/socket.c:1129
-do_iter_write+0x4b4/0x7b0 fs/read_write.c:860
-vfs_writev+0x1a8/0x320 fs/read_write.c:933
-do_writev+0xf8/0x220 fs/read_write.c:976
-__do_sys_writev fs/read_write.c:1049 [inline]
-__se_sys_writev fs/read_write.c:1046 [inline]
-__x64_sys_writev+0x45/0x50 fs/read_write.c:1046
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Depending on the used SSD, we have seen up to 1.8 Watt lower system
+idle power usage and up to 30°C lower SSD controller temperatures in
+our tests, when we set med_power_with_dipm manually. I have provided a
+table showing seven different SATA SSDs from ATP, Intel/Solidigm and
+Samsung [2].
 
-read to 0xffff888150f31744 of 1 bytes by task 21839 on cpu 1:
-fib_table_lookup+0x2bf/0xd50 net/ipv4/fib_trie.c:1585
-fib_lookup include/net/ip_fib.h:383 [inline]
-ip_route_output_key_hash_rcu+0x38c/0x12c0 net/ipv4/route.c:2751
-ip_route_output_key_hash net/ipv4/route.c:2641 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2869
-send4+0x1e7/0x500 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work+0x434/0x860 kernel/workqueue.c:2600
-worker_thread+0x5f2/0xa10 kernel/workqueue.c:2751
-kthread+0x1d7/0x210 kernel/kthread.c:389
-ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+Intel lists a total of 3 SATA controller IDs (4B60, 4B62, 4B63) in [1]
+for those mobile PCHs.
+This commit just adds 0x4b63 as I do not have test systems with 0x4b60
+and 0x4b62 SATA controllers.
+I have tested this patch with a system which uses 0x4b63 as SATA
+controller.
 
-value changed: 0x00 -> 0x01
+[1] https://sata-io.org/product/8803
+[2] https://www.thomas-krenn.com/en/wiki/SATA_Link_Power_Management#Example_LES_v4
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 21839 Comm: kworker/u4:18 Tainted: G W 6.5.0-syzkaller #0
-
-Fixes: dccd9ecc3744 ("ipv4: Do not use dead fib_info entries.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230830095520.1046984-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Werner Fischer <devlists@wefi.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fib_semantics.c | 5 ++++-
- net/ipv4/fib_trie.c      | 3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/ata/ahci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 4e94796ccdbd1..ed20d6ac10dc2 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -278,7 +278,8 @@ void fib_release_info(struct fib_info *fi)
- 				hlist_del(&nexthop_nh->nh_hash);
- 			} endfor_nexthops(fi)
- 		}
--		fi->fib_dead = 1;
-+		/* Paired with READ_ONCE() from fib_table_lookup() */
-+		WRITE_ONCE(fi->fib_dead, 1);
- 		fib_info_put(fi);
- 	}
- 	spin_unlock_bh(&fib_info_lock);
-@@ -1599,6 +1600,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
- link_it:
- 	ofi = fib_find_info(fi);
- 	if (ofi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
- 		ofi->fib_treeref++;
-@@ -1637,6 +1639,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -421,6 +421,8 @@ static const struct pci_device_id ahci_p
+ 	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_low_power }, /* Ice Lake LP AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_low_power }, /* Comet Lake PCH-U AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_low_power }, /* Comet Lake PCH RAID */
++	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
++	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_low_power }, /* Elkhart Lake AHCI */
  
- failure:
- 	if (fi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
- 	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index d11fb16234a6a..456240d2adc11 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1534,7 +1534,8 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
- 		}
- 		if (fa->fa_tos && fa->fa_tos != flp->flowi4_tos)
- 			continue;
--		if (fi->fib_dead)
-+		/* Paired with WRITE_ONCE() in fib_release_info() */
-+		if (READ_ONCE(fi->fib_dead))
- 			continue;
- 		if (fa->fa_info->fib_scope < flp->flowi4_scope)
- 			continue;
--- 
-2.40.1
-
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
+ 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
 
 
