@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B14AC7A3B0B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA057A3CFD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240498AbjIQUMS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
+        id S241193AbjIQUhz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240609AbjIQULx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:53 -0400
+        with ESMTP id S241199AbjIQUhk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217D9138
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264F1C433C9;
-        Sun, 17 Sep 2023 20:11:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B7210F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894F3C433C9;
+        Sun, 17 Sep 2023 20:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981499;
-        bh=KoRGFtKAHV7RcqLMWUdprxAQ0nprA+K5PC9IMuK9/Aw=;
+        s=korg; t=1694983055;
+        bh=7uH/qq8VLOiF/0vLOzykWm45WKF3kYKYmFRriAp1L2k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uKguA8dsZrTCA7d2YQjBH8Go2mkrg8TMvhdGLZbVe3tt4mwDGxMvKvbcaFlIXnllO
-         Iyb5v/aWPgeVQB154C5JGItrckt7pwKZaGJG7PicGtkXTZ623rD1DmI6ponfezNIyz
-         /4yGKVW/5S262yuydeV/pmgvBlZ+TfbZVDjqFJ9Y=
+        b=IMrrvX7eNR4+h9UxpGSiDCT8/0dwDWvz39qnj4JVThkjYhoAmYDumH0rYtPkNFJ3n
+         PxA5uiEti0Pxl1hw5kU1bXpWMSF9vjwzgkvs/wG3kne40mjTCpyPro+K2ckIluKXSZ
+         JYDmad4qGZLuUOS10WZO0UrGQ7MjuEoVmBHiXFlY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/219] net: hns3: fix invalid mutex between tc qdisc and dcb ets command issue
+Subject: [PATCH 5.15 432/511] ceph: make members in struct ceph_mds_request_args_ext a union
 Date:   Sun, 17 Sep 2023 21:14:19 +0200
-Message-ID: <20230917191045.759493622@linuxfoundation.org>
+Message-ID: <20230917191124.197154600@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,154 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit fa5564945f7d15ae2390b00c08b6abaef0165cda ]
+[ Upstream commit 3af5ae22030cb59fab4fba35f5a2b62f47e14df9 ]
 
-We hope that tc qdisc and dcb ets commands can not be used crosswise.
-If we want to use any of the commands to configure tc,
-We must use the other command to clear the existing configuration.
+In ceph mainline it will allow to set the btime in the setattr request
+and just add a 'btime' member in the union 'ceph_mds_request_args' and
+then bump up the header version to 4. That means the total size of union
+'ceph_mds_request_args' will increase sizeof(struct ceph_timespec) bytes,
+but in kclient it will increase the sizeof(setattr_ext) bytes for each
+request.
 
-However, when we configure a single tc with tc qdisc,
-we can still configure it with dcb ets.
-Because we use mqprio_active as the tag of tc qdisc configuration,
-but with dcb ets, we do not check mqprio_active.
+Since the MDS will always depend on the header's vesion and front_len
+members to decode the 'ceph_mds_request_head' struct, at the same time
+kclient hasn't supported the 'btime' feature yet in setattr request,
+so it's safe to do this change here.
 
-This patch fix this issue by check mqprio_active before
-executing the dcb ets command. and add dcb_ets_active to
-replace HCLGE_FLAG_DCB_ENABLE and HCLGE_FLAG_MQPRIO_ENABLE
-at the hclge layer,
+This will save 48 bytes memories for each request.
 
-Fixes: cacde272dd00 ("net: hns3: Add hclge_dcb module for the support of DCB feature")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4f1ddb1ea874 ("ceph: implement updated ceph_mds_request_head structure")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  1 +
- .../hisilicon/hns3/hns3pf/hclge_dcb.c         | 20 +++++--------------
- .../hisilicon/hns3/hns3pf/hclge_main.c        |  5 +++--
- .../hisilicon/hns3/hns3pf/hclge_main.h        |  2 --
- 4 files changed, 9 insertions(+), 19 deletions(-)
+ include/linux/ceph/ceph_fs.h | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index fcb8b6dc5ab92..c693bb701ba3e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -797,6 +797,7 @@ struct hnae3_tc_info {
- 	u8 max_tc; /* Total number of TCs */
- 	u8 num_tc; /* Total number of enabled TCs */
- 	bool mqprio_active;
-+	bool dcb_ets_active;
+diff --git a/include/linux/ceph/ceph_fs.h b/include/linux/ceph/ceph_fs.h
+index bc2699feddbeb..8038279a14fa0 100644
+--- a/include/linux/ceph/ceph_fs.h
++++ b/include/linux/ceph/ceph_fs.h
+@@ -459,17 +459,19 @@ union ceph_mds_request_args {
+ } __attribute__ ((packed));
+ 
+ union ceph_mds_request_args_ext {
+-	union ceph_mds_request_args old;
+-	struct {
+-		__le32 mode;
+-		__le32 uid;
+-		__le32 gid;
+-		struct ceph_timespec mtime;
+-		struct ceph_timespec atime;
+-		__le64 size, old_size;       /* old_size needed by truncate */
+-		__le32 mask;                 /* CEPH_SETATTR_* */
+-		struct ceph_timespec btime;
+-	} __attribute__ ((packed)) setattr_ext;
++	union {
++		union ceph_mds_request_args old;
++		struct {
++			__le32 mode;
++			__le32 uid;
++			__le32 gid;
++			struct ceph_timespec mtime;
++			struct ceph_timespec atime;
++			__le64 size, old_size;       /* old_size needed by truncate */
++			__le32 mask;                 /* CEPH_SETATTR_* */
++			struct ceph_timespec btime;
++		} __attribute__ ((packed)) setattr_ext;
++	};
  };
  
- #define HNAE3_MAX_DSCP			64
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-index 09362823140d5..2740f0d703e4f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-@@ -251,7 +251,7 @@ static int hclge_ieee_setets(struct hnae3_handle *h, struct ieee_ets *ets)
- 	int ret;
- 
- 	if (!(hdev->dcbx_cap & DCB_CAP_DCBX_VER_IEEE) ||
--	    hdev->flag & HCLGE_FLAG_MQPRIO_ENABLE)
-+	    h->kinfo.tc_info.mqprio_active)
- 		return -EINVAL;
- 
- 	ret = hclge_ets_validate(hdev, ets, &num_tc, &map_changed);
-@@ -267,10 +267,7 @@ static int hclge_ieee_setets(struct hnae3_handle *h, struct ieee_ets *ets)
- 	}
- 
- 	hclge_tm_schd_info_update(hdev, num_tc);
--	if (num_tc > 1)
--		hdev->flag |= HCLGE_FLAG_DCB_ENABLE;
--	else
--		hdev->flag &= ~HCLGE_FLAG_DCB_ENABLE;
-+	h->kinfo.tc_info.dcb_ets_active = num_tc > 1;
- 
- 	ret = hclge_ieee_ets_to_tm_info(hdev, ets);
- 	if (ret)
-@@ -463,7 +460,7 @@ static u8 hclge_getdcbx(struct hnae3_handle *h)
- 	struct hclge_vport *vport = hclge_get_vport(h);
- 	struct hclge_dev *hdev = vport->back;
- 
--	if (hdev->flag & HCLGE_FLAG_MQPRIO_ENABLE)
-+	if (h->kinfo.tc_info.mqprio_active)
- 		return 0;
- 
- 	return hdev->dcbx_cap;
-@@ -587,7 +584,8 @@ static int hclge_setup_tc(struct hnae3_handle *h,
- 	if (!test_bit(HCLGE_STATE_NIC_REGISTERED, &hdev->state))
- 		return -EBUSY;
- 
--	if (hdev->flag & HCLGE_FLAG_DCB_ENABLE)
-+	kinfo = &vport->nic.kinfo;
-+	if (kinfo->tc_info.dcb_ets_active)
- 		return -EINVAL;
- 
- 	ret = hclge_mqprio_qopt_check(hdev, mqprio_qopt);
-@@ -601,7 +599,6 @@ static int hclge_setup_tc(struct hnae3_handle *h,
- 	if (ret)
- 		return ret;
- 
--	kinfo = &vport->nic.kinfo;
- 	memcpy(&old_tc_info, &kinfo->tc_info, sizeof(old_tc_info));
- 	hclge_sync_mqprio_qopt(&kinfo->tc_info, mqprio_qopt);
- 	kinfo->tc_info.mqprio_active = tc > 0;
-@@ -610,13 +607,6 @@ static int hclge_setup_tc(struct hnae3_handle *h,
- 	if (ret)
- 		goto err_out;
- 
--	hdev->flag &= ~HCLGE_FLAG_DCB_ENABLE;
--
--	if (tc > 1)
--		hdev->flag |= HCLGE_FLAG_MQPRIO_ENABLE;
--	else
--		hdev->flag &= ~HCLGE_FLAG_MQPRIO_ENABLE;
--
- 	return hclge_notify_init_up(hdev);
- 
- err_out:
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 84ecd8b9be48c..884e45fb6b72e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11132,6 +11132,7 @@ static void hclge_get_mdix_mode(struct hnae3_handle *handle,
- 
- static void hclge_info_show(struct hclge_dev *hdev)
- {
-+	struct hnae3_handle *handle = &hdev->vport->nic;
- 	struct device *dev = &hdev->pdev->dev;
- 
- 	dev_info(dev, "PF info begin:\n");
-@@ -11148,9 +11149,9 @@ static void hclge_info_show(struct hclge_dev *hdev)
- 	dev_info(dev, "This is %s PF\n",
- 		 hdev->flag & HCLGE_FLAG_MAIN ? "main" : "not main");
- 	dev_info(dev, "DCB %s\n",
--		 hdev->flag & HCLGE_FLAG_DCB_ENABLE ? "enable" : "disable");
-+		 handle->kinfo.tc_info.dcb_ets_active ? "enable" : "disable");
- 	dev_info(dev, "MQPRIO %s\n",
--		 hdev->flag & HCLGE_FLAG_MQPRIO_ENABLE ? "enable" : "disable");
-+		 handle->kinfo.tc_info.mqprio_active ? "enable" : "disable");
- 	dev_info(dev, "Default tx spare buffer size: %u\n",
- 		 hdev->tx_spare_buf_size);
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-index 13f23d606e77b..f6fef790e16c1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-@@ -916,8 +916,6 @@ struct hclge_dev {
- 
- #define HCLGE_FLAG_MAIN			BIT(0)
- #define HCLGE_FLAG_DCB_CAPABLE		BIT(1)
--#define HCLGE_FLAG_DCB_ENABLE		BIT(2)
--#define HCLGE_FLAG_MQPRIO_ENABLE	BIT(3)
- 	u32 flag;
- 
- 	u32 pkt_buf_size; /* Total pf buf size for tx/rx */
+ #define CEPH_MDS_FLAG_REPLAY		1 /* this is a replayed op */
 -- 
 2.40.1
 
