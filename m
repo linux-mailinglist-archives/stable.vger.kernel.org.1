@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 831B47A3A09
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B6237A38F1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240250AbjIQT5y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
+        id S239900AbjIQTnB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:43:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240263AbjIQT5b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:31 -0400
+        with ESMTP id S239995AbjIQTmg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6351FF3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1E5C433C8;
-        Sun, 17 Sep 2023 19:57:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35AB0196
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA4FC433CD;
+        Sun, 17 Sep 2023 19:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980646;
-        bh=gsRmCtZzBkkF+BVBc/EkuaSU+nBqxu1KsZ+wJHYi8/s=;
+        s=korg; t=1694979731;
+        bh=AIxl1nel51xCxSXTC+pkw4dKGzihcA3EbqdzsdYplHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MvzQBTC+Pa0xQ0oue1iinqCVvbyTBQMl8ol4wxW6IQxvyz1eMHzTwf6gsfbjlDkfi
-         CtIqX4/go7Cbo0xXn7G8rK/s9xi1WD13w9tX6peiea4VMgBeS0PaZVzaJCt4J6aKk/
-         cW25YkK8TmSOKL7dNNUhbKigc+JrHd21i1z+xZ5I=
+        b=KusAuyU3bSnP6tvUIb0e+zFugfz0fhlt7VRDVUkBKu5FyxHNkcPUuC70HjYwK+8EG
+         a1Tfaazo6Z3MiRn8FSi2i556GyZ/bep9LcKnPq9v/iP1WxnwI8ADogw9ffsxPU7l/p
+         rGM4FoZflUMqxH3XuEWyHKVfNieJIV+BYx0s2KPY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 252/285] octeontx2-pf: Fix page pool cache index corruption.
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+6f98de741f7dbbfc4ccb@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 398/406] kcm: Fix memory leak in error path of kcm_sendmsg()
 Date:   Sun, 17 Sep 2023 21:14:12 +0200
-Message-ID: <20230917191100.022023815@linuxfoundation.org>
+Message-ID: <20230917191111.771413618@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,287 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 88e69af061f2e061a68751ef9cad47a674527a1b ]
+[ Upstream commit c821a88bd720b0046433173185fd841a100d44ad ]
 
-The access to page pool `cache' array and the `count' variable
-is not locked. Page pool cache access is fine as long as there
-is only one consumer per pool.
+syzbot reported a memory leak like below:
 
-octeontx2 driver fills in rx buffers from page pool in NAPI context.
-If system is stressed and could not allocate buffers, refiiling work
-will be delegated to a delayed workqueue. This means that there are
-two cosumers to the page pool cache.
+BUG: memory leak
+unreferenced object 0xffff88810b088c00 (size 240):
+  comm "syz-executor186", pid 5012, jiffies 4294943306 (age 13.680s)
+  hex dump (first 32 bytes):
+    00 89 08 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff83e5d5ff>] __alloc_skb+0x1ef/0x230 net/core/skbuff.c:634
+    [<ffffffff84606e59>] alloc_skb include/linux/skbuff.h:1289 [inline]
+    [<ffffffff84606e59>] kcm_sendmsg+0x269/0x1050 net/kcm/kcmsock.c:815
+    [<ffffffff83e479c6>] sock_sendmsg_nosec net/socket.c:725 [inline]
+    [<ffffffff83e479c6>] sock_sendmsg+0x56/0xb0 net/socket.c:748
+    [<ffffffff83e47f55>] ____sys_sendmsg+0x365/0x470 net/socket.c:2494
+    [<ffffffff83e4c389>] ___sys_sendmsg+0xc9/0x130 net/socket.c:2548
+    [<ffffffff83e4c536>] __sys_sendmsg+0xa6/0x120 net/socket.c:2577
+    [<ffffffff84ad7bb8>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84ad7bb8>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Either workqueue or IRQ/NAPI can be run on other CPU. This will lead
-to lock less access, hence corruption of cache pool indexes.
+In kcm_sendmsg(), kcm_tx_msg(head)->last_skb is used as a cursor to append
+newly allocated skbs to 'head'. If some bytes are copied, an error occurred,
+and jumped to out_error label, 'last_skb' is left unmodified. A later
+kcm_sendmsg() will use an obsoleted 'last_skb' reference, corrupting the
+'head' frag_list and causing the leak.
 
-To fix this issue, NAPI is rescheduled from workqueue context to refill
-rx buffers.
+This patch fixes this issue by properly updating the last allocated skb in
+'last_skb'.
 
-Fixes: b2e3406a38f0 ("octeontx2-pf: Add support for page pool")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Reported-and-tested-by: syzbot+6f98de741f7dbbfc4ccb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6f98de741f7dbbfc4ccb
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/nic/cn10k.c    |  6 ++-
- .../ethernet/marvell/octeontx2/nic/cn10k.h    |  2 +-
- .../marvell/octeontx2/nic/otx2_common.c       | 43 +++----------------
- .../marvell/octeontx2/nic/otx2_common.h       |  3 +-
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  7 +--
- .../marvell/octeontx2/nic/otx2_txrx.c         | 30 ++++++++++---
- .../marvell/octeontx2/nic/otx2_txrx.h         |  4 +-
- 7 files changed, 44 insertions(+), 51 deletions(-)
+ net/kcm/kcmsock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-index 826f691de2595..a4a258da8dd59 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-@@ -107,12 +107,13 @@ int cn10k_sq_aq_init(void *dev, u16 qidx, u16 sqb_aura)
- }
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index 71608a6def988..fb025406ea567 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -1073,6 +1073,8 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
  
- #define NPA_MAX_BURST 16
--void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
-+int cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
- {
- 	struct otx2_nic *pfvf = dev;
-+	int cnt = cq->pool_ptrs;
- 	u64 ptrs[NPA_MAX_BURST];
--	int num_ptrs = 1;
- 	dma_addr_t bufptr;
-+	int num_ptrs = 1;
+ 	if (head != kcm->seq_skb)
+ 		kfree_skb(head);
++	else if (copied)
++		kcm_tx_msg(head)->last_skb = skb;
  
- 	/* Refill pool with new buffers */
- 	while (cq->pool_ptrs) {
-@@ -131,6 +132,7 @@ void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
- 			num_ptrs = 1;
- 		}
- 	}
-+	return cnt - cq->pool_ptrs;
- }
+ 	err = sk_stream_error(sk, msg->msg_flags, err);
  
- void cn10k_sqe_flush(void *dev, struct otx2_snd_queue *sq, int size, int qidx)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h
-index 8ae96815865e6..c1861f7de2545 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h
-@@ -24,7 +24,7 @@ static inline int mtu_to_dwrr_weight(struct otx2_nic *pfvf, int mtu)
- 	return weight;
- }
- 
--void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
-+int cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
- void cn10k_sqe_flush(void *dev, struct otx2_snd_queue *sq, int size, int qidx);
- int cn10k_sq_aq_init(void *dev, u16 qidx, u16 sqb_aura);
- int cn10k_lmtst_init(struct otx2_nic *pfvf);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index b9712040a0bc2..20ecc90d203e0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -573,20 +573,8 @@ int otx2_alloc_rbuf(struct otx2_nic *pfvf, struct otx2_pool *pool,
- int otx2_alloc_buffer(struct otx2_nic *pfvf, struct otx2_cq_queue *cq,
- 		      dma_addr_t *dma)
- {
--	if (unlikely(__otx2_alloc_rbuf(pfvf, cq->rbpool, dma))) {
--		struct refill_work *work;
--		struct delayed_work *dwork;
--
--		work = &pfvf->refill_wrk[cq->cq_idx];
--		dwork = &work->pool_refill_work;
--		/* Schedule a task if no other task is running */
--		if (!cq->refill_task_sched) {
--			cq->refill_task_sched = true;
--			schedule_delayed_work(dwork,
--					      msecs_to_jiffies(100));
--		}
-+	if (unlikely(__otx2_alloc_rbuf(pfvf, cq->rbpool, dma)))
- 		return -ENOMEM;
--	}
- 	return 0;
- }
- 
-@@ -1080,39 +1068,20 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
- static void otx2_pool_refill_task(struct work_struct *work)
- {
- 	struct otx2_cq_queue *cq;
--	struct otx2_pool *rbpool;
- 	struct refill_work *wrk;
--	int qidx, free_ptrs = 0;
- 	struct otx2_nic *pfvf;
--	dma_addr_t bufptr;
-+	int qidx;
- 
- 	wrk = container_of(work, struct refill_work, pool_refill_work.work);
- 	pfvf = wrk->pf;
- 	qidx = wrk - pfvf->refill_wrk;
- 	cq = &pfvf->qset.cq[qidx];
--	rbpool = cq->rbpool;
--	free_ptrs = cq->pool_ptrs;
- 
--	while (cq->pool_ptrs) {
--		if (otx2_alloc_rbuf(pfvf, rbpool, &bufptr)) {
--			/* Schedule a WQ if we fails to free atleast half of the
--			 * pointers else enable napi for this RQ.
--			 */
--			if (!((free_ptrs - cq->pool_ptrs) > free_ptrs / 2)) {
--				struct delayed_work *dwork;
--
--				dwork = &wrk->pool_refill_work;
--				schedule_delayed_work(dwork,
--						      msecs_to_jiffies(100));
--			} else {
--				cq->refill_task_sched = false;
--			}
--			return;
--		}
--		pfvf->hw_ops->aura_freeptr(pfvf, qidx, bufptr + OTX2_HEAD_ROOM);
--		cq->pool_ptrs--;
--	}
- 	cq->refill_task_sched = false;
-+
-+	local_bh_disable();
-+	napi_schedule(wrk->napi);
-+	local_bh_enable();
- }
- 
- int otx2_config_nix_queues(struct otx2_nic *pfvf)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index ba8091131ec08..0e81849db3538 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -301,6 +301,7 @@ struct flr_work {
- struct refill_work {
- 	struct delayed_work pool_refill_work;
- 	struct otx2_nic *pf;
-+	struct napi_struct *napi;
- };
- 
- /* PTPv2 originTimestamp structure */
-@@ -373,7 +374,7 @@ struct dev_hw_ops {
- 	int	(*sq_aq_init)(void *dev, u16 qidx, u16 sqb_aura);
- 	void	(*sqe_flush)(void *dev, struct otx2_snd_queue *sq,
- 			     int size, int qidx);
--	void	(*refill_pool_ptrs)(void *dev, struct otx2_cq_queue *cq);
-+	int	(*refill_pool_ptrs)(void *dev, struct otx2_cq_queue *cq);
- 	void	(*aura_freeptr)(void *dev, int aura, u64 buf);
- };
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 9551b422622a4..9ded98bb1c890 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1942,6 +1942,10 @@ int otx2_stop(struct net_device *netdev)
- 
- 	netif_tx_disable(netdev);
- 
-+	for (wrk = 0; wrk < pf->qset.cq_cnt; wrk++)
-+		cancel_delayed_work_sync(&pf->refill_wrk[wrk].pool_refill_work);
-+	devm_kfree(pf->dev, pf->refill_wrk);
-+
- 	otx2_free_hw_resources(pf);
- 	otx2_free_cints(pf, pf->hw.cint_cnt);
- 	otx2_disable_napi(pf);
-@@ -1949,9 +1953,6 @@ int otx2_stop(struct net_device *netdev)
- 	for (qidx = 0; qidx < netdev->num_tx_queues; qidx++)
- 		netdev_tx_reset_queue(netdev_get_tx_queue(netdev, qidx));
- 
--	for (wrk = 0; wrk < pf->qset.cq_cnt; wrk++)
--		cancel_delayed_work_sync(&pf->refill_wrk[wrk].pool_refill_work);
--	devm_kfree(pf->dev, pf->refill_wrk);
- 
- 	kfree(qset->sq);
- 	kfree(qset->cq);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index e369baf115301..e77d438489557 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -424,9 +424,10 @@ static int otx2_rx_napi_handler(struct otx2_nic *pfvf,
- 	return processed_cqe;
- }
- 
--void otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
-+int otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
- {
- 	struct otx2_nic *pfvf = dev;
-+	int cnt = cq->pool_ptrs;
- 	dma_addr_t bufptr;
- 
- 	while (cq->pool_ptrs) {
-@@ -435,6 +436,8 @@ void otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
- 		otx2_aura_freeptr(pfvf, cq->cq_idx, bufptr + OTX2_HEAD_ROOM);
- 		cq->pool_ptrs--;
- 	}
-+
-+	return cnt - cq->pool_ptrs;
- }
- 
- static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
-@@ -521,6 +524,7 @@ int otx2_napi_handler(struct napi_struct *napi, int budget)
- 	struct otx2_cq_queue *cq;
- 	struct otx2_qset *qset;
- 	struct otx2_nic *pfvf;
-+	int filled_cnt = -1;
- 
- 	cq_poll = container_of(napi, struct otx2_cq_poll, napi);
- 	pfvf = (struct otx2_nic *)cq_poll->dev;
-@@ -541,7 +545,7 @@ int otx2_napi_handler(struct napi_struct *napi, int budget)
- 	}
- 
- 	if (rx_cq && rx_cq->pool_ptrs)
--		pfvf->hw_ops->refill_pool_ptrs(pfvf, rx_cq);
-+		filled_cnt = pfvf->hw_ops->refill_pool_ptrs(pfvf, rx_cq);
- 	/* Clear the IRQ */
- 	otx2_write64(pfvf, NIX_LF_CINTX_INT(cq_poll->cint_idx), BIT_ULL(0));
- 
-@@ -561,9 +565,25 @@ int otx2_napi_handler(struct napi_struct *napi, int budget)
- 				otx2_config_irq_coalescing(pfvf, i);
- 		}
- 
--		/* Re-enable interrupts */
--		otx2_write64(pfvf, NIX_LF_CINTX_ENA_W1S(cq_poll->cint_idx),
--			     BIT_ULL(0));
-+		if (unlikely(!filled_cnt)) {
-+			struct refill_work *work;
-+			struct delayed_work *dwork;
-+
-+			work = &pfvf->refill_wrk[cq->cq_idx];
-+			dwork = &work->pool_refill_work;
-+			/* Schedule a task if no other task is running */
-+			if (!cq->refill_task_sched) {
-+				work->napi = napi;
-+				cq->refill_task_sched = true;
-+				schedule_delayed_work(dwork,
-+						      msecs_to_jiffies(100));
-+			}
-+		} else {
-+			/* Re-enable interrupts */
-+			otx2_write64(pfvf,
-+				     NIX_LF_CINTX_ENA_W1S(cq_poll->cint_idx),
-+				     BIT_ULL(0));
-+		}
- 	}
- 	return workdone;
- }
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-index 9e3bfbe5c4809..a82ffca8ce1b1 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-@@ -170,6 +170,6 @@ void cn10k_sqe_flush(void *dev, struct otx2_snd_queue *sq,
- 		     int size, int qidx);
- void otx2_sqe_flush(void *dev, struct otx2_snd_queue *sq,
- 		    int size, int qidx);
--void otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
--void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
-+int otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
-+int cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
- #endif /* OTX2_TXRX_H */
 -- 
 2.40.1
 
