@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A29417A3B65
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C267A3D3D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240685AbjIQURI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37874 "EHLO
+        id S239714AbjIQUke (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240704AbjIQUQu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:50 -0400
+        with ESMTP id S241252AbjIQUkI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF79F4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8601EC433C7;
-        Sun, 17 Sep 2023 20:16:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 306F710F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63076C433C9;
+        Sun, 17 Sep 2023 20:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981805;
-        bh=GPSb+Nd0EdalvzDR8d92eLBR6ccCaGZT2GR9tBUtixA=;
+        s=korg; t=1694983202;
+        bh=JE0kbxSbPjKa/tU1V5tOVtgE4R+vEBlw3AlCzFbTLP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1DuvuDt4UQjkW+81uc/IsRBvjC3Wr2mkZHtiffRshKJ3iNAQD7cfPt7gU9X57yOFE
-         QyIGOlWsOCoTEYhwtHW/PDD7Uz6+lO+xqnTYb8W49nNFbH8j3qTGSBCE9Obq+/6wh9
-         wYrCSUOgidVyiEdkQA3GYRwQtuiXamDblzinzZMI=
+        b=KVsw8aD1o31ny0yDZ0ZxIo6NnFzVd7m7HcLfSve2EUrAhIiO3FVfy2cN3iNaSGrNq
+         cP7sEqoVOm5u0Aqq26msl/uxZ3osZ1/9rlPqm1/80uZsv/R7IW7rCU3Jl7HdTyL5B1
+         +Cjy05pnwtQCBcjWeO0XwRqG75ppL8Kxi7B54jjo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 174/219] KVM: nSVM: Load L1s TSC multiplier based on L1 state, not L2 state
-Date:   Sun, 17 Sep 2023 21:15:01 +0200
-Message-ID: <20230917191047.276555428@linuxfoundation.org>
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 475/511] btrfs: dont start transaction when joining with TRANS_JOIN_NOSTART
+Date:   Sun, 17 Sep 2023 21:15:02 +0200
+Message-ID: <20230917191125.213641737@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,75 +49,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 0c94e2468491cbf0754f49a5136ab51294a96b69 upstream.
+commit 4490e803e1fe9fab8db5025e44e23b55df54078b upstream.
 
-When emulating nested VM-Exit, load L1's TSC multiplier if L1's desired
-ratio doesn't match the current ratio, not if the ratio L1 is using for
-L2 diverges from the default.  Functionally, the end result is the same
-as KVM will run L2 with L1's multiplier if L2's multiplier is the default,
-i.e. checking that L1's multiplier is loaded is equivalent to checking if
-L2 has a non-default multiplier.
+When joining a transaction with TRANS_JOIN_NOSTART, if we don't find a
+running transaction we end up creating one. This goes against the purpose
+of TRANS_JOIN_NOSTART which is to join a running transaction if its state
+is at or below the state TRANS_STATE_COMMIT_START, otherwise return an
+-ENOENT error and don't start a new transaction. So fix this to not create
+a new transaction if there's no running transaction at or below that
+state.
 
-However, the assertion that TSC scaling is exposed to L1 is flawed, as
-userspace can trigger the WARN at will by writing the MSR and then
-updating guest CPUID to hide the feature (modifying guest CPUID is
-allowed anytime before KVM_RUN).  E.g. hacking KVM's state_test
-selftest to do
-
-                vcpu_set_msr(vcpu, MSR_AMD64_TSC_RATIO, 0);
-                vcpu_clear_cpuid_feature(vcpu, X86_FEATURE_TSCRATEMSR);
-
-after restoring state in a new VM+vCPU yields an endless supply of:
-
-  ------------[ cut here ]------------
-  WARNING: CPU: 10 PID: 206939 at arch/x86/kvm/svm/nested.c:1105
-           nested_svm_vmexit+0x6af/0x720 [kvm_amd]
-  Call Trace:
-   nested_svm_exit_handled+0x102/0x1f0 [kvm_amd]
-   svm_handle_exit+0xb9/0x180 [kvm_amd]
-   kvm_arch_vcpu_ioctl_run+0x1eab/0x2570 [kvm]
-   kvm_vcpu_ioctl+0x4c9/0x5b0 [kvm]
-   ? trace_hardirqs_off+0x4d/0xa0
-   __se_sys_ioctl+0x7a/0xc0
-   __x64_sys_ioctl+0x21/0x30
-   do_syscall_64+0x41/0x90
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Unlike the nested VMRUN path, hoisting the svm->tsc_scaling_enabled check
-into the if-statement is wrong as KVM needs to ensure L1's multiplier is
-loaded in the above scenario.   Alternatively, the WARN_ON() could simply
-be deleted, but that would make KVM's behavior even more subtle, e.g. it's
-not immediately obvious why it's safe to write MSR_AMD64_TSC_RATIO when
-checking only tsc_ratio_msr.
-
-Fixes: 5228eb96a487 ("KVM: x86: nSVM: implement nested TSC scaling")
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230729011608.1065019-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+CC: stable@vger.kernel.org # 4.14+
+Fixes: a6d155d2e363 ("Btrfs: fix deadlock between fiemap and transaction commits")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/transaction.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1021,8 +1021,8 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 		vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
- 	}
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -311,10 +311,11 @@ loop:
+ 	spin_unlock(&fs_info->trans_lock);
  
--	if (svm->tsc_ratio_msr != kvm_caps.default_tsc_scaling_ratio) {
--		WARN_ON(!svm->tsc_scaling_enabled);
-+	if (kvm_caps.has_tsc_control &&
-+	    vcpu->arch.tsc_scaling_ratio != vcpu->arch.l1_tsc_scaling_ratio) {
- 		vcpu->arch.tsc_scaling_ratio = vcpu->arch.l1_tsc_scaling_ratio;
- 		__svm_write_tsc_multiplier(vcpu->arch.tsc_scaling_ratio);
- 	}
+ 	/*
+-	 * If we are ATTACH, we just want to catch the current transaction,
+-	 * and commit it. If there is no transaction, just return ENOENT.
++	 * If we are ATTACH or TRANS_JOIN_NOSTART, we just want to catch the
++	 * current transaction, and commit it. If there is no transaction, just
++	 * return ENOENT.
+ 	 */
+-	if (type == TRANS_ATTACH)
++	if (type == TRANS_ATTACH || type == TRANS_JOIN_NOSTART)
+ 		return -ENOENT;
+ 
+ 	/*
 
 
