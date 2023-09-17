@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FCFA7A3A86
+	by mail.lfdr.de (Postfix) with ESMTP id E541D7A3A88
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240375AbjIQUF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
+        id S240381AbjIQUF3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:05:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240443AbjIQUFL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:11 -0400
+        with ESMTP id S240448AbjIQUFT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE1597
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D217C433C7;
-        Sun, 17 Sep 2023 20:05:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F1DF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2359C433C8;
+        Sun, 17 Sep 2023 20:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981106;
-        bh=gSbxUM7Il9VzKi2xUBFiK7ne8jKvQ1ea6Pke4WTLAvg=;
+        s=korg; t=1694981113;
+        bh=2e4MDDlhhm0jF7NcLxFiVGaadbK1I5EZbYueXLelGac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HUYKDKds9hni6jgnTzzqkgixAKd5WlEeLpZhVeELsdO7MXZ6iLJJwPGNSV2WvZodq
-         PiXIPV7Th8u6zYi7AxzMyJx33DNL132xwQePR10V/cwN7OP0CRMgxQoILRN1AwVvvj
-         3oGyBbU0hQhbFaS1ylJCKpmYTm/yBsKuUxLdQmD8=
+        b=RbXmoNLxH+VQOARL2qz7DMGh4V6n7XwIt7zzNau2/7iYdDTxJdUFzfekPzd7wVv8Z
+         M8gNsFKHxK2urm8qy3x0u+RvYzuRhZ5/Geg8IeZJOfL1fAFhC0wxkw57fCL+MjJzqz
+         i8RxXrYTVPv4l6T+8hcnfh80qRNcBCzcsTtbJpJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
+        patches@lists.linux.dev, Nikolay Burykin <burikin@ivk.ru>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/511] media: pulse8-cec: handle possible ping error
-Date:   Sun, 17 Sep 2023 21:07:13 +0200
-Message-ID: <20230917191113.988000930@linuxfoundation.org>
+Subject: [PATCH 5.15 007/511] media: pci: cx23885: fix error handling for cx23885 ATSC boards
+Date:   Sun, 17 Sep 2023 21:07:14 +0200
+Message-ID: <20230917191114.011129284@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,40 +55,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Nikolay Burykin <burikin@ivk.ru>
 
-[ Upstream commit 92cbf865ea2e0f2997ff97815c6db182eb23df1b ]
+[ Upstream commit 4aaa96b59df5fac41ba891969df6b092061ea9d7 ]
 
-Handle (and warn about) possible error waiting for MSGCODE_PING result.
+After having been assigned to NULL value at cx23885-dvb.c:1202,
+pointer '0' is dereferenced at cx23885-dvb.c:2469.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Nikolay Burykin <burikin@ivk.ru>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/usb/pulse8/pulse8-cec.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/pci/cx23885/cx23885-dvb.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/media/cec/usb/pulse8/pulse8-cec.c b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-index 04b13cdc38d2c..ba67587bd43ec 100644
---- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
-+++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-@@ -809,8 +809,11 @@ static void pulse8_ping_eeprom_work_handler(struct work_struct *work)
- 
- 	mutex_lock(&pulse8->lock);
- 	cmd = MSGCODE_PING;
--	pulse8_send_and_wait(pulse8, &cmd, 1,
--			     MSGCODE_COMMAND_ACCEPTED, 0);
-+	if (pulse8_send_and_wait(pulse8, &cmd, 1,
-+				 MSGCODE_COMMAND_ACCEPTED, 0)) {
-+		dev_warn(pulse8->dev, "failed to ping EEPROM\n");
-+		goto unlock;
-+	}
- 
- 	if (pulse8->vers < 2)
- 		goto unlock;
+diff --git a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/cx23885-dvb.c
+index 45c2f4afceb82..9b437faf2c3f6 100644
+--- a/drivers/media/pci/cx23885/cx23885-dvb.c
++++ b/drivers/media/pci/cx23885/cx23885-dvb.c
+@@ -2459,16 +2459,10 @@ static int dvb_register(struct cx23885_tsport *port)
+ 			request_module("%s", info.type);
+ 			client_tuner = i2c_new_client_device(&dev->i2c_bus[1].i2c_adap, &info);
+ 			if (!i2c_client_has_driver(client_tuner)) {
+-				module_put(client_demod->dev.driver->owner);
+-				i2c_unregister_device(client_demod);
+-				port->i2c_client_demod = NULL;
+ 				goto frontend_detach;
+ 			}
+ 			if (!try_module_get(client_tuner->dev.driver->owner)) {
+ 				i2c_unregister_device(client_tuner);
+-				module_put(client_demod->dev.driver->owner);
+-				i2c_unregister_device(client_demod);
+-				port->i2c_client_demod = NULL;
+ 				goto frontend_detach;
+ 			}
+ 			port->i2c_client_tuner = client_tuner;
+@@ -2505,16 +2499,10 @@ static int dvb_register(struct cx23885_tsport *port)
+ 			request_module("%s", info.type);
+ 			client_tuner = i2c_new_client_device(&dev->i2c_bus[1].i2c_adap, &info);
+ 			if (!i2c_client_has_driver(client_tuner)) {
+-				module_put(client_demod->dev.driver->owner);
+-				i2c_unregister_device(client_demod);
+-				port->i2c_client_demod = NULL;
+ 				goto frontend_detach;
+ 			}
+ 			if (!try_module_get(client_tuner->dev.driver->owner)) {
+ 				i2c_unregister_device(client_tuner);
+-				module_put(client_demod->dev.driver->owner);
+-				i2c_unregister_device(client_demod);
+-				port->i2c_client_demod = NULL;
+ 				goto frontend_detach;
+ 			}
+ 			port->i2c_client_tuner = client_tuner;
 -- 
 2.40.1
 
