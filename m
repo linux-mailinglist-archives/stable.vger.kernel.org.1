@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E06AD7A392D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 407C97A392E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239989AbjIQTqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44088 "EHLO
+        id S239992AbjIQTqK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239956AbjIQTpg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:36 -0400
+        with ESMTP id S239969AbjIQTph (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C4D12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83325C433CC;
-        Sun, 17 Sep 2023 19:45:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD05EE7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3565C433C8;
+        Sun, 17 Sep 2023 19:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979929;
-        bh=tKcsJLhwgEPfznRGV6YxdNSIA5jBIWpd/YI3crS82Qc=;
+        s=korg; t=1694979932;
+        bh=Z5vACDYnhDiJvy+1UfnUT7QZfxfG31KrBRMU2TrcjGc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jA6PmdxSSb5BQGyyQVCE9TNJK63dWSm92SvjAO0qM0nsVMPHXmfRuT/ukOs1lYAlt
-         PvHBp26LfigMt6Dr3TDXt3mKKJdEHiMncCTmvdbNCOk7PhcP+HfHamqgHpHSjFlneE
-         18ON7UsfuhOzsvfLM4PMGC2XUV9bTsdOEPTjGCMg=
+        b=tYaTt8tJ7ZVkJ2icfxlEyaZc8dcAmS2Nvw2bOz07YyJ1M7P7TGuDIOVqZ7Ce96Kl8
+         Z7ZR1sH8XeOFqZ9pUmejilUuQu/2sHMK0xQrV5+2ch45MFkrvMNqTg/4VzPzHJsH3K
+         ZeCzTUUNTR7Of8QTr69mQeJtRO8SYn/uS3IIlui4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Johan Hovold <johan+linaro@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 048/285] clk: qcom: dispcc-sm8450: fix runtime PM imbalance on probe errors
-Date:   Sun, 17 Sep 2023 21:10:48 +0200
-Message-ID: <20230917191053.337193953@linuxfoundation.org>
+Subject: [PATCH 6.5 049/285] clk: qcom: dispcc-sm8550: fix runtime PM imbalance on probe errors
+Date:   Sun, 17 Sep 2023 21:10:49 +0200
+Message-ID: <20230917191053.375624870@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -57,28 +57,28 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-commit b0f3d01bda6c3f6f811e70f76d2040ae81f64565 upstream.
+commit acaf1b3296a504d4a61b685f78baae771421608d upstream.
 
 Make sure to decrement the runtime PM usage count before returning in
 case regmap initialisation fails.
 
-Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
-Cc: stable@vger.kernel.org      # 6.1
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Cc: stable@vger.kernel.org      # 6.3
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-3-johan+linaro@kernel.org
+Link: https://lore.kernel.org/r/20230718132902.21430-4-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/dispcc-sm8450.c |   13 +++++++++++--
+ drivers/clk/qcom/dispcc-sm8550.c |   13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/dispcc-sm8450.c
-+++ b/drivers/clk/qcom/dispcc-sm8450.c
-@@ -1776,8 +1776,10 @@ static int disp_cc_sm8450_probe(struct p
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -1761,8 +1761,10 @@ static int disp_cc_sm8550_probe(struct p
  		return ret;
  
- 	regmap = qcom_cc_map(pdev, &disp_cc_sm8450_desc);
+ 	regmap = qcom_cc_map(pdev, &disp_cc_sm8550_desc);
 -	if (IS_ERR(regmap))
 -		return PTR_ERR(regmap);
 +	if (IS_ERR(regmap)) {
@@ -88,10 +88,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	clk_lucid_evo_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
  	clk_lucid_evo_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
-@@ -1792,9 +1794,16 @@ static int disp_cc_sm8450_probe(struct p
- 	regmap_update_bits(regmap, 0xe05c, BIT(0), BIT(0));
+@@ -1777,9 +1779,16 @@ static int disp_cc_sm8550_probe(struct p
+ 	regmap_update_bits(regmap, 0xe054, BIT(0), BIT(0));
  
- 	ret = qcom_cc_really_probe(pdev, &disp_cc_sm8450_desc, regmap);
+ 	ret = qcom_cc_really_probe(pdev, &disp_cc_sm8550_desc, regmap);
 +	if (ret)
 +		goto err_put_rpm;
  
