@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8377A3A0D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA8D7A38EF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240253AbjIQT5y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
+        id S239892AbjIQTm7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240264AbjIQT5e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:34 -0400
+        with ESMTP id S240003AbjIQTmh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEA6EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD69C433C7;
-        Sun, 17 Sep 2023 19:57:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF91126
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D480BC433CA;
+        Sun, 17 Sep 2023 19:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980649;
-        bh=FUFNArSybQxnqddbYf1LD/u79YnQHc1Eck/M4pdREUU=;
+        s=korg; t=1694979735;
+        bh=8I178DIcNwZ6a8fhcST2AOwZhMvxIzJbSdSuYlJYajs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ScG0WfO/gNdREZxpDB6WAJpqX1su0lVKxJxy98FqdTCvCj32kMTanMgphX3TBPWRg
-         J8FKp9xtztWPV902GF1u2ER3mtD4dfnm5YyaGCvTK1Xqa3tLoIKo0lTHB1v9RVXCvm
-         3+7uVwsPVL2A4YrCI0DmEMgoAV2SZ2jhy8pHjEkk=
+        b=zoPvF1fSkvhB/CL7MMw+a78P71IvWS1BuzjttVdcsvHi4w3jPZRBS4ruYxlmBfDSb
+         nTDY2QK6BJQMLhDfm0VAEDtgqemxI0Qu+osxOta4zfphg61jO5No2vuhft/VgL16JU
+         THm5bJ9EmpTG36wwkgwjl2L4kT6GViVz67b8QR18=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
+        Vadim Pasternak <vadimp@nvidia.com>,
+        David Thompson <davthompson@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 253/285] net/smc: use smc_lgr_list.lock to protect smc_lgr_list.list iterate in smcr_port_add
+Subject: [PATCH 5.10 399/406] platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors
 Date:   Sun, 17 Sep 2023 21:14:13 +0200
-Message-ID: <20230917191100.051049200@linuxfoundation.org>
+Message-ID: <20230917191111.797359135@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +52,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Liming Sun <limings@nvidia.com>
 
-[ Upstream commit f5146e3ef0a9eea405874b36178c19a4863b8989 ]
+[ Upstream commit 78034cbece79c2d730ad0770b3b7f23eedbbecf5 ]
 
-While doing smcr_port_add, there maybe linkgroup add into or delete
-from smc_lgr_list.list at the same time, which may result kernel crash.
-So, use smc_lgr_list.lock to protect smc_lgr_list.list iterate in
-smcr_port_add.
+This commit fixes tmfifo console stuck issue when the virtual
+networking interface is in down state. In such case, the network
+Rx descriptors runs out and causes the Rx network packet staying
+in the head of the tmfifo thus blocking the console packets. The
+fix is to drop the Rx network packet when no more Rx descriptors.
+Function name mlxbf_tmfifo_release_pending_pkt() is also renamed
+to mlxbf_tmfifo_release_pkt() to be more approperiate.
 
-The crash calltrace show below:
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 0 P4D 0
-Oops: 0000 [#1] SMP NOPTI
-CPU: 0 PID: 559726 Comm: kworker/0:92 Kdump: loaded Tainted: G
-Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014
-Workqueue: events smc_ib_port_event_work [smc]
-RIP: 0010:smcr_port_add+0xa6/0xf0 [smc]
-RSP: 0000:ffffa5a2c8f67de0 EFLAGS: 00010297
-RAX: 0000000000000001 RBX: ffff9935e0650000 RCX: 0000000000000000
-RDX: 0000000000000010 RSI: ffff9935e0654290 RDI: ffff9935c8560000
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9934c0401918
-R10: 0000000000000000 R11: ffffffffb4a5c278 R12: ffff99364029aae4
-R13: ffff99364029aa00 R14: 00000000ffffffed R15: ffff99364029ab08
-FS:  0000000000000000(0000) GS:ffff994380600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000f06a10003 CR4: 0000000002770ef0
-PKRU: 55555554
-Call Trace:
- smc_ib_port_event_work+0x18f/0x380 [smc]
- process_one_work+0x19b/0x340
- worker_thread+0x30/0x370
- ? process_one_work+0x340/0x340
- kthread+0x114/0x130
- ? __kthread_cancel_work+0x50/0x50
- ret_from_fork+0x1f/0x30
-
-Fixes: 1f90a05d9ff9 ("net/smc: add smcr_port_add() and smcr_link_up() processing")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1357dfd7261f ("platform/mellanox: Add TmFifo driver for Mellanox BlueField Soc")
+Signed-off-by: Liming Sun <limings@nvidia.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/8c0177dc938ae03f52ff7e0b62dbeee74b7bec09.1693322547.git.limings@nvidia.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 66 ++++++++++++++++++------
+ 1 file changed, 49 insertions(+), 17 deletions(-)
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 6b78075404d7d..3e89bb9b7c56c 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1654,6 +1654,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
- {
- 	struct smc_link_group *lgr, *n;
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 64d22ecf3cddd..42fcccf06157f 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -56,6 +56,7 @@ struct mlxbf_tmfifo;
+  * @vq: pointer to the virtio virtqueue
+  * @desc: current descriptor of the pending packet
+  * @desc_head: head descriptor of the pending packet
++ * @drop_desc: dummy desc for packet dropping
+  * @cur_len: processed length of the current descriptor
+  * @rem_len: remaining length of the pending packet
+  * @pkt_len: total length of the pending packet
+@@ -72,6 +73,7 @@ struct mlxbf_tmfifo_vring {
+ 	struct virtqueue *vq;
+ 	struct vring_desc *desc;
+ 	struct vring_desc *desc_head;
++	struct vring_desc drop_desc;
+ 	int cur_len;
+ 	int rem_len;
+ 	u32 pkt_len;
+@@ -83,6 +85,14 @@ struct mlxbf_tmfifo_vring {
+ 	struct mlxbf_tmfifo *fifo;
+ };
  
-+	spin_lock_bh(&smc_lgr_list.lock);
- 	list_for_each_entry_safe(lgr, n, &smc_lgr_list.list, list) {
- 		struct smc_link *link;
++/* Check whether vring is in drop mode. */
++#define IS_VRING_DROP(_r) ({ \
++	typeof(_r) (r) = (_r); \
++	(r->desc_head == &r->drop_desc ? true : false); })
++
++/* A stub length to drop maximum length packet. */
++#define VRING_DROP_DESC_MAX_LEN		GENMASK(15, 0)
++
+ /* Interrupt types. */
+ enum {
+ 	MLXBF_TM_RX_LWM_IRQ,
+@@ -243,6 +253,7 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
++		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
+ 		dev = &tm_vdev->vdev.dev;
  
-@@ -1669,6 +1670,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
- 		if (link)
- 			smc_llc_add_link_local(link);
- 	}
-+	spin_unlock_bh(&smc_lgr_list.lock);
+ 		size = vring_size(vring->num, vring->align);
+@@ -348,7 +359,7 @@ static u32 mlxbf_tmfifo_get_pkt_len(struct mlxbf_tmfifo_vring *vring,
+ 	return len;
  }
  
- /* link is down - switch connections to alternate link,
+-static void mlxbf_tmfifo_release_pending_pkt(struct mlxbf_tmfifo_vring *vring)
++static void mlxbf_tmfifo_release_pkt(struct mlxbf_tmfifo_vring *vring)
+ {
+ 	struct vring_desc *desc_head;
+ 	u32 len = 0;
+@@ -577,19 +588,25 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
+ 
+ 	if (vring->cur_len + sizeof(u64) <= len) {
+ 		/* The whole word. */
+-		if (is_rx)
+-			memcpy(addr + vring->cur_len, &data, sizeof(u64));
+-		else
+-			memcpy(&data, addr + vring->cur_len, sizeof(u64));
++		if (!IS_VRING_DROP(vring)) {
++			if (is_rx)
++				memcpy(addr + vring->cur_len, &data,
++				       sizeof(u64));
++			else
++				memcpy(&data, addr + vring->cur_len,
++				       sizeof(u64));
++		}
+ 		vring->cur_len += sizeof(u64);
+ 	} else {
+ 		/* Leftover bytes. */
+-		if (is_rx)
+-			memcpy(addr + vring->cur_len, &data,
+-			       len - vring->cur_len);
+-		else
+-			memcpy(&data, addr + vring->cur_len,
+-			       len - vring->cur_len);
++		if (!IS_VRING_DROP(vring)) {
++			if (is_rx)
++				memcpy(addr + vring->cur_len, &data,
++				       len - vring->cur_len);
++			else
++				memcpy(&data, addr + vring->cur_len,
++				       len - vring->cur_len);
++		}
+ 		vring->cur_len = len;
+ 	}
+ 
+@@ -690,8 +707,16 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
+ 	/* Get the descriptor of the next packet. */
+ 	if (!vring->desc) {
+ 		desc = mlxbf_tmfifo_get_next_pkt(vring, is_rx);
+-		if (!desc)
+-			return false;
++		if (!desc) {
++			/* Drop next Rx packet to avoid stuck. */
++			if (is_rx) {
++				desc = &vring->drop_desc;
++				vring->desc_head = desc;
++				vring->desc = desc;
++			} else {
++				return false;
++			}
++		}
+ 	} else {
+ 		desc = vring->desc;
+ 	}
+@@ -724,17 +749,24 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
+ 		vring->rem_len -= len;
+ 
+ 		/* Get the next desc on the chain. */
+-		if (vring->rem_len > 0 &&
++		if (!IS_VRING_DROP(vring) && vring->rem_len > 0 &&
+ 		    (virtio16_to_cpu(vdev, desc->flags) & VRING_DESC_F_NEXT)) {
+ 			idx = virtio16_to_cpu(vdev, desc->next);
+ 			desc = &vr->desc[idx];
+ 			goto mlxbf_tmfifo_desc_done;
+ 		}
+ 
+-		/* Done and release the pending packet. */
+-		mlxbf_tmfifo_release_pending_pkt(vring);
++		/* Done and release the packet. */
+ 		desc = NULL;
+ 		fifo->vring[is_rx] = NULL;
++		if (!IS_VRING_DROP(vring)) {
++			mlxbf_tmfifo_release_pkt(vring);
++		} else {
++			vring->pkt_len = 0;
++			vring->desc_head = NULL;
++			vring->desc = NULL;
++			return false;
++		}
+ 
+ 		/*
+ 		 * Make sure the load/store are in order before
+@@ -914,7 +946,7 @@ static void mlxbf_tmfifo_virtio_del_vqs(struct virtio_device *vdev)
+ 
+ 		/* Release the pending packet. */
+ 		if (vring->desc)
+-			mlxbf_tmfifo_release_pending_pkt(vring);
++			mlxbf_tmfifo_release_pkt(vring);
+ 		vq = vring->vq;
+ 		if (vq) {
+ 			vring->vq = NULL;
 -- 
 2.40.1
 
