@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25AD37A37FD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFAA77A3918
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:45:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239581AbjIQT3g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
+        id S239948AbjIQToi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239618AbjIQT3X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:29:23 -0400
+        with ESMTP id S239977AbjIQTo3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:44:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DCA1D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:29:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C54BC433C7;
-        Sun, 17 Sep 2023 19:29:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F09DB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAF3C433C9;
+        Sun, 17 Sep 2023 19:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978957;
-        bh=mZmed1ZtocuSlERXngBUOpaI/6D9/WoO+oJIEe78qCc=;
+        s=korg; t=1694979863;
+        bh=TO+8SN8WaTqa5n7iUA4tChfNMY6fPhJDhT2b9/YUusM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YtJmrVn8yHSThXfBLu1MPzqrVcEoy6o+8bkTFaT3g8yg3y96rmEhwDURlcugudq4F
-         UmUrLVMxN1vbVJ82aAPAYEAewMQJQNr4jz9ijqXUjB2XrVszkFFH2Q/vesO0hBhdXZ
-         9K75WjNZnTu7yaCC2Ata1qgYTpRxWm4m6EozLrlg=
+        b=KGHWpXbs7d69079Z0PRsKsIf4pCzn1jNIFz2Z7OV0I0jDwvj9BJ59JEnmUaD/Usbe
+         PJsbeM2bwfdAtpdJjvfz9TNc9KMPMeKBkFQ6MXofLJFkFWI6G9hISajnvAB8whl0T4
+         1riffn5vC0ijpS43eG8nkJ/sGW+Vx7cCG/EsfTSA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 173/406] clk: qcom: gcc-sc7180: use ARRAY_SIZE instead of specifying num_parents
-Date:   Sun, 17 Sep 2023 21:10:27 +0200
-Message-ID: <20230917191105.755105676@linuxfoundation.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 028/285] ARM: dts: qcom: msm8974pro-castor: correct inverted X of touchscreen
+Date:   Sun, 17 Sep 2023 21:10:28 +0200
+Message-ID: <20230917191052.637842973@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,176 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e957ca2a930ad42e47bf5c9ea2a7afa0960ec1d8 ]
+commit 43db69268149049540b1d2bbe8a69e59d5cb43b6 upstream.
 
-Use ARRAY_SIZE() instead of manually specifying num_parents. This makes
-adding/removing entries to/from parent_data easy and errorproof.
+There is no syna,f11-flip-x property, so assume intention was to use
+touchscreen-inverted-x.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20210405224743.590029-30-dmitry.baryshkov@linaro.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: fd0b5ba87ad5 ("clk: qcom: gcc-sc7180: Fix up gcc_sdcc2_apps_clk_src")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ab80661883de ("ARM: dts: qcom: msm8974: Add Sony Xperia Z2 Tablet")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230720115335.137354-4-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sc7180.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc7180.c b/drivers/clk/qcom/gcc-sc7180.c
-index 7e80dbd4a3f9f..16f65f74cb8fd 100644
---- a/drivers/clk/qcom/gcc-sc7180.c
-+++ b/drivers/clk/qcom/gcc-sc7180.c
-@@ -285,7 +285,7 @@ static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_cpuss_ahb_clk_src",
- 		.parent_data = gcc_parent_data_0_ao,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0_ao),
- 		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_rcg2_ops,
- 		},
-@@ -309,7 +309,7 @@ static struct clk_rcg2 gcc_gp1_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_gp1_clk_src",
- 		.parent_data = gcc_parent_data_4,
--		.num_parents = 5,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
- 		.ops = &clk_rcg2_ops,
- 	},
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -132,8 +132,8 @@
+ 
+ 		rmi-f11@11 {
+ 			reg = <0x11>;
+-			syna,f11-flip-x = <1>;
+ 			syna,sensor-type = <1>;
++			touchscreen-inverted-x;
+ 		};
+ 	};
  };
-@@ -323,7 +323,7 @@ static struct clk_rcg2 gcc_gp2_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_gp2_clk_src",
- 		.parent_data = gcc_parent_data_4,
--		.num_parents = 5,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -337,7 +337,7 @@ static struct clk_rcg2 gcc_gp3_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_gp3_clk_src",
- 		.parent_data = gcc_parent_data_4,
--		.num_parents = 5,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -357,7 +357,7 @@ static struct clk_rcg2 gcc_pdm2_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_pdm2_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -378,7 +378,7 @@ static struct clk_rcg2 gcc_qspi_core_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_qspi_core_clk_src",
- 		.parent_data = gcc_parent_data_2,
--		.num_parents = 6,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_2),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -619,7 +619,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_sdcc1_apps_clk_src",
- 		.parent_data = gcc_parent_data_1,
--		.num_parents = 5,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_1),
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
-@@ -641,7 +641,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_sdcc1_ice_core_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -665,7 +665,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_5,
--		.num_parents = 5,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_5),
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
-@@ -688,7 +688,7 @@ static struct clk_rcg2 gcc_ufs_phy_axi_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_ufs_phy_axi_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -710,7 +710,7 @@ static struct clk_rcg2 gcc_ufs_phy_ice_core_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_ufs_phy_ice_core_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -730,7 +730,7 @@ static struct clk_rcg2 gcc_ufs_phy_phy_aux_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_ufs_phy_phy_aux_clk_src",
- 		.parent_data = gcc_parent_data_3,
--		.num_parents = 3,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -751,7 +751,7 @@ static struct clk_rcg2 gcc_ufs_phy_unipro_core_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_ufs_phy_unipro_core_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -773,7 +773,7 @@ static struct clk_rcg2 gcc_usb30_prim_master_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_usb30_prim_master_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -793,7 +793,7 @@ static struct clk_rcg2 gcc_usb30_prim_mock_utmi_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_usb30_prim_mock_utmi_clk_src",
- 		.parent_data = gcc_parent_data_0,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -812,7 +812,7 @@ static struct clk_rcg2 gcc_usb3_prim_phy_aux_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gcc_usb3_prim_phy_aux_clk_src",
- 		.parent_data = gcc_parent_data_6,
--		.num_parents = 4,
-+		.num_parents = ARRAY_SIZE(gcc_parent_data_6),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
--- 
-2.40.1
-
 
 
