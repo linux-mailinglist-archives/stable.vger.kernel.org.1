@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 801547A3CE7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 536A97A3ADC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241160AbjIQUgu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:36:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
+        id S240495AbjIQUJm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:09:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241171AbjIQUg3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:29 -0400
+        with ESMTP id S240557AbjIQUJ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C56410E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBCCC433C8;
-        Sun, 17 Sep 2023 20:36:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DCF997
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C768BC433C7;
+        Sun, 17 Sep 2023 20:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982983;
-        bh=Z8LpXU4rz0Jkr5dZqjS0HvtGVDVAPVmxjp0MVeW6SaU=;
+        s=korg; t=1694981364;
+        bh=hInM9uqM0pmXPvWu3qH3SskDUUC/MW5Hr3H7Cxbgepw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=deoUPvbRYVPX6PU9Ail63gu6eb7AUEEf9ooB8nw2nOIfXRjChIsa0XMQ3idXmrBA/
-         TopeUTwJsV+/pfEQh0gXuDuu1kjN8LyE9CSlCb9pkm0VNY7m3/L1k+zc6XTayvSN9f
-         rp8/o4ZQCXsXOVPEvyRLAd0PaqGOKyj+N0fDs9oQ=
+        b=uREjULbgE/Y+quj7jiGqA1klosF3P/U3NDGgbbBbQXVyKDf/bxkDmSiEQEW/1uA+v
+         Bk0ST7QfTP/ES4hnLnkXGEfI0DWByhneAHlNmOOPnPxyUqejDvA8lyjBzuvGrqHJMC
+         Jandg8MU0F5ehja1iy4mOct+e7OwbeVXg7ZivCOw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Gruenbacher <agruenba@redhat.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 409/511] gfs2: low-memory forced flush fixes
-Date:   Sun, 17 Sep 2023 21:13:56 +0200
-Message-ID: <20230917191123.662397627@linuxfoundation.org>
+Subject: [PATCH 6.1 110/219] af_unix: Fix data-races around sk->sk_shutdown.
+Date:   Sun, 17 Sep 2023 21:13:57 +0200
+Message-ID: <20230917191044.966302447@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +52,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit b74cd55aa9a9d0aca760028a51343ec79812e410 ]
+[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
 
-First, function gfs2_ail_flush_reqd checks the SDF_FORCE_AIL_FLUSH flag
-to determine if an AIL flush should be forced in low-memory situations.
-However, it also immediately clears the flag, and when called repeatedly
-as in function gfs2_logd, the flag will be lost.  Fix that by pulling
-the SDF_FORCE_AIL_FLUSH flag check out of gfs2_ail_flush_reqd.
+sk->sk_shutdown is changed under unix_state_lock(sk), but
+unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
 
-Second, function gfs2_writepages sets the SDF_FORCE_AIL_FLUSH flag
-whether or not enough pages were written.  If enough pages could be
-written, flushing the AIL is unnecessary, though.
+  sock_alloc_send_pskb
+  `- sock_wait_for_wmem
 
-Third, gfs2_writepages doesn't wake up logd after setting the
-SDF_FORCE_AIL_FLUSH flag, so it can take a long time for logd to react.
-It would be preferable to wake up logd, but that hurts the performance
-of some workloads and we don't quite understand why so far, so don't
-wake up logd so far.
+Let's use READ_ONCE() there.
 
-Fixes: b066a4eebd4f ("gfs2: forcibly flush ail to relieve memory pressure")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
+Fix data races around sk->sk_shutdown.").
+
+BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
+
+write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
+ unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
+ unix_release+0x59/0x80 net/unix/af_unix.c:1053
+ __sock_release+0x7d/0x170 net/socket.c:654
+ sock_close+0x19/0x30 net/socket.c:1386
+ __fput+0x2a3/0x680 fs/file_table.c:384
+ ____fput+0x15/0x20 fs/file_table.c:412
+ task_work_run+0x116/0x1a0 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
+ do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
+ sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
+ unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+value changed: 0x00 -> 0x03
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/aops.c | 4 ++--
- fs/gfs2/log.c  | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ net/core/sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-index ee212c9310ad0..2b654c3b918a3 100644
---- a/fs/gfs2/aops.c
-+++ b/fs/gfs2/aops.c
-@@ -207,13 +207,13 @@ static int gfs2_writepages(struct address_space *mapping,
- 	int ret;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index aa628c6314f64..71990525d37e2 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2690,7 +2690,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
+ 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
+ 			break;
+-		if (sk->sk_shutdown & SEND_SHUTDOWN)
++		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			break;
+ 		if (sk->sk_err)
+ 			break;
+@@ -2720,7 +2720,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
+ 			goto failure;
  
- 	/*
--	 * Even if we didn't write any pages here, we might still be holding
-+	 * Even if we didn't write enough pages here, we might still be holding
- 	 * dirty pages in the ail. We forcibly flush the ail because we don't
- 	 * want balance_dirty_pages() to loop indefinitely trying to write out
- 	 * pages held in the ail that it can't find.
- 	 */
- 	ret = iomap_writepages(mapping, wbc, &wpc, &gfs2_writeback_ops);
--	if (ret == 0)
-+	if (ret == 0 && wbc->nr_to_write > 0)
- 		set_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
- 	return ret;
- }
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 924d7f0de1e83..9a96842aeab3d 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1277,9 +1277,6 @@ static inline int gfs2_ail_flush_reqd(struct gfs2_sbd *sdp)
- {
- 	unsigned int used_blocks = sdp->sd_jdesc->jd_blocks - atomic_read(&sdp->sd_log_blks_free);
+ 		err = -EPIPE;
+-		if (sk->sk_shutdown & SEND_SHUTDOWN)
++		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			goto failure;
  
--	if (test_and_clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags))
--		return 1;
--
- 	return used_blocks + atomic_read(&sdp->sd_log_blks_needed) >=
- 		atomic_read(&sdp->sd_log_thresh2);
- }
-@@ -1320,7 +1317,9 @@ int gfs2_logd(void *data)
- 						  GFS2_LFC_LOGD_JFLUSH_REQD);
- 		}
- 
--		if (gfs2_ail_flush_reqd(sdp)) {
-+		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
-+		    gfs2_ail_flush_reqd(sdp)) {
-+			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
- 			gfs2_ail1_start(sdp);
- 			gfs2_ail1_wait(sdp);
- 			gfs2_ail1_empty(sdp, 0);
-@@ -1333,6 +1332,7 @@ int gfs2_logd(void *data)
- 		try_to_freeze();
- 
- 		t = wait_event_interruptible_timeout(sdp->sd_logd_waitq,
-+				test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
- 				gfs2_ail_flush_reqd(sdp) ||
- 				gfs2_jrnl_flush_reqd(sdp) ||
- 				kthread_should_stop(),
+ 		if (sk_wmem_alloc_get(sk) < READ_ONCE(sk->sk_sndbuf))
 -- 
 2.40.1
 
