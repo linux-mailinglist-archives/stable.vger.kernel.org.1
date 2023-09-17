@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB59F7A39F2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 069987A38B9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240194AbjIQT4s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52226 "EHLO
+        id S239626AbjIQTjp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240209AbjIQT4T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:19 -0400
+        with ESMTP id S239845AbjIQTjT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31069EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583E8C433C7;
-        Sun, 17 Sep 2023 19:56:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD48C103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D203C433C8;
+        Sun, 17 Sep 2023 19:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980573;
-        bh=JCfKoVL7XCImyp9xBhwFHJ5phPA68pbyU4XIZ7//244=;
+        s=korg; t=1694979554;
+        bh=UXXKxW93z6LQ0/LMhS1lxjcM/Wb6aUI3BC1ow/fa6Y0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ziLNA4+Z21REX/AgsESX6CwI8Ivnb59dcI0CF082zzaVaK5zBXfiZy8yUq6peziOk
-         6kEEC4Fl9/u25GH1prk8dnH64E/4SOrO/Sqp2HG76YG7U9KzEL/po3/TsSTfLxVcyv
-         ZCEH7IGq/Qd23AMheNa6IIHKAiNd5LORLtgpyyv4=
+        b=n16TZrG58Ms2t05zcwr0YDtHd8v8P7Xgf29UiLvsyqQyhTQwuZ33R0kYrVuWoVlPK
+         mOn+1bThGNQqvBb3W4wKchqqwlf6+yT776nnQEjbVNL+RNcAiGcushJK86GfKsxkjC
+         otRrYru3nxTLsHMlWgUATINkpOI4o83If1uzO7Z0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanmeisi <ruan.meisi@zte.com.cn>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.5 201/285] fuse: nlookup missing decrement in fuse_direntplus_link
+        patches@lists.linux.dev,
+        Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+        Ido Schimmel <idosch@nvidia.com>,
+        David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 347/406] ipv4: ignore dst hint for multipath routes
 Date:   Sun, 17 Sep 2023 21:13:21 +0200
-Message-ID: <20230917191058.539277400@linuxfoundation.org>
+Message-ID: <20230917191110.437557588@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +53,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ruanmeisi <ruan.meisi@zte.com.cn>
+From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 
-commit b8bd342d50cbf606666488488f9fea374aceb2d5 upstream.
+[ Upstream commit 6ac66cb03ae306c2e288a9be18226310529f5b25 ]
 
-During our debugging of glusterfs, we found an Assertion failed error:
-inode_lookup >= nlookup, which was caused by the nlookup value in the
-kernel being greater than that in the FUSE file system.
+Route hints when the nexthop is part of a multipath group causes packets
+in the same receive batch to be sent to the same nexthop irrespective of
+the multipath hash of the packet. So, do not extract route hint for
+packets whose destination is part of a multipath group.
 
-The issue was introduced by fuse_direntplus_link, where in the function,
-fuse_iget increments nlookup, and if d_splice_alias returns failure,
-fuse_direntplus_link returns failure without decrementing nlookup
-https://github.com/gluster/glusterfs/pull/4081
+A new SKB flag IPSKB_MULTIPATH is introduced for this purpose, set the
+flag when route is looked up in ip_mkroute_input() and use it in
+ip_extract_route_hint() to check for the existence of the flag.
 
-Signed-off-by: ruanmeisi <ruan.meisi@zte.com.cn>
-Fixes: 0b05b18381ee ("fuse: implement NFS-like readdirplus support")
-Cc: <stable@vger.kernel.org> # v3.9
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
+Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/readdir.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/net/ip.h    | 1 +
+ net/ipv4/ip_input.c | 3 ++-
+ net/ipv4/route.c    | 1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/fuse/readdir.c
-+++ b/fs/fuse/readdir.c
-@@ -243,8 +243,16 @@ retry:
- 			dput(dentry);
- 			dentry = alias;
- 		}
--		if (IS_ERR(dentry))
-+		if (IS_ERR(dentry)) {
-+			if (!IS_ERR(inode)) {
-+				struct fuse_inode *fi = get_fuse_inode(inode);
-+
-+				spin_lock(&fi->lock);
-+				fi->nlookup--;
-+				spin_unlock(&fi->lock);
-+			}
- 			return PTR_ERR(dentry);
-+		}
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 8d1173577fb5c..9be2efe00f2c0 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -56,6 +56,7 @@ struct inet_skb_parm {
+ #define IPSKB_FRAG_PMTU		BIT(6)
+ #define IPSKB_L3SLAVE		BIT(7)
+ #define IPSKB_NOPOLICY		BIT(8)
++#define IPSKB_MULTIPATH		BIT(9)
+ 
+ 	u16			frag_max_size;
+ };
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index eccd7897e7aa6..372579686162b 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -566,7 +566,8 @@ static void ip_sublist_rcv_finish(struct list_head *head)
+ static struct sk_buff *ip_extract_route_hint(const struct net *net,
+ 					     struct sk_buff *skb, int rt_type)
+ {
+-	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST)
++	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
++	    IPCB(skb)->flags & IPSKB_MULTIPATH)
+ 		return NULL;
+ 
+ 	return skb;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 374647693d7ac..3ddeb4fc0d08a 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2066,6 +2066,7 @@ static int ip_mkroute_input(struct sk_buff *skb,
+ 		int h = fib_multipath_hash(res->fi->fib_net, NULL, skb, hkeys);
+ 
+ 		fib_select_multipath(res, h);
++		IPCB(skb)->flags |= IPSKB_MULTIPATH;
  	}
- 	if (fc->readdirplus_auto)
- 		set_bit(FUSE_I_INIT_RDPLUS, &get_fuse_inode(inode)->state);
+ #endif
+ 
+-- 
+2.40.1
+
 
 
