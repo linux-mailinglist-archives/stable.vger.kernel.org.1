@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BC87A39E6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 967407A38E6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240197AbjIQTzr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42904 "EHLO
+        id S239887AbjIQTm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240273AbjIQTzl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:41 -0400
+        with ESMTP id S239978AbjIQTmJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377DAEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1B3C433C7;
-        Sun, 17 Sep 2023 19:55:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DF95CD0
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F46EC433CA;
+        Sun, 17 Sep 2023 19:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980535;
-        bh=9xV51YyNchbEXU2n98xZshXrwpMRd5yP3n0HRY7YXsA=;
+        s=korg; t=1694979707;
+        bh=/aFflsaOzerGOL+qZC2G7QOVElX7NvEPu+9RZbpU04Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rje/se81pNejwU7aN+T3/TswcZiPZ6A1AFi9iUYbpwXePvrmUxGGGZp5TBl5SkqND
-         15FBqhBbvYiZHvbonj9148IDKdq803GNoXbzoLwZmdgWvQ7CwIIiJXmt9eTKdijvfL
-         BddixfbNVsom3mj1YG0IS+aIy1fT5OZzHDKTeBtM=
+        b=pNzpbez4opqbJj/dKiLJOZs5ktSwAwlNZ7xuMLRQ+nBH/gDMaBmKfPJbtvcjqslNH
+         g3hJA0bWJYK2enYt9WCN9icag7ocfR/2sP/UARRlVoN66IXgdRkOV9aVjOuwjtJzd7
+         WKI3c+hR4Av028j1Y1zLbqg6Xq1PXNWnrkH4I7aQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fangzhi Zuo <jerry.zuo@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 220/285] drm/amd/display: limit the v_startup workaround to ASICs older than DCN3.1
+        patches@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 366/406] net: hns3: fix the port information display when sfp is absent
 Date:   Sun, 17 Sep 2023 21:13:40 +0200
-Message-ID: <20230917191059.124100411@linuxfoundation.org>
+Message-ID: <20230917191110.932701006@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Yisen Zhuang <yisen.zhuang@huawei.com>
 
-commit 47428f4b638d3b3264a2efa1a567b0bbddbb6107 upstream.
+[ Upstream commit 674d9591a32d01df75d6b5fffed4ef942a294376 ]
 
-Since, calling dcn20_adjust_freesync_v_startup() on DCN3.1+ ASICs
-can cause the display to flicker and underflow to occur, we shouldn't
-call it for them. So, ensure that the DCN version is less than
-DCN_VERSION_3_1 before calling dcn20_adjust_freesync_v_startup().
+When sfp is absent or unidentified, the port type should be
+displayed as PORT_OTHERS, rather than PORT_FIBRE.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 88d10bd6f730 ("net: hns3: add support for multiple media type")
+Signed-off-by: Yisen Zhuang <yisen.zhuang@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -1099,7 +1099,8 @@ void dcn20_calculate_dlg_params(struct d
- 		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
- 						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
- 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
--		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
-+		if (dc->ctx->dce_version < DCN_VERSION_3_1 &&
-+		    context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
- 			dcn20_adjust_freesync_v_startup(
- 				&context->res_ctx.pipe_ctx[i].stream->timing,
- 				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+index cd0d7a546957a..d35f4b2b480e6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+@@ -704,7 +704,9 @@ static int hns3_get_link_ksettings(struct net_device *netdev,
+ 		hns3_get_ksettings(h, cmd);
+ 		break;
+ 	case HNAE3_MEDIA_TYPE_FIBER:
+-		if (module_type == HNAE3_MODULE_TYPE_CR)
++		if (module_type == HNAE3_MODULE_TYPE_UNKNOWN)
++			cmd->base.port = PORT_OTHER;
++		else if (module_type == HNAE3_MODULE_TYPE_CR)
+ 			cmd->base.port = PORT_DA;
+ 		else
+ 			cmd->base.port = PORT_FIBRE;
+-- 
+2.40.1
+
 
 
