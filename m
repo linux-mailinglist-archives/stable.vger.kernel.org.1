@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D5837A3AE8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58BD77A3D32
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240472AbjIQUKn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53832 "EHLO
+        id S241216AbjIQUkD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240538AbjIQUKR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:17 -0400
+        with ESMTP id S241255AbjIQUjh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800D418F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ED0C433C9;
-        Sun, 17 Sep 2023 20:10:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4605D10F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B80C433CA;
+        Sun, 17 Sep 2023 20:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981401;
-        bh=WZfD3BPOseEtV+8jRFfxy291HuE2WiMus2PaVUjXNX0=;
+        s=korg; t=1694983171;
+        bh=UhiFXcArgQn/F56yCsSZEWBrynLN5xwx90mcBWbo8iE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sDujJL7PYhuBfVTVa9Ug9rX5pJnfBHzk0+YuXkZgEbcTIDF3ZEZrLeqGmGMcp82Ho
-         lD7BVLbqbSrTPyfcOsQPGbIERZeQ18I/+CsU3MwpAfcADfRBzXT7iANSNXBtnN06w6
-         CI/sRejqP1YIFLK+YH5tQdMBkt6WcT6GLwiN55QI=
+        b=N00GG+UQg7NiFnZsq44EN54HhzikwgrbRA4cNZRnxfPYS3KZdf6p7xyf10zpTZL0d
+         kSENNSPXqkZ4miJuulyM8YW3UVa67XUcmTiuaUhay6SuVG2PBml12YuIkhKZL7H6s4
+         AA4F57mRJVo6YP9WXNq1EV/Guh+t3GerM6WdrLnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/219] igc: Change IGC_MIN to allow set rx/tx value between 64 and 80
+Subject: [PATCH 5.15 415/511] pwm: atmel-tcb: Fix resource freeing in error path and remove
 Date:   Sun, 17 Sep 2023 21:14:02 +0200
-Message-ID: <20230917191045.137399898@linuxfoundation.org>
+Message-ID: <20230917191123.802990376@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,46 +54,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 5aa48279712e1f134aac908acde4df798955a955 ]
+[ Upstream commit c11622324c023415fb69196c5fc3782d2b8cced0 ]
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igc devices can use as low as 64 descriptors.
-This change will unify igc with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+Several resources were not freed in the error path and the remove
+function. Add the forgotten items.
 
-Fixes: 0507ef8a0372 ("igc: Add transmit and receive fastpath and interrupt handlers")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 34cbcd72588f ("pwm: atmel-tcb: Add sama5d2 support")
+Fixes: 061f8572a31c ("pwm: atmel-tcb: Switch to new binding")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-atmel-tcb.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index f83cbc4a1afa8..d3b17aa1d1a83 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -354,11 +354,11 @@ static inline u32 igc_rss_type(const union igc_adv_rx_desc *rx_desc)
- /* TX/RX descriptor defines */
- #define IGC_DEFAULT_TXD		256
- #define IGC_DEFAULT_TX_WORK	128
--#define IGC_MIN_TXD		80
-+#define IGC_MIN_TXD		64
- #define IGC_MAX_TXD		4096
+diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
+index 4e07d4694bb60..bb415be73bbe4 100644
+--- a/drivers/pwm/pwm-atmel-tcb.c
++++ b/drivers/pwm/pwm-atmel-tcb.c
+@@ -450,16 +450,20 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	tcbpwm->clk = of_clk_get_by_name(np->parent, clk_name);
+ 	if (IS_ERR(tcbpwm->clk))
+ 		tcbpwm->clk = of_clk_get_by_name(np->parent, "t0_clk");
+-	if (IS_ERR(tcbpwm->clk))
+-		return PTR_ERR(tcbpwm->clk);
++	if (IS_ERR(tcbpwm->clk)) {
++		err = PTR_ERR(tcbpwm->clk);
++		goto err_slow_clk;
++	}
  
- #define IGC_DEFAULT_RXD		256
--#define IGC_MIN_RXD		80
-+#define IGC_MIN_RXD		64
- #define IGC_MAX_RXD		4096
+ 	match = of_match_node(atmel_tcb_of_match, np->parent);
+ 	config = match->data;
  
- /* Supported Rx Buffer Sizes */
+ 	if (config->has_gclk) {
+ 		tcbpwm->gclk = of_clk_get_by_name(np->parent, "gclk");
+-		if (IS_ERR(tcbpwm->gclk))
+-			return PTR_ERR(tcbpwm->gclk);
++		if (IS_ERR(tcbpwm->gclk)) {
++			err = PTR_ERR(tcbpwm->gclk);
++			goto err_clk;
++		}
+ 	}
+ 
+ 	tcbpwm->chip.dev = &pdev->dev;
+@@ -470,7 +474,7 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 
+ 	err = clk_prepare_enable(tcbpwm->slow_clk);
+ 	if (err)
+-		goto err_slow_clk;
++		goto err_gclk;
+ 
+ 	spin_lock_init(&tcbpwm->lock);
+ 
+@@ -485,6 +489,12 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ err_disable_clk:
+ 	clk_disable_unprepare(tcbpwm->slow_clk);
+ 
++err_gclk:
++	clk_put(tcbpwm->gclk);
++
++err_clk:
++	clk_put(tcbpwm->clk);
++
+ err_slow_clk:
+ 	clk_put(tcbpwm->slow_clk);
+ 
+@@ -498,8 +508,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
+ 	pwmchip_remove(&tcbpwm->chip);
+ 
+ 	clk_disable_unprepare(tcbpwm->slow_clk);
+-	clk_put(tcbpwm->slow_clk);
++	clk_put(tcbpwm->gclk);
+ 	clk_put(tcbpwm->clk);
++	clk_put(tcbpwm->slow_clk);
+ }
+ 
+ static const struct of_device_id atmel_tcb_pwm_dt_ids[] = {
 -- 
 2.40.1
 
