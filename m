@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D2E07A381B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E047A3934
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239639AbjIQTbM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:31:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
+        id S239999AbjIQTqN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238549AbjIQTa5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:57 -0400
+        with ESMTP id S240053AbjIQTp6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E29121
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:30:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11181C433C8;
-        Sun, 17 Sep 2023 19:30:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70634103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E930C433C8;
+        Sun, 17 Sep 2023 19:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979051;
-        bh=bdeAsP9V2ha+7lz5u0uOAgG4pD4Pxe/7DAnB60OvXlw=;
+        s=korg; t=1694979953;
+        bh=hMrmL8O9gKdfEZZP5+qHXRJTFmONbmVIu5cpr9kMuyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jdFUY9XBUysyeKQLKxWNNt/T49p6d4iqb6SrQlkb/wSZwx66O+RPWuyz2ic6DP619
-         GtiE47F6F+LGnd4VvaSFMboIeusZTWpSZJUtNK5ciHww8EPvMLDoL7J1XvRhHKAWXQ
-         mAFrzO8NDICpoHSfSG5Qhn4uSo9B00wtnxrBa31Y=
+        b=GxObcOzxHRiw4evpTHh0hCoHce7dyl7laUOpUhgra0uo/+jTq1EqDjhKmMOprnu9w
+         38KFMqw+4f/ISELVbdJVL6ZiLXCRDLBO+X9upkHBSi9t1S/qrEKuK3bxP3/rH9tS42
+         jPI+Oi7X8aGR0Jg1/Imw4tmqKAfDCeOXZrQoDBgI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 200/406] NFSv4.2: fix handling of COPY ERR_OFFLOAD_NO_REQ
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.5 054/285] NFSv4/pnfs: minor fix for cleanup path in nfs4_get_device_info
 Date:   Sun, 17 Sep 2023 21:10:54 +0200
-Message-ID: <20230917191106.472878500@linuxfoundation.org>
+Message-ID: <20230917191053.552843867@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 5690eed941ab7e33c3c3d6b850100cabf740f075 ]
+commit 96562c45af5c31b89a197af28f79bfa838fb8391 upstream.
 
-If the client sent a synchronous copy and the server replied with
-ERR_OFFLOAD_NO_REQ indicating that it wants an asynchronous
-copy instead, the client should retry with asynchronous copy.
+It is an almost improbable error case but when page allocating loop in
+nfs4_get_device_info() fails then we should only free the already
+allocated pages, as __free_page() can't deal with NULL arguments.
 
-Fixes: 539f57b3e0fd ("NFS handle COPY ERR_OFFLOAD_NO_REQS")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Found by Linux Verification Center (linuxtesting.org).
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs42proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/nfs/pnfs_dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index dad32b171e677..dfeea712014b7 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -443,8 +443,9 @@ ssize_t nfs42_proc_copy(struct file *src, loff_t pos_src,
- 				continue;
- 			}
- 			break;
--		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS && !args.sync) {
--			args.sync = true;
-+		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS &&
-+				args.sync != res.synchronous) {
-+			args.sync = res.synchronous;
- 			dst_exception.retry = 1;
- 			continue;
- 		} else if ((err == -ESTALE ||
--- 
-2.40.1
-
+--- a/fs/nfs/pnfs_dev.c
++++ b/fs/nfs/pnfs_dev.c
+@@ -154,7 +154,7 @@ nfs4_get_device_info(struct nfs_server *
+ 		set_bit(NFS_DEVICEID_NOCACHE, &d->flags);
+ 
+ out_free_pages:
+-	for (i = 0; i < max_pages; i++)
++	while (--i >= 0)
+ 		__free_page(pages[i]);
+ 	kfree(pages);
+ out_free_pdev:
 
 
