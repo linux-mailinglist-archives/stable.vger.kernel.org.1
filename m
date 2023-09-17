@@ -2,53 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D71F7A3942
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F206D7A3806
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239091AbjIQTrM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
+        id S239601AbjIQTaJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240068AbjIQTqk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:40 -0400
+        with ESMTP id S239617AbjIQTaF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A96E19F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B874C433C7;
-        Sun, 17 Sep 2023 19:46:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325E1D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:30:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6045AC433C7;
+        Sun, 17 Sep 2023 19:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979994;
-        bh=EUa0AjzmjosFq2QWhjih8GwoE1puji7XLs95WTaL42A=;
+        s=korg; t=1694978999;
+        bh=qzjCHUHP7mmqGGT5OEXAHOpyJrPKDDlHx9tHSn/0Yy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YMAEMa59CAt8xgOUNikdC1wP8sp4ixC7eiJ9N6Ho3o5APWJWC8cz+P3e8R8uYvtl5
-         tmr5h4zFaDIJPpydhVQ4se8oelgrCvvAYLwDFdZT/aQfWWd79FEENycRxr09NSssfb
-         nbncIG+3Fcsu7q6Q+us+bnCWwpcCOcWEw/CscUE8=
+        b=kl+4WziRKi5sySHlj17tAIDp+T/qUWCuJWQgAASxNAgNtpZ2hrYZawc15q3s6j0sq
+         oKYkuz6FAnU4CB+zHQwnxrBS5MewvUx/kSH4sEkzMuO/S0FErYSiIAmvA0uWqDa+W7
+         xCvteXL+KcQ4bAyVO1sN5sNIdKJnlu86tlulK++E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalesh Singh <kaleshsingh@google.com>,
-        Charan Teja Kalla <quic_charante@quicinc.com>,
-        Yu Zhao <yuzhao@google.com>,
-        Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
-        Barry Song <baohua@kernel.org>,
-        Brian Geffon <bgeffon@google.com>,
-        "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
-        Lecopzer Chen <lecopzer.chen@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Steven Barrett <steven@liquorix.net>,
-        Suleiman Souhlal <suleiman@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.5 038/285] Multi-gen LRU: avoid race in inc_min_seq()
+        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 184/406] clk: imx: composite-8m: fix clock pauses when set_rate would be a no-op
 Date:   Sun, 17 Sep 2023 21:10:38 +0200
-Message-ID: <20230917191052.988461946@linuxfoundation.org>
+Message-ID: <20230917191106.063373021@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +50,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh Singh <kaleshsingh@google.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-commit bb5e7f234eacf34b65be67ebb3613e3b8cf11b87 upstream.
+[ Upstream commit 4dd432d985ef258e3bc436e568fba4b987b59171 ]
 
-inc_max_seq() will try to inc_min_seq() if nr_gens == MAX_NR_GENS. This
-is because the generations are reused (the last oldest now empty
-generation will become the next youngest generation).
+Reconfiguring the clock divider to the exact same value is observed
+on an i.MX8MN to often cause a longer than usual clock pause, probably
+because the divider restarts counting whenever the register is rewritten.
 
-inc_min_seq() is retried until successful, dropping the lru_lock
-and yielding the CPU on each failure, and retaking the lock before
-trying again:
+This issue doesn't show up normally, because the clock framework will
+take care to not call set_rate when the clock rate is the same.
+However, when we reconfigure an upstream clock, the common code will
+call set_rate with the newly calculated rate on all children, e.g.:
 
-        while (!inc_min_seq(lruvec, type, can_swap)) {
-                spin_unlock_irq(&lruvec->lru_lock);
-                cond_resched();
-                spin_lock_irq(&lruvec->lru_lock);
-        }
+  - sai5 is running normally and divides Audio PLL out by 16.
+  - Audio PLL rate is increased by 32Hz (glitch-free kdiv change)
+  - rates for children are recalculated and rates are set recursively
+  - imx8m_clk_composite_divider_set_rate(sai5) is called with
+    32/16 = 2Hz more
+  - imx8m_clk_composite_divider_set_rate computes same divider as before
+  - divider register is written, so it restarts counting from zero and
+    MCLK is briefly paused, so instead of e.g. 40ns, MCLK is low for 120ns.
 
-However, the initial condition that required incrementing the min_seq
-(nr_gens == MAX_NR_GENS) is not retested. This can change by another
-call to inc_max_seq() from run_aging() with force_scan=true from the
-debugfs interface.
+Some external clock consumers can be upset by such unexpected clock pauses,
+so let's make sure we only rewrite the divider value when the value to be
+written is actually different.
 
-Since the eviction stalls when the nr_gens == MIN_NR_GENS, avoid
-unnecessarily incrementing the min_seq by rechecking the number of
-generations before each attempt.
-
-This issue was uncovered in previous discussion on the list by Yu Zhao
-and Aneesh Kumar [1].
-
-[1] https://lore.kernel.org/linux-mm/CAOUHufbO7CaVm=xjEb1avDhHVvnC8pJmGyKcFf2iY_dpf+zR3w@mail.gmail.com/
-
-Link: https://lkml.kernel.org/r/20230802025606.346758-2-kaleshsingh@google.com
-Fixes: d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
-Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
-Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Steven Barrett <steven@liquorix.net>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d3ff9728134e ("clk: imx: Add imx composite clock")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20230807082201.2332746-1-a.fatoum@pengutronix.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/clk/imx/clk-composite-8m.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4440,7 +4440,7 @@ static void inc_max_seq(struct lruvec *l
- 	int prev, next;
- 	int type, zone;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
--
-+restart:
- 	spin_lock_irq(&lruvec->lru_lock);
+diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
+index 04e728538cefe..75e05582cb24f 100644
+--- a/drivers/clk/imx/clk-composite-8m.c
++++ b/drivers/clk/imx/clk-composite-8m.c
+@@ -97,7 +97,7 @@ static int imx8m_clk_composite_divider_set_rate(struct clk_hw *hw,
+ 	int prediv_value;
+ 	int div_value;
+ 	int ret;
+-	u32 val;
++	u32 orig, val;
  
- 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
-@@ -4451,11 +4451,12 @@ static void inc_max_seq(struct lruvec *l
+ 	ret = imx8m_clk_composite_compute_dividers(rate, parent_rate,
+ 						&prediv_value, &div_value);
+@@ -106,13 +106,15 @@ static int imx8m_clk_composite_divider_set_rate(struct clk_hw *hw,
  
- 		VM_WARN_ON_ONCE(!force_scan && (type == LRU_GEN_FILE || can_swap));
+ 	spin_lock_irqsave(divider->lock, flags);
  
--		while (!inc_min_seq(lruvec, type, can_swap)) {
--			spin_unlock_irq(&lruvec->lru_lock);
--			cond_resched();
--			spin_lock_irq(&lruvec->lru_lock);
--		}
-+		if (inc_min_seq(lruvec, type, can_swap))
-+			continue;
+-	val = readl(divider->reg);
+-	val &= ~((clk_div_mask(divider->width) << divider->shift) |
+-			(clk_div_mask(PCG_DIV_WIDTH) << PCG_DIV_SHIFT));
++	orig = readl(divider->reg);
++	val = orig & ~((clk_div_mask(divider->width) << divider->shift) |
++		       (clk_div_mask(PCG_DIV_WIDTH) << PCG_DIV_SHIFT));
+ 
+ 	val |= (u32)(prediv_value  - 1) << divider->shift;
+ 	val |= (u32)(div_value - 1) << PCG_DIV_SHIFT;
+-	writel(val, divider->reg);
 +
-+		spin_unlock_irq(&lruvec->lru_lock);
-+		cond_resched();
-+		goto restart;
- 	}
++	if (val != orig)
++		writel(val, divider->reg);
  
- 	/*
+ 	spin_unlock_irqrestore(divider->lock, flags);
+ 
+-- 
+2.40.1
+
 
 
