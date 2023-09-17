@@ -2,90 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14BB07A35F7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 16:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 967C87A3693
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 18:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbjIQO60 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 10:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57280 "EHLO
+        id S233059AbjIQQeA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 12:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230117AbjIQO6T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 10:58:19 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132D211B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 07:58:14 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7955636f500so151473239f.1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 07:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694962693; x=1695567493; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NWUbWA25YXqpror227XldM/36YXQGvWvbjMtDvGK5qY=;
-        b=V9E9CWczyOa1J6XsGmVhGUvL4+t6pBsmehdZgBT7jz6DOGCIVCfGq3iCy/9PzReacd
-         MbYDYQnMSVuoKrR3AFA9iT2dQT22D0GB8Rk2YMXDoe8H5y3zNjFkb8V5VFFOId+3LiS4
-         BYKuiojEhFNvUkGLc4aZ4CLA4QzUnNKRac2X3NY+jVhJWvN6QOXPdfUMxOaUAorS25Rl
-         gy2liyZIVmZlf5jWPMg15CVNCknJwFwzKESMRDv9AA/I8ZfwdHDf87fZZFDGs2Up4B4a
-         cY70+QBBLaFVpLvyUA75A1afjx5Pg7LYJXF1aXwjsADEPLZ89yQ+X94nKnb+8xD9YBq6
-         5dFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694962693; x=1695567493;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NWUbWA25YXqpror227XldM/36YXQGvWvbjMtDvGK5qY=;
-        b=I7FACKv+vHSnOdwU3JYwmkED3b9CoAodwfvzk2dw7FHs3NXbcwKMvytCH4CBqPgdNr
-         w0+zUObPDc21G/X7TfWEsycVbDTnPZ5cWzlVx+S1IzaYuK+lIbXUC5U5FKCZVizkUcWw
-         0KuywWDdQkAnNWTGKVe0OYJ8aU2HtFuTRkL3sK714mnrklWxoevo27eChQAAzzGZ4nES
-         9fLCmC9x+knN2Sv7F1+ij/V/zGSflKtYJdrAbGmFMf+f0A/HobvmGNOOLLqbQn3UOGIH
-         t255omw6BM8hKZi3kw6YyTOdceU5kh6kFoIARoJR0kpSYK21eqhmFh/VJJhTB7Jf3EFx
-         eH7Q==
-X-Gm-Message-State: AOJu0Yxrg8NVl+79xJTch7UzxW/KszU/ixYmlCtndkUERTKGdlvzS9GM
-        gVnrl1x1cjRoXBQ1km9PD75q9ZLa0/I=
-X-Google-Smtp-Source: AGHT+IEYPmMQACeN8Xc6Vufm/q+iag1Mt7cCX92L0bCwAlSqsdouwpoAkdNCjzJmGH37Kd+SoKUcpg==
-X-Received: by 2002:a05:6e02:c24:b0:34c:cbd4:114b with SMTP id q4-20020a056e020c2400b0034ccbd4114bmr8602343ilg.7.1694962693127;
-        Sun, 17 Sep 2023 07:58:13 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a4-20020a029f84000000b0042bb13cb80fsm2294934jam.120.2023.09.17.07.58.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Sep 2023 07:58:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <8e198214-c12c-a921-ef7e-82b5e2f70ec2@roeck-us.net>
-Date:   Sun, 17 Sep 2023 07:58:11 -0700
+        with ESMTP id S229957AbjIQQd3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 12:33:29 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8494FB5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 09:33:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B3AC433C7;
+        Sun, 17 Sep 2023 16:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694968404;
+        bh=SrOhOHdyFlQ7PEGdXQB3aL9yu63uiJIYfAymgVpLPOA=;
+        h=Subject:To:Cc:From:Date:From;
+        b=yrbeiKCWkWxyHhays3axNlbdF+n+feWXiy56MJ9W0s/TsJ3v8Yhb/rvxzY66ZOxYT
+         SfeYsjBvTK4RUn4rtJsXS2I3cUNFLibg1/MrK5B+C/3iCwVMFnTYfln/jQV37Ojw6J
+         5vf51PVX2DpPZWN5HOh4Yc9DL+93/NOQ2SnJ4nro=
+Subject: FAILED: patch "[PATCH] perf build: Update build rule for generated files" failed to apply to 6.1-stable tree
+To:     namhyung@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
+        ak@linux.intel.com, anupnewsmail@gmail.com, irogers@google.com,
+        jolsa@kernel.org, mingo@kernel.org, peterz@infradead.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 17 Sep 2023 18:33:18 +0200
+Message-ID: <2023091718-unequal-drinkable-e89d@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To:     stable <stable@vger.kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Build failures in v{4.14, 4.19, 5.4, 5.10}.y.queue
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Building parisc:allnoconfig ... failed
---------------
-Error log:
-arch/parisc/kernel/processor.c: In function 'show_cpuinfo':
-arch/parisc/kernel/processor.c:443:30: error: 'cpuinfo' undeclared (first use in this function)
-   443 |                              cpuinfo->loops_per_jiffy / (500000 / HZ),
 
-Caused by 'parisc: Fix /proc/cpuinfo output for lscpu' which
-moves the declaration of cpuinfo inside an #ifdef but still uses
-it outside of it in v5.10.y and older.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-That either needs to be dropped, adjusted, or commit 93346da8ff47 ("parisc:
-Drop loops_per_jiffy from per_cpu struct") needs to be applied as well
-(tested with v5.10.y.queue).
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Guenter
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7822a8913f4c51c7d1aff793b525d60c3384fb5b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091718-unequal-drinkable-e89d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+7822a8913f4c ("perf build: Update build rule for generated files")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7822a8913f4c51c7d1aff793b525d60c3384fb5b Mon Sep 17 00:00:00 2001
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Thu, 27 Jul 2023 19:24:46 -0700
+Subject: [PATCH] perf build: Update build rule for generated files
+
+The bison and flex generate C files from the source (.y and .l)
+files.  When O= option is used, they are saved in a separate directory
+but the default build rule assumes the .C files are in the source
+directory.  So it might read invalid file if there are generated files
+from an old version.  The same is true for the pmu-events files.
+
+For example, the following command would cause a build failure:
+
+  $ git checkout v6.3
+  $ make -C tools/perf  # build in the same directory
+
+  $ git checkout v6.5-rc2
+  $ mkdir build  # create a build directory
+  $ make -C tools/perf O=build  # build in a different directory but it
+                                # refers files in the source directory
+
+Let's update the build rule to specify those cases explicitly to depend
+on the files in the output directory.
+
+Note that it's not a complete fix and it needs the next patch for the
+include path too.
+
+Fixes: 80eeb67fe577aa76 ("perf jevents: Program to convert JSON file")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Anup Sharma <anupnewsmail@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230728022447.1323563-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index 89430338a3d9..fac42486a8cf 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -117,6 +117,16 @@ $(OUTPUT)%.s: %.c FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed_dep,cc_s_c)
+ 
++# bison and flex files are generated in the OUTPUT directory
++# so it needs a separate rule to depend on them properly
++$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
++
++$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
++
+ # Gather build data:
+ #   obj-y        - list of build objects
+ #   subdir-y     - list of directories to nest
+diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+index 150765f2baee..1d18bb89402e 100644
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -35,3 +35,9 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(JEVENTS_PY) $(METRIC_PY) $(METRIC_TEST_L
+ 	$(call rule_mkdir)
+ 	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
+ endif
++
++# pmu-events.c file is generated in the OUTPUT directory so it needs a
++# separate rule to depend on it properly
++$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
++	$(call rule_mkdir)
++	$(call if_changed_dep,cc_o_c)
+
