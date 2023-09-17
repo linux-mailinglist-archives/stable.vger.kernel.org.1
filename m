@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED147A3B87
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 176957A3D54
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240696AbjIQUTO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60718 "EHLO
+        id S241268AbjIQUli (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240739AbjIQUSx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:53 -0400
+        with ESMTP id S241340AbjIQUlU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E895F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE57C433C7;
-        Sun, 17 Sep 2023 20:18:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9BDA10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C125C433C7;
+        Sun, 17 Sep 2023 20:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981927;
-        bh=/dt2wDhwFmLPeLXKqaZBrgCOpmHNwUDPBUu1PAUPcNg=;
+        s=korg; t=1694983274;
+        bh=ZPZ26NRoVEzsl0xjXXpsLsNJphWIXQRhWebI7CkEWNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c/mz5BfaAhmpvkGsnk7kfNKb+rewAxf595jb9H4qIHEa2UoLeiguLeE1eWOnpLGan
-         SnU/AcOZM8SXFUT2IlOKB7s7INaosqB/UEhZHaxwP+Z1Nt+k0E4nxJrWTjWOoRY9YQ
-         a1BPRNCOhGKExj063S0hp43EGZEJM7M6m0TAGnMM=
+        b=FHLW5hg6zPzxYLllJCo2JXjl8TpBXieBAfjIPdLVrPuWtSQWuqhEG2E/iqgDwGEkb
+         fAGfFYrvM0Pc2fLw6cgoRy5z2NEIeoDUsJwc8oPnGA5/1eibtzaDzRw9jXZZ+hfBQE
+         jUW2WZ/ywDbfxspmYRD8dbjYtDdTE6+H24gN3M5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 194/219] net: ethernet: adi: adin1110: use eth_broadcast_addr() to assign broadcast address
+Subject: [PATCH 5.15 494/511] kselftest/runner.sh: Propagate SIGTERM to runner child
 Date:   Sun, 17 Sep 2023 21:15:21 +0200
-Message-ID: <20230917191047.952536716@linuxfoundation.org>
+Message-ID: <20230917191125.657869093@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,66 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 54024dbec95585243391caeb9f04a2620e630765 ]
+[ Upstream commit 9616cb34b08ec86642b162eae75c5a7ca8debe3c ]
 
-Use eth_broadcast_addr() to assign broadcast address instead
-of memset().
+Timeouts in kselftest are done using the "timeout" command with the
+"--foreground" option. Without the "foreground" option, it is not
+possible for a user to cancel the runner using SIGINT, because the
+signal is not propagated to timeout which is running in a different
+process group. The "forground" options places the timeout in the same
+process group as its parent, but only sends the SIGTERM (on timeout)
+signal to the forked process. Unfortunately, this does not play nice
+with all kselftests, e.g. "net:fcnal-test.sh", where the child
+processes will linger because timeout does not send SIGTERM to the
+group.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 32530dba1bd4 ("net:ethernet:adi:adin1110: Fix forwarding offload")
+Some users have noted these hangs [1].
+
+Fix this by nesting the timeout with an additional timeout without the
+foreground option.
+
+Link: https://lore.kernel.org/all/7650b2eb-0aee-a2b0-2e64-c9bc63210f67@alu.unizg.hr/ # [1]
+Fixes: 651e0d881461 ("kselftest/runner: allow to properly deliver signals to tests")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/adi/adin1110.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kselftest/runner.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index ecce5f7a549f2..cc026780ee0e8 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -740,7 +740,7 @@ static int adin1110_broadcasts_filter(struct adin1110_port_priv *port_priv,
- 	u32 port_rules = 0;
- 	u8 mask[ETH_ALEN];
- 
--	memset(mask, 0xFF, ETH_ALEN);
-+	eth_broadcast_addr(mask);
- 
- 	if (accept_broadcast && port_priv->state == BR_STATE_FORWARDING)
- 		port_rules = adin1110_port_rules(port_priv, true, true);
-@@ -761,7 +761,7 @@ static int adin1110_set_mac_address(struct net_device *netdev,
- 		return -EADDRNOTAVAIL;
- 
- 	eth_hw_addr_set(netdev, dev_addr);
--	memset(mask, 0xFF, ETH_ALEN);
-+	eth_broadcast_addr(mask);
- 
- 	mac_slot = (!port_priv->nr) ?  ADIN_MAC_P1_ADDR_SLOT : ADIN_MAC_P2_ADDR_SLOT;
- 	port_rules = adin1110_port_rules(port_priv, true, false);
-@@ -1251,7 +1251,7 @@ static int adin1110_port_set_blocking_state(struct adin1110_port_priv *port_priv
- 		goto out;
- 
- 	/* Allow only BPDUs to be passed to the CPU */
--	memset(mask, 0xFF, ETH_ALEN);
-+	eth_broadcast_addr(mask);
- 	port_rules = adin1110_port_rules(port_priv, true, false);
- 	ret = adin1110_write_mac_address(port_priv, mac_slot, mac,
- 					 mask, port_rules);
-@@ -1366,7 +1366,7 @@ static int adin1110_fdb_add(struct adin1110_port_priv *port_priv,
- 
- 	other_port = priv->ports[!port_priv->nr];
- 	port_rules = adin1110_port_rules(port_priv, false, true);
--	memset(mask, 0xFF, ETH_ALEN);
-+	eth_broadcast_addr(mask);
- 
- 	return adin1110_write_mac_address(other_port, mac_nr, (u8 *)fdb->addr,
- 					  mask, port_rules);
+diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
+index a9ba782d8ca0f..83616f0779a7e 100644
+--- a/tools/testing/selftests/kselftest/runner.sh
++++ b/tools/testing/selftests/kselftest/runner.sh
+@@ -33,7 +33,8 @@ tap_timeout()
+ {
+ 	# Make sure tests will time out if utility is available.
+ 	if [ -x /usr/bin/timeout ] ; then
+-		/usr/bin/timeout --foreground "$kselftest_timeout" $1
++		/usr/bin/timeout --foreground "$kselftest_timeout" \
++			/usr/bin/timeout "$kselftest_timeout" $1
+ 	else
+ 		$1
+ 	fi
 -- 
 2.40.1
 
