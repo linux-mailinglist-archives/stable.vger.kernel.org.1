@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 349367A3CD0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C067A3AF4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241085AbjIQUfp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
+        id S240522AbjIQULN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:11:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241126AbjIQUfO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:14 -0400
+        with ESMTP id S240505AbjIQUKp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB1B101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817D9C433C7;
-        Sun, 17 Sep 2023 20:35:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68ACFB5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC5BC433C9;
+        Sun, 17 Sep 2023 20:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982909;
-        bh=TZ+GqbaKRkILdJNTNcThnfCBKdDqfJ4NLS5dLs2QZng=;
+        s=korg; t=1694981439;
+        bh=4giGb3eGkgqwrvCJLG0BP/IpFLtq0rRjgqC7q0gINio=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KXRlR3FZJ4MkP/65leIblsAV0zYGWRUrTB5VEOWe5IEad9MLhjY+ApHM7uLhfws/A
-         oJ0luumiEUxR32HLBuuB8SENOYadcJR7PxQNx8h+fIkp2QKdVgxvFWtTsdx55HrpPY
-         7MrpAHcoX+4qB0kb4pC4B2DL92APwhj3AAAhbBzQ=
+        b=W3MPhTBAJFgdp6T2SfnvbybHFyvNg+fdyjh4dnuI9hTJWCnyXhBUKhCvaf+p2P6z9
+         QEYJpKFPl4UPDdQjkhMfIenmoi4oltcFuhRVfXRzrdjvE9XJzb/UC7+Bq9rENHNHcx
+         uj1s1RWRy0/q1OrOeJKC5kUVoHI+vz9zVeUeysXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 389/511] scsi: qla2xxx: Fix firmware resource tracking
-Date:   Sun, 17 Sep 2023 21:13:36 +0200
-Message-ID: <20230917191123.187689972@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/219] net: read sk->sk_family once in sk_mc_loop()
+Date:   Sun, 17 Sep 2023 21:13:37 +0200
+Message-ID: <20230917191044.223813685@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,205 +52,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e370b64c7db96384a0886a09a9d80406e4c663d7 upstream.
+[ Upstream commit a3e0fdf71bbe031de845e8e08ed7fba49f9c702c ]
 
-The storage was not draining I/Os and the work load was not spread out
-across different CPUs evenly. This led to firmware resource counters
-getting overrun on the busy CPU. This overrun prevented error recovery from
-happening in a timely manner.
+syzbot is playing with IPV6_ADDRFORM quite a lot these days,
+and managed to hit the WARN_ON_ONCE(1) in sk_mc_loop()
 
-By switching the counter to atomic, it allows the count to be little more
-accurate to prevent the overrun.
+We have many more similar issues to fix.
 
-Cc: stable@vger.kernel.org
-Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: CPU: 1 PID: 1593 at net/core/sock.c:782 sk_mc_loop+0x165/0x260
+Modules linked in:
+CPU: 1 PID: 1593 Comm: kworker/1:3 Not tainted 6.1.40-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+Workqueue: events_power_efficient gc_worker
+RIP: 0010:sk_mc_loop+0x165/0x260 net/core/sock.c:782
+Code: 34 1b fd 49 81 c7 18 05 00 00 4c 89 f8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ff e8 25 36 6d fd 4d 8b 37 eb 13 e8 db 33 1b fd <0f> 0b b3 01 eb 34 e8 d0 33 1b fd 45 31 f6 49 83 c6 38 4c 89 f0 48
+RSP: 0018:ffffc90000388530 EFLAGS: 00010246
+RAX: ffffffff846d9b55 RBX: 0000000000000011 RCX: ffff88814f884980
+RDX: 0000000000000102 RSI: ffffffff87ae5160 RDI: 0000000000000011
+RBP: ffffc90000388550 R08: 0000000000000003 R09: ffffffff846d9a65
+R10: 0000000000000002 R11: ffff88814f884980 R12: dffffc0000000000
+R13: ffff88810dbee000 R14: 0000000000000010 R15: ffff888150084000
+FS: 0000000000000000(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000180 CR3: 000000014ee5b000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<IRQ>
+[<ffffffff8507734f>] ip6_finish_output2+0x33f/0x1ae0 net/ipv6/ip6_output.c:83
+[<ffffffff85062766>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff85062766>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff85061f8c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff85061f8c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff852071cf>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff852071cf>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff83618fb4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff83618fb4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff83618fb4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff83618fb4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff8361ddd9>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84763fc0>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
+[<ffffffff84763fc0>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84763fc0>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff8494c650>] sch_direct_xmit+0x2a0/0x9c0 net/sched/sch_generic.c:342
+[<ffffffff8494d883>] qdisc_restart net/sched/sch_generic.c:407 [inline]
+[<ffffffff8494d883>] __qdisc_run+0xb13/0x1e70 net/sched/sch_generic.c:415
+[<ffffffff8478c426>] qdisc_run+0xd6/0x260 include/net/pkt_sched.h:125
+[<ffffffff84796eac>] net_tx_action+0x7ac/0x940 net/core/dev.c:5247
+[<ffffffff858002bd>] __do_softirq+0x2bd/0x9bd kernel/softirq.c:599
+[<ffffffff814c3fe8>] invoke_softirq kernel/softirq.c:430 [inline]
+[<ffffffff814c3fe8>] __irq_exit_rcu+0xc8/0x170 kernel/softirq.c:683
+[<ffffffff814c3f09>] irq_exit_rcu+0x9/0x20 kernel/softirq.c:695
+
+Fixes: 7ad6848c7e81 ("ip: fix mc_loop checks for tunnels with multicast outer addresses")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230830101244.1146934-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h    |   11 +++++++
- drivers/scsi/qla2xxx/qla_dfs.c    |   10 ++++++
- drivers/scsi/qla2xxx/qla_init.c   |    8 +++++
- drivers/scsi/qla2xxx/qla_inline.h |   57 +++++++++++++++++++++++++++++++++++++-
- drivers/scsi/qla2xxx/qla_os.c     |    5 ++-
- 5 files changed, 88 insertions(+), 3 deletions(-)
+ net/core/sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3726,6 +3726,16 @@ struct qla_fw_resources {
- 	u16 pad;
- };
- 
-+struct qla_fw_res {
-+	u16      iocb_total;
-+	u16      iocb_limit;
-+	atomic_t iocb_used;
-+
-+	u16      exch_total;
-+	u16      exch_limit;
-+	atomic_t exch_used;
-+};
-+
- #define QLA_IOCB_PCT_LIMIT 95
- 
- /*Queue pair data structure */
-@@ -4768,6 +4778,7 @@ struct qla_hw_data {
- 	spinlock_t sadb_lock;	/* protects list */
- 	struct els_reject elsrej;
- 	u8 edif_post_stop_cnt_down;
-+	struct qla_fw_res fwres ____cacheline_aligned;
- };
- 
- #define RX_ELS_SIZE (roundup(sizeof(struct enode) + ELS_MAX_PAYLOAD, SMP_CACHE_BYTES))
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -276,6 +276,16 @@ qla_dfs_fw_resource_cnt_show(struct seq_
- 
- 		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
- 			   exch_used, ha->base_qpair->fwres.exch_limit);
-+
-+		if (ql2xenforce_iocb_limit == 2) {
-+			iocbs_used = atomic_read(&ha->fwres.iocb_used);
-+			exch_used  = atomic_read(&ha->fwres.exch_used);
-+			seq_printf(s, "        estimate iocb2 used [%d] high water limit [%d]\n",
-+					iocbs_used, ha->fwres.iocb_limit);
-+
-+			seq_printf(s, "        estimate exchange2 used[%d] high water limit [%d] \n",
-+					exch_used, ha->fwres.exch_limit);
-+		}
- 	}
- 
- 	return 0;
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4218,6 +4218,14 @@ void qla_init_iocb_limit(scsi_qla_host_t
- 			ha->queue_pair_map[i]->fwres.exch_used = 0;
- 		}
- 	}
-+
-+	ha->fwres.iocb_total = ha->orig_fw_iocb_count;
-+	ha->fwres.iocb_limit = (ha->orig_fw_iocb_count * QLA_IOCB_PCT_LIMIT) / 100;
-+	ha->fwres.exch_total = ha->orig_fw_xcb_count;
-+	ha->fwres.exch_limit = (ha->orig_fw_xcb_count * QLA_IOCB_PCT_LIMIT) / 100;
-+
-+	atomic_set(&ha->fwres.iocb_used, 0);
-+	atomic_set(&ha->fwres.exch_used, 0);
- }
- 
- void qla_adjust_iocb_limit(scsi_qla_host_t *vha)
---- a/drivers/scsi/qla2xxx/qla_inline.h
-+++ b/drivers/scsi/qla2xxx/qla_inline.h
-@@ -386,6 +386,7 @@ enum {
- 	RESOURCE_IOCB = BIT_0,
- 	RESOURCE_EXCH = BIT_1,  /* exchange */
- 	RESOURCE_FORCE = BIT_2,
-+	RESOURCE_HA = BIT_3,
- };
- 
- static inline int
-@@ -393,7 +394,7 @@ qla_get_fw_resources(struct qla_qpair *q
- {
- 	u16 iocbs_used, i;
- 	u16 exch_used;
--	struct qla_hw_data *ha = qp->vha->hw;
-+	struct qla_hw_data *ha = qp->hw;
- 
- 	if (!ql2xenforce_iocb_limit) {
- 		iores->res_type = RESOURCE_NONE;
-@@ -428,15 +429,69 @@ qla_get_fw_resources(struct qla_qpair *q
- 			return -ENOSPC;
- 		}
- 	}
-+
-+	if (ql2xenforce_iocb_limit == 2) {
-+		if ((iores->iocb_cnt + atomic_read(&ha->fwres.iocb_used)) >=
-+		    ha->fwres.iocb_limit) {
-+			iores->res_type = RESOURCE_NONE;
-+			return -ENOSPC;
-+		}
-+
-+		if (iores->res_type & RESOURCE_EXCH) {
-+			if ((iores->exch_cnt + atomic_read(&ha->fwres.exch_used)) >=
-+			    ha->fwres.exch_limit) {
-+				iores->res_type = RESOURCE_NONE;
-+				return -ENOSPC;
-+			}
-+		}
-+	}
-+
- force:
- 	qp->fwres.iocbs_used += iores->iocb_cnt;
- 	qp->fwres.exch_used += iores->exch_cnt;
-+	if (ql2xenforce_iocb_limit == 2) {
-+		atomic_add(iores->iocb_cnt, &ha->fwres.iocb_used);
-+		atomic_add(iores->exch_cnt, &ha->fwres.exch_used);
-+		iores->res_type |= RESOURCE_HA;
-+	}
- 	return 0;
- }
- 
-+/*
-+ * decrement to zero.  This routine will not decrement below zero
-+ * @v:  pointer of type atomic_t
-+ * @amount: amount to decrement from v
-+ */
-+static void qla_atomic_dtz(atomic_t *v, int amount)
-+{
-+	int c, old, dec;
-+
-+	c = atomic_read(v);
-+	for (;;) {
-+		dec = c - amount;
-+		if (unlikely(dec < 0))
-+			dec = 0;
-+
-+		old = atomic_cmpxchg((v), c, dec);
-+		if (likely(old == c))
-+			break;
-+		c = old;
-+	}
-+}
-+
- static inline void
- qla_put_fw_resources(struct qla_qpair *qp, struct iocb_resource *iores)
- {
-+	struct qla_hw_data *ha = qp->hw;
-+
-+	if (iores->res_type & RESOURCE_HA) {
-+		if (iores->res_type & RESOURCE_IOCB)
-+			qla_atomic_dtz(&ha->fwres.iocb_used, iores->iocb_cnt);
-+
-+		if (iores->res_type & RESOURCE_EXCH)
-+			qla_atomic_dtz(&ha->fwres.exch_used, iores->exch_cnt);
-+	}
-+
- 	if (iores->res_type & RESOURCE_IOCB) {
- 		if (qp->fwres.iocbs_used >= iores->iocb_cnt) {
- 			qp->fwres.iocbs_used -= iores->iocb_cnt;
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -40,10 +40,11 @@ module_param(ql2xfulldump_on_mpifail, in
- MODULE_PARM_DESC(ql2xfulldump_on_mpifail,
- 		 "Set this to take full dump on MPI hang.");
- 
--int ql2xenforce_iocb_limit = 1;
-+int ql2xenforce_iocb_limit = 2;
- module_param(ql2xenforce_iocb_limit, int, S_IRUGO | S_IWUSR);
- MODULE_PARM_DESC(ql2xenforce_iocb_limit,
--		 "Enforce IOCB throttling, to avoid FW congestion. (default: 1)");
-+		 "Enforce IOCB throttling, to avoid FW congestion. (default: 2) "
-+		 "1: track usage per queue, 2: track usage per adapter");
- 
- /*
-  * CT6 CTX allocation cache
+diff --git a/net/core/sock.c b/net/core/sock.c
+index fc475845c94d5..fa988063630db 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -761,7 +761,8 @@ bool sk_mc_loop(struct sock *sk)
+ 		return false;
+ 	if (!sk)
+ 		return true;
+-	switch (sk->sk_family) {
++	/* IPV6_ADDRFORM can change sk->sk_family under us. */
++	switch (READ_ONCE(sk->sk_family)) {
+ 	case AF_INET:
+ 		return inet_sk(sk)->mc_loop;
+ #if IS_ENABLED(CONFIG_IPV6)
+-- 
+2.40.1
+
 
 
