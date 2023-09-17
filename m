@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CD77A3AC3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD07D7A3CDC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240456AbjIQUIf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37702 "EHLO
+        id S241145AbjIQUgS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240455AbjIQUIO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:14 -0400
+        with ESMTP id S241153AbjIQUfz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B9BB5
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D7DC433C7;
-        Sun, 17 Sep 2023 20:08:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB748123
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06073C433C8;
+        Sun, 17 Sep 2023 20:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981288;
-        bh=3jofWKcPO/FI1TT3/PRbIYM6xhfWfTNYXlHQOBgf10E=;
+        s=korg; t=1694982949;
+        bh=fnlPCh6ZFNY/oe3agZbtdrIIjfmq9rgK9vW1odpEFaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0qZ9n9ZPvPnhSkd+WBqXNu9byCdbb3ZvoI65gM4/fK6yPI3p7oqeh3dfMlm4rVVJD
-         nnzSI0gJQ2JkfeiLsazdBe02no1RrSWenO41XRSmQG7TCakNhPiZi2ymRkTuy2kPsi
-         axGKOvaz1RQ5Xd2/MSQ+AbUWEb/0Mvsob1vezgN0=
+        b=nMw/pUVOOC3+GdmsYiMivmcqVf0BWzaVfQa8NDdZsxJPHUKim7Z1n6zAHPm2Fj+h7
+         ZQ/8C8SUE+Xmytd5WD+jTCzhraOn4wuay0njUToN+TNUYFDHl34FjhU8+s0bMV76ov
+         xqCsbzukH3hnTJ+fo83TnjMgnn7nT6H4H6wJQMFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/219] ipv4: ignore dst hint for multipath routes
+        patches@lists.linux.dev, stable@kernel.org,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 400/511] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
 Date:   Sun, 17 Sep 2023 21:13:47 +0200
-Message-ID: <20230917191044.586350956@linuxfoundation.org>
+Message-ID: <20230917191123.450043409@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 6ac66cb03ae306c2e288a9be18226310529f5b25 ]
+commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
 
-Route hints when the nexthop is part of a multipath group causes packets
-in the same receive batch to be sent to the same nexthop irrespective of
-the multipath hash of the packet. So, do not extract route hint for
-packets whose destination is part of a multipath group.
+The pll0_vote clock definitely should have pll0 as a parent (instead of
+pll8).
 
-A new SKB flag IPSKB_MULTIPATH is introduced for this purpose, set the
-flag when route is looked up in ip_mkroute_input() and use it in
-ip_extract_route_hint() to check for the existence of the flag.
-
-Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
-Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
+Cc: stable@kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip.h    | 1 +
- net/ipv4/ip_input.c | 3 ++-
- net/ipv4/route.c    | 1 +
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-mdm9615.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 1872f570abeda..c286344628dba 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -57,6 +57,7 @@ struct inet_skb_parm {
- #define IPSKB_FRAG_PMTU		BIT(6)
- #define IPSKB_L3SLAVE		BIT(7)
- #define IPSKB_NOPOLICY		BIT(8)
-+#define IPSKB_MULTIPATH		BIT(9)
- 
- 	u16			frag_max_size;
- };
-diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-index e880ce77322aa..e7196ecffafc6 100644
---- a/net/ipv4/ip_input.c
-+++ b/net/ipv4/ip_input.c
-@@ -584,7 +584,8 @@ static void ip_sublist_rcv_finish(struct list_head *head)
- static struct sk_buff *ip_extract_route_hint(const struct net *net,
- 					     struct sk_buff *skb, int rt_type)
- {
--	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST)
-+	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
-+	    IPCB(skb)->flags & IPSKB_MULTIPATH)
- 		return NULL;
- 
- 	return skb;
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 51bd9a50a1d1d..a04ffc128e22b 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2146,6 +2146,7 @@ static int ip_mkroute_input(struct sk_buff *skb,
- 		int h = fib_multipath_hash(res->fi->fib_net, NULL, skb, hkeys);
- 
- 		fib_select_multipath(res, h);
-+		IPCB(skb)->flags |= IPSKB_MULTIPATH;
- 	}
- #endif
- 
--- 
-2.40.1
-
+--- a/drivers/clk/qcom/gcc-mdm9615.c
++++ b/drivers/clk/qcom/gcc-mdm9615.c
+@@ -58,7 +58,7 @@ static struct clk_regmap pll0_vote = {
+ 	.enable_mask = BIT(0),
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "pll0_vote",
+-		.parent_names = (const char *[]){ "pll8" },
++		.parent_names = (const char *[]){ "pll0" },
+ 		.num_parents = 1,
+ 		.ops = &clk_pll_vote_ops,
+ 	},
 
 
