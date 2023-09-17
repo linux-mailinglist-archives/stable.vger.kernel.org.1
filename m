@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347A77A3CE6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EBE27A3AD3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbjIQUgt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42144 "EHLO
+        id S240509AbjIQUJK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:09:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241150AbjIQUgT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:19 -0400
+        with ESMTP id S240528AbjIQUJC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA50210E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B531C433C7;
-        Sun, 17 Sep 2023 20:36:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E3B97
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F0AC433C8;
+        Sun, 17 Sep 2023 20:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982973;
-        bh=O1ySbr520dKXjw0BnS0YM7v2k9EauXIaSobWuvyuBtI=;
+        s=korg; t=1694981337;
+        bh=VtLKBdObbWHe/GGDUYC7SuJxfar+R9cBqj/otcSw+L8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S5D/d0NCM6qmJiiOmFdmivfTVJn5CwuVaXLQeyUpDVQCvCBfMr0aHZRwg5dy2zOfJ
-         I9UVIDx+vxszAv7MdzkQiyXVzcITIAxcQEz0Y6DxbVCSdzv7j1V2scA6iTcXjHZeCO
-         uSHaotddd+ZbBsjyeNpbsRZkzxy4yCue++w5Pus8=
+        b=ZBZORtP0PZ33Okijxg27D6pU9h5RnusLCHRcFdP6P1WMhN0cX/ZUpkradK6aETyAu
+         RhWDWoDNXUstYhVC82PYmJjCrUIaG/nnDB2M0mYpXIzAV6lJLnI7gT1WgZ7MgD8Evf
+         TbTpWhbzugBSfLsMgPdd8wovzBpnrjiET7xdYyis=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qiang Yu <quic_qianyu@quicinc.com>,
-        Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 5.15 406/511] bus: mhi: host: Skip MHI reset if device is in RDDM
+        patches@lists.linux.dev, Oleksij Rempel <o.rempel@pengutronix.de>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/219] net: phy: micrel: Correct bit assignments for phy_device flags
 Date:   Sun, 17 Sep 2023 21:13:53 +0200
-Message-ID: <20230917191123.591781800@linuxfoundation.org>
+Message-ID: <20230917191044.825922349@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <quic_qianyu@quicinc.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit cabce92dd805945a090dc6fc73b001bb35ed083a upstream.
+[ Upstream commit 719c5e37e99d2fd588d1c994284d17650a66354c ]
 
-In RDDM EE, device can not process MHI reset issued by host. In case of MHI
-power off, host is issuing MHI reset and polls for it to get cleared until
-it times out. Since this timeout can not be avoided in case of RDDM, skip
-the MHI reset in this scenarios.
+Previously, the defines for phy_device flags in the Micrel driver were
+ambiguous in their representation. They were intended to be bit masks
+but were mistakenly defined as bit positions. This led to the following
+issues:
 
-Cc: <stable@vger.kernel.org>
-Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/1684390959-17836-1-git-send-email-quic_qianyu@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- MICREL_KSZ8_P1_ERRATA, designated for KSZ88xx switches, overlapped
+  with MICREL_PHY_FXEN and MICREL_PHY_50MHZ_CLK.
+- Due to this overlap, the code path for MICREL_PHY_FXEN, tailored for
+  the KSZ8041 PHY, was not executed for KSZ88xx PHYs.
+- Similarly, the code associated with MICREL_PHY_50MHZ_CLK wasn't
+  triggered for KSZ88xx.
+
+To rectify this, all three flags have now been explicitly converted to
+use the `BIT()` macro, ensuring they are defined as bit masks and
+preventing potential overlaps in the future.
+
+Fixes: 49011e0c1555 ("net: phy: micrel: ksz886x/ksz8081: add cabletest support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pm.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/micrel_phy.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -466,6 +466,10 @@ static void mhi_pm_disable_transition(st
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index 1f7c33b2f5a3f..e164facb0f363 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -38,9 +38,9 @@
+ #define	PHY_ID_KSZ9477		0x00221631
  
- 	/* Trigger MHI RESET so that the device will not access host memory */
- 	if (!MHI_PM_IN_FATAL_STATE(mhi_cntrl->pm_state)) {
-+		/* Skip MHI RESET if in RDDM state */
-+		if (mhi_cntrl->rddm_image && mhi_get_exec_env(mhi_cntrl) == MHI_EE_RDDM)
-+			goto skip_mhi_reset;
-+
- 		dev_dbg(dev, "Triggering MHI Reset in device\n");
- 		mhi_set_mhi_state(mhi_cntrl, MHI_STATE_RESET);
+ /* struct phy_device dev_flags definitions */
+-#define MICREL_PHY_50MHZ_CLK	0x00000001
+-#define MICREL_PHY_FXEN		0x00000002
+-#define MICREL_KSZ8_P1_ERRATA	0x00000003
++#define MICREL_PHY_50MHZ_CLK	BIT(0)
++#define MICREL_PHY_FXEN		BIT(1)
++#define MICREL_KSZ8_P1_ERRATA	BIT(2)
  
-@@ -483,6 +487,7 @@ static void mhi_pm_disable_transition(st
- 		mhi_write_reg(mhi_cntrl, mhi_cntrl->bhi, BHI_INTVEC, 0);
- 	}
- 
-+skip_mhi_reset:
- 	dev_dbg(dev,
- 		 "Waiting for all pending event ring processing to complete\n");
- 	mhi_event = mhi_cntrl->mhi_event;
+ #define MICREL_KSZ9021_EXTREG_CTRL	0xB
+ #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+-- 
+2.40.1
+
 
 
