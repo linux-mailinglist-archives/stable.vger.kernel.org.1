@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED8E7A3924
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02EB87A37EB
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239961AbjIQTpg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:45:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60808 "EHLO
+        id S239559AbjIQT04 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:26:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239442AbjIQTpO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:14 -0400
+        with ESMTP id S239576AbjIQT0a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED7C189
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB1DC433C7;
-        Sun, 17 Sep 2023 19:44:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF4CDB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:26:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7D1C433C7;
+        Sun, 17 Sep 2023 19:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979898;
-        bh=l1rvJ6xUA7kc+gpv2k95Nk+XnIFUu0vfssRNHbxKfbM=;
+        s=korg; t=1694978784;
+        bh=NJbIyOhwNcqnBYNs2JN+sDBlczzJG2WUt7N45SfTPP4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YPmZj6HtQ+8/Aj+gYyu8rEKPcPkSzCN/KgVjsTeYYJV/31YeCZGoiBqhRNylbqHQX
-         zv2KrytdCt4RYlESa6OZkUjJWzPSDq/vzjoHugjP8ItTVz9Pk9EehvFX6xcrxzAqLi
-         5HU4uso+63LnujYUuktGM1vLllpVx2RzxnIv+Bec=
+        b=pDdxY42a1tch86E0jD7oYcvQjFNugvW6/Vk+w1ETK7jeC7xr7JOQWtxoxFcDY+Mns
+         1smnw6bZAKYcl0cFclB+6NoLpLcfzzacw+Qpeo8Fheuxyt43EhuJWeqSyT4GYlLkwB
+         Ukfx9wOgw2XZKpHheACY+3EXBcX9yVUgy7SuKsbg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manish Rangankar <mrangankar@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 013/285] scsi: qla2xxx: Remove unsupported ql2xenabledif option
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 159/406] firmware: meson_sm: fix to avoid potential NULL pointer dereference
 Date:   Sun, 17 Sep 2023 21:10:13 +0200
-Message-ID: <20230917191052.081440911@linuxfoundation.org>
+Message-ID: <20230917191105.376182261@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit e9105c4b7a9208a21a9bda133707624f12ddabc2 upstream.
+[ Upstream commit f2ed165619c16577c02b703a114a1f6b52026df4 ]
 
-User accidently passed module parameter ql2xenabledif=1 which is
-unsupported. However, driver still initialized which lead to guard tag
-errors during device discovery.
+of_match_device() may fail and returns a NULL pointer.
 
-Remove unsupported ql2xenabledif=1 option and validate the user input.
+Fix this by checking the return value of of_match_device.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/tencent_AA08AAA6C4F34D53ADCE962E188A879B8206@qq.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c |    2 --
- drivers/scsi/qla2xxx/qla_dbg.c  |    2 +-
- drivers/scsi/qla2xxx/qla_os.c   |    9 +++++++--
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/firmware/meson/meson_sm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -3093,8 +3093,6 @@ qla24xx_vport_create(struct fc_vport *fc
- 			vha->flags.difdix_supported = 1;
- 			ql_dbg(ql_dbg_user, vha, 0x7082,
- 			    "Registered for DIF/DIX type 1 and 3 protection.\n");
--			if (ql2xenabledif == 1)
--				prot = SHOST_DIX_TYPE0_PROTECTION;
- 			scsi_host_set_prot(vha->host,
- 			    prot | SHOST_DIF_TYPE1_PROTECTION
- 			    | SHOST_DIF_TYPE2_PROTECTION
---- a/drivers/scsi/qla2xxx/qla_dbg.c
-+++ b/drivers/scsi/qla2xxx/qla_dbg.c
-@@ -18,7 +18,7 @@
-  * | Queue Command and IO tracing |       0x3074       | 0x300b         |
-  * |                              |                    | 0x3027-0x3028  |
-  * |                              |                    | 0x303d-0x3041  |
-- * |                              |                    | 0x302d,0x3033  |
-+ * |                              |                    | 0x302e,0x3033  |
-  * |                              |                    | 0x3036,0x3038  |
-  * |                              |                    | 0x303a		|
-  * | DPC Thread                   |       0x4023       | 0x4002,0x4013  |
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -3288,6 +3288,13 @@ qla2x00_probe_one(struct pci_dev *pdev,
- 	host->max_id = ha->max_fibre_devices;
- 	host->cmd_per_lun = 3;
- 	host->unique_id = host->host_no;
-+
-+	if (ql2xenabledif && ql2xenabledif != 2) {
-+		ql_log(ql_log_warn, base_vha, 0x302d,
-+		       "Invalid value for ql2xenabledif, resetting it to default (2)\n");
-+		ql2xenabledif = 2;
-+	}
-+
- 	if (IS_T10_PI_CAPABLE(ha) && ql2xenabledif)
- 		host->max_cmd_len = 32;
- 	else
-@@ -3524,8 +3531,6 @@ skip_dpc:
- 			base_vha->flags.difdix_supported = 1;
- 			ql_dbg(ql_dbg_init, base_vha, 0x00f1,
- 			    "Registering for DIF/DIX type 1 and 3 protection.\n");
--			if (ql2xenabledif == 1)
--				prot = SHOST_DIX_TYPE0_PROTECTION;
- 			if (ql2xprotmask)
- 				scsi_host_set_prot(host, ql2xprotmask);
- 			else
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index 2854b56f6e0bd..ed27ff2e503ef 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -292,6 +292,8 @@ static int __init meson_sm_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	chip = of_match_device(meson_sm_ids, dev)->data;
++	if (!chip)
++		return -EINVAL;
+ 
+ 	if (chip->cmd_shmem_in_base) {
+ 		fw->sm_shmem_in_base = meson_sm_map_shmem(chip->cmd_shmem_in_base,
+-- 
+2.40.1
+
 
 
