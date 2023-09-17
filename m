@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A0547A39AE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35EA7A388C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240121AbjIQTxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45776 "EHLO
+        id S239784AbjIQThH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240171AbjIQTws (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:48 -0400
+        with ESMTP id S239870AbjIQTgx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E5018C
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36F4C433D9;
-        Sun, 17 Sep 2023 19:51:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EC7138
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E57C433C7;
+        Sun, 17 Sep 2023 19:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980320;
-        bh=wXpLIDcEhs842ktkQ6YGxobXSl9fIbvqM1tIKmUkeTk=;
+        s=korg; t=1694979406;
+        bh=TfgcZFk09UR5no467oQfAAD/F1wsBVKLiPka3LybUT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0roRihJfiqamKgdxO6gjyUxtj6zX5BbiuSIR/pqKyLpPhoOGm5rxaTf49uP1awlcK
-         RdEimF2HJoDs8mmCUIVqHzy+EYUhFh3Xm3HlDEOXHdWoHpm+BX5AwhME48grucDfF4
-         CrsaFWqBHv6D8Qhpn6JcD0p3VuLBdSZhn8dVmZ1o=
+        b=bktuAG6n/KeRjSgIom+dXCUpIf9bZXMPA2YbeyTj8eq27iudglaELZ2EARc3SWPyS
+         GhUxruF5RGB8zekEWQGRwy1uNZH8SoASv2Ulkrekq+syAZiAtPvmZ/kt2IZ76nx0N7
+         Zhc7CornFEuFc4EyxSx6AYu5lNkvPW0r5FCh/5eM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 157/285] bpf: Invoke __bpf_prog_exit_sleepable_recur() on recursion in kern_sys_bpf().
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 5.10 303/406] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
 Date:   Sun, 17 Sep 2023 21:12:37 +0200
-Message-ID: <20230917191057.113915901@linuxfoundation.org>
+Message-ID: <20230917191109.309517368@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 7645629f7dc88cd777f98970134bf1a54c8d77e3 ]
+commit e520d0b6be950ce3738cf4b9bd3b392be818f1dc upstream.
 
-If __bpf_prog_enter_sleepable_recur() detects recursion then it returns
-0 without undoing rcu_read_lock_trace(), migrate_disable() or
-decrementing the recursion counter. This is fine in the JIT case because
-the JIT code will jump in the 0 case to the end and invoke the matching
-exit trampoline (__bpf_prog_exit_sleepable_recur()).
+Allocate extra space for terminating element at:
 
-This is not the case in kern_sys_bpf() which returns directly to the
-caller with an error code.
+drivers/cpufreq/brcmstb-avs-cpufreq.c:
+449         table[i].frequency = CPUFREQ_TABLE_END;
 
-Add __bpf_prog_exit_sleepable_recur() as clean up in the recursion case.
+and add code comment to make this clear.
 
-Fixes: b1d18a7574d0d ("bpf: Extend sys_bpf commands for bpf_syscall programs.")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20230830080405.251926-2-bigeasy@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the following -Warray-bounds warning seen after building
+ARM with multi_v7_defconfig (GCC 13):
+In function 'brcm_avs_get_freq_table',
+    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
+drivers/cpufreq/brcmstb-avs-cpufreq.c:449:28: warning: array subscript 5 is outside array bounds of 'void[60]' [-Warray-bounds=]
+  449 |         table[i].frequency = CPUFREQ_TABLE_END;
+In file included from include/linux/node.h:18,
+                 from include/linux/cpu.h:17,
+                 from include/linux/cpufreq.h:12,
+                 from drivers/cpufreq/brcmstb-avs-cpufreq.c:44:
+In function 'devm_kmalloc_array',
+    inlined from 'devm_kcalloc' at include/linux/device.h:328:9,
+    inlined from 'brcm_avs_get_freq_table' at drivers/cpufreq/brcmstb-avs-cpufreq.c:437:10,
+    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
+include/linux/device.h:323:16: note: at offset 60 into object of size 60 allocated by 'devm_kmalloc'
+  323 |         return devm_kmalloc(dev, bytes, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -Warray-bounds.
+
+Link: https://github.com/KSPP/linux/issues/324
+Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/syscall.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/brcmstb-avs-cpufreq.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index a2aef900519c2..c925c270ed8b4 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -5307,6 +5307,7 @@ int kern_sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
- 		run_ctx.saved_run_ctx = NULL;
- 		if (!__bpf_prog_enter_sleepable_recur(prog, &run_ctx)) {
- 			/* recursion detected */
-+			__bpf_prog_exit_sleepable_recur(prog, 0, &run_ctx);
- 			bpf_prog_put(prog);
- 			return -EBUSY;
- 		}
--- 
-2.40.1
-
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -434,7 +434,11 @@ brcm_avs_get_freq_table(struct device *d
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1, sizeof(*table),
++	/*
++	 * We allocate space for the 5 different P-STATES AVS,
++	 * plus extra space for a terminating element.
++	 */
++	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1 + 1, sizeof(*table),
+ 			     GFP_KERNEL);
+ 	if (!table)
+ 		return ERR_PTR(-ENOMEM);
 
 
