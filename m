@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 103E37A3872
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7FEA7A3854
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239764AbjIQTgE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
+        id S238429AbjIQTeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239778AbjIQTfl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:41 -0400
+        with ESMTP id S239756AbjIQTeM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:34:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E424119
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4826DC433C7;
-        Sun, 17 Sep 2023 19:35:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0970DDB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD1CC433C7;
+        Sun, 17 Sep 2023 19:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979335;
-        bh=a/aoqHj3YFT//S6D+wjP2gzE/CY+uTpaYvrkrHXzKO0=;
+        s=korg; t=1694979246;
+        bh=uVExRrAanT2fyP/zNDJrQJ9plTXAr7vDOkjS1GeFXVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KyqA5fUrbVNlZaT1Te1ruGj8Mu/b/QaTFN9iV+Na8gUI7waSr/ugr4TapI6uchc4D
-         hnAHHovSjCT5Ur3dEH+OkDt4GUH2YgEXT3HGd+GhtwPBrt8kw7NScIj/+BJpTapEYo
-         2CV6gAPMzn6/KruGrqF0oiIoaRwM203GKjZrjqg4=
+        b=Drlv0CcwCGL83MSxVV/fvJG1/bZNxZhMo8FZDyGZZJswosyNWY7TV6NBlUvT3bk+l
+         Qc0j6OHQ7Zf4ddomDX3B5cH8vPiL7A4lrcihF/SbY9/RSPJ/PEYNiDuu4/7dP4M3Vi
+         +ut0DRfuCSud+bgS1WJe/qXnU+LB+7yCmDzq5vjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/406] mtd: rawnand: brcmnand: Fix mtd oobsize
-Date:   Sun, 17 Sep 2023 21:11:50 +0200
-Message-ID: <20230917191107.941576619@linuxfoundation.org>
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 257/406] phy/rockchip: inno-hdmi: use correct vco_div_5 macro on rk3328
+Date:   Sun, 17 Sep 2023 21:11:51 +0200
+Message-ID: <20230917191107.972753795@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -55,60 +53,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 60177390fa061c62d156f4a546e3efd90df3c183 ]
+[ Upstream commit 644c06dfbd0da713f772abf0a8f8581ac78e6264 ]
 
-brcmnand controller can only access the flash spare area up to certain
-bytes based on the ECC level. It can be less than the actual flash spare
-area size. For example, for many NAND chip supporting ECC BCH-8, it has
-226 bytes spare area. But controller can only uses 218 bytes. So brcmand
-driver overrides the mtd oobsize with the controller's accessible spare
-area size. When the nand base driver utilizes the nand_device object, it
-resets the oobsize back to the actual flash spare aprea size from
-nand_memory_organization structure and controller may not able to access
-all the oob area as mtd advises.
+inno_hdmi_phy_rk3328_clk_set_rate() is using the RK3228 macro
+when configuring vco_div_5 on RK3328.
 
-This change fixes the issue by overriding the oobsize in the
-nand_memory_organization structure to the controller's accessible spare
-area size.
+Fix this by using correct vco_div_5 macro for RK3328.
 
-Fixes: a7ab085d7c16 ("mtd: rawnand: Initialize the nand_device object")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-6-william.zhang@broadcom.com
+Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20230615171005.2251032-2-jonas@kwiboo.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 580b91cbd18de..64c8c177d0082 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2534,6 +2534,8 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
- 	struct nand_chip *chip = &host->chip;
- 	const struct nand_ecc_props *requirements =
- 		nanddev_get_ecc_requirements(&chip->base);
-+	struct nand_memory_organization *memorg =
-+		nanddev_get_memorg(&chip->base);
- 	struct brcmnand_controller *ctrl = host->ctrl;
- 	struct brcmnand_cfg *cfg = &host->hwcfg;
- 	char msg[128];
-@@ -2555,10 +2557,11 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
- 	if (cfg->spare_area_size > ctrl->max_oob)
- 		cfg->spare_area_size = ctrl->max_oob;
- 	/*
--	 * Set oobsize to be consistent with controller's spare_area_size, as
--	 * the rest is inaccessible.
-+	 * Set mtd and memorg oobsize to be consistent with controller's
-+	 * spare_area_size, as the rest is inaccessible.
- 	 */
- 	mtd->oobsize = cfg->spare_area_size * (mtd->writesize >> FC_SHIFT);
-+	memorg->oobsize = mtd->oobsize;
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+index 9ca20c947283d..b0ac1d3ee3905 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+@@ -790,8 +790,8 @@ static int inno_hdmi_phy_rk3328_clk_set_rate(struct clk_hw *hw,
+ 			 RK3328_PRE_PLL_POWER_DOWN);
  
- 	cfg->device_size = mtd->size;
- 	cfg->block_size = mtd->erasesize;
+ 	/* Configure pre-pll */
+-	inno_update_bits(inno, 0xa0, RK3228_PCLK_VCO_DIV_5_MASK,
+-			 RK3228_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
++	inno_update_bits(inno, 0xa0, RK3328_PCLK_VCO_DIV_5_MASK,
++			 RK3328_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
+ 	inno_write(inno, 0xa1, RK3328_PRE_PLL_PRE_DIV(cfg->prediv));
+ 
+ 	val = RK3328_SPREAD_SPECTRUM_MOD_DISABLE;
 -- 
 2.40.1
 
