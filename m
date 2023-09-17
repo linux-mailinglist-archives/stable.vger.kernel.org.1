@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C3E7A3B15
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DEF07A3B12
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240585AbjIQUMw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:12:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
+        id S240568AbjIQUMv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:12:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240652AbjIQUMg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:36 -0400
+        with ESMTP id S240657AbjIQUMh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D90138
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39CFC433CC;
-        Sun, 17 Sep 2023 20:12:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C69C218D
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF5DC433A9;
+        Sun, 17 Sep 2023 20:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981527;
-        bh=ZEAvIuWDCht/shF9li2a/rx/9A5yJL5z+MFrBmv3PX0=;
+        s=korg; t=1694981534;
+        bh=90/VDRzgAsMMbP9GktBU599SBM0WKn8bYsfshphDvvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CDiq1ADC0MSTP4tHZ0UcdpPZliPYbL9wGcf2rCQhZ4Z63Tw3I6Cot5nNMRiqOOq46
-         aF8ts24zBivTOLZYuw4t2y2zEgp1WGVA4CQXpWkIop/WJFDP5VZ8ZuvH4Yt8wFaRji
-         J8XOQDM9qzMcOYItq6L3XUDSpIXnETsR+OmnB3QA=
+        b=ATHELWMrKbsDMw8jzATy6LKea6R+0gDdSx3Hiuf0Wu4r080lVdWxDjQPhxPbH3zSD
+         nFzCJ/ATLcp9aPMqc8j14Qiya3q16Q4n2gJHM0tQlKNg6C6WcWWCVWFI5TDIchAYlP
+         /usRrO7uZaCsiC1L6cWQfJFy7wQGZIvnBTwAWPeY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -33,9 +33,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
         Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 067/511] selftests/resctrl: Dont leak buffer in fill_cache()
-Date:   Sun, 17 Sep 2023 21:08:14 +0200
-Message-ID: <20230917191115.500304804@linuxfoundation.org>
+Subject: [PATCH 5.15 068/511] selftests/resctrl: Unmount resctrl FS if child fails to run benchmark
+Date:   Sun, 17 Sep 2023 21:08:15 +0200
+Message-ID: <20230917191115.523591702@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -61,19 +61,15 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 2d320b1029ee7329ee0638181be967789775b962 ]
+[ Upstream commit f99e413eb54652e2436cc56d081176bc9a34cd8d ]
 
-The error path in fill_cache() does return before the allocated buffer
-is freed leaking the buffer.
+A child calls PARENT_EXIT() when it fails to run a benchmark to kill
+the parent process. PARENT_EXIT() lacks unmount for the resctrl FS and
+the parent won't be there to unmount it either after it gets killed.
 
-The leak was introduced when fill_cache_read() started to return errors
-in commit c7b607fa9325 ("selftests/resctrl: Fix null pointer
-dereference on open failed"), before that both fill functions always
-returned 0.
+Add the resctrl FS unmount also to PARENT_EXIT().
 
-Move free() earlier to prevent the mem leak.
-
-Fixes: c7b607fa9325 ("selftests/resctrl: Fix null pointer dereference on open failed")
+Fixes: 591a6e8588fc ("selftests/resctrl: Add basic resctrl file system operations and data")
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
@@ -81,28 +77,21 @@ Tested-by: Shaopeng Tan (Fujitsu) <tan.shaopeng@fujitsu.com>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/fill_buf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/resctrl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
-index c20d0a7ecbe63..ab1d91328d67b 100644
---- a/tools/testing/selftests/resctrl/fill_buf.c
-+++ b/tools/testing/selftests/resctrl/fill_buf.c
-@@ -184,12 +184,13 @@ fill_cache(unsigned long long buf_size, int malloc_and_init, int memflush,
- 	else
- 		ret = fill_cache_write(start_ptr, end_ptr, resctrl_val);
+diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
+index f44fa2de4d986..dbe5cfb545585 100644
+--- a/tools/testing/selftests/resctrl/resctrl.h
++++ b/tools/testing/selftests/resctrl/resctrl.h
+@@ -43,6 +43,7 @@
+ 	do {					\
+ 		perror(err_msg);		\
+ 		kill(ppid, SIGKILL);		\
++		umount_resctrlfs();		\
+ 		exit(EXIT_FAILURE);		\
+ 	} while (0)
  
-+	free(startptr);
-+
- 	if (ret) {
- 		printf("\n Error in fill cache read/write...\n");
- 		return -1;
- 	}
- 
--	free(startptr);
- 
- 	return 0;
- }
 -- 
 2.40.1
 
