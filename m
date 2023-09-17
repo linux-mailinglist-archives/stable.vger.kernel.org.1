@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FDA07A39FF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AA217A38FB
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240234AbjIQT5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58806 "EHLO
+        id S239883AbjIQTn3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240323AbjIQT5L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:11 -0400
+        with ESMTP id S239921AbjIQTnE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1CA2101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC75CC433C8;
-        Sun, 17 Sep 2023 19:57:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CCC0103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8144C433C9;
+        Sun, 17 Sep 2023 19:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980625;
-        bh=Zn157htonH7TjCE1noIExchVgUFOONkLE/4pxdEqM3s=;
+        s=korg; t=1694979778;
+        bh=X3sR6X595CJRfhGlAmmPylyQrWfbX3mWpNOo1swWc+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xnwtB6mJLzFhksnJwKVCAVATxwG804y/ZaMXDjatbpPqz4CBzxi9GQORuehuWaSh9
-         2+B3h9yOsOfJ2q3JZihSWFyosnW5gB4MSEH3xBcGHFZkfWNW5MezjV8FaCeO6toIX+
-         a/kmKar9GYPlbZ1v3Ct51RytfabQ664ySWTpK0DA=
+        b=Ba3J8AE9N5lsmivGnTJ9e+Al2FvlLuSWcoaMeoLlXuqk3aFImQXTz6rkVObTOzu4N
+         Ia8jl8tM5I6lJ33iMKOQLNNb1FShCksWeJNpnRaibc6lkTBtSjPK6KoWBeogMWlExC
+         E4QLMewstO7/DaUCoAROSw+ujyMLFb2yeD9xaiLQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Julian Anastasov <ja@ssi.bg>,
+        patches@lists.linux.dev,
+        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 247/285] net: ipv4: fix one memleak in __inet_del_ifa()
+Subject: [PATCH 5.10 393/406] net/smc: use smc_lgr_list.lock to protect smc_lgr_list.list iterate in smcr_port_add
 Date:   Sun, 17 Sep 2023 21:14:07 +0200
-Message-ID: <20230917191059.880342020@linuxfoundation.org>
+Message-ID: <20230917191111.642381695@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,87 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit ac28b1ec6135649b5d78b028e47264cb3ebca5ea ]
+[ Upstream commit f5146e3ef0a9eea405874b36178c19a4863b8989 ]
 
-I got the below warning when do fuzzing test:
-unregister_netdevice: waiting for bond0 to become free. Usage count = 2
+While doing smcr_port_add, there maybe linkgroup add into or delete
+from smc_lgr_list.list at the same time, which may result kernel crash.
+So, use smc_lgr_list.lock to protect smc_lgr_list.list iterate in
+smcr_port_add.
 
-It can be repoduced via:
+The crash calltrace show below:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 0 P4D 0
+Oops: 0000 [#1] SMP NOPTI
+CPU: 0 PID: 559726 Comm: kworker/0:92 Kdump: loaded Tainted: G
+Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014
+Workqueue: events smc_ib_port_event_work [smc]
+RIP: 0010:smcr_port_add+0xa6/0xf0 [smc]
+RSP: 0000:ffffa5a2c8f67de0 EFLAGS: 00010297
+RAX: 0000000000000001 RBX: ffff9935e0650000 RCX: 0000000000000000
+RDX: 0000000000000010 RSI: ffff9935e0654290 RDI: ffff9935c8560000
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9934c0401918
+R10: 0000000000000000 R11: ffffffffb4a5c278 R12: ffff99364029aae4
+R13: ffff99364029aa00 R14: 00000000ffffffed R15: ffff99364029ab08
+FS:  0000000000000000(0000) GS:ffff994380600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000f06a10003 CR4: 0000000002770ef0
+PKRU: 55555554
+Call Trace:
+ smc_ib_port_event_work+0x18f/0x380 [smc]
+ process_one_work+0x19b/0x340
+ worker_thread+0x30/0x370
+ ? process_one_work+0x340/0x340
+ kthread+0x114/0x130
+ ? __kthread_cancel_work+0x50/0x50
+ ret_from_fork+0x1f/0x30
 
-ip link add bond0 type bond
-sysctl -w net.ipv4.conf.bond0.promote_secondaries=1
-ip addr add 4.117.174.103/0 scope 0x40 dev bond0
-ip addr add 192.168.100.111/255.255.255.254 scope 0 dev bond0
-ip addr add 0.0.0.4/0 scope 0x40 secondary dev bond0
-ip addr del 4.117.174.103/0 scope 0x40 dev bond0
-ip link delete bond0 type bond
-
-In this reproduction test case, an incorrect 'last_prim' is found in
-__inet_del_ifa(), as a result, the secondary address(0.0.0.4/0 scope 0x40)
-is lost. The memory of the secondary address is leaked and the reference of
-in_device and net_device is leaked.
-
-Fix this problem:
-Look for 'last_prim' starting at location of the deleted IP and inserting
-the promoted IP into the location of 'last_prim'.
-
-Fixes: 0ff60a45678e ("[IPV4]: Fix secondary IP addresses after promotion")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Fixes: 1f90a05d9ff9 ("net/smc: add smcr_port_add() and smcr_link_up() processing")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/smc/smc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 5deac0517ef70..37be82496322d 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -355,14 +355,14 @@ static void __inet_del_ifa(struct in_device *in_dev,
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index e84241ff4ac4f..ab9ecdd1af0ac 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1101,6 +1101,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
  {
- 	struct in_ifaddr *promote = NULL;
- 	struct in_ifaddr *ifa, *ifa1;
--	struct in_ifaddr *last_prim;
-+	struct in_ifaddr __rcu **last_prim;
- 	struct in_ifaddr *prev_prom = NULL;
- 	int do_promote = IN_DEV_PROMOTE_SECONDARIES(in_dev);
+ 	struct smc_link_group *lgr, *n;
  
- 	ASSERT_RTNL();
++	spin_lock_bh(&smc_lgr_list.lock);
+ 	list_for_each_entry_safe(lgr, n, &smc_lgr_list.list, list) {
+ 		struct smc_link *link;
  
- 	ifa1 = rtnl_dereference(*ifap);
--	last_prim = rtnl_dereference(in_dev->ifa_list);
-+	last_prim = ifap;
- 	if (in_dev->dead)
- 		goto no_promotions;
+@@ -1115,6 +1116,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
+ 		if (link)
+ 			smc_llc_add_link_local(link);
+ 	}
++	spin_unlock_bh(&smc_lgr_list.lock);
+ }
  
-@@ -376,7 +376,7 @@ static void __inet_del_ifa(struct in_device *in_dev,
- 		while ((ifa = rtnl_dereference(*ifap1)) != NULL) {
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) &&
- 			    ifa1->ifa_scope <= ifa->ifa_scope)
--				last_prim = ifa;
-+				last_prim = &ifa->ifa_next;
- 
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) ||
- 			    ifa1->ifa_mask != ifa->ifa_mask ||
-@@ -440,9 +440,9 @@ static void __inet_del_ifa(struct in_device *in_dev,
- 
- 			rcu_assign_pointer(prev_prom->ifa_next, next_sec);
- 
--			last_sec = rtnl_dereference(last_prim->ifa_next);
-+			last_sec = rtnl_dereference(*last_prim);
- 			rcu_assign_pointer(promote->ifa_next, last_sec);
--			rcu_assign_pointer(last_prim->ifa_next, promote);
-+			rcu_assign_pointer(*last_prim, promote);
- 		}
- 
- 		promote->ifa_flags &= ~IFA_F_SECONDARY;
+ /* link is down - switch connections to alternate link,
 -- 
 2.40.1
 
