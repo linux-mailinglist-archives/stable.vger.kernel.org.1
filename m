@@ -2,41 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 666927A3A4C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED9E07A3896
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240360AbjIQUCT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
+        id S239755AbjIQThi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240345AbjIQUBn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:43 -0400
+        with ESMTP id S239809AbjIQThJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3261BB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FE5C433CA;
-        Sun, 17 Sep 2023 20:00:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB49133;
+        Sun, 17 Sep 2023 12:37:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41798C433C8;
+        Sun, 17 Sep 2023 19:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980844;
-        bh=9RgGhV07ktGNpqqY6xQkN6F8LbUe6TYFgZxsFu3T2zc=;
+        s=korg; t=1694979423;
+        bh=FaHZs0H7L9XI4op+fCtKFIPP6DpxemZRSsishgD6eOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RyvsRg1VoEUPDYCWsUgtq8ZIqHQ2B95a936Wmc1LguFtW/crZdedU4A4ELZZmSpSr
-         73All09okvzeWIwf60mSo39PYjTn1JNk++AA9sHiCgDWwHXDPIStM1Itom3CO0YUkJ
-         HRClStFJBB7u0O8sjV2XxE7J+rX/3RLYCEl3WZ9o=
+        b=cc6mQmygtgnIfhDcNtjS1JfdcgMS7HW84uRDpKgwty2PyeTrnvUFhs8ScPjaLuEwJ
+         0/GMtilrR3WvQSyW7vldKdMcGcJEJvRmUK03/d7SxEem0Arfwgy61fXO3Bhc5gwczk
+         Rb/Dz3azDRWDIPuPBQEEDTEVg9ByOcy0xBY8ZtEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com,
-        Gabriel Krisman Bertazi <krisman@suse.de>,
-        Jens Axboe <axboe@kernel.dk>,
-        Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 6.1 009/219] io_uring: Dont set affinity on a dying sqpoll thread
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 5.10 282/406] backlight/lv5207lp: Compare against struct fb_info.device
 Date:   Sun, 17 Sep 2023 21:12:16 +0200
-Message-ID: <20230917191041.311875005@linuxfoundation.org>
+Message-ID: <20230917191108.743503537@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,112 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+commit 1ca8819320fd84e7d95b04e7668efc5f9fe9fa5c upstream.
 
-[ upstream commit bd6fc5da4c51107e1e0cec4a3a07963d1dae2c84 ]
+Struct lv5207lp_platform_data refers to a platform device within
+the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
+compares it against the fbdev device in struct fb_info.dev, which
+is different. Fix the test by comparing to struct fb_info.device.
 
-Syzbot reported a null-ptr-deref of sqd->thread inside
-io_sqpoll_wq_cpu_affinity.  It turns out the sqd->thread can go away
-from under us during io_uring_register, in case the process gets a
-fatal signal during io_uring_register.
+Fixes a bug in the backlight driver and prepares fbdev for making
+struct fb_info.dev optional.
 
-It is not particularly hard to hit the race, and while I am not sure
-this is the exact case hit by syzbot, it solves it.  Finally, checking
-->thread is enough to close the race because we locked sqd while
-"parking" the thread, thus preventing it from going away.
+v2:
+	* move renames into separate patch (Javier, Sam, Michael)
 
-I reproduced it fairly consistently with a program that does:
-
-int main(void) {
-  ...
-  io_uring_queue_init(RING_LEN, &ring1, IORING_SETUP_SQPOLL);
-  while (1) {
-    io_uring_register_iowq_aff(ring, 1, &mask);
-  }
-}
-
-Executed in a loop with timeout to trigger SIGTERM:
-  while true; do timeout 1 /a.out ; done
-
-This will hit the following BUG() in very few attempts.
-
-BUG: kernel NULL pointer dereference, address: 00000000000007a8
-PGD 800000010e949067 P4D 800000010e949067 PUD 10e46e067 PMD 0
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 0 PID: 15715 Comm: dead-sqpoll Not tainted 6.5.0-rc7-next-20230825-g193296236fa0-dirty #23
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-RIP: 0010:io_sqpoll_wq_cpu_affinity+0x27/0x70
-Code: 90 90 90 0f 1f 44 00 00 55 53 48 8b 9f 98 03 00 00 48 85 db 74 4f
-48 89 df 48 89 f5 e8 e2 f8 ff ff 48 8b 43 38 48 85 c0 74 22 <48> 8b b8
-a8 07 00 00 48 89 ee e8 ba b1 00 00 48 89 df 89 c5 e8 70
-RSP: 0018:ffffb04040ea7e70 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff93c010749e40 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffffffa7653331 RDI: 00000000ffffffff
-RBP: ffffb04040ea7eb8 R08: 0000000000000000 R09: c0000000ffffdfff
-R10: ffff93c01141b600 R11: ffffb04040ea7d18 R12: ffff93c00ea74840
-R13: 0000000000000011 R14: 0000000000000000 R15: ffff93c00ea74800
-FS:  00007fb7c276ab80(0000) GS:ffff93c36f200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000007a8 CR3: 0000000111634003 CR4: 0000000000370ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x154/0x440
- ? do_user_addr_fault+0x174/0x7b0
- ? exc_page_fault+0x63/0x140
- ? asm_exc_page_fault+0x22/0x30
- ? io_sqpoll_wq_cpu_affinity+0x27/0x70
- __io_register_iowq_aff+0x2b/0x60
- __io_uring_register+0x614/0xa70
- __x64_sys_io_uring_register+0xaa/0x1a0
- do_syscall_64+0x3a/0x90
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x7fb7c226fec9
-Code: 2e 00 b8 ca 00 00 00 0f 05 eb a5 66 0f 1f 44 00 00 48 89 f8 48 89
-f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
-f0 ff ff 73 01 c3 48 8b 0d 97 7f 2d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffe2c0674f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb7c226fec9
-RDX: 00007ffe2c067530 RSI: 0000000000000011 RDI: 0000000000000003
-RBP: 00007ffe2c0675d0 R08: 00007ffe2c067550 R09: 00007ffe2c067550
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffe2c067750 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-Modules linked in:
-CR2: 00000000000007a8
----[ end trace 0000000000000000 ]---
-
-Reported-by: syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com
-Fixes: ebdfefc09c6d ("io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://lore.kernel.org/r/87v8cybuo6.fsf@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: linux-sh@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.12+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-6-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/sqpoll.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/backlight/lv5207lp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -432,7 +432,9 @@ __cold int io_sqpoll_wq_cpu_affinity(str
+--- a/drivers/video/backlight/lv5207lp.c
++++ b/drivers/video/backlight/lv5207lp.c
+@@ -67,7 +67,7 @@ static int lv5207lp_backlight_check_fb(s
+ {
+ 	struct lv5207lp *lv = bl_get_data(backlight);
  
- 	if (sqd) {
- 		io_sq_thread_park(sqd);
--		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
-+		/* Don't set affinity for a dying thread */
-+		if (sqd->thread)
-+			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
- 		io_sq_thread_unpark(sqd);
- 	}
+-	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->dev;
++	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->device;
+ }
  
+ static const struct backlight_ops lv5207lp_backlight_ops = {
 
 
