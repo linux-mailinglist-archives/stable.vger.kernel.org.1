@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3317A3B14
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C847A3D08
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240598AbjIQUMx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57144 "EHLO
+        id S241195AbjIQUi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240688AbjIQUMl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:41 -0400
+        with ESMTP id S241226AbjIQUiB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C5E81AA
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1FEC433C8;
-        Sun, 17 Sep 2023 20:12:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B76112F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D36C433C7;
+        Sun, 17 Sep 2023 20:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981538;
-        bh=UfgNaUBA+5y+GQi6suqNy2ZoO9pm10f658UGJIQTYdo=;
+        s=korg; t=1694983075;
+        bh=5mmG88hO5VSaPsHgwtUzAFpNNHhWPg9jvgKl2p0NVoo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vm42TvSm+xbYtBCZ2WVjcb407l1LI9hQWFKK8RwTUb2AvdlBxsSga1P53qjReM1gG
-         F7FvdLM2odLkIj6+14fgZl/8KorkmqObMQTfxGV4Eapr3bd8S96GIf/PJlCHnHP/3m
-         m6M633jS0eLpPBtuF5rSw63AeP4PP3kuFD34bdRg=
+        b=K7njAn2OPqqHvtMPykpUGYVxNiDflUzGz16i1lJRI4orNHQPlr/HcSbgvswr2h6k1
+         8GcoLgYMEUdpXZbsmmVcNZrxqa/znNcWDDRizsTWYOSHk7m9xYlq8NVu1UWpOeUOXZ
+         3zx2wg0KGvGcv7YGV34nruwWrETzdHkKYNW9JItg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saeed Mahameed <saeedm@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-Subject: [PATCH 6.1 137/219] net/mlx5: Free IRQ rmap and notifier on kernel shutdown
+        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
+        David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 437/511] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
 Date:   Sun, 17 Sep 2023 21:14:24 +0200
-Message-ID: <20230917191045.950299386@linuxfoundation.org>
+Message-ID: <20230917191124.312038914@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,124 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-commit 314ded538e5f22e7610b1bf621402024a180ec80 upstream.
+[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
 
-The kernel IRQ system needs the irq affinity notifier to be clear
-before attempting to free the irq, see WARN_ON log below.
+The existing code incorrectly casted a negative value (the result of a
+subtraction) to an unsigned value without checking. For example, if
+/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
+lifetime would jump to 4 billion seconds. On my machine and network the
+shortest lifetime that avoided underflow was 3 seconds.
 
-On a normal driver unload we don't have this issue since we do the
-complete cleanup of the irq resources.
-
-To fix this, put the important resources cleanup in a helper function
-and use it in both normal driver unload and shutdown flows.
-
-[ 4497.498434] ------------[ cut here ]------------
-[ 4497.498726] WARNING: CPU: 0 PID: 9 at kernel/irq/manage.c:2034 free_irq+0x295/0x340
-[ 4497.499193] Modules linked in:
-[ 4497.499386] CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W          6.4.0-rc4+ #10
-[ 4497.499876] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
-[ 4497.500518] Workqueue: events do_poweroff
-[ 4497.500849] RIP: 0010:free_irq+0x295/0x340
-[ 4497.501132] Code: 85 c0 0f 84 1d ff ff ff 48 89 ef ff d0 0f 1f 00 e9 10 ff ff ff 0f 0b e9 72 ff ff ff 49 8d 7f 28 ff d0 0f 1f 00 e9 df fd ff ff <0f> 0b 48 c7 80 c0 008
-[ 4497.502269] RSP: 0018:ffffc90000053da0 EFLAGS: 00010282
-[ 4497.502589] RAX: ffff888100949600 RBX: ffff88810330b948 RCX: 0000000000000000
-[ 4497.503035] RDX: ffff888100949600 RSI: ffff888100400490 RDI: 0000000000000023
-[ 4497.503472] RBP: ffff88810330c7e0 R08: ffff8881004005d0 R09: ffffffff8273a260
-[ 4497.503923] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881009ae000
-[ 4497.504359] R13: ffff8881009ae148 R14: 0000000000000000 R15: ffff888100949600
-[ 4497.504804] FS:  0000000000000000(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-[ 4497.505302] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 4497.505671] CR2: 00007fce98806298 CR3: 000000000262e005 CR4: 0000000000370ef0
-[ 4497.506104] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 4497.506540] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 4497.507002] Call Trace:
-[ 4497.507158]  <TASK>
-[ 4497.507299]  ? free_irq+0x295/0x340
-[ 4497.507522]  ? __warn+0x7c/0x130
-[ 4497.507740]  ? free_irq+0x295/0x340
-[ 4497.507963]  ? report_bug+0x171/0x1a0
-[ 4497.508197]  ? handle_bug+0x3c/0x70
-[ 4497.508417]  ? exc_invalid_op+0x17/0x70
-[ 4497.508662]  ? asm_exc_invalid_op+0x1a/0x20
-[ 4497.508926]  ? free_irq+0x295/0x340
-[ 4497.509146]  mlx5_irq_pool_free_irqs+0x48/0x90
-[ 4497.509421]  mlx5_irq_table_free_irqs+0x38/0x50
-[ 4497.509714]  mlx5_core_eq_free_irqs+0x27/0x40
-[ 4497.509984]  shutdown+0x7b/0x100
-[ 4497.510184]  pci_device_shutdown+0x30/0x60
-[ 4497.510440]  device_shutdown+0x14d/0x240
-[ 4497.510698]  kernel_power_off+0x30/0x70
-[ 4497.510938]  process_one_work+0x1e6/0x3e0
-[ 4497.511183]  worker_thread+0x49/0x3b0
-[ 4497.511407]  ? __pfx_worker_thread+0x10/0x10
-[ 4497.511679]  kthread+0xe0/0x110
-[ 4497.511879]  ? __pfx_kthread+0x10/0x10
-[ 4497.512114]  ret_from_fork+0x29/0x50
-[ 4497.512342]  </TASK>
-
-Fixes: 9c2d08010963 ("net/mlx5: Free irqs only on shutdown callback")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c |   26 ++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ net/ipv6/addrconf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -123,18 +123,32 @@ out:
- 	return ret;
- }
- 
--static void irq_release(struct mlx5_irq *irq)
-+/* mlx5_system_free_irq - Free an IRQ
-+ * @irq: IRQ to free
-+ *
-+ * Free the IRQ and other resources such as rmap from the system.
-+ * BUT doesn't free or remove reference from mlx5.
-+ * This function is very important for the shutdown flow, where we need to
-+ * cleanup system resoruces but keep mlx5 objects alive,
-+ * see mlx5_irq_table_free_irqs().
-+ */
-+static void mlx5_system_free_irq(struct mlx5_irq *irq)
- {
--	struct mlx5_irq_pool *pool = irq->pool;
--
--	xa_erase(&pool->irqs, irq->index);
- 	/* free_irq requires that affinity_hint and rmap will be cleared
- 	 * before calling it. This is why there is asymmetry with set_rmap
- 	 * which should be called after alloc_irq but before request_irq.
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 0c0b7969840f5..6572174e2115f 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1368,7 +1368,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 	 * idev->desync_factor if it's larger
  	 */
- 	irq_update_affinity_hint(irq->irqn, NULL);
--	free_cpumask_var(irq->mask);
- 	free_irq(irq->irqn, &irq->nh);
-+}
-+
-+static void irq_release(struct mlx5_irq *irq)
-+{
-+	struct mlx5_irq_pool *pool = irq->pool;
-+
-+	xa_erase(&pool->irqs, irq->index);
-+	mlx5_system_free_irq(irq);
-+	free_cpumask_var(irq->mask);
- 	kfree(irq);
- }
+ 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
+-	max_desync_factor = min_t(__u32,
++	max_desync_factor = min_t(long,
+ 				  idev->cnf.max_desync_factor,
+ 				  cnf_temp_preferred_lft - regen_advance);
  
-@@ -597,7 +611,7 @@ static void mlx5_irq_pool_free_irqs(stru
- 	unsigned long index;
- 
- 	xa_for_each(&pool->irqs, index, irq)
--		free_irq(irq->irqn, &irq->nh);
-+		mlx5_system_free_irq(irq);
- }
- 
- static void mlx5_irq_pools_free_irqs(struct mlx5_irq_table *table)
+-- 
+2.40.1
+
 
 
