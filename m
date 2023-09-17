@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF46C7A3879
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6F67A3999
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239762AbjIQTgg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49350 "EHLO
+        id S240100AbjIQTvb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:51:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239791AbjIQTgI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:08 -0400
+        with ESMTP id S240153AbjIQTvV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BBAE133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514FCC433CA;
-        Sun, 17 Sep 2023 19:36:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 060249F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311FDC433C8;
+        Sun, 17 Sep 2023 19:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979362;
-        bh=ftMAgaHXtEKi1Ngaz4BsXCjgTY8u3F0BeJpURwvtuhI=;
+        s=korg; t=1694980275;
+        bh=5rWvPxY4VFOqW+S6+yCNwhClFr9qMokkirstouey+NQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FK0mMNHoA6wOfacwp0nmwZCVZeUoNnaF/GQJAu34EJF/VNZtGkJu8e5ccU/6u4w2Z
-         OrQ6INP4lAMRrjHZuzuE3KoCzLiY9c7q0rfTqyZphMjjSJZ3nW7Uf2G7/hD2TqZMHv
-         ei9AoBgcCnBopaNlntKEiglcr5f4aW+V4/Z6BZzE=
+        b=i9ZQoY/izbmMdhLjrRF2eqaLfxbNP2jCmdbea1dHD5l+dYWDUcBsx53BRmc9x0sp/
+         tuKWJPIYHjIZ+eoXT8q9tX+Q4dx26mm4YjQnO4fLurWeBmcYF1lDLyScfwwDgu6/bT
+         Qz324YxJU2Ewq7pYOreNvuURnh2KWDqStctICaeM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.10 291/406] Revert "PCI: Mark NVIDIA T4 GPUs to avoid bus reset"
+        patches@lists.linux.dev, Udit Kumar <u-kumar1@ti.com>,
+        Jerome Neanne <jneanne@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 145/285] regulator: tps6594-regulator: Fix random kernel crash
 Date:   Sun, 17 Sep 2023 21:12:25 +0200
-Message-ID: <20230917191108.991275506@linuxfoundation.org>
+Message-ID: <20230917191056.703460957@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,46 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Jerome Neanne <jneanne@baylibre.com>
 
-commit 5260bd6d36c83c5b269c33baaaf8c78e520908b0 upstream.
+[ Upstream commit ca0e36e3e39a4e8b5a4b647dff8c5938ca6ccbec ]
 
-This reverts commit d5af729dc2071273f14cbb94abbc60608142fd83.
+Random kernel crash detected in TI CICD when regulator driver is added.
+This is root caused to irq index increment being done twice causing
+irq_data being allocated outside of the range.
 
-d5af729dc207 ("PCI: Mark NVIDIA T4 GPUs to avoid bus reset") avoided
-Secondary Bus Reset on the T4 because the reset seemed to not work when the
-T4 was directly attached to a Root Port.
+- Rework tps6594_request_reg_irqs with correct index increment
+- Adjust irq_data kmalloc size to the exact size needed for the device
 
-But NVIDIA thinks the issue is probably related to some issue with the Root
-Port, not with the T4.  The T4 provides neither PM nor FLR reset, so
-masking bus reset compromises this device for assignment scenarios.
+This has been reported on TI mainline. No public bug report associated.
 
-Revert d5af729dc207 as requested by Wu Zongyong.  This will leave SBR
-broken in the specific configuration Wu tested, as it was in v6.5, so Wu
-will debug that further.
-
-Link: https://lore.kernel.org/r/ZPqMCDWvITlOLHgJ@wuzongyong-alibaba
-Link: https://lore.kernel.org/r/20230908201104.GA305023@bhelgaas
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Udit Kumar <u-kumar1@ti.com>
+Fixes: f17ccc5deb4d ("regulator: tps6594-regulator: Add driver for TI TPS6594 regulators")
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+Link: https://lore.kernel.org/r/20230828-tps6594_random_boot_crash_fix-v1-1-f29cbf9ddb37@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/tps6594-regulator.c | 31 +++++++++++++--------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3578,7 +3578,7 @@ static void quirk_no_bus_reset(struct pc
-  */
- static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
- {
--	if ((dev->device & 0xffc0) == 0x2340 || dev->device == 0x1eb8)
-+	if ((dev->device & 0xffc0) == 0x2340)
- 		quirk_no_bus_reset(dev);
+diff --git a/drivers/regulator/tps6594-regulator.c b/drivers/regulator/tps6594-regulator.c
+index d5a574ec6d12f..47c3b7efe145e 100644
+--- a/drivers/regulator/tps6594-regulator.c
++++ b/drivers/regulator/tps6594-regulator.c
+@@ -384,21 +384,19 @@ static int tps6594_request_reg_irqs(struct platform_device *pdev,
+ 		if (irq < 0)
+ 			return -EINVAL;
+ 
+-		irq_data[*irq_idx + j].dev = tps->dev;
+-		irq_data[*irq_idx + j].type = irq_type;
+-		irq_data[*irq_idx + j].rdev = rdev;
++		irq_data[*irq_idx].dev = tps->dev;
++		irq_data[*irq_idx].type = irq_type;
++		irq_data[*irq_idx].rdev = rdev;
+ 
+ 		error = devm_request_threaded_irq(tps->dev, irq, NULL,
+-						  tps6594_regulator_irq_handler,
+-						  IRQF_ONESHOT,
+-						  irq_type->irq_name,
+-						  &irq_data[*irq_idx]);
+-		(*irq_idx)++;
++						  tps6594_regulator_irq_handler, IRQF_ONESHOT,
++						  irq_type->irq_name, &irq_data[*irq_idx]);
+ 		if (error) {
+ 			dev_err(tps->dev, "tps6594 failed to request %s IRQ %d: %d\n",
+ 				irq_type->irq_name, irq, error);
+ 			return error;
+ 		}
++		(*irq_idx)++;
+ 	}
+ 	return 0;
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
+@@ -420,8 +418,8 @@ static int tps6594_regulator_probe(struct platform_device *pdev)
+ 	int error, i, irq, multi, delta;
+ 	int irq_idx = 0;
+ 	int buck_idx = 0;
+-	int ext_reg_irq_nb = 2;
+-
++	size_t ext_reg_irq_nb = 2;
++	size_t reg_irq_nb;
+ 	enum {
+ 		MULTI_BUCK12,
+ 		MULTI_BUCK123,
+@@ -484,15 +482,16 @@ static int tps6594_regulator_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	if (tps->chip_id == LP8764)
++	if (tps->chip_id == LP8764) {
+ 		/* There is only 4 buck on LP8764 */
+ 		buck_configured[4] = 1;
++		reg_irq_nb = size_mul(REGS_INT_NB, (BUCK_NB - 1));
++	} else {
++		reg_irq_nb = size_mul(REGS_INT_NB, (size_add(BUCK_NB, LDO_NB)));
++	}
+ 
+-	irq_data = devm_kmalloc_array(tps->dev,
+-				REGS_INT_NB * sizeof(struct tps6594_regulator_irq_data),
+-				ARRAY_SIZE(tps6594_bucks_irq_types) +
+-				ARRAY_SIZE(tps6594_ldos_irq_types),
+-				GFP_KERNEL);
++	irq_data = devm_kmalloc_array(tps->dev, reg_irq_nb,
++				      sizeof(struct tps6594_regulator_irq_data), GFP_KERNEL);
+ 	if (!irq_data)
+ 		return -ENOMEM;
+ 
+-- 
+2.40.1
+
 
 
