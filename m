@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53B0B7A3A97
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D267A3A96
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240384AbjIQUG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240385AbjIQUG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:06:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240436AbjIQUGF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:05 -0400
+        with ESMTP id S240455AbjIQUGI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD60187
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C960C433CB;
-        Sun, 17 Sep 2023 20:05:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FCB1A4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D185CC433C8;
+        Sun, 17 Sep 2023 20:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981151;
-        bh=slNFVex6530uEUZcuiyPBzY+EXNSvDL/pQfBR7iB2v0=;
+        s=korg; t=1694981154;
+        bh=vJO+IaWQI0CldO0cyArEdhlr+hmUVX7GF9H/ewK4G4o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=raCUVgI6oG50rZ0QSMleMHloFgIh6nrkQX8h9tMNH/vA0zklmCRi6TazBs6USvYx1
-         SutvPYumXU2gBY20QHetLKw06dD21B52hJaXmpqch37XTBWW7GWy13nxzcciK6y16Y
-         HRXgBwGW5kavOcSzbNPN/0vfuIpFtLD1gCcguEkk=
+        b=qCs2jt6UgyuolgIZU1aepFVzqo2HtGm7jOHzzsSxLMqJ75uR3uuMOCQmvNI9PlKmC
+         yQ3iMcpK1Pszihfq0X6W80pu/mjUehxvZ2GMPTB4D8XoZ6TlZYxwBBiPwZVjGhbXfH
+         CwfZXFh6mJqLVqM1zG1iRMXqKZbQlLN2PX8b3Zjo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmytro Maluka <dmy@semihalf.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/511] ASoC: da7219: Check for failure reading AAD IRQ events
-Date:   Sun, 17 Sep 2023 21:07:19 +0200
-Message-ID: <20230917191114.130357861@linuxfoundation.org>
+Subject: [PATCH 5.15 013/511] ethernet: atheros: fix return value check in atl1c_tso_csum()
+Date:   Sun, 17 Sep 2023 21:07:20 +0200
+Message-ID: <20230917191114.153693412@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,49 +55,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmytro Maluka <dmy@semihalf.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit f0691dc16206f21b13c464434366e2cd632b8ed7 ]
+[ Upstream commit 8d01da0a1db237c44c92859ce3612df7af8d3a53 ]
 
-When handling an AAD interrupt, if IRQ events read failed (for example,
-due to i2c "Transfer while suspended" failure, i.e. when attempting to
-read it while DA7219 is suspended, which may happen due to a spurious
-AAD interrupt), the events array contains garbage uninitialized values.
-So instead of trying to interprete those values and doing any actions
-based on them (potentially resulting in misbehavior, e.g. reporting
-bogus events), refuse to handle the interrupt.
+in atl1c_tso_csum, it should check the return value of pskb_trim(),
+and return an error code if an unexpected value is returned
+by pskb_trim().
 
-Signed-off-by: Dmytro Maluka <dmy@semihalf.com>
-Link: https://lore.kernel.org/r/20230717193737.161784-3-dmy@semihalf.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/atheros/atl1c/atl1c_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index 6b368ab945be5..7d18de959439f 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -347,11 +347,15 @@ static irqreturn_t da7219_aad_irq_thread(int irq, void *data)
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	u8 events[DA7219_AAD_IRQ_REG_MAX];
- 	u8 statusa;
--	int i, report = 0, mask = 0;
-+	int i, ret, report = 0, mask = 0;
+diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+index 5cbd815c737e7..dad21b4fbc0bc 100644
+--- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
++++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+@@ -2104,8 +2104,11 @@ static int atl1c_tso_csum(struct atl1c_adapter *adapter,
+ 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
+ 					+ ntohs(ip_hdr(skb)->tot_len));
  
- 	/* Read current IRQ events */
--	regmap_bulk_read(da7219->regmap, DA7219_ACCDET_IRQ_EVENT_A,
--			 events, DA7219_AAD_IRQ_REG_MAX);
-+	ret = regmap_bulk_read(da7219->regmap, DA7219_ACCDET_IRQ_EVENT_A,
-+			       events, DA7219_AAD_IRQ_REG_MAX);
-+	if (ret) {
-+		dev_warn_ratelimited(component->dev, "Failed to read IRQ events: %d\n", ret);
-+		return IRQ_NONE;
-+	}
+-			if (real_len < skb->len)
+-				pskb_trim(skb, real_len);
++			if (real_len < skb->len) {
++				err = pskb_trim(skb, real_len);
++				if (err)
++					return err;
++			}
  
- 	if (!events[DA7219_AAD_IRQ_REG_A] && !events[DA7219_AAD_IRQ_REG_B])
- 		return IRQ_NONE;
+ 			hdr_len = (skb_transport_offset(skb) + tcp_hdrlen(skb));
+ 			if (unlikely(skb->len == hdr_len)) {
 -- 
 2.40.1
 
