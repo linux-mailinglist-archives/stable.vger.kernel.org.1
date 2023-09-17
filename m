@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F18E47A39A2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E4917A3A67
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232943AbjIQTwc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:52:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41354 "EHLO
+        id S229615AbjIQUDO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240108AbjIQTwB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:01 -0400
+        with ESMTP id S240350AbjIQUCw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC821AD
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972A0C433C9;
-        Sun, 17 Sep 2023 19:51:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76338100
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4E5C433CA;
+        Sun, 17 Sep 2023 20:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980306;
-        bh=0xcsQ88TWlM+5AjypHyRhtI2R06o4B/DeP4xDUPQ30w=;
+        s=korg; t=1694980951;
+        bh=CtWAUSYTdB8JDO8KxVBNhCPGQ9Ix7OI4ea/4XaGBpIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NB135Dv2diB+G/xFZdOu8lfTVbOfT8ibn6Z37283x32QMaoz9TBCxUf78VLfjSXd5
-         7YYzWt6SMH07Nbz2f2a/pYcAjlVwCBdTqODv+ce209TycrSX8Lz4lZaT/SmFGOAJxW
-         vHUdvdI7b4M0eUNscivFVLS2PrftYaBZNVX+nmEc=
+        b=lcSJbTc33rNHR+i+ptiONDYjBSR/Uuc4cu9oj1p0xjnjcnPpn9xFAwGjuFhlWbPjc
+         IeDY+A8Jku6NAcfeytXoL45s1Ze+ZaKllAT7bnjfd3ynyYQgVZU6ayDDeS6T0y3PlX
+         zFNN/mICjZJNKC1Fa6FWPgCaIi7UOmwOnkBVa9Jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yanan Yang <yanan.yang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 153/285] net: dsa: sja1105: fix bandwidth discrepancy between tc-cbs software and offload
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 6.1 026/219] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
 Date:   Sun, 17 Sep 2023 21:12:33 +0200
-Message-ID: <20230917191056.981257857@linuxfoundation.org>
+Message-ID: <20230917191041.945647009@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,139 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 954ad9bf13c4f95a4958b5f8433301f2ab99e1f5 ]
+commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
 
-More careful measurement of the tc-cbs bandwidth shows that the stream
-bandwidth (effectively idleslope) increases, there is a larger and
-larger discrepancy between the rate limit obtained by the software
-Qdisc, and the rate limit obtained by its offloaded counterpart.
+Do not assing the Linux device to struct fb_info.dev. The call to
+register_framebuffer() initializes the field to the fbdev device.
+Drivers should not override its value.
 
-The discrepancy becomes so large, that e.g. at an idleslope of 40000
-(40Mbps), the offloaded cbs does not actually rate limit anything, and
-traffic will pass at line rate through a 100 Mbps port.
+Fixes a bug where the driver incorrectly decreases the hardware
+device's reference counter and leaks the fbdev device.
 
-The reason for the discrepancy is that the hardware documentation I've
-been following is incorrect. UM11040.pdf (for SJA1105P/Q/R/S) states
-about IDLE_SLOPE that it is "the rate (in unit of bytes/sec) at which
-the credit counter is increased".
+v2:
+	* add Fixes tag (Dan)
 
-Cross-checking with UM10944.pdf (for SJA1105E/T) and UM11107.pdf
-(for SJA1110), the wording is different: "This field specifies the
-value, in bytes per second times link speed, by which the credit counter
-is increased".
-
-So there's an extra scaling for link speed that the driver is currently
-not accounting for, and apparently (empirically), that link speed is
-expressed in Kbps.
-
-I've pondered whether to pollute the sja1105_mac_link_up()
-implementation with CBS shaper reprogramming, but I don't think it is
-worth it. IMO, the UAPI exposed by tc-cbs requires user space to
-recalculate the sendslope anyway, since the formula for that depends on
-port_transmit_rate (see man tc-cbs), which is not an invariant from tc's
-perspective.
-
-So we use the offload->sendslope and offload->idleslope to deduce the
-original port_transmit_rate from the CBS formula, and use that value to
-scale the offload->sendslope and offload->idleslope to values that the
-hardware understands.
-
-Some numerical data points:
-
- 40Mbps stream, max interfering frame size 1500, port speed 100M
- ---------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 40000 sendslope -60000 locredit -900 hicredit 600
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    600                600
- credit_lo    900                900
- send_slope   7500000            75
- idle_slope   5000000            50
-
- 40Mbps stream, max interfering frame size 1500, port speed 1G
- -------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 40000 sendslope -960000 locredit -1440 hicredit 60
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    60                 60
- credit_lo    1440               1440
- send_slope   120000000          120
- idle_slope   5000000            5
-
- 5.12Mbps stream, max interfering frame size 1522, port speed 100M
- -----------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 5120 sendslope -94880 locredit -1444 hicredit 77
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    77                 77
- credit_lo    1444               1444
- send_slope   11860000           118
- idle_slope   640000             6
-
-Tested on SJA1105T, SJA1105S and SJA1110A, at 1Gbps and 100Mbps.
-
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Reported-by: Yanan Yang <yanan.yang@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 88017bda96a5 ("ep93xx video driver")
+Cc: <stable@vger.kernel.org> # v2.6.32+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/ep93xx-fb.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 3529a565b4aaf..fe7f09519653a 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2157,6 +2157,7 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- {
- 	struct sja1105_private *priv = ds->priv;
- 	struct sja1105_cbs_entry *cbs;
-+	s64 port_transmit_rate_kbps;
- 	int index;
+--- a/drivers/video/fbdev/ep93xx-fb.c
++++ b/drivers/video/fbdev/ep93xx-fb.c
+@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
+ 	if (!info)
+ 		return -ENOMEM;
  
- 	if (!offload->enable)
-@@ -2174,9 +2175,17 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	 */
- 	cbs->credit_hi = offload->hicredit;
- 	cbs->credit_lo = abs(offload->locredit);
--	/* User space is in kbits/sec, hardware in bytes/sec */
--	cbs->idle_slope = offload->idleslope * BYTES_PER_KBIT;
--	cbs->send_slope = abs(offload->sendslope * BYTES_PER_KBIT);
-+	/* User space is in kbits/sec, while the hardware in bytes/sec times
-+	 * link speed. Since the given offload->sendslope is good only for the
-+	 * current link speed anyway, and user space is likely to reprogram it
-+	 * when that changes, don't even bother to track the port's link speed,
-+	 * but deduce the port transmit rate from idleslope - sendslope.
-+	 */
-+	port_transmit_rate_kbps = offload->idleslope - offload->sendslope;
-+	cbs->idle_slope = div_s64(offload->idleslope * BYTES_PER_KBIT,
-+				  port_transmit_rate_kbps);
-+	cbs->send_slope = div_s64(abs(offload->sendslope * BYTES_PER_KBIT),
-+				  port_transmit_rate_kbps);
- 	/* Convert the negative values from 64-bit 2's complement
- 	 * to 32-bit 2's complement (for the case of 0x80000000 whose
- 	 * negative is still negative).
--- 
-2.40.1
-
+-	info->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, info);
+ 	fbi = info->par;
+ 	fbi->mach_info = mach_info;
 
 
