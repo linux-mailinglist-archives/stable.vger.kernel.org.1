@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0007A38F6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D4E7A3A0E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239910AbjIQTnC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41018 "EHLO
+        id S240263AbjIQT54 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240029AbjIQTmj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:39 -0400
+        with ESMTP id S240272AbjIQT5t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3D9D18F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058E9C43397;
-        Sun, 17 Sep 2023 19:42:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709D2EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24A7C433C8;
+        Sun, 17 Sep 2023 19:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979749;
-        bh=/IvNLvZsC1+wwT7Uquv49JXw9Q/cGureZOUkGgCAul4=;
+        s=korg; t=1694980663;
+        bh=jN+IicPruRospwHvB2lRxnl7vJMNQhqiZT+iDE685/w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XFKpbu3U1scSNAwnIgEZ9odk0u/kkyOB2ZVYsHKI2VmSnxNpcSoxWniT2R0IqdzM6
-         fRa5AurDl3r+aqJ0wNp/nDDCIcc5nXY/Pjwx548qJiiV88QWiGsdZrZX0KQj02c8UF
-         kWZc1H0aZr4afXkGfUgV6cr5KVgVkLB1h2fOwp9o=
+        b=1IMNwUByOm64NXHZBsg9TolJ2j6UGjaW+73xMRUu/iShDuE5QSXV2J3qtmZY1BFSe
+         zQXZ5FgjaQ7B9R+Hx2LD/cBFBaw2vtaSeMMpY6oPqg1+CyZKFeIq5bPp5E9E+MRR4b
+         5xA3wRIS+JyZB2ai/5QFDMY7GdJBSKVFDTW/WeLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-        Simon Horman <horms@kernel.org>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        syzbot+bf7e6250c7ce248f3ec9@syzkaller.appspotmail.com,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 403/406] ixgbe: fix timestamp configuration code
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 257/285] hsr: Fix uninit-value access in fill_frame_info()
 Date:   Sun, 17 Sep 2023 21:14:17 +0200
-Message-ID: <20230917191111.898918061@linuxfoundation.org>
+Message-ID: <20230917191100.165452583@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,151 +52,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 3c44191dd76cf9c0cc49adaf34384cbd42ef8ad2 ]
+[ Upstream commit 484b4833c604c0adcf19eac1ca14b60b757355b5 ]
 
-The commit in fixes introduced flags to control the status of hardware
-configuration while processing packets. At the same time another structure
-is used to provide configuration of timestamper to user-space applications.
-The way it was coded makes this structures go out of sync easily. The
-repro is easy for 82599 chips:
+Syzbot reports the following uninit-value access problem.
 
-[root@hostname ~]# hwstamp_ctl -i eth0 -r 12 -t 1
-current settings:
-tx_type 0
-rx_filter 0
-new settings:
-tx_type 1
-rx_filter 12
+=====================================================
+BUG: KMSAN: uninit-value in fill_frame_info net/hsr/hsr_forward.c:601 [inline]
+BUG: KMSAN: uninit-value in hsr_forward_skb+0x9bd/0x30f0 net/hsr/hsr_forward.c:616
+ fill_frame_info net/hsr/hsr_forward.c:601 [inline]
+ hsr_forward_skb+0x9bd/0x30f0 net/hsr/hsr_forward.c:616
+ hsr_dev_xmit+0x192/0x330 net/hsr/hsr_device.c:223
+ __netdev_start_xmit include/linux/netdevice.h:4889 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+ xmit_one net/core/dev.c:3544 [inline]
+ dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3560
+ __dev_queue_xmit+0x34d0/0x52a0 net/core/dev.c:4340
+ dev_queue_xmit include/linux/netdevice.h:3082 [inline]
+ packet_xmit+0x9c/0x6b0 net/packet/af_packet.c:276
+ packet_snd net/packet/af_packet.c:3087 [inline]
+ packet_sendmsg+0x8b1d/0x9f30 net/packet/af_packet.c:3119
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ sock_sendmsg net/socket.c:753 [inline]
+ __sys_sendto+0x781/0xa30 net/socket.c:2176
+ __do_sys_sendto net/socket.c:2188 [inline]
+ __se_sys_sendto net/socket.c:2184 [inline]
+ __ia32_sys_sendto+0x11f/0x1c0 net/socket.c:2184
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
 
-The eth0 device is properly configured to timestamp any PTPv2 events.
+Uninit was created at:
+ slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
+ slab_alloc_node mm/slub.c:3478 [inline]
+ kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
+ kmalloc_reserve+0x148/0x470 net/core/skbuff.c:559
+ __alloc_skb+0x318/0x740 net/core/skbuff.c:644
+ alloc_skb include/linux/skbuff.h:1286 [inline]
+ alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6299
+ sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2794
+ packet_alloc_skb net/packet/af_packet.c:2936 [inline]
+ packet_snd net/packet/af_packet.c:3030 [inline]
+ packet_sendmsg+0x70e8/0x9f30 net/packet/af_packet.c:3119
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ sock_sendmsg net/socket.c:753 [inline]
+ __sys_sendto+0x781/0xa30 net/socket.c:2176
+ __do_sys_sendto net/socket.c:2188 [inline]
+ __se_sys_sendto net/socket.c:2184 [inline]
+ __ia32_sys_sendto+0x11f/0x1c0 net/socket.c:2184
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
 
-[root@hostname ~]# hwstamp_ctl -i eth0 -r 1 -t 1
-current settings:
-tx_type 1
-rx_filter 12
-SIOCSHWTSTAMP failed: Numerical result out of range
-The requested time stamping mode is not supported by the hardware.
+It is because VLAN not yet supported in hsr driver. Return error
+when protocol is ETH_P_8021Q in fill_frame_info() now to fix it.
 
-The error is properly returned because HW doesn't support all packets
-timestamping. But the adapter->flags is cleared of timestamp flags
-even though no HW configuration was done. From that point no RX timestamps
-are received by user-space application. But configuration shows good
-values:
-
-[root@hostname ~]# hwstamp_ctl -i eth0
-current settings:
-tx_type 1
-rx_filter 12
-
-Fix the issue by applying new flags only when the HW was actually
-configured.
-
-Fixes: a9763f3cb54c ("ixgbe: Update PTP to support X550EM_x devices")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 451d8123f897 ("net: prp: add packet handling support")
+Reported-by: syzbot+bf7e6250c7ce248f3ec9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bf7e6250c7ce248f3ec9
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c | 28 +++++++++++---------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ net/hsr/hsr_forward.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-index 8b7f300355710..3eb2c05361e80 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-@@ -989,6 +989,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 	u32 tsync_tx_ctl = IXGBE_TSYNCTXCTL_ENABLED;
- 	u32 tsync_rx_ctl = IXGBE_TSYNCRXCTL_ENABLED;
- 	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
-+	u32 aflags = adapter->flags;
- 	bool is_l2 = false;
- 	u32 regval;
- 
-@@ -1009,20 +1010,20 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 	case HWTSTAMP_FILTER_NONE:
- 		tsync_rx_ctl = 0;
- 		tsync_rx_mtrl = 0;
--		adapter->flags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
- 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_L4_V1;
- 		tsync_rx_mtrl |= IXGBE_RXMTRL_V1_SYNC_MSG;
--		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
- 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_L4_V1;
- 		tsync_rx_mtrl |= IXGBE_RXMTRL_V1_DELAY_REQ_MSG;
--		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
- 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
-@@ -1036,8 +1037,8 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_EVENT_V2;
- 		is_l2 = true;
- 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
--		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
- 	case HWTSTAMP_FILTER_NTP_ALL:
-@@ -1048,7 +1049,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 		if (hw->mac.type >= ixgbe_mac_X550) {
- 			tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_ALL;
- 			config->rx_filter = HWTSTAMP_FILTER_ALL;
--			adapter->flags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
-+			aflags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
- 			break;
- 		}
- 		fallthrough;
-@@ -1059,8 +1060,6 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 		 * Delay_Req messages and hardware does not support
- 		 * timestamping all packets => return error
- 		 */
--		adapter->flags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		config->rx_filter = HWTSTAMP_FILTER_NONE;
- 		return -ERANGE;
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 629daacc96071..b71dab630a873 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -594,6 +594,7 @@ static int fill_frame_info(struct hsr_frame_info *frame,
+ 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
+ 		/* FIXME: */
+ 		netdev_warn_once(skb->dev, "VLAN not yet supported");
++		return -EINVAL;
  	}
-@@ -1092,8 +1091,8 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 			       IXGBE_TSYNCRXCTL_TYPE_ALL |
- 			       IXGBE_TSYNCRXCTL_TSIP_UT_EN;
- 		config->rx_filter = HWTSTAMP_FILTER_ALL;
--		adapter->flags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
--		adapter->flags &= ~IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER;
-+		aflags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
-+		aflags &= ~IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER;
- 		is_l2 = true;
- 		break;
- 	default:
-@@ -1126,6 +1125,9 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
  
- 	IXGBE_WRITE_FLUSH(hw);
- 
-+	/* configure adapter flags only when HW is actually configured */
-+	adapter->flags = aflags;
-+
- 	/* clear TX/RX time stamp registers, just to be sure */
- 	ixgbe_ptp_clear_tx_timestamp(adapter);
- 	IXGBE_READ_REG(hw, IXGBE_RXSTMPH);
+ 	frame->is_from_san = false;
 -- 
 2.40.1
 
