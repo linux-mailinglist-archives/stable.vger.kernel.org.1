@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 192DF7A3D05
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D027A3B10
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241199AbjIQUhz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
+        id S238654AbjIQUMt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:12:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241205AbjIQUho (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:44 -0400
+        with ESMTP id S240571AbjIQUMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF8C1101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD3BC433C7;
-        Sun, 17 Sep 2023 20:37:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86AB110B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF452C433D9;
+        Sun, 17 Sep 2023 20:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983058;
-        bh=R+mypiVBncQnLoJO95qhMNggMkCeRQbEvsud2r1r19k=;
+        s=korg; t=1694981513;
+        bh=ckmWjC+WPVPA7aK4Fdtx3pJZkUB1BQxVSn/MtG0LtpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0U1xoSOxijxE8Ww23hcOKkio54BfR1dCY2h65/R0MiHjH3giRZvLp3uXqqSseWSOR
-         bo6rxNyLtBx6Nj/qmfh1V4sTbuHX1NAb94HJf7/DxDk9NWBA/ZvNCqHKRimX3FLOkl
-         /EQbzr1GKe1CAub/JELotZOqrdE9u0ppk4vCh0l0=
+        b=1VJLJkjaGK3OKEc3LbqjbsE3LU7ZcCcqw83yJOBDLASwWI8gg02+4Gpnrb5367Gi8
+         8ZLZbHgjKNz8/ywnt3eIWDgHw5AaZ/8i16OuvGPddbQyZWh+To3ncwsvLlbkfFp+7g
+         BLwd3Cp+Rm+gAy0yeBXevQWif9I0Gqb/8Qgt5qco=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yan Zhao <yan.y.zhao@intel.com>,
-        Yongwei Ma <yongwei.ma@intel.com>,
-        Zhi Wang <zhi.a.wang@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 433/511] drm/i915/gvt: Drop unused helper intel_vgpu_reset_gtt()
-Date:   Sun, 17 Sep 2023 21:14:20 +0200
-Message-ID: <20230917191124.220003047@linuxfoundation.org>
+Subject: [PATCH 6.1 134/219] net: hns3: remove GSO partial feature bit
+Date:   Sun, 17 Sep 2023 21:14:21 +0200
+Message-ID: <20230917191045.830380971@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit a90c367e5af63880008e21dd199dac839e0e9e0f ]
+[ Upstream commit 60326634f6c54528778de18bfef1e8a7a93b3771 ]
 
-Drop intel_vgpu_reset_gtt() as it no longer has any callers.  In addition
-to eliminating dead code, this eliminates the last possible scenario where
-__kvmgt_protect_table_find() can be reached without holding vgpu_lock.
-Requiring vgpu_lock to be held when calling __kvmgt_protect_table_find()
-will allow a protecting the gfn hash with vgpu_lock without too much fuss.
+HNS3 NIC does not support GSO partial packets segmentation. Actually tunnel
+packets for example NvGRE packets segment offload and checksum offload is
+already supported. There is no need to keep gso partial feature bit. So
+this patch removes it.
 
-No functional change intended.
-
-Fixes: ba25d977571e ("drm/i915/gvt: Do not destroy ppgtt_mm during vGPU D3->D0.")
-Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Reviewed-by: Zhi Wang <zhi.a.wang@intel.com>
-Link: https://lore.kernel.org/r/20230729013535.1070024-11-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gvt/gtt.c | 18 ------------------
- drivers/gpu/drm/i915/gvt/gtt.h |  1 -
- 2 files changed, 19 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gvt/gtt.c b/drivers/gpu/drm/i915/gvt/gtt.c
-index 7ea7abef6143f..0344a0eef95c0 100644
---- a/drivers/gpu/drm/i915/gvt/gtt.c
-+++ b/drivers/gpu/drm/i915/gvt/gtt.c
-@@ -2864,24 +2864,6 @@ void intel_vgpu_reset_ggtt(struct intel_vgpu *vgpu, bool invalidate_old)
- 	ggtt_invalidate(gvt->gt);
- }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 9942b21cd6193..8aae179554a81 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -3315,8 +3315,6 @@ static void hns3_set_default_feature(struct net_device *netdev)
  
--/**
-- * intel_vgpu_reset_gtt - reset the all GTT related status
-- * @vgpu: a vGPU
-- *
-- * This function is called from vfio core to reset reset all
-- * GTT related status, including GGTT, PPGTT, scratch page.
-- *
-- */
--void intel_vgpu_reset_gtt(struct intel_vgpu *vgpu)
--{
--	/* Shadow pages are only created when there is no page
--	 * table tracking data, so remove page tracking data after
--	 * removing the shadow pages.
--	 */
--	intel_vgpu_destroy_all_ppgtt_mm(vgpu);
--	intel_vgpu_reset_ggtt(vgpu, true);
--}
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 
+-	netdev->gso_partial_features |= NETIF_F_GSO_GRE_CSUM;
 -
- /**
-  * intel_gvt_restore_ggtt - restore all vGPU's ggtt entries
-  * @gvt: intel gvt device
-diff --git a/drivers/gpu/drm/i915/gvt/gtt.h b/drivers/gpu/drm/i915/gvt/gtt.h
-index 3bf45672ef987..8e8fe21186243 100644
---- a/drivers/gpu/drm/i915/gvt/gtt.h
-+++ b/drivers/gpu/drm/i915/gvt/gtt.h
-@@ -224,7 +224,6 @@ void intel_vgpu_reset_ggtt(struct intel_vgpu *vgpu, bool invalidate_old);
- void intel_vgpu_invalidate_ppgtt(struct intel_vgpu *vgpu);
- 
- int intel_gvt_init_gtt(struct intel_gvt *gvt);
--void intel_vgpu_reset_gtt(struct intel_vgpu *vgpu);
- void intel_gvt_clean_gtt(struct intel_gvt *gvt);
- 
- struct intel_vgpu_mm *intel_gvt_find_ppgtt_mm(struct intel_vgpu *vgpu,
+ 	netdev->features |= NETIF_F_HW_VLAN_CTAG_FILTER |
+ 		NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
+ 		NETIF_F_RXCSUM | NETIF_F_SG | NETIF_F_GSO |
 -- 
 2.40.1
 
