@@ -2,34 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D53357A3CD7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5756B7A3CDB
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241142AbjIQUfr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48888 "EHLO
+        id S241143AbjIQUgR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239699AbjIQUfl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:41 -0400
+        with ESMTP id S241193AbjIQUfo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68B9010E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEE1C433C8;
-        Sun, 17 Sep 2023 20:35:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C0510E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72B7C433C8;
+        Sun, 17 Sep 2023 20:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982936;
-        bh=z2ghM6vYIJ8HVYXCb7DI2pJ9u4aTZ7OWzVwyYaMrN2E=;
+        s=korg; t=1694982939;
+        bh=k8tIV6kYv9QpGbto6kSNkf7j/C3qKOXzbBITgkZJ7QQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wnMfoo+rQ7EN6B77UBxxaEIiz6tTth6AC26YAtM0Em10hsuUzqtECKCBMADOjiReS
-         qNdMw6E0AFPLZ18Yo8B8yL+zZ6VIVC9D0Mwq6jR57kmd4zp6uJiljJFDTxcFkhpCvC
-         wiOUEbENfJozWlSwdnfX2lf5DpbBn+yF6p+H4WHo=
+        b=2XZMvNhyZ/bSM+Rn9yHesx3wpf0qS6uzO7nWAlr/jRRvaN69hkMorCQDVUpQEBrP4
+         xNbuCwM2V/j5I38SnTO4ue+u0XWGaBLEtHyeuU4B7irDscQfvHlVhUhmqYAhHnVv9E
+         9ojyAqqkQ6GJeQ8MDsUi52h6zcHBlSGDb3XLKZuU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 396/511] parisc: led: Reduce CPU overhead for disk & lan LED computation
-Date:   Sun, 17 Sep 2023 21:13:43 +0200
-Message-ID: <20230917191123.355437434@linuxfoundation.org>
+        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 5.15 397/511] pinctrl: cherryview: fix address_space_handler() argument
+Date:   Sun, 17 Sep 2023 21:13:44 +0200
+Message-ID: <20230917191123.378233142@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -52,38 +54,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Raag Jadav <raag.jadav@intel.com>
 
-commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
+commit d5301c90716a8e20bc961a348182daca00c8e8f0 upstream.
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+First argument of acpi_*_address_space_handler() APIs is acpi_handle of
+the device, which is incorrectly passed in driver ->remove() path here.
+Fix it by passing the appropriate argument and while at it, make both
+API calls consistent using ACPI_HANDLE().
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
+Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/led.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/intel/pinctrl-cherryview.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -56,8 +56,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+--- a/drivers/pinctrl/intel/pinctrl-cherryview.c
++++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+@@ -1624,7 +1624,6 @@ static int chv_pinctrl_probe(struct plat
+ 	const struct intel_pinctrl_soc_data *soc_data;
+ 	struct intel_community *community;
+ 	struct device *dev = &pdev->dev;
+-	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct intel_pinctrl *pctrl;
+ 	acpi_status status;
+ 	int ret, irq;
+@@ -1687,7 +1686,7 @@ static int chv_pinctrl_probe(struct plat
+ 	if (ret)
+ 		return ret;
+ 
+-	status = acpi_install_address_space_handler(adev->handle,
++	status = acpi_install_address_space_handler(ACPI_HANDLE(dev),
+ 					community->acpi_space_id,
+ 					chv_pinctrl_mmio_access_handler,
+ 					NULL, pctrl);
+@@ -1704,7 +1703,7 @@ static int chv_pinctrl_remove(struct pla
+ 	struct intel_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 	const struct intel_community *community = &pctrl->communities[0];
+ 
+-	acpi_remove_address_space_handler(ACPI_COMPANION(&pdev->dev),
++	acpi_remove_address_space_handler(ACPI_HANDLE(&pdev->dev),
+ 					  community->acpi_space_id,
+ 					  chv_pinctrl_mmio_access_handler);
+ 
 
 
