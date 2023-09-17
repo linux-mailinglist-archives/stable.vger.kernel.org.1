@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89BB37A38E1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3E27A3A15
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239868AbjIQTlx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
+        id S240264AbjIQT62 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239889AbjIQTl3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:29 -0400
+        with ESMTP id S240320AbjIQT6N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:58:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E77DB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18595C433C7;
-        Sun, 17 Sep 2023 19:41:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3978EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:58:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C213C433C8;
+        Sun, 17 Sep 2023 19:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979683;
-        bh=PpP5ZRHtK1fJfVAMHD2y03tuAh0dISzCxhhfPEoHJIs=;
+        s=korg; t=1694980687;
+        bh=YZSisbruAH/vvDY24lyHyKFC7mSWT4fNCzPqqkeivoU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a4gBn+a/ygUMJ9JTI/3FdKupsp36LLIuHa/4fCTKXWI3YMP6mPAyDSiE4tI1W48C4
-         CSce8MgOnf77YNnUTZ59AMLWvCOk0XAiqFBk2ji/aXoV/sfcEMxvh+EyhYHGm1LbsO
-         UVFdxWR8ZSTU1Zqa9KjrPaiIarN2jfXwZlKzOmMg=
+        b=YLRvK0H2WayXZTUerTk95oapsvUWw8pZsoGdWMU0fwWiioNJXexbLOi901ff25GBb
+         WsrQXcHlme4e9RYeL0ZaPoFkpTa32OEmy1QVeSVMpbR7PHDkMGv+Olu4HPsER46oJa
+         FAxbvsxpRQNb1b4b6xSBxBOJ5Xju73C6OVY8CH/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Saurav Kashyap <skashyap@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 383/406] scsi: qla2xxx: If fcport is undergoing deletion complete I/O with retry
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.5 237/285] perf hists browser: Fix the number of entries for e key
 Date:   Sun, 17 Sep 2023 21:13:57 +0200
-Message-ID: <20230917191111.375051397@linuxfoundation.org>
+Message-ID: <20230917191059.601057358@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,86 +53,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 707531bc2626c1959a03b93566ebb4e629c99276 ]
+commit f6b8436bede3e80226e8b2100279c4450c73806a upstream.
 
-Driver unload with I/Os in flight causes server to crash.  Complete I/O
-with DID_IMM_RETRY if fcport undergoing deletion.
+The 'e' key is to toggle expand/collapse the selected entry only.  But
+the current code has a bug that it only increases the number of entries
+by 1 in the hierarchy mode so users cannot move under the current entry
+after the key stroke.  This is due to a wrong assumption in the
+hist_entry__set_folding().
 
-CPU: 44 PID: 35008 Comm: qla2xxx_4_dpc Kdump: loaded Tainted: G
-OE  X   5.3.18-22-default #1 SLE15-SP2 (unreleased)
-Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 07/16/2020
-RIP: 0010:dma_direct_unmap_sg+0x24/0x60
-Code: 4c 8b 04 24 eb b9 0f 1f 44 00 00 85 d2 7e 4e 41 57
-      4d 89 c7 41 56 41 89 ce 41 55 49 89 fd 41 54 41 89 d4 55 31 ed 53 48 89
-      f3 <8b> 53 18 48 8b 73 10 4d 89 f8 44 89 f1 4c 89 ef 83 c5 01 e8 44 ff
-RSP: 0018:ffffc0c661037d88 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000002
-RDX: 000000000000001d RSI: 0000000000000000 RDI: ffff9a51ee53b0b0
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9a51ee53b0b0
-R10: ffffc0c646463dc8 R11: ffff9a4a067087c8 R12: 000000000000001d
-R13: ffff9a51ee53b0b0 R14: 0000000000000002 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff9a523f800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000018 CR3: 000000043740a004 CR4: 00000000007606e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
-qla2xxx_qpair_sp_free_dma+0x20d/0x3c0 [qla2xxx]
-qla2xxx_qpair_sp_compl+0x35/0x90 [qla2xxx]
-__qla2x00_abort_all_cmds+0x180/0x390 [qla2xxx]
-? qla24xx_process_purex_list+0x100/0x100 [qla2xxx]
-qla2x00_abort_all_cmds+0x5e/0x80 [qla2xxx]
-qla2x00_do_dpc+0x317/0xa30 [qla2xxx]
-kthread+0x10d/0x130
-? kthread_park+0xa0/0xa0
-ret_from_fork+0x35/0x40
+The commit b33f922651011eff ("perf hists browser: Put hist_entry folding
+logic into single function") factored out the code, but actually it
+should be handled separately.  The hist_browser__set_folding() is to
+update fold state for each entry so it needs to traverse all (child)
+entries regardless of the current fold state.  So it increases the
+number of entries by 1.
 
-Link: https://lore.kernel.org/r/20201202132312.19966-14-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 6d0b65569c0a ("scsi: qla2xxx: Flush mailbox commands on chip reset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But the hist_entry__set_folding() only cares the currently selected
+entry and its all children.  So it should count all unfolded child
+entries.  This code is implemented in hist_browser__toggle_fold()
+already so we can just call it.
+
+Fixes: b33f922651011eff ("perf hists browser: Put hist_entry folding logic into single function")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230731094934.1616495-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/ui/browsers/hists.c |   58 ++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index f1e7868787d4a..78a335f862cee 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -879,8 +879,8 @@ qla2xxx_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
- 			goto qc24_fail_command;
- 	}
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_
+ 	return container_of(ms, struct callchain_list, ms)->has_children;
+ }
  
--	if (!fcport) {
--		cmd->result = DID_NO_CONNECT << 16;
-+	if (!fcport || fcport->deleted) {
-+		cmd->result = DID_IMM_RETRY << 16;
- 		goto qc24_fail_command;
- 	}
+-static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
+-{
+-	return browser->he_selection ? browser->he_selection->unfolded : false;
+-}
+-
+ static bool hist_browser__selection_unfolded(struct hist_browser *browser)
+ {
+ 	struct hist_entry *he = browser->he_selection;
+@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct
+ 	return n;
+ }
  
-@@ -961,8 +961,8 @@ qla2xxx_mqueuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd,
- 		goto qc24_fail_command;
- 	}
+-static void __hist_entry__set_folding(struct hist_entry *he,
+-				      struct hist_browser *hb, bool unfold)
++static void hist_entry__set_folding(struct hist_entry *he,
++				    struct hist_browser *hb, bool unfold)
+ {
+ 	hist_entry__init_have_children(he);
+ 	he->unfolded = unfold ? he->has_children : false;
+@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(st
+ 		he->nr_rows = 0;
+ }
  
--	if (!fcport) {
--		cmd->result = DID_NO_CONNECT << 16;
-+	if (!fcport || fcport->deleted) {
-+		cmd->result = DID_IMM_RETRY << 16;
- 		goto qc24_fail_command;
- 	}
+-static void hist_entry__set_folding(struct hist_entry *he,
+-				    struct hist_browser *browser, bool unfold)
+-{
+-	double percent;
+-
+-	percent = hist_entry__get_percent_limit(he);
+-	if (he->filtered || percent < browser->min_pcnt)
+-		return;
+-
+-	__hist_entry__set_folding(he, browser, unfold);
+-
+-	if (!he->depth || unfold)
+-		browser->nr_hierarchy_entries++;
+-	if (he->leaf)
+-		browser->nr_callchain_rows += he->nr_rows;
+-	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
+-		browser->nr_hierarchy_entries++;
+-		he->has_no_entry = true;
+-		he->nr_rows = 1;
+-	} else
+-		he->has_no_entry = false;
+-}
+-
+ static void
+ __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
+ {
+ 	struct rb_node *nd;
+ 	struct hist_entry *he;
++	double percent;
  
--- 
-2.40.1
-
+ 	nd = rb_first_cached(&browser->hists->entries);
+ 	while (nd) {
+@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_
+ 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
+ 
+ 		hist_entry__set_folding(he, browser, unfold);
++
++		percent = hist_entry__get_percent_limit(he);
++		if (he->filtered || percent < browser->min_pcnt)
++			continue;
++
++		if (!he->depth || unfold)
++			browser->nr_hierarchy_entries++;
++		if (he->leaf)
++			browser->nr_callchain_rows += he->nr_rows;
++		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
++			browser->nr_hierarchy_entries++;
++			he->has_no_entry = true;
++			he->nr_rows = 1;
++		} else
++			he->has_no_entry = false;
+ 	}
+ }
+ 
+@@ -659,8 +647,10 @@ static void hist_browser__set_folding_se
+ 	if (!browser->he_selection)
+ 		return;
+ 
+-	hist_entry__set_folding(browser->he_selection, browser, unfold);
+-	browser->b.nr_entries = hist_browser__nr_entries(browser);
++	if (unfold == browser->he_selection->unfolded)
++		return;
++
++	hist_browser__toggle_fold(browser);
+ }
+ 
+ static void ui_browser__warn_lost_events(struct ui_browser *browser)
+@@ -732,8 +722,8 @@ static int hist_browser__handle_hotkey(s
+ 		hist_browser__set_folding(browser, true);
+ 		break;
+ 	case 'e':
+-		/* Expand the selected entry. */
+-		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
++		/* Toggle expand/collapse the selected entry. */
++		hist_browser__toggle_fold(browser);
+ 		break;
+ 	case 'H':
+ 		browser->show_headers = !browser->show_headers;
 
 
