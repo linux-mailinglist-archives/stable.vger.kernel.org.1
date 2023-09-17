@@ -2,47 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EC4E7A3968
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63E5E7A3856
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240055AbjIQTst (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:48:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57546 "EHLO
+        id S238365AbjIQTeY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:34:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240106AbjIQTsb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:31 -0400
+        with ESMTP id S239722AbjIQTeE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:34:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70933188
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73475C433C8;
-        Sun, 17 Sep 2023 19:48:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982D8D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE83FC433CA;
+        Sun, 17 Sep 2023 19:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980103;
-        bh=liSoS85Ki91JxZKWflQ2B3GR6U+TDH/OfF3NDZ2S7QU=;
+        s=korg; t=1694979239;
+        bh=KtxwKeYgWZtvZKo590157D+mkITOvNs+tiXpn4WQsQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UV8BYqtaBYeRG0TvevLHWqFbrA6jzCBE2Qq482aY1QnoKqmrgsRtvinGsRDUBo99z
-         /my9uhIC4z2fFW2JAhuzjJxbkSKBnXn99mPzt25BjwJ9MfuM0ScmqCO6qpP1Dew+vh
-         +7EJSnmukiTAVVwJN5GLsyg60GrtM0HvHXf4SLlE=
+        b=INuQk73X3LT4hdsODfcTLMsTgOaWfKJcuupECL7BzMQHwEl+3Dvm/8XNsUAfeLDAn
+         mcQeQ0pAiHrt+zh8i3hEtq2KM6VPIIygXgAGxdtfKFafhVC2+WdUfjtNZSjLPqzQNU
+         FiM6HJe19eIXur+bZz4ag7ZDuNRTd8OgGvfdf4es=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Wenchao Hao <haowenchao@huawei.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Lee Duncan <lduncan@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 071/285] perf parse-events: Separate YYABORT and YYNOMEM cases
-Date:   Sun, 17 Sep 2023 21:11:11 +0200
-Message-ID: <20230917191054.179104053@linuxfoundation.org>
+Subject: [PATCH 5.10 218/406] scsi: iscsi: Rename iscsi_set_param() to iscsi_if_set_param()
+Date:   Sun, 17 Sep 2023 21:11:12 +0200
+Message-ID: <20230917191106.940009120@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,128 +52,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Wenchao Hao <haowenchao@huawei.com>
 
-[ Upstream commit a7a3252dad354a9e5c173156dab959e4019b9467 ]
+[ Upstream commit 0c26a2d7c98039e913e63f9250fde738a3f88a60 ]
 
-Split cases in event_pmu for greater accuracy.
+There are two iscsi_set_param() functions defined in libiscsi.c and
+scsi_transport_iscsi.c respectively which is confusing.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: bpf@vger.kernel.org
-Link: https://lore.kernel.org/r/20230627181030.95608-8-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: b30d4f0b6954 ("perf parse-events: Additional error reporting")
+Rename the one in scsi_transport_iscsi.c to iscsi_if_set_param().
+
+Signed-off-by: Wenchao Hao <haowenchao@huawei.com>
+Link: https://lore.kernel.org/r/20221122181105.4123935-1-haowenchao@huawei.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Lee Duncan <lduncan@suse.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 971dfcb74a80 ("scsi: iscsi: Add length check for nlattr payload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/parse-events.y | 45 ++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index 9f28d4b5502f1..6b996f22dee3a 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -285,37 +285,42 @@ event_pmu:
- PE_NAME opt_pmu_config
- {
- 	struct parse_events_state *parse_state = _parse_state;
--	struct parse_events_error *error = parse_state->error;
- 	struct list_head *list = NULL, *orig_terms = NULL, *terms= NULL;
-+	struct parse_events_error *error = parse_state->error;
- 	char *pattern = NULL;
- 
--#define CLEANUP_YYABORT					\
-+#define CLEANUP						\
- 	do {						\
- 		parse_events_terms__delete($2);		\
- 		parse_events_terms__delete(orig_terms);	\
- 		free(list);				\
- 		free($1);				\
- 		free(pattern);				\
--		YYABORT;				\
- 	} while(0)
- 
--	if (parse_events_copy_term_list($2, &orig_terms))
--		CLEANUP_YYABORT;
--
- 	if (error)
- 		error->idx = @1.first_column;
- 
-+	if (parse_events_copy_term_list($2, &orig_terms)) {
-+		CLEANUP;
-+		YYNOMEM;
-+	}
-+
- 	list = alloc_list();
--	if (!list)
--		CLEANUP_YYABORT;
-+	if (!list) {
-+		CLEANUP;
-+		YYNOMEM;
-+	}
- 	/* Attempt to add to list assuming $1 is a PMU name. */
- 	if (parse_events_add_pmu(parse_state, list, $1, $2, /*auto_merge_stats=*/false)) {
- 		struct perf_pmu *pmu = NULL;
- 		int ok = 0;
- 
- 		/* Failure to add, try wildcard expansion of $1 as a PMU name. */
--		if (asprintf(&pattern, "%s*", $1) < 0)
--			CLEANUP_YYABORT;
-+		if (asprintf(&pattern, "%s*", $1) < 0) {
-+			CLEANUP;
-+			YYNOMEM;
-+		}
- 
- 		while ((pmu = perf_pmus__scan(pmu)) != NULL) {
- 			char *name = pmu->name;
-@@ -330,8 +335,10 @@ PE_NAME opt_pmu_config
- 			    !perf_pmu__match(pattern, pmu->alias_name, $1)) {
- 				bool auto_merge_stats = perf_pmu__auto_merge_stats(pmu);
- 
--				if (parse_events_copy_term_list(orig_terms, &terms))
--					CLEANUP_YYABORT;
-+				if (parse_events_copy_term_list(orig_terms, &terms)) {
-+					CLEANUP;
-+					YYNOMEM;
-+				}
- 				if (!parse_events_add_pmu(parse_state, list, pmu->name, terms,
- 							  auto_merge_stats)) {
- 					ok++;
-@@ -347,15 +354,15 @@ PE_NAME opt_pmu_config
- 			ok = !parse_events_multi_pmu_add(parse_state, $1, $2, &list);
- 			$2 = NULL;
- 		}
--		if (!ok)
--			CLEANUP_YYABORT;
-+		if (!ok) {
-+			CLEANUP;
-+			YYABORT;
-+		}
- 	}
--	parse_events_terms__delete($2);
--	parse_events_terms__delete(orig_terms);
--	free(pattern);
--	free($1);
- 	$$ = list;
--#undef CLEANUP_YYABORT
-+	list = NULL;
-+	CLEANUP;
-+#undef CLEANUP
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 092bd6a3d64a1..a22bc594b2d4a 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -2991,7 +2991,7 @@ iscsi_if_destroy_conn(struct iscsi_transport *transport, struct iscsi_uevent *ev
  }
- |
- PE_KERNEL_PMU_EVENT sep_dc
+ 
+ static int
+-iscsi_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
++iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
+ {
+ 	char *data = (char*)ev + sizeof(*ev);
+ 	struct iscsi_cls_conn *conn;
+@@ -3940,7 +3940,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 			err = -EINVAL;
+ 		break;
+ 	case ISCSI_UEVENT_SET_PARAM:
+-		err = iscsi_set_param(transport, ev);
++		err = iscsi_if_set_param(transport, ev);
+ 		break;
+ 	case ISCSI_UEVENT_CREATE_CONN:
+ 	case ISCSI_UEVENT_DESTROY_CONN:
 -- 
 2.40.1
 
