@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9FA7A3949
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B8BF7A3849
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239923AbjIQTrS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
+        id S239713AbjIQTdy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240098AbjIQTrH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:07 -0400
+        with ESMTP id S239720AbjIQTdk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5763FC6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADA5C433C7;
-        Sun, 17 Sep 2023 19:47:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C8ED9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CB6C433C8;
+        Sun, 17 Sep 2023 19:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980022;
-        bh=mrPJXpCKk63myEWwJO5ZMdUYeu+afRGdVubDOOyzklM=;
+        s=korg; t=1694979215;
+        bh=lFzFsNwfkN8QUXScJVVd3gRNq5OvzauMUgLNZObrsks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lpygmjBvosZFolcWcm253VH47qZm7pNk6ptjRn+x0bQ7+mhlTlPrtP5WOy3IFbsUc
-         QH0WK0OiVeWJrcNDr+nMNaIykpHf0I8L+xVglL+e6mOjEckp3/Zy8xeeJirpFRQCmn
-         0B2aMaIQsGWrVtAci1kPaT81TYVueGy1r3j0CKpg=
+        b=1hMjLrG4QS92kuXNbnw/inXvEhm4pBIGvcDBC+J7VdaqC9ZgKlmgmDYsQGRbL+kl8
+         rCgLa1lcpSBcEO2kKlNKQDHU4Ul200G2N9eMCx2ZUDsqBhUdVbZzgv6yzA3AygBJrR
+         wWY9X9XFXnv6067gZcSViOkp/3dvMJQVJHDkSrXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 075/285] KVM: SVM: Dont defer NMI unblocking until next exit for SEV-ES guests
+Subject: [PATCH 5.10 221/406] scsi: be2iscsi: Add length check when parsing nlattrs
 Date:   Sun, 17 Sep 2023 21:11:15 +0200
-Message-ID: <20230917191054.318636011@linuxfoundation.org>
+Message-ID: <20230917191107.015840928@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,87 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 389fbbec261b2842fd0e34b26a2b288b122cc406 ]
+[ Upstream commit ee0268f230f66cb472df3424f380ea668da2749a ]
 
-Immediately mark NMIs as unmasked in response to #VMGEXIT(NMI complete)
-instead of setting awaiting_iret_completion and waiting until the *next*
-VM-Exit to unmask NMIs.  The whole point of "NMI complete" is that the
-guest is responsible for telling the hypervisor when it's safe to inject
-an NMI, i.e. there's no need to wait.  And because there's no IRET to
-single-step, the next VM-Exit could be a long time coming, i.e. KVM could
-incorrectly hold an NMI pending for far longer than what is required and
-expected.
+beiscsi_iface_set_param() parses nlattr with nla_for_each_attr and assumes
+every attributes can be viewed as struct iscsi_iface_param_info.
 
-Opportunistically fix a stale reference to HF_IRET_MASK.
+This is not true because there is no any nla_policy to validate the
+attributes passed from the upper function iscsi_set_iface_params().
 
-Fixes: 916b54a7688b ("KVM: x86: Move HF_NMI_MASK and HF_IRET_MASK into "struct vcpu_svm"")
-Fixes: 4444dfe4050b ("KVM: SVM: Add NMI support for an SEV-ES guest")
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20230615063757.3039121-9-aik@amd.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Add the nla_len check before accessing the nlattr data and return EINVAL if
+the length check fails.
+
+Fixes: 0e43895ec1f4 ("[SCSI] be2iscsi: adding functionality to change network settings using iscsiadm")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230723075938.3713864-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |  5 ++++-
- arch/x86/kvm/svm/svm.c | 10 +++++-----
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/scsi/be2iscsi/be_iscsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index d3aec1f2cad20..42630f5b11875 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2881,7 +2881,10 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 					    svm->sev_es.ghcb_sa);
- 		break;
- 	case SVM_VMGEXIT_NMI_COMPLETE:
--		ret = svm_invoke_exit_handler(vcpu, SVM_EXIT_IRET);
-+		++vcpu->stat.nmi_window_exits;
-+		svm->nmi_masked = false;
-+		kvm_make_request(KVM_REQ_EVENT, vcpu);
-+		ret = 1;
- 		break;
- 	case SVM_VMGEXIT_AP_HLT_LOOP:
- 		ret = kvm_emulate_ap_reset_hold(vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index d4bfdc607fe7f..dfb8a3f504322 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2510,12 +2510,13 @@ static int iret_interception(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
+diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
+index c4881657a807b..e07052fb0ec32 100644
+--- a/drivers/scsi/be2iscsi/be_iscsi.c
++++ b/drivers/scsi/be2iscsi/be_iscsi.c
+@@ -450,6 +450,10 @@ int beiscsi_iface_set_param(struct Scsi_Host *shost,
+ 	}
  
-+	WARN_ON_ONCE(sev_es_guest(vcpu->kvm));
+ 	nla_for_each_attr(attrib, data, dt_len, rm_len) {
++		/* ignore nla_type as it is never used */
++		if (nla_len(attrib) < sizeof(*iface_param))
++			return -EINVAL;
 +
- 	++vcpu->stat.nmi_window_exits;
- 	svm->awaiting_iret_completion = true;
+ 		iface_param = nla_data(attrib);
  
- 	svm_clr_iret_intercept(svm);
--	if (!sev_es_guest(vcpu->kvm))
--		svm->nmi_iret_rip = kvm_rip_read(vcpu);
-+	svm->nmi_iret_rip = kvm_rip_read(vcpu);
- 
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 	return 1;
-@@ -3918,12 +3919,11 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
- 	svm->soft_int_injected = false;
- 
- 	/*
--	 * If we've made progress since setting HF_IRET_MASK, we've
-+	 * If we've made progress since setting awaiting_iret_completion, we've
- 	 * executed an IRET and can allow NMI injection.
- 	 */
- 	if (svm->awaiting_iret_completion &&
--	    (sev_es_guest(vcpu->kvm) ||
--	     kvm_rip_read(vcpu) != svm->nmi_iret_rip)) {
-+	    kvm_rip_read(vcpu) != svm->nmi_iret_rip) {
- 		svm->awaiting_iret_completion = false;
- 		svm->nmi_masked = false;
- 		kvm_make_request(KVM_REQ_EVENT, vcpu);
+ 		if (iface_param->param_type != ISCSI_NET_PARAM)
 -- 
 2.40.1
 
