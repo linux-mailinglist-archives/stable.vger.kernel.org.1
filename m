@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 191DE7A3A85
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A197A7A3CA1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240372AbjIQUF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
+        id S241060AbjIQUdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240440AbjIQUFI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:08 -0400
+        with ESMTP id S241110AbjIQUdQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B100CEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB77FC433C7;
-        Sun, 17 Sep 2023 20:05:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA9D10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F903C433C8;
+        Sun, 17 Sep 2023 20:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981102;
-        bh=szUOsgoyGnld9wPzHnMT2Xj9OSq9XJDlCdNQ3KaVsH8=;
+        s=korg; t=1694982789;
+        bh=ZU/1zerD36y2HdHS7a42WqT4UIddPy2QBXS1Ty47eW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F2HGKbLNRi3NQvrq5RT7kL0q/oMu8Y5HS6CtSPp7eH3BclEAG5Bsoml1En4mwldkf
-         BIINddt1a2AkBn2I/JooF+ib/DxWtaGdJAIsaLqbSFamMDR/pMzu1p9w4ZyoIWblxg
-         ovAs8MjnZFCSwpdm1G6zVYFWO6WOzPg7SeMmIbmM=
+        b=ZlgQW5yn4RQsxC8ZyKd6rebUgRII0Gw0slcNAo9nIT1HT5fpzP7V1RsOINx2MV4IQ
+         mGjFqvofi74fknkLnTU3NIT6kBOTygGHn73Vg0iTmfOmXz4cZGQAJh3g2yhkqWMCbL
+         Duc/8SfwOsXz496PAjY4OQavh1dpsv9peYMANKn0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Soheil Hassas Yeganeh <soheil@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ajay Kaher <akaher@vmware.com>
-Subject: [PATCH 6.1 053/219] net: remove osize variable in __alloc_skb()
-Date:   Sun, 17 Sep 2023 21:13:00 +0200
-Message-ID: <20230917191042.922231265@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 354/511] mmc: renesas_sdhi: register irqs before registering controller
+Date:   Sun, 17 Sep 2023 21:13:01 +0200
+Message-ID: <20230917191122.351589373@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,66 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 65998d2bf857b9ae5acc1f3b70892bd1b429ccab upstream.
+commit 74f45de394d979cc7770271f92fafa53e1ed3119 upstream.
 
-This is a cleanup patch, to prepare following change.
+IRQs should be ready to serve when we call mmc_add_host() via
+tmio_mmc_host_probe(). To achieve that, ensure that all irqs are masked
+before registering the handlers.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Ajay: Regenerated the patch for v6.1.y]
-Signed-off-by: Ajay Kaher <akaher@vmware.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230712140011.18602-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -479,7 +479,6 @@ struct sk_buff *__alloc_skb(unsigned int
- {
- 	struct kmem_cache *cache;
- 	struct sk_buff *skb;
--	unsigned int osize;
- 	bool pfmemalloc;
- 	u8 *data;
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -975,6 +975,8 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
+ 		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
+ 		host->reset = renesas_sdhi_reset;
++	} else {
++		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+ 	}
  
-@@ -505,16 +504,15 @@ struct sk_buff *__alloc_skb(unsigned int
- 	 * Both skb->head and skb_shared_info are cache line aligned.
- 	 */
- 	size = SKB_HEAD_ALIGN(size);
--	osize = kmalloc_size_roundup(size);
--	data = kmalloc_reserve(osize, gfp_mask, node, &pfmemalloc);
-+	size = kmalloc_size_roundup(size);
-+	data = kmalloc_reserve(size, gfp_mask, node, &pfmemalloc);
- 	if (unlikely(!data))
- 		goto nodata;
- 	/* kmalloc_size_roundup() might give us more room than requested.
- 	 * Put skb_shared_info exactly at the end of allocated zone,
- 	 * to allow max possible filling before reallocation.
- 	 */
--	size = SKB_WITH_OVERHEAD(osize);
--	prefetchw(data + size);
-+	prefetchw(data + SKB_WITH_OVERHEAD(size));
+ 	/* Orginally registers were 16 bit apart, could be 32 or 64 nowadays */
+@@ -1071,9 +1073,7 @@ int renesas_sdhi_probe(struct platform_d
+ 		host->ops.hs400_complete = renesas_sdhi_hs400_complete;
+ 	}
  
- 	/*
- 	 * Only clear those fields we need to clear, not those that we will
-@@ -522,7 +520,7 @@ struct sk_buff *__alloc_skb(unsigned int
- 	 * the tail pointer in struct sk_buff!
- 	 */
- 	memset(skb, 0, offsetof(struct sk_buff, tail));
--	__build_skb_around(skb, data, osize);
-+	__build_skb_around(skb, data, size);
- 	skb->pfmemalloc = pfmemalloc;
+-	ret = tmio_mmc_host_probe(host);
+-	if (ret < 0)
+-		goto edisclk;
++	sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK, host->sdcard_irq_mask_all);
  
- 	if (flags & SKB_ALLOC_FCLONE) {
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+@@ -1100,6 +1100,10 @@ int renesas_sdhi_probe(struct platform_d
+ 			goto eirq;
+ 	}
+ 
++	ret = tmio_mmc_host_probe(host);
++	if (ret < 0)
++		goto edisclk;
++
+ 	dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
+ 		 mmc_hostname(host->mmc), &res->start, host->mmc->f_max / 1000000);
+ 
 
 
