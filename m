@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1EB7A3985
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CDF7A3864
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239474AbjIQTu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48414 "EHLO
+        id S238153AbjIQTf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:35:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240121AbjIQTuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:14 -0400
+        with ESMTP id S238860AbjIQTfB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D7879F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5CAC433C7;
-        Sun, 17 Sep 2023 19:50:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E771812A
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3C9C433CA;
+        Sun, 17 Sep 2023 19:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980208;
-        bh=QoMy6hAzx2AtxZOxJL87yM76XEFe735vEhjVxp/v2U0=;
+        s=korg; t=1694979291;
+        bh=k0yT05CYt9De2FtZfPxNxDXYt02hNdLtQVKSblX1Rfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FdUrziZEiznSL3wCyfB+LtYGtolBW07GrK3zmhpzKGKZEl+9U5XK0fThdRRm4Avec
-         HE/wZHIdxgaEFDdDQGu1SQOMV1Zb9VILJd0rzl9ejyu2XmXQk9r3W3iZ8NPC+TmWcA
-         OTHK9zCanQHZkgMANZjLLbCg8YW5vKVll8mKrH/Q=
+        b=GE7gsq4WrofNAUAnj3eOdoZ4qu5nMwCylv3hsU3AitCU4iCCa5HgFy3M2HjT91wL+
+         a9lwtunauSS+lakQgSxxBu+bksojjXvwtOm5M6hfNfvP49kVp1U4xGjOVK2u1fx981
+         8BtYtYA8vn1PUFYWcWDUrf7ursd8f0HfsQreVv04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Yangbo Lu <yangbo.lu@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 123/285] net: annotate data-races around sk->sk_bind_phc
+        patches@lists.linux.dev, Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Kyle Zeng <zengyhkyle@gmail.com>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.10 269/406] netfilter: ipset: add the missing IP_SET_HASH_WITH_NET0 macro for ip_set_hash_netportnet.c
 Date:   Sun, 17 Sep 2023 21:12:03 +0200
-Message-ID: <20230917191055.921019545@linuxfoundation.org>
+Message-ID: <20230917191108.346605016@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kyle Zeng <zengyhkyle@gmail.com>
 
-[ Upstream commit 251cd405a9e6e70b92fe5afbdd17fd5caf9d3266 ]
+commit 050d91c03b28ca479df13dfb02bcd2c60dd6a878 upstream.
 
-sk->sk_bind_phc is read locklessly. Add corresponding annotations.
+The missing IP_SET_HASH_WITH_NET0 macro in ip_set_hash_netportnet can
+lead to the use of wrong `CIDR_POS(c)` for calculating array offsets,
+which can lead to integer underflow. As a result, it leads to slab
+out-of-bound access.
+This patch adds back the IP_SET_HASH_WITH_NET0 macro to
+ip_set_hash_netportnet to address the issue.
 
-Fixes: d463126e23f1 ("net: sock: extend SO_TIMESTAMPING for PHC binding")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Yangbo Lu <yangbo.lu@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 886503f34d63 ("netfilter: ipset: actually allow allowable CIDR 0 in hash:net,port,net")
+Suggested-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 4 ++--
- net/socket.c    | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/ipset/ip_set_hash_netportnet.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index fea5961c51fd1..0a687c8fbed7f 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -894,7 +894,7 @@ static int sock_timestamping_bind_phc(struct sock *sk, int phc_index)
- 	if (!match)
- 		return -EINVAL;
+--- a/net/netfilter/ipset/ip_set_hash_netportnet.c
++++ b/net/netfilter/ipset/ip_set_hash_netportnet.c
+@@ -35,6 +35,7 @@ MODULE_ALIAS("ip_set_hash:net,port,net")
+ #define IP_SET_HASH_WITH_PROTO
+ #define IP_SET_HASH_WITH_NETS
+ #define IPSET_NET_COUNT 2
++#define IP_SET_HASH_WITH_NET0
  
--	sk->sk_bind_phc = phc_index;
-+	WRITE_ONCE(sk->sk_bind_phc, phc_index);
+ /* IPv4 variant */
  
- 	return 0;
- }
-@@ -1719,7 +1719,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 	case SO_TIMESTAMPING_OLD:
- 		lv = sizeof(v.timestamping);
- 		v.timestamping.flags = READ_ONCE(sk->sk_tsflags);
--		v.timestamping.bind_phc = sk->sk_bind_phc;
-+		v.timestamping.bind_phc = READ_ONCE(sk->sk_bind_phc);
- 		break;
- 
- 	case SO_RCVTIMEO_OLD:
-diff --git a/net/socket.c b/net/socket.c
-index 6bba7818b593d..b5639a6500158 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -935,7 +935,7 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
- 
- 		if (tsflags & SOF_TIMESTAMPING_BIND_PHC)
- 			hwtstamp = ptp_convert_timestamp(&hwtstamp,
--							 sk->sk_bind_phc);
-+							 READ_ONCE(sk->sk_bind_phc));
- 
- 		if (ktime_to_timespec64_cond(hwtstamp, tss.ts + 2)) {
- 			empty = 0;
--- 
-2.40.1
-
 
 
