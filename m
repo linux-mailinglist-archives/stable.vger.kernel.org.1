@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7AE7A3D73
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5007A3BB1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237326AbjIQUnN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:43:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51398 "EHLO
+        id S240743AbjIQUVW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241314AbjIQUmq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:46 -0400
+        with ESMTP id S240780AbjIQUUu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A413CCE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:42:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79FDC433CA;
-        Sun, 17 Sep 2023 20:42:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED5D186
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24353C433C8;
+        Sun, 17 Sep 2023 20:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983345;
-        bh=Z9hQ0kNV8gqHtWt64eiBng++M2iBISmwSDZ0hmf2oyA=;
+        s=korg; t=1694982040;
+        bh=l7uAbJLNv5VMvZpJIxuMKIvRG0NyjozB0cFeYKLFcmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fEyiUJVZ4EwpH7Wtf7CJcwM4RNa8DkEG9vQBMKvbf8f/wY30YAt2RcZ0Qbfzc0yLP
-         d+tU3/qqBTrP4Yt7/m0vZ1sLi6ZC1mFu+Dn5D/v2UV06M8oBqvQFtei5vuGY09Tqna
-         v8c+7WaRXB9GSjyLGiCnn90HtV6nkud89BK2HhqM=
+        b=ja1OMQfNcSrEQu06BDVz4buBw8mwEeentt2xpLRS+uRv6dwuFRvex04odlpszSovc
+         QAirO6pynFdLAX3ekW2lpHupggmLsrpxUVW9d7GKqMKo065uc1BmAGUq7U0wFtGtEV
+         2GcNpwePZe79w2Y8iU0bgzxcwdVUkw7WhL4x3vKo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Harini Katakam <harini.katakam@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 509/511] kcm: Fix error handling for SOCK_DGRAM in kcm_sendmsg().
+Subject: [PATCH 6.1 209/219] net: macb: Enable PTP unicast
 Date:   Sun, 17 Sep 2023 21:15:36 +0200
-Message-ID: <20230917191126.008215161@linuxfoundation.org>
+Message-ID: <20230917191048.488595561@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,72 +53,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Harini Katakam <harini.katakam@xilinx.com>
 
-[ Upstream commit a22730b1b4bf437c6bbfdeff5feddf54be4aeada ]
+[ Upstream commit ee4e92c26c60b7344b7261035683a37da5a6119b ]
 
-syzkaller found a memory leak in kcm_sendmsg(), and commit c821a88bd720
-("kcm: Fix memory leak in error path of kcm_sendmsg()") suppressed it by
-updating kcm_tx_msg(head)->last_skb if partial data is copied so that the
-following sendmsg() will resume from the skb.
+Enable transmission and reception of PTP unicast packets by
+updating PTP unicast config bit and setting current HW mac
+address as allowed address in PTP unicast filter registers.
 
-However, we cannot know how many bytes were copied when we get the error.
-Thus, we could mess up the MSG_MORE queue.
-
-When kcm_sendmsg() fails for SOCK_DGRAM, we should purge the queue as we
-do so for UDP by udp_flush_pending_frames().
-
-Even without this change, when the error occurred, the following sendmsg()
-resumed from a wrong skb and the queue was messed up.  However, we have
-yet to get such a report, and only syzkaller stumbled on it.  So, this
-can be changed safely.
-
-Note this does not change SOCK_SEQPACKET behaviour.
-
-Fixes: c821a88bd720 ("kcm: Fix memory leak in error path of kcm_sendmsg()")
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230912022753.33327-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Harini Katakam <harini.katakam@xilinx.com>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 403f0e771457 ("net: macb: fix sleep inside spinlock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/cadence/macb.h      |  4 ++++
+ drivers/net/ethernet/cadence/macb_main.c | 13 +++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 2d06617e89891..0d1ab4149553c 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1064,17 +1064,18 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- out_error:
- 	kcm_push(kcm);
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 9c410f93a1039..1aa578c1ca4ad 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -95,6 +95,8 @@
+ #define GEM_SA4B		0x00A0 /* Specific4 Bottom */
+ #define GEM_SA4T		0x00A4 /* Specific4 Top */
+ #define GEM_WOL			0x00b8 /* Wake on LAN */
++#define GEM_RXPTPUNI		0x00D4 /* PTP RX Unicast address */
++#define GEM_TXPTPUNI		0x00D8 /* PTP TX Unicast address */
+ #define GEM_EFTSH		0x00e8 /* PTP Event Frame Transmitted Seconds Register 47:32 */
+ #define GEM_EFRSH		0x00ec /* PTP Event Frame Received Seconds Register 47:32 */
+ #define GEM_PEFTSH		0x00f0 /* PTP Peer Event Frame Transmitted Seconds Register 47:32 */
+@@ -245,6 +247,8 @@
+ #define MACB_TZQ_OFFSET		12 /* Transmit zero quantum pause frame */
+ #define MACB_TZQ_SIZE		1
+ #define MACB_SRTSM_OFFSET	15 /* Store Receive Timestamp to Memory */
++#define MACB_PTPUNI_OFFSET	20 /* PTP Unicast packet enable */
++#define MACB_PTPUNI_SIZE	1
+ #define MACB_OSSMODE_OFFSET	24 /* Enable One Step Synchro Mode */
+ #define MACB_OSSMODE_SIZE	1
+ #define MACB_MIIONRGMII_OFFSET	28 /* MII Usage on RGMII Interface */
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 5fb991835078a..9470e895591e5 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -288,6 +288,11 @@ static void macb_set_hwaddr(struct macb *bp)
+ 	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
+ 	macb_or_gem_writel(bp, SA1T, top);
  
--	if (copied && sock->type == SOCK_SEQPACKET) {
-+	if (sock->type == SOCK_SEQPACKET) {
- 		/* Wrote some bytes before encountering an
- 		 * error, return partial success.
- 		 */
--		goto partial_message;
--	}
--
--	if (head != kcm->seq_skb)
-+		if (copied)
-+			goto partial_message;
-+		if (head != kcm->seq_skb)
-+			kfree_skb(head);
-+	} else {
- 		kfree_skb(head);
--	else if (copied)
--		kcm_tx_msg(head)->last_skb = skb;
-+		kcm->seq_skb = NULL;
++	if (gem_has_ptp(bp)) {
++		gem_writel(bp, RXPTPUNI, bottom);
++		gem_writel(bp, TXPTPUNI, bottom);
 +	}
++
+ 	/* Clear unused address register sets */
+ 	macb_or_gem_writel(bp, SA2B, 0);
+ 	macb_or_gem_writel(bp, SA2T, 0);
+@@ -721,8 +726,12 @@ static void macb_mac_link_up(struct phylink_config *config,
  
- 	err = sk_stream_error(sk, msg->msg_flags, err);
+ 	spin_unlock_irqrestore(&bp->lock, flags);
  
+-	/* Enable Rx and Tx */
+-	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(RE) | MACB_BIT(TE));
++	/* Enable Rx and Tx; Enable PTP unicast */
++	ctrl = macb_readl(bp, NCR);
++	if (gem_has_ptp(bp))
++		ctrl |= MACB_BIT(PTPUNI);
++
++	macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
+ 
+ 	netif_tx_wake_all_queues(ndev);
+ }
 -- 
 2.40.1
 
