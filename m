@@ -2,35 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C5F07A39E0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB427A39EC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240177AbjIQTzp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
+        id S240200AbjIQT4S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240211AbjIQTzU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:20 -0400
+        with ESMTP id S240250AbjIQTz6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B33EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF453C433CA;
-        Sun, 17 Sep 2023 19:55:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB11133
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D80C433CB;
+        Sun, 17 Sep 2023 19:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980515;
-        bh=lzsh/iWyxPdIxUZ4801aGLJJEoa2VsjQWVD9sfVhbmQ=;
+        s=korg; t=1694980553;
+        bh=RgNh2LVJxOuyJeU27TuKyV+rz9RGRrzzf4eFVBA/PZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fo4ksa1lMe1GVCpsdcQZcN9DEXrkTsyqth8GiQh4I81fNKZfYpZPLKWAx0GNjlznO
-         5kE/zW+M9d/qaj5/EkkQ32RqiOkZJO2LCSpGW/coUix7EMr8bdRDm+tSfnN2NfD92b
-         heUJdfdOfIM09OnMH+SXNQZd78AQawJ/dFs5AsMs=
+        b=O6BolJk+FuP3Aju8j7UfgH6Xobrp7WsSXqRJSDnR5Elk8yYKEXZp5yhqcpjLpj64a
+         Q/yRObSr+1/hUHAs1WJSeVVjdBfGvpbXJJktKA731p2NHcojdu12XXyIoRFtE4kGKs
+         D7yMbsMjM3JV3Ne5WkQ90CZ30MEmnPcF/eI4jMs0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Fischer <devlists@wefi.net>,
+        patches@lists.linux.dev,
+        William R Sowerbutts <will@sowerbutts.com>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
         Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.5 197/285] ata: ahci: Add Elkhart Lake AHCI controller
-Date:   Sun, 17 Sep 2023 21:13:17 +0200
-Message-ID: <20230917191058.405406596@linuxfoundation.org>
+Subject: [PATCH 6.5 198/285] ata: pata_falcon: fix IO base selection for Q40
+Date:   Sun, 17 Sep 2023 21:13:18 +0200
+Message-ID: <20230917191058.442164997@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -38,7 +43,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,58 +58,123 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Werner Fischer <devlists@wefi.net>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-commit 2a2df98ec592667927b5c1351afa6493ea125c9f upstream.
+commit 8a1f00b753ecfdb117dc1a07e68c46d80e7923ea upstream.
 
-Elkhart Lake is the successor of Apollo Lake and Gemini Lake. These
-CPUs and their PCHs are used in mobile and embedded environments.
+With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
+with pata_falcon and falconide"), the Q40 IDE driver was
+replaced by pata_falcon.c.
 
-With this patch I suggest that Elkhart Lake SATA controllers [1] should
-use the default LPM policy for mobile chipsets.
-The disadvantage of missing hot-plug support with this setting should
-not be an issue, as those CPUs are used in embedded environments and
-not in servers with hot-plug backplanes.
+Both IO and memory resources were defined for the Q40 IDE
+platform device, but definition of the IDE register addresses
+was modeled after the Falcon case, both in use of the memory
+resources and in including register shift and byte vs. word
+offset in the address.
 
-We discovered that the Elkhart Lake SATA controllers have been missing
-in ahci.c after a customer reported the throttling of his SATA SSD
-after a short period of higher I/O. We determined the high temperature
-of the SSD controller in idle mode as the root cause for that.
+This was correct for the Falcon case, which does not apply
+any address translation to the register addresses. In the
+Q40 case, all of device base address, byte access offset
+and register shift is included in the platform specific
+ISA access translation (in asm/mm_io.h).
 
-Depending on the used SSD, we have seen up to 1.8 Watt lower system
-idle power usage and up to 30°C lower SSD controller temperatures in
-our tests, when we set med_power_with_dipm manually. I have provided a
-table showing seven different SATA SSDs from ATP, Intel/Solidigm and
-Samsung [2].
+As a consequence, such address translation gets applied
+twice, and register addresses are mangled.
 
-Intel lists a total of 3 SATA controller IDs (4B60, 4B62, 4B63) in [1]
-for those mobile PCHs.
-This commit just adds 0x4b63 as I do not have test systems with 0x4b60
-and 0x4b62 SATA controllers.
-I have tested this patch with a system which uses 0x4b63 as SATA
-controller.
+Use the device base address from the platform IO resource
+for Q40 (the IO address translation will then add the correct
+ISA window base address and byte access offset), with register
+shift 1. Use MMIO base address and register shift 2 as before
+for Falcon.
 
-[1] https://sata-io.org/product/8803
-[2] https://www.thomas-krenn.com/en/wiki/SATA_Link_Power_Management#Example_LES_v4
+Encode PIO_OFFSET into IO port addresses for all registers
+for Q40 except the data transfer register. Encode the MMIO
+offset there (pata_falcon_data_xfer() directly uses raw IO
+with no address translation).
 
-Signed-off-by: Werner Fischer <devlists@wefi.net>
+Reported-by: William R Sowerbutts <will@sowerbutts.com>
+Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
 Cc: stable@vger.kernel.org
+Cc: Finn Thain <fthain@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: William R Sowerbutts <will@sowerbutts.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/pata_falcon.c |   50 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -421,6 +421,8 @@ static const struct pci_device_id ahci_p
- 	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_low_power }, /* Ice Lake LP AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_low_power }, /* Comet Lake PCH-U AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_low_power }, /* Comet Lake PCH RAID */
-+	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
-+	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_low_power }, /* Elkhart Lake AHCI */
+--- a/drivers/ata/pata_falcon.c
++++ b/drivers/ata/pata_falcon.c
+@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(s
+ 	struct resource *base_res, *ctl_res, *irq_res;
+ 	struct ata_host *host;
+ 	struct ata_port *ap;
+-	void __iomem *base;
+-	int irq = 0;
++	void __iomem *base, *ctl_base;
++	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
  
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
- 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+ 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
+ 
+@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(s
+ 	ap->pio_mask = ATA_PIO4;
+ 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
+ 
+-	base = (void __iomem *)base_mem_res->start;
+ 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
+-	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
+-	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
+-	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
+-	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
+-	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
+-	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
+-	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
+-	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
+-
+-	base = (void __iomem *)ctl_mem_res->start;
+-	ap->ioaddr.altstatus_addr	= base + 1;
+-	ap->ioaddr.ctl_addr		= base + 1;
+-
+-	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
+-		      (unsigned long)base_mem_res->start,
+-		      (unsigned long)ctl_mem_res->start);
++	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
++
++	if (base_res) {		/* only Q40 has IO resources */
++		io_offset = 0x10000;
++		reg_shift = 0;
++		base = (void __iomem *)base_res->start;
++		ctl_base = (void __iomem *)ctl_res->start;
++	} else {
++		base = (void __iomem *)base_mem_res->start;
++		ctl_base = (void __iomem *)ctl_mem_res->start;
++	}
++
++	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
++	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
++	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
++	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
++	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
++	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
++	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
++
++	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
++	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
++
++	ata_port_desc(ap, "cmd %px ctl %px data %px",
++		      base, ctl_base, ap->ioaddr.data_addr);
+ 
+ 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+ 	if (irq_res && irq_res->start > 0) {
 
 
