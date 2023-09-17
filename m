@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5FD7A3A6B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42A1C7A3886
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239534AbjIQUDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57812 "EHLO
+        id S238963AbjIQThE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240339AbjIQUCw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
+        with ESMTP id S239029AbjIQTgc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E6F103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE410C433C9;
-        Sun, 17 Sep 2023 20:02:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED50ED9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEB4C433C8;
+        Sun, 17 Sep 2023 19:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980944;
-        bh=Tf2zcGLX2R22IhkRfMgby+zBvicJNxjCcSW3sY21fpc=;
+        s=korg; t=1694979386;
+        bh=jhnVTkp4lCpWAAILiQ1dkgSZczDzHzLwlo12sSPD1ig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T8aQVm7gsxc/ZGsCGXaMC8D5ViTUmvRBCHn5J0RH7oU6YAiUhweiSHT+5j1wY9fxs
-         8+Hxfj0bBB41hsJ3ErXjEY3F6u6CfXpjolVCUX/epNe03F0lDzQlesKGEHnxDr5Sj0
-         Q18HhTGvjNY8dFVEYFePPdXPv1YB/bLYkBHLEkY0=
+        b=qDTzAiRlYcV7rYoVGeZ8UR7JRVKaz9VX/w7IZEas6yC2dZ48snrNSBJ8SfII/CvbK
+         WJAIYfJrypuMQRpPTGmcFjovLu+m3jmBr0ayYXtj4PY89Q+q3NU1yCCYZ5CBb4MWNX
+         8h2fOneEP/9q3PA9CwMkDV76eMu3UEdPNkxkjH8E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 024/219] scsi: qla2xxx: Fix firmware resource tracking
+        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 297/406] X.509: if signature is unsupported skip validation
 Date:   Sun, 17 Sep 2023 21:12:31 +0200
-Message-ID: <20230917191041.869370875@linuxfoundation.org>
+Message-ID: <20230917191109.154205434@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,205 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Thore Sommer <public@thson.de>
 
-commit e370b64c7db96384a0886a09a9d80406e4c663d7 upstream.
+commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
 
-The storage was not draining I/Os and the work load was not spread out
-across different CPUs evenly. This led to firmware resource counters
-getting overrun on the busy CPU. This overrun prevented error recovery from
-happening in a timely manner.
+When the hash algorithm for the signature is not available the digest size
+is 0 and the signature in the certificate is marked as unsupported.
 
-By switching the counter to atomic, it allows the count to be little more
-accurate to prevent the overrun.
+When validating a self-signed certificate, this needs to be checked,
+because otherwise trying to validate the signature will fail with an
+warning:
 
-Cc: stable@vger.kernel.org
-Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Loading compiled-in X.509 certificates
+WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
+pkcs1pad_verify+0x46/0x12c
+...
+Problem loading in-kernel X.509 certificate (-22)
+
+Signed-off-by: Thore Sommer <public@thson.de>
+Cc: stable@vger.kernel.org # v4.7+
+Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h    |   11 +++++++
- drivers/scsi/qla2xxx/qla_dfs.c    |   10 ++++++
- drivers/scsi/qla2xxx/qla_init.c   |    8 +++++
- drivers/scsi/qla2xxx/qla_inline.h |   57 +++++++++++++++++++++++++++++++++++++-
- drivers/scsi/qla2xxx/qla_os.c     |    5 ++-
- 5 files changed, 88 insertions(+), 3 deletions(-)
+ crypto/asymmetric_keys/x509_public_key.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3740,6 +3740,16 @@ struct qla_fw_resources {
- 	u16 pad;
- };
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -132,6 +132,11 @@ int x509_check_for_self_signed(struct x5
+ 	if (strcmp(cert->pub->pkey_algo, cert->sig->pkey_algo) != 0)
+ 		goto out;
  
-+struct qla_fw_res {
-+	u16      iocb_total;
-+	u16      iocb_limit;
-+	atomic_t iocb_used;
-+
-+	u16      exch_total;
-+	u16      exch_limit;
-+	atomic_t exch_used;
-+};
-+
- #define QLA_IOCB_PCT_LIMIT 95
- 
- /*Queue pair data structure */
-@@ -4782,6 +4792,7 @@ struct qla_hw_data {
- 	spinlock_t sadb_lock;	/* protects list */
- 	struct els_reject elsrej;
- 	u8 edif_post_stop_cnt_down;
-+	struct qla_fw_res fwres ____cacheline_aligned;
- };
- 
- #define RX_ELS_SIZE (roundup(sizeof(struct enode) + ELS_MAX_PAYLOAD, SMP_CACHE_BYTES))
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -276,6 +276,16 @@ qla_dfs_fw_resource_cnt_show(struct seq_
- 
- 		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
- 			   exch_used, ha->base_qpair->fwres.exch_limit);
-+
-+		if (ql2xenforce_iocb_limit == 2) {
-+			iocbs_used = atomic_read(&ha->fwres.iocb_used);
-+			exch_used  = atomic_read(&ha->fwres.exch_used);
-+			seq_printf(s, "        estimate iocb2 used [%d] high water limit [%d]\n",
-+					iocbs_used, ha->fwres.iocb_limit);
-+
-+			seq_printf(s, "        estimate exchange2 used[%d] high water limit [%d] \n",
-+					exch_used, ha->fwres.exch_limit);
-+		}
- 	}
- 
- 	return 0;
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4217,6 +4217,14 @@ void qla_init_iocb_limit(scsi_qla_host_t
- 			ha->queue_pair_map[i]->fwres.exch_used = 0;
- 		}
- 	}
-+
-+	ha->fwres.iocb_total = ha->orig_fw_iocb_count;
-+	ha->fwres.iocb_limit = (ha->orig_fw_iocb_count * QLA_IOCB_PCT_LIMIT) / 100;
-+	ha->fwres.exch_total = ha->orig_fw_xcb_count;
-+	ha->fwres.exch_limit = (ha->orig_fw_xcb_count * QLA_IOCB_PCT_LIMIT) / 100;
-+
-+	atomic_set(&ha->fwres.iocb_used, 0);
-+	atomic_set(&ha->fwres.exch_used, 0);
- }
- 
- void qla_adjust_iocb_limit(scsi_qla_host_t *vha)
---- a/drivers/scsi/qla2xxx/qla_inline.h
-+++ b/drivers/scsi/qla2xxx/qla_inline.h
-@@ -386,6 +386,7 @@ enum {
- 	RESOURCE_IOCB = BIT_0,
- 	RESOURCE_EXCH = BIT_1,  /* exchange */
- 	RESOURCE_FORCE = BIT_2,
-+	RESOURCE_HA = BIT_3,
- };
- 
- static inline int
-@@ -393,7 +394,7 @@ qla_get_fw_resources(struct qla_qpair *q
- {
- 	u16 iocbs_used, i;
- 	u16 exch_used;
--	struct qla_hw_data *ha = qp->vha->hw;
-+	struct qla_hw_data *ha = qp->hw;
- 
- 	if (!ql2xenforce_iocb_limit) {
- 		iores->res_type = RESOURCE_NONE;
-@@ -428,15 +429,69 @@ qla_get_fw_resources(struct qla_qpair *q
- 			return -ENOSPC;
- 		}
- 	}
-+
-+	if (ql2xenforce_iocb_limit == 2) {
-+		if ((iores->iocb_cnt + atomic_read(&ha->fwres.iocb_used)) >=
-+		    ha->fwres.iocb_limit) {
-+			iores->res_type = RESOURCE_NONE;
-+			return -ENOSPC;
-+		}
-+
-+		if (iores->res_type & RESOURCE_EXCH) {
-+			if ((iores->exch_cnt + atomic_read(&ha->fwres.exch_used)) >=
-+			    ha->fwres.exch_limit) {
-+				iores->res_type = RESOURCE_NONE;
-+				return -ENOSPC;
-+			}
-+		}
++	if (cert->unsupported_sig) {
++		ret = 0;
++		goto out;
 +	}
 +
- force:
- 	qp->fwres.iocbs_used += iores->iocb_cnt;
- 	qp->fwres.exch_used += iores->exch_cnt;
-+	if (ql2xenforce_iocb_limit == 2) {
-+		atomic_add(iores->iocb_cnt, &ha->fwres.iocb_used);
-+		atomic_add(iores->exch_cnt, &ha->fwres.exch_used);
-+		iores->res_type |= RESOURCE_HA;
-+	}
- 	return 0;
- }
- 
-+/*
-+ * decrement to zero.  This routine will not decrement below zero
-+ * @v:  pointer of type atomic_t
-+ * @amount: amount to decrement from v
-+ */
-+static void qla_atomic_dtz(atomic_t *v, int amount)
-+{
-+	int c, old, dec;
-+
-+	c = atomic_read(v);
-+	for (;;) {
-+		dec = c - amount;
-+		if (unlikely(dec < 0))
-+			dec = 0;
-+
-+		old = atomic_cmpxchg((v), c, dec);
-+		if (likely(old == c))
-+			break;
-+		c = old;
-+	}
-+}
-+
- static inline void
- qla_put_fw_resources(struct qla_qpair *qp, struct iocb_resource *iores)
- {
-+	struct qla_hw_data *ha = qp->hw;
-+
-+	if (iores->res_type & RESOURCE_HA) {
-+		if (iores->res_type & RESOURCE_IOCB)
-+			qla_atomic_dtz(&ha->fwres.iocb_used, iores->iocb_cnt);
-+
-+		if (iores->res_type & RESOURCE_EXCH)
-+			qla_atomic_dtz(&ha->fwres.exch_used, iores->exch_cnt);
-+	}
-+
- 	if (iores->res_type & RESOURCE_IOCB) {
- 		if (qp->fwres.iocbs_used >= iores->iocb_cnt) {
- 			qp->fwres.iocbs_used -= iores->iocb_cnt;
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -44,10 +44,11 @@ module_param(ql2xfulldump_on_mpifail, in
- MODULE_PARM_DESC(ql2xfulldump_on_mpifail,
- 		 "Set this to take full dump on MPI hang.");
- 
--int ql2xenforce_iocb_limit = 1;
-+int ql2xenforce_iocb_limit = 2;
- module_param(ql2xenforce_iocb_limit, int, S_IRUGO | S_IWUSR);
- MODULE_PARM_DESC(ql2xenforce_iocb_limit,
--		 "Enforce IOCB throttling, to avoid FW congestion. (default: 1)");
-+		 "Enforce IOCB throttling, to avoid FW congestion. (default: 2) "
-+		 "1: track usage per queue, 2: track usage per adapter");
- 
- /*
-  * CT6 CTX allocation cache
+ 	ret = public_key_verify_signature(cert->pub, cert->sig);
+ 	if (ret < 0) {
+ 		if (ret == -ENOPKG) {
 
 
