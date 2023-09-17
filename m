@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B35EA7A388C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400AE7A3A4B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239784AbjIQThH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48638 "EHLO
+        id S240341AbjIQUCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239870AbjIQTgx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:53 -0400
+        with ESMTP id S240338AbjIQUBn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EC7138
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E57C433C7;
-        Sun, 17 Sep 2023 19:36:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18FD31B3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB89C433CD;
+        Sun, 17 Sep 2023 20:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979406;
-        bh=TfgcZFk09UR5no467oQfAAD/F1wsBVKLiPka3LybUT4=;
+        s=korg; t=1694980862;
+        bh=MZK+mCg1TYkhQHD/khNxC+P/EEVoCKRmWgMtOJdO4P4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bktuAG6n/KeRjSgIom+dXCUpIf9bZXMPA2YbeyTj8eq27iudglaELZ2EARc3SWPyS
-         GhUxruF5RGB8zekEWQGRwy1uNZH8SoASv2Ulkrekq+syAZiAtPvmZ/kt2IZ76nx0N7
-         Zhc7CornFEuFc4EyxSx6AYu5lNkvPW0r5FCh/5eM=
+        b=1PSovpHi1ArTO4JWt8jAIhgXaCC99jj4O53eCEbA6OFum7yrZSb5gM6flBd76ZAc1
+         Yc22uEDopfEnqZqEk7fOZ3WtTb5V7KjkScp42pkFY2y8JbUe6/VwbkqCAfOVYzzGZc
+         cGQTRYV42AhDswLmheH2Pi/Ii9kBPwOol6ou+o7E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.10 303/406] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
+        patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.1 030/219] clk: qcom: turingcc-qcs404: fix missing resume during probe
 Date:   Sun, 17 Sep 2023 21:12:37 +0200
-Message-ID: <20230917191109.309517368@linuxfoundation.org>
+Message-ID: <20230917191042.086977827@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,68 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit e520d0b6be950ce3738cf4b9bd3b392be818f1dc upstream.
+commit a9f71a033587c9074059132d34c74eabbe95ef26 upstream.
 
-Allocate extra space for terminating element at:
+Drivers that enable runtime PM must make sure that the controller is
+runtime resumed before accessing its registers to prevent the power
+domain from being disabled.
 
-drivers/cpufreq/brcmstb-avs-cpufreq.c:
-449         table[i].frequency = CPUFREQ_TABLE_END;
-
-and add code comment to make this clear.
-
-This fixes the following -Warray-bounds warning seen after building
-ARM with multi_v7_defconfig (GCC 13):
-In function 'brcm_avs_get_freq_table',
-    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
-drivers/cpufreq/brcmstb-avs-cpufreq.c:449:28: warning: array subscript 5 is outside array bounds of 'void[60]' [-Warray-bounds=]
-  449 |         table[i].frequency = CPUFREQ_TABLE_END;
-In file included from include/linux/node.h:18,
-                 from include/linux/cpu.h:17,
-                 from include/linux/cpufreq.h:12,
-                 from drivers/cpufreq/brcmstb-avs-cpufreq.c:44:
-In function 'devm_kmalloc_array',
-    inlined from 'devm_kcalloc' at include/linux/device.h:328:9,
-    inlined from 'brcm_avs_get_freq_table' at drivers/cpufreq/brcmstb-avs-cpufreq.c:437:10,
-    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
-include/linux/device.h:323:16: note: at offset 60 into object of size 60 allocated by 'devm_kmalloc'
-  323 |         return devm_kmalloc(dev, bytes, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -Warray-bounds.
-
-Link: https://github.com/KSPP/linux/issues/324
-Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 892df0191b29 ("clk: qcom: Add QCS404 TuringCC")
+Cc: stable@vger.kernel.org      # 5.2
+Cc: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-9-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/brcmstb-avs-cpufreq.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/turingcc-qcs404.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -434,7 +434,11 @@ brcm_avs_get_freq_table(struct device *d
- 	if (ret)
- 		return ERR_PTR(ret);
+--- a/drivers/clk/qcom/turingcc-qcs404.c
++++ b/drivers/clk/qcom/turingcc-qcs404.c
+@@ -125,11 +125,22 @@ static int turingcc_probe(struct platfor
+ 		return ret;
+ 	}
  
--	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1, sizeof(*table),
-+	/*
-+	 * We allocate space for the 5 different P-STATES AVS,
-+	 * plus extra space for a terminating element.
-+	 */
-+	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1 + 1, sizeof(*table),
- 			     GFP_KERNEL);
- 	if (!table)
- 		return ERR_PTR(-ENOMEM);
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		return ret;
++
+ 	ret = qcom_cc_probe(pdev, &turingcc_desc);
+ 	if (ret < 0)
+-		return ret;
++		goto err_put_rpm;
++
++	pm_runtime_put(&pdev->dev);
+ 
+ 	return 0;
++
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops turingcc_pm_ops = {
 
 
