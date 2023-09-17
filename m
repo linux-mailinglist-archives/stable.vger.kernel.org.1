@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08C0A7A3833
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35AC77A3931
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239664AbjIQTdU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:33:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34582 "EHLO
+        id S239998AbjIQTqN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239707AbjIQTct (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:49 -0400
+        with ESMTP id S240045AbjIQTpz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD29188
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0F8C433CA;
-        Sun, 17 Sep 2023 19:32:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFDD126
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3798CC433C7;
+        Sun, 17 Sep 2023 19:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979136;
-        bh=AUyHjVCGGyvYrmpwiarymqrv5bShwkTp7XeQU7c3Cj0=;
+        s=korg; t=1694979949;
+        bh=FWlucc2eDGB9TZDJjY8RefPTRm1RnG3AuVqfhmEnoPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E4nK25JYnbIF8eWQQxkt3AhGiAHonf0bk5fOk9b/Le7p6UdekSZABfBpqtb79lVZ+
-         bj7XOaMyiyvy/Nr2HUyvSqf5Xeq0m6ykXp0URJy8G3VQKJ15kiR5KsSJwhTwnsA5rc
-         gZP/wtyezKMc4VRMyFMafBw6HDUQ2xS4IRp8sC9k=
+        b=2M58OLSWMyKMqt8Zq1aLkEudO4g3gLAU1KAvghB4j/mITCsixHc8qPsTeGxRdbk2U
+         D17CboPwcC9K8ZsJAYuF5VqzZF0HUtUfrzb2jVi/DhjH0micAzkKitGjIDq4M/2qSt
+         XZBZFz6d5UnH2fZpZuGgHQugRZlJ7kRN3/tKLSU0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 199/406] NFS: Guard against READDIR loop when entry names exceed MAXNAMELEN
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.5 053/285] NFS: Fix a potential data corruption
 Date:   Sun, 17 Sep 2023 21:10:53 +0200
-Message-ID: <20230917191106.447960929@linuxfoundation.org>
+Message-ID: <20230917191053.520383425@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f67b55b6588bcf9316a1e6e8d529100a5aa3ebe6 ]
+commit 88975a55969e11f26fe3846bf4fbf8e7dc8cbbd4 upstream.
 
-Commit 64cfca85bacd asserts the only valid return values for
-nfs2/3_decode_dirent should not include -ENAMETOOLONG, but for a server
-that sends a filename3 which exceeds MAXNAMELEN in a READDIR response the
-client's behavior will be to endlessly retry the operation.
+We must ensure that the subrequests are joined back into the head before
+we can retransmit a request. If the head was not on the commit lists,
+because the server wrote it synchronously, we still need to add it back
+to the retransmission list.
+Add a call that mirrors the effect of nfs_cancel_remove_inode() for
+O_DIRECT.
 
-We could map -ENAMETOOLONG into -EBADCOOKIE, but that would produce
-truncated listings without any error.  The client should return an error
-for this case to clearly assert that the server implementation must be
-corrected.
-
-Fixes: 64cfca85bacd ("NFS: Return valid errors from nfs2/3_decode_dirent()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Fixes: ed5d588fe47f ("NFS: Try to join page groups before an O_DIRECT retransmission")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs2xdr.c | 2 +-
- fs/nfs/nfs3xdr.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/direct.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs2xdr.c b/fs/nfs/nfs2xdr.c
-index 5e6453e9b3079..b34196da1f945 100644
---- a/fs/nfs/nfs2xdr.c
-+++ b/fs/nfs/nfs2xdr.c
-@@ -948,7 +948,7 @@ int nfs2_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -472,13 +472,31 @@ out:
+ 	return result;
+ }
  
- 	error = decode_filename_inline(xdr, &entry->name, &entry->len);
- 	if (unlikely(error))
--		return -EAGAIN;
-+		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
++static void nfs_direct_add_page_head(struct list_head *list,
++				     struct nfs_page *req)
++{
++	struct nfs_page *head = req->wb_head;
++
++	if (!list_empty(&head->wb_list) || !nfs_lock_request(head))
++		return;
++	if (!list_empty(&head->wb_list)) {
++		nfs_unlock_request(head);
++		return;
++	}
++	list_add(&head->wb_list, list);
++	kref_get(&head->wb_kref);
++	kref_get(&head->wb_kref);
++}
++
+ static void nfs_direct_join_group(struct list_head *list, struct inode *inode)
+ {
+ 	struct nfs_page *req, *subreq;
  
- 	/*
- 	 * The type (size and byte order) of nfscookie isn't defined in
-diff --git a/fs/nfs/nfs3xdr.c b/fs/nfs/nfs3xdr.c
-index b5a9379b14504..509f32845d7b2 100644
---- a/fs/nfs/nfs3xdr.c
-+++ b/fs/nfs/nfs3xdr.c
-@@ -1987,7 +1987,7 @@ int nfs3_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
- 
- 	error = decode_inline_filename3(xdr, &entry->name, &entry->len);
- 	if (unlikely(error))
--		return -EAGAIN;
-+		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
- 
- 	error = decode_cookie3(xdr, &new_cookie);
- 	if (unlikely(error))
--- 
-2.40.1
-
+ 	list_for_each_entry(req, list, wb_list) {
+-		if (req->wb_head != req)
++		if (req->wb_head != req) {
++			nfs_direct_add_page_head(&req->wb_list, req);
+ 			continue;
++		}
+ 		subreq = req->wb_this_page;
+ 		if (subreq == req)
+ 			continue;
 
 
