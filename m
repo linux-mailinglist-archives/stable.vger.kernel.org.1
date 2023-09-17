@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 796467A3D1D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA49E7A3B2C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241250AbjIQUjB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50920 "EHLO
+        id S240632AbjIQUOC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241300AbjIQUis (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:48 -0400
+        with ESMTP id S240776AbjIQUNp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C550D1AC
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC4FC433C9;
-        Sun, 17 Sep 2023 20:38:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E93F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB39C433C8;
+        Sun, 17 Sep 2023 20:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983116;
-        bh=Zt4lMUNeZxIuyvj5K0/U08LqQkL5pCbAj0ltr7lqdSc=;
+        s=korg; t=1694981619;
+        bh=rnEQd1DnjfRykfVRaBoagkC4v/zXWGm5IC/0zvqHjTw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T4sPxp0BI9fycWzCzT3/D54zdvGqT6lk+LbY3tLDUcAoxNePPUzDJxhbbc4j2oPee
-         NGa4U48gFA0QJRh33+9P6v85cEBBhZNOyHDHB56taWz4xFXUUU0wBDWKcNS4SrdDNz
-         sZfDI+Ddmw+FbaiFHLx0CoJW+tJJlc7gv04dl82Y=
+        b=Rox0vCmapkRXkMNWHWvEJCPlh0hh+W4ReyM+tHJzYehpY1HKvyGf9S1HdATZSFZcy
+         nMCGBa3Sm9USJE/Ztc6ReqoexLmjib8ej2bKtorZU3JMUrCujOJ9ynBkSFJ1PEnOxp
+         riWdfHFelwyJbHEkFPjZFOU+NsE0DB6qUOMAVSbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 448/511] igb: Change IGB_MIN to allow set rx/tx value between 64 and 80
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Petr Mladek <pmladek@suse.com>
+Subject: [PATCH 6.1 148/219] lib: test_scanf: Add explicit type cast to result initialization in test_number_prefix()
 Date:   Sun, 17 Sep 2023 21:14:35 +0200
-Message-ID: <20230917191124.567724044@linuxfoundation.org>
+Message-ID: <20230917191046.375634669@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 6319685bdc8ad5310890add907b7c42f89302886 ]
+commit 92382d744176f230101d54f5c017bccd62770f01 upstream.
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igb devices can use as low as 64 descriptors.
-This change will unify igb with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+A recent change in clang allows it to consider more expressions as
+compile time constants, which causes it to point out an implicit
+conversion in the scanf tests:
 
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  lib/test_scanf.c:661:2: warning: implicit conversion from 'int' to 'unsigned char' changes value from -168 to 88 [-Wconstant-conversion]
+    661 |         test_number_prefix(unsigned char,       "0xA7", "%2hhx%hhx", 0, 0xa7, 2, check_uchar);
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  lib/test_scanf.c:609:29: note: expanded from macro 'test_number_prefix'
+    609 |         T result[2] = {~expect[0], ~expect[1]};                                 \
+        |                       ~            ^~~~~~~~~~
+  1 warning generated.
+
+The result of the bitwise negation is the type of the operand after
+going through the integer promotion rules, so this truncation is
+expected but harmless, as the initial values in the result array get
+overwritten by _test() anyways. Add an explicit cast to the expected
+type in test_number_prefix() to silence the warning. There is no
+functional change, as all the tests still pass with GCC 13.1.0 and clang
+18.0.0.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/ClangBuiltLinux/linuxq/issues/1899
+Link: https://github.com/llvm/llvm-project/commit/610ec954e1f81c0e8fcadedcd25afe643f5a094e
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230807-test_scanf-wconstant-conversion-v2-1-839ca39083e1@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/test_scanf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
-index 015b781441149..a2b759531cb7b 100644
---- a/drivers/net/ethernet/intel/igb/igb.h
-+++ b/drivers/net/ethernet/intel/igb/igb.h
-@@ -34,11 +34,11 @@ struct igb_adapter;
- /* TX/RX descriptor defines */
- #define IGB_DEFAULT_TXD		256
- #define IGB_DEFAULT_TX_WORK	128
--#define IGB_MIN_TXD		80
-+#define IGB_MIN_TXD		64
- #define IGB_MAX_TXD		4096
- 
- #define IGB_DEFAULT_RXD		256
--#define IGB_MIN_RXD		80
-+#define IGB_MIN_RXD		64
- #define IGB_MAX_RXD		4096
- 
- #define IGB_DEFAULT_ITR		3 /* dynamic */
--- 
-2.40.1
-
+--- a/lib/test_scanf.c
++++ b/lib/test_scanf.c
+@@ -606,7 +606,7 @@ static void __init numbers_slice(void)
+ #define test_number_prefix(T, str, scan_fmt, expect0, expect1, n_args, fn)	\
+ do {										\
+ 	const T expect[2] = { expect0, expect1 };				\
+-	T result[2] = {~expect[0], ~expect[1]};					\
++	T result[2] = { (T)~expect[0], (T)~expect[1] };				\
+ 										\
+ 	_test(fn, &expect, str, scan_fmt, n_args, &result[0], &result[1]);	\
+ } while (0)
 
 
