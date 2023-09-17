@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 035F47A3B63
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430327A3B67
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240678AbjIQURH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37830 "EHLO
+        id S240689AbjIQURJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:17:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240697AbjIQUQr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:47 -0400
+        with ESMTP id S240720AbjIQUQy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E9710B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14049C433C8;
-        Sun, 17 Sep 2023 20:16:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97772F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE244C433C7;
+        Sun, 17 Sep 2023 20:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981801;
-        bh=ViNJ/NW9B3k9i8JOiAWn4ob8fCuB16urphrOPpk4k84=;
+        s=korg; t=1694981808;
+        bh=t5glHwnkzYNf+tRWGVe75DJYnyxEruDdfVgx8/qfuQ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KMZgn2gHP+eEpHUZ+Lka+JDfmxZ9KO9Er2BzTIBf3O+0Ff4qBR2hedMyvxEbvIaZB
-         NuyayMHiLqFx+KIudvGXl7NC5kh2pQRyYmhGOJD8RUDwzJzOs/T7v9hrSBqJt4Kxf6
-         kfvLN5DWzKWszSXi0BUwd8EHTYKYuHrvqfeeMOM8=
+        b=T1hrNa8UOp/ml2vF1YFJ5pJErpAB3rmIHz/cYGDuI9msoXy7Zzwyg8xzxXJfogP4Q
+         1jP+U++nKzMhDCG6Y2ybWsR9rFSs60y40HRIjJ454fHh6N7eQAtpw79bZrbFblEsmO
+         BeZSXyWQTFYIzNmf7OZrGLz4tJpZ484zZ5/A2ow4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
         Dmitry Antipov <dmantipov@yandex.ru>,
+        Brian Norris <briannorris@chromium.org>,
         Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 108/511] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
-Date:   Sun, 17 Sep 2023 21:08:55 +0200
-Message-ID: <20230917191116.468178873@linuxfoundation.org>
+Subject: [PATCH 5.15 109/511] wifi: mwifiex: Fix missed return in oob checks failed path
+Date:   Sun, 17 Sep 2023 21:08:56 +0200
+Message-ID: <20230917191116.491664499@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,50 +55,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Polaris Pi <pinkperfect2021@gmail.com>
 
-[ Upstream commit 9c8fd72a5c2a031cbc680a2990107ecd958ffcdb ]
+[ Upstream commit 2785851c627f2db05f9271f7f63661b5dbd95c4c ]
 
-Always free the zeroed page on return from 'mwifiex_histogram_read()'.
+Add missed return in mwifiex_uap_queue_bridged_pkt() and
+mwifiex_process_rx_packet().
 
-Fixes: cbf6e05527a7 ("mwifiex: add rx histogram statistics support")
-
+Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
+Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+Reported-by: Dmitry Antipov <dmantipov@yandex.ru>
 Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230802160726.85545-1-dmantipov@yandex.ru
+Link: https://lore.kernel.org/r/20230810083911.3725248-1-pinkperfect2021@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c   | 1 +
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-index dded92db1f373..1e7dc724c6a94 100644
---- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
-+++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-@@ -265,8 +265,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
- 	if (!p)
- 		return -ENOMEM;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+index 685a5b6697046..3c555946cb2cc 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+@@ -104,6 +104,7 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 			    skb->len, rx_pkt_off);
+ 		priv->stats.rx_dropped++;
+ 		dev_kfree_skb_any(skb);
++		return -1;
+ 	}
  
--	if (!priv || !priv->hist_data)
--		return -EFAULT;
-+	if (!priv || !priv->hist_data) {
-+		ret = -EFAULT;
-+		goto free_and_exit;
-+	}
-+
- 	phist_data = priv->hist_data;
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index b3915bfd38693..d6493638e7028 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -122,6 +122,7 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
+ 			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
+ 		priv->stats.rx_dropped++;
+ 		dev_kfree_skb_any(skb);
++		return;
+ 	}
  
- 	p += sprintf(p, "\n"
-@@ -321,6 +324,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
- 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
- 				      (unsigned long)p - page);
- 
-+free_and_exit:
-+	free_page(page);
- 	return ret;
- }
- 
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
 -- 
 2.40.1
 
