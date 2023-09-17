@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 021757A3997
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6B17A387B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240095AbjIQTva (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54376 "EHLO
+        id S239747AbjIQTgf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240131AbjIQTvK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:10 -0400
+        with ESMTP id S239758AbjIQTgC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC13132
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C30C433C7;
-        Sun, 17 Sep 2023 19:51:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF2B11C
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F69C433C8;
+        Sun, 17 Sep 2023 19:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980265;
-        bh=+T3n6YfKiPO3t0PzUzmL8XDQcscfNBafcfwaJDjkFcA=;
+        s=korg; t=1694979356;
+        bh=aQ5n/VVPtwqy9hJg4kI2nkUECggeWNzM2R5XTRbVIWg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dryEacxp8zWLMy/l7PaYvisbMhru5BqMB9mTS9Qa72HmJLYczp20PM7Mh1ou54j/P
-         STbtWzPbC9jiQ1r/3saebnPmDZC4TqBDjr7rbEKPTXZKIx622x/Nyt/jnvV7xg1fvl
-         +7oSFPdjZLf1J75RR3wLqmQdmZQvEtLZ84WscvXg=
+        b=wpHpultlIfQJ4IqiFRV73yU00sJ5m9SzcTMrVKlOJDVooOXZtdT2qffjXxHDADqJ+
+         bNzEXsy71dBMtkchwgMlKfGPY/L9RnfRciBy7KrD1LgkRsaASBM+hpFD++53CwF9uI
+         m+0J+Svv0PvmYbrrSoO9TxXkuhmq/US0G/qVSMnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 142/285] igbvf: Change IGBVF_MIN to allow set rx/tx value between 64 and 80
-Date:   Sun, 17 Sep 2023 21:12:22 +0200
-Message-ID: <20230917191056.587007151@linuxfoundation.org>
+        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 5.10 289/406] ntb: Clean up tx tail index on link down
+Date:   Sun, 17 Sep 2023 21:12:23 +0200
+Message-ID: <20230917191108.937677225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 8360717524a24a421c36ef8eb512406dbd42160a ]
+commit cc79bd2738c2d40aba58b2be6ce47dc0e471df0e upstream.
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igbvf devices can use as low as 64 descriptors.
-This change will unify igbvf with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+The tx tail index is not reset when the link goes down. This causes the
+tail index to go out of sync when the link goes down and comes back up.
+Refactor the ntb_qp_link_down_reset() and reset the tail index as well.
 
-Fixes: d4e0fe01a38a ("igbvf: add new driver to support 82576 virtual functions")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2849b5d70641 ("NTB: Reset transport QP link stats on down")
+Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igbvf/igbvf.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ntb/ntb_transport.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igbvf/igbvf.h b/drivers/net/ethernet/intel/igbvf/igbvf.h
-index 57d39ee00b585..7b83678ba83a6 100644
---- a/drivers/net/ethernet/intel/igbvf/igbvf.h
-+++ b/drivers/net/ethernet/intel/igbvf/igbvf.h
-@@ -39,11 +39,11 @@ enum latency_range {
- /* Tx/Rx descriptor defines */
- #define IGBVF_DEFAULT_TXD	256
- #define IGBVF_MAX_TXD		4096
--#define IGBVF_MIN_TXD		80
-+#define IGBVF_MIN_TXD		64
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -911,7 +911,7 @@ static int ntb_set_mw(struct ntb_transpo
+ 	return 0;
+ }
  
- #define IGBVF_DEFAULT_RXD	256
- #define IGBVF_MAX_RXD		4096
--#define IGBVF_MIN_RXD		80
-+#define IGBVF_MIN_RXD		64
+-static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
+ {
+ 	qp->link_is_up = false;
+ 	qp->active = false;
+@@ -934,6 +934,13 @@ static void ntb_qp_link_down_reset(struc
+ 	qp->tx_async = 0;
+ }
  
- #define IGBVF_MIN_ITR_USECS	10 /* 100000 irq/sec */
- #define IGBVF_MAX_ITR_USECS	10000 /* 100    irq/sec */
--- 
-2.40.1
-
++static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++{
++	ntb_qp_link_context_reset(qp);
++	if (qp->remote_rx_info)
++		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
++}
++
+ static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
+ {
+ 	struct ntb_transport_ctx *nt = qp->transport;
+@@ -1176,7 +1183,7 @@ static int ntb_transport_init_queue(stru
+ 	qp->ndev = nt->ndev;
+ 	qp->client_ready = false;
+ 	qp->event_handler = NULL;
+-	ntb_qp_link_down_reset(qp);
++	ntb_qp_link_context_reset(qp);
+ 
+ 	if (mw_num < qp_count % mw_count)
+ 		num_qps_mw = qp_count / mw_count + 1;
 
 
