@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D5D7A38AC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B8D7A39C5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239814AbjIQTim (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:38:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        id S239451AbjIQTyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239834AbjIQTiZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:25 -0400
+        with ESMTP id S240137AbjIQTxj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1EB103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41221C433C7;
-        Sun, 17 Sep 2023 19:38:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8EFEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C779FC433C8;
+        Sun, 17 Sep 2023 19:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979499;
-        bh=c0SwBZBfqPGmCWPY2Kv2393hxTg/xNOKA9WUhHGHYGA=;
+        s=korg; t=1694980412;
+        bh=81tucJsHQUWAJJjQim7Pa7p0SISWH/NKmScDJ11eVvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mCIIK/YgBVlMzaleEEmERyeiOPy/HqpXZcD6yA6ulhHiDb5xxNVa6gbKL9DxgV5Sz
-         7bBg1yV4oGTdGOePL+z3GwZ2KOYUA0wLy1ucCs/ovk1WQnfi/MxlGY9o1yaojfavei
-         2uD1X6daozfBJMFAkLI2OpubnwUcWG8IOxxxKnrg=
+        b=EilY9kr3WI0H0B6sRmniamN9LcGlLQ4d82bB5HT5HmXlXU0FwiFh1e8bjJbxEnnya
+         psOg6PZvFU2sSFr08YWBOHzHSSdi+OqUlyWby3fOdORZf/io74NJpdningBbBCa6D+
+         YbC/2EhgRDFGr+BQj93NAe6GWC7B7yTwuvPnaVkw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable@kernel.org,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 330/406] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.5 184/285] jbd2: fix checkpoint cleanup performance regression
 Date:   Sun, 17 Sep 2023 21:13:04 +0200
-Message-ID: <20230917191110.003149319@linuxfoundation.org>
+Message-ID: <20230917191057.986118226@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +50,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
+commit 373ac521799d9e97061515aca6ec6621789036bb upstream.
 
-The pll0_vote clock definitely should have pll0 as a parent (instead of
-pll8).
+journal_clean_one_cp_list() has been merged into
+journal_shrink_one_cp_list(), but do chekpoint buffer cleanup from the
+committing process is just a best effort, it should stop scan once it
+meet a busy buffer, or else it will cause a lot of invalid buffer scan
+and checks. We catch a performance regression when doing fs_mark tests
+below.
 
-Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
+Test cmd:
+ ./fs_mark  -d  scratch  -s  1024  -n  10000  -t  1  -D  100  -N  100
+
+Before merging checkpoint buffer cleanup:
+ FSUse%        Count         Size    Files/sec     App Overhead
+     95        10000         1024       8304.9            49033
+
+After merging checkpoint buffer cleanup:
+ FSUse%        Count         Size    Files/sec     App Overhead
+     95        10000         1024       7649.0            50012
+ FSUse%        Count         Size    Files/sec     App Overhead
+     95        10000         1024       2107.1            50871
+
+After merging checkpoint buffer cleanup, the total loop count in
+journal_shrink_one_cp_list() could be up to 6,261,600+ (50,000+ ~
+100,000+ in general), most of them are invalid. This patch fix it
+through passing 'shrink_type' into journal_shrink_one_cp_list() and add
+a new 'SHRINK_BUSY_STOP' to indicate it should stop once meet a busy
+buffer. After fix, the loop count descending back to 10,000+.
+
+After this fix:
+ FSUse%        Count         Size    Files/sec     App Overhead
+     95        10000         1024       8558.4            49109
+
 Cc: stable@kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b98dba273a0e ("jbd2: remove journal_clean_one_cp_list()")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230714025528.564988-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-mdm9615.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jbd2/checkpoint.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/clk/qcom/gcc-mdm9615.c
-+++ b/drivers/clk/qcom/gcc-mdm9615.c
-@@ -58,7 +58,7 @@ static struct clk_regmap pll0_vote = {
- 	.enable_mask = BIT(0),
- 	.hw.init = &(struct clk_init_data){
- 		.name = "pll0_vote",
--		.parent_names = (const char *[]){ "pll8" },
-+		.parent_names = (const char *[]){ "pll0" },
- 		.num_parents = 1,
- 		.ops = &clk_pll_vote_ops,
- 	},
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -349,6 +349,8 @@ int jbd2_cleanup_journal_tail(journal_t
+ 
+ /* Checkpoint list management */
+ 
++enum shrink_type {SHRINK_DESTROY, SHRINK_BUSY_STOP, SHRINK_BUSY_SKIP};
++
+ /*
+  * journal_shrink_one_cp_list
+  *
+@@ -360,7 +362,8 @@ int jbd2_cleanup_journal_tail(journal_t
+  * Called with j_list_lock held.
+  */
+ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+-						bool destroy, bool *released)
++						enum shrink_type type,
++						bool *released)
+ {
+ 	struct journal_head *last_jh;
+ 	struct journal_head *next_jh = jh;
+@@ -376,12 +379,15 @@ static unsigned long journal_shrink_one_
+ 		jh = next_jh;
+ 		next_jh = jh->b_cpnext;
+ 
+-		if (destroy) {
++		if (type == SHRINK_DESTROY) {
+ 			ret = __jbd2_journal_remove_checkpoint(jh);
+ 		} else {
+ 			ret = jbd2_journal_try_remove_checkpoint(jh);
+-			if (ret < 0)
+-				continue;
++			if (ret < 0) {
++				if (type == SHRINK_BUSY_SKIP)
++					continue;
++				break;
++			}
+ 		}
+ 
+ 		nr_freed++;
+@@ -445,7 +451,7 @@ again:
+ 		tid = transaction->t_tid;
+ 
+ 		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
+-						   false, &released);
++						   SHRINK_BUSY_SKIP, &released);
+ 		nr_freed += freed;
+ 		(*nr_to_scan) -= min(*nr_to_scan, freed);
+ 		if (*nr_to_scan == 0)
+@@ -485,19 +491,21 @@ out:
+ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
+ {
+ 	transaction_t *transaction, *last_transaction, *next_transaction;
++	enum shrink_type type;
+ 	bool released;
+ 
+ 	transaction = journal->j_checkpoint_transactions;
+ 	if (!transaction)
+ 		return;
+ 
++	type = destroy ? SHRINK_DESTROY : SHRINK_BUSY_STOP;
+ 	last_transaction = transaction->t_cpprev;
+ 	next_transaction = transaction;
+ 	do {
+ 		transaction = next_transaction;
+ 		next_transaction = transaction->t_cpnext;
+ 		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
+-					   destroy, &released);
++					   type, &released);
+ 		/*
+ 		 * This function only frees up some memory if possible so we
+ 		 * dont have an obligation to finish processing. Bail out if
 
 
