@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B61F7A38C1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56AF87A39DB
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239215AbjIQTkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43780 "EHLO
+        id S240171AbjIQTzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239924AbjIQTjl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:41 -0400
+        with ESMTP id S240194AbjIQTyy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEF6113E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96B4C433C9;
-        Sun, 17 Sep 2023 19:39:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A03F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95D3C433C7;
+        Sun, 17 Sep 2023 19:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979571;
-        bh=BycRv6mFuDyR6WUG1/qdtdgp3usBkVD+AEQcrBWx1uA=;
+        s=korg; t=1694980488;
+        bh=egCKt7TXu4Qc0ilwWMzuAlfaKrdnwpfhWv2GYIPtfu8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xkcpkpp0y5ZftgcaDhOc4+Y70YLr0Q8ykJCO0ze0N9Rd3bI6lhcH/QqshrQkKVySC
-         gVSue+R21FEaRfh133PAb9s7XrDWQM+cyvJdKnaq2x0sUmLE8W5hEocdE4dZ/VgpRb
-         +r5nr9jVk+/kZSm4jvQ/xnIqSNnoD7gaToG29/Fo=
+        b=Zsi1u6OYrwKGoQ1Kep5F2lwy+GKLfQ/2Ux1S9upicA6AtN+Gjt7ikW8x7lQwC/y6/
+         DlDG7smYm6nUPD91f6I6uoE2WFKAgbxB40zMSvxAv0A1gTNwURLW1/JZ102dIaoyxz
+         qv6goKOu4LV8K457wBIw7ywgXSusk+pefGsI4yJU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 352/406] af_unix: Fix data-race around unix_tot_inflight.
-Date:   Sun, 17 Sep 2023 21:13:26 +0200
-Message-ID: <20230917191110.566367080@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 207/285] btrfs: zoned: re-enable metadata over-commit for zoned mode
+Date:   Sun, 17 Sep 2023 21:13:27 +0200
+Message-ID: <20230917191058.737926200@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,88 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit ade32bd8a738d7497ffe9743c46728db26740f78 ]
+commit 5b135b382a360f4c87cf8896d1465b0b07f10cb0 upstream.
 
-unix_tot_inflight is changed under spin_lock(unix_gc_lock), but
-unix_release_sock() reads it locklessly.
+Now that, we can re-enable metadata over-commit. As we moved the activation
+from the reservation time to the write time, we no longer need to ensure
+all the reserved bytes is properly activated.
 
-Let's use READ_ONCE() for unix_tot_inflight.
+Without the metadata over-commit, it suffers from lower performance because
+it needs to flush the delalloc items more often and allocate more block
+groups. Re-enabling metadata over-commit will solve the issue.
 
-Note that the writer side was marked by commit 9d6d7f1cb67c ("af_unix:
-annote lockless accesses to unix_tot_inflight & gc_in_progress")
-
-BUG: KCSAN: data-race in unix_inflight / unix_release_sock
-
-write (marked) to 0xffffffff871852b8 of 4 bytes by task 123 on cpu 1:
- unix_inflight+0x130/0x180 net/unix/scm.c:64
- unix_attach_fds+0x137/0x1b0 net/unix/scm.c:123
- unix_scm_to_skb net/unix/af_unix.c:1832 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1955
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:747
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2493
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2547
- __sys_sendmsg+0x94/0x140 net/socket.c:2576
- __do_sys_sendmsg net/socket.c:2585 [inline]
- __se_sys_sendmsg net/socket.c:2583 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2583
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffffffff871852b8 of 4 bytes by task 4891 on cpu 0:
- unix_release_sock+0x608/0x910 net/unix/af_unix.c:671
- unix_release+0x59/0x80 net/unix/af_unix.c:1058
- __sock_release+0x7d/0x170 net/socket.c:653
- sock_close+0x19/0x30 net/socket.c:1385
- __fput+0x179/0x5e0 fs/file_table.c:321
- ____fput+0x15/0x20 fs/file_table.c:349
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0x00000000 -> 0x00000001
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 4891 Comm: systemd-coredum Not tainted 6.4.0-rc5-01219-gfa0e21fa4443 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 9305cfa4443d ("[AF_UNIX]: Make unix_tot_inflight counter non-atomic")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 79417d040f4f ("btrfs: zoned: disable metadata overcommit for zoned")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/space-info.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 8d941cbba5cb7..237488b1b58b6 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -587,7 +587,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	 *	  What the above comment does talk about? --ANK(980817)
- 	 */
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -389,11 +389,7 @@ int btrfs_can_overcommit(struct btrfs_fs
+ 		return 0;
  
--	if (unix_tot_inflight)
-+	if (READ_ONCE(unix_tot_inflight))
- 		unix_gc();		/* Garbage collect fds */
- }
+ 	used = btrfs_space_info_used(space_info, true);
+-	if (test_bit(BTRFS_FS_ACTIVE_ZONE_TRACKING, &fs_info->flags) &&
+-	    (space_info->flags & BTRFS_BLOCK_GROUP_METADATA))
+-		avail = 0;
+-	else
+-		avail = calc_available_free_space(fs_info, space_info, flush);
++	avail = calc_available_free_space(fs_info, space_info, flush);
  
--- 
-2.40.1
-
+ 	if (used + bytes < space_info->total_bytes + avail)
+ 		return 1;
 
 
