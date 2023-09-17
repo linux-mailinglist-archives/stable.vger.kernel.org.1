@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D507E7A3857
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B16A37A3979
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239722AbjIQTe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44974 "EHLO
+        id S240066AbjIQTtx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238153AbjIQTeT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:34:19 -0400
+        with ESMTP id S240082AbjIQTtb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA01119
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E8AC433C7;
-        Sun, 17 Sep 2023 19:34:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748B09F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1794C433C8;
+        Sun, 17 Sep 2023 19:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979253;
-        bh=iRX4Q8UeqTVgsbiTJjzCr/jb/605a+Ji4hQ7VR+XWVI=;
+        s=korg; t=1694980166;
+        bh=R5dBXc1sQ/RiThmvzVbPfGGsjMRngK3L/XuUSxYZWPc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LdvStqmpnzP8Iwv3MT1woUeElUgi/Mn3jKItcGh2sPxT/OinX+u0WJUHnTAycGlmY
-         p7FxkDiNCaLO0a6sn+gs304wIMog8JrjEE/6v1zQQs03JrucJoBwbswKuq6LFd8jwj
-         +eAo7gYFGmSRxsa1qEBmdBUm1H2R1kCTn8bLd7q8=
+        b=vHE22sBLOkZ7JWX2QIq/j1XetN8YutY+BzXvhQxb8jKhvZ2NKW0pcoWWkVG/Q0/GN
+         IJsRLXa6oappiGBINw0oF9szP5HGyHfblv0g5T0sws0uS2Fid94qNakjQEAjDxS2SS
+         bsuxu31CCdVjxkywAtr4ZKpXAROG1o/6nDaIuIU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/406] phy/rockchip: inno-hdmi: do not power on rk3328 post pll on reg write
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 113/285] ceph: make members in struct ceph_mds_request_args_ext a union
 Date:   Sun, 17 Sep 2023 21:11:53 +0200
-Message-ID: <20230917191108.033987854@linuxfoundation.org>
+Message-ID: <20230917191055.579497834@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,57 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 19a1d46bd699940a496d3b0d4e142ef99834988c ]
+[ Upstream commit 3af5ae22030cb59fab4fba35f5a2b62f47e14df9 ]
 
-inno_write is used to configure 0xaa reg, that also hold the
-POST_PLL_POWER_DOWN bit.
-When POST_PLL_REFCLK_SEL_TMDS is configured the power down bit is not
-taken into consideration.
+In ceph mainline it will allow to set the btime in the setattr request
+and just add a 'btime' member in the union 'ceph_mds_request_args' and
+then bump up the header version to 4. That means the total size of union
+'ceph_mds_request_args' will increase sizeof(struct ceph_timespec) bytes,
+but in kclient it will increase the sizeof(setattr_ext) bytes for each
+request.
 
-Fix this by keeping the power down bit until configuration is complete.
-Also reorder the reg write order for consistency.
+Since the MDS will always depend on the header's vesion and front_len
+members to decode the 'ceph_mds_request_head' struct, at the same time
+kclient hasn't supported the 'btime' feature yet in setattr request,
+so it's safe to do this change here.
 
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-5-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This will save 48 bytes memories for each request.
+
+Fixes: 4f1ddb1ea874 ("ceph: implement updated ceph_mds_request_head structure")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/ceph/ceph_fs.h | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index 093d2334e8cdc..2b0f5f2b4f339 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -1023,9 +1023,10 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
+diff --git a/include/linux/ceph/ceph_fs.h b/include/linux/ceph/ceph_fs.h
+index 49586ff261520..b4fa2a25b7d95 100644
+--- a/include/linux/ceph/ceph_fs.h
++++ b/include/linux/ceph/ceph_fs.h
+@@ -462,17 +462,19 @@ union ceph_mds_request_args {
+ } __attribute__ ((packed));
  
- 	inno_write(inno, 0xac, RK3328_POST_PLL_FB_DIV_7_0(cfg->fbdiv));
- 	if (cfg->postdiv == 1) {
--		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS);
- 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
- 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
-+		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS |
-+			   RK3328_POST_PLL_POWER_DOWN);
- 	} else {
- 		v = (cfg->postdiv / 2) - 1;
- 		v &= RK3328_POST_PLL_POST_DIV_MASK;
-@@ -1033,7 +1034,8 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
- 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
- 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
- 		inno_write(inno, 0xaa, RK3328_POST_PLL_POST_DIV_ENABLE |
--			   RK3328_POST_PLL_REFCLK_SEL_TMDS);
-+			   RK3328_POST_PLL_REFCLK_SEL_TMDS |
-+			   RK3328_POST_PLL_POWER_DOWN);
- 	}
+ union ceph_mds_request_args_ext {
+-	union ceph_mds_request_args old;
+-	struct {
+-		__le32 mode;
+-		__le32 uid;
+-		__le32 gid;
+-		struct ceph_timespec mtime;
+-		struct ceph_timespec atime;
+-		__le64 size, old_size;       /* old_size needed by truncate */
+-		__le32 mask;                 /* CEPH_SETATTR_* */
+-		struct ceph_timespec btime;
+-	} __attribute__ ((packed)) setattr_ext;
++	union {
++		union ceph_mds_request_args old;
++		struct {
++			__le32 mode;
++			__le32 uid;
++			__le32 gid;
++			struct ceph_timespec mtime;
++			struct ceph_timespec atime;
++			__le64 size, old_size;       /* old_size needed by truncate */
++			__le32 mask;                 /* CEPH_SETATTR_* */
++			struct ceph_timespec btime;
++		} __attribute__ ((packed)) setattr_ext;
++	};
+ };
  
- 	for (v = 0; v < 14; v++)
+ #define CEPH_MDS_FLAG_REPLAY		1 /* this is a replayed op */
 -- 
 2.40.1
 
