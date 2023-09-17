@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 679BE7A38CD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CAD7A39CC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239308AbjIQTks (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41040 "EHLO
+        id S240141AbjIQTyk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:54:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239703AbjIQTkS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:18 -0400
+        with ESMTP id S240158AbjIQTyN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B63D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1B7C433C8;
-        Sun, 17 Sep 2023 19:40:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68D3EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED72FC433CA;
+        Sun, 17 Sep 2023 19:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979612;
-        bh=23EOOYz7xIrjWi0AlS3Y4pc9MbdPAd7VSVfQWxczvYw=;
+        s=korg; t=1694980447;
+        bh=a1IvbntcG5urIGhTQvW+AgA5to3Qq9gM00HgATG9TrQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PXsiwrWTn5apKfZoMyDdPePKcIHAvPSHvxyxF9D9hFczPJddFjtSiSo42+M6j3D24
-         7BmZKRx1UCBRHfOj8Fa6h5IHLliW+E6QVaZx8xbINqwK6Z/knyzz50XgiRE9US2/JP
-         oXzNmuPPRJlR24z9LdPX/IH2D+Iplq7IfMVTDXm4=
+        b=VGI47izXS4XI6kSkQTJMs8OjLrQyTZz38n467Lc133fa7fCUOEPUChxWJR1x5XpXL
+         Flmz4Lvq5yiS0raPOf8tHamiFmL0VQ72eMlfu9GysY1ph8Be80wTfplK8+0ka2M/Kg
+         XpMEYOC8iXUR3uiTDEq3w9TEqZ9XVDDWHpVC8bWc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 339/406] watchdog: intel-mid_wdt: add MODULE_ALIAS() to allow auto-load
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        syzbot+e5600587fa9cbf8e3826@syzkaller.appspotmail.com
+Subject: [PATCH 6.5 193/285] f2fs: avoid false alarm of circular locking
 Date:   Sun, 17 Sep 2023 21:13:13 +0200
-Message-ID: <20230917191110.233970413@linuxfoundation.org>
+Message-ID: <20230917191058.277186854@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +50,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit cf38e7691c85f1b09973b22a0b89bf1e1228d2f9 ]
+commit 5c13e2388bf3426fd69a89eb46e50469e9624e56 upstream.
 
-When built with CONFIG_INTEL_MID_WATCHDOG=m, currently the driver
-needs to be loaded manually, for the lack of module alias.
-This causes unintended resets in cases where watchdog timer is
-set-up by bootloader and the driver is not explicitly loaded.
-Add MODULE_ALIAS() to load the driver automatically at boot and
-avoid this issue.
+======================================================
+WARNING: possible circular locking dependency detected
+6.5.0-rc5-syzkaller-00353-gae545c3283dc #0 Not tainted
+------------------------------------------------------
+syz-executor273/5027 is trying to acquire lock:
+ffff888077fe1fb0 (&fi->i_sem){+.+.}-{3:3}, at: f2fs_down_write fs/f2fs/f2fs.h:2133 [inline]
+ffff888077fe1fb0 (&fi->i_sem){+.+.}-{3:3}, at: f2fs_add_inline_entry+0x300/0x6f0 fs/f2fs/inline.c:644
 
-Fixes: 87a1ef8058d9 ("watchdog: add Intel MID watchdog driver support")
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230811120220.31578-1-raag.jadav@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+but task is already holding lock:
+ffff888077fe07c8 (&fi->i_xattr_sem){.+.+}-{3:3}, at: f2fs_down_read fs/f2fs/f2fs.h:2108 [inline]
+ffff888077fe07c8 (&fi->i_xattr_sem){.+.+}-{3:3}, at: f2fs_add_dentry+0x92/0x230 fs/f2fs/dir.c:783
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&fi->i_xattr_sem){.+.+}-{3:3}:
+       down_read+0x9c/0x470 kernel/locking/rwsem.c:1520
+       f2fs_down_read fs/f2fs/f2fs.h:2108 [inline]
+       f2fs_getxattr+0xb1e/0x12c0 fs/f2fs/xattr.c:532
+       __f2fs_get_acl+0x5a/0x900 fs/f2fs/acl.c:179
+       f2fs_acl_create fs/f2fs/acl.c:377 [inline]
+       f2fs_init_acl+0x15c/0xb30 fs/f2fs/acl.c:420
+       f2fs_init_inode_metadata+0x159/0x1290 fs/f2fs/dir.c:558
+       f2fs_add_regular_entry+0x79e/0xb90 fs/f2fs/dir.c:740
+       f2fs_add_dentry+0x1de/0x230 fs/f2fs/dir.c:788
+       f2fs_do_add_link+0x190/0x280 fs/f2fs/dir.c:827
+       f2fs_add_link fs/f2fs/f2fs.h:3554 [inline]
+       f2fs_mkdir+0x377/0x620 fs/f2fs/namei.c:781
+       vfs_mkdir+0x532/0x7e0 fs/namei.c:4117
+       do_mkdirat+0x2a9/0x330 fs/namei.c:4140
+       __do_sys_mkdir fs/namei.c:4160 [inline]
+       __se_sys_mkdir fs/namei.c:4158 [inline]
+       __x64_sys_mkdir+0xf2/0x140 fs/namei.c:4158
+       do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+       do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+       entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+-> #0 (&fi->i_sem){+.+.}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3142 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+       validate_chain kernel/locking/lockdep.c:3876 [inline]
+       __lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
+       lock_acquire kernel/locking/lockdep.c:5761 [inline]
+       lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+       down_write+0x93/0x200 kernel/locking/rwsem.c:1573
+       f2fs_down_write fs/f2fs/f2fs.h:2133 [inline]
+       f2fs_add_inline_entry+0x300/0x6f0 fs/f2fs/inline.c:644
+       f2fs_add_dentry+0xa6/0x230 fs/f2fs/dir.c:784
+       f2fs_do_add_link+0x190/0x280 fs/f2fs/dir.c:827
+       f2fs_add_link fs/f2fs/f2fs.h:3554 [inline]
+       f2fs_mkdir+0x377/0x620 fs/f2fs/namei.c:781
+       vfs_mkdir+0x532/0x7e0 fs/namei.c:4117
+       ovl_do_mkdir fs/overlayfs/overlayfs.h:196 [inline]
+       ovl_mkdir_real+0xb5/0x370 fs/overlayfs/dir.c:146
+       ovl_workdir_create+0x3de/0x820 fs/overlayfs/super.c:309
+       ovl_make_workdir fs/overlayfs/super.c:711 [inline]
+       ovl_get_workdir fs/overlayfs/super.c:864 [inline]
+       ovl_fill_super+0xdab/0x6180 fs/overlayfs/super.c:1400
+       vfs_get_super+0xf9/0x290 fs/super.c:1152
+       vfs_get_tree+0x88/0x350 fs/super.c:1519
+       do_new_mount fs/namespace.c:3335 [inline]
+       path_mount+0x1492/0x1ed0 fs/namespace.c:3662
+       do_mount fs/namespace.c:3675 [inline]
+       __do_sys_mount fs/namespace.c:3884 [inline]
+       __se_sys_mount fs/namespace.c:3861 [inline]
+       __x64_sys_mount+0x293/0x310 fs/namespace.c:3861
+       do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+       do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+       entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(&fi->i_xattr_sem);
+                               lock(&fi->i_sem);
+                               lock(&fi->i_xattr_sem);
+  lock(&fi->i_sem);
+
+Cc: <stable@vger.kernel.org>
+Reported-and-tested-by: syzbot+e5600587fa9cbf8e3826@syzkaller.appspotmail.com
+Fixes: 5eda1ad1aaff "f2fs: fix deadlock in i_xattr_sem and inode page lock"
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/intel-mid_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/f2fs.h   |   24 +++++++++++++++---------
+ fs/f2fs/inline.c |    3 ++-
+ 2 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/watchdog/intel-mid_wdt.c b/drivers/watchdog/intel-mid_wdt.c
-index 9b2173f765c8c..fb7fae750181b 100644
---- a/drivers/watchdog/intel-mid_wdt.c
-+++ b/drivers/watchdog/intel-mid_wdt.c
-@@ -203,3 +203,4 @@ module_platform_driver(mid_wdt_driver);
- MODULE_AUTHOR("David Cohen <david.a.cohen@linux.intel.com>");
- MODULE_DESCRIPTION("Watchdog Driver for Intel MID platform");
- MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:intel_mid_wdt");
--- 
-2.40.1
-
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2122,15 +2122,6 @@ static inline int f2fs_down_read_trylock
+ 	return down_read_trylock(&sem->internal_rwsem);
+ }
+ 
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-static inline void f2fs_down_read_nested(struct f2fs_rwsem *sem, int subclass)
+-{
+-	down_read_nested(&sem->internal_rwsem, subclass);
+-}
+-#else
+-#define f2fs_down_read_nested(sem, subclass) f2fs_down_read(sem)
+-#endif
+-
+ static inline void f2fs_up_read(struct f2fs_rwsem *sem)
+ {
+ 	up_read(&sem->internal_rwsem);
+@@ -2141,6 +2132,21 @@ static inline void f2fs_down_write(struc
+ 	down_write(&sem->internal_rwsem);
+ }
+ 
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++static inline void f2fs_down_read_nested(struct f2fs_rwsem *sem, int subclass)
++{
++	down_read_nested(&sem->internal_rwsem, subclass);
++}
++
++static inline void f2fs_down_write_nested(struct f2fs_rwsem *sem, int subclass)
++{
++	down_write_nested(&sem->internal_rwsem, subclass);
++}
++#else
++#define f2fs_down_read_nested(sem, subclass) f2fs_down_read(sem)
++#define f2fs_down_write_nested(sem, subclass) f2fs_down_write(sem)
++#endif
++
+ static inline int f2fs_down_write_trylock(struct f2fs_rwsem *sem)
+ {
+ 	return down_write_trylock(&sem->internal_rwsem);
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -641,7 +641,8 @@ int f2fs_add_inline_entry(struct inode *
+ 	}
+ 
+ 	if (inode) {
+-		f2fs_down_write(&F2FS_I(inode)->i_sem);
++		f2fs_down_write_nested(&F2FS_I(inode)->i_sem,
++						SINGLE_DEPTH_NESTING);
+ 		page = f2fs_init_inode_metadata(inode, dir, fname, ipage);
+ 		if (IS_ERR(page)) {
+ 			err = PTR_ERR(page);
 
 
