@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B57F07A39ED
+	by mail.lfdr.de (Postfix) with ESMTP id 181277A39EB
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240199AbjIQT4S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46880 "EHLO
+        id S240202AbjIQT4T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240225AbjIQTzz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:55 -0400
+        with ESMTP id S240270AbjIQT4C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC55F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D40C433C7;
-        Sun, 17 Sep 2023 19:55:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08929F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED57C433C7;
+        Sun, 17 Sep 2023 19:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980549;
-        bh=QYARrcBXEoggJSNwN8JNKMgKEJSuHc2LumamX8uRB4A=;
+        s=korg; t=1694980556;
+        bh=deQrrf+xOBM3E4OjB7S/Xs4BBH3wEnyP5OtHoo93mSQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IunP0vZL0WLz47TSFHNv4O6+X2vnXmho5rucvbgbVOri8KdMWt84OSwo2aHrU2k7A
-         X9ggpaK1ffq5eJSMv5vqCeMieJPjtj5OGiT/ZxZ6nBkaJ2hfFE6O0ruFf7VYmoh5rw
-         QM4+f5SyZ3I49Lm3L4sGqvezyMhQF/HslYyyMF70=
+        b=QDsNF3JkWtkpQ4gP1j99Scrvrx6qWpDK42fEhc1FmJCKZ/e2vmsisOapVONHDrqgv
+         ZU9FvvBdD1vebWzM8BgUMAgsujd99zjpC1n2Dt9T8Lxm2LSwkh3D+TiHiHJPd+o8DO
+         anSH2XbF9zE49lSSOtjR9JRPRkZmTT3+aJVBSgNE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wu Zongyo <wuzongyo@mail.ustc.edu.cn>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
+        patches@lists.linux.dev, Peter Gonda <pgonda@google.com>,
+        Pankaj Gupta <pankaj.gupta@amd.com>,
         Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.5 224/285] KVM: SVM: Dont inject #UD if KVM attempts to skip SEV guest insn
-Date:   Sun, 17 Sep 2023 21:13:44 +0200
-Message-ID: <20230917191059.238532047@linuxfoundation.org>
+Subject: [PATCH 6.5 225/285] KVM: SVM: Get source vCPUs from source VM for SEV-ES intrahost migration
+Date:   Sun, 17 Sep 2023 21:13:45 +0200
+Message-ID: <20230917191059.266184112@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -56,102 +56,73 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Sean Christopherson <seanjc@google.com>
 
-commit cb49631ad111570f1bad37702c11c2ae07fa2e3c upstream.
+commit f1187ef24eb8f36e8ad8106d22615ceddeea6097 upstream.
 
-Don't inject a #UD if KVM attempts to "emulate" to skip an instruction
-for an SEV guest, and instead resume the guest and hope that it can make
-forward progress.  When commit 04c40f344def ("KVM: SVM: Inject #UD on
-attempted emulation for SEV guest w/o insn buffer") added the completely
-arbitrary #UD behavior, there were no known scenarios where a well-behaved
-guest would induce a VM-Exit that triggered emulation, i.e. it was thought
-that injecting #UD would be helpful.
+Fix a goof where KVM tries to grab source vCPUs from the destination VM
+when doing intrahost migration.  Grabbing the wrong vCPU not only hoses
+the guest, it also crashes the host due to the VMSA pointer being left
+NULL.
 
-However, now that KVM (correctly) attempts to re-inject INT3/INTO, e.g. if
-a #NPF is encountered when attempting to deliver the INT3/INTO, an SEV
-guest can trigger emulation without a buffer, through no fault of its own.
-Resuming the guest and retrying the INT3/INTO is architecturally wrong,
-e.g. the vCPU will incorrectly re-hit code #DBs, but for SEV guests there
-is literally no other option that has a chance of making forward progress.
+  BUG: unable to handle page fault for address: ffffe38687000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP NOPTI
+  CPU: 39 PID: 17143 Comm: sev_migrate_tes Tainted: GO       6.5.0-smp--fff2e47e6c3b-next #151
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 34.28.0 07/10/2023
+  RIP: 0010:__free_pages+0x15/0xd0
+  RSP: 0018:ffff923fcf6e3c78 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: ffffe38687000000 RCX: 0000000000000100
+  RDX: 0000000000000100 RSI: 0000000000000000 RDI: ffffe38687000000
+  RBP: ffff923fcf6e3c88 R08: ffff923fcafb0000 R09: 0000000000000000
+  R10: 0000000000000000 R11: ffffffff83619b90 R12: ffff923fa9540000
+  R13: 0000000000080007 R14: ffff923f6d35d000 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff929d0d7c0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffffe38687000000 CR3: 0000005224c34005 CR4: 0000000000770ee0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   sev_free_vcpu+0xcb/0x110 [kvm_amd]
+   svm_vcpu_free+0x75/0xf0 [kvm_amd]
+   kvm_arch_vcpu_destroy+0x36/0x140 [kvm]
+   kvm_destroy_vcpus+0x67/0x100 [kvm]
+   kvm_arch_destroy_vm+0x161/0x1d0 [kvm]
+   kvm_put_kvm+0x276/0x560 [kvm]
+   kvm_vm_release+0x25/0x30 [kvm]
+   __fput+0x106/0x280
+   ____fput+0x12/0x20
+   task_work_run+0x86/0xb0
+   do_exit+0x2e3/0x9c0
+   do_group_exit+0xb1/0xc0
+   __x64_sys_exit_group+0x1b/0x20
+   do_syscall_64+0x41/0x90
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+   </TASK>
+  CR2: ffffe38687000000
 
-Drop the #UD injection for all "skip" emulation, not just those related to
-INT3/INTO, even though that means that the guest will likely end up in an
-infinite loop instead of getting a #UD (the vCPU may also crash, e.g. if
-KVM emulated everything about an instruction except for advancing RIP).
-There's no evidence that suggests that an unexpected #UD is actually
-better than hanging the vCPU, e.g. a soft-hung vCPU can still respond to
-IRQs and NMIs to generate a backtrace.
-
-Reported-by: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
-Closes: https://lore.kernel.org/all/8eb933fd-2cf3-d7a9-32fe-2a1d82eac42a@mail.ustc.edu.cn
-Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
+Fixes: 6defa24d3b12 ("KVM: SEV: Init target VMCBs in sev_migrate_from")
 Cc: stable@vger.kernel.org
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20230825013621.2845700-2-seanjc@google.com
+Cc: Peter Gonda <pgonda@google.com>
+Reviewed-by: Peter Gonda <pgonda@google.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Link: https://lore.kernel.org/r/20230825022357.2852133-2-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   35 +++++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 8 deletions(-)
+ arch/x86/kvm/svm/sev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -365,6 +365,8 @@ static void svm_set_interrupt_shadow(str
- 		svm->vmcb->control.int_state |= SVM_INTERRUPT_SHADOW_MASK;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1725,7 +1725,7 @@ static void sev_migrate_from(struct kvm
+ 		 * Note, the source is not required to have the same number of
+ 		 * vCPUs as the destination when migrating a vanilla SEV VM.
+ 		 */
+-		src_vcpu = kvm_get_vcpu(dst_kvm, i);
++		src_vcpu = kvm_get_vcpu(src_kvm, i);
+ 		src_svm = to_svm(src_vcpu);
  
- }
-+static bool svm_can_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
-+					void *insn, int insn_len);
- 
- static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
- 					   bool commit_side_effects)
-@@ -385,6 +387,14 @@ static int __svm_skip_emulated_instructi
- 	}
- 
- 	if (!svm->next_rip) {
-+		/*
-+		 * FIXME: Drop this when kvm_emulate_instruction() does the
-+		 * right thing and treats "can't emulate" as outright failure
-+		 * for EMULTYPE_SKIP.
-+		 */
-+		if (!svm_can_emulate_instruction(vcpu, EMULTYPE_SKIP, NULL, 0))
-+			return 0;
-+
- 		if (unlikely(!commit_side_effects))
- 			old_rflags = svm->vmcb->save.rflags;
- 
-@@ -4651,16 +4661,25 @@ static bool svm_can_emulate_instruction(
- 	 * and cannot be decrypted by KVM, i.e. KVM would read cyphertext and
- 	 * decode garbage.
- 	 *
--	 * Inject #UD if KVM reached this point without an instruction buffer.
--	 * In practice, this path should never be hit by a well-behaved guest,
--	 * e.g. KVM doesn't intercept #UD or #GP for SEV guests, but this path
--	 * is still theoretically reachable, e.g. via unaccelerated fault-like
--	 * AVIC access, and needs to be handled by KVM to avoid putting the
--	 * guest into an infinite loop.   Injecting #UD is somewhat arbitrary,
--	 * but its the least awful option given lack of insight into the guest.
-+	 * If KVM is NOT trying to simply skip an instruction, inject #UD if
-+	 * KVM reached this point without an instruction buffer.  In practice,
-+	 * this path should never be hit by a well-behaved guest, e.g. KVM
-+	 * doesn't intercept #UD or #GP for SEV guests, but this path is still
-+	 * theoretically reachable, e.g. via unaccelerated fault-like AVIC
-+	 * access, and needs to be handled by KVM to avoid putting the guest
-+	 * into an infinite loop.   Injecting #UD is somewhat arbitrary, but
-+	 * its the least awful option given lack of insight into the guest.
-+	 *
-+	 * If KVM is trying to skip an instruction, simply resume the guest.
-+	 * If a #NPF occurs while the guest is vectoring an INT3/INTO, then KVM
-+	 * will attempt to re-inject the INT3/INTO and skip the instruction.
-+	 * In that scenario, retrying the INT3/INTO and hoping the guest will
-+	 * make forward progress is the only option that has a chance of
-+	 * success (and in practice it will work the vast majority of the time).
- 	 */
- 	if (unlikely(!insn)) {
--		kvm_queue_exception(vcpu, UD_VECTOR);
-+		if (!(emul_type & EMULTYPE_SKIP))
-+			kvm_queue_exception(vcpu, UD_VECTOR);
- 		return false;
- 	}
- 
+ 		/*
 
 
