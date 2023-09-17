@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE9E7A38F2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529C77A3A0C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239897AbjIQTnA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40950 "EHLO
+        id S240255AbjIQT5z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240001AbjIQTmh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:37 -0400
+        with ESMTP id S240267AbjIQT5i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E12199
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8351CC433C7;
-        Sun, 17 Sep 2023 19:42:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBE0101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773D1C433C8;
+        Sun, 17 Sep 2023 19:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979739;
-        bh=0lmO+68ouqd8g37PAhNXwqjDKRrTij3Xg3KWCeoHn3E=;
+        s=korg; t=1694980652;
+        bh=WWGUXPhkakP+yRZvsor8WX5PUXUHn2BNPOMfzMqlLOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0nwMb2aFIDux1MWOJhy5JRv3q0HoNXhuH3CviH/7e8QtEMT+gg9R7c/udkwpz5h/S
-         39v86TtpHHnHTBxG1DX8bkxx5exADD+HRGgd+0BGUIZJc+CaRhXuDke/GmBusqSOyE
-         LQLR7az1KuuWSUlgcZAvO9kyPG8kqJ3YyhsvdmBw=
+        b=lZgVKhEdZI2BJTDFbIRs0WMj24uexauBCyxR56B9+SqoTphwc2qd3YdFJPJdhfR/g
+         VZHv/kbthfyBjUd3+5MdPEpNYSFqlf8bItVqtujKgzYPWo5/B82MeTawRuKWjJ2xsB
+         BHTD87shiZvcdHtX1bdRthCD0zSqKiqflnr8GSnI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
-        Vadim Pasternak <vadimp@nvidia.com>,
-        David Thompson <davthompson@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 400/406] platform/mellanox: mlxbf-tmfifo: Drop jumbo frames
+Subject: [PATCH 6.5 254/285] net: stmmac: fix handling of zero coalescing tx-usecs
 Date:   Sun, 17 Sep 2023 21:14:14 +0200
-Message-ID: <20230917191111.823017964@linuxfoundation.org>
+Message-ID: <20230917191100.080645917@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,105 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liming Sun <limings@nvidia.com>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-[ Upstream commit fc4c655821546239abb3cf4274d66b9747aa87dd ]
+[ Upstream commit fa60b8163816f194786f3ee334c9a458da7699c6 ]
 
-This commit drops over-sized network packets to avoid tmfifo
-queue stuck.
+Setting ethtool -C eth0 tx-usecs 0 is supposed to disable the use of the
+coalescing timer but currently it gets programmed with zero delay
+instead.
 
-Fixes: 1357dfd7261f ("platform/mellanox: Add TmFifo driver for Mellanox BlueField Soc")
-Signed-off-by: Liming Sun <limings@nvidia.com>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/9318936c2447f76db475c985ca6d91f057efcd41.1693322547.git.limings@nvidia.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Disable the use of the coalescing timer if tx-usecs is zero by
+preventing it from being restarted.  Note that to keep things simple we
+don't start/stop the timer when the coalescing settings are changed, but
+just let that happen on the next transmit or timer expiry.
+
+Fixes: 8fce33317023 ("net: stmmac: Rework coalesce timer and fix multi-queue races")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 42fcccf06157f..194f3205e5597 100644
---- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-+++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -205,7 +205,7 @@ static u8 mlxbf_tmfifo_net_default_mac[ETH_ALEN] = {
- static efi_char16_t mlxbf_tmfifo_efi_name[] = L"RshimMacAddr";
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 4727f7be4f86e..6931973028aef 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2703,9 +2703,7 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue)
  
- /* Maximum L2 header length. */
--#define MLXBF_TMFIFO_NET_L2_OVERHEAD	36
-+#define MLXBF_TMFIFO_NET_L2_OVERHEAD	(ETH_HLEN + VLAN_HLEN)
+ 	/* We still have pending packets, let's call for a new scheduling */
+ 	if (tx_q->dirty_tx != tx_q->cur_tx)
+-		hrtimer_start(&tx_q->txtimer,
+-			      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
+-			      HRTIMER_MODE_REL);
++		stmmac_tx_timer_arm(priv, queue);
  
- /* Supported virtio-net features. */
- #define MLXBF_TMFIFO_NET_FEATURES \
-@@ -623,13 +623,14 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
-  * flag is set.
-  */
- static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
--				     struct vring_desc *desc,
-+				     struct vring_desc **desc,
- 				     bool is_rx, bool *vring_change)
+ 	__netif_tx_unlock_bh(netdev_get_tx_queue(priv->dev, queue));
+ 
+@@ -2986,9 +2984,13 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
+ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
  {
- 	struct mlxbf_tmfifo *fifo = vring->fifo;
- 	struct virtio_net_config *config;
- 	struct mlxbf_tmfifo_msg_hdr hdr;
- 	int vdev_id, hdr_len;
-+	bool drop_rx = false;
- 
- 	/* Read/Write packet header. */
- 	if (is_rx) {
-@@ -649,8 +650,8 @@ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
- 			if (ntohs(hdr.len) >
- 			    __virtio16_to_cpu(virtio_legacy_is_little_endian(),
- 					      config->mtu) +
--			    MLXBF_TMFIFO_NET_L2_OVERHEAD)
--				return;
-+					      MLXBF_TMFIFO_NET_L2_OVERHEAD)
-+				drop_rx = true;
- 		} else {
- 			vdev_id = VIRTIO_ID_CONSOLE;
- 			hdr_len = 0;
-@@ -665,16 +666,25 @@ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
- 
- 			if (!tm_dev2)
- 				return;
--			vring->desc = desc;
-+			vring->desc = *desc;
- 			vring = &tm_dev2->vrings[MLXBF_TMFIFO_VRING_RX];
- 			*vring_change = true;
- 		}
+ 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
++	u32 tx_coal_timer = priv->tx_coal_timer[queue];
 +
-+		if (drop_rx && !IS_VRING_DROP(vring)) {
-+			if (vring->desc_head)
-+				mlxbf_tmfifo_release_pkt(vring);
-+			*desc = &vring->drop_desc;
-+			vring->desc_head = *desc;
-+			vring->desc = *desc;
-+		}
-+
- 		vring->pkt_len = ntohs(hdr.len) + hdr_len;
- 	} else {
- 		/* Network virtio has an extra header. */
- 		hdr_len = (vring->vdev_id == VIRTIO_ID_NET) ?
- 			   sizeof(struct virtio_net_hdr) : 0;
--		vring->pkt_len = mlxbf_tmfifo_get_pkt_len(vring, desc);
-+		vring->pkt_len = mlxbf_tmfifo_get_pkt_len(vring, *desc);
- 		hdr.type = (vring->vdev_id == VIRTIO_ID_NET) ?
- 			    VIRTIO_ID_NET : VIRTIO_ID_CONSOLE;
- 		hdr.len = htons(vring->pkt_len - hdr_len);
-@@ -723,7 +733,7 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
++	if (!tx_coal_timer)
++		return;
  
- 	/* Beginning of a packet. Start to Rx/Tx packet header. */
- 	if (vring->pkt_len == 0) {
--		mlxbf_tmfifo_rxtx_header(vring, desc, is_rx, &vring_change);
-+		mlxbf_tmfifo_rxtx_header(vring, &desc, is_rx, &vring_change);
- 		(*avail)--;
+ 	hrtimer_start(&tx_q->txtimer,
+-		      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
++		      STMMAC_COAL_TIMER(tx_coal_timer),
+ 		      HRTIMER_MODE_REL);
+ }
  
- 		/* Return if new packet is for another ring. */
 -- 
 2.40.1
 
