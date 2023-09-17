@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18BA77A3B17
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 931347A3B1B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240567AbjIQUNW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:13:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37976 "EHLO
+        id S240528AbjIQUNz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240699AbjIQUNS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:18 -0400
+        with ESMTP id S240617AbjIQUN0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF523101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA40C433CB;
-        Sun, 17 Sep 2023 20:12:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C381A1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C052BC433CA;
+        Sun, 17 Sep 2023 20:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981551;
-        bh=e82gT6krPl713O8fus37hEhMMOCqBTSr1OJ3lna3s/Q=;
+        s=korg; t=1694981561;
+        bh=2h+Be2syWhL3FzRZga+PGxP2ZeQGG5CFtKpYPPbdEUM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ch0uCy4T7WkG+5o+rPTLZle6U5ZfC6QwYNrQuEhCY/2Q1olBKhLJ58SFErEWR6kjF
-         yZ2pA1l10SHwcG+EzO1Oam+1pid5W9oFaVXvf9Ydk0penSNNawblEoFTjFJYC2eVRD
-         CIYjEmb2M8wNdQK/sP/PYllM/JooAD/oco082mVg=
+        b=zt835riSpxb1JqMEs8CR9LUVb8I46I52vcTAHhBKPV94HdMkoN7LRR0TC7u9H1wIO
+         p/exQElnh8sdtd8ZChfwb1qTyAzs83aGtFXpEabrTe7+RO+oTWFGTF/Mmwsq42kdHq
+         hm8wtOum1BwAG9W+GHs/95LTSRHnN5NOFf7J1L6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Walter Chang <walter.chang@mediatek.com>,
-        Marc Zyngier <maz@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.1 139/219] clocksource/drivers/arm_arch_timer: Disable timer before programming CVAL
-Date:   Sun, 17 Sep 2023 21:14:26 +0200
-Message-ID: <20230917191046.023689490@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        Hien Huynh <hien.huynh.px@renesas.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 140/219] dmaengine: sh: rz-dmac: Fix destination and source data size setting
+Date:   Sun, 17 Sep 2023 21:14:27 +0200
+Message-ID: <20230917191046.062583059@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -56,58 +56,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Walter Chang <walter.chang@mediatek.com>
+From: Hien Huynh <hien.huynh.px@renesas.com>
 
-commit e7d65e40ab5a5940785c5922f317602d0268caaf upstream.
+commit c6ec8c83a29fb3aec3efa6fabbf5344498f57c7f upstream.
 
-Due to the fact that the use of `writeq_relaxed()` to program CVAL is
-not guaranteed to be atomic, it is necessary to disable the timer before
-programming CVAL.
+Before setting DDS and SDS values, we need to clear its value first
+otherwise, we get incorrect results when we change/update the DMA bus
+width several times due to the 'OR' expression.
 
-However, if the MMIO timer is already enabled and has not yet expired,
-there is a possibility of unexpected behavior occurring: when the CPU
-enters the idle state during this period, and if the CPU's local event
-is earlier than the broadcast event, the following process occurs:
-
-tick_broadcast_enter()
-  tick_broadcast_oneshot_control(TICK_BROADCAST_ENTER)
-    __tick_broadcast_oneshot_control()
-      ___tick_broadcast_oneshot_control()
-        tick_broadcast_set_event()
-          clockevents_program_event()
-            set_next_event_mem()
-
-During this process, the MMIO timer remains enabled while programming
-CVAL. To prevent such behavior, disable timer explicitly prior to
-programming CVAL.
-
-Fixes: 8b82c4f883a7 ("clocksource/drivers/arm_arch_timer: Move MMIO timer programming over to CVAL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Walter Chang <walter.chang@mediatek.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230717090735.19370-1-walter.chang@mediatek.com
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@kernel.org
+Signed-off-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230706112150.198941-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/arm_arch_timer.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/dma/sh/rz-dmac.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -773,6 +773,13 @@ static __always_inline void set_next_eve
- 	u64 cnt;
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -9,6 +9,7 @@
+  * Copyright 2012 Javier Martin, Vista Silicon <javier.martin@vista-silicon.com>
+  */
  
- 	ctrl = arch_timer_reg_read(access, ARCH_TIMER_REG_CTRL, clk);
-+
-+	/* Timer must be disabled before programming CVAL */
-+	if (ctrl & ARCH_TIMER_CTRL_ENABLE) {
-+		ctrl &= ~ARCH_TIMER_CTRL_ENABLE;
-+		arch_timer_reg_write(access, ARCH_TIMER_REG_CTRL, ctrl, clk);
-+	}
-+
- 	ctrl |= ARCH_TIMER_CTRL_ENABLE;
- 	ctrl &= ~ARCH_TIMER_CTRL_IT_MASK;
++#include <linux/bitfield.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+ #include <linux/interrupt.h>
+@@ -145,8 +146,8 @@ struct rz_dmac {
+ #define CHCFG_REQD			BIT(3)
+ #define CHCFG_SEL(bits)			((bits) & 0x07)
+ #define CHCFG_MEM_COPY			(0x80400008)
+-#define CHCFG_FILL_DDS(a)		(((a) << 16) & GENMASK(19, 16))
+-#define CHCFG_FILL_SDS(a)		(((a) << 12) & GENMASK(15, 12))
++#define CHCFG_FILL_DDS_MASK		GENMASK(19, 16)
++#define CHCFG_FILL_SDS_MASK		GENMASK(15, 12)
+ #define CHCFG_FILL_TM(a)		(((a) & BIT(5)) << 22)
+ #define CHCFG_FILL_AM(a)		(((a) & GENMASK(4, 2)) << 6)
+ #define CHCFG_FILL_LVL(a)		(((a) & BIT(1)) << 5)
+@@ -609,13 +610,15 @@ static int rz_dmac_config(struct dma_cha
+ 	if (val == CHCFG_DS_INVALID)
+ 		return -EINVAL;
  
+-	channel->chcfg |= CHCFG_FILL_DDS(val);
++	channel->chcfg &= ~CHCFG_FILL_DDS_MASK;
++	channel->chcfg |= FIELD_PREP(CHCFG_FILL_DDS_MASK, val);
+ 
+ 	val = rz_dmac_ds_to_val_mapping(config->src_addr_width);
+ 	if (val == CHCFG_DS_INVALID)
+ 		return -EINVAL;
+ 
+-	channel->chcfg |= CHCFG_FILL_SDS(val);
++	channel->chcfg &= ~CHCFG_FILL_SDS_MASK;
++	channel->chcfg |= FIELD_PREP(CHCFG_FILL_SDS_MASK, val);
+ 
+ 	return 0;
+ }
 
 
