@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC5C17A399D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FF177A3881
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240106AbjIQTwB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48472 "EHLO
+        id S239787AbjIQTgj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239447AbjIQTvf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:35 -0400
+        with ESMTP id S239896AbjIQTg3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58F39F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E273DC433C8;
-        Sun, 17 Sep 2023 19:51:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAE7AC
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03FCC433C7;
+        Sun, 17 Sep 2023 19:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980289;
-        bh=sNBXR5k+6ue0LN93lWqKy3yiL1YOjcjrvS+k3reJuNA=;
+        s=korg; t=1694979383;
+        bh=hZqkfXmm2z0Zu4iTgwMSz52DAc4tyQJdEl8Ghoce75g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wLJ5wWqxCh+20waQakHYa/Dxe69z/Wm4DKV8TaM3fhaM33w1NLV4ohbZZd0r90uqV
-         TKteJWqc80bPTqbskuisU/TgxCpOBoHIrnAiSGACOEng3+x6ToQ1Ev968/RAS12xBk
-         RI+/rc9r3b+x1Omu5Pp/ZcgMwEeaZTNJN/E7N+4w=
+        b=ScL5G0eNT+RLtwanhfO2J6H3qmGYBt4D4OjXMSulds6XmPEkh2jRycmobdTJoAcYO
+         Gy5jz235+IDA2w3Ds4tlyDXr/rVE1/vBbKcbDc1OIq/Dta8fWc+KNF0+SMt3eRwkvG
+         0yjzTFd0xZw7cI/sGCnZ/cDdJqypIIdSGpIjV0oY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 149/285] net/mlx5: Give esw_offloads_load/unload_rep() "mlx5_" prefix
-Date:   Sun, 17 Sep 2023 21:12:29 +0200
-Message-ID: <20230917191056.846715907@linuxfoundation.org>
+        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 296/406] dccp: Fix out of bounds access in DCCP error handler
+Date:   Sun, 17 Sep 2023 21:12:30 +0200
+Message-ID: <20230917191109.128060940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,116 +50,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 9eca8bb8da4385b02bd02b6876af8d4225bf4713 ]
+commit 977ad86c2a1bcaf58f01ab98df5cc145083c489c upstream.
 
-As esw_offloads_load/unload_rep() are used outside eswitch.c it is nicer
-for them to have "mlx5_" prefix. Add it.
+There was a previous attempt to fix an out-of-bounds access in the DCCP
+error handlers, but that fix assumed that the error handlers only want
+to access the first 8 bytes of the DCCP header. Actually, they also look
+at the DCCP sequence number, which is stored beyond 8 bytes, so an
+explicit pskb_may_pull() is required.
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 344134609a56 ("mlx5/core: E-Switch, Create ACL FT for eswitch manager in switchdev mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6706a97fec96 ("dccp: fix out of bound access in dccp_v4_err()")
+Fixes: 1aa9d1a0e7ee ("ipv6: dccp: fix out of bound access in dccp_v6_err()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.c      |  4 ++--
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.h      |  4 ++--
- .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 10 +++++-----
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ net/dccp/ipv4.c |   13 +++++++++----
+ net/dccp/ipv6.c |   15 ++++++++++-----
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 243c455f10297..85ddf6f7e37df 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1078,7 +1078,7 @@ int mlx5_eswitch_load_vport(struct mlx5_eswitch *esw, u16 vport_num,
- 	if (err)
- 		return err;
- 
--	err = esw_offloads_load_rep(esw, vport_num);
-+	err = mlx5_esw_offloads_load_rep(esw, vport_num);
- 	if (err)
- 		goto err_rep;
- 
-@@ -1091,7 +1091,7 @@ int mlx5_eswitch_load_vport(struct mlx5_eswitch *esw, u16 vport_num,
- 
- void mlx5_eswitch_unload_vport(struct mlx5_eswitch *esw, u16 vport_num)
- {
--	esw_offloads_unload_rep(esw, vport_num);
-+	mlx5_esw_offloads_unload_rep(esw, vport_num);
- 	mlx5_esw_vport_disable(esw, vport_num);
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index ae0dc8a3060d7..040ed6d79258f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -725,8 +725,8 @@ void mlx5_esw_set_spec_source_port(struct mlx5_eswitch *esw,
- 				   u16 vport,
- 				   struct mlx5_flow_spec *spec);
- 
--int esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num);
--void esw_offloads_unload_rep(struct mlx5_eswitch *esw, u16 vport_num);
-+int mlx5_esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num);
-+void mlx5_esw_offloads_unload_rep(struct mlx5_eswitch *esw, u16 vport_num);
- 
- int mlx5_esw_offloads_rep_load(struct mlx5_eswitch *esw, u16 vport_num);
- void mlx5_esw_offloads_rep_unload(struct mlx5_eswitch *esw, u16 vport_num);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index e59380ee1ead3..1eb49784c0e11 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -2424,7 +2424,7 @@ void mlx5_esw_offloads_rep_unload(struct mlx5_eswitch *esw, u16 vport_num)
- 		__esw_offloads_unload_rep(esw, rep, rep_type);
- }
- 
--int esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num)
-+int mlx5_esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num)
- {
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -243,12 +243,17 @@ static int dccp_v4_err(struct sk_buff *s
  	int err;
+ 	struct net *net = dev_net(skb->dev);
  
-@@ -2448,7 +2448,7 @@ int esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num)
- 	return err;
- }
+-	/* Only need dccph_dport & dccph_sport which are the first
+-	 * 4 bytes in dccp header.
++	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
++	 * which is in byte 7 of the dccp header.
+ 	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
++	 *
++	 * Later on, we want to access the sequence number fields, which are
++	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+ 	 */
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
++	dh = (struct dccp_hdr *)(skb->data + offset);
++	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++		return -EINVAL;
++	iph = (struct iphdr *)skb->data;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
  
--void esw_offloads_unload_rep(struct mlx5_eswitch *esw, u16 vport_num)
-+void mlx5_esw_offloads_unload_rep(struct mlx5_eswitch *esw, u16 vport_num)
+ 	sk = __inet_lookup_established(net, &dccp_hashinfo,
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -67,7 +67,7 @@ static inline __u64 dccp_v6_init_sequenc
+ static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 			u8 type, u8 code, int offset, __be32 info)
  {
- 	if (esw->mode != MLX5_ESWITCH_OFFLOADS)
- 		return;
-@@ -3355,7 +3355,7 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 			vport->info.link_state = MLX5_VPORT_ADMIN_STATE_DOWN;
+-	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
++	const struct ipv6hdr *hdr;
+ 	const struct dccp_hdr *dh;
+ 	struct dccp_sock *dp;
+ 	struct ipv6_pinfo *np;
+@@ -76,12 +76,17 @@ static int dccp_v6_err(struct sk_buff *s
+ 	__u64 seq;
+ 	struct net *net = dev_net(skb->dev);
  
- 	/* Uplink vport rep must load first. */
--	err = esw_offloads_load_rep(esw, MLX5_VPORT_UPLINK);
-+	err = mlx5_esw_offloads_load_rep(esw, MLX5_VPORT_UPLINK);
- 	if (err)
- 		goto err_uplink;
+-	/* Only need dccph_dport & dccph_sport which are the first
+-	 * 4 bytes in dccp header.
++	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
++	 * which is in byte 7 of the dccp header.
+ 	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
++	 *
++	 * Later on, we want to access the sequence number fields, which are
++	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+ 	 */
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
++	dh = (struct dccp_hdr *)(skb->data + offset);
++	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++		return -EINVAL;
++	hdr = (const struct ipv6hdr *)skb->data;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
  
-@@ -3366,7 +3366,7 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	return 0;
- 
- err_vports:
--	esw_offloads_unload_rep(esw, MLX5_VPORT_UPLINK);
-+	mlx5_esw_offloads_unload_rep(esw, MLX5_VPORT_UPLINK);
- err_uplink:
- 	esw_offloads_steering_cleanup(esw);
- err_steering_init:
-@@ -3404,7 +3404,7 @@ static int esw_offloads_stop(struct mlx5_eswitch *esw,
- void esw_offloads_disable(struct mlx5_eswitch *esw)
- {
- 	mlx5_eswitch_disable_pf_vf_vports(esw);
--	esw_offloads_unload_rep(esw, MLX5_VPORT_UPLINK);
-+	mlx5_esw_offloads_unload_rep(esw, MLX5_VPORT_UPLINK);
- 	esw_set_passing_vport_metadata(esw, false);
- 	esw_offloads_steering_cleanup(esw);
- 	mapping_destroy(esw->offloads.reg_c0_obj_pool);
--- 
-2.40.1
-
+ 	sk = __inet6_lookup_established(net, &dccp_hashinfo,
 
 
