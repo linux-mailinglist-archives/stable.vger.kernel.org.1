@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A937A382E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D550E7A3930
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239684AbjIQTcr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:32:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34482 "EHLO
+        id S239993AbjIQTqL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239826AbjIQTco (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:44 -0400
+        with ESMTP id S239987AbjIQTpm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07FAFE57
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A49AC433C9;
-        Sun, 17 Sep 2023 19:32:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C67103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BC4C433C8;
+        Sun, 17 Sep 2023 19:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979122;
-        bh=USKT0d+KxyiHUT2T6RNmOh8korOLYLooWlVuxvA6uFc=;
+        s=korg; t=1694979935;
+        bh=6mzTUJrcQzwAWL0Zwjl0Wtuj94nxwdg86m6H5LBUZHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LoIwzIeunRl8T3Qy3lSNr/IjeC2Ky/ybvXuFVB/wwdYWA3d2svmQiJa2hsk98oRM/
-         I/bVd98EcPss7k63M3byig5qU480puSrgLXRbw9yDhHidQvqUomv1HO1SIXolbT9nN
-         JaTRMNfXGjbB/aRYyznPWAy4ucIWQOrxrueNMWB0=
+        b=2fIbzfYUJNqLUVk0ED3EdoHhw/z4rui3kTTuyVY2zvAyLOAevKzF6uZpNBvAfu9Jy
+         6Y8CSjbDjKaryjXEEH44yBi4A3GbRWdEVUvMCrcZ/3gns9Odk0nIBj4uFEub4qlPck
+         fWZMsXFKdyQQ4l+T4HzraMmzUk6V0hHFKr41GmVY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nageswara R Sastry <rnsastry@linux.ibm.com>,
-        Russell Currey <ruscur@russell.cc>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/406] powerpc/iommu: Fix notifiers being shared by PCI and VIO buses
-Date:   Sun, 17 Sep 2023 21:10:49 +0200
-Message-ID: <20230917191106.346699873@linuxfoundation.org>
+        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 050/285] clk: qcom: lpasscc-sc7280: fix missing resume during probe
+Date:   Sun, 17 Sep 2023 21:10:50 +0200
+Message-ID: <20230917191053.413771110@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,100 +50,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Currey <ruscur@russell.cc>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c37b6908f7b2bd24dcaaf14a180e28c9132b9c58 ]
+commit 66af5339d4f8e20c6d89a490570bd94d40f1a7f6 upstream.
 
-fail_iommu_setup() registers the fail_iommu_bus_notifier struct to both
-PCI and VIO buses.  struct notifier_block is a linked list node, so this
-causes any notifiers later registered to either bus type to also be
-registered to the other since they share the same node.
+Drivers that enable runtime PM must make sure that the controller is
+runtime resumed before accessing its registers to prevent the power
+domain from being disabled.
 
-This causes issues in (at least) the vgaarb code, which registers a
-notifier for PCI buses.  pci_notify() ends up being called on a vio
-device, converted with to_pci_dev() even though it's not a PCI device,
-and finally makes a bad access in vga_arbiter_add_pci_device() as
-discovered with KASAN:
-
- BUG: KASAN: slab-out-of-bounds in vga_arbiter_add_pci_device+0x60/0xe00
- Read of size 4 at addr c000000264c26fdc by task swapper/0/1
-
- Call Trace:
-   dump_stack_lvl+0x1bc/0x2b8 (unreliable)
-   print_report+0x3f4/0xc60
-   kasan_report+0x244/0x698
-   __asan_load4+0xe8/0x250
-   vga_arbiter_add_pci_device+0x60/0xe00
-   pci_notify+0x88/0x444
-   notifier_call_chain+0x104/0x320
-   blocking_notifier_call_chain+0xa0/0x140
-   device_add+0xac8/0x1d30
-   device_register+0x58/0x80
-   vio_register_device_node+0x9ac/0xce0
-   vio_bus_scan_register_devices+0xc4/0x13c
-   __machine_initcall_pseries_vio_device_init+0x94/0xf0
-   do_one_initcall+0x12c/0xaa8
-   kernel_init_freeable+0xa48/0xba8
-   kernel_init+0x64/0x400
-   ret_from_kernel_thread+0x5c/0x64
-
-Fix this by creating separate notifier_block structs for each bus type.
-
-Fixes: d6b9a81b2a45 ("powerpc: IOMMU fault injection")
-Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-[mpe: Add #ifdef to fix CONFIG_IBMVIO=n build]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230322035322.328709-1-ruscur@russell.cc
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
+Cc: stable@vger.kernel.org      # 5.16
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-6-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/iommu.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/lpasscc-sc7280.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 6806eefa52ceb..370635107f1c6 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -133,17 +133,28 @@ static int fail_iommu_bus_notify(struct notifier_block *nb,
- 	return 0;
- }
+--- a/drivers/clk/qcom/lpasscc-sc7280.c
++++ b/drivers/clk/qcom/lpasscc-sc7280.c
+@@ -118,9 +118,13 @@ static int lpass_cc_sc7280_probe(struct
+ 	ret = pm_clk_add(&pdev->dev, "iface");
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to acquire iface clock\n");
+-		goto destroy_pm_clk;
++		goto err_destroy_pm_clk;
+ 	}
  
--static struct notifier_block fail_iommu_bus_notifier = {
-+/*
-+ * PCI and VIO buses need separate notifier_block structs, since they're linked
-+ * list nodes.  Sharing a notifier_block would mean that any notifiers later
-+ * registered for PCI buses would also get called by VIO buses and vice versa.
-+ */
-+static struct notifier_block fail_iommu_pci_bus_notifier = {
- 	.notifier_call = fail_iommu_bus_notify
- };
- 
-+#ifdef CONFIG_IBMVIO
-+static struct notifier_block fail_iommu_vio_bus_notifier = {
-+	.notifier_call = fail_iommu_bus_notify
-+};
-+#endif
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		goto err_destroy_pm_clk;
 +
- static int __init fail_iommu_setup(void)
- {
- #ifdef CONFIG_PCI
--	bus_register_notifier(&pci_bus_type, &fail_iommu_bus_notifier);
-+	bus_register_notifier(&pci_bus_type, &fail_iommu_pci_bus_notifier);
- #endif
- #ifdef CONFIG_IBMVIO
--	bus_register_notifier(&vio_bus_type, &fail_iommu_bus_notifier);
-+	bus_register_notifier(&vio_bus_type, &fail_iommu_vio_bus_notifier);
- #endif
+ 	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
+ 		lpass_regmap_config.name = "qdsp6ss";
+ 		lpass_regmap_config.max_register = 0x3f;
+@@ -128,7 +132,7 @@ static int lpass_cc_sc7280_probe(struct
+ 
+ 		ret = qcom_cc_probe_by_index(pdev, 0, desc);
+ 		if (ret)
+-			goto destroy_pm_clk;
++			goto err_put_rpm;
+ 	}
+ 
+ 	lpass_regmap_config.name = "top_cc";
+@@ -137,11 +141,15 @@ static int lpass_cc_sc7280_probe(struct
+ 
+ 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+ 	if (ret)
+-		goto destroy_pm_clk;
++		goto err_put_rpm;
++
++	pm_runtime_put(&pdev->dev);
  
  	return 0;
--- 
-2.40.1
-
+ 
+-destroy_pm_clk:
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++err_destroy_pm_clk:
+ 	pm_clk_destroy(&pdev->dev);
+ 
+ 	return ret;
 
 
