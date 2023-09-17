@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A561E7A3917
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25AD37A37FD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239947AbjIQToh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39694 "EHLO
+        id S239581AbjIQT3g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239976AbjIQToZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:44:25 -0400
+        with ESMTP id S239618AbjIQT3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:29:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A6AE7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C161EC433C8;
-        Sun, 17 Sep 2023 19:44:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DCA1D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:29:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C54BC433C7;
+        Sun, 17 Sep 2023 19:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979860;
-        bh=zfZICG2oq/ZB60ihnsb9cWRv+5wFq8oHuhem0VFuE20=;
+        s=korg; t=1694978957;
+        bh=mZmed1ZtocuSlERXngBUOpaI/6D9/WoO+oJIEe78qCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PwE7d+MZw/NynF2hBOrrkedti5XJcprBeUfoLaL84GJoo1vbXNaPYEQviU5YTKH9Y
-         tr20GVM7pEsDYEHuaxEDKLjld+bqtK71+22wxziN/ADszOnvu8INk/pJdPVeoOw+9f
-         riyuHmEX4mtYM8QU1xhZ7PSrz2+56EYfHC/aiQ/I=
+        b=YtJmrVn8yHSThXfBLu1MPzqrVcEoy6o+8bkTFaT3g8yg3y96rmEhwDURlcugudq4F
+         UmUrLVMxN1vbVJ82aAPAYEAewMQJQNr4jz9ijqXUjB2XrVszkFFH2Q/vesO0hBhdXZ
+         9K75WjNZnTu7yaCC2Ata1qgYTpRxWm4m6EozLrlg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.5 027/285] clk: qcom: turingcc-qcs404: fix missing resume during probe
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 173/406] clk: qcom: gcc-sc7180: use ARRAY_SIZE instead of specifying num_parents
 Date:   Sun, 17 Sep 2023 21:10:27 +0200
-Message-ID: <20230917191052.593015081@linuxfoundation.org>
+Message-ID: <20230917191105.755105676@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +51,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit a9f71a033587c9074059132d34c74eabbe95ef26 upstream.
+[ Upstream commit e957ca2a930ad42e47bf5c9ea2a7afa0960ec1d8 ]
 
-Drivers that enable runtime PM must make sure that the controller is
-runtime resumed before accessing its registers to prevent the power
-domain from being disabled.
+Use ARRAY_SIZE() instead of manually specifying num_parents. This makes
+adding/removing entries to/from parent_data easy and errorproof.
 
-Fixes: 892df0191b29 ("clk: qcom: Add QCS404 TuringCC")
-Cc: stable@vger.kernel.org      # 5.2
-Cc: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-9-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20210405224743.590029-30-dmitry.baryshkov@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: fd0b5ba87ad5 ("clk: qcom: gcc-sc7180: Fix up gcc_sdcc2_apps_clk_src")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/turingcc-qcs404.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sc7180.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/clk/qcom/turingcc-qcs404.c
-+++ b/drivers/clk/qcom/turingcc-qcs404.c
-@@ -125,11 +125,22 @@ static int turingcc_probe(struct platfor
- 		return ret;
- 	}
- 
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = qcom_cc_probe(pdev, &turingcc_desc);
- 	if (ret < 0)
--		return ret;
-+		goto err_put_rpm;
-+
-+	pm_runtime_put(&pdev->dev);
- 
- 	return 0;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops turingcc_pm_ops = {
+diff --git a/drivers/clk/qcom/gcc-sc7180.c b/drivers/clk/qcom/gcc-sc7180.c
+index 7e80dbd4a3f9f..16f65f74cb8fd 100644
+--- a/drivers/clk/qcom/gcc-sc7180.c
++++ b/drivers/clk/qcom/gcc-sc7180.c
+@@ -285,7 +285,7 @@ static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_cpuss_ahb_clk_src",
+ 		.parent_data = gcc_parent_data_0_ao,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0_ao),
+ 		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_rcg2_ops,
+ 		},
+@@ -309,7 +309,7 @@ static struct clk_rcg2 gcc_gp1_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_gp1_clk_src",
+ 		.parent_data = gcc_parent_data_4,
+-		.num_parents = 5,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -323,7 +323,7 @@ static struct clk_rcg2 gcc_gp2_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_gp2_clk_src",
+ 		.parent_data = gcc_parent_data_4,
+-		.num_parents = 5,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -337,7 +337,7 @@ static struct clk_rcg2 gcc_gp3_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_gp3_clk_src",
+ 		.parent_data = gcc_parent_data_4,
+-		.num_parents = 5,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -357,7 +357,7 @@ static struct clk_rcg2 gcc_pdm2_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_pdm2_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -378,7 +378,7 @@ static struct clk_rcg2 gcc_qspi_core_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_qspi_core_clk_src",
+ 		.parent_data = gcc_parent_data_2,
+-		.num_parents = 6,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_2),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -619,7 +619,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_sdcc1_apps_clk_src",
+ 		.parent_data = gcc_parent_data_1,
+-		.num_parents = 5,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_1),
+ 		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
+@@ -641,7 +641,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_sdcc1_ice_core_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -665,7 +665,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_sdcc2_apps_clk_src",
+ 		.parent_data = gcc_parent_data_5,
+-		.num_parents = 5,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_5),
+ 		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
+@@ -688,7 +688,7 @@ static struct clk_rcg2 gcc_ufs_phy_axi_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_ufs_phy_axi_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -710,7 +710,7 @@ static struct clk_rcg2 gcc_ufs_phy_ice_core_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_ufs_phy_ice_core_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -730,7 +730,7 @@ static struct clk_rcg2 gcc_ufs_phy_phy_aux_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_ufs_phy_phy_aux_clk_src",
+ 		.parent_data = gcc_parent_data_3,
+-		.num_parents = 3,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_3),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -751,7 +751,7 @@ static struct clk_rcg2 gcc_ufs_phy_unipro_core_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_ufs_phy_unipro_core_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -773,7 +773,7 @@ static struct clk_rcg2 gcc_usb30_prim_master_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_usb30_prim_master_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -793,7 +793,7 @@ static struct clk_rcg2 gcc_usb30_prim_mock_utmi_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_usb30_prim_mock_utmi_clk_src",
+ 		.parent_data = gcc_parent_data_0,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+@@ -812,7 +812,7 @@ static struct clk_rcg2 gcc_usb3_prim_phy_aux_clk_src = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gcc_usb3_prim_phy_aux_clk_src",
+ 		.parent_data = gcc_parent_data_6,
+-		.num_parents = 4,
++		.num_parents = ARRAY_SIZE(gcc_parent_data_6),
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+-- 
+2.40.1
+
 
 
