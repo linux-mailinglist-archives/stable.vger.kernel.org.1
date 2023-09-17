@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8F997A3A12
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C31F7A38DC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239527AbjIQT60 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
+        id S239855AbjIQTlX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240256AbjIQT5z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:55 -0400
+        with ESMTP id S239913AbjIQTlI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F754103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236FDC433C8;
-        Sun, 17 Sep 2023 19:57:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8915F133
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA66CC433C8;
+        Sun, 17 Sep 2023 19:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980669;
-        bh=f8hbIIYs7JZaW6q537MESf+tLtLRtcJXmjhtNpZyzJI=;
+        s=korg; t=1694979662;
+        bh=KPftC77digq9+hl296wzXWoGGKYcLPDo3faO9W6wWyI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fXNjvqaeyLjLEoPBJCucxP6imX+mBOPHBlbrO+ut2/YSKf6Pk0QWjNOoclC2N2GSZ
-         PkvHupZIpf6wLDnxlV965Eq7hFhd7gsgW4pfN8Eo73t+US/ApVy14pnSBxXpeIRBiI
-         51zvswyBdJuEBS4JVJKVfmtchTCoOvhab5FdZV4M=
+        b=BD4/l7Zez7MY1bNnkplw9K8YmR/jh77qjohnJ4cCWlzJRp0LFZhjoraoOT3UedMHu
+         Ff0TshJt1gFIUUTiDceweUBirLLPvsJcvmS+Gglyy2TBr4UGAGpeqydXlZB/PVgVwe
+         JqNxBuSkc46W+MKtGl1y24Ps3Jh/qACxCkbcBvQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ian Rogers <irogers@google.com>,
         Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.5 232/285] perf hists browser: Fix hierarchy mode header
+Subject: [PATCH 5.10 378/406] perf hists browser: Fix hierarchy mode header
 Date:   Sun, 17 Sep 2023 21:13:52 +0200
-Message-ID: <20230917191059.460922018@linuxfoundation.org>
+Message-ID: <20230917191111.247777426@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/tools/perf/ui/browsers/hists.c
 +++ b/tools/perf/ui/browsers/hists.c
-@@ -1779,7 +1779,7 @@ static void hists_browser__hierarchy_hea
+@@ -1778,7 +1778,7 @@ static void hists_browser__hierarchy_hea
  	hists_browser__scnprintf_hierarchy_headers(browser, headers,
  						   sizeof(headers));
  
