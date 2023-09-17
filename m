@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC917A3B7B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743197A3D4B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240709AbjIQUSN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46458 "EHLO
+        id S241262AbjIQUlG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240743AbjIQUSF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:05 -0400
+        with ESMTP id S241275AbjIQUkr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7958F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E50C433C8;
-        Sun, 17 Sep 2023 20:17:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E1D115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473F7C433C8;
+        Sun, 17 Sep 2023 20:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981879;
-        bh=SehNVzGmva21IZADFw45mq7V8Uw4oIweINHjbD2mdjM=;
+        s=korg; t=1694983240;
+        bh=v7McN2ILIZvBGbn/NT91eDbi43k7lmNm7D/QZQHBAuc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItqTo3BsaHJN3OFS5d8Ma/Y6jYMKuwq64c1SACk+8Geky24puVRF3paGiVD7RMQ0S
-         uzO1nFsfzI+zjbVPSvPanaFgR7sm1ysiTnXsae+3xvGt2nKHjDJnCWPikw7Y5FxDMI
-         TEwE+uMckV4cFSK+z7WKuPlf+GlLUQNzL1ZTg1CY=
+        b=n2ObDjCFOZM54Q/ApxQ8gKZZ52RlvFu8hCQnOZRm+ZbM9GYWwJ/6FWM4wkuPSHUpk
+         Nsv9ECPVou03oHYFZ8uYABoWkjfW+8IHfQCjknCwzM5ChNzAlm6BpSOyZoGJ06Hrdl
+         d86YsueKes9kzAG5zBA3x0UCtQIXIvsJs33MuL34=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 184/219] drm/amdgpu: register a dirty framebuffer callback for fbcon
-Date:   Sun, 17 Sep 2023 21:15:11 +0200
-Message-ID: <20230917191047.603461873@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 485/511] pcd: move the identify buffer into pcd_identify
+Date:   Sun, 17 Sep 2023 21:15:12 +0200
+Message-ID: <20230917191125.448749640@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,88 +49,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 0a611560f53bfd489e33f4a718c915f1a6123d03 upstream.
+[ Upstream commit 7d8b72aaddd3ec5f350d3e9988d6735a7b9b18e9 ]
 
-fbcon requires that we implement &drm_framebuffer_funcs.dirty.
-Otherwise, the framebuffer might take a while to flush (which would
-manifest as noticeable lag). However, we can't enable this callback for
-non-fbcon cases since it may cause too many atomic commits to be made at
-once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
-framebuffers (we can use the "struct drm_file file" parameter in the
-callback to check for this since it is only NULL when called by fbcon,
-at least in the mainline kernel) on devices that support atomic KMS.
+No need to pass it through a bunch of functions.
 
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c |   26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ drivers/block/paride/pcd.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -38,6 +38,8 @@
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <drm/drm_crtc_helper.h>
-+#include <drm/drm_damage_helper.h>
-+#include <drm/drm_drv.h>
- #include <drm/drm_edid.h>
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_fb_helper.h>
-@@ -493,11 +495,29 @@ bool amdgpu_display_ddc_probe(struct amd
- 	return true;
+diff --git a/drivers/block/paride/pcd.c b/drivers/block/paride/pcd.c
+index f9cdd11f02f58..8903fdaa20466 100644
+--- a/drivers/block/paride/pcd.c
++++ b/drivers/block/paride/pcd.c
+@@ -630,10 +630,11 @@ static int pcd_drive_status(struct cdrom_device_info *cdi, int slot_nr)
+ 	return CDS_DISC_OK;
  }
  
-+static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct drm_file *file,
-+			  unsigned int flags, unsigned int color,
-+			  struct drm_clip_rect *clips, unsigned int num_clips)
-+{
-+
-+	if (file)
-+		return -ENOSYS;
-+
-+	return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
-+					 num_clips);
-+}
-+
- static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
- 	.destroy = drm_gem_fb_destroy,
- 	.create_handle = drm_gem_fb_create_handle,
- };
- 
-+static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
-+	.destroy = drm_gem_fb_destroy,
-+	.create_handle = drm_gem_fb_create_handle,
-+	.dirty = amdgpu_dirtyfb
-+};
-+
- uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
- 					  uint64_t bo_flags)
+-static int pcd_identify(struct pcd_unit *cd, char *id)
++static int pcd_identify(struct pcd_unit *cd)
  {
-@@ -1100,7 +1120,11 @@ static int amdgpu_display_gem_fb_verify_
- 	if (ret)
- 		goto err;
+-	int k, s;
+ 	char id_cmd[12] = { 0x12, 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0 };
++	char id[18];
++	int k, s;
  
--	ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
-+	if (drm_drv_uses_atomic_modeset(dev))
-+		ret = drm_framebuffer_init(dev, &rfb->base,
-+					   &amdgpu_fb_funcs_atomic);
-+	else
-+		ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
+ 	pcd_bufblk = -1;
  
- 	if (ret)
- 		goto err;
+@@ -664,15 +665,15 @@ static int pcd_identify(struct pcd_unit *cd, char *id)
+  * returns  0, with id set if drive is detected
+  *	    -1, if drive detection failed
+  */
+-static int pcd_probe(struct pcd_unit *cd, int ms, char *id)
++static int pcd_probe(struct pcd_unit *cd, int ms)
+ {
+ 	if (ms == -1) {
+ 		for (cd->drive = 0; cd->drive <= 1; cd->drive++)
+-			if (!pcd_reset(cd) && !pcd_identify(cd, id))
++			if (!pcd_reset(cd) && !pcd_identify(cd))
+ 				return 0;
+ 	} else {
+ 		cd->drive = ms;
+-		if (!pcd_reset(cd) && !pcd_identify(cd, id))
++		if (!pcd_reset(cd) && !pcd_identify(cd))
+ 			return 0;
+ 	}
+ 	return -1;
+@@ -709,7 +710,6 @@ static void pcd_probe_capabilities(void)
+ 
+ static int pcd_detect(void)
+ {
+-	char id[18];
+ 	int k, unit;
+ 	struct pcd_unit *cd;
+ 
+@@ -727,7 +727,7 @@ static int pcd_detect(void)
+ 		cd = pcd;
+ 		if (cd->disk && pi_init(cd->pi, 1, -1, -1, -1, -1, -1,
+ 			    pcd_buffer, PI_PCD, verbose, cd->name)) {
+-			if (!pcd_probe(cd, -1, id)) {
++			if (!pcd_probe(cd, -1)) {
+ 				cd->present = 1;
+ 				k++;
+ 			} else
+@@ -744,7 +744,7 @@ static int pcd_detect(void)
+ 				     conf[D_UNI], conf[D_PRO], conf[D_DLY],
+ 				     pcd_buffer, PI_PCD, verbose, cd->name)) 
+ 				continue;
+-			if (!pcd_probe(cd, conf[D_SLV], id)) {
++			if (!pcd_probe(cd, conf[D_SLV])) {
+ 				cd->present = 1;
+ 				k++;
+ 			} else
+-- 
+2.40.1
+
 
 
