@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 407C97A392E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38A937A382E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239992AbjIQTqK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:46:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44108 "EHLO
+        id S239684AbjIQTcr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:32:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239969AbjIQTph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:37 -0400
+        with ESMTP id S239826AbjIQTco (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD05EE7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3565C433C8;
-        Sun, 17 Sep 2023 19:45:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07FAFE57
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A49AC433C9;
+        Sun, 17 Sep 2023 19:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979932;
-        bh=Z5vACDYnhDiJvy+1UfnUT7QZfxfG31KrBRMU2TrcjGc=;
+        s=korg; t=1694979122;
+        bh=USKT0d+KxyiHUT2T6RNmOh8korOLYLooWlVuxvA6uFc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tYaTt8tJ7ZVkJ2icfxlEyaZc8dcAmS2Nvw2bOz07YyJ1M7P7TGuDIOVqZ7Ce96Kl8
-         Z7ZR1sH8XeOFqZ9pUmejilUuQu/2sHMK0xQrV5+2ch45MFkrvMNqTg/4VzPzHJsH3K
-         ZeCzTUUNTR7Of8QTr69mQeJtRO8SYn/uS3IIlui4=
+        b=LoIwzIeunRl8T3Qy3lSNr/IjeC2Ky/ybvXuFVB/wwdYWA3d2svmQiJa2hsk98oRM/
+         I/bVd98EcPss7k63M3byig5qU480puSrgLXRbw9yDhHidQvqUomv1HO1SIXolbT9nN
+         JaTRMNfXGjbB/aRYyznPWAy4ucIWQOrxrueNMWB0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 049/285] clk: qcom: dispcc-sm8550: fix runtime PM imbalance on probe errors
+        Nageswara R Sastry <rnsastry@linux.ibm.com>,
+        Russell Currey <ruscur@russell.cc>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 195/406] powerpc/iommu: Fix notifiers being shared by PCI and VIO buses
 Date:   Sun, 17 Sep 2023 21:10:49 +0200
-Message-ID: <20230917191053.375624870@linuxfoundation.org>
+Message-ID: <20230917191106.346699873@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +53,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Russell Currey <ruscur@russell.cc>
 
-commit acaf1b3296a504d4a61b685f78baae771421608d upstream.
+[ Upstream commit c37b6908f7b2bd24dcaaf14a180e28c9132b9c58 ]
 
-Make sure to decrement the runtime PM usage count before returning in
-case regmap initialisation fails.
+fail_iommu_setup() registers the fail_iommu_bus_notifier struct to both
+PCI and VIO buses.  struct notifier_block is a linked list node, so this
+causes any notifiers later registered to either bus type to also be
+registered to the other since they share the same node.
 
-Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
-Cc: stable@vger.kernel.org      # 6.3
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This causes issues in (at least) the vgaarb code, which registers a
+notifier for PCI buses.  pci_notify() ends up being called on a vio
+device, converted with to_pci_dev() even though it's not a PCI device,
+and finally makes a bad access in vga_arbiter_add_pci_device() as
+discovered with KASAN:
+
+ BUG: KASAN: slab-out-of-bounds in vga_arbiter_add_pci_device+0x60/0xe00
+ Read of size 4 at addr c000000264c26fdc by task swapper/0/1
+
+ Call Trace:
+   dump_stack_lvl+0x1bc/0x2b8 (unreliable)
+   print_report+0x3f4/0xc60
+   kasan_report+0x244/0x698
+   __asan_load4+0xe8/0x250
+   vga_arbiter_add_pci_device+0x60/0xe00
+   pci_notify+0x88/0x444
+   notifier_call_chain+0x104/0x320
+   blocking_notifier_call_chain+0xa0/0x140
+   device_add+0xac8/0x1d30
+   device_register+0x58/0x80
+   vio_register_device_node+0x9ac/0xce0
+   vio_bus_scan_register_devices+0xc4/0x13c
+   __machine_initcall_pseries_vio_device_init+0x94/0xf0
+   do_one_initcall+0x12c/0xaa8
+   kernel_init_freeable+0xa48/0xba8
+   kernel_init+0x64/0x400
+   ret_from_kernel_thread+0x5c/0x64
+
+Fix this by creating separate notifier_block structs for each bus type.
+
+Fixes: d6b9a81b2a45 ("powerpc: IOMMU fault injection")
+Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+[mpe: Add #ifdef to fix CONFIG_IBMVIO=n build]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230322035322.328709-1-ruscur@russell.cc
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/iommu.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/qcom/dispcc-sm8550.c
-+++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -1761,8 +1761,10 @@ static int disp_cc_sm8550_probe(struct p
- 		return ret;
- 
- 	regmap = qcom_cc_map(pdev, &disp_cc_sm8550_desc);
--	if (IS_ERR(regmap))
--		return PTR_ERR(regmap);
-+	if (IS_ERR(regmap)) {
-+		ret = PTR_ERR(regmap);
-+		goto err_put_rpm;
-+	}
- 
- 	clk_lucid_evo_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
- 	clk_lucid_evo_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
-@@ -1777,9 +1779,16 @@ static int disp_cc_sm8550_probe(struct p
- 	regmap_update_bits(regmap, 0xe054, BIT(0), BIT(0));
- 
- 	ret = qcom_cc_really_probe(pdev, &disp_cc_sm8550_desc, regmap);
-+	if (ret)
-+		goto err_put_rpm;
- 
- 	pm_runtime_put(&pdev->dev);
- 
-+	return 0;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+
- 	return ret;
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 6806eefa52ceb..370635107f1c6 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -133,17 +133,28 @@ static int fail_iommu_bus_notify(struct notifier_block *nb,
+ 	return 0;
  }
  
+-static struct notifier_block fail_iommu_bus_notifier = {
++/*
++ * PCI and VIO buses need separate notifier_block structs, since they're linked
++ * list nodes.  Sharing a notifier_block would mean that any notifiers later
++ * registered for PCI buses would also get called by VIO buses and vice versa.
++ */
++static struct notifier_block fail_iommu_pci_bus_notifier = {
+ 	.notifier_call = fail_iommu_bus_notify
+ };
+ 
++#ifdef CONFIG_IBMVIO
++static struct notifier_block fail_iommu_vio_bus_notifier = {
++	.notifier_call = fail_iommu_bus_notify
++};
++#endif
++
+ static int __init fail_iommu_setup(void)
+ {
+ #ifdef CONFIG_PCI
+-	bus_register_notifier(&pci_bus_type, &fail_iommu_bus_notifier);
++	bus_register_notifier(&pci_bus_type, &fail_iommu_pci_bus_notifier);
+ #endif
+ #ifdef CONFIG_IBMVIO
+-	bus_register_notifier(&vio_bus_type, &fail_iommu_bus_notifier);
++	bus_register_notifier(&vio_bus_type, &fail_iommu_vio_bus_notifier);
+ #endif
+ 
+ 	return 0;
+-- 
+2.40.1
+
 
 
