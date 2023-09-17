@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD2E7A38E7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42BC87A39E6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239412AbjIQTmZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:42:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46672 "EHLO
+        id S240197AbjIQTzr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239924AbjIQTmD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:03 -0400
+        with ESMTP id S240273AbjIQTzl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F74D186
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CC6C433C9;
-        Sun, 17 Sep 2023 19:41:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377DAEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1B3C433C7;
+        Sun, 17 Sep 2023 19:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979704;
-        bh=dwxJiaYDVylNz7sBJ9gjj7VqR/OzouVAU62rr+id4Ew=;
+        s=korg; t=1694980535;
+        bh=9xV51YyNchbEXU2n98xZshXrwpMRd5yP3n0HRY7YXsA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B/6Ppux7LmUlF4JzT1Z5byQ1aDM6ukVHQNVEYVIIjodQLht4StLv437q7S8u+x9oI
-         5lNeWNUYjG3B5KKDo/yre0rdSaq2lNc0Zw6qBfAUJYMS5TBQ/EdDOzwX4p8V6b6Meu
-         d1rN45AyzESpLHPaKnLCA938IoL+hErFP6BTmDHc=
+        b=rje/se81pNejwU7aN+T3/TswcZiPZ6A1AFi9iUYbpwXePvrmUxGGGZp5TBl5SkqND
+         15FBqhBbvYiZHvbonj9148IDKdq803GNoXbzoLwZmdgWvQ7CwIIiJXmt9eTKdijvfL
+         BddixfbNVsom3mj1YG0IS+aIy1fT5OZzHDKTeBtM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
-        Wander Lairson Costa <wander@redhat.com>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 365/406] netfilter: nfnetlink_osf: avoid OOB read
-Date:   Sun, 17 Sep 2023 21:13:39 +0200
-Message-ID: <20230917191110.907686782@linuxfoundation.org>
+        patches@lists.linux.dev, Fangzhi Zuo <jerry.zuo@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 220/285] drm/amd/display: limit the v_startup workaround to ASICs older than DCN3.1
+Date:   Sun, 17 Sep 2023 21:13:40 +0200
+Message-ID: <20230917191059.124100411@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit f4f8a7803119005e87b716874bec07c751efafec ]
+commit 47428f4b638d3b3264a2efa1a567b0bbddbb6107 upstream.
 
-The opt_num field is controlled by user mode and is not currently
-validated inside the kernel. An attacker can take advantage of this to
-trigger an OOB read and potentially leak information.
+Since, calling dcn20_adjust_freesync_v_startup() on DCN3.1+ ASICs
+can cause the display to flicker and underflow to occur, we shouldn't
+call it for them. So, ensure that the DCN version is less than
+DCN_VERSION_3_1 before calling dcn20_adjust_freesync_v_startup().
 
-BUG: KASAN: slab-out-of-bounds in nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
-Read of size 2 at addr ffff88804bc64272 by task poc/6431
-
-CPU: 1 PID: 6431 Comm: poc Not tainted 6.0.0-rc4 #1
-Call Trace:
- nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
- nf_osf_find+0x186/0x2f0 net/netfilter/nfnetlink_osf.c:281
- nft_osf_eval+0x37f/0x590 net/netfilter/nft_osf.c:47
- expr_call_ops_eval net/netfilter/nf_tables_core.c:214
- nft_do_chain+0x2b0/0x1490 net/netfilter/nf_tables_core.c:264
- nft_do_chain_ipv4+0x17c/0x1f0 net/netfilter/nft_chain_filter.c:23
- [..]
-
-Also add validation to genre, subtype and version fields.
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Lucas Leong <wmliang@infosec.exchange>
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_osf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 9dbaa5ce24e51..573a372e760f4 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -316,6 +316,14 @@ static int nfnl_osf_add_callback(struct net *net, struct sock *ctnl,
- 
- 	f = nla_data(osf_attrs[OSF_ATTR_FINGER]);
- 
-+	if (f->opt_num > ARRAY_SIZE(f->opt))
-+		return -EINVAL;
-+
-+	if (!memchr(f->genre, 0, MAXGENRELEN) ||
-+	    !memchr(f->subtype, 0, MAXGENRELEN) ||
-+	    !memchr(f->version, 0, MAXGENRELEN))
-+		return -EINVAL;
-+
- 	kf = kmalloc(sizeof(struct nf_osf_finger), GFP_KERNEL);
- 	if (!kf)
- 		return -ENOMEM;
--- 
-2.40.1
-
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -1099,7 +1099,8 @@ void dcn20_calculate_dlg_params(struct d
+ 		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
+ 						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
+ 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
++		if (dc->ctx->dce_version < DCN_VERSION_3_1 &&
++		    context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+ 			dcn20_adjust_freesync_v_startup(
+ 				&context->res_ctx.pipe_ctx[i].stream->timing,
+ 				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
 
 
