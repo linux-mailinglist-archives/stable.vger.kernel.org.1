@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 010D07A3D3F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B497A3B68
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239716AbjIQUkf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42134 "EHLO
+        id S240700AbjIQURK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241260AbjIQUkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:11 -0400
+        with ESMTP id S240761AbjIQURD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E58E10F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6581C433C7;
-        Sun, 17 Sep 2023 20:40:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0AE101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C04C433C7;
+        Sun, 17 Sep 2023 20:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983206;
-        bh=O7FxgGZ1B+eQUm/9SdvfJ6TSz7VwfWW/IhWaBr4NEr4=;
+        s=korg; t=1694981818;
+        bh=4JsY7IPnLqarNEYvlGBdpA2mhmxQqHs8ps85jbhos84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uy9mJqFIfPfUWZ8qJ/kYC71EfNRjt/JbvMwCDQfPHHJAmDl1SwC9tpq8n5aacFjsI
-         aqQjxzu7GXgiOzV9hPCEPS6jMtn8BAaOf12Eu0+CE28o2lTxKXDVY/TwaXxd6k/ySX
-         +rnTZibikyDORfKtuKQBcyyxRorm9/NlHnWfW8Fw=
+        b=WmWNlrAa394Vh4qgVI61s1vQOA7iPllZkxlcs/UcHIDsSNCvRCJW1G+bMiw1UxI2c
+         SVB/9RLXRgfuZ17GgPRXo4V0AZwp3fjS0Vkhnhrh5MS4Mad6pUbtufhXV3TewdxgWt
+         qx4oyE+OMn6qUcgp4lRcrCoEXPxiOmZ+lpyPBqog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 476/511] btrfs: use the correct superblock to compare fsid in btrfs_validate_super
+        patches@lists.linux.dev, Peter Gonda <pgonda@google.com>,
+        Pankaj Gupta <pankaj.gupta@amd.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 176/219] KVM: SVM: Skip VMSA init in sev_es_init_vmcb() if pointer is NULL
 Date:   Sun, 17 Sep 2023 21:15:03 +0200
-Message-ID: <20230917191125.238185422@linuxfoundation.org>
+Message-ID: <20230917191047.338434419@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Jain <anand.jain@oracle.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit d167aa76dc0683828588c25767da07fb549e4f48 upstream.
+commit 1952e74da96fb3e48b72a2d0ece78c688a5848c1 upstream.
 
-The function btrfs_validate_super() should verify the fsid in the provided
-superblock argument. Because, all its callers expect it to do that.
+Skip initializing the VMSA physical address in the VMCB if the VMSA is
+NULL, which occurs during intrahost migration as KVM initializes the VMCB
+before copying over state from the source to the destination (including
+the VMSA and its physical address).
 
-Such as in the following stack:
+In normal builds, __pa() is just math, so the bug isn't fatal, but with
+CONFIG_DEBUG_VIRTUAL=y, the validity of the virtual address is verified
+and passing in NULL will make the kernel unhappy.
 
-   write_all_supers()
-       sb = fs_info->super_for_commit;
-       btrfs_validate_write_super(.., sb)
-         btrfs_validate_super(.., sb, ..)
-
-   scrub_one_super()
-	btrfs_validate_super(.., sb, ..)
-
-And
-   check_dev_super()
-	btrfs_validate_super(.., sb, ..)
-
-However, it currently verifies the fs_info::super_copy::fsid instead,
-which is not correct.  Fix this using the correct fsid in the superblock
-argument.
-
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 6defa24d3b12 ("KVM: SEV: Init target VMCBs in sev_migrate_from")
+Cc: stable@vger.kernel.org
+Cc: Peter Gonda <pgonda@google.com>
+Reviewed-by: Peter Gonda <pgonda@google.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Link: https://lore.kernel.org/r/20230825022357.2852133-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/sev.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2598,11 +2598,10 @@ int btrfs_validate_super(struct btrfs_fs
- 		ret = -EINVAL;
- 	}
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2951,9 +2951,12 @@ static void sev_es_init_vmcb(struct vcpu
+ 	/*
+ 	 * An SEV-ES guest requires a VMSA area that is a separate from the
+ 	 * VMCB page. Do not include the encryption mask on the VMSA physical
+-	 * address since hardware will access it using the guest key.
++	 * address since hardware will access it using the guest key.  Note,
++	 * the VMSA will be NULL if this vCPU is the destination for intrahost
++	 * migration, and will be copied later.
+ 	 */
+-	svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
++	if (svm->sev_es.vmsa)
++		svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
  
--	if (memcmp(fs_info->fs_devices->fsid, fs_info->super_copy->fsid,
--		   BTRFS_FSID_SIZE)) {
-+	if (memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0) {
- 		btrfs_err(fs_info,
- 		"superblock fsid doesn't match fsid of fs_devices: %pU != %pU",
--			fs_info->super_copy->fsid, fs_info->fs_devices->fsid);
-+			  sb->fsid, fs_info->fs_devices->fsid);
- 		ret = -EINVAL;
- 	}
- 
+ 	/* Can't intercept CR register access, HV can't modify CR registers */
+ 	svm_clr_intercept(svm, INTERCEPT_CR0_READ);
 
 
