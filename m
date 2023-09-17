@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AC287A3B48
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D64C87A3B55
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239487AbjIQUPb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
+        id S240658AbjIQUQF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:16:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239454AbjIQUPS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:18 -0400
+        with ESMTP id S240710AbjIQUPz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D73B0F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2D8C433C7;
-        Sun, 17 Sep 2023 20:15:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E8CF3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F1BC433C7;
+        Sun, 17 Sep 2023 20:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981712;
-        bh=oolUaj3iv16VWgqBG5yBCJZF3xDJy2+xr0nL1XfTrVc=;
+        s=korg; t=1694981750;
+        bh=tynlqowZxBPGcPTu+V1o+rPwNwlQCUc5cvgswCIWO2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RpR9rtnm/78ot8AazG0CKntsAFY4h2vFYknV7ZCR0D2adbgib0FD2S+WIL1pn5OAY
-         AB+PuQpqwOFVspUEL/UQwuujcQAThiLsMY8kLeZxYtYtxBr3lw+4XlgZkT0r99E449
-         RfudlK3HdUgKk6AAAUvqCUIeY4vZo67SuEa1PUSg=
+        b=iwOR0rkFRXzpup50RcPb4BJLejtcG+gfJ+ccFEapJGr+FiIC3nU+5LGJu/lTIDUrb
+         O5kDTd0VwkNGlcd22BIx1/5gIuK7hTOyH5cHsGfbDF98RSlES6cZQNUiYOIpi7LZy+
+         Ft/SVuNUzUkgH2Jj16emyCFBCsHswwtgNP2e00BA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/511] ipv6: Add reasons for skb drops to __udp6_lib_rcv
-Date:   Sun, 17 Sep 2023 21:08:34 +0200
-Message-ID: <20230917191115.973104486@linuxfoundation.org>
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 088/511] wifi: mt76: testmode: add nla_policy for MT76_TM_ATTR_TX_LENGTH
+Date:   Sun, 17 Sep 2023 21:08:35 +0200
+Message-ID: <20230917191115.996918673@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,71 +53,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 4cf91f825b2777f81799f98ce32172b829acd1b2 ]
+[ Upstream commit 74f12d511625e603fac8c0c2b6872e687e56dd61 ]
 
-Add reasons to __udp6_lib_rcv for skb drops. The only twist is that the
-NO_SOCKET takes precedence over the CSUM or other counters for that
-path (motivation behind this patch - csum counter was misleading).
+It seems that the nla_policy in mt76_tm_policy is missed for attribute
+MT76_TM_ATTR_TX_LENGTH. This patch adds the correct description to make
+sure the
 
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9c02bec95954 ("bpf, net: Support SO_REUSEPORT sockets with bpf_sk_assign")
+  u32 val = nla_get_u32(tb[MT76_TM_ATTR_TX_LENGTH]);
+
+in function mt76_testmode_cmd() is safe and will not result in
+out-of-attribute read.
+
+Fixes: f0efa8621550 ("mt76: add API for testmode support")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/udp.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/testmode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 2dab9aab551c3..d5d254ca2dfe6 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -936,6 +936,7 @@ static int udp6_unicast_rcv_skb(struct sock *sk, struct sk_buff *skb,
- int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 		   int proto)
- {
-+	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	const struct in6_addr *saddr, *daddr;
- 	struct net *net = dev_net(skb->dev);
- 	struct udphdr *uh;
-@@ -1012,6 +1013,8 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 		return udp6_unicast_rcv_skb(sk, skb, uh);
- 	}
- 
-+	reason = SKB_DROP_REASON_NO_SOCKET;
-+
- 	if (!uh->check)
- 		goto report_csum_error;
- 
-@@ -1024,10 +1027,12 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 	__UDP6_INC_STATS(net, UDP_MIB_NOPORTS, proto == IPPROTO_UDPLITE);
- 	icmpv6_send(skb, ICMPV6_DEST_UNREACH, ICMPV6_PORT_UNREACH, 0);
- 
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return 0;
- 
- short_packet:
-+	if (reason == SKB_DROP_REASON_NOT_SPECIFIED)
-+		reason = SKB_DROP_REASON_PKT_TOO_SMALL;
- 	net_dbg_ratelimited("UDP%sv6: short packet: From [%pI6c]:%u %d/%d to [%pI6c]:%u\n",
- 			    proto == IPPROTO_UDPLITE ? "-Lite" : "",
- 			    saddr, ntohs(uh->source),
-@@ -1038,10 +1043,12 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- report_csum_error:
- 	udp6_csum_zero_error(skb);
- csum_error:
-+	if (reason == SKB_DROP_REASON_NOT_SPECIFIED)
-+		reason = SKB_DROP_REASON_UDP_CSUM;
- 	__UDP6_INC_STATS(net, UDP_MIB_CSUMERRORS, proto == IPPROTO_UDPLITE);
- discard:
- 	__UDP6_INC_STATS(net, UDP_MIB_INERRORS, proto == IPPROTO_UDPLITE);
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return 0;
- }
- 
+diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
+index f73ffbd6e622d..0109433e8c2fe 100644
+--- a/drivers/net/wireless/mediatek/mt76/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/testmode.c
+@@ -6,6 +6,7 @@ static const struct nla_policy mt76_tm_policy[NUM_MT76_TM_ATTRS] = {
+ 	[MT76_TM_ATTR_RESET] = { .type = NLA_FLAG },
+ 	[MT76_TM_ATTR_STATE] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_COUNT] = { .type = NLA_U32 },
++	[MT76_TM_ATTR_TX_LENGTH] = { .type = NLA_U32 },
+ 	[MT76_TM_ATTR_TX_RATE_MODE] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_RATE_NSS] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_RATE_IDX] = { .type = NLA_U8 },
 -- 
 2.40.1
 
