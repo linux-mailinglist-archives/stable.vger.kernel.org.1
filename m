@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F16E7A3A08
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BCA67A38ED
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240203AbjIQT5x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37224 "EHLO
+        id S238649AbjIQTm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240250AbjIQT5Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:25 -0400
+        with ESMTP id S239987AbjIQTmf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E515103;
-        Sun, 17 Sep 2023 12:57:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3420C433C8;
-        Sun, 17 Sep 2023 19:57:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28B1133
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C34DC433C8;
+        Sun, 17 Sep 2023 19:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980639;
-        bh=hTMj4zR+eqs6TRX7gmcw3iaQ3NXr3pJlwDDvye19O1Y=;
+        s=korg; t=1694979728;
+        bh=I+icLZQEp7C0VlMRlcdwJue3sbzoxBAIxeN2RT1SwQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LLrVPxDhzFQFEzKgtR0dMVGS/j8DtkY+3beepZVBrZp/4CvErJcQOb5/V4qBB7Bsr
-         ve+Vreyzl85GjrS+RU2lJUb6WOA/DXgNPc3wBHOpvfprORpXS39W6ZJpzjGujmgNgo
-         PiUn17q/w8z4dGA1Xbvs822ldiZYc5XcPBvXjSzU=
+        b=GpzOhzcNB0xHNzOrn6bBo06vJOGp8jhT91MIcZP271m4dHV2WCYKC6NRx9boGmsjG
+         c/eJrqbavEqzrIsrzf3zNaj00/W6k8M15EOcD6XI0/faNvBxSnAjYOT/GQsfTp2Z+m
+         RBMz2aIvGHQETzbOt1EdpO8GubiqZPM4EZOraHsg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kselftest@vger.kernel.org,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Shuah Khan <shuah@kernel.org>,
-        Naveen N Rao <naveen@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 250/285] selftests/ftrace: Fix dependencies for some of the synthetic event tests
-Date:   Sun, 17 Sep 2023 21:14:10 +0200
-Message-ID: <20230917191059.965018096@linuxfoundation.org>
+Subject: [PATCH 5.10 397/406] r8152: check budget for r8152_poll()
+Date:   Sun, 17 Sep 2023 21:14:11 +0200
+Message-ID: <20230917191111.745512261@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Hayes Wang <hayeswang@realtek.com>
 
-[ Upstream commit 145036f88d693d7ef3aa8537a4b1aa22f8764647 ]
+[ Upstream commit a7b8d60b37237680009dd0b025fe8c067aba0ee3 ]
 
-Commit b81a3a100cca1b ("tracing/histogram: Add simple tests for
-stacktrace usage of synthetic events") changed the output text in
-tracefs README, but missed updating some of the dependencies specified
-in selftests. This causes some of the tests to exit as unsupported.
+According to the document of napi, there is no rx process when the
+budget is 0. Therefore, r8152_poll() has to return 0 directly when the
+budget is equal to 0.
 
-Fix this by changing the grep pattern. Since we want these tests to work
-on older kernels, match only against the common last part of the
-pattern.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230614091046.2178539-1-naveen@kernel.org
-
-Cc: <linux-kselftest@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Fixes: b81a3a100cca ("tracing/histogram: Add simple tests for stacktrace usage of synthetic events")
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: d2187f8e4454 ("r8152: divide the tx and rx bottom functions")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../trigger/inter-event/trigger-synthetic-event-dynstring.tc    | 2 +-
- .../inter-event/trigger-synthetic_event_syntax_errors.tc        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/r8152.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic-event-dynstring.tc b/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic-event-dynstring.tc
-index 213d890ed1886..174376ddbc6c7 100644
---- a/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic-event-dynstring.tc
-+++ b/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic-event-dynstring.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: event trigger - test inter-event histogram trigger trace action with dynamic string param
--# requires: set_event synthetic_events events/sched/sched_process_exec/hist "char name[]' >> synthetic_events":README ping:program
-+# requires: set_event synthetic_events events/sched/sched_process_exec/hist "' >> synthetic_events":README ping:program
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index f9a79d67d6d4f..cc7c86debfa27 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -2439,6 +2439,9 @@ static int r8152_poll(struct napi_struct *napi, int budget)
+ 	struct r8152 *tp = container_of(napi, struct r8152, napi);
+ 	int work_done;
  
- fail() { #msg
-     echo $1
-diff --git a/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic_event_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic_event_syntax_errors.tc
-index 955e3ceea44b5..b927ee54c02da 100644
---- a/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic_event_syntax_errors.tc
-+++ b/tools/testing/selftests/ftrace/test.d/trigger/inter-event/trigger-synthetic_event_syntax_errors.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: event trigger - test synthetic_events syntax parser errors
--# requires: synthetic_events error_log "char name[]' >> synthetic_events":README
-+# requires: synthetic_events error_log "' >> synthetic_events":README
++	if (!budget)
++		return 0;
++
+ 	work_done = rx_bottom(tp, budget);
  
- check_error() { # command-with-error-pos-by-^
-     ftrace_errlog_check 'synthetic_events' "$1" 'synthetic_events'
+ 	if (work_done < budget) {
 -- 
 2.40.1
 
