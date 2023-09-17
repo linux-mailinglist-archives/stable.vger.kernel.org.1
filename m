@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1117A38D8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8F997A3A12
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239852AbjIQTlX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:41:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39898 "EHLO
+        id S239527AbjIQT60 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:58:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239900AbjIQTlE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:04 -0400
+        with ESMTP id S240256AbjIQT5z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4229ED9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72296C433C8;
-        Sun, 17 Sep 2023 19:40:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F754103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236FDC433C8;
+        Sun, 17 Sep 2023 19:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979658;
-        bh=9U2mOrgmbePNLWxvJc+Bm2b4QvAgngMKZ0NRQn5tPNs=;
+        s=korg; t=1694980669;
+        bh=f8hbIIYs7JZaW6q537MESf+tLtLRtcJXmjhtNpZyzJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b42zc4DvihzWqC/EJ433A0lmO4skR3ky2GVgVmudwS3MyClwexSSstEMYvLtLeDBt
-         9luppbCNX90aJcca1+bKl2K+U/K9dEB2fvSgI5xZHziMxuPRnvUUpwuKOBkqw3ktIp
-         UpsST6DYd7UySjl+jvEbwXptqTqaUtnmAbs4Yj8M=
+        b=fXNjvqaeyLjLEoPBJCucxP6imX+mBOPHBlbrO+ut2/YSKf6Pk0QWjNOoclC2N2GSZ
+         PkvHupZIpf6wLDnxlV965Eq7hFhd7gsgW4pfN8Eo73t+US/ApVy14pnSBxXpeIRBiI
+         51zvswyBdJuEBS4JVJKVfmtchTCoOvhab5FdZV4M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 377/406] drm/amd/display: prevent potential division by zero errors
-Date:   Sun, 17 Sep 2023 21:13:51 +0200
-Message-ID: <20230917191111.222336071@linuxfoundation.org>
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.5 232/285] perf hists browser: Fix hierarchy mode header
+Date:   Sun, 17 Sep 2023 21:13:52 +0200
+Message-ID: <20230917191059.460922018@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 07e388aab042774f284a2ad75a70a194517cdad4 upstream.
+commit e2cabf2a44791f01c21f8d5189b946926e34142e upstream.
 
-There are two places in apply_below_the_range() where it's possible for
-a divide by zero error to occur. So, to fix this make sure the divisor
-is non-zero before attempting the computation in both cases.
+The commit ef9ff6017e3c4593 ("perf ui browser: Move the extra title
+lines from the hists browser") introduced ui_browser__gotorc_title() to
+help moving non-title lines easily.  But it missed to update the title
+for the hierarchy mode so it won't print the header line on TUI at all.
 
+  $ perf report --hierarchy
+
+Fixes: ef9ff6017e3c4593 ("perf ui browser: Move the extra title lines from the hists browser")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2637
-Fixes: a463b263032f ("drm/amd/display: Fix frames_to_insert math")
-Fixes: ded6119e825a ("drm/amd/display: Reinstate LFC optimization")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20230731094934.1616495-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/perf/ui/browsers/hists.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-+++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-@@ -327,7 +327,9 @@ static void apply_below_the_range(struct
- 		 *  - Delta for CEIL: delta_from_mid_point_in_us_1
- 		 *  - Delta for FLOOR: delta_from_mid_point_in_us_2
- 		 */
--		if ((last_render_time_in_us / mid_point_frames_ceil) < in_out_vrr->min_duration_in_us) {
-+		if (mid_point_frames_ceil &&
-+		    (last_render_time_in_us / mid_point_frames_ceil) <
-+		    in_out_vrr->min_duration_in_us) {
- 			/* Check for out of range.
- 			 * If using CEIL produces a value that is out of range,
- 			 * then we are forced to use FLOOR.
-@@ -374,8 +376,9 @@ static void apply_below_the_range(struct
- 		/* Either we've calculated the number of frames to insert,
- 		 * or we need to insert min duration frames
- 		 */
--		if (last_render_time_in_us / frames_to_insert <
--				in_out_vrr->min_duration_in_us){
-+		if (frames_to_insert &&
-+		    (last_render_time_in_us / frames_to_insert) <
-+		    in_out_vrr->min_duration_in_us){
- 			frames_to_insert -= (frames_to_insert > 1) ?
- 					1 : 0;
- 		}
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -1779,7 +1779,7 @@ static void hists_browser__hierarchy_hea
+ 	hists_browser__scnprintf_hierarchy_headers(browser, headers,
+ 						   sizeof(headers));
+ 
+-	ui_browser__gotorc(&browser->b, 0, 0);
++	ui_browser__gotorc_title(&browser->b, 0, 0);
+ 	ui_browser__set_color(&browser->b, HE_COLORSET_ROOT);
+ 	ui_browser__write_nstring(&browser->b, headers, browser->b.width + 1);
+ }
 
 
