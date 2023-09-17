@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E48C7A3B84
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47A437A3D4E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240705AbjIQUSn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36310 "EHLO
+        id S241267AbjIQUlH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240733AbjIQUSZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:25 -0400
+        with ESMTP id S241288AbjIQUku (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F844F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5347FC433C8;
-        Sun, 17 Sep 2023 20:18:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F2CF10F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7474FC433C8;
+        Sun, 17 Sep 2023 20:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981900;
-        bh=FlxuJ+NqmEwaGLOOaFFl3/lVo0/p2Ekfpgqz07oQyXA=;
+        s=korg; t=1694983243;
+        bh=4Eheh9/ertHrPYrXFLlzPiAQaLPOrKjt7KYHZmFmJbg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YgU7PnzucfItVMg+bcNBDnJvsJmtes3i24pMHZhcsnYmdz7DI49ThirRVryZiB023
-         cRvv08KDBFzbI6ArzX/w3oEGf5u3o/IHwb9zSjZb3BBIYCbBGHbh5/gkr33A2IVQsY
-         oamIjioS7RO7m0i02FZMz77IzP6QM/Gp3EbUEe1w=
+        b=LS1TySUBIpRAVTXlXJQcxZZrmNfDi4gCnkITqJxhDn//NBiWs8SZ9AdHpqHa10Dnv
+         iRq8tX9fPc5RWfk9F0LdacLx2NRtC2DfDE5ca8KuaB+DjUzAEm47H8W7ByW3coPGgP
+         cAiojKxavr6SlDrS0N8Ic4Nx3FziI1JEV+zj0bU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Julian Anastasov <ja@ssi.bg>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/219] net: ipv4: fix one memleak in __inet_del_ifa()
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 486/511] pcd: cleanup initialization
 Date:   Sun, 17 Sep 2023 21:15:13 +0200
-Message-ID: <20230917191047.674997503@linuxfoundation.org>
+Message-ID: <20230917191125.472123142@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,87 +49,375 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit ac28b1ec6135649b5d78b028e47264cb3ebca5ea ]
+[ Upstream commit af761f277b7fd896c27cb1100b25f11567987822 ]
 
-I got the below warning when do fuzzing test:
-unregister_netdevice: waiting for bond0 to become free. Usage count = 2
+Refactor the pcd initialization to have a dedicated helper to initialize
+a single disk.
 
-It can be repoduced via:
-
-ip link add bond0 type bond
-sysctl -w net.ipv4.conf.bond0.promote_secondaries=1
-ip addr add 4.117.174.103/0 scope 0x40 dev bond0
-ip addr add 192.168.100.111/255.255.255.254 scope 0 dev bond0
-ip addr add 0.0.0.4/0 scope 0x40 secondary dev bond0
-ip addr del 4.117.174.103/0 scope 0x40 dev bond0
-ip link delete bond0 type bond
-
-In this reproduction test case, an incorrect 'last_prim' is found in
-__inet_del_ifa(), as a result, the secondary address(0.0.0.4/0 scope 0x40)
-is lost. The memory of the secondary address is leaked and the reference of
-in_device and net_device is leaked.
-
-Fix this problem:
-Look for 'last_prim' starting at location of the deleted IP and inserting
-the promoted IP into the location of 'last_prim'.
-
-Fixes: 0ff60a45678e ("[IPV4]: Fix secondary IP addresses after promotion")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/block/paride/pcd.c | 286 ++++++++++++++++---------------------
+ 1 file changed, 127 insertions(+), 159 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index e8b9a9202fecd..35d6e74be8406 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -354,14 +354,14 @@ static void __inet_del_ifa(struct in_device *in_dev,
+diff --git a/drivers/block/paride/pcd.c b/drivers/block/paride/pcd.c
+index 8903fdaa20466..93ed636262328 100644
+--- a/drivers/block/paride/pcd.c
++++ b/drivers/block/paride/pcd.c
+@@ -183,8 +183,6 @@ static int pcd_audio_ioctl(struct cdrom_device_info *cdi,
+ static int pcd_packet(struct cdrom_device_info *cdi,
+ 		      struct packet_command *cgc);
+ 
+-static int pcd_detect(void);
+-static void pcd_probe_capabilities(void);
+ static void do_pcd_read_drq(void);
+ static blk_status_t pcd_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 				 const struct blk_mq_queue_data *bd);
+@@ -302,53 +300,6 @@ static const struct blk_mq_ops pcd_mq_ops = {
+ 	.queue_rq	= pcd_queue_rq,
+ };
+ 
+-static void pcd_init_units(void)
+-{
+-	struct pcd_unit *cd;
+-	int unit;
+-
+-	pcd_drive_count = 0;
+-	for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-		struct gendisk *disk;
+-
+-		if (blk_mq_alloc_sq_tag_set(&cd->tag_set, &pcd_mq_ops, 1,
+-				BLK_MQ_F_SHOULD_MERGE))
+-			continue;
+-
+-		disk = blk_mq_alloc_disk(&cd->tag_set, cd);
+-		if (IS_ERR(disk)) {
+-			blk_mq_free_tag_set(&cd->tag_set);
+-			continue;
+-		}
+-
+-		INIT_LIST_HEAD(&cd->rq_list);
+-		blk_queue_bounce_limit(disk->queue, BLK_BOUNCE_HIGH);
+-		cd->disk = disk;
+-		cd->pi = &cd->pia;
+-		cd->present = 0;
+-		cd->last_sense = 0;
+-		cd->changed = 1;
+-		cd->drive = (*drives[unit])[D_SLV];
+-		if ((*drives[unit])[D_PRT])
+-			pcd_drive_count++;
+-
+-		cd->name = &cd->info.name[0];
+-		snprintf(cd->name, sizeof(cd->info.name), "%s%d", name, unit);
+-		cd->info.ops = &pcd_dops;
+-		cd->info.handle = cd;
+-		cd->info.speed = 0;
+-		cd->info.capacity = 1;
+-		cd->info.mask = 0;
+-		disk->major = major;
+-		disk->first_minor = unit;
+-		disk->minors = 1;
+-		strcpy(disk->disk_name, cd->name);	/* umm... */
+-		disk->fops = &pcd_bdops;
+-		disk->flags = GENHD_FL_BLOCK_EVENTS_ON_EXCL_WRITE;
+-		disk->events = DISK_EVENT_MEDIA_CHANGE;
+-	}
+-}
+-
+ static int pcd_open(struct cdrom_device_info *cdi, int purpose)
  {
- 	struct in_ifaddr *promote = NULL;
- 	struct in_ifaddr *ifa, *ifa1;
--	struct in_ifaddr *last_prim;
-+	struct in_ifaddr __rcu **last_prim;
- 	struct in_ifaddr *prev_prom = NULL;
- 	int do_promote = IN_DEV_PROMOTE_SECONDARIES(in_dev);
+ 	struct pcd_unit *cd = cdi->handle;
+@@ -679,90 +630,31 @@ static int pcd_probe(struct pcd_unit *cd, int ms)
+ 	return -1;
+ }
  
- 	ASSERT_RTNL();
+-static void pcd_probe_capabilities(void)
++static int pcd_probe_capabilities(struct pcd_unit *cd)
+ {
+-	int unit, r;
+-	char buffer[32];
+ 	char cmd[12] = { 0x5a, 1 << 3, 0x2a, 0, 0, 0, 0, 18, 0, 0, 0, 0 };
+-	struct pcd_unit *cd;
+-
+-	for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-		if (!cd->present)
+-			continue;
+-		r = pcd_atapi(cd, cmd, 18, buffer, "mode sense capabilities");
+-		if (r)
+-			continue;
+-		/* we should now have the cap page */
+-		if ((buffer[11] & 1) == 0)
+-			cd->info.mask |= CDC_CD_R;
+-		if ((buffer[11] & 2) == 0)
+-			cd->info.mask |= CDC_CD_RW;
+-		if ((buffer[12] & 1) == 0)
+-			cd->info.mask |= CDC_PLAY_AUDIO;
+-		if ((buffer[14] & 1) == 0)
+-			cd->info.mask |= CDC_LOCK;
+-		if ((buffer[14] & 8) == 0)
+-			cd->info.mask |= CDC_OPEN_TRAY;
+-		if ((buffer[14] >> 6) == 0)
+-			cd->info.mask |= CDC_CLOSE_TRAY;
+-	}
+-}
+-
+-static int pcd_detect(void)
+-{
+-	int k, unit;
+-	struct pcd_unit *cd;
+-
+-	printk("%s: %s version %s, major %d, nice %d\n",
+-	       name, name, PCD_VERSION, major, nice);
++	char buffer[32];
++	int ret;
  
- 	ifa1 = rtnl_dereference(*ifap);
--	last_prim = rtnl_dereference(in_dev->ifa_list);
-+	last_prim = ifap;
- 	if (in_dev->dead)
- 		goto no_promotions;
+-	par_drv = pi_register_driver(name);
+-	if (!par_drv) {
+-		pr_err("failed to register %s driver\n", name);
+-		return -1;
+-	}
++	ret = pcd_atapi(cd, cmd, 18, buffer, "mode sense capabilities");
++	if (ret)
++		return ret;
++
++	/* we should now have the cap page */
++	if ((buffer[11] & 1) == 0)
++		cd->info.mask |= CDC_CD_R;
++	if ((buffer[11] & 2) == 0)
++		cd->info.mask |= CDC_CD_RW;
++	if ((buffer[12] & 1) == 0)
++		cd->info.mask |= CDC_PLAY_AUDIO;
++	if ((buffer[14] & 1) == 0)
++		cd->info.mask |= CDC_LOCK;
++	if ((buffer[14] & 8) == 0)
++		cd->info.mask |= CDC_OPEN_TRAY;
++	if ((buffer[14] >> 6) == 0)
++		cd->info.mask |= CDC_CLOSE_TRAY;
  
-@@ -375,7 +375,7 @@ static void __inet_del_ifa(struct in_device *in_dev,
- 		while ((ifa = rtnl_dereference(*ifap1)) != NULL) {
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) &&
- 			    ifa1->ifa_scope <= ifa->ifa_scope)
--				last_prim = ifa;
-+				last_prim = &ifa->ifa_next;
+-	k = 0;
+-	if (pcd_drive_count == 0) { /* nothing spec'd - so autoprobe for 1 */
+-		cd = pcd;
+-		if (cd->disk && pi_init(cd->pi, 1, -1, -1, -1, -1, -1,
+-			    pcd_buffer, PI_PCD, verbose, cd->name)) {
+-			if (!pcd_probe(cd, -1)) {
+-				cd->present = 1;
+-				k++;
+-			} else
+-				pi_release(cd->pi);
+-		}
+-	} else {
+-		for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-			int *conf = *drives[unit];
+-			if (!conf[D_PRT])
+-				continue;
+-			if (!cd->disk)
+-				continue;
+-			if (!pi_init(cd->pi, 0, conf[D_PRT], conf[D_MOD],
+-				     conf[D_UNI], conf[D_PRO], conf[D_DLY],
+-				     pcd_buffer, PI_PCD, verbose, cd->name)) 
+-				continue;
+-			if (!pcd_probe(cd, conf[D_SLV])) {
+-				cd->present = 1;
+-				k++;
+-			} else
+-				pi_release(cd->pi);
+-		}
+-	}
+-	if (k)
+-		return 0;
+-
+-	printk("%s: No CD-ROM drive found\n", name);
+-	for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-		if (!cd->disk)
+-			continue;
+-		blk_cleanup_disk(cd->disk);
+-		blk_mq_free_tag_set(&cd->tag_set);
+-	}
+-	pi_unregister_driver(par_drv);
+-	return -1;
++	return 0;
+ }
  
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) ||
- 			    ifa1->ifa_mask != ifa->ifa_mask ||
-@@ -439,9 +439,9 @@ static void __inet_del_ifa(struct in_device *in_dev,
+ /* I/O request processing */
+@@ -999,43 +891,121 @@ static int pcd_get_mcn(struct cdrom_device_info *cdi, struct cdrom_mcn *mcn)
+ 	return 0;
+ }
  
- 			rcu_assign_pointer(prev_prom->ifa_next, next_sec);
++static int pcd_init_unit(struct pcd_unit *cd, bool autoprobe, int port,
++		int mode, int unit, int protocol, int delay, int ms)
++{
++	struct gendisk *disk;
++	int ret;
++
++	ret = blk_mq_alloc_sq_tag_set(&cd->tag_set, &pcd_mq_ops, 1,
++				      BLK_MQ_F_SHOULD_MERGE);
++	if (ret)
++		return ret;
++
++	disk = blk_mq_alloc_disk(&cd->tag_set, cd);
++	if (IS_ERR(disk)) {
++		ret = PTR_ERR(disk);
++		goto out_free_tag_set;
++	}
++
++	INIT_LIST_HEAD(&cd->rq_list);
++	blk_queue_bounce_limit(disk->queue, BLK_BOUNCE_HIGH);
++	cd->disk = disk;
++	cd->pi = &cd->pia;
++	cd->present = 0;
++	cd->last_sense = 0;
++	cd->changed = 1;
++	cd->drive = (*drives[cd - pcd])[D_SLV];
++
++	cd->name = &cd->info.name[0];
++	snprintf(cd->name, sizeof(cd->info.name), "%s%d", name, unit);
++	cd->info.ops = &pcd_dops;
++	cd->info.handle = cd;
++	cd->info.speed = 0;
++	cd->info.capacity = 1;
++	cd->info.mask = 0;
++	disk->major = major;
++	disk->first_minor = unit;
++	disk->minors = 1;
++	strcpy(disk->disk_name, cd->name);	/* umm... */
++	disk->fops = &pcd_bdops;
++	disk->flags = GENHD_FL_BLOCK_EVENTS_ON_EXCL_WRITE;
++	disk->events = DISK_EVENT_MEDIA_CHANGE;
++
++	if (!pi_init(cd->pi, autoprobe, port, mode, unit, protocol, delay,
++			pcd_buffer, PI_PCD, verbose, cd->name))
++		goto out_free_disk;
++	if (pcd_probe(cd, ms))
++		goto out_pi_release;
++
++	cd->present = 1;
++	pcd_probe_capabilities(cd);
++	register_cdrom(cd->disk, &cd->info);
++	add_disk(cd->disk);
++	return 0;
++
++out_pi_release:
++	pi_release(cd->pi);
++out_free_disk:
++	blk_cleanup_disk(cd->disk);
++out_free_tag_set:
++	blk_mq_free_tag_set(&cd->tag_set);
++	return ret;
++}
++
+ static int __init pcd_init(void)
+ {
+-	struct pcd_unit *cd;
+-	int unit;
++	int found = 0, unit;
  
--			last_sec = rtnl_dereference(last_prim->ifa_next);
-+			last_sec = rtnl_dereference(*last_prim);
- 			rcu_assign_pointer(promote->ifa_next, last_sec);
--			rcu_assign_pointer(last_prim->ifa_next, promote);
-+			rcu_assign_pointer(*last_prim, promote);
+ 	if (disable)
+ 		return -EINVAL;
+ 
+-	pcd_init_units();
++	if (register_blkdev(major, name))
++		return -EBUSY;
+ 
+-	if (pcd_detect())
+-		return -ENODEV;
++	pr_info("%s: %s version %s, major %d, nice %d\n",
++		name, name, PCD_VERSION, major, nice);
+ 
+-	/* get the atapi capabilities page */
+-	pcd_probe_capabilities();
++	par_drv = pi_register_driver(name);
++	if (!par_drv) {
++		pr_err("failed to register %s driver\n", name);
++		goto out_unregister_blkdev;
++	}
+ 
+-	if (register_blkdev(major, name)) {
+-		for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-			if (!cd->disk)
+-				continue;
++	for (unit = 0; unit < PCD_UNITS; unit++) {
++		if ((*drives[unit])[D_PRT])
++			pcd_drive_count++;
++	}
+ 
+-			blk_cleanup_queue(cd->disk->queue);
+-			blk_mq_free_tag_set(&cd->tag_set);
+-			put_disk(cd->disk);
++	if (pcd_drive_count == 0) { /* nothing spec'd - so autoprobe for 1 */
++		if (!pcd_init_unit(pcd, 1, -1, -1, -1, -1, -1, -1))
++			found++;
++	} else {
++		for (unit = 0; unit < PCD_UNITS; unit++) {
++			struct pcd_unit *cd = &pcd[unit];
++			int *conf = *drives[unit];
++
++			if (!conf[D_PRT])
++				continue;
++			if (!pcd_init_unit(cd, 0, conf[D_PRT], conf[D_MOD],
++					conf[D_UNI], conf[D_PRO], conf[D_DLY],
++					conf[D_SLV]))
++				found++;
  		}
+-		return -EBUSY;
+ 	}
  
- 		promote->ifa_flags &= ~IFA_F_SECONDARY;
+-	for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-		if (cd->present) {
+-			register_cdrom(cd->disk, &cd->info);
+-			cd->disk->private_data = cd;
+-			add_disk(cd->disk);
+-		}
++	if (!found) {
++		pr_info("%s: No CD-ROM drive found\n", name);
++		goto out_unregister_pi_driver;
+ 	}
+ 
+ 	return 0;
++
++out_unregister_pi_driver:
++	pi_unregister_driver(par_drv);
++out_unregister_blkdev:
++	unregister_blkdev(major, name);
++	return -ENODEV;
+ }
+ 
+ static void __exit pcd_exit(void)
+@@ -1044,20 +1014,18 @@ static void __exit pcd_exit(void)
+ 	int unit;
+ 
+ 	for (unit = 0, cd = pcd; unit < PCD_UNITS; unit++, cd++) {
+-		if (!cd->disk)
++		if (!cd->present)
+ 			continue;
+ 
+-		if (cd->present) {
+-			del_gendisk(cd->disk);
+-			pi_release(cd->pi);
+-			unregister_cdrom(&cd->info);
+-		}
+-		blk_cleanup_queue(cd->disk->queue);
++		del_gendisk(cd->disk);
++		pi_release(cd->pi);
++		unregister_cdrom(&cd->info);
++		blk_cleanup_disk(cd->disk);
++
+ 		blk_mq_free_tag_set(&cd->tag_set);
+-		put_disk(cd->disk);
+ 	}
+-	unregister_blkdev(major, name);
+ 	pi_unregister_driver(par_drv);
++	unregister_blkdev(major, name);
+ }
+ 
+ MODULE_LICENSE("GPL");
 -- 
 2.40.1
 
