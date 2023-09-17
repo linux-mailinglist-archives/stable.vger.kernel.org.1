@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13CC77A37FF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BEB7A3947
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239575AbjIQTaH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
+        id S240012AbjIQTrP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239589AbjIQT3l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:29:41 -0400
+        with ESMTP id S240049AbjIQTqy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26551D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:29:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568C1C433C7;
-        Sun, 17 Sep 2023 19:29:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60754133
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99428C433C8;
+        Sun, 17 Sep 2023 19:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978975;
-        bh=nhHYxWOE6uAhSAbYQREaPc7ug703pcA6OQf/fPAtZmg=;
+        s=korg; t=1694980008;
+        bh=FaQjAb2zYMO1YjQrxeUxtBKrLv8dMDEeyg9XfYol9Y8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nUkOXlAVkUsHo9mEtfyTKU/XmrhHCyYhaRhaGD12HWeogDrIMYqOjphPBQEQxqN5c
-         0wsiUNqOMQVQTWm4XGATJFRfO7sC/aOZyWKj3xaPdE88Ck/b5ANXb4MQTzVE/w3O6C
-         z1+UDica7ao+ePpGiBLJXrP2qeDCDuP82pxKNVc0=
+        b=uL8NkwnEkYEu3vHHrlOi+q9lqTC1IQCFrtOWdwj4Ewl2uL1NbXPqpMXyWvWk3izUe
+         SVFYrMfmfMyvyHjBhcbstgB+/W0k2T7B5tK8DFRKM2AF4QHaLlxnbc+j8FPVr1EvZC
+         b4dqfr7hmWOS+D0Hb1Hpl5xmts6N9G29GrHyTZG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/406] clk: qcom: reset: Use the correct type of sleep/delay based on length
+        patches@lists.linux.dev,
+        Tomohiro Komagata <tomohiro.komagata.aj@renesas.com>,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.5 032/285] arm64: dts: renesas: rzg2l: Fix txdv-skew-psec typos
 Date:   Sun, 17 Sep 2023 21:10:32 +0200
-Message-ID: <20230917191105.894023140@linuxfoundation.org>
+Message-ID: <20230917191052.781761234@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +51,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Chris Paterson <chris.paterson2@renesas.com>
 
-[ Upstream commit 181b66ee7cdd824797fc99b53bec29cf5630a04f ]
+commit db67345716a52abb750ec8f76d6a5675218715f9 upstream.
 
-Use the fsleep() helper that (based on the length of the delay, see: [1])
-chooses the correct sleep/delay functions.
+It looks like txdv-skew-psec is a typo from a copy+paste. txdv-skew-psec
+is not present in the PHY bindings nor is it in the driver.
 
-[1] https://www.kernel.org/doc/Documentation/timers/timers-howto.txt
+Correct to txen-skew-psec which is clearly what it was meant to be.
 
-Fixes: 2cb8a39b6781 ("clk: qcom: reset: Allow specifying custom reset delay")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230726-topic-qcom_reset-v3-1-5958facd5db2@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Given that the default for txen-skew-psec is 0, and the device tree is
+only trying to set it to 0 anyway, there should not be any functional
+change from this fix.
+
+Fixes: 361b0dcbd7f9 ("arm64: dts: renesas: rzg2l-smarc-som: Enable Ethernet")
+Fixes: 6494e4f90503 ("arm64: dts: renesas: rzg2ul-smarc-som: Enable Ethernet on SMARC platform")
+Fixes: ce0c63b6a5ef ("arm64: dts: renesas: Add initial device tree for RZ/G2LC SMARC EVK")
+Cc: stable@vger.kernel.org # 6.1.y
+Reported-by: Tomohiro Komagata <tomohiro.komagata.aj@renesas.com>
+Signed-off-by: Chris Paterson <chris.paterson2@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230609221136.7431-1-chris.paterson2@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/reset.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi  |    4 ++--
+ arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi |    2 +-
+ arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi |    4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/qcom/reset.c b/drivers/clk/qcom/reset.c
-index 0e914ec7aeae1..e45e32804d2c7 100644
---- a/drivers/clk/qcom/reset.c
-+++ b/drivers/clk/qcom/reset.c
-@@ -16,7 +16,8 @@ static int qcom_reset(struct reset_controller_dev *rcdev, unsigned long id)
- 	struct qcom_reset_controller *rst = to_qcom_reset_controller(rcdev);
- 
- 	rcdev->ops->assert(rcdev, id);
--	udelay(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
-+	fsleep(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
-+
- 	rcdev->ops->deassert(rcdev, id);
- 	return 0;
- }
--- 
-2.40.1
-
+--- a/arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi
+@@ -100,7 +100,7 @@
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+@@ -128,7 +128,7 @@
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+--- a/arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi
+@@ -77,7 +77,7 @@
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+--- a/arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi
+@@ -83,7 +83,7 @@
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+@@ -112,7 +112,7 @@
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
 
 
