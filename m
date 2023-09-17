@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C531F7A3CCB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B7C7A3AEF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241144AbjIQUfR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56892 "EHLO
+        id S240527AbjIQUKt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:10:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241197AbjIQUfL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:11 -0400
+        with ESMTP id S240617AbjIQUKh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1248110E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC49C433C9;
-        Sun, 17 Sep 2023 20:35:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEFFB5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18232C433C8;
+        Sun, 17 Sep 2023 20:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982905;
-        bh=F7eKVdOZt5Tnl1rqzd7kPl8RMr6LNtJCyt3pTx8eexc=;
+        s=korg; t=1694981431;
+        bh=FPMo3cLjyMHVLhRvEtInB8aSkq2WNaxGodpWNHWWZSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X91lofZL/S2lnv4JQaidyJUhRv46WqvkKwaHcJSoCk218QNKZxk/8IyTDSXQRmYfJ
-         h42JVqbnaixrM65sJmQvRFr657LqZ0ecPLqpOPKmdafib8wF9bqSb7ZN9ZjnRO8cxd
-         K2bnInRr3hDtz/Q2mTq7MGDg1LHADXmZntt8jk5E=
+        b=aWdigs8rTryv7aUNYny3WC9vNBjAJIQ4Ru1uA2Sfxq3YJOCOhGARcMKeBNr816xv8
+         4DWSTiQIHVfWpfkaGeMGhma6FW+LiHwidvyOrf7iKu8nVfs2eLeOXdXyRL68QMvcn/
+         aCO0NM6bAgA1VgRjfjnWjmZtxbc76xOAftEpTSGM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 388/511] scsi: qla2xxx: Error code did not return to upper layer
-Date:   Sun, 17 Sep 2023 21:13:35 +0200
-Message-ID: <20230917191123.164314553@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 089/219] ipv4: annotate data-races around fi->fib_dead
+Date:   Sun, 17 Sep 2023 21:13:36 +0200
+Message-ID: <20230917191044.190028439@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +52,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 0ba0b018f94525a6b32f5930f980ce9b62b72e6f upstream.
+[ Upstream commit fce92af1c29d90184dfec638b5738831097d66e9 ]
 
-TMF was returned with an error code. The error code was not preserved to be
-returned to upper layer. Instead, the error code from the Marker was
-returned.
+syzbot complained about a data-race in fib_table_lookup() [1]
 
-Preserve error code from TMF and return it to upper layer.
+Add appropriate annotations to document it.
 
-Cc: stable@vger.kernel.org
-Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+BUG: KCSAN: data-race in fib_release_info / fib_table_lookup
+
+write to 0xffff888150f31744 of 1 bytes by task 1189 on cpu 0:
+fib_release_info+0x3a0/0x460 net/ipv4/fib_semantics.c:281
+fib_table_delete+0x8d2/0x900 net/ipv4/fib_trie.c:1777
+fib_magic+0x1c1/0x1f0 net/ipv4/fib_frontend.c:1106
+fib_del_ifaddr+0x8cf/0xa60 net/ipv4/fib_frontend.c:1317
+fib_inetaddr_event+0x77/0x200 net/ipv4/fib_frontend.c:1448
+notifier_call_chain kernel/notifier.c:93 [inline]
+blocking_notifier_call_chain+0x90/0x200 kernel/notifier.c:388
+__inet_del_ifa+0x4df/0x800 net/ipv4/devinet.c:432
+inet_del_ifa net/ipv4/devinet.c:469 [inline]
+inetdev_destroy net/ipv4/devinet.c:322 [inline]
+inetdev_event+0x553/0xaf0 net/ipv4/devinet.c:1606
+notifier_call_chain kernel/notifier.c:93 [inline]
+raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
+call_netdevice_notifiers_info net/core/dev.c:1962 [inline]
+call_netdevice_notifiers_mtu+0xd2/0x130 net/core/dev.c:2037
+dev_set_mtu_ext+0x30b/0x3e0 net/core/dev.c:8673
+do_setlink+0x5be/0x2430 net/core/rtnetlink.c:2837
+rtnl_setlink+0x255/0x300 net/core/rtnetlink.c:3177
+rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6445
+netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2549
+rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6463
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1914
+sock_sendmsg_nosec net/socket.c:725 [inline]
+sock_sendmsg net/socket.c:748 [inline]
+sock_write_iter+0x1aa/0x230 net/socket.c:1129
+do_iter_write+0x4b4/0x7b0 fs/read_write.c:860
+vfs_writev+0x1a8/0x320 fs/read_write.c:933
+do_writev+0xf8/0x220 fs/read_write.c:976
+__do_sys_writev fs/read_write.c:1049 [inline]
+__se_sys_writev fs/read_write.c:1046 [inline]
+__x64_sys_writev+0x45/0x50 fs/read_write.c:1046
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffff888150f31744 of 1 bytes by task 21839 on cpu 1:
+fib_table_lookup+0x2bf/0xd50 net/ipv4/fib_trie.c:1585
+fib_lookup include/net/ip_fib.h:383 [inline]
+ip_route_output_key_hash_rcu+0x38c/0x12c0 net/ipv4/route.c:2751
+ip_route_output_key_hash net/ipv4/route.c:2641 [inline]
+__ip_route_output_key include/net/route.h:134 [inline]
+ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2869
+send4+0x1e7/0x500 drivers/net/wireguard/socket.c:61
+wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
+wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
+wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
+wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
+process_one_work+0x434/0x860 kernel/workqueue.c:2600
+worker_thread+0x5f2/0xa10 kernel/workqueue.c:2751
+kthread+0x1d7/0x210 kernel/kthread.c:389
+ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
+ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+value changed: 0x00 -> 0x01
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 21839 Comm: kworker/u4:18 Tainted: G W 6.5.0-syzkaller #0
+
+Fixes: dccd9ecc3744 ("ipv4: Do not use dead fib_info entries.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230830095520.1046984-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/fib_semantics.c | 5 ++++-
+ net/ipv4/fib_trie.c      | 3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2225,6 +2225,8 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
- 			rval = QLA_FUNCTION_FAILED;
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 3bb890a40ed73..3b6e6bc80dc1c 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -278,7 +278,8 @@ void fib_release_info(struct fib_info *fi)
+ 				hlist_del(&nexthop_nh->nh_hash);
+ 			} endfor_nexthops(fi)
  		}
+-		fi->fib_dead = 1;
++		/* Paired with READ_ONCE() from fib_table_lookup() */
++		WRITE_ONCE(fi->fib_dead, 1);
+ 		fib_info_put(fi);
  	}
-+	if (tm_iocb->u.tmf.data)
-+		rval = tm_iocb->u.tmf.data;
+ 	spin_unlock_bh(&fib_info_lock);
+@@ -1581,6 +1582,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ link_it:
+ 	ofi = fib_find_info(fi);
+ 	if (ofi) {
++		/* fib_table_lookup() should not see @fi yet. */
+ 		fi->fib_dead = 1;
+ 		free_fib_info(fi);
+ 		refcount_inc(&ofi->fib_treeref);
+@@ -1619,6 +1621,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
  
- done_free_sp:
- 	/* ref: INIT */
+ failure:
+ 	if (fi) {
++		/* fib_table_lookup() should not see @fi yet. */
+ 		fi->fib_dead = 1;
+ 		free_fib_info(fi);
+ 	}
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 74d403dbd2b4e..d13fb9e76b971 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -1582,7 +1582,8 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
+ 		if (fa->fa_dscp &&
+ 		    inet_dscp_to_dsfield(fa->fa_dscp) != flp->flowi4_tos)
+ 			continue;
+-		if (fi->fib_dead)
++		/* Paired with WRITE_ONCE() in fib_release_info() */
++		if (READ_ONCE(fi->fib_dead))
+ 			continue;
+ 		if (fa->fa_info->fib_scope < flp->flowi4_scope)
+ 			continue;
+-- 
+2.40.1
+
 
 
