@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB6B7A391F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF7D37A37E5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239963AbjIQTpG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60700 "EHLO
+        id S239563AbjIQT01 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:26:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240015AbjIQTov (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:44:51 -0400
+        with ESMTP id S239703AbjIQT0N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF75413E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4C0C433C9;
-        Sun, 17 Sep 2023 19:44:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717CB120
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:26:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD21C433C8;
+        Sun, 17 Sep 2023 19:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979884;
-        bh=baBWhUDNBqDGgKIqsk8TlJ4yQD5OzG9s3eFLX7YRrx8=;
+        s=korg; t=1694978767;
+        bh=hiWOxdf0sySCw5wRF3dFSlbmQUPTRZISyfpw4+1pysM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eN47Xo+di/zrOp87imPkCa9uGX8riSS9gxdcMtTTc3SpqjSalaRqBSKlCnjekayHV
-         jTEG+23FsziFj/BYgFhLle6RYe16i8/M9DdmtIcdopA0xg731v/dyfa5OKtpXaDw8h
-         MRN0Vh+UNYO5MrueAayEOoUJ6jfOe1E95k03yMW0=
+        b=WQgY+xEtuYeDd97Aau9Us2+SOh4td4KeB+vMFMkzo3qapW9ZpJxinN5NI/wjG6svQ
+         s4vo3Kj2y1l/Xu85sq7Bp0bRLTlb1Zm4S0xHWXeyNDGMTaM3diTVeVB1PTitt5HSmw
+         nDrIXpFzFtBgy+hQ8QGLe/xNDTLAB9NIkLezLvwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 009/285] scsi: qla2xxx: Fix erroneous link up failure
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 155/406] drm/panel: simple: Add missing connector type and pixel format for AUO T215HVN01
 Date:   Sun, 17 Sep 2023 21:10:09 +0200
-Message-ID: <20230917191051.946535880@linuxfoundation.org>
+Message-ID: <20230917191105.266413618@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 5b51f35d127e7bef55fa869d2465e2bca4636454 upstream.
+[ Upstream commit 7a675a8fa598edb29a664a91adb80f0340649f6f ]
 
-Link up failure occurred where driver failed to see certain events from FW
-indicating link up (AEN 8011) and fabric login completion (AEN 8014).
-Without these 2 events, driver would not proceed forward to scan the
-fabric. The cause of this is due to delay in the receive of interrupt for
-Mailbox 60 that causes qla to set the fw_started flag late.  The late
-setting of this flag causes other interrupts to be dropped.  These dropped
-interrupts happen to be the link up (AEN 8011) and fabric login completion
-(AEN 8014).
+The connector type and pixel format are missing for this panel,
+add them to prevent various drivers from failing to determine
+either of those parameters.
 
-Set fw_started flag early to prevent interrupts being dropped.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230714070104.40052-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ee933a1d5c4 ("drm/panel: simple: Add support for AUO T215HVN01")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230709134914.449328-1-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    3 ++-
- drivers/scsi/qla2xxx/qla_isr.c  |    6 +++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4815,15 +4815,16 @@ qla2x00_init_rings(scsi_qla_host_t *vha)
- 	if (ha->flags.edif_enabled)
- 		mid_init_cb->init_cb.frame_payload_size = cpu_to_le16(ELS_MAX_PAYLOAD);
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index e40321d798981..e90b518118881 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1200,7 +1200,9 @@ static const struct panel_desc auo_t215hvn01 = {
+ 	.delay = {
+ 		.disable = 5,
+ 		.unprepare = 1000,
+-	}
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
-+	QLA_FW_STARTED(ha);
- 	rval = qla2x00_init_firmware(vha, ha->init_cb_size);
- next_check:
- 	if (rval) {
-+		QLA_FW_STOPPED(ha);
- 		ql_log(ql_log_fatal, vha, 0x00d2,
- 		    "Init Firmware **** FAILED ****.\n");
- 	} else {
- 		ql_dbg(ql_dbg_init, vha, 0x00d3,
- 		    "Init Firmware -- success.\n");
--		QLA_FW_STARTED(ha);
- 		vha->u_ql2xexchoffld = vha->u_ql2xiniexchg = 0;
- 	}
- 
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -1121,8 +1121,12 @@ qla2x00_async_event(scsi_qla_host_t *vha
- 	unsigned long	flags;
- 	fc_port_t	*fcport = NULL;
- 
--	if (!vha->hw->flags.fw_started)
-+	if (!vha->hw->flags.fw_started) {
-+		ql_log(ql_log_warn, vha, 0x50ff,
-+		    "Dropping AEN - %04x %04x %04x %04x.\n",
-+		    mb[0], mb[1], mb[2], mb[3]);
- 		return;
-+	}
- 
- 	/* Setup to process RIO completion. */
- 	handle_cnt = 0;
+ static const struct drm_display_mode avic_tm070ddh03_mode = {
+-- 
+2.40.1
+
 
 
