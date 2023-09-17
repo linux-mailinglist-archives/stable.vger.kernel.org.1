@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A88457A3D27
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 201467A3B77
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241213AbjIQUjb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44078 "EHLO
+        id S240701AbjIQUSM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241268AbjIQUjD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:03 -0400
+        with ESMTP id S240702AbjIQURs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1387133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE67C433C9;
-        Sun, 17 Sep 2023 20:38:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A549E101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6D9C433C8;
+        Sun, 17 Sep 2023 20:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983137;
-        bh=HLuNdYq3Aq63MoFe2+hUVbV4mDH+DzJbxPC22DS3b4Y=;
+        s=korg; t=1694981862;
+        bh=7r2XjeQSronMV+K4uPDGh3gE5PxyFdbnwPFYrDGvyPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rnmzYK7hsIorHJAMGpHzkx2SlAimOEqZDXj+iwqMl4tbMYGHrJ8Rm9VGFEM7lCO+n
-         BJuysCBccMGfkM3+FufgFLmpT6yZXCcAo9Zp7QYR2SD+ilbl/5jcwDV93bHYdItitq
-         1i9Nj3/1kAom9eOby5oI6GR3qtSXnErX2WQWvp1M=
+        b=hd762e9jPTNb+ZV4rlL/ISHuF+1DLUwRN+mYd0SlHxp0Su+i6SYF/+hrp/2+50zMp
+         OjbVQqmW9l1ULRi43T6gMPQ8GEBg9z4KQZYV635WW/QKcTxp0hKZ4LOh1I4Lmk8RzP
+         i57QjBcCR7WIoRYiOgKwzo/BjC8/LHewb8tKuQB8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 454/511] net: dsa: sja1105: complete tc-cbs offload support on SJA1110
-Date:   Sun, 17 Sep 2023 21:14:41 +0200
-Message-ID: <20230917191124.721530724@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 155/219] btrfs: zoned: do not zone finish data relocation block group
+Date:   Sun, 17 Sep 2023 21:14:42 +0200
+Message-ID: <20230917191046.648509908@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,140 +51,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 180a7419fe4adc8d9c8e0ef0fd17bcdd0cf78acd ]
+commit 332581bde2a419d5f12a93a1cdc2856af649a3cc upstream.
 
-The blamed commit left this delta behind:
+When multiple writes happen at once, we may need to sacrifice a currently
+active block group to be zone finished for a new allocation. We choose a
+block group with the least free space left, and zone finish it.
 
-  struct sja1105_cbs_entry {
- -	u64 port;
- -	u64 prio;
- +	u64 port; /* Not used for SJA1110 */
- +	u64 prio; /* Not used for SJA1110 */
-  	u64 credit_hi;
-  	u64 credit_lo;
-  	u64 send_slope;
-  	u64 idle_slope;
-  };
+To do the finishing, we need to send IOs for already allocated region
+and wait for them and on-going IOs. Otherwise, these IOs fail because the
+zone is already finished at the time the IO reach a device.
 
-but did not actually implement tc-cbs offload fully for the new switch.
-The offload is accepted, but it doesn't work.
+However, if a block group dedicated to the data relocation is zone
+finished, there is a chance that finishing it before an ongoing write IO
+reaches the device. That is because there is timing gap between an
+allocation is done (block_group->reservations == 0, as pre-allocation is
+done) and an ordered extent is created when the relocation IO starts.
+Thus, if we finish the zone between them, we can fail the IOs.
 
-The difference compared to earlier switch generations is that now, the
-table of CBS shapers is sparse, because there are many more shapers, so
-the mapping between a {port, prio} and a table index is static, rather
-than requiring us to store the port and prio into the sja1105_cbs_entry.
+We cannot simply use "fs_info->data_reloc_bg == block_group->start" to
+avoid the zone finishing. Because, the data_reloc_bg may already switch to
+a new block group, while there are still ongoing write IOs to the old
+data_reloc_bg.
 
-So, the problem is that the code programs the CBS shaper parameters at a
-dynamic table index which is incorrect.
+So, this patch reworks the BLOCK_GROUP_FLAG_ZONED_DATA_RELOC bit to
+indicate there is a data relocation allocation and/or ongoing write to the
+block group. The bit is set on allocation and cleared in end_io function of
+the last IO for the currently allocated region.
 
-All that needs to be done for SJA1110 CBS shapers to work is to bypass
-the logic which allocates shapers in a dense manner, as for SJA1105, and
-use the fixed mapping instead.
+To change the timing of the bit setting also solves the issue that the bit
+being left even after there is no IO going on. With the current code, if
+the data_reloc_bg switches after the last IO to the current data_reloc_bg,
+the bit is set at this timing and there is no one clearing that bit. As a
+result, that block group is kept unallocatable for anything.
 
-Fixes: 3e77e59bf8cf ("net: dsa: sja1105: add support for the SJA1110 switch family")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 343d8a30851c ("btrfs: zoned: prevent allocation from previous data relocation BG")
+Fixes: 74e91b12b115 ("btrfs: zoned: zone finish unused block group")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105.h      |  2 ++
- drivers/net/dsa/sja1105/sja1105_main.c | 13 +++++++++++++
- drivers/net/dsa/sja1105/sja1105_spi.c  |  4 ++++
- 3 files changed, 19 insertions(+)
+ fs/btrfs/extent-tree.c |   43 +++++++++++++++++++++++--------------------
+ fs/btrfs/zoned.c       |   16 +++++++++++++---
+ 2 files changed, 36 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105.h b/drivers/net/dsa/sja1105/sja1105.h
-index 5e5d24e7c02b2..548d585256fbb 100644
---- a/drivers/net/dsa/sja1105/sja1105.h
-+++ b/drivers/net/dsa/sja1105/sja1105.h
-@@ -111,6 +111,8 @@ struct sja1105_info {
- 	int max_frame_mem;
- 	int num_ports;
- 	bool multiple_cascade_ports;
-+	/* Every {port, TXQ} has its own CBS shaper */
-+	bool fixed_cbs_mapping;
- 	enum dsa_tag_protocol tag_proto;
- 	const struct sja1105_dynamic_table_ops *dyn_ops;
- 	const struct sja1105_table_ops *static_ops;
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 9176bd78b3d61..d5600d0d6ef10 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2014,12 +2014,22 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
- }
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -3810,7 +3810,8 @@ static int do_allocation_zoned(struct bt
+ 	       fs_info->data_reloc_bg == 0);
  
- #define BYTES_PER_KBIT (1000LL / 8)
-+/* Port 0 (the uC port) does not have CBS shapers */
-+#define SJA1110_FIXED_CBS(port, prio) ((((port) - 1) * SJA1105_NUM_TC) + (prio))
+ 	if (block_group->ro ||
+-	    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
++	    (!ffe_ctl->for_data_reloc &&
++	     test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags))) {
+ 		ret = 1;
+ 		goto out;
+ 	}
+@@ -3853,8 +3854,26 @@ static int do_allocation_zoned(struct bt
+ 	if (ffe_ctl->for_treelog && !fs_info->treelog_bg)
+ 		fs_info->treelog_bg = block_group->start;
  
- static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
- 				   int port, int prio)
- {
- 	int i;
- 
-+	if (priv->info->fixed_cbs_mapping) {
-+		i = SJA1110_FIXED_CBS(port, prio);
-+		if (i >= 0 && i < priv->info->num_cbs_shapers)
-+			return i;
-+
-+		return -1;
+-	if (ffe_ctl->for_data_reloc && !fs_info->data_reloc_bg)
+-		fs_info->data_reloc_bg = block_group->start;
++	if (ffe_ctl->for_data_reloc) {
++		if (!fs_info->data_reloc_bg)
++			fs_info->data_reloc_bg = block_group->start;
++		/*
++		 * Do not allow allocations from this block group, unless it is
++		 * for data relocation. Compared to increasing the ->ro, setting
++		 * the ->zoned_data_reloc_ongoing flag still allows nocow
++		 * writers to come in. See btrfs_inc_nocow_writers().
++		 *
++		 * We need to disable an allocation to avoid an allocation of
++		 * regular (non-relocation data) extent. With mix of relocation
++		 * extents and regular extents, we can dispatch WRITE commands
++		 * (for relocation extents) and ZONE APPEND commands (for
++		 * regular extents) at the same time to the same zone, which
++		 * easily break the write pointer.
++		 *
++		 * Also, this flag avoids this block group to be zone finished.
++		 */
++		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags);
 +	}
-+
- 	for (i = 0; i < priv->info->num_cbs_shapers; i++)
- 		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
- 			return i;
-@@ -2031,6 +2041,9 @@ static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
- {
- 	int i;
  
-+	if (priv->info->fixed_cbs_mapping)
-+		return -1;
-+
- 	for (i = 0; i < priv->info->num_cbs_shapers; i++)
- 		if (!priv->cbs[i].idle_slope && !priv->cbs[i].send_slope)
- 			return i;
-diff --git a/drivers/net/dsa/sja1105/sja1105_spi.c b/drivers/net/dsa/sja1105/sja1105_spi.c
-index d3c9ad6d39d46..e6b61aef4127c 100644
---- a/drivers/net/dsa/sja1105/sja1105_spi.c
-+++ b/drivers/net/dsa/sja1105/sja1105_spi.c
-@@ -781,6 +781,7 @@ const struct sja1105_info sja1110a_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
-@@ -831,6 +832,7 @@ const struct sja1105_info sja1110b_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
-@@ -881,6 +883,7 @@ const struct sja1105_info sja1110c_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
-@@ -931,6 +934,7 @@ const struct sja1105_info sja1110d_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
--- 
-2.40.1
-
+ 	ffe_ctl->found_offset = start + block_group->alloc_offset;
+ 	block_group->alloc_offset += num_bytes;
+@@ -3872,24 +3891,8 @@ static int do_allocation_zoned(struct bt
+ out:
+ 	if (ret && ffe_ctl->for_treelog)
+ 		fs_info->treelog_bg = 0;
+-	if (ret && ffe_ctl->for_data_reloc &&
+-	    fs_info->data_reloc_bg == block_group->start) {
+-		/*
+-		 * Do not allow further allocations from this block group.
+-		 * Compared to increasing the ->ro, setting the
+-		 * ->zoned_data_reloc_ongoing flag still allows nocow
+-		 *  writers to come in. See btrfs_inc_nocow_writers().
+-		 *
+-		 * We need to disable an allocation to avoid an allocation of
+-		 * regular (non-relocation data) extent. With mix of relocation
+-		 * extents and regular extents, we can dispatch WRITE commands
+-		 * (for relocation extents) and ZONE APPEND commands (for
+-		 * regular extents) at the same time to the same zone, which
+-		 * easily break the write pointer.
+-		 */
+-		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags);
++	if (ret && ffe_ctl->for_data_reloc)
+ 		fs_info->data_reloc_bg = 0;
+-	}
+ 	spin_unlock(&fs_info->relocation_bg_lock);
+ 	spin_unlock(&fs_info->treelog_bg_lock);
+ 	spin_unlock(&block_group->lock);
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2009,6 +2009,10 @@ static int do_zone_finish(struct btrfs_b
+ 	 * and block_group->meta_write_pointer for metadata.
+ 	 */
+ 	if (!fully_written) {
++		if (test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
++			spin_unlock(&block_group->lock);
++			return -EAGAIN;
++		}
+ 		spin_unlock(&block_group->lock);
+ 
+ 		ret = btrfs_inc_block_group_ro(block_group, false);
+@@ -2037,7 +2041,9 @@ static int do_zone_finish(struct btrfs_b
+ 			return 0;
+ 		}
+ 
+-		if (block_group->reserved) {
++		if (block_group->reserved ||
++		    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC,
++			     &block_group->runtime_flags)) {
+ 			spin_unlock(&block_group->lock);
+ 			btrfs_dec_block_group_ro(block_group);
+ 			return -EAGAIN;
+@@ -2268,7 +2274,10 @@ void btrfs_zoned_release_data_reloc_bg(s
+ 
+ 	/* All relocation extents are written. */
+ 	if (block_group->start + block_group->alloc_offset == logical + length) {
+-		/* Now, release this block group for further allocations. */
++		/*
++		 * Now, release this block group for further allocations and
++		 * zone finish.
++		 */
+ 		clear_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC,
+ 			  &block_group->runtime_flags);
+ 	}
+@@ -2292,7 +2301,8 @@ int btrfs_zone_finish_one_bg(struct btrf
+ 
+ 		spin_lock(&block_group->lock);
+ 		if (block_group->reserved || block_group->alloc_offset == 0 ||
+-		    (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM)) {
++		    (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM) ||
++		    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
+ 			spin_unlock(&block_group->lock);
+ 			continue;
+ 		}
 
 
