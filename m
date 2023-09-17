@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B56EB7A3A5A
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02A47A38B0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240407AbjIQUCY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47450 "EHLO
+        id S239825AbjIQTjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239541AbjIQUBx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:53 -0400
+        with ESMTP id S239830AbjIQTit (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34381A3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C7AC43397;
-        Sun, 17 Sep 2023 20:01:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AB112F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE345C433C8;
+        Sun, 17 Sep 2023 19:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980896;
-        bh=as0J3H/xL5dPfWVrq0kfX/GJJyWMonj+2aUu74eZ/Ug=;
+        s=korg; t=1694979523;
+        bh=Lsi8qjLrylpLacNBb7E/6YJaM9Yt4YmkmDtL4RA85gc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HRj1W4mq4atEU5wTkmPL3QwhcZHDQLP/P/EUu80LkKYqhkS/4DGLa7/xDNuKTr9s2
-         1V7w0H9zvLGMYIHRrkIEvTFBIzPGVtohccVkIHhTs3hGIi4cJOBJzrGuJiScjkjfY2
-         4Su5j8r/ke1jdC7i0I0FpD5K68KvhwTbxP3XBCSg=
+        b=yc8iI9TRyIkYZM+IFZK59af7kOORt/C0rP/bzRww6SLs4VKCzed4eGHLZ7poSUVN8
+         7OIn0J/dRfgG7MluOe084wHfQCkeQEcVXCNrBcpR3QEgEBMfwZrrU0XqAgKOoG/ZqH
+         QXEZgt7u/P5dRkDQnlb4uosZJnikxkw1GvQPI8H0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.1 039/219] pinctrl: cherryview: fix address_space_handler() argument
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Tom Rix <trix@redhat.com>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 312/406] udf: initialize newblock to 0
 Date:   Sun, 17 Sep 2023 21:12:46 +0200
-Message-ID: <20230917191042.409175998@linuxfoundation.org>
+Message-ID: <20230917191109.539529677@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Tom Rix <trix@redhat.com>
 
-commit d5301c90716a8e20bc961a348182daca00c8e8f0 upstream.
+commit 23970a1c9475b305770fd37bebfec7a10f263787 upstream.
 
-First argument of acpi_*_address_space_handler() APIs is acpi_handle of
-the device, which is incorrectly passed in driver ->remove() path here.
-Fix it by passing the appropriate argument and while at it, make both
-API calls consistent using ACPI_HANDLE().
+The clang build reports this error
+fs/udf/inode.c:805:6: error: variable 'newblock' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
+        if (*err < 0)
+            ^~~~~~~~
+newblock is never set before error handling jump.
+Initialize newblock to 0 and remove redundant settings.
 
-Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: d8b39db5fab8 ("udf: Handle error when adding extent to a file")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Tom Rix <trix@redhat.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20221230175341.1629734-1-trix@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/intel/pinctrl-cherryview.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/udf/inode.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1698,7 +1698,6 @@ static int chv_pinctrl_probe(struct plat
- 	struct intel_community_context *cctx;
- 	struct intel_community *community;
- 	struct device *dev = &pdev->dev;
--	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct intel_pinctrl *pctrl;
- 	acpi_status status;
- 	unsigned int i;
-@@ -1766,7 +1765,7 @@ static int chv_pinctrl_probe(struct plat
- 	if (ret)
- 		return ret;
- 
--	status = acpi_install_address_space_handler(adev->handle,
-+	status = acpi_install_address_space_handler(ACPI_HANDLE(dev),
- 					community->acpi_space_id,
- 					chv_pinctrl_mmio_access_handler,
- 					NULL, pctrl);
-@@ -1783,7 +1782,7 @@ static int chv_pinctrl_remove(struct pla
- 	struct intel_pinctrl *pctrl = platform_get_drvdata(pdev);
- 	const struct intel_community *community = &pctrl->communities[0];
- 
--	acpi_remove_address_space_handler(ACPI_COMPANION(&pdev->dev),
-+	acpi_remove_address_space_handler(ACPI_HANDLE(&pdev->dev),
- 					  community->acpi_space_id,
- 					  chv_pinctrl_mmio_access_handler);
- 
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -695,7 +695,7 @@ static sector_t inode_getblk(struct inod
+ 	struct kernel_lb_addr eloc, tmpeloc;
+ 	int c = 1;
+ 	loff_t lbcount = 0, b_off = 0;
+-	udf_pblk_t newblocknum, newblock;
++	udf_pblk_t newblocknum, newblock = 0;
+ 	sector_t offset = 0;
+ 	int8_t etype;
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
+@@ -798,7 +798,6 @@ static sector_t inode_getblk(struct inod
+ 		ret = udf_do_extend_file(inode, &prev_epos, laarr, hole_len);
+ 		if (ret < 0) {
+ 			*err = ret;
+-			newblock = 0;
+ 			goto out_free;
+ 		}
+ 		c = 0;
+@@ -861,7 +860,6 @@ static sector_t inode_getblk(struct inod
+ 				goal, err);
+ 		if (!newblocknum) {
+ 			*err = -ENOSPC;
+-			newblock = 0;
+ 			goto out_free;
+ 		}
+ 		if (isBeyondEOF)
 
 
