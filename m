@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535397A38C4
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB377A38C3
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239411AbjIQTkS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S231883AbjIQTkS (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58108 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231883AbjIQTjo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:44 -0400
+        with ESMTP id S239842AbjIQTjr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8B912F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D64C433C8;
-        Sun, 17 Sep 2023 19:39:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 394A1133
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E46AC433CD;
+        Sun, 17 Sep 2023 19:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979578;
-        bh=byMRyfuVWpcYGeD+/w3pNWsC76In0z3/sWU2bNkQc0I=;
+        s=korg; t=1694979581;
+        bh=sBmrhuPhBxUDaQ7dzbjAaTdzyLpUcrB42iXHItB6C5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pHRds4MaU4mDj1EwXOdFr9jU1+Ny/ytksd+ixTsd9fFV2e6zzZVy1Kix+gGRwq+qb
-         OZYUIqCbj7TRsDj8x1GaL7Dt2Cuhq9oAK4ETys5CmqlLU8pSeAcEMEfZ3P3YEmLCdS
-         T1QkiYJjkeKeFeKZbmbN3C9hg/LW8ljfsvh4P2mI=
+        b=d5GtI+Os7DXSo+ofZ0jxvXTGEvy7BGKscIrp6cwNd+PqglGRi0urZvIm3xRoWndzV
+         bFdz3tBcwjy6qPckGOb/UTfSZzfZOSp/eFhhZG7LukVDymtTplYbiIe84yzkAsj24y
+         AJRjLIe3sWtKDvQ7Ek1QQfICiPH/j6P2NKUUZq2Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
         Eric Dumazet <edumazet@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 353/406] af_unix: Fix data-races around sk->sk_shutdown.
-Date:   Sun, 17 Sep 2023 21:13:27 +0200
-Message-ID: <20230917191110.592689656@linuxfoundation.org>
+Subject: [PATCH 5.10 354/406] af_unix: Fix data race around sk->sk_err.
+Date:   Sun, 17 Sep 2023 21:13:28 +0200
+Message-ID: <20230917191110.620457307@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -58,92 +57,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
+[ Upstream commit b192812905e4b134f7b7994b079eb647e9d2d37e ]
 
-sk->sk_shutdown is changed under unix_state_lock(sk), but
-unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
+As with sk->sk_shutdown shown in the previous patch, sk->sk_err can be
+read locklessly by unix_dgram_sendmsg().
 
-  sock_alloc_send_pskb
-  `- sock_wait_for_wmem
+Let's use READ_ONCE() for sk_err as well.
 
-Let's use READ_ONCE() there.
-
-Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
-Fix data races around sk->sk_shutdown.").
-
-BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
-
-write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
- unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
- unix_release+0x59/0x80 net/unix/af_unix.c:1053
- __sock_release+0x7d/0x170 net/socket.c:654
- sock_close+0x19/0x30 net/socket.c:1386
- __fput+0x2a3/0x680 fs/file_table.c:384
- ____fput+0x15/0x20 fs/file_table.c:412
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
- sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
- unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x00 -> 0x03
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Note that the writer side is marked by commit cc04410af7de ("af_unix:
+annotate lockless accesses to sk->sk_err").
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/core/sock.c b/net/core/sock.c
-index e2d45631c15d7..a971385a95d92 100644
+index a971385a95d92..fcb998dc2dc68 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -2315,7 +2315,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
+@@ -2317,7 +2317,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
  			break;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
  			break;
- 		if (sk->sk_err)
+-		if (sk->sk_err)
++		if (READ_ONCE(sk->sk_err))
  			break;
-@@ -2345,7 +2345,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
- 			goto failure;
- 
- 		err = -EPIPE;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			goto failure;
- 
- 		if (sk_wmem_alloc_get(sk) < READ_ONCE(sk->sk_sndbuf))
+ 		timeo = schedule_timeout(timeo);
+ 	}
 -- 
 2.40.1
 
