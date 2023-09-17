@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73A457A3D63
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A28E7A3B9F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241220AbjIQUmK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        id S240835AbjIQUUR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241303AbjIQUlo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:44 -0400
+        with ESMTP id S240757AbjIQUTr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4BC118
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B05C433CB;
-        Sun, 17 Sep 2023 20:41:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F09101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D716C433C8;
+        Sun, 17 Sep 2023 20:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983298;
-        bh=jVMoetdjx2myosw4xd8mjeQZe2Rvi3UtzKFjsDmbzMA=;
+        s=korg; t=1694981982;
+        bh=eyUaPxDvoBiSihAEMziXLBnWMtiD1hYaMGJpwl7jGIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nbG19bQP2wxm/NmFgejcKYqwS3XQgRzBvei6Y3t5H4guFeg/MGVpCg50lngNtiJa7
-         fkQCsS5pY9f2jvbIbVrfv8C9a6RSomCQJyGA4XBNCqY3yx5AnU5n9bjBRQRbh+qYhW
-         5ofuSALWb6T4QNQyrXZTPFBvycphQ1CzIV5lPVoE=
+        b=inPiWdk97AmhAKU7xVsw2dbRsr1wBulB50WZeU+WgbvR3QMc0wyig6rnaHH1sohmq
+         c1V/zAymMsdA0p210s1LY7F3kpd4iMoNnOpAtdGeDXBWWEMIXR24jPJ6Pi0189eose
+         MJfkpRFo9iIYOR1/hbfwKLo6GPU6SldRfwtzQ45s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 500/511] r8152: check budget for r8152_poll()
-Date:   Sun, 17 Sep 2023 21:15:27 +0200
-Message-ID: <20230917191125.798348313@linuxfoundation.org>
+Subject: [PATCH 6.1 201/219] r8152: check budget for r8152_poll()
+Date:   Sun, 17 Sep 2023 21:15:28 +0200
+Message-ID: <20230917191048.205044060@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,7 +50,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -71,10 +71,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 579524cb5d9b2..4cd9bcca84c5b 100644
+index 059d610901d84..fc1458f96e170 100644
 --- a/drivers/net/usb/r8152.c
 +++ b/drivers/net/usb/r8152.c
-@@ -2625,6 +2625,9 @@ static int r8152_poll(struct napi_struct *napi, int budget)
+@@ -2628,6 +2628,9 @@ static int r8152_poll(struct napi_struct *napi, int budget)
  	struct r8152 *tp = container_of(napi, struct r8152, napi);
  	int work_done;
  
