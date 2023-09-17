@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E8C07A3888
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D1D7A3A4A
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239758AbjIQThF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
+        id S240320AbjIQUCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239809AbjIQTgm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:42 -0400
+        with ESMTP id S240341AbjIQUBn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE96C103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F56AC433C8;
-        Sun, 17 Sep 2023 19:36:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27FE5CCE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1968C433C9;
+        Sun, 17 Sep 2023 20:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979396;
-        bh=guKVQl8MbW0AenFvi3ODDLkb+KAXTyFtB7A/+LQM080=;
+        s=korg; t=1694980855;
+        bh=gwVcaf30Pfjogt0h9om2AC4GabOGeu71ECpEXmIirHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eb+RIRyyxDLnAvOPTGlmZv6qMxN+PH7J7TEw4DnZ/Hg5odgoo756RFK9TYR0EFUl0
-         spfItNaaBbYlc4Vd9oqXIKNpCTJUnWNvxa6IMJGNMqWnqPw5EN/Ddej/ohG6rgnRNF
-         kvWSrrIdXXk8mNj/PjnE7H6yzUoKbNDhhrB/kfRg=
+        b=UmMXqyezHGs4Q1MuebIlXnYzYlMIqnV928rdA0pdtvUuMIR0m62KccYWbqKwgDN4e
+         avOkD0Q06ZcjD9WLwWZrDtBVxNFgjWoRPig5efZMzdVaLTQQVZoPrvPl9zY0usGXbZ
+         WLffd6YX8NADtAXSUBv4+ZOplXZ8Qxozz7DbYhc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
-        Enlin Mu <enlin.mu@unisoc.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.10 300/406] pstore/ram: Check start of empty przs during init
-Date:   Sun, 17 Sep 2023 21:12:34 +0200
-Message-ID: <20230917191109.233333703@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Dave Airlie <airlied@redhat.com>,
+        dri-devel@lists.freedesktop.org,
+        Sui Jingfeng <suijingfeng@loongson.cn>,
+        Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.1 028/219] drm/ast: Fix DRAM init on AST2200
+Date:   Sun, 17 Sep 2023 21:12:35 +0200
+Message-ID: <20230917191042.010511579@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enlin Mu <enlin.mu@unisoc.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit fe8c3623ab06603eb760444a032d426542212021 upstream.
+commit 4cfe75f0f14f044dae66ad0e6eea812d038465d9 upstream.
 
-After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
-valid"), initialization would assume a prz was valid after seeing that
-the buffer_size is zero (regardless of the buffer start position). This
-unchecked start value means it could be outside the bounds of the buffer,
-leading to future access panics when written to:
+Fix the test for the AST2200 in the DRAM initialization. The value
+in ast->chip has to be compared against an enum constant instead of
+a numerical value.
 
- sysdump_panic_event+0x3b4/0x5b8
- atomic_notifier_call_chain+0x54/0x90
- panic+0x1c8/0x42c
- die+0x29c/0x2a8
- die_kernel_fault+0x68/0x78
- __do_kernel_fault+0x1c4/0x1e0
- do_bad_area+0x40/0x100
- do_translation_fault+0x68/0x80
- do_mem_abort+0x68/0xf8
- el1_da+0x1c/0xc0
- __raw_writeb+0x38/0x174
- __memcpy_toio+0x40/0xac
- persistent_ram_update+0x44/0x12c
- persistent_ram_write+0x1a8/0x1b8
- ramoops_pstore_write+0x198/0x1e8
- pstore_console_write+0x94/0xe0
- ...
+This bug got introduced when the driver was first imported into the
+kernel.
 
-To avoid this, also check if the prz start is 0 during the initialization
-phase. If not, the next prz sanity check case will discover it (start >
-size) and zap the buffer back to a sane state.
-
-Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
-Cc: Yunlong Xing <yunlong.xing@unisoc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
-Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
-[kees: update commit log with backtrace and clarifications]
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.5+
+Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Tested-by: Jocelyn Falempe <jfalempe@redhat.com> # AST2600
+Link: https://patchwork.freedesktop.org/patch/msgid/20230621130032.3568-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/pstore/ram_core.c |    2 +-
+ drivers/gpu/drm/ast/ast_post.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -504,7 +504,7 @@ static int persistent_ram_post_init(stru
- 	sig ^= PERSISTENT_RAM_SIG;
- 
- 	if (prz->buffer->sig == sig) {
--		if (buffer_size(prz) == 0) {
-+		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
- 			pr_debug("found existing empty buffer\n");
- 			return 0;
- 		}
+--- a/drivers/gpu/drm/ast/ast_post.c
++++ b/drivers/gpu/drm/ast/ast_post.c
+@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm
+ 				;
+ 			} while (ast_read32(ast, 0x10100) != 0xa8);
+ 		} else {/* AST2100/1100 */
+-			if (ast->chip == AST2100 || ast->chip == 2200)
++			if (ast->chip == AST2100 || ast->chip == AST2200)
+ 				dram_reg_info = ast2100_dram_table_data;
+ 			else
+ 				dram_reg_info = ast1100_dram_table_data;
 
 
