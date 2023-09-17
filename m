@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA49E7A3B2C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3FE27A3D1E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240632AbjIQUOC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:14:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33060 "EHLO
+        id S241259AbjIQUjC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:39:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240776AbjIQUNp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:45 -0400
+        with ESMTP id S241319AbjIQUiw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E93F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB39C433C8;
-        Sun, 17 Sep 2023 20:13:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20222123
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DAAC433C7;
+        Sun, 17 Sep 2023 20:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981619;
-        bh=rnEQd1DnjfRykfVRaBoagkC4v/zXWGm5IC/0zvqHjTw=;
+        s=korg; t=1694983119;
+        bh=jA4DAkjQfIPuZ5CXZknTC+5hGbPVpEtQ1npU7FRJrRE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rox0vCmapkRXkMNWHWvEJCPlh0hh+W4ReyM+tHJzYehpY1HKvyGf9S1HdATZSFZcy
-         nMCGBa3Sm9USJE/Ztc6ReqoexLmjib8ej2bKtorZU3JMUrCujOJ9ynBkSFJ1PEnOxp
-         riWdfHFelwyJbHEkFPjZFOU+NsE0DB6qUOMAVSbQ=
+        b=qYdhGQ/QGhvv3dn1fkCUxHYRuKSwDvaC+xJv4Q68tsdXG8Yp6JUYAnhwnVMuoRiJ0
+         SNhG3jZG3rjiVr3fsEaUHYpIm2Zhd39m16QDwQmeJ75I4qdPFruMwfUOkMQBOs3tzC
+         hEYPfLJAd7EqT9jJTYIi399+0cQ6+lsXrGx2Dwgo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Petr Mladek <pmladek@suse.com>
-Subject: [PATCH 6.1 148/219] lib: test_scanf: Add explicit type cast to result initialization in test_number_prefix()
-Date:   Sun, 17 Sep 2023 21:14:35 +0200
-Message-ID: <20230917191046.375634669@linuxfoundation.org>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 449/511] s390/zcrypt: dont leak memory if dev_set_name() fails
+Date:   Sun, 17 Sep 2023 21:14:36 +0200
+Message-ID: <20230917191124.591704460@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 92382d744176f230101d54f5c017bccd62770f01 upstream.
+[ Upstream commit 6252f47b78031979ad919f971dc8468b893488bd ]
 
-A recent change in clang allows it to consider more expressions as
-compile time constants, which causes it to point out an implicit
-conversion in the scanf tests:
+When dev_set_name() fails, zcdn_create() doesn't free the newly
+allocated resources. Do it.
 
-  lib/test_scanf.c:661:2: warning: implicit conversion from 'int' to 'unsigned char' changes value from -168 to 88 [-Wconstant-conversion]
-    661 |         test_number_prefix(unsigned char,       "0xA7", "%2hhx%hhx", 0, 0xa7, 2, check_uchar);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  lib/test_scanf.c:609:29: note: expanded from macro 'test_number_prefix'
-    609 |         T result[2] = {~expect[0], ~expect[1]};                                 \
-        |                       ~            ^~~~~~~~~~
-  1 warning generated.
-
-The result of the bitwise negation is the type of the operand after
-going through the integer promotion rules, so this truncation is
-expected but harmless, as the initial values in the result array get
-overwritten by _test() anyways. Add an explicit cast to the expected
-type in test_number_prefix() to silence the warning. There is no
-functional change, as all the tests still pass with GCC 13.1.0 and clang
-18.0.0.
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linuxq/issues/1899
-Link: https://github.com/llvm/llvm-project/commit/610ec954e1f81c0e8fcadedcd25afe643f5a094e
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230807-test_scanf-wconstant-conversion-v2-1-839ca39083e1@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 00fab2350e6b ("s390/zcrypt: multiple zcrypt device nodes support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230831110000.24279-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_scanf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/crypto/zcrypt_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/lib/test_scanf.c
-+++ b/lib/test_scanf.c
-@@ -606,7 +606,7 @@ static void __init numbers_slice(void)
- #define test_number_prefix(T, str, scan_fmt, expect0, expect1, n_args, fn)	\
- do {										\
- 	const T expect[2] = { expect0, expect1 };				\
--	T result[2] = {~expect[0], ~expect[1]};					\
-+	T result[2] = { (T)~expect[0], (T)~expect[1] };				\
- 										\
- 	_test(fn, &expect, str, scan_fmt, n_args, &result[0], &result[1]);	\
- } while (0)
+diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
+index 356318746dd16..17b3f1ea3a5c2 100644
+--- a/drivers/s390/crypto/zcrypt_api.c
++++ b/drivers/s390/crypto/zcrypt_api.c
+@@ -398,6 +398,7 @@ static int zcdn_create(const char *name)
+ 			 ZCRYPT_NAME "_%d", (int) MINOR(devt));
+ 	nodename[sizeof(nodename)-1] = '\0';
+ 	if (dev_set_name(&zcdndev->device, nodename)) {
++		kfree(zcdndev);
+ 		rc = -EINVAL;
+ 		goto unlockout;
+ 	}
+-- 
+2.40.1
+
 
 
