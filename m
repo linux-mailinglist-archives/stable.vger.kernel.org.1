@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F37437A38EB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E30D47A39E5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239871AbjIQTm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:42:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53414 "EHLO
+        id S240183AbjIQTzp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239935AbjIQTmb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:31 -0400
+        with ESMTP id S240229AbjIQTzY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC011B8
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059B3C433CB;
-        Sun, 17 Sep 2023 19:42:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89DA9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8CAC433C8;
+        Sun, 17 Sep 2023 19:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979721;
-        bh=hpATzd7nE4lsaEEUFJBSnx47npLiapextnnGoRcuCKw=;
+        s=korg; t=1694980518;
+        bh=JuwaC0bt8lw4tt7OuaGqacrosBa6t8JSDlwOIqhNccU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MHaEAFUis1BOX+NAtQSD8IxZuxUP+O4LZLBtaqRiroM12cAYiJoa2mQtx6IeEMDAo
-         vNdqJCEI2Yvvhl3x+xNcD8Fy5dMHvWHJOTkls5zAGArjLV/oxluWtTzzNjCAZKv4yT
-         fMNAZ2pd9u0yVIwBfm8HZooPfSkhC8VbnHvD0K7g=
+        b=Yz3RJQgMGYPLTE/bRjvM5qPNH5m1XXRHxj3cH2+jxg1qyhClt15Mg+PW4pkCUsyy7
+         3r2VrMg/ZQRYXKaPSqDwkme9oMQDMWizL7yhSNgEreOcXBrVv8WSBmBwCcdh6rjx/j
+         ayeNpWsYdyQFG2OFXVkArXLSqB9L8BA714kBVE7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 360/406] s390/zcrypt: dont leak memory if dev_set_name() fails
-Date:   Sun, 17 Sep 2023 21:13:34 +0200
-Message-ID: <20230917191110.781429368@linuxfoundation.org>
+        patches@lists.linux.dev, Michael Walle <michael@walle.cc>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH 6.5 215/285] mtd: spi-nor: Correct flags for Winbond w25q128
+Date:   Sun, 17 Sep 2023 21:13:35 +0200
+Message-ID: <20230917191058.985421467@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +50,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 6252f47b78031979ad919f971dc8468b893488bd ]
+commit 83e824a4a595132f9bd7ac4f5afff857bfc5991e upstream.
 
-When dev_set_name() fails, zcdn_create() doesn't free the newly
-allocated resources. Do it.
+The Winbond "w25q128" (actual vendor name W25Q128JV) has
+exactly the same flags as the sibling device "w25q128jv".
+The devices both require unlocking to enable write access.
 
-Fixes: 00fab2350e6b ("s390/zcrypt: multiple zcrypt device nodes support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230831110000.24279-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The actual product naming between devices vs the Linux
+strings in winbond.c:
+
+0xef4018: "w25q128"   W25Q128JV-IN/IQ/JQ
+0xef7018: "w25q128jv" W25Q128JV-IM/JM
+
+The latter device, "w25q128jv" supports features named DTQ
+and QPI, otherwise it is the same.
+
+Not having the right flags has the annoying side effect
+that write access does not work.
+
+After this patch I can write to the flash on the Inteno
+XG6846 router.
+
+The flash memory also supports dual and quad SPI modes.
+This does not currently manifest, but by turning on SFDP
+parsing, the right SPI modes are emitted in
+/sys/kernel/debug/spi-nor/spi1.0/capabilities
+for this chip, so we also turn on this.
+
+Since we now have determined that SFDP parsing works on
+the device, we also detect the geometry using SFDP.
+
+After this dmesg and sysfs says:
+[    1.062401] spi-nor spi1.0: w25q128 (16384 Kbytes)
+cat erasesize
+65536
+(16384*1024)/65536 = 256 sectors
+
+spi-nor sysfs:
+cat jedec_id
+ef4018
+cat manufacturer
+winbond
+cat partname
+w25q128
+hexdump -v -C sfdp
+00000000  53 46 44 50 05 01 00 ff  00 05 01 10 80 00 00 ff
+00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000020  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000030  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000040  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000050  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000060  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000070  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000080  e5 20 f9 ff ff ff ff 07  44 eb 08 6b 08 3b 42 bb
+00000090  fe ff ff ff ff ff 00 00  ff ff 40 eb 0c 20 0f 52
+000000a0  10 d8 00 00 36 02 a6 00  82 ea 14 c9 e9 63 76 33
+000000b0  7a 75 7a 75 f7 a2 d5 5c  19 f7 4d ff e9 30 f8 80
+
+Cc: stable@vger.kernel.org
+Suggested-by: Michael Walle <michael@walle.cc>
+Reviewed-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/zcrypt_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/spi-nor/winbond.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
-index 3b9eda311c273..b518009715eeb 100644
---- a/drivers/s390/crypto/zcrypt_api.c
-+++ b/drivers/s390/crypto/zcrypt_api.c
-@@ -399,6 +399,7 @@ static int zcdn_create(const char *name)
- 			 ZCRYPT_NAME "_%d", (int) MINOR(devt));
- 	nodename[sizeof(nodename)-1] = '\0';
- 	if (dev_set_name(&zcdndev->device, nodename)) {
-+		kfree(zcdndev);
- 		rc = -EINVAL;
- 		goto unlockout;
- 	}
--- 
-2.40.1
-
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -120,8 +120,9 @@ static const struct flash_info winbond_n
+ 		NO_SFDP_FLAGS(SECT_4K) },
+ 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+ 		NO_SFDP_FLAGS(SECT_4K) },
+-	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
+-		NO_SFDP_FLAGS(SECT_4K) },
++	{ "w25q128", INFO(0xef4018, 0, 0, 0)
++		PARSE_SFDP
++		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
+ 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
+ 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
+ 		.fixups = &w25q256_fixups },
 
 
