@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 167547A38F3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6D47A3A35
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:00:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239909AbjIQTnC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40932 "EHLO
+        id S240328AbjIQUAI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:00:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240034AbjIQTmk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:40 -0400
+        with ESMTP id S240345AbjIQT7x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:59:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC93188
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B10DC433C8;
-        Sun, 17 Sep 2023 19:42:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46477EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:59:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A45AC433C8;
+        Sun, 17 Sep 2023 19:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979752;
-        bh=Iy8Hpnu4l2JK/2QqLSAUsdVKerP/3M/4WH5HMg7lHXs=;
+        s=korg; t=1694980787;
+        bh=F2kLMIdedlDAEGkCZrRidVTHlHXfAtDL6uyYy2yYRQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CZ7zeKZTR/VzJNEe5LI1ZXnAFYvZUdeL4LXyW8Kjug4UDNO7D53S2ELopJmX4X7Hm
-         X7c9Cuj7wG5BzlO5rovdZrGfHFuOiqjRzvAOFmfjNFlwlr1KxSGwfBowNh6/M39wfL
-         EEa5EUgQE8aE3F/Kq7dOpvdbh8Xuqlb3SHDRQ1l4=
+        b=gC5xSeXmIaiQ9h5hTXSYhcI3ebXcQN2XeCcFTtQIlAxuidk0lvMh6JqNTv9AW39kN
+         LuaUb9Y2hK0ullQhMRqiU54zTe+R49OQJhKDSpDagGYrc95uuRmN2YWx3UjTbum8Yh
+         NfO+AkvyaCvqDscG+Rb7Rrt6MNuPy8kW38kqGOrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 404/406] kcm: Fix error handling for SOCK_DGRAM in kcm_sendmsg().
+Subject: [PATCH 6.5 258/285] net: ethernet: adi: adin1110: use eth_broadcast_addr() to assign broadcast address
 Date:   Sun, 17 Sep 2023 21:14:18 +0200
-Message-ID: <20230917191111.925191338@linuxfoundation.org>
+Message-ID: <20230917191100.193836225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,72 +51,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit a22730b1b4bf437c6bbfdeff5feddf54be4aeada ]
+[ Upstream commit 54024dbec95585243391caeb9f04a2620e630765 ]
 
-syzkaller found a memory leak in kcm_sendmsg(), and commit c821a88bd720
-("kcm: Fix memory leak in error path of kcm_sendmsg()") suppressed it by
-updating kcm_tx_msg(head)->last_skb if partial data is copied so that the
-following sendmsg() will resume from the skb.
+Use eth_broadcast_addr() to assign broadcast address instead
+of memset().
 
-However, we cannot know how many bytes were copied when we get the error.
-Thus, we could mess up the MSG_MORE queue.
-
-When kcm_sendmsg() fails for SOCK_DGRAM, we should purge the queue as we
-do so for UDP by udp_flush_pending_frames().
-
-Even without this change, when the error occurred, the following sendmsg()
-resumed from a wrong skb and the queue was messed up.  However, we have
-yet to get such a report, and only syzkaller stumbled on it.  So, this
-can be changed safely.
-
-Note this does not change SOCK_SEQPACKET behaviour.
-
-Fixes: c821a88bd720 ("kcm: Fix memory leak in error path of kcm_sendmsg()")
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230912022753.33327-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 32530dba1bd4 ("net:ethernet:adi:adin1110: Fix forwarding offload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/adi/adin1110.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index fb025406ea567..39b3c7fbf9f66 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1064,17 +1064,18 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- out_error:
- 	kcm_push(kcm);
+diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
+index f5c2d7a9abc10..1c009b485188d 100644
+--- a/drivers/net/ethernet/adi/adin1110.c
++++ b/drivers/net/ethernet/adi/adin1110.c
+@@ -739,7 +739,7 @@ static int adin1110_broadcasts_filter(struct adin1110_port_priv *port_priv,
+ 	u32 port_rules = 0;
+ 	u8 mask[ETH_ALEN];
  
--	if (copied && sock->type == SOCK_SEQPACKET) {
-+	if (sock->type == SOCK_SEQPACKET) {
- 		/* Wrote some bytes before encountering an
- 		 * error, return partial success.
- 		 */
--		goto partial_message;
--	}
--
--	if (head != kcm->seq_skb)
-+		if (copied)
-+			goto partial_message;
-+		if (head != kcm->seq_skb)
-+			kfree_skb(head);
-+	} else {
- 		kfree_skb(head);
--	else if (copied)
--		kcm_tx_msg(head)->last_skb = skb;
-+		kcm->seq_skb = NULL;
-+	}
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
  
- 	err = sk_stream_error(sk, msg->msg_flags, err);
+ 	if (accept_broadcast && port_priv->state == BR_STATE_FORWARDING)
+ 		port_rules = adin1110_port_rules(port_priv, true, true);
+@@ -760,7 +760,7 @@ static int adin1110_set_mac_address(struct net_device *netdev,
+ 		return -EADDRNOTAVAIL;
  
+ 	eth_hw_addr_set(netdev, dev_addr);
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
+ 
+ 	mac_slot = (!port_priv->nr) ?  ADIN_MAC_P1_ADDR_SLOT : ADIN_MAC_P2_ADDR_SLOT;
+ 	port_rules = adin1110_port_rules(port_priv, true, false);
+@@ -1271,7 +1271,7 @@ static int adin1110_port_set_blocking_state(struct adin1110_port_priv *port_priv
+ 		goto out;
+ 
+ 	/* Allow only BPDUs to be passed to the CPU */
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
+ 	port_rules = adin1110_port_rules(port_priv, true, false);
+ 	ret = adin1110_write_mac_address(port_priv, mac_slot, mac,
+ 					 mask, port_rules);
+@@ -1386,7 +1386,7 @@ static int adin1110_fdb_add(struct adin1110_port_priv *port_priv,
+ 
+ 	other_port = priv->ports[!port_priv->nr];
+ 	port_rules = adin1110_port_rules(port_priv, false, true);
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
+ 
+ 	return adin1110_write_mac_address(other_port, mac_nr, (u8 *)fdb->addr,
+ 					  mask, port_rules);
 -- 
 2.40.1
 
