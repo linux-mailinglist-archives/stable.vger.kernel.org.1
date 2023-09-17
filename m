@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 301727A3D6B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F027A3BA4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238429AbjIQUml (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56132 "EHLO
+        id S240774AbjIQUUU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241269AbjIQUmK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:10 -0400
+        with ESMTP id S240784AbjIQUUB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202B5115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:42:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C79C433C8;
-        Sun, 17 Sep 2023 20:42:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E159CF4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FE8C433C7;
+        Sun, 17 Sep 2023 20:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983324;
-        bh=IAb2Zw1JcbGoFSMVSGo5+KNcAkX+o6kztlZtZFy9moM=;
+        s=korg; t=1694981995;
+        bh=j4EPA6SHpZ+2mbLZcacx7C1zlthNhv5TYucxXWWteaU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JJqZmSrriEKPAUG48xcNDrEO+NoFKiMWB+cPrFMwTkYhjgOMov5IU9zyd8tF1ZVzQ
-         CGJqzz4TFMHzs/inOW5Hm6WlTyCvYEpKrGkQ8KEWmJSR4c8u1fGXI/frOhcaty2tGR
-         1rc/AsIR6cbZW7NYNXsiE7IPCl19R/cWUv3ZQs4s=
+        b=lGCTJJS21Pe8m8vt7v1S87xDa9BI88aMe3+40ell1Fe29EwJmGJ6GYQLF3CPi8EOR
+         zEO2JldlR6W8cCQVfvNr+7ddDZZjhKem7uSS4qjWHUUlrwtLvMHfhjo3Movvb08EfI
+         +dtgJndbGjbqgcaqo+xBJ0NXN4PSCJBEnJP4E8rw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,12 +31,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         David Thompson <davthompson@nvidia.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 503/511] platform/mellanox: mlxbf-tmfifo: Drop jumbo frames
+Subject: [PATCH 6.1 203/219] platform/mellanox: mlxbf-tmfifo: Drop the Rx packet if no more descriptors
 Date:   Sun, 17 Sep 2023 21:15:30 +0200
-Message-ID: <20230917191125.868332444@linuxfoundation.org>
+Message-ID: <20230917191048.275429622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,105 +52,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Liming Sun <limings@nvidia.com>
 
-[ Upstream commit fc4c655821546239abb3cf4274d66b9747aa87dd ]
+[ Upstream commit 78034cbece79c2d730ad0770b3b7f23eedbbecf5 ]
 
-This commit drops over-sized network packets to avoid tmfifo
-queue stuck.
+This commit fixes tmfifo console stuck issue when the virtual
+networking interface is in down state. In such case, the network
+Rx descriptors runs out and causes the Rx network packet staying
+in the head of the tmfifo thus blocking the console packets. The
+fix is to drop the Rx network packet when no more Rx descriptors.
+Function name mlxbf_tmfifo_release_pending_pkt() is also renamed
+to mlxbf_tmfifo_release_pkt() to be more approperiate.
 
 Fixes: 1357dfd7261f ("platform/mellanox: Add TmFifo driver for Mellanox BlueField Soc")
 Signed-off-by: Liming Sun <limings@nvidia.com>
 Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
 Reviewed-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/9318936c2447f76db475c985ca6d91f057efcd41.1693322547.git.limings@nvidia.com
+Link: https://lore.kernel.org/r/8c0177dc938ae03f52ff7e0b62dbeee74b7bec09.1693322547.git.limings@nvidia.com
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 66 ++++++++++++++++++------
+ 1 file changed, 49 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 42fcccf06157f..194f3205e5597 100644
+index d31fe7eed38df..ee8648a271fda 100644
 --- a/drivers/platform/mellanox/mlxbf-tmfifo.c
 +++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -205,7 +205,7 @@ static u8 mlxbf_tmfifo_net_default_mac[ETH_ALEN] = {
- static efi_char16_t mlxbf_tmfifo_efi_name[] = L"RshimMacAddr";
+@@ -56,6 +56,7 @@ struct mlxbf_tmfifo;
+  * @vq: pointer to the virtio virtqueue
+  * @desc: current descriptor of the pending packet
+  * @desc_head: head descriptor of the pending packet
++ * @drop_desc: dummy desc for packet dropping
+  * @cur_len: processed length of the current descriptor
+  * @rem_len: remaining length of the pending packet
+  * @pkt_len: total length of the pending packet
+@@ -72,6 +73,7 @@ struct mlxbf_tmfifo_vring {
+ 	struct virtqueue *vq;
+ 	struct vring_desc *desc;
+ 	struct vring_desc *desc_head;
++	struct vring_desc drop_desc;
+ 	int cur_len;
+ 	int rem_len;
+ 	u32 pkt_len;
+@@ -83,6 +85,14 @@ struct mlxbf_tmfifo_vring {
+ 	struct mlxbf_tmfifo *fifo;
+ };
  
- /* Maximum L2 header length. */
--#define MLXBF_TMFIFO_NET_L2_OVERHEAD	36
-+#define MLXBF_TMFIFO_NET_L2_OVERHEAD	(ETH_HLEN + VLAN_HLEN)
++/* Check whether vring is in drop mode. */
++#define IS_VRING_DROP(_r) ({ \
++	typeof(_r) (r) = (_r); \
++	(r->desc_head == &r->drop_desc ? true : false); })
++
++/* A stub length to drop maximum length packet. */
++#define VRING_DROP_DESC_MAX_LEN		GENMASK(15, 0)
++
+ /* Interrupt types. */
+ enum {
+ 	MLXBF_TM_RX_LWM_IRQ,
+@@ -243,6 +253,7 @@ static int mlxbf_tmfifo_alloc_vrings(struct mlxbf_tmfifo *fifo,
+ 		vring->align = SMP_CACHE_BYTES;
+ 		vring->index = i;
+ 		vring->vdev_id = tm_vdev->vdev.id.device;
++		vring->drop_desc.len = VRING_DROP_DESC_MAX_LEN;
+ 		dev = &tm_vdev->vdev.dev;
  
- /* Supported virtio-net features. */
- #define MLXBF_TMFIFO_NET_FEATURES \
-@@ -623,13 +623,14 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
-  * flag is set.
-  */
- static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
--				     struct vring_desc *desc,
-+				     struct vring_desc **desc,
- 				     bool is_rx, bool *vring_change)
+ 		size = vring_size(vring->num, vring->align);
+@@ -348,7 +359,7 @@ static u32 mlxbf_tmfifo_get_pkt_len(struct mlxbf_tmfifo_vring *vring,
+ 	return len;
+ }
+ 
+-static void mlxbf_tmfifo_release_pending_pkt(struct mlxbf_tmfifo_vring *vring)
++static void mlxbf_tmfifo_release_pkt(struct mlxbf_tmfifo_vring *vring)
  {
- 	struct mlxbf_tmfifo *fifo = vring->fifo;
- 	struct virtio_net_config *config;
- 	struct mlxbf_tmfifo_msg_hdr hdr;
- 	int vdev_id, hdr_len;
-+	bool drop_rx = false;
+ 	struct vring_desc *desc_head;
+ 	u32 len = 0;
+@@ -577,19 +588,25 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
  
- 	/* Read/Write packet header. */
- 	if (is_rx) {
-@@ -649,8 +650,8 @@ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
- 			if (ntohs(hdr.len) >
- 			    __virtio16_to_cpu(virtio_legacy_is_little_endian(),
- 					      config->mtu) +
--			    MLXBF_TMFIFO_NET_L2_OVERHEAD)
--				return;
-+					      MLXBF_TMFIFO_NET_L2_OVERHEAD)
-+				drop_rx = true;
- 		} else {
- 			vdev_id = VIRTIO_ID_CONSOLE;
- 			hdr_len = 0;
-@@ -665,16 +666,25 @@ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
- 
- 			if (!tm_dev2)
- 				return;
--			vring->desc = desc;
-+			vring->desc = *desc;
- 			vring = &tm_dev2->vrings[MLXBF_TMFIFO_VRING_RX];
- 			*vring_change = true;
- 		}
-+
-+		if (drop_rx && !IS_VRING_DROP(vring)) {
-+			if (vring->desc_head)
-+				mlxbf_tmfifo_release_pkt(vring);
-+			*desc = &vring->drop_desc;
-+			vring->desc_head = *desc;
-+			vring->desc = *desc;
+ 	if (vring->cur_len + sizeof(u64) <= len) {
+ 		/* The whole word. */
+-		if (is_rx)
+-			memcpy(addr + vring->cur_len, &data, sizeof(u64));
+-		else
+-			memcpy(&data, addr + vring->cur_len, sizeof(u64));
++		if (!IS_VRING_DROP(vring)) {
++			if (is_rx)
++				memcpy(addr + vring->cur_len, &data,
++				       sizeof(u64));
++			else
++				memcpy(&data, addr + vring->cur_len,
++				       sizeof(u64));
 +		}
-+
- 		vring->pkt_len = ntohs(hdr.len) + hdr_len;
+ 		vring->cur_len += sizeof(u64);
  	} else {
- 		/* Network virtio has an extra header. */
- 		hdr_len = (vring->vdev_id == VIRTIO_ID_NET) ?
- 			   sizeof(struct virtio_net_hdr) : 0;
--		vring->pkt_len = mlxbf_tmfifo_get_pkt_len(vring, desc);
-+		vring->pkt_len = mlxbf_tmfifo_get_pkt_len(vring, *desc);
- 		hdr.type = (vring->vdev_id == VIRTIO_ID_NET) ?
- 			    VIRTIO_ID_NET : VIRTIO_ID_CONSOLE;
- 		hdr.len = htons(vring->pkt_len - hdr_len);
-@@ -723,7 +733,7 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
+ 		/* Leftover bytes. */
+-		if (is_rx)
+-			memcpy(addr + vring->cur_len, &data,
+-			       len - vring->cur_len);
+-		else
+-			memcpy(&data, addr + vring->cur_len,
+-			       len - vring->cur_len);
++		if (!IS_VRING_DROP(vring)) {
++			if (is_rx)
++				memcpy(addr + vring->cur_len, &data,
++				       len - vring->cur_len);
++			else
++				memcpy(&data, addr + vring->cur_len,
++				       len - vring->cur_len);
++		}
+ 		vring->cur_len = len;
+ 	}
  
- 	/* Beginning of a packet. Start to Rx/Tx packet header. */
- 	if (vring->pkt_len == 0) {
--		mlxbf_tmfifo_rxtx_header(vring, desc, is_rx, &vring_change);
-+		mlxbf_tmfifo_rxtx_header(vring, &desc, is_rx, &vring_change);
- 		(*avail)--;
+@@ -690,8 +707,16 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
+ 	/* Get the descriptor of the next packet. */
+ 	if (!vring->desc) {
+ 		desc = mlxbf_tmfifo_get_next_pkt(vring, is_rx);
+-		if (!desc)
+-			return false;
++		if (!desc) {
++			/* Drop next Rx packet to avoid stuck. */
++			if (is_rx) {
++				desc = &vring->drop_desc;
++				vring->desc_head = desc;
++				vring->desc = desc;
++			} else {
++				return false;
++			}
++		}
+ 	} else {
+ 		desc = vring->desc;
+ 	}
+@@ -724,17 +749,24 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
+ 		vring->rem_len -= len;
  
- 		/* Return if new packet is for another ring. */
+ 		/* Get the next desc on the chain. */
+-		if (vring->rem_len > 0 &&
++		if (!IS_VRING_DROP(vring) && vring->rem_len > 0 &&
+ 		    (virtio16_to_cpu(vdev, desc->flags) & VRING_DESC_F_NEXT)) {
+ 			idx = virtio16_to_cpu(vdev, desc->next);
+ 			desc = &vr->desc[idx];
+ 			goto mlxbf_tmfifo_desc_done;
+ 		}
+ 
+-		/* Done and release the pending packet. */
+-		mlxbf_tmfifo_release_pending_pkt(vring);
++		/* Done and release the packet. */
+ 		desc = NULL;
+ 		fifo->vring[is_rx] = NULL;
++		if (!IS_VRING_DROP(vring)) {
++			mlxbf_tmfifo_release_pkt(vring);
++		} else {
++			vring->pkt_len = 0;
++			vring->desc_head = NULL;
++			vring->desc = NULL;
++			return false;
++		}
+ 
+ 		/*
+ 		 * Make sure the load/store are in order before
+@@ -914,7 +946,7 @@ static void mlxbf_tmfifo_virtio_del_vqs(struct virtio_device *vdev)
+ 
+ 		/* Release the pending packet. */
+ 		if (vring->desc)
+-			mlxbf_tmfifo_release_pending_pkt(vring);
++			mlxbf_tmfifo_release_pkt(vring);
+ 		vq = vring->vq;
+ 		if (vq) {
+ 			vring->vq = NULL;
 -- 
 2.40.1
 
