@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 246DE7A3691
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 18:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D30F7A3694
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 18:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbjIQQeB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 12:34:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53714 "EHLO
+        id S230010AbjIQQgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 12:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230375AbjIQQdp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 12:33:45 -0400
+        with ESMTP id S236387AbjIQQf6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 12:35:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C79CED
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 09:33:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843B0C433C8;
-        Sun, 17 Sep 2023 16:33:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33D7ED
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 09:35:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A533C433C8;
+        Sun, 17 Sep 2023 16:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694968420;
-        bh=zgJQapM/ECO9Ct34+OXARIRtVe/xxqxHB62SwZquj6U=;
+        s=korg; t=1694968553;
+        bh=DGAHnJejwLYKHJMrBokxHjciIAhEvemn5OzDMBLRyRw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fQgbbJjEqQqrjQF4gkmG66XrWgVgqs1qvfkm/kIBx4y2NJ4572lWEsERXZzzYS2z9
-         Ot8w+OpQwQ35lF3uQV3Y3hpukTraT4s/KdYfs73Uu7sQbWeoyxYkED49Ur6UgdtSro
-         sUmQblESu9ozqmdGDrXF0Z3yj0/f1JXR76mzSmGI=
-Date:   Sun, 17 Sep 2023 18:33:35 +0200
+        b=HURnTrlvOnqGgBvON46ekgwis0yJaTyyMdBEaJQl2HsxQaZynE2Yr9IKV6Aa4z8Er
+         8U0YeDwjOQa4P+zmLgSlEXv4c0RtbwUUs/7u+H0wZa7T1q1TDuwk15TP7Q5atdH9K5
+         dIgVF8yK9MkIWMiU5V2JKO78A04MzmwZbfimRsNs=
+Date:   Sun, 17 Sep 2023 18:35:49 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     stable <stable@vger.kernel.org>
-Subject: Re: perf build failure in v6.1.53-221-g5e5c3289d389
-Message-ID: <2023091722-kinetic-stargazer-be71@gregkh>
-References: <1ac26257-5434-0ef2-d9e5-66398c684ac4@roeck-us.net>
+Subject: Re: Build failures in v{4.14, 4.19, 5.4, 5.10}.y.queue
+Message-ID: <2023091739-myself-starring-dcd9@gregkh>
+References: <8e198214-c12c-a921-ef7e-82b5e2f70ec2@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ac26257-5434-0ef2-d9e5-66398c684ac4@roeck-us.net>
+In-Reply-To: <8e198214-c12c-a921-ef7e-82b5e2f70ec2@roeck-us.net>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -44,25 +44,22 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 17, 2023 at 07:48:43AM -0700, Guenter Roeck wrote:
-> make tools/perf fails with
+On Sun, Sep 17, 2023 at 07:58:11AM -0700, Guenter Roeck wrote:
+> Building parisc:allnoconfig ... failed
+> --------------
+> Error log:
+> arch/parisc/kernel/processor.c: In function 'show_cpuinfo':
+> arch/parisc/kernel/processor.c:443:30: error: 'cpuinfo' undeclared (first use in this function)
+>   443 |                              cpuinfo->loops_per_jiffy / (500000 / HZ),
 > 
-> gcc: fatal error: no input files
+> Caused by 'parisc: Fix /proc/cpuinfo output for lscpu' which
+> moves the declaration of cpuinfo inside an #ifdef but still uses
+> it outside of it in v5.10.y and older.
 > 
-> Bisect points to 'perf build: Update build rule for generated files'
-> which adds
-> 
-> +
-> +# pmu-events.c file is generated in the OUTPUT directory so it needs a
-> +# separate rule to depend on it properly
-> +$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
-> +       $(call rule_mkdir)
-> +       $(call if_changed_dep,cc_o_c)
-> 
-> but there is no PMU_EVENTS_C in v6.1.y.
+> That either needs to be dropped, adjusted, or commit 93346da8ff47 ("parisc:
+> Drop loops_per_jiffy from per_cpu struct") needs to be applied as well
+> (tested with v5.10.y.queue).
 
-Then the Fixes: tag lied :(
-
-I'll go drop this patch now, thanks.
+Thanks, I've added this patch now to the queues.
 
 greg k-h
