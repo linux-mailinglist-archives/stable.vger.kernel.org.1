@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2518B7A3758
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 680BF7A3744
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236646AbjIQTRw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:17:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57282 "EHLO
+        id S229949AbjIQTQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236901AbjIQTRl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:17:41 -0400
+        with ESMTP id S231166AbjIQTQn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:16:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32DAF115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:17:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB7CC433C8;
-        Sun, 17 Sep 2023 19:17:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 042F6115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:16:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D85C433C8;
+        Sun, 17 Sep 2023 19:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978255;
-        bh=EohJLrEoOvb8ggYwESR+ZD1ATwzUgZUwQ57p3Mnt8GM=;
+        s=korg; t=1694978197;
+        bh=32jpjkm1hmqIvfR3YfuXkGwA04Hg3YOsAeUpu/kVXxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GlAEaT9fkX/wg4YtyVtgsIrsQZs1203PVx42uKR8WOIIxyNIn2j80c3VeMQGhP6gn
-         o2j/lCygMvpL2YTyjh9bVHUAxY+OPR9gBn7+4mVeGLYiV8sYYURw0Lxnoq7tGwboca
-         NkwppLDmhEptggDd06VsyQ/iT+cGGwz/ddKHGTxs=
+        b=GFQVvBaakQqrwSFZOY2QiMopHyecpZ8RJ+sQfBlFyLP+wrU3ZRPLKPEeJADy3AtgA
+         m7iHt2QFtAnPfzzXAEWsWpfaWa0y+q6AtAZaWE31bgGMJGqhojHOXlQu74Dv6nQwTm
+         1kZ6oLeqHoXBWFnszb0AERuNIMykAAfKcxErvYQA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luke Lu <luke.lu@libre.computer>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 009/406] usb: dwc3: meson-g12a: do post init to fix broken usb after resumption
-Date:   Sun, 17 Sep 2023 21:07:43 +0200
-Message-ID: <20230917191101.348819122@linuxfoundation.org>
+        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
+        Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.10 010/406] usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
+Date:   Sun, 17 Sep 2023 21:07:44 +0200
+Message-ID: <20230917191101.382295207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -53,45 +53,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Luke Lu <luke.lu@libre.computer>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 1fa206bb764f37d2ab4bf671e483153ef0659b34 upstream.
+commit 36668515d56bf73f06765c71e08c8f7465f1e5c4 upstream.
 
-Device connected to usb otg port of GXL-based boards can not be
-recognised after resumption, doesn't recover even if disconnect and
-reconnect the device. dmesg shows it disconnects during resumption.
+In current driver, the value of tuning parameter will not take effect
+if samsung,picophy-* is assigned as 0. Because 0 is also a valid value
+acccording to the description of USB_PHY_CFG1 register, this will improve
+the logic to let it work.
 
-[   41.492911] usb 1-2: USB disconnect, device number 3
-[   41.499346] usb 1-2: unregistering device
-[   41.511939] usb 1-2: unregistering interface 1-2:1.0
-
-Calling usb_post_init() will fix this issue, and it's tested and
-verified on libretech's aml-s905x-cc board.
-
-Cc: stable@vger.kernel.org # v5.8+
-Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
-Signed-off-by: Luke Lu <luke.lu@libre.computer>
-Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230809212911.18903-1-luke.lu@libre.computer
+Fixes: 58a3cefb3840 ("usb: chipidea: imx: add two samsung picophy parameters tuning implementation")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627112126.1882666-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-meson-g12a.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/chipidea/ci_hdrc_imx.c |   10 ++++++----
+ drivers/usb/chipidea/usbmisc_imx.c |    6 ++++--
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -931,6 +931,12 @@ static int __maybe_unused dwc3_meson_g12
- 			return ret;
- 	}
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -175,10 +175,12 @@ static struct imx_usbmisc_data *usbmisc_
+ 	if (of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI)
+ 		data->ulpi = 1;
  
-+	if (priv->drvdata->usb_post_init) {
-+		ret = priv->drvdata->usb_post_init(priv);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return 0;
+-	of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
+-			&data->emp_curr_control);
+-	of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
+-			&data->dc_vol_level_adjust);
++	if (of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
++			&data->emp_curr_control))
++		data->emp_curr_control = -1;
++	if (of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
++			&data->dc_vol_level_adjust))
++		data->dc_vol_level_adjust = -1;
+ 
+ 	return data;
  }
+--- a/drivers/usb/chipidea/usbmisc_imx.c
++++ b/drivers/usb/chipidea/usbmisc_imx.c
+@@ -657,13 +657,15 @@ static int usbmisc_imx7d_init(struct imx
+ 			usbmisc->base + MX7D_USBNC_USB_CTRL2);
+ 		/* PHY tuning for signal quality */
+ 		reg = readl(usbmisc->base + MX7D_USB_OTG_PHY_CFG1);
+-		if (data->emp_curr_control && data->emp_curr_control <=
++		if (data->emp_curr_control >= 0 &&
++			data->emp_curr_control <=
+ 			(TXPREEMPAMPTUNE0_MASK >> TXPREEMPAMPTUNE0_BIT)) {
+ 			reg &= ~TXPREEMPAMPTUNE0_MASK;
+ 			reg |= (data->emp_curr_control << TXPREEMPAMPTUNE0_BIT);
+ 		}
  
+-		if (data->dc_vol_level_adjust && data->dc_vol_level_adjust <=
++		if (data->dc_vol_level_adjust >= 0 &&
++			data->dc_vol_level_adjust <=
+ 			(TXVREFTUNE0_MASK >> TXVREFTUNE0_BIT)) {
+ 			reg &= ~TXVREFTUNE0_MASK;
+ 			reg |= (data->dc_vol_level_adjust << TXVREFTUNE0_BIT);
 
 
