@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DFB7A3828
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC98F7A395E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239635AbjIQTcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S240048AbjIQTsT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:48:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239608AbjIQTbn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:43 -0400
+        with ESMTP id S240126AbjIQTsL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7882D129
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD329C433C7;
-        Sun, 17 Sep 2023 19:31:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5211D103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A2DC433C7;
+        Sun, 17 Sep 2023 19:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979095;
-        bh=CiFSRwtOJvJW8zB4xGB0BPmh5m2H9Sa3NhfpRFopsuw=;
+        s=korg; t=1694980085;
+        bh=/Mei+FpVfa5HkpUmvPx6McNZFi+vXToykyfgG2hjcjQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Al+XMp8uYUoJrpMpo+wyED1PusMuIk6B39qwAqLlxqNcAesYERUxain2EXEj+hr7y
-         v9rv55M/csLY9kZ5yzsYs3qctozf58xXfRmcL4Ywj5X3iNY/1auZ0EyvHGucnyQBCk
-         dZzAcPqP1srP4FFFpw+0rBB79P4iN3RuzDVCaiY0=
+        b=LB1W0L1UL6wGdk8r6RgCAuIs5AU1LixHdjAI0MFjJsmPIn0Ean5BIf7FW5syIsVzn
+         NUlXbBEdQugiKTO0mRsSy7XGrLLdmXofPpuQxny7qw/FkSTd2CZwNDT+jlC0Yn+pH/
+         SFC69bJg421PJnU4vY+SxqVa6lBQG9YMh7WCVW0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Xingui Yang <yangxingui@huawei.com>,
-        Xiang Chen <chenxiang66@hisilicon.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Riccardo Mancini <rickyman7@gmail.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 212/406] scsi: hisi_sas: Fix warnings detected by sparse
+Subject: [PATCH 6.5 066/285] perf trace: Really free the evsel->priv area
 Date:   Sun, 17 Sep 2023 21:11:06 +0200
-Message-ID: <20230917191106.786571621@linuxfoundation.org>
+Message-ID: <20230917191053.998659968@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +54,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit c0328cc595124579328462fc45d7a29a084cf357 ]
+[ Upstream commit 7962ef13651a9163f07b530607392ea123482e8a ]
 
-This patch fixes the following warning:
+In 3cb4d5e00e037c70 ("perf trace: Free syscall tp fields in
+evsel->priv") it only was freeing if strcmp(evsel->tp_format->system,
+"syscalls") returned zero, while the corresponding initialization of
+evsel->priv was being performed if it was _not_ zero, i.e. if the tp
+system wasn't 'syscalls'.
 
-drivers/scsi/hisi_sas/hisi_sas_v3_hw.c:2168:43: sparse: sparse: restricted __le32 degrades to integer
+Just stop looking for that and free it if evsel->priv was set, which
+should be equivalent.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202304161254.NztCVZIO-lkp@intel.com/
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1684118481-95908-4-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: f5393a5602ca ("scsi: hisi_sas: Fix normally completed I/O analysed as failed")
+Also use the pre-existing evsel_trace__delete() function.
+
+This resolves these leaks, detected with:
+
+  $ make EXTRA_CFLAGS="-fsanitize=address" BUILD_BPF_SKEL=1 CORESIGHT=1 O=/tmp/build/perf-tools-next -C tools/perf install-bin
+
+  =================================================================
+  ==481565==ERROR: LeakSanitizer: detected memory leaks
+
+  Direct leak of 40 byte(s) in 1 object(s) allocated from:
+      #0 0x7f7343cba097 in calloc (/lib64/libasan.so.8+0xba097)
+      #1 0x987966 in zalloc (/home/acme/bin/perf+0x987966)
+      #2 0x52f9b9 in evsel_trace__new /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:307
+      #3 0x52f9b9 in evsel__syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:333
+      #4 0x52f9b9 in evsel__init_raw_syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:458
+      #5 0x52f9b9 in perf_evsel__raw_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:480
+      #6 0x540e8b in trace__add_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3212
+      #7 0x540e8b in trace__run /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3891
+      #8 0x540e8b in cmd_trace /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:5156
+      #9 0x5ef262 in run_builtin /home/acme/git/perf-tools-next/tools/perf/perf.c:323
+      #10 0x4196da in handle_internal_command /home/acme/git/perf-tools-next/tools/perf/perf.c:377
+      #11 0x4196da in run_argv /home/acme/git/perf-tools-next/tools/perf/perf.c:421
+      #12 0x4196da in main /home/acme/git/perf-tools-next/tools/perf/perf.c:537
+      #13 0x7f7342c4a50f in __libc_start_call_main (/lib64/libc.so.6+0x2750f)
+
+  Direct leak of 40 byte(s) in 1 object(s) allocated from:
+      #0 0x7f7343cba097 in calloc (/lib64/libasan.so.8+0xba097)
+      #1 0x987966 in zalloc (/home/acme/bin/perf+0x987966)
+      #2 0x52f9b9 in evsel_trace__new /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:307
+      #3 0x52f9b9 in evsel__syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:333
+      #4 0x52f9b9 in evsel__init_raw_syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:458
+      #5 0x52f9b9 in perf_evsel__raw_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:480
+      #6 0x540dd1 in trace__add_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3205
+      #7 0x540dd1 in trace__run /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3891
+      #8 0x540dd1 in cmd_trace /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:5156
+      #9 0x5ef262 in run_builtin /home/acme/git/perf-tools-next/tools/perf/perf.c:323
+      #10 0x4196da in handle_internal_command /home/acme/git/perf-tools-next/tools/perf/perf.c:377
+      #11 0x4196da in run_argv /home/acme/git/perf-tools-next/tools/perf/perf.c:421
+      #12 0x4196da in main /home/acme/git/perf-tools-next/tools/perf/perf.c:537
+      #13 0x7f7342c4a50f in __libc_start_call_main (/lib64/libc.so.6+0x2750f)
+
+  SUMMARY: AddressSanitizer: 80 byte(s) leaked in 2 allocation(s).
+  [root@quaco ~]#
+
+With this we plug all leaks with "perf trace sleep 1".
+
+Fixes: 3cb4d5e00e037c70 ("perf trace: Free syscall tp fields in evsel->priv")
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Riccardo Mancini <rickyman7@gmail.com>
+Link: https://lore.kernel.org/lkml/20230719202951.534582-5-acme@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/perf/builtin-trace.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index f3b53eb2cbefe..0aea82a1205bd 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2135,6 +2135,7 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
- 	u32 trans_tx_fail_type = le32_to_cpu(record->trans_tx_fail_type);
- 	u16 sipc_rx_err_type = le16_to_cpu(record->sipc_rx_err_type);
- 	u32 dw3 = le32_to_cpu(complete_hdr->dw3);
-+	u32 dw0 = le32_to_cpu(complete_hdr->dw0);
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 6e73d0e957152..4aba576512a15 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -3136,13 +3136,8 @@ static void evlist__free_syscall_tp_fields(struct evlist *evlist)
+ 	struct evsel *evsel;
  
- 	switch (task->task_proto) {
- 	case SAS_PROTOCOL_SSP:
-@@ -2144,8 +2145,8 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
- 			 * but I/O information has been written to the host memory, we examine
- 			 * response IU.
- 			 */
--			if (!(complete_hdr->dw0 & CMPLT_HDR_RSPNS_GOOD_MSK) &&
--				(complete_hdr->dw0 & CMPLT_HDR_RSPNS_XFRD_MSK))
-+			if (!(dw0 & CMPLT_HDR_RSPNS_GOOD_MSK) &&
-+			    (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK))
- 				return false;
+ 	evlist__for_each_entry(evlist, evsel) {
+-		struct evsel_trace *et = evsel->priv;
+-
+-		if (!et || !evsel->tp_format || strcmp(evsel->tp_format->system, "syscalls"))
+-			continue;
+-
+-		zfree(&et->fmt);
+-		free(et);
++		evsel_trace__delete(evsel->priv);
++		evsel->priv = NULL;
+ 	}
+ }
  
- 			ts->residual = trans_tx_fail_type;
-@@ -2161,7 +2162,7 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
- 	case SAS_PROTOCOL_SATA:
- 	case SAS_PROTOCOL_STP:
- 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
--		if ((complete_hdr->dw0 & CMPLT_HDR_RSPNS_XFRD_MSK) &&
-+		if ((dw0 & CMPLT_HDR_RSPNS_XFRD_MSK) &&
- 		    (sipc_rx_err_type & RX_FIS_STATUS_ERR_MSK)) {
- 			ts->stat = SAS_PROTO_RESPONSE;
- 		} else if (dma_rx_err_type & RX_DATA_LEN_UNDERFLOW_MSK) {
 -- 
 2.40.1
 
