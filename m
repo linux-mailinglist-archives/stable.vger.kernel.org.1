@@ -2,38 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6EA7A3C38
+	by mail.lfdr.de (Postfix) with ESMTP id 6A0417A3C37
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240930AbjIQU2R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240942AbjIQU2R (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48230 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240969AbjIQU1v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:27:51 -0400
+        with ESMTP id S240975AbjIQU1y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:27:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D2F10A
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:27:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C9DC433CB;
-        Sun, 17 Sep 2023 20:27:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40035101;
+        Sun, 17 Sep 2023 13:27:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461CCC433CB;
+        Sun, 17 Sep 2023 20:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982465;
-        bh=26hjbXumtLqOGG+4U5aXIZCKDnGe+LirgD1ZqXmrFlM=;
+        s=korg; t=1694982468;
+        bh=kkmqUzkEyBJFV3Sd5g8iXUwkdqL4W7+oAIngdk5Nea8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y/pOh7R1Z0qkalsjk/pH7zrJ/uIhiLF7PDojOOIZ55yN1Bu9WNHJeghe3A4bhTFRV
-         iQv4bqmX74eCrOe3bd31Pn2nXmavIm96NcKMLXpX8Q8QexJAmblYAqtS0tHkdVQcCx
-         FX65Lc/foOMTUvjhuxNFoBeink95zY3ntcBvoMuU=
+        b=Tz+OV7d/99uymuPx6hr7V2iz2s2QPGM99WyxL6kR9Vg2xEFdvE+bPSF0P5JzfUP1u
+         Hy0nKvOEJXrHgk/9KlGZo/Wrb/K14JYnEo+QoKTpun/nNryRN2FkE7KO7VW/peI447
+         gI/qNv66DVUYl+pr6fEZNN597/KLeslz6BJzG6Vw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Kosina <jikos@kernel.org>, x86@kernel.org,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 259/511] x86/APM: drop the duplicate APM_MINOR_DEV macro
-Date:   Sun, 17 Sep 2023 21:11:26 +0200
-Message-ID: <20230917191120.088560540@linuxfoundation.org>
+Subject: [PATCH 5.15 260/511] scsi: qedf: Do not touch __user pointer in qedf_dbg_stop_io_on_error_cmd_read() directly
+Date:   Sun, 17 Sep 2023 21:11:27 +0200
+Message-ID: <20230917191120.113014752@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,44 +63,67 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit 4ba2909638a29630a346d6c4907a3105409bee7d ]
+[ Upstream commit 7d3d20dee4f648ec44e9717d5f647d594d184433 ]
 
-This source file already includes <linux/miscdevice.h>, which contains
-the same macro. It doesn't need to be defined here again.
+The qedf_dbg_stop_io_on_error_cmd_read() function invokes sprintf()
+directly on a __user pointer, which may crash the kernel.
 
-Fixes: 874bcd00f520 ("apm-emulation: move APM_MINOR_DEV to include/linux/miscdevice.h")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: x86@kernel.org
-Cc: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/r/20230728011120.759-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid doing that by using a small on-stack buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
+
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-2-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apm_32.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/apm_32.c b/arch/x86/kernel/apm_32.c
-index 241dda687eb9f..06978a1194f24 100644
---- a/arch/x86/kernel/apm_32.c
-+++ b/arch/x86/kernel/apm_32.c
-@@ -237,12 +237,6 @@
- extern int (*console_blank_hook)(int);
- #endif
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index a3ed681c8ce3f..3eb4334ac6a32 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -185,18 +185,17 @@ qedf_dbg_stop_io_on_error_cmd_read(struct file *filp, char __user *buffer,
+ 				   size_t count, loff_t *ppos)
+ {
+ 	int cnt;
++	char cbuf[7];
+ 	struct qedf_dbg_ctx *qedf_dbg =
+ 				(struct qedf_dbg_ctx *)filp->private_data;
+ 	struct qedf_ctx *qedf = container_of(qedf_dbg,
+ 	    struct qedf_ctx, dbg_ctx);
  
--/*
-- * The apm_bios device is one of the misc char devices.
-- * This is its minor number.
-- */
--#define	APM_MINOR_DEV	134
--
- /*
-  * Various options can be changed at boot time as follows:
-  * (We allow underscores for compatibility with the modules code)
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
+-	cnt = sprintf(buffer, "%s\n",
++	cnt = scnprintf(cbuf, sizeof(cbuf), "%s\n",
+ 	    qedf->stop_io_on_error ? "true" : "false");
+ 
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
+ }
+ 
+ static ssize_t
 -- 
 2.40.1
 
