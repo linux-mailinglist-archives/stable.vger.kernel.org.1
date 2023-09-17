@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6FA07A3CD2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C0E7A3AAE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239689AbjIQUfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51226 "EHLO
+        id S240420AbjIQUHa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241168AbjIQUfY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:24 -0400
+        with ESMTP id S240439AbjIQUHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:07:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC8010F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BACC433C7;
-        Sun, 17 Sep 2023 20:35:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5686D100
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:07:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830B9C433C9;
+        Sun, 17 Sep 2023 20:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982919;
-        bh=jN0M/X7bXSx5uFKisNoBR3uNNI5SDPyQXwScRA8EYzQ=;
+        s=korg; t=1694981223;
+        bh=BMGgILFutftvnTz6aObBw6szIR0xB8oRtdePRriaA8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0XpK4R8vtPfY5ZDG3gaTBpgVe5971fcL7rDv1AifhtK3s7iTU9z7BEw5Gldh241+D
-         jmyWEs5yP4tYz5LguGpU73/VxIKMTeaW0ll+fD0rivYZCde1lt/u6IO99Vj8kYhMVm
-         m1FNxBZo0mjeTP+QCkwXZm/MHrqESglh83U5lJIk=
+        b=u75Fla+hKX0hb9NzHYUicpyGJNtYLzxf9pNAH5V9/kaDTW/Pcn0ovpnSkwc3vOST+
+         OEeCsLKqD4TlcocDEcPu4hR5qdXoa+5nICAmN9Lon307Fd+pX5ll3C9LbyS/n8Hnig
+         wdg9OP7JBNLaPns9qMdx/HRTz1sT+3voLDviJyHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 391/511] clk: qcom: camcc-sc7180: fix async resume during probe
+        patches@lists.linux.dev, Stanislav Fomichev <sdf@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Florian Westphal <fw@strlen.de>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/219] net: fib: avoid warn splat in flow dissector
 Date:   Sun, 17 Sep 2023 21:13:38 +0200
-Message-ID: <20230917191123.235633859@linuxfoundation.org>
+Message-ID: <20230917191044.263816855@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +53,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit c948ff727e25297f3a703eb5349dd66aabf004e4 upstream.
+[ Upstream commit 8aae7625ff3f0bd5484d01f1b8d5af82e44bec2d ]
 
-To make sure that the controller is runtime resumed and its power domain
-is enabled before accessing its registers during probe, the synchronous
-runtime PM interface must be used.
+New skbs allocated via nf_send_reset() have skb->dev == NULL.
 
-Fixes: 8d4025943e13 ("clk: qcom: camcc-sc7180: Use runtime PM ops instead of clk ones")
-Cc: stable@vger.kernel.org      # 5.11
-Cc: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-2-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+fib*_rules_early_flow_dissect helpers already have a 'struct net'
+argument but its not passed down to the flow dissector core, which
+will then WARN as it can't derive a net namespace to use:
+
+ WARNING: CPU: 0 PID: 0 at net/core/flow_dissector.c:1016 __skb_flow_dissect+0xa91/0x1cd0
+ [..]
+  ip_route_me_harder+0x143/0x330
+  nf_send_reset+0x17c/0x2d0 [nf_reject_ipv4]
+  nft_reject_inet_eval+0xa9/0xf2 [nft_reject_inet]
+  nft_do_chain+0x198/0x5d0 [nf_tables]
+  nft_do_chain_inet+0xa4/0x110 [nf_tables]
+  nf_hook_slow+0x41/0xc0
+  ip_local_deliver+0xce/0x110
+  ..
+
+Cc: Stanislav Fomichev <sdf@google.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Fixes: 812fa71f0d96 ("netfilter: Dissect flow after packet mangling")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217826
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230830110043.30497-1-fw@strlen.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sc7180.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/ip6_fib.h | 5 ++++-
+ include/net/ip_fib.h  | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/camcc-sc7180.c
-+++ b/drivers/clk/qcom/camcc-sc7180.c
-@@ -1677,7 +1677,7 @@ static int cam_cc_sc7180_probe(struct pl
- 		return ret;
- 	}
+diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
+index 6268963d95994..a92f6eb853068 100644
+--- a/include/net/ip6_fib.h
++++ b/include/net/ip6_fib.h
+@@ -610,7 +610,10 @@ static inline bool fib6_rules_early_flow_dissect(struct net *net,
+ 	if (!net->ipv6.fib6_rules_require_fldissect)
+ 		return false;
  
--	ret = pm_runtime_get(&pdev->dev);
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret)
- 		return ret;
+-	skb_flow_dissect_flow_keys(skb, flkeys, flag);
++	memset(flkeys, 0, sizeof(*flkeys));
++	__skb_flow_dissect(net, skb, &flow_keys_dissector,
++			   flkeys, NULL, 0, 0, 0, flag);
++
+ 	fl6->fl6_sport = flkeys->ports.src;
+ 	fl6->fl6_dport = flkeys->ports.dst;
+ 	fl6->flowi6_proto = flkeys->basic.ip_proto;
+diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
+index a378eff827c74..f0c13864180e2 100644
+--- a/include/net/ip_fib.h
++++ b/include/net/ip_fib.h
+@@ -418,7 +418,10 @@ static inline bool fib4_rules_early_flow_dissect(struct net *net,
+ 	if (!net->ipv4.fib_rules_require_fldissect)
+ 		return false;
  
+-	skb_flow_dissect_flow_keys(skb, flkeys, flag);
++	memset(flkeys, 0, sizeof(*flkeys));
++	__skb_flow_dissect(net, skb, &flow_keys_dissector,
++			   flkeys, NULL, 0, 0, 0, flag);
++
+ 	fl4->fl4_sport = flkeys->ports.src;
+ 	fl4->fl4_dport = flkeys->ports.dst;
+ 	fl4->flowi4_proto = flkeys->basic.ip_proto;
+-- 
+2.40.1
+
 
 
