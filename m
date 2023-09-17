@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D851D7A3D5A
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C93767A3B8C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241270AbjIQUli (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35440 "EHLO
+        id S240721AbjIQUTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241358AbjIQUlX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:23 -0400
+        with ESMTP id S240760AbjIQUS7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE1B10F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6319BC433C8;
-        Sun, 17 Sep 2023 20:41:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4489D10F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFC8C433C7;
+        Sun, 17 Sep 2023 20:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983277;
-        bh=NGuAonsCpXSHsbjTnEtCymeyRXLM7spNiP9pcGzbT+Y=;
+        s=korg; t=1694981933;
+        bh=IrCIMyGJqENalE/KJWq0Vs66S84g+l7xgRrOMJBD3N8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NOeNiRyAAPQXjtjW6ae+4NObHbZfVNKOIxykzIGRhD9oJkMLt3Q44KVAMX2ZBHnlE
-         ybIxryQUjoFuWrYLWwteFfo8mgPXlZjJ80jboaNkWJnmxI9oYE556IStYu8+88DJpM
-         O4GusoDNiOQsJ1pBZOS7yXFQsRlUvbArZs+J3n0Y=
+        b=CvuCKRUEJyOPnK3o7x36n7/CCK68vBHTt/IIYXoV34dw/BQ+8ACiIiGWTOYGJ1m/d
+         3oOTnjWDfKlzj5u4GmFqlEApV/NSV7qHMTFoU6SGYOjZkig17CTu40p7pz8eBQMoS9
+         VbICByOnHyxjgSNR3ePyh6n8LRTu4PlxwVugYSvY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+        patches@lists.linux.dev, Ciprian Regus <ciprian.regus@analog.com>,
+        Simon Horman <horms@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 495/511] net/smc: use smc_lgr_list.lock to protect smc_lgr_list.list iterate in smcr_port_add
+Subject: [PATCH 6.1 195/219] net:ethernet:adi:adin1110: Fix forwarding offload
 Date:   Sun, 17 Sep 2023 21:15:22 +0200
-Message-ID: <20230917191125.680711319@linuxfoundation.org>
+Message-ID: <20230917191047.989785592@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Ciprian Regus <ciprian.regus@analog.com>
 
-[ Upstream commit f5146e3ef0a9eea405874b36178c19a4863b8989 ]
+[ Upstream commit 32530dba1bd48da4437d18d9a8dbc9d2826938a6 ]
 
-While doing smcr_port_add, there maybe linkgroup add into or delete
-from smc_lgr_list.list at the same time, which may result kernel crash.
-So, use smc_lgr_list.lock to protect smc_lgr_list.list iterate in
-smcr_port_add.
+Currently, when a new fdb entry is added (with both ports of the
+ADIN2111 bridged), the driver configures the MAC filters for the wrong
+port, which results in the forwarding being done by the host, and not
+actually hardware offloaded.
 
-The crash calltrace show below:
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 0 P4D 0
-Oops: 0000 [#1] SMP NOPTI
-CPU: 0 PID: 559726 Comm: kworker/0:92 Kdump: loaded Tainted: G
-Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014
-Workqueue: events smc_ib_port_event_work [smc]
-RIP: 0010:smcr_port_add+0xa6/0xf0 [smc]
-RSP: 0000:ffffa5a2c8f67de0 EFLAGS: 00010297
-RAX: 0000000000000001 RBX: ffff9935e0650000 RCX: 0000000000000000
-RDX: 0000000000000010 RSI: ffff9935e0654290 RDI: ffff9935c8560000
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9934c0401918
-R10: 0000000000000000 R11: ffffffffb4a5c278 R12: ffff99364029aae4
-R13: ffff99364029aa00 R14: 00000000ffffffed R15: ffff99364029ab08
-FS:  0000000000000000(0000) GS:ffff994380600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000f06a10003 CR4: 0000000002770ef0
-PKRU: 55555554
-Call Trace:
- smc_ib_port_event_work+0x18f/0x380 [smc]
- process_one_work+0x19b/0x340
- worker_thread+0x30/0x370
- ? process_one_work+0x340/0x340
- kthread+0x114/0x130
- ? __kthread_cancel_work+0x50/0x50
- ret_from_fork+0x1f/0x30
+The ADIN2111 offloads the forwarding by setting filters on the
+destination MAC address of incoming frames. Based on these, they may be
+routed to the other port. Thus, if a frame has to be forwarded from port
+1 to port 2, the required configuration for the ADDR_FILT_UPRn register
+should set the APPLY2PORT1 bit (instead of APPLY2PORT2, as it's
+currently the case).
 
-Fixes: 1f90a05d9ff9 ("net/smc: add smcr_port_add() and smcr_link_up() processing")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
+Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/adi/adin1110.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index f08fcc50fad3c..b84896acd4732 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1486,6 +1486,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
- {
- 	struct smc_link_group *lgr, *n;
+diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
+index cc026780ee0e8..ed2863ed6a5bb 100644
+--- a/drivers/net/ethernet/adi/adin1110.c
++++ b/drivers/net/ethernet/adi/adin1110.c
+@@ -1365,7 +1365,7 @@ static int adin1110_fdb_add(struct adin1110_port_priv *port_priv,
+ 		return -ENOMEM;
  
-+	spin_lock_bh(&smc_lgr_list.lock);
- 	list_for_each_entry_safe(lgr, n, &smc_lgr_list.list, list) {
- 		struct smc_link *link;
+ 	other_port = priv->ports[!port_priv->nr];
+-	port_rules = adin1110_port_rules(port_priv, false, true);
++	port_rules = adin1110_port_rules(other_port, false, true);
+ 	eth_broadcast_addr(mask);
  
-@@ -1500,6 +1501,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
- 		if (link)
- 			smc_llc_add_link_local(link);
- 	}
-+	spin_unlock_bh(&smc_lgr_list.lock);
- }
- 
- /* link is down - switch connections to alternate link,
+ 	return adin1110_write_mac_address(other_port, mac_nr, (u8 *)fdb->addr,
 -- 
 2.40.1
 
