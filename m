@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7857A3D12
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 910D07A3B1E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241212AbjIQUi3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41358 "EHLO
+        id S240576AbjIQUN4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:13:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241264AbjIQUiS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:18 -0400
+        with ESMTP id S240660AbjIQUNb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D9F10E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830E3C433C8;
-        Sun, 17 Sep 2023 20:38:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98472CDF
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3787C43397;
+        Sun, 17 Sep 2023 20:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983092;
-        bh=se+VeTBj1v5DlkTCMH8pHh0kOB0kRg7Lt24IorO6Lbo=;
+        s=korg; t=1694981575;
+        bh=nhUVXmL9v5nfJUDn+UQ4b10E10vthsyd7EaqQiqkGm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uye9rhXBu6xOUxN+e9JHJf0xCbxJyyiiHP2EQwyVftGkmbDZKVfo6LIv0dK20s3fK
-         Cno9J/5e9dFyhOaoSZIpECG6C60VA99wa5F3F+uhZpT9pA+ZAs5OzuggzpV1/SLn9B
-         WRmvBeqZyKeUPZWpwW8LCGmeW6pCV11HdFbABLaU=
+        b=WvCd9y3TSSYFqaNE3n7uJ0CyjWZJVY6GrbvYlXgk0aMyfR4ibfw2yKNQTYn/KHFdj
+         0bGKfgl/u4c5ltEgBtdNMJ+w456iI77ckmKv/2TYZxXDodRJ/SIDSQf2Y7pDPPieFJ
+         9DFL+1eYPfAQLkxeWXgCcG86Vnlxczz3f4P0A+J4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 442/511] af_unix: Fix data race around sk->sk_err.
+        patches@lists.linux.dev, stable@kernel.org,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 142/219] jbd2: check jh->b_transaction before removing it from checkpoint
 Date:   Sun, 17 Sep 2023 21:14:29 +0200
-Message-ID: <20230917191124.427705528@linuxfoundation.org>
+Message-ID: <20230917191046.139473152@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,46 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit b192812905e4b134f7b7994b079eb647e9d2d37e ]
+commit 590a809ff743e7bd890ba5fb36bc38e20a36de53 upstream.
 
-As with sk->sk_shutdown shown in the previous patch, sk->sk_err can be
-read locklessly by unix_dgram_sendmsg().
+Following process will corrupt ext4 image:
+Step 1:
+jbd2_journal_commit_transaction
+ __jbd2_journal_insert_checkpoint(jh, commit_transaction)
+ // Put jh into trans1->t_checkpoint_list
+ journal->j_checkpoint_transactions = commit_transaction
+ // Put trans1 into journal->j_checkpoint_transactions
 
-Let's use READ_ONCE() for sk_err as well.
+Step 2:
+do_get_write_access
+ test_clear_buffer_dirty(bh) // clear buffer dirty，set jbd dirty
+ __jbd2_journal_file_buffer(jh, transaction) // jh belongs to trans2
 
-Note that the writer side is marked by commit cc04410af7de ("af_unix:
-annotate lockless accesses to sk->sk_err").
+Step 3:
+drop_cache
+ journal_shrink_one_cp_list
+  jbd2_journal_try_remove_checkpoint
+   if (!trylock_buffer(bh))  // lock bh, true
+   if (buffer_dirty(bh))     // buffer is not dirty
+   __jbd2_journal_remove_checkpoint(jh)
+   // remove jh from trans1->t_checkpoint_list
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Step 4:
+jbd2_log_do_checkpoint
+ trans1 = journal->j_checkpoint_transactions
+ // jh is not in trans1->t_checkpoint_list
+ jbd2_cleanup_journal_tail(journal)  // trans1 is done
+
+Step 5: Power cut, trans2 is not committed, jh is lost in next mounting.
+
+Fix it by checking 'jh->b_transaction' before remove it from checkpoint.
+
+Cc: stable@kernel.org
+Fixes: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230714025528.564988-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jbd2/checkpoint.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index ba669f72d7df2..8faa0f9cc0839 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2466,7 +2466,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 			break;
- 		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			break;
--		if (sk->sk_err)
-+		if (READ_ONCE(sk->sk_err))
- 			break;
- 		timeo = schedule_timeout(timeo);
- 	}
--- 
-2.40.1
-
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -639,6 +639,8 @@ int jbd2_journal_try_remove_checkpoint(s
+ {
+ 	struct buffer_head *bh = jh2bh(jh);
+ 
++	if (jh->b_transaction)
++		return -EBUSY;
+ 	if (!trylock_buffer(bh))
+ 		return -EBUSY;
+ 	if (buffer_dirty(bh)) {
 
 
