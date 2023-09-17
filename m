@@ -2,45 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CCE97A37EC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED8E7A3924
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239504AbjIQT0z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41242 "EHLO
+        id S239961AbjIQTpg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:45:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239559AbjIQT00 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:26 -0400
+        with ESMTP id S239442AbjIQTpO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113E1DB;
-        Sun, 17 Sep 2023 12:26:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1E8C433A9;
-        Sun, 17 Sep 2023 19:26:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED7C189
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB1DC433C7;
+        Sun, 17 Sep 2023 19:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978780;
-        bh=XTziQflBtU2AkACxr/MEtdaIzxCY2gQQPHQEj56nd50=;
+        s=korg; t=1694979898;
+        bh=l1rvJ6xUA7kc+gpv2k95Nk+XnIFUu0vfssRNHbxKfbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cYQTENl93CszGXYt8aPSk1yUD7xFAi5Kg1byJGx9hiDrgATs3eEPDuL/aQVJhi6E7
-         MV3USSSJPTJ9HhEUmzB+Rs8jMoS5z+IAB8+CdZYeXCm0LUgiVC3uyOznCAv9l1bS4R
-         6QA37W75/V4MDGcHSn18Sq2DHnluM/PP/cWWENoQ=
+        b=YPmZj6HtQ+8/Aj+gYyu8rEKPcPkSzCN/KgVjsTeYYJV/31YeCZGoiBqhRNylbqHQX
+         zv2KrytdCt4RYlESa6OZkUjJWzPSDq/vzjoHugjP8ItTVz9Pk9EehvFX6xcrxzAqLi
+         5HU4uso+63LnujYUuktGM1vLllpVx2RzxnIv+Bec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        dorum@noisolation.com, Daniel Vetter <daniel.vetter@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 158/406] drm/msm/mdp5: Dont leak some plane state
-Date:   Sun, 17 Sep 2023 21:10:12 +0200
-Message-ID: <20230917191105.347169382@linuxfoundation.org>
+        patches@lists.linux.dev, Manish Rangankar <mrangankar@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 013/285] scsi: qla2xxx: Remove unsupported ql2xenabledif option
+Date:   Sun, 17 Sep 2023 21:10:13 +0200
+Message-ID: <20230917191052.081440911@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,59 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Manish Rangankar <mrangankar@marvell.com>
 
-[ Upstream commit fd0ad3b2365c1c58aa5a761c18efc4817193beb6 ]
+commit e9105c4b7a9208a21a9bda133707624f12ddabc2 upstream.
 
-Apparently no one noticed that mdp5 plane states leak like a sieve
-ever since we introduced plane_state->commit refcount a few years ago
-in 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too
-early by tracking commits, v3.")
+User accidently passed module parameter ql2xenabledif=1 which is
+unsupported. However, driver still initialized which lead to guard tag
+errors during device discovery.
 
-Fix it by using the right helpers.
+Remove unsupported ql2xenabledif=1 option and validate the user input.
 
-Fixes: 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too early by tracking commits, v3.")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org
-Cc: freedreno@lists.freedesktop.org
-Reported-and-tested-by: dorum@noisolation.com
-Cc: dorum@noisolation.com
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/551236/
-Link: https://lore.kernel.org/r/20230803204521.928582-1-daniel.vetter@ffwll.ch
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_attr.c |    2 --
+ drivers/scsi/qla2xxx/qla_dbg.c  |    2 +-
+ drivers/scsi/qla2xxx/qla_os.c   |    9 +++++++--
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-index 0dc23c86747e8..e1c1b4ad5ed04 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-@@ -221,8 +221,7 @@ static void mdp5_plane_destroy_state(struct drm_plane *plane,
- {
- 	struct mdp5_plane_state *pstate = to_mdp5_plane_state(state);
- 
--	if (state->fb)
--		drm_framebuffer_put(state->fb);
-+	__drm_atomic_helper_plane_destroy_state(state);
- 
- 	kfree(pstate);
- }
--- 
-2.40.1
-
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -3093,8 +3093,6 @@ qla24xx_vport_create(struct fc_vport *fc
+ 			vha->flags.difdix_supported = 1;
+ 			ql_dbg(ql_dbg_user, vha, 0x7082,
+ 			    "Registered for DIF/DIX type 1 and 3 protection.\n");
+-			if (ql2xenabledif == 1)
+-				prot = SHOST_DIX_TYPE0_PROTECTION;
+ 			scsi_host_set_prot(vha->host,
+ 			    prot | SHOST_DIF_TYPE1_PROTECTION
+ 			    | SHOST_DIF_TYPE2_PROTECTION
+--- a/drivers/scsi/qla2xxx/qla_dbg.c
++++ b/drivers/scsi/qla2xxx/qla_dbg.c
+@@ -18,7 +18,7 @@
+  * | Queue Command and IO tracing |       0x3074       | 0x300b         |
+  * |                              |                    | 0x3027-0x3028  |
+  * |                              |                    | 0x303d-0x3041  |
+- * |                              |                    | 0x302d,0x3033  |
++ * |                              |                    | 0x302e,0x3033  |
+  * |                              |                    | 0x3036,0x3038  |
+  * |                              |                    | 0x303a		|
+  * | DPC Thread                   |       0x4023       | 0x4002,0x4013  |
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -3288,6 +3288,13 @@ qla2x00_probe_one(struct pci_dev *pdev,
+ 	host->max_id = ha->max_fibre_devices;
+ 	host->cmd_per_lun = 3;
+ 	host->unique_id = host->host_no;
++
++	if (ql2xenabledif && ql2xenabledif != 2) {
++		ql_log(ql_log_warn, base_vha, 0x302d,
++		       "Invalid value for ql2xenabledif, resetting it to default (2)\n");
++		ql2xenabledif = 2;
++	}
++
+ 	if (IS_T10_PI_CAPABLE(ha) && ql2xenabledif)
+ 		host->max_cmd_len = 32;
+ 	else
+@@ -3524,8 +3531,6 @@ skip_dpc:
+ 			base_vha->flags.difdix_supported = 1;
+ 			ql_dbg(ql_dbg_init, base_vha, 0x00f1,
+ 			    "Registering for DIF/DIX type 1 and 3 protection.\n");
+-			if (ql2xenabledif == 1)
+-				prot = SHOST_DIX_TYPE0_PROTECTION;
+ 			if (ql2xprotmask)
+ 				scsi_host_set_prot(host, ql2xprotmask);
+ 			else
 
 
