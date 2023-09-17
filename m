@@ -2,39 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 458207A3B1D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04BED7A3D34
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239550AbjIQUNy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:13:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58424 "EHLO
+        id S241209AbjIQUkC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240606AbjIQUNZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:25 -0400
+        with ESMTP id S239713AbjIQUja (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49481197
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8036AC433C9;
-        Sun, 17 Sep 2023 20:12:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61FD510E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E67C433C7;
+        Sun, 17 Sep 2023 20:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981557;
-        bh=2NnO2pLOzToTkxrJytKxraV2QfcI5DQqP1RgHN0kczM=;
+        s=korg; t=1694983165;
+        bh=WEfK55I44bJ0+aLOHQucIGF4vP6kB/UM/LzZ1xmE31U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=htQHDNyaZ0KxmRRHs/9/Dl4jEsii8Rv9MB4G7BhtHcjs7M+M9rt4QhiAvbPXfeiI5
-         HlSM8iULOs8ohyrlNYgptwBWF1SwLJeRQ+oSVvnVZ6p4iqghfvsQ+lecCoKHjH8ryo
-         5umIoOW+L2Xr2/EKL38Z+a1eF401aCfmqPl5Brfo=
+        b=Zn8q7ezxtbrBfxtkkZFQN4bnnrhRSZQRx9QFR7mcpUeNzS0zWZB5HdrDNzPdDUjOI
+         qYNfKLt8acf79bh6x6g51n2lEWB5e4tervpHxmCHzKxeGJ5o0GT9AlLTAnD3ujM5E7
+         9GGLHWg0U0KFSNBrcLHIw5I1aybPweKswSJ4ju/A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Jeremie Galarneau <jeremie.galarneau@efficios.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+        Shawn Landden <shawn@git.icu>,
+        Song Liu <songliubraving@fb.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/219] net: dsa: sja1105: fix -ENOSPC when replacing the same tc-cbs too many times
-Date:   Sun, 17 Sep 2023 21:14:09 +0200
-Message-ID: <20230917191045.387863974@linuxfoundation.org>
+Subject: [PATCH 5.15 423/511] perf top: Dont pass an ERR_PTR() directly to perf_session__delete()
+Date:   Sun, 17 Sep 2023 21:14:10 +0200
+Message-ID: <20230917191123.988288256@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +65,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 894cafc5c62ccced758077bd4e970dc714c42637 ]
+[ Upstream commit ef23cb593304bde0cc046fd4cc83ae7ea2e24f16 ]
 
-After running command [2] too many times in a row:
+While debugging a segfault on 'perf lock contention' without an
+available perf.data file I noticed that it was basically calling:
 
-[1] $ tc qdisc add dev sw2p0 root handle 1: mqprio num_tc 8 \
-	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 hw 0
-[2] $ tc qdisc replace dev sw2p0 parent 1:1 cbs offload 1 \
-	idleslope 120000 sendslope -880000 locredit -1320 hicredit 180
+	perf_session__delete(ERR_PTR(-1))
 
-(aka more than priv->info->num_cbs_shapers times)
+Resulting in:
 
-we start seeing the following error message:
+  (gdb) run lock contention
+  Starting program: /root/bin/perf lock contention
+  [Thread debugging using libthread_db enabled]
+  Using host libthread_db library "/lib64/libthread_db.so.1".
+  failed to open perf.data: No such file or directory  (try 'perf record' first)
+  Initializing perf session failed
 
-Error: Specified device failed to setup cbs hardware offload.
+  Program received signal SIGSEGV, Segmentation fault.
+  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
+  2858		if (!session->auxtrace)
+  (gdb) p session
+  $1 = (struct perf_session *) 0xffffffffffffffff
+  (gdb) bt
+  #0  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
+  #1  0x000000000057bb4d in perf_session__delete (session=0xffffffffffffffff) at util/session.c:300
+  #2  0x000000000047c421 in __cmd_contention (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2161
+  #3  0x000000000047dc95 in cmd_lock (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2604
+  #4  0x0000000000501466 in run_builtin (p=0xe597a8 <commands+552>, argc=2, argv=0x7fffffffe200) at perf.c:322
+  #5  0x00000000005016d5 in handle_internal_command (argc=2, argv=0x7fffffffe200) at perf.c:375
+  #6  0x0000000000501824 in run_argv (argcp=0x7fffffffe02c, argv=0x7fffffffe020) at perf.c:419
+  #7  0x0000000000501b11 in main (argc=2, argv=0x7fffffffe200) at perf.c:535
+  (gdb)
 
-This comes from the fact that ndo_setup_tc(TC_SETUP_QDISC_CBS) presents
-the same API for the qdisc create and replace cases, and the sja1105
-driver fails to distinguish between the 2. Thus, it always thinks that
-it must allocate the same shaper for a {port, queue} pair, when it may
-instead have to replace an existing one.
+So just set it to NULL after using PTR_ERR(session) to decode the error
+as perf_session__delete(NULL) is supported.
 
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The same problem was found in 'perf top' after an audit of all
+perf_session__new() failure handling.
+
+Fixes: 6ef81c55a2b6584c ("perf session: Return error code for perf_session__new() function on failure")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jeremie Galarneau <jeremie.galarneau@efficios.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>
+Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
+Cc: Mukesh Ojha <mojha@codeaurora.org>
+Cc: Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Shawn Landden <shawn@git.icu>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
+Link: https://lore.kernel.org/lkml/ZN4Q2rxxsL08A8rd@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ tools/perf/builtin-top.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 377f177502003..9dd5cdcda2843 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2123,6 +2123,18 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index a3ae9176a83e2..6fdd401ec9c56 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -1743,6 +1743,7 @@ int cmd_top(int argc, const char **argv)
+ 	top.session = perf_session__new(NULL, NULL);
+ 	if (IS_ERR(top.session)) {
+ 		status = PTR_ERR(top.session);
++		top.session = NULL;
+ 		goto out_delete_evlist;
+ 	}
  
- #define BYTES_PER_KBIT (1000LL / 8)
- 
-+static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
-+				   int port, int prio)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->info->num_cbs_shapers; i++)
-+		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
-+			return i;
-+
-+	return -1;
-+}
-+
- static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
- {
- 	int i;
-@@ -2163,9 +2175,14 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	if (!offload->enable)
- 		return sja1105_delete_cbs_shaper(priv, port, offload->queue);
- 
--	index = sja1105_find_unused_cbs_shaper(priv);
--	if (index < 0)
--		return -ENOSPC;
-+	/* The user may be replacing an existing shaper */
-+	index = sja1105_find_cbs_shaper(priv, port, offload->queue);
-+	if (index < 0) {
-+		/* That isn't the case - see if we can allocate a new one */
-+		index = sja1105_find_unused_cbs_shaper(priv);
-+		if (index < 0)
-+			return -ENOSPC;
-+	}
- 
- 	cbs = &priv->cbs[index];
- 	cbs->port = port;
 -- 
 2.40.1
 
