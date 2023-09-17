@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FBC7A37AF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1933D7A37B1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239483AbjIQTXq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40998 "EHLO
+        id S239495AbjIQTXr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:23:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239521AbjIQTX3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:23:29 -0400
+        with ESMTP id S239538AbjIQTXk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:23:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFF5D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:23:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4DBC433C8;
-        Sun, 17 Sep 2023 19:23:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DDF118
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:23:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3309DC433C7;
+        Sun, 17 Sep 2023 19:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978603;
-        bh=Mj0MdEFh8/6JtpIkZSFpS48jVyD0msraU27pIKb7hX8=;
+        s=korg; t=1694978613;
+        bh=eOMiWgP5zF1XSiJCHa6sk/eeOd8r44tLjlr+X3ecFww=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K3zFs6Vt8Vdn5yg5Lt1AogARuLGDKRAjnxU5OqpAEfPFB9/aNd4Ax+zPJx1atXg6t
-         6Pjl5Lo8gG+GCKJzBXtlGCIx/WRr/SDhy13N3FEYJSEmrq6mnMxD2iyqAyiJqHvGiO
-         I9Pt1z2eTgqVwmxHYQX5oEgir9280ePsP0GZ3Sdk=
+        b=xd8V01Bzv6Ul3iFKGsbUqW2A8f9JVlDV3wy8jRBJjT+FJ9VF8NQeCTDJHTrsEC/P7
+         EdG97svTWlGbTAKBaM0QDeCDJlJboav6kdWwuRnruYrc8wCJlc9phdt8xODkZIWf02
+         mfkgZkDjMwG4wKzz5KaenkaTG7iuwnmpFTiJQLdk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Mikel Rychliski <mikel@mikelr.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/406] s390/paes: fix PKEY_TYPE_EP11_AES handling for secure keyblobs
-Date:   Sun, 17 Sep 2023 21:08:53 +0200
-Message-ID: <20230917191103.218091505@linuxfoundation.org>
+Subject: [PATCH 5.10 080/406] x86/efistub: Fix PCI ROM preservation in mixed mode
+Date:   Sun, 17 Sep 2023 21:08:54 +0200
+Message-ID: <20230917191103.243547117@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -55,38 +54,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Mikel Rychliski <mikel@mikelr.com>
 
-[ Upstream commit cba33db3fc4dbf2e54294b0e499d2335a3a00d78 ]
+[ Upstream commit 8b94da92559f7e403dc7ab81937cc50f949ee2fd ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES securekey blobs as a
-supplement to the PKEY_TYPE_EP11 (which won't work in environments
-with session-bound keys). This new keyblobs has a different maximum
-size, so fix paes crypto module to accept also these larger keyblobs.
+preserve_pci_rom_image() was accessing the romsize field in
+efi_pci_io_protocol_t directly instead of using the efi_table_attr()
+helper. This prevents the ROM image from being saved correctly during a
+mixed mode boot.
 
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 2c3625cb9fa2 ("efi/x86: Fold __setup_efi_pci32() and __setup_efi_pci64() into one function")
+Signed-off-by: Mikel Rychliski <mikel@mikelr.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/paes_s390.c | 2 +-
+ drivers/firmware/efi/libstub/x86-stub.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/crypto/paes_s390.c b/arch/s390/crypto/paes_s390.c
-index f3caeb17c85b9..a6727ad58d65a 100644
---- a/arch/s390/crypto/paes_s390.c
-+++ b/arch/s390/crypto/paes_s390.c
-@@ -34,7 +34,7 @@
-  * and padding is also possible, the limits need to be generous.
-  */
- #define PAES_MIN_KEYSIZE 16
--#define PAES_MAX_KEYSIZE 320
-+#define PAES_MAX_KEYSIZE MAXEP11AESKEYBLOBSIZE
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 5d0f1b1966fc6..9f998e6bff957 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -60,7 +60,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 	rom->data.type	= SETUP_PCI;
+ 	rom->data.len	= size - sizeof(struct setup_data);
+ 	rom->data.next	= 0;
+-	rom->pcilen	= pci->romsize;
++	rom->pcilen	= romsize;
+ 	*__rom = rom;
  
- static u8 *ctrblk;
- static DEFINE_MUTEX(ctrblk_lock);
+ 	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
 -- 
 2.40.1
 
