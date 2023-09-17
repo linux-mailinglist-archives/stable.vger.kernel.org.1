@@ -2,40 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47D017A3807
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D71F7A3942
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239595AbjIQTaJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
+        id S239091AbjIQTrM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239611AbjIQTaB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:01 -0400
+        with ESMTP id S240068AbjIQTqk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7819D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:29:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A84C433C7;
-        Sun, 17 Sep 2023 19:29:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A96E19F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B874C433C7;
+        Sun, 17 Sep 2023 19:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978996;
-        bh=qWm2r3RRo+6faBoN6sXlAFt3IEpaPdz/woXEqN5QTTE=;
+        s=korg; t=1694979994;
+        bh=EUa0AjzmjosFq2QWhjih8GwoE1puji7XLs95WTaL42A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QusSO6qx5VUbWcY/hMMUecZ+0a5Q7lmz5o4G+j0UZ4SoewN2N56vQIK0w2xHZWIgm
-         V9/l5dPWGOi/CnHOAlmJu6vaK597m9PpPIfQXZPLKQlM0yWIPS5rHJlKYFewH0RaGo
-         d8B+sRL7XBlsWYPskb0YC0e8AoqmmpPnmbg0l5S0=
+        b=YMAEMa59CAt8xgOUNikdC1wP8sp4ixC7eiJ9N6Ho3o5APWJWC8cz+P3e8R8uYvtl5
+         tmr5h4zFaDIJPpydhVQ4se8oelgrCvvAYLwDFdZT/aQfWWd79FEENycRxr09NSssfb
+         nbncIG+3Fcsu7q6Q+us+bnCWwpcCOcWEw/CscUE8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/406] clk: imx8mp: fix sai4 clock
-Date:   Sun, 17 Sep 2023 21:10:37 +0200
-Message-ID: <20230917191106.035940529@linuxfoundation.org>
+        patches@lists.linux.dev, Kalesh Singh <kaleshsingh@google.com>,
+        Charan Teja Kalla <quic_charante@quicinc.com>,
+        Yu Zhao <yuzhao@google.com>,
+        Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
+        Barry Song <baohua@kernel.org>,
+        Brian Geffon <bgeffon@google.com>,
+        "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Steven Barrett <steven@liquorix.net>,
+        Suleiman Souhlal <suleiman@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.5 038/285] Multi-gen LRU: avoid race in inc_min_seq()
+Date:   Sun, 17 Sep 2023 21:10:38 +0200
+Message-ID: <20230917191052.988461946@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +64,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Kalesh Singh <kaleshsingh@google.com>
 
-[ Upstream commit c30f600f1f41dcf5ef0fb02e9a201f9b2e8f31bd ]
+commit bb5e7f234eacf34b65be67ebb3613e3b8cf11b87 upstream.
 
-The reference manual don't mention a SAI4 hardware block. This would be
-clock slice 78 which is skipped (TRM, page 237). Remove any reference to
-this clock to align the driver with the reality.
+inc_max_seq() will try to inc_min_seq() if nr_gens == MAX_NR_GENS. This
+is because the generations are reused (the last oldest now empty
+generation will become the next youngest generation).
 
-Fixes: 9c140d992676 ("clk: imx: Add support for i.MX8MP clock driver")
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.kernel.org/r/20230731142150.3186650-1-m.felsch@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+inc_min_seq() is retried until successful, dropping the lru_lock
+and yielding the CPU on each failure, and retaking the lock before
+trying again:
+
+        while (!inc_min_seq(lruvec, type, can_swap)) {
+                spin_unlock_irq(&lruvec->lru_lock);
+                cond_resched();
+                spin_lock_irq(&lruvec->lru_lock);
+        }
+
+However, the initial condition that required incrementing the min_seq
+(nr_gens == MAX_NR_GENS) is not retested. This can change by another
+call to inc_max_seq() from run_aging() with force_scan=true from the
+debugfs interface.
+
+Since the eviction stalls when the nr_gens == MIN_NR_GENS, avoid
+unnecessarily incrementing the min_seq by rechecking the number of
+generations before each attempt.
+
+This issue was uncovered in previous discussion on the list by Yu Zhao
+and Aneesh Kumar [1].
+
+[1] https://lore.kernel.org/linux-mm/CAOUHufbO7CaVm=xjEb1avDhHVvnC8pJmGyKcFf2iY_dpf+zR3w@mail.gmail.com/
+
+Link: https://lkml.kernel.org/r/20230802025606.346758-2-kaleshsingh@google.com
+Fixes: d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
+Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Steven Barrett <steven@liquorix.net>
+Cc: Suleiman Souhlal <suleiman@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 5 -----
- 1 file changed, 5 deletions(-)
+ mm/vmscan.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 98a4711ef38d0..148572852e70f 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -181,10 +181,6 @@ static const char * const imx8mp_sai3_sels[] = {"osc_24m", "audio_pll1_out", "au
- 						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
- 						"clk_ext3", "clk_ext4", };
- 
--static const char * const imx8mp_sai4_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
--						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
--						"clk_ext1", "clk_ext2", };
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4440,7 +4440,7 @@ static void inc_max_seq(struct lruvec *l
+ 	int prev, next;
+ 	int type, zone;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
 -
- static const char * const imx8mp_sai5_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
- 						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
- 						"clk_ext2", "clk_ext3", };
-@@ -596,7 +592,6 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_CLK_SAI1] = imx8m_clk_hw_composite("sai1", imx8mp_sai1_sels, ccm_base + 0xa580);
- 	hws[IMX8MP_CLK_SAI2] = imx8m_clk_hw_composite("sai2", imx8mp_sai2_sels, ccm_base + 0xa600);
- 	hws[IMX8MP_CLK_SAI3] = imx8m_clk_hw_composite("sai3", imx8mp_sai3_sels, ccm_base + 0xa680);
--	hws[IMX8MP_CLK_SAI4] = imx8m_clk_hw_composite("sai4", imx8mp_sai4_sels, ccm_base + 0xa700);
- 	hws[IMX8MP_CLK_SAI5] = imx8m_clk_hw_composite("sai5", imx8mp_sai5_sels, ccm_base + 0xa780);
- 	hws[IMX8MP_CLK_SAI6] = imx8m_clk_hw_composite("sai6", imx8mp_sai6_sels, ccm_base + 0xa800);
- 	hws[IMX8MP_CLK_ENET_QOS] = imx8m_clk_hw_composite("enet_qos", imx8mp_enet_qos_sels, ccm_base + 0xa880);
--- 
-2.40.1
-
++restart:
+ 	spin_lock_irq(&lruvec->lru_lock);
+ 
+ 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+@@ -4451,11 +4451,12 @@ static void inc_max_seq(struct lruvec *l
+ 
+ 		VM_WARN_ON_ONCE(!force_scan && (type == LRU_GEN_FILE || can_swap));
+ 
+-		while (!inc_min_seq(lruvec, type, can_swap)) {
+-			spin_unlock_irq(&lruvec->lru_lock);
+-			cond_resched();
+-			spin_lock_irq(&lruvec->lru_lock);
+-		}
++		if (inc_min_seq(lruvec, type, can_swap))
++			continue;
++
++		spin_unlock_irq(&lruvec->lru_lock);
++		cond_resched();
++		goto restart;
+ 	}
+ 
+ 	/*
 
 
