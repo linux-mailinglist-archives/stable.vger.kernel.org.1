@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CFA07A3BC1
+	by mail.lfdr.de (Postfix) with ESMTP id 334EE7A3BC2
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240789AbjIQUVy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:21:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43566 "EHLO
+        id S240817AbjIQUV4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240866AbjIQUVk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:40 -0400
+        with ESMTP id S240870AbjIQUVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7813F101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC163C433C7;
-        Sun, 17 Sep 2023 20:21:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B5419B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBF0C433CA;
+        Sun, 17 Sep 2023 20:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982092;
-        bh=MH9heb5nfpx+d/oqWUTgPO3J1DMVH9i2WLsyHHBa1MQ=;
+        s=korg; t=1694982098;
+        bh=LEsXtiL5sswqQmBzNdtFv9c6TDnHIaSGH30QXSKO6cg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vK1UROgyXz3l5R1bpNFNsFQCwkBjT8scnPtwfjcWCdU6QRpFLwKVPZNnU2q+3cMsL
-         yWqwX2kl/KCd5+U8hKSelorbhN6uvGvQ4zJ+5E/v8AlGL/r4M6EdsdMzMZrDPB6DFm
-         cGe3pnGlmKaEjR4MfHR0gTEyWoyirpx3clS7n7H0=
+        b=tZA6J4FUQ2ks118Q+2AgHV8qDYQNkjMHVM4sX7zgSr3vNntCxYpEnZw08GWIWx9C6
+         dU1YRsAia6H5h7O64d8x6PclFTktrBE8RIL8g7esX4wBYaruCXkrADpWU9LJaY/q4I
+         zoUEQ+m07iGXZs+tzJ+iXvtZ+mjEw2mXFI6KCY4E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Lucas Stach <l.stach@pengutronix.de>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/511] arm64: dts: qcom: pmi8994: Add missing OVP interrupt
-Date:   Sun, 17 Sep 2023 21:09:36 +0200
-Message-ID: <20230917191117.452143075@linuxfoundation.org>
+Subject: [PATCH 5.15 150/511] drm/etnaviv: fix dumping of active MMU context
+Date:   Sun, 17 Sep 2023 21:09:37 +0200
+Message-ID: <20230917191117.475786215@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,39 +54,70 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit 8db94432690371b1736e9a2566a9b3d8a73d5a97 ]
+[ Upstream commit 20faf2005ec85fa1a6acc9a74ff27de667f90576 ]
 
-Add the missing OVP interrupt. This fixes the schema warning:
+gpu->mmu_context is the MMU context of the last job in the HW queue, which
+isn't necessarily the same as the context from the bad job. Dump the MMU
+context from the scheduler determined bad submit to make it work as intended.
 
-wled@d800: interrupt-names: ['short'] is too short
-
-Fixes: 37aa540cbd30 ("arm64: dts: qcom: pmi8994: Add WLED node")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230626-topic-bindingsfixups-v1-6-254ae8642e69@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 17e4660ae3d7 ("drm/etnaviv: implement per-process address spaces on MMUv2")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Christian Gmeiner <christian.gmeiner@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/pmi8994.dtsi | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_dump.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi8994.dtsi b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
-index 81899fe17f2b2..38cf0f14e8798 100644
---- a/arch/arm64/boot/dts/qcom/pmi8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmi8994.dtsi
-@@ -36,8 +36,9 @@ pmi8994_spmi_regulators: regulators {
- 		pmi8994_wled: wled@d800 {
- 			compatible = "qcom,pmi8994-wled";
- 			reg = <0xd800>, <0xd900>;
--			interrupts = <3 0xd8 0x02 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "short";
-+			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
-+				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "ovp", "short";
- 			qcom,cabc;
- 			qcom,external-pfet;
- 			status = "disabled";
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_dump.c b/drivers/gpu/drm/etnaviv/etnaviv_dump.c
+index f418e0b75772e..0edcf8ceb4a78 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_dump.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_dump.c
+@@ -125,9 +125,9 @@ void etnaviv_core_dump(struct etnaviv_gem_submit *submit)
+ 		return;
+ 	etnaviv_dump_core = false;
+ 
+-	mutex_lock(&gpu->mmu_context->lock);
++	mutex_lock(&submit->mmu_context->lock);
+ 
+-	mmu_size = etnaviv_iommu_dump_size(gpu->mmu_context);
++	mmu_size = etnaviv_iommu_dump_size(submit->mmu_context);
+ 
+ 	/* We always dump registers, mmu, ring, hanging cmdbuf and end marker */
+ 	n_obj = 5;
+@@ -157,7 +157,7 @@ void etnaviv_core_dump(struct etnaviv_gem_submit *submit)
+ 	iter.start = __vmalloc(file_size, GFP_KERNEL | __GFP_NOWARN |
+ 			__GFP_NORETRY);
+ 	if (!iter.start) {
+-		mutex_unlock(&gpu->mmu_context->lock);
++		mutex_unlock(&submit->mmu_context->lock);
+ 		dev_warn(gpu->dev, "failed to allocate devcoredump file\n");
+ 		return;
+ 	}
+@@ -169,18 +169,18 @@ void etnaviv_core_dump(struct etnaviv_gem_submit *submit)
+ 	memset(iter.hdr, 0, iter.data - iter.start);
+ 
+ 	etnaviv_core_dump_registers(&iter, gpu);
+-	etnaviv_core_dump_mmu(&iter, gpu->mmu_context, mmu_size);
++	etnaviv_core_dump_mmu(&iter, submit->mmu_context, mmu_size);
+ 	etnaviv_core_dump_mem(&iter, ETDUMP_BUF_RING, gpu->buffer.vaddr,
+ 			      gpu->buffer.size,
+ 			      etnaviv_cmdbuf_get_va(&gpu->buffer,
+-					&gpu->mmu_context->cmdbuf_mapping));
++					&submit->mmu_context->cmdbuf_mapping));
+ 
+ 	etnaviv_core_dump_mem(&iter, ETDUMP_BUF_CMD,
+ 			      submit->cmdbuf.vaddr, submit->cmdbuf.size,
+ 			      etnaviv_cmdbuf_get_va(&submit->cmdbuf,
+-					&gpu->mmu_context->cmdbuf_mapping));
++					&submit->mmu_context->cmdbuf_mapping));
+ 
+-	mutex_unlock(&gpu->mmu_context->lock);
++	mutex_unlock(&submit->mmu_context->lock);
+ 
+ 	/* Reserve space for the bomap */
+ 	if (n_bomap_pages) {
 -- 
 2.40.1
 
