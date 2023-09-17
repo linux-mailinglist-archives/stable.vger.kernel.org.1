@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21ECD7A3D5F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0C67A3B92
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241208AbjIQUmJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55750 "EHLO
+        id S240759AbjIQUTr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241292AbjIQUlk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:40 -0400
+        with ESMTP id S240766AbjIQUTa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B36D10F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CA0C433CB;
-        Sun, 17 Sep 2023 20:41:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8F8F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C016C433C8;
+        Sun, 17 Sep 2023 20:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983294;
-        bh=iNWYJM94zPuVJ1OGhM68kB3gRxptOcxzRPoeLHhJWik=;
+        s=korg; t=1694981964;
+        bh=5BKotphG5h6L0UZDNHq+JyH0Z59yO5xgZl+eqjtu3ZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R7mgQ7JZaZE+Pa7ZBni2F3fnzXOuRF0C0mqNHuBeRaGw14BkVQ3izaLaJWnrf1QyD
-         R+XcoOLz0KX81Btol3YqlpRbhcKaHH4hFBHSmX1omIZ3Ekj0DAl44FPwkXaiYzea9C
-         e3Y03cL0O3vtXu2ZP3UUepPnIuZBDzZ3jMxpg2hA=
+        b=Z3UP/8a7T8/hbcAVcNFKXc94dRLrTeWAw6jqxJlrOfb6bOhPTOuvVvQnApN9TGrSH
+         mfXKiUTD4+RVZiNXWBPGf1oMo/E/oA1SUt5qIqu6Wi21szok03TqEnBlEScztkMQVg
+         WgBurrEUz/c+aFmiVZ7YrXym+Y1B+spqwmJI5zr4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 499/511] net: dsa: sja1105: hide all multicast addresses from "bridge fdb show"
+Subject: [PATCH 6.1 199/219] net: dsa: sja1105: serialize sja1105_port_mcast_flood() with other FDB accesses
 Date:   Sun, 17 Sep 2023 21:15:26 +0200
-Message-ID: <20230917191125.775409427@linuxfoundation.org>
+Message-ID: <20230917191048.139098992@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +50,190 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 02c652f5465011126152bbd93b6a582a1d0c32f1 ]
+[ Upstream commit ea32690daf4fa525dc5a4d164bd00ed8c756e1c6 ]
 
-Commit 4d9423549501 ("net: dsa: sja1105: offload bridge port flags to
-device") has partially hidden some multicast entries from showing up in
-the "bridge fdb show" output, but it wasn't enough. Addresses which are
-added through "bridge mdb add" still show up. Hide them all.
+sja1105_fdb_add() runs from the dsa_owq, and sja1105_port_mcast_flood()
+runs from switchdev_deferred_process_work(). Prior to the blamed commit,
+they used to be indirectly serialized through the rtnl_lock(), which
+no longer holds true because dsa_owq dropped that.
 
-Fixes: 291d1e72b756 ("net: dsa: sja1105: Add support for FDB and MDB management")
+So, it is now possible that we traverse the static config BLK_IDX_L2_LOOKUP
+elements concurrently compared to when we change them, in
+sja1105_static_fdb_change(). That is not ideal, since it might result in
+data corruption.
+
+Introduce a mutex which serializes accesses to the hardware FDB and to
+the static config elements for the L2 Address Lookup table.
+
+I can't find a good reason to add locking around sja1105_fdb_dump().
+I'll add it later if needed.
+
+Fixes: 0faf890fc519 ("net: dsa: drop rtnl_lock from dsa_slave_switchdev_event_work")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/dsa/sja1105/sja1105.h      |  2 +
+ drivers/net/dsa/sja1105/sja1105_main.c | 56 ++++++++++++++++++++------
+ 2 files changed, 45 insertions(+), 13 deletions(-)
 
+diff --git a/drivers/net/dsa/sja1105/sja1105.h b/drivers/net/dsa/sja1105/sja1105.h
+index a831bb0a52074..06e0ebfe652a4 100644
+--- a/drivers/net/dsa/sja1105/sja1105.h
++++ b/drivers/net/dsa/sja1105/sja1105.h
+@@ -264,6 +264,8 @@ struct sja1105_private {
+ 	 * the switch doesn't confuse them with one another.
+ 	 */
+ 	struct mutex mgmt_lock;
++	/* Serializes accesses to the FDB */
++	struct mutex fdb_lock;
+ 	/* PTP two-step TX timestamp ID, and its serialization lock */
+ 	spinlock_t ts_id_lock;
+ 	u8 ts_id;
 diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index d5600d0d6ef10..493192a8000c8 100644
+index f8228a81234fe..c6c74e302e4dd 100644
 --- a/drivers/net/dsa/sja1105/sja1105_main.c
 +++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1794,13 +1794,14 @@ static int sja1105_fdb_dump(struct dsa_switch *ds, int port,
- 		if (!(l2_lookup.destports & BIT(port)))
- 			continue;
+@@ -1805,6 +1805,7 @@ static int sja1105_fdb_add(struct dsa_switch *ds, int port,
+ 			   struct dsa_db db)
+ {
+ 	struct sja1105_private *priv = ds->priv;
++	int rc;
  
--		/* We need to hide the FDB entry for unknown multicast */
--		if (l2_lookup.macaddr == SJA1105_UNKNOWN_MULTICAST &&
--		    l2_lookup.mask_macaddr == SJA1105_UNKNOWN_MULTICAST)
--			continue;
--
+ 	if (!vid) {
+ 		switch (db.type) {
+@@ -1819,12 +1820,16 @@ static int sja1105_fdb_add(struct dsa_switch *ds, int port,
+ 		}
+ 	}
+ 
+-	return priv->info->fdb_add_cmd(ds, port, addr, vid);
++	mutex_lock(&priv->fdb_lock);
++	rc = priv->info->fdb_add_cmd(ds, port, addr, vid);
++	mutex_unlock(&priv->fdb_lock);
++
++	return rc;
+ }
+ 
+-static int sja1105_fdb_del(struct dsa_switch *ds, int port,
+-			   const unsigned char *addr, u16 vid,
+-			   struct dsa_db db)
++static int __sja1105_fdb_del(struct dsa_switch *ds, int port,
++			     const unsigned char *addr, u16 vid,
++			     struct dsa_db db)
+ {
+ 	struct sja1105_private *priv = ds->priv;
+ 
+@@ -1844,6 +1849,20 @@ static int sja1105_fdb_del(struct dsa_switch *ds, int port,
+ 	return priv->info->fdb_del_cmd(ds, port, addr, vid);
+ }
+ 
++static int sja1105_fdb_del(struct dsa_switch *ds, int port,
++			   const unsigned char *addr, u16 vid,
++			   struct dsa_db db)
++{
++	struct sja1105_private *priv = ds->priv;
++	int rc;
++
++	mutex_lock(&priv->fdb_lock);
++	rc = __sja1105_fdb_del(ds, port, addr, vid, db);
++	mutex_unlock(&priv->fdb_lock);
++
++	return rc;
++}
++
+ static int sja1105_fdb_dump(struct dsa_switch *ds, int port,
+ 			    dsa_fdb_dump_cb_t *cb, void *data)
+ {
+@@ -1906,6 +1925,8 @@ static void sja1105_fast_age(struct dsa_switch *ds, int port)
+ 	};
+ 	int i;
+ 
++	mutex_lock(&priv->fdb_lock);
++
+ 	for (i = 0; i < SJA1105_MAX_L2_LOOKUP_COUNT; i++) {
+ 		struct sja1105_l2_lookup_entry l2_lookup = {0};
+ 		u8 macaddr[ETH_ALEN];
+@@ -1919,7 +1940,7 @@ static void sja1105_fast_age(struct dsa_switch *ds, int port)
+ 		if (rc) {
+ 			dev_err(ds->dev, "Failed to read FDB: %pe\n",
+ 				ERR_PTR(rc));
+-			return;
++			break;
+ 		}
+ 
+ 		if (!(l2_lookup.destports & BIT(port)))
+@@ -1931,14 +1952,16 @@ static void sja1105_fast_age(struct dsa_switch *ds, int port)
+ 
  		u64_to_ether_addr(l2_lookup.macaddr, macaddr);
  
-+		/* Hardware FDB is shared for fdb and mdb, "bridge fdb show"
-+		 * only wants to see unicast
-+		 */
-+		if (is_multicast_ether_addr(macaddr))
-+			continue;
+-		rc = sja1105_fdb_del(ds, port, macaddr, l2_lookup.vlanid, db);
++		rc = __sja1105_fdb_del(ds, port, macaddr, l2_lookup.vlanid, db);
+ 		if (rc) {
+ 			dev_err(ds->dev,
+ 				"Failed to delete FDB entry %pM vid %lld: %pe\n",
+ 				macaddr, l2_lookup.vlanid, ERR_PTR(rc));
+-			return;
++			break;
+ 		}
+ 	}
 +
- 		/* We need to hide the dsa_8021q VLANs from the user. */
- 		if (!priv->vlan_aware)
- 			l2_lookup.vlanid = 0;
++	mutex_unlock(&priv->fdb_lock);
+ }
+ 
+ static int sja1105_mdb_add(struct dsa_switch *ds, int port,
+@@ -2964,7 +2987,9 @@ static int sja1105_port_mcast_flood(struct sja1105_private *priv, int to,
+ {
+ 	struct sja1105_l2_lookup_entry *l2_lookup;
+ 	struct sja1105_table *table;
+-	int match;
++	int match, rc;
++
++	mutex_lock(&priv->fdb_lock);
+ 
+ 	table = &priv->static_config.tables[BLK_IDX_L2_LOOKUP];
+ 	l2_lookup = table->entries;
+@@ -2977,7 +3002,8 @@ static int sja1105_port_mcast_flood(struct sja1105_private *priv, int to,
+ 	if (match == table->entry_count) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "Could not find FDB entry for unknown multicast");
+-		return -ENOSPC;
++		rc = -ENOSPC;
++		goto out;
+ 	}
+ 
+ 	if (flags.val & BR_MCAST_FLOOD)
+@@ -2985,10 +3011,13 @@ static int sja1105_port_mcast_flood(struct sja1105_private *priv, int to,
+ 	else
+ 		l2_lookup[match].destports &= ~BIT(to);
+ 
+-	return sja1105_dynamic_config_write(priv, BLK_IDX_L2_LOOKUP,
+-					    l2_lookup[match].index,
+-					    &l2_lookup[match],
+-					    true);
++	rc = sja1105_dynamic_config_write(priv, BLK_IDX_L2_LOOKUP,
++					  l2_lookup[match].index,
++					  &l2_lookup[match], true);
++out:
++	mutex_unlock(&priv->fdb_lock);
++
++	return rc;
+ }
+ 
+ static int sja1105_port_pre_bridge_flags(struct dsa_switch *ds, int port,
+@@ -3358,6 +3387,7 @@ static int sja1105_probe(struct spi_device *spi)
+ 	mutex_init(&priv->ptp_data.lock);
+ 	mutex_init(&priv->dynamic_config_lock);
+ 	mutex_init(&priv->mgmt_lock);
++	mutex_init(&priv->fdb_lock);
+ 	spin_lock_init(&priv->ts_id_lock);
+ 
+ 	rc = sja1105_parse_dt(priv);
 -- 
 2.40.1
 
