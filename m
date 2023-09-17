@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E3D67A38E3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CBF57A39FA
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239884AbjIQTly (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:41:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35294 "EHLO
+        id S240241AbjIQT4v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239928AbjIQTlk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:40 -0400
+        with ESMTP id S240298AbjIQT4q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A1C7126
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEB9C433C9;
-        Sun, 17 Sep 2023 19:41:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C856F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BC3C433C8;
+        Sun, 17 Sep 2023 19:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979693;
-        bh=r18kjhwrSbpKP+cunDaASZEpzysT5TyyZUYkRcKytic=;
+        s=korg; t=1694980600;
+        bh=rkGtkdCl5XhERT2Y/rhlof33Dfs9We53wkXc/S7L8TI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YnepHS/9e58o7kb/Ot9tq6ypEFaN4h1zn6q81UcKItwjMDWI06KHIVCrJCJld/9Hw
-         KENu7dfZ/cC0I8CjSuRkGRfDCXV5LWHcTgD6T6V8wLWfHpSPEBA2sBfeFPQqk6y25j
-         opcK01FbJXKSea/Dfyn/YZwwr13RUAr5x7VqK1J0=
+        b=jmQvLAaPLmIyTPPtHFYXI9ZlDcz2eLrSHCJ01SzfGLjRM5B+IL1Hqu8FNg34gsjrX
+         3nfYYiKBKsE3gpUFabko/KPcNc3ZYhqGBm30MxbOg0BGI/8rFm/6iKBlbSgnsAD9kz
+         MAvoY/0Z6dS2vBSiGiRNAZhkmJLwOQDpoSGt8uuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <quinn.tran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 386/406] scsi: qla2xxx: Flush mailbox commands on chip reset
+        patches@lists.linux.dev, Jay Cornwall <jay.cornwall@amd.com>,
+        Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 240/285] drm/amdkfd: Add missing gfx11 MQD manager callbacks
 Date:   Sun, 17 Sep 2023 21:14:00 +0200
-Message-ID: <20230917191111.455297162@linuxfoundation.org>
+Message-ID: <20230917191059.683637788@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,119 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-[ Upstream commit 6d0b65569c0a10b27c49bacd8d25bcd406003533 ]
+commit e9dca969b2426702a73719ab9207e43c6d80b581 upstream.
 
-Fix race condition between Interrupt thread and Chip reset thread in trying
-to flush the same mailbox. With the race condition, the "ha->mbx_intr_comp"
-will get an extra complete() call. The extra complete call create erroneous
-mailbox timeout condition when the next mailbox is sent where the mailbox
-call does not wait for interrupt to arrive. Instead, it advances without
-waiting.
+mqd_stride function was introduced in commit 2f77b9a242a2
+("drm/amdkfd: Update MQD management on multi XCC setup")
+but not assigned for gfx11. Fixes a NULL dereference in debugfs.
 
-Add lock protection around the check for mailbox completion.
-
-Cc: stable@vger.kernel.org
-Fixes: b2000805a975 ("scsi: qla2xxx: Flush mailbox commands on chip reset")
-Signed-off-by: Quinn Tran <quinn.tran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.5.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h  | 1 -
- drivers/scsi/qla2xxx/qla_init.c | 7 ++++---
- drivers/scsi/qla2xxx/qla_mbx.c  | 4 ----
- drivers/scsi/qla2xxx/qla_os.c   | 1 -
- 4 files changed, 4 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 9a09b36fd573c..6645b69fc2a0f 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -4200,7 +4200,6 @@ struct qla_hw_data {
- 	uint8_t		aen_mbx_count;
- 	atomic_t	num_pend_mbx_stage1;
- 	atomic_t	num_pend_mbx_stage2;
--	atomic_t	num_pend_mbx_stage3;
- 	uint16_t	frame_payload_size;
- 
- 	uint32_t	login_retry_count;
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index f24f087c733b1..a8d2c06285c24 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -6926,14 +6926,15 @@ qla2x00_abort_isp_cleanup(scsi_qla_host_t *vha)
- 	}
- 
- 	/* purge MBox commands */
--	if (atomic_read(&ha->num_pend_mbx_stage3)) {
-+	spin_lock_irqsave(&ha->hardware_lock, flags);
-+	if (test_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags)) {
- 		clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
- 		complete(&ha->mbx_intr_comp);
- 	}
-+	spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 
- 	i = 0;
--	while (atomic_read(&ha->num_pend_mbx_stage3) ||
--	    atomic_read(&ha->num_pend_mbx_stage2) ||
-+	while (atomic_read(&ha->num_pend_mbx_stage2) ||
- 	    atomic_read(&ha->num_pend_mbx_stage1)) {
- 		msleep(20);
- 		i++;
-diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
-index 8b65e8a82ec99..21ba7100ff676 100644
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -269,7 +269,6 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
- 		spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 
- 		wait_time = jiffies;
--		atomic_inc(&ha->num_pend_mbx_stage3);
- 		if (!wait_for_completion_timeout(&ha->mbx_intr_comp,
- 		    mcp->tov * HZ)) {
- 			ql_dbg(ql_dbg_mbx, vha, 0x117a,
-@@ -284,7 +283,6 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
- 				spin_unlock_irqrestore(&ha->hardware_lock,
- 				    flags);
- 				atomic_dec(&ha->num_pend_mbx_stage2);
--				atomic_dec(&ha->num_pend_mbx_stage3);
- 				rval = QLA_ABORTED;
- 				goto premature_exit;
- 			}
-@@ -294,11 +292,9 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
- 			ha->flags.mbox_busy = 0;
- 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 			atomic_dec(&ha->num_pend_mbx_stage2);
--			atomic_dec(&ha->num_pend_mbx_stage3);
- 			rval = QLA_ABORTED;
- 			goto premature_exit;
- 		}
--		atomic_dec(&ha->num_pend_mbx_stage3);
- 
- 		if (time_after(jiffies, wait_time + 5 * HZ))
- 			ql_log(ql_log_warn, vha, 0x1015, "cmd=0x%x, waited %d msecs\n",
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 5a4df566afd16..8d199deaf3b12 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -2848,7 +2848,6 @@ qla2x00_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	ha->max_exchg = FW_MAX_EXCHANGES_CNT;
- 	atomic_set(&ha->num_pend_mbx_stage1, 0);
- 	atomic_set(&ha->num_pend_mbx_stage2, 0);
--	atomic_set(&ha->num_pend_mbx_stage3, 0);
- 	atomic_set(&ha->zio_threshold, DEFAULT_ZIO_THRESHOLD);
- 	ha->last_zio_threshold = DEFAULT_ZIO_THRESHOLD;
- 
--- 
-2.40.1
-
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -437,6 +437,7 @@ struct mqd_manager *mqd_manager_init_v11
+ 		mqd->is_occupied = kfd_is_occupied_cp;
+ 		mqd->mqd_size = sizeof(struct v11_compute_mqd);
+ 		mqd->get_wave_state = get_wave_state;
++		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
+ 		mqd->debugfs_show_mqd = debugfs_show_mqd;
+ #endif
+@@ -452,6 +453,7 @@ struct mqd_manager *mqd_manager_init_v11
+ 		mqd->destroy_mqd = kfd_destroy_mqd_cp;
+ 		mqd->is_occupied = kfd_is_occupied_cp;
+ 		mqd->mqd_size = sizeof(struct v11_compute_mqd);
++		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
+ 		mqd->debugfs_show_mqd = debugfs_show_mqd;
+ #endif
+@@ -481,6 +483,7 @@ struct mqd_manager *mqd_manager_init_v11
+ 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
+ 		mqd->is_occupied = kfd_is_occupied_sdma;
+ 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
++		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
+ 		mqd->debugfs_show_mqd = debugfs_show_mqd_sdma;
+ #endif
 
 
