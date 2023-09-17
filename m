@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F047A3873
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F5E67A3970
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239032AbjIQTgD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60958 "EHLO
+        id S240065AbjIQTtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239776AbjIQTfh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:37 -0400
+        with ESMTP id S240156AbjIQTtS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C814F119
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5F1C433C9;
-        Sun, 17 Sep 2023 19:35:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE71DC6
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5236C433C7;
+        Sun, 17 Sep 2023 19:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979332;
-        bh=iQQKVdXqtENnTGRTMj5DSOcxacoKTtv481bpNwks8z8=;
+        s=korg; t=1694980152;
+        bh=3pdcRWoY5ciUVN4Uoyoeh3+rjWiz4Alh776E3apmbHw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LEH1gOchSvu1smFJNs81WdTiaO8htLaWkHuzQzYe3LSDoGFqR3mFzS0r4RCeCJyoK
-         7fY7VuyfVIJKXeBWxPAJ9JyB3DiYhbiV3pCEyRVs3DDsjrZlHGJ7Y/VTrW1O5AjJBM
-         MWoWhqbajfr0gLM1N4ukWCjLPT2ulsvE1Bu0KK+0=
+        b=Pk543Czwo8VeeddLPn1wEFrTCaOPylhFaW33MUXa8QerWqa4rA0k4hx6fcFVUrgR9
+         I947Ro/N6d3gNLu6zJnAhx7WJ7Kqizw1Ffn01SfgIwDNpkZHexB4++1IahRSDzPBni
+         t2jYZ/uwdY0cP9IsJ+ZSC/Lmpq/ydjtqjlpjsV/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 255/406] tracing: Fix race issue between cpu buffer write and swap
-Date:   Sun, 17 Sep 2023 21:11:49 +0200
-Message-ID: <20230917191107.911945682@linuxfoundation.org>
+Subject: [PATCH 6.5 110/285] net: read sk->sk_family once in sk_mc_loop()
+Date:   Sun, 17 Sep 2023 21:11:50 +0200
+Message-ID: <20230917191055.467412210@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,143 +52,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3163f635b20e9e1fb4659e74f47918c9dddfe64e ]
+[ Upstream commit a3e0fdf71bbe031de845e8e08ed7fba49f9c702c ]
 
-Warning happened in rb_end_commit() at code:
-	if (RB_WARN_ON(cpu_buffer, !local_read(&cpu_buffer->committing)))
+syzbot is playing with IPV6_ADDRFORM quite a lot these days,
+and managed to hit the WARN_ON_ONCE(1) in sk_mc_loop()
 
-  WARNING: CPU: 0 PID: 139 at kernel/trace/ring_buffer.c:3142
-	rb_commit+0x402/0x4a0
-  Call Trace:
-   ring_buffer_unlock_commit+0x42/0x250
-   trace_buffer_unlock_commit_regs+0x3b/0x250
-   trace_event_buffer_commit+0xe5/0x440
-   trace_event_buffer_reserve+0x11c/0x150
-   trace_event_raw_event_sched_switch+0x23c/0x2c0
-   __traceiter_sched_switch+0x59/0x80
-   __schedule+0x72b/0x1580
-   schedule+0x92/0x120
-   worker_thread+0xa0/0x6f0
+We have many more similar issues to fix.
 
-It is because the race between writing event into cpu buffer and swapping
-cpu buffer through file per_cpu/cpu0/snapshot:
+WARNING: CPU: 1 PID: 1593 at net/core/sock.c:782 sk_mc_loop+0x165/0x260
+Modules linked in:
+CPU: 1 PID: 1593 Comm: kworker/1:3 Not tainted 6.1.40-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+Workqueue: events_power_efficient gc_worker
+RIP: 0010:sk_mc_loop+0x165/0x260 net/core/sock.c:782
+Code: 34 1b fd 49 81 c7 18 05 00 00 4c 89 f8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ff e8 25 36 6d fd 4d 8b 37 eb 13 e8 db 33 1b fd <0f> 0b b3 01 eb 34 e8 d0 33 1b fd 45 31 f6 49 83 c6 38 4c 89 f0 48
+RSP: 0018:ffffc90000388530 EFLAGS: 00010246
+RAX: ffffffff846d9b55 RBX: 0000000000000011 RCX: ffff88814f884980
+RDX: 0000000000000102 RSI: ffffffff87ae5160 RDI: 0000000000000011
+RBP: ffffc90000388550 R08: 0000000000000003 R09: ffffffff846d9a65
+R10: 0000000000000002 R11: ffff88814f884980 R12: dffffc0000000000
+R13: ffff88810dbee000 R14: 0000000000000010 R15: ffff888150084000
+FS: 0000000000000000(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000180 CR3: 000000014ee5b000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<IRQ>
+[<ffffffff8507734f>] ip6_finish_output2+0x33f/0x1ae0 net/ipv6/ip6_output.c:83
+[<ffffffff85062766>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff85062766>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff85061f8c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff85061f8c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff852071cf>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff852071cf>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff83618fb4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff83618fb4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff83618fb4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff83618fb4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff8361ddd9>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84763fc0>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
+[<ffffffff84763fc0>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84763fc0>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff8494c650>] sch_direct_xmit+0x2a0/0x9c0 net/sched/sch_generic.c:342
+[<ffffffff8494d883>] qdisc_restart net/sched/sch_generic.c:407 [inline]
+[<ffffffff8494d883>] __qdisc_run+0xb13/0x1e70 net/sched/sch_generic.c:415
+[<ffffffff8478c426>] qdisc_run+0xd6/0x260 include/net/pkt_sched.h:125
+[<ffffffff84796eac>] net_tx_action+0x7ac/0x940 net/core/dev.c:5247
+[<ffffffff858002bd>] __do_softirq+0x2bd/0x9bd kernel/softirq.c:599
+[<ffffffff814c3fe8>] invoke_softirq kernel/softirq.c:430 [inline]
+[<ffffffff814c3fe8>] __irq_exit_rcu+0xc8/0x170 kernel/softirq.c:683
+[<ffffffff814c3f09>] irq_exit_rcu+0x9/0x20 kernel/softirq.c:695
 
-  Write on CPU 0             Swap buffer by per_cpu/cpu0/snapshot on CPU 1
-  --------                   --------
-                             tracing_snapshot_write()
-                               [...]
-
-  ring_buffer_lock_reserve()
-    cpu_buffer = buffer->buffers[cpu]; // 1. Suppose find 'cpu_buffer_a';
-    [...]
-    rb_reserve_next_event()
-      [...]
-
-                               ring_buffer_swap_cpu()
-                                 if (local_read(&cpu_buffer_a->committing))
-                                     goto out_dec;
-                                 if (local_read(&cpu_buffer_b->committing))
-                                     goto out_dec;
-                                 buffer_a->buffers[cpu] = cpu_buffer_b;
-                                 buffer_b->buffers[cpu] = cpu_buffer_a;
-                                 // 2. cpu_buffer has swapped here.
-
-      rb_start_commit(cpu_buffer);
-      if (unlikely(READ_ONCE(cpu_buffer->buffer)
-          != buffer)) { // 3. This check passed due to 'cpu_buffer->buffer'
-        [...]           //    has not changed here.
-        return NULL;
-      }
-                                 cpu_buffer_b->buffer = buffer_a;
-                                 cpu_buffer_a->buffer = buffer_b;
-                                 [...]
-
-      // 4. Reserve event from 'cpu_buffer_a'.
-
-  ring_buffer_unlock_commit()
-    [...]
-    cpu_buffer = buffer->buffers[cpu]; // 5. Now find 'cpu_buffer_b' !!!
-    rb_commit(cpu_buffer)
-      rb_end_commit()  // 6. WARN for the wrong 'committing' state !!!
-
-Based on above analysis, we can easily reproduce by following testcase:
-  ``` bash
-  #!/bin/bash
-
-  dmesg -n 7
-  sysctl -w kernel.panic_on_warn=1
-  TR=/sys/kernel/tracing
-  echo 7 > ${TR}/buffer_size_kb
-  echo "sched:sched_switch" > ${TR}/set_event
-  while [ true ]; do
-          echo 1 > ${TR}/per_cpu/cpu0/snapshot
-  done &
-  while [ true ]; do
-          echo 1 > ${TR}/per_cpu/cpu0/snapshot
-  done &
-  while [ true ]; do
-          echo 1 > ${TR}/per_cpu/cpu0/snapshot
-  done &
-  ```
-
-To fix it, IIUC, we can use smp_call_function_single() to do the swap on
-the target cpu where the buffer is located, so that above race would be
-avoided.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230831132739.4070878-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Fixes: f1affcaaa861 ("tracing: Add snapshot in the per_cpu trace directories")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 7ad6848c7e81 ("ip: fix mc_loop checks for tunnels with multicast outer addresses")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230830101244.1146934-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/core/sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 2ded5012543bf..fbe13cfdb85b0 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7164,6 +7164,11 @@ static int tracing_snapshot_open(struct inode *inode, struct file *file)
- 	return ret;
- }
- 
-+static void tracing_swap_cpu_buffer(void *tr)
-+{
-+	update_max_tr_single((struct trace_array *)tr, current, smp_processor_id());
-+}
-+
- static ssize_t
- tracing_snapshot_write(struct file *filp, const char __user *ubuf, size_t cnt,
- 		       loff_t *ppos)
-@@ -7222,13 +7227,15 @@ tracing_snapshot_write(struct file *filp, const char __user *ubuf, size_t cnt,
- 			ret = tracing_alloc_snapshot_instance(tr);
- 		if (ret < 0)
- 			break;
--		local_irq_disable();
- 		/* Now, we're going to swap */
--		if (iter->cpu_file == RING_BUFFER_ALL_CPUS)
-+		if (iter->cpu_file == RING_BUFFER_ALL_CPUS) {
-+			local_irq_disable();
- 			update_max_tr(tr, current, smp_processor_id(), NULL);
--		else
--			update_max_tr_single(tr, current, iter->cpu_file);
--		local_irq_enable();
-+			local_irq_enable();
-+		} else {
-+			smp_call_function_single(iter->cpu_file, tracing_swap_cpu_buffer,
-+						 (void *)tr, 1);
-+		}
- 		break;
- 	default:
- 		if (tr->allocated_snapshot) {
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 1c5c01b116e6f..4ae68aa07e9fe 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -765,7 +765,8 @@ bool sk_mc_loop(struct sock *sk)
+ 		return false;
+ 	if (!sk)
+ 		return true;
+-	switch (sk->sk_family) {
++	/* IPV6_ADDRFORM can change sk->sk_family under us. */
++	switch (READ_ONCE(sk->sk_family)) {
+ 	case AF_INET:
+ 		return inet_sk(sk)->mc_loop;
+ #if IS_ENABLED(CONFIG_IPV6)
 -- 
 2.40.1
 
