@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4917A3A67
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E89E7A3889
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbjIQUDO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57830 "EHLO
+        id S239029AbjIQThF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240350AbjIQUCw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
+        with ESMTP id S239784AbjIQTgi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76338100
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4E5C433CA;
-        Sun, 17 Sep 2023 20:02:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9943012F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AE4C433C9;
+        Sun, 17 Sep 2023 19:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980951;
-        bh=CtWAUSYTdB8JDO8KxVBNhCPGQ9Ix7OI4ea/4XaGBpIg=;
+        s=korg; t=1694979393;
+        bh=6xG5K7B8vJ8lVlp1lFNORIztkhXDvRkj5f07odaHvLE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lcSJbTc33rNHR+i+ptiONDYjBSR/Uuc4cu9oj1p0xjnjcnPpn9xFAwGjuFhlWbPjc
-         IeDY+A8Jku6NAcfeytXoL45s1Ze+ZaKllAT7bnjfd3ynyYQgVZU6ayDDeS6T0y3PlX
-         zFNN/mICjZJNKC1Fa6FWPgCaIi7UOmwOnkBVa9Jg=
+        b=qSTR54Z4ot8AlcMgI0QOkxo75iZYMEYxIQFs5jsNHbkhmBqDaMD3PRfrE3yRt+ty7
+         3a+sg5FMXy2L18J+UqqU0SA4ahsuGkKxFU2nSQ79JCEjspaQQeufGs2MCTK3s9Tss4
+         mcfgxumhk4UrqEmnZSWz0QtvaOZXeaLrco79VFLM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 6.1 026/219] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
+        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 5.10 299/406] fsverity: skip PKCS#7 parser when keyring is empty
 Date:   Sun, 17 Sep 2023 21:12:33 +0200
-Message-ID: <20230917191041.945647009@linuxfoundation.org>
+Message-ID: <20230917191109.207523272@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +49,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Eric Biggers <ebiggers@google.com>
 
-commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
+commit 919dc320956ea353a7fb2d84265195ad5ef525ac upstream.
 
-Do not assing the Linux device to struct fb_info.dev. The call to
-register_framebuffer() initializes the field to the fbdev device.
-Drivers should not override its value.
+If an fsverity builtin signature is given for a file but the
+".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+signature support is configured into the kernel but is not being used.
 
-Fixes a bug where the driver incorrectly decreases the hardware
-device's reference counter and leaks the fbdev device.
+This is a hardening improvement, not a fix per se, but I've added
+Fixes and Cc stable to get it out to more users.
 
-v2:
-	* add Fixes tag (Dan)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 88017bda96a5 ("ep93xx video driver")
-Cc: <stable@vger.kernel.org> # v2.6.32+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
+Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20230820173237.2579-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/ep93xx-fb.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/verity/signature.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/video/fbdev/ep93xx-fb.c
-+++ b/drivers/video/fbdev/ep93xx-fb.c
-@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
- 	if (!info)
- 		return -ENOMEM;
+--- a/fs/verity/signature.c
++++ b/fs/verity/signature.c
+@@ -61,6 +61,22 @@ int fsverity_verify_signature(const stru
+ 		return -EBADMSG;
+ 	}
  
--	info->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, info);
- 	fbi = info->par;
- 	fbi->mach_info = mach_info;
++	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
++		/*
++		 * The ".fs-verity" keyring is empty, due to builtin signatures
++		 * being supported by the kernel but not actually being used.
++		 * In this case, verify_pkcs7_signature() would always return an
++		 * error, usually ENOKEY.  It could also be EBADMSG if the
++		 * PKCS#7 is malformed, but that isn't very important to
++		 * distinguish.  So, just skip to ENOKEY to avoid the attack
++		 * surface of the PKCS#7 parser, which would otherwise be
++		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
++		 */
++		fsverity_err(inode,
++			     "fs-verity keyring is empty, rejecting signed file!");
++		return -ENOKEY;
++	}
++
+ 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
+ 	if (!d)
+ 		return -ENOMEM;
 
 
