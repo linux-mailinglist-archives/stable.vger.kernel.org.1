@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C203B7A3CFE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 503F67A3B06
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241190AbjIQUhz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36144 "EHLO
+        id S240577AbjIQULv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241193AbjIQUhj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:39 -0400
+        with ESMTP id S240606AbjIQULk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18780118
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A74FC433C7;
-        Sun, 17 Sep 2023 20:37:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56450103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F242C433C8;
+        Sun, 17 Sep 2023 20:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983051;
-        bh=muDtx0IPLQwvepeTe6y4RStc7A5tyrUojWhDuhDpv+w=;
+        s=korg; t=1694981493;
+        bh=IR3h7znMFYK4GmZryJN1k+y9fmJpuzCpOE+hWGQfqy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HzCHm4DuBpp8cfy7X0pttgEk9NO5USOBds5MsiXkjCOXF7was7dLEqTAH+gbjPuZz
-         IeKpoj4NDCjUVrIhBCfj4+WSay1nLAPbobl5x32zu8ZsSIFwinnykWyc58HaRIi70R
-         bTqXXqSL64jpSGR3NyWCaMY+F4c3dkhnXy0LX06g=
+        b=j9lhKTXeZK9DLYrTYIyPg/bAj7KIrd7u5JUtbO58glekHhpXXnhis8lAT5Bo8dX8m
+         i36ZQ91ppS4BwRi3hMzfZ89ToAo+rfYx4IPunO4lHgbGniUxEZRGhgUM/LWwNkvGk5
+         vAYPMhtxr+4zTTX34aPzUdra3hiBSZZIGhVOm7Yo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+822d1359297e2694f873@syzkaller.appspotmail.com,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 431/511] xsk: Fix xsk_diag use-after-free error during socket cleanup
+Subject: [PATCH 6.1 131/219] net: hns3: fix debugfs concurrency issue between kfree buffer and read
 Date:   Sun, 17 Sep 2023 21:14:18 +0200
-Message-ID: <20230917191124.174314960@linuxfoundation.org>
+Message-ID: <20230917191045.720449941@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Karlsson <magnus.karlsson@intel.com>
+From: Hao Chen <chenhao418@huawei.com>
 
-[ Upstream commit 3e019d8a05a38abb5c85d4f1e85fda964610aa14 ]
+[ Upstream commit c295160b1d95e885f1af4586a221cb221d232d10 ]
 
-Fix a use-after-free error that is possible if the xsk_diag interface
-is used after the socket has been unbound from the device. This can
-happen either due to the socket being closed or the device
-disappearing. In the early days of AF_XDP, the way we tested that a
-socket was not bound to a device was to simply check if the netdevice
-pointer in the xsk socket structure was NULL. Later, a better system
-was introduced by having an explicit state variable in the xsk socket
-struct. For example, the state of a socket that is on the way to being
-closed and has been unbound from the device is XSK_UNBOUND.
+Now in hns3_dbg_uninit(), there may be concurrency between
+kfree buffer and read, it may result in memory error.
 
-The commit in the Fixes tag below deleted the old way of signalling
-that a socket is unbound, setting dev to NULL. This in the belief that
-all code using the old way had been exterminated. That was
-unfortunately not true as the xsk diagnostics code was still using the
-old way and thus does not work as intended when a socket is going
-down. Fix this by introducing a test against the state variable. If
-the socket is in the state XSK_UNBOUND, simply abort the diagnostic's
-netlink operation.
+Moving debugfs_remove_recursive() in front of kfree buffer to ensure
+they don't happen at the same time.
 
-Fixes: 18b1ab7aa76b ("xsk: Fix race at socket teardown")
-Reported-by: syzbot+822d1359297e2694f873@syzkaller.appspotmail.com
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+822d1359297e2694f873@syzkaller.appspotmail.com
-Tested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20230831100119.17408-1-magnus.karlsson@gmail.com
+Fixes: 5e69ea7ee2a6 ("net: hns3: refactor the debugfs process")
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk_diag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/xdp/xsk_diag.c b/net/xdp/xsk_diag.c
-index c014217f5fa7d..22b36c8143cfd 100644
---- a/net/xdp/xsk_diag.c
-+++ b/net/xdp/xsk_diag.c
-@@ -111,6 +111,9 @@ static int xsk_diag_fill(struct sock *sk, struct sk_buff *nlskb,
- 	sock_diag_save_cookie(sk, msg->xdiag_cookie);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 69d1549e63a98..00eed9835cb55 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -1406,9 +1406,9 @@ int hns3_dbg_init(struct hnae3_handle *handle)
+ 	return 0;
  
- 	mutex_lock(&xs->mutex);
-+	if (READ_ONCE(xs->state) == XSK_UNBOUND)
-+		goto out_nlmsg_trim;
+ out:
+-	mutex_destroy(&handle->dbgfs_lock);
+ 	debugfs_remove_recursive(handle->hnae3_dbgfs);
+ 	handle->hnae3_dbgfs = NULL;
++	mutex_destroy(&handle->dbgfs_lock);
+ 	return ret;
+ }
+ 
+@@ -1416,6 +1416,9 @@ void hns3_dbg_uninit(struct hnae3_handle *handle)
+ {
+ 	u32 i;
+ 
++	debugfs_remove_recursive(handle->hnae3_dbgfs);
++	handle->hnae3_dbgfs = NULL;
 +
- 	if ((req->xdiag_show & XDP_SHOW_INFO) && xsk_diag_put_info(xs, nlskb))
- 		goto out_nlmsg_trim;
+ 	for (i = 0; i < ARRAY_SIZE(hns3_dbg_cmd); i++)
+ 		if (handle->dbgfs_buf[i]) {
+ 			kvfree(handle->dbgfs_buf[i]);
+@@ -1423,8 +1426,6 @@ void hns3_dbg_uninit(struct hnae3_handle *handle)
+ 		}
  
+ 	mutex_destroy(&handle->dbgfs_lock);
+-	debugfs_remove_recursive(handle->hnae3_dbgfs);
+-	handle->hnae3_dbgfs = NULL;
+ }
+ 
+ void hns3_dbg_register_debugfs(const char *debugfs_dir_name)
 -- 
 2.40.1
 
