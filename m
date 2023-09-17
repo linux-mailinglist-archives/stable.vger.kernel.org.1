@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB8E97A3B3F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DFE17A3D68
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240627AbjIQUO6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:14:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58978 "EHLO
+        id S241294AbjIQUmN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:42:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240439AbjIQUOn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:43 -0400
+        with ESMTP id S241375AbjIQUmH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A391F4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFDEC433C8;
-        Sun, 17 Sep 2023 20:14:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D9A115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:42:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0722AC433C7;
+        Sun, 17 Sep 2023 20:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981678;
-        bh=IElLcl7hKP5cIjm1uOSGAn9LI5C1J2KQwLWTutCt7kY=;
+        s=korg; t=1694983321;
+        bh=RqOYO62bmjzq9NVlLjXht/OR5ywtbYuZdoRIAMDk7r8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C2+zxMLOy1pKoAZTq2oFMrHrCHbmmEXceVeq82mX6oAXaXQqyBWylVXdLytlPjMOu
-         dkJvZ9vu0bgo2WkzRNonXxp7MqBT8OzSjNCCQoatsoqfb+rDmKQ65I2qAE4AVQqh2p
-         kusGnNRd1M8HA9pFBivaN0+CFf8hmz0gWWu2ddHU=
+        b=k7JXvKxBVBRnbqE9Sn/A3RHlasXUhd2+1yjvdCZKBkgXXFI4YZZ8LOB1XJ0fO6cUp
+         6tBm9ycI4pzJ2yNx4vjDKeKvqZnSTbV3rYOKpfXtCDhVsxBHQxVR9/Ct/b+11PEHoE
+         7HfYxvX50RyuI10r4QSia8QFlzOWH3j2vKu2JO/g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 157/219] btrfs: free qgroup rsv on io failure
-Date:   Sun, 17 Sep 2023 21:14:44 +0200
-Message-ID: <20230917191046.725838396@linuxfoundation.org>
+        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 458/511] net: hns3: fix debugfs concurrency issue between kfree buffer and read
+Date:   Sun, 17 Sep 2023 21:14:45 +0200
+Message-ID: <20230917191124.814442133@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,50 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Hao Chen <chenhao418@huawei.com>
 
-commit e28b02118b94e42be3355458a2406c6861e2dd32 upstream.
+[ Upstream commit c295160b1d95e885f1af4586a221cb221d232d10 ]
 
-If we do a write whose bio suffers an error, we will never reclaim the
-qgroup reserved space for it. We allocate the space in the write_iter
-codepath, then release the reservation as we allocate the ordered
-extent, but we only create a delayed ref if the ordered extent finishes.
-If it has an error, we simply leak the rsv. This is apparent in running
-any error injecting (dmerror) fstests like btrfs/146 or btrfs/160. Such
-tests fail due to dmesg on umount complaining about the leaked qgroup
-data space.
+Now in hns3_dbg_uninit(), there may be concurrency between
+kfree buffer and read, it may result in memory error.
 
-When we clean up other aspects of space on failed ordered_extents, also
-free the qgroup rsv.
+Moving debugfs_remove_recursive() in front of kfree buffer to ensure
+they don't happen at the same time.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-CC: stable@vger.kernel.org # 5.10+
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e69ea7ee2a6 ("net: hns3: refactor the debugfs process")
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3393,6 +3393,13 @@ out:
- 			btrfs_free_reserved_extent(fs_info,
- 					ordered_extent->disk_bytenr,
- 					ordered_extent->disk_num_bytes, 1);
-+			/*
-+			 * Actually free the qgroup rsv which was released when
-+			 * the ordered extent was created.
-+			 */
-+			btrfs_qgroup_free_refroot(fs_info, inode->root->root_key.objectid,
-+						  ordered_extent->qgroup_rsv,
-+						  BTRFS_QGROUP_RSV_DATA);
- 		}
- 	}
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 3158c08a3aa9c..45f245b1d331c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -1171,9 +1171,9 @@ int hns3_dbg_init(struct hnae3_handle *handle)
+ 	return 0;
  
+ out:
+-	mutex_destroy(&handle->dbgfs_lock);
+ 	debugfs_remove_recursive(handle->hnae3_dbgfs);
+ 	handle->hnae3_dbgfs = NULL;
++	mutex_destroy(&handle->dbgfs_lock);
+ 	return ret;
+ }
+ 
+@@ -1181,6 +1181,9 @@ void hns3_dbg_uninit(struct hnae3_handle *handle)
+ {
+ 	u32 i;
+ 
++	debugfs_remove_recursive(handle->hnae3_dbgfs);
++	handle->hnae3_dbgfs = NULL;
++
+ 	for (i = 0; i < ARRAY_SIZE(hns3_dbg_cmd); i++)
+ 		if (handle->dbgfs_buf[i]) {
+ 			kvfree(handle->dbgfs_buf[i]);
+@@ -1188,8 +1191,6 @@ void hns3_dbg_uninit(struct hnae3_handle *handle)
+ 		}
+ 
+ 	mutex_destroy(&handle->dbgfs_lock);
+-	debugfs_remove_recursive(handle->hnae3_dbgfs);
+-	handle->hnae3_dbgfs = NULL;
+ }
+ 
+ void hns3_dbg_register_debugfs(const char *debugfs_dir_name)
+-- 
+2.40.1
+
 
 
