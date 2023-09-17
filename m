@@ -2,54 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 486C57A38CB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 722077A3A71
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239857AbjIQTkW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
+        id S240354AbjIQUDV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239945AbjIQTkP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:15 -0400
+        with ESMTP id S240485AbjIQUDI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:03:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8126DD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CA9C433C7;
-        Sun, 17 Sep 2023 19:40:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB6797
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:03:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E22BC433C7;
+        Sun, 17 Sep 2023 20:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979609;
-        bh=o48EqMlfIXFVaImhYipgBxT/5hzopEd7FMMDyq3jZTI=;
+        s=korg; t=1694980981;
+        bh=P0sjx+iniFkqZEYOmsetBCnmkwwlHphkPzoVxeFZrps=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O6E7CzMyyWt/LUEuJAhWGZ6GSpVl2fT5m6wo19jkwn7o/s0MLpm1YwDDcy8jGV1YD
-         s/jRyttQ/aSFzSDzn3ZmwHUxJdRnol4oeMe5a0hJzZAiHKZvk2VOsxOVZH8JEDifU2
-         8TTL8U+xBylvBzVCJAtIPPsLWkYmkm/5zI+JPZdg=
+        b=xMDK0qEOicd2W0lu+lyVSz0h1YSDWsiImmh9Q5vBPWtsWWW9KlJHV81Gr8/30RrKM
+         expo0PpnwEFTeVooDq8KlrwwSSL7FvSxgNMGNEjn5asImb4oV0C8O4PBWOLPMWWbsA
+         +6UtDGoA3WeomMES0kyA5I12kizyLAGjnIYp3JqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Jeremie Galarneau <jeremie.galarneau@efficios.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         Jiri Olsa <jolsa@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>,
         Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Shawn Landden <shawn@git.icu>,
-        Song Liu <songliubraving@fb.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
+        Riccardo Mancini <rickyman7@gmail.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 338/406] perf top: Dont pass an ERR_PTR() directly to perf_session__delete()
+Subject: [PATCH 6.1 065/219] perf trace: Really free the evsel->priv area
 Date:   Sun, 17 Sep 2023 21:13:12 +0200
-Message-ID: <20230917191110.207009186@linuxfoundation.org>
+Message-ID: <20230917191043.350400134@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +54,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit ef23cb593304bde0cc046fd4cc83ae7ea2e24f16 ]
+[ Upstream commit 7962ef13651a9163f07b530607392ea123482e8a ]
 
-While debugging a segfault on 'perf lock contention' without an
-available perf.data file I noticed that it was basically calling:
+In 3cb4d5e00e037c70 ("perf trace: Free syscall tp fields in
+evsel->priv") it only was freeing if strcmp(evsel->tp_format->system,
+"syscalls") returned zero, while the corresponding initialization of
+evsel->priv was being performed if it was _not_ zero, i.e. if the tp
+system wasn't 'syscalls'.
 
-	perf_session__delete(ERR_PTR(-1))
+Just stop looking for that and free it if evsel->priv was set, which
+should be equivalent.
 
-Resulting in:
+Also use the pre-existing evsel_trace__delete() function.
 
-  (gdb) run lock contention
-  Starting program: /root/bin/perf lock contention
-  [Thread debugging using libthread_db enabled]
-  Using host libthread_db library "/lib64/libthread_db.so.1".
-  failed to open perf.data: No such file or directory  (try 'perf record' first)
-  Initializing perf session failed
+This resolves these leaks, detected with:
 
-  Program received signal SIGSEGV, Segmentation fault.
-  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
-  2858		if (!session->auxtrace)
-  (gdb) p session
-  $1 = (struct perf_session *) 0xffffffffffffffff
-  (gdb) bt
-  #0  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
-  #1  0x000000000057bb4d in perf_session__delete (session=0xffffffffffffffff) at util/session.c:300
-  #2  0x000000000047c421 in __cmd_contention (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2161
-  #3  0x000000000047dc95 in cmd_lock (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2604
-  #4  0x0000000000501466 in run_builtin (p=0xe597a8 <commands+552>, argc=2, argv=0x7fffffffe200) at perf.c:322
-  #5  0x00000000005016d5 in handle_internal_command (argc=2, argv=0x7fffffffe200) at perf.c:375
-  #6  0x0000000000501824 in run_argv (argcp=0x7fffffffe02c, argv=0x7fffffffe020) at perf.c:419
-  #7  0x0000000000501b11 in main (argc=2, argv=0x7fffffffe200) at perf.c:535
-  (gdb)
+  $ make EXTRA_CFLAGS="-fsanitize=address" BUILD_BPF_SKEL=1 CORESIGHT=1 O=/tmp/build/perf-tools-next -C tools/perf install-bin
 
-So just set it to NULL after using PTR_ERR(session) to decode the error
-as perf_session__delete(NULL) is supported.
+  =================================================================
+  ==481565==ERROR: LeakSanitizer: detected memory leaks
 
-The same problem was found in 'perf top' after an audit of all
-perf_session__new() failure handling.
+  Direct leak of 40 byte(s) in 1 object(s) allocated from:
+      #0 0x7f7343cba097 in calloc (/lib64/libasan.so.8+0xba097)
+      #1 0x987966 in zalloc (/home/acme/bin/perf+0x987966)
+      #2 0x52f9b9 in evsel_trace__new /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:307
+      #3 0x52f9b9 in evsel__syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:333
+      #4 0x52f9b9 in evsel__init_raw_syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:458
+      #5 0x52f9b9 in perf_evsel__raw_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:480
+      #6 0x540e8b in trace__add_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3212
+      #7 0x540e8b in trace__run /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3891
+      #8 0x540e8b in cmd_trace /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:5156
+      #9 0x5ef262 in run_builtin /home/acme/git/perf-tools-next/tools/perf/perf.c:323
+      #10 0x4196da in handle_internal_command /home/acme/git/perf-tools-next/tools/perf/perf.c:377
+      #11 0x4196da in run_argv /home/acme/git/perf-tools-next/tools/perf/perf.c:421
+      #12 0x4196da in main /home/acme/git/perf-tools-next/tools/perf/perf.c:537
+      #13 0x7f7342c4a50f in __libc_start_call_main (/lib64/libc.so.6+0x2750f)
 
-Fixes: 6ef81c55a2b6584c ("perf session: Return error code for perf_session__new() function on failure")
+  Direct leak of 40 byte(s) in 1 object(s) allocated from:
+      #0 0x7f7343cba097 in calloc (/lib64/libasan.so.8+0xba097)
+      #1 0x987966 in zalloc (/home/acme/bin/perf+0x987966)
+      #2 0x52f9b9 in evsel_trace__new /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:307
+      #3 0x52f9b9 in evsel__syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:333
+      #4 0x52f9b9 in evsel__init_raw_syscall_tp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:458
+      #5 0x52f9b9 in perf_evsel__raw_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:480
+      #6 0x540dd1 in trace__add_syscall_newtp /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3205
+      #7 0x540dd1 in trace__run /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:3891
+      #8 0x540dd1 in cmd_trace /home/acme/git/perf-tools-next/tools/perf/builtin-trace.c:5156
+      #9 0x5ef262 in run_builtin /home/acme/git/perf-tools-next/tools/perf/perf.c:323
+      #10 0x4196da in handle_internal_command /home/acme/git/perf-tools-next/tools/perf/perf.c:377
+      #11 0x4196da in run_argv /home/acme/git/perf-tools-next/tools/perf/perf.c:421
+      #12 0x4196da in main /home/acme/git/perf-tools-next/tools/perf/perf.c:537
+      #13 0x7f7342c4a50f in __libc_start_call_main (/lib64/libc.so.6+0x2750f)
+
+  SUMMARY: AddressSanitizer: 80 byte(s) leaked in 2 allocation(s).
+  [root@quaco ~]#
+
+With this we plug all leaks with "perf trace sleep 1".
+
+Fixes: 3cb4d5e00e037c70 ("perf trace: Free syscall tp fields in evsel->priv")
+Acked-by: Ian Rogers <irogers@google.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jeremie Galarneau <jeremie.galarneau@efficios.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>
-Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
-Cc: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Shawn Landden <shawn@git.icu>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Link: https://lore.kernel.org/lkml/ZN4Q2rxxsL08A8rd@kernel.org
+Cc: Riccardo Mancini <rickyman7@gmail.com>
+Link: https://lore.kernel.org/lkml/20230719202951.534582-5-acme@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-trace.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 7c64134472c77..ee30372f77133 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1743,6 +1743,7 @@ int cmd_top(int argc, const char **argv)
- 	top.session = perf_session__new(NULL, false, NULL);
- 	if (IS_ERR(top.session)) {
- 		status = PTR_ERR(top.session);
-+		top.session = NULL;
- 		goto out_delete_evlist;
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 6392fcf2610c4..93dab6423a048 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -3124,13 +3124,8 @@ static void evlist__free_syscall_tp_fields(struct evlist *evlist)
+ 	struct evsel *evsel;
+ 
+ 	evlist__for_each_entry(evlist, evsel) {
+-		struct evsel_trace *et = evsel->priv;
+-
+-		if (!et || !evsel->tp_format || strcmp(evsel->tp_format->system, "syscalls"))
+-			continue;
+-
+-		zfree(&et->fmt);
+-		free(et);
++		evsel_trace__delete(evsel->priv);
++		evsel->priv = NULL;
  	}
+ }
  
 -- 
 2.40.1
