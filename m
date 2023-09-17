@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6647A3B99
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6109A7A3B97
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239607AbjIQUTp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S240734AbjIQUTq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240842AbjIQUTN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:13 -0400
+        with ESMTP id S240743AbjIQUTU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C27F4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D023C433C7;
-        Sun, 17 Sep 2023 20:19:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AAC10B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E89C433CB;
+        Sun, 17 Sep 2023 20:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981947;
-        bh=Yd/9mABRRi6aor79S350vDsRzYOwm16MoUIrPWPng64=;
+        s=korg; t=1694981954;
+        bh=KpcSjzMlrTPLaTfGT4P2k+1TqlSqipQM+ciHARCZgF4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dxWEBtzhMVPeaAIkHBz9ydaU2LWMCsRbA17FrKAuwBoTO79zshZr5fxOR6dll8vDq
-         yx6YCZaNWUT179mmtpN5rW8Hj3TyvpXyT51qdIUfIRU+js4S4FO1bYayIYxf5UjY49
-         r8PtvoK+ndHsAfPCHlUcAnbiOlR8cwzkJEOilqCg=
+        b=CrxjXB1+GCdyNqaGdN/56HEszfKdDnoe8z/TApZURe4zOi8js5k4mmC1G3cmFZs0j
+         KYNYyFeAkm5c51l6gk83P8g4rAdrNRhhYIDxugU29tejHrtb107SwlMthpcjzEhmLq
+         E4eciWIBYaqbOxTRoWUsrnxhPsKsyyHXGAKytqAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/511] soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
-Date:   Sun, 17 Sep 2023 21:09:17 +0200
-Message-ID: <20230917191117.005048587@linuxfoundation.org>
+Subject: [PATCH 5.15 131/511] arm64: dts: qcom: sm8250: correct dynamic power coefficients
+Date:   Sun, 17 Sep 2023 21:09:18 +0200
+Message-ID: <20230917191117.028399375@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -57,48 +55,90 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Luca Weiss <luca@z3ntu.xyz>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit a7b484b1c9332a1ee12e8799d62a11ee3f8e0801 ]
+[ Upstream commit 775a5283c25d160b2a1359018c447bc518096547 ]
 
-Since we're using these two macros to read a value from a register, we
-need to use the FIELD_GET instead of the FIELD_PREP macro, otherwise
-we're getting wrong values.
+sm8250 faces the same problem with its Energy Model as sdm845. The energy
+cost of LITTLE cores is reported to be higher than medium or big cores
 
-So instead of:
+EM computes the energy with formula:
 
-  [    3.111779] ocmem fdd00000.sram: 2 ports, 1 regions, 512 macros, not interleaved
+energy = OPP's cost / maximum cpu capacity * utilization
 
-we now get the correct value of:
+On v6.4-rc6 we have:
+max capacity of CPU0 = 284
+capacity of CPU0's OPP(1612800 Hz) = 253
+cost of CPU0's OPP(1612800 Hz) = 191704
 
-  [    3.129672] ocmem fdd00000.sram: 2 ports, 1 regions, 2 macros, not interleaved
+max capacity of CPU4 = 871
+capacity of CPU4's OPP(710400 Hz) = 255
+cost of CPU4's OPP(710400 Hz) = 343217
 
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Link: https://lore.kernel.org/r/20230506-msm8226-ocmem-v3-1-79da95a2581f@z3ntu.xyz
+Both OPPs have almost the same compute capacity but the estimated energy
+per unit of utilization will be estimated to:
+
+energy CPU0 = 191704 / 284 * 1 = 675
+energy CPU4 = 343217 / 871 * 1 = 394
+
+EM estimates that little CPU0 will consume 71% more than medium CPU4 for
+the same compute capacity. According to [1], little consumes 25% less than
+medium core for Coremark benchmark at those OPPs for the same duration.
+
+Set the dynamic-power-coefficient of CPU0-3 to 105 to fix the energy model
+for little CPUs.
+
+[1] https://github.com/kdrag0n/freqbench/tree/master/results/sm8250/k30s
+
+Fixes: 6aabed5526ee ("arm64: dts: qcom: sm8250: Add CPU capacities and energy model")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20230615154852.130076-1-vincent.guittot@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index ae023bef81b6f..8b80c8e94c77a 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -80,8 +80,8 @@ struct ocmem {
- #define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
- #define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
- 
--#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
--#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
-+#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_GET(0x0000000f, (val))
-+#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_GET(0x00003f00, (val))
- 
- #define OCMEM_HW_PROFILE_LAST_REGN_HALFSIZE	0x00010000
- #define OCMEM_HW_PROFILE_INTERLEAVING		0x00020000
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 181e32b8a2728..005e75dc6919e 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -97,7 +97,7 @@ CPU0: cpu@0 {
+ 			reg = <0x0 0x0>;
+ 			enable-method = "psci";
+ 			capacity-dmips-mhz = <448>;
+-			dynamic-power-coefficient = <205>;
++			dynamic-power-coefficient = <105>;
+ 			next-level-cache = <&L2_0>;
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			#cooling-cells = <2>;
+@@ -116,7 +116,7 @@ CPU1: cpu@100 {
+ 			reg = <0x0 0x100>;
+ 			enable-method = "psci";
+ 			capacity-dmips-mhz = <448>;
+-			dynamic-power-coefficient = <205>;
++			dynamic-power-coefficient = <105>;
+ 			next-level-cache = <&L2_100>;
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			#cooling-cells = <2>;
+@@ -132,7 +132,7 @@ CPU2: cpu@200 {
+ 			reg = <0x0 0x200>;
+ 			enable-method = "psci";
+ 			capacity-dmips-mhz = <448>;
+-			dynamic-power-coefficient = <205>;
++			dynamic-power-coefficient = <105>;
+ 			next-level-cache = <&L2_200>;
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			#cooling-cells = <2>;
+@@ -148,7 +148,7 @@ CPU3: cpu@300 {
+ 			reg = <0x0 0x300>;
+ 			enable-method = "psci";
+ 			capacity-dmips-mhz = <448>;
+-			dynamic-power-coefficient = <205>;
++			dynamic-power-coefficient = <105>;
+ 			next-level-cache = <&L2_300>;
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 			#cooling-cells = <2>;
 -- 
 2.40.1
 
