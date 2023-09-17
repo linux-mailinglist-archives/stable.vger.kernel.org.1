@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22F297A3B5E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B9D7A3D39
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240660AbjIQUQg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:16:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35414 "EHLO
+        id S241222AbjIQUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240766AbjIQUQT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:19 -0400
+        with ESMTP id S241279AbjIQUjv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96EF3101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A47C433C7;
-        Sun, 17 Sep 2023 20:16:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB59E10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029B6C433C8;
+        Sun, 17 Sep 2023 20:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981774;
-        bh=+YSvmt0ZW6DngcsUv6UHm6opbvIqOxN2huuJEEz+JUw=;
+        s=korg; t=1694983185;
+        bh=XaEI+TgndUjlZQZhtsb7D5kWjtpse4TqUNbcTblMWUg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rA9VklqDYYQt2D5joiuxksX6KC99F8Yk/Xpe6aVWLHvlFXG93KDO3oVQVpYOfkRwf
-         k4AB2bXg9/CGbOShVucv3z/pjyNe2aHGBK7iyzf7h2EOI957HLwX23O4lahQHfnxiH
-         85sxlHYQ1fSQLF3Kdf/0aQLHzTPkMdMAsgAPN2m0=
+        b=BieFet3kAsmFDz32CM7wCkjw56/R2Wz9PDpLD/k9ppsc5fGhKxNTrUaJ/FZOLSIgm
+         YISPvhVe2v7TOYvjE+vea51PwzcLWtycKY3wo7BmlOLy9TmZNr6Zkfy+5eYToAvfzs
+         8cWgg3ggoqCEsGBm8HutcdllVBs2cymbNk1cVKuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-        Joao Martins <joao.m.martins@oracle.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 170/219] KVM: SVM: Take and hold ir_list_lock when updating vCPUs Physical ID entry
+        William R Sowerbutts <will@sowerbutts.com>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.15 470/511] ata: pata_falcon: fix IO base selection for Q40
 Date:   Sun, 17 Sep 2023 21:14:57 +0200
-Message-ID: <20230917191047.158597262@linuxfoundation.org>
+Message-ID: <20230917191125.095785679@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,135 +54,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-commit 4c08e737f056fec930b416a2bd37ed266d724f95 upstream.
+commit 8a1f00b753ecfdb117dc1a07e68c46d80e7923ea upstream.
 
-Hoist the acquisition of ir_list_lock from avic_update_iommu_vcpu_affinity()
-to its two callers, avic_vcpu_load() and avic_vcpu_put(), specifically to
-encapsulate the write to the vCPU's entry in the AVIC Physical ID table.
-This will allow a future fix to pull information from the Physical ID entry
-when updating the IRTE, without potentially consuming stale information,
-i.e. without racing with the vCPU being (un)loaded.
+With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
+with pata_falcon and falconide"), the Q40 IDE driver was
+replaced by pata_falcon.c.
 
-Add a comment to call out that ir_list_lock does NOT protect against
-multiple writers, specifically that reading the Physical ID entry in
-avic_vcpu_put() outside of the lock is safe.
+Both IO and memory resources were defined for the Q40 IDE
+platform device, but definition of the IDE register addresses
+was modeled after the Falcon case, both in use of the memory
+resources and in including register shift and byte vs. word
+offset in the address.
 
-To preserve some semblance of independence from ir_list_lock, keep the
-READ_ONCE() in avic_vcpu_load() even though acuiring the spinlock
-effectively ensures the load(s) will be generated after acquiring the
-lock.
+This was correct for the Falcon case, which does not apply
+any address translation to the register addresses. In the
+Q40 case, all of device base address, byte access offset
+and register shift is included in the platform specific
+ISA access translation (in asm/mm_io.h).
 
+As a consequence, such address translation gets applied
+twice, and register addresses are mangled.
+
+Use the device base address from the platform IO resource
+for Q40 (the IO address translation will then add the correct
+ISA window base address and byte access offset), with register
+shift 1. Use MMIO base address and register shift 2 as before
+for Falcon.
+
+Encode PIO_OFFSET into IO port addresses for all registers
+for Q40 except the data transfer register. Encode the MMIO
+offset there (pata_falcon_data_xfer() directly uses raw IO
+with no address translation).
+
+Reported-by: William R Sowerbutts <will@sowerbutts.com>
+Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
 Cc: stable@vger.kernel.org
-Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/r/20230808233132.2499764-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: Finn Thain <fthain@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: William R Sowerbutts <will@sowerbutts.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |   31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ drivers/ata/pata_falcon.c |   50 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -1022,10 +1022,11 @@ static inline int
- avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int cpu, bool r)
- {
- 	int ret = 0;
--	unsigned long flags;
- 	struct amd_svm_iommu_ir *ir;
- 	struct vcpu_svm *svm = to_svm(vcpu);
+--- a/drivers/ata/pata_falcon.c
++++ b/drivers/ata/pata_falcon.c
+@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(s
+ 	struct resource *base_res, *ctl_res, *irq_res;
+ 	struct ata_host *host;
+ 	struct ata_port *ap;
+-	void __iomem *base;
+-	int irq = 0;
++	void __iomem *base, *ctl_base;
++	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
  
-+	lockdep_assert_held(&svm->ir_list_lock);
-+
- 	if (!kvm_arch_has_assigned_device(vcpu->kvm))
- 		return 0;
+ 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
  
-@@ -1033,19 +1034,15 @@ avic_update_iommu_vcpu_affinity(struct k
- 	 * Here, we go through the per-vcpu ir_list to update all existing
- 	 * interrupt remapping table entry targeting this vcpu.
- 	 */
--	spin_lock_irqsave(&svm->ir_list_lock, flags);
+@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(s
+ 	ap->pio_mask = ATA_PIO4;
+ 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
+ 
+-	base = (void __iomem *)base_mem_res->start;
+ 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
+-	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
+-	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
+-	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
+-	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
+-	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
+-	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
+-	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
+-	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
 -
- 	if (list_empty(&svm->ir_list))
--		goto out;
-+		return 0;
- 
- 	list_for_each_entry(ir, &svm->ir_list, node) {
- 		ret = amd_iommu_update_ga(cpu, r, ir->data);
- 		if (ret)
--			break;
-+			return ret;
- 	}
--out:
--	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
--	return ret;
-+	return 0;
- }
- 
- void avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
-@@ -1053,6 +1050,7 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
- 	u64 entry;
- 	int h_physical_id = kvm_cpu_get_apicid(cpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
-+	unsigned long flags;
- 
- 	lockdep_assert_preemption_disabled();
- 
-@@ -1069,6 +1067,8 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
- 	if (kvm_vcpu_is_blocking(vcpu))
- 		return;
- 
-+	spin_lock_irqsave(&svm->ir_list_lock, flags);
+-	base = (void __iomem *)ctl_mem_res->start;
+-	ap->ioaddr.altstatus_addr	= base + 1;
+-	ap->ioaddr.ctl_addr		= base + 1;
+-
+-	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
+-		      (unsigned long)base_mem_res->start,
+-		      (unsigned long)ctl_mem_res->start);
++	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
 +
- 	entry = READ_ONCE(*(svm->avic_physical_id_cache));
- 
- 	entry &= ~AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK;
-@@ -1077,25 +1077,40 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
- 
- 	WRITE_ONCE(*(svm->avic_physical_id_cache), entry);
- 	avic_update_iommu_vcpu_affinity(vcpu, h_physical_id, true);
++	if (base_res) {		/* only Q40 has IO resources */
++		io_offset = 0x10000;
++		reg_shift = 0;
++		base = (void __iomem *)base_res->start;
++		ctl_base = (void __iomem *)ctl_res->start;
++	} else {
++		base = (void __iomem *)base_mem_res->start;
++		ctl_base = (void __iomem *)ctl_mem_res->start;
++	}
 +
-+	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
- }
- 
- void avic_vcpu_put(struct kvm_vcpu *vcpu)
- {
- 	u64 entry;
- 	struct vcpu_svm *svm = to_svm(vcpu);
-+	unsigned long flags;
- 
- 	lockdep_assert_preemption_disabled();
- 
-+	/*
-+	 * Note, reading the Physical ID entry outside of ir_list_lock is safe
-+	 * as only the pCPU that has loaded (or is loading) the vCPU is allowed
-+	 * to modify the entry, and preemption is disabled.  I.e. the vCPU
-+	 * can't be scheduled out and thus avic_vcpu_{put,load}() can't run
-+	 * recursively.
-+	 */
- 	entry = READ_ONCE(*(svm->avic_physical_id_cache));
- 
- 	/* Nothing to do if IsRunning == '0' due to vCPU blocking. */
- 	if (!(entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK))
- 		return;
- 
-+	spin_lock_irqsave(&svm->ir_list_lock, flags);
++	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
++	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
++	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
++	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
++	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
++	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
++	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
 +
- 	avic_update_iommu_vcpu_affinity(vcpu, -1, 0);
- 
- 	entry &= ~AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK;
- 	WRITE_ONCE(*(svm->avic_physical_id_cache), entry);
++	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
++	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
 +
-+	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
-+
- }
++	ata_port_desc(ap, "cmd %px ctl %px data %px",
++		      base, ctl_base, ap->ioaddr.data_addr);
  
- void avic_refresh_virtual_apic_mode(struct kvm_vcpu *vcpu)
+ 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+ 	if (irq_res && irq_res->start > 0) {
 
 
