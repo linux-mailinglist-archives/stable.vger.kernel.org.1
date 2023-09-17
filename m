@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 150C77A3AE3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9906F7A3CED
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240501AbjIQUKK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33218 "EHLO
+        id S239704AbjIQUgx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240605AbjIQUKE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:04 -0400
+        with ESMTP id S241192AbjIQUgq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191BAF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A712C433C7;
-        Sun, 17 Sep 2023 20:09:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D630110F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C99C433C8;
+        Sun, 17 Sep 2023 20:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981387;
-        bh=/D8cDFhdwe1Rph4uROS+u9oZb4nn3e0/fmkHBne25Ig=;
+        s=korg; t=1694983000;
+        bh=SuwNVi/udvkiZb8ECgsul+BwfIoLx1mcmqpiU1n/ujQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ryg9MZjS6t7PvJbCvCxAa1aHyKhD3Z4ul58Mto0sTkmnFQOPX5VweKJHhVO1q6CTz
-         ThyHrIw1rNk+1vKq3juCBD4F49bsx2azrnjSnmaW8QZeghZguwrlJgG+u696MG3fhX
-         AnKUSsdNxverx+4gLotfOJtFGYJik0ht0axhRdXA=
+        b=UKUdM/4lB/5Hi6t1plB+qFVHHthNJJqi+pUsoNc8B+1HrHoZfprE9IblvGatwOSwF
+         te3GURjYgnVkJCabZTREMY1iqRbdgR07QcXbOEb2kxWek1m0eimwwODstzD3A45PbP
+         pW6GtjtgF6wsOWhWY71zTFmjEylpUhkCnWuMc4GE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/219] kcm: Destroy mutex in kcm_exit_net()
+Subject: [PATCH 5.15 413/511] pwm: atmel-tcb: Convert to platform remove callback returning void
 Date:   Sun, 17 Sep 2023 21:14:00 +0200
-Message-ID: <20230917191045.067941122@linuxfoundation.org>
+Message-ID: <20230917191123.755480885@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,39 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 6ad40b36cd3b04209e2d6c89d252c873d8082a59 ]
+[ Upstream commit 9609284a76978daf53a54e05cff36873a75e4d13 ]
 
-kcm_exit_net() should call mutex_destroy() on knet->mutex. This is especially
-needed if CONFIG_DEBUG_MUTEXES is enabled.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Link: https://lore.kernel.org/r/20230902170708.1727999-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: c11622324c02 ("pwm: atmel-tcb: Fix resource freeing in error path and remove")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pwm/pwm-atmel-tcb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 890a2423f559e..6a97662d7548e 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1981,6 +1981,8 @@ static __net_exit void kcm_exit_net(struct net *net)
- 	 * that all multiplexors and psocks have been destroyed.
- 	 */
- 	WARN_ON(!list_empty(&knet->mux_list));
-+
-+	mutex_destroy(&knet->mutex);
+diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
+index 36f7ea381838d..2a06b7dd224c9 100644
+--- a/drivers/pwm/pwm-atmel-tcb.c
++++ b/drivers/pwm/pwm-atmel-tcb.c
+@@ -500,7 +500,7 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	return err;
  }
  
- static struct pernet_operations kcm_net_ops = {
+-static int atmel_tcb_pwm_remove(struct platform_device *pdev)
++static void atmel_tcb_pwm_remove(struct platform_device *pdev)
+ {
+ 	struct atmel_tcb_pwm_chip *tcbpwm = platform_get_drvdata(pdev);
+ 
+@@ -509,8 +509,6 @@ static int atmel_tcb_pwm_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(tcbpwm->slow_clk);
+ 	clk_put(tcbpwm->slow_clk);
+ 	clk_put(tcbpwm->clk);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id atmel_tcb_pwm_dt_ids[] = {
+@@ -564,7 +562,7 @@ static struct platform_driver atmel_tcb_pwm_driver = {
+ 		.pm = &atmel_tcb_pwm_pm_ops,
+ 	},
+ 	.probe = atmel_tcb_pwm_probe,
+-	.remove = atmel_tcb_pwm_remove,
++	.remove_new = atmel_tcb_pwm_remove,
+ };
+ module_platform_driver(atmel_tcb_pwm_driver);
+ 
 -- 
 2.40.1
 
