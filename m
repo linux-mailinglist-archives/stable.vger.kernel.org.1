@@ -2,150 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6F67A3999
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A4C57A3A6A
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240100AbjIQTvb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:51:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
+        id S239560AbjIQUDR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240153AbjIQTvV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:21 -0400
+        with ESMTP id S240382AbjIQUCx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 060249F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311FDC433C8;
-        Sun, 17 Sep 2023 19:51:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CDC1191
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB8AC433C8;
+        Sun, 17 Sep 2023 20:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980275;
-        bh=5rWvPxY4VFOqW+S6+yCNwhClFr9qMokkirstouey+NQ=;
+        s=korg; t=1694980958;
+        bh=pDHgO5lrPCh7mPnYE6Vytf7kHtKK+s65hAipoN30L2g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i9ZQoY/izbmMdhLjrRF2eqaLfxbNP2jCmdbea1dHD5l+dYWDUcBsx53BRmc9x0sp/
-         tuKWJPIYHjIZ+eoXT8q9tX+Q4dx26mm4YjQnO4fLurWeBmcYF1lDLyScfwwDgu6/bT
-         Qz324YxJU2Ewq7pYOreNvuURnh2KWDqStctICaeM=
+        b=CdBWjpqKsO7t7zuhxc4+Z7tAcYGqDaPedCCrnqcdIKOIZ00df8rC5tK8FiaqZQIzM
+         azywFdhhjgTvdYQt8AJ+yLjn7C7Vr2f9nVB9h+EiZqd2sYLmxjvtxDDvxXoTzcMDm3
+         L0VJikVBHoVdIOMO7lmmUBrFeaVa0T1AeCDvEClE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Udit Kumar <u-kumar1@ti.com>,
-        Jerome Neanne <jneanne@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 145/285] regulator: tps6594-regulator: Fix random kernel crash
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 018/219] scsi: qla2xxx: Fix session hang in gnl
 Date:   Sun, 17 Sep 2023 21:12:25 +0200
-Message-ID: <20230917191056.703460957@linuxfoundation.org>
+Message-ID: <20230917191041.653723421@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_OTHER_BAD_TLD,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Neanne <jneanne@baylibre.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit ca0e36e3e39a4e8b5a4b647dff8c5938ca6ccbec ]
+commit 39d22740712c7563a2e18c08f033deeacdaf66e7 upstream.
 
-Random kernel crash detected in TI CICD when regulator driver is added.
-This is root caused to irq index increment being done twice causing
-irq_data being allocated outside of the range.
+Connection does not resume after a host reset / chip reset. The cause of
+the blockage is due to the FCF_ASYNC_ACTIVE left on. The gnl command was
+interrupted by the chip reset. On exiting the command, this flag should be
+turn off to allow relogin to reoccur. Clear this flag to prevent blockage.
 
-- Rework tps6594_request_reg_irqs with correct index increment
-- Adjust irq_data kmalloc size to the exact size needed for the device
-
-This has been reported on TI mainline. No public bug report associated.
-
-Reported-by: Udit Kumar <u-kumar1@ti.com>
-Fixes: f17ccc5deb4d ("regulator: tps6594-regulator: Add driver for TI TPS6594 regulators")
-Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-Link: https://lore.kernel.org/r/20230828-tps6594_random_boot_crash_fix-v1-1-f29cbf9ddb37@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 17e64648aa47 ("scsi: qla2xxx: Correct fcport flags handling")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/tps6594-regulator.c | 31 +++++++++++++--------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/tps6594-regulator.c b/drivers/regulator/tps6594-regulator.c
-index d5a574ec6d12f..47c3b7efe145e 100644
---- a/drivers/regulator/tps6594-regulator.c
-+++ b/drivers/regulator/tps6594-regulator.c
-@@ -384,21 +384,19 @@ static int tps6594_request_reg_irqs(struct platform_device *pdev,
- 		if (irq < 0)
- 			return -EINVAL;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1135,7 +1135,7 @@ int qla24xx_async_gnl(struct scsi_qla_ho
+ 	u16 *mb;
  
--		irq_data[*irq_idx + j].dev = tps->dev;
--		irq_data[*irq_idx + j].type = irq_type;
--		irq_data[*irq_idx + j].rdev = rdev;
-+		irq_data[*irq_idx].dev = tps->dev;
-+		irq_data[*irq_idx].type = irq_type;
-+		irq_data[*irq_idx].rdev = rdev;
+ 	if (!vha->flags.online || (fcport->flags & FCF_ASYNC_SENT))
+-		return rval;
++		goto done;
  
- 		error = devm_request_threaded_irq(tps->dev, irq, NULL,
--						  tps6594_regulator_irq_handler,
--						  IRQF_ONESHOT,
--						  irq_type->irq_name,
--						  &irq_data[*irq_idx]);
--		(*irq_idx)++;
-+						  tps6594_regulator_irq_handler, IRQF_ONESHOT,
-+						  irq_type->irq_name, &irq_data[*irq_idx]);
- 		if (error) {
- 			dev_err(tps->dev, "tps6594 failed to request %s IRQ %d: %d\n",
- 				irq_type->irq_name, irq, error);
- 			return error;
- 		}
-+		(*irq_idx)++;
- 	}
- 	return 0;
+ 	ql_dbg(ql_dbg_disc, vha, 0x20d9,
+ 	    "Async-gnlist WWPN %8phC \n", fcport->port_name);
+@@ -1189,8 +1189,9 @@ int qla24xx_async_gnl(struct scsi_qla_ho
+ done_free_sp:
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	fcport->flags &= ~(FCF_ASYNC_SENT);
+ done:
+-	fcport->flags &= ~(FCF_ASYNC_ACTIVE | FCF_ASYNC_SENT);
++	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
+ 	return rval;
  }
-@@ -420,8 +418,8 @@ static int tps6594_regulator_probe(struct platform_device *pdev)
- 	int error, i, irq, multi, delta;
- 	int irq_idx = 0;
- 	int buck_idx = 0;
--	int ext_reg_irq_nb = 2;
--
-+	size_t ext_reg_irq_nb = 2;
-+	size_t reg_irq_nb;
- 	enum {
- 		MULTI_BUCK12,
- 		MULTI_BUCK123,
-@@ -484,15 +482,16 @@ static int tps6594_regulator_probe(struct platform_device *pdev)
- 		}
- 	}
  
--	if (tps->chip_id == LP8764)
-+	if (tps->chip_id == LP8764) {
- 		/* There is only 4 buck on LP8764 */
- 		buck_configured[4] = 1;
-+		reg_irq_nb = size_mul(REGS_INT_NB, (BUCK_NB - 1));
-+	} else {
-+		reg_irq_nb = size_mul(REGS_INT_NB, (size_add(BUCK_NB, LDO_NB)));
-+	}
- 
--	irq_data = devm_kmalloc_array(tps->dev,
--				REGS_INT_NB * sizeof(struct tps6594_regulator_irq_data),
--				ARRAY_SIZE(tps6594_bucks_irq_types) +
--				ARRAY_SIZE(tps6594_ldos_irq_types),
--				GFP_KERNEL);
-+	irq_data = devm_kmalloc_array(tps->dev, reg_irq_nb,
-+				      sizeof(struct tps6594_regulator_irq_data), GFP_KERNEL);
- 	if (!irq_data)
- 		return -ENOMEM;
- 
--- 
-2.40.1
-
 
 
