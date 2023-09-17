@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FDC27A3BCB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D397A3B83
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240806AbjIQUW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37826 "EHLO
+        id S240710AbjIQUSn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240867AbjIQUWg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:22:36 -0400
+        with ESMTP id S240739AbjIQUS3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A01ACC7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:22:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18FAC433CD;
-        Sun, 17 Sep 2023 20:22:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E257BF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15895C433C8;
+        Sun, 17 Sep 2023 20:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982123;
-        bh=kX2frQTxAFZYwqFQ4Te4E5g3jHG7wuwlVXf8l45cDWo=;
+        s=korg; t=1694981903;
+        bh=ceRQjJHz2eMEvq2zvIyNOwBhmaZ67fxhY/J9YhgFQzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g4zZkx7Qxr4fO216Hi2AzbBGLqDgdm6HHl8+8pfeW7sTEtxZYODz96goX86uAvZou
-         ekYOEnLuig7deOZr5xTLo+EqPbcpqPY+/o/y5EfxRS4UBtmnxRizg6oJf2Y4tSFIkZ
-         gZcHFe9vUA9HJ6xAlYJO+5c1xrJDaFxVKnU5A3hs=
+        b=w77y1torMUL74cn2ftQi8DZ9D3QtHxrFEhdrHHsg2FAWrD6g1hRpPHwSC/F0muWpz
+         +TN1LWHm9xEZLdxl0mnPbNED7TxyhPOTbq219reQG/gQNhRTkX7biTrwS4ngcjmG3l
+         qlnzNqe8JU55Fp7zFa+s04l4lJX+Vsj7vkWsk9x4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/511] drm/bridge: tc358764: Fix debug print parameter order
-Date:   Sun, 17 Sep 2023 21:09:10 +0200
-Message-ID: <20230917191116.841306961@linuxfoundation.org>
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 124/511] quota: factor out dquot_write_dquot()
+Date:   Sun, 17 Sep 2023 21:09:11 +0200
+Message-ID: <20230917191116.865028814@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -53,38 +53,92 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 7f947be02aab5b154427cb5b0fffe858fc387b02 ]
+[ Upstream commit 024128477809f8073d870307c8157b8826ebfd08 ]
 
-The debug print parameters were swapped in the output and they were
-printed as decimal values, both the hardware address and the value.
-Update the debug print to print the parameters in correct order, and
-use hexadecimal print for both address and value.
+Refactor out dquot_write_dquot() to reduce duplicate code.
 
-Fixes: f38b7cca6d0e ("drm/bridge: tc358764: Add DSI to LVDS bridge driver")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230615152817.359420-1-marex@denx.de
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230630110822.3881712-2-libaokun1@huawei.com>
+Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358764.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/quota/dquot.c | 39 ++++++++++++++++-----------------------
+ 1 file changed, 16 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358764.c b/drivers/gpu/drm/bridge/tc358764.c
-index c1e35bdf9232a..ba4e869f58a4a 100644
---- a/drivers/gpu/drm/bridge/tc358764.c
-+++ b/drivers/gpu/drm/bridge/tc358764.c
-@@ -181,7 +181,7 @@ static void tc358764_read(struct tc358764 *ctx, u16 addr, u32 *val)
- 	if (ret >= 0)
- 		le32_to_cpus(val);
- 
--	dev_dbg(ctx->dev, "read: %d, addr: %d\n", addr, *val);
-+	dev_dbg(ctx->dev, "read: addr=0x%04x data=0x%08x\n", addr, *val);
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index b88f5a2f6032b..fae2dbd663020 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -628,6 +628,18 @@ int dquot_scan_active(struct super_block *sb,
  }
+ EXPORT_SYMBOL(dquot_scan_active);
  
- static void tc358764_write(struct tc358764 *ctx, u16 addr, u32 val)
++static inline int dquot_write_dquot(struct dquot *dquot)
++{
++	int ret = dquot->dq_sb->dq_op->write_dquot(dquot);
++	if (ret < 0) {
++		quota_error(dquot->dq_sb, "Can't write quota structure "
++			    "(error %d). Quota may get out of sync!", ret);
++		/* Clear dirty bit anyway to avoid infinite loop. */
++		clear_dquot_dirty(dquot);
++	}
++	return ret;
++}
++
+ /* Write all dquot structures to quota files */
+ int dquot_writeback_dquots(struct super_block *sb, int type)
+ {
+@@ -658,16 +670,9 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			 * use count */
+ 			dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+-			err = sb->dq_op->write_dquot(dquot);
+-			if (err) {
+-				/*
+-				 * Clear dirty bit anyway to avoid infinite
+-				 * loop here.
+-				 */
+-				clear_dquot_dirty(dquot);
+-				if (!ret)
+-					ret = err;
+-			}
++			err = dquot_write_dquot(dquot);
++			if (err && !ret)
++				ret = err;
+ 			dqput(dquot);
+ 			spin_lock(&dq_list_lock);
+ 		}
+@@ -765,8 +770,6 @@ static struct shrinker dqcache_shrinker = {
+  */
+ void dqput(struct dquot *dquot)
+ {
+-	int ret;
+-
+ 	if (!dquot)
+ 		return;
+ #ifdef CONFIG_QUOTA_DEBUG
+@@ -794,17 +797,7 @@ void dqput(struct dquot *dquot)
+ 	if (dquot_dirty(dquot)) {
+ 		spin_unlock(&dq_list_lock);
+ 		/* Commit dquot before releasing */
+-		ret = dquot->dq_sb->dq_op->write_dquot(dquot);
+-		if (ret < 0) {
+-			quota_error(dquot->dq_sb, "Can't write quota structure"
+-				    " (error %d). Quota may get out of sync!",
+-				    ret);
+-			/*
+-			 * We clear dirty bit anyway, so that we avoid
+-			 * infinite loop here
+-			 */
+-			clear_dquot_dirty(dquot);
+-		}
++		dquot_write_dquot(dquot);
+ 		goto we_slept;
+ 	}
+ 	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
 -- 
 2.40.1
 
