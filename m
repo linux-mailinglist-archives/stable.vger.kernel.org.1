@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 443FD7A395F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40CBE7A3842
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240045AbjIQTsT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:48:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58906 "EHLO
+        id S239704AbjIQTdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240106AbjIQTsI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:08 -0400
+        with ESMTP id S239799AbjIQTdJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECDC0133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FEEC433C7;
-        Sun, 17 Sep 2023 19:48:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 420AFD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F305C433C8;
+        Sun, 17 Sep 2023 19:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980081;
-        bh=axfVNPmtgG2YZqv1hDxWmwZbYNRayAl1kQ9xLDFo64A=;
+        s=korg; t=1694979183;
+        bh=aPTAngpsOj9RQhuBh7aLgj2KfgSr78DmwJ/sPTgHAbg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rtK02qBjVF8HnuGELfVV+3VeitzfnKQ46IoZi392NmhX6q44AoleWzi/nSeNNrP/D
-         sSRoxe1pGw5MjYYxPjYSOOf254lOmbeULCGdj9LjsXtiERLfJJQd1QnobVG0Ie/vAF
-         U72XqzSamw3W/At0NfgISJlEJIARP5C1hHmznNf4=
+        b=l5Wi//0/I6UhEzef9M+nVMmjk2jOnFz7q8Pld+4UaErmr1oD/O+s7RYdM2iZ/BBoJ
+         0u05id8I9XZICuboG7I95RVPn/rFK//eiz/HeVnYTjgR7cuV3GVKTiQZp8FqdcDuj6
+         XvInRTFMWdxx11qkZ1ggrBvj6odGJ4VVDz6ukIwk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 091/285] watchdog: intel-mid_wdt: add MODULE_ALIAS() to allow auto-load
-Date:   Sun, 17 Sep 2023 21:11:31 +0200
-Message-ID: <20230917191054.849525434@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Marek Vasut <marex@denx.de>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, Jai Luthra <j-luthra@ti.com>
+Subject: [PATCH 5.10 238/406] media: ov5640: Enable MIPI interface in ov5640_set_power_mipi()
+Date:   Sun, 17 Sep 2023 21:11:32 +0200
+Message-ID: <20230917191107.447986600@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit cf38e7691c85f1b09973b22a0b89bf1e1228d2f9 ]
+[ Upstream commit 98cb72d3b9c5e03b10fa993752ecfcbd9c572d8c ]
 
-When built with CONFIG_INTEL_MID_WATCHDOG=m, currently the driver
-needs to be loaded manually, for the lack of module alias.
-This causes unintended resets in cases where watchdog timer is
-set-up by bootloader and the driver is not explicitly loaded.
-Add MODULE_ALIAS() to load the driver automatically at boot and
-avoid this issue.
+Set OV5640_REG_IO_MIPI_CTRL00 bit 2 to 1 instead of 0, since 1 means
+MIPI CSI2 interface, while 0 means CPI parallel interface.
 
-Fixes: 87a1ef8058d9 ("watchdog: add Intel MID watchdog driver support")
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230811120220.31578-1-raag.jadav@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+In the ov5640_set_power_mipi() the interface should obviously be set
+to MIPI CSI2 since this functions is used to power up the sensor when
+operated in MIPI CSI2 mode. The sensor should not be in CPI mode in
+that case.
+
+This fixes a corner case where capturing the first frame on i.MX8MN
+with CSI/ISI resulted in corrupted frame.
+
+Fixes: aa4bb8b8838f ("media: ov5640: Re-work MIPI startup sequence")
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Tested-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com> # [Test on imx6q]
+Signed-off-by: Marek Vasut <marex@denx.de>
+Tested-by: Jai Luthra <j-luthra@ti.com> # [Test on bplay, sk-am62]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/intel-mid_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/ov5640.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/intel-mid_wdt.c b/drivers/watchdog/intel-mid_wdt.c
-index 9b2173f765c8c..fb7fae750181b 100644
---- a/drivers/watchdog/intel-mid_wdt.c
-+++ b/drivers/watchdog/intel-mid_wdt.c
-@@ -203,3 +203,4 @@ module_platform_driver(mid_wdt_driver);
- MODULE_AUTHOR("David Cohen <david.a.cohen@linux.intel.com>");
- MODULE_DESCRIPTION("Watchdog Driver for Intel MID platform");
- MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:intel_mid_wdt");
+diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
+index 92a5f9aff9b53..db4b6095f4f4c 100644
+--- a/drivers/media/i2c/ov5640.c
++++ b/drivers/media/i2c/ov5640.c
+@@ -1942,9 +1942,9 @@ static int ov5640_set_power_mipi(struct ov5640_dev *sensor, bool on)
+ 	 *		  "ov5640_set_stream_mipi()")
+ 	 * [4] = 0	: Power up MIPI HS Tx
+ 	 * [3] = 0	: Power up MIPI LS Rx
+-	 * [2] = 0	: MIPI interface disabled
++	 * [2] = 1	: MIPI interface enabled
+ 	 */
+-	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x40);
++	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x44);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.40.1
 
