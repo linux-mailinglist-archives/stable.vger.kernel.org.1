@@ -2,40 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05ADB7A3B05
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DBE57A3D31
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237957AbjIQULr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54404 "EHLO
+        id S241177AbjIQUkB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240567AbjIQUL2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:28 -0400
+        with ESMTP id S241330AbjIQUj1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336B8B5
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACE8C433CA;
-        Sun, 17 Sep 2023 20:11:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FBB115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EB5C433C9;
+        Sun, 17 Sep 2023 20:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981482;
-        bh=PwNTik405e8jOYuDZkL3pyUFc7DKweAJrbF/vAv67KE=;
+        s=korg; t=1694983161;
+        bh=Ic4I248YwH676AjREz0MjYhDcUHg4J3jXSV+p38T/yo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pZ6FHCd7KcVlmNDdGHDZAahGVZhHbigCXPm8ySucMcBgN66KZnXoMRY5b/iretqLI
-         4ZRhpzScuOko6VVWlJiXKk/F7xCRYeHFYuFDgpYfveQVfThITYeXjs+l8qRht0Clde
-         DPM4jxslvFMqKyuADrB34y0l0gFG03yOsjYkGY5A=
+        b=IXsxl80LKGd9+CGrKxeZwqElHtT8kP+3TD20NCJxzEWaj6MhXm0z1Iw95sIRsR4l6
+         rFbD8Kddn48+fLmbB6f0KlemQtWCFqTa6MAPM8AeiPjB9fqpw0QvLwP5aiJUxOHfu5
+         EK9c6XZW5Axy3Yf7VNI5CyN6RrXImygc+QQMVzLc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yanan Yang <yanan.yang@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Kajol Jain <kjain@linux.ibm.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/219] net: dsa: sja1105: fix bandwidth discrepancy between tc-cbs software and offload
-Date:   Sun, 17 Sep 2023 21:14:08 +0200
-Message-ID: <20230917191045.351766948@linuxfoundation.org>
+Subject: [PATCH 5.15 422/511] perf vendor events: Drop some of the JSON/events for power10 platform
+Date:   Sun, 17 Sep 2023 21:14:09 +0200
+Message-ID: <20230917191123.965168646@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,137 +56,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 954ad9bf13c4f95a4958b5f8433301f2ab99e1f5 ]
+[ Upstream commit e104df97b8dcfbab2e42de634b99bf03f0805d85 ]
 
-More careful measurement of the tc-cbs bandwidth shows that the stream
-bandwidth (effectively idleslope) increases, there is a larger and
-larger discrepancy between the rate limit obtained by the software
-Qdisc, and the rate limit obtained by its offloaded counterpart.
+Drop some of the JSON/events for power10 platform due to counter
+data mismatch.
 
-The discrepancy becomes so large, that e.g. at an idleslope of 40000
-(40Mbps), the offloaded cbs does not actually rate limit anything, and
-traffic will pass at line rate through a 100 Mbps port.
-
-The reason for the discrepancy is that the hardware documentation I've
-been following is incorrect. UM11040.pdf (for SJA1105P/Q/R/S) states
-about IDLE_SLOPE that it is "the rate (in unit of bytes/sec) at which
-the credit counter is increased".
-
-Cross-checking with UM10944.pdf (for SJA1105E/T) and UM11107.pdf
-(for SJA1110), the wording is different: "This field specifies the
-value, in bytes per second times link speed, by which the credit counter
-is increased".
-
-So there's an extra scaling for link speed that the driver is currently
-not accounting for, and apparently (empirically), that link speed is
-expressed in Kbps.
-
-I've pondered whether to pollute the sja1105_mac_link_up()
-implementation with CBS shaper reprogramming, but I don't think it is
-worth it. IMO, the UAPI exposed by tc-cbs requires user space to
-recalculate the sendslope anyway, since the formula for that depends on
-port_transmit_rate (see man tc-cbs), which is not an invariant from tc's
-perspective.
-
-So we use the offload->sendslope and offload->idleslope to deduce the
-original port_transmit_rate from the CBS formula, and use that value to
-scale the offload->sendslope and offload->idleslope to values that the
-hardware understands.
-
-Some numerical data points:
-
- 40Mbps stream, max interfering frame size 1500, port speed 100M
- ---------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 40000 sendslope -60000 locredit -900 hicredit 600
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    600                600
- credit_lo    900                900
- send_slope   7500000            75
- idle_slope   5000000            50
-
- 40Mbps stream, max interfering frame size 1500, port speed 1G
- -------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 40000 sendslope -960000 locredit -1440 hicredit 60
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    60                 60
- credit_lo    1440               1440
- send_slope   120000000          120
- idle_slope   5000000            5
-
- 5.12Mbps stream, max interfering frame size 1522, port speed 100M
- -----------------------------------------------------------------
-
- tc-cbs parameters:
- idleslope 5120 sendslope -94880 locredit -1444 hicredit 77
-
- which result in hardware values:
-
- Before (doesn't work)           After (works)
- credit_hi    77                 77
- credit_lo    1444               1444
- send_slope   11860000           118
- idle_slope   640000             6
-
-Tested on SJA1105T, SJA1105S and SJA1110A, at 1Gbps and 100Mbps.
-
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Reported-by: Yanan Yang <yanan.yang@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 32daa5d7899e0343 ("perf vendor events: Initial JSON/events list for power10 platform")
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Disha Goel <disgoel@linux.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/r/20230814112803.1508296-2-kjain@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ .../arch/powerpc/power10/floating_point.json           |  7 -------
+ tools/perf/pmu-events/arch/powerpc/power10/marked.json | 10 ----------
+ tools/perf/pmu-events/arch/powerpc/power10/others.json |  5 -----
+ .../perf/pmu-events/arch/powerpc/power10/pipeline.json | 10 ----------
+ .../pmu-events/arch/powerpc/power10/translation.json   |  5 -----
+ 5 files changed, 37 deletions(-)
+ delete mode 100644 tools/perf/pmu-events/arch/powerpc/power10/floating_point.json
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 947e8f7c09880..377f177502003 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2157,6 +2157,7 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- {
- 	struct sja1105_private *priv = ds->priv;
- 	struct sja1105_cbs_entry *cbs;
-+	s64 port_transmit_rate_kbps;
- 	int index;
- 
- 	if (!offload->enable)
-@@ -2174,9 +2175,17 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	 */
- 	cbs->credit_hi = offload->hicredit;
- 	cbs->credit_lo = abs(offload->locredit);
--	/* User space is in kbits/sec, hardware in bytes/sec */
--	cbs->idle_slope = offload->idleslope * BYTES_PER_KBIT;
--	cbs->send_slope = abs(offload->sendslope * BYTES_PER_KBIT);
-+	/* User space is in kbits/sec, while the hardware in bytes/sec times
-+	 * link speed. Since the given offload->sendslope is good only for the
-+	 * current link speed anyway, and user space is likely to reprogram it
-+	 * when that changes, don't even bother to track the port's link speed,
-+	 * but deduce the port transmit rate from idleslope - sendslope.
-+	 */
-+	port_transmit_rate_kbps = offload->idleslope - offload->sendslope;
-+	cbs->idle_slope = div_s64(offload->idleslope * BYTES_PER_KBIT,
-+				  port_transmit_rate_kbps);
-+	cbs->send_slope = div_s64(abs(offload->sendslope * BYTES_PER_KBIT),
-+				  port_transmit_rate_kbps);
- 	/* Convert the negative values from 64-bit 2's complement
- 	 * to 32-bit 2's complement (for the case of 0x80000000 whose
- 	 * negative is still negative).
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/floating_point.json b/tools/perf/pmu-events/arch/powerpc/power10/floating_point.json
+deleted file mode 100644
+index 54acb55e2c8c6..0000000000000
+--- a/tools/perf/pmu-events/arch/powerpc/power10/floating_point.json
++++ /dev/null
+@@ -1,7 +0,0 @@
+-[
+-  {
+-    "EventCode": "0x4016E",
+-    "EventName": "PM_THRESH_NOT_MET",
+-    "BriefDescription": "Threshold counter did not meet threshold."
+-  }
+-]
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/marked.json b/tools/perf/pmu-events/arch/powerpc/power10/marked.json
+index 131f8d0e88317..f2436fc5537ce 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/marked.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/marked.json
+@@ -19,11 +19,6 @@
+     "EventName": "PM_MRK_BR_TAKEN_CMPL",
+     "BriefDescription": "Marked Branch Taken instruction completed."
+   },
+-  {
+-    "EventCode": "0x20112",
+-    "EventName": "PM_MRK_NTF_FIN",
+-    "BriefDescription": "The marked instruction became the oldest in the pipeline before it finished. It excludes instructions that finish at dispatch."
+-  },
+   {
+     "EventCode": "0x2C01C",
+     "EventName": "PM_EXEC_STALL_DMISS_OFF_CHIP",
+@@ -64,11 +59,6 @@
+     "EventName": "PM_L1_ICACHE_MISS",
+     "BriefDescription": "Demand instruction cache miss."
+   },
+-  {
+-    "EventCode": "0x30130",
+-    "EventName": "PM_MRK_INST_FIN",
+-    "BriefDescription": "marked instruction finished. Excludes instructions that finish at dispatch. Note that stores always finish twice since the address gets issued to the LSU and the data gets issued to the VSU."
+-  },
+   {
+     "EventCode": "0x34146",
+     "EventName": "PM_MRK_LD_CMPL",
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/others.json b/tools/perf/pmu-events/arch/powerpc/power10/others.json
+index e691041ee8678..36c5bbc64c3be 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/others.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/others.json
+@@ -29,11 +29,6 @@
+     "EventName": "PM_DISP_SS0_2_INSTR_CYC",
+     "BriefDescription": "Cycles in which Superslice 0 dispatches either 1 or 2 instructions."
+   },
+-  {
+-    "EventCode": "0x1F15C",
+-    "EventName": "PM_MRK_STCX_L2_CYC",
+-    "BriefDescription": "Cycles spent in the nest portion of a marked Stcx instruction. It starts counting when the operation starts to drain to the L2 and it stops counting when the instruction retires from the Instruction Completion Table (ICT) in the Instruction Sequencing Unit (ISU)."
+-  },
+   {
+     "EventCode": "0x10066",
+     "EventName": "PM_ADJUNCT_CYC",
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json
+index 449f57e8ba6af..799893c56f32b 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/pipeline.json
+@@ -194,11 +194,6 @@
+     "EventName": "PM_TLBIE_FIN",
+     "BriefDescription": "TLBIE instruction finished in the LSU. Two TLBIEs can finish each cycle. All will be counted."
+   },
+-  {
+-    "EventCode": "0x3D058",
+-    "EventName": "PM_SCALAR_FSQRT_FDIV_ISSUE",
+-    "BriefDescription": "Scalar versions of four floating point operations: fdiv,fsqrt (xvdivdp, xvdivsp, xvsqrtdp, xvsqrtsp)."
+-  },
+   {
+     "EventCode": "0x30066",
+     "EventName": "PM_LSU_FIN",
+@@ -269,11 +264,6 @@
+     "EventName": "PM_IC_MISS_CMPL",
+     "BriefDescription": "Non-speculative instruction cache miss, counted at completion."
+   },
+-  {
+-    "EventCode": "0x4D050",
+-    "EventName": "PM_VSU_NON_FLOP_CMPL",
+-    "BriefDescription": "Non-floating point VSU instructions completed."
+-  },
+   {
+     "EventCode": "0x4D052",
+     "EventName": "PM_2FLOP_CMPL",
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/translation.json b/tools/perf/pmu-events/arch/powerpc/power10/translation.json
+index 3e47b804a0a8f..961e2491e73f6 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/translation.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/translation.json
+@@ -4,11 +4,6 @@
+     "EventName": "PM_MRK_START_PROBE_NOP_CMPL",
+     "BriefDescription": "Marked Start probe nop (AND R0,R0,R0) completed."
+   },
+-  {
+-    "EventCode": "0x20016",
+-    "EventName": "PM_ST_FIN",
+-    "BriefDescription": "Store finish count. Includes speculative activity."
+-  },
+   {
+     "EventCode": "0x20018",
+     "EventName": "PM_ST_FWD",
 -- 
 2.40.1
 
