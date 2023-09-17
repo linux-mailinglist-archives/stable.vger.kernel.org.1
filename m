@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD5D27A3868
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 471947A398B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239744AbjIQTf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:35:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45946 "EHLO
+        id S237118AbjIQTu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239824AbjIQTfO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:14 -0400
+        with ESMTP id S230258AbjIQTue (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5617119
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D791FC433CA;
-        Sun, 17 Sep 2023 19:35:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFC4C6
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5433BC433C8;
+        Sun, 17 Sep 2023 19:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979308;
-        bh=31TavuVgCmN9+4Z2Wkw5QCzzaBEHmH6luXnw23yOHAk=;
+        s=korg; t=1694980228;
+        bh=qXEzGM9wteNPUhjuWh4RqbNcoDnsS4ajr0SHHeugjFA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EF0wz6BKeJ+SP4WYKL3WbxX25ZNLuHcloBoRdH/PtFr3gEi7RQ72sRGtYWuM8bafq
-         5tVIuo2BUydKk8WOXkMFr3QAWmhRHe//SwhXgiiyF7WGtg136CHOlOrra+deE1rRaE
-         SZSs2D26gm1nmWJBV/bW3xQAJ05csfROzGUwl4uU=
+        b=sIqkZehO2HCc1A4wMVnHkyDJ90LSp8Xc2zDS7qQOY0cBN4d4FcTu1aYoqPmm9N7uR
+         46i6bQ7AZsWoFomv4o9PozXJCYKd3LitwxO8m0fD6p+ybv7upCViZffJaaD4RCoyAq
+         qke9XN2pw4114X1dXyHDjA8PL8z36x0SnkuN1ZrM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 5.10 274/406] PM / devfreq: Fix leak in devfreq_dev_release()
-Date:   Sun, 17 Sep 2023 21:12:08 +0200
-Message-ID: <20230917191108.501360715@linuxfoundation.org>
+        patches@lists.linux.dev, Liang Chen <liangchen.linux@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 129/285] veth: Fixing transmit return status for dropped packets
+Date:   Sun, 17 Sep 2023 21:12:09 +0200
+Message-ID: <20230917191056.128658047@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Liang Chen <liangchen.linux@gmail.com>
 
-commit 5693d077595de721f9ddbf9d37f40e5409707dfe upstream.
+[ Upstream commit 151e887d8ff97e2e42110ffa1fb1e6a2128fb364 ]
 
-srcu_init_notifier_head() allocates resources that need to be released
-with a srcu_cleanup_notifier_head() call.
+The veth_xmit function returns NETDEV_TX_OK even when packets are dropped.
+This behavior leads to incorrect calculations of statistics counts, as
+well as things like txq->trans_start updates.
 
-Reported by kmemleak.
-
-Fixes: 0fe3a66410a3 ("PM / devfreq: Add new DEVFREQ_TRANSITION_NOTIFIER notifier")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e314dbdc1c0d ("[NET]: Virtual ethernet device driver.")
+Signed-off-by: Liang Chen <liangchen.linux@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/devfreq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/veth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -732,6 +732,7 @@ static void devfreq_dev_release(struct d
- 		devfreq->profile->exit(devfreq->dev.parent);
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index ef8eacb596f73..2db678c0082a3 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -344,6 +344,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
+ 	struct veth_rq *rq = NULL;
++	int ret = NETDEV_TX_OK;
+ 	struct net_device *rcv;
+ 	int length = skb->len;
+ 	bool use_napi = false;
+@@ -376,6 +377,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	} else {
+ drop:
+ 		atomic64_inc(&priv->dropped);
++		ret = NET_XMIT_DROP;
+ 	}
  
- 	mutex_destroy(&devfreq->lock);
-+	srcu_cleanup_notifier_head(&devfreq->transition_notifier_list);
- 	kfree(devfreq);
+ 	if (use_napi)
+@@ -383,7 +385,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	rcu_read_unlock();
+ 
+-	return NETDEV_TX_OK;
++	return ret;
  }
  
+ static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
+-- 
+2.40.1
+
 
 
