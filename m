@@ -2,35 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB1E07A3AED
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD4DC7A3AF0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240513AbjIQUKr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:10:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38326 "EHLO
+        id S240525AbjIQUKt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:10:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240601AbjIQUK2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:28 -0400
+        with ESMTP id S240613AbjIQUKe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ADEFF3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB697C433CA;
-        Sun, 17 Sep 2023 20:10:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E99BB5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B756C433C7;
+        Sun, 17 Sep 2023 20:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981421;
-        bh=YGFx+3RPt45e91Kkgf2hRSz22toku8q2AVKcb6Mjh1g=;
+        s=korg; t=1694981428;
+        bh=OUKDi2uMrP28Uikek4Ixfzm4Qrx1+nRqC0pIgid3PHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ggiQnMkn9xg96QJuYo+4DAgnRZnoKkYPBqbbCj1vS7DJNCZOtwWRJP4J3aHjSzx7Z
-         GB6oEkv8mVEugNomoRROfs7Vgy/YWRTU/VTMa7tvmk8wb48xsYbpso1y0gYD9lZ1h+
-         ecONpcvLDZUzZU1s1/5oywVX/hlQPUCYY9UeqZ2o=
+        b=hZiQTN0TXTreLsE/9zBL5JhlqCbcTlTx2MPJYZzYJQ8K7UKZhxnB1pi4U2N6oY/od
+         LpboRlr9CH+rnwZgsjsGodqBOedKJEVIyVesWEExswtIua95xCl7vnT1PcKlys2LWz
+         jmpkI5wsN0nsxUv2WXAfI3Saz1uaqPyG7M8vgfdc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 051/511] net: Avoid address overwrite in kernel_connect
-Date:   Sun, 17 Sep 2023 21:07:58 +0200
-Message-ID: <20230917191115.110073662@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "stable@vger.kernel.org, robh+dt@kernel.org, frowand.list@gmail.com,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        devicetree@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, Nathan Chancellor" 
+        <nathan@kernel.org>, Rob Herring <robh@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.15 052/511] of: kexec: Mark ima_{free,stable}_kexec_buffer() as __init
+Date:   Sun, 17 Sep 2023 21:07:59 +0200
+Message-ID: <20230917191115.135922367@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -53,51 +58,82 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 0bdf399342c5acbd817c9098b6c7ed21f1974312 upstream.
+This commit has no direct upstream equivalent.
 
-BPF programs that run on connect can rewrite the connect address. For
-the connect system call this isn't a problem, because a copy of the address
-is made when it is moved into kernel space. However, kernel_connect
-simply passes through the address it is given, so the caller may observe
-its address value unexpectedly change.
+After commit d48016d74836 ("mm,ima,kexec,of: use memblock_free_late from
+ima_free_kexec_buffer") in 5.15, there is a modpost warning for certain
+configurations:
 
-A practical example where this is problematic is where NFS is combined
-with a system such as Cilium which implements BPF-based load balancing.
-A common pattern in software-defined storage systems is to have an NFS
-mount that connects to a persistent virtual IP which in turn maps to an
-ephemeral server IP. This is usually done to achieve high availability:
-if your server goes down you can quickly spin up a replacement and remap
-the virtual IP to that endpoint. With BPF-based load balancing, mounts
-will forget the virtual IP address when the address rewrite occurs
-because a pointer to the only copy of that address is passed down the
-stack. Server failover then breaks, because clients have forgotten the
-virtual IP address. Reconnects fail and mounts remain broken. This patch
-was tested by setting up a scenario like this and ensuring that NFS
-reconnects worked after applying the patch.
+  WARNING: modpost: vmlinux.o(.text+0xb14064): Section mismatch in reference from the function ima_free_kexec_buffer() to the function .init.text:__memblock_free_late()
+  The function ima_free_kexec_buffer() references
+  the function __init __memblock_free_late().
+  This is often because ima_free_kexec_buffer lacks a __init
+  annotation or the annotation of __memblock_free_late is wrong.
 
-Signed-off-by: Jordan Rife <jrife@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In mainline, there is no issue because ima_free_kexec_buffer() is marked
+as __init, which was done as part of commit b69a2afd5afc ("x86/kexec:
+Carry forward IMA measurement log on kexec") in 6.0, which is not
+suitable for stable.
+
+Mark ima_free_kexec_buffer() and its single caller
+ima_load_kexec_buffer() as __init in 5.15, as ima_load_kexec_buffer() is
+only called from ima_init(), which is __init, clearing up the warning.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/socket.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/of/kexec.c                 |    2 +-
+ include/linux/of.h                 |    2 +-
+ security/integrity/ima/ima.h       |    2 +-
+ security/integrity/ima/ima_kexec.c |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -3453,7 +3453,11 @@ EXPORT_SYMBOL(kernel_accept);
- int kernel_connect(struct socket *sock, struct sockaddr *addr, int addrlen,
- 		   int flags)
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -165,7 +165,7 @@ int ima_get_kexec_buffer(void **addr, si
+ /**
+  * ima_free_kexec_buffer - free memory used by the IMA buffer
+  */
+-int ima_free_kexec_buffer(void)
++int __init ima_free_kexec_buffer(void)
  {
--	return sock->ops->connect(sock, addr, addrlen, flags);
-+	struct sockaddr_storage address;
-+
-+	memcpy(&address, addr, addrlen);
-+
-+	return sock->ops->connect(sock, (struct sockaddr *)&address, addrlen, flags);
- }
- EXPORT_SYMBOL(kernel_connect);
+ 	int ret;
+ 	unsigned long addr;
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -574,7 +574,7 @@ void *of_kexec_alloc_and_setup_fdt(const
+ 				   unsigned long initrd_len,
+ 				   const char *cmdline, size_t extra_fdt_size);
+ int ima_get_kexec_buffer(void **addr, size_t *size);
+-int ima_free_kexec_buffer(void);
++int __init ima_free_kexec_buffer(void);
+ #else /* CONFIG_OF */
  
+ static inline void of_core_init(void)
+--- a/security/integrity/ima/ima.h
++++ b/security/integrity/ima/ima.h
+@@ -122,7 +122,7 @@ struct ima_kexec_hdr {
+ extern const int read_idmap[];
+ 
+ #ifdef CONFIG_HAVE_IMA_KEXEC
+-void ima_load_kexec_buffer(void);
++void __init ima_load_kexec_buffer(void);
+ #else
+ static inline void ima_load_kexec_buffer(void) {}
+ #endif /* CONFIG_HAVE_IMA_KEXEC */
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -137,7 +137,7 @@ void ima_add_kexec_buffer(struct kimage
+ /*
+  * Restore the measurement list from the previous kernel.
+  */
+-void ima_load_kexec_buffer(void)
++void __init ima_load_kexec_buffer(void)
+ {
+ 	void *kexec_buffer = NULL;
+ 	size_t kexec_buffer_size = 0;
 
 
