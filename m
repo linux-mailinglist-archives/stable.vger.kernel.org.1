@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6EE7A39E3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82BD07A38E4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240188AbjIQTzq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38462 "EHLO
+        id S239888AbjIQTlz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240253AbjIQTzb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:31 -0400
+        with ESMTP id S239971AbjIQTlq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD670F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15651C433C7;
-        Sun, 17 Sep 2023 19:55:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F24018D
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC694C433C8;
+        Sun, 17 Sep 2023 19:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980525;
-        bh=kvUoWf5FwusLr7nVtNeAQFNs10GuytQJ1c3SOUpYEFE=;
+        s=korg; t=1694979697;
+        bh=tUaXcAfOu5/i+4QjLpG2wsQu2+7lRGQh/hzP9wY+Odk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CjcpCcq0KqEfbxfRaO8BhKA7tFaMGQ21SSeGLEC8tUzVwwjH2mG9TDpkFKPilQX/q
-         SVZPIIY5Trkl1K2Vkk6k6f1YAWa9h3xuGqnvBRQkwJhLTfdluSvlc3k6+WIN7ZMI2c
-         kSZu9yIXn8/lH3LBAyA59lBzYGDwpx8ct9RSwOzg=
+        b=WiJj88f8rcA5aK3oCSPNkQyTX1+mYPW9/Eji0ToYLc9XOyLjmO+UYSs7ZOsAG/pXr
+         o9xDygwvpDGA8/7WhtCEfDt+DrNYaKoKUl8ZZC2Rkog1RvhscRNJubE2uZxDbizrPm
+         m9pZuIY8c8+sGNZ7+BcUOYfLlwVazlyxdfYcU6Vg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.5 217/285] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
+        patches@lists.linux.dev, Yanan Yang <yanan.yang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 363/406] net: dsa: sja1105: fix bandwidth discrepancy between tc-cbs software and offload
 Date:   Sun, 17 Sep 2023 21:13:37 +0200
-Message-ID: <20230917191059.041342259@linuxfoundation.org>
+Message-ID: <20230917191110.857212278@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,159 +51,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b upstream.
+[ Upstream commit 954ad9bf13c4f95a4958b5f8433301f2ab99e1f5 ]
 
-v7.2 controller has different ECC level field size and shift in the acc
-control register than its predecessor and successor controller. It needs
-to be set specifically.
+More careful measurement of the tc-cbs bandwidth shows that the stream
+bandwidth (effectively idleslope) increases, there is a larger and
+larger discrepancy between the rate limit obtained by the software
+Qdisc, and the rate limit obtained by its offloaded counterpart.
 
-Fixes: decba6d47869 ("mtd: brcmnand: Add v7.2 controller support")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The discrepancy becomes so large, that e.g. at an idleslope of 40000
+(40Mbps), the offloaded cbs does not actually rate limit anything, and
+traffic will pass at line rate through a 100 Mbps port.
+
+The reason for the discrepancy is that the hardware documentation I've
+been following is incorrect. UM11040.pdf (for SJA1105P/Q/R/S) states
+about IDLE_SLOPE that it is "the rate (in unit of bytes/sec) at which
+the credit counter is increased".
+
+Cross-checking with UM10944.pdf (for SJA1105E/T) and UM11107.pdf
+(for SJA1110), the wording is different: "This field specifies the
+value, in bytes per second times link speed, by which the credit counter
+is increased".
+
+So there's an extra scaling for link speed that the driver is currently
+not accounting for, and apparently (empirically), that link speed is
+expressed in Kbps.
+
+I've pondered whether to pollute the sja1105_mac_link_up()
+implementation with CBS shaper reprogramming, but I don't think it is
+worth it. IMO, the UAPI exposed by tc-cbs requires user space to
+recalculate the sendslope anyway, since the formula for that depends on
+port_transmit_rate (see man tc-cbs), which is not an invariant from tc's
+perspective.
+
+So we use the offload->sendslope and offload->idleslope to deduce the
+original port_transmit_rate from the CBS formula, and use that value to
+scale the offload->sendslope and offload->idleslope to values that the
+hardware understands.
+
+Some numerical data points:
+
+ 40Mbps stream, max interfering frame size 1500, port speed 100M
+ ---------------------------------------------------------------
+
+ tc-cbs parameters:
+ idleslope 40000 sendslope -60000 locredit -900 hicredit 600
+
+ which result in hardware values:
+
+ Before (doesn't work)           After (works)
+ credit_hi    600                600
+ credit_lo    900                900
+ send_slope   7500000            75
+ idle_slope   5000000            50
+
+ 40Mbps stream, max interfering frame size 1500, port speed 1G
+ -------------------------------------------------------------
+
+ tc-cbs parameters:
+ idleslope 40000 sendslope -960000 locredit -1440 hicredit 60
+
+ which result in hardware values:
+
+ Before (doesn't work)           After (works)
+ credit_hi    60                 60
+ credit_lo    1440               1440
+ send_slope   120000000          120
+ idle_slope   5000000            5
+
+ 5.12Mbps stream, max interfering frame size 1522, port speed 100M
+ -----------------------------------------------------------------
+
+ tc-cbs parameters:
+ idleslope 5120 sendslope -94880 locredit -1444 hicredit 77
+
+ which result in hardware values:
+
+ Before (doesn't work)           After (works)
+ credit_hi    77                 77
+ credit_lo    1444               1444
+ send_slope   11860000           118
+ idle_slope   640000             6
+
+Tested on SJA1105T, SJA1105S and SJA1110A, at 1Gbps and 100Mbps.
+
+Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
+Reported-by: Yanan Yang <yanan.yang@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |   74 +++++++++++++++++--------------
- 1 file changed, 41 insertions(+), 33 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -272,6 +272,7 @@ struct brcmnand_controller {
- 	const unsigned int	*page_sizes;
- 	unsigned int		page_size_shift;
- 	unsigned int		max_oob;
-+	u32			ecc_level_shift;
- 	u32			features;
- 
- 	/* for low-power standby/resume only */
-@@ -596,6 +597,34 @@ enum {
- 	INTFC_CTLR_READY		= BIT(31),
- };
- 
-+/***********************************************************************
-+ * NAND ACC CONTROL bitfield
-+ *
-+ * Some bits have remained constant throughout hardware revision, while
-+ * others have shifted around.
-+ ***********************************************************************/
-+
-+/* Constant for all versions (where supported) */
-+enum {
-+	/* See BRCMNAND_HAS_CACHE_MODE */
-+	ACC_CONTROL_CACHE_MODE				= BIT(22),
-+
-+	/* See BRCMNAND_HAS_PREFETCH */
-+	ACC_CONTROL_PREFETCH				= BIT(23),
-+
-+	ACC_CONTROL_PAGE_HIT				= BIT(24),
-+	ACC_CONTROL_WR_PREEMPT				= BIT(25),
-+	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
-+	ACC_CONTROL_RD_ERASED				= BIT(27),
-+	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
-+	ACC_CONTROL_WR_ECC				= BIT(30),
-+	ACC_CONTROL_RD_ECC				= BIT(31),
-+};
-+
-+#define	ACC_CONTROL_ECC_SHIFT			16
-+/* Only for v7.2 */
-+#define	ACC_CONTROL_ECC_EXT_SHIFT		13
-+
- static inline bool brcmnand_non_mmio_ops(struct brcmnand_controller *ctrl)
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index c03d76c108686..4c0ee13126e4f 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1725,6 +1725,7 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
  {
- #if IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA)
-@@ -737,6 +766,12 @@ static int brcmnand_revision_init(struct
- 	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
- 		ctrl->features |= BRCMNAND_HAS_WP;
+ 	struct sja1105_private *priv = ds->priv;
+ 	struct sja1105_cbs_entry *cbs;
++	s64 port_transmit_rate_kbps;
+ 	int index;
  
-+	/* v7.2 has different ecc level shift in the acc register */
-+	if (ctrl->nand_version == 0x0702)
-+		ctrl->ecc_level_shift = ACC_CONTROL_ECC_EXT_SHIFT;
-+	else
-+		ctrl->ecc_level_shift = ACC_CONTROL_ECC_SHIFT;
-+
- 	return 0;
- }
- 
-@@ -931,30 +966,6 @@ static inline int brcmnand_cmd_shift(str
- 	return 0;
- }
- 
--/***********************************************************************
-- * NAND ACC CONTROL bitfield
-- *
-- * Some bits have remained constant throughout hardware revision, while
-- * others have shifted around.
-- ***********************************************************************/
--
--/* Constant for all versions (where supported) */
--enum {
--	/* See BRCMNAND_HAS_CACHE_MODE */
--	ACC_CONTROL_CACHE_MODE				= BIT(22),
--
--	/* See BRCMNAND_HAS_PREFETCH */
--	ACC_CONTROL_PREFETCH				= BIT(23),
--
--	ACC_CONTROL_PAGE_HIT				= BIT(24),
--	ACC_CONTROL_WR_PREEMPT				= BIT(25),
--	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
--	ACC_CONTROL_RD_ERASED				= BIT(27),
--	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
--	ACC_CONTROL_WR_ECC				= BIT(30),
--	ACC_CONTROL_RD_ECC				= BIT(31),
--};
--
- static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
- {
- 	if (ctrl->nand_version == 0x0702)
-@@ -967,18 +978,15 @@ static inline u32 brcmnand_spare_area_ma
- 		return GENMASK(4, 0);
- }
- 
--#define NAND_ACC_CONTROL_ECC_SHIFT	16
--#define NAND_ACC_CONTROL_ECC_EXT_SHIFT	13
--
- static inline u32 brcmnand_ecc_level_mask(struct brcmnand_controller *ctrl)
- {
- 	u32 mask = (ctrl->nand_version >= 0x0600) ? 0x1f : 0x0f;
- 
--	mask <<= NAND_ACC_CONTROL_ECC_SHIFT;
-+	mask <<= ACC_CONTROL_ECC_SHIFT;
- 
- 	/* v7.2 includes additional ECC levels */
--	if (ctrl->nand_version >= 0x0702)
--		mask |= 0x7 << NAND_ACC_CONTROL_ECC_EXT_SHIFT;
-+	if (ctrl->nand_version == 0x0702)
-+		mask |= 0x7 << ACC_CONTROL_ECC_EXT_SHIFT;
- 
- 	return mask;
- }
-@@ -992,8 +1000,8 @@ static void brcmnand_set_ecc_enabled(str
- 
- 	if (en) {
- 		acc_control |= ecc_flags; /* enable RD/WR ECC */
--		acc_control |= host->hwcfg.ecc_level
--			       << NAND_ACC_CONTROL_ECC_SHIFT;
-+		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-+		acc_control |= host->hwcfg.ecc_level << ctrl->ecc_level_shift;
- 	} else {
- 		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
- 		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-@@ -2593,7 +2601,7 @@ static int brcmnand_set_cfg(struct brcmn
- 	tmp &= ~brcmnand_ecc_level_mask(ctrl);
- 	tmp &= ~brcmnand_spare_area_mask(ctrl);
- 	if (ctrl->nand_version >= 0x0302) {
--		tmp |= cfg->ecc_level << NAND_ACC_CONTROL_ECC_SHIFT;
-+		tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
- 		tmp |= cfg->spare_area_size;
- 	}
- 	nand_writereg(ctrl, acc_control_offs, tmp);
+ 	if (!offload->enable)
+@@ -1742,9 +1743,17 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
+ 	 */
+ 	cbs->credit_hi = offload->hicredit;
+ 	cbs->credit_lo = abs(offload->locredit);
+-	/* User space is in kbits/sec, hardware in bytes/sec */
+-	cbs->idle_slope = offload->idleslope * BYTES_PER_KBIT;
+-	cbs->send_slope = abs(offload->sendslope * BYTES_PER_KBIT);
++	/* User space is in kbits/sec, while the hardware in bytes/sec times
++	 * link speed. Since the given offload->sendslope is good only for the
++	 * current link speed anyway, and user space is likely to reprogram it
++	 * when that changes, don't even bother to track the port's link speed,
++	 * but deduce the port transmit rate from idleslope - sendslope.
++	 */
++	port_transmit_rate_kbps = offload->idleslope - offload->sendslope;
++	cbs->idle_slope = div_s64(offload->idleslope * BYTES_PER_KBIT,
++				  port_transmit_rate_kbps);
++	cbs->send_slope = div_s64(abs(offload->sendslope * BYTES_PER_KBIT),
++				  port_transmit_rate_kbps);
+ 	/* Convert the negative values from 64-bit 2's complement
+ 	 * to 32-bit 2's complement (for the case of 0x80000000 whose
+ 	 * negative is still negative).
+-- 
+2.40.1
+
 
 
