@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3AF7A389E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A77417A3A60
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239761AbjIQTiJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54546 "EHLO
+        id S240301AbjIQUCn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239791AbjIQThn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:43 -0400
+        with ESMTP id S240478AbjIQUCc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB3A103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D007AC433CB;
-        Sun, 17 Sep 2023 19:37:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928FA18B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5BEC433CA;
+        Sun, 17 Sep 2023 20:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979458;
-        bh=7BfA+JjrJ6l5Ei3qn9iueBr/bKg91pX4CGH4+xSlhog=;
+        s=korg; t=1694980920;
+        bh=wYZ8Ez6SAfQhmO2iHsoeNdbSh4MhMD5GfbBAuJr8xn8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jDxUaKrt/A+hnQKmGgj8blwvQ11KltFBjgBiAINjiez4r+QHb8LPzHJxVSM/p6frx
-         6aqPJkZpWa1Fyf5e/S2SjZGkikkJKnxZcJckrG0SRmBwhH2Ewkyh8BSqguYRCCguIh
-         OHGTESwKSlevXMv6NDff7l63ebhEj50qQj/wt3gA=
+        b=b69iTCvExNQ2P2jO9KXC9g/emgPhoVrUdD40LsBzwfikJuMSps2TdMpmqsY2oiXVS
+         wy8GNQnoqWOhS/mJWPUnAYLsFCL7R3CyF8CfPr0Ds05mcVtdMLx+b9c/N0eX06JLxi
+         w+BityK9JUPUuHmticRk0RFt/XW3G8wdElHQJOJg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 319/406] scsi: qla2xxx: Fix erroneous link up failure
+        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 046/219] clk: qcom: lpasscc-sc7280: fix missing resume during probe
 Date:   Sun, 17 Sep 2023 21:12:53 +0200
-Message-ID: <20230917191109.721287312@linuxfoundation.org>
+Message-ID: <20230917191042.666196864@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 5b51f35d127e7bef55fa869d2465e2bca4636454 upstream.
+commit 66af5339d4f8e20c6d89a490570bd94d40f1a7f6 upstream.
 
-Link up failure occurred where driver failed to see certain events from FW
-indicating link up (AEN 8011) and fabric login completion (AEN 8014).
-Without these 2 events, driver would not proceed forward to scan the
-fabric. The cause of this is due to delay in the receive of interrupt for
-Mailbox 60 that causes qla to set the fw_started flag late.  The late
-setting of this flag causes other interrupts to be dropped.  These dropped
-interrupts happen to be the link up (AEN 8011) and fabric login completion
-(AEN 8014).
+Drivers that enable runtime PM must make sure that the controller is
+runtime resumed before accessing its registers to prevent the power
+domain from being disabled.
 
-Set fw_started flag early to prevent interrupts being dropped.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230714070104.40052-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
+Cc: stable@vger.kernel.org      # 5.16
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-6-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    3 ++-
- drivers/scsi/qla2xxx/qla_isr.c  |    6 +++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/lpasscc-sc7280.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4342,15 +4342,16 @@ qla2x00_init_rings(scsi_qla_host_t *vha)
- 		memcpy(ha->port_name, ha->init_cb->port_name, WWN_SIZE);
+--- a/drivers/clk/qcom/lpasscc-sc7280.c
++++ b/drivers/clk/qcom/lpasscc-sc7280.c
+@@ -115,9 +115,13 @@ static int lpass_cc_sc7280_probe(struct
+ 	ret = pm_clk_add(&pdev->dev, "iface");
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to acquire iface clock\n");
+-		goto destroy_pm_clk;
++		goto err_destroy_pm_clk;
  	}
  
-+	QLA_FW_STARTED(ha);
- 	rval = qla2x00_init_firmware(vha, ha->init_cb_size);
- next_check:
- 	if (rval) {
-+		QLA_FW_STOPPED(ha);
- 		ql_log(ql_log_fatal, vha, 0x00d2,
- 		    "Init Firmware **** FAILED ****.\n");
- 	} else {
- 		ql_dbg(ql_dbg_init, vha, 0x00d3,
- 		    "Init Firmware -- success.\n");
--		QLA_FW_STARTED(ha);
- 		vha->u_ql2xexchoffld = vha->u_ql2xiniexchg = 0;
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		goto err_destroy_pm_clk;
++
+ 	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
+ 		lpass_regmap_config.name = "qdsp6ss";
+ 		lpass_regmap_config.max_register = 0x3f;
+@@ -125,7 +129,7 @@ static int lpass_cc_sc7280_probe(struct
+ 
+ 		ret = qcom_cc_probe_by_index(pdev, 0, desc);
+ 		if (ret)
+-			goto destroy_pm_clk;
++			goto err_put_rpm;
  	}
  
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -982,8 +982,12 @@ qla2x00_async_event(scsi_qla_host_t *vha
- 	unsigned long	flags;
- 	fc_port_t	*fcport = NULL;
+ 	lpass_regmap_config.name = "top_cc";
+@@ -134,11 +138,15 @@ static int lpass_cc_sc7280_probe(struct
  
--	if (!vha->hw->flags.fw_started)
-+	if (!vha->hw->flags.fw_started) {
-+		ql_log(ql_log_warn, vha, 0x50ff,
-+		    "Dropping AEN - %04x %04x %04x %04x.\n",
-+		    mb[0], mb[1], mb[2], mb[3]);
- 		return;
-+	}
+ 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+ 	if (ret)
+-		goto destroy_pm_clk;
++		goto err_put_rpm;
++
++	pm_runtime_put(&pdev->dev);
  
- 	/* Setup to process RIO completion. */
- 	handle_cnt = 0;
+ 	return 0;
+ 
+-destroy_pm_clk:
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++err_destroy_pm_clk:
+ 	pm_clk_destroy(&pdev->dev);
+ 
+ disable_pm_runtime:
 
 
