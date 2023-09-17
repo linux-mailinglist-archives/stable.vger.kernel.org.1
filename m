@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6B267A3D67
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB637A3D35
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241291AbjIQUmM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55982 "EHLO
+        id S241218AbjIQUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241374AbjIQUmD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:03 -0400
+        with ESMTP id S241269AbjIQUjp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 611C410F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99241C433C7;
-        Sun, 17 Sep 2023 20:41:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B5910E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506B2C433C8;
+        Sun, 17 Sep 2023 20:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983318;
-        bh=N4ITTM1fnk+dmTGXrSVLfkt2ZMf0Rt3z2Vus0of1JiU=;
+        s=korg; t=1694983178;
+        bh=qohU3B/4idrDu9l+gkfnjCMf8XIdrvE4n7OHYNtvApI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oJg/yLoY9/Z/UYr5umnhz/0yy2vHvvzDpZS3CBYwWcmLVy5bu6jFrhn8fgLp0e6pL
-         8+yx7gy/+seXQ5+4orAqsviensQ2shTuquLjVBVm1cjxsfGVfQdI7IzhA5VUP2CCDF
-         crX1nemgwLkU8yfGxmLVCRWTJK1lWPUJQkZM59tg=
+        b=asq5R7MkH1U4oMcsjSiQWyborjRYXgJAIi1xuH0YweiA3jOJGCVHh8cekmvxuP/pj
+         c5Ih34NuW2HOmy3Ha7mnpsubJ4dmYk/3Y4W8tlXL3ZYcBAqQHDokYG9PzYE4stZ3Vb
+         x9QXB+jjKvtOow8oA4LqifkY9bBJI3TxDa6DohJQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable@kernel.org,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Wang Jianjian <wangjianjian0@foxmail.com>,
         Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 467/511] jbd2: check jh->b_transaction before removing it from checkpoint
-Date:   Sun, 17 Sep 2023 21:14:54 +0200
-Message-ID: <20230917191125.025951843@linuxfoundation.org>
+Subject: [PATCH 5.15 468/511] ext4: add correct group descriptors and reserved GDT blocks to system zone
+Date:   Sun, 17 Sep 2023 21:14:55 +0200
+Message-ID: <20230917191125.048962890@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -40,7 +39,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,69 +54,101 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Wang Jianjian <wangjianjian0@foxmail.com>
 
-commit 590a809ff743e7bd890ba5fb36bc38e20a36de53 upstream.
+commit 68228da51c9a436872a4ef4b5a7692e29f7e5bc7 upstream.
 
-Following process will corrupt ext4 image:
-Step 1:
-jbd2_journal_commit_transaction
- __jbd2_journal_insert_checkpoint(jh, commit_transaction)
- // Put jh into trans1->t_checkpoint_list
- journal->j_checkpoint_transactions = commit_transaction
- // Put trans1 into journal->j_checkpoint_transactions
+When setup_system_zone, flex_bg is not initialized so it is always 1.
+Use a new helper function, ext4_num_base_meta_blocks() which does not
+depend on sbi->s_log_groups_per_flex being initialized.
 
-Step 2:
-do_get_write_access
- test_clear_buffer_dirty(bh) // clear buffer dirty，set jbd dirty
- __jbd2_journal_file_buffer(jh, transaction) // jh belongs to trans2
-
-Step 3:
-drop_cache
- journal_shrink_one_cp_list
-  jbd2_journal_try_remove_checkpoint
-   if (!trylock_buffer(bh))  // lock bh, true
-   if (buffer_dirty(bh))     // buffer is not dirty
-   __jbd2_journal_remove_checkpoint(jh)
-   // remove jh from trans1->t_checkpoint_list
-
-Step 4:
-jbd2_log_do_checkpoint
- trans1 = journal->j_checkpoint_transactions
- // jh is not in trans1->t_checkpoint_list
- jbd2_cleanup_journal_tail(journal)  // trans1 is done
-
-Step 5: Power cut, trans2 is not committed, jh is lost in next mounting.
-
-Fix it by checking 'jh->b_transaction' before remove it from checkpoint.
+[ Squashed two patches in the Link URL's below together into a single
+  commit, which is simpler to review/understand.  Also fix checkpatch
+  warnings. --TYT ]
 
 Cc: stable@kernel.org
-Fixes: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230714025528.564988-3-yi.zhang@huaweicloud.com
+Signed-off-by: Wang Jianjian <wangjianjian0@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_21AF0D446A9916ED5C51492CC6C9A0A77B05@qq.com
+Link: https://lore.kernel.org/r/tencent_D744D1450CC169AEA77FCF0A64719909ED05@qq.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/balloc.c         |   15 +++++++++++----
+ fs/ext4/block_validity.c |    8 ++++----
+ fs/ext4/ext4.h           |    2 ++
+ 3 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 936c6d758a65..f033ac807013 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -639,6 +639,8 @@ int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
- {
- 	struct buffer_head *bh = jh2bh(jh);
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -909,11 +909,11 @@ unsigned long ext4_bg_num_gdb(struct sup
+ }
  
-+	if (jh->b_transaction)
-+		return -EBUSY;
- 	if (!trylock_buffer(bh))
- 		return -EBUSY;
- 	if (buffer_dirty(bh)) {
--- 
-2.42.0
-
+ /*
+- * This function returns the number of file system metadata clusters at
++ * This function returns the number of file system metadata blocks at
+  * the beginning of a block group, including the reserved gdt blocks.
+  */
+-static unsigned ext4_num_base_meta_clusters(struct super_block *sb,
+-				     ext4_group_t block_group)
++unsigned int ext4_num_base_meta_blocks(struct super_block *sb,
++				       ext4_group_t block_group)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	unsigned num;
+@@ -931,8 +931,15 @@ static unsigned ext4_num_base_meta_clust
+ 	} else { /* For META_BG_BLOCK_GROUPS */
+ 		num += ext4_bg_num_gdb(sb, block_group);
+ 	}
+-	return EXT4_NUM_B2C(sbi, num);
++	return num;
+ }
++
++static unsigned int ext4_num_base_meta_clusters(struct super_block *sb,
++						ext4_group_t block_group)
++{
++	return EXT4_NUM_B2C(EXT4_SB(sb), ext4_num_base_meta_blocks(sb, block_group));
++}
++
+ /**
+  *	ext4_inode_to_goal_block - return a hint for block allocation
+  *	@inode: inode for block allocation
+--- a/fs/ext4/block_validity.c
++++ b/fs/ext4/block_validity.c
+@@ -215,7 +215,6 @@ int ext4_setup_system_zone(struct super_
+ 	struct ext4_system_blocks *system_blks;
+ 	struct ext4_group_desc *gdp;
+ 	ext4_group_t i;
+-	int flex_size = ext4_flex_bg_size(sbi);
+ 	int ret;
+ 
+ 	system_blks = kzalloc(sizeof(*system_blks), GFP_KERNEL);
+@@ -223,12 +222,13 @@ int ext4_setup_system_zone(struct super_
+ 		return -ENOMEM;
+ 
+ 	for (i=0; i < ngroups; i++) {
++		unsigned int meta_blks = ext4_num_base_meta_blocks(sb, i);
++
+ 		cond_resched();
+-		if (ext4_bg_has_super(sb, i) &&
+-		    ((i < 5) || ((i % flex_size) == 0))) {
++		if (meta_blks != 0) {
+ 			ret = add_system_zone(system_blks,
+ 					ext4_group_first_block_no(sb, i),
+-					ext4_bg_num_gdb(sb, i) + 1, 0);
++					meta_blks, 0);
+ 			if (ret)
+ 				goto err;
+ 		}
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3120,6 +3120,8 @@ extern const char *ext4_decode_error(str
+ extern void ext4_mark_group_bitmap_corrupted(struct super_block *sb,
+ 					     ext4_group_t block_group,
+ 					     unsigned int flags);
++extern unsigned int ext4_num_base_meta_blocks(struct super_block *sb,
++					      ext4_group_t block_group);
+ 
+ extern __printf(7, 8)
+ void __ext4_error(struct super_block *, const char *, unsigned int, bool,
 
 
