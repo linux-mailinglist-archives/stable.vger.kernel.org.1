@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 154167A3B81
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 971037A3B3E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240690AbjIQUSm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48556 "EHLO
+        id S240439AbjIQUO7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240724AbjIQUSS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:18 -0400
+        with ESMTP id S240675AbjIQUOr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E8DF4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8BAC433C8;
-        Sun, 17 Sep 2023 20:18:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E44C7F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25960C433C8;
+        Sun, 17 Sep 2023 20:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981892;
-        bh=o/ZVIrgLUUr7lIW8utgRGf3xcye5To6rGi2uHe/P8Z4=;
+        s=korg; t=1694981681;
+        bh=woZeRbhD2ErIMQ85pRRe83sRaxWDG3PfhTNE35iXPcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VXaSXCj645Hl0QK3Qie1Fft1bwRX/V/zttOFBDYbYtSaDJ1tTUQkEzmtm/UYMrMbZ
-         owCWt7HZ/bWICpSRHZjfTKKBdnvD4iI8KsTzGIFln8+8jeFyYHzOkw6X55fZr7VFe0
-         HXhahd40lcELvTDoEoBX5m2mi9Sdk9SFxNq90SgY=
+        b=x0lo8afNareJ1oj6StO1oFR+5JvrVEVDeuc5wCmFXwBzHBuYWAraN+q5LAjY2rsMb
+         g6fHsPu2JRruAWFtktWuP9+781K1l1l1NLAdBuUTOE2KsHKMl9rASMW0tRZJ7+SRxz
+         JzP/vJy4fGAbK3jTo7KEqyPHreoyCj4NrXSvE2IU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chad Monroe <chad.monroe@smartrg.com>,
-        Allen Ye <allen.ye@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/511] wifi: mt76: mt7915: fix power-limits while chan_switch
-Date:   Sun, 17 Sep 2023 21:08:38 +0200
-Message-ID: <20230917191116.068011249@linuxfoundation.org>
+        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
+        Matthew Wang <matthewmwang@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 092/511] wifi: mwifiex: Fix OOB and integer underflow when rx packets
+Date:   Sun, 17 Sep 2023 21:08:39 +0200
+Message-ID: <20230917191116.091489898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,43 +55,125 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Polaris Pi <pinkperfect2021@gmail.com>
 
-[ Upstream commit 6c0570bc21ec2073890aa252c8420ca7bec402e4 ]
+[ Upstream commit 11958528161731c58e105b501ed60b83a91ea941 ]
 
-If user changes the channel without completely disabling the interface the
-txpower_sku values reported track the old channel the device was operating on.
-If user bounces the interface the correct power tables are applied.
+Make sure mwifiex_process_mgmt_packet,
+mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
+mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
+not out-of-bounds access the skb->data buffer.
 
-mt7915_sku_group_len array gets updated before the channel switch happens so it
-uses data from the old channel.
-
-Fixes: ecb187a74e18 ("mt76: mt7915: rework the flow of txpower setting")
-Fixes: f1d962369d56 ("mt76: mt7915: implement HE per-rate tx power support")
-Reported-By: Chad Monroe <chad.monroe@smartrg.com>
-Tested-by: Chad Monroe <chad.monroe@smartrg.com>
-Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
+Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230723070741.1544662-1-pinkperfect2021@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
+ .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
+ 3 files changed, 36 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 7a4f277a16223..09ea97a81fb4f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -441,7 +441,8 @@ static int mt7915_config(struct ieee80211_hw *hw, u32 changed)
- 		ieee80211_wake_queues(hw);
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+index 0d2adf8879005..685a5b6697046 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+@@ -98,6 +98,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+ 
++	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
++		mwifiex_dbg(priv->adapter, ERROR,
++			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
++			    skb->len, rx_pkt_off);
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++	}
++
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 		     sizeof(bridge_tunnel_header))) ||
+ 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+@@ -206,7 +214,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
+ 
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
+ 
+-	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
++	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
++	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
+ 			    skb->len, rx_pkt_offset, rx_pkt_length);
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index 245ff644f81e3..b3915bfd38693 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -115,6 +115,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
+ 		return;
  	}
  
--	if (changed & IEEE80211_CONF_CHANGE_POWER) {
-+	if (changed & (IEEE80211_CONF_CHANGE_POWER |
-+		       IEEE80211_CONF_CHANGE_CHANNEL)) {
- 		ret = mt7915_mcu_set_txpower_sku(phy);
- 		if (ret)
- 			return ret;
++	if (sizeof(*rx_pkt_hdr) +
++	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
++		mwifiex_dbg(adapter, ERROR,
++			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
++			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++	}
++
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 		     sizeof(bridge_tunnel_header))) ||
+ 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+@@ -379,6 +388,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
+ 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
+ 
++	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
++	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
++		mwifiex_dbg(adapter, ERROR,
++			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
++			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++		return 0;
++	}
++
+ 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
+ 
+ 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
+diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+index d583fa600a296..1f5a6dab9ce55 100644
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -405,11 +405,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 	}
+ 
+ 	rx_pd = (struct rxpd *)skb->data;
++	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
++	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
++		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
++		return -1;
++	}
+ 
+ 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
+ 	skb_pull(skb, sizeof(pkt_len));
+-
+-	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
++	pkt_len -= sizeof(pkt_len);
+ 
+ 	ieee_hdr = (void *)skb->data;
+ 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
+@@ -422,7 +426,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 		skb->data + sizeof(struct ieee80211_hdr),
+ 		pkt_len - sizeof(struct ieee80211_hdr));
+ 
+-	pkt_len -= ETH_ALEN + sizeof(pkt_len);
++	pkt_len -= ETH_ALEN;
+ 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
+ 
+ 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
 -- 
 2.40.1
 
