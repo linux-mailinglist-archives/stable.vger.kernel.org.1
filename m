@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56AF87A39DB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535397A38C4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240171AbjIQTzN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37072 "EHLO
+        id S239411AbjIQTkS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:40:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240194AbjIQTyy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:54 -0400
+        with ESMTP id S231883AbjIQTjo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A03F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95D3C433C7;
-        Sun, 17 Sep 2023 19:54:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8B912F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D64C433C8;
+        Sun, 17 Sep 2023 19:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980488;
-        bh=egCKt7TXu4Qc0ilwWMzuAlfaKrdnwpfhWv2GYIPtfu8=;
+        s=korg; t=1694979578;
+        bh=byMRyfuVWpcYGeD+/w3pNWsC76In0z3/sWU2bNkQc0I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zsi1u6OYrwKGoQ1Kep5F2lwy+GKLfQ/2Ux1S9upicA6AtN+Gjt7ikW8x7lQwC/y6/
-         DlDG7smYm6nUPD91f6I6uoE2WFKAgbxB40zMSvxAv0A1gTNwURLW1/JZ102dIaoyxz
-         qv6goKOu4LV8K457wBIw7ywgXSusk+pefGsI4yJU=
+        b=pHRds4MaU4mDj1EwXOdFr9jU1+Ny/ytksd+ixTsd9fFV2e6zzZVy1Kix+gGRwq+qb
+         OZYUIqCbj7TRsDj8x1GaL7Dt2Cuhq9oAK4ETys5CmqlLU8pSeAcEMEfZ3P3YEmLCdS
+         T1QkiYJjkeKeFeKZbmbN3C9hg/LW8ljfsvh4P2mI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 207/285] btrfs: zoned: re-enable metadata over-commit for zoned mode
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 353/406] af_unix: Fix data-races around sk->sk_shutdown.
 Date:   Sun, 17 Sep 2023 21:13:27 +0200
-Message-ID: <20230917191058.737926200@linuxfoundation.org>
+Message-ID: <20230917191110.592689656@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +52,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 5b135b382a360f4c87cf8896d1465b0b07f10cb0 upstream.
+[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
 
-Now that, we can re-enable metadata over-commit. As we moved the activation
-from the reservation time to the write time, we no longer need to ensure
-all the reserved bytes is properly activated.
+sk->sk_shutdown is changed under unix_state_lock(sk), but
+unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
 
-Without the metadata over-commit, it suffers from lower performance because
-it needs to flush the delalloc items more often and allocate more block
-groups. Re-enabling metadata over-commit will solve the issue.
+  sock_alloc_send_pskb
+  `- sock_wait_for_wmem
 
-Fixes: 79417d040f4f ("btrfs: zoned: disable metadata overcommit for zoned")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's use READ_ONCE() there.
+
+Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
+Fix data races around sk->sk_shutdown.").
+
+BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
+
+write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
+ unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
+ unix_release+0x59/0x80 net/unix/af_unix.c:1053
+ __sock_release+0x7d/0x170 net/socket.c:654
+ sock_close+0x19/0x30 net/socket.c:1386
+ __fput+0x2a3/0x680 fs/file_table.c:384
+ ____fput+0x15/0x20 fs/file_table.c:412
+ task_work_run+0x116/0x1a0 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
+ do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
+ sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
+ unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+value changed: 0x00 -> 0x03
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/space-info.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/core/sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -389,11 +389,7 @@ int btrfs_can_overcommit(struct btrfs_fs
- 		return 0;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e2d45631c15d7..a971385a95d92 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2315,7 +2315,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
+ 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
+ 			break;
+-		if (sk->sk_shutdown & SEND_SHUTDOWN)
++		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			break;
+ 		if (sk->sk_err)
+ 			break;
+@@ -2345,7 +2345,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
+ 			goto failure;
  
- 	used = btrfs_space_info_used(space_info, true);
--	if (test_bit(BTRFS_FS_ACTIVE_ZONE_TRACKING, &fs_info->flags) &&
--	    (space_info->flags & BTRFS_BLOCK_GROUP_METADATA))
--		avail = 0;
--	else
--		avail = calc_available_free_space(fs_info, space_info, flush);
-+	avail = calc_available_free_space(fs_info, space_info, flush);
+ 		err = -EPIPE;
+-		if (sk->sk_shutdown & SEND_SHUTDOWN)
++		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			goto failure;
  
- 	if (used + bytes < space_info->total_bytes + avail)
- 		return 1;
+ 		if (sk_wmem_alloc_get(sk) < READ_ONCE(sk->sk_sndbuf))
+-- 
+2.40.1
+
 
 
