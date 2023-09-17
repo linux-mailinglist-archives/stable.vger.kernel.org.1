@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B307A39D1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B6447A3A5C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240164AbjIQTym (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:54:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
+        id S232919AbjIQUCl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240197AbjIQTy3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:29 -0400
+        with ESMTP id S240344AbjIQUCV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D901CEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11189C433C8;
-        Sun, 17 Sep 2023 19:54:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0B1CED
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F81C433CB;
+        Sun, 17 Sep 2023 20:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980464;
-        bh=dmsLguZ9znPnsJmAtocGyeM80bpyU/35NFFfSP2TJT0=;
+        s=korg; t=1694980909;
+        bh=116/Y19skuZ2ITVxi+w9WKz1Q78UibIwaxhiNfLTk9k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0caAjBwgMCTqjVSTWVBRxIW8D0yVdulUz9X00GfK5wMz/2F5Om4hqpPSfvm+32wFq
-         ym3x9pDhAd/LlidCihelhI/dDH0mMKv63Vs9QsmGssK2JVLvMLLmuH3b2/3oxTLGet
-         w+KX1D3o3eteahCVORJmgEFsYr7/CIAAwHp1+p+o=
+        b=YWBOjEmOqc46O3OulAKm701pIU8o/PcCiYs6DEK6cPRI3qk37KUe2n7FtlfWRM1w2
+         eHTyxIBPDCVOPrWDJWnOOss6xL/c7KRkyaEKXBKbabweraES0mA/2GP3CAfF6gxNiA
+         L7lqjwZIgN7FHT+IsCWiB7XixM00VYfWQJg05sSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 169/285] net: hns3: fix debugfs concurrency issue between kfree buffer and read
-Date:   Sun, 17 Sep 2023 21:12:49 +0200
-Message-ID: <20230917191057.493860481@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 043/219] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
+Date:   Sun, 17 Sep 2023 21:12:50 +0200
+Message-ID: <20230917191042.557725722@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c295160b1d95e885f1af4586a221cb221d232d10 ]
+commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
 
-Now in hns3_dbg_uninit(), there may be concurrency between
-kfree buffer and read, it may result in memory error.
+The pll0_vote clock definitely should have pll0 as a parent (instead of
+pll8).
 
-Moving debugfs_remove_recursive() in front of kfree buffer to ensure
-they don't happen at the same time.
-
-Fixes: 5e69ea7ee2a6 ("net: hns3: refactor the debugfs process")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
+Cc: stable@kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-mdm9615.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index f276b5ecb431f..26fb6fefcb9d9 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -1411,9 +1411,9 @@ int hns3_dbg_init(struct hnae3_handle *handle)
- 	return 0;
- 
- out:
--	mutex_destroy(&handle->dbgfs_lock);
- 	debugfs_remove_recursive(handle->hnae3_dbgfs);
- 	handle->hnae3_dbgfs = NULL;
-+	mutex_destroy(&handle->dbgfs_lock);
- 	return ret;
- }
- 
-@@ -1421,6 +1421,9 @@ void hns3_dbg_uninit(struct hnae3_handle *handle)
- {
- 	u32 i;
- 
-+	debugfs_remove_recursive(handle->hnae3_dbgfs);
-+	handle->hnae3_dbgfs = NULL;
-+
- 	for (i = 0; i < ARRAY_SIZE(hns3_dbg_cmd); i++)
- 		if (handle->dbgfs_buf[i]) {
- 			kvfree(handle->dbgfs_buf[i]);
-@@ -1428,8 +1431,6 @@ void hns3_dbg_uninit(struct hnae3_handle *handle)
- 		}
- 
- 	mutex_destroy(&handle->dbgfs_lock);
--	debugfs_remove_recursive(handle->hnae3_dbgfs);
--	handle->hnae3_dbgfs = NULL;
- }
- 
- void hns3_dbg_register_debugfs(const char *debugfs_dir_name)
--- 
-2.40.1
-
+--- a/drivers/clk/qcom/gcc-mdm9615.c
++++ b/drivers/clk/qcom/gcc-mdm9615.c
+@@ -58,7 +58,7 @@ static struct clk_regmap pll0_vote = {
+ 	.enable_mask = BIT(0),
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "pll0_vote",
+-		.parent_names = (const char *[]){ "pll8" },
++		.parent_names = (const char *[]){ "pll0" },
+ 		.num_parents = 1,
+ 		.ops = &clk_pll_vote_ops,
+ 	},
 
 
