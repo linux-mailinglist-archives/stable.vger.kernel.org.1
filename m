@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6447A3A5C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D46F17A389C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232919AbjIQUCl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41012 "EHLO
+        id S239790AbjIQThn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240344AbjIQUCV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:21 -0400
+        with ESMTP id S239870AbjIQThd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0B1CED
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F81C433CB;
-        Sun, 17 Sep 2023 20:01:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36F0103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D98C433C7;
+        Sun, 17 Sep 2023 19:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980909;
-        bh=116/Y19skuZ2ITVxi+w9WKz1Q78UibIwaxhiNfLTk9k=;
+        s=korg; t=1694979448;
+        bh=xxfQCAlqZC1Pop/J1WZVRKIBwDGgv8R60zpSX0n7y8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YWBOjEmOqc46O3OulAKm701pIU8o/PcCiYs6DEK6cPRI3qk37KUe2n7FtlfWRM1w2
-         eHTyxIBPDCVOPrWDJWnOOss6xL/c7KRkyaEKXBKbabweraES0mA/2GP3CAfF6gxNiA
-         L7lqjwZIgN7FHT+IsCWiB7XixM00VYfWQJg05sSc=
+        b=Q+fjtEVcby3Os7P8JXVmhR+Q1QKFjveeBBon8Y5KZK3zdd8UdnEJb6aIVJzfAkkQg
+         S1CpfftZgutHYB3U4m5i9SBQFF9+e9gw70C8Qa5a+/dTU6Svj/AQXIrXMNKh2CYxFJ
+         9Jp1wmuQDLFH00XCluEeddr1ZA/voXZAg3EfzGYE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 043/219] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 316/406] io_uring: break iopolling on signal
 Date:   Sun, 17 Sep 2023 21:12:50 +0200
-Message-ID: <20230917191042.557725722@linuxfoundation.org>
+Message-ID: <20230917191109.643232691@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
+[ upstream commit dc314886cb3d0e4ab2858003e8de2917f8a3ccbd ]
 
-The pll0_vote clock definitely should have pll0 as a parent (instead of
-pll8).
+Don't keep spinning iopoll with a signal set. It'll eventually return
+back, e.g. by virtue of need_resched(), but it's not a nice user
+experience.
 
-Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
-Cc: stable@kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: def596e9557c9 ("io_uring: support for IO polling")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/eeba551e82cad12af30c3220125eb6cb244cc94c.1691594339.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-mdm9615.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/clk/qcom/gcc-mdm9615.c
-+++ b/drivers/clk/qcom/gcc-mdm9615.c
-@@ -58,7 +58,7 @@ static struct clk_regmap pll0_vote = {
- 	.enable_mask = BIT(0),
- 	.hw.init = &(struct clk_init_data){
- 		.name = "pll0_vote",
--		.parent_names = (const char *[]){ "pll8" },
-+		.parent_names = (const char *[]){ "pll0" },
- 		.num_parents = 1,
- 		.ops = &clk_pll_vote_ops,
- 	},
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2665,6 +2665,11 @@ static int io_iopoll_check(struct io_rin
+ 				break;
+ 		}
+ 		ret = io_do_iopoll(ctx, &nr_events, min);
++
++		if (task_sigpending(current)) {
++			ret = -EINTR;
++			goto out;
++		}
+ 	} while (!ret && nr_events < min && !need_resched());
+ out:
+ 	mutex_unlock(&ctx->uring_lock);
 
 
