@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4877A3B32
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 021937A3B3C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240571AbjIQUO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
+        id S240579AbjIQUO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240620AbjIQUOA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:00 -0400
+        with ESMTP id S240647AbjIQUOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451E2F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F81C433C8;
-        Sun, 17 Sep 2023 20:13:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96E10137
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA47C433C9;
+        Sun, 17 Sep 2023 20:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981633;
-        bh=W+no1Kn/rOq2myDNYLUrnOBz3xAB+subx0v1n7O0FEs=;
+        s=korg; t=1694981664;
+        bh=9uKF/0Kp5XO9bm3SzzIRYOx/q1D9TN0mA0rAG6ZuPx4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dqejJUHS0QSTEOacmeqcRabxyZybFrYaMBX4689bh42U1c0JIGC58xgHx1aEIaIz/
-         JcqDEFv9Yirna193PVEex4YXsLGwAAekB0yjAvXDLgg8Pm9NDKo0ztjsj0GihKHo+i
-         Svj5SvYhsz1imivpv5zOv5XnbQJMgCRcB0EJwSkw=
+        b=W/TUKfinOCqnw+o/Kgm+xGvUvbnsWyG1XHVBcHtqYZOs0eCxnLvSXKgrpBToXYVAb
+         rFyiLmDf9ehZXfjaWc9seWHcXpCsiuf6z9MvUcLLxI1S1ZynxY71ijQqFopZ4qJiAM
+         P3FZeiZJUMAIHIHsbelYdCokPLU4rHQ9d0CBn0bw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/219] net: dsa: sja1105: complete tc-cbs offload support on SJA1110
-Date:   Sun, 17 Sep 2023 21:14:10 +0200
-Message-ID: <20230917191045.422989628@linuxfoundation.org>
+Subject: [PATCH 6.1 124/219] bpf: Remove prog->active check for bpf_lsm and bpf_iter
+Date:   Sun, 17 Sep 2023 21:14:11 +0200
+Message-ID: <20230917191045.461720717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -54,134 +54,344 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 180a7419fe4adc8d9c8e0ef0fd17bcdd0cf78acd ]
+[ Upstream commit 271de525e1d7f564e88a9d212c50998b49a54476 ]
 
-The blamed commit left this delta behind:
+The commit 64696c40d03c ("bpf: Add __bpf_prog_{enter,exit}_struct_ops for struct_ops trampoline")
+removed prog->active check for struct_ops prog.  The bpf_lsm
+and bpf_iter is also using trampoline.  Like struct_ops, the bpf_lsm
+and bpf_iter have fixed hooks for the prog to attach.  The
+kernel does not call the same hook in a recursive way.
+This patch also removes the prog->active check for
+bpf_lsm and bpf_iter.
 
-  struct sja1105_cbs_entry {
- -	u64 port;
- -	u64 prio;
- +	u64 port; /* Not used for SJA1110 */
- +	u64 prio; /* Not used for SJA1110 */
-  	u64 credit_hi;
-  	u64 credit_lo;
-  	u64 send_slope;
-  	u64 idle_slope;
-  };
+A later patch has a test to reproduce the recursion issue
+for a sleepable bpf_lsm program.
 
-but did not actually implement tc-cbs offload fully for the new switch.
-The offload is accepted, but it doesn't work.
+This patch appends the '_recur' naming to the existing
+enter and exit functions that track the prog->active counter.
+New __bpf_prog_{enter,exit}[_sleepable] function are
+added to skip the prog->active tracking. The '_struct_ops'
+version is also removed.
 
-The difference compared to earlier switch generations is that now, the
-table of CBS shapers is sparse, because there are many more shapers, so
-the mapping between a {port, prio} and a table index is static, rather
-than requiring us to store the port and prio into the sja1105_cbs_entry.
+It also moves the decision on picking the enter and exit function to
+the new bpf_trampoline_{enter,exit}().  It returns the '_recur' ones
+for all tracing progs to use.  For bpf_lsm, bpf_iter,
+struct_ops (no prog->active tracking after 64696c40d03c), and
+bpf_lsm_cgroup (no prog->active tracking after 69fd337a975c7),
+it will return the functions that don't track the prog->active.
 
-So, the problem is that the code programs the CBS shaper parameters at a
-dynamic table index which is incorrect.
-
-All that needs to be done for SJA1110 CBS shapers to work is to bypass
-the logic which allocates shapers in a dense manner, as for SJA1105, and
-use the fixed mapping instead.
-
-Fixes: 3e77e59bf8cf ("net: dsa: sja1105: add support for the SJA1110 switch family")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20221025184524.3526117-2-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 7645629f7dc8 ("bpf: Invoke __bpf_prog_exit_sleepable_recur() on recursion in kern_sys_bpf().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105.h      |  2 ++
- drivers/net/dsa/sja1105/sja1105_main.c | 13 +++++++++++++
- drivers/net/dsa/sja1105/sja1105_spi.c  |  4 ++++
- 3 files changed, 19 insertions(+)
+ arch/arm64/net/bpf_jit_comp.c |  9 +---
+ arch/x86/net/bpf_jit_comp.c   | 19 +--------
+ include/linux/bpf.h           | 24 +++++------
+ include/linux/bpf_verifier.h  | 13 ++++++
+ kernel/bpf/syscall.c          |  5 ++-
+ kernel/bpf/trampoline.c       | 80 +++++++++++++++++++++++++++++------
+ 6 files changed, 97 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105.h b/drivers/net/dsa/sja1105/sja1105.h
-index fb3cd4c78faa8..a831bb0a52074 100644
---- a/drivers/net/dsa/sja1105/sja1105.h
-+++ b/drivers/net/dsa/sja1105/sja1105.h
-@@ -132,6 +132,8 @@ struct sja1105_info {
- 	int max_frame_mem;
- 	int num_ports;
- 	bool multiple_cascade_ports;
-+	/* Every {port, TXQ} has its own CBS shaper */
-+	bool fixed_cbs_mapping;
- 	enum dsa_tag_protocol tag_proto;
- 	const struct sja1105_dynamic_table_ops *dyn_ops;
- 	const struct sja1105_table_ops *static_ops;
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 9dd5cdcda2843..ff94c5996fafb 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2122,12 +2122,22 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 14134fd34ff79..0ce5f13eabb1b 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -1655,13 +1655,8 @@ static void invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
+ 	struct bpf_prog *p = l->link.prog;
+ 	int cookie_off = offsetof(struct bpf_tramp_run_ctx, bpf_cookie);
+ 
+-	if (p->aux->sleepable) {
+-		enter_prog = (u64)__bpf_prog_enter_sleepable;
+-		exit_prog = (u64)__bpf_prog_exit_sleepable;
+-	} else {
+-		enter_prog = (u64)__bpf_prog_enter;
+-		exit_prog = (u64)__bpf_prog_exit;
+-	}
++	enter_prog = (u64)bpf_trampoline_enter(p);
++	exit_prog = (u64)bpf_trampoline_exit(p);
+ 
+ 	if (l->cookie == 0) {
+ 		/* if cookie is zero, one instruction is enough to store it */
+diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+index db6053a22e866..5e680e039d0e1 100644
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -1813,10 +1813,6 @@ static int invoke_bpf_prog(const struct btf_func_model *m, u8 **pprog,
+ 			   struct bpf_tramp_link *l, int stack_size,
+ 			   int run_ctx_off, bool save_ret)
+ {
+-	void (*exit)(struct bpf_prog *prog, u64 start,
+-		     struct bpf_tramp_run_ctx *run_ctx) = __bpf_prog_exit;
+-	u64 (*enter)(struct bpf_prog *prog,
+-		     struct bpf_tramp_run_ctx *run_ctx) = __bpf_prog_enter;
+ 	u8 *prog = *pprog;
+ 	u8 *jmp_insn;
+ 	int ctx_cookie_off = offsetof(struct bpf_tramp_run_ctx, bpf_cookie);
+@@ -1835,23 +1831,12 @@ static int invoke_bpf_prog(const struct btf_func_model *m, u8 **pprog,
+ 	 */
+ 	emit_stx(&prog, BPF_DW, BPF_REG_FP, BPF_REG_1, -run_ctx_off + ctx_cookie_off);
+ 
+-	if (p->aux->sleepable) {
+-		enter = __bpf_prog_enter_sleepable;
+-		exit = __bpf_prog_exit_sleepable;
+-	} else if (p->type == BPF_PROG_TYPE_STRUCT_OPS) {
+-		enter = __bpf_prog_enter_struct_ops;
+-		exit = __bpf_prog_exit_struct_ops;
+-	} else if (p->expected_attach_type == BPF_LSM_CGROUP) {
+-		enter = __bpf_prog_enter_lsm_cgroup;
+-		exit = __bpf_prog_exit_lsm_cgroup;
+-	}
+-
+ 	/* arg1: mov rdi, progs[i] */
+ 	emit_mov_imm64(&prog, BPF_REG_1, (long) p >> 32, (u32) (long) p);
+ 	/* arg2: lea rsi, [rbp - ctx_cookie_off] */
+ 	EMIT4(0x48, 0x8D, 0x75, -run_ctx_off);
+ 
+-	if (emit_call(&prog, enter, prog))
++	if (emit_call(&prog, bpf_trampoline_enter(p), prog))
+ 		return -EINVAL;
+ 	/* remember prog start time returned by __bpf_prog_enter */
+ 	emit_mov_reg(&prog, true, BPF_REG_6, BPF_REG_0);
+@@ -1896,7 +1881,7 @@ static int invoke_bpf_prog(const struct btf_func_model *m, u8 **pprog,
+ 	emit_mov_reg(&prog, true, BPF_REG_2, BPF_REG_6);
+ 	/* arg3: lea rdx, [rbp - run_ctx_off] */
+ 	EMIT4(0x48, 0x8D, 0x55, -run_ctx_off);
+-	if (emit_call(&prog, exit, prog))
++	if (emit_call(&prog, bpf_trampoline_exit(p), prog))
+ 		return -EINVAL;
+ 
+ 	*pprog = prog;
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 8cef9ec3a89c2..b3d3aa8437dce 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -862,22 +862,18 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *tr, void *image, void *i
+ 				const struct btf_func_model *m, u32 flags,
+ 				struct bpf_tramp_links *tlinks,
+ 				void *orig_call);
+-/* these two functions are called from generated trampoline */
+-u64 notrace __bpf_prog_enter(struct bpf_prog *prog, struct bpf_tramp_run_ctx *run_ctx);
+-void notrace __bpf_prog_exit(struct bpf_prog *prog, u64 start, struct bpf_tramp_run_ctx *run_ctx);
+-u64 notrace __bpf_prog_enter_sleepable(struct bpf_prog *prog, struct bpf_tramp_run_ctx *run_ctx);
+-void notrace __bpf_prog_exit_sleepable(struct bpf_prog *prog, u64 start,
+-				       struct bpf_tramp_run_ctx *run_ctx);
+-u64 notrace __bpf_prog_enter_lsm_cgroup(struct bpf_prog *prog,
+-					struct bpf_tramp_run_ctx *run_ctx);
+-void notrace __bpf_prog_exit_lsm_cgroup(struct bpf_prog *prog, u64 start,
+-					struct bpf_tramp_run_ctx *run_ctx);
+-u64 notrace __bpf_prog_enter_struct_ops(struct bpf_prog *prog,
+-					struct bpf_tramp_run_ctx *run_ctx);
+-void notrace __bpf_prog_exit_struct_ops(struct bpf_prog *prog, u64 start,
+-					struct bpf_tramp_run_ctx *run_ctx);
++u64 notrace __bpf_prog_enter_sleepable_recur(struct bpf_prog *prog,
++					     struct bpf_tramp_run_ctx *run_ctx);
++void notrace __bpf_prog_exit_sleepable_recur(struct bpf_prog *prog, u64 start,
++					     struct bpf_tramp_run_ctx *run_ctx);
+ void notrace __bpf_tramp_enter(struct bpf_tramp_image *tr);
+ void notrace __bpf_tramp_exit(struct bpf_tramp_image *tr);
++typedef u64 (*bpf_trampoline_enter_t)(struct bpf_prog *prog,
++				      struct bpf_tramp_run_ctx *run_ctx);
++typedef void (*bpf_trampoline_exit_t)(struct bpf_prog *prog, u64 start,
++				      struct bpf_tramp_run_ctx *run_ctx);
++bpf_trampoline_enter_t bpf_trampoline_enter(const struct bpf_prog *prog);
++bpf_trampoline_exit_t bpf_trampoline_exit(const struct bpf_prog *prog);
+ 
+ struct bpf_ksym {
+ 	unsigned long		 start;
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 0eb8f035b3d9f..1a32baa78ce26 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -648,4 +648,17 @@ static inline enum bpf_prog_type resolve_prog_type(const struct bpf_prog *prog)
+ 		prog->aux->dst_prog->type : prog->type;
  }
  
- #define BYTES_PER_KBIT (1000LL / 8)
-+/* Port 0 (the uC port) does not have CBS shapers */
-+#define SJA1110_FIXED_CBS(port, prio) ((((port) - 1) * SJA1105_NUM_TC) + (prio))
- 
- static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
- 				   int port, int prio)
- {
- 	int i;
- 
-+	if (priv->info->fixed_cbs_mapping) {
-+		i = SJA1110_FIXED_CBS(port, prio);
-+		if (i >= 0 && i < priv->info->num_cbs_shapers)
-+			return i;
-+
-+		return -1;
++static inline bool bpf_prog_check_recur(const struct bpf_prog *prog)
++{
++	switch (resolve_prog_type(prog)) {
++	case BPF_PROG_TYPE_TRACING:
++		return prog->expected_attach_type != BPF_TRACE_ITER;
++	case BPF_PROG_TYPE_STRUCT_OPS:
++	case BPF_PROG_TYPE_LSM:
++		return false;
++	default:
++		return true;
 +	}
++}
 +
- 	for (i = 0; i < priv->info->num_cbs_shapers; i++)
- 		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
- 			return i;
-@@ -2139,6 +2149,9 @@ static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
- {
- 	int i;
+ #endif /* _LINUX_BPF_VERIFIER_H */
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 0c44a716f0a24..7afec961c5728 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -5136,13 +5136,14 @@ int kern_sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
  
-+	if (priv->info->fixed_cbs_mapping)
-+		return -1;
+ 		run_ctx.bpf_cookie = 0;
+ 		run_ctx.saved_run_ctx = NULL;
+-		if (!__bpf_prog_enter_sleepable(prog, &run_ctx)) {
++		if (!__bpf_prog_enter_sleepable_recur(prog, &run_ctx)) {
+ 			/* recursion detected */
+ 			bpf_prog_put(prog);
+ 			return -EBUSY;
+ 		}
+ 		attr->test.retval = bpf_prog_run(prog, (void *) (long) attr->test.ctx_in);
+-		__bpf_prog_exit_sleepable(prog, 0 /* bpf_prog_run does runtime stats */, &run_ctx);
++		__bpf_prog_exit_sleepable_recur(prog, 0 /* bpf_prog_run does runtime stats */,
++						&run_ctx);
+ 		bpf_prog_put(prog);
+ 		return 0;
+ #endif
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index 30af8f66e17b4..88841e352dcdf 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -874,7 +874,7 @@ static __always_inline u64 notrace bpf_prog_start_time(void)
+  * [2..MAX_U64] - execute bpf prog and record execution time.
+  *     This is start time.
+  */
+-u64 notrace __bpf_prog_enter(struct bpf_prog *prog, struct bpf_tramp_run_ctx *run_ctx)
++static u64 notrace __bpf_prog_enter_recur(struct bpf_prog *prog, struct bpf_tramp_run_ctx *run_ctx)
+ 	__acquires(RCU)
+ {
+ 	rcu_read_lock();
+@@ -911,7 +911,8 @@ static void notrace update_prog_stats(struct bpf_prog *prog,
+ 	}
+ }
+ 
+-void notrace __bpf_prog_exit(struct bpf_prog *prog, u64 start, struct bpf_tramp_run_ctx *run_ctx)
++static void notrace __bpf_prog_exit_recur(struct bpf_prog *prog, u64 start,
++					  struct bpf_tramp_run_ctx *run_ctx)
+ 	__releases(RCU)
+ {
+ 	bpf_reset_run_ctx(run_ctx->saved_run_ctx);
+@@ -922,8 +923,8 @@ void notrace __bpf_prog_exit(struct bpf_prog *prog, u64 start, struct bpf_tramp_
+ 	rcu_read_unlock();
+ }
+ 
+-u64 notrace __bpf_prog_enter_lsm_cgroup(struct bpf_prog *prog,
+-					struct bpf_tramp_run_ctx *run_ctx)
++static u64 notrace __bpf_prog_enter_lsm_cgroup(struct bpf_prog *prog,
++					       struct bpf_tramp_run_ctx *run_ctx)
+ 	__acquires(RCU)
+ {
+ 	/* Runtime stats are exported via actual BPF_LSM_CGROUP
+@@ -937,8 +938,8 @@ u64 notrace __bpf_prog_enter_lsm_cgroup(struct bpf_prog *prog,
+ 	return NO_START_TIME;
+ }
+ 
+-void notrace __bpf_prog_exit_lsm_cgroup(struct bpf_prog *prog, u64 start,
+-					struct bpf_tramp_run_ctx *run_ctx)
++static void notrace __bpf_prog_exit_lsm_cgroup(struct bpf_prog *prog, u64 start,
++					       struct bpf_tramp_run_ctx *run_ctx)
+ 	__releases(RCU)
+ {
+ 	bpf_reset_run_ctx(run_ctx->saved_run_ctx);
+@@ -947,7 +948,8 @@ void notrace __bpf_prog_exit_lsm_cgroup(struct bpf_prog *prog, u64 start,
+ 	rcu_read_unlock();
+ }
+ 
+-u64 notrace __bpf_prog_enter_sleepable(struct bpf_prog *prog, struct bpf_tramp_run_ctx *run_ctx)
++u64 notrace __bpf_prog_enter_sleepable_recur(struct bpf_prog *prog,
++					     struct bpf_tramp_run_ctx *run_ctx)
+ {
+ 	rcu_read_lock_trace();
+ 	migrate_disable();
+@@ -963,8 +965,8 @@ u64 notrace __bpf_prog_enter_sleepable(struct bpf_prog *prog, struct bpf_tramp_r
+ 	return bpf_prog_start_time();
+ }
+ 
+-void notrace __bpf_prog_exit_sleepable(struct bpf_prog *prog, u64 start,
+-				       struct bpf_tramp_run_ctx *run_ctx)
++void notrace __bpf_prog_exit_sleepable_recur(struct bpf_prog *prog, u64 start,
++					     struct bpf_tramp_run_ctx *run_ctx)
+ {
+ 	bpf_reset_run_ctx(run_ctx->saved_run_ctx);
+ 
+@@ -974,8 +976,30 @@ void notrace __bpf_prog_exit_sleepable(struct bpf_prog *prog, u64 start,
+ 	rcu_read_unlock_trace();
+ }
+ 
+-u64 notrace __bpf_prog_enter_struct_ops(struct bpf_prog *prog,
+-					struct bpf_tramp_run_ctx *run_ctx)
++static u64 notrace __bpf_prog_enter_sleepable(struct bpf_prog *prog,
++					      struct bpf_tramp_run_ctx *run_ctx)
++{
++	rcu_read_lock_trace();
++	migrate_disable();
++	might_fault();
 +
- 	for (i = 0; i < priv->info->num_cbs_shapers; i++)
- 		if (!priv->cbs[i].idle_slope && !priv->cbs[i].send_slope)
- 			return i;
-diff --git a/drivers/net/dsa/sja1105/sja1105_spi.c b/drivers/net/dsa/sja1105/sja1105_spi.c
-index d3c9ad6d39d46..e6b61aef4127c 100644
---- a/drivers/net/dsa/sja1105/sja1105_spi.c
-+++ b/drivers/net/dsa/sja1105/sja1105_spi.c
-@@ -781,6 +781,7 @@ const struct sja1105_info sja1110a_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
-@@ -831,6 +832,7 @@ const struct sja1105_info sja1110b_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
-@@ -881,6 +883,7 @@ const struct sja1105_info sja1110c_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
-@@ -931,6 +934,7 @@ const struct sja1105_info sja1110d_info = {
- 	.tag_proto		= DSA_TAG_PROTO_SJA1110,
- 	.can_limit_mcast_flood	= true,
- 	.multiple_cascade_ports	= true,
-+	.fixed_cbs_mapping	= true,
- 	.ptp_ts_bits		= 32,
- 	.ptpegr_ts_bytes	= 8,
- 	.max_frame_mem		= SJA1110_MAX_FRAME_MEMORY,
++	run_ctx->saved_run_ctx = bpf_set_run_ctx(&run_ctx->run_ctx);
++
++	return bpf_prog_start_time();
++}
++
++static void notrace __bpf_prog_exit_sleepable(struct bpf_prog *prog, u64 start,
++					      struct bpf_tramp_run_ctx *run_ctx)
++{
++	bpf_reset_run_ctx(run_ctx->saved_run_ctx);
++
++	update_prog_stats(prog, start);
++	migrate_enable();
++	rcu_read_unlock_trace();
++}
++
++static u64 notrace __bpf_prog_enter(struct bpf_prog *prog,
++				    struct bpf_tramp_run_ctx *run_ctx)
+ 	__acquires(RCU)
+ {
+ 	rcu_read_lock();
+@@ -986,8 +1010,8 @@ u64 notrace __bpf_prog_enter_struct_ops(struct bpf_prog *prog,
+ 	return bpf_prog_start_time();
+ }
+ 
+-void notrace __bpf_prog_exit_struct_ops(struct bpf_prog *prog, u64 start,
+-					struct bpf_tramp_run_ctx *run_ctx)
++static void notrace __bpf_prog_exit(struct bpf_prog *prog, u64 start,
++				    struct bpf_tramp_run_ctx *run_ctx)
+ 	__releases(RCU)
+ {
+ 	bpf_reset_run_ctx(run_ctx->saved_run_ctx);
+@@ -1007,6 +1031,36 @@ void notrace __bpf_tramp_exit(struct bpf_tramp_image *tr)
+ 	percpu_ref_put(&tr->pcref);
+ }
+ 
++bpf_trampoline_enter_t bpf_trampoline_enter(const struct bpf_prog *prog)
++{
++	bool sleepable = prog->aux->sleepable;
++
++	if (bpf_prog_check_recur(prog))
++		return sleepable ? __bpf_prog_enter_sleepable_recur :
++			__bpf_prog_enter_recur;
++
++	if (resolve_prog_type(prog) == BPF_PROG_TYPE_LSM &&
++	    prog->expected_attach_type == BPF_LSM_CGROUP)
++		return __bpf_prog_enter_lsm_cgroup;
++
++	return sleepable ? __bpf_prog_enter_sleepable : __bpf_prog_enter;
++}
++
++bpf_trampoline_exit_t bpf_trampoline_exit(const struct bpf_prog *prog)
++{
++	bool sleepable = prog->aux->sleepable;
++
++	if (bpf_prog_check_recur(prog))
++		return sleepable ? __bpf_prog_exit_sleepable_recur :
++			__bpf_prog_exit_recur;
++
++	if (resolve_prog_type(prog) == BPF_PROG_TYPE_LSM &&
++	    prog->expected_attach_type == BPF_LSM_CGROUP)
++		return __bpf_prog_exit_lsm_cgroup;
++
++	return sleepable ? __bpf_prog_exit_sleepable : __bpf_prog_exit;
++}
++
+ int __weak
+ arch_prepare_bpf_trampoline(struct bpf_tramp_image *tr, void *image, void *image_end,
+ 			    const struct btf_func_model *m, u32 flags,
 -- 
 2.40.1
 
