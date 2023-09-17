@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D807A38DD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72ACF7A3A14
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239867AbjIQTlY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:41:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45948 "EHLO
+        id S240237AbjIQT60 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:58:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239945AbjIQTlS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:18 -0400
+        with ESMTP id S240284AbjIQT6C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:58:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2BBDB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312B2C433C8;
-        Sun, 17 Sep 2023 19:41:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC72EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E55BC433C8;
+        Sun, 17 Sep 2023 19:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979672;
-        bh=4yBxqbBas5LNvpIPZ4wJLKbMqBlLF8YT/bW/Zs4MHbw=;
+        s=korg; t=1694980676;
+        bh=+5KquvfLRnhi0sY4tQvF7EFjkRW7FL8PiQ2vPPKCTb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dxWHrVOSyGUcVPLHVUcctSjFnHzMRl1VieFv6227Qs7QceJRQCCz7+9Vv5qM0yaIL
-         ZbaWGf8U3HjDAinvn+1ipef8LEJ7hjH3BF8aFyc9FczrDk7sMMIF8Q0wHHGETUMpc5
-         BPNsHrGDZhwq9RluYi929upkfexfphnY7s6Kj9+4=
+        b=wjX0uB9jF8kQ9h//GOuTdwMoNhL2KpaDzbrb1i2wI8EeOVa3Y7VxBh7kP/mD9udqj
+         hqmS5ESP9mFz2aOz2Sr7TxSc0mX2EwluSCz8/Q0xUQJnTPFlOJ68cXFIWsA099INE0
+         AHqEN1MGWa/kYWdquyMW2fOhfCbD7WBuqzCzJ9ZU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
         Adrian Hunter <adrian.hunter@intel.com>,
         Ian Rogers <irogers@google.com>,
         Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.10 380/406] perf hists browser: Fix the number of entries for e key
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.5 234/285] perf test shell stat_bpf_counters: Fix test on Intel
 Date:   Sun, 17 Sep 2023 21:13:54 +0200
-Message-ID: <20230917191111.298504266@linuxfoundation.org>
+Message-ID: <20230917191059.518477143@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,154 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namhyung Kim <namhyung@kernel.org>
 
-commit f6b8436bede3e80226e8b2100279c4450c73806a upstream.
+commit 68ca249c964f520af7f8763e22f12bd26b57b870 upstream.
 
-The 'e' key is to toggle expand/collapse the selected entry only.  But
-the current code has a bug that it only increases the number of entries
-by 1 in the hierarchy mode so users cannot move under the current entry
-after the key stroke.  This is due to a wrong assumption in the
-hist_entry__set_folding().
+As of now, bpf counters (bperf) don't support event groups.  But the
+default perf stat includes topdown metrics if supported (on recent Intel
+machines) which require groups.  That makes perf stat exiting.
 
-The commit b33f922651011eff ("perf hists browser: Put hist_entry folding
-logic into single function") factored out the code, but actually it
-should be handled separately.  The hist_browser__set_folding() is to
-update fold state for each entry so it needs to traverse all (child)
-entries regardless of the current fold state.  So it increases the
-number of entries by 1.
+  $ sudo perf stat --bpf-counter true
+  bpf managed perf events do not yet support groups.
 
-But the hist_entry__set_folding() only cares the currently selected
-entry and its all children.  So it should count all unfolded child
-entries.  This code is implemented in hist_browser__toggle_fold()
-already so we can just call it.
+Actually the test explicitly uses cycles event only, but it missed to
+pass the option when it checks the availability of the command.
 
-Fixes: b33f922651011eff ("perf hists browser: Put hist_entry folding logic into single function")
+Fixes: 2c0cb9f56020d2ea ("perf test: Add a shell test for 'perf stat --bpf-counters' new option")
+Reviewed-by: Song Liu <song@kernel.org>
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230731094934.1616495-2-namhyung@kernel.org
+Link: https://lore.kernel.org/r/20230825164152.165610-2-namhyung@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browsers/hists.c |   58 ++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 34 deletions(-)
+ tools/perf/tests/shell/stat_bpf_counters.sh |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_
- 	return container_of(ms, struct callchain_list, ms)->has_children;
+--- a/tools/perf/tests/shell/stat_bpf_counters.sh
++++ b/tools/perf/tests/shell/stat_bpf_counters.sh
+@@ -22,10 +22,10 @@ compare_number()
  }
  
--static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
--{
--	return browser->he_selection ? browser->he_selection->unfolded : false;
--}
--
- static bool hist_browser__selection_unfolded(struct hist_browser *browser)
- {
- 	struct hist_entry *he = browser->he_selection;
-@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct
- 	return n;
- }
- 
--static void __hist_entry__set_folding(struct hist_entry *he,
--				      struct hist_browser *hb, bool unfold)
-+static void hist_entry__set_folding(struct hist_entry *he,
-+				    struct hist_browser *hb, bool unfold)
- {
- 	hist_entry__init_have_children(he);
- 	he->unfolded = unfold ? he->has_children : false;
-@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(st
- 		he->nr_rows = 0;
- }
- 
--static void hist_entry__set_folding(struct hist_entry *he,
--				    struct hist_browser *browser, bool unfold)
--{
--	double percent;
--
--	percent = hist_entry__get_percent_limit(he);
--	if (he->filtered || percent < browser->min_pcnt)
--		return;
--
--	__hist_entry__set_folding(he, browser, unfold);
--
--	if (!he->depth || unfold)
--		browser->nr_hierarchy_entries++;
--	if (he->leaf)
--		browser->nr_callchain_rows += he->nr_rows;
--	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
--		browser->nr_hierarchy_entries++;
--		he->has_no_entry = true;
--		he->nr_rows = 1;
--	} else
--		he->has_no_entry = false;
--}
--
- static void
- __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
- {
- 	struct rb_node *nd;
- 	struct hist_entry *he;
-+	double percent;
- 
- 	nd = rb_first_cached(&browser->hists->entries);
- 	while (nd) {
-@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_
- 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
- 
- 		hist_entry__set_folding(he, browser, unfold);
-+
-+		percent = hist_entry__get_percent_limit(he);
-+		if (he->filtered || percent < browser->min_pcnt)
-+			continue;
-+
-+		if (!he->depth || unfold)
-+			browser->nr_hierarchy_entries++;
-+		if (he->leaf)
-+			browser->nr_callchain_rows += he->nr_rows;
-+		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
-+			browser->nr_hierarchy_entries++;
-+			he->has_no_entry = true;
-+			he->nr_rows = 1;
-+		} else
-+			he->has_no_entry = false;
- 	}
- }
- 
-@@ -659,8 +647,10 @@ static void hist_browser__set_folding_se
- 	if (!browser->he_selection)
- 		return;
- 
--	hist_entry__set_folding(browser->he_selection, browser, unfold);
--	browser->b.nr_entries = hist_browser__nr_entries(browser);
-+	if (unfold == browser->he_selection->unfolded)
-+		return;
-+
-+	hist_browser__toggle_fold(browser);
- }
- 
- static void ui_browser__warn_lost_events(struct ui_browser *browser)
-@@ -731,8 +721,8 @@ static int hist_browser__handle_hotkey(s
- 		hist_browser__set_folding(browser, true);
- 		break;
- 	case 'e':
--		/* Expand the selected entry. */
--		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
-+		/* Toggle expand/collapse the selected entry. */
-+		hist_browser__toggle_fold(browser);
- 		break;
- 	case 'H':
- 		browser->show_headers = !browser->show_headers;
+ # skip if --bpf-counters is not supported
+-if ! perf stat --bpf-counters true > /dev/null 2>&1; then
++if ! perf stat -e cycles --bpf-counters true > /dev/null 2>&1; then
+ 	if [ "$1" = "-v" ]; then
+ 		echo "Skipping: --bpf-counters not supported"
+-		perf --no-pager stat --bpf-counters true || true
++		perf --no-pager stat -e cycles --bpf-counters true || true
+ 	fi
+ 	exit 2
+ fi
 
 
