@@ -2,35 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A9A7A3C6F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3FA97A3C4D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241044AbjIQUbB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:31:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43834 "EHLO
+        id S240988AbjIQU3X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239642AbjIQUaz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:30:55 -0400
+        with ESMTP id S241047AbjIQU3H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:29:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED2DB101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:30:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30145C433C7;
-        Sun, 17 Sep 2023 20:30:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686C610A
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:29:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9806CC433C8;
+        Sun, 17 Sep 2023 20:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982649;
-        bh=I+BZh61C0HRxM6+oYbkagjGQirh4JtN28qkfHWafnog=;
+        s=korg; t=1694982541;
+        bh=uzJyNjGzGmSqLZZ20L8p3R8jATjTVy3ma1K6XLL4qQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rR5ry6KpB5LWi9Jy0aITElAKhlGSyxK0NXBeAULvcAq+MBMJ6h1JQKUV6uoH2jvYx
-         wkwSB38qnGmC149CF3pVuhCW1gnyccMSVFsL1ZWVvBjyvLWHtL4ULv6z/cNY4NCsbU
-         DvnZ8jHf7w+bQkZqCvbKMG4a+u72VMcI6RGS33GQ=
+        b=KCa2t46CYtNcjP16xOoYZwgBZvE+vTh7HzYti7kelVsG0oRcezcZjcAYRAzvarmoW
+         Ins4Ne8DdxLoV+svLArWvONOcgHgrNHsLS+mWoUvmPSiHTXNLYgQ6RPIqhCjXveP49
+         /cnW8u++8DOEroWZmnRkmLAwRLAT6mKKgxsYHSSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eddie James <eajames@linux.ibm.com>,
-        Joel Stanley <joel@jms.id.au>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 272/511] fsi: aspeed: Reset master errors after CFAM reset
-Date:   Sun, 17 Sep 2023 21:11:39 +0200
-Message-ID: <20230917191120.409314466@linuxfoundation.org>
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 273/511] iommu/qcom: Disable and reset context bank before programming
+Date:   Sun, 17 Sep 2023 21:11:40 +0200
+Message-ID: <20230917191120.432473010@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -53,36 +56,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 52300909f4670ac552bfeb33c1355b896eac8c06 ]
+[ Upstream commit 9f3fef23d9b5a858a6e6d5f478bb1b6b76265e76 ]
 
-It has been observed that sometimes the FSI master will return all 0xffs
-after a CFAM has been taken out of reset, without presenting any error.
-Resetting the FSI master errors resolves the issue.
+Writing	the new	TTBRs, TCRs and MAIRs on a previously enabled
+context bank may trigger a context fault, resulting in firmware
+driven AP resets: change the domain initialization programming
+sequence to disable the context bank(s) and to also clear the
+related fault address (CB_FAR) and fault status (CB_FSR)
+registers before writing new values to TTBR0/1, TCR/TCR2, MAIR0/1.
 
-Fixes: 4a851d714ead ("fsi: aspeed: Support CFAM reset GPIO")
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230612195657.245125-8-eajames@linux.ibm.com
-Signed-off-by: Joel Stanley <joel@jms.id.au>
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230622092742.74819-4-angelogioacchino.delregno@collabora.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fsi/fsi-master-aspeed.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/fsi/fsi-master-aspeed.c b/drivers/fsi/fsi-master-aspeed.c
-index 0bed2fab80558..a3645da1f1bf3 100644
---- a/drivers/fsi/fsi-master-aspeed.c
-+++ b/drivers/fsi/fsi-master-aspeed.c
-@@ -453,6 +453,8 @@ static ssize_t cfam_reset_store(struct device *dev, struct device_attribute *att
- 	gpiod_set_value(aspeed->cfam_reset_gpio, 1);
- 	usleep_range(900, 1000);
- 	gpiod_set_value(aspeed->cfam_reset_gpio, 0);
-+	usleep_range(900, 1000);
-+	opb_writel(aspeed, ctrl_base + FSI_MRESP0, cpu_to_be32(FSI_MRESP_RST_ALL_MASTER));
- 	mutex_unlock(&aspeed->lock);
+diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+index a47cb654b7048..9438203f08de7 100644
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -273,6 +273,13 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
+ 			ctx->secure_init = true;
+ 		}
  
- 	return count;
++		/* Disable context bank before programming */
++		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
++
++		/* Clear context bank fault address fault status registers */
++		iommu_writel(ctx, ARM_SMMU_CB_FAR, 0);
++		iommu_writel(ctx, ARM_SMMU_CB_FSR, ARM_SMMU_FSR_FAULT);
++
+ 		/* TTBRs */
+ 		iommu_writeq(ctx, ARM_SMMU_CB_TTBR0,
+ 				pgtbl_cfg.arm_lpae_s1_cfg.ttbr |
 -- 
 2.40.1
 
