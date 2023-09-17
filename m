@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF63D7A39C4
+	by mail.lfdr.de (Postfix) with ESMTP id 64E4F7A39C3
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239478AbjIQTyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240116AbjIQTyI (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36960 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240148AbjIQTxl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:41 -0400
+        with ESMTP id S240156AbjIQTxp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878469F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E231C433CA;
-        Sun, 17 Sep 2023 19:53:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F75FEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10447C433C9;
+        Sun, 17 Sep 2023 19:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980416;
-        bh=8iEAd/V1lZ+jR4ER1aNolpBBT1QuaTi6V+94sXYJ3lg=;
+        s=korg; t=1694980419;
+        bh=ZykPAvmsFfKN9NS9q5vACLFlt2i+IFt/tiCNu0KVTl4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KxtHQ2VhHdD5xZGpGjviMCWw4mlLG4mm2pLJyXSBX9Rnuy5LaGgsbNMKGAhumdgCV
-         0n6q1lWTkS/Z0i9tkO8yJdcf6tTXwxxAAeifkEESOjAv/Jbu1k9BqMIpa4NbN6jkVH
-         1MLMP1b6YXd8FwihCKoHvvRMGXcPIu+vzBac0t3M=
+        b=scmflm06MjV652f5xUyMjr4atX8Oh8WHjvkItg8xQdFc09BUlvzpMLrLkICGfl0RJ
+         hgwfqVsRRplGpqe/uzBhiPx7DTi+i7vYftTSYPsueAUf0bzAVF6JLy501B5p0BiYFo
+         h4qmRABlbelb+gS2REdQm83DJUbpBTXc6kcHvqbw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable@kernel.org,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.5 185/285] jbd2: check jh->b_transaction before removing it from checkpoint
-Date:   Sun, 17 Sep 2023 21:13:05 +0200
-Message-ID: <20230917191058.017005856@linuxfoundation.org>
+        Theodore Tso <tytso@mit.edu>, Zhang Yi <yi.zhang@huawei.com>,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.5 186/285] jbd2: correct the end of the journal recovery scan range
+Date:   Sun, 17 Sep 2023 21:13:06 +0200
+Message-ID: <20230917191058.050792700@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -40,7 +39,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,64 +54,76 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 590a809ff743e7bd890ba5fb36bc38e20a36de53 upstream.
+commit 2dfba3bb40ad8536b9fa802364f2d40da31aa88e upstream.
 
-Following process will corrupt ext4 image:
-Step 1:
-jbd2_journal_commit_transaction
- __jbd2_journal_insert_checkpoint(jh, commit_transaction)
- // Put jh into trans1->t_checkpoint_list
- journal->j_checkpoint_transactions = commit_transaction
- // Put trans1 into journal->j_checkpoint_transactions
+We got a filesystem inconsistency issue below while running generic/475
+I/O failure pressure test with fast_commit feature enabled.
 
-Step 2:
-do_get_write_access
- test_clear_buffer_dirty(bh) // clear buffer dirty，set jbd dirty
- __jbd2_journal_file_buffer(jh, transaction) // jh belongs to trans2
+ Symlink /p3/d3/d1c/d6c/dd6/dce/l101 (inode #132605) is invalid.
 
-Step 3:
-drop_cache
- journal_shrink_one_cp_list
-  jbd2_journal_try_remove_checkpoint
-   if (!trylock_buffer(bh))  // lock bh, true
-   if (buffer_dirty(bh))     // buffer is not dirty
-   __jbd2_journal_remove_checkpoint(jh)
-   // remove jh from trans1->t_checkpoint_list
+If fast_commit feature is enabled, a special fast_commit journal area is
+appended to the end of the normal journal area. The journal->j_last
+point to the first unused block behind the normal journal area instead
+of the whole log area, and the journal->j_fc_last point to the first
+unused block behind the fast_commit journal area. While doing journal
+recovery, do_one_pass(PASS_SCAN) should first scan the normal journal
+area and turn around to the first block once it meet journal->j_last,
+but the wrap() macro misuse the journal->j_fc_last, so the recovering
+could not read the next magic block (commit block perhaps) and would end
+early mistakenly and missing tN and every transaction after it in the
+following example. Finally, it could lead to filesystem inconsistency.
 
-Step 4:
-jbd2_log_do_checkpoint
- trans1 = journal->j_checkpoint_transactions
- // jh is not in trans1->t_checkpoint_list
- jbd2_cleanup_journal_tail(journal)  // trans1 is done
+ | normal journal area                             | fast commit area |
+ +-------------------------------------------------+------------------+
+ | tN(rere) | tN+1 |~| tN-x |...| tN-1 | tN(front) |       ....       |
+ +-------------------------------------------------+------------------+
+                     /                             /                  /
+                start               journal->j_last journal->j_fc_last
 
-Step 5: Power cut, trans2 is not committed, jh is lost in next mounting.
+This patch fix it by use the correct ending journal->j_last.
 
-Fix it by checking 'jh->b_transaction' before remove it from checkpoint.
-
+Fixes: 5b849b5f96b4 ("jbd2: fast commit recovery path")
 Cc: stable@kernel.org
-Fixes: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reported-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/linux-ext4/20230613043120.GB1584772@mit.edu/
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230714025528.564988-3-yi.zhang@huaweicloud.com
+Link: https://lore.kernel.org/r/20230626073322.3956567-1-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/jbd2/recovery.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -639,6 +639,8 @@ int jbd2_journal_try_remove_checkpoint(s
- {
- 	struct buffer_head *bh = jh2bh(jh);
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -230,12 +230,8 @@ static int count_tags(journal_t *journal
+ /* Make sure we wrap around the log correctly! */
+ #define wrap(journal, var)						\
+ do {									\
+-	unsigned long _wrap_last =					\
+-		jbd2_has_feature_fast_commit(journal) ?			\
+-			(journal)->j_fc_last : (journal)->j_last;	\
+-									\
+-	if (var >= _wrap_last)						\
+-		var -= (_wrap_last - (journal)->j_first);		\
++	if (var >= (journal)->j_last)					\
++		var -= ((journal)->j_last - (journal)->j_first);	\
+ } while (0)
  
-+	if (jh->b_transaction)
-+		return -EBUSY;
- 	if (!trylock_buffer(bh))
- 		return -EBUSY;
- 	if (buffer_dirty(bh)) {
+ static int fc_do_one_pass(journal_t *journal,
+@@ -524,9 +520,7 @@ static int do_one_pass(journal_t *journa
+ 				break;
+ 
+ 		jbd2_debug(2, "Scanning for sequence ID %u at %lu/%lu\n",
+-			  next_commit_ID, next_log_block,
+-			  jbd2_has_feature_fast_commit(journal) ?
+-			  journal->j_fc_last : journal->j_last);
++			  next_commit_ID, next_log_block, journal->j_last);
+ 
+ 		/* Skip over each chunk of the transaction looking
+ 		 * either the next descriptor block or the final commit
 
 
