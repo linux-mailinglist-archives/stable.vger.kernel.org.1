@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 430327A3B67
+	by mail.lfdr.de (Postfix) with ESMTP id E571E7A3B6A
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240689AbjIQURJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45182 "EHLO
+        id S240697AbjIQURK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240720AbjIQUQy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:54 -0400
+        with ESMTP id S240755AbjIQURA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97772F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE244C433C7;
-        Sun, 17 Sep 2023 20:16:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 445B5101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF1DC433C8;
+        Sun, 17 Sep 2023 20:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981808;
-        bh=t5glHwnkzYNf+tRWGVe75DJYnyxEruDdfVgx8/qfuQ8=;
+        s=korg; t=1694981814;
+        bh=svO+GXBMomxTW8JIT8sk5mtDy8FhwsU87K2uRVP/DEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T1hrNa8UOp/ml2vF1YFJ5pJErpAB3rmIHz/cYGDuI9msoXy7Zzwyg8xzxXJfogP4Q
-         1jP+U++nKzMhDCG6Y2ybWsR9rFSs60y40HRIjJ454fHh6N7eQAtpw79bZrbFblEsmO
-         BeZSXyWQTFYIzNmf7OZrGLz4tJpZ484zZ5/A2ow4=
+        b=R68jzA+/ONxpUwid6lawwKijSXoQNoYzurUNti6fSlVLTKFUqb8w23VUfjb9cFvr7
+         7/ZdJWFnCDWUpQg65UW8Ydi2ZdnYdNuj3zHDJCQUrMm3lbTJObMygeZhQUuZ95drpl
+         bgAOM2lYwBTEvuvSHeWLg/tfp4bg6I4C5ezTfaQA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/511] wifi: mwifiex: Fix missed return in oob checks failed path
-Date:   Sun, 17 Sep 2023 21:08:56 +0200
-Message-ID: <20230917191116.491664499@linuxfoundation.org>
+        patches@lists.linux.dev, "Daniel T. Lee" <danieltimlee@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 110/511] samples/bpf: fix broken map lookup probe
+Date:   Sun, 17 Sep 2023 21:08:57 +0200
+Message-ID: <20230917191116.515297475@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,49 +54,69 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Polaris Pi <pinkperfect2021@gmail.com>
+From: Daniel T. Lee <danieltimlee@gmail.com>
 
-[ Upstream commit 2785851c627f2db05f9271f7f63661b5dbd95c4c ]
+[ Upstream commit d93a7cf6ca2cfcd7de5d06f753ce8d5e863316ac ]
 
-Add missed return in mwifiex_uap_queue_bridged_pkt() and
-mwifiex_process_rx_packet().
+In the commit 7c4cd051add3 ("bpf: Fix syscall's stackmap lookup
+potential deadlock"), a potential deadlock issue was addressed, which
+resulted in *_map_lookup_elem not triggering BPF programs.
+(prior to lookup, bpf_disable_instrumentation() is used)
 
-Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-Reported-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230810083911.3725248-1-pinkperfect2021@gmail.com
+To resolve the broken map lookup probe using "htab_map_lookup_elem",
+this commit introduces an alternative approach. Instead, it utilize
+"bpf_map_copy_value" and apply a filter specifically for the hash table
+with map_type.
+
+Signed-off-by: Daniel T. Lee <danieltimlee@gmail.com>
+Fixes: 7c4cd051add3 ("bpf: Fix syscall's stackmap lookup potential deadlock")
+Link: https://lore.kernel.org/r/20230818090119.477441-8-danieltimlee@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c   | 1 +
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 1 +
- 2 files changed, 2 insertions(+)
+ samples/bpf/tracex6_kern.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 685a5b6697046..3c555946cb2cc 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -104,6 +104,7 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 			    skb->len, rx_pkt_off);
- 		priv->stats.rx_dropped++;
- 		dev_kfree_skb_any(skb);
-+		return -1;
- 	}
+diff --git a/samples/bpf/tracex6_kern.c b/samples/bpf/tracex6_kern.c
+index acad5712d8b4f..fd602c2774b8b 100644
+--- a/samples/bpf/tracex6_kern.c
++++ b/samples/bpf/tracex6_kern.c
+@@ -2,6 +2,8 @@
+ #include <linux/version.h>
+ #include <uapi/linux/bpf.h>
+ #include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++#include <bpf/bpf_core_read.h>
  
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index b3915bfd38693..d6493638e7028 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -122,6 +122,7 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
- 			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
- 		priv->stats.rx_dropped++;
- 		dev_kfree_skb_any(skb);
-+		return;
- 	}
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+@@ -45,13 +47,24 @@ int bpf_prog1(struct pt_regs *ctx)
+ 	return 0;
+ }
  
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+-SEC("kprobe/htab_map_lookup_elem")
+-int bpf_prog2(struct pt_regs *ctx)
++/*
++ * Since *_map_lookup_elem can't be expected to trigger bpf programs
++ * due to potential deadlocks (bpf_disable_instrumentation), this bpf
++ * program will be attached to bpf_map_copy_value (which is called
++ * from map_lookup_elem) and will only filter the hashtable type.
++ */
++SEC("kprobe/bpf_map_copy_value")
++int BPF_KPROBE(bpf_prog2, struct bpf_map *map)
+ {
+ 	u32 key = bpf_get_smp_processor_id();
+ 	struct bpf_perf_event_value *val, buf;
++	enum bpf_map_type type;
+ 	int error;
+ 
++	type = BPF_CORE_READ(map, map_type);
++	if (type != BPF_MAP_TYPE_HASH)
++		return 0;
++
+ 	error = bpf_perf_event_read_value(&counters, key, &buf, sizeof(buf));
+ 	if (error)
+ 		return 0;
 -- 
 2.40.1
 
