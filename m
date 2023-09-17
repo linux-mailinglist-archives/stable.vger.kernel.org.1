@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EBB37A380F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEF7C7A3911
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239617AbjIQTal (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:30:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56094 "EHLO
+        id S239978AbjIQToc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:44:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239653AbjIQTaa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:30 -0400
+        with ESMTP id S239919AbjIQToB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:44:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90FC9119
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:30:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DD2C433C9;
-        Sun, 17 Sep 2023 19:30:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8342E7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB52FC433C8;
+        Sun, 17 Sep 2023 19:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979024;
-        bh=siv6BfS3vbLbukNSvZBUzC7iL1IEdS9fSevnFRzjjRs=;
+        s=korg; t=1694979836;
+        bh=zRF+DlKPj12GfWW4fgkhwCyoge/oPy/u06Rw8EvpkGc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AZvTrrziQzXADK+1oH5OPhcdQEqG0j+/Ef805LjgmitjGN1q5QaHfapiW3McX4TQf
-         N6+bNvrfvLEwqZpgyXnua0rdbgpitUS5jDcWFu9+pHIdTpR6CO5xYBMWeQV4uQ6Mhw
-         LHYBEYoSt274CfjSlyBaMV7vRBEbfbUjCT9Rtfac=
+        b=mhrCcMLZ5Ox/Wu+7IZd9fw5zATiMFK+QAcoadF+2MD41BOiZo5Ppyu5Rrn1SF+MJf
+         /tTdXOby2i4P63laS5JfjwajSfGMGciZuFCJPuGAi/cZOYtg3gVkCUVSUeXuonDf21
+         FUuuzTeHK9sAMHRkZ9s3M+P/4lcolRLYUcwCYDrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 167/406] of: unittest: Fix overlay type in apply/revert check
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 021/285] clk: qcom: camcc-sc7180: fix async resume during probe
 Date:   Sun, 17 Sep 2023 21:10:21 +0200
-Message-ID: <20230917191105.592698107@linuxfoundation.org>
+Message-ID: <20230917191052.365617023@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 6becf8f845ae1f0b1cfed395bbeccbd23654162d ]
+commit c948ff727e25297f3a703eb5349dd66aabf004e4 upstream.
 
-The removal check in of_unittest_apply_revert_overlay_check()
-always uses the platform device overlay type, while it should use the
-actual overlay type, as passed as a parameter to the function.
+To make sure that the controller is runtime resumed and its power domain
+is enabled before accessing its registers during probe, the synchronous
+runtime PM interface must be used.
 
-This has no impact on any current test, as all tests calling
-of_unittest_apply_revert_overlay_check() use the platform device overlay
-type.
-
-Fixes: d5e75500ca401d31 ("of: unitest: Add I2C overlay unit tests.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/ba0234c41ba808f10112094f88792beeb6dbaedf.1690533838.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8d4025943e13 ("clk: qcom: camcc-sc7180: Use runtime PM ops instead of clk ones")
+Cc: stable@vger.kernel.org      # 5.11
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c | 2 +-
+ drivers/clk/qcom/camcc-sc7180.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 1058e23eca7d2..412d7ddb3b8b2 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -2067,7 +2067,7 @@ static int __init of_unittest_apply_revert_overlay_check(int overlay_nr,
- 	of_unittest_untrack_overlay(save_id);
+--- a/drivers/clk/qcom/camcc-sc7180.c
++++ b/drivers/clk/qcom/camcc-sc7180.c
+@@ -1664,7 +1664,7 @@ static int cam_cc_sc7180_probe(struct pl
+ 		return ret;
+ 	}
  
- 	/* unittest device must be again in before state */
--	if (of_unittest_device_exists(unittest_nr, PDEV_OVERLAY) != before) {
-+	if (of_unittest_device_exists(unittest_nr, ovtype) != before) {
- 		unittest(0, "%s with device @\"%s\" %s\n",
- 				overlay_name_from_nr(overlay_nr),
- 				unittest_path(unittest_nr, ovtype),
--- 
-2.40.1
-
+-	ret = pm_runtime_get(&pdev->dev);
++	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret)
+ 		return ret;
+ 
 
 
