@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1687A3944
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 686F87A380E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:31:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239994AbjIQTrN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58152 "EHLO
+        id S239594AbjIQTai (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240016AbjIQTqr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:47 -0400
+        with ESMTP id S239609AbjIQTaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E2F185
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACF6C433C9;
-        Sun, 17 Sep 2023 19:46:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EBCEDB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:30:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F2AC433CA;
+        Sun, 17 Sep 2023 19:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980001;
-        bh=X1ts288xElJ8jQbpBp13NftFq0tedjB9BQd6mUGkFyg=;
+        s=korg; t=1694979007;
+        bh=5BAhze+cPqEDG53Ew8dQ8KlzPw0/V0e8APFHw74TYQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bFA3Q8qkWRm7zCI2XIVc0ocEPKvBbCoRvjE5hhmHxWNYKHQiSpvavaZtrn/m5m0vH
-         xvGk2Sai+eLwYPWzk1bRWIBb1nmILhYv/jAHpsQgVOuPSkQUXpwCjJyH3vK+iT2q//
-         ANi227Iy5vESpJnp8heKAlMXD6l3GovyLGFvTJes=
+        b=kEBocwboZLrKIL7efO8n/c+IBKUYlsl5Dh8G/YOobREbQEYhO+9o2rqVCkpX3DkWW
+         zUr4FZHCNcY7InBGcBQ0IYGYPmoCFDUJJlscKP6RUWln2Gw1VXZKuQ9LhwYmZV02Tf
+         49tYakv/SbhlFRkxB4cwRPOnHLFF/Q8k0f7nbMDc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 040/285] parisc: led: Reduce CPU overhead for disk & lan LED computation
+        patches@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 186/406] powerpc/fadump: reset dump area size if fadump memory reserve fails
 Date:   Sun, 17 Sep 2023 21:10:40 +0200
-Message-ID: <20230917191053.059354720@linuxfoundation.org>
+Message-ID: <20230917191106.116635384@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,42 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
+[ Upstream commit d1eb75e0dfed80d2d85b664e28a39f65b290ab55 ]
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+In case fadump_reserve_mem() fails to reserve memory, the
+reserve_dump_area_size variable will retain the reserve area size. This
+will lead to /sys/kernel/fadump/mem_reserved node displaying an incorrect
+memory reserved by fadump.
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
+To fix this problem, reserve dump area size variable is set to 0 if fadump
+failed to reserve memory.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8255da95e545 ("powerpc/fadump: release all the memory above boot memory size")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230704050715.203581-1-sourabhjain@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parisc/led.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/fadump.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -56,8 +56,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 1a5ba26aab156..935ce1bec43fa 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -642,6 +642,7 @@ int __init fadump_reserve_mem(void)
+ 	return ret;
+ error_out:
+ 	fw_dump.fadump_enabled = 0;
++	fw_dump.reserve_dump_area_size = 0;
+ 	return 0;
+ }
+ 
+-- 
+2.40.1
+
 
 
