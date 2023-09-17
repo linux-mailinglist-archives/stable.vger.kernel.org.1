@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B249C7A38CE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91F507A38B6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239837AbjIQTku (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35902 "EHLO
+        id S239831AbjIQTjO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239885AbjIQTkb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:31 -0400
+        with ESMTP id S239882AbjIQTjC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C9DD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296D4C433C9;
-        Sun, 17 Sep 2023 19:40:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3822E103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69461C433C8;
+        Sun, 17 Sep 2023 19:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979626;
-        bh=u1Qd/tXq41RIRhrkEl//ZYbRz6jrrAOuZr4CLzP4wjs=;
+        s=korg; t=1694979536;
+        bh=5YcyLFBsZWDYFPNRrf88SDokjBAls2eW3zzPCfaCRM4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xDxLZC+ix2mCe+dXcX7FUoofoKAZs4uIrIkH62BmrO8Gy8j8MGJU5sS+LaZz5np6H
-         0M5ACJjmfhLWgi/COpzTmxLcxBBLIDRBB7NdkMgwvxYgQ/IJoRyBEMhY2eYiuTQgPd
-         +1/25gIEySrTw6E+c3wvsolO52B16sUHnmqL1Y6g=
+        b=hcuEq+XIDcp10h7X7qT5lqWEbiAU6PYp7k02kh/ZYsXXzh7MUpPdVwXSPRNwYrT9M
+         hk8uYifyqubqkeG+YghrUXG4UmEN5K13A3/b182yqIdqkxSEhy9LHtyIAelexaYX65
+         K07EVcGgPypGtMwHwerAZnfyxOuBIvvCAFvywMlI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 5.10 333/406] NFSv4/pnfs: minor fix for cleanup path in nfs4_get_device_info
-Date:   Sun, 17 Sep 2023 21:13:07 +0200
-Message-ID: <20230917191110.078860307@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 5.10 334/406] kconfig: fix possible buffer overflow
+Date:   Sun, 17 Sep 2023 21:13:08 +0200
+Message-ID: <20230917191110.103868185@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -54,35 +56,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-commit 96562c45af5c31b89a197af28f79bfa838fb8391 upstream.
+[ Upstream commit a3b7039bb2b22fcd2ad20d59c00ed4e606ce3754 ]
 
-It is an almost improbable error case but when page allocating loop in
-nfs4_get_device_info() fails then we should only free the already
-allocated pages, as __free_page() can't deal with NULL arguments.
+Buffer 'new_argv' is accessed without bound check after accessing with
+bound check via 'new_argc' index.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e298f3b49def ("kconfig: add built-in function support")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs_dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/preprocess.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfs/pnfs_dev.c
-+++ b/fs/nfs/pnfs_dev.c
-@@ -152,7 +152,7 @@ nfs4_get_device_info(struct nfs_server *
- 		set_bit(NFS_DEVICEID_NOCACHE, &d->flags);
+diff --git a/scripts/kconfig/preprocess.c b/scripts/kconfig/preprocess.c
+index 748da578b418c..d1f5bcff4b62d 100644
+--- a/scripts/kconfig/preprocess.c
++++ b/scripts/kconfig/preprocess.c
+@@ -396,6 +396,9 @@ static char *eval_clause(const char *str, size_t len, int argc, char *argv[])
  
- out_free_pages:
--	for (i = 0; i < max_pages; i++)
-+	while (--i >= 0)
- 		__free_page(pages[i]);
- 	kfree(pages);
- out_free_pdev:
+ 		p++;
+ 	}
++
++	if (new_argc >= FUNCTION_MAX_ARGS)
++		pperror("too many function arguments");
+ 	new_argv[new_argc++] = prev;
+ 
+ 	/*
+-- 
+2.40.1
+
 
 
