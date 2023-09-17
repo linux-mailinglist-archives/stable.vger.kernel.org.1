@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 833F37A38D1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 058137A38D4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239846AbjIQTkv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S238276AbjIQTkv (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48868 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239894AbjIQTkm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:42 -0400
+        with ESMTP id S238066AbjIQTkq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8865ED9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2552C433C8;
-        Sun, 17 Sep 2023 19:40:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2DD2D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D310C433C7;
+        Sun, 17 Sep 2023 19:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979637;
-        bh=rx+Uo4jOiT/UfwQrvjO7SUXejUpqVB9634IUYPvzJvU=;
+        s=korg; t=1694979640;
+        bh=7BJJkVw6qMYRT9cCpgR4kx4t4RvZuSr25OcLn1r3Eck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WW8c2SlF/9tDHHtnTEwY4JW/DaVPj+VTUkBkFL98F64F2JG3qS1IBJ7w+r/Sawb6V
-         xOiiaI4BddWCbyu6/ccusLCenmAoTGpcJ5cRn3VM0snaR8xpli099KculStjVNlGKv
-         6HDilSrTOAQqontnCRlN7Oy51cr+SUEZrGx4oh3I=
+        b=HYSik943Br9U+Q7Vlrd67ikon3D5AguzGERYr+VmVNda4z0BxmH+BFcZiuNamF2zN
+         QP+ayGDktV6DNeHZcngFFSgNUf7L1z2i3rDt/KQT25qZEY4OYjtvp6AwwNHvJ/ZR57
+         7kwkUUQsNh4WNsx5Zjl3ELgstzqCMAJnXDBob+rU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanmeisi <ruan.meisi@zte.com.cn>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.10 371/406] fuse: nlookup missing decrement in fuse_direntplus_link
-Date:   Sun, 17 Sep 2023 21:13:45 +0200
-Message-ID: <20230917191111.063973050@linuxfoundation.org>
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 372/406] btrfs: dont start transaction when joining with TRANS_JOIN_NOSTART
+Date:   Sun, 17 Sep 2023 21:13:46 +0200
+Message-ID: <20230917191111.091639084@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -53,47 +53,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: ruanmeisi <ruan.meisi@zte.com.cn>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit b8bd342d50cbf606666488488f9fea374aceb2d5 upstream.
+commit 4490e803e1fe9fab8db5025e44e23b55df54078b upstream.
 
-During our debugging of glusterfs, we found an Assertion failed error:
-inode_lookup >= nlookup, which was caused by the nlookup value in the
-kernel being greater than that in the FUSE file system.
+When joining a transaction with TRANS_JOIN_NOSTART, if we don't find a
+running transaction we end up creating one. This goes against the purpose
+of TRANS_JOIN_NOSTART which is to join a running transaction if its state
+is at or below the state TRANS_STATE_COMMIT_START, otherwise return an
+-ENOENT error and don't start a new transaction. So fix this to not create
+a new transaction if there's no running transaction at or below that
+state.
 
-The issue was introduced by fuse_direntplus_link, where in the function,
-fuse_iget increments nlookup, and if d_splice_alias returns failure,
-fuse_direntplus_link returns failure without decrementing nlookup
-https://github.com/gluster/glusterfs/pull/4081
-
-Signed-off-by: ruanmeisi <ruan.meisi@zte.com.cn>
-Fixes: 0b05b18381ee ("fuse: implement NFS-like readdirplus support")
-Cc: <stable@vger.kernel.org> # v3.9
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+CC: stable@vger.kernel.org # 4.14+
+Fixes: a6d155d2e363 ("Btrfs: fix deadlock between fiemap and transaction commits")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/readdir.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/btrfs/transaction.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/fuse/readdir.c
-+++ b/fs/fuse/readdir.c
-@@ -243,8 +243,16 @@ retry:
- 			dput(dentry);
- 			dentry = alias;
- 		}
--		if (IS_ERR(dentry))
-+		if (IS_ERR(dentry)) {
-+			if (!IS_ERR(inode)) {
-+				struct fuse_inode *fi = get_fuse_inode(inode);
-+
-+				spin_lock(&fi->lock);
-+				fi->nlookup--;
-+				spin_unlock(&fi->lock);
-+			}
- 			return PTR_ERR(dentry);
-+		}
- 	}
- 	if (fc->readdirplus_auto)
- 		set_bit(FUSE_I_INIT_RDPLUS, &get_fuse_inode(inode)->state);
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -301,10 +301,11 @@ loop:
+ 	spin_unlock(&fs_info->trans_lock);
+ 
+ 	/*
+-	 * If we are ATTACH, we just want to catch the current transaction,
+-	 * and commit it. If there is no transaction, just return ENOENT.
++	 * If we are ATTACH or TRANS_JOIN_NOSTART, we just want to catch the
++	 * current transaction, and commit it. If there is no transaction, just
++	 * return ENOENT.
+ 	 */
+-	if (type == TRANS_ATTACH)
++	if (type == TRANS_ATTACH || type == TRANS_JOIN_NOSTART)
+ 		return -ENOENT;
+ 
+ 	/*
 
 
