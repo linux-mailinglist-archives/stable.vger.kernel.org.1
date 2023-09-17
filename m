@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BEAB7A3BE6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53CEF7A3C0C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239639AbjIQUYB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47816 "EHLO
+        id S239654AbjIQU0J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:26:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240780AbjIQUXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:23:31 -0400
+        with ESMTP id S240868AbjIQUZi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:25:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AA4101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:23:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48434C433C8;
-        Sun, 17 Sep 2023 20:23:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B738101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:25:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846FCC433C7;
+        Sun, 17 Sep 2023 20:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982205;
-        bh=ct5uwVRjzT+FZi9/I/bMLW/7bfnUbEyG+vHhK9jXKvA=;
+        s=korg; t=1694982332;
+        bh=80GwFUNwt+1ilv/SmM761ph9FAs4ARABJiWj0TZZVjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VADgn+c0cA3SOsoxGUvg72qtOQeLXBT8P5dsGFVrvqAjxkI+4kkKNP2p9G+00AAUm
-         DTc/lpyVGF+ezflDt7RwdKhiUOfyyhzIxQUTYY7Nzgnt8cXg/jzLdrroqeGnih4N2U
-         xcZh2AoEVCmb5uB939SGg9Es3g9haF2w6v2c40rI=
+        b=zRA9liqcFvj80JEJkCmYsSvlI412VVhK96EL9UfcRvVImh64esskZoTipBHUnv3pr
+         CNDdHcwnrn9ZejNIAmXK5VM9fgjZCMB4OV65aTjmusAYZ4rB36IcSNe8GDPPJ1iPkY
+         m2h5FqMwMGp4pND5tTTGVHNe8IhK6fQw+d0fEOys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthias Brugger <matthias.bgg@gmail.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        CK Hu <ck.hu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 182/511] drm/mediatek: Fix potential memory leak if vmap() fail
-Date:   Sun, 17 Sep 2023 21:10:09 +0200
-Message-ID: <20230917191118.225215314@linuxfoundation.org>
+Subject: [PATCH 5.15 183/511] arm64: dts: qcom: apq8016-sbc: Fix ov5640 regulator supply names
+Date:   Sun, 17 Sep 2023 21:10:10 +0200
+Message-ID: <20230917191118.248468700@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -59,43 +56,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 379091e0f6d179d1a084c65de90fa44583b14a70 ]
+[ Upstream commit 43a684580819e7f35b6cb38236be63c4cba26ef4 ]
 
-Also return -ENOMEM if such a failure happens, the implement should take
-responsibility for the error handling.
+The ov5640 driver expects DOVDD, AVDD and DVDD as regulator supply names.
 
-Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap function")
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230706134000.130098-1-suijingfeng@loongson.cn/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+The ov5640 has depended on these names since the driver was committed
+upstream in 2017. Similarly apq8016-sbc.dtsi has had completely different
+regulator names since its own initial commit in 2020.
+
+Perhaps the regulators were left on in previous 410c bootloaders. In any
+case today on 6.5 we won't switch on the ov5640 without correctly naming
+the regulators.
+
+Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811234738.2859417-3-bryan.odonoghue@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index 726a34c4725c4..b983adffa3929 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -242,7 +242,11 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj, struct dma_buf_map *map)
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index c6e8bf18defc6..ad4c2ccec63ee 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -280,9 +280,9 @@ camera_rear@3b {
+ 		clock-names = "xclk";
+ 		clock-frequency = <23880000>;
  
- 	mtk_gem->kvaddr = vmap(mtk_gem->pages, npages, VM_MAP,
- 			       pgprot_writecombine(PAGE_KERNEL));
--
-+	if (!mtk_gem->kvaddr) {
-+		kfree(sgt);
-+		kfree(mtk_gem->pages);
-+		return -ENOMEM;
-+	}
- out:
- 	kfree(sgt);
- 	dma_buf_map_set_vaddr(map, mtk_gem->kvaddr);
+-		vdddo-supply = <&camera_vdddo_1v8>;
+-		vdda-supply = <&camera_vdda_2v8>;
+-		vddd-supply = <&camera_vddd_1v5>;
++		DOVDD-supply = <&camera_vdddo_1v8>;
++		AVDD-supply = <&camera_vdda_2v8>;
++		DVDD-supply = <&camera_vddd_1v5>;
+ 
+ 		/* No camera mezzanine by default */
+ 		status = "disabled";
 -- 
 2.40.1
 
