@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4F17A3AC1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02CD77A3AC3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240443AbjIQUId (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59904 "EHLO
+        id S240456AbjIQUIf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:08:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240446AbjIQUIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:07 -0400
+        with ESMTP id S240455AbjIQUIO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA660F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AD9C433CB;
-        Sun, 17 Sep 2023 20:08:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B9BB5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D7DC433C7;
+        Sun, 17 Sep 2023 20:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981281;
-        bh=filhF9FNRxf3M116g2dY73Mft83ZY/NnPIuoLwouxXE=;
+        s=korg; t=1694981288;
+        bh=3jofWKcPO/FI1TT3/PRbIYM6xhfWfTNYXlHQOBgf10E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GsqQ348z7sPHLdVPKLz/PaEmxg3xDOpImVn8ffS5X9fsq2loI6lpw+vtR68Cp8W2R
-         qOyE7n8nnLglgWprZdQsTeNL+kJisN/mc84OBCPw6uLUJpk/1KssISrTBO/f9D910z
-         K8xujgIRMeaj4icwuMq+RYrqK/ihnjok3JXaWCzs=
+        b=0qZ9n9ZPvPnhSkd+WBqXNu9byCdbb3ZvoI65gM4/fK6yPI3p7oqeh3dfMlm4rVVJD
+         nnzSI0gJQ2JkfeiLsazdBe02no1RrSWenO41XRSmQG7TCakNhPiZi2ymRkTuy2kPsi
+         axGKOvaz1RQ5Xd2/MSQ+AbUWEb/0Mvsob1vezgN0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+        Ido Schimmel <idosch@nvidia.com>,
+        David Ahern <dsahern@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/219] mptcp: annotate data-races around msk->rmem_fwd_alloc
-Date:   Sun, 17 Sep 2023 21:13:46 +0200
-Message-ID: <20230917191044.552392703@linuxfoundation.org>
+Subject: [PATCH 6.1 100/219] ipv4: ignore dst hint for multipath routes
+Date:   Sun, 17 Sep 2023 21:13:47 +0200
+Message-ID: <20230917191044.586350956@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -55,91 +57,69 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 
-[ Upstream commit 9531e4a83febc3fb47ac77e24cfb5ea97e50034d ]
+[ Upstream commit 6ac66cb03ae306c2e288a9be18226310529f5b25 ]
 
-msk->rmem_fwd_alloc can be read locklessly.
+Route hints when the nexthop is part of a multipath group causes packets
+in the same receive batch to be sent to the same nexthop irrespective of
+the multipath hash of the packet. So, do not extract route hint for
+packets whose destination is part of a multipath group.
 
-Add mptcp_rmem_fwd_alloc_add(), similar to sk_forward_alloc_add(),
-and appropriate READ_ONCE()/WRITE_ONCE() annotations.
+A new SKB flag IPSKB_MULTIPATH is introduced for this purpose, set the
+flag when route is looked up in ip_mkroute_input() and use it in
+ip_extract_route_hint() to check for the existence of the flag.
 
-Fixes: 6511882cdd82 ("mptcp: allocate fwd memory separately on the rx and tx path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
+Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
+Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ include/net/ip.h    | 1 +
+ net/ipv4/ip_input.c | 3 ++-
+ net/ipv4/route.c    | 1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 573db9c2bc1cd..6dd880d6b0518 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -131,9 +131,15 @@ static void mptcp_drop(struct sock *sk, struct sk_buff *skb)
- 	__kfree_skb(skb);
- }
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 1872f570abeda..c286344628dba 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -57,6 +57,7 @@ struct inet_skb_parm {
+ #define IPSKB_FRAG_PMTU		BIT(6)
+ #define IPSKB_L3SLAVE		BIT(7)
+ #define IPSKB_NOPOLICY		BIT(8)
++#define IPSKB_MULTIPATH		BIT(9)
  
-+static void mptcp_rmem_fwd_alloc_add(struct sock *sk, int size)
-+{
-+	WRITE_ONCE(mptcp_sk(sk)->rmem_fwd_alloc,
-+		   mptcp_sk(sk)->rmem_fwd_alloc + size);
-+}
-+
- static void mptcp_rmem_charge(struct sock *sk, int size)
+ 	u16			frag_max_size;
+ };
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index e880ce77322aa..e7196ecffafc6 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -584,7 +584,8 @@ static void ip_sublist_rcv_finish(struct list_head *head)
+ static struct sk_buff *ip_extract_route_hint(const struct net *net,
+ 					     struct sk_buff *skb, int rt_type)
  {
--	mptcp_sk(sk)->rmem_fwd_alloc -= size;
-+	mptcp_rmem_fwd_alloc_add(sk, -size);
- }
+-	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST)
++	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
++	    IPCB(skb)->flags & IPSKB_MULTIPATH)
+ 		return NULL;
  
- static bool mptcp_try_coalesce(struct sock *sk, struct sk_buff *to,
-@@ -174,7 +180,7 @@ static bool mptcp_ooo_try_coalesce(struct mptcp_sock *msk, struct sk_buff *to,
- static void __mptcp_rmem_reclaim(struct sock *sk, int amount)
- {
- 	amount >>= PAGE_SHIFT;
--	mptcp_sk(sk)->rmem_fwd_alloc -= amount << PAGE_SHIFT;
-+	mptcp_rmem_charge(sk, amount << PAGE_SHIFT);
- 	__sk_mem_reduce_allocated(sk, amount);
- }
+ 	return skb;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 51bd9a50a1d1d..a04ffc128e22b 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2146,6 +2146,7 @@ static int ip_mkroute_input(struct sk_buff *skb,
+ 		int h = fib_multipath_hash(res->fi->fib_net, NULL, skb, hkeys);
  
-@@ -183,7 +189,7 @@ static void mptcp_rmem_uncharge(struct sock *sk, int size)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	int reclaimable;
+ 		fib_select_multipath(res, h);
++		IPCB(skb)->flags |= IPSKB_MULTIPATH;
+ 	}
+ #endif
  
--	msk->rmem_fwd_alloc += size;
-+	mptcp_rmem_fwd_alloc_add(sk, size);
- 	reclaimable = msk->rmem_fwd_alloc - sk_unused_reserved_mem(sk);
- 
- 	/* see sk_mem_uncharge() for the rationale behind the following schema */
-@@ -338,7 +344,7 @@ static bool mptcp_rmem_schedule(struct sock *sk, struct sock *ssk, int size)
- 	if (!__sk_mem_raise_allocated(sk, size, amt, SK_MEM_RECV))
- 		return false;
- 
--	msk->rmem_fwd_alloc += amount;
-+	mptcp_rmem_fwd_alloc_add(sk, amount);
- 	return true;
- }
- 
-@@ -3279,7 +3285,7 @@ void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
- 	 * inet_sock_destruct() will dispose it
- 	 */
- 	sk_forward_alloc_add(sk, msk->rmem_fwd_alloc);
--	msk->rmem_fwd_alloc = 0;
-+	WRITE_ONCE(msk->rmem_fwd_alloc, 0);
- 	mptcp_token_destroy(msk);
- 	mptcp_pm_free_anno_list(msk);
- 	mptcp_free_local_addr_list(msk);
-@@ -3562,7 +3568,8 @@ static void mptcp_shutdown(struct sock *sk, int how)
- 
- static int mptcp_forward_alloc_get(const struct sock *sk)
- {
--	return READ_ONCE(sk->sk_forward_alloc) + mptcp_sk(sk)->rmem_fwd_alloc;
-+	return READ_ONCE(sk->sk_forward_alloc) +
-+	       READ_ONCE(mptcp_sk(sk)->rmem_fwd_alloc);
- }
- 
- static int mptcp_ioctl_outq(const struct mptcp_sock *msk, u64 v)
 -- 
 2.40.1
 
