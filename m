@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5E07A37FB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB8477A3919
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239585AbjIQT3h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:29:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35938 "EHLO
+        id S239935AbjIQTpE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239622AbjIQT3a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:29:30 -0400
+        with ESMTP id S239919AbjIQTod (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:44:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F59D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:29:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED29C433C7;
-        Sun, 17 Sep 2023 19:29:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D310FE7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF866C433C8;
+        Sun, 17 Sep 2023 19:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978964;
-        bh=P4ICwFglm/+bbDgtOFBXYaDX9KEOCXskdrtFGdXmf74=;
+        s=korg; t=1694979867;
+        bh=UK4FhFAAiuGaE9cwKOK3Z3OP3b7PFEjrkbfY57R7dXk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i7pTzvn7rNz5aTit55Ih4vkF+EFIokl0NslSx4CqT+tFitd2OZzwz1SSwEvTgzUZc
-         CyjtvK+eiJ8IQF5LaBo9RfMdq9Tu/Lkvir0GNxq0mQ8IXKglbdyaXp71g+ffV87Zpk
-         NbIyqzaYwjsOQekQFpBrmYYuRNxlkxl6tfDWhNDk=
+        b=fqzq92AQU3a2zEKnvM05Kv45L/jGbm0sPkMMpjQkeE5kCa3ndCk7c/1p2fSD7rq9B
+         SynOgUHA2DqUxuF9YnDPs3sd/9hxbrjv1ieiyjlJt36rvabk7xBfUvi2qOdHioh9em
+         TPkjF5nJ4k6L+qI+gQ6pcA9Tkk/wGepvtpXkqQLg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 175/406] ext4: correct grp validation in ext4_mb_good_group
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 029/285] arm64: dts: qcom: msm8953-vince: drop duplicated touschreen parent interrupt
 Date:   Sun, 17 Sep 2023 21:10:29 +0200
-Message-ID: <20230917191105.811371805@linuxfoundation.org>
+Message-ID: <20230917191052.679242898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a9ce5993a0f5c0887c8a1b4ffa3b8046fbcfdc93 ]
+commit b019cf7e5fbaa7d25f716cb936a9237b47156f2d upstream.
 
-Group corruption check will access memory of grp and will trigger kernel
-crash if grp is NULL. So do NULL check before corruption check.
+Interrupts extended already define a parent interrupt controller:
 
-Fixes: 5354b2af3406 ("ext4: allow ext4_get_group_info() to fail")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20230801143204.2284343-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  msm8953-xiaomi-vince.dtb: touchscreen@20: Unevaluated properties are not allowed ('interrupts-parent' was unexpected)
+
+Fixes: aa17e707e04a ("arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi 5 Plus")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230720115335.137354-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 3a71928846712..2f6ed59d81f02 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2103,7 +2103,7 @@ static bool ext4_mb_good_group(struct ext4_allocation_context *ac,
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
+index 0956c866d6cb..1a1d3f92a511 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
+@@ -132,7 +132,6 @@ &i2c_3 {
+ 	touchscreen@20 {
+ 		reg = <0x20>;
+ 		compatible = "syna,rmi4-i2c";
+-		interrupts-parent = <&tlmm>;
+ 		interrupts-extended = <&tlmm 65 IRQ_TYPE_EDGE_FALLING>;
  
- 	BUG_ON(cr < 0 || cr >= 4);
- 
--	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(grp) || !grp))
-+	if (unlikely(!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp)))
- 		return false;
- 
- 	free = grp->bb_free;
+ 		#address-cells = <1>;
 -- 
-2.40.1
+2.42.0
 
 
 
