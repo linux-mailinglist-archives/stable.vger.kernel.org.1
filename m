@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 778727A38FF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B547A3A03
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239885AbjIQTn3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55358 "EHLO
+        id S240245AbjIQT5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239929AbjIQTnH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:07 -0400
+        with ESMTP id S240329AbjIQT5S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0495C12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AF8C433C8;
-        Sun, 17 Sep 2023 19:43:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1292F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD8DC433C7;
+        Sun, 17 Sep 2023 19:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979781;
-        bh=hTuAOaifu5bj/xylVDvhcg1eNrwgDLExuGQF+5m0Piw=;
+        s=korg; t=1694980632;
+        bh=7jFHej5OV0IpjZoYNVHxM/4YxQbmxAKHaYr7FJRisDQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oEDE3Xqmn7rVuOmqwGcwv99YFzhxOBouzF3HFQBHJAc17aDQFM5E4d86wKrt1q0br
-         9Ws2chqOiyTsrMQV46ZCIDJ6uRR3JUT/F+JYiD3SYJnuHRLZ13QbidCitcGyL8x6n8
-         CWZjHsMm/sLTITdW5v0TGGKCNHVYdZrQmTTDq9ok=
+        b=LxZ67rO2KAyRtwfr2YLRFlc1qLNlhgjWXyolIr9V7ZXsqasLhaZTfjOnDGjKAZU5G
+         qUf2UI8i4P31kAk4jTeWvTzvl1BiUQZKzHuQy6UMn2eSSRCtcNAdj5g5dHE/JwyT9L
+         MadlsO8ccTYEHkECWf9Mv2HQVMLfU7MWWgwb6gsg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 394/406] net: ethernet: mvpp2_main: fix possible OOB write in mvpp2_ethtool_get_rxnfc()
+Subject: [PATCH 6.5 248/285] kselftest/runner.sh: Propagate SIGTERM to runner child
 Date:   Sun, 17 Sep 2023 21:14:08 +0200
-Message-ID: <20230917191111.667682956@linuxfoundation.org>
+Message-ID: <20230917191059.909298225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,44 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 51fe0a470543f345e3c62b6798929de3ddcedc1d ]
+[ Upstream commit 9616cb34b08ec86642b162eae75c5a7ca8debe3c ]
 
-rules is allocated in ethtool_get_rxnfc and the size is determined by
-rule_cnt from user space. So rule_cnt needs to be check before using
-rules to avoid OOB writing or NULL pointer dereference.
+Timeouts in kselftest are done using the "timeout" command with the
+"--foreground" option. Without the "foreground" option, it is not
+possible for a user to cancel the runner using SIGINT, because the
+signal is not propagated to timeout which is running in a different
+process group. The "forground" options places the timeout in the same
+process group as its parent, but only sends the SIGTERM (on timeout)
+signal to the forked process. Unfortunately, this does not play nice
+with all kselftests, e.g. "net:fcnal-test.sh", where the child
+processes will linger because timeout does not send SIGTERM to the
+group.
 
-Fixes: 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Reviewed-by: Marcin Wojtas <mw@semihalf.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Some users have noted these hangs [1].
+
+Fix this by nesting the timeout with an additional timeout without the
+foreground option.
+
+Link: https://lore.kernel.org/all/7650b2eb-0aee-a2b0-2e64-c9bc63210f67@alu.unizg.hr/ # [1]
+Fixes: 651e0d881461 ("kselftest/runner: allow to properly deliver signals to tests")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/kselftest/runner.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 68c5ed8716c84..e0e6275b3e20c 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5201,6 +5201,11 @@ static int mvpp2_ethtool_get_rxnfc(struct net_device *dev,
- 		break;
- 	case ETHTOOL_GRXCLSRLALL:
- 		for (i = 0; i < MVPP2_N_RFS_ENTRIES_PER_FLOW; i++) {
-+			if (loc == info->rule_cnt) {
-+				ret = -EMSGSIZE;
-+				break;
-+			}
-+
- 			if (port->rfs_rules[i])
- 				rules[loc++] = i;
- 		}
+diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
+index 1c952d1401d46..70e0a465e30da 100644
+--- a/tools/testing/selftests/kselftest/runner.sh
++++ b/tools/testing/selftests/kselftest/runner.sh
+@@ -36,7 +36,8 @@ tap_timeout()
+ {
+ 	# Make sure tests will time out if utility is available.
+ 	if [ -x /usr/bin/timeout ] ; then
+-		/usr/bin/timeout --foreground "$kselftest_timeout" $1
++		/usr/bin/timeout --foreground "$kselftest_timeout" \
++			/usr/bin/timeout "$kselftest_timeout" $1
+ 	else
+ 		$1
+ 	fi
 -- 
 2.40.1
 
