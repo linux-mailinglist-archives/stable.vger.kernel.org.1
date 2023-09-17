@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 536A97A3ADC
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AD7B7A3CEA
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240495AbjIQUJm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
+        id S241167AbjIQUgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240557AbjIQUJ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:29 -0400
+        with ESMTP id S241175AbjIQUgc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DCF997
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C768BC433C7;
-        Sun, 17 Sep 2023 20:09:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B91F10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8177EC433C8;
+        Sun, 17 Sep 2023 20:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981364;
-        bh=hInM9uqM0pmXPvWu3qH3SskDUUC/MW5Hr3H7Cxbgepw=;
+        s=korg; t=1694982986;
+        bh=2VqXem/+7HQshhQKrXpg5wCAACmihLo3j+436LD8bFk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uREjULbgE/Y+quj7jiGqA1klosF3P/U3NDGgbbBbQXVyKDf/bxkDmSiEQEW/1uA+v
-         Bk0ST7QfTP/ES4hnLnkXGEfI0DWByhneAHlNmOOPnPxyUqejDvA8lyjBzuvGrqHJMC
-         Jandg8MU0F5ehja1iy4mOct+e7OwbeVXg7ZivCOw=
+        b=fKDBhLmaC0sO/PwcUHbjkhA1R/aT28ZU36iBXn8TiwF1U24JV+8hPBpKhtKFbunLP
+         VQYGDOA/HzgLqQgWl3wXctkVOWpuFzrLK9npOIg1SPkMCINeRPPnbAaw4hDFFJvfNC
+         HYTSfx/k6Yt2FtUv0E3fzO8WwwrNUIdCEHT/kwc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/219] af_unix: Fix data-races around sk->sk_shutdown.
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 5.15 410/511] kconfig: fix possible buffer overflow
 Date:   Sun, 17 Sep 2023 21:13:57 +0200
-Message-ID: <20230917191044.966302447@linuxfoundation.org>
+Message-ID: <20230917191123.684788129@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,98 +52,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
+[ Upstream commit a3b7039bb2b22fcd2ad20d59c00ed4e606ce3754 ]
 
-sk->sk_shutdown is changed under unix_state_lock(sk), but
-unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
+Buffer 'new_argv' is accessed without bound check after accessing with
+bound check via 'new_argc' index.
 
-  sock_alloc_send_pskb
-  `- sock_wait_for_wmem
-
-Let's use READ_ONCE() there.
-
-Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
-Fix data races around sk->sk_shutdown.").
-
-BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
-
-write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
- unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
- unix_release+0x59/0x80 net/unix/af_unix.c:1053
- __sock_release+0x7d/0x170 net/socket.c:654
- sock_close+0x19/0x30 net/socket.c:1386
- __fput+0x2a3/0x680 fs/file_table.c:384
- ____fput+0x15/0x20 fs/file_table.c:412
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
- sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
- unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x00 -> 0x03
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e298f3b49def ("kconfig: add built-in function support")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/kconfig/preprocess.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index aa628c6314f64..71990525d37e2 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2690,7 +2690,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
- 			break;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			break;
- 		if (sk->sk_err)
- 			break;
-@@ -2720,7 +2720,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
- 			goto failure;
+diff --git a/scripts/kconfig/preprocess.c b/scripts/kconfig/preprocess.c
+index 748da578b418c..d1f5bcff4b62d 100644
+--- a/scripts/kconfig/preprocess.c
++++ b/scripts/kconfig/preprocess.c
+@@ -396,6 +396,9 @@ static char *eval_clause(const char *str, size_t len, int argc, char *argv[])
  
- 		err = -EPIPE;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			goto failure;
+ 		p++;
+ 	}
++
++	if (new_argc >= FUNCTION_MAX_ARGS)
++		pperror("too many function arguments");
+ 	new_argv[new_argc++] = prev;
  
- 		if (sk_wmem_alloc_get(sk) < READ_ONCE(sk->sk_sndbuf))
+ 	/*
 -- 
 2.40.1
 
