@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5E67A3970
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 103E37A3872
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240065AbjIQTtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50070 "EHLO
+        id S239764AbjIQTgE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240156AbjIQTtS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:18 -0400
+        with ESMTP id S239778AbjIQTfl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE71DC6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5236C433C7;
-        Sun, 17 Sep 2023 19:49:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E424119
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4826DC433C7;
+        Sun, 17 Sep 2023 19:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980152;
-        bh=3pdcRWoY5ciUVN4Uoyoeh3+rjWiz4Alh776E3apmbHw=;
+        s=korg; t=1694979335;
+        bh=a/aoqHj3YFT//S6D+wjP2gzE/CY+uTpaYvrkrHXzKO0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pk543Czwo8VeeddLPn1wEFrTCaOPylhFaW33MUXa8QerWqa4rA0k4hx6fcFVUrgR9
-         I947Ro/N6d3gNLu6zJnAhx7WJ7Kqizw1Ffn01SfgIwDNpkZHexB4++1IahRSDzPBni
-         t2jYZ/uwdY0cP9IsJ+ZSC/Lmpq/ydjtqjlpjsV/M=
+        b=KyqA5fUrbVNlZaT1Te1ruGj8Mu/b/QaTFN9iV+Na8gUI7waSr/ugr4TapI6uchc4D
+         hnAHHovSjCT5Ur3dEH+OkDt4GUH2YgEXT3HGd+GhtwPBrt8kw7NScIj/+BJpTapEYo
+         2CV6gAPMzn6/KruGrqF0oiIoaRwM203GKjZrjqg4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 110/285] net: read sk->sk_family once in sk_mc_loop()
+Subject: [PATCH 5.10 256/406] mtd: rawnand: brcmnand: Fix mtd oobsize
 Date:   Sun, 17 Sep 2023 21:11:50 +0200
-Message-ID: <20230917191055.467412210@linuxfoundation.org>
+Message-ID: <20230917191107.941576619@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,89 +51,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: William Zhang <william.zhang@broadcom.com>
 
-[ Upstream commit a3e0fdf71bbe031de845e8e08ed7fba49f9c702c ]
+[ Upstream commit 60177390fa061c62d156f4a546e3efd90df3c183 ]
 
-syzbot is playing with IPV6_ADDRFORM quite a lot these days,
-and managed to hit the WARN_ON_ONCE(1) in sk_mc_loop()
+brcmnand controller can only access the flash spare area up to certain
+bytes based on the ECC level. It can be less than the actual flash spare
+area size. For example, for many NAND chip supporting ECC BCH-8, it has
+226 bytes spare area. But controller can only uses 218 bytes. So brcmand
+driver overrides the mtd oobsize with the controller's accessible spare
+area size. When the nand base driver utilizes the nand_device object, it
+resets the oobsize back to the actual flash spare aprea size from
+nand_memory_organization structure and controller may not able to access
+all the oob area as mtd advises.
 
-We have many more similar issues to fix.
+This change fixes the issue by overriding the oobsize in the
+nand_memory_organization structure to the controller's accessible spare
+area size.
 
-WARNING: CPU: 1 PID: 1593 at net/core/sock.c:782 sk_mc_loop+0x165/0x260
-Modules linked in:
-CPU: 1 PID: 1593 Comm: kworker/1:3 Not tainted 6.1.40-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-Workqueue: events_power_efficient gc_worker
-RIP: 0010:sk_mc_loop+0x165/0x260 net/core/sock.c:782
-Code: 34 1b fd 49 81 c7 18 05 00 00 4c 89 f8 48 c1 e8 03 42 80 3c 20 00 74 08 4c 89 ff e8 25 36 6d fd 4d 8b 37 eb 13 e8 db 33 1b fd <0f> 0b b3 01 eb 34 e8 d0 33 1b fd 45 31 f6 49 83 c6 38 4c 89 f0 48
-RSP: 0018:ffffc90000388530 EFLAGS: 00010246
-RAX: ffffffff846d9b55 RBX: 0000000000000011 RCX: ffff88814f884980
-RDX: 0000000000000102 RSI: ffffffff87ae5160 RDI: 0000000000000011
-RBP: ffffc90000388550 R08: 0000000000000003 R09: ffffffff846d9a65
-R10: 0000000000000002 R11: ffff88814f884980 R12: dffffc0000000000
-R13: ffff88810dbee000 R14: 0000000000000010 R15: ffff888150084000
-FS: 0000000000000000(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000180 CR3: 000000014ee5b000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<IRQ>
-[<ffffffff8507734f>] ip6_finish_output2+0x33f/0x1ae0 net/ipv6/ip6_output.c:83
-[<ffffffff85062766>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
-[<ffffffff85062766>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
-[<ffffffff85061f8c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
-[<ffffffff85061f8c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
-[<ffffffff852071cf>] dst_output include/net/dst.h:444 [inline]
-[<ffffffff852071cf>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
-[<ffffffff83618fb4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
-[<ffffffff83618fb4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
-[<ffffffff83618fb4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
-[<ffffffff83618fb4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
-[<ffffffff8361ddd9>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
-[<ffffffff84763fc0>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
-[<ffffffff84763fc0>] xmit_one net/core/dev.c:3644 [inline]
-[<ffffffff84763fc0>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
-[<ffffffff8494c650>] sch_direct_xmit+0x2a0/0x9c0 net/sched/sch_generic.c:342
-[<ffffffff8494d883>] qdisc_restart net/sched/sch_generic.c:407 [inline]
-[<ffffffff8494d883>] __qdisc_run+0xb13/0x1e70 net/sched/sch_generic.c:415
-[<ffffffff8478c426>] qdisc_run+0xd6/0x260 include/net/pkt_sched.h:125
-[<ffffffff84796eac>] net_tx_action+0x7ac/0x940 net/core/dev.c:5247
-[<ffffffff858002bd>] __do_softirq+0x2bd/0x9bd kernel/softirq.c:599
-[<ffffffff814c3fe8>] invoke_softirq kernel/softirq.c:430 [inline]
-[<ffffffff814c3fe8>] __irq_exit_rcu+0xc8/0x170 kernel/softirq.c:683
-[<ffffffff814c3f09>] irq_exit_rcu+0x9/0x20 kernel/softirq.c:695
-
-Fixes: 7ad6848c7e81 ("ip: fix mc_loop checks for tunnels with multicast outer addresses")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230830101244.1146934-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a7ab085d7c16 ("mtd: rawnand: Initialize the nand_device object")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-6-william.zhang@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1c5c01b116e6f..4ae68aa07e9fe 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -765,7 +765,8 @@ bool sk_mc_loop(struct sock *sk)
- 		return false;
- 	if (!sk)
- 		return true;
--	switch (sk->sk_family) {
-+	/* IPV6_ADDRFORM can change sk->sk_family under us. */
-+	switch (READ_ONCE(sk->sk_family)) {
- 	case AF_INET:
- 		return inet_sk(sk)->mc_loop;
- #if IS_ENABLED(CONFIG_IPV6)
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 580b91cbd18de..64c8c177d0082 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2534,6 +2534,8 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
+ 	struct nand_chip *chip = &host->chip;
+ 	const struct nand_ecc_props *requirements =
+ 		nanddev_get_ecc_requirements(&chip->base);
++	struct nand_memory_organization *memorg =
++		nanddev_get_memorg(&chip->base);
+ 	struct brcmnand_controller *ctrl = host->ctrl;
+ 	struct brcmnand_cfg *cfg = &host->hwcfg;
+ 	char msg[128];
+@@ -2555,10 +2557,11 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
+ 	if (cfg->spare_area_size > ctrl->max_oob)
+ 		cfg->spare_area_size = ctrl->max_oob;
+ 	/*
+-	 * Set oobsize to be consistent with controller's spare_area_size, as
+-	 * the rest is inaccessible.
++	 * Set mtd and memorg oobsize to be consistent with controller's
++	 * spare_area_size, as the rest is inaccessible.
+ 	 */
+ 	mtd->oobsize = cfg->spare_area_size * (mtd->writesize >> FC_SHIFT);
++	memorg->oobsize = mtd->oobsize;
+ 
+ 	cfg->device_size = mtd->size;
+ 	cfg->block_size = mtd->erasesize;
 -- 
 2.40.1
 
