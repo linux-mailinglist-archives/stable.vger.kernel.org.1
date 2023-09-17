@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE677A3B66
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 010D07A3D3F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240694AbjIQURJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45276 "EHLO
+        id S239716AbjIQUkf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240740AbjIQUQ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:57 -0400
+        with ESMTP id S241260AbjIQUkL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCEC310F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E9FC433C7;
-        Sun, 17 Sep 2023 20:16:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E58E10F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6581C433C7;
+        Sun, 17 Sep 2023 20:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981811;
-        bh=c/wQLWk58pfvRlGpgrBPF8/W/N4WX+MtsaSiGvB6Afc=;
+        s=korg; t=1694983206;
+        bh=O7FxgGZ1B+eQUm/9SdvfJ6TSz7VwfWW/IhWaBr4NEr4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PvnDNU4JnLrbi4gP5lfERn1lmgF7LhMXdFIs9ZqLaNkY26INkxkAgkVRJLhNqpQRd
-         yAQ5+8eCYdEwXZHXqcaxNVzrn9dZTECfbgQnBqtCqEnYteLlgIDB8YBZU9ZNTvAJ+q
-         TAd9+xraIYt63czbehr7Na2Aljfi/px4A3VYepQg=
+        b=uy9mJqFIfPfUWZ8qJ/kYC71EfNRjt/JbvMwCDQfPHHJAmDl1SwC9tpq8n5aacFjsI
+         aqQjxzu7GXgiOzV9hPCEPS6jMtn8BAaOf12Eu0+CE28o2lTxKXDVY/TwaXxd6k/ySX
+         +rnTZibikyDORfKtuKQBcyyxRorm9/NlHnWfW8Fw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "dengqiao.joey" <dengqiao.joey@bytedance.com>,
-        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-        Joao Martins <joao.m.martins@oracle.com>,
-        Maxim Levitsky <mlevitsk@redhat.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 175/219] KVM: SVM: Set target pCPU during IRTE update if target vCPU is running
-Date:   Sun, 17 Sep 2023 21:15:02 +0200
-Message-ID: <20230917191047.309017429@linuxfoundation.org>
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 476/511] btrfs: use the correct superblock to compare fsid in btrfs_validate_super
+Date:   Sun, 17 Sep 2023 21:15:03 +0200
+Message-ID: <20230917191125.238185422@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,99 +52,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-commit f3cebc75e7425d6949d726bb8e937095b0aef025 upstream.
+commit d167aa76dc0683828588c25767da07fb549e4f48 upstream.
 
-Update the target pCPU for IOMMU doorbells when updating IRTE routing if
-KVM is actively running the associated vCPU.  KVM currently only updates
-the pCPU when loading the vCPU (via avic_vcpu_load()), and so doorbell
-events will be delayed until the vCPU goes through a put+load cycle (which
-might very well "never" happen for the lifetime of the VM).
+The function btrfs_validate_super() should verify the fsid in the provided
+superblock argument. Because, all its callers expect it to do that.
 
-To avoid inserting a stale pCPU, e.g. due to racing between updating IRTE
-routing and vCPU load/put, get the pCPU information from the vCPU's
-Physical APIC ID table entry (a.k.a. avic_physical_id_cache in KVM) and
-update the IRTE while holding ir_list_lock.  Add comments with --verbose
-enabled to explain exactly what is and isn't protected by ir_list_lock.
+Such as in the following stack:
 
-Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
-Reported-by: dengqiao.joey <dengqiao.joey@bytedance.com>
-Cc: stable@vger.kernel.org
-Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/r/20230808233132.2499764-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+   write_all_supers()
+       sb = fs_info->super_for_commit;
+       btrfs_validate_write_super(.., sb)
+         btrfs_validate_super(.., sb, ..)
+
+   scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
+
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
+
+However, it currently verifies the fs_info::super_copy::fsid instead,
+which is not correct.  Fix this using the correct fsid in the superblock
+argument.
+
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ fs/btrfs/disk-io.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -810,6 +810,7 @@ static int svm_ir_list_add(struct vcpu_s
- 	int ret = 0;
- 	unsigned long flags;
- 	struct amd_svm_iommu_ir *ir;
-+	u64 entry;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2598,11 +2598,10 @@ int btrfs_validate_super(struct btrfs_fs
+ 		ret = -EINVAL;
+ 	}
  
- 	/**
- 	 * In some cases, the existing irte is updated and re-set,
-@@ -843,6 +844,18 @@ static int svm_ir_list_add(struct vcpu_s
- 	ir->data = pi->ir_data;
+-	if (memcmp(fs_info->fs_devices->fsid, fs_info->super_copy->fsid,
+-		   BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ 		"superblock fsid doesn't match fsid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->fsid, fs_info->fs_devices->fsid);
++			  sb->fsid, fs_info->fs_devices->fsid);
+ 		ret = -EINVAL;
+ 	}
  
- 	spin_lock_irqsave(&svm->ir_list_lock, flags);
-+
-+	/*
-+	 * Update the target pCPU for IOMMU doorbells if the vCPU is running.
-+	 * If the vCPU is NOT running, i.e. is blocking or scheduled out, KVM
-+	 * will update the pCPU info when the vCPU awkened and/or scheduled in.
-+	 * See also avic_vcpu_load().
-+	 */
-+	entry = READ_ONCE(*(svm->avic_physical_id_cache));
-+	if (entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK)
-+		amd_iommu_update_ga(entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK,
-+				    true, pi->ir_data);
-+
- 	list_add(&ir->node, &svm->ir_list);
- 	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
- out:
-@@ -1067,6 +1080,13 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
- 	if (kvm_vcpu_is_blocking(vcpu))
- 		return;
- 
-+	/*
-+	 * Grab the per-vCPU interrupt remapping lock even if the VM doesn't
-+	 * _currently_ have assigned devices, as that can change.  Holding
-+	 * ir_list_lock ensures that either svm_ir_list_add() will consume
-+	 * up-to-date entry information, or that this task will wait until
-+	 * svm_ir_list_add() completes to set the new target pCPU.
-+	 */
- 	spin_lock_irqsave(&svm->ir_list_lock, flags);
- 
- 	entry = READ_ONCE(*(svm->avic_physical_id_cache));
-@@ -1102,6 +1122,14 @@ void avic_vcpu_put(struct kvm_vcpu *vcpu
- 	if (!(entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK))
- 		return;
- 
-+	/*
-+	 * Take and hold the per-vCPU interrupt remapping lock while updating
-+	 * the Physical ID entry even though the lock doesn't protect against
-+	 * multiple writers (see above).  Holding ir_list_lock ensures that
-+	 * either svm_ir_list_add() will consume up-to-date entry information,
-+	 * or that this task will wait until svm_ir_list_add() completes to
-+	 * mark the vCPU as not running.
-+	 */
- 	spin_lock_irqsave(&svm->ir_list_lock, flags);
- 
- 	avic_update_iommu_vcpu_affinity(vcpu, -1, 0);
 
 
