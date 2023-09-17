@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EFFC7A3CBA
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A1F77A3A7E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241102AbjIQUel (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:34:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
+        id S240380AbjIQUEz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241133AbjIQUeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:34:17 -0400
+        with ESMTP id S240399AbjIQUEq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:04:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D10101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:34:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2132AC433CA;
-        Sun, 17 Sep 2023 20:34:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FAB185
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:04:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D966C433C7;
+        Sun, 17 Sep 2023 20:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982851;
-        bh=b6OVyUOzp6LINKKHdGbB8GFONID7IIWUipGw0YqbU0I=;
+        s=korg; t=1694981077;
+        bh=Wol+DELWex9HdLbw+G93WqCqoGDohPzsMLbJIPM68s4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MHPQtY1GWqlktnLEh9JraPwv2EyT/WcIJK9NGBa77hzBF1Htk9EyEa+eJXOVVx1H6
-         8AL8xz1HS1rAsfFCrgarZW2Md0HcUbq0JdSTWgNSUVRA4sL4c4CzmsQSDwX8kSAkL2
-         SeE2RrhB5UGqTDv9PFBF6lcPEYLsqvZaLY45YlQ8=
+        b=hKYQiNXm9BFnpjjviH28yWOaiOwCkcqthMru8tIfmxf8u2AmQzGNz5k9f/8fmqtCu
+         z8hu76ut7WKzIX+3s9ddG111lB4KSbi8LA40bOb2GG5z6EccAzaVwCQiuZTxt8CZWx
+         hN+2M61H9Xn4mIfB/1qmdfo11/A+7WTM6Nz/ysWs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bryan Jennings <bryjen423@gmail.com>,
-        Alexander Deucher <Alexander.Deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Lang Yu <Lang.Yu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 370/511] Revert "drm/amdgpu: install stub fence into potential unused fence pointers"
+Subject: [PATCH 6.1 070/219] Input: tca6416-keypad - always expect proper IRQ number in i2c client
 Date:   Sun, 17 Sep 2023 21:13:17 +0200
-Message-ID: <20230917191122.741628538@linuxfoundation.org>
+Message-ID: <20230917191043.524768673@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,59 +50,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-This reverts commit 4921792e04f2125b5eadef9dbe9417a8354c7eff which is
-commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 upstream.
+[ Upstream commit 687fe7dfb736b03ab820d172ea5dbfc1ec447135 ]
 
-It is reported to cause a lot of log spam, so should be reverted.
+Remove option having i2c client contain raw gpio number instead of proper
+IRQ number. There are no users of this facility in mainline and it will
+allow cleaning up the driver code with regard to wakeup handling, etc.
 
-Link: https://lore.kernel.org/r/d32d6919-47cf-4ddc-955a-0759088220ae@gmail.com
-Link: https://lore.kernel.org/r/BL1PR12MB5144A0E84378A2666A26AE18F7F2A@BL1PR12MB5144.namprd12.prod.outlook.com
-Reported-by: Bryan Jennings <bryjen423@gmail.com>
-Reported-by: Alexander Deucher <Alexander.Deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Lang Yu <Lang.Yu@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230724053024.352054-1-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: cc141c35af87 ("Input: tca6416-keypad - fix interrupt enable disbalance")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/input/keyboard/tca6416-keypad.c | 27 +++++++++----------------
+ include/linux/tca6416_keypad.h          |  1 -
+ 2 files changed, 10 insertions(+), 18 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2260,7 +2260,6 @@ struct amdgpu_bo_va *amdgpu_vm_bo_add(st
- 	amdgpu_vm_bo_base_init(&bo_va->base, vm, bo);
- 
- 	bo_va->ref_count = 1;
--	bo_va->last_pt_update = dma_fence_get_stub();
- 	INIT_LIST_HEAD(&bo_va->valids);
- 	INIT_LIST_HEAD(&bo_va->invalids);
- 
-@@ -2975,8 +2974,7 @@ int amdgpu_vm_init(struct amdgpu_device
- 		vm->update_funcs = &amdgpu_vm_cpu_funcs;
+diff --git a/drivers/input/keyboard/tca6416-keypad.c b/drivers/input/keyboard/tca6416-keypad.c
+index afcdfbb002ff3..b48adec8fe2e7 100644
+--- a/drivers/input/keyboard/tca6416-keypad.c
++++ b/drivers/input/keyboard/tca6416-keypad.c
+@@ -148,7 +148,7 @@ static int tca6416_keys_open(struct input_dev *dev)
+ 	if (chip->use_polling)
+ 		schedule_delayed_work(&chip->dwork, msecs_to_jiffies(100));
  	else
- 		vm->update_funcs = &amdgpu_vm_sdma_funcs;
+-		enable_irq(chip->irqnum);
++		enable_irq(chip->client->irq);
+ 
+ 	return 0;
+ }
+@@ -160,7 +160,7 @@ static void tca6416_keys_close(struct input_dev *dev)
+ 	if (chip->use_polling)
+ 		cancel_delayed_work_sync(&chip->dwork);
+ 	else
+-		disable_irq(chip->irqnum);
++		disable_irq(chip->client->irq);
+ }
+ 
+ static int tca6416_setup_registers(struct tca6416_keypad_chip *chip)
+@@ -266,12 +266,7 @@ static int tca6416_keypad_probe(struct i2c_client *client,
+ 		goto fail1;
+ 
+ 	if (!chip->use_polling) {
+-		if (pdata->irq_is_gpio)
+-			chip->irqnum = gpio_to_irq(client->irq);
+-		else
+-			chip->irqnum = client->irq;
 -
--	vm->last_update = dma_fence_get_stub();
-+	vm->last_update = NULL;
- 	vm->last_unlocked = dma_fence_get_stub();
- 
- 	mutex_init(&vm->eviction_lock);
-@@ -3119,7 +3117,7 @@ int amdgpu_vm_make_compute(struct amdgpu
- 		vm->update_funcs = &amdgpu_vm_sdma_funcs;
+-		error = request_threaded_irq(chip->irqnum, NULL,
++		error = request_threaded_irq(client->irq, NULL,
+ 					     tca6416_keys_isr,
+ 					     IRQF_TRIGGER_FALLING |
+ 					     IRQF_ONESHOT | IRQF_NO_AUTOEN,
+@@ -279,7 +274,7 @@ static int tca6416_keypad_probe(struct i2c_client *client,
+ 		if (error) {
+ 			dev_dbg(&client->dev,
+ 				"Unable to claim irq %d; error %d\n",
+-				chip->irqnum, error);
++				client->irq, error);
+ 			goto fail1;
+ 		}
  	}
- 	dma_fence_put(vm->last_update);
--	vm->last_update = dma_fence_get_stub();
-+	vm->last_update = NULL;
- 	vm->is_compute_context = true;
+@@ -298,8 +293,8 @@ static int tca6416_keypad_probe(struct i2c_client *client,
  
- 	/* Free the shadow bo for compute VM */
+ fail2:
+ 	if (!chip->use_polling) {
+-		free_irq(chip->irqnum, chip);
+-		enable_irq(chip->irqnum);
++		free_irq(client->irq, chip);
++		enable_irq(client->irq);
+ 	}
+ fail1:
+ 	input_free_device(input);
+@@ -312,8 +307,8 @@ static void tca6416_keypad_remove(struct i2c_client *client)
+ 	struct tca6416_keypad_chip *chip = i2c_get_clientdata(client);
+ 
+ 	if (!chip->use_polling) {
+-		free_irq(chip->irqnum, chip);
+-		enable_irq(chip->irqnum);
++		free_irq(client->irq, chip);
++		enable_irq(client->irq);
+ 	}
+ 
+ 	input_unregister_device(chip->input);
+@@ -324,10 +319,9 @@ static void tca6416_keypad_remove(struct i2c_client *client)
+ static int tca6416_keypad_suspend(struct device *dev)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+-	struct tca6416_keypad_chip *chip = i2c_get_clientdata(client);
+ 
+ 	if (device_may_wakeup(dev))
+-		enable_irq_wake(chip->irqnum);
++		enable_irq_wake(client->irq);
+ 
+ 	return 0;
+ }
+@@ -335,10 +329,9 @@ static int tca6416_keypad_suspend(struct device *dev)
+ static int tca6416_keypad_resume(struct device *dev)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+-	struct tca6416_keypad_chip *chip = i2c_get_clientdata(client);
+ 
+ 	if (device_may_wakeup(dev))
+-		disable_irq_wake(chip->irqnum);
++		disable_irq_wake(client->irq);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/tca6416_keypad.h b/include/linux/tca6416_keypad.h
+index b0d36a9934ccd..5cf6f6f82aa70 100644
+--- a/include/linux/tca6416_keypad.h
++++ b/include/linux/tca6416_keypad.h
+@@ -25,7 +25,6 @@ struct tca6416_keys_platform_data {
+ 	unsigned int rep:1;	/* enable input subsystem auto repeat */
+ 	uint16_t pinmask;
+ 	uint16_t invert;
+-	int irq_is_gpio;
+ 	int use_polling;	/* use polling if Interrupt is not connected*/
+ };
+ #endif
+-- 
+2.40.1
+
 
 
