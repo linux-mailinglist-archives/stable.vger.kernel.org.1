@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB63F7A39B7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8311E7A38A4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240152AbjIQTxL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47410 "EHLO
+        id S239809AbjIQTiL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240335AbjIQTxD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:03 -0400
+        with ESMTP id S239818AbjIQThy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6D79F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9186DC433C7;
-        Sun, 17 Sep 2023 19:52:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE262D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B58C433C8;
+        Sun, 17 Sep 2023 19:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980378;
-        bh=VhaUDfkEwSMloKhp8Rp2ZIuk8+GkIjfPp2aWUzAEGmE=;
+        s=korg; t=1694979468;
+        bh=GhvfnwqZgxmQGO5SHthqHYWfa/jDpgtmChtnhx6NMZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cwwl4g9593QzSQUZCIvcKPQqPRTWJ7RCAfpvRugbJdSsF+igYNwU8pLhMj7r3ViqO
-         kIrxJAyW8E4QWvkfOj6SVum0wCyFTwA3bnbFttMRoXtOd1+TCopsLl8V3Dm0JOwJbd
-         n/TvA3LTc2gnZPSs+hyvsqfGrEeMIwU321HHznyk=
+        b=U/1Je/mGCqOVsmuFMBgdj4Ra1uOA9itGBoF/raEdDQfbh4B7clvtO21Go7EOLT4UP
+         38r/23VLzCa9GF4GAUdMQqBqNSY0ZC1tWt2uVZCesCmmuDz9o9IvmqhCL9L3J7juDc
+         RA40axpIFyhnG2k1qsGcy768PIiA9NaOQxlTlOzk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 175/285] sh: push-switch: Reorder cleanup operations to avoid use-after-free bug
-Date:   Sun, 17 Sep 2023 21:12:55 +0200
-Message-ID: <20230917191057.691406198@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 5.10 322/406] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
+Date:   Sun, 17 Sep 2023 21:12:56 +0200
+Message-ID: <20230917191109.797009149@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,60 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 246f80a0b17f8f582b2c0996db02998239057c65 ]
+commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
 
-The original code puts flush_work() before timer_shutdown_sync()
-in switch_drv_remove(). Although we use flush_work() to stop
-the worker, it could be rescheduled in switch_timer(). As a result,
-a use-after-free bug can occur. The details are shown below:
+Do not assing the Linux device to struct fb_info.dev. The call to
+register_framebuffer() initializes the field to the fbdev device.
+Drivers should not override its value.
 
-      (cpu 0)                    |      (cpu 1)
-switch_drv_remove()              |
- flush_work()                    |
-  ...                            |  switch_timer // timer
-                                 |   schedule_work(&psw->work)
- timer_shutdown_sync()           |
- ...                             |  switch_work_handler // worker
- kfree(psw) // free              |
-                                 |   psw->state = 0 // use
+Fixes a bug where the driver incorrectly decreases the hardware
+device's reference counter and leaks the fbdev device.
 
-This patch puts timer_shutdown_sync() before flush_work() to
-mitigate the bugs. As a result, the worker and timer will be
-stopped safely before the deallocate operations.
+v2:
+	* add Fixes tag (Dan)
 
-Fixes: 9f5e8eee5cfe ("sh: generic push-switch framework.")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230802033737.9738-1-duoming@zju.edu.cn
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 88017bda96a5 ("ep93xx video driver")
+Cc: <stable@vger.kernel.org> # v2.6.32+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/drivers/push-switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/ep93xx-fb.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/sh/drivers/push-switch.c b/arch/sh/drivers/push-switch.c
-index c95f48ff3f6fb..6ecba5f521eb6 100644
---- a/arch/sh/drivers/push-switch.c
-+++ b/arch/sh/drivers/push-switch.c
-@@ -101,8 +101,8 @@ static int switch_drv_remove(struct platform_device *pdev)
- 		device_remove_file(&pdev->dev, &dev_attr_switch);
+--- a/drivers/video/fbdev/ep93xx-fb.c
++++ b/drivers/video/fbdev/ep93xx-fb.c
+@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
+ 	if (!info)
+ 		return -ENOMEM;
  
- 	platform_set_drvdata(pdev, NULL);
--	flush_work(&psw->work);
- 	timer_shutdown_sync(&psw->debounce);
-+	flush_work(&psw->work);
- 	free_irq(irq, pdev);
- 
- 	kfree(psw);
--- 
-2.40.1
-
+-	info->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, info);
+ 	fbi = info->par;
+ 	fbi->mach_info = mach_info;
 
 
