@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02BC47A3946
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D60537A3826
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:32:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240014AbjIQTrQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50476 "EHLO
+        id S239691AbjIQTbq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:31:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240080AbjIQTq6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:58 -0400
+        with ESMTP id S239717AbjIQTbe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37569F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2948C433C7;
-        Sun, 17 Sep 2023 19:46:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2EAC119
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA3BC433C8;
+        Sun, 17 Sep 2023 19:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980011;
-        bh=XDFDxLm7EzVJ9QXdjFO+R2i3u5qiTT3+MZw3Z2Ayxos=;
+        s=korg; t=1694979088;
+        bh=K08NqUdJjDJ2RSQeN8ikpd6gjanTkbkD3ytlr5NYKo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YEqG83jsN2wS6qSGF5YO0kifzYxjnD9iKuQzY3h/L6GYojRPSs7zyO8XnHY6+52cZ
-         nl32RiObn4WpgOC/u5fuhWeelUXDTYhjMlqdbcCmFwf18tkMEiKlofHMg+U7bP/FE4
-         UeP6nHdjKGmuIt/hUnoQVnpgNt2ZYUyCH8ROAieA=
+        b=EuX7F6WlYUSkfOSuPA09c85/iCHFVkMzu2fnDLfXlcJkmuFeFJGC7dxqNH8eayf6P
+         NUTtKGyjimc+89HjwKOl6e264qGcFRlMdZvCEPiBdf87goFRiuLXb6RRGoLXNOzLbb
+         ht+5AKwiIkXbiy96bEQBYRDXOPmwlR8j+P3vFrec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xie XiuQi <xiexiuqi@huawei.com>,
-        Ian Rogers <irogers@google.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+        Qi Liu <liuqi115@huawei.com>,
+        John Garry <john.garry@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 064/285] tools/mm: fix undefined reference to pthread_once
+Subject: [PATCH 5.10 210/406] scsi: hisi_sas: Modify v3 HW SSP underflow error processing
 Date:   Sun, 17 Sep 2023 21:11:04 +0200
-Message-ID: <20230917191053.923872590@linuxfoundation.org>
+Message-ID: <20230917191106.736391060@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,56 +52,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xie XiuQi <xiexiuqi@huawei.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 7f33105cdd59a99d068d3d147723a865d10e2260 ]
+[ Upstream commit 62413199cd6d2906c121c2dfa3d7b82fd05f08db ]
 
-Commit 97d5f2e9ee12 ("tools api fs: More thread safety for global
-filesystem variables") introduces pthread_once, so the libpthread
-should be added at link time, or we'll meet the following compile
-error when 'make -C tools/mm':
+In case of SSP underflow allow the response frame IU to be examined for
+setting the response stat value rather than always setting
+SAS_DATA_UNDERRUN.
 
-  gcc -Wall -Wextra -I../lib/ -o page-types page-types.c ../lib/api/libapi.a
-  ~/linux/tools/lib/api/fs/fs.c:146: undefined reference to `pthread_once'
-  ~/linux/tools/lib/api/fs/fs.c:147: undefined reference to `pthread_once'
-  ~/linux/tools/lib/api/fs/fs.c:148: undefined reference to `pthread_once'
-  ~/linux/tools/lib/api/fs/fs.c:149: undefined reference to `pthread_once'
-  ~/linux/tools/lib/api/fs/fs.c:150: undefined reference to `pthread_once'
-  /usr/bin/ld: ../lib/api/libapi.a(libapi-in.o):~/linux/tools/lib/api/fs/fs.c:151:
-  more undefined references to `pthread_once' follow
-  collect2: error: ld returned 1 exit status
-  make: *** [Makefile:22: page-types] Error 1
+This will mean that we call sas_ssp_task_response() in those scenarios and
+may send sense data to upper layer.
 
-Link: https://lkml.kernel.org/r/20230831034205.2376653-1-xiexiuqi@huaweicloud.com
-Fixes: 97d5f2e9ee12 ("tools api fs: More thread safety for global filesystem variables")
-Signed-off-by: Xie XiuQi <xiexiuqi@huawei.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Such a condition would be for bad blocks were we just reporting an
+underflow error to upper layer, but now the sense data will tell
+immediately that the media is faulty.
+
+Link: https://lore.kernel.org/r/1645703489-87194-7-git-send-email-john.garry@huawei.com
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Qi Liu <liuqi115@huawei.com>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: f5393a5602ca ("scsi: hisi_sas: Fix normally completed I/O analysed as failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/mm/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 39 +++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/tools/mm/Makefile b/tools/mm/Makefile
-index 6c1da51f4177c..1c5606cc33346 100644
---- a/tools/mm/Makefile
-+++ b/tools/mm/Makefile
-@@ -8,8 +8,8 @@ TARGETS=page-types slabinfo page_owner_sort
- LIB_DIR = ../lib/api
- LIBS = $(LIB_DIR)/libapi.a
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 59ac0f8e6d5c3..937e4ba46134e 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -392,6 +392,8 @@
+ #define CMPLT_HDR_ERROR_PHASE_MSK   (0xff << CMPLT_HDR_ERROR_PHASE_OFF)
+ #define CMPLT_HDR_RSPNS_XFRD_OFF	10
+ #define CMPLT_HDR_RSPNS_XFRD_MSK	(0x1 << CMPLT_HDR_RSPNS_XFRD_OFF)
++#define CMPLT_HDR_RSPNS_GOOD_OFF	11
++#define CMPLT_HDR_RSPNS_GOOD_MSK	(0x1 << CMPLT_HDR_RSPNS_GOOD_OFF)
+ #define CMPLT_HDR_ERX_OFF		12
+ #define CMPLT_HDR_ERX_MSK		(0x1 << CMPLT_HDR_ERX_OFF)
+ #define CMPLT_HDR_ABORT_STAT_OFF	13
+@@ -2115,7 +2117,7 @@ static irqreturn_t fatal_axi_int_v3_hw(int irq_no, void *p)
+ 	return IRQ_HANDLED;
+ }
  
--CFLAGS += -Wall -Wextra -I../lib/
--LDFLAGS += $(LIBS)
-+CFLAGS += -Wall -Wextra -I../lib/ -pthread
-+LDFLAGS += $(LIBS) -pthread
+-static void
++static bool
+ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 	       struct hisi_sas_slot *slot)
+ {
+@@ -2133,6 +2135,15 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 	switch (task->task_proto) {
+ 	case SAS_PROTOCOL_SSP:
+ 		if (dma_rx_err_type & RX_DATA_LEN_UNDERFLOW_MSK) {
++			/*
++			 * If returned response frame is incorrect because of data underflow,
++			 * but I/O information has been written to the host memory, we examine
++			 * response IU.
++			 */
++			if (!(complete_hdr->dw0 & CMPLT_HDR_RSPNS_GOOD_MSK) &&
++				(complete_hdr->dw0 & CMPLT_HDR_RSPNS_XFRD_MSK))
++				return false;
++
+ 			ts->residual = trans_tx_fail_type;
+ 			ts->stat = SAS_DATA_UNDERRUN;
+ 		} else if (dw3 & CMPLT_HDR_IO_IN_TARGET_MSK) {
+@@ -2164,6 +2175,7 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 	default:
+ 		break;
+ 	}
++	return true;
+ }
  
- all: $(TARGETS)
+ static void slot_complete_v3_hw(struct hisi_hba *hisi_hba,
+@@ -2238,19 +2250,20 @@ static void slot_complete_v3_hw(struct hisi_hba *hisi_hba,
+ 	if ((dw0 & CMPLT_HDR_CMPLT_MSK) == 0x3) {
+ 		u32 *error_info = hisi_sas_status_buf_addr_mem(slot);
  
+-		slot_err_v3_hw(hisi_hba, task, slot);
+-		if (ts->stat != SAS_DATA_UNDERRUN)
+-			dev_info(dev, "erroneous completion iptt=%d task=%pK dev id=%d addr=%016llx CQ hdr: 0x%x 0x%x 0x%x 0x%x Error info: 0x%x 0x%x 0x%x 0x%x\n",
+-				 slot->idx, task, sas_dev->device_id,
+-				 SAS_ADDR(device->sas_addr),
+-				 dw0, dw1, complete_hdr->act, dw3,
+-				 error_info[0], error_info[1],
+-				 error_info[2], error_info[3]);
+-		if (unlikely(slot->abort)) {
+-			sas_task_abort(task);
+-			return;
++		if (slot_err_v3_hw(hisi_hba, task, slot)) {
++			if (ts->stat != SAS_DATA_UNDERRUN)
++				dev_info(dev, "erroneous completion iptt=%d task=%pK dev id=%d addr=%016llx CQ hdr: 0x%x 0x%x 0x%x 0x%x Error info: 0x%x 0x%x 0x%x 0x%x\n",
++					slot->idx, task, sas_dev->device_id,
++					SAS_ADDR(device->sas_addr),
++					dw0, dw1, complete_hdr->act, dw3,
++					error_info[0], error_info[1],
++					error_info[2], error_info[3]);
++			if (unlikely(slot->abort)) {
++				sas_task_abort(task);
++				return;
++			}
++			goto out;
+ 		}
+-		goto out;
+ 	}
+ 
+ 	switch (task->task_proto) {
 -- 
 2.40.1
 
