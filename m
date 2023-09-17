@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 760007A3D6F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C446D7A3BAD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241299AbjIQUmn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47320 "EHLO
+        id S240815AbjIQUUx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241395AbjIQUmb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:31 -0400
+        with ESMTP id S240872AbjIQUUr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8D213E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:42:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DCEC433C8;
-        Sun, 17 Sep 2023 20:42:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C689D12F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F0AC433CA;
+        Sun, 17 Sep 2023 20:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983338;
-        bh=1iOZB3hoYMKGD6g4nSKxO9fJg7PU0ybs0T15dHH7LhA=;
+        s=korg; t=1694982033;
+        bh=IZMosm85UAPBCV0or0MvrEO1dUVR0SmhNlO1F7ck7Bk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VAfgQ0ZdZ0lSX1jDluXqxNDbS9grDuTuNqG1+RyZvJXFyTMc/F24N0KYkUWe/cTG+
-         4AoG8JWVBpWPLG3iVbFWoVVI2pW4JzSSyJQXV9VrFv6eL6b3a2kUXeynE7bY11oBWY
-         fQLfhLd0i6vv5vTf61kSbNcCdZlRL79+h3b/W+tw=
+        b=1epV/1eMcuneJxu97LIsJx0fUWDbqnyAazgsegS5H+F0joGP4BI98K8/9QkluwMXV
+         5Eh/OTG2VcrqzO8jJ3C8l9dbfoZuWdQSPp2N3Hme7HLvF6WypQIl35/0bl375TsCFC
+         JYppdXIKq1JBXQEYawUdOfVwWslQYH7INpNGzX4U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Simon Horman <horms@kernel.org>,
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 507/511] ipv6: fix ip6_sock_set_addr_preferences() typo
-Date:   Sun, 17 Sep 2023 21:15:34 +0200
-Message-ID: <20230917191125.960361412@linuxfoundation.org>
+Subject: [PATCH 6.1 208/219] net/tls: do not free tls_rec on async operation in bpf_exec_tx_verdict()
+Date:   Sun, 17 Sep 2023 21:15:35 +0200
+Message-ID: <20230917191048.451440190@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 8cdd9f1aaedf823006449faa4e540026c692ac43 ]
+[ Upstream commit cfaa80c91f6f99b9342b6557f0f0e1143e434066 ]
 
-ip6_sock_set_addr_preferences() second argument should be an integer.
+I got the below warning when do fuzzing test:
+BUG: KASAN: null-ptr-deref in scatterwalk_copychunks+0x320/0x470
+Read of size 4 at addr 0000000000000008 by task kworker/u8:1/9
 
-SUNRPC attempts to set IPV6_PREFER_SRC_PUBLIC were
-translated to IPV6_PREFER_SRC_TMP
+CPU: 0 PID: 9 Comm: kworker/u8:1 Tainted: G           OE
+Hardware name: linux,dummy-virt (DT)
+Workqueue: pencrypt_parallel padata_parallel_worker
+Call trace:
+ dump_backtrace+0x0/0x420
+ show_stack+0x34/0x44
+ dump_stack+0x1d0/0x248
+ __kasan_report+0x138/0x140
+ kasan_report+0x44/0x6c
+ __asan_load4+0x94/0xd0
+ scatterwalk_copychunks+0x320/0x470
+ skcipher_next_slow+0x14c/0x290
+ skcipher_walk_next+0x2fc/0x480
+ skcipher_walk_first+0x9c/0x110
+ skcipher_walk_aead_common+0x380/0x440
+ skcipher_walk_aead_encrypt+0x54/0x70
+ ccm_encrypt+0x13c/0x4d0
+ crypto_aead_encrypt+0x7c/0xfc
+ pcrypt_aead_enc+0x28/0x84
+ padata_parallel_worker+0xd0/0x2dc
+ process_one_work+0x49c/0xbdc
+ worker_thread+0x124/0x880
+ kthread+0x210/0x260
+ ret_from_fork+0x10/0x18
 
-Fixes: 18d5ad623275 ("ipv6: add ip6_sock_set_addr_preferences")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230911154213.713941-1-edumazet@google.com
+This is because the value of rec_seq of tls_crypto_info configured by the
+user program is too large, for example, 0xffffffffffffff. In addition, TLS
+is asynchronously accelerated. When tls_do_encryption() returns
+-EINPROGRESS and sk->sk_err is set to EBADMSG due to rec_seq overflow,
+skmsg is released before the asynchronous encryption process ends. As a
+result, the UAF problem occurs during the asynchronous processing of the
+encryption module.
+
+If the operation is asynchronous and the encryption module returns
+EINPROGRESS, do not free the record information.
+
+Fixes: 635d93981786 ("net/tls: free record only on encryption error")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20230909081434.2324940-1-liujian56@huawei.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ipv6.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_sw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 20930086b2288..6b3309e55dcb1 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -1258,7 +1258,7 @@ static inline int __ip6_sock_set_addr_preferences(struct sock *sk, int val)
- 	return 0;
- }
- 
--static inline int ip6_sock_set_addr_preferences(struct sock *sk, bool val)
-+static inline int ip6_sock_set_addr_preferences(struct sock *sk, int val)
- {
- 	int ret;
- 
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 96b4545ea700f..9be00ebbb2341 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -802,7 +802,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 	psock = sk_psock_get(sk);
+ 	if (!psock || !policy) {
+ 		err = tls_push_record(sk, flags, record_type);
+-		if (err && sk->sk_err == EBADMSG) {
++		if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
+ 			*copied -= sk_msg_free(sk, msg);
+ 			tls_free_open_rec(sk);
+ 			err = -sk->sk_err;
+@@ -831,7 +831,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 	switch (psock->eval) {
+ 	case __SK_PASS:
+ 		err = tls_push_record(sk, flags, record_type);
+-		if (err && sk->sk_err == EBADMSG) {
++		if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
+ 			*copied -= sk_msg_free(sk, msg);
+ 			tls_free_open_rec(sk);
+ 			err = -sk->sk_err;
 -- 
 2.40.1
 
