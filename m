@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B297A38D5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B217A3A17
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238428AbjIQTlU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
+        id S240265AbjIQT62 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239864AbjIQTkx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:53 -0400
+        with ESMTP id S240324AbjIQT6R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:58:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93735D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0ED1C433CB;
-        Sun, 17 Sep 2023 19:40:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA164101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:58:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2079BC433C7;
+        Sun, 17 Sep 2023 19:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979648;
-        bh=XQ0Oxz7aKNc6zcRMUNrly53tjKamtM31vkfh0wSYvX8=;
+        s=korg; t=1694980690;
+        bh=iLxdRoywkauh7b2Apk0BQR3LmdjNrX5WECw+la157RI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m4Vm1+7XcFUHgNC0cOleXSfpAizCS4LP50neu4WkL3nmCOpmQzvhAE/QHExo6ANk5
-         ySpSzwFqWsKAsoZTWYdp2IzN8Z+fPiwgoloRf0TpaGKkGsAE1wjT71JWSmVBtpo/7n
-         NAvEFb2V2ljhY+Ur6FmSKY53rE3Q7OwH0GIlMnEM=
+        b=K+lbHz/1e8YiZedA7hvMQu4bacCDMF15rIw17ln0Lv/yair3Zz0Drgj2B0jzlouB3
+         VjD9a5NY5hJuzXOo/e/WbjkfTD3h7RHOJvu1Sq0sUbHhDcERSxvV0+30o2MUUtgP6H
+         m/Aqp5Xb/PikcS9vagd9dCmm7HwS0gtM6+/cMRQ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Kursad Oney <kursad.oney@broadcom.com>,
-        Kamal Dasu <kamal.dasu@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 374/406] mtd: rawnand: brcmnand: Fix crash during the panic_write
+        "dengqiao.joey" <dengqiao.joey@bytedance.com>,
+        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Maxim Levitsky <mlevitsk@redhat.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.5 228/285] KVM: SVM: Set target pCPU during IRTE update if target vCPU is running
 Date:   Sun, 17 Sep 2023 21:13:48 +0200
-Message-ID: <20230917191111.146520993@linuxfoundation.org>
+Message-ID: <20230917191059.349171618@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +54,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit e66dd317194daae0475fe9e5577c80aa97f16cb9 upstream.
+commit f3cebc75e7425d6949d726bb8e937095b0aef025 upstream.
 
-When executing a NAND command within the panic write path, wait for any
-pending command instead of calling BUG_ON to avoid crashing while
-already crashing.
+Update the target pCPU for IOMMU doorbells when updating IRTE routing if
+KVM is actively running the associated vCPU.  KVM currently only updates
+the pCPU when loading the vCPU (via avic_vcpu_load()), and so doorbell
+events will be delayed until the vCPU goes through a put+load cycle (which
+might very well "never" happen for the lifetime of the VM).
 
-Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Kursad Oney <kursad.oney@broadcom.com>
-Reviewed-by: Kamal Dasu <kamal.dasu@broadcom.com>
+To avoid inserting a stale pCPU, e.g. due to racing between updating IRTE
+routing and vCPU load/put, get the pCPU information from the vCPU's
+Physical APIC ID table entry (a.k.a. avic_physical_id_cache in KVM) and
+update the IRTE while holding ir_list_lock.  Add comments with --verbose
+enabled to explain exactly what is and isn't protected by ir_list_lock.
+
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Reported-by: dengqiao.joey <dengqiao.joey@bytedance.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-4-william.zhang@broadcom.com
+Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Link: https://lore.kernel.org/r/20230808233132.2499764-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/avic.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -1543,7 +1543,17 @@ static void brcmnand_send_cmd(struct brc
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -791,6 +791,7 @@ static int svm_ir_list_add(struct vcpu_s
+ 	int ret = 0;
+ 	unsigned long flags;
+ 	struct amd_svm_iommu_ir *ir;
++	u64 entry;
  
- 	dev_dbg(ctrl->dev, "send native cmd %d addr 0x%llx\n", cmd, cmd_addr);
+ 	/**
+ 	 * In some cases, the existing irte is updated and re-set,
+@@ -824,6 +825,18 @@ static int svm_ir_list_add(struct vcpu_s
+ 	ir->data = pi->ir_data;
  
--	BUG_ON(ctrl->cmd_pending != 0);
+ 	spin_lock_irqsave(&svm->ir_list_lock, flags);
++
 +	/*
-+	 * If we came here through _panic_write and there is a pending
-+	 * command, try to wait for it. If it times out, rather than
-+	 * hitting BUG_ON, just return so we don't crash while crashing.
++	 * Update the target pCPU for IOMMU doorbells if the vCPU is running.
++	 * If the vCPU is NOT running, i.e. is blocking or scheduled out, KVM
++	 * will update the pCPU info when the vCPU awkened and/or scheduled in.
++	 * See also avic_vcpu_load().
 +	 */
-+	if (oops_in_progress) {
-+		if (ctrl->cmd_pending &&
-+			bcmnand_ctrl_poll_status(ctrl, NAND_CTRL_RDY, NAND_CTRL_RDY, 0))
-+			return;
-+	} else
-+		BUG_ON(ctrl->cmd_pending != 0);
- 	ctrl->cmd_pending = cmd;
++	entry = READ_ONCE(*(svm->avic_physical_id_cache));
++	if (entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK)
++		amd_iommu_update_ga(entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK,
++				    true, pi->ir_data);
++
+ 	list_add(&ir->node, &svm->ir_list);
+ 	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
+ out:
+@@ -1031,6 +1044,13 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
+ 	if (kvm_vcpu_is_blocking(vcpu))
+ 		return;
  
- 	ret = bcmnand_ctrl_poll_status(ctrl, NAND_CTRL_RDY, NAND_CTRL_RDY, 0);
++	/*
++	 * Grab the per-vCPU interrupt remapping lock even if the VM doesn't
++	 * _currently_ have assigned devices, as that can change.  Holding
++	 * ir_list_lock ensures that either svm_ir_list_add() will consume
++	 * up-to-date entry information, or that this task will wait until
++	 * svm_ir_list_add() completes to set the new target pCPU.
++	 */
+ 	spin_lock_irqsave(&svm->ir_list_lock, flags);
+ 
+ 	entry = READ_ONCE(*(svm->avic_physical_id_cache));
+@@ -1067,6 +1087,14 @@ void avic_vcpu_put(struct kvm_vcpu *vcpu
+ 	if (!(entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK))
+ 		return;
+ 
++	/*
++	 * Take and hold the per-vCPU interrupt remapping lock while updating
++	 * the Physical ID entry even though the lock doesn't protect against
++	 * multiple writers (see above).  Holding ir_list_lock ensures that
++	 * either svm_ir_list_add() will consume up-to-date entry information,
++	 * or that this task will wait until svm_ir_list_add() completes to
++	 * mark the vCPU as not running.
++	 */
+ 	spin_lock_irqsave(&svm->ir_list_lock, flags);
+ 
+ 	avic_update_iommu_vcpu_affinity(vcpu, -1, 0);
 
 
