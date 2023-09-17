@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C787A387F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02C037A399E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239777AbjIQTgh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
+        id S240101AbjIQTwA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:52:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239882AbjIQTgS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:18 -0400
+        with ESMTP id S240106AbjIQTvc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C779D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD76C433C9;
-        Sun, 17 Sep 2023 19:36:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549FB12F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838E5C433C7;
+        Sun, 17 Sep 2023 19:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979372;
-        bh=pX0edh+OHZ+Rby7A1cQUfcEHCE+T2nXNrNwg0WzzAtM=;
+        s=korg; t=1694980286;
+        bh=jKpJZIi0QLb84HiPsYwdr5+LSl2xwbRqFozdHBZVC74=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LlEc9s4OsBNLUDcK3XO6K0FWm8rNXw6QzpAo7k1a9CvgdKaH1T1qjG3MAajNBz4Qp
-         5GqifyoNFPumsqOmPJFYfvcOrTzUYIx5OnI+h3XihnmIboCEFcpthVGiISJdOVrFNV
-         HDoNKjYfp0/fWA0dA6D+wyKZTp0FqhkW3Jp6o6Go=
+        b=ac3gcKEysn0OHa/F1Q9k86lo4jbUYxQOK3VpTbl26KfFc35Gobqj3T/VLMVP+Agor
+         661dVtcxbBXt/0Lwcs3UoZoUDwqZSF7gHh6qGAbF725kcAnct/6eAc6Zwrd5bN0L1b
+         IiH8loE/HVFV+zPMhH99nlehCHQtqXp2a6OoZwss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yonghong Song <yonghong.song@linux.dev>,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Yafang Shao <laoar.shao@gmail.com>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 5.10 294/406] bpf: Fix issue in verifying allow_ptr_leaks
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 148/285] net/mlx5e: Clear mirred devices array if the rule is split
 Date:   Sun, 17 Sep 2023 21:12:28 +0200
-Message-ID: <20230917191109.075455780@linuxfoundation.org>
+Message-ID: <20230917191056.811248208@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,94 +52,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
+[ Upstream commit b7558a77529fef60e7992f40fb5353fed8be0cf8 ]
 
-After we converted the capabilities of our networking-bpf program from
-cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
-failed to start. Because it failed the bpf verifier, and the error log
-is "R3 pointer comparison prohibited".
+In the cited commit, the mirred devices are recorded and checked while
+parsing the actions. In order to avoid system crash, the duplicate
+action in a single rule is not allowed.
 
-A simple reproducer as follows,
+But the rule is actually break down into several FTEs in different
+tables, for either mirroring, or the specified types of actions which
+use post action infrastructure.
 
-SEC("cls-ingress")
-int ingress(struct __sk_buff *skb)
-{
-	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
+It will reject certain action list by mistake, for example:
+    actions:enp8s0f0_1,set(ipv4(ttl=63)),enp8s0f0_0,enp8s0f0_1.
+Here the rule is split to two FTEs because of pedit action.
 
-	if ((long)(iph + 1) > (long)skb->data_end)
-		return TC_ACT_STOLEN;
-	return TC_ACT_OK;
-}
+To fix this issue, when parsing the rule actions, reset if_count to
+clear the mirred devices array if the rule is split to multiple
+FTEs, and then the duplicate checking is restarted.
 
-Per discussion with Yonghong and Alexei [1], comparison of two packet
-pointers is not a pointer leak. This patch fixes it.
-
-Our local kernel is 6.1.y and we expect this fix to be backported to
-6.1.y, so stable is CCed.
-
-[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
-
-Suggested-by: Yonghong Song <yonghong.song@linux.dev>
-Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230823020703.3790-2-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 554fe75c1b3f ("net/mlx5e: Avoid duplicating rule destinations")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/ct.c        | 4 +++-
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c    | 1 +
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/pedit.c     | 4 +++-
+ .../ethernet/mellanox/mlx5/core/en/tc/act/redirect_ingress.c  | 1 +
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan.c      | 1 +
+ .../net/ethernet/mellanox/mlx5/core/en/tc/act/vlan_mangle.c   | 4 +++-
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c               | 1 +
+ 7 files changed, 13 insertions(+), 3 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8178,6 +8178,12 @@ static int check_cond_jmp_op(struct bpf_
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/ct.c
+index 92d3952dfa8b7..feeb41693c176 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/ct.c
+@@ -17,8 +17,10 @@ tc_act_parse_ct(struct mlx5e_tc_act_parse_state *parse_state,
+ 	if (err)
+ 		return err;
  
-+	/* check src2 operand */
-+	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
-+	if (err)
-+		return err;
-+
-+	dst_reg = &regs[insn->dst_reg];
- 	if (BPF_SRC(insn->code) == BPF_X) {
- 		if (insn->imm != 0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -8189,12 +8195,13 @@ static int check_cond_jmp_op(struct bpf_
- 		if (err)
- 			return err;
+-	if (mlx5e_is_eswitch_flow(parse_state->flow))
++	if (mlx5e_is_eswitch_flow(parse_state->flow)) {
+ 		attr->esw_attr->split_count = attr->esw_attr->out_count;
++		parse_state->if_count = 0;
++	}
  
--		if (is_pointer_value(env, insn->src_reg)) {
-+		src_reg = &regs[insn->src_reg];
-+		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
-+		    is_pointer_value(env, insn->src_reg)) {
- 			verbose(env, "R%d pointer comparison prohibited\n",
- 				insn->src_reg);
- 			return -EACCES;
+ 	attr->flags |= MLX5_ATTR_FLAG_CT;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c
+index 291193f7120d5..f63402c480280 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c
+@@ -294,6 +294,7 @@ parse_mirred_ovs_master(struct mlx5e_tc_act_parse_state *parse_state,
+ 	if (err)
+ 		return err;
+ 
++	parse_state->if_count = 0;
+ 	esw_attr->out_count++;
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/pedit.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/pedit.c
+index 3b272bbf4c538..368a95fa77d32 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/pedit.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/pedit.c
+@@ -98,8 +98,10 @@ tc_act_parse_pedit(struct mlx5e_tc_act_parse_state *parse_state,
+ 
+ 	attr->action |= MLX5_FLOW_CONTEXT_ACTION_MOD_HDR;
+ 
+-	if (ns_type == MLX5_FLOW_NAMESPACE_FDB)
++	if (ns_type == MLX5_FLOW_NAMESPACE_FDB) {
+ 		esw_attr->split_count = esw_attr->out_count;
++		parse_state->if_count = 0;
++	}
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/redirect_ingress.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/redirect_ingress.c
+index ad09a8a5f36e0..2d1d4a04501b4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/redirect_ingress.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/redirect_ingress.c
+@@ -66,6 +66,7 @@ tc_act_parse_redirect_ingress(struct mlx5e_tc_act_parse_state *parse_state,
+ 	if (err)
+ 		return err;
+ 
++	parse_state->if_count = 0;
+ 	esw_attr->out_count++;
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan.c
+index c8a3eaf189f6a..a13c5e707b83c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan.c
+@@ -166,6 +166,7 @@ tc_act_parse_vlan(struct mlx5e_tc_act_parse_state *parse_state,
+ 		return err;
+ 
+ 	esw_attr->split_count = esw_attr->out_count;
++	parse_state->if_count = 0;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan_mangle.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan_mangle.c
+index 310b992307607..f17575b09788d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan_mangle.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/vlan_mangle.c
+@@ -65,8 +65,10 @@ tc_act_parse_vlan_mangle(struct mlx5e_tc_act_parse_state *parse_state,
+ 	if (err)
+ 		return err;
+ 
+-	if (ns_type == MLX5_FLOW_NAMESPACE_FDB)
++	if (ns_type == MLX5_FLOW_NAMESPACE_FDB) {
+ 		attr->esw_attr->split_count = attr->esw_attr->out_count;
++		parse_state->if_count = 0;
++	}
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 31708d5aa6087..4b22a91482cec 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -3939,6 +3939,7 @@ parse_tc_actions(struct mlx5e_tc_act_parse_state *parse_state,
+ 			}
+ 
+ 			i_split = i + 1;
++			parse_state->if_count = 0;
+ 			list_add(&attr->list, &flow->attrs);
  		}
--		src_reg = &regs[insn->src_reg];
- 	} else {
- 		if (insn->src_reg != BPF_REG_0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -8202,12 +8209,6 @@ static int check_cond_jmp_op(struct bpf_
- 		}
- 	}
  
--	/* check src2 operand */
--	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
--	if (err)
--		return err;
--
--	dst_reg = &regs[insn->dst_reg];
- 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
- 
- 	if (BPF_SRC(insn->code) == BPF_K) {
+-- 
+2.40.1
+
 
 
