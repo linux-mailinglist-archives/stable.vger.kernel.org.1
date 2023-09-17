@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 827737A3782
+	by mail.lfdr.de (Postfix) with ESMTP id CD6347A3783
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbjIQTVe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239091AbjIQTVe (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 15:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36406 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233512AbjIQTVD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:21:03 -0400
+        with ESMTP id S239056AbjIQTVH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:21:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 895E7FA
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:20:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C288AC433C7;
-        Sun, 17 Sep 2023 19:20:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15F5383
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:21:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E29C433C7;
+        Sun, 17 Sep 2023 19:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978458;
-        bh=CXxpORrGgan/jXnZr7uHhwkWC9/d4p4v/bG7nAGc1zc=;
+        s=korg; t=1694978461;
+        bh=sR81dnaaaLWGrBIcKKj+EJ3wUQmsdG3TQj5KHUzTMmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XOp0RczeYaUtBqF35neuyir05dIt6/Tex6wsYPt+w218/ZKMVFo/47i7ygW1doSaS
-         DD7nNEgTqdRfp6j4BzPIRLKOD500ygprDcu1DnkW8g8SFggOdfBpuI2NkyjNXbnUny
-         smvdRRJ3HjeY8fCtsa8OdXd3MKECImOGkyeKFJkk=
+        b=nCBHGMJWM+tuy7NLZLEqMOIyOcep75ci09C0HbFdAaVoCa54LHo9mVMeMOpK2zTQE
+         rfquGYjuoT5VR9AzcUHkTj0X7Hm56WcCsPSPZm6bpdWeK6aUfQ6tifVFih5Aa/PJ7R
+         Bhu0XvSwUpAv1CcBwzdRzPbkO5mClYQ3mM92AHZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        butt3rflyh4ck <butterflyhuangxx@gmail.com>,
-        Edward Shishkin <edward.shishkin@gmail.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, David Woodhouse <dwmw@amazon.co.uk>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/406] reiserfs: Check the return value from __getblk()
-Date:   Sun, 17 Sep 2023 21:08:39 +0200
-Message-ID: <20230917191102.856494442@linuxfoundation.org>
+Subject: [PATCH 5.10 066/406] eventfd: Export eventfd_ctx_do_read()
+Date:   Sun, 17 Sep 2023 21:08:40 +0200
+Message-ID: <20230917191102.881791034@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -57,47 +54,73 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Matthew Wilcox <willy@infradead.org>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit ba38980add7ffc9e674ada5b4ded4e7d14e76581 ]
+[ Upstream commit 28f1326710555bbe666f64452d08f2d7dd657cae ]
 
-__getblk() can return a NULL pointer if we run out of memory or if we
-try to access beyond the end of the device; check it and handle it
-appropriately.
+Where events are consumed in the kernel, for example by KVM's
+irqfd_wakeup() and VFIO's virqfd_wakeup(), they currently lack a
+mechanism to drain the eventfd's counter.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/lkml/CAFcO6XOacq3hscbXevPQP7sXRoYFz34ZdKPYjmd6k5sZuhGFDw@mail.gmail.com/
-Tested-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") # probably introduced in 2002
-Acked-by: Edward Shishkin <edward.shishkin@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Since the wait queue is already locked while the wakeup functions are
+invoked, all they really need to do is call eventfd_ctx_do_read().
+
+Add a check for the lock, and export it for them.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Message-Id: <20201027135523.646811-2-dwmw2@infradead.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: 758b49204781 ("eventfd: prevent underflow for eventfd semaphores")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/reiserfs/journal.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/eventfd.c            | 5 ++++-
+ include/linux/eventfd.h | 6 ++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/fs/reiserfs/journal.c b/fs/reiserfs/journal.c
-index df5fc12a6ceed..cfa4defbd0401 100644
---- a/fs/reiserfs/journal.c
-+++ b/fs/reiserfs/journal.c
-@@ -2325,7 +2325,7 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	int i, j;
+diff --git a/fs/eventfd.c b/fs/eventfd.c
+index 4a14295cffe0d..b8d38b970ce7f 100644
+--- a/fs/eventfd.c
++++ b/fs/eventfd.c
+@@ -187,11 +187,14 @@ static __poll_t eventfd_poll(struct file *file, poll_table *wait)
+ 	return events;
+ }
  
- 	bh = __getblk(dev, block, bufsize);
--	if (buffer_uptodate(bh))
-+	if (!bh || buffer_uptodate(bh))
- 		return (bh);
+-static void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt)
++void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt)
+ {
++	lockdep_assert_held(&ctx->wqh.lock);
++
+ 	*cnt = (ctx->flags & EFD_SEMAPHORE) ? 1 : ctx->count;
+ 	ctx->count -= *cnt;
+ }
++EXPORT_SYMBOL_GPL(eventfd_ctx_do_read);
  
- 	if (block + BUFNR > max_block) {
-@@ -2335,6 +2335,8 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	j = 1;
- 	for (i = 1; i < blocks; i++) {
- 		bh = __getblk(dev, block + i, bufsize);
-+		if (!bh)
-+			break;
- 		if (buffer_uptodate(bh)) {
- 			brelse(bh);
- 			break;
+ /**
+  * eventfd_ctx_remove_wait_queue - Read the current counter and removes wait queue.
+diff --git a/include/linux/eventfd.h b/include/linux/eventfd.h
+index 6cd2a92daf205..c1bd4883e2faf 100644
+--- a/include/linux/eventfd.h
++++ b/include/linux/eventfd.h
+@@ -42,6 +42,7 @@ __u64 eventfd_signal(struct eventfd_ctx *ctx, __u64 n);
+ __u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n, unsigned mask);
+ int eventfd_ctx_remove_wait_queue(struct eventfd_ctx *ctx, wait_queue_entry_t *wait,
+ 				  __u64 *cnt);
++void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt);
+ 
+ DECLARE_PER_CPU(int, eventfd_wake_count);
+ 
+@@ -89,6 +90,11 @@ static inline bool eventfd_signal_count(void)
+ 	return false;
+ }
+ 
++static inline void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt)
++{
++
++}
++
+ #endif
+ 
+ #endif /* _LINUX_EVENTFD_H */
 -- 
 2.40.1
 
