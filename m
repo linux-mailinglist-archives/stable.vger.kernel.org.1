@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53F17A3A81
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A2BB7A3A83
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239521AbjIQUFW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52594 "EHLO
+        id S239547AbjIQUFY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240375AbjIQUEy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:04:54 -0400
+        with ESMTP id S240406AbjIQUFC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BAEEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:04:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCF0C433C7;
-        Sun, 17 Sep 2023 20:04:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62CF133
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:04:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F0EC433C8;
+        Sun, 17 Sep 2023 20:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981088;
-        bh=RFTX+JDsTL9lEanEfvctsikny6AOZXur9xTBweMDhGs=;
+        s=korg; t=1694981095;
+        bh=9gr4e9nS4lnp5w4BTZiIuQ3PP4VMbCs4Y+OGGNAv5CM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cxXxxVv3pSH+RlIQCm0X+QOLXgbYW6ChGJhDY2umnIgk/aISBvTMUeeXn3TllhZqk
-         WG7/nrVSETvNnmtBmU3kmd+FT6jFZEC0d5jv2KJKwNLBRaXbhZLo0sGlukDDM1i+S0
-         PVq7rr1ARk+IcqG+C4Izzq6hFNM9G409YZDX9Asw=
+        b=ZQPZ/LQ3Ul1TEQPBJQOyMLDZCqCBp9a/Rz7qzsuW8x7mFd18IVvDFsmgNM9GXzoP8
+         mdtRAcCGwHOZJmWtorweR4G7NjQwliS9Z2KmA9srRs/7FiKfpSw2Py/xNpW68RCHQh
+         PUYI/yXSbDXTG95VbNxhQ3l76wezNQnmCZHChbik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/511] ARM: dts: imx: Set default tuning step for imx7d usdhc
-Date:   Sun, 17 Sep 2023 21:07:11 +0200
-Message-ID: <20230917191113.941455162@linuxfoundation.org>
+        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 005/511] phy: qcom-snps-femto-v2: use qcom_snps_hsphy_suspend/resume error code
+Date:   Sun, 17 Sep 2023 21:07:12 +0200
+Message-ID: <20230917191113.964500398@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,62 +53,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Adrien Thierry <athierry@redhat.com>
 
-[ Upstream commit be18293e47cbca7c6acee9231fc851601d69563a ]
+[ Upstream commit 8932089b566c24ea19b57e37704c492678de1420 ]
 
-If the tuning step is not set, the tuning step is set to 1.
-For some sd cards, the following Tuning timeout will occur.
+The return value from qcom_snps_hsphy_suspend/resume is not used. Make
+sure qcom_snps_hsphy_runtime_suspend/resume return this value as well.
 
-Tuning failed, falling back to fixed sampling clock
-mmc0: Tuning failed, falling back to fixed sampling clock
-
-So set the default tuning step. This refers to the NXP vendor's
-commit below:
-
-https://github.com/nxp-imx/linux-imx/blob/lf-6.1.y/
-arch/arm/boot/dts/imx7s.dtsi#L1216-L1217
-
-Fixes: 1e336aa0c025 ("mmc: sdhci-esdhc-imx: correct the tuning start tap and step setting")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Adrien Thierry <athierry@redhat.com>
+Link: https://lore.kernel.org/r/20230629144542.14906-4-athierry@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 1055a1013fd00..c978aab1d0e3d 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -1166,6 +1166,8 @@
- 					<&clks IMX7D_USDHC1_ROOT_CLK>;
- 				clock-names = "ipg", "ahb", "per";
- 				bus-width = <4>;
-+				fsl,tuning-step = <2>;
-+				fsl,tuning-start-tap = <20>;
- 				status = "disabled";
- 			};
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index abb9264569336..173d166ed8295 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -171,8 +171,7 @@ static int __maybe_unused qcom_snps_hsphy_runtime_suspend(struct device *dev)
+ 	if (!hsphy->phy_initialized)
+ 		return 0;
  
-@@ -1178,6 +1180,8 @@
- 					<&clks IMX7D_USDHC2_ROOT_CLK>;
- 				clock-names = "ipg", "ahb", "per";
- 				bus-width = <4>;
-+				fsl,tuning-step = <2>;
-+				fsl,tuning-start-tap = <20>;
- 				status = "disabled";
- 			};
+-	qcom_snps_hsphy_suspend(hsphy);
+-	return 0;
++	return qcom_snps_hsphy_suspend(hsphy);
+ }
  
-@@ -1190,6 +1194,8 @@
- 					<&clks IMX7D_USDHC3_ROOT_CLK>;
- 				clock-names = "ipg", "ahb", "per";
- 				bus-width = <4>;
-+				fsl,tuning-step = <2>;
-+				fsl,tuning-start-tap = <20>;
- 				status = "disabled";
- 			};
+ static int __maybe_unused qcom_snps_hsphy_runtime_resume(struct device *dev)
+@@ -182,8 +181,7 @@ static int __maybe_unused qcom_snps_hsphy_runtime_resume(struct device *dev)
+ 	if (!hsphy->phy_initialized)
+ 		return 0;
  
+-	qcom_snps_hsphy_resume(hsphy);
+-	return 0;
++	return qcom_snps_hsphy_resume(hsphy);
+ }
+ 
+ static int qcom_snps_hsphy_set_mode(struct phy *phy, enum phy_mode mode,
 -- 
 2.40.1
 
