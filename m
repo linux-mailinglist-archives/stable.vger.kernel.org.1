@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 645F47A39D8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A947A38CF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239496AbjIQTzM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40732 "EHLO
+        id S239703AbjIQTkt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240172AbjIQTyo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:44 -0400
+        with ESMTP id S239882AbjIQTk3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99185EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4394C433CB;
-        Sun, 17 Sep 2023 19:54:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4ACDD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDEEC433C7;
+        Sun, 17 Sep 2023 19:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980478;
-        bh=iiGWqYnUKvDlZ9Ijatx7wxPfkP1i3kaU/POtqO6EFYU=;
+        s=korg; t=1694979623;
+        bh=bzyg6akzCAWLa9+n5itahdGiYhRgm6OQ1WJnzEhqUyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wHcTt+a49GPlNvWRMSozdzg/r1dZTfTEO1WNPqFgxQ53D/A71jZ+qqHNx8SjDGelU
-         esofviVEMa6B0KtTCG0cODlXoj2bb3xfSz42YyjyeDQz8NHq0qtjUNZ+GabB1BOu6S
-         KBWGua+p1hCFppIghXpoUaXdGdB5wbHEwHI+2bIw=
+        b=gyVC6lis0DU2F35GMyoZTJj2YU52eTdo2PvbgNk2FSvYiIMDbjT7vMmHb9INWOHuf
+         Lw27/yQzJWOtkPjd73hjY99XH9ey17ngkoHLf45G7//yDGy4LqRzcYmAKo346CrVUu
+         Ena89OSy+jPnkiXYzS/p/NbeXqajUlJSVcjHOSgU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
-        Nhat Pham <nphamcs@gmail.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Yosry Ahmed <yosryahmed@google.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 196/285] memcontrol: ensure memcg acquired by id is properly set up
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 342/406] sctp: annotate data-races around sk->sk_wmem_queued
 Date:   Sun, 17 Sep 2023 21:13:16 +0200
-Message-ID: <20230917191058.374856598@linuxfoundation.org>
+Message-ID: <20230917191110.309877563@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,135 +53,156 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 6f0df8e16eb543167f2929cb756e695709a3551d upstream.
+[ Upstream commit dc9511dd6f37fe803f6b15b61b030728d7057417 ]
 
-In the eviction recency check, we attempt to retrieve the memcg to which
-the folio belonged when it was evicted, by the memcg id stored in the
-shadow entry.  However, there is a chance that the retrieved memcg is not
-the original memcg that has been killed, but a new one which happens to
-have the same id.
+sk->sk_wmem_queued can be read locklessly from sctp_poll()
 
-This is a somewhat unfortunate, but acceptable and rare inaccuracy in the
-heuristics.  However, if we retrieve this new memcg between its allocation
-and when it is properly attached to the memcg hierarchy, we could run into
-the following NULL pointer exception during the memcg hierarchy traversal
-done in mem_cgroup_get_nr_swap_pages():
+Use sk_wmem_queued_add() when the field is changed,
+and add READ_ONCE() annotations in sctp_writeable()
+and sctp_assocs_seq_show()
 
-[ 155757.793456] BUG: kernel NULL pointer dereference, address: 00000000000000c0
-[ 155757.807568] #PF: supervisor read access in kernel mode
-[ 155757.818024] #PF: error_code(0x0000) - not-present page
-[ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
-[ 155757.839985] Oops: 0000 [#1] SMP
-[ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-[ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
-[ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
-[ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: ffff888280183000
-[ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: ffff888bbc2d1000
-[ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: ffff888ad9cedba0
-[ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: ffff888b23a7b000
-[ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000007ffffc71354
-[ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000) knlGS:0000000000000000
-[ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 00000000007706e0
-[ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 155758.091376] PKRU: 55555554
-[ 155758.096957] Call Trace:
-[ 155758.102016]  <TASK>
-[ 155758.106502]  ? __die+0x78/0xc0
-[ 155758.112793]  ? page_fault_oops+0x286/0x380
-[ 155758.121175]  ? exc_page_fault+0x5d/0x110
-[ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
-[ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-[ 155758.148060]  workingset_test_recent+0xda/0x1b0
-[ 155758.157133]  workingset_refault+0xca/0x1e0
-[ 155758.165508]  filemap_add_folio+0x4d/0x70
-[ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
-[ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
-[ 155758.191738]  filemap_read+0x68d/0xdf0
-[ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
-[ 155758.207981]  ? __napi_schedule+0x55/0x90
-[ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
-[ 155758.224601]  do_syscall_64+0x3d/0x80
-[ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[ 155758.242473] RIP: 0033:0x7f62c29153b5
-[ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
-[ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX: 0000000000000011
-[ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 00007f62c29153b5
-[ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0000000000000076
-[ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0000000064d5230c
-[ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 000000000003c041
-[ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 000000000027d450
-[ 155758.376661]  </TASK>
+syzbot reported:
 
-This patch fixes the issue by moving the memcg's id publication from the
-alloc stage to online stage, ensuring that any memcg acquired via id must
-be connected to the memcg tree.
+BUG: KCSAN: data-race in sctp_poll / sctp_wfree
 
-Link: https://lkml.kernel.org/r/20230823225430.166925-1-nphamcs@gmail.com
-Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs refault container")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Co-developed-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+read-write to 0xffff888149d77810 of 4 bytes by interrupt on cpu 0:
+sctp_wfree+0x170/0x4a0 net/sctp/socket.c:9147
+skb_release_head_state+0xb7/0x1a0 net/core/skbuff.c:988
+skb_release_all net/core/skbuff.c:1000 [inline]
+__kfree_skb+0x16/0x140 net/core/skbuff.c:1016
+consume_skb+0x57/0x180 net/core/skbuff.c:1232
+sctp_chunk_destroy net/sctp/sm_make_chunk.c:1503 [inline]
+sctp_chunk_put+0xcd/0x130 net/sctp/sm_make_chunk.c:1530
+sctp_datamsg_put+0x29a/0x300 net/sctp/chunk.c:128
+sctp_chunk_free+0x34/0x50 net/sctp/sm_make_chunk.c:1515
+sctp_outq_sack+0xafa/0xd70 net/sctp/outqueue.c:1381
+sctp_cmd_process_sack net/sctp/sm_sideeffect.c:834 [inline]
+sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1366 [inline]
+sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
+sctp_do_sm+0x12c7/0x31b0 net/sctp/sm_sideeffect.c:1169
+sctp_assoc_bh_rcv+0x2b2/0x430 net/sctp/associola.c:1051
+sctp_inq_push+0x108/0x120 net/sctp/inqueue.c:80
+sctp_rcv+0x116e/0x1340 net/sctp/input.c:243
+sctp6_rcv+0x25/0x40 net/sctp/ipv6.c:1120
+ip6_protocol_deliver_rcu+0x92f/0xf30 net/ipv6/ip6_input.c:437
+ip6_input_finish net/ipv6/ip6_input.c:482 [inline]
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ip6_input+0xbd/0x1b0 net/ipv6/ip6_input.c:491
+dst_input include/net/dst.h:468 [inline]
+ip6_rcv_finish+0x1e2/0x2e0 net/ipv6/ip6_input.c:79
+NF_HOOK include/linux/netfilter.h:303 [inline]
+ipv6_rcv+0x74/0x150 net/ipv6/ip6_input.c:309
+__netif_receive_skb_one_core net/core/dev.c:5452 [inline]
+__netif_receive_skb+0x90/0x1b0 net/core/dev.c:5566
+process_backlog+0x21f/0x380 net/core/dev.c:5894
+__napi_poll+0x60/0x3b0 net/core/dev.c:6460
+napi_poll net/core/dev.c:6527 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6660
+__do_softirq+0xc1/0x265 kernel/softirq.c:553
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:921
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:389
+ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
+ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+read to 0xffff888149d77810 of 4 bytes by task 17828 on cpu 1:
+sctp_writeable net/sctp/socket.c:9304 [inline]
+sctp_poll+0x265/0x410 net/sctp/socket.c:8671
+sock_poll+0x253/0x270 net/socket.c:1374
+vfs_poll include/linux/poll.h:88 [inline]
+do_pollfd fs/select.c:873 [inline]
+do_poll fs/select.c:921 [inline]
+do_sys_poll+0x636/0xc00 fs/select.c:1015
+__do_sys_ppoll fs/select.c:1121 [inline]
+__se_sys_ppoll+0x1af/0x1f0 fs/select.c:1101
+__x64_sys_ppoll+0x67/0x80 fs/select.c:1101
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00019e80 -> 0x0000cc80
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 17828 Comm: syz-executor.1 Not tainted 6.5.0-rc7-syzkaller-00185-g28f20a19294d #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/20230830094519.950007-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ net/sctp/proc.c   |  2 +-
+ net/sctp/socket.c | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5329,7 +5329,6 @@ static struct mem_cgroup *mem_cgroup_all
- 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
- 	memcg->deferred_split_queue.split_queue_len = 0;
- #endif
--	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
- 	lru_gen_init_memcg(memcg);
- 	return memcg;
- fail:
-@@ -5401,14 +5400,27 @@ static int mem_cgroup_css_online(struct
- 	if (alloc_shrinker_info(memcg))
- 		goto offline_kmem;
+diff --git a/net/sctp/proc.c b/net/sctp/proc.c
+index 982a87b3e11f8..963b94517ec20 100644
+--- a/net/sctp/proc.c
++++ b/net/sctp/proc.c
+@@ -284,7 +284,7 @@ static int sctp_assocs_seq_show(struct seq_file *seq, void *v)
+ 		assoc->init_retries, assoc->shutdown_retries,
+ 		assoc->rtx_data_chunks,
+ 		refcount_read(&sk->sk_wmem_alloc),
+-		sk->sk_wmem_queued,
++		READ_ONCE(sk->sk_wmem_queued),
+ 		sk->sk_sndbuf,
+ 		sk->sk_rcvbuf);
+ 	seq_printf(seq, "\n");
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index fa4d31b507f29..68d53e3f0d07a 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -68,7 +68,7 @@
+ #include <net/sctp/stream_sched.h>
  
--	/* Online state pins memcg ID, memcg ID pins CSS */
--	refcount_set(&memcg->id.ref, 1);
--	css_get(css);
--
- 	if (unlikely(mem_cgroup_is_root(memcg)))
- 		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
- 				   FLUSH_TIME);
- 	lru_gen_online_memcg(memcg);
-+
-+	/* Online state pins memcg ID, memcg ID pins CSS */
-+	refcount_set(&memcg->id.ref, 1);
-+	css_get(css);
-+
-+	/*
-+	 * Ensure mem_cgroup_from_id() works once we're fully online.
-+	 *
-+	 * We could do this earlier and require callers to filter with
-+	 * css_tryget_online(). But right now there are no users that
-+	 * need earlier access, and the workingset code relies on the
-+	 * cgroup tree linkage (mem_cgroup_get_nr_swap_pages()). So
-+	 * publish it here at the end of onlining. This matches the
-+	 * regular ID destruction during offlining.
-+	 */
-+	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
-+
- 	return 0;
- offline_kmem:
- 	memcg_offline_kmem(memcg);
+ /* Forward declarations for internal helper functions. */
+-static bool sctp_writeable(struct sock *sk);
++static bool sctp_writeable(const struct sock *sk);
+ static void sctp_wfree(struct sk_buff *skb);
+ static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
+ 				size_t msg_len);
+@@ -138,7 +138,7 @@ static inline void sctp_set_owner_w(struct sctp_chunk *chunk)
+ 
+ 	refcount_add(sizeof(struct sctp_chunk), &sk->sk_wmem_alloc);
+ 	asoc->sndbuf_used += chunk->skb->truesize + sizeof(struct sctp_chunk);
+-	sk->sk_wmem_queued += chunk->skb->truesize + sizeof(struct sctp_chunk);
++	sk_wmem_queued_add(sk, chunk->skb->truesize + sizeof(struct sctp_chunk));
+ 	sk_mem_charge(sk, chunk->skb->truesize);
+ }
+ 
+@@ -8900,7 +8900,7 @@ static void sctp_wfree(struct sk_buff *skb)
+ 	struct sock *sk = asoc->base.sk;
+ 
+ 	sk_mem_uncharge(sk, skb->truesize);
+-	sk->sk_wmem_queued -= skb->truesize + sizeof(struct sctp_chunk);
++	sk_wmem_queued_add(sk, -(skb->truesize + sizeof(struct sctp_chunk)));
+ 	asoc->sndbuf_used -= skb->truesize + sizeof(struct sctp_chunk);
+ 	WARN_ON(refcount_sub_and_test(sizeof(struct sctp_chunk),
+ 				      &sk->sk_wmem_alloc));
+@@ -9055,9 +9055,9 @@ void sctp_write_space(struct sock *sk)
+  * UDP-style sockets or TCP-style sockets, this code should work.
+  *  - Daisy
+  */
+-static bool sctp_writeable(struct sock *sk)
++static bool sctp_writeable(const struct sock *sk)
+ {
+-	return sk->sk_sndbuf > sk->sk_wmem_queued;
++	return READ_ONCE(sk->sk_sndbuf) > READ_ONCE(sk->sk_wmem_queued);
+ }
+ 
+ /* Wait for an association to go into ESTABLISHED state. If timeout is 0,
+-- 
+2.40.1
+
 
 
