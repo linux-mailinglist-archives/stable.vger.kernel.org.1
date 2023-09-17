@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 959377A3AE1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFB07A3ADF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240477AbjIQUKK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240500AbjIQUKK (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43714 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240522AbjIQUJp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:45 -0400
+        with ESMTP id S240557AbjIQUJw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56BB3189
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89639C433C7;
-        Sun, 17 Sep 2023 20:09:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE9D819F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1F8C433CC;
+        Sun, 17 Sep 2023 20:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981378;
-        bh=Q1Qr5Xtb2K90VsTq9xHcFUAnYzeafguNzVn087kUQl8=;
+        s=korg; t=1694981384;
+        bh=mnhG65XuUfzIFAR78aBg6APVsyNRYlzNIHY5pb1YThs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WmM8R74WK2xuc2JpY1Ma1Wcfr0o7/zCDpi/XUfUHVGQvJZHaZCw/ZYg2WSnh/8yRs
-         m/Us7B5MqtMEzVhU01VK/Sz1EocsPwQu2YUj0XR9t8ms/+YS2LllDFsQVBXl923Vsh
-         HESfmQsYGJaeZD339gxv6VeFe3Pmh2EnGFtRxBkE=
+        b=hKqRrAY8PW8WYZC5V3EMN38t9Ff0i8gNFTfax/KDDV7j4HKpFGID56kXMCQgD0Zgg
+         d6U7utHswdCvht+K58a2fXsn7uyGE5DX4gCft0SCt0kMH+zioRp4Hb0IAwLVpjODb8
+         PI4OR2yAYxxzJJvpgXM1Vbn66ighkRK6XZiqaw9Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Justin Tee <justin.tee@broadcom.com>,
-        kernel test robot <lkp@intel.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/511] scsi: lpfc: Fix incorrect big endian type assignment in bsg loopback path
-Date:   Sun, 17 Sep 2023 21:07:52 +0200
-Message-ID: <20230917191114.955714317@linuxfoundation.org>
+        patches@lists.linux.dev, "Gong, Sishuai" <sishuai@purdue.edu>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 046/511] ALSA: seq: oss: Fix racy open/close of MIDI devices
+Date:   Sun, 17 Sep 2023 21:07:53 +0200
+Message-ID: <20230917191114.982035447@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,59 +53,127 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Justin Tee <justintee8345@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9cefd6e7e0a77b0fbca5c793f6fb6821b0962775 ]
+[ Upstream commit 297224fc0922e7385573a30c29ffdabb67f27b7d ]
 
-The kernel test robot reported sparse warnings regarding incorrect type
-assignment for __be16 variables in bsg loopback path.
+Although snd_seq_oss_midi_open() and snd_seq_oss_midi_close() can be
+called concurrently from different code paths, we have no proper data
+protection against races.  Introduce open_mutex to each seq_oss_midi
+object for avoiding the races.
 
-Change the flagged lines to use the be16_to_cpu() and cpu_to_be16() macros
-appropriately.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20230614175944.3577-1-justintee8345@gmail.com
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306110819.sDIKiGgg-lkp@intel.com/
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: "Gong, Sishuai" <sishuai@purdue.edu>
+Closes: https://lore.kernel.org/r/7DC9AF71-F481-4ABA-955F-76C535661E33@purdue.edu
+Link: https://lore.kernel.org/r/20230612125533.27461-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_bsg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/core/seq/oss/seq_oss_midi.c | 35 +++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
-index fdf08cb572071..ed827f198cb68 100644
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -911,7 +911,7 @@ lpfc_bsg_ct_unsol_event(struct lpfc_hba *phba, struct lpfc_sli_ring *pring,
- 			struct lpfc_iocbq *piocbq)
- {
- 	uint32_t evt_req_id = 0;
--	uint32_t cmd;
-+	u16 cmd;
- 	struct lpfc_dmabuf *dmabuf = NULL;
- 	struct lpfc_bsg_event *evt;
- 	struct event_data *evt_dat = NULL;
-@@ -936,7 +936,7 @@ lpfc_bsg_ct_unsol_event(struct lpfc_hba *phba, struct lpfc_sli_ring *pring,
+diff --git a/sound/core/seq/oss/seq_oss_midi.c b/sound/core/seq/oss/seq_oss_midi.c
+index 07efb38f58ac1..f2940b29595f0 100644
+--- a/sound/core/seq/oss/seq_oss_midi.c
++++ b/sound/core/seq/oss/seq_oss_midi.c
+@@ -37,6 +37,7 @@ struct seq_oss_midi {
+ 	struct snd_midi_event *coder;	/* MIDI event coder */
+ 	struct seq_oss_devinfo *devinfo;	/* assigned OSSseq device */
+ 	snd_use_lock_t use_lock;
++	struct mutex open_mutex;
+ };
  
- 	ct_req = (struct lpfc_sli_ct_request *)bdeBuf1->virt;
- 	evt_req_id = ct_req->FsType;
--	cmd = ct_req->CommandResponse.bits.CmdRsp;
-+	cmd = be16_to_cpu(ct_req->CommandResponse.bits.CmdRsp);
  
- 	spin_lock_irqsave(&phba->ct_ev_lock, flags);
- 	list_for_each_entry(evt, &phba->ct_ev_waiters, node) {
-@@ -3243,8 +3243,8 @@ lpfc_bsg_diag_loopback_run(struct bsg_job *job)
- 			ctreq->RevisionId.bits.InId = 0;
- 			ctreq->FsType = SLI_CT_ELX_LOOPBACK;
- 			ctreq->FsSubType = 0;
--			ctreq->CommandResponse.bits.CmdRsp = ELX_LOOPBACK_DATA;
--			ctreq->CommandResponse.bits.Size   = size;
-+			ctreq->CommandResponse.bits.CmdRsp = cpu_to_be16(ELX_LOOPBACK_DATA);
-+			ctreq->CommandResponse.bits.Size   = cpu_to_be16(size);
- 			segment_offset = ELX_LOOPBACK_HEADER_SZ;
- 		} else
- 			segment_offset = 0;
+@@ -172,6 +173,7 @@ snd_seq_oss_midi_check_new_port(struct snd_seq_port_info *pinfo)
+ 	mdev->flags = pinfo->capability;
+ 	mdev->opened = 0;
+ 	snd_use_lock_init(&mdev->use_lock);
++	mutex_init(&mdev->open_mutex);
+ 
+ 	/* copy and truncate the name of synth device */
+ 	strscpy(mdev->name, pinfo->name, sizeof(mdev->name));
+@@ -322,15 +324,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
+ 	int perm;
+ 	struct seq_oss_midi *mdev;
+ 	struct snd_seq_port_subscribe subs;
++	int err;
+ 
+ 	mdev = get_mididev(dp, dev);
+ 	if (!mdev)
+ 		return -ENODEV;
+ 
++	mutex_lock(&mdev->open_mutex);
+ 	/* already used? */
+ 	if (mdev->opened && mdev->devinfo != dp) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return -EBUSY;
++		err = -EBUSY;
++		goto unlock;
+ 	}
+ 
+ 	perm = 0;
+@@ -340,14 +344,14 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
+ 		perm |= PERM_READ;
+ 	perm &= mdev->flags;
+ 	if (perm == 0) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return -ENXIO;
++		err = -ENXIO;
++		goto unlock;
+ 	}
+ 
+ 	/* already opened? */
+ 	if ((mdev->opened & perm) == perm) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return 0;
++		err = 0;
++		goto unlock;
+ 	}
+ 
+ 	perm &= ~mdev->opened;
+@@ -372,13 +376,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
+ 	}
+ 
+ 	if (! mdev->opened) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return -ENXIO;
++		err = -ENXIO;
++		goto unlock;
+ 	}
+ 
+ 	mdev->devinfo = dp;
++	err = 0;
++
++ unlock:
++	mutex_unlock(&mdev->open_mutex);
+ 	snd_use_lock_free(&mdev->use_lock);
+-	return 0;
++	return err;
+ }
+ 
+ /*
+@@ -393,10 +401,9 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
+ 	mdev = get_mididev(dp, dev);
+ 	if (!mdev)
+ 		return -ENODEV;
+-	if (! mdev->opened || mdev->devinfo != dp) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return 0;
+-	}
++	mutex_lock(&mdev->open_mutex);
++	if (!mdev->opened || mdev->devinfo != dp)
++		goto unlock;
+ 
+ 	memset(&subs, 0, sizeof(subs));
+ 	if (mdev->opened & PERM_WRITE) {
+@@ -415,6 +422,8 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
+ 	mdev->opened = 0;
+ 	mdev->devinfo = NULL;
+ 
++ unlock:
++	mutex_unlock(&mdev->open_mutex);
+ 	snd_use_lock_free(&mdev->use_lock);
+ 	return 0;
+ }
 -- 
 2.40.1
 
