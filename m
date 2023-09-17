@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD277A3B7E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B57F7A3D29
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239595AbjIQUSl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
+        id S241240AbjIQUjd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240718AbjIQUSP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:15 -0400
+        with ESMTP id S241307AbjIQUjN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF0F101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6D8C433C9;
-        Sun, 17 Sep 2023 20:18:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08677101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CF5C433C9;
+        Sun, 17 Sep 2023 20:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981889;
-        bh=O68uv2Qp8pKV87GjEPT88Jjk1JlCqVYyw63/MmEdniA=;
+        s=korg; t=1694983147;
+        bh=XUKeue+CE6XpjMmfx+afqABy9bKT0545n0bmr2QC4BY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x6Nlxth/vt7yJwEWhbBrsoPv3MFJgl4bmC28yjSQXvLwDPdIVAJEntKSGlR5J2b/y
-         rKTLfudJXt3DTHAnogHkn1Rd+y/ztWoyLKsEteXvNUX0eqHh7Jc0QzCu5FfjCvurXZ
-         mMaXVJDdkqzWMEwUgZAS1CK2ZBVzzeHoZGVqp7cA=
+        b=OWFo1XzCQHtrAjWER57PIWfuhvCQt0ZV7zoVaaBBiJF5W/BH2+lfjZN34uJla6jZt
+         F/FvQz6owlLyntjuC6vOn74tr5uVha4wclUJrhznTpeV4GJ9QLYzFTTCMTQuZQ/uWQ
+         T3Iexb/JQrmpkFzTZC2FB1Km3OWIL5gfLnKNSdo4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 156/219] btrfs: fix start transaction qgroup rsv double free
+        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
+        Wander Lairson Costa <wander@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 456/511] netfilter: nfnetlink_osf: avoid OOB read
 Date:   Sun, 17 Sep 2023 21:14:43 +0200
-Message-ID: <20230917191046.688260869@linuxfoundation.org>
+Message-ID: <20230917191124.767865456@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,101 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Wander Lairson Costa <wander@redhat.com>
 
-commit a6496849671a5bc9218ecec25a983253b34351b1 upstream.
+[ Upstream commit f4f8a7803119005e87b716874bec07c751efafec ]
 
-btrfs_start_transaction reserves metadata space of the PERTRANS type
-before it identifies a transaction to start/join. This allows flushing
-when reserving that space without a deadlock. However, it results in a
-race which temporarily breaks qgroup rsv accounting.
+The opt_num field is controlled by user mode and is not currently
+validated inside the kernel. An attacker can take advantage of this to
+trigger an OOB read and potentially leak information.
 
-T1                                              T2
-start_transaction
-do_stuff
-                                            start_transaction
-                                                qgroup_reserve_meta_pertrans
-commit_transaction
-    qgroup_free_meta_all_pertrans
-                                            hit an error starting txn
-                                            goto reserve_fail
-                                            qgroup_free_meta_pertrans (already freed!)
+BUG: KASAN: slab-out-of-bounds in nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
+Read of size 2 at addr ffff88804bc64272 by task poc/6431
 
-The basic issue is that there is nothing preventing another commit from
-committing before start_transaction finishes (in fact sometimes we
-intentionally wait for it) so any error path that frees the reserve is
-at risk of this race.
+CPU: 1 PID: 6431 Comm: poc Not tainted 6.0.0-rc4 #1
+Call Trace:
+ nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
+ nf_osf_find+0x186/0x2f0 net/netfilter/nfnetlink_osf.c:281
+ nft_osf_eval+0x37f/0x590 net/netfilter/nft_osf.c:47
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:214
+ nft_do_chain+0x2b0/0x1490 net/netfilter/nf_tables_core.c:264
+ nft_do_chain_ipv4+0x17c/0x1f0 net/netfilter/nft_chain_filter.c:23
+ [..]
 
-While this exact space was getting freed anyway, and it's not a huge
-deal to double free it (just a warning, the free code catches this), it
-can result in incorrectly freeing some other pertrans reservation in
-this same reservation, which could then lead to spuriously granting
-reservations we might not have the space for. Therefore, I do believe it
-is worth fixing.
+Also add validation to genre, subtype and version fields.
 
-To fix it, use the existing prealloc->pertrans conversion mechanism.
-When we first reserve the space, we reserve prealloc space and only when
-we are sure we have a transaction do we convert it to pertrans. This way
-any racing commits do not blow away our reservation, but we still get a
-pertrans reservation that is freed when _this_ transaction gets committed.
-
-This issue can be reproduced by running generic/269 with either qgroups
-or squotas enabled via mkfs on the scratch device.
-
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-CC: stable@vger.kernel.org # 5.10+
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Lucas Leong <wmliang@infosec.exchange>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ net/netfilter/nfnetlink_osf.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -580,8 +580,13 @@ start_transaction(struct btrfs_root *roo
- 		u64 delayed_refs_bytes = 0;
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 8f1bfa6ccc2d9..50723ba082890 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -315,6 +315,14 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
  
- 		qgroup_reserved = num_items * fs_info->nodesize;
--		ret = btrfs_qgroup_reserve_meta_pertrans(root, qgroup_reserved,
--				enforce_qgroups);
-+		/*
-+		 * Use prealloc for now, as there might be a currently running
-+		 * transaction that could free this reserved space prematurely
-+		 * by committing.
-+		 */
-+		ret = btrfs_qgroup_reserve_meta_prealloc(root, qgroup_reserved,
-+							 enforce_qgroups, false);
- 		if (ret)
- 			return ERR_PTR(ret);
+ 	f = nla_data(osf_attrs[OSF_ATTR_FINGER]);
  
-@@ -693,6 +698,14 @@ again:
- 		h->reloc_reserved = reloc_reserved;
- 	}
- 
-+	/*
-+	 * Now that we have found a transaction to be a part of, convert the
-+	 * qgroup reservation from prealloc to pertrans. A different transaction
-+	 * can't race in and free our pertrans out from under us.
-+	 */
-+	if (qgroup_reserved)
-+		btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
++	if (f->opt_num > ARRAY_SIZE(f->opt))
++		return -EINVAL;
 +
- got_it:
- 	if (!current->journal_info)
- 		current->journal_info = h;
-@@ -740,7 +753,7 @@ alloc_fail:
- 		btrfs_block_rsv_release(fs_info, &fs_info->trans_block_rsv,
- 					num_bytes, NULL);
- reserve_fail:
--	btrfs_qgroup_free_meta_pertrans(root, qgroup_reserved);
-+	btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
- 	return ERR_PTR(ret);
- }
- 
++	if (!memchr(f->genre, 0, MAXGENRELEN) ||
++	    !memchr(f->subtype, 0, MAXGENRELEN) ||
++	    !memchr(f->version, 0, MAXGENRELEN))
++		return -EINVAL;
++
+ 	kf = kmalloc(sizeof(struct nf_osf_finger), GFP_KERNEL);
+ 	if (!kf)
+ 		return -ENOMEM;
+-- 
+2.40.1
+
 
 
