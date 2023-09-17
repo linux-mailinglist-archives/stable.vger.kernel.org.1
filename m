@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D12587A3945
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D639C7A3928
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240009AbjIQTrO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58224 "EHLO
+        id S239905AbjIQTpj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240030AbjIQTqu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:50 -0400
+        with ESMTP id S240043AbjIQTpa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0126F12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3170DC433C8;
-        Sun, 17 Sep 2023 19:46:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6366D1AB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA8EC433CC;
+        Sun, 17 Sep 2023 19:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980004;
-        bh=+AuWhvgK8yBaEgnxhQqwzkn0VjYNuxU2qAFSFXQolyw=;
+        s=korg; t=1694979908;
+        bh=mdJiD3+ihnpddKCFG7X+9IZmYl/O25XQemgZIZSsUwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nUkhY8eAkgoQVKRnHDkf3IZtKDlmsJ8+fE94hWnis7Qgy7B1Z5ns1qWIzwwiVXTGM
-         Jpv1R8BwPIS2+JqX5KvtM5cKMhin41xAr2D54eipzi/tbiC1zHW1Qf7rpfm9shV0BZ
-         gRAg6+WcClgDwCuSaQ+GWeT7TfsAqwnobD8EvmK8=
+        b=ffYkuOPNvoue+wouplePDG+2gP0/tkz5eAmKF1K+6wCkEoO94EYwgoEP09qrmtVcl
+         6FQzmqzwmcE8C5QGKtCGmfXI1GPavM4TLP5kBvas5aFRoRPX4cjS8rTshwBYWyQDko
+         yhi7fRZpAcW3w52IdrPr38sdwjVjUZSh4YDMTwBw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 041/285] cifs: update desired access while requesting for directory lease
-Date:   Sun, 17 Sep 2023 21:10:41 +0200
-Message-ID: <20230917191053.092955161@linuxfoundation.org>
+        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.5 042/285] pinctrl: cherryview: fix address_space_handler() argument
+Date:   Sun, 17 Sep 2023 21:10:42 +0200
+Message-ID: <20230917191053.131102804@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -40,10 +40,10 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,TVD_PH_SUBJ_META1,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -54,33 +54,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Raag Jadav <raag.jadav@intel.com>
 
-commit b6d44d42313baa45a81ce9b299aeee2ccf3d0ee1 upstream.
+commit d5301c90716a8e20bc961a348182daca00c8e8f0 upstream.
 
-We read and cache directory contents when we get directory
-lease, so we should ask for read permission to read contents
-of directory.
+First argument of acpi_*_address_space_handler() APIs is acpi_handle of
+the device, which is incorrectly passed in driver ->remove() path here.
+Fix it by passing the appropriate argument and while at it, make both
+API calls consistent using ACPI_HANDLE().
 
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/intel/pinctrl-cherryview.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -218,7 +218,7 @@ int open_cached_dir(unsigned int xid, st
- 		.tcon = tcon,
- 		.path = path,
- 		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_FILE),
--		.desired_access = FILE_READ_ATTRIBUTES,
-+		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES,
- 		.disposition = FILE_OPEN,
- 		.fid = pfid,
- 	};
+--- a/drivers/pinctrl/intel/pinctrl-cherryview.c
++++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+@@ -1701,7 +1701,6 @@ static int chv_pinctrl_probe(struct plat
+ 	struct intel_community_context *cctx;
+ 	struct intel_community *community;
+ 	struct device *dev = &pdev->dev;
+-	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct intel_pinctrl *pctrl;
+ 	acpi_status status;
+ 	unsigned int i;
+@@ -1769,7 +1768,7 @@ static int chv_pinctrl_probe(struct plat
+ 	if (ret)
+ 		return ret;
+ 
+-	status = acpi_install_address_space_handler(adev->handle,
++	status = acpi_install_address_space_handler(ACPI_HANDLE(dev),
+ 					community->acpi_space_id,
+ 					chv_pinctrl_mmio_access_handler,
+ 					NULL, pctrl);
+@@ -1786,7 +1785,7 @@ static int chv_pinctrl_remove(struct pla
+ 	struct intel_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 	const struct intel_community *community = &pctrl->communities[0];
+ 
+-	acpi_remove_address_space_handler(ACPI_COMPANION(&pdev->dev),
++	acpi_remove_address_space_handler(ACPI_HANDLE(&pdev->dev),
+ 					  community->acpi_space_id,
+ 					  chv_pinctrl_mmio_access_handler);
+ 
 
 
