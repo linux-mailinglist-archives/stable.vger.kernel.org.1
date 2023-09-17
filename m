@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20CD47A3B8D
+	by mail.lfdr.de (Postfix) with ESMTP id 9DCA07A3B8F
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240720AbjIQUTO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60750 "EHLO
+        id S240725AbjIQUTP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240745AbjIQUS4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:56 -0400
+        with ESMTP id S240785AbjIQUTG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B93EC101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C6BC433C8;
-        Sun, 17 Sep 2023 20:18:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575CCF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53270C433C8;
+        Sun, 17 Sep 2023 20:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981930;
-        bh=71GMPI/Lb5pmDb+MvCRHT0kSU2dShKoJOBhNjKjwBNM=;
+        s=korg; t=1694981941;
+        bh=snMCM8mXA7QX3252dzZFtjjuEAPsBrGg3ddIwPj0flg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D1kpcME7Zz5Yn+S/tyWY9PcVVd46XTpkC4kdjEvqmjH+9qdzHqLGfeCzUOyBfsKBN
-         bDq+WA5ZrequNKbQCVJSJ+udOHQvG68bgx6aqDtIOFALz3G/jgugrBf/FbGyq3gzDq
-         Dly/0OVIOLwbhmrastZiBhkFsUotVbXeOA3aN8SQ=
+        b=tG/fzTFiSU/PZdGpMACkdpHhdyLZ1KjW8yK5ikMLNdRHaGBoJIqfSfpxwFS4/x4nK
+         gcoC2j4vmjigKElVlIWzwfFYPFWze2nLH7VuwErU+00xP38rfL4uePnejy+U1/gYo6
+         Ov9MJ7GHDqCqwcH3Riu0p7PMTleCO4GzsjugVT2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        alsa-devel@alsa-project.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/511] ASoC: stac9766: fix build errors with REGMAP_AC97
-Date:   Sun, 17 Sep 2023 21:09:15 +0200
-Message-ID: <20230917191116.958580291@linuxfoundation.org>
+        patches@lists.linux.dev, Luca Weiss <luca@z3ntu.xyz>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 129/511] soc: qcom: ocmem: Add OCMEM hardware version print
+Date:   Sun, 17 Sep 2023 21:09:16 +0200
+Message-ID: <20230917191116.981765533@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,40 +55,51 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit c70064b96f509daa78f57992aeabcf274fb2fed4 ]
+[ Upstream commit e81a16e77259294cd4ff0a9c1fbe5aa0e311a47d ]
 
-Select REGMAP_AC97 to fix these build errors:
+It might be useful to know what hardware version of the OCMEM block the
+SoC contains. Add a debug print for that.
 
-ERROR: modpost: "regmap_ac97_default_volatile" [sound/soc/codecs/snd-soc-stac9766.ko] undefined!
-ERROR: modpost: "__regmap_init_ac97" [sound/soc/codecs/snd-soc-stac9766.ko] undefined!
-
-Fixes: 6bbf787bb70c ("ASoC: stac9766: Convert to regmap")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: alsa-devel@alsa-project.org
-Link: https://lore.kernel.org/r/20230701044836.18789-1-rdunlap@infradead.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz
+Stable-dep-of: a7b484b1c933 ("soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/qcom/ocmem.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
-index c3deb82c5da3a..1750cc888bbe8 100644
---- a/sound/soc/codecs/Kconfig
-+++ b/sound/soc/codecs/Kconfig
-@@ -1383,6 +1383,7 @@ config SND_SOC_STA529
- config SND_SOC_STAC9766
- 	tristate
- 	depends on SND_SOC_AC97_BUS
-+	select REGMAP_AC97
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index 1dfdd0b9ba24d..ae023bef81b6f 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -76,6 +76,10 @@ struct ocmem {
+ #define OCMEM_REG_GFX_MPU_START			0x00001004
+ #define OCMEM_REG_GFX_MPU_END			0x00001008
  
- config SND_SOC_STI_SAS
- 	tristate "codec Audio support for STI SAS codec"
++#define OCMEM_HW_VERSION_MAJOR(val)		FIELD_GET(GENMASK(31, 28), val)
++#define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
++#define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
++
+ #define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
+ #define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
+ 
+@@ -357,6 +361,12 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	reg = ocmem_read(ocmem, OCMEM_REG_HW_VERSION);
++	dev_dbg(dev, "OCMEM hardware version: %lu.%lu.%lu\n",
++		OCMEM_HW_VERSION_MAJOR(reg),
++		OCMEM_HW_VERSION_MINOR(reg),
++		OCMEM_HW_VERSION_STEP(reg));
++
+ 	reg = ocmem_read(ocmem, OCMEM_REG_HW_PROFILE);
+ 	ocmem->num_ports = OCMEM_HW_PROFILE_NUM_PORTS(reg);
+ 	ocmem->num_macros = OCMEM_HW_PROFILE_NUM_MACROS(reg);
 -- 
 2.40.1
 
