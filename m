@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C64BD7A3D6D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E627A3BA5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239712AbjIQUmm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50870 "EHLO
+        id S240776AbjIQUUX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241301AbjIQUmP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:15 -0400
+        with ESMTP id S240834AbjIQUUP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F16912F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:42:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131AEC433CB;
-        Sun, 17 Sep 2023 20:42:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A65101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0345C433C8;
+        Sun, 17 Sep 2023 20:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983328;
-        bh=QImpNT00WxptbDHPag4ThNppLakDLi3gsjUk1oiioVk=;
+        s=korg; t=1694982009;
+        bh=jgTWJXU9rtF9UA/dQu1G9LY6FX4NAywPEWl1V9CuZlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KRLHyXEU8a3C+SLxhVOy1D2j7FuL4pzMXRlYA8A8tj/ZbpZG23p1X+MTc0Yr7pLZH
-         SdiR0TOxkHPK8pWGRP3UOFCGvtXhHG1EimwGtMXGTAEyMxifM297ttpgpPZSIvCHS1
-         OJuYAydLYPHi5aBkBVsSyiZ8LsXB/n1QZ4/HrrtQ=
+        b=Sud7/4XIvKxtWlSTfwU9y1oynSQxtQXZ0m0bNBr+2rJrh3BfcTi94K0AwctjwibF7
+         rNINzo6AZRlvIYuUfme0d4NMgKN5YzMJyuQNHzgGRXU58Lj54MQn8dLLKyeWeg5ZMz
+         1AbzQCrnlhrAMmVIHWA+meok7QjLIAVxcrpq7SjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         David Thompson <davthompson@nvidia.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 504/511] platform/mellanox: mlxbf-pmc: Fix potential buffer overflows
-Date:   Sun, 17 Sep 2023 21:15:31 +0200
-Message-ID: <20230917191125.890941982@linuxfoundation.org>
+Subject: [PATCH 6.1 205/219] platform/mellanox: mlxbf-pmc: Fix potential buffer overflows
+Date:   Sun, 17 Sep 2023 21:15:32 +0200
+Message-ID: <20230917191048.348283006@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
