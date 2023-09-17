@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA6907A3880
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A27677A39A0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239783AbjIQTgi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57378 "EHLO
+        id S240109AbjIQTwC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239891AbjIQTgZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:25 -0400
+        with ESMTP id S240127AbjIQTvm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E26103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7517DC433C9;
-        Sun, 17 Sep 2023 19:36:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2AEB132
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA21CC433C8;
+        Sun, 17 Sep 2023 19:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979379;
-        bh=F3t9gfMv4WMlRM5BciFH4OEyJAp/L1hdnE8yNOCKnvM=;
+        s=korg; t=1694980296;
+        bh=MCrlwr+2dIlW2OqNs5tGStPAfB6fteqEbTHk2gBZL1A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KtvwobLDJ5Yor40hj7gg2eeYSifTtCrXe6cxjnRhtHxpeMLclKZOhW59Qnucfayoy
-         PHxZrLz6rICZV54F64UUvwB0tZR8Z7UaSwvWUZ8MQfoxFfBQDt4puPr2m4aEUsYwu5
-         y2kNNMab/vJ+vf75ZD4Zhwtbw6x1dIV7b4/dx85Y=
+        b=bwfyamcoA8DCtgvIwt6DTwzL5NbqmFmf0NI1Nn46gVJ14AN8LVK4mDW6MFP6FVw1F
+         brZt3DRoYYmlUvAmZV+nmAruVsY96UGktHlKDDjgmskzdfriV8C54u7QTaHZ9rQU9Q
+         cbY7WeXK8oRYOnvTBZBhurfJOYzXhQ0kS9l000ig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
-        Corey Minyard <minyard@acm.org>, GONG@vger.kernel.org
-Subject: [PATCH 5.10 278/406] ipmi_si: fix a memleak in try_smi_init()
-Date:   Sun, 17 Sep 2023 21:12:12 +0200
-Message-ID: <20230917191108.622123562@linuxfoundation.org>
+        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+        Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+        Christian Brauner <brauner@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 133/285] af_unix: Fix msg_controllen test in scm_pidfd_recv() for MSG_CMSG_COMPAT.
+Date:   Sun, 17 Sep 2023 21:12:13 +0200
+Message-ID: <20230917191056.265203812@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +54,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 6cf1a126de2992b4efe1c3c4d398f8de4aed6e3f upstream.
+[ Upstream commit 718e6b51298e0f254baca0d40ab52a00e004e014 ]
 
-Kmemleak reported the following leak info in try_smi_init():
+Heiko Carstens reported that SCM_PIDFD does not work with MSG_CMSG_COMPAT
+because scm_pidfd_recv() always checks msg_controllen against sizeof(struct
+cmsghdr).
 
-unreferenced object 0xffff00018ecf9400 (size 1024):
-  comm "modprobe", pid 2707763, jiffies 4300851415 (age 773.308s)
-  backtrace:
-    [<000000004ca5b312>] __kmalloc+0x4b8/0x7b0
-    [<00000000953b1072>] try_smi_init+0x148/0x5dc [ipmi_si]
-    [<000000006460d325>] 0xffff800081b10148
-    [<0000000039206ea5>] do_one_initcall+0x64/0x2a4
-    [<00000000601399ce>] do_init_module+0x50/0x300
-    [<000000003c12ba3c>] load_module+0x7a8/0x9e0
-    [<00000000c246fffe>] __se_sys_init_module+0x104/0x180
-    [<00000000eea99093>] __arm64_sys_init_module+0x24/0x30
-    [<0000000021b1ef87>] el0_svc_common.constprop.0+0x94/0x250
-    [<0000000070f4f8b7>] do_el0_svc+0x48/0xe0
-    [<000000005a05337f>] el0_svc+0x24/0x3c
-    [<000000005eb248d6>] el0_sync_handler+0x160/0x164
-    [<0000000030a59039>] el0_sync+0x160/0x180
+We need to use sizeof(struct compat_cmsghdr) for the compat case.
 
-The problem was that when an error occurred before handlers registration
-and after allocating `new_smi->si_sm`, the variable wouldn't be freed in
-the error handling afterwards since `shutdown_smi()` hadn't been
-registered yet. Fix it by adding a `kfree()` in the error handling path
-in `try_smi_init()`.
-
-Cc: stable@vger.kernel.org # 4.19+
-Fixes: 7960f18a5647 ("ipmi_si: Convert over to a shutdown handler")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Co-developed-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
-Signed-off-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
-Message-Id: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
-Signed-off-by: Corey Minyard <minyard@acm.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e2ff6704a27 ("scm: add SO_PASSPIDFD and SCM_PIDFD")
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Closes: https://lore.kernel.org/netdev/20230901200517.8742-A-hca@linux.ibm.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/net/scm.h | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -2089,6 +2089,11 @@ static int try_smi_init(struct smi_info
- 		new_smi->io.io_cleanup = NULL;
- 	}
+diff --git a/include/net/scm.h b/include/net/scm.h
+index c5bcdf65f55c9..e8c76b4be2fe7 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -9,6 +9,7 @@
+ #include <linux/pid.h>
+ #include <linux/nsproxy.h>
+ #include <linux/sched/signal.h>
++#include <net/compat.h>
  
-+	if (rv && new_smi->si_sm) {
-+		kfree(new_smi->si_sm);
-+		new_smi->si_sm = NULL;
-+	}
+ /* Well, we should have at least one descriptor open
+  * to accept passed FDs 8)
+@@ -123,14 +124,17 @@ static inline bool scm_has_secdata(struct socket *sock)
+ static __inline__ void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+ {
+ 	struct file *pidfd_file = NULL;
+-	int pidfd;
++	int len, pidfd;
+ 
+-	/*
+-	 * put_cmsg() doesn't return an error if CMSG is truncated,
++	/* put_cmsg() doesn't return an error if CMSG is truncated,
+ 	 * that's why we need to opencode these checks here.
+ 	 */
+-	if ((msg->msg_controllen <= sizeof(struct cmsghdr)) ||
+-	    (msg->msg_controllen - sizeof(struct cmsghdr)) < sizeof(int)) {
++	if (msg->msg_flags & MSG_CMSG_COMPAT)
++		len = sizeof(struct compat_cmsghdr) + sizeof(int);
++	else
++		len = sizeof(struct cmsghdr) + sizeof(int);
 +
- 	return rv;
- }
- 
++	if (msg->msg_controllen < len) {
+ 		msg->msg_flags |= MSG_CTRUNC;
+ 		return;
+ 	}
+-- 
+2.40.1
+
 
 
