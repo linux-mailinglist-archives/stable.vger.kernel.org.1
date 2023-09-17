@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C2C77A3CCF
+	by mail.lfdr.de (Postfix) with ESMTP id D6FA07A3CD2
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241126AbjIQUfp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53690 "EHLO
+        id S239689AbjIQUfq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241150AbjIQUfS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:18 -0400
+        with ESMTP id S241168AbjIQUfY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24BB123
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9789C433C7;
-        Sun, 17 Sep 2023 20:35:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC8010F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BACC433C7;
+        Sun, 17 Sep 2023 20:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982912;
-        bh=vxpBZC1wR1R9+WyORlS/zNOyyIfpAjt8cHQVje7YzZY=;
+        s=korg; t=1694982919;
+        bh=jN0M/X7bXSx5uFKisNoBR3uNNI5SDPyQXwScRA8EYzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ElGXphWaWeeES+/rxU2GFeZFIOLQe6fe7knjSwGWX2O0PV190s6qKElwzeTU9kB1Y
-         BrEs/+EiCnPS6aCBQsZGlRHWiTa8VrAzRiS/6VMIVpw8S5iE7vOR82QnbfKG/RupNL
-         bSShQ5HOAHu6ER2dq4kdYJd6Ur3+90Ljh9Atz+/4=
+        b=0XpK4R8vtPfY5ZDG3gaTBpgVe5971fcL7rDv1AifhtK3s7iTU9z7BEw5Gldh241+D
+         jmyWEs5yP4tYz5LguGpU73/VxIKMTeaW0ll+fD0rivYZCde1lt/u6IO99Vj8kYhMVm
+         m1FNxBZo0mjeTP+QCkwXZm/MHrqESglh83U5lJIk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 5.15 390/511] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
-Date:   Sun, 17 Sep 2023 21:13:37 +0200
-Message-ID: <20230917191123.211295109@linuxfoundation.org>
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 391/511] clk: qcom: camcc-sc7180: fix async resume during probe
+Date:   Sun, 17 Sep 2023 21:13:38 +0200
+Message-ID: <20230917191123.235633859@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,40 +54,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
+commit c948ff727e25297f3a703eb5349dd66aabf004e4 upstream.
 
-Do not assing the Linux device to struct fb_info.dev. The call to
-register_framebuffer() initializes the field to the fbdev device.
-Drivers should not override its value.
+To make sure that the controller is runtime resumed and its power domain
+is enabled before accessing its registers during probe, the synchronous
+runtime PM interface must be used.
 
-Fixes a bug where the driver incorrectly decreases the hardware
-device's reference counter and leaks the fbdev device.
-
-v2:
-	* add Fixes tag (Dan)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 88017bda96a5 ("ep93xx video driver")
-Cc: <stable@vger.kernel.org> # v2.6.32+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
+Fixes: 8d4025943e13 ("clk: qcom: camcc-sc7180: Use runtime PM ops instead of clk ones")
+Cc: stable@vger.kernel.org      # 5.11
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/ep93xx-fb.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/qcom/camcc-sc7180.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/ep93xx-fb.c
-+++ b/drivers/video/fbdev/ep93xx-fb.c
-@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
- 	if (!info)
- 		return -ENOMEM;
+--- a/drivers/clk/qcom/camcc-sc7180.c
++++ b/drivers/clk/qcom/camcc-sc7180.c
+@@ -1677,7 +1677,7 @@ static int cam_cc_sc7180_probe(struct pl
+ 		return ret;
+ 	}
  
--	info->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, info);
- 	fbi = info->par;
- 	fbi->mach_info = mach_info;
+-	ret = pm_runtime_get(&pdev->dev);
++	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret)
+ 		return ret;
+ 
 
 
