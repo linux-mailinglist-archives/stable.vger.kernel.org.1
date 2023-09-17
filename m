@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF047A3D5B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 839DD7A3B4C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:16:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241284AbjIQUlj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55628 "EHLO
+        id S239454AbjIQUPc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241377AbjIQUld (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:33 -0400
+        with ESMTP id S240685AbjIQUPV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27D7010F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C00C433C8;
-        Sun, 17 Sep 2023 20:41:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA64F4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42555C433CB;
+        Sun, 17 Sep 2023 20:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983287;
-        bh=B9+MYkgozfeHAb961IV0daq+Jjin4QBhDmUd7Kr+OxU=;
+        s=korg; t=1694981715;
+        bh=psFQzHfvPHzTEy+QKzSSAR5Ojx6BhZUZSeGBY4lLGIE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Iy67Dx+0CsjDohhyuYUQ9aR3//hjiFhcz2BzX/tmZ9RRY2wVc6h7FovWcIJFygm+c
-         NbCz0QUJyLs3PMh01kJg2uSmIyrQZRcJ+CAL98ArcVthk4JyhYeiqXx3golvOjxiaC
-         f8ZI3IBLnbx3yOzyyOMICkCax2zgctYM5Z330Y+I=
+        b=jlmpFoSjBnjhHY+zx+IoQXppSm0IzrvGiIj1Wq/jxeDDsRj0FhHh7Cb7iJJpd7Lmx
+         kvyAadI3eY9ngCg07ZeLFSuWsNoRVcPTQKhev1b1hDAprn6XIPa4kjLhUTagvpNg6V
+         CsA+vrtVURZIl2eS05msTxeTaAwYYMX4KtQTPiQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Petr Tesarik <petr.tesarik.ext@huawei.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 462/511] sh: boards: Fix CEU buffer size passed to dma_declare_coherent_memory()
+        patches@lists.linux.dev, Liu Ying <victor.liu@nxp.com>,
+        Marek Vasut <marex@denx.de>
+Subject: [PATCH 6.1 162/219] drm/mxsfb: Disable overlay plane in mxsfb_plane_overlay_atomic_disable()
 Date:   Sun, 17 Sep 2023 21:14:49 +0200
-Message-ID: <20230917191124.907409998@linuxfoundation.org>
+Message-ID: <20230917191046.897954268@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,124 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <petr.tesarik.ext@huawei.com>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit fb60211f377b69acffead3147578f86d0092a7a5 ]
+commit aa656d48e871a1b062e1bbf9474d8b831c35074c upstream.
 
-In all these cases, the last argument to dma_declare_coherent_memory() is
-the buffer end address, but the expected value should be the size of the
-reserved region.
+When disabling overlay plane in mxsfb_plane_overlay_atomic_update(),
+overlay plane's framebuffer pointer is NULL.  So, dereferencing it would
+cause a kernel Oops(NULL pointer dereferencing).  Fix the issue by
+disabling overlay plane in mxsfb_plane_overlay_atomic_disable() instead.
 
-Fixes: 39fb993038e1 ("media: arch: sh: ap325rxa: Use new renesas-ceu camera driver")
-Fixes: c2f9b05fd5c1 ("media: arch: sh: ecovec: Use new renesas-ceu camera driver")
-Fixes: f3590dc32974 ("media: arch: sh: kfr2r09: Use new renesas-ceu camera driver")
-Fixes: 186c446f4b84 ("media: arch: sh: migor: Use new renesas-ceu camera driver")
-Fixes: 1a3c230b4151 ("media: arch: sh: ms7724se: Use new renesas-ceu camera driver")
-Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20230724120742.2187-1-petrtesarik@huaweicloud.com
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cb285a5348e7 ("drm: mxsfb: Replace mxsfb_get_fb_paddr() with drm_fb_cma_get_gem_addr()")
+Cc: stable@vger.kernel.org # 5.19+
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230612092359.784115-1-victor.liu@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/boards/mach-ap325rxa/setup.c | 2 +-
- arch/sh/boards/mach-ecovec24/setup.c | 6 ++----
- arch/sh/boards/mach-kfr2r09/setup.c  | 2 +-
- arch/sh/boards/mach-migor/setup.c    | 2 +-
- arch/sh/boards/mach-se/7724/setup.c  | 6 ++----
- 5 files changed, 7 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/sh/boards/mach-ap325rxa/setup.c b/arch/sh/boards/mach-ap325rxa/setup.c
-index bac8a058ebd7c..05bd42dde107b 100644
---- a/arch/sh/boards/mach-ap325rxa/setup.c
-+++ b/arch/sh/boards/mach-ap325rxa/setup.c
-@@ -530,7 +530,7 @@ static int __init ap325rxa_devices_setup(void)
- 	device_initialize(&ap325rxa_ceu_device.dev);
- 	dma_declare_coherent_memory(&ap325rxa_ceu_device.dev,
- 			ceu_dma_membase, ceu_dma_membase,
--			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
-+			CEU_BUFFER_MEMORY_SIZE);
+--- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+@@ -611,6 +611,14 @@ static void mxsfb_plane_overlay_atomic_u
+ 	writel(ctrl, mxsfb->base + LCDC_AS_CTRL);
+ }
  
- 	platform_device_add(&ap325rxa_ceu_device);
++static void mxsfb_plane_overlay_atomic_disable(struct drm_plane *plane,
++					       struct drm_atomic_state *state)
++{
++	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(plane->dev);
++
++	writel(0, mxsfb->base + LCDC_AS_CTRL);
++}
++
+ static bool mxsfb_format_mod_supported(struct drm_plane *plane,
+ 				       uint32_t format,
+ 				       uint64_t modifier)
+@@ -626,6 +634,7 @@ static const struct drm_plane_helper_fun
+ static const struct drm_plane_helper_funcs mxsfb_plane_overlay_helper_funcs = {
+ 	.atomic_check = mxsfb_plane_atomic_check,
+ 	.atomic_update = mxsfb_plane_overlay_atomic_update,
++	.atomic_disable = mxsfb_plane_overlay_atomic_disable,
+ };
  
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index bab91a99124e1..9730a992dab33 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -1454,15 +1454,13 @@ static int __init arch_setup(void)
- 	device_initialize(&ecovec_ceu_devices[0]->dev);
- 	dma_declare_coherent_memory(&ecovec_ceu_devices[0]->dev,
- 				    ceu0_dma_membase, ceu0_dma_membase,
--				    ceu0_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ecovec_ceu_devices[0]);
- 
- 	device_initialize(&ecovec_ceu_devices[1]->dev);
- 	dma_declare_coherent_memory(&ecovec_ceu_devices[1]->dev,
- 				    ceu1_dma_membase, ceu1_dma_membase,
--				    ceu1_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ecovec_ceu_devices[1]);
- 
- 	gpiod_add_lookup_table(&cn12_power_gpiod_table);
-diff --git a/arch/sh/boards/mach-kfr2r09/setup.c b/arch/sh/boards/mach-kfr2r09/setup.c
-index eeb5ce341efdd..4a1caa3e7cf5a 100644
---- a/arch/sh/boards/mach-kfr2r09/setup.c
-+++ b/arch/sh/boards/mach-kfr2r09/setup.c
-@@ -603,7 +603,7 @@ static int __init kfr2r09_devices_setup(void)
- 	device_initialize(&kfr2r09_ceu_device.dev);
- 	dma_declare_coherent_memory(&kfr2r09_ceu_device.dev,
- 			ceu_dma_membase, ceu_dma_membase,
--			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
-+			CEU_BUFFER_MEMORY_SIZE);
- 
- 	platform_device_add(&kfr2r09_ceu_device);
- 
-diff --git a/arch/sh/boards/mach-migor/setup.c b/arch/sh/boards/mach-migor/setup.c
-index 6703a2122c0d6..bd4ccd9f8dd06 100644
---- a/arch/sh/boards/mach-migor/setup.c
-+++ b/arch/sh/boards/mach-migor/setup.c
-@@ -604,7 +604,7 @@ static int __init migor_devices_setup(void)
- 	device_initialize(&migor_ceu_device.dev);
- 	dma_declare_coherent_memory(&migor_ceu_device.dev,
- 			ceu_dma_membase, ceu_dma_membase,
--			ceu_dma_membase + CEU_BUFFER_MEMORY_SIZE - 1);
-+			CEU_BUFFER_MEMORY_SIZE);
- 
- 	platform_device_add(&migor_ceu_device);
- 
-diff --git a/arch/sh/boards/mach-se/7724/setup.c b/arch/sh/boards/mach-se/7724/setup.c
-index 8d6541ba01865..edc7712e4a804 100644
---- a/arch/sh/boards/mach-se/7724/setup.c
-+++ b/arch/sh/boards/mach-se/7724/setup.c
-@@ -940,15 +940,13 @@ static int __init devices_setup(void)
- 	device_initialize(&ms7724se_ceu_devices[0]->dev);
- 	dma_declare_coherent_memory(&ms7724se_ceu_devices[0]->dev,
- 				    ceu0_dma_membase, ceu0_dma_membase,
--				    ceu0_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ms7724se_ceu_devices[0]);
- 
- 	device_initialize(&ms7724se_ceu_devices[1]->dev);
- 	dma_declare_coherent_memory(&ms7724se_ceu_devices[1]->dev,
- 				    ceu1_dma_membase, ceu1_dma_membase,
--				    ceu1_dma_membase +
--				    CEU_BUFFER_MEMORY_SIZE - 1);
-+				    CEU_BUFFER_MEMORY_SIZE);
- 	platform_device_add(ms7724se_ceu_devices[1]);
- 
- 	return platform_add_devices(ms7724se_devices,
--- 
-2.40.1
-
+ static const struct drm_plane_funcs mxsfb_plane_funcs = {
 
 
