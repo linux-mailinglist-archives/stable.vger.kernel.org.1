@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9310E7A3D4F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95BF87A3BCC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241285AbjIQUlJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52548 "EHLO
+        id S239628AbjIQUW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241329AbjIQUlD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:03 -0400
+        with ESMTP id S240830AbjIQUWb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:22:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5BA010F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134BDC433C8;
-        Sun, 17 Sep 2023 20:40:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C8C1B3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:22:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76726C433C7;
+        Sun, 17 Sep 2023 20:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983257;
-        bh=en6TzRpPOJgviRR/OxWo2/ErMuiiG6N0Oxq/fXCZqxY=;
+        s=korg; t=1694982119;
+        bh=EYeHAULtVdrV2D512WBx4tlco+xwkC+kfcGPe3m1wCw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KFjrYdqgSsRH0lEQNoNqyHJAVlOiztbY833bmkjz5dm8+EJpjHn56A4CVB3igN348
-         2wyFRE26RlEQH1z8iPRuiPI/JJHxSNKUYk7UAsFy7oqCUeq5nQbCCSLUrdVEAu0TvK
-         v56Ak+DKpRWU90pOlhKykuSIsIdtd3wphBujDfrs=
+        b=qF8Jfm9a31rwfymMLjWxZsnsoyaReW7LPx4fQBRxCKbqpbWyvcFodV0OqhjLbAQbD
+         9o/NDrnC6NElZFkARTyfO+y9XgtdkuEwsqJPEscgfM3ISQ1tYuw0qACDNoD85+vw5t
+         U2NEp4x9yM7qdW/cVF5dInuSer6G+u0931piJp3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 489/511] block: rename GENHD_FL_NO_PART_SCAN to GENHD_FL_NO_PART
+        patches@lists.linux.dev,
+        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 189/219] net/smc: use smc_lgr_list.lock to protect smc_lgr_list.list iterate in smcr_port_add
 Date:   Sun, 17 Sep 2023 21:15:16 +0200
-Message-ID: <20230917191125.541560659@linuxfoundation.org>
+Message-ID: <20230917191047.775142178@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,155 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 46e7eac647b34ed4106a8262f8bedbb90801fadd ]
+[ Upstream commit f5146e3ef0a9eea405874b36178c19a4863b8989 ]
 
-The GENHD_FL_NO_PART_SCAN controls more than just partitions canning,
-so rename it to GENHD_FL_NO_PART.
+While doing smcr_port_add, there maybe linkgroup add into or delete
+from smc_lgr_list.list at the same time, which may result kernel crash.
+So, use smc_lgr_list.lock to protect smc_lgr_list.list iterate in
+smcr_port_add.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20211122130625.1136848-7-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
+The crash calltrace show below:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 0 P4D 0
+Oops: 0000 [#1] SMP NOPTI
+CPU: 0 PID: 559726 Comm: kworker/0:92 Kdump: loaded Tainted: G
+Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014
+Workqueue: events smc_ib_port_event_work [smc]
+RIP: 0010:smcr_port_add+0xa6/0xf0 [smc]
+RSP: 0000:ffffa5a2c8f67de0 EFLAGS: 00010297
+RAX: 0000000000000001 RBX: ffff9935e0650000 RCX: 0000000000000000
+RDX: 0000000000000010 RSI: ffff9935e0654290 RDI: ffff9935c8560000
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9934c0401918
+R10: 0000000000000000 R11: ffffffffb4a5c278 R12: ffff99364029aae4
+R13: ffff99364029aa00 R14: 00000000ffffffed R15: ffff99364029ab08
+FS:  0000000000000000(0000) GS:ffff994380600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000f06a10003 CR4: 0000000002770ef0
+PKRU: 55555554
+Call Trace:
+ smc_ib_port_event_work+0x18f/0x380 [smc]
+ process_one_work+0x19b/0x340
+ worker_thread+0x30/0x370
+ ? process_one_work+0x340/0x340
+ kthread+0x114/0x130
+ ? __kthread_cancel_work+0x50/0x50
+ ret_from_fork+0x1f/0x30
+
+Fixes: 1f90a05d9ff9 ("net/smc: add smcr_port_add() and smcr_link_up() processing")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c            |  2 +-
- drivers/block/loop.c     |  8 ++++----
- drivers/block/n64cart.c  |  2 +-
- drivers/mmc/core/block.c |  4 ++--
- include/linux/genhd.h    | 13 ++++++-------
- 5 files changed, 14 insertions(+), 15 deletions(-)
+ net/smc/smc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/genhd.c b/block/genhd.c
-index a1d9e785dcf70..6123f13e148e0 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -495,7 +495,7 @@ int device_add_disk(struct device *parent, struct gendisk *disk,
- 		 * and don't bother scanning for partitions either.
- 		 */
- 		disk->flags |= GENHD_FL_SUPPRESS_PARTITION_INFO;
--		disk->flags |= GENHD_FL_NO_PART_SCAN;
-+		disk->flags |= GENHD_FL_NO_PART;
- 	} else {
- 		ret = bdi_register(disk->bdi, "%u:%u",
- 				   disk->major, disk->first_minor);
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index c96bdb3e7ac52..1d60d5ac0db80 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1314,7 +1314,7 @@ static int loop_configure(struct loop_device *lo, fmode_t mode,
- 		lo->lo_flags |= LO_FLAGS_PARTSCAN;
- 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN;
- 	if (partscan)
--		lo->lo_disk->flags &= ~GENHD_FL_NO_PART_SCAN;
-+		lo->lo_disk->flags &= ~GENHD_FL_NO_PART;
- 
- 	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-@@ -1463,7 +1463,7 @@ static int __loop_clr_fd(struct loop_device *lo, bool release)
- 	mutex_lock(&lo->lo_mutex);
- 	lo->lo_flags = 0;
- 	if (!part_shift)
--		lo->lo_disk->flags |= GENHD_FL_NO_PART_SCAN;
-+		lo->lo_disk->flags |= GENHD_FL_NO_PART;
- 	lo->lo_state = Lo_unbound;
- 	mutex_unlock(&lo->lo_mutex);
- 
-@@ -1580,7 +1580,7 @@ loop_set_status(struct loop_device *lo, const struct loop_info64 *info)
- 
- 	if (!err && (lo->lo_flags & LO_FLAGS_PARTSCAN) &&
- 	     !(prev_lo_flags & LO_FLAGS_PARTSCAN)) {
--		lo->lo_disk->flags &= ~GENHD_FL_NO_PART_SCAN;
-+		lo->lo_disk->flags &= ~GENHD_FL_NO_PART;
- 		partscan = true;
- 	}
- out_unlock:
-@@ -2410,7 +2410,7 @@ static int loop_add(int i)
- 	 * userspace tools. Parameters like this in general should be avoided.
- 	 */
- 	if (!part_shift)
--		disk->flags |= GENHD_FL_NO_PART_SCAN;
-+		disk->flags |= GENHD_FL_NO_PART;
- 	disk->flags |= GENHD_FL_EXT_DEVT;
- 	atomic_set(&lo->lo_refcnt, 0);
- 	mutex_init(&lo->lo_mutex);
-diff --git a/drivers/block/n64cart.c b/drivers/block/n64cart.c
-index bcaabf038947c..0bda4a468c660 100644
---- a/drivers/block/n64cart.c
-+++ b/drivers/block/n64cart.c
-@@ -137,7 +137,7 @@ static int __init n64cart_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	disk->first_minor = 0;
--	disk->flags = GENHD_FL_NO_PART_SCAN;
-+	disk->flags = GENHD_FL_NO_PART;
- 	disk->fops = &n64cart_fops;
- 	disk->private_data = &pdev->dev;
- 	strcpy(disk->disk_name, "n64cart");
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 965b44a095077..25077a1a3d821 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -2447,8 +2447,8 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
- 	set_disk_ro(md->disk, md->read_only || default_ro);
- 	md->disk->flags = GENHD_FL_EXT_DEVT;
- 	if (area_type & (MMC_BLK_DATA_AREA_RPMB | MMC_BLK_DATA_AREA_BOOT))
--		md->disk->flags |= GENHD_FL_NO_PART_SCAN
--				   | GENHD_FL_SUPPRESS_PARTITION_INFO;
-+		md->disk->flags |= GENHD_FL_NO_PART |
-+				   GENHD_FL_SUPPRESS_PARTITION_INFO;
- 
- 	/*
- 	 * As discussed on lkml, GENHD_FL_REMOVABLE should:
-diff --git a/include/linux/genhd.h b/include/linux/genhd.h
-index 300f796b8773d..690b7f7996d15 100644
---- a/include/linux/genhd.h
-+++ b/include/linux/genhd.h
-@@ -60,15 +60,15 @@ struct partition_meta_info {
-  * (``BLOCK_EXT_MAJOR``).
-  * This affects the maximum number of partitions.
-  *
-- * ``GENHD_FL_NO_PART_SCAN`` (0x0200): partition scanning is disabled.
-- * Used for loop devices in their default settings and some MMC
-- * devices.
-+ * ``GENHD_FL_NO_PART`` (0x0200): partition support is disabled.
-+ * The kernel will not scan for partitions from add_disk, and users
-+ * can't add partitions manually.
-  *
-  * ``GENHD_FL_HIDDEN`` (0x0400): the block device is hidden; it
-  * doesn't produce events, doesn't appear in sysfs, and doesn't have
-  * an associated ``bdev``.
-  * Implies ``GENHD_FL_SUPPRESS_PARTITION_INFO`` and
-- * ``GENHD_FL_NO_PART_SCAN``.
-+ * ``GENHD_FL_NO_PART``.
-  * Used for multipath devices.
-  */
- #define GENHD_FL_REMOVABLE			0x0001
-@@ -77,7 +77,7 @@ struct partition_meta_info {
- #define GENHD_FL_CD				0x0008
- #define GENHD_FL_SUPPRESS_PARTITION_INFO	0x0020
- #define GENHD_FL_EXT_DEVT			0x0040
--#define GENHD_FL_NO_PART_SCAN			0x0200
-+#define GENHD_FL_NO_PART			0x0200
- #define GENHD_FL_HIDDEN				0x0400
- 
- enum {
-@@ -185,8 +185,7 @@ static inline int disk_max_parts(struct gendisk *disk)
- 
- static inline bool disk_part_scan_enabled(struct gendisk *disk)
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index c676d92af7b7d..64b6dd439938e 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1650,6 +1650,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
  {
--	return disk_max_parts(disk) > 1 &&
--		!(disk->flags & GENHD_FL_NO_PART_SCAN);
-+	return disk_max_parts(disk) > 1 && !(disk->flags & GENHD_FL_NO_PART);
+ 	struct smc_link_group *lgr, *n;
+ 
++	spin_lock_bh(&smc_lgr_list.lock);
+ 	list_for_each_entry_safe(lgr, n, &smc_lgr_list.list, list) {
+ 		struct smc_link *link;
+ 
+@@ -1665,6 +1666,7 @@ void smcr_port_add(struct smc_ib_device *smcibdev, u8 ibport)
+ 		if (link)
+ 			smc_llc_add_link_local(link);
+ 	}
++	spin_unlock_bh(&smc_lgr_list.lock);
  }
  
- static inline dev_t disk_devt(struct gendisk *disk)
+ /* link is down - switch connections to alternate link,
 -- 
 2.40.1
 
