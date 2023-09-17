@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D20107A38F9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D63547A3A32
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239912AbjIQTnD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55912 "EHLO
+        id S240359AbjIQUAA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240058AbjIQTmp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:45 -0400
+        with ESMTP id S240273AbjIQT73 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:59:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E793E7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5F9C433C8;
-        Sun, 17 Sep 2023 19:42:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41F1F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:59:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39562C433C7;
+        Sun, 17 Sep 2023 19:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979759;
-        bh=O6c5xmlACNbV3p/kt57kBXUsGGnySPy9d2nPPcggmCI=;
+        s=korg; t=1694980763;
+        bh=Y/TkFpoUER/7l7r59y15FdXJlS49RVh62VhpLpRX+rw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dZxW9ZeQy1VOe0R49vcxdDuWUKbEEApWg6lCd/TynvS71bHUsJT62+3qnpT40UsFI
-         yPf/iS1TQ5H/IJqd6i6jUa3Rp4vQwD9/Q5Z0R3xPtsdtsXZBIv7OcW8ozz/PBOv/vh
-         aVWBwzOXUsUEB4Y9Eb0yuLl7X0Jc68utTrnNy1b4=
+        b=LUPwvSMBKWuFpLCT0k/+Z3Hvp0v3hwmHzxs9gSyfkSQNLZcBuhIpanQwjzivbvXUG
+         QDA8GgbcWatcZL7hY1pS/QwOGiaQz9aLEygTD3Zp0WeUm4OG5rXVWqxskMwyCoZlux
+         0pEMObU5uJXMzj3Ck31wmvQli3xXwpVNTSNMkwe4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 406/406] parisc: Drop loops_per_jiffy from per_cpu struct
-Date:   Sun, 17 Sep 2023 21:14:20 +0200
-Message-ID: <20230917191111.976067790@linuxfoundation.org>
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 261/285] net: dsa: sja1105: propagate exact error code from sja1105_dynamic_config_poll_valid()
+Date:   Sun, 17 Sep 2023 21:14:21 +0200
+Message-ID: <20230917191100.278184777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 93346da8ff47cc00f953c7f38a2d6ba11977fc42 upstream.
+[ Upstream commit c956798062b5a308db96e75157747291197f0378 ]
 
-There is no need to keep a loops_per_jiffy value per cpu. Drop it.
+Currently, sja1105_dynamic_config_wait_complete() returns either 0 or
+-ETIMEDOUT, because it just looks at the read_poll_timeout() return code.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There will be future changes which move some more checks to
+sja1105_dynamic_config_poll_valid(). It is important that we propagate
+their exact return code (-ENOENT, -EINVAL), because callers of
+sja1105_dynamic_config_read() depend on them.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 7cef293b9a63 ("net: dsa: sja1105: fix multicast forwarding working only for last added mdb entry")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/processor.h |    1 -
- arch/parisc/kernel/processor.c      |    5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_dynamic_config.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -97,7 +97,6 @@ struct cpuinfo_parisc {
- 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
- 	unsigned int state;
- 	struct parisc_device *dev;
--	unsigned long loops_per_jiffy;
- };
+diff --git a/drivers/net/dsa/sja1105/sja1105_dynamic_config.c b/drivers/net/dsa/sja1105/sja1105_dynamic_config.c
+index 7729d3f8b7f50..93d47dab8d3e9 100644
+--- a/drivers/net/dsa/sja1105/sja1105_dynamic_config.c
++++ b/drivers/net/dsa/sja1105/sja1105_dynamic_config.c
+@@ -1211,13 +1211,14 @@ sja1105_dynamic_config_wait_complete(struct sja1105_private *priv,
+ 				     struct sja1105_dyn_cmd *cmd,
+ 				     const struct sja1105_dynamic_table_ops *ops)
+ {
+-	int rc;
+-
+-	return read_poll_timeout(sja1105_dynamic_config_poll_valid,
+-				 rc, rc != -EAGAIN,
+-				 SJA1105_DYNAMIC_CONFIG_SLEEP_US,
+-				 SJA1105_DYNAMIC_CONFIG_TIMEOUT_US,
+-				 false, priv, cmd, ops);
++	int err, rc;
++
++	err = read_poll_timeout(sja1105_dynamic_config_poll_valid,
++				rc, rc != -EAGAIN,
++				SJA1105_DYNAMIC_CONFIG_SLEEP_US,
++				SJA1105_DYNAMIC_CONFIG_TIMEOUT_US,
++				false, priv, cmd, ops);
++	return err < 0 ? err : rc;
+ }
  
- extern struct system_cpuinfo_parisc boot_cpu_data;
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -163,7 +163,6 @@ static int __init processor_probe(struct
- 	if (cpuid)
- 		memset(p, 0, sizeof(struct cpuinfo_parisc));
- 
--	p->loops_per_jiffy = loops_per_jiffy;
- 	p->dev = dev;		/* Save IODC data in case we need it */
- 	p->hpa = dev->hpa.start;	/* save CPU hpa */
- 	p->cpuid = cpuid;	/* save CPU id */
-@@ -440,8 +439,8 @@ show_cpuinfo (struct seq_file *m, void *
- 		show_cache_info(m);
- 
- 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
--			     cpuinfo->loops_per_jiffy / (500000 / HZ),
--			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
-+			     loops_per_jiffy / (500000 / HZ),
-+			     loops_per_jiffy / (5000 / HZ) % 100);
- 
- 		seq_printf(m, "software id\t: %ld\n\n",
- 				boot_cpu_data.pdc.model.sw_id);
+ /* Provides read access to the settings through the dynamic interface
+-- 
+2.40.1
+
 
 
