@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB03A7A3B7D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 739B77A3B8B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240712AbjIQUSO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46486 "EHLO
+        id S240724AbjIQUTP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240745AbjIQUSI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:08 -0400
+        with ESMTP id S240774AbjIQUTC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F4FF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B1FC433C8;
-        Sun, 17 Sep 2023 20:18:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE412101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E18C433C7;
+        Sun, 17 Sep 2023 20:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981882;
-        bh=NInC6Urs60IIlL+b4Tp8QEJUIYPxzYvvfQxravTe6TU=;
+        s=korg; t=1694981937;
+        bh=EKVqVctqoxuq2R0G1HvDUXQ+z0zXOcC/DtOG35F6bz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZhQ5UlNI8/CsCaF4NyJXsi7tI483WjOU6Lw/t6p9sJhTXcLwd/E/NE2nRxNXbicZK
-         5Zrv9qgvFpRXqoMx2Ot7bVpj7dqZSgtPMI7gXGQHpM0pOm1cFASoYF3npbTI7o9vkr
-         YdvEquwVUKuGW9iN2p+g5D3o+7j2eET/RVp0gIFQ=
+        b=fFNvr5mLi1w1YsJYrCfWx2jGm+IXKyBZ0YxttgoRQoSvEq8Qx6hUjxZXOYz5UFykB
+         9Z2/3tfqYuY2S9YvYhZLIl2syMhxZq/N2WKBx3R7Ff1nrevf+OTcqjYZp1Fjx2xJon
+         xRCKMq7bHeIft31zSeXuwjKO1gHiRUJNIR/Uust4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/511] mlxsw: i2c: Limit single transaction buffer size
-Date:   Sun, 17 Sep 2023 21:09:06 +0200
-Message-ID: <20230917191116.748118101@linuxfoundation.org>
+Subject: [PATCH 5.15 120/511] hwmon: (tmp513) Fix the channel number in tmp51x_is_visible()
+Date:   Sun, 17 Sep 2023 21:09:07 +0200
+Message-ID: <20230917191116.771413188@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,54 +54,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
+[ Upstream commit d103337e38e7e64c3d915029e947b1cb0b512737 ]
 
-Maximum size of buffer is obtained from underlying I2C adapter and in
-case adapter allows I2C transaction buffer size greater than 100 bytes,
-transaction will fail due to firmware limitation.
+The supported channels for this driver are {0..3}. Fix the incorrect
+channel in tmp51x_is_visible().
 
-As a result driver will fail initialization.
-
-Limit the maximum size of transaction buffer by 100 bytes to fit to
-firmware.
-
-Remove unnecessary calculation:
-max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
-This condition can not happened.
-
-Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/ea0eccc0-a29f-41e4-9049-a1a13f8b16f1@roeck-us.net/
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20230824204456.401580-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/tmp513.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-index f20dca41424c9..61d2f621d65fc 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-@@ -47,6 +47,7 @@
- #define MLXSW_I2C_MBOX_SIZE_BITS	12
- #define MLXSW_I2C_ADDR_BUF_SIZE		4
- #define MLXSW_I2C_BLK_DEF		32
-+#define MLXSW_I2C_BLK_MAX		100
- #define MLXSW_I2C_RETRY			5
- #define MLXSW_I2C_TIMEOUT_MSECS		5000
- #define MLXSW_I2C_MAX_DATA_SIZE		256
-@@ -576,7 +577,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client,
- 			return -EOPNOTSUPP;
- 		}
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index 7d5f7441aceb1..b9a93ee9c2364 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -434,7 +434,7 @@ static umode_t tmp51x_is_visible(const void *_data,
  
--		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
-+		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
- 					      min_t(u16, quirks->max_read_len,
- 						    quirks->max_write_len));
- 	} else {
+ 	switch (type) {
+ 	case hwmon_temp:
+-		if (data->id == tmp512 && channel == 4)
++		if (data->id == tmp512 && channel == 3)
+ 			return 0;
+ 		switch (attr) {
+ 		case hwmon_temp_input:
 -- 
 2.40.1
 
