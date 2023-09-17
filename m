@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EDF77A3AC7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03FCF7A3CE1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240461AbjIQUIi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59956 "EHLO
+        id S239697AbjIQUgU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240471AbjIQUIb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:31 -0400
+        with ESMTP id S241174AbjIQUgF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7EA97
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B364DC433C8;
-        Sun, 17 Sep 2023 20:08:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A2B101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C492C433C8;
+        Sun, 17 Sep 2023 20:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981306;
-        bh=nii4d2Qyti2rJKnjjwLT2B3iHLJJ9QOerW4lv+EgU2A=;
+        s=korg; t=1694982959;
+        bh=zJJc7Z4X4cr0S0sB+e/L2f3x5JeBd6JGMhl/mun95aU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJ7qIC9mwpUqvqMSgs+RZmro64ZW+b8fLSih8WWiIq2qQsBeuWZ1gooTNXMye9AIj
-         f1RgDW+YGjg99Fo7FJX5SxNGTG5loIH4EMQwJrrpVBcfl+PqZzBk/psGt8C3UadlCp
-         2YhLji9b8OWTVq+VVh2o1OK2fniZJHWcOjdo0jvw=
+        b=T8hZp0p+f/wUjKqnWOJBruksCuhTTbYAvrdnSnCxdE4TW0FpLzVODgU5i3V7wNCpH
+         v94QqU+1+fcBMA8uQqGamY4FNbrZMWkRRjthtM6AgmTGcufFJoUTi4F8iyp1vITU5x
+         OBOEeX4iFLfCy6XAkyktcxvacCVvi4RVnFrB7dRk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Corinna Vinschen <vinschen@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/219] igb: disable virtualization features on 82580
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 402/511] clk: qcom: q6sstop-qcs404: fix missing resume during probe
 Date:   Sun, 17 Sep 2023 21:13:49 +0200
-Message-ID: <20230917191044.681750523@linuxfoundation.org>
+Message-ID: <20230917191123.496821414@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corinna Vinschen <vinschen@redhat.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit fa09bc40b21a33937872c4c4cf0f266ec9fa4869 ]
+commit 97112c83f4671a4a722f99a53be4e91fac4091bc upstream.
 
-Disable virtualization features on 82580 just as on i210/i211.
-This avoids that virt functions are acidentally called on 82850.
+Drivers that enable runtime PM must make sure that the controller is
+runtime resumed before accessing its registers to prevent the power
+domain from being disabled.
 
-Fixes: 55cac248caa4 ("igb: Add full support for 82580 devices")
-Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6cdef2738db0 ("clk: qcom: Add Q6SSTOP clock controller for QCS404")
+Cc: stable@vger.kernel.org      # 5.5
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-7-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/q6sstop-qcs404.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index d0ead18ec0266..45ce4ed16146e 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -3877,8 +3877,9 @@ static void igb_probe_vfs(struct igb_adapter *adapter)
- 	struct pci_dev *pdev = adapter->pdev;
- 	struct e1000_hw *hw = &adapter->hw;
+--- a/drivers/clk/qcom/q6sstop-qcs404.c
++++ b/drivers/clk/qcom/q6sstop-qcs404.c
+@@ -173,21 +173,32 @@ static int q6sstopcc_qcs404_probe(struct
+ 		return ret;
+ 	}
  
--	/* Virtualization features not supported on i210 family. */
--	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211))
-+	/* Virtualization features not supported on i210 and 82580 family. */
-+	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211) ||
-+	    (hw->mac.type == e1000_82580))
- 		return;
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		return ret;
++
+ 	q6sstop_regmap_config.name = "q6sstop_tcsr";
+ 	desc = &tcsr_qcs404_desc;
  
- 	/* Of the below we really only want the effect of getting
--- 
-2.40.1
-
+ 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+ 	if (ret)
+-		return ret;
++		goto err_put_rpm;
+ 
+ 	q6sstop_regmap_config.name = "q6sstop_cc";
+ 	desc = &q6sstop_qcs404_desc;
+ 
+ 	ret = qcom_cc_probe_by_index(pdev, 0, desc);
+ 	if (ret)
+-		return ret;
++		goto err_put_rpm;
++
++	pm_runtime_put(&pdev->dev);
+ 
+ 	return 0;
++
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops q6sstopcc_pm_ops = {
 
 
