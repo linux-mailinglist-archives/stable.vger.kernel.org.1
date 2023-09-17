@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C647A3B47
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423A17A3D43
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240607AbjIQUPa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
+        id S241246AbjIQUkg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240646AbjIQUPE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:04 -0400
+        with ESMTP id S241266AbjIQUkS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2850F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2246EC433CB;
-        Sun, 17 Sep 2023 20:14:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2FD101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2A9C433C7;
+        Sun, 17 Sep 2023 20:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981698;
-        bh=hBl5ak4Es+nNBCrKLcbYU6LdM4tRBTSRERIIhECx0bQ=;
+        s=korg; t=1694983212;
+        bh=mt20ImDg5irwEfu8rqJVGj0V4y+LHqm4P8E5lrNR/jI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TQZf6OXTK9UYADIQhKLZNWL19mDpwIevqBG8i8zEiTmL7Hxc7UTEujT95X/Djb/X7
-         aTINpsUGUfb1bPMN4rA+Tp/vGpUdV6UEZLOYOeddlamrn+bsotiMrEN3p6R5KXVl6i
-         jtP+GXnYA2i+2hHfnWM/P9+2S/CoPh02iqF0u2P0=
+        b=c9SWbkFp5E2OCPjZX42rrCJmHvmAFa9vYFoWhQejQx1py1dHg8DytLCFNTp9eooG2
+         htny2K65U4QtJpTFehUtgg9im/qEBNg2oQEZOBG40oS9A0C+IaBlB2bKvZKWkhBzao
+         wHhsqfOPITWReNQm+kE6wKHrno6IUiNRgPVbNW1k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 160/219] btrfs: zoned: re-enable metadata over-commit for zoned mode
+        patches@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 460/511] net: hns3: fix the port information display when sfp is absent
 Date:   Sun, 17 Sep 2023 21:14:47 +0200
-Message-ID: <20230917191046.830166954@linuxfoundation.org>
+Message-ID: <20230917191124.861039290@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Yisen Zhuang <yisen.zhuang@huawei.com>
 
-commit 5b135b382a360f4c87cf8896d1465b0b07f10cb0 upstream.
+[ Upstream commit 674d9591a32d01df75d6b5fffed4ef942a294376 ]
 
-Now that, we can re-enable metadata over-commit. As we moved the activation
-from the reservation time to the write time, we no longer need to ensure
-all the reserved bytes is properly activated.
+When sfp is absent or unidentified, the port type should be
+displayed as PORT_OTHERS, rather than PORT_FIBRE.
 
-Without the metadata over-commit, it suffers from lower performance because
-it needs to flush the delalloc items more often and allocate more block
-groups. Re-enabling metadata over-commit will solve the issue.
-
-Fixes: 79417d040f4f ("btrfs: zoned: disable metadata overcommit for zoned")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 88d10bd6f730 ("net: hns3: add support for multiple media type")
+Signed-off-by: Yisen Zhuang <yisen.zhuang@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/space-info.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -404,11 +404,7 @@ int btrfs_can_overcommit(struct btrfs_fs
- 		return 0;
- 
- 	used = btrfs_space_info_used(space_info, true);
--	if (test_bit(BTRFS_FS_ACTIVE_ZONE_TRACKING, &fs_info->flags) &&
--	    (space_info->flags & BTRFS_BLOCK_GROUP_METADATA))
--		avail = 0;
--	else
--		avail = calc_available_free_space(fs_info, space_info, flush);
-+	avail = calc_available_free_space(fs_info, space_info, flush);
- 
- 	if (used + bytes < writable_total_bytes(fs_info, space_info) + avail)
- 		return 1;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+index 526fb56c84f24..17fa4e7684cd2 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+@@ -739,7 +739,9 @@ static int hns3_get_link_ksettings(struct net_device *netdev,
+ 		hns3_get_ksettings(h, cmd);
+ 		break;
+ 	case HNAE3_MEDIA_TYPE_FIBER:
+-		if (module_type == HNAE3_MODULE_TYPE_CR)
++		if (module_type == HNAE3_MODULE_TYPE_UNKNOWN)
++			cmd->base.port = PORT_OTHER;
++		else if (module_type == HNAE3_MODULE_TYPE_CR)
+ 			cmd->base.port = PORT_DA;
+ 		else
+ 			cmd->base.port = PORT_FIBRE;
+-- 
+2.40.1
+
 
 
