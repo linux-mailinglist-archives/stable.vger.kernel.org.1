@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A6B77A39F5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 470A57A38BD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240214AbjIQT4t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47298 "EHLO
+        id S239832AbjIQTjp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240250AbjIQT40 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:26 -0400
+        with ESMTP id S239867AbjIQTj0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7019F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A833C433C7;
-        Sun, 17 Sep 2023 19:56:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA206D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0E8C433C7;
+        Sun, 17 Sep 2023 19:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980580;
-        bh=85QHQLH9ykH1BK1k+SKFqT7ndvWwwjQ1OLGFwKU2WZQ=;
+        s=korg; t=1694979561;
+        bh=fbbmO2LoZUOJqPKC4lREG07NyYmNFzI743R1Jx7dcEU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N0yBBsLXkWthrad0rpZKmMia3/GP/rl+EIrSBvqjCAIR+XjuJho1I8H/nGIbmo3PZ
-         AMwy/BnehFt1KWMXHF/hcyMp7dv28CMpXsOB3JxZQBnkaMvJC+A9Rbym6cukOCrTCD
-         XoNp/wibvWonahrMZdNpzqFrgccAS7+kWdsD4dMs=
+        b=knXYe+nY739nmpKISbfmqbZbEQinW7SrwgC+gqWu3cvBRtf4DyKkNWHc832V8GJkQ
+         pmzpudLFtckaVpteDC6IIHBFDVXyp8i319U2AlM6d+mNOcoTTJqRDnkhH1K/G7ryPg
+         GYuF5T7sE44Q6AgBB7TX69G/d3vhQbjq0VLSgJCg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 203/285] btrfs: fix start transaction qgroup rsv double free
+        patches@lists.linux.dev, Liang Chen <liangchen.linux@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 349/406] veth: Fixing transmit return status for dropped packets
 Date:   Sun, 17 Sep 2023 21:13:23 +0200
-Message-ID: <20230917191058.603731703@linuxfoundation.org>
+Message-ID: <20230917191110.488966069@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,101 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Liang Chen <liangchen.linux@gmail.com>
 
-commit a6496849671a5bc9218ecec25a983253b34351b1 upstream.
+[ Upstream commit 151e887d8ff97e2e42110ffa1fb1e6a2128fb364 ]
 
-btrfs_start_transaction reserves metadata space of the PERTRANS type
-before it identifies a transaction to start/join. This allows flushing
-when reserving that space without a deadlock. However, it results in a
-race which temporarily breaks qgroup rsv accounting.
+The veth_xmit function returns NETDEV_TX_OK even when packets are dropped.
+This behavior leads to incorrect calculations of statistics counts, as
+well as things like txq->trans_start updates.
 
-T1                                              T2
-start_transaction
-do_stuff
-                                            start_transaction
-                                                qgroup_reserve_meta_pertrans
-commit_transaction
-    qgroup_free_meta_all_pertrans
-                                            hit an error starting txn
-                                            goto reserve_fail
-                                            qgroup_free_meta_pertrans (already freed!)
-
-The basic issue is that there is nothing preventing another commit from
-committing before start_transaction finishes (in fact sometimes we
-intentionally wait for it) so any error path that frees the reserve is
-at risk of this race.
-
-While this exact space was getting freed anyway, and it's not a huge
-deal to double free it (just a warning, the free code catches this), it
-can result in incorrectly freeing some other pertrans reservation in
-this same reservation, which could then lead to spuriously granting
-reservations we might not have the space for. Therefore, I do believe it
-is worth fixing.
-
-To fix it, use the existing prealloc->pertrans conversion mechanism.
-When we first reserve the space, we reserve prealloc space and only when
-we are sure we have a transaction do we convert it to pertrans. This way
-any racing commits do not blow away our reservation, but we still get a
-pertrans reservation that is freed when _this_ transaction gets committed.
-
-This issue can be reproduced by running generic/269 with either qgroups
-or squotas enabled via mkfs on the scratch device.
-
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-CC: stable@vger.kernel.org # 5.10+
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e314dbdc1c0d ("[NET]: Virtual ethernet device driver.")
+Signed-off-by: Liang Chen <liangchen.linux@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/veth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -591,8 +591,13 @@ start_transaction(struct btrfs_root *roo
- 		u64 delayed_refs_bytes = 0;
- 
- 		qgroup_reserved = num_items * fs_info->nodesize;
--		ret = btrfs_qgroup_reserve_meta_pertrans(root, qgroup_reserved,
--				enforce_qgroups);
-+		/*
-+		 * Use prealloc for now, as there might be a currently running
-+		 * transaction that could free this reserved space prematurely
-+		 * by committing.
-+		 */
-+		ret = btrfs_qgroup_reserve_meta_prealloc(root, qgroup_reserved,
-+							 enforce_qgroups, false);
- 		if (ret)
- 			return ERR_PTR(ret);
- 
-@@ -705,6 +710,14 @@ again:
- 		h->reloc_reserved = reloc_reserved;
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 4ba86fa4d6497..743716ebebdb9 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -285,6 +285,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
+ 	struct veth_rq *rq = NULL;
++	int ret = NETDEV_TX_OK;
+ 	struct net_device *rcv;
+ 	int length = skb->len;
+ 	bool rcv_xdp = false;
+@@ -311,6 +312,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	} else {
+ drop:
+ 		atomic64_inc(&priv->dropped);
++		ret = NET_XMIT_DROP;
  	}
  
-+	/*
-+	 * Now that we have found a transaction to be a part of, convert the
-+	 * qgroup reservation from prealloc to pertrans. A different transaction
-+	 * can't race in and free our pertrans out from under us.
-+	 */
-+	if (qgroup_reserved)
-+		btrfs_qgroup_convert_reserved_meta(root, qgroup_reserved);
-+
- got_it:
- 	if (!current->journal_info)
- 		current->journal_info = h;
-@@ -752,7 +765,7 @@ alloc_fail:
- 		btrfs_block_rsv_release(fs_info, &fs_info->trans_block_rsv,
- 					num_bytes, NULL);
- reserve_fail:
--	btrfs_qgroup_free_meta_pertrans(root, qgroup_reserved);
-+	btrfs_qgroup_free_meta_prealloc(root, qgroup_reserved);
- 	return ERR_PTR(ret);
+ 	if (rcv_xdp)
+@@ -318,7 +320,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	rcu_read_unlock();
+ 
+-	return NETDEV_TX_OK;
++	return ret;
  }
  
+ static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
+-- 
+2.40.1
+
 
 
