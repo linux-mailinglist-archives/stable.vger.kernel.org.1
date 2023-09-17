@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A19327A3B04
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C203B7A3CFE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240562AbjIQULt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54428 "EHLO
+        id S241190AbjIQUhz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240584AbjIQULb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:31 -0400
+        with ESMTP id S241193AbjIQUhj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A629AB5
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A717EC433CC;
-        Sun, 17 Sep 2023 20:11:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18780118
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A74FC433C7;
+        Sun, 17 Sep 2023 20:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981486;
-        bh=UJaJ0aGznNlLBRJo8ioZ7VqZsFb3HUwILfXeXgG+0os=;
+        s=korg; t=1694983051;
+        bh=muDtx0IPLQwvepeTe6y4RStc7A5tyrUojWhDuhDpv+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l3QMcWrRw5laaAHxXI1OfsXzRIPuwigJkQDXVWLlB73PlZUDwfJqN44oH7q0J6jjT
-         WUuOthH5UE04iPMVgpPRKkQgjv5Q26atuhVZyKPMCX2AkwTcE0/PbNy5of4rdgAb+6
-         gHCJ/UJJ9EcyAh8vlxCsTZ74N2L0k7JAp7jFq3lk=
+        b=HzCHm4DuBpp8cfy7X0pttgEk9NO5USOBds5MsiXkjCOXF7was7dLEqTAH+gbjPuZz
+         IeKpoj4NDCjUVrIhBCfj4+WSay1nLAPbobl5x32zu8ZsSIFwinnykWyc58HaRIi70R
+         bTqXXqSL64jpSGR3NyWCaMY+F4c3dkhnXy0LX06g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        syzbot+822d1359297e2694f873@syzkaller.appspotmail.com,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/219] net: hns3: fix byte order conversion issue in hclge_dbg_fd_tcam_read()
-Date:   Sun, 17 Sep 2023 21:14:17 +0200
-Message-ID: <20230917191045.686774320@linuxfoundation.org>
+Subject: [PATCH 5.15 431/511] xsk: Fix xsk_diag use-after-free error during socket cleanup
+Date:   Sun, 17 Sep 2023 21:14:18 +0200
+Message-ID: <20230917191124.174314960@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Magnus Karlsson <magnus.karlsson@intel.com>
 
-[ Upstream commit efccf655e99b6907ca07a466924e91805892e7d3 ]
+[ Upstream commit 3e019d8a05a38abb5c85d4f1e85fda964610aa14 ]
 
-req1->tcam_data is defined as "u8 tcam_data[8]", and we convert it as
-(u32 *) without considerring byte order conversion,
-it may result in printing wrong data for tcam_data.
+Fix a use-after-free error that is possible if the xsk_diag interface
+is used after the socket has been unbound from the device. This can
+happen either due to the socket being closed or the device
+disappearing. In the early days of AF_XDP, the way we tested that a
+socket was not bound to a device was to simply check if the netdevice
+pointer in the xsk socket structure was NULL. Later, a better system
+was introduced by having an explicit state variable in the xsk socket
+struct. For example, the state of a socket that is on the way to being
+closed and has been unbound from the device is XSK_UNBOUND.
 
-Convert tcam_data to (__le32 *) first to fix it.
+The commit in the Fixes tag below deleted the old way of signalling
+that a socket is unbound, setting dev to NULL. This in the belief that
+all code using the old way had been exterminated. That was
+unfortunately not true as the xsk diagnostics code was still using the
+old way and thus does not work as intended when a socket is going
+down. Fix this by introducing a test against the state variable. If
+the socket is in the state XSK_UNBOUND, simply abort the diagnostic's
+netlink operation.
 
-Fixes: b5a0b70d77b9 ("net: hns3: refactor dump fd tcam of debugfs")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 18b1ab7aa76b ("xsk: Fix race at socket teardown")
+Reported-by: syzbot+822d1359297e2694f873@syzkaller.appspotmail.com
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+822d1359297e2694f873@syzkaller.appspotmail.com
+Tested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/bpf/20230831100119.17408-1-magnus.karlsson@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/xdp/xsk_diag.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-index 5cb8f1818e51c..a1c59f4aae988 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -1517,7 +1517,7 @@ static int hclge_dbg_fd_tcam_read(struct hclge_dev *hdev, bool sel_x,
- 	struct hclge_desc desc[3];
- 	int pos = 0;
- 	int ret, i;
--	u32 *req;
-+	__le32 *req;
+diff --git a/net/xdp/xsk_diag.c b/net/xdp/xsk_diag.c
+index c014217f5fa7d..22b36c8143cfd 100644
+--- a/net/xdp/xsk_diag.c
++++ b/net/xdp/xsk_diag.c
+@@ -111,6 +111,9 @@ static int xsk_diag_fill(struct sock *sk, struct sk_buff *nlskb,
+ 	sock_diag_save_cookie(sk, msg->xdiag_cookie);
  
- 	hclge_cmd_setup_basic_desc(&desc[0], HCLGE_OPC_FD_TCAM_OP, true);
- 	desc[0].flag |= cpu_to_le16(HCLGE_COMM_CMD_FLAG_NEXT);
-@@ -1542,22 +1542,22 @@ static int hclge_dbg_fd_tcam_read(struct hclge_dev *hdev, bool sel_x,
- 			 tcam_msg.loc);
+ 	mutex_lock(&xs->mutex);
++	if (READ_ONCE(xs->state) == XSK_UNBOUND)
++		goto out_nlmsg_trim;
++
+ 	if ((req->xdiag_show & XDP_SHOW_INFO) && xsk_diag_put_info(xs, nlskb))
+ 		goto out_nlmsg_trim;
  
- 	/* tcam_data0 ~ tcam_data1 */
--	req = (u32 *)req1->tcam_data;
-+	req = (__le32 *)req1->tcam_data;
- 	for (i = 0; i < 2; i++)
- 		pos += scnprintf(tcam_buf + pos, HCLGE_DBG_TCAM_BUF_SIZE - pos,
--				 "%08x\n", *req++);
-+				 "%08x\n", le32_to_cpu(*req++));
- 
- 	/* tcam_data2 ~ tcam_data7 */
--	req = (u32 *)req2->tcam_data;
-+	req = (__le32 *)req2->tcam_data;
- 	for (i = 0; i < 6; i++)
- 		pos += scnprintf(tcam_buf + pos, HCLGE_DBG_TCAM_BUF_SIZE - pos,
--				 "%08x\n", *req++);
-+				 "%08x\n", le32_to_cpu(*req++));
- 
- 	/* tcam_data8 ~ tcam_data12 */
--	req = (u32 *)req3->tcam_data;
-+	req = (__le32 *)req3->tcam_data;
- 	for (i = 0; i < 5; i++)
- 		pos += scnprintf(tcam_buf + pos, HCLGE_DBG_TCAM_BUF_SIZE - pos,
--				 "%08x\n", *req++);
-+				 "%08x\n", le32_to_cpu(*req++));
- 
- 	return ret;
- }
 -- 
 2.40.1
 
