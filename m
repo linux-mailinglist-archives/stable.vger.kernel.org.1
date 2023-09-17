@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2407A3A11
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D807A38DD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240210AbjIQT60 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35770 "EHLO
+        id S239867AbjIQTlY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240272AbjIQT57 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:59 -0400
+        with ESMTP id S239945AbjIQTlS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93FEB12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D1CC433CA;
-        Sun, 17 Sep 2023 19:57:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2BBDB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312B2C433C8;
+        Sun, 17 Sep 2023 19:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980673;
-        bh=1UDDH/yEbRx/M/zZhmjrAlUsaSKBMsoGU+bJiGAJRBo=;
+        s=korg; t=1694979672;
+        bh=4yBxqbBas5LNvpIPZ4wJLKbMqBlLF8YT/bW/Zs4MHbw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pNfrAB4Xm41KYBRNBEFqIhVxp8yX2uKGAEwXtDdcRRbIlwc2cjwoKCPSP3/wdGbY7
-         3ikGf6xe/AtDFjM84/Q/ss600jr3//Z/Pxr+1/jAdDkkulfkL+y+YdFeTegbS8nuYc
-         6uSB7t9Alsw96AKT7tX0FatLy7b9QugJ1IX24BpQ=
+        b=dxWHrVOSyGUcVPLHVUcctSjFnHzMRl1VieFv6227Qs7QceJRQCCz7+9Vv5qM0yaIL
+         ZbaWGf8U3HjDAinvn+1ipef8LEJ7hjH3BF8aFyc9FczrDk7sMMIF8Q0wHHGETUMpc5
+         BPNsHrGDZhwq9RluYi929upkfexfphnY7s6Kj9+4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Anup Sharma <anupnewsmail@gmail.com>,
         Ian Rogers <irogers@google.com>,
         Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.5 233/285] perf build: Update build rule for generated files
-Date:   Sun, 17 Sep 2023 21:13:53 +0200
-Message-ID: <20230917191059.490942929@linuxfoundation.org>
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 5.10 380/406] perf hists browser: Fix the number of entries for e key
+Date:   Sun, 17 Sep 2023 21:13:54 +0200
+Message-ID: <20230917191111.298504266@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,84 +53,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namhyung Kim <namhyung@kernel.org>
 
-commit 7822a8913f4c51c7d1aff793b525d60c3384fb5b upstream.
+commit f6b8436bede3e80226e8b2100279c4450c73806a upstream.
 
-The bison and flex generate C files from the source (.y and .l)
-files.  When O= option is used, they are saved in a separate directory
-but the default build rule assumes the .C files are in the source
-directory.  So it might read invalid file if there are generated files
-from an old version.  The same is true for the pmu-events files.
+The 'e' key is to toggle expand/collapse the selected entry only.  But
+the current code has a bug that it only increases the number of entries
+by 1 in the hierarchy mode so users cannot move under the current entry
+after the key stroke.  This is due to a wrong assumption in the
+hist_entry__set_folding().
 
-For example, the following command would cause a build failure:
+The commit b33f922651011eff ("perf hists browser: Put hist_entry folding
+logic into single function") factored out the code, but actually it
+should be handled separately.  The hist_browser__set_folding() is to
+update fold state for each entry so it needs to traverse all (child)
+entries regardless of the current fold state.  So it increases the
+number of entries by 1.
 
-  $ git checkout v6.3
-  $ make -C tools/perf  # build in the same directory
+But the hist_entry__set_folding() only cares the currently selected
+entry and its all children.  So it should count all unfolded child
+entries.  This code is implemented in hist_browser__toggle_fold()
+already so we can just call it.
 
-  $ git checkout v6.5-rc2
-  $ mkdir build  # create a build directory
-  $ make -C tools/perf O=build  # build in a different directory but it
-                                # refers files in the source directory
-
-Let's update the build rule to specify those cases explicitly to depend
-on the files in the output directory.
-
-Note that it's not a complete fix and it needs the next patch for the
-include path too.
-
-Fixes: 80eeb67fe577aa76 ("perf jevents: Program to convert JSON file")
+Fixes: b33f922651011eff ("perf hists browser: Put hist_entry folding logic into single function")
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Anup Sharma <anupnewsmail@gmail.com>
 Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230728022447.1323563-1-namhyung@kernel.org
+Link: https://lore.kernel.org/r/20230731094934.1616495-2-namhyung@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/build/Makefile.build  |   10 ++++++++++
- tools/perf/pmu-events/Build |    6 ++++++
- 2 files changed, 16 insertions(+)
+ tools/perf/ui/browsers/hists.c |   58 ++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 34 deletions(-)
 
---- a/tools/build/Makefile.build
-+++ b/tools/build/Makefile.build
-@@ -117,6 +117,16 @@ $(OUTPUT)%.s: %.c FORCE
- 	$(call rule_mkdir)
- 	$(call if_changed_dep,cc_s_c)
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_
+ 	return container_of(ms, struct callchain_list, ms)->has_children;
+ }
  
-+# bison and flex files are generated in the OUTPUT directory
-+# so it needs a separate rule to depend on them properly
-+$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
-+	$(call rule_mkdir)
-+	$(call if_changed_dep,$(host)cc_o_c)
+-static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
+-{
+-	return browser->he_selection ? browser->he_selection->unfolded : false;
+-}
+-
+ static bool hist_browser__selection_unfolded(struct hist_browser *browser)
+ {
+ 	struct hist_entry *he = browser->he_selection;
+@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct
+ 	return n;
+ }
+ 
+-static void __hist_entry__set_folding(struct hist_entry *he,
+-				      struct hist_browser *hb, bool unfold)
++static void hist_entry__set_folding(struct hist_entry *he,
++				    struct hist_browser *hb, bool unfold)
+ {
+ 	hist_entry__init_have_children(he);
+ 	he->unfolded = unfold ? he->has_children : false;
+@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(st
+ 		he->nr_rows = 0;
+ }
+ 
+-static void hist_entry__set_folding(struct hist_entry *he,
+-				    struct hist_browser *browser, bool unfold)
+-{
+-	double percent;
+-
+-	percent = hist_entry__get_percent_limit(he);
+-	if (he->filtered || percent < browser->min_pcnt)
+-		return;
+-
+-	__hist_entry__set_folding(he, browser, unfold);
+-
+-	if (!he->depth || unfold)
+-		browser->nr_hierarchy_entries++;
+-	if (he->leaf)
+-		browser->nr_callchain_rows += he->nr_rows;
+-	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
+-		browser->nr_hierarchy_entries++;
+-		he->has_no_entry = true;
+-		he->nr_rows = 1;
+-	} else
+-		he->has_no_entry = false;
+-}
+-
+ static void
+ __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
+ {
+ 	struct rb_node *nd;
+ 	struct hist_entry *he;
++	double percent;
+ 
+ 	nd = rb_first_cached(&browser->hists->entries);
+ 	while (nd) {
+@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_
+ 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
+ 
+ 		hist_entry__set_folding(he, browser, unfold);
 +
-+$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
-+	$(call rule_mkdir)
-+	$(call if_changed_dep,$(host)cc_o_c)
++		percent = hist_entry__get_percent_limit(he);
++		if (he->filtered || percent < browser->min_pcnt)
++			continue;
 +
- # Gather build data:
- #   obj-y        - list of build objects
- #   subdir-y     - list of directories to nest
---- a/tools/perf/pmu-events/Build
-+++ b/tools/perf/pmu-events/Build
-@@ -35,3 +35,9 @@ $(PMU_EVENTS_C): $(JSON) $(JSON_TEST) $(
- 	$(call rule_mkdir)
- 	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(JEVENTS_ARCH) $(JEVENTS_MODEL) pmu-events/arch $@
- endif
++		if (!he->depth || unfold)
++			browser->nr_hierarchy_entries++;
++		if (he->leaf)
++			browser->nr_callchain_rows += he->nr_rows;
++		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
++			browser->nr_hierarchy_entries++;
++			he->has_no_entry = true;
++			he->nr_rows = 1;
++		} else
++			he->has_no_entry = false;
+ 	}
+ }
+ 
+@@ -659,8 +647,10 @@ static void hist_browser__set_folding_se
+ 	if (!browser->he_selection)
+ 		return;
+ 
+-	hist_entry__set_folding(browser->he_selection, browser, unfold);
+-	browser->b.nr_entries = hist_browser__nr_entries(browser);
++	if (unfold == browser->he_selection->unfolded)
++		return;
 +
-+# pmu-events.c file is generated in the OUTPUT directory so it needs a
-+# separate rule to depend on it properly
-+$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
-+	$(call rule_mkdir)
-+	$(call if_changed_dep,cc_o_c)
++	hist_browser__toggle_fold(browser);
+ }
+ 
+ static void ui_browser__warn_lost_events(struct ui_browser *browser)
+@@ -731,8 +721,8 @@ static int hist_browser__handle_hotkey(s
+ 		hist_browser__set_folding(browser, true);
+ 		break;
+ 	case 'e':
+-		/* Expand the selected entry. */
+-		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
++		/* Toggle expand/collapse the selected entry. */
++		hist_browser__toggle_fold(browser);
+ 		break;
+ 	case 'H':
+ 		browser->show_headers = !browser->show_headers;
 
 
