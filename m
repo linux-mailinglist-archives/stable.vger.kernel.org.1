@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7495E7A3A05
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F3E7A38FE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239501AbjIQT5w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58856 "EHLO
+        id S239891AbjIQTna (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:43:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240203AbjIQT5V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:21 -0400
+        with ESMTP id S239952AbjIQTnK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D220EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5893BC433C8;
-        Sun, 17 Sep 2023 19:57:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C6BDB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B141C433C8;
+        Sun, 17 Sep 2023 19:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980635;
-        bh=Bw3Nk7PrgzSbvDXDTe8dKPqMGcKpUjqQ6N6EI6+kOc4=;
+        s=korg; t=1694979784;
+        bh=iQY4Og23v3o8zQmp9mKbc6a7Ie+IPQWAYKbbHIJhIqM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MHZT7TCEqKGpmQWat53suRr7YIRdaKRTzxOIDx5XSUj37yNCykSODq2vPXrmo14eD
-         7MboSQuGJPdwLRu2kcs9lImUn39fif+L3Oafi9Mzczs7eOHkDNA7wVU4/+HgRzUZdk
-         JM+KvMmsvvNqsbuP7edRkqg0QUecl6nmBbkBYqH0=
+        b=BxuMjOwvTmaF4PiT0NmPxfEqZPamMTrXLjty2uTtK4pitoiABzY3CM2th7znh3MsN
+         6JjLAX8q2i1Dz6XT33Q98I7frjE4xpYo/PX4ZIhtluFVcPyk0U30PglLXFHtHThl5S
+         SPeTEWm/pRR6uiBQIXePwBMNI6NKNcrRDxODXm+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-        Benjamin Poirier <bpoirier@nvidia.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 249/285] selftests: Keep symlinks, when possible
+Subject: [PATCH 5.10 395/406] net: ethernet: mtk_eth_soc: fix possible NULL pointer dereference in mtk_hwlro_get_fdir_all()
 Date:   Sun, 17 Sep 2023 21:14:09 +0200
-Message-ID: <20230917191059.937141826@linuxfoundation.org>
+Message-ID: <20230917191111.693868527@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,55 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 3f3f384139ed147c71e1d770accf610133d5309b ]
+[ Upstream commit e4c79810755f66c9a933ca810da2724133b1165a ]
 
-When kselftest is built/installed with the 'gen_tar' target, rsync is
-used for the installation step to copy files. Extra care is needed for
-tests that have symlinks. Commit ae108c48b5d2 ("selftests: net: Fix
-cross-tree inclusion of scripts") added '-L' (transform symlink into
-referent file/dir) to rsync, to fix dangling links. However, that
-broke some tests where the symlink (being a symlink) is part of the
-test (e.g. exec:execveat).
+rule_locs is allocated in ethtool_get_rxnfc and the size is determined by
+rule_cnt from user space. So rule_cnt needs to be check before using
+rule_locs to avoid NULL pointer dereference.
 
-Use rsync's '--copy-unsafe-links' that does right thing.
-
-Fixes: ae108c48b5d2 ("selftests: net: Fix cross-tree inclusion of scripts")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 7aab747e5563 ("net: ethernet: mediatek: add ethtool functions to configure RX flows of HW LRO")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/lib.mk | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-index d17854285f2b6..118e0964bda94 100644
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -106,7 +106,7 @@ endef
- run_tests: all
- ifdef building_out_of_srctree
- 	@if [ "X$(TEST_PROGS)$(TEST_PROGS_EXTENDED)$(TEST_FILES)" != "X" ]; then \
--		rsync -aLq $(TEST_PROGS) $(TEST_PROGS_EXTENDED) $(TEST_FILES) $(OUTPUT); \
-+		rsync -aq --copy-unsafe-links $(TEST_PROGS) $(TEST_PROGS_EXTENDED) $(TEST_FILES) $(OUTPUT); \
- 	fi
- 	@if [ "X$(TEST_PROGS)" != "X" ]; then \
- 		$(call RUN_TESTS, $(TEST_GEN_PROGS) $(TEST_CUSTOM_PROGS) \
-@@ -120,7 +120,7 @@ endif
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index a8319295f1ab2..aa9e616cc1d59 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -2013,6 +2013,9 @@ static int mtk_hwlro_get_fdir_all(struct net_device *dev,
+ 	int i;
  
- define INSTALL_SINGLE_RULE
- 	$(if $(INSTALL_LIST),@mkdir -p $(INSTALL_PATH))
--	$(if $(INSTALL_LIST),rsync -aL $(INSTALL_LIST) $(INSTALL_PATH)/)
-+	$(if $(INSTALL_LIST),rsync -a --copy-unsafe-links $(INSTALL_LIST) $(INSTALL_PATH)/)
- endef
- 
- define INSTALL_RULE
+ 	for (i = 0; i < MTK_MAX_LRO_IP_CNT; i++) {
++		if (cnt == cmd->rule_cnt)
++			return -EMSGSIZE;
++
+ 		if (mac->hwlro_ip[i]) {
+ 			rule_locs[cnt] = i;
+ 			cnt++;
 -- 
 2.40.1
 
