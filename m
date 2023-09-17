@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E1E7A39FB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A527A3901
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238814AbjIQT5U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
+        id S239228AbjIQTna (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:43:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240217AbjIQT4t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:49 -0400
+        with ESMTP id S239955AbjIQTnR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 390E9EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728EEC433C7;
-        Sun, 17 Sep 2023 19:56:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06BCEE7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFD5C433C7;
+        Sun, 17 Sep 2023 19:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980603;
-        bh=VXGS6YsGhfKWDurSh0nHD9Jvh8eNrWsygFaY+9JPXhQ=;
+        s=korg; t=1694979791;
+        bh=6j97H9MsDa6BUbr39pYGsOLvczMcdqFrmlnEJkbMTuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F1/B0T0rRg/1afHWKtOvew4G9i/AJQr1nuNMs3S42oJobXMTHXPf+CgroAEEPpQoU
-         1qOk4ROx9HeCzyUUMXc3zdR8V1kFjJbeRPszbpr0VaLpcF+QUDK85cBb1r/35UHC6x
-         IjtorGVBDi7U5BmcYv8eM5H3muqu+b37gId4211I=
+        b=avxmlMtow4Sd935BrDNqARJIJU8N8aMXRE5nuRD2XdD4CHJj0uJ4/uM/9BLoIJ2nQ
+         p2HvF+kPCGyqaCNKw1dE4jxpoYLsyAFYNeYvFeSdZYfqPuBqR0rzzDhlTEyIM0Gmml
+         Kg1Dmq0B0z8wJFPb3ansgDZYYac1b0nUwQ86d4/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 241/285] drm/amdgpu: register a dirty framebuffer callback for fbcon
+        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 387/406] ARM: dts: samsung: exynos4210-i9100: Fix LCD screens physical size
 Date:   Sun, 17 Sep 2023 21:14:01 +0200
-Message-ID: <20230917191059.712099168@linuxfoundation.org>
+Message-ID: <20230917191111.481096129@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,88 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Paul Cercueil <paul@crapouillou.net>
 
-commit 0a611560f53bfd489e33f4a718c915f1a6123d03 upstream.
+[ Upstream commit b3f3fc32e5ff1e848555af8616318cc667457f90 ]
 
-fbcon requires that we implement &drm_framebuffer_funcs.dirty.
-Otherwise, the framebuffer might take a while to flush (which would
-manifest as noticeable lag). However, we can't enable this callback for
-non-fbcon cases since it may cause too many atomic commits to be made at
-once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
-framebuffers (we can use the "struct drm_file file" parameter in the
-callback to check for this since it is only NULL when called by fbcon,
-at least in the mainline kernel) on devices that support atomic KMS.
+The previous values were completely bogus, and resulted in the computed
+DPI ratio being much lower than reality, causing applications and UIs to
+misbehave.
 
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The new values were measured by myself with a ruler.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Cc: <stable@vger.kernel.org> # v5.8+
+Link: https://lore.kernel.org/r/20230714153720.336990-1-paul@crapouillou.net
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c |   26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/exynos4210-i9100.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -38,6 +38,8 @@
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <drm/drm_crtc_helper.h>
-+#include <drm/drm_damage_helper.h>
-+#include <drm/drm_drv.h>
- #include <drm/drm_edid.h>
- #include <drm/drm_fb_helper.h>
- #include <drm/drm_gem_framebuffer_helper.h>
-@@ -529,11 +531,29 @@ bool amdgpu_display_ddc_probe(struct amd
- 	return true;
- }
+diff --git a/arch/arm/boot/dts/exynos4210-i9100.dts b/arch/arm/boot/dts/exynos4210-i9100.dts
+index ecc9d4dc707e4..d186b93144e38 100644
+--- a/arch/arm/boot/dts/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/exynos4210-i9100.dts
+@@ -170,8 +170,8 @@
+ 			power-on-delay = <10>;
+ 			reset-delay = <10>;
  
-+static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct drm_file *file,
-+			  unsigned int flags, unsigned int color,
-+			  struct drm_clip_rect *clips, unsigned int num_clips)
-+{
-+
-+	if (file)
-+		return -ENOSYS;
-+
-+	return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
-+					 num_clips);
-+}
-+
- static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
- 	.destroy = drm_gem_fb_destroy,
- 	.create_handle = drm_gem_fb_create_handle,
- };
+-			panel-width-mm = <90>;
+-			panel-height-mm = <154>;
++			panel-width-mm = <56>;
++			panel-height-mm = <93>;
  
-+static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
-+	.destroy = drm_gem_fb_destroy,
-+	.create_handle = drm_gem_fb_create_handle,
-+	.dirty = amdgpu_dirtyfb
-+};
-+
- uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
- 					  uint64_t bo_flags)
- {
-@@ -1136,7 +1156,11 @@ static int amdgpu_display_gem_fb_verify_
- 	if (ret)
- 		goto err;
- 
--	ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
-+	if (drm_drv_uses_atomic_modeset(dev))
-+		ret = drm_framebuffer_init(dev, &rfb->base,
-+					   &amdgpu_fb_funcs_atomic);
-+	else
-+		ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
- 
- 	if (ret)
- 		goto err;
+ 			display-timings {
+ 				timing {
+-- 
+2.40.1
+
 
 
