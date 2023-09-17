@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D03EE7A3B89
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 632AE7A3D55
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239609AbjIQUTN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:19:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
+        id S241261AbjIQUli (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240724AbjIQUSq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:46 -0400
+        with ESMTP id S241320AbjIQUlR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A24101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C897DC433CD;
-        Sun, 17 Sep 2023 20:18:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A083912F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D697DC433C7;
+        Sun, 17 Sep 2023 20:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981920;
-        bh=e1tP5OTR7KeI7Nq6k72+EhVcB/IH7qtRFTINw+6WLH0=;
+        s=korg; t=1694983271;
+        bh=dW/vucEDjBMUCTZ+P5SQlbZEhMFaOzIVcIE8Oc13YJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jptozn1WSTvsEJI1kLsBjViuhQYKWrCo6ewXBKy9ZM4cvD7S39+no3YMHwAzeqo3s
-         qJSxHjhXP3qzFKQx4XrRQbjLN5/OzyytpogG+QhbS7W5nWoSZbPim0KxFwPyQMiTWH
-         rK8Xq4p6Bjk5SXqbGGRJNpXlu6xxYb2Nlc9OM4d4=
+        b=1xgSfDyslD0jWuIBXqTruPBIhsIZ0xg+Lfm56zntW+9F0/A/TbOK9IOH4YN9Ymr79
+         ZBwBYcXebjFcVgIIuNaarPX49D8dRudwdqp6OE2goboTqfJJF/S9noSpKh+HbNHeTb
+         z1V+vuY+pyYzmfMtpQi8gXgu6YufjLID1A8dVavo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+bf7e6250c7ce248f3ec9@syzkaller.appspotmail.com,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Julian Anastasov <ja@ssi.bg>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/219] hsr: Fix uninit-value access in fill_frame_info()
+Subject: [PATCH 5.15 493/511] net: ipv4: fix one memleak in __inet_del_ifa()
 Date:   Sun, 17 Sep 2023 21:15:20 +0200
-Message-ID: <20230917191047.919103402@linuxfoundation.org>
+Message-ID: <20230917191125.635188170@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,92 +51,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 484b4833c604c0adcf19eac1ca14b60b757355b5 ]
+[ Upstream commit ac28b1ec6135649b5d78b028e47264cb3ebca5ea ]
 
-Syzbot reports the following uninit-value access problem.
+I got the below warning when do fuzzing test:
+unregister_netdevice: waiting for bond0 to become free. Usage count = 2
 
-=====================================================
-BUG: KMSAN: uninit-value in fill_frame_info net/hsr/hsr_forward.c:601 [inline]
-BUG: KMSAN: uninit-value in hsr_forward_skb+0x9bd/0x30f0 net/hsr/hsr_forward.c:616
- fill_frame_info net/hsr/hsr_forward.c:601 [inline]
- hsr_forward_skb+0x9bd/0x30f0 net/hsr/hsr_forward.c:616
- hsr_dev_xmit+0x192/0x330 net/hsr/hsr_device.c:223
- __netdev_start_xmit include/linux/netdevice.h:4889 [inline]
- netdev_start_xmit include/linux/netdevice.h:4903 [inline]
- xmit_one net/core/dev.c:3544 [inline]
- dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3560
- __dev_queue_xmit+0x34d0/0x52a0 net/core/dev.c:4340
- dev_queue_xmit include/linux/netdevice.h:3082 [inline]
- packet_xmit+0x9c/0x6b0 net/packet/af_packet.c:276
- packet_snd net/packet/af_packet.c:3087 [inline]
- packet_sendmsg+0x8b1d/0x9f30 net/packet/af_packet.c:3119
- sock_sendmsg_nosec net/socket.c:730 [inline]
- sock_sendmsg net/socket.c:753 [inline]
- __sys_sendto+0x781/0xa30 net/socket.c:2176
- __do_sys_sendto net/socket.c:2188 [inline]
- __se_sys_sendto net/socket.c:2184 [inline]
- __ia32_sys_sendto+0x11f/0x1c0 net/socket.c:2184
- do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
- __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
- do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
- entry_SYSENTER_compat_after_hwframe+0x70/0x82
+It can be repoduced via:
 
-Uninit was created at:
- slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
- slab_alloc_node mm/slub.c:3478 [inline]
- kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
- kmalloc_reserve+0x148/0x470 net/core/skbuff.c:559
- __alloc_skb+0x318/0x740 net/core/skbuff.c:644
- alloc_skb include/linux/skbuff.h:1286 [inline]
- alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6299
- sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2794
- packet_alloc_skb net/packet/af_packet.c:2936 [inline]
- packet_snd net/packet/af_packet.c:3030 [inline]
- packet_sendmsg+0x70e8/0x9f30 net/packet/af_packet.c:3119
- sock_sendmsg_nosec net/socket.c:730 [inline]
- sock_sendmsg net/socket.c:753 [inline]
- __sys_sendto+0x781/0xa30 net/socket.c:2176
- __do_sys_sendto net/socket.c:2188 [inline]
- __se_sys_sendto net/socket.c:2184 [inline]
- __ia32_sys_sendto+0x11f/0x1c0 net/socket.c:2184
- do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
- __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
- do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
- entry_SYSENTER_compat_after_hwframe+0x70/0x82
+ip link add bond0 type bond
+sysctl -w net.ipv4.conf.bond0.promote_secondaries=1
+ip addr add 4.117.174.103/0 scope 0x40 dev bond0
+ip addr add 192.168.100.111/255.255.255.254 scope 0 dev bond0
+ip addr add 0.0.0.4/0 scope 0x40 secondary dev bond0
+ip addr del 4.117.174.103/0 scope 0x40 dev bond0
+ip link delete bond0 type bond
 
-It is because VLAN not yet supported in hsr driver. Return error
-when protocol is ETH_P_8021Q in fill_frame_info() now to fix it.
+In this reproduction test case, an incorrect 'last_prim' is found in
+__inet_del_ifa(), as a result, the secondary address(0.0.0.4/0 scope 0x40)
+is lost. The memory of the secondary address is leaked and the reference of
+in_device and net_device is leaked.
 
-Fixes: 451d8123f897 ("net: prp: add packet handling support")
-Reported-by: syzbot+bf7e6250c7ce248f3ec9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bf7e6250c7ce248f3ec9
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Fix this problem:
+Look for 'last_prim' starting at location of the deleted IP and inserting
+the promoted IP into the location of 'last_prim'.
+
+Fixes: 0ff60a45678e ("[IPV4]: Fix secondary IP addresses after promotion")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/devinet.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 629daacc96071..b71dab630a873 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -594,6 +594,7 @@ static int fill_frame_info(struct hsr_frame_info *frame,
- 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
- 		/* FIXME: */
- 		netdev_warn_once(skb->dev, "VLAN not yet supported");
-+		return -EINVAL;
- 	}
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 9ac41ffdc6344..c511751c2f41a 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -351,14 +351,14 @@ static void __inet_del_ifa(struct in_device *in_dev,
+ {
+ 	struct in_ifaddr *promote = NULL;
+ 	struct in_ifaddr *ifa, *ifa1;
+-	struct in_ifaddr *last_prim;
++	struct in_ifaddr __rcu **last_prim;
+ 	struct in_ifaddr *prev_prom = NULL;
+ 	int do_promote = IN_DEV_PROMOTE_SECONDARIES(in_dev);
  
- 	frame->is_from_san = false;
+ 	ASSERT_RTNL();
+ 
+ 	ifa1 = rtnl_dereference(*ifap);
+-	last_prim = rtnl_dereference(in_dev->ifa_list);
++	last_prim = ifap;
+ 	if (in_dev->dead)
+ 		goto no_promotions;
+ 
+@@ -372,7 +372,7 @@ static void __inet_del_ifa(struct in_device *in_dev,
+ 		while ((ifa = rtnl_dereference(*ifap1)) != NULL) {
+ 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) &&
+ 			    ifa1->ifa_scope <= ifa->ifa_scope)
+-				last_prim = ifa;
++				last_prim = &ifa->ifa_next;
+ 
+ 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) ||
+ 			    ifa1->ifa_mask != ifa->ifa_mask ||
+@@ -436,9 +436,9 @@ static void __inet_del_ifa(struct in_device *in_dev,
+ 
+ 			rcu_assign_pointer(prev_prom->ifa_next, next_sec);
+ 
+-			last_sec = rtnl_dereference(last_prim->ifa_next);
++			last_sec = rtnl_dereference(*last_prim);
+ 			rcu_assign_pointer(promote->ifa_next, last_sec);
+-			rcu_assign_pointer(last_prim->ifa_next, promote);
++			rcu_assign_pointer(*last_prim, promote);
+ 		}
+ 
+ 		promote->ifa_flags &= ~IFA_F_SECONDARY;
 -- 
 2.40.1
 
