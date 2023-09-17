@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F7AE7A38C8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 087027A39DF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239853AbjIQTkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59292 "EHLO
+        id S239485AbjIQTzo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239895AbjIQTkE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:04 -0400
+        with ESMTP id S240177AbjIQTzO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5A4133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D567C433C8;
-        Sun, 17 Sep 2023 19:39:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE849F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EC7C433C8;
+        Sun, 17 Sep 2023 19:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979598;
-        bh=htgHOyql5qoQ6s1BSc0EOtxstF/5bYAz0N284ZJHjGM=;
+        s=korg; t=1694980508;
+        bh=FPax6pi9d8wq+kvrtvWcUgUsDCVmI0ku03tvdR7qYr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rKym0uektYua/BByLRMcwoi7Lx21k/3hFbKfWJXNF/ReLIlLQAno2Nyr2BkGBDfDD
-         O+Miw+66ePCyMWBAk4nF91Tzhgqcd0FKS3WJB9NyXi+e4OwAPEs6pTkU5KH90qAMjE
-         Wuz/nc2M2zQFjdlN8RHVVSrnsfs1scmewDydby6o=
+        b=EED7tSisxQKT0z/1CwMhvQ6vLswJgT7SNLuvE/fIl8kXsgNDG++RH4B+BGQyrwHmr
+         xjROz6FNO5q9V67l8ITfNo+YDPGeO9JnxvdDSNKKbnwdTAb80hhjbZ3udM2TmQ0UZl
+         BYoaKa/i4LPy9u/AoLRqGZNamaOhU1L0XZ2Fd+6Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 359/406] igb: Change IGB_MIN to allow set rx/tx value between 64 and 80
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Kursad Oney <kursad.oney@broadcom.com>,
+        Kamal Dasu <kamal.dasu@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.5 213/285] mtd: rawnand: brcmnand: Fix crash during the panic_write
 Date:   Sun, 17 Sep 2023 21:13:33 +0200
-Message-ID: <20230917191110.754870188@linuxfoundation.org>
+Message-ID: <20230917191058.929137047@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: William Zhang <william.zhang@broadcom.com>
 
-[ Upstream commit 6319685bdc8ad5310890add907b7c42f89302886 ]
+commit e66dd317194daae0475fe9e5577c80aa97f16cb9 upstream.
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igb devices can use as low as 64 descriptors.
-This change will unify igb with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+When executing a NAND command within the panic write path, wait for any
+pending command instead of calling BUG_ON to avoid crashing while
+already crashing.
 
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Kursad Oney <kursad.oney@broadcom.com>
+Reviewed-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-4-william.zhang@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
-index e6d2800a8abc5..da0e3897e6831 100644
---- a/drivers/net/ethernet/intel/igb/igb.h
-+++ b/drivers/net/ethernet/intel/igb/igb.h
-@@ -34,11 +34,11 @@ struct igb_adapter;
- /* TX/RX descriptor defines */
- #define IGB_DEFAULT_TXD		256
- #define IGB_DEFAULT_TX_WORK	128
--#define IGB_MIN_TXD		80
-+#define IGB_MIN_TXD		64
- #define IGB_MAX_TXD		4096
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -1592,7 +1592,17 @@ static void brcmnand_send_cmd(struct brc
  
- #define IGB_DEFAULT_RXD		256
--#define IGB_MIN_RXD		80
-+#define IGB_MIN_RXD		64
- #define IGB_MAX_RXD		4096
+ 	dev_dbg(ctrl->dev, "send native cmd %d addr 0x%llx\n", cmd, cmd_addr);
  
- #define IGB_DEFAULT_ITR		3 /* dynamic */
--- 
-2.40.1
-
+-	BUG_ON(ctrl->cmd_pending != 0);
++	/*
++	 * If we came here through _panic_write and there is a pending
++	 * command, try to wait for it. If it times out, rather than
++	 * hitting BUG_ON, just return so we don't crash while crashing.
++	 */
++	if (oops_in_progress) {
++		if (ctrl->cmd_pending &&
++			bcmnand_ctrl_poll_status(ctrl, NAND_CTRL_RDY, NAND_CTRL_RDY, 0))
++			return;
++	} else
++		BUG_ON(ctrl->cmd_pending != 0);
+ 	ctrl->cmd_pending = cmd;
+ 
+ 	ret = bcmnand_ctrl_poll_status(ctrl, NAND_CTRL_RDY, NAND_CTRL_RDY, 0);
 
 
