@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B02527A3871
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4F437A3971
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239754AbjIQTgC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60932 "EHLO
+        id S240064AbjIQTtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239769AbjIQTfe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:34 -0400
+        with ESMTP id S240152AbjIQTtP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E04119
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA1AC433C7;
-        Sun, 17 Sep 2023 19:35:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 923FC9F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEE4C433C9;
+        Sun, 17 Sep 2023 19:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979329;
-        bh=u9LmL/WkoefVI7VgOteQGKMTIDI6iX8bcN/9mSwTI6g=;
+        s=korg; t=1694980149;
+        bh=2w6KS/bnavq4oN+O1Yrbi7wxeqhwTN+FtKAFREsZrf8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ULdSK+rbzErgygZl2k4j+yuw370293FMP0VIc2CAngrU5N86C4ZoDy6amLoVoeWlu
-         UFyt1mQdNQO4QuIY2rbj6Wz9UeMj3zgY950jdnZgQqqzVoTgFNK2tXlOYlZFxMAG2z
-         rfgjjyB+OujJXaQUr68wbM64I+P4oDLLMbRDx9zQ=
+        b=jxRyEQ9tCOY4f3Vg6K6jTQIvGp2MfqvnIIwLSh4o8Nf2HhEroP0g3hmIKjuPxNktM
+         3PHdQLZR297/s4lJcFAdSMSYTu/mK4kyi6BQkhocLu0ja48Xyfh1TTCrvGdE31cXzY
+         +6wkmra7Pyfoqpt6Azad1baItZ+JLWjCjSnWiAwg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Zhivich <mzhivich@akamai.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 254/406] x86/speculation: Mark all Skylake CPUs as vulnerable to GDS
-Date:   Sun, 17 Sep 2023 21:11:48 +0200
-Message-ID: <20230917191107.881643860@linuxfoundation.org>
+Subject: [PATCH 6.5 109/285] ipv4: annotate data-races around fi->fib_dead
+Date:   Sun, 17 Sep 2023 21:11:49 +0200
+Message-ID: <20230917191055.431648365@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,78 +52,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c9f4c45c8ec3f07f4f083f9750032a1ec3eab6b2 ]
+[ Upstream commit fce92af1c29d90184dfec638b5738831097d66e9 ]
 
-The Gather Data Sampling (GDS) vulnerability is common to all Skylake
-processors.  However, the "client" Skylakes* are now in this list:
+syzbot complained about a data-race in fib_table_lookup() [1]
 
-	https://www.intel.com/content/www/us/en/support/articles/000022396/processors.html
+Add appropriate annotations to document it.
 
-which means they are no longer included for new vulnerabilities here:
+[1]
+BUG: KCSAN: data-race in fib_release_info / fib_table_lookup
 
-	https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
+write to 0xffff888150f31744 of 1 bytes by task 1189 on cpu 0:
+fib_release_info+0x3a0/0x460 net/ipv4/fib_semantics.c:281
+fib_table_delete+0x8d2/0x900 net/ipv4/fib_trie.c:1777
+fib_magic+0x1c1/0x1f0 net/ipv4/fib_frontend.c:1106
+fib_del_ifaddr+0x8cf/0xa60 net/ipv4/fib_frontend.c:1317
+fib_inetaddr_event+0x77/0x200 net/ipv4/fib_frontend.c:1448
+notifier_call_chain kernel/notifier.c:93 [inline]
+blocking_notifier_call_chain+0x90/0x200 kernel/notifier.c:388
+__inet_del_ifa+0x4df/0x800 net/ipv4/devinet.c:432
+inet_del_ifa net/ipv4/devinet.c:469 [inline]
+inetdev_destroy net/ipv4/devinet.c:322 [inline]
+inetdev_event+0x553/0xaf0 net/ipv4/devinet.c:1606
+notifier_call_chain kernel/notifier.c:93 [inline]
+raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
+call_netdevice_notifiers_info net/core/dev.c:1962 [inline]
+call_netdevice_notifiers_mtu+0xd2/0x130 net/core/dev.c:2037
+dev_set_mtu_ext+0x30b/0x3e0 net/core/dev.c:8673
+do_setlink+0x5be/0x2430 net/core/rtnetlink.c:2837
+rtnl_setlink+0x255/0x300 net/core/rtnetlink.c:3177
+rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6445
+netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2549
+rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6463
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1914
+sock_sendmsg_nosec net/socket.c:725 [inline]
+sock_sendmsg net/socket.c:748 [inline]
+sock_write_iter+0x1aa/0x230 net/socket.c:1129
+do_iter_write+0x4b4/0x7b0 fs/read_write.c:860
+vfs_writev+0x1a8/0x320 fs/read_write.c:933
+do_writev+0xf8/0x220 fs/read_write.c:976
+__do_sys_writev fs/read_write.c:1049 [inline]
+__se_sys_writev fs/read_write.c:1046 [inline]
+__x64_sys_writev+0x45/0x50 fs/read_write.c:1046
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-or in other GDS documentation.  Thus, they were not included in the
-original GDS mitigation patches.
+read to 0xffff888150f31744 of 1 bytes by task 21839 on cpu 1:
+fib_table_lookup+0x2bf/0xd50 net/ipv4/fib_trie.c:1585
+fib_lookup include/net/ip_fib.h:383 [inline]
+ip_route_output_key_hash_rcu+0x38c/0x12c0 net/ipv4/route.c:2751
+ip_route_output_key_hash net/ipv4/route.c:2641 [inline]
+__ip_route_output_key include/net/route.h:134 [inline]
+ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2869
+send4+0x1e7/0x500 drivers/net/wireguard/socket.c:61
+wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
+wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
+wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
+wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
+process_one_work+0x434/0x860 kernel/workqueue.c:2600
+worker_thread+0x5f2/0xa10 kernel/workqueue.c:2751
+kthread+0x1d7/0x210 kernel/kthread.c:389
+ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
+ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
 
-Mark SKYLAKE and SKYLAKE_L as vulnerable to GDS to match all the
-other Skylake CPUs (which include Kaby Lake).  Also group the CPUs
-so that the ones that share the exact same vulnerabilities are next
-to each other.
+value changed: 0x00 -> 0x01
 
-Last, move SRBDS to the end of each line.  This makes it clear at a
-glance that SKYLAKE_X is unique.  Of the five Skylakes, it is the
-only "server" CPU and has a different implementation from the
-clients of the "special register" hardware, making it immune to SRBDS.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 21839 Comm: kworker/u4:18 Tainted: G W 6.5.0-syzkaller #0
 
-This makes the diff much harder to read, but the resulting table is
-worth it.
-
-I very much appreciate the report from Michael Zhivich about this
-issue.  Despite what level of support a hardware vendor is providing,
-the kernel very much needs an accurate and up-to-date list of
-vulnerable CPUs.  More reports like this are very welcome.
-
-* Client Skylakes are CPUID 406E3/506E3 which is family 6, models
-  0x4E and 0x5E, aka INTEL_FAM6_SKYLAKE and INTEL_FAM6_SKYLAKE_L.
-
-Reported-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: 8974eb588283 ("x86/speculation: Add Gather Data Sampling mitigation")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: dccd9ecc3744 ("ipv4: Do not use dead fib_info entries.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230830095520.1046984-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/fib_semantics.c | 5 ++++-
+ net/ipv4/fib_trie.c      | 3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index c1ff75ad11358..4ecc6072e9a48 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1145,11 +1145,11 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 65ba18a91865a..eafa4a0335157 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -278,7 +278,8 @@ void fib_release_info(struct fib_info *fi)
+ 				hlist_del(&nexthop_nh->nh_hash);
+ 			} endfor_nexthops(fi)
+ 		}
+-		fi->fib_dead = 1;
++		/* Paired with READ_ONCE() from fib_table_lookup() */
++		WRITE_ONCE(fi->fib_dead, 1);
+ 		fib_info_put(fi);
+ 	}
+ 	spin_unlock_bh(&fib_info_lock);
+@@ -1581,6 +1582,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ link_it:
+ 	ofi = fib_find_info(fi);
+ 	if (ofi) {
++		/* fib_table_lookup() should not see @fi yet. */
+ 		fi->fib_dead = 1;
+ 		free_fib_info(fi);
+ 		refcount_inc(&ofi->fib_treeref);
+@@ -1619,6 +1621,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+ 
+ failure:
+ 	if (fi) {
++		/* fib_table_lookup() should not see @fi yet. */
+ 		fi->fib_dead = 1;
+ 		free_fib_info(fi);
+ 	}
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 74d403dbd2b4e..d13fb9e76b971 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -1582,7 +1582,8 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
+ 		if (fa->fa_dscp &&
+ 		    inet_dscp_to_dsfield(fa->fa_dscp) != flp->flowi4_tos)
+ 			continue;
+-		if (fi->fib_dead)
++		/* Paired with WRITE_ONCE() in fib_release_info() */
++		if (READ_ONCE(fi->fib_dead))
+ 			continue;
+ 		if (fa->fa_info->fib_scope < flp->flowi4_scope)
+ 			continue;
 -- 
 2.40.1
 
