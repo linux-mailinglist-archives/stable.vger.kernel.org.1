@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2CB37A3B52
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 388AD7A3B53
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240644AbjIQUQD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:16:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60142 "EHLO
+        id S240652AbjIQUQE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:16:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240678AbjIQUPq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:46 -0400
+        with ESMTP id S240697AbjIQUPx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1072F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20FEC433C7;
-        Sun, 17 Sep 2023 20:15:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80462103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F12C433C9;
+        Sun, 17 Sep 2023 20:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981740;
-        bh=r59RjgYv4e7NFE7LyggbkOx/Nbg21c8E/rE6Vf5Cy4I=;
+        s=korg; t=1694981747;
+        bh=F2m1EVKy1K9iSC7HylGIBeFybQxx8lgcnXVWGZl6mNU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g7pPSNo0RoxW0n3kxcy2BpmW123jg8+Vv/z0WHUWiNmDMSIz9DMAaWn78FFYs+lxY
-         quSqTMNrDNF8njbdp3rq/mpKwJEJCWClDQjaI7QHIsZjCEyLgQrmsJZFXOZJ+LZqxR
-         xv0pr64jMC+mq1L24mDcNLfC75gn9I8R4Wn38GvM=
+        b=vvMDVwkdB8/DE7iADaRZ4npq2dV8dyQwPlr69wtc2JV4HOVqjFGRvC5LJSD4xjbPR
+         Vv5P4LZUgFjUHN1Fks4r69RabNQverW0lG5EbDjHNWeFsFXRkDFLK2rSKAsYWHJtgV
+         FAE2tph10McwalaZW61tgPhaY6Vl8Exh6cSO1cN4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yipeng Zou <zouyipeng@huawei.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/511] selftests/bpf: Clean up fmod_ret in bench_rename test script
-Date:   Sun, 17 Sep 2023 21:08:47 +0200
-Message-ID: <20230917191116.280315807@linuxfoundation.org>
+Subject: [PATCH 5.15 101/511] net-memcg: Fix scope of sockmem pressure indicators
+Date:   Sun, 17 Sep 2023 21:08:48 +0200
+Message-ID: <20230917191116.304320785@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -39,7 +40,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,47 +55,84 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-[ Upstream commit 83a89c4b6ae93481d3f618aba6a29d89208d26ed ]
+[ Upstream commit ac8a52962164a50e693fa021d3564d7745b83a7f ]
 
-Running the bench_rename test script, the following error occurs:
+Now there are two indicators of socket memory pressure sit inside
+struct mem_cgroup, socket_pressure and tcpmem_pressure, indicating
+memory reclaim pressure in memcg->memory and ->tcpmem respectively.
 
-  # ./benchs/run_bench_rename.sh
-  base      :    0.819 ± 0.012M/s
-  kprobe    :    0.538 ± 0.009M/s
-  kretprobe :    0.503 ± 0.004M/s
-  rawtp     :    0.779 ± 0.020M/s
-  fentry    :    0.726 ± 0.007M/s
-  fexit     :    0.691 ± 0.007M/s
-  benchmark 'rename-fmodret' not found
+When in legacy mode (cgroupv1), the socket memory is charged into
+->tcpmem which is independent of ->memory, so socket_pressure has
+nothing to do with socket's pressure at all. Things could be worse
+by taking socket_pressure into consideration in legacy mode, as a
+pressure in ->memory can lead to premature reclamation/throttling
+in socket.
 
-The bench_rename_fmodret has been removed in commit b000def2e052
-("selftests: Remove fmod_ret from test_overhead"), thus remove it
-from the runners in the test script.
+While for the default mode (cgroupv2), the socket memory is charged
+into ->memory, and ->tcpmem/->tcpmem_pressure are simply not used.
 
-Fixes: b000def2e052 ("selftests: Remove fmod_ret from test_overhead")
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230814030727.3010390-1-zouyipeng@huawei.com
+So {socket,tcpmem}_pressure are only used in default/legacy mode
+respectively for indicating socket memory pressure. This patch fixes
+the pieces of code that make mixed use of both.
+
+Fixes: 8e8ae645249b ("mm: memcontrol: hook up vmpressure to socket pressure")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/benchs/run_bench_rename.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/memcontrol.h | 9 +++++++--
+ mm/vmpressure.c            | 8 ++++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/benchs/run_bench_rename.sh b/tools/testing/selftests/bpf/benchs/run_bench_rename.sh
-index 16f774b1cdbed..7b281dbe41656 100755
---- a/tools/testing/selftests/bpf/benchs/run_bench_rename.sh
-+++ b/tools/testing/selftests/bpf/benchs/run_bench_rename.sh
-@@ -2,7 +2,7 @@
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 4f189b17dafcc..94df87cb69c3b 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -310,6 +310,11 @@ struct mem_cgroup {
+ 	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+ 	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
  
- set -eufo pipefail
++	/*
++	 * Hint of reclaim pressure for socket memroy management. Note
++	 * that this indicator should NOT be used in legacy cgroup mode
++	 * where socket memory is accounted/charged separately.
++	 */
+ 	unsigned long		socket_pressure;
  
--for i in base kprobe kretprobe rawtp fentry fexit fmodret
-+for i in base kprobe kretprobe rawtp fentry fexit
- do
- 	summary=$(sudo ./bench -w2 -d5 -a rename-$i | tail -n1 | cut -d'(' -f1 | cut -d' ' -f3-)
- 	printf "%-10s: %s\n" $i "$summary"
+ 	/* Legacy tcp memory accounting */
+@@ -1627,8 +1632,8 @@ void mem_cgroup_sk_alloc(struct sock *sk);
+ void mem_cgroup_sk_free(struct sock *sk);
+ static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
+ {
+-	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && memcg->tcpmem_pressure)
+-		return true;
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return !!memcg->tcpmem_pressure;
+ 	do {
+ 		if (time_before(jiffies, memcg->socket_pressure))
+ 			return true;
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index 76518e4166dc9..383e0463c0258 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -244,6 +244,14 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, bool tree,
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
++	/*
++	 * The in-kernel users only care about the reclaim efficiency
++	 * for this @memcg rather than the whole subtree, and there
++	 * isn't and won't be any in-kernel user in a legacy cgroup.
++	 */
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
++		return;
++
+ 	vmpr = memcg_to_vmpressure(memcg);
+ 
+ 	/*
 -- 
 2.40.1
 
