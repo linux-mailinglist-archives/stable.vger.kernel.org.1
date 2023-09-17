@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F6E7A38F0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F301E7A3A0B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239889AbjIQTm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40932 "EHLO
+        id S240259AbjIQT5z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240014AbjIQTmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:38 -0400
+        with ESMTP id S240270AbjIQT5l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068431A1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19754C433D9;
-        Sun, 17 Sep 2023 19:42:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EFB9EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62CFC433C8;
+        Sun, 17 Sep 2023 19:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979742;
-        bh=cJQHA0aG0D7nS/4tWFYgU3en00NgNzLdjR8+LwKKVUM=;
+        s=korg; t=1694980656;
+        bh=lpAjVzuSAVbyhb3+vu0XK9iJQgj4WVZUE0V052FH8DA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jwKQO+x8bwKfE0fw4TYyAF+gPvajkGgjuWo7Hb5puuXMfyMnhNFj+qGNxVrxPHdvf
-         O0rgYU4zvQAOd+RnLLBbHoZS+ffaixjn1uJXOEqODrgB/nYO3vtNvvKghBsLrF+pyt
-         Fi5XovpRE1JAKtwdF494r2G6P5bQtYYmqyFIrBCU=
+        b=uPloJ+11S4ChWHIWF1XcdA3pMW4Bog7BmZ6KW3QswAcnpvt60eRpds5GPP4PspZNY
+         jS2crfwHL0pP3pluHtS0f5Z2akoP1gSlVqFNvHQGJKbJsLAxvem7YhmRvvF2SkCZ38
+         6uBCwrLHrWyYQYz9kSaBC/098CYWLl1xhcyjYrr0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 401/406] net/tls: do not free tls_rec on async operation in bpf_exec_tx_verdict()
+Subject: [PATCH 6.5 255/285] net: ethernet: mvpp2_main: fix possible OOB write in mvpp2_ethtool_get_rxnfc()
 Date:   Sun, 17 Sep 2023 21:14:15 +0200
-Message-ID: <20230917191111.848206508@linuxfoundation.org>
+Message-ID: <20230917191100.109206712@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,86 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit cfaa80c91f6f99b9342b6557f0f0e1143e434066 ]
+[ Upstream commit 51fe0a470543f345e3c62b6798929de3ddcedc1d ]
 
-I got the below warning when do fuzzing test:
-BUG: KASAN: null-ptr-deref in scatterwalk_copychunks+0x320/0x470
-Read of size 4 at addr 0000000000000008 by task kworker/u8:1/9
+rules is allocated in ethtool_get_rxnfc and the size is determined by
+rule_cnt from user space. So rule_cnt needs to be check before using
+rules to avoid OOB writing or NULL pointer dereference.
 
-CPU: 0 PID: 9 Comm: kworker/u8:1 Tainted: G           OE
-Hardware name: linux,dummy-virt (DT)
-Workqueue: pencrypt_parallel padata_parallel_worker
-Call trace:
- dump_backtrace+0x0/0x420
- show_stack+0x34/0x44
- dump_stack+0x1d0/0x248
- __kasan_report+0x138/0x140
- kasan_report+0x44/0x6c
- __asan_load4+0x94/0xd0
- scatterwalk_copychunks+0x320/0x470
- skcipher_next_slow+0x14c/0x290
- skcipher_walk_next+0x2fc/0x480
- skcipher_walk_first+0x9c/0x110
- skcipher_walk_aead_common+0x380/0x440
- skcipher_walk_aead_encrypt+0x54/0x70
- ccm_encrypt+0x13c/0x4d0
- crypto_aead_encrypt+0x7c/0xfc
- pcrypt_aead_enc+0x28/0x84
- padata_parallel_worker+0xd0/0x2dc
- process_one_work+0x49c/0xbdc
- worker_thread+0x124/0x880
- kthread+0x210/0x260
- ret_from_fork+0x10/0x18
-
-This is because the value of rec_seq of tls_crypto_info configured by the
-user program is too large, for example, 0xffffffffffffff. In addition, TLS
-is asynchronously accelerated. When tls_do_encryption() returns
--EINPROGRESS and sk->sk_err is set to EBADMSG due to rec_seq overflow,
-skmsg is released before the asynchronous encryption process ends. As a
-result, the UAF problem occurs during the asynchronous processing of the
-encryption module.
-
-If the operation is asynchronous and the encryption module returns
-EINPROGRESS, do not free the record information.
-
-Fixes: 635d93981786 ("net/tls: free record only on encryption error")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20230909081434.2324940-1-liujian56@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Reviewed-by: Marcin Wojtas <mw@semihalf.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index ac7feadb43904..50eae668578a7 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -810,7 +810,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 	psock = sk_psock_get(sk);
- 	if (!psock || !policy) {
- 		err = tls_push_record(sk, flags, record_type);
--		if (err && sk->sk_err == EBADMSG) {
-+		if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
- 			*copied -= sk_msg_free(sk, msg);
- 			tls_free_open_rec(sk);
- 			err = -sk->sk_err;
-@@ -839,7 +839,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 	switch (psock->eval) {
- 	case __SK_PASS:
- 		err = tls_push_record(sk, flags, record_type);
--		if (err && sk->sk_err == EBADMSG) {
-+		if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
- 			*copied -= sk_msg_free(sk, msg);
- 			tls_free_open_rec(sk);
- 			err = -sk->sk_err;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 1fec84b4c068d..0129afa1210e6 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -5586,6 +5586,11 @@ static int mvpp2_ethtool_get_rxnfc(struct net_device *dev,
+ 		break;
+ 	case ETHTOOL_GRXCLSRLALL:
+ 		for (i = 0; i < MVPP2_N_RFS_ENTRIES_PER_FLOW; i++) {
++			if (loc == info->rule_cnt) {
++				ret = -EMSGSIZE;
++				break;
++			}
++
+ 			if (port->rfs_rules[i])
+ 				rules[loc++] = i;
+ 		}
 -- 
 2.40.1
 
