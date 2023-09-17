@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB6B7A3909
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 969637A37ED
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239921AbjIQToC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:44:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50254 "EHLO
+        id S239573AbjIQT05 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239945AbjIQTni (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:38 -0400
+        with ESMTP id S239591AbjIQT0c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B70BE132
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D801DC433C9;
-        Sun, 17 Sep 2023 19:43:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 117AD11D
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:26:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1628CC433CB;
+        Sun, 17 Sep 2023 19:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979812;
-        bh=oSX4Ty6fo3MERBXNLFDKvRHBZCiCJENgzh0JLDl7G/0=;
+        s=korg; t=1694978787;
+        bh=URsDg96MxUBkOZKJkq1pNys/RAj/vCXYDW02WEwSHfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R2VWUrxLxeqbI375Yc0OUm3NLHSyF37jroNcYuCPS1JnMsuMf+VXD4k34hbA2sJqS
-         2lFEhqDfWaZtobuwhFqFX3rQvpvprLqM0uG4BIrVwgIOB0cThzXXlmqG4eMT33VMR4
-         6owr/v0+0NcTeBITf2iGDaFKYXVhbqruHsGq7jv4=
+        b=Onjkl4nnohkPV+YV2wKLNZ8YJH54VisZmSf9JVimcvzfMCUM2Non1BXYfQc34OShF
+         djz6Xi/Ow93TfyL29YKx7MqWxdQz7M7uUYIkbny9V027qMXRrk5TF2zUgKHvGimpxa
+         CNgtd0g59PFiqhsP32iXdsYYxh5XhuTbwZ/sQS8E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <quinn.tran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 014/285] scsi: qla2xxx: Flush mailbox commands on chip reset
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 160/406] smackfs: Prevent underflow in smk_set_cipso()
 Date:   Sun, 17 Sep 2023 21:10:14 +0200
-Message-ID: <20230917191052.116453915@linuxfoundation.org>
+Message-ID: <20230917191105.402927083@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,108 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 6d0b65569c0a10b27c49bacd8d25bcd406003533 upstream.
+[ Upstream commit 3ad49d37cf5759c3b8b68d02e3563f633d9c1aee ]
 
-Fix race condition between Interrupt thread and Chip reset thread in trying
-to flush the same mailbox. With the race condition, the "ha->mbx_intr_comp"
-will get an extra complete() call. The extra complete call create erroneous
-mailbox timeout condition when the next mailbox is sent where the mailbox
-call does not wait for interrupt to arrive. Instead, it advances without
-waiting.
+There is a upper bound to "catlen" but no lower bound to prevent
+negatives.  I don't see that this necessarily causes a problem but we
+may as well be safe.
 
-Add lock protection around the check for mailbox completion.
-
-Cc: stable@vger.kernel.org
-Fixes: b2000805a975 ("scsi: qla2xxx: Flush mailbox commands on chip reset")
-Signed-off-by: Quinn Tran <quinn.tran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h  |    1 -
- drivers/scsi/qla2xxx/qla_init.c |    7 ++++---
- drivers/scsi/qla2xxx/qla_mbx.c  |    4 ----
- drivers/scsi/qla2xxx/qla_os.c   |    1 -
- 4 files changed, 4 insertions(+), 9 deletions(-)
+ security/smack/smackfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -4384,7 +4384,6 @@ struct qla_hw_data {
- 	uint8_t		aen_mbx_count;
- 	atomic_t	num_pend_mbx_stage1;
- 	atomic_t	num_pend_mbx_stage2;
--	atomic_t	num_pend_mbx_stage3;
- 	uint16_t	frame_payload_size;
- 
- 	uint32_t	login_retry_count;
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -7390,14 +7390,15 @@ qla2x00_abort_isp_cleanup(scsi_qla_host_
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 3eabcc469669e..8403c91a6b297 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -895,7 +895,7 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
  	}
  
- 	/* purge MBox commands */
--	if (atomic_read(&ha->num_pend_mbx_stage3)) {
-+	spin_lock_irqsave(&ha->hardware_lock, flags);
-+	if (test_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags)) {
- 		clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
- 		complete(&ha->mbx_intr_comp);
- 	}
-+	spin_unlock_irqrestore(&ha->hardware_lock, flags);
+ 	ret = sscanf(rule, "%d", &catlen);
+-	if (ret != 1 || catlen > SMACK_CIPSO_MAXCATNUM)
++	if (ret != 1 || catlen < 0 || catlen > SMACK_CIPSO_MAXCATNUM)
+ 		goto out;
  
- 	i = 0;
--	while (atomic_read(&ha->num_pend_mbx_stage3) ||
--	    atomic_read(&ha->num_pend_mbx_stage2) ||
-+	while (atomic_read(&ha->num_pend_mbx_stage2) ||
- 	    atomic_read(&ha->num_pend_mbx_stage1)) {
- 		msleep(20);
- 		i++;
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -273,7 +273,6 @@ qla2x00_mailbox_command(scsi_qla_host_t
- 		spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 
- 		wait_time = jiffies;
--		atomic_inc(&ha->num_pend_mbx_stage3);
- 		if (!wait_for_completion_timeout(&ha->mbx_intr_comp,
- 		    mcp->tov * HZ)) {
- 			ql_dbg(ql_dbg_mbx, vha, 0x117a,
-@@ -290,7 +289,6 @@ qla2x00_mailbox_command(scsi_qla_host_t
- 				spin_unlock_irqrestore(&ha->hardware_lock,
- 				    flags);
- 				atomic_dec(&ha->num_pend_mbx_stage2);
--				atomic_dec(&ha->num_pend_mbx_stage3);
- 				rval = QLA_ABORTED;
- 				goto premature_exit;
- 			}
-@@ -302,11 +300,9 @@ qla2x00_mailbox_command(scsi_qla_host_t
- 			ha->flags.mbox_busy = 0;
- 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 			atomic_dec(&ha->num_pend_mbx_stage2);
--			atomic_dec(&ha->num_pend_mbx_stage3);
- 			rval = QLA_ABORTED;
- 			goto premature_exit;
- 		}
--		atomic_dec(&ha->num_pend_mbx_stage3);
- 
- 		if (time_after(jiffies, wait_time + 5 * HZ))
- 			ql_log(ql_log_warn, vha, 0x1015, "cmd=0x%x, waited %d msecs\n",
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -3007,7 +3007,6 @@ qla2x00_probe_one(struct pci_dev *pdev,
- 	ha->max_exchg = FW_MAX_EXCHANGES_CNT;
- 	atomic_set(&ha->num_pend_mbx_stage1, 0);
- 	atomic_set(&ha->num_pend_mbx_stage2, 0);
--	atomic_set(&ha->num_pend_mbx_stage3, 0);
- 	atomic_set(&ha->zio_threshold, DEFAULT_ZIO_THRESHOLD);
- 	ha->last_zio_threshold = DEFAULT_ZIO_THRESHOLD;
- 	INIT_LIST_HEAD(&ha->tmf_pending);
+ 	if (format == SMK_FIXED24_FMT &&
+-- 
+2.40.1
+
 
 
