@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0557A3A16
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BB37A38E1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240252AbjIQT61 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:58:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53436 "EHLO
+        id S239868AbjIQTlx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240316AbjIQT6J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:58:09 -0400
+        with ESMTP id S239889AbjIQTl3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B0CEE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:58:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3733FC433C8;
-        Sun, 17 Sep 2023 19:58:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E77DB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18595C433C7;
+        Sun, 17 Sep 2023 19:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980683;
-        bh=3bPN4zzq1NNkyvAeaPF3oSmnaftj5DWe4UYoPAz0Eeo=;
+        s=korg; t=1694979683;
+        bh=PpP5ZRHtK1fJfVAMHD2y03tuAh0dISzCxhhfPEoHJIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZCXLVFOndMcUAn1wNGZOnY0koMItJYhd3PwhFtvdUlRlRc5swBrEWIzsKynEP5JaT
-         eLXlLQRAIuFbhe+xhWjdiPacSW8qSo3yVetEupMDDLiA257u8Rd75+b85qlEAwdwDm
-         SfJpdbnPdPCAVJaG6oCMZNoLn+FAUViIzIB1njPs=
+        b=a4gBn+a/ygUMJ9JTI/3FdKupsp36LLIuHa/4fCTKXWI3YMP6mPAyDSiE4tI1W48C4
+         CSce8MgOnf77YNnUTZ59AMLWvCOk0XAiqFBk2ji/aXoV/sfcEMxvh+EyhYHGm1LbsO
+         UVFdxWR8ZSTU1Zqa9KjrPaiIarN2jfXwZlKzOmMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Anup Sharma <anupnewsmail@gmail.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.5 236/285] perf build: Include generated header files properly
-Date:   Sun, 17 Sep 2023 21:13:56 +0200
-Message-ID: <20230917191059.573361717@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        Saurav Kashyap <skashyap@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 383/406] scsi: qla2xxx: If fcport is undergoing deletion complete I/O with retry
+Date:   Sun, 17 Sep 2023 21:13:57 +0200
+Message-ID: <20230917191111.375051397@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,105 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit c7e97f215a4ad634b746804679f5937d25f77e29 upstream.
+[ Upstream commit 707531bc2626c1959a03b93566ebb4e629c99276 ]
 
-The flex and bison generate header files from the source.  When user
-specified a build directory with O= option, it'd generate files under
-the directory.  The build command has -I option to specify the header
-include directory.
+Driver unload with I/Os in flight causes server to crash.  Complete I/O
+with DID_IMM_RETRY if fcport undergoing deletion.
 
-But the -I option only affects the files included like <...>.  Let's
-change the flex and bison headers to use it instead of "...".
+CPU: 44 PID: 35008 Comm: qla2xxx_4_dpc Kdump: loaded Tainted: G
+OE  X   5.3.18-22-default #1 SLE15-SP2 (unreleased)
+Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 07/16/2020
+RIP: 0010:dma_direct_unmap_sg+0x24/0x60
+Code: 4c 8b 04 24 eb b9 0f 1f 44 00 00 85 d2 7e 4e 41 57
+      4d 89 c7 41 56 41 89 ce 41 55 49 89 fd 41 54 41 89 d4 55 31 ed 53 48 89
+      f3 <8b> 53 18 48 8b 73 10 4d 89 f8 44 89 f1 4c 89 ef 83 c5 01 e8 44 ff
+RSP: 0018:ffffc0c661037d88 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000002
+RDX: 000000000000001d RSI: 0000000000000000 RDI: ffff9a51ee53b0b0
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9a51ee53b0b0
+R10: ffffc0c646463dc8 R11: ffff9a4a067087c8 R12: 000000000000001d
+R13: ffff9a51ee53b0b0 R14: 0000000000000002 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff9a523f800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000018 CR3: 000000043740a004 CR4: 00000000007606e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+qla2xxx_qpair_sp_free_dma+0x20d/0x3c0 [qla2xxx]
+qla2xxx_qpair_sp_compl+0x35/0x90 [qla2xxx]
+__qla2x00_abort_all_cmds+0x180/0x390 [qla2xxx]
+? qla24xx_process_purex_list+0x100/0x100 [qla2xxx]
+qla2x00_abort_all_cmds+0x5e/0x80 [qla2xxx]
+qla2x00_do_dpc+0x317/0xa30 [qla2xxx]
+kthread+0x10d/0x130
+? kthread_park+0xa0/0xa0
+ret_from_fork+0x35/0x40
 
-Fixes: 80eeb67fe577aa76 ("perf jevents: Program to convert JSON file")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Anup Sharma <anupnewsmail@gmail.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230728022447.1323563-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20201202132312.19966-14-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 6d0b65569c0a ("scsi: qla2xxx: Flush mailbox commands on chip reset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/jevents.py |    2 +-
- tools/perf/util/bpf-filter.c     |    4 ++--
- tools/perf/util/expr.c           |    4 ++--
- tools/perf/util/parse-events.c   |    4 ++--
- tools/perf/util/pmu.c            |    4 ++--
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/tools/perf/pmu-events/jevents.py
-+++ b/tools/perf/pmu-events/jevents.py
-@@ -999,7 +999,7 @@ such as "arm/cortex-a34".''',
-   _args = ap.parse_args()
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index f1e7868787d4a..78a335f862cee 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -879,8 +879,8 @@ qla2xxx_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
+ 			goto qc24_fail_command;
+ 	}
  
-   _args.output_file.write("""
--#include "pmu-events/pmu-events.h"
-+#include <pmu-events/pmu-events.h>
- #include "util/header.h"
- #include "util/pmu.h"
- #include <string.h>
---- a/tools/perf/util/bpf-filter.c
-+++ b/tools/perf/util/bpf-filter.c
-@@ -9,8 +9,8 @@
- #include "util/evsel.h"
+-	if (!fcport) {
+-		cmd->result = DID_NO_CONNECT << 16;
++	if (!fcport || fcport->deleted) {
++		cmd->result = DID_IMM_RETRY << 16;
+ 		goto qc24_fail_command;
+ 	}
  
- #include "util/bpf-filter.h"
--#include "util/bpf-filter-flex.h"
--#include "util/bpf-filter-bison.h"
-+#include <util/bpf-filter-flex.h>
-+#include <util/bpf-filter-bison.h>
+@@ -961,8 +961,8 @@ qla2xxx_mqueuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd,
+ 		goto qc24_fail_command;
+ 	}
  
- #include "bpf_skel/sample-filter.h"
- #include "bpf_skel/sample_filter.skel.h"
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -10,8 +10,8 @@
- #include "debug.h"
- #include "evlist.h"
- #include "expr.h"
--#include "expr-bison.h"
--#include "expr-flex.h"
-+#include <util/expr-bison.h>
-+#include <util/expr-flex.h>
- #include "util/hashmap.h"
- #include "smt.h"
- #include "tsc.h"
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -18,8 +18,8 @@
- #include "debug.h"
- #include <api/fs/tracing_path.h>
- #include <perf/cpumap.h>
--#include "parse-events-bison.h"
--#include "parse-events-flex.h"
-+#include <util/parse-events-bison.h>
-+#include <util/parse-events-flex.h>
- #include "pmu.h"
- #include "pmus.h"
- #include "asm/bug.h"
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -19,8 +19,8 @@
- #include "evsel.h"
- #include "pmu.h"
- #include "pmus.h"
--#include "pmu-bison.h"
--#include "pmu-flex.h"
-+#include <util/pmu-bison.h>
-+#include <util/pmu-flex.h>
- #include "parse-events.h"
- #include "print-events.h"
- #include "header.h"
+-	if (!fcport) {
+-		cmd->result = DID_NO_CONNECT << 16;
++	if (!fcport || fcport->deleted) {
++		cmd->result = DID_IMM_RETRY << 16;
+ 		goto qc24_fail_command;
+ 	}
+ 
+-- 
+2.40.1
+
 
 
