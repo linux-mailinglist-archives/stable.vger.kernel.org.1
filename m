@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 368CD7A3B23
+	by mail.lfdr.de (Postfix) with ESMTP id 824FD7A3B24
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240594AbjIQUN4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:13:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36078 "EHLO
+        id S240609AbjIQUN7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:13:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240682AbjIQUNf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:35 -0400
+        with ESMTP id S240705AbjIQUNi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF89CF2
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4207FC43395;
-        Sun, 17 Sep 2023 20:12:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF09F4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC63C433A9;
+        Sun, 17 Sep 2023 20:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981578;
-        bh=SG9ZOfLKS9vTjbzpI5rfwGg4C+b6SWdZWQws2uZuyWI=;
+        s=korg; t=1694981585;
+        bh=6YOjiR7HTNX4cXM31+4HXiEOCAUoZwgIXcuhhgKnE+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zm6usNhLklbJ/UFrqJIcXs09sOhII2Qtuowgb3upOW3JsiHmzy21HBhzgxHOcXxdK
-         5jzHu4UA5yis4x8ErNiWnYwhBvLvXlMefJB4LjXph2sMIJtftUrhRRrX4tuchewRZ1
-         tLwC9BOxAavE6ppjo/ZZkVjlr7Upk+92XnewR0Wc=
+        b=q4/aqU/NWYW7Hj/7IUhpn2SVvBpv+4n1IpNm9W1d7YZhroeqBpNRNgmNp9x4K+Mh1
+         jIsQm7XxYvbaU8nTqeSQHx6TGuR1Ok5IAJUXrSWydytw1tqpxQvhGplg8lyyCi/6KF
+         6gv/sATAssxDV1i7s+59g7vXbrQLJZoQHKSBimzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 074/511] s390/paes: fix PKEY_TYPE_EP11_AES handling for secure keyblobs
-Date:   Sun, 17 Sep 2023 21:08:21 +0200
-Message-ID: <20230917191115.666050759@linuxfoundation.org>
+Subject: [PATCH 5.15 075/511] ACPI: x86: s2idle: Post-increment variables when getting constraints
+Date:   Sun, 17 Sep 2023 21:08:22 +0200
+Message-ID: <20230917191115.689339130@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,38 +58,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit cba33db3fc4dbf2e54294b0e499d2335a3a00d78 ]
+[ Upstream commit 3c6b1212d20bbbffcad5709ab0f2d5ed9b5859a8 ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES securekey blobs as a
-supplement to the PKEY_TYPE_EP11 (which won't work in environments
-with session-bound keys). This new keyblobs has a different maximum
-size, so fix paes crypto module to accept also these larger keyblobs.
+When code uses a pre-increment it makes the reader question "why".
+In the constraint fetching code there is no reason for the variables
+to be pre-incremented so adjust to post-increment.
+No intended functional changes.
 
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 9cc8cd086f05 ("ACPI: x86: s2idle: Fix a logic error parsing AMD constraints table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/paes_s390.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/x86/s2idle.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/crypto/paes_s390.c b/arch/s390/crypto/paes_s390.c
-index a279b7d23a5e2..621322eb0e681 100644
---- a/arch/s390/crypto/paes_s390.c
-+++ b/arch/s390/crypto/paes_s390.c
-@@ -35,7 +35,7 @@
-  * and padding is also possible, the limits need to be generous.
-  */
- #define PAES_MIN_KEYSIZE 16
--#define PAES_MAX_KEYSIZE 320
-+#define PAES_MAX_KEYSIZE MAXEP11AESKEYBLOBSIZE
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index 4a11a38764321..7658953dfce8f 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -121,13 +121,13 @@ static void lpi_device_get_constraints_amd(void)
+ 			acpi_handle_debug(lps0_device_handle,
+ 					  "LPI: constraints list begin:\n");
  
- static u8 *ctrblk;
- static DEFINE_MUTEX(ctrblk_lock);
+-			for (j = 0; j < package->package.count; ++j) {
++			for (j = 0; j < package->package.count; j++) {
+ 				union acpi_object *info_obj = &package->package.elements[j];
+ 				struct lpi_device_constraint_amd dev_info = {};
+ 				struct lpi_constraints *list;
+ 				acpi_status status;
+ 
+-				for (k = 0; k < info_obj->package.count; ++k) {
++				for (k = 0; k < info_obj->package.count; k++) {
+ 					union acpi_object *obj = &info_obj->package.elements[k];
+ 
+ 					list = &lpi_constraints_table[lpi_constraints_table_size];
+@@ -212,7 +212,7 @@ static void lpi_device_get_constraints(void)
+ 		if (!package)
+ 			continue;
+ 
+-		for (j = 0; j < package->package.count; ++j) {
++		for (j = 0; j < package->package.count; j++) {
+ 			union acpi_object *element =
+ 					&(package->package.elements[j]);
+ 
+@@ -244,7 +244,7 @@ static void lpi_device_get_constraints(void)
+ 
+ 		constraint->min_dstate = -1;
+ 
+-		for (j = 0; j < package_count; ++j) {
++		for (j = 0; j < package_count; j++) {
+ 			union acpi_object *info_obj = &info.package[j];
+ 			union acpi_object *cnstr_pkg;
+ 			union acpi_object *obj;
 -- 
 2.40.1
 
