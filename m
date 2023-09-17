@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB657A3C1D
+	by mail.lfdr.de (Postfix) with ESMTP id 74F157A3C1C
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240913AbjIQU0q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240917AbjIQU0q (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:26:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240981AbjIQU0d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:26:33 -0400
+        with ESMTP id S240991AbjIQU0g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:26:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C2510A
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:26:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00233C433C8;
-        Sun, 17 Sep 2023 20:26:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58ABF101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:26:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA34C433C7;
+        Sun, 17 Sep 2023 20:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982387;
-        bh=dNuWsC0ZjSm/NidWBT8opnCTvNlh1wzPfaDOrX9idb8=;
+        s=korg; t=1694982391;
+        bh=SrOre4N5gqiaA52p9dl9rveDnVOnVtafQn9m9eyG7F8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GVVcHkO6mkJYq4LzZ5A/7yGWlfjJ6pWhCoNEICjJoM9Xgw1reO5lx46wDfe7cLmgR
-         F9hPSfmNj5a6tQ+Rai+/DZ6AP1mN+ywBZHgCuPHlrRLCDSrpjUKTU62Fr/tCIcxREY
-         J/cpkFG9nC5RphHCSiKxJ0oKIGcz9aHevRZiDarA=
+        b=qjbCdZI7TNhozCctEBrAIGoi6Nsi1sRmh3hkPHtWpSqgETiyJVK0QpCzVvE0Y8K0E
+         zkM674s90Coo2OuvpeIvUawL84za81wDGOk8pAbmNCJ5LWpUT/R5HZe65KbpsgkeHw
+         uN9bpScW/qr0LZ+HWaX+s1Dc60ep+6nTZRB4sTns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Machek <pavel@ucw.cz>,
-        Ricardo Ribalda Delgado <ribalda@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ricardo Ribalda <ribalda@chromium.org>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Marco Felsch <m.felsch@pengutronix.de>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 235/511] media: ad5820: Drop unsupported ad5823 from i2c_ and of_device_id tables
-Date:   Sun, 17 Sep 2023 21:11:02 +0200
-Message-ID: <20230917191119.485619791@linuxfoundation.org>
+Subject: [PATCH 5.15 236/511] media: i2c: tvp5150: check return value of devm_kasprintf()
+Date:   Sun, 17 Sep 2023 21:11:03 +0200
+Message-ID: <20230917191119.510513288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -58,63 +57,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit f126ff7e4024f6704e6ec0d4137037568708a3c7 ]
+[ Upstream commit 26ce7054d804be73935b9268d6e0ecf2fbbc8aef ]
 
-The supported ad5820 and ad5821 VCMs both use a single 16 bit register
-which is written by sending 2 bytes with the data directly after sending
-the i2c-client address.
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-The ad5823 OTOH has a more typical i2c / smbus device setup with multiple
-8 bit registers where the first byte send after the i2c-client address is
-the register address and the actual data only starts from the second byte
-after the i2c-client address.
-
-The ad5823 i2c_ and of_device_id-s was added at the same time as
-the ad5821 ids with as rationale:
-
-"""
-Some camera modules also refer that AD5823 is a replacement of AD5820:
-https://download.kamami.com/p564094-OV8865_DS.pdf
-"""
-
-The AD5823 may be an electrical and functional replacement of the AD5820,
-but from a software pov it is not compatible at all and it is going to
-need its own driver, drop its id from the ad5820 driver.
-
-Fixes: b8bf73136bae ("media: ad5820: Add support for ad5821 and ad5823")
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Fixes: 0556f1d580d4 ("media: tvp5150: add input source selection of_graph support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ad5820.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/i2c/tvp5150.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/i2c/ad5820.c b/drivers/media/i2c/ad5820.c
-index 07639ecc85aa8..63b5bf1fae761 100644
---- a/drivers/media/i2c/ad5820.c
-+++ b/drivers/media/i2c/ad5820.c
-@@ -357,7 +357,6 @@ static int ad5820_remove(struct i2c_client *client)
- static const struct i2c_device_id ad5820_id_table[] = {
- 	{ "ad5820", 0 },
- 	{ "ad5821", 0 },
--	{ "ad5823", 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, ad5820_id_table);
-@@ -365,7 +364,6 @@ MODULE_DEVICE_TABLE(i2c, ad5820_id_table);
- static const struct of_device_id ad5820_of_table[] = {
- 	{ .compatible = "adi,ad5820" },
- 	{ .compatible = "adi,ad5821" },
--	{ .compatible = "adi,ad5823" },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ad5820_of_table);
+diff --git a/drivers/media/i2c/tvp5150.c b/drivers/media/i2c/tvp5150.c
+index 4b16ffcaef98a..b0dc21ba25c31 100644
+--- a/drivers/media/i2c/tvp5150.c
++++ b/drivers/media/i2c/tvp5150.c
+@@ -2066,6 +2066,10 @@ static int tvp5150_parse_dt(struct tvp5150 *decoder, struct device_node *np)
+ 		tvpc->ent.name = devm_kasprintf(dev, GFP_KERNEL, "%s %s",
+ 						v4l2c->name, v4l2c->label ?
+ 						v4l2c->label : "");
++		if (!tvpc->ent.name) {
++			ret = -ENOMEM;
++			goto err_free;
++		}
+ 	}
+ 
+ 	ep_np = of_graph_get_endpoint_by_regs(np, TVP5150_PAD_VID_OUT, 0);
 -- 
 2.40.1
 
