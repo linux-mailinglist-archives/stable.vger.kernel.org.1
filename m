@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6952E7A3A6D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 133F77A39B9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240334AbjIQUDS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
+        id S240115AbjIQTxh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:53:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240389AbjIQUCx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:53 -0400
+        with ESMTP id S240155AbjIQTxN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712D1199
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D4AC433C9;
-        Sun, 17 Sep 2023 20:02:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 965B5EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B70C433C8;
+        Sun, 17 Sep 2023 19:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980961;
-        bh=K/J3zECpqS71XWC/LQcQKS7LENUY8faj+JS0yuJkZeE=;
+        s=korg; t=1694980388;
+        bh=S8KM1Z+IhlTMHvCzMBsp73/plPCPlfIV44m8XavTalw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XrBGSpU6evVlLSB/GG1hNPJPzCZxFeTc20RgN5nQstVpvUiWJlXKA5G7kWG8/5R+t
-         BstXTZ+Ux0m3hrWpqx/DlvhUueS067OeElDzfo1UI3V8bcscGiGgippyYksAd+THcV
-         t0S1c2Xej59X2wma7rWb3E5X8/bINbiDWCwYJ1GY=
+        b=IWQ1dD0v8YGVAA0qyQeF7U/SpQ7f7jDg2rtmKBq69IRC6G4rPEXP/HoGsCRW+nYgv
+         6l7ZsmSZ8gFeJAamqkajZq0jd+5IAcrLwbtsPhb9GdJwSM0hYxIBoTTpzREvEtF6zJ
+         l81xWSjL/OAkVG/Z1d6z7GuXebHCJM5sxJ+ZqQaA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qiang Yu <quic_qianyu@quicinc.com>,
-        Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.1 051/219] bus: mhi: host: Skip MHI reset if device is in RDDM
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Fangzhi Zuo <jerry.zuo@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.5 178/285] drm/amd/display: Temporary Disable MST DP Colorspace Property
 Date:   Sun, 17 Sep 2023 21:12:58 +0200
-Message-ID: <20230917191042.848472437@linuxfoundation.org>
+Message-ID: <20230917191057.789210819@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +53,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <quic_qianyu@quicinc.com>
+From: Fangzhi Zuo <jerry.zuo@amd.com>
 
-commit cabce92dd805945a090dc6fc73b001bb35ed083a upstream.
+commit 69a959610229ec31b534eaa5f6ec75965f321bed upstream.
 
-In RDDM EE, device can not process MHI reset issued by host. In case of MHI
-power off, host is issuing MHI reset and polls for it to get cleared until
-it times out. Since this timeout can not be avoided in case of RDDM, skip
-the MHI reset in this scenarios.
+Create MST colorsapce property for downstream device would trigger
+warning message "RIP: 0010:drm_mode_object_add+0x8e/0xa0 [drm]"
 
-Cc: <stable@vger.kernel.org>
-Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/1684390959-17836-1-git-send-email-quic_qianyu@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+After driver is loaded and drm device is registered, create
+dp colorspace property triggers warning storm at
+WARN_ON(!dev->driver->load && dev->registered && !obj_free_cb);
+
+Temporary disabling MST dp colorspace property for now.
+
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pm.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -470,6 +470,10 @@ static void mhi_pm_disable_transition(st
- 
- 	/* Trigger MHI RESET so that the device will not access host memory */
- 	if (!MHI_PM_IN_FATAL_STATE(mhi_cntrl->pm_state)) {
-+		/* Skip MHI RESET if in RDDM state */
-+		if (mhi_cntrl->rddm_image && mhi_get_exec_env(mhi_cntrl) == MHI_EE_RDDM)
-+			goto skip_mhi_reset;
-+
- 		dev_dbg(dev, "Triggering MHI Reset in device\n");
- 		mhi_set_mhi_state(mhi_cntrl, MHI_STATE_RESET);
- 
-@@ -495,6 +499,7 @@ static void mhi_pm_disable_transition(st
- 		}
- 	}
- 
-+skip_mhi_reset:
- 	dev_dbg(dev,
- 		 "Waiting for all pending event ring processing to complete\n");
- 	mhi_event = mhi_cntrl->mhi_event;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7295,7 +7295,7 @@ void amdgpu_dm_connector_init_helper(str
+ 	if (connector_type == DRM_MODE_CONNECTOR_HDMIA) {
+ 		if (!drm_mode_create_hdmi_colorspace_property(&aconnector->base, supported_colorspaces))
+ 			drm_connector_attach_colorspace_property(&aconnector->base);
+-	} else if (connector_type == DRM_MODE_CONNECTOR_DisplayPort ||
++	} else if ((connector_type == DRM_MODE_CONNECTOR_DisplayPort && !aconnector->mst_root) ||
+ 		   connector_type == DRM_MODE_CONNECTOR_eDP) {
+ 		if (!drm_mode_create_dp_colorspace_property(&aconnector->base, supported_colorspaces))
+ 			drm_connector_attach_colorspace_property(&aconnector->base);
 
 
