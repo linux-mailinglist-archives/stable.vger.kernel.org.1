@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6FB7A3B54
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B267A3D67
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240662AbjIQUQF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:16:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
+        id S241291AbjIQUmM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:42:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240721AbjIQUP7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:59 -0400
+        with ESMTP id S241374AbjIQUmD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:42:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 333B8F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61967C433C8;
-        Sun, 17 Sep 2023 20:15:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 611C410F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99241C433C7;
+        Sun, 17 Sep 2023 20:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981753;
-        bh=s7gxMNX2ynG5mnYYerhiYy9FfsGxKtw1o8WFz19vjaM=;
+        s=korg; t=1694983318;
+        bh=N4ITTM1fnk+dmTGXrSVLfkt2ZMf0Rt3z2Vus0of1JiU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AEdEBJDQ4e+qQ99i6gpYmdNwJ5NgfKUDhWbx9k1i8YjZGU9est5+wGfEXHMYVGJmS
-         PH+azVBr4rbwUexBjGc/Z35Pb+kFa5dsz/CnyNeylodUbVo+41kJbb5SnThUfWuHMr
-         qvNNimFWU+tDGYlMz4FEccjsGXSBaTnt9RxO3h5E=
+        b=oJg/yLoY9/Z/UYr5umnhz/0yy2vHvvzDpZS3CBYwWcmLVy5bu6jFrhn8fgLp0e6pL
+         8+yx7gy/+seXQ5+4orAqsviensQ2shTuquLjVBVm1cjxsfGVfQdI7IzhA5VUP2CCDF
+         crX1nemgwLkU8yfGxmLVCRWTJK1lWPUJQkZM59tg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 167/219] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
+        patches@lists.linux.dev, stable@kernel.org,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 467/511] jbd2: check jh->b_transaction before removing it from checkpoint
 Date:   Sun, 17 Sep 2023 21:14:54 +0200
-Message-ID: <20230917191047.060833298@linuxfoundation.org>
+Message-ID: <20230917191125.025951843@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,159 +52,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b upstream.
+commit 590a809ff743e7bd890ba5fb36bc38e20a36de53 upstream.
 
-v7.2 controller has different ECC level field size and shift in the acc
-control register than its predecessor and successor controller. It needs
-to be set specifically.
+Following process will corrupt ext4 image:
+Step 1:
+jbd2_journal_commit_transaction
+ __jbd2_journal_insert_checkpoint(jh, commit_transaction)
+ // Put jh into trans1->t_checkpoint_list
+ journal->j_checkpoint_transactions = commit_transaction
+ // Put trans1 into journal->j_checkpoint_transactions
 
-Fixes: decba6d47869 ("mtd: brcmnand: Add v7.2 controller support")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
+Step 2:
+do_get_write_access
+ test_clear_buffer_dirty(bh) // clear buffer dirty，set jbd dirty
+ __jbd2_journal_file_buffer(jh, transaction) // jh belongs to trans2
+
+Step 3:
+drop_cache
+ journal_shrink_one_cp_list
+  jbd2_journal_try_remove_checkpoint
+   if (!trylock_buffer(bh))  // lock bh, true
+   if (buffer_dirty(bh))     // buffer is not dirty
+   __jbd2_journal_remove_checkpoint(jh)
+   // remove jh from trans1->t_checkpoint_list
+
+Step 4:
+jbd2_log_do_checkpoint
+ trans1 = journal->j_checkpoint_transactions
+ // jh is not in trans1->t_checkpoint_list
+ jbd2_cleanup_journal_tail(journal)  // trans1 is done
+
+Step 5: Power cut, trans2 is not committed, jh is lost in next mounting.
+
+Fix it by checking 'jh->b_transaction' before remove it from checkpoint.
+
+Cc: stable@kernel.org
+Fixes: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230714025528.564988-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |   74 +++++++++++++++++--------------
- 1 file changed, 41 insertions(+), 33 deletions(-)
+ fs/jbd2/checkpoint.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -272,6 +272,7 @@ struct brcmnand_controller {
- 	const unsigned int	*page_sizes;
- 	unsigned int		page_size_shift;
- 	unsigned int		max_oob;
-+	u32			ecc_level_shift;
- 	u32			features;
- 
- 	/* for low-power standby/resume only */
-@@ -596,6 +597,34 @@ enum {
- 	INTFC_CTLR_READY		= BIT(31),
- };
- 
-+/***********************************************************************
-+ * NAND ACC CONTROL bitfield
-+ *
-+ * Some bits have remained constant throughout hardware revision, while
-+ * others have shifted around.
-+ ***********************************************************************/
-+
-+/* Constant for all versions (where supported) */
-+enum {
-+	/* See BRCMNAND_HAS_CACHE_MODE */
-+	ACC_CONTROL_CACHE_MODE				= BIT(22),
-+
-+	/* See BRCMNAND_HAS_PREFETCH */
-+	ACC_CONTROL_PREFETCH				= BIT(23),
-+
-+	ACC_CONTROL_PAGE_HIT				= BIT(24),
-+	ACC_CONTROL_WR_PREEMPT				= BIT(25),
-+	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
-+	ACC_CONTROL_RD_ERASED				= BIT(27),
-+	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
-+	ACC_CONTROL_WR_ECC				= BIT(30),
-+	ACC_CONTROL_RD_ECC				= BIT(31),
-+};
-+
-+#define	ACC_CONTROL_ECC_SHIFT			16
-+/* Only for v7.2 */
-+#define	ACC_CONTROL_ECC_EXT_SHIFT		13
-+
- static inline bool brcmnand_non_mmio_ops(struct brcmnand_controller *ctrl)
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 936c6d758a65..f033ac807013 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -639,6 +639,8 @@ int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
  {
- #if IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA)
-@@ -737,6 +766,12 @@ static int brcmnand_revision_init(struct
- 	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
- 		ctrl->features |= BRCMNAND_HAS_WP;
+ 	struct buffer_head *bh = jh2bh(jh);
  
-+	/* v7.2 has different ecc level shift in the acc register */
-+	if (ctrl->nand_version == 0x0702)
-+		ctrl->ecc_level_shift = ACC_CONTROL_ECC_EXT_SHIFT;
-+	else
-+		ctrl->ecc_level_shift = ACC_CONTROL_ECC_SHIFT;
-+
- 	return 0;
- }
- 
-@@ -931,30 +966,6 @@ static inline int brcmnand_cmd_shift(str
- 	return 0;
- }
- 
--/***********************************************************************
-- * NAND ACC CONTROL bitfield
-- *
-- * Some bits have remained constant throughout hardware revision, while
-- * others have shifted around.
-- ***********************************************************************/
--
--/* Constant for all versions (where supported) */
--enum {
--	/* See BRCMNAND_HAS_CACHE_MODE */
--	ACC_CONTROL_CACHE_MODE				= BIT(22),
--
--	/* See BRCMNAND_HAS_PREFETCH */
--	ACC_CONTROL_PREFETCH				= BIT(23),
--
--	ACC_CONTROL_PAGE_HIT				= BIT(24),
--	ACC_CONTROL_WR_PREEMPT				= BIT(25),
--	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
--	ACC_CONTROL_RD_ERASED				= BIT(27),
--	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
--	ACC_CONTROL_WR_ECC				= BIT(30),
--	ACC_CONTROL_RD_ECC				= BIT(31),
--};
--
- static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
- {
- 	if (ctrl->nand_version == 0x0702)
-@@ -967,18 +978,15 @@ static inline u32 brcmnand_spare_area_ma
- 		return GENMASK(4, 0);
- }
- 
--#define NAND_ACC_CONTROL_ECC_SHIFT	16
--#define NAND_ACC_CONTROL_ECC_EXT_SHIFT	13
--
- static inline u32 brcmnand_ecc_level_mask(struct brcmnand_controller *ctrl)
- {
- 	u32 mask = (ctrl->nand_version >= 0x0600) ? 0x1f : 0x0f;
- 
--	mask <<= NAND_ACC_CONTROL_ECC_SHIFT;
-+	mask <<= ACC_CONTROL_ECC_SHIFT;
- 
- 	/* v7.2 includes additional ECC levels */
--	if (ctrl->nand_version >= 0x0702)
--		mask |= 0x7 << NAND_ACC_CONTROL_ECC_EXT_SHIFT;
-+	if (ctrl->nand_version == 0x0702)
-+		mask |= 0x7 << ACC_CONTROL_ECC_EXT_SHIFT;
- 
- 	return mask;
- }
-@@ -992,8 +1000,8 @@ static void brcmnand_set_ecc_enabled(str
- 
- 	if (en) {
- 		acc_control |= ecc_flags; /* enable RD/WR ECC */
--		acc_control |= host->hwcfg.ecc_level
--			       << NAND_ACC_CONTROL_ECC_SHIFT;
-+		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-+		acc_control |= host->hwcfg.ecc_level << ctrl->ecc_level_shift;
- 	} else {
- 		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
- 		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-@@ -2593,7 +2601,7 @@ static int brcmnand_set_cfg(struct brcmn
- 	tmp &= ~brcmnand_ecc_level_mask(ctrl);
- 	tmp &= ~brcmnand_spare_area_mask(ctrl);
- 	if (ctrl->nand_version >= 0x0302) {
--		tmp |= cfg->ecc_level << NAND_ACC_CONTROL_ECC_SHIFT;
-+		tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
- 		tmp |= cfg->spare_area_size;
- 	}
- 	nand_writereg(ctrl, acc_control_offs, tmp);
++	if (jh->b_transaction)
++		return -EBUSY;
+ 	if (!trylock_buffer(bh))
+ 		return -EBUSY;
+ 	if (buffer_dirty(bh)) {
+-- 
+2.42.0
+
 
 
