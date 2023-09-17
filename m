@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E94AB7A3908
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBDF77A37F3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239924AbjIQToD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50378 "EHLO
+        id S237957AbjIQT3C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:29:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239954AbjIQTnl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:41 -0400
+        with ESMTP id S239585AbjIQT2t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:28:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDC3DB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AADC433C8;
-        Sun, 17 Sep 2023 19:43:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A84CDB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:28:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44950C433C8;
+        Sun, 17 Sep 2023 19:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979815;
-        bh=cdrEBvqpyUCSjpTzNEQV5yphANDHyXE8A9QLU25yA+Y=;
+        s=korg; t=1694978923;
+        bh=PAYpS2HBcrj20qqkNGo85Kq7Gjmr+CTyahpLCc9wbkI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aVx0npt5Nkxg63y3oc0chdgEMHxx9czDviQKI2Y1ESbad/tgmoqh1MyVDyFZ1eaPB
-         CnK5DdPOe3SZdGM/pllb/Y8HyyxIhDcJz3iBRAtfe0xFccMnVscbmKEsgmELM26xX2
-         uEH5mTGs8UkrS9UpFE/Kqb5Y2PB0pBTMq+fyvsls=
+        b=uwhse6SILNYFXLBZufIDJNTeVXxUrBIvhBLTMtge5JrjRrB5FI4Qr54g97U+R75Wu
+         rjgJGZ1tIuo30S6K6AOaMJjAmwG4UocrmZgZyMdCDP7/WLaLN57AjErNxn3uES4zLd
+         G0Sf8zza32V3sAQLCDhCXLv7Wq8vicT7n1sMoKAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 015/285] scsi: qla2xxx: Fix smatch warn for qla_init_iocb_limit()
-Date:   Sun, 17 Sep 2023 21:10:15 +0200
-Message-ID: <20230917191052.148824561@linuxfoundation.org>
+        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Clark <robdclark@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/406] drm/msm/a2xx: Call adreno_gpu_init() earlier
+Date:   Sun, 17 Sep 2023 21:10:16 +0200
+Message-ID: <20230917191105.457080925@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit b496953dd0444001b12f425ea07d78c1f47e3193 upstream.
+[ Upstream commit db07ce5da8b26bfeaf437a676ae49bd3bb1eace6 ]
 
-Fix indentation for warning reported by smatch:
+The adreno_is_a20x() and adreno_is_a225() functions rely on the
+GPU revision, but such information is retrieved inside adreno_gpu_init(),
+which is called afterwards.
 
-drivers/scsi/qla2xxx/qla_init.c:4199 qla_init_iocb_limit() warn: inconsistent indenting
+Fix this problem by caling adreno_gpu_init() earlier, so that
+the GPU information revision is available when adreno_is_a20x()
+and adreno_is_a225() run.
 
-Fixes: efa74a62aaa2 ("scsi: qla2xxx: Adjust IOCB resource on qpair create")
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-8-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested on a imx53-qsb board.
+
+Fixes: 21af872cd8c6 ("drm/msm/adreno: add a2xx")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/543456/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4203,7 +4203,7 @@ void qla_init_iocb_limit(scsi_qla_host_t
- 	u8 i;
- 	struct qla_hw_data *ha = vha->hw;
+diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+index 7e82c41a85f1a..64ee63dcdb7c9 100644
+--- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+@@ -521,6 +521,10 @@ struct msm_gpu *a2xx_gpu_init(struct drm_device *dev)
+ 	gpu->perfcntrs = perfcntrs;
+ 	gpu->num_perfcntrs = ARRAY_SIZE(perfcntrs);
  
--	 __qla_adjust_iocb_limit(ha->base_qpair);
-+	__qla_adjust_iocb_limit(ha->base_qpair);
- 	ha->base_qpair->fwres.iocbs_used = 0;
- 	ha->base_qpair->fwres.exch_used  = 0;
++	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 1);
++	if (ret)
++		goto fail;
++
+ 	if (adreno_is_a20x(adreno_gpu))
+ 		adreno_gpu->registers = a200_registers;
+ 	else if (adreno_is_a225(adreno_gpu))
+@@ -528,10 +532,6 @@ struct msm_gpu *a2xx_gpu_init(struct drm_device *dev)
+ 	else
+ 		adreno_gpu->registers = a220_registers;
  
+-	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 1);
+-	if (ret)
+-		goto fail;
+-
+ 	if (!gpu->aspace) {
+ 		dev_err(dev->dev, "No memory protection without MMU\n");
+ 		ret = -ENXIO;
+-- 
+2.40.1
+
 
 
