@@ -2,46 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ECCF7A3A98
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 006F47A3CF5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240386AbjIQUG1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:06:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56430 "EHLO
+        id S239702AbjIQUhX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240468AbjIQUGJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:09 -0400
+        with ESMTP id S241208AbjIQUhG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC94F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11306C433CA;
-        Sun, 17 Sep 2023 20:05:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4705E101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701E7C433C8;
+        Sun, 17 Sep 2023 20:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981157;
-        bh=AcUDdRyH7qYeCFpzWUgeeRK7h+hUf9upgMa7Ss0V+XQ=;
+        s=korg; t=1694983020;
+        bh=5C/vmAerpHwd6fEsT982AYVwUMNbTBnoY7QpyewuQBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VMoFO+O82FEk+MmW9FYv3h0Snra3ykzPhJdE2oLmMOibKPwAJvTg4M0b0ThF7I5YV
-         iK0Q+Iyvv2O85R1mArP25O0oPWOSaVOlBtgsPKGkONq5VgpU4Cus4LfRNle1ssmkeC
-         2mCnRKUfG5Bn1a8L2ulNam/JNmP4zyjlHmEqDDVU=
+        b=Y0mD6p08v4TCTpfYwXM2uH+JcnhSkj8NqkLy21c0DwWZS+meqH9+d3FkeF5Rfpzli
+         QEUp3u2Y26nG2GjQn/fnOPMluEfhH4hK7oNoLON6NYfk/w7T08SyJDCqCK510EGZOR
+         hpuitFo0uSQaFNxasYduBi4YOMAB10y4NS6IA8mw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kajol Jain <kjain@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Disha Goel <disgoel@linux.vnet.ibm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/219] perf test stat_bpf_counters_cgrp: Fix shellcheck issue about logical operators
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 380/511] scsi: qla2xxx: Fix command flush during TMF
 Date:   Sun, 17 Sep 2023 21:13:27 +0200
-Message-ID: <20230917191043.869526841@linuxfoundation.org>
+Message-ID: <20230917191122.978147577@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,124 +51,196 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 0dd1f815545d7210150642741c364521cc5cf116 ]
+commit da7c21b72aa86e990af5f73bce6590b8d8d148d0 upstream.
 
-Running shellcheck on lock_contention.sh generates below warning:
+For each TMF request, driver iterates through each qpair and flushes
+commands associated to the TMF. At the end of the qpair flush, a Marker is
+used to complete the flush transaction. This process was repeated for each
+qpair. The multiple flush and marker for this TMF request seems to cause
+confusion for FW.
 
-In stat_bpf_counters_cgrp.sh line 28:
-	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
-                                            ^-- SC2166 (warning): Prefer [ p ] && [ q ] as [ p -a q ] is not well defined.
+Instead, 1 flush is sent to FW. Driver would wait for FW to go through all
+the I/Os on each qpair to be read then return. Driver then closes out the
+transaction with a Marker.
 
-In stat_bpf_counters_cgrp.sh line 34:
-	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
-        ^-------------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
-              ^-------^ SC2155 (warning): Declare and assign separately to avoid masking return values.
-                        ^-- SC2046 (warning): Quote this to prevent word splitting.
-
-In stat_bpf_counters_cgrp.sh line 51:
-	local output
-        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
-
-In stat_bpf_counters_cgrp.sh line 65:
-	local output
-        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
-
-Fixed above warnings by:
-- Changing the expression [p -a q] to [p] && [q].
-- Fixing shellcheck warnings for local usage, by prefixing
-  function name to the variable.
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230709182800.53002-6-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: a84260e31402 ("perf test stat_bpf_counters_cgrp: Enhance perf stat cgroup BPF counter test")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d90171dd0da5 ("scsi: qla2xxx: Multi-que support for TMF")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-5-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |   74 +++++++++++++++++++++-------------------
+ drivers/scsi/qla2xxx/qla_iocb.c |    1 
+ drivers/scsi/qla2xxx/qla_os.c   |    9 ++--
+ 3 files changed, 45 insertions(+), 39 deletions(-)
 
-diff --git a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-index d724855d097c2..a74440a00b6b6 100755
---- a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-+++ b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-@@ -25,22 +25,22 @@ check_bpf_counter()
- find_cgroups()
- {
- 	# try usual systemd slices first
--	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
-+	if [ -d /sys/fs/cgroup/system.slice ] && [ -d /sys/fs/cgroup/user.slice ]; then
- 		test_cgroups="system.slice,user.slice"
- 		return
- 	fi
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2004,12 +2004,11 @@ qla2x00_tmf_iocb_timeout(void *data)
+ 	int rc, h;
+ 	unsigned long flags;
  
- 	# try root and self cgroups
--	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
--	if [ -z ${self_cgrp} ]; then
-+	find_cgroups_self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
-+	if [ -z ${find_cgroups_self_cgrp} ]; then
- 		# cgroup v2 doesn't specify perf_event
--		self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
-+		find_cgroups_self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
- 	fi
+-	if (sp->type == SRB_MARKER) {
+-		complete(&tmf->u.tmf.comp);
+-		return;
+-	}
++	if (sp->type == SRB_MARKER)
++		rc = QLA_FUNCTION_FAILED;
++	else
++		rc = qla24xx_async_abort_cmd(sp, false);
  
--	if [ -z ${self_cgrp} ]; then
-+	if [ -z ${find_cgroups_self_cgrp} ]; then
- 		test_cgroups="/"
- 	else
--		test_cgroups="/,${self_cgrp}"
-+		test_cgroups="/,${find_cgroups_self_cgrp}"
- 	fi
+-	rc = qla24xx_async_abort_cmd(sp, false);
+ 	if (rc) {
+ 		spin_lock_irqsave(sp->qpair->qp_lock_ptr, flags);
+ 		for (h = 1; h < sp->qpair->req->num_outstanding_cmds; h++) {
+@@ -2131,6 +2130,17 @@ static void qla2x00_tmf_sp_done(srb_t *s
+ 	complete(&tmf->u.tmf.comp);
  }
  
-@@ -48,13 +48,11 @@ find_cgroups()
- # Just check if it runs without failure and has non-zero results.
- check_system_wide_counted()
++static int qla_tmf_wait(struct tmf_arg *arg)
++{
++	/* there are only 2 types of error handling that reaches here, lun or target reset */
++	if (arg->flags & (TCF_LUN_RESET | TCF_ABORT_TASK_SET | TCF_CLEAR_TASK_SET))
++		return qla2x00_eh_wait_for_pending_commands(arg->vha,
++		    arg->fcport->d_id.b24, arg->lun, WAIT_LUN);
++	else
++		return qla2x00_eh_wait_for_pending_commands(arg->vha,
++		    arg->fcport->d_id.b24, arg->lun, WAIT_TARGET);
++}
++
+ static int
+ __qla2x00_async_tm_cmd(struct tmf_arg *arg)
  {
--	local output
+@@ -2138,8 +2148,9 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
+ 	struct srb_iocb *tm_iocb;
+ 	srb_t *sp;
+ 	int rval = QLA_FUNCTION_FAILED;
 -
--	output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
--	if echo ${output} | grep -q -F "<not "; then
-+	check_system_wide_counted_output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
-+	if echo ${check_system_wide_counted_output} | grep -q -F "<not "; then
- 		echo "Some system-wide events are not counted"
- 		if [ "${verbose}" = "1" ]; then
--			echo ${output}
-+			echo ${check_system_wide_counted_output}
- 		fi
- 		exit 1
- 	fi
-@@ -62,13 +60,11 @@ check_system_wide_counted()
+ 	fc_port_t *fcport = arg->fcport;
++	u32 chip_gen, login_gen;
++	u64 jif;
  
- check_cpu_list_counted()
+ 	if (TMF_NOT_READY(arg->fcport)) {
+ 		ql_dbg(ql_dbg_taskm, vha, 0x8032,
+@@ -2184,8 +2195,27 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
+ 		    "TM IOCB failed (%x).\n", rval);
+ 	}
+ 
+-	if (!test_bit(UNLOADING, &vha->dpc_flags) && !IS_QLAFX00(vha->hw))
+-		rval = qla26xx_marker(arg);
++	if (!test_bit(UNLOADING, &vha->dpc_flags) && !IS_QLAFX00(vha->hw)) {
++		chip_gen = vha->hw->chip_reset;
++		login_gen = fcport->login_gen;
++
++		jif = jiffies;
++		if (qla_tmf_wait(arg)) {
++			ql_log(ql_log_info, vha, 0x803e,
++			       "Waited %u ms Nexus=%ld:%06x:%llu.\n",
++			       jiffies_to_msecs(jiffies - jif), vha->host_no,
++			       fcport->d_id.b24, arg->lun);
++		}
++
++		if (chip_gen == vha->hw->chip_reset && login_gen == fcport->login_gen) {
++			rval = qla26xx_marker(arg);
++		} else {
++			ql_log(ql_log_info, vha, 0x803e,
++			       "Skip Marker due to disruption. Nexus=%ld:%06x:%llu.\n",
++			       vha->host_no, fcport->d_id.b24, arg->lun);
++			rval = QLA_FUNCTION_FAILED;
++		}
++	}
+ 
+ done_free_sp:
+ 	/* ref: INIT */
+@@ -2263,9 +2293,8 @@ qla2x00_async_tm_cmd(fc_port_t *fcport,
+ 		     uint32_t tag)
  {
--	local output
+ 	struct scsi_qla_host *vha = fcport->vha;
+-	struct qla_qpair *qpair;
+ 	struct tmf_arg a;
+-	int i, rval = QLA_SUCCESS;
++	int rval = QLA_SUCCESS;
+ 
+ 	if (TMF_NOT_READY(fcport))
+ 		return QLA_SUSPENDED;
+@@ -2285,34 +2314,9 @@ qla2x00_async_tm_cmd(fc_port_t *fcport,
+ 	if (qla_get_tmf(&a))
+ 		return QLA_FUNCTION_FAILED;
+ 
+-	if (vha->hw->mqenable) {
+-		for (i = 0; i < vha->hw->num_qpairs; i++) {
+-			qpair = vha->hw->queue_pair_map[i];
+-			if (!qpair)
+-				continue;
 -
--	output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
--	if echo ${output} | grep -q -F "<not "; then
-+	check_cpu_list_counted_output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
-+	if echo ${check_cpu_list_counted_output} | grep -q -F "<not "; then
- 		echo "Some CPU events are not counted"
- 		if [ "${verbose}" = "1" ]; then
--			echo ${output}
-+			echo ${check_cpu_list_counted_output}
- 		fi
- 		exit 1
- 	fi
--- 
-2.40.1
-
+-			if (TMF_NOT_READY(fcport)) {
+-				ql_log(ql_log_warn, vha, 0x8026,
+-				    "Unable to send TM due to disruption.\n");
+-				rval = QLA_SUSPENDED;
+-				break;
+-			}
+-
+-			a.qpair = qpair;
+-			a.flags = flags|TCF_NOTMCMD_TO_TARGET;
+-			rval = __qla2x00_async_tm_cmd(&a);
+-			if (rval)
+-				break;
+-		}
+-	}
+-
+-	if (rval)
+-		goto bailout;
+-
+ 	a.qpair = vha->hw->base_qpair;
+ 	rval = __qla2x00_async_tm_cmd(&a);
+ 
+-bailout:
+ 	qla_put_tmf(&a);
+ 	return rval;
+ }
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -3887,6 +3887,7 @@ qla_marker_iocb(srb_t *sp, struct mrk_en
+ {
+ 	mrk->entry_type = MARKER_TYPE;
+ 	mrk->modifier = sp->u.iocb_cmd.u.tmf.modifier;
++	mrk->handle = make_handle(sp->qpair->req->id, sp->handle);
+ 	if (sp->u.iocb_cmd.u.tmf.modifier != MK_SYNC_ALL) {
+ 		mrk->nport_handle = cpu_to_le16(sp->u.iocb_cmd.u.tmf.loop_id);
+ 		int_to_scsilun(sp->u.iocb_cmd.u.tmf.lun, (struct scsi_lun *)&mrk->lun);
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1470,8 +1470,9 @@ qla2xxx_eh_device_reset(struct scsi_cmnd
+ 		goto eh_reset_failed;
+ 	}
+ 	err = 3;
+-	if (qla2x00_eh_wait_for_pending_commands(vha, sdev->id,
+-	    sdev->lun, WAIT_LUN) != QLA_SUCCESS) {
++	if (qla2x00_eh_wait_for_pending_commands(vha, fcport->d_id.b24,
++						 cmd->device->lun,
++						 WAIT_LUN) != QLA_SUCCESS) {
+ 		ql_log(ql_log_warn, vha, 0x800d,
+ 		    "wait for pending cmds failed for cmd=%p.\n", cmd);
+ 		goto eh_reset_failed;
+@@ -1537,8 +1538,8 @@ qla2xxx_eh_target_reset(struct scsi_cmnd
+ 		goto eh_reset_failed;
+ 	}
+ 	err = 3;
+-	if (qla2x00_eh_wait_for_pending_commands(vha, sdev->id,
+-	    0, WAIT_TARGET) != QLA_SUCCESS) {
++	if (qla2x00_eh_wait_for_pending_commands(vha, fcport->d_id.b24, 0,
++						 WAIT_TARGET) != QLA_SUCCESS) {
+ 		ql_log(ql_log_warn, vha, 0x800d,
+ 		    "wait for pending cmds failed for cmd=%p.\n", cmd);
+ 		goto eh_reset_failed;
 
 
