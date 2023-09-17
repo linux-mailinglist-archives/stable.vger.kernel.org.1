@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D6107A387E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56DF17A3A66
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239781AbjIQTgi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38104 "EHLO
+        id S234296AbjIQUDN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239887AbjIQTgW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:22 -0400
+        with ESMTP id S229615AbjIQUCm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC240103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14FDC433C7;
-        Sun, 17 Sep 2023 19:36:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631A6CC9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0D0C433CB;
+        Sun, 17 Sep 2023 20:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979376;
-        bh=X+ZEdIUBAKsSg00EhzCDV+5Ry7Mx+3idAO5BxDAfQ9M=;
+        s=korg; t=1694980937;
+        bh=AqKVkf7WXflN3rY3llnVnZyWRr9Vvf3FXJBvohiXQO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Jc0CcUCFljKVmenhbHSm7ARWI7wJAdB3UTsaE/idNxp7XeXpBh6F8zvmM8zwNUkt
-         lj6QOIjODLFwtuCEqQJN9JMIHm9MpQA8bPbiz47XcPXvadsiKaaNn1rsDS8vmGyBQ/
-         PQRNLyp4weVxhUAi1J3VLCw4ScCVzFP73TJto3To=
+        b=MHYDcS6hFNQ5zfxond+ZL3FcuDnWb3oDdyphyNkH/nAzxEqQzJkGgobk09QYOzMt6
+         ytO/MS7/AjnGaxzk5yulLdzDxrI2SFOMtJIYOIi88h4amSkdagtCUy0D4ZfOK3K7K7
+         1ee6etWcGWRa2bRM4ISNt+6H4hR5iA5+iUt+1cA8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Barry Marson <bmarson@redhat.com>,
-        Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 5.10 295/406] dlm: fix plock lookup when using multiple lockspaces
+        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 022/219] scsi: qla2xxx: Fix smatch warn for qla_init_iocb_limit()
 Date:   Sun, 17 Sep 2023 21:12:29 +0200
-Message-ID: <20230917191109.101539237@linuxfoundation.org>
+Message-ID: <20230917191041.800047216@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-commit 7c53e847ff5e97f033fdd31f71949807633d506b upstream.
+commit b496953dd0444001b12f425ea07d78c1f47e3193 upstream.
 
-All posix lock ops, for all lockspaces (gfs2 file systems) are
-sent to userspace (dlm_controld) through a single misc device.
-The dlm_controld daemon reads the ops from the misc device
-and sends them to other cluster nodes using separate, per-lockspace
-cluster api communication channels.  The ops for a single lockspace
-are ordered at this level, so that the results are received in
-the same sequence that the requests were sent.  When the results
-are sent back to the kernel via the misc device, they are again
-funneled through the single misc device for all lockspaces.  When
-the dlm code in the kernel processes the results from the misc
-device, these results will be returned in the same sequence that
-the requests were sent, on a per-lockspace basis.  A recent change
-in this request/reply matching code missed the "per-lockspace"
-check (fsid comparison) when matching request and reply, so replies
-could be incorrectly matched to requests from other lockspaces.
+Fix indentation for warning reported by smatch:
 
-Cc: stable@vger.kernel.org
-Reported-by: Barry Marson <bmarson@redhat.com>
-Fixes: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+drivers/scsi/qla2xxx/qla_init.c:4199 qla_init_iocb_limit() warn: inconsistent indenting
+
+Fixes: efa74a62aaa2 ("scsi: qla2xxx: Adjust IOCB resource on qpair create")
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/plock.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -466,7 +466,8 @@ static ssize_t dev_write(struct file *fi
- 		}
- 	} else {
- 		list_for_each_entry(iter, &recv_list, list) {
--			if (!iter->info.wait) {
-+			if (!iter->info.wait &&
-+			    iter->info.fsid == info.fsid) {
- 				op = iter;
- 				break;
- 			}
-@@ -478,8 +479,7 @@ static ssize_t dev_write(struct file *fi
- 		if (info.wait)
- 			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
- 		else
--			WARN_ON(op->info.fsid != info.fsid ||
--				op->info.number != info.number ||
-+			WARN_ON(op->info.number != info.number ||
- 				op->info.owner != info.owner ||
- 				op->info.optype != info.optype);
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -4204,7 +4204,7 @@ void qla_init_iocb_limit(scsi_qla_host_t
+ 	u8 i;
+ 	struct qla_hw_data *ha = vha->hw;
+ 
+-	 __qla_adjust_iocb_limit(ha->base_qpair);
++	__qla_adjust_iocb_limit(ha->base_qpair);
+ 	ha->base_qpair->fwres.iocbs_used = 0;
+ 	ha->base_qpair->fwres.exch_used  = 0;
  
 
 
