@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B54487A3B79
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E677A3D49
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240704AbjIQUSN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
+        id S241232AbjIQUlF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240721AbjIQUSA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:00 -0400
+        with ESMTP id S241260AbjIQUkj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21A5A137
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B02C433C7;
-        Sun, 17 Sep 2023 20:17:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146DB101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1F0C433CA;
+        Sun, 17 Sep 2023 20:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981872;
-        bh=xvfI+eUOuRPJT8MJpoF94F7Wbo/9GCEio1Hd9nQXWKo=;
+        s=korg; t=1694983233;
+        bh=QrqlO+QV4/YxQ25WSJjUFCai9grA00zl4FP8WglFa/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S0POz85UZxLT4srUbleYXuEFaJRbS+3z6QP1ymiurqwzZOGCU266Qv9v70pYjjX5a
-         WLmMNAq63eFdHsy54r4ueI+f8ylnwTzwyjgAiqqF7sqeE9ipY1yXv/E9yFCaIMwMA4
-         UjtIhwS1HFAp4YAZwhcnoW9McVpFldtiqb2/17B8=
+        b=RLhrO0Fb3wTMgL/LISsi2fGWYk2nju4D0GAGNY4zS9kvzVmVccZt2jv2QgzYCK6Od
+         yz4Jbpx36cNwiyceWYYeepgRBNzLj2wsQPYaGQtqs6qGcmKo6pnu0ev8NcNnOSnp34
+         zdVGShVC2geMz+6mFzFNJA7v+Ns2MnOOH5NmQWV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jun Lei <jun.lei@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Gabe Teeger <gabe.teeger@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 183/219] drm/amd/display: Remove wait while locked
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Tom Zanussi <zanussi@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 5.15 483/511] perf tools: Handle old data in PERF_RECORD_ATTR
 Date:   Sun, 17 Sep 2023 21:15:10 +0200
-Message-ID: <20230917191047.564563937@linuxfoundation.org>
+Message-ID: <20230917191125.402131019@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,138 +54,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabe Teeger <gabe.teeger@amd.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 5a3ccb1400339268c5e3dc1fa044a7f6c7f59a02 upstream.
+commit 9bf63282ea77a531ea58acb42fb3f40d2d1e4497 upstream.
 
-[Why]
-We wait for mpc idle while in a locked state, leading to potential
-deadlock.
+The PERF_RECORD_ATTR is used for a pipe mode to describe an event with
+attribute and IDs.  The ID table comes after the attr and it calculate
+size of the table using the total record size and the attr size.
 
-[What]
-Move the wait_for_idle call to outside of HW lock. This and a
-call to wait_drr_doublebuffer_pending_clear are moved added to a new
-static helper function called wait_for_outstanding_hw_updates, to make
-the interface clearer.
+  n_ids = (total_record_size - end_of_the_attr_field) / sizeof(u64)
 
+This is fine for most use cases, but sometimes it saves the pipe output
+in a file and then process it later.  And it becomes a problem if there
+is a change in attr size between the record and report.
+
+  $ perf record -o- > perf-pipe.data  # old version
+  $ perf report -i- < perf-pipe.data  # new version
+
+For example, if the attr size is 128 and it has 4 IDs, then it would
+save them in 168 byte like below:
+
+   8 byte: perf event header { .type = PERF_RECORD_ATTR, .size = 168 },
+ 128 byte: perf event attr { .size = 128, ... },
+  32 byte: event IDs [] = { 1234, 1235, 1236, 1237 },
+
+But when report later, it thinks the attr size is 136 then it only read
+the last 3 entries as ID.
+
+   8 byte: perf event header { .type = PERF_RECORD_ATTR, .size = 168 },
+ 136 byte: perf event attr { .size = 136, ... },
+  24 byte: event IDs [] = { 1235, 1236, 1237 },  // 1234 is missing
+
+So it should use the recorded version of the attr.  The attr has the
+size field already then it should honor the size when reading data.
+
+Fixes: 2c46dbb517a10b18 ("perf: Convert perf header attrs into attr events")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tom Zanussi <zanussi@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 8f0d304d21b3 ("drm/amd/display: Do not commit pipe when updating DRR")
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20230825152552.112913-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/Makefile            |    1 
- drivers/gpu/drm/amd/display/dc/core/dc.c           |   58 ++++++++++++++-------
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c |   11 ---
- 3 files changed, 42 insertions(+), 28 deletions(-)
+ tools/perf/util/header.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/Makefile
-@@ -82,3 +82,4 @@ DC_EDID += dc_edid_parser.o
- AMD_DISPLAY_DMUB = $(addprefix $(AMDDALPATH)/dc/,$(DC_DMUB))
- AMD_DISPLAY_EDID = $(addprefix $(AMDDALPATH)/dc/,$(DC_EDID))
- AMD_DISPLAY_FILES += $(AMD_DISPLAY_DMUB) $(AMD_DISPLAY_EDID)
-+
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3361,6 +3361,45 @@ void dc_dmub_update_dirty_rect(struct dc
- 	}
- }
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -4200,7 +4200,8 @@ int perf_event__process_attr(struct perf
+ 			     union perf_event *event,
+ 			     struct evlist **pevlist)
+ {
+-	u32 i, ids, n_ids;
++	u32 i, n_ids;
++	u64 *ids;
+ 	struct evsel *evsel;
+ 	struct evlist *evlist = *pevlist;
  
-+static void wait_for_outstanding_hw_updates(struct dc *dc, const struct dc_state *dc_context)
-+{
-+/*
-+ * This function calls HWSS to wait for any potentially double buffered
-+ * operations to complete. It should be invoked as a pre-amble prior
-+ * to full update programming before asserting any HW locks.
-+ */
-+	int pipe_idx;
-+	int opp_inst;
-+	int opp_count = dc->res_pool->pipe_count;
-+	struct hubp *hubp;
-+	int mpcc_inst;
-+	const struct pipe_ctx *pipe_ctx;
-+
-+	for (pipe_idx = 0; pipe_idx < dc->res_pool->pipe_count; pipe_idx++) {
-+		pipe_ctx = &dc_context->res_ctx.pipe_ctx[pipe_idx];
-+
-+		if (!pipe_ctx->stream)
-+			continue;
-+
-+		if (pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear)
-+			pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear(pipe_ctx->stream_res.tg);
-+
-+		hubp = pipe_ctx->plane_res.hubp;
-+		if (!hubp)
-+			continue;
-+
-+		mpcc_inst = hubp->inst;
-+		// MPCC inst is equal to pipe index in practice
-+		for (opp_inst = 0; opp_inst < opp_count; opp_inst++) {
-+			if (dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst]) {
-+				dc->res_pool->mpc->funcs->wait_for_idle(dc->res_pool->mpc, mpcc_inst);
-+				dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst] = false;
-+				break;
-+			}
-+		}
-+	}
-+}
-+
- static void commit_planes_for_stream(struct dc *dc,
- 		struct dc_surface_update *srf_updates,
- 		int surface_count,
-@@ -3378,24 +3417,9 @@ static void commit_planes_for_stream(str
- 	// dc->current_state anymore, so we have to cache it before we apply
- 	// the new SubVP context
- 	subvp_prev_use = false;
--
--
- 	dc_z10_restore(dc);
--
--	if (update_type == UPDATE_TYPE_FULL) {
--		/* wait for all double-buffer activity to clear on all pipes */
--		int pipe_idx;
--
--		for (pipe_idx = 0; pipe_idx < dc->res_pool->pipe_count; pipe_idx++) {
--			struct pipe_ctx *pipe_ctx = &context->res_ctx.pipe_ctx[pipe_idx];
--
--			if (!pipe_ctx->stream)
--				continue;
--
--			if (pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear)
--				pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear(pipe_ctx->stream_res.tg);
--		}
--	}
-+	if (update_type == UPDATE_TYPE_FULL)
-+		wait_for_outstanding_hw_updates(dc, context);
+@@ -4216,9 +4217,8 @@ int perf_event__process_attr(struct perf
  
- 	if (get_seamless_boot_stream_count(context) > 0 && surface_count > 0) {
- 		/* Optimize seamless boot flag keeps clocks and watermarks high until
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -1515,17 +1515,6 @@ static void dcn20_update_dchubp_dpp(
- 			|| plane_state->update_flags.bits.global_alpha_change
- 			|| plane_state->update_flags.bits.per_pixel_alpha_change) {
- 		// MPCC inst is equal to pipe index in practice
--		int mpcc_inst = hubp->inst;
--		int opp_inst;
--		int opp_count = dc->res_pool->pipe_count;
--
--		for (opp_inst = 0; opp_inst < opp_count; opp_inst++) {
--			if (dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst]) {
--				dc->res_pool->mpc->funcs->wait_for_idle(dc->res_pool->mpc, mpcc_inst);
--				dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst] = false;
--				break;
--			}
--		}
- 		hws->funcs.update_mpcc(dc, pipe_ctx);
+ 	evlist__add(evlist, evsel);
+ 
+-	ids = event->header.size;
+-	ids -= (void *)&event->attr.id - (void *)event;
+-	n_ids = ids / sizeof(u64);
++	n_ids = event->header.size - sizeof(event->header) - event->attr.attr.size;
++	n_ids = n_ids / sizeof(u64);
+ 	/*
+ 	 * We don't have the cpu and thread maps on the header, so
+ 	 * for allocating the perf_sample_id table we fake 1 cpu and
+@@ -4227,8 +4227,9 @@ int perf_event__process_attr(struct perf
+ 	if (perf_evsel__alloc_id(&evsel->core, 1, n_ids))
+ 		return -ENOMEM;
+ 
++	ids = (void *)&event->attr.attr + event->attr.attr.size;
+ 	for (i = 0; i < n_ids; i++) {
+-		perf_evlist__id_add(&evlist->core, &evsel->core, 0, i, event->attr.id[i]);
++		perf_evlist__id_add(&evlist->core, &evsel->core, 0, i, ids[i]);
  	}
  
+ 	return 0;
 
 
