@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 242AD7A3C9B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3FDE7A3CA5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241088AbjIQUdK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:33:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
+        id S239686AbjIQUdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241177AbjIQUcz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:32:55 -0400
+        with ESMTP id S241113AbjIQUdS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63EF1CCE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:32:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927F9C433C8;
-        Sun, 17 Sep 2023 20:32:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C6D010E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB02C433C8;
+        Sun, 17 Sep 2023 20:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982755;
-        bh=K44H1wk9Vd1L+9n9AGRa04th3NlKgC/dsyVzKUcNggc=;
+        s=korg; t=1694982793;
+        bh=n8ZOJ5ER9DtK3NM9tRKJgVD+nzt1iah/cKD3Xc7MzAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nq0art5z2GJeq5b51/iTiZu3FCLUdhHhtLttAwOcb9dHAV54wJsLkwooSlKbCSaz2
-         YQu3TLKSh52kLutN2UGTpugFBanFmG6oTs0j02qFi2CVKydtcMx53W9+YqDVqcppOV
-         z8U4NRSzqiV5G3MMXids8oGVvlD8zDoV4ASYh9eM=
+        b=o0Wg+DyEZljpZ4bIKPQSFNFkqIbmTQ8Dh626Vj6ycmwS/lphEyqDg81JwnbWkt2NM
+         HAvDO9aDWM7QJQMZuEaEF45LgAEhRBWm6CA+fi6VVPNHNfTKcTJ4qfhpQfM/PUxiDA
+         2v0OSWpOyQ+U3v/TwqdRvQs0iTrLIwEjPRQFFVOk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 336/511] i3c: master: svc: fix probe failure when no i3c device exist
-Date:   Sun, 17 Sep 2023 21:12:43 +0200
-Message-ID: <20230917191121.927792757@linuxfoundation.org>
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 337/511] arm64: csum: Fix OoB access in IP checksum code for negative lengths
+Date:   Sun, 17 Sep 2023 21:12:44 +0200
+Message-ID: <20230917191121.951508452@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,66 +54,75 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Will Deacon <will@kernel.org>
 
-commit 6e13d6528be2f7e801af63c8153b87293f25d736 upstream.
+commit 8bd795fedb8450ecbef18eeadbd23ed8fc7630f5 upstream.
 
-I3C masters are expected to support hot-join. This means at initialization
-time we might not yet discover any device and this should not be treated
-as a fatal error.
+Although commit c2c24edb1d9c ("arm64: csum: Fix pathological zero-length
+calls") added an early return for zero-length input, syzkaller has
+popped up with an example of a _negative_ length which causes an
+undefined shift and an out-of-bounds read:
 
-During the DAA procedure which happens at probe time, if no device has
-joined, all CCC will be NACKed (from a bus perspective). This leads to an
-early return with an error code which fails the probe of the master.
+ | BUG: KASAN: slab-out-of-bounds in do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
+ | Read of size 4294966928 at addr ffff0000d7ac0170 by task syz-executor412/5975
+ |
+ | CPU: 0 PID: 5975 Comm: syz-executor412 Not tainted 6.4.0-rc4-syzkaller-g908f31f2a05b #0
+ | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+ | Call trace:
+ |  dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
+ |  show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
+ |  __dump_stack lib/dump_stack.c:88 [inline]
+ |  dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
+ |  print_address_description mm/kasan/report.c:351 [inline]
+ |  print_report+0x174/0x514 mm/kasan/report.c:462
+ |  kasan_report+0xd4/0x130 mm/kasan/report.c:572
+ |  kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
+ |  __kasan_check_read+0x20/0x30 mm/kasan/shadow.c:31
+ |  do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
+ |  csum_partial+0x30/0x58 lib/checksum.c:128
+ |  gso_make_checksum include/linux/skbuff.h:4928 [inline]
+ |  __udp_gso_segment+0xaf4/0x1bc4 net/ipv4/udp_offload.c:332
+ |  udp6_ufo_fragment+0x540/0xca0 net/ipv6/udp_offload.c:47
+ |  ipv6_gso_segment+0x5cc/0x1760 net/ipv6/ip6_offload.c:119
+ |  skb_mac_gso_segment+0x2b4/0x5b0 net/core/gro.c:141
+ |  __skb_gso_segment+0x250/0x3d0 net/core/dev.c:3401
+ |  skb_gso_segment include/linux/netdevice.h:4859 [inline]
+ |  validate_xmit_skb+0x364/0xdbc net/core/dev.c:3659
+ |  validate_xmit_skb_list+0x94/0x130 net/core/dev.c:3709
+ |  sch_direct_xmit+0xe8/0x548 net/sched/sch_generic.c:327
+ |  __dev_xmit_skb net/core/dev.c:3805 [inline]
+ |  __dev_queue_xmit+0x147c/0x3318 net/core/dev.c:4210
+ |  dev_queue_xmit include/linux/netdevice.h:3085 [inline]
+ |  packet_xmit+0x6c/0x318 net/packet/af_packet.c:276
+ |  packet_snd net/packet/af_packet.c:3081 [inline]
+ |  packet_sendmsg+0x376c/0x4c98 net/packet/af_packet.c:3113
+ |  sock_sendmsg_nosec net/socket.c:724 [inline]
+ |  sock_sendmsg net/socket.c:747 [inline]
+ |  __sys_sendto+0x3b4/0x538 net/socket.c:2144
 
-Let's avoid this by just telling the core through an I3C_ERROR_M2
-return command code that no device was discovered, which is a valid
-situation. This way the master will no longer bail out and fail to probe
-for a wrong reason.
+Extend the early return to reject negative lengths as well, aligning our
+implementation with the generic code in lib/checksum.c
 
-Cc: stable@vger.kernel.org
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230831141324.2841525-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Fixes: 5777eaed566a ("arm64: Implement optimised checksum routine")
+Reported-by: syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/000000000000e0e94c0603f8d213@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/lib/csum.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -723,6 +723,10 @@ static int svc_i3c_master_do_daa_locked(
- 				 */
- 				break;
- 			} else if (SVC_I3C_MSTATUS_NACKED(reg)) {
-+				/* No I3C devices attached */
-+				if (dev_nb == 0)
-+					break;
-+
- 				/*
- 				 * A slave device nacked the address, this is
- 				 * allowed only once, DAA will be stopped and
-@@ -1152,11 +1156,17 @@ static int svc_i3c_master_send_ccc_cmd(s
- {
- 	struct svc_i3c_master *master = to_svc_i3c_master(m);
- 	bool broadcast = cmd->id < 0x80;
-+	int ret;
+--- a/arch/arm64/lib/csum.c
++++ b/arch/arm64/lib/csum.c
+@@ -24,7 +24,7 @@ unsigned int __no_sanitize_address do_cs
+ 	const u64 *ptr;
+ 	u64 data, sum64 = 0;
  
- 	if (broadcast)
--		return svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
-+		ret = svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
- 	else
--		return svc_i3c_master_send_direct_ccc_cmd(master, cmd);
-+		ret = svc_i3c_master_send_direct_ccc_cmd(master, cmd);
-+
-+	if (ret)
-+		cmd->err = I3C_ERROR_M2;
-+
-+	return ret;
- }
+-	if (unlikely(len == 0))
++	if (unlikely(len <= 0))
+ 		return 0;
  
- static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	offset = (unsigned long)buff & 7;
 
 
