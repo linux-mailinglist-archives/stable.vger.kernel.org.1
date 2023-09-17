@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8117A3CD6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFED07A3AB5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241136AbjIQUfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
+        id S239558AbjIQUIB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241184AbjIQUfb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:31 -0400
+        with ESMTP id S240475AbjIQUH2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:07:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665EA115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADE7C433C8;
-        Sun, 17 Sep 2023 20:35:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEB297
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:07:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C817FC433C7;
+        Sun, 17 Sep 2023 20:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982926;
-        bh=RdUGNlqLu8aW3BNwtMJy7dqiGhVxPIHDFd9Yj+DoHDI=;
+        s=korg; t=1694981243;
+        bh=LCCw8kkN5lY6JAqJAa6t0bDmWaFxhthOz9RY5ndBrCU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=016tYytdxWkEuJjrmTpyeIpalUcx21oWPftDM+kO1JlkMG0qAojnnjOTGF93yxBPz
-         Y8Qpo6Gkjb7SrJE/dVA1UizngmvDPg7+CFPqiGS7OnVhyQWQb3sWLtV3wH6Q32zn8y
-         RxHbGX1p9vx8J2v892xrSmbjW2Uqq/Ahuj0CMuUM=
+        b=BoXptm9nVeUX7xhZISn4UrQbgGRN3HLCB8l4ijUZ5e9rO4zb3VRhJ7a7oU93wOdTR
+         VJG5ok/e8XutjufYrLkoQ98m3HJdyz07mRMV/erZ1oLE5DOn8iAKKToMIkpYIYhGqD
+         Pc0paLIrM/u2eiAulr/bEEVlTeiiiBAGthSD6NlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 5.15 393/511] clk: qcom: turingcc-qcs404: fix missing resume during probe
-Date:   Sun, 17 Sep 2023 21:13:40 +0200
-Message-ID: <20230917191123.284212093@linuxfoundation.org>
+        patches@lists.linux.dev, Yan Zhao <yan.y.zhao@intel.com>,
+        Yongwei Ma <yongwei.ma@intel.com>,
+        Zhi Wang <zhi.a.wang@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/219] drm/i915/gvt: Verify pfn is "valid" before dereferencing "struct page"
+Date:   Sun, 17 Sep 2023 21:13:41 +0200
+Message-ID: <20230917191044.377917495@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a9f71a033587c9074059132d34c74eabbe95ef26 upstream.
+[ Upstream commit f046923af79158361295ed4f0a588c80b9fdcc1d ]
 
-Drivers that enable runtime PM must make sure that the controller is
-runtime resumed before accessing its registers to prevent the power
-domain from being disabled.
+Check that the pfn found by gfn_to_pfn() is actually backed by "struct
+page" memory prior to retrieving and dereferencing the page.  KVM
+supports backing guest memory with VM_PFNMAP, VM_IO, etc., and so
+there is no guarantee the pfn returned by gfn_to_pfn() has an associated
+"struct page".
 
-Fixes: 892df0191b29 ("clk: qcom: Add QCS404 TuringCC")
-Cc: stable@vger.kernel.org      # 5.2
-Cc: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230718132902.21430-9-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b901b252b6cf ("drm/i915/gvt: Add 2M huge gtt support")
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Reviewed-by: Zhi Wang <zhi.a.wang@intel.com>
+Link: https://lore.kernel.org/r/20230729013535.1070024-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/turingcc-qcs404.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gvt/gtt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/clk/qcom/turingcc-qcs404.c
-+++ b/drivers/clk/qcom/turingcc-qcs404.c
-@@ -124,11 +124,22 @@ static int turingcc_probe(struct platfor
- 		return ret;
- 	}
- 
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret)
-+		return ret;
+diff --git a/drivers/gpu/drm/i915/gvt/gtt.c b/drivers/gpu/drm/i915/gvt/gtt.c
+index 80c60754a5c1c..92462cd4bf7cc 100644
+--- a/drivers/gpu/drm/i915/gvt/gtt.c
++++ b/drivers/gpu/drm/i915/gvt/gtt.c
+@@ -1188,6 +1188,10 @@ static int is_2MB_gtt_possible(struct intel_vgpu *vgpu,
+ 	pfn = gfn_to_pfn(vgpu->vfio_device.kvm, ops->get_pfn(entry));
+ 	if (is_error_noslot_pfn(pfn))
+ 		return -EINVAL;
 +
- 	ret = qcom_cc_probe(pdev, &turingcc_desc);
- 	if (ret < 0)
--		return ret;
-+		goto err_put_rpm;
++	if (!pfn_valid(pfn))
++		return -EINVAL;
 +
-+	pm_runtime_put(&pdev->dev);
- 
- 	return 0;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+
-+	return ret;
+ 	return PageTransHuge(pfn_to_page(pfn));
  }
  
- static const struct dev_pm_ops turingcc_pm_ops = {
+-- 
+2.40.1
+
 
 
