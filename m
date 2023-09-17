@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6D07A3843
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A2017A394A
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239702AbjIQTdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35812 "EHLO
+        id S240015AbjIQTrS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239784AbjIQTdF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:05 -0400
+        with ESMTP id S239923AbjIQTrE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02E6D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A6AC433C8;
-        Sun, 17 Sep 2023 19:32:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6CEE7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888FAC433C8;
+        Sun, 17 Sep 2023 19:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979180;
-        bh=BLXzJInpoP1yUewiHEwqFN1kF/2K3cjdj03PJTee+Aw=;
+        s=korg; t=1694980018;
+        bh=Df43u3kUb/fHF8v6EaU7HR+ofLr1Qykb4JrOU3gCwaE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vmqoWGPqxgDk6u1A6LiFU1TqW2u6m73J9GLGemfel6X3RsycckwAo0zf4xWHWpXCP
-         v0tk2Kf4xVQqBTEbwNzZcP/GKvINSOt35ltAdtJk1fvcUl+YluOycCbb8eiZUvfm+8
-         9SyhEP8RBJK97Y4s53Z3jgR9WCXGnR/lP1KaihJs=
+        b=O9CnMXZN+rPjJb5WJcTM575dqkV1mdbG0Zydd9lp/EaAKltWyu+7fKJY4vp7p6KeE
+         QxqkmTxVPM8OMXpa8zH7krwINc06NaknVJWfMjTMGTAOfnDL7dQ0h6jXDDGvmUuZU+
+         6//xEb/OtXtxZkg4kv4hNLx5QxhAUP6JJMF6FtTU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 220/406] scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()
+Subject: [PATCH 6.5 074/285] perf parse-events: Additional error reporting
 Date:   Sun, 17 Sep 2023 21:11:14 +0200
-Message-ID: <20230917191106.989718113@linuxfoundation.org>
+Message-ID: <20230917191054.280992183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +58,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit ce51c817008450ef4188471db31639d42d37a5e1 ]
+[ Upstream commit b30d4f0b695428f513c561eeaea52e042ef48550 ]
 
-The functions iscsi_if_set_param() and iscsi_if_set_host_param() convert an
-nlattr payload to type char* and then call C string handling functions like
-sscanf and kstrdup:
+When no events or PMUs match report an error for event_pmu:
 
-  char *data = (char*)ev + sizeof(*ev);
-  ...
-  sscanf(data, "%d", &value);
+Before:
+```
+$ perf stat -e 'asdfasdf' -a sleep 1
+Run 'perf list' for a list of valid events
 
-However, since the nlattr is provided by the user-space program and the
-nlmsg skb is allocated with GFP_KERNEL instead of GFP_ZERO flag (see
-netlink_alloc_large_skb() in netlink_sendmsg()), dirty data on the heap can
-lead to an OOB access for those string handling functions.
+ Usage: perf stat [<options>] [<command>]
 
-By investigating how the bug is introduced, we find it is really
-interesting as the old version parsing code starting from commit
-fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up") treated
-the nlattr as integer bytes instead of string and had length check in
-iscsi_copy_param():
+    -e, --event <event>   event selector. use 'perf list' to list available events
+```
 
-  if (ev->u.set_param.len != sizeof(uint32_t))
-    BUG();
+After:
+```
+$ perf stat -e 'asdfasdf' -a sleep 1
+event syntax error: 'asdfasdf'
+                     \___ Bad event name
 
-But, since the commit a54a52caad4b ("[SCSI] iscsi: fixup set/get param
-functions"), the code treated the nlattr as C string while forgetting to
-add any strlen checks(), opening the possibility of an OOB access.
+Unabled to find PMU or event on a PMU of 'asdfasdf'
+Run 'perf list' for a list of valid events
 
-Fix the potential OOB by adding the strlen() check before accessing the
-buf. If the data passes this check, all low-level set_param handlers can
-safely treat this buf as legal C string.
+ Usage: perf stat [<options>] [<command>]
 
-Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
-Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230723075820.3713119-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    -e, --event <event>   event selector. use 'perf list' to list available events
+```
+
+Fixes the inadvertent removal when hybrid parsing was modified.
+
+Fixes: 70c90e4a6b2fbe77 ("perf parse-events: Avoid scanning PMUs before parsing")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627181030.95608-11-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/util/parse-events.y | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 64bc403a4c285..074cbd64aa253 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3007,6 +3007,10 @@ iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev, u
- 	if (!conn || !session)
- 		return -EINVAL;
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index 24274c6cf85f1..c590cf7f02a45 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -293,7 +293,6 @@ PE_NAME opt_pmu_config
+ {
+ 	struct parse_events_state *parse_state = _parse_state;
+ 	struct list_head *list = NULL, *orig_terms = NULL, *terms= NULL;
+-	struct parse_events_error *error = parse_state->error;
+ 	char *pattern = NULL;
  
-+	/* data will be regarded as NULL-ended string, do length check */
-+	if (strlen(data) > ev->u.set_param.len)
-+		return -EINVAL;
-+
- 	switch (ev->u.set_param.param) {
- 	case ISCSI_PARAM_SESS_RECOVERY_TMO:
- 		sscanf(data, "%d", &value);
-@@ -3180,6 +3184,10 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 		return -ENODEV;
- 	}
+ #define CLEANUP						\
+@@ -305,9 +304,6 @@ PE_NAME opt_pmu_config
+ 		free(pattern);				\
+ 	} while(0)
  
-+	/* see similar check in iscsi_if_set_param() */
-+	if (strlen(data) > ev->u.set_host_param.len)
-+		return -EINVAL;
+-	if (error)
+-		error->idx = @1.first_column;
+-
+ 	if (parse_events_copy_term_list($2, &orig_terms)) {
+ 		CLEANUP;
+ 		YYNOMEM;
+@@ -362,6 +358,14 @@ PE_NAME opt_pmu_config
+ 			$2 = NULL;
+ 		}
+ 		if (!ok) {
++			struct parse_events_error *error = parse_state->error;
++			char *help;
 +
- 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
- 					data, ev->u.set_host_param.len);
- 	scsi_host_put(shost);
++			if (asprintf(&help, "Unabled to find PMU or event on a PMU of '%s'", $1) < 0)
++				help = NULL;
++			parse_events_error__handle(error, @1.first_column,
++						   strdup("Bad event or PMU"),
++						   help);
+ 			CLEANUP;
+ 			YYABORT;
+ 		}
+@@ -390,9 +394,18 @@ PE_NAME sep_dc
+ 	int err;
+ 
+ 	err = parse_events_multi_pmu_add(_parse_state, $1, NULL, &list);
+-	free($1);
+-	if (err < 0)
++	if (err < 0) {
++		struct parse_events_state *parse_state = _parse_state;
++		struct parse_events_error *error = parse_state->error;
++		char *help;
++
++		if (asprintf(&help, "Unabled to find PMU or event on a PMU of '%s'", $1) < 0)
++			help = NULL;
++		parse_events_error__handle(error, @1.first_column, strdup("Bad event name"), help);
++		free($1);
+ 		PE_ABORT(err);
++	}
++	free($1);
+ 	$$ = list;
+ }
+ |
 -- 
 2.40.1
 
