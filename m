@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B107A3745
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1A5D7A374E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:17:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbjIQTQq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:16:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44388 "EHLO
+        id S233811AbjIQTRV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:17:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbjIQTQj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:16:39 -0400
+        with ESMTP id S237957AbjIQTRS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:17:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35848FA
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:16:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E58C433C7;
-        Sun, 17 Sep 2023 19:16:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4287FA
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:17:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DC4C433C7;
+        Sun, 17 Sep 2023 19:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978193;
-        bh=aGIbATvrgmnfkOZQ5CRLe7PWMPYKxCagS+RIbT+OJSw=;
+        s=korg; t=1694978232;
+        bh=WIqYjgr3eBtJEOX5KW6jzVZVLnxZIFp+wfTcYzjG+7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u9y5SKDSUSAIIhirPYP+d9fBl/VRD00vtdxatFcTMAGgeXz+tiHDxBA0kbbRia3PM
-         Omeid1hACk9WqfAuu0Hf8qRzXQfmA8gnkFu2nwW2gcuFn2eBrcT/Bd5qCqKo0GHJl6
-         eme6xJxMXExLPAngXuuhdWR1VEPgSJ3t06o9UJVg=
+        b=GcGsfs8Khbc6N8c9HPGchn9HgPeLs+tsgONuQVCjpUCWoLE5tbMjfAX86b+071Znr
+         7WXccK48JuJ/EBqnaNIAVWRNid8s1IAB5RnzZwBG7RN7m57oQHG6rEjizkIjCA37Yd
+         x3QmrYHg4mvW1KsDU+zJ6e+qUO7AsaVU0YRddXyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, keltargw <keltar.gw@gmail.com>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 5.10 001/406] erofs: ensure that the post-EOF tails are all zeroed
-Date:   Sun, 17 Sep 2023 21:07:35 +0200
-Message-ID: <20230917191101.088800193@linuxfoundation.org>
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 5.10 002/406] ARM: pxa: remove use of symbol_get()
+Date:   Sun, 17 Sep 2023 21:07:36 +0200
+Message-ID: <20230917191101.129417420@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -53,47 +54,73 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit e4c1cf523d820730a86cae2c6d55924833b6f7ac upstream.
+commit 0faa29c4207e6e29cfc81b427df60e326c37083a upstream.
 
-This was accidentally fixed up in commit e4c1cf523d82 but we can't
-take the full change due to other dependancy issues, so here is just
-the actual bugfix that is needed.
+The spitz board file uses the obscure symbol_get() function
+to optionally call a function from sharpsl_pm.c if that is
+built. However, the two files are always built together
+these days, and have been for a long time, so this can
+be changed to a normal function call.
 
-[Background]
-
-keltargw reported an issue [1] that with mmaped I/Os, sometimes the
-tail of the last page (after file ends) is not filled with zeroes.
-
-The root cause is that such tail page could be wrongly selected for
-inplace I/Os so the zeroed part will then be filled with compressed
-data instead of zeroes.
-
-A simple fix is to avoid doing inplace I/Os for such tail parts,
-actually that was already fixed upstream in commit e4c1cf523d82
-("erofs: tidy up z_erofs_do_read_page()") by accident.
-
-[1] https://lore.kernel.org/r/3ad8b469-25db-a297-21f9-75db2d6ad224@linux.alibaba.com
-
-Reported-by: keltargw <keltar.gw@gmail.com>
-Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/lkml/20230731162639.GA9441@lst.de/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zdata.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-pxa/sharpsl_pm.c |    2 --
+ arch/arm/mach-pxa/spitz.c      |   14 +-------------
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -632,6 +632,8 @@ hitted:
- 	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
- 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
- 		zero_user_segment(page, cur, end);
-+		++spiltted;
-+		tight = false;
- 		goto next_part;
- 	}
+--- a/arch/arm/mach-pxa/sharpsl_pm.c
++++ b/arch/arm/mach-pxa/sharpsl_pm.c
+@@ -220,8 +220,6 @@ void sharpsl_battery_kick(void)
+ {
+ 	schedule_delayed_work(&sharpsl_bat, msecs_to_jiffies(125));
+ }
+-EXPORT_SYMBOL(sharpsl_battery_kick);
+-
  
+ static void sharpsl_battery_thread(struct work_struct *private_)
+ {
+--- a/arch/arm/mach-pxa/spitz.c
++++ b/arch/arm/mach-pxa/spitz.c
+@@ -9,7 +9,6 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <linux/module.h>	/* symbol_get ; symbol_put */
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/gpio_keys.h>
+@@ -514,17 +513,6 @@ static struct pxa2xx_spi_chip spitz_ads7
+ 	.gpio_cs		= SPITZ_GPIO_ADS7846_CS,
+ };
+ 
+-static void spitz_bl_kick_battery(void)
+-{
+-	void (*kick_batt)(void);
+-
+-	kick_batt = symbol_get(sharpsl_battery_kick);
+-	if (kick_batt) {
+-		kick_batt();
+-		symbol_put(sharpsl_battery_kick);
+-	}
+-}
+-
+ static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
+ 	.dev_id = "spi2.1",
+ 	.table = {
+@@ -552,7 +540,7 @@ static struct corgi_lcd_platform_data sp
+ 	.max_intensity		= 0x2f,
+ 	.default_intensity	= 0x1f,
+ 	.limit_mask		= 0x0b,
+-	.kick_battery		= spitz_bl_kick_battery,
++	.kick_battery		= sharpsl_battery_kick,
+ };
+ 
+ static struct pxa2xx_spi_chip spitz_lcdcon_chip = {
 
 
