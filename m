@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E0147A3B2B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47FB37A3B2D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240623AbjIQUOB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:14:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36454 "EHLO
+        id S240628AbjIQUOC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240756AbjIQUNm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:42 -0400
+        with ESMTP id S240769AbjIQUNn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB897195
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FD4C433C8;
-        Sun, 17 Sep 2023 20:13:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D41EF3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1A2C433C9;
+        Sun, 17 Sep 2023 20:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981609;
-        bh=T7bcrBAT3B2mrpDiThxWXFxEBT7H1fohY3CdZ30bGJA=;
+        s=korg; t=1694981616;
+        bh=MEKrscnEFiv1sBKukiE8YPGiWFdaeSu7ukY7ftomAz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E9ibumVP4hmrC0OaYX8BX3JKat6MfSlIrS8vv8nOiakR37xpWW8EXH6+9vU0Jp0x8
-         Zc1PAbf+VBGXLkEj8H55Y6X5frvcfuGIkCVwkFOhUVFr2ggitjLQr81Ib7+6bD3VMT
-         srAGRXD2rQnsoNF/HVvXvzlSqJcbZbBc46iHtk6s=
+        b=Tqi4LlQV7ZG9qKuh/LB4EyAiITeR0d/NV6Ty8IvN5NDmXS3RfJi9AWPjk16cS7vZf
+         FTIdLdjPXMIvWKNoUkUE3UtldDkwVPp18Cxx6MC1HeOBI6tYYHjF1k+OMFplRvC92Y
+         +bZSa6skmImwvAXtS/bfUUQ5/qefk5emDjCBoP10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexander Lobakin <alobakin@pm.me>,
+        Quentin Monnet <quentin@isovalent.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/511] cpufreq: powernow-k8: Use related_cpus instead of cpus in driver.exit()
-Date:   Sun, 17 Sep 2023 21:08:25 +0200
-Message-ID: <20230917191115.758604813@linuxfoundation.org>
+Subject: [PATCH 5.15 079/511] bpftool: Use a local bpf_perf_event_value to fix accessing its fields
+Date:   Sun, 17 Sep 2023 21:08:26 +0200
+Message-ID: <20230917191115.782455086@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,36 +55,135 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Alexander Lobakin <alobakin@pm.me>
 
-[ Upstream commit 03997da042dac73c69e60d91942c727c76828b65 ]
+[ Upstream commit 658ac06801315b739774a15796ff06913ef5cad5 ]
 
-Since the 'cpus' field of policy structure will become empty in the
-cpufreq core API, it is better to use 'related_cpus' in the exit()
-callback of driver.
+Fix the following error when building bpftool:
 
-Fixes: c3274763bfc3 ("cpufreq: powernow-k8: Initialize per-cpu data-structures properly")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+  CLANG   profiler.bpf.o
+  CLANG   pid_iter.bpf.o
+skeleton/profiler.bpf.c:18:21: error: invalid application of 'sizeof' to an incomplete type 'struct bpf_perf_event_value'
+        __uint(value_size, sizeof(struct bpf_perf_event_value));
+                           ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:13:39: note: expanded from macro '__uint'
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helper_defs.h:7:8: note: forward declaration of 'struct bpf_perf_event_value'
+struct bpf_perf_event_value;
+       ^
+
+struct bpf_perf_event_value is being used in the kernel only when
+CONFIG_BPF_EVENTS is enabled, so it misses a BTF entry then.
+Define struct bpf_perf_event_value___local with the
+`preserve_access_index` attribute inside the pid_iter BPF prog to
+allow compiling on any configs. It is a full mirror of a UAPI
+structure, so is compatible both with and w/o CO-RE.
+bpf_perf_event_read_value() requires a pointer of the original type,
+so a cast is needed.
+
+Fixes: 47c09d6a9f67 ("bpftool: Introduce "prog profile" command")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Alexander Lobakin <alobakin@pm.me>
+Signed-off-by: Quentin Monnet <quentin@isovalent.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230707095425.168126-5-quentin@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/powernow-k8.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/skeleton/profiler.bpf.c | 27 ++++++++++++++---------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
-index 12ab4014af712..94fe0e15623e4 100644
---- a/drivers/cpufreq/powernow-k8.c
-+++ b/drivers/cpufreq/powernow-k8.c
-@@ -1101,7 +1101,8 @@ static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
+diff --git a/tools/bpf/bpftool/skeleton/profiler.bpf.c b/tools/bpf/bpftool/skeleton/profiler.bpf.c
+index ce5b65e07ab10..2f80edc682f11 100644
+--- a/tools/bpf/bpftool/skeleton/profiler.bpf.c
++++ b/tools/bpf/bpftool/skeleton/profiler.bpf.c
+@@ -4,6 +4,12 @@
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_tracing.h>
  
- 	kfree(data->powernow_table);
- 	kfree(data);
--	for_each_cpu(cpu, pol->cpus)
-+	/* pol->cpus will be empty here, use related_cpus instead. */
-+	for_each_cpu(cpu, pol->related_cpus)
- 		per_cpu(powernow_data, cpu) = NULL;
++struct bpf_perf_event_value___local {
++	__u64 counter;
++	__u64 enabled;
++	__u64 running;
++} __attribute__((preserve_access_index));
++
+ /* map of perf event fds, num_cpu * num_metric entries */
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+@@ -15,14 +21,14 @@ struct {
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
+ 	__uint(key_size, sizeof(u32));
+-	__uint(value_size, sizeof(struct bpf_perf_event_value));
++	__uint(value_size, sizeof(struct bpf_perf_event_value___local));
+ } fentry_readings SEC(".maps");
  
- 	return 0;
+ /* accumulated readings */
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
+ 	__uint(key_size, sizeof(u32));
+-	__uint(value_size, sizeof(struct bpf_perf_event_value));
++	__uint(value_size, sizeof(struct bpf_perf_event_value___local));
+ } accum_readings SEC(".maps");
+ 
+ /* sample counts, one per cpu */
+@@ -39,7 +45,7 @@ const volatile __u32 num_metric = 1;
+ SEC("fentry/XXX")
+ int BPF_PROG(fentry_XXX)
+ {
+-	struct bpf_perf_event_value *ptrs[MAX_NUM_MATRICS];
++	struct bpf_perf_event_value___local *ptrs[MAX_NUM_MATRICS];
+ 	u32 key = bpf_get_smp_processor_id();
+ 	u32 i;
+ 
+@@ -53,10 +59,10 @@ int BPF_PROG(fentry_XXX)
+ 	}
+ 
+ 	for (i = 0; i < num_metric && i < MAX_NUM_MATRICS; i++) {
+-		struct bpf_perf_event_value reading;
++		struct bpf_perf_event_value___local reading;
+ 		int err;
+ 
+-		err = bpf_perf_event_read_value(&events, key, &reading,
++		err = bpf_perf_event_read_value(&events, key, (void *)&reading,
+ 						sizeof(reading));
+ 		if (err)
+ 			return 0;
+@@ -68,14 +74,14 @@ int BPF_PROG(fentry_XXX)
+ }
+ 
+ static inline void
+-fexit_update_maps(u32 id, struct bpf_perf_event_value *after)
++fexit_update_maps(u32 id, struct bpf_perf_event_value___local *after)
+ {
+-	struct bpf_perf_event_value *before, diff;
++	struct bpf_perf_event_value___local *before, diff;
+ 
+ 	before = bpf_map_lookup_elem(&fentry_readings, &id);
+ 	/* only account samples with a valid fentry_reading */
+ 	if (before && before->counter) {
+-		struct bpf_perf_event_value *accum;
++		struct bpf_perf_event_value___local *accum;
+ 
+ 		diff.counter = after->counter - before->counter;
+ 		diff.enabled = after->enabled - before->enabled;
+@@ -93,7 +99,7 @@ fexit_update_maps(u32 id, struct bpf_perf_event_value *after)
+ SEC("fexit/XXX")
+ int BPF_PROG(fexit_XXX)
+ {
+-	struct bpf_perf_event_value readings[MAX_NUM_MATRICS];
++	struct bpf_perf_event_value___local readings[MAX_NUM_MATRICS];
+ 	u32 cpu = bpf_get_smp_processor_id();
+ 	u32 i, zero = 0;
+ 	int err;
+@@ -102,7 +108,8 @@ int BPF_PROG(fexit_XXX)
+ 	/* read all events before updating the maps, to reduce error */
+ 	for (i = 0; i < num_metric && i < MAX_NUM_MATRICS; i++) {
+ 		err = bpf_perf_event_read_value(&events, cpu + i * num_cpu,
+-						readings + i, sizeof(*readings));
++						(void *)(readings + i),
++						sizeof(*readings));
+ 		if (err)
+ 			return 0;
+ 	}
 -- 
 2.40.1
 
