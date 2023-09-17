@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FA87A396F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DBBC7A386B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240016AbjIQTtV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:49:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46500 "EHLO
+        id S239753AbjIQTfb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:35:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240099AbjIQTtA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:00 -0400
+        with ESMTP id S239842AbjIQTfY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5216EE7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787B3C433CA;
-        Sun, 17 Sep 2023 19:48:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9568711C
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F0BC433C7;
+        Sun, 17 Sep 2023 19:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980134;
-        bh=IypD/JXIcR+bD/Jjk63RQMNMcV1yuByPeFbpAnGS9SY=;
+        s=korg; t=1694979318;
+        bh=s+vTHCBQuFiC/dW4Upd3TRl0y4Q18HJadIPJ4EKFFGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZgwYEJiHeBYtveL1g7pl0iS9k4W4WWFAFAI/QAsbT2iX+T3j3jVrck2MXx/4CwfaT
-         6h+v/QQhucnO+G5LSe5WqVE8IJbcSaPkn56Hjus5KAN1Xkosg9eGROIEXhfg/b6OFh
-         I1K8pPCsUwrbsoSm5r2IsyNk9o0xTVfxSBpP1EcY=
+        b=e3igZZkN8C72sO6k6onVmwGS2KaiyFzMLD+dlj33/yQ0tsndBLkl1vpueDmO36whi
+         dDORx67wuYjOQSaI5lYban0j2pJBAA3Wt+G7BSV2WY2x+GhWqn6wc2ZPGBDqurHj8D
+         /OFbVmo9lajrH2WJQqJNESptzGQr5zuizeRPcET8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
-        Richard Guy Briggs <rgb@redhat.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 105/285] netfilter: nf_tables: Audit log rule reset
+Subject: [PATCH 5.10 251/406] RDMA/siw: Correct wrong debug message
 Date:   Sun, 17 Sep 2023 21:11:45 +0200
-Message-ID: <20230917191055.301845427@linuxfoundation.org>
+Message-ID: <20230917191107.796121629@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,95 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-[ Upstream commit ea078ae9108e25fc881c84369f7c03931d22e555 ]
+[ Upstream commit bee024d20451e4ce04ea30099cad09f7f75d288b ]
 
-Resetting rules' stateful data happens outside of the transaction logic,
-so 'get' and 'dump' handlers have to emit audit log entries themselves.
+We need to print num_sle first then pbl->max_buf per the condition.
+Also replace mem->pbl with pbl while at it.
 
-Fixes: 8daa8fde3fc3f ("netfilter: nf_tables: Introduce NFT_MSG_GETRULE_RESET")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Reviewed-by: Richard Guy Briggs <rgb@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Link: https://lore.kernel.org/r/20230821133255.31111-3-guoqing.jiang@linux.dev
+Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/audit.h         |  1 +
- kernel/auditsc.c              |  1 +
- net/netfilter/nf_tables_api.c | 18 ++++++++++++++++++
- 3 files changed, 20 insertions(+)
+ drivers/infiniband/sw/siw/siw_verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 192bf03aacc52..51b1b7054a233 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -118,6 +118,7 @@ enum audit_nfcfgop {
- 	AUDIT_NFT_OP_FLOWTABLE_REGISTER,
- 	AUDIT_NFT_OP_FLOWTABLE_UNREGISTER,
- 	AUDIT_NFT_OP_SETELEM_RESET,
-+	AUDIT_NFT_OP_RULE_RESET,
- 	AUDIT_NFT_OP_INVALID,
- };
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index d043793ff0f53..1d4e0dc550e42 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -1487,7 +1487,7 @@ int siw_map_mr_sg(struct ib_mr *base_mr, struct scatterlist *sl, int num_sle,
  
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 87342b7126bcd..eae5dfe9b9a01 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -144,6 +144,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
- 	{ AUDIT_NFT_OP_FLOWTABLE_REGISTER,	"nft_register_flowtable"   },
- 	{ AUDIT_NFT_OP_FLOWTABLE_UNREGISTER,	"nft_unregister_flowtable" },
- 	{ AUDIT_NFT_OP_SETELEM_RESET,		"nft_reset_setelem"        },
-+	{ AUDIT_NFT_OP_RULE_RESET,		"nft_reset_rule"           },
- 	{ AUDIT_NFT_OP_INVALID,			"nft_invalid"		   },
- };
- 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 2e3844d5923f5..cc70482b94907 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3422,6 +3422,18 @@ static void nf_tables_rule_notify(const struct nft_ctx *ctx,
- 	nfnetlink_set_err(ctx->net, ctx->portid, NFNLGRP_NFTABLES, -ENOBUFS);
- }
- 
-+static void audit_log_rule_reset(const struct nft_table *table,
-+				 unsigned int base_seq,
-+				 unsigned int nentries)
-+{
-+	char *buf = kasprintf(GFP_ATOMIC, "%s:%u",
-+			      table->name, base_seq);
-+
-+	audit_log_nfcfg(buf, table->family, nentries,
-+			AUDIT_NFT_OP_RULE_RESET, GFP_ATOMIC);
-+	kfree(buf);
-+}
-+
- struct nft_rule_dump_ctx {
- 	char *table;
- 	char *chain;
-@@ -3528,6 +3540,9 @@ static int nf_tables_dump_rules(struct sk_buff *skb,
- done:
- 	rcu_read_unlock();
- 
-+	if (reset && idx > cb->args[0])
-+		audit_log_rule_reset(table, cb->seq, idx - cb->args[0]);
-+
- 	cb->args[0] = idx;
- 	return skb->len;
- }
-@@ -3635,6 +3650,9 @@ static int nf_tables_getrule(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (err < 0)
- 		goto err_fill_rule_info;
- 
-+	if (reset)
-+		audit_log_rule_reset(table, nft_pernet(net)->base_seq, 1);
-+
- 	return nfnetlink_unicast(skb2, net, NETLINK_CB(skb).portid);
- 
- err_fill_rule_info:
+ 	if (pbl->max_buf < num_sle) {
+ 		siw_dbg_mem(mem, "too many SGE's: %d > %d\n",
+-			    mem->pbl->max_buf, num_sle);
++			    num_sle, pbl->max_buf);
+ 		return -ENOMEM;
+ 	}
+ 	for_each_sg(sl, slp, num_sle, i) {
 -- 
 2.40.1
 
