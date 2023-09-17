@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11AC97A3A4E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED4F7A39A8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240275AbjIQUCR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59292 "EHLO
+        id S239495AbjIQTxF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:53:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240333AbjIQUBm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:42 -0400
+        with ESMTP id S240136AbjIQTwq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A25196
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B5BC43397;
-        Sun, 17 Sep 2023 20:01:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F25CCC4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D711C433CD;
+        Sun, 17 Sep 2023 19:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980875;
-        bh=38gmd9P7XBwZM5CarY5zU96L3QdMcJQ65V8M2FdO8yQ=;
+        s=korg; t=1694980337;
+        bh=pU0p9780dtn6CnZNE+9uIF67WFRb4UcUtb72quRvovk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oqqPeXkq0fQrUS2ZZfQXQ+IdndNgIzIq/cYUWSz86UynS7hRbY0lOE3heesJ2bGbJ
-         WUpfvcw4Z9kEfH73LbFhjh2JPS+iUo4gcFqWaJIp2R806+yaPauIaijO+o+rmDGU3n
-         ig0IEvP21J+vMHozvanfqfgSid9dq/PT6Ua180RE=
+        b=SRMMYlQKR2pDGdUFbiSqraEq0yKQzxx8KEjCp/9ZEtQtBuMEyrzbsqqtHCr+qf5LT
+         OnaBwg106+9z7++oQ1UjJKzjCUd6Zo4wjpu/VJNiGh/eTNGcKqXjOU7Wp1B6ORLQoI
+         TFEMBTaePSozTknR9XfO3vqAZTKRhLcPB7L50go8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Muchun Song <songmuchun@bytedance.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 034/219] mm: hugetlb_vmemmap: fix a race between vmemmap pmd split
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 161/285] bpf: bpf_sk_storage: Fix the missing uncharge in sk_omem_alloc
 Date:   Sun, 17 Sep 2023 21:12:41 +0200
-Message-ID: <20230917191042.236707960@linuxfoundation.org>
+Message-ID: <20230917191057.241079311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,104 +50,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-commit 3ce2c24cb68f228590a053d6058a5901cd31af61 upstream.
+[ Upstream commit 55d49f750b1cb1f177fb1b00ae02cba4613bcfb7 ]
 
-The local variable @page in __split_vmemmap_huge_pmd() to obtain a pmd
-page without holding page_table_lock may possiblely get the page table
-page instead of a huge pmd page.
+The commit c83597fa5dc6 ("bpf: Refactor some inode/task/sk storage functions
+for reuse"), refactored the bpf_{sk,task,inode}_storage_free() into
+bpf_local_storage_unlink_nolock() which then later renamed to
+bpf_local_storage_destroy(). The commit accidentally passed the
+"bool uncharge_mem = false" argument to bpf_selem_unlink_storage_nolock()
+which then stopped the uncharge from happening to the sk->sk_omem_alloc.
 
-The effect may be in set_pte_at() since we may pass an invalid page
-struct, if set_pte_at() wants to access the page struct (e.g.
-CONFIG_PAGE_TABLE_CHECK is enabled), it may crash the kernel.
+This missing uncharge only happens when the sk is going away (during
+__sk_destruct).
 
-So fix it.  And inline __split_vmemmap_huge_pmd() since it only has one
-user.
+This patch fixes it by always passing "uncharge_mem = true". It is a
+noop to the task/inode/cgroup storage because they do not have the
+map_local_storage_(un)charge enabled in the map_ops. A followup patch
+will be done in bpf-next to remove the uncharge_mem argument.
 
-Link: https://lkml.kernel.org/r/20230707033859.16148-1-songmuchun@bytedance.com
-Fixes: d8d55f5616cf ("mm: sparsemem: use page table lock to protect kernel pmd operations")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A selftest is added in the next patch.
+
+Fixes: c83597fa5dc6 ("bpf: Refactor some inode/task/sk storage functions for reuse")
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230901231129.578493-3-martin.lau@linux.dev
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb_vmemmap.c |   34 ++++++++++++++--------------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+ kernel/bpf/bpf_local_storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -36,14 +36,22 @@ struct vmemmap_remap_walk {
- 	struct list_head	*vmemmap_pages;
- };
- 
--static int __split_vmemmap_huge_pmd(pmd_t *pmd, unsigned long start)
-+static int split_vmemmap_huge_pmd(pmd_t *pmd, unsigned long start)
- {
- 	pmd_t __pmd;
- 	int i;
- 	unsigned long addr = start;
--	struct page *page = pmd_page(*pmd);
--	pte_t *pgtable = pte_alloc_one_kernel(&init_mm);
-+	struct page *head;
-+	pte_t *pgtable;
-+
-+	spin_lock(&init_mm.page_table_lock);
-+	head = pmd_leaf(*pmd) ? pmd_page(*pmd) : NULL;
-+	spin_unlock(&init_mm.page_table_lock);
- 
-+	if (!head)
-+		return 0;
-+
-+	pgtable = pte_alloc_one_kernel(&init_mm);
- 	if (!pgtable)
- 		return -ENOMEM;
- 
-@@ -53,7 +61,7 @@ static int __split_vmemmap_huge_pmd(pmd_
- 		pte_t entry, *pte;
- 		pgprot_t pgprot = PAGE_KERNEL;
- 
--		entry = mk_pte(page + i, pgprot);
-+		entry = mk_pte(head + i, pgprot);
- 		pte = pte_offset_kernel(&__pmd, addr);
- 		set_pte_at(&init_mm, addr, pte, entry);
- 	}
-@@ -65,8 +73,8 @@ static int __split_vmemmap_huge_pmd(pmd_
- 		 * be treated as indepdenent small pages (as they can be freed
- 		 * individually).
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index 37ad47d52dc55..146824cc96893 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -760,7 +760,7 @@ void bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
+ 		 * of the loop will set the free_cgroup_storage to true.
  		 */
--		if (!PageReserved(page))
--			split_page(page, get_order(PMD_SIZE));
-+		if (!PageReserved(head))
-+			split_page(head, get_order(PMD_SIZE));
+ 		free_storage = bpf_selem_unlink_storage_nolock(
+-			local_storage, selem, false, true);
++			local_storage, selem, true, true);
+ 	}
+ 	raw_spin_unlock_irqrestore(&local_storage->lock, flags);
  
- 		/* Make pte visible before pmd. See comment in pmd_install(). */
- 		smp_wmb();
-@@ -80,20 +88,6 @@ static int __split_vmemmap_huge_pmd(pmd_
- 	return 0;
- }
- 
--static int split_vmemmap_huge_pmd(pmd_t *pmd, unsigned long start)
--{
--	int leaf;
--
--	spin_lock(&init_mm.page_table_lock);
--	leaf = pmd_leaf(*pmd);
--	spin_unlock(&init_mm.page_table_lock);
--
--	if (!leaf)
--		return 0;
--
--	return __split_vmemmap_huge_pmd(pmd, start);
--}
--
- static void vmemmap_pte_range(pmd_t *pmd, unsigned long addr,
- 			      unsigned long end,
- 			      struct vmemmap_remap_walk *walk)
+-- 
+2.40.1
+
 
 
