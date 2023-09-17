@@ -2,50 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E9C47A3992
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 619FA7A3966
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239483AbjIQTv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48798 "EHLO
+        id S240071AbjIQTsu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240096AbjIQTvB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:01 -0400
+        with ESMTP id S240157AbjIQTsp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D277AC6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89F5C433CB;
-        Sun, 17 Sep 2023 19:50:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 452D513E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8B2C433CA;
+        Sun, 17 Sep 2023 19:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980255;
-        bh=M3AKh6KQKt+8WdMFk6UOGvMfyzzadE+EGT7aXdguJao=;
+        s=korg; t=1694980113;
+        bh=EFNQ6yXt0cCWJy3EtzKj5AiRiApdkqUgpA/tXOI6UL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cf7ZBq9eLcvkfsTlwJv9MI9p+FV5DiRBdaHwHnwlxrOi9PGGlV7mR1Alm61UE80MH
-         2I9SEahL24UGZcduKJsTh3fi7rmETtJ+eibL3CfopDEMb7HGkHjFdG93GwkXATqdja
-         m8qp44uq0b90JhcyR6Y1O5E5ty3ROcL0NkbQzkk8=
+        b=Z1Zyluq3yyK+7KJ2DGmZkHJGkjWCm79VKImKp/sPRECgFDoxDePcRnmXfyMVRuntj
+         C11v229VN2YOjCJKA3AeiRJyS0CWmeHzNVmZMYPuEfxAs5KpJWNhra0SKDjESRdJUP
+         dmijvr6817v+28ny9KRZzuPT8aSpxKkxc385vylg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Ian Rogers <irogers@google.com>,
-        John Garry <john.g.garry@oracle.com>,
-        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        James Clark <james.clark@arm.com>,
-        Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mike Leach <mike.leach@linaro.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 092/285] perf vendor events arm64: Remove L1D_CACHE_LMISS from AmpereOne list
-Date:   Sun, 17 Sep 2023 21:11:32 +0200
-Message-ID: <20230917191054.880020905@linuxfoundation.org>
+Subject: [PATCH 6.5 093/285] pwm: lpc32xx: Remove handling of PWM channels
+Date:   Sun, 17 Sep 2023 21:11:33 +0200
+Message-ID: <20230917191054.914789261@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -53,6 +42,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -68,55 +58,83 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Vladimir Zapolskiy <vz@mleia.com>
 
-[ Upstream commit b8af10062df3c23fe002c3f187389bb263b3eb20 ]
+[ Upstream commit 4aae44f65827f0213a7361cf9c32cfe06114473f ]
 
-amperene/cache.json file tried to include L1D_CACHE_LMISS while it
-doesn't exist in common-and-microarch.json. While this bug doesn't seem to
-cause issue in newer kernels with jevents.py script, it prevents building
-older perf tools with the backported patch.
+Because LPC32xx PWM controllers have only a single output which is
+registered as the only PWM device/channel per controller, it is known in
+advance that pwm->hwpwm value is always 0. On basis of this fact
+simplify the code by removing operations with pwm->hwpwm, there is no
+controls which require channel number as input.
 
-Fixes: a9650b7f6fc09d16 ("perf vendor events arm64: Add AmpereOne core PMU events")
-Reported-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Closes: https://lore.kernel.org/all/76bb2e47-ce44-76ae-838e-53279047084d@oracle.com/
-Link: https://lore.kernel.org/r/20230803211331.140553-2-ilkka@os.amperecomputing.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Even though I wasn't aware at the time when I forward ported that patch,
+this fixes a null pointer dereference as lpc32xx->chip.pwms is NULL
+before devm_pwmchip_add() is called.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 3d2813fb17e5 ("pwm: lpc32xx: Don't modify HW state in .probe() after the PWM chip was registered")
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/arm64/ampere/ampereone/cache.json | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pwm/pwm-lpc32xx.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/cache.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/cache.json
-index fc06330542116..7a2b7b200f144 100644
---- a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/cache.json
-+++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/cache.json
-@@ -92,9 +92,6 @@
-     {
-         "ArchStdEvent": "L1D_CACHE_LMISS_RD"
-     },
--    {
--        "ArchStdEvent": "L1D_CACHE_LMISS"
--    },
-     {
-         "ArchStdEvent": "L1I_CACHE_LMISS"
-     },
+diff --git a/drivers/pwm/pwm-lpc32xx.c b/drivers/pwm/pwm-lpc32xx.c
+index 86a0ea0f6955c..806f0bb3ad6d8 100644
+--- a/drivers/pwm/pwm-lpc32xx.c
++++ b/drivers/pwm/pwm-lpc32xx.c
+@@ -51,10 +51,10 @@ static int lpc32xx_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	if (duty_cycles > 255)
+ 		duty_cycles = 255;
+ 
+-	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val &= ~0xFFFF;
+ 	val |= (period_cycles << 8) | duty_cycles;
+-	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	return 0;
+ }
+@@ -69,9 +69,9 @@ static int lpc32xx_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	if (ret)
+ 		return ret;
+ 
+-	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val |= PWM_ENABLE;
+-	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	return 0;
+ }
+@@ -81,9 +81,9 @@ static void lpc32xx_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	struct lpc32xx_pwm_chip *lpc32xx = to_lpc32xx_pwm_chip(chip);
+ 	u32 val;
+ 
+-	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val &= ~PWM_ENABLE;
+-	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	clk_disable_unprepare(lpc32xx->clk);
+ }
+@@ -141,9 +141,9 @@ static int lpc32xx_pwm_probe(struct platform_device *pdev)
+ 	lpc32xx->chip.npwm = 1;
+ 
+ 	/* If PWM is disabled, configure the output to the default value */
+-	val = readl(lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val &= ~PWM_PIN_LEVEL;
+-	writel(val, lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	ret = devm_pwmchip_add(&pdev->dev, &lpc32xx->chip);
+ 	if (ret < 0) {
 -- 
 2.40.1
 
