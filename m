@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E75597A38B4
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 074367A39CE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239826AbjIQTjN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
+        id S240160AbjIQTyl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:54:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239835AbjIQTiw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:52 -0400
+        with ESMTP id S240183AbjIQTyW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FDC12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E276C433C7;
-        Sun, 17 Sep 2023 19:38:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90FAEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1B0C433C8;
+        Sun, 17 Sep 2023 19:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979526;
-        bh=NCktdAvptq8QEQ1CCYoHSb1xKU3ImX2Gc56Fchvjyho=;
+        s=korg; t=1694980457;
+        bh=S0zqokmRPlr3UoQkRLDvQt+xA6D03M85IfXHQl7w7ug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=afOyPFyOTaTu1/n6MKZ1bx8wH8toSYfXVQHnniKvCsU52ypqjMk7xx8JIq5tZsH/2
-         N/J4qvN+8BwQXfNFzqR5NlXtjO2WeNbkVrvJj8m2LYSz8Ka1L67Q1zqsGsTTgxMLvK
-         17/VfGoCN7Y/cThoWGPvaOnqxCpstyXnHZ3RTahc=
+        b=v5uhT6DkeN8Cd1MfQZLL3NWDoJ/1/WTyciio8OQ05jeskgOLS0i/xDcIgfrgZkT5e
+         xMgdLLJcMTcU6j1X7mo47i4CnEufyMIQl3F1xes6kdnKLbsgd0Ij1BryoBnxlEyLjA
+         2FC17H+nQ7ZYpUJz4MiEEqmeRukxkEJScIC9F5DU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lars Ekman <uablrek@gmail.com>,
-        Quan Tian <qtian@vmware.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 313/406] net/ipv6: SKB symmetric hash should incorporate transport ports
+        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 167/285] net: hns3: fix tx timeout issue
 Date:   Sun, 17 Sep 2023 21:12:47 +0200
-Message-ID: <20230917191109.565873918@linuxfoundation.org>
+Message-ID: <20230917191057.431684481@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,55 +51,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quan Tian <qtian@vmware.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit a5e2151ff9d5852d0ababbbcaeebd9646af9c8d9 upstream.
+[ Upstream commit 61a1deacc3d4fd3d57d7fda4d935f7f7503e8440 ]
 
-__skb_get_hash_symmetric() was added to compute a symmetric hash over
-the protocol, addresses and transport ports, by commit eb70db875671
-("packet: Use symmetric hash for PACKET_FANOUT_HASH."). It uses
-flow_keys_dissector_symmetric_keys as the flow_dissector to incorporate
-IPv4 addresses, IPv6 addresses and ports. However, it should not specify
-the flag as FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL, which stops further
-dissection when an IPv6 flow label is encountered, making transport
-ports not being incorporated in such case.
+Currently, the driver knocks the ring doorbell before updating
+the ring->last_to_use in tx flow. if the hardware transmiting
+packet and napi poll scheduling are fast enough, it may get
+the old ring->last_to_use in drivers' napi poll.
+In this case, the driver will think the tx is not completed, and
+return directly without clear the flag __QUEUE_STATE_STACK_XOFF,
+which may cause tx timeout.
 
-As a consequence, the symmetric hash is based on 5-tuple for IPv4 but
-3-tuple for IPv6 when flow label is present. It caused a few problems,
-e.g. when nft symhash and openvswitch l4_sym rely on the symmetric hash
-to perform load balancing as different L4 flows between two given IPv6
-addresses would always get the same symmetric hash, leading to uneven
-traffic distribution.
-
-Removing the use of FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL makes sure the
-symmetric hash is based on 5-tuple for both IPv4 and IPv6 consistently.
-
-Fixes: eb70db875671 ("packet: Use symmetric hash for PACKET_FANOUT_HASH.")
-Reported-by: Lars Ekman <uablrek@gmail.com>
-Closes: https://github.com/antrea-io/antrea/issues/5457
-Signed-off-by: Quan Tian <qtian@vmware.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 20d06ca2679c ("net: hns3: optimize the tx clean process")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/flow_dissector.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1589,8 +1589,7 @@ u32 __skb_get_hash_symmetric(const struc
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index b7b51e56b0308..71772213b4448 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -2102,8 +2102,12 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
+ 	 */
+ 	if (test_bit(HNS3_NIC_STATE_TX_PUSH_ENABLE, &priv->state) && num &&
+ 	    !ring->pending_buf && num <= HNS3_MAX_PUSH_BD_NUM && doorbell) {
++		/* This smp_store_release() pairs with smp_load_aquire() in
++		 * hns3_nic_reclaim_desc(). Ensure that the BD valid bit
++		 * is updated.
++		 */
++		smp_store_release(&ring->last_to_use, ring->next_to_use);
+ 		hns3_tx_push_bd(ring, num);
+-		WRITE_ONCE(ring->last_to_use, ring->next_to_use);
+ 		return;
+ 	}
  
- 	memset(&keys, 0, sizeof(keys));
- 	__skb_flow_dissect(NULL, skb, &flow_keys_dissector_symmetric,
--			   &keys, NULL, 0, 0, 0,
--			   FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL);
-+			   &keys, NULL, 0, 0, 0, 0);
+@@ -2114,6 +2118,11 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
+ 		return;
+ 	}
  
- 	return __flow_hash_from_keys(&keys, &hashrnd);
++	/* This smp_store_release() pairs with smp_load_aquire() in
++	 * hns3_nic_reclaim_desc(). Ensure that the BD valid bit is updated.
++	 */
++	smp_store_release(&ring->last_to_use, ring->next_to_use);
++
+ 	if (ring->tqp->mem_base)
+ 		hns3_tx_mem_doorbell(ring);
+ 	else
+@@ -2121,7 +2130,6 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
+ 		       ring->tqp->io_base + HNS3_RING_TX_RING_TAIL_REG);
+ 
+ 	ring->pending_buf = 0;
+-	WRITE_ONCE(ring->last_to_use, ring->next_to_use);
  }
+ 
+ static void hns3_tsyn(struct net_device *netdev, struct sk_buff *skb,
+@@ -3562,9 +3570,8 @@ static void hns3_reuse_buffer(struct hns3_enet_ring *ring, int i)
+ static bool hns3_nic_reclaim_desc(struct hns3_enet_ring *ring,
+ 				  int *bytes, int *pkts, int budget)
+ {
+-	/* pair with ring->last_to_use update in hns3_tx_doorbell(),
+-	 * smp_store_release() is not used in hns3_tx_doorbell() because
+-	 * the doorbell operation already have the needed barrier operation.
++	/* This smp_load_acquire() pairs with smp_store_release() in
++	 * hns3_tx_doorbell().
+ 	 */
+ 	int ltu = smp_load_acquire(&ring->last_to_use);
+ 	int ntc = ring->next_to_clean;
+-- 
+2.40.1
+
 
 
