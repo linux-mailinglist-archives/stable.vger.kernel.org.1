@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6137C7A3B82
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F3BE7A3D57
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240716AbjIQUSo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:18:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36392 "EHLO
+        id S241196AbjIQUlh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240745AbjIQUSd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:33 -0400
+        with ESMTP id S241300AbjIQUlK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD2EF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A832BC433C8;
-        Sun, 17 Sep 2023 20:18:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E5410E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F417EC433C9;
+        Sun, 17 Sep 2023 20:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981907;
-        bh=T2Tl6WgiHZghGvk3lPvU0D6PB9CZNRtV45MbXsCj4w0=;
+        s=korg; t=1694983264;
+        bh=OXm5oR9ppirK49YrlnYus9fh58vqVzZeVm61hhZu1Pk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Etm60sY3CH98tBfYeKYr+2q0RE241YRQldG24V2zu3m42VnyYHxcIaCtGEg/Wqod0
-         CJAec2ybWM8+yLNgHk22qclEflI32XoSjh4TVwabxzAGvThMXCz4Fmu+nW1YOzFffO
-         2vB1B44jUuEVEYL9MCArvN2ekGY1a89SZnBmWm98=
+        b=xKHxEFYptE4Qc1a2fZ+jA4daQ0r4vjf3+AcrkqhBf+fLxlv2yGgpUwFVcbtf+oP3N
+         VmY4A2Y5ygZ0nSSXTjRi2bZsgftwQsHQwI0p1hkQuBwyaiX+Tou8aypQMuMNpPYbqL
+         5gWHy7zconDyDTrj1fy9E8eGDMqukuqk83RjD1VA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
-        Marcin Wojtas <mw@semihalf.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/219] net: ethernet: mvpp2_main: fix possible OOB write in mvpp2_ethtool_get_rxnfc()
+Subject: [PATCH 5.15 491/511] ARM: dts: samsung: exynos4210-i9100: Fix LCD screens physical size
 Date:   Sun, 17 Sep 2023 21:15:18 +0200
-Message-ID: <20230917191047.844782197@linuxfoundation.org>
+Message-ID: <20230917191125.588707008@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit 51fe0a470543f345e3c62b6798929de3ddcedc1d ]
+[ Upstream commit b3f3fc32e5ff1e848555af8616318cc667457f90 ]
 
-rules is allocated in ethtool_get_rxnfc and the size is determined by
-rule_cnt from user space. So rule_cnt needs to be check before using
-rules to avoid OOB writing or NULL pointer dereference.
+The previous values were completely bogus, and resulted in the computed
+DPI ratio being much lower than reality, causing applications and UIs to
+misbehave.
 
-Fixes: 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Reviewed-by: Marcin Wojtas <mw@semihalf.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The new values were measured by myself with a ruler.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Cc: <stable@vger.kernel.org> # v5.8+
+Link: https://lore.kernel.org/r/20230714153720.336990-1-paul@crapouillou.net
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/boot/dts/exynos4210-i9100.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index b399bdb1ca362..f936640cca4e6 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5578,6 +5578,11 @@ static int mvpp2_ethtool_get_rxnfc(struct net_device *dev,
- 		break;
- 	case ETHTOOL_GRXCLSRLALL:
- 		for (i = 0; i < MVPP2_N_RFS_ENTRIES_PER_FLOW; i++) {
-+			if (loc == info->rule_cnt) {
-+				ret = -EMSGSIZE;
-+				break;
-+			}
-+
- 			if (port->rfs_rules[i])
- 				rules[loc++] = i;
- 		}
+diff --git a/arch/arm/boot/dts/exynos4210-i9100.dts b/arch/arm/boot/dts/exynos4210-i9100.dts
+index 5f5d9b1357365..93880bdbcad98 100644
+--- a/arch/arm/boot/dts/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/exynos4210-i9100.dts
+@@ -200,8 +200,8 @@
+ 			power-on-delay = <10>;
+ 			reset-delay = <10>;
+ 
+-			panel-width-mm = <90>;
+-			panel-height-mm = <154>;
++			panel-width-mm = <56>;
++			panel-height-mm = <93>;
+ 
+ 			display-timings {
+ 				timing {
 -- 
 2.40.1
 
