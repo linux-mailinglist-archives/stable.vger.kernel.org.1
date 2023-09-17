@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7D1D7A3BBD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACADB7A3BC0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239594AbjIQUVy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:21:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
+        id S240805AbjIQUVz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240837AbjIQUVd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:33 -0400
+        with ESMTP id S240901AbjIQUVo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB2C10A
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB67C433CB;
-        Sun, 17 Sep 2023 20:21:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E814610B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2796EC433C8;
+        Sun, 17 Sep 2023 20:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982085;
-        bh=ooDOdC8PmgA4kwmfAvkTIrjiH3M9GDJeRd422wdJDyQ=;
+        s=korg; t=1694982095;
+        bh=Lfl5yv2lqXwKyy48iIvyXTsd09P0ejVdwAwfo6Bdxek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zRTFS4awX0Jx64EP6/nah5UqHTKCnesYlvx2yXkDTBkE+ML7MkPGx4reLRMX/d2KK
-         OFY99SRavsD9GsIc4tME3Rz4/NOUJQ/3h4bn0xJnrpa4q0ZeC3QilZOhA/XF1s/FV4
-         BPslzM2O2itnyHmCWvSyAF/WTyg6URERjPSdLOQ8=
+        b=DXYpBsEy5YhezY7nsIx8o8OSGNVjtfRtWJycpGnmtL/RCX6ApYitA0xaI7MYYfxe/
+         qXgPxb3fKTIidNqLGvd38HwwJnrbS/05N5rZPQj/diKow8AUkaERf7LSym8MH64Ytv
+         xVnsgvmpt2ZEU0R2sVGiT+zwJeX7TgVI0lyuY+nw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Andrei Vagin <avagin@gmail.com>,
+        patches@lists.linux.dev,
+        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        Simon Horman <horms@kernel.org>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/219] tcp: Fix bind() regression for v4-mapped-v6 non-wildcard address.
-Date:   Sun, 17 Sep 2023 21:15:42 +0200
-Message-ID: <20230917191048.707271129@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 216/219] ixgbe: fix timestamp configuration code
+Date:   Sun, 17 Sep 2023 21:15:43 +0200
+Message-ID: <20230917191048.746065977@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -56,64 +58,147 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-[ Upstream commit c48ef9c4aed3632566b57ba66cec6ec78624d4cb ]
+[ Upstream commit 3c44191dd76cf9c0cc49adaf34384cbd42ef8ad2 ]
 
-Since bhash2 was introduced, the example below does not work as expected.
-These two bind() should conflict, but the 2nd bind() now succeeds.
+The commit in fixes introduced flags to control the status of hardware
+configuration while processing packets. At the same time another structure
+is used to provide configuration of timestamper to user-space applications.
+The way it was coded makes this structures go out of sync easily. The
+repro is easy for 82599 chips:
 
-  from socket import *
+[root@hostname ~]# hwstamp_ctl -i eth0 -r 12 -t 1
+current settings:
+tx_type 0
+rx_filter 0
+new settings:
+tx_type 1
+rx_filter 12
 
-  s1 = socket(AF_INET6, SOCK_STREAM)
-  s1.bind(('::ffff:127.0.0.1', 0))
+The eth0 device is properly configured to timestamp any PTPv2 events.
 
-  s2 = socket(AF_INET, SOCK_STREAM)
-  s2.bind(('127.0.0.1', s1.getsockname()[1]))
+[root@hostname ~]# hwstamp_ctl -i eth0 -r 1 -t 1
+current settings:
+tx_type 1
+rx_filter 12
+SIOCSHWTSTAMP failed: Numerical result out of range
+The requested time stamping mode is not supported by the hardware.
 
-During the 2nd bind() in inet_csk_get_port(), inet_bind2_bucket_find()
-fails to find the 1st socket's tb2, so inet_bind2_bucket_create() allocates
-a new tb2 for the 2nd socket.  Then, we call inet_csk_bind_conflict() that
-checks conflicts in the new tb2 by inet_bhash2_conflict().  However, the
-new tb2 does not include the 1st socket, thus the bind() finally succeeds.
+The error is properly returned because HW doesn't support all packets
+timestamping. But the adapter->flags is cleared of timestamp flags
+even though no HW configuration was done. From that point no RX timestamps
+are received by user-space application. But configuration shows good
+values:
 
-In this case, inet_bind2_bucket_match() must check if AF_INET6 tb2 has
-the conflicting v4-mapped-v6 address so that inet_bind2_bucket_find()
-returns the 1st socket's tb2.
+[root@hostname ~]# hwstamp_ctl -i eth0
+current settings:
+tx_type 1
+rx_filter 12
 
-Note that if we bind two sockets to 127.0.0.1 and then ::FFFF:127.0.0.1,
-the 2nd bind() fails properly for the same reason mentinoed in the previous
-commit.
+Fix the issue by applying new flags only when the HW was actually
+configured.
 
-Fixes: 28044fc1d495 ("net: Add a bhash2 table hashed by port and address")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Andrei Vagin <avagin@gmail.com>
+Fixes: a9763f3cb54c ("ixgbe: Update PTP to support X550EM_x devices")
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_hashtables.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c | 28 +++++++++++---------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index eb522c0374d59..d79de4b95186b 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -800,8 +800,13 @@ static bool inet_bind2_bucket_match(const struct inet_bind2_bucket *tb,
- 		return false;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
+index f8605f57bd067..75e1383263c1e 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
+@@ -995,6 +995,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 	u32 tsync_tx_ctl = IXGBE_TSYNCTXCTL_ENABLED;
+ 	u32 tsync_rx_ctl = IXGBE_TSYNCRXCTL_ENABLED;
+ 	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
++	u32 aflags = adapter->flags;
+ 	bool is_l2 = false;
+ 	u32 regval;
  
- #if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family != tb->family)
-+	if (sk->sk_family != tb->family) {
-+		if (sk->sk_family == AF_INET)
-+			return ipv6_addr_v4mapped(&tb->v6_rcv_saddr) &&
-+				tb->v6_rcv_saddr.s6_addr32[3] == sk->sk_rcv_saddr;
+@@ -1012,20 +1013,20 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 	case HWTSTAMP_FILTER_NONE:
+ 		tsync_rx_ctl = 0;
+ 		tsync_rx_mtrl = 0;
+-		adapter->flags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
+-				    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
++		aflags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
++			    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+ 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_L4_V1;
+ 		tsync_rx_mtrl |= IXGBE_RXMTRL_V1_SYNC_MSG;
+-		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
+-				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
++		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
++			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+ 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_L4_V1;
+ 		tsync_rx_mtrl |= IXGBE_RXMTRL_V1_DELAY_REQ_MSG;
+-		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
+-				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
++		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
++			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
+@@ -1039,8 +1040,8 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_EVENT_V2;
+ 		is_l2 = true;
+ 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
+-				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
++		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
++			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+ 	case HWTSTAMP_FILTER_NTP_ALL:
+@@ -1051,7 +1052,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 		if (hw->mac.type >= ixgbe_mac_X550) {
+ 			tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_ALL;
+ 			config->rx_filter = HWTSTAMP_FILTER_ALL;
+-			adapter->flags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
++			aflags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
+ 			break;
+ 		}
+ 		fallthrough;
+@@ -1062,8 +1063,6 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 		 * Delay_Req messages and hardware does not support
+ 		 * timestamping all packets => return error
+ 		 */
+-		adapter->flags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
+-				    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
+ 		config->rx_filter = HWTSTAMP_FILTER_NONE;
+ 		return -ERANGE;
+ 	}
+@@ -1095,8 +1094,8 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 			       IXGBE_TSYNCRXCTL_TYPE_ALL |
+ 			       IXGBE_TSYNCRXCTL_TSIP_UT_EN;
+ 		config->rx_filter = HWTSTAMP_FILTER_ALL;
+-		adapter->flags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
+-		adapter->flags &= ~IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER;
++		aflags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
++		aflags &= ~IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER;
+ 		is_l2 = true;
+ 		break;
+ 	default:
+@@ -1129,6 +1128,9 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+ 
+ 	IXGBE_WRITE_FLUSH(hw);
+ 
++	/* configure adapter flags only when HW is actually configured */
++	adapter->flags = aflags;
 +
- 		return false;
-+	}
- 
- 	if (sk->sk_family == AF_INET6)
- 		return ipv6_addr_equal(&tb->v6_rcv_saddr, &sk->sk_v6_rcv_saddr);
+ 	/* clear TX/RX time stamp registers, just to be sure */
+ 	ixgbe_ptp_clear_tx_timestamp(adapter);
+ 	IXGBE_READ_REG(hw, IXGBE_RXSTMPH);
 -- 
 2.40.1
 
