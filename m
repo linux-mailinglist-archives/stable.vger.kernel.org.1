@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58CA87A39A3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 435A37A3A6C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240097AbjIQTwj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
+        id S240304AbjIQUDR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240159AbjIQTwK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:10 -0400
+        with ESMTP id S240365AbjIQUCx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575F6194
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285FBC433C8;
-        Sun, 17 Sep 2023 19:51:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C965187
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1802CC433CD;
+        Sun, 17 Sep 2023 20:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980309;
-        bh=+KQDJPNUmqldDjAsgE6GGFKbWBLRZT4B/NSW6rtLaLg=;
+        s=korg; t=1694980954;
+        bh=Ib/M55cvfB37uLiofTWwMSszBjIXjlgqLRJvZ4US3u8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EHhZwNaxHyFKh/zPQxGg57M85dW40AOq+HMLNonuKqSCcam6cQUntKF+gxAZLuWfn
-         6xC3sXVojbdWtTYk4+wIx+XlVNxVnzYHzLfVDqSRAZRiRKWOZwQ4gRyierFH/GN4Uo
-         LwJEWTJr/Te3+MEIspDzCr/R0I0zhcXoCCnomKUw=
+        b=WZhzAkjVYslSSWF73n1g50qw8Iz6jomMHBby9gIsw5jfh3G/Oqg96K0mUIot8jQvg
+         G+OPzK4SR2xvUQyoQq9Z2UH+WchM0VWSWygOnymGSvlEawgwS264/KrcRLv8fio7yp
+         8O5ya5T9D/qkiufwXjKx2vx8jov8uIrILj0I/+zM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 154/285] net: dsa: sja1105: fix -ENOSPC when replacing the same tc-cbs too many times
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 027/219] clk: qcom: camcc-sc7180: fix async resume during probe
 Date:   Sun, 17 Sep 2023 21:12:34 +0200
-Message-ID: <20230917191057.015813198@linuxfoundation.org>
+Message-ID: <20230917191041.977768577@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,84 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 894cafc5c62ccced758077bd4e970dc714c42637 ]
+commit c948ff727e25297f3a703eb5349dd66aabf004e4 upstream.
 
-After running command [2] too many times in a row:
+To make sure that the controller is runtime resumed and its power domain
+is enabled before accessing its registers during probe, the synchronous
+runtime PM interface must be used.
 
-[1] $ tc qdisc add dev sw2p0 root handle 1: mqprio num_tc 8 \
-	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 hw 0
-[2] $ tc qdisc replace dev sw2p0 parent 1:1 cbs offload 1 \
-	idleslope 120000 sendslope -880000 locredit -1320 hicredit 180
-
-(aka more than priv->info->num_cbs_shapers times)
-
-we start seeing the following error message:
-
-Error: Specified device failed to setup cbs hardware offload.
-
-This comes from the fact that ndo_setup_tc(TC_SETUP_QDISC_CBS) presents
-the same API for the qdisc create and replace cases, and the sja1105
-driver fails to distinguish between the 2. Thus, it always thinks that
-it must allocate the same shaper for a {port, queue} pair, when it may
-instead have to replace an existing one.
-
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8d4025943e13 ("clk: qcom: camcc-sc7180: Use runtime PM ops instead of clk ones")
+Cc: stable@vger.kernel.org      # 5.11
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/camcc-sc7180.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index fe7f09519653a..e6d82ac106bee 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2123,6 +2123,18 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+--- a/drivers/clk/qcom/camcc-sc7180.c
++++ b/drivers/clk/qcom/camcc-sc7180.c
+@@ -1664,7 +1664,7 @@ static int cam_cc_sc7180_probe(struct pl
+ 		return ret;
+ 	}
  
- #define BYTES_PER_KBIT (1000LL / 8)
+-	ret = pm_runtime_get(&pdev->dev);
++	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret)
+ 		return ret;
  
-+static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
-+				   int port, int prio)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->info->num_cbs_shapers; i++)
-+		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
-+			return i;
-+
-+	return -1;
-+}
-+
- static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
- {
- 	int i;
-@@ -2163,9 +2175,14 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	if (!offload->enable)
- 		return sja1105_delete_cbs_shaper(priv, port, offload->queue);
- 
--	index = sja1105_find_unused_cbs_shaper(priv);
--	if (index < 0)
--		return -ENOSPC;
-+	/* The user may be replacing an existing shaper */
-+	index = sja1105_find_cbs_shaper(priv, port, offload->queue);
-+	if (index < 0) {
-+		/* That isn't the case - see if we can allocate a new one */
-+		index = sja1105_find_unused_cbs_shaper(priv);
-+		if (index < 0)
-+			return -ENOSPC;
-+	}
- 
- 	cbs = &priv->cbs[index];
- 	cbs->port = port;
--- 
-2.40.1
-
 
 
