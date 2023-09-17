@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 470A57A38BD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0A187A38BC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239832AbjIQTjp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58632 "EHLO
+        id S238442AbjIQTjq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239867AbjIQTj0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:26 -0400
+        with ESMTP id S239880AbjIQTj3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA206D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0E8C433C7;
-        Sun, 17 Sep 2023 19:39:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04E5ED9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D65EC433C7;
+        Sun, 17 Sep 2023 19:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979561;
-        bh=fbbmO2LoZUOJqPKC4lREG07NyYmNFzI743R1Jx7dcEU=;
+        s=korg; t=1694979564;
+        bh=dgEmA6LrNJYeIPd4Ims83BkoEL11arIoPxpo0KyhUM4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=knXYe+nY739nmpKISbfmqbZbEQinW7SrwgC+gqWu3cvBRtf4DyKkNWHc832V8GJkQ
-         pmzpudLFtckaVpteDC6IIHBFDVXyp8i319U2AlM6d+mNOcoTTJqRDnkhH1K/G7ryPg
-         GYuF5T7sE44Q6AgBB7TX69G/d3vhQbjq0VLSgJCg=
+        b=njKyiXlqZlhAySIvsMXIna2kBy7chCyqJrHfnuvXHwQdKCzFzh32RTN2b4JJskHC7
+         UozfXGRkOeqgCI6YitFbuNEwz0Mx+nUecNTu8R6R1lAvSgVQKkDi2TIBGJxsAialr2
+         6jqjApFGFQzOYiEZSU5JIt+AZqi7lvQiLOySzsZI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Chen <liangchen.linux@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
+        David Ahern <dsahern@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 349/406] veth: Fixing transmit return status for dropped packets
-Date:   Sun, 17 Sep 2023 21:13:23 +0200
-Message-ID: <20230917191110.488966069@linuxfoundation.org>
+Subject: [PATCH 5.10 350/406] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
+Date:   Sun, 17 Sep 2023 21:13:24 +0200
+Message-ID: <20230917191110.514407937@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -55,52 +55,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Liang Chen <liangchen.linux@gmail.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit 151e887d8ff97e2e42110ffa1fb1e6a2128fb364 ]
+[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
 
-The veth_xmit function returns NETDEV_TX_OK even when packets are dropped.
-This behavior leads to incorrect calculations of statistics counts, as
-well as things like txq->trans_start updates.
+The existing code incorrectly casted a negative value (the result of a
+subtraction) to an unsigned value without checking. For example, if
+/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
+lifetime would jump to 4 billion seconds. On my machine and network the
+shortest lifetime that avoided underflow was 3 seconds.
 
-Fixes: e314dbdc1c0d ("[NET]: Virtual ethernet device driver.")
-Signed-off-by: Liang Chen <liangchen.linux@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/veth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 4ba86fa4d6497..743716ebebdb9 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -285,6 +285,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
- 	struct veth_rq *rq = NULL;
-+	int ret = NETDEV_TX_OK;
- 	struct net_device *rcv;
- 	int length = skb->len;
- 	bool rcv_xdp = false;
-@@ -311,6 +312,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	} else {
- drop:
- 		atomic64_inc(&priv->dropped);
-+		ret = NET_XMIT_DROP;
- 	}
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 9b414681500a5..0eafe26c05f77 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1359,7 +1359,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 	 * idev->desync_factor if it's larger
+ 	 */
+ 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
+-	max_desync_factor = min_t(__u32,
++	max_desync_factor = min_t(long,
+ 				  idev->cnf.max_desync_factor,
+ 				  cnf_temp_preferred_lft - regen_advance);
  
- 	if (rcv_xdp)
-@@ -318,7 +320,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	rcu_read_unlock();
- 
--	return NETDEV_TX_OK;
-+	return ret;
- }
- 
- static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
 -- 
 2.40.1
 
