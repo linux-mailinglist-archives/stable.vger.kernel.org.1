@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF687A3846
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7227A398D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239675AbjIQTdu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33668 "EHLO
+        id S240087AbjIQTu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:50:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239698AbjIQTdX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:23 -0400
+        with ESMTP id S240098AbjIQTun (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C25DD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3BCC433C8;
-        Sun, 17 Sep 2023 19:33:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D344FE7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1356DC433C8;
+        Sun, 17 Sep 2023 19:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979197;
-        bh=smiFZWhgaJXmflHPIOYA/83MztIIxPqWtgWWqtO0sBw=;
+        s=korg; t=1694980235;
+        bh=lNz8UXBmQwyRzBmIogOTD9NOv0ozDdU2tK/udVornes=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=woXVy07OOF4TWrw5y5m8nP7zFTm8Bibo1uwllJgsezUp8tRinZJdHbHIKnAG8/C0S
-         9h7WEMJrVupKmR2cvV860DouoDIOsDMhM5A6cqIpLLXc5FTnBgalU2hrc0ZNU3XimX
-         kHeNnPFsLXGYh7dYPem+qoKGlEco0/pPaxRlHl/c=
+        b=s8W5DYZzBpaokvv2XezXLD081vAv5mv7EBcLWknv1ARWYlOGAKs5M0+H1g1jGyAl1
+         v2X8K+42DsUJw9gJ/eJxqbkV55PfqQbe3OrBFCagNchUNfNO+BQ58NwqmcN5foq5uM
+         DN/eqFLPZdwDOdM5rNNErAmohRRvU1mih0rvl9ao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/406] media: ov2680: Fix vflip / hflip set functions
+Subject: [PATCH 6.5 096/285] i3c: master: svc: Describe member saved_regs
 Date:   Sun, 17 Sep 2023 21:11:36 +0200
-Message-ID: <20230917191107.551920423@linuxfoundation.org>
+Message-ID: <20230917191055.016182665@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,120 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit d5d08ad330c9ccebc5e066fda815423a290f48b0 ]
+[ Upstream commit 5496eac6ad7428fa06811a8c34b3a15beb93b86d ]
 
-ov2680_vflip_disable() / ov2680_hflip_disable() pass BIT(0) instead of
-0 as value to ov2680_mod_reg().
+The 'saved_regs' member of the 'svc_i3c_master'	structure is not
+described in the kernel doc, which produces the following warning:
 
-While fixing this also:
+    Function parameter or member 'saved_regs' not described in 'svc_i3c_master'
 
-1. Stop having separate enable/disable functions for hflip / vflip
-2. Move the is_streaming check, which is unique to hflip / vflip
-   into the ov2680_set_?flip() functions.
+Add the missing line in the kernel documentation of the parent
+structure.
 
-for a nice code cleanup.
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 1c5ee2a77b1b ("i3c: master: svc: fix i3c suspend/resume issue")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308171435.0xQ82lvu-lkp@intel.com/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20230817101853.16805-1-miquel.raynal@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 50 +++++++++-----------------------------
- 1 file changed, 12 insertions(+), 38 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index a4baf440b9505..5249a9eb7c81a 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -328,23 +328,15 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
- }
- 
--static int ov2680_vflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_vflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -352,23 +344,15 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
- 	return 0;
- }
- 
--static int ov2680_hflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_hflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -721,19 +705,9 @@ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
- 	case V4L2_CID_EXPOSURE:
- 		return ov2680_exposure_set(sensor, ctrl->val);
- 	case V4L2_CID_VFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_vflip_enable(sensor);
--		else
--			return ov2680_vflip_disable(sensor);
-+		return ov2680_set_vflip(sensor, ctrl->val);
- 	case V4L2_CID_HFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_hflip_enable(sensor);
--		else
--			return ov2680_hflip_disable(sensor);
-+		return ov2680_set_hflip(sensor, ctrl->val);
- 	case V4L2_CID_TEST_PATTERN:
- 		return ov2680_test_pattern_set(sensor, ctrl->val);
- 	default:
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 2fefbe55c1675..6c43992c8cf6b 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -156,6 +156,7 @@ struct svc_i3c_regs_save {
+  * @base: I3C master controller
+  * @dev: Corresponding device
+  * @regs: Memory mapping
++ * @saved_regs: Volatile values for PM operations
+  * @free_slots: Bit array of available slots
+  * @addrs: Array containing the dynamic addresses of each attached device
+  * @descs: Array of descriptors, one per attached device
 -- 
 2.40.1
 
