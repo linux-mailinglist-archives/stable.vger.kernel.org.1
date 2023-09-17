@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3D07A39B0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B2C67A3A3E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240132AbjIQTxI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45776 "EHLO
+        id S240323AbjIQUAe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:00:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240284AbjIQTwv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:51 -0400
+        with ESMTP id S240353AbjIQUAN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:00:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D718013E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B049C433C8;
-        Sun, 17 Sep 2023 19:52:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F92196
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D170C433B8;
+        Sun, 17 Sep 2023 20:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980357;
-        bh=FvVFEPxVxowNq4euWBmGYAZuJ3bwrFBoC2aNwkBeP5Y=;
+        s=korg; t=1694980804;
+        bh=PglaJZYMQLnBdXU/K2MALjmW1wjCUHIgbfwlBVq0d1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tC9wuPMvAhdDirjovBHV85qXdWlcF6mIb5Og0ksjmcBcH65VJX5jBWjZ/pp6BUwE7
-         beCDRgZDHQZE6ZTmDHqrqY/gw5yPZ6R7lsk6PnnC2Jj1XO8JcdM5iFIubacA2tlc0/
-         hqQ6q5RmwGLv4PaQ9vUH8bLt9f8UaeZxZH2BRcN8=
+        b=m202kH1xQwBQ32hqt9Ij/4tcwl74GJzJWZhAEZqGDXBDJA+jF2cRsMj8mg04tPfvp
+         XiQbW3kZbdCHlrsUTh2CNwsLBfcYiAy4v/tW9+6anQJm/CGFhcnNSBSPIRFB5ADExW
+         emo/FUUMWo9f6BqO0TJRrHXkKE1/xPnfOBNIxqZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 140/285] octeontx2-af: Fix truncation of smq in CN10K NIX AQ enqueue mbox handler
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 013/219] scsi: qla2xxx: Fix deletion race condition
 Date:   Sun, 17 Sep 2023 21:12:20 +0200
-Message-ID: <20230917191056.522203106@linuxfoundation.org>
+Message-ID: <20230917191041.465170728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,84 +51,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 29fe7a1b62717d58f033009874554d99d71f7d37 ]
+commit 6dfe4344c168c6ca20fe7640649aacfcefcccb26 upstream.
 
-The smq value used in the CN10K NIX AQ instruction enqueue mailbox
-handler was truncated to 9-bit value from 10-bit value because of
-typecasting the CN10K mbox request structure to the CN9K structure.
-Though this hasn't caused any problems when programming the NIX SQ
-context to the HW because the context structure is the same size.
-However, this causes a problem when accessing the structure parameters.
-This patch reads the right smq value for each platform.
+System crash when using debug kernel due to link list corruption. The cause
+of the link list corruption is due to session deletion was allowed to queue
+up twice.  Here's the internal trace that show the same port was allowed to
+double queue for deletion on different cpu.
 
-Fixes: 30077d210c83 ("octeontx2-af: cn10k: Update NIX/NPA context structure")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+20808683956 015 qla2xxx [0000:13:00.1]-e801:4: Scheduling sess ffff93ebf9306800 for deletion 50:06:0e:80:12:48:ff:50 fc4_type 1
+20808683957 027 qla2xxx [0000:13:00.1]-e801:4: Scheduling sess ffff93ebf9306800 for deletion 50:06:0e:80:12:48:ff:50 fc4_type 1
+
+Move the clearing/setting of deleted flag lock.
+
+Cc: stable@vger.kernel.org
+Fixes: 726b85487067 ("qla2xxx: Add framework for async fabric discovery")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 21 +++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c   |   16 ++++++++++++++--
+ drivers/scsi/qla2xxx/qla_target.c |   14 +++++++-------
+ 2 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index c2f68678e947e..23c2f2ed2fb83 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -846,6 +846,21 @@ static int nix_aq_enqueue_wait(struct rvu *rvu, struct rvu_block *block,
- 	return 0;
- }
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -502,6 +502,7 @@ static
+ void qla24xx_handle_adisc_event(scsi_qla_host_t *vha, struct event_arg *ea)
+ {
+ 	struct fc_port *fcport = ea->fcport;
++	unsigned long flags;
  
-+static void nix_get_aq_req_smq(struct rvu *rvu, struct nix_aq_enq_req *req,
-+			       u16 *smq, u16 *smq_mask)
-+{
-+	struct nix_cn10k_aq_enq_req *aq_req;
+ 	ql_dbg(ql_dbg_disc, vha, 0x20d2,
+ 	    "%s %8phC DS %d LS %d rc %d login %d|%d rscn %d|%d lid %d\n",
+@@ -516,9 +517,15 @@ void qla24xx_handle_adisc_event(scsi_qla
+ 		ql_dbg(ql_dbg_disc, vha, 0x2066,
+ 		    "%s %8phC: adisc fail: post delete\n",
+ 		    __func__, ea->fcport->port_name);
 +
-+	if (!is_rvu_otx2(rvu)) {
-+		aq_req = (struct nix_cn10k_aq_enq_req *)req;
-+		*smq = aq_req->sq.smq;
-+		*smq_mask = aq_req->sq_mask.smq;
-+	} else {
-+		*smq = req->sq.smq;
-+		*smq_mask = req->sq_mask.smq;
-+	}
-+}
++		spin_lock_irqsave(&vha->work_lock, flags);
+ 		/* deleted = 0 & logout_on_delete = force fw cleanup */
+-		fcport->deleted = 0;
++		if (fcport->deleted == QLA_SESS_DELETED)
++			fcport->deleted = 0;
 +
- static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
- 				   struct nix_aq_enq_req *req,
- 				   struct nix_aq_enq_rsp *rsp)
-@@ -857,6 +872,7 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
- 	struct rvu_block *block;
- 	struct admin_queue *aq;
- 	struct rvu_pfvf *pfvf;
-+	u16 smq, smq_mask;
- 	void *ctx, *mask;
- 	bool ena;
- 	u64 cfg;
-@@ -928,13 +944,14 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
- 	if (rc)
- 		return rc;
+ 		fcport->logout_on_delete = 1;
++		spin_unlock_irqrestore(&vha->work_lock, flags);
++
+ 		qlt_schedule_sess_for_deletion(ea->fcport);
+ 		return;
+ 	}
+@@ -1440,7 +1447,6 @@ void __qla24xx_handle_gpdb_event(scsi_ql
  
-+	nix_get_aq_req_smq(rvu, req, &smq, &smq_mask);
- 	/* Check if SQ pointed SMQ belongs to this PF/VF or not */
- 	if (req->ctype == NIX_AQ_CTYPE_SQ &&
- 	    ((req->op == NIX_AQ_INSTOP_INIT && req->sq.ena) ||
- 	     (req->op == NIX_AQ_INSTOP_WRITE &&
--	      req->sq_mask.ena && req->sq_mask.smq && req->sq.ena))) {
-+	      req->sq_mask.ena && req->sq.ena && smq_mask))) {
- 		if (!is_valid_txschq(rvu, blkaddr, NIX_TXSCH_LVL_SMQ,
--				     pcifunc, req->sq.smq))
-+				     pcifunc, smq))
- 			return NIX_AF_ERR_AQ_ENQUEUE;
+ 	spin_lock_irqsave(&vha->hw->tgt.sess_lock, flags);
+ 	ea->fcport->login_gen++;
+-	ea->fcport->deleted = 0;
+ 	ea->fcport->logout_on_delete = 1;
+ 
+ 	if (!ea->fcport->login_succ && !IS_SW_RESV_ADDR(ea->fcport->d_id)) {
+@@ -6143,6 +6149,8 @@ qla2x00_reg_remote_port(scsi_qla_host_t
+ void
+ qla2x00_update_fcport(scsi_qla_host_t *vha, fc_port_t *fcport)
+ {
++	unsigned long flags;
++
+ 	if (IS_SW_RESV_ADDR(fcport->d_id))
+ 		return;
+ 
+@@ -6152,7 +6160,11 @@ qla2x00_update_fcport(scsi_qla_host_t *v
+ 	qla2x00_set_fcport_disc_state(fcport, DSC_UPD_FCPORT);
+ 	fcport->login_retry = vha->hw->login_retry_count;
+ 	fcport->flags &= ~(FCF_LOGIN_NEEDED | FCF_ASYNC_SENT);
++
++	spin_lock_irqsave(&vha->work_lock, flags);
+ 	fcport->deleted = 0;
++	spin_unlock_irqrestore(&vha->work_lock, flags);
++
+ 	if (vha->hw->current_topology == ISP_CFG_NL)
+ 		fcport->logout_on_delete = 0;
+ 	else
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -1085,10 +1085,6 @@ void qlt_free_session_done(struct work_s
+ 			(struct imm_ntfy_from_isp *)sess->iocb, SRB_NACK_LOGO);
  	}
  
--- 
-2.40.1
-
+-	spin_lock_irqsave(&vha->work_lock, flags);
+-	sess->flags &= ~FCF_ASYNC_SENT;
+-	spin_unlock_irqrestore(&vha->work_lock, flags);
+-
+ 	spin_lock_irqsave(&ha->tgt.sess_lock, flags);
+ 	if (sess->se_sess) {
+ 		sess->se_sess = NULL;
+@@ -1098,7 +1094,6 @@ void qlt_free_session_done(struct work_s
+ 
+ 	qla2x00_set_fcport_disc_state(sess, DSC_DELETED);
+ 	sess->fw_login_state = DSC_LS_PORT_UNAVAIL;
+-	sess->deleted = QLA_SESS_DELETED;
+ 
+ 	if (sess->login_succ && !IS_SW_RESV_ADDR(sess->d_id)) {
+ 		vha->fcport_count--;
+@@ -1150,10 +1145,15 @@ void qlt_free_session_done(struct work_s
+ 
+ 	sess->explicit_logout = 0;
+ 	spin_unlock_irqrestore(&ha->tgt.sess_lock, flags);
+-	sess->free_pending = 0;
+ 
+ 	qla2x00_dfs_remove_rport(vha, sess);
+ 
++	spin_lock_irqsave(&vha->work_lock, flags);
++	sess->flags &= ~FCF_ASYNC_SENT;
++	sess->deleted = QLA_SESS_DELETED;
++	sess->free_pending = 0;
++	spin_unlock_irqrestore(&vha->work_lock, flags);
++
+ 	ql_dbg(ql_dbg_disc, vha, 0xf001,
+ 	    "Unregistration of sess %p %8phC finished fcp_cnt %d\n",
+ 		sess, sess->port_name, vha->fcport_count);
+@@ -1202,12 +1202,12 @@ void qlt_unreg_sess(struct fc_port *sess
+ 	 * management from being sent.
+ 	 */
+ 	sess->flags |= FCF_ASYNC_SENT;
++	sess->deleted = QLA_SESS_DELETION_IN_PROGRESS;
+ 	spin_unlock_irqrestore(&sess->vha->work_lock, flags);
+ 
+ 	if (sess->se_sess)
+ 		vha->hw->tgt.tgt_ops->clear_nacl_from_fcport_map(sess);
+ 
+-	sess->deleted = QLA_SESS_DELETION_IN_PROGRESS;
+ 	qla2x00_set_fcport_disc_state(sess, DSC_DELETE_PEND);
+ 	sess->last_rscn_gen = sess->rscn_gen;
+ 	sess->last_login_gen = sess->login_gen;
 
 
