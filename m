@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A517A3A95
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 708277A3CA4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239533AbjIQUGZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38720 "EHLO
+        id S241070AbjIQUdj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:33:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240384AbjIQUF5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:57 -0400
+        with ESMTP id S241122AbjIQUdW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54BFF188
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CB0C433C7;
-        Sun, 17 Sep 2023 20:05:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF9510F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC8FC433C7;
+        Sun, 17 Sep 2023 20:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981141;
-        bh=p26DkhKFJ81co0k2n3hA1EcFlHxbunOtbVuE5poYLZk=;
+        s=korg; t=1694982796;
+        bh=HuVoiCWovM9o2D3WB/0oNLr3gzNppIEIwTUTfE9yC+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zDqU8fl9K0qNnkG/6GOJMPw3x1TH4/rz54qEvSTPVRZh9hDpXFVBXE0KEdiMqMgZw
-         ESKL6MuXM6kmsPU/OBV+tbkjEj3O2RyWb9UOss5etN5p6JrJTtPWQ1d8NbpLJQ1ZYw
-         p5DB+oLETWz9HI716aIisQawYh/JPGvY8Kj9d9Gg=
+        b=15jP3ZkiqHi+hrscODMqypuQEbQNi44NCDf+6u2NEjtJsoChvJlwLzygVaBqDpnzU
+         Xl+Z0g+PmjEOD5n7ULCNUlEfv7V2ulnp7fsM/VWKhA6maM/AzHRton/tOfhazHK4DR
+         klwyUJBubP881U3I4bZQU2sBYPnlok+Ytuu8+T94=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Soheil Hassas Yeganeh <soheil@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ajay Kaher <akaher@vmware.com>
-Subject: [PATCH 6.1 054/219] net: factorize code in kmalloc_reserve()
-Date:   Sun, 17 Sep 2023 21:13:01 +0200
-Message-ID: <20230917191042.960936698@linuxfoundation.org>
+        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
+        Enlin Mu <enlin.mu@unisoc.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.15 355/511] pstore/ram: Check start of empty przs during init
+Date:   Sun, 17 Sep 2023 21:13:02 +0200
+Message-ID: <20230917191122.375111830@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,107 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Enlin Mu <enlin.mu@unisoc.com>
 
-commit 5c0e820cbbbe2d1c4cea5cd2bfc1302c123436df upstream.
+commit fe8c3623ab06603eb760444a032d426542212021 upstream.
 
-All kmalloc_reserve() callers have to make the same computation,
-we can factorize them, to prepare following patch in the series.
+After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
+valid"), initialization would assume a prz was valid after seeing that
+the buffer_size is zero (regardless of the buffer start position). This
+unchecked start value means it could be outside the bounds of the buffer,
+leading to future access panics when written to:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Ajay: Regenerated the patch for v6.1.y]
-Signed-off-by: Ajay Kaher <akaher@vmware.com>
+ sysdump_panic_event+0x3b4/0x5b8
+ atomic_notifier_call_chain+0x54/0x90
+ panic+0x1c8/0x42c
+ die+0x29c/0x2a8
+ die_kernel_fault+0x68/0x78
+ __do_kernel_fault+0x1c4/0x1e0
+ do_bad_area+0x40/0x100
+ do_translation_fault+0x68/0x80
+ do_mem_abort+0x68/0xf8
+ el1_da+0x1c/0xc0
+ __raw_writeb+0x38/0x174
+ __memcpy_toio+0x40/0xac
+ persistent_ram_update+0x44/0x12c
+ persistent_ram_write+0x1a8/0x1b8
+ ramoops_pstore_write+0x198/0x1e8
+ pstore_console_write+0x94/0xe0
+ ...
+
+To avoid this, also check if the prz start is 0 during the initialization
+phase. If not, the next prz sanity check case will discover it (start >
+size) and zap the buffer back to a sane state.
+
+Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
+Cc: Yunlong Xing <yunlong.xing@unisoc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
+Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
+[kees: update commit log with backtrace and clarifications]
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |   27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ fs/pstore/ram_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -424,17 +424,20 @@ EXPORT_SYMBOL(napi_build_skb);
-  * may be used. Otherwise, the packet data may be discarded until enough
-  * memory is free
-  */
--static void *kmalloc_reserve(size_t size, gfp_t flags, int node,
-+static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 			     bool *pfmemalloc)
- {
--	void *obj;
- 	bool ret_pfmemalloc = false;
-+	unsigned int obj_size;
-+	void *obj;
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -518,7 +518,7 @@ static int persistent_ram_post_init(stru
+ 	sig ^= PERSISTENT_RAM_SIG;
  
-+	obj_size = SKB_HEAD_ALIGN(*size);
-+	*size = obj_size = kmalloc_size_roundup(obj_size);
- 	/*
- 	 * Try a regular allocation, when that fails and we're not entitled
- 	 * to the reserves, fail.
- 	 */
--	obj = kmalloc_node_track_caller(size,
-+	obj = kmalloc_node_track_caller(obj_size,
- 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
- 					node);
- 	if (obj || !(gfp_pfmemalloc_allowed(flags)))
-@@ -442,7 +445,7 @@ static void *kmalloc_reserve(size_t size
- 
- 	/* Try again but now we are using pfmemalloc reserves */
- 	ret_pfmemalloc = true;
--	obj = kmalloc_node_track_caller(size, flags, node);
-+	obj = kmalloc_node_track_caller(obj_size, flags, node);
- 
- out:
- 	if (pfmemalloc)
-@@ -503,9 +506,7 @@ struct sk_buff *__alloc_skb(unsigned int
- 	 * aligned memory blocks, unless SLUB/SLAB debug is enabled.
- 	 * Both skb->head and skb_shared_info are cache line aligned.
- 	 */
--	size = SKB_HEAD_ALIGN(size);
--	size = kmalloc_size_roundup(size);
--	data = kmalloc_reserve(size, gfp_mask, node, &pfmemalloc);
-+	data = kmalloc_reserve(&size, gfp_mask, node, &pfmemalloc);
- 	if (unlikely(!data))
- 		goto nodata;
- 	/* kmalloc_size_roundup() might give us more room than requested.
-@@ -1832,9 +1833,7 @@ int pskb_expand_head(struct sk_buff *skb
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_HEAD_ALIGN(size);
--	size = kmalloc_size_roundup(size);
--	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
-+	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
- 		goto nodata;
- 	size = SKB_WITH_OVERHEAD(size);
-@@ -6198,9 +6197,7 @@ static int pskb_carve_inside_header(stru
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_HEAD_ALIGN(size);
--	size = kmalloc_size_roundup(size);
--	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
-+	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
- 		return -ENOMEM;
- 	size = SKB_WITH_OVERHEAD(size);
-@@ -6316,9 +6313,7 @@ static int pskb_carve_inside_nonlinear(s
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_HEAD_ALIGN(size);
--	size = kmalloc_size_roundup(size);
--	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
-+	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
- 		return -ENOMEM;
- 	size = SKB_WITH_OVERHEAD(size);
+ 	if (prz->buffer->sig == sig) {
+-		if (buffer_size(prz) == 0) {
++		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
+ 			pr_debug("found existing empty buffer\n");
+ 			return 0;
+ 		}
 
 
