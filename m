@@ -2,35 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6BEF7A39F9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 645F47A39D8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240219AbjIQT4u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35288 "EHLO
+        id S239496AbjIQTzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240267AbjIQT4e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:34 -0400
+        with ESMTP id S240172AbjIQTyo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE9C812F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE60C433C8;
-        Sun, 17 Sep 2023 19:56:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99185EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4394C433CB;
+        Sun, 17 Sep 2023 19:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980587;
-        bh=W0oEmUM3Eg/m4RcBuAghDz29QYQX6m4FsadyLS08IaE=;
+        s=korg; t=1694980478;
+        bh=iiGWqYnUKvDlZ9Ijatx7wxPfkP1i3kaU/POtqO6EFYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x4Meb2mqkEeg4n+jr2m6cBkg1kG6FszHOXnbYe8MmhmlbAI8/AOxPlrQ31xTbB1o9
-         XFdsHxSajD8cfzWhbHL9+uubpm8IiYOSn5Dbcu6u4Aa6VDl47XRLrzxgsUC2Cn5UnV
-         BdX5ttG8yFO+W5JXeQrBS4oTR7oBZP5RGTc6cbL4=
+        b=wHcTt+a49GPlNvWRMSozdzg/r1dZTfTEO1WNPqFgxQ53D/A71jZ+qqHNx8SjDGelU
+         esofviVEMa6B0KtTCG0cODlXoj2bb3xfSz42YyjyeDQz8NHq0qtjUNZ+GabB1BOu6S
+         KBWGua+p1hCFppIghXpoUaXdGdB5wbHEwHI+2bIw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 195/285] hwspinlock: qcom: add missing regmap config for SFPB MMIO implementation
-Date:   Sun, 17 Sep 2023 21:13:15 +0200
-Message-ID: <20230917191058.341427456@linuxfoundation.org>
+        patches@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
+        Nhat Pham <nphamcs@gmail.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Yosry Ahmed <yosryahmed@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 196/285] memcontrol: ensure memcg acquired by id is properly set up
+Date:   Sun, 17 Sep 2023 21:13:16 +0200
+Message-ID: <20230917191058.374856598@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -53,53 +59,131 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-commit 23316be8a9d450f33a21f1efe7d89570becbec58 upstream.
+commit 6f0df8e16eb543167f2929cb756e695709a3551d upstream.
 
-Commit 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older
-SoCs") introduced and made regmap_config mandatory in the of_data struct
-but didn't add the regmap_config for sfpb based devices.
+In the eviction recency check, we attempt to retrieve the memcg to which
+the folio belonged when it was evicted, by the memcg id stored in the
+shadow entry.  However, there is a chance that the retrieved memcg is not
+the original memcg that has been killed, but a new one which happens to
+have the same id.
 
-SFPB based devices can both use the legacy syscon way to probe or the
-new MMIO way and currently device that use the MMIO way are broken as
-they lack the definition of the now required regmap_config and always
-return -EINVAL (and indirectly makes fail probing everything that
-depends on it, smem, nandc with smem-parser...)
+This is a somewhat unfortunate, but acceptable and rare inaccuracy in the
+heuristics.  However, if we retrieve this new memcg between its allocation
+and when it is properly attached to the memcg hierarchy, we could run into
+the following NULL pointer exception during the memcg hierarchy traversal
+done in mem_cgroup_get_nr_swap_pages():
 
-Fix this by correctly adding the missing regmap_config and restore
-function of hwspinlock on SFPB based devices with MMIO implementation.
+[ 155757.793456] BUG: kernel NULL pointer dereference, address: 00000000000000c0
+[ 155757.807568] #PF: supervisor read access in kernel mode
+[ 155757.818024] #PF: error_code(0x0000) - not-present page
+[ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
+[ 155757.839985] Oops: 0000 [#1] SMP
+[ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+[ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
+[ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
+[ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: ffff888280183000
+[ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: ffff888bbc2d1000
+[ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: ffff888ad9cedba0
+[ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: ffff888b23a7b000
+[ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000007ffffc71354
+[ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000) knlGS:0000000000000000
+[ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 00000000007706e0
+[ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 155758.091376] PKRU: 55555554
+[ 155758.096957] Call Trace:
+[ 155758.102016]  <TASK>
+[ 155758.106502]  ? __die+0x78/0xc0
+[ 155758.112793]  ? page_fault_oops+0x286/0x380
+[ 155758.121175]  ? exc_page_fault+0x5d/0x110
+[ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
+[ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+[ 155758.148060]  workingset_test_recent+0xda/0x1b0
+[ 155758.157133]  workingset_refault+0xca/0x1e0
+[ 155758.165508]  filemap_add_folio+0x4d/0x70
+[ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
+[ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
+[ 155758.191738]  filemap_read+0x68d/0xdf0
+[ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
+[ 155758.207981]  ? __napi_schedule+0x55/0x90
+[ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
+[ 155758.224601]  do_syscall_64+0x3d/0x80
+[ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+[ 155758.242473] RIP: 0033:0x7f62c29153b5
+[ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
+[ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX: 0000000000000011
+[ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 00007f62c29153b5
+[ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0000000000000076
+[ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0000000064d5230c
+[ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 000000000003c041
+[ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 000000000027d450
+[ 155758.376661]  </TASK>
 
-Cc: stable@vger.kernel.org
-Fixes: 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older SoCs")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Link: https://lore.kernel.org/r/20230716022804.21239-1-ansuelsmth@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This patch fixes the issue by moving the memcg's id publication from the
+alloc stage to online stage, ensuring that any memcg acquired via id must
+be connected to the memcg tree.
+
+Link: https://lkml.kernel.org/r/20230823225430.166925-1-nphamcs@gmail.com
+Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs refault container")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Co-developed-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwspinlock/qcom_hwspinlock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ mm/memcontrol.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
---- a/drivers/hwspinlock/qcom_hwspinlock.c
-+++ b/drivers/hwspinlock/qcom_hwspinlock.c
-@@ -69,9 +69,18 @@ static const struct hwspinlock_ops qcom_
- 	.unlock		= qcom_hwspinlock_unlock,
- };
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5329,7 +5329,6 @@ static struct mem_cgroup *mem_cgroup_all
+ 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
+ 	memcg->deferred_split_queue.split_queue_len = 0;
+ #endif
+-	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
+ 	lru_gen_init_memcg(memcg);
+ 	return memcg;
+ fail:
+@@ -5401,14 +5400,27 @@ static int mem_cgroup_css_online(struct
+ 	if (alloc_shrinker_info(memcg))
+ 		goto offline_kmem;
  
-+static const struct regmap_config sfpb_mutex_config = {
-+	.reg_bits		= 32,
-+	.reg_stride		= 4,
-+	.val_bits		= 32,
-+	.max_register		= 0x100,
-+	.fast_io		= true,
-+};
+-	/* Online state pins memcg ID, memcg ID pins CSS */
+-	refcount_set(&memcg->id.ref, 1);
+-	css_get(css);
+-
+ 	if (unlikely(mem_cgroup_is_root(memcg)))
+ 		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
+ 				   FLUSH_TIME);
+ 	lru_gen_online_memcg(memcg);
 +
- static const struct qcom_hwspinlock_of_data of_sfpb_mutex = {
- 	.offset = 0x4,
- 	.stride = 0x4,
-+	.regmap_config = &sfpb_mutex_config,
- };
- 
- static const struct regmap_config tcsr_msm8226_mutex_config = {
++	/* Online state pins memcg ID, memcg ID pins CSS */
++	refcount_set(&memcg->id.ref, 1);
++	css_get(css);
++
++	/*
++	 * Ensure mem_cgroup_from_id() works once we're fully online.
++	 *
++	 * We could do this earlier and require callers to filter with
++	 * css_tryget_online(). But right now there are no users that
++	 * need earlier access, and the workingset code relies on the
++	 * cgroup tree linkage (mem_cgroup_get_nr_swap_pages()). So
++	 * publish it here at the end of onlining. This matches the
++	 * regular ID destruction during offlining.
++	 */
++	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
++
+ 	return 0;
+ offline_kmem:
+ 	memcg_offline_kmem(memcg);
 
 
