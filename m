@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 661347A38A0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 475977A3A65
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239799AbjIQTiK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54590 "EHLO
+        id S240335AbjIQUCp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239813AbjIQThu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:37:50 -0400
+        with ESMTP id S240531AbjIQUCi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A47C12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:37:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2E2C433C8;
-        Sun, 17 Sep 2023 19:37:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82AE1B3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC74C433C8;
+        Sun, 17 Sep 2023 20:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979465;
-        bh=sHRaxoHX1IPtEwW8iwT4HP6h0ughCTCG8aX+eGBzaFc=;
+        s=korg; t=1694980930;
+        bh=N7QPDjMwzzoS9pC3veKgBidFqXwMmz6aROehXQX9Dc4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QgHXfcQxQyE/eTnVLIJ1GFz+N8/9m5qyauEIscf7zvFQ0W0xyu+a+Wy9ZyyYVsT7w
-         vLdSq5Olz6vRqfrQqxRmg3rbTlpf38oV/I3fRY3iTuZE9lK/MipMYJSasdsvaRxFij
-         NpyI2fIr7sj2+RLkHlllyf3Uj3Q5kXpok4nV0K9U=
+        b=PEBmNbT7vfKBpgZfuPDnDskEVgm7cku9tlRKhyNtF3sJX9fPVK4kL3JSey8561M+e
+         xiIiKsX4/QD3tr93hrrURcJX7PlORffXpI1YxdndC1TugLjSC52v/i7BVYgPbrAXRj
+         JlYERwrSi/MnyD55ilhUKZR/F4MtlSBkRSghgxSo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manish Rangankar <mrangankar@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 321/406] scsi: qla2xxx: Remove unsupported ql2xenabledif option
+        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 048/219] clk: qcom: mss-sc7180: fix missing resume during probe
 Date:   Sun, 17 Sep 2023 21:12:55 +0200
-Message-ID: <20230917191109.771768400@linuxfoundation.org>
+Message-ID: <20230917191042.743511819@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit e9105c4b7a9208a21a9bda133707624f12ddabc2 upstream.
+commit e2349da0fa7ca822cda72f427345b95795358fe7 upstream.
 
-User accidently passed module parameter ql2xenabledif=1 which is
-unsupported. However, driver still initialized which lead to guard tag
-errors during device discovery.
+Drivers that enable runtime PM must make sure that the controller is
+runtime resumed before accessing its registers to prevent the power
+domain from being disabled.
 
-Remove unsupported ql2xenabledif=1 option and validate the user input.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 8def929c4097 ("clk: qcom: Add modem clock controller driver for SC7180")
+Cc: stable@vger.kernel.org      # 5.7
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-8-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c |    2 --
- drivers/scsi/qla2xxx/qla_dbg.c  |    2 +-
- drivers/scsi/qla2xxx/qla_os.c   |    9 +++++++--
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/mss-sc7180.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -3028,8 +3028,6 @@ qla24xx_vport_create(struct fc_vport *fc
- 			vha->flags.difdix_supported = 1;
- 			ql_dbg(ql_dbg_user, vha, 0x7082,
- 			    "Registered for DIF/DIX type 1 and 3 protection.\n");
--			if (ql2xenabledif == 1)
--				prot = SHOST_DIX_TYPE0_PROTECTION;
- 			scsi_host_set_prot(vha->host,
- 			    prot | SHOST_DIF_TYPE1_PROTECTION
- 			    | SHOST_DIF_TYPE2_PROTECTION
---- a/drivers/scsi/qla2xxx/qla_dbg.c
-+++ b/drivers/scsi/qla2xxx/qla_dbg.c
-@@ -18,7 +18,7 @@
-  * | Queue Command and IO tracing |       0x3074       | 0x300b         |
-  * |                              |                    | 0x3027-0x3028  |
-  * |                              |                    | 0x303d-0x3041  |
-- * |                              |                    | 0x302d,0x3033  |
-+ * |                              |                    | 0x302e,0x3033  |
-  * |                              |                    | 0x3036,0x3038  |
-  * |                              |                    | 0x303a		|
-  * | DPC Thread                   |       0x4023       | 0x4002,0x4013  |
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -3141,6 +3141,13 @@ qla2x00_probe_one(struct pci_dev *pdev,
- 	host->max_id = ha->max_fibre_devices;
- 	host->cmd_per_lun = 3;
- 	host->unique_id = host->host_no;
+--- a/drivers/clk/qcom/mss-sc7180.c
++++ b/drivers/clk/qcom/mss-sc7180.c
+@@ -87,11 +87,22 @@ static int mss_sc7180_probe(struct platf
+ 		return ret;
+ 	}
+ 
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		return ret;
 +
-+	if (ql2xenabledif && ql2xenabledif != 2) {
-+		ql_log(ql_log_warn, base_vha, 0x302d,
-+		       "Invalid value for ql2xenabledif, resetting it to default (2)\n");
-+		ql2xenabledif = 2;
-+	}
+ 	ret = qcom_cc_probe(pdev, &mss_sc7180_desc);
+ 	if (ret < 0)
+-		return ret;
++		goto err_put_rpm;
 +
- 	if (IS_T10_PI_CAPABLE(ha) && ql2xenabledif)
- 		host->max_cmd_len = 32;
- 	else
-@@ -3373,8 +3380,6 @@ skip_dpc:
- 			base_vha->flags.difdix_supported = 1;
- 			ql_dbg(ql_dbg_init, base_vha, 0x00f1,
- 			    "Registering for DIF/DIX type 1 and 3 protection.\n");
--			if (ql2xenabledif == 1)
--				prot = SHOST_DIX_TYPE0_PROTECTION;
- 			if (ql2xprotmask)
- 				scsi_host_set_prot(host, ql2xprotmask);
- 			else
++	pm_runtime_put(&pdev->dev);
+ 
+ 	return 0;
++
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops mss_sc7180_pm_ops = {
 
 
