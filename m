@@ -2,54 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D337A395D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 974557A3840
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239462AbjIQTsS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:48:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59852 "EHLO
+        id S239697AbjIQTdX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240089AbjIQTsA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:00 -0400
+        with ESMTP id S239777AbjIQTc6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EEF7103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E210C433C7;
-        Sun, 17 Sep 2023 19:47:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2B212B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA38C433C7;
+        Sun, 17 Sep 2023 19:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980074;
-        bh=eGMwnej6m+ZnPJxqfDhehVsGkQ00rYu7rFlBh3oFOi4=;
+        s=korg; t=1694979170;
+        bh=/PbjieVacA6H+0TEX6WkGY6El2gaGJcf1K8rja0ulvA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XgbKZ7WeDaTJ3seqrKy8/9Kjz4wMZpe3MX+zmyXlI/WmOUzSHSgLG3ZL5SZxZ96+K
-         F/D/HYLyqiVL3xCXkKDxX8iJ+TGPF21yVKBQX4UH9xpMDQOhs8KGhY9WUMim2hNY09
-         8AholiPUZUr8Btd+BcFKDa1lix8YuKR4avvijBCc=
+        b=SUWAlJIrY/hPZxj465kxeM4S07UAXa38YXkBdVlBi1xogZahXtKYn+UAn2jzWdDFo
+         hQSa7KXrZJ+THctFr52epGQmC1PueraT0xZSkNPJhDOS1PTKAz0T1gVvbkTE8xc3rs
+         lSA4X6j8/dGhE5sud757GcEcxiOMP8syza6XMywA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Jeremie Galarneau <jeremie.galarneau@efficios.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Shawn Landden <shawn@git.icu>,
-        Song Liu <songliubraving@fb.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tzvetomir Stoyanov <tstoyanov@vmware.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 089/285] perf top: Dont pass an ERR_PTR() directly to perf_session__delete()
+        patches@lists.linux.dev, Lu Baolu <baolu.lu@linux.intel.com>,
+        Yanfei Xu <yanfei.xu@intel.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 235/406] iommu/vt-d: Fix to flush cache of PASID directory table
 Date:   Sun, 17 Sep 2023 21:11:29 +0200
-Message-ID: <20230917191054.783484646@linuxfoundation.org>
+Message-ID: <20230917191107.372401382@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Yanfei Xu <yanfei.xu@intel.com>
 
-[ Upstream commit ef23cb593304bde0cc046fd4cc83ae7ea2e24f16 ]
+[ Upstream commit 8a3b8e63f8371c1247b7aa24ff9c5312f1a6948b ]
 
-While debugging a segfault on 'perf lock contention' without an
-available perf.data file I noticed that it was basically calling:
+Even the PCI devices don't support pasid capability, PASID table is
+mandatory for a PCI device in scalable mode. However flushing cache
+of pasid directory table for these devices are not taken after pasid
+table is allocated as the "size" of table is zero. Fix it by
+calculating the size by page order.
 
-	perf_session__delete(ERR_PTR(-1))
+Found this when reading the code, no real problem encountered for now.
 
-Resulting in:
-
-  (gdb) run lock contention
-  Starting program: /root/bin/perf lock contention
-  [Thread debugging using libthread_db enabled]
-  Using host libthread_db library "/lib64/libthread_db.so.1".
-  failed to open perf.data: No such file or directory  (try 'perf record' first)
-  Initializing perf session failed
-
-  Program received signal SIGSEGV, Segmentation fault.
-  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
-  2858		if (!session->auxtrace)
-  (gdb) p session
-  $1 = (struct perf_session *) 0xffffffffffffffff
-  (gdb) bt
-  #0  0x00000000005e7515 in auxtrace__free (session=0xffffffffffffffff) at util/auxtrace.c:2858
-  #1  0x000000000057bb4d in perf_session__delete (session=0xffffffffffffffff) at util/session.c:300
-  #2  0x000000000047c421 in __cmd_contention (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2161
-  #3  0x000000000047dc95 in cmd_lock (argc=0, argv=0x7fffffffe200) at builtin-lock.c:2604
-  #4  0x0000000000501466 in run_builtin (p=0xe597a8 <commands+552>, argc=2, argv=0x7fffffffe200) at perf.c:322
-  #5  0x00000000005016d5 in handle_internal_command (argc=2, argv=0x7fffffffe200) at perf.c:375
-  #6  0x0000000000501824 in run_argv (argcp=0x7fffffffe02c, argv=0x7fffffffe020) at perf.c:419
-  #7  0x0000000000501b11 in main (argc=2, argv=0x7fffffffe200) at perf.c:535
-  (gdb)
-
-So just set it to NULL after using PTR_ERR(session) to decode the error
-as perf_session__delete(NULL) is supported.
-
-The same problem was found in 'perf top' after an audit of all
-perf_session__new() failure handling.
-
-Fixes: 6ef81c55a2b6584c ("perf session: Return error code for perf_session__new() function on failure")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jeremie Galarneau <jeremie.galarneau@efficios.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>
-Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
-Cc: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Nageswara R Sastry <rnsastry@linux.vnet.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Shawn Landden <shawn@git.icu>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tzvetomir Stoyanov <tstoyanov@vmware.com>
-Link: https://lore.kernel.org/lkml/ZN4Q2rxxsL08A8rd@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 194b3348bdbb ("iommu/vt-d: Fix PASID directory pointer coherency")
+Suggested-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
+Link: https://lore.kernel.org/r/20230616081045.721873-1-yanfei.xu@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/intel/pasid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 1baa2acb3cedd..ea8c7eca5eeed 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1805,6 +1805,7 @@ int cmd_top(int argc, const char **argv)
- 	top.session = perf_session__new(NULL, NULL);
- 	if (IS_ERR(top.session)) {
- 		status = PTR_ERR(top.session);
-+		top.session = NULL;
- 		goto out_delete_evlist;
- 	}
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 80d6412e2c546..9b24e8224379e 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -187,7 +187,7 @@ int intel_pasid_alloc_table(struct device *dev)
+ 	device_attach_pasid_table(info, pasid_table);
  
+ 	if (!ecap_coherent(info->iommu->ecap))
+-		clflush_cache_range(pasid_table->table, size);
++		clflush_cache_range(pasid_table->table, (1 << order) * PAGE_SIZE);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
