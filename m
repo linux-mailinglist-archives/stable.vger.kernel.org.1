@@ -2,236 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF95F7A3B08
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6137A3BC3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240564AbjIQULu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:11:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
+        id S240812AbjIQUV4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240590AbjIQULd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:33 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567B3F1;
-        Sun, 17 Sep 2023 13:11:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1694981485; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=XcsXwrMZJ4WmkGraLw8tnCxf93iR/28w9SR7c7+HCSiww3BEdBHCUP3YOLbtvM9Tib
-    IECw3WuoXOiu0Da/PESnntJmYoIDWA/486YGzzbDDDYsyaj8Vg/gyFLopaPw0Lu0XhBZ
-    p46NBsyQJaEXrDiJsCUKDal7z/eKDlmoQTxvXp28xjWKcitYcVHg+5T8CrgGHtadXFAJ
-    xWS/SvFNrS+SY8YAgGHKvghLZxHh47JdU5thxAWzhT8RNf0/NWDjBS/X8eSHe/rTJPlo
-    aArkMzjRP1vmmxbAG1To1c+lQiQLVcaVEQ3mfAU6Sp5plhS0wOlcF5nRpeMsyeEvsNDl
-    bwtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1694981485;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=zGxppwIRX0Tl3MeLWQbRI04qLkWaOFo5HeDhjvTY4G0=;
-    b=Ef0il6xRoac5wEKvL9zmOYkxhdTxsKQxlUA0odQNLvrDgFSRcocAHvMbbQABCLHJs2
-    AIrENww6hzKbF5a2t+lEIUBuqrWSzIHBcvG0CmvYHIst7cFFkLddbB3E2LAXyV7HX6Si
-    OZIVACXZFsce8I97+aMDt/3fYk5QcmXvcy0k+9cIeEn1T4IsZDZw0QvE08HjlNnKkbr2
-    eeZlH0HUGRLGLVXkS1hbbBFg0cNhqAwRtsleq8UdEbgQpmtu8lgB4f/xCImZRYOiujPE
-    PtkeG97lkd+ua1ar+0lOGBOVcv2YoPN01LRvra5U8lUES9P2iM2pLJzCCGtsL/2es9Zd
-    He3g==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1694981484;
-    s=strato-dkim-0002; d=iokpp.de;
-    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=zGxppwIRX0Tl3MeLWQbRI04qLkWaOFo5HeDhjvTY4G0=;
-    b=OSnuotJG+MwgZLx8mfpTzwjApvKCScN0Nv4W7AJGdKKCieOo51os4/8XNZY70jR6Pd
-    dldHWl+ybZP8RgVdBGRw4X/11DYdWftSIi5R8y3P8ram3+CR8qklFjyvrwC6gZ9Ttcjr
-    P3zepjXk9GhZh+XQNbFzhCQd8QtaMuQmLzW1TX6+yV+7JurRBfJigDPLU34Yb5SqNaM1
-    jkSXbvbZGPOlunKMbcy+Jp9kJ/NlBG/daKa06zCYpmW+JhmeoQRTSEAa/0wTiZj+CFCy
-    b1bsbluFVNzbu4UyrGl6wB6D9ZMXeyO+PaRgIhTytEQd4+PGT7h7RTkOuGS0wIoiI+cp
-    JnEQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1694981484;
-    s=strato-dkim-0003; d=iokpp.de;
-    h=References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=zGxppwIRX0Tl3MeLWQbRI04qLkWaOFo5HeDhjvTY4G0=;
-    b=42b5DEePtqlChrZhp9Op9nz7V4ylqCq3akygV8jbyjuNu14kvdlfFHQp8kNnMNcach
-    VsvjSQLemRN5ottbkbBA==
-X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSeBwhhSxarlUcu05JyMI1zXvWpofGAbhC22VTSyBo5Bpg9wgYEqSm4NXFaofpx464Ao="
-Received: from p200300c58703581b312819b392712fb6.dip0.t-ipconnect.de
-    by smtp.strato.de (RZmta 49.8.2 AUTH)
-    with ESMTPSA id V04024z8HKBOI6g
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sun, 17 Sep 2023 22:11:24 +0200 (CEST)
-Message-ID: <c66810ae52446db41fd187ee4be24d04d40c1abb.camel@iokpp.de>
-Subject: Re: [PATCH v2] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for
- Micron eMMC Q2J54A
-From:   Bean Huo <beanhuo@iokpp.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
-        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S240909AbjIQUVr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:47 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C57195
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:37 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-523100882f2so4868310a12.2
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1694982096; x=1695586896; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MT2s77/+t/5Zt0AJKF5jpT5srXOu3+XziZDQE7OQs9Y=;
+        b=ljjAqVqFykgtwX3xTT3ynL5tlT+0ZPgkHQxRVPi6EAxb4E69OzF4U7ULZnn99clME2
+         zlVLxkJjKESLqBtSkPxHTgTsZR1VYRnRFVUruCCY8chG9BavLHY/HPz/W7cI2F1rrF8z
+         V8zPqjHK8p3GGTgFSoxB+inz9I5udSptcg71X2JJL+O+H9KRLCXwhSJNDvHM3fybkvwf
+         tTX61OiXU/r+0+4G3YCcRmDWXnkO+TZe39GcwadqBmNmb/Xjx7K4ZwQffPf7x0x0qRj/
+         gWHJT9ELf1CSzRwdh00/fEzks19nEng44za20ttLsI+wmIxgjJdI7U+1vyGQwqIqZCAp
+         N2xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694982096; x=1695586896;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MT2s77/+t/5Zt0AJKF5jpT5srXOu3+XziZDQE7OQs9Y=;
+        b=XSVeQJDhQ41apjqCDJBvF0aPj3T7U2glIsjV80yOXNn+YtKtiyyFpfiNivr6/sCCwm
+         8z1MEXhQqSY2fJSrZLe9BSWSlIhHnb0iRIt2qQkweHs3dUg8nFE3c1n4XuaLyZMlpodQ
+         vhTz8JFhMaOMThDVJ7IWAlZkwPrMJTEi+flb/CRmQgw5ttsTpo87Tp2ZTtzOM84unbTo
+         lx9zqqxp6N0ZuXv6B/MWCRGhNkHwvgq/8PpJqhmJTZHfr1gUdbqD7GvWqLQN+AhhOHWV
+         mdvpOvqSdZDtERl5inWhpREIcae7ZlDUK9VIRQgmnelUDuDGZxR6TiGR+ZM4cIoDxfY/
+         oMYQ==
+X-Gm-Message-State: AOJu0Ywp64KEI4HBpdXXwMqovazewaUY7NnB4luq182Vjv/ZD3SoeqGt
+        hRUrIlhIyTvngJz5IonPLpU=
+X-Google-Smtp-Source: AGHT+IH2uDCu+lNmhA38xKp7G6491vz5k/A6md5hgEgEU/DemD64vORYrlIUG6193N3V/g0mKOVxtA==
+X-Received: by 2002:a05:6402:1a57:b0:52c:b469:bafd with SMTP id bf23-20020a0564021a5700b0052cb469bafdmr5574517edb.41.1694982095809;
+        Sun, 17 Sep 2023 13:21:35 -0700 (PDT)
+Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id x26-20020aa7dada000000b005224f840130sm5041888eds.60.2023.09.17.13.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Sep 2023 13:21:35 -0700 (PDT)
+Message-ID: <276965bc5bb339bc02bbd653072ceb50a7103400.camel@gmail.com>
+Subject: Re: [PATCH 5.10 294/406] bpf: Fix issue in verifying allow_ptr_leaks
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Date:   Sun, 17 Sep 2023 22:11:24 +0200
-In-Reply-To: <CAPDyKFruYooG4yQ4yqrwEcrvy4xe6hYByF2Q57eQ1g0tiUtcug@mail.gmail.com>
-References: <20230914202749.470100-1-beanhuo@iokpp.de>
-         <CAPDyKFruYooG4yQ4yqrwEcrvy4xe6hYByF2Q57eQ1g0tiUtcug@mail.gmail.com>
+Cc:     patches@lists.linux.dev, Yonghong Song <yonghong.song@linux.dev>,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Yafang Shao <laoar.shao@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>, gerhorst@amazon.de
+Date:   Sun, 17 Sep 2023 23:21:34 +0300
+In-Reply-To: <20230917191109.075455780@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
+         <20230917191109.075455780@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, 2023-09-17 at 21:12 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
 
-Hi Ulf,
+I believe=C2=A0Luis Gerhorst posted an objection to this patch for 6.1 in [=
+1],
+for reasons described in [2]. The objection is relevant for 5.10 as well
+(does not depend on kernel version, actually).
 
-Thanks for your comment, much appreciated!
+[1]=C2=A0https://lore.kernel.org/all/2023091653-peso-sprint-889d@gregkh/
+[2]=C2=A0https://lore.kernel.org/bpf/20230913122827.91591-1-gerhorst@amazon=
+.de/=20
 
-
-On Fri, 2023-09-15 at 00:09 +0200, Ulf Hansson wrote:
-> On Thu, 14 Sept 2023 at 22:28, Bean Huo <beanhuo@iokpp.de> wrote:
-> >=20
-> > From: Bean Huo <beanhuo@micron.com>
-> >=20
-> > Micron MTFC4GACAJCN eMMC supports cache but requires that flush
-> > cache
-> > operation be allowed only after a write has occurred. Otherwise,
-> > the
-> > cache flush command or subsequent commands will time out.
 >=20
-> For my information, more exactly, how can we trigger this problem?
+> ------------------
 >=20
-
-This issue may be likely reproduced in this command sequence:
-
-eMMC power-cycle/reset-->...(other operations, but no data write)...-
->cache flush-->...... ->write data, must say, it is not 100%
-reproducable.
-
-> >=20
-> > Signed-off-by: Bean Huo <beanhuo@micron.com>
-> > Co-developed-by: Rafael Beims <rafael.beims@toradex.com>
-> > Tested-by: Rafael Beims <rafael.beims@toradex.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> > Changelog:
-> >=20
-> > v1--v2:
-> > =C2=A0=C2=A0=C2=A0 1. Add Rafael's test-tag, and Co-developed-by.
-> > =C2=A0=C2=A0=C2=A0 2. Check host->card whether NULL or not in
-> > __mmc_start_request() before asserting host->card->->quirks
-> >=20
-> > ---
-> > =C2=A0drivers/mmc/core/core.c=C2=A0=C2=A0 | 7 +++++++
-> > =C2=A0drivers/mmc/core/mmc.c=C2=A0=C2=A0=C2=A0 | 5 +++++
-> > =C2=A0drivers/mmc/core/quirks.h | 7 ++++---
-> > =C2=A0include/linux/mmc/card.h=C2=A0 | 2 ++
-> > =C2=A04 files changed, 18 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> > index 3d3e0ca52614..86a669b35b91 100644
-> > --- a/drivers/mmc/core/core.c
-> > +++ b/drivers/mmc/core/core.c
-> > @@ -259,6 +259,13 @@ static void __mmc_start_request(struct
-> > mmc_host *host, struct mmc_request *mrq)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 host->cqe_ops->cqe_off(host);
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 host->ops->request(host, mrq=
-);
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (host->card && host->card->qui=
-rks &
-> > MMC_QUIRK_BROKEN_CACHE_FLUSH &&
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !host->ca=
-rd->written_flag) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 if (mrq->cmd->opcode =3D=3D MMC_WRITE_MULTIPLE_BLOCK ||
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mrq->cmd->opcode =3D=3D MMC_WRITE_B=
-LOCK)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 host->card-=
->written_flag =3D true;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> From: Yafang Shao <laoar.shao@gmail.com>
 >=20
-> I don't quite like that we are adding the above code here - as it's
-> used for *all* requests.
+> commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
 >=20
-> Seems like the flag is better set from the mmc block device driver
-> instead. Somewhere in the path when we serve I/O write requests.
+> After we converted the capabilities of our networking-bpf program from
+> cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
+> failed to start. Because it failed the bpf verifier, and the error log
+> is "R3 pointer comparison prohibited".
 >=20
-
-yes, you are correct, I will update the patch and add this flag set in
-mmc block driver mmc_blk_mq_issue_rq().
-
-> > =C2=A0}
-> >=20
-> > =C2=A0static void mmc_mrq_pr_debug(struct mmc_host *host, struct
-> > mmc_request *mrq,
-> > diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> > index 89cd48fcec79..a2edd065fa1b 100644
-> > --- a/drivers/mmc/core/mmc.c
-> > +++ b/drivers/mmc/core/mmc.c
-> > @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host
-> > *host, u32 ocr,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!oldcard)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 host->card =3D card;
-> >=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 card->written_flag =3D false;
-> > +
+> A simple reproducer as follows,
 >=20
-> According to your earlier reply, it sounds like the problem isn't
-> really about the card being re-initialized, but rather that we
-> actually need a write request to happen before a flush. No matter
-> what, no?
+> SEC("cls-ingress")
+> int ingress(struct __sk_buff *skb)
+> {
+> 	struct iphdr *iph =3D (void *)(long)skb->data + sizeof(struct ethhdr);
 >=20
-> See more about this below.
+> 	if ((long)(iph + 1) > (long)skb->data_end)
+> 		return TC_ACT_STOLEN;
+> 	return TC_ACT_OK;
+> }
 >=20
-
-Actually, it matters that the first cache flush command after
-reboot/reset. means that for the first cache flush command, before
-execution, the write data operation should occur,
-After that, there is no problem even if there are no writes before the
-cache is flushed.
-
-
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
-> >=20
-> > =C2=A0free_card:
-> > @@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host
-> > *host)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err =3D 0;
-> >=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (host->card->quirks & MMC_QUIR=
-K_BROKEN_CACHE_FLUSH &&
-> > !host->card->written_flag)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return err;
-> > +
+> Per discussion with Yonghong and Alexei [1], comparison of two packet
+> pointers is not a pointer leak. This patch fixes it.
 >=20
-> Could an option to the above, be to reset the flag here instead.
-> After
-> a successful cache flush has been done.
+> Our local kernel is 6.1.y and we expect this fix to be backported to
+> 6.1.y, so stable is CCed.
+>=20
+> [1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94=
+aXSy4uQ9vBg@mail.gmail.com/
+>=20
+> Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+> Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/r/20230823020703.3790-2-laoar.shao@gmail.co=
+m
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  kernel/bpf/verifier.c |   17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+>=20
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -8178,6 +8178,12 @@ static int check_cond_jmp_op(struct bpf_
+>  		return -EINVAL;
+>  	}
+> =20
+> +	/* check src2 operand */
+> +	err =3D check_reg_arg(env, insn->dst_reg, SRC_OP);
+> +	if (err)
+> +		return err;
+> +
+> +	dst_reg =3D &regs[insn->dst_reg];
+>  	if (BPF_SRC(insn->code) =3D=3D BPF_X) {
+>  		if (insn->imm !=3D 0) {
+>  			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+> @@ -8189,12 +8195,13 @@ static int check_cond_jmp_op(struct bpf_
+>  		if (err)
+>  			return err;
+> =20
+> -		if (is_pointer_value(env, insn->src_reg)) {
+> +		src_reg =3D &regs[insn->src_reg];
+> +		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_re=
+g)) &&
+> +		    is_pointer_value(env, insn->src_reg)) {
+>  			verbose(env, "R%d pointer comparison prohibited\n",
+>  				insn->src_reg);
+>  			return -EACCES;
+>  		}
+> -		src_reg =3D &regs[insn->src_reg];
+>  	} else {
+>  		if (insn->src_reg !=3D BPF_REG_0) {
+>  			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+> @@ -8202,12 +8209,6 @@ static int check_cond_jmp_op(struct bpf_
+>  		}
+>  	}
+> =20
+> -	/* check src2 operand */
+> -	err =3D check_reg_arg(env, insn->dst_reg, SRC_OP);
+> -	if (err)
+> -		return err;
+> -
+> -	dst_reg =3D &regs[insn->dst_reg];
+>  	is_jmp32 =3D BPF_CLASS(insn->code) =3D=3D BPF_JMP32;
+> =20
+>  	if (BPF_SRC(insn->code) =3D=3D BPF_K) {
 >=20
 >=20
-
-As I explained above, the first cache flush after a power cycle/reset
-is important. We just want to eliminate the first unnecessary cache
-flush.
-We can eliminate all unnecessary cache flushes when the cache is empty.
-But I don't want to change the current logic too much, only want to
-focus on the first unnecessary cache flush, how do you think?
-
-Kind regards,
-Bean
 
