@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D8A7A3AD0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 773CE7A3CE3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240471AbjIQUJI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:09:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
+        id S241157AbjIQUgV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240485AbjIQUIp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:45 -0400
+        with ESMTP id S241203AbjIQUgM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C82100
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DA2C433C8;
-        Sun, 17 Sep 2023 20:08:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0395B10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6ADC433C8;
+        Sun, 17 Sep 2023 20:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981320;
-        bh=hQ/Shi1xM6zOpOqrlot7rf3I0ukxj3BWR4uhr5iDWws=;
+        s=korg; t=1694982966;
+        bh=civgUsj0Kvz6jeBR1mRZNjwpoZHGpmoF59hSYxzYcPk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uecRtRoLDI241ml2LBgu4I71K2lxxEWW0egktZSmBQo929G9AUsMESrKKfbR+T4Us
-         rIQhwrxVKE5lA+ejVq7XTC0JO3zIo7rkNSYhn//uTTb3t6/hBQy3BTfOL9KM4jtF0w
-         4oEmhhe5K4bezl6Z1jGiXIBMmiPZf9EFPHOr4lfU=
+        b=Chu3NaY1ZuSygIr+FKE4Ue5YU+qi6gtqemk0aLdPfVbX0EiAami38H2GU4DgoKBM6
+         8oN2tKlt2Lf03MA40Hl2x3JunaNyLKAZoVdWWdvxfcJJ/K6kaGqxdDYAVJk98Iv/vu
+         9SapE3cxcF0bNbK360i8Oh4cti8ROM5m7k3p2PjE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Chen <liangchen.linux@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/219] veth: Fixing transmit return status for dropped packets
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 5.15 404/511] NFS: Fix a potential data corruption
 Date:   Sun, 17 Sep 2023 21:13:51 +0200
-Message-ID: <20230917191044.756600990@linuxfoundation.org>
+Message-ID: <20230917191123.545023246@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liang Chen <liangchen.linux@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 151e887d8ff97e2e42110ffa1fb1e6a2128fb364 ]
+commit 88975a55969e11f26fe3846bf4fbf8e7dc8cbbd4 upstream.
 
-The veth_xmit function returns NETDEV_TX_OK even when packets are dropped.
-This behavior leads to incorrect calculations of statistics counts, as
-well as things like txq->trans_start updates.
+We must ensure that the subrequests are joined back into the head before
+we can retransmit a request. If the head was not on the commit lists,
+because the server wrote it synchronously, we still need to add it back
+to the retransmission list.
+Add a call that mirrors the effect of nfs_cancel_remove_inode() for
+O_DIRECT.
 
-Fixes: e314dbdc1c0d ("[NET]: Virtual ethernet device driver.")
-Signed-off-by: Liang Chen <liangchen.linux@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ed5d588fe47f ("NFS: Try to join page groups before an O_DIRECT retransmission")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/direct.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 727b9278b9fe5..36c5a41f84e44 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -313,6 +313,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
- 	struct veth_rq *rq = NULL;
-+	int ret = NETDEV_TX_OK;
- 	struct net_device *rcv;
- 	int length = skb->len;
- 	bool use_napi = false;
-@@ -345,6 +346,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	} else {
- drop:
- 		atomic64_inc(&priv->dropped);
-+		ret = NET_XMIT_DROP;
- 	}
- 
- 	if (use_napi)
-@@ -352,7 +354,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	rcu_read_unlock();
- 
--	return NETDEV_TX_OK;
-+	return ret;
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -509,13 +509,31 @@ out:
+ 	return result;
  }
  
- static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
--- 
-2.40.1
-
++static void nfs_direct_add_page_head(struct list_head *list,
++				     struct nfs_page *req)
++{
++	struct nfs_page *head = req->wb_head;
++
++	if (!list_empty(&head->wb_list) || !nfs_lock_request(head))
++		return;
++	if (!list_empty(&head->wb_list)) {
++		nfs_unlock_request(head);
++		return;
++	}
++	list_add(&head->wb_list, list);
++	kref_get(&head->wb_kref);
++	kref_get(&head->wb_kref);
++}
++
+ static void nfs_direct_join_group(struct list_head *list, struct inode *inode)
+ {
+ 	struct nfs_page *req, *subreq;
+ 
+ 	list_for_each_entry(req, list, wb_list) {
+-		if (req->wb_head != req)
++		if (req->wb_head != req) {
++			nfs_direct_add_page_head(&req->wb_list, req);
+ 			continue;
++		}
+ 		subreq = req->wb_this_page;
+ 		if (subreq == req)
+ 			continue;
 
 
