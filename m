@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A9DD7A3987
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 004367A3869
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231237AbjIQTu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43244 "EHLO
+        id S239742AbjIQTf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231197AbjIQTuY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:24 -0400
+        with ESMTP id S239821AbjIQTfK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495C19F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491A4C433C8;
-        Sun, 17 Sep 2023 19:50:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44ADB121
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682F2C433C7;
+        Sun, 17 Sep 2023 19:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980218;
-        bh=XG1yvnM742iSHLXc8KxlOVseL3j9d68UH6NIHQott54=;
+        s=korg; t=1694979304;
+        bh=TzYX9Ny9EcSiuf1MKEugoVHe4t6Fz0LkUgKhl7YCgjc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zrsaOLtTuuVL+dE48LDaprijam81Fc50Syi3C4B2zHrRXh1ACfguCfALjWpgTaEz+
-         XcveOdzXkqyceX/ywbKyRYRjHoljNwos2W3rcH+y1SFMNfpFwsrGdwEsjk4RSJt99C
-         2+F+x8HfZCqsDYooWVdFBfekYl/gFaDwgf0Fb0ko=
+        b=lbA9mdncOZzc78eIqruufrHcjoclpphnXUHfhu3GlBVHTLwHa0/73wCFQuHkhwnxR
+         aaWfeSxd/z0Iim68RyauIVZC01NWFJ6eWUWsKVTeAdSW1OxqXmXtxiaH2Uoj6BKgib
+         /rBRqJve9aaMMhlIwFNwl7XT5dfhRBy6+foG8JII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Kuohai <xukuohai@huawei.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 126/285] selftests/bpf: Fix a CI failure caused by vsock write
-Date:   Sun, 17 Sep 2023 21:12:06 +0200
-Message-ID: <20230917191056.028842505@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
+        Radoslaw Tyl <radoslawx.tyl@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 5.10 273/406] igb: set max size RX buffer when store bad packet is enabled
+Date:   Sun, 17 Sep 2023 21:12:07 +0200
+Message-ID: <20230917191108.468721442@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,105 +53,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Radoslaw Tyl <radoslawx.tyl@intel.com>
 
-[ Upstream commit c1970e26bdc1209974bb5cf31cc23f2b7ad6ce50 ]
+commit bb5ed01cd2428cd25b1c88a3a9cba87055eb289f upstream.
 
-While commit 90f0074cd9f9 ("selftests/bpf: fix a CI failure caused by vsock sockmap test")
-fixes a receive failure of vsock sockmap test, there is still a write failure:
+Increase the RX buffer size to 3K when the SBP bit is on. The size of
+the RX buffer determines the number of pages allocated which may not
+be sufficient for receive frames larger than the set MTU size.
 
-Error: #211/79 sockmap_listen/sockmap VSOCK test_vsock_redir
-Error: #211/79 sockmap_listen/sockmap VSOCK test_vsock_redir
-  ./test_progs:vsock_unix_redir_connectible:1501: egress: write: Transport endpoint is not connected
-  vsock_unix_redir_connectible:FAIL:1501
-  ./test_progs:vsock_unix_redir_connectible:1501: ingress: write: Transport endpoint is not connected
-  vsock_unix_redir_connectible:FAIL:1501
-  ./test_progs:vsock_unix_redir_connectible:1501: egress: write: Transport endpoint is not connected
-  vsock_unix_redir_connectible:FAIL:1501
-
-The reason is that the vsock connection in the test is set to ESTABLISHED state
-by function virtio_transport_recv_pkt, which is executed in a workqueue thread,
-so when the user space test thread runs before the workqueue thread, this
-problem occurs.
-
-To fix it, before writing the connection, wait for it to be connected.
-
-Fixes: d61bd8c1fd02 ("selftests/bpf: add a test case for vsock sockmap")
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230901031037.3314007-1-xukuohai@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
+Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
+Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../bpf/prog_tests/sockmap_helpers.h          | 26 +++++++++++++++++++
- .../selftests/bpf/prog_tests/sockmap_listen.c |  7 +++++
- 2 files changed, 33 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_main.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_helpers.h b/tools/testing/selftests/bpf/prog_tests/sockmap_helpers.h
-index d12665490a905..36d829a65aa44 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_helpers.h
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_helpers.h
-@@ -179,6 +179,32 @@
- 		__ret;                                                         \
- 	})
- 
-+static inline int poll_connect(int fd, unsigned int timeout_sec)
-+{
-+	struct timeval timeout = { .tv_sec = timeout_sec };
-+	fd_set wfds;
-+	int r, eval;
-+	socklen_t esize = sizeof(eval);
-+
-+	FD_ZERO(&wfds);
-+	FD_SET(fd, &wfds);
-+
-+	r = select(fd + 1, NULL, &wfds, NULL, &timeout);
-+	if (r == 0)
-+		errno = ETIME;
-+	if (r != 1)
-+		return -1;
-+
-+	if (getsockopt(fd, SOL_SOCKET, SO_ERROR, &eval, &esize) < 0)
-+		return -1;
-+	if (eval != 0) {
-+		errno = eval;
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- static inline int poll_read(int fd, unsigned int timeout_sec)
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -4731,6 +4731,10 @@ void igb_configure_rx_ring(struct igb_ad
+ static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
+ 				  struct igb_ring *rx_ring)
  {
- 	struct timeval timeout = { .tv_sec = timeout_sec };
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-index 5674a9d0cacf0..8df8cbb447f10 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-@@ -1452,11 +1452,18 @@ static int vsock_socketpair_connectible(int sotype, int *v0, int *v1)
- 	if (p < 0)
- 		goto close_cli;
- 
-+	if (poll_connect(c, IO_TIMEOUT_SEC) < 0) {
-+		FAIL_ERRNO("poll_connect");
-+		goto close_acc;
-+	}
++#if (PAGE_SIZE < 8192)
++	struct e1000_hw *hw = &adapter->hw;
++#endif
 +
- 	*v0 = p;
- 	*v1 = c;
+ 	/* set build_skb and buffer size flags */
+ 	clear_ring_build_skb_enabled(rx_ring);
+ 	clear_ring_uses_large_buffer(rx_ring);
+@@ -4741,10 +4745,9 @@ static void igb_set_rx_buffer_len(struct
+ 	set_ring_build_skb_enabled(rx_ring);
  
- 	return 0;
+ #if (PAGE_SIZE < 8192)
+-	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
+-		return;
+-
+-	set_ring_uses_large_buffer(rx_ring);
++	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
++	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
++		set_ring_uses_large_buffer(rx_ring);
+ #endif
+ }
  
-+close_acc:
-+	close(p);
- close_cli:
- 	close(c);
- close_srv:
--- 
-2.40.1
-
 
 
