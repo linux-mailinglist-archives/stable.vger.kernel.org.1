@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C97BA7A3BB8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725E27A3BBA
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239622AbjIQUV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52908 "EHLO
+        id S240800AbjIQUV1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240856AbjIQUVK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:10 -0400
+        with ESMTP id S240866AbjIQUVQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C92AD101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FB3C433C8;
-        Sun, 17 Sep 2023 20:21:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAB9101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:21:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF9EC433C9;
+        Sun, 17 Sep 2023 20:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982064;
-        bh=AaudtMlagcBRdsIH2HRds5+Xpbdjsl3kwKhR/cvz37o=;
+        s=korg; t=1694982071;
+        bh=uf0H6mFhprfZJ4IOR3/B3qBU2Kvvyb9xOSAyA78Lohw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2lpPBpsjZfnpQOW1T86A+nlZZ+hFzS8evJw46OskC2LeWyyD7nlvLzSFIkbruqrdO
-         xMBAfgQ53HgpMEnR/uMrO9bSmty2kU0xJUxXBSA8efW6/2Ha6mD2W+btYjb2a3/S64
-         jaPVVNrcYbVWeUz/yhaCHnFHHnDTIdfaiV7dHF5E=
+        b=yYgbiMgG/CyYugpR5E1jrmb+jFgNhaN7q2c0r7wXeGbDCFLuZaBrZF7iuRVcuFWLU
+         LpfO5unKmBC1Y2OhpiRHCUj6yUmcx4tr+/tLI2patcu+y66hF/MTUV/U8poPq+jcZR
+         7goRflaaBtOuQduHTTzwaFF9yMppKYgNjFlJ2eAM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Mark Bloch <mbloch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/219] ipv6: Remove in6addr_any alternatives.
-Date:   Sun, 17 Sep 2023 21:15:39 +0200
-Message-ID: <20230917191048.594890561@linuxfoundation.org>
+Subject: [PATCH 6.1 213/219] tcp: Factorise sk_family-independent comparison in inet_bind2_bucket_match(_addr_any).
+Date:   Sun, 17 Sep 2023 21:15:40 +0200
+Message-ID: <20230917191048.633862131@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -58,206 +57,82 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 8cdc3223e78c43e1b60ea1c536a103e32fdca3c5 ]
+[ Upstream commit c6d277064b1da7f9015b575a562734de87a7e463 ]
 
-Some code defines the IPv6 wildcard address as a local variable and
-use it with memcmp() or ipv6_addr_equal().
+This is a prep patch to make the following patches cleaner that touch
+inet_bind2_bucket_match() and inet_bind2_bucket_match_addr_any().
 
-Let's use in6addr_any and ipv6_addr_any() instead.
+Both functions have duplicated comparison for netns, port, and l3mdev.
+Let's factorise them.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: aa99e5f87bd5 ("tcp: Fix bind() regression for v4-mapped-v6 wildcard address.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c |  5 ++---
- include/net/ip6_fib.h                                 |  9 +++------
- include/trace/events/fib.h                            |  5 ++---
- include/trace/events/fib6.h                           |  5 +----
- net/ethtool/ioctl.c                                   | 10 +++++-----
- net/ipv4/inet_hashtables.c                            | 11 ++++-------
- 6 files changed, 17 insertions(+), 28 deletions(-)
+ net/ipv4/inet_hashtables.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index 72b61f66df37a..cd15d36b1507e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -97,7 +97,6 @@ int mlx5e_tc_set_attr_rx_tun(struct mlx5e_tc_flow *flow,
- #if IS_ENABLED(CONFIG_INET) && IS_ENABLED(CONFIG_IPV6)
- 	else if (ip_version == 6) {
- 		int ipv6_size = MLX5_FLD_SZ_BYTES(ipv6_layout, ipv6);
--		struct in6_addr zerov6 = {};
- 
- 		daddr = MLX5_ADDR_OF(fte_match_param, spec->match_value,
- 				     outer_headers.dst_ipv4_dst_ipv6.ipv6_layout.ipv6);
-@@ -105,8 +104,8 @@ int mlx5e_tc_set_attr_rx_tun(struct mlx5e_tc_flow *flow,
- 				     outer_headers.src_ipv4_src_ipv6.ipv6_layout.ipv6);
- 		memcpy(&tun_attr->dst_ip.v6, daddr, ipv6_size);
- 		memcpy(&tun_attr->src_ip.v6, saddr, ipv6_size);
--		if (!memcmp(&tun_attr->dst_ip.v6, &zerov6, sizeof(zerov6)) ||
--		    !memcmp(&tun_attr->src_ip.v6, &zerov6, sizeof(zerov6)))
-+		if (ipv6_addr_any(&tun_attr->dst_ip.v6) ||
-+		    ipv6_addr_any(&tun_attr->src_ip.v6))
- 			return 0;
- 	}
- #endif
-diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
-index a92f6eb853068..fa4e6af382e2a 100644
---- a/include/net/ip6_fib.h
-+++ b/include/net/ip6_fib.h
-@@ -472,13 +472,10 @@ void rt6_get_prefsrc(const struct rt6_info *rt, struct in6_addr *addr)
- 	rcu_read_lock();
- 
- 	from = rcu_dereference(rt->from);
--	if (from) {
-+	if (from)
- 		*addr = from->fib6_prefsrc.addr;
--	} else {
--		struct in6_addr in6_zero = {};
--
--		*addr = in6_zero;
--	}
-+	else
-+		*addr = in6addr_any;
- 
- 	rcu_read_unlock();
- }
-diff --git a/include/trace/events/fib.h b/include/trace/events/fib.h
-index c2300c407f583..76297ecd4935c 100644
---- a/include/trace/events/fib.h
-+++ b/include/trace/events/fib.h
-@@ -36,7 +36,6 @@ TRACE_EVENT(fib_table_lookup,
- 	),
- 
- 	TP_fast_assign(
--		struct in6_addr in6_zero = {};
- 		struct net_device *dev;
- 		struct in6_addr *in6;
- 		__be32 *p32;
-@@ -74,7 +73,7 @@ TRACE_EVENT(fib_table_lookup,
- 				*p32 = nhc->nhc_gw.ipv4;
- 
- 				in6 = (struct in6_addr *)__entry->gw6;
--				*in6 = in6_zero;
-+				*in6 = in6addr_any;
- 			} else if (nhc->nhc_gw_family == AF_INET6) {
- 				p32 = (__be32 *) __entry->gw4;
- 				*p32 = 0;
-@@ -87,7 +86,7 @@ TRACE_EVENT(fib_table_lookup,
- 			*p32 = 0;
- 
- 			in6 = (struct in6_addr *)__entry->gw6;
--			*in6 = in6_zero;
-+			*in6 = in6addr_any;
- 		}
- 	),
- 
-diff --git a/include/trace/events/fib6.h b/include/trace/events/fib6.h
-index 6e821eb794503..4d3e607b3cdec 100644
---- a/include/trace/events/fib6.h
-+++ b/include/trace/events/fib6.h
-@@ -68,11 +68,8 @@ TRACE_EVENT(fib6_table_lookup,
- 			strcpy(__entry->name, "-");
- 		}
- 		if (res->f6i == net->ipv6.fib6_null_entry) {
--			struct in6_addr in6_zero = {};
--
- 			in6 = (struct in6_addr *)__entry->gw;
--			*in6 = in6_zero;
--
-+			*in6 = in6addr_any;
- 		} else if (res->nh) {
- 			in6 = (struct in6_addr *)__entry->gw;
- 			*in6 = res->nh->fib_nh_gw6;
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 940c0e27be735..e31d1247b9f08 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -27,6 +27,7 @@
- #include <linux/net.h>
- #include <linux/pm_runtime.h>
- #include <net/devlink.h>
-+#include <net/ipv6.h>
- #include <net/xdp_sock_drv.h>
- #include <net/flow_offload.h>
- #include <linux/ethtool_netlink.h>
-@@ -3090,7 +3091,6 @@ struct ethtool_rx_flow_rule *
- ethtool_rx_flow_rule_create(const struct ethtool_rx_flow_spec_input *input)
- {
- 	const struct ethtool_rx_flow_spec *fs = input->fs;
--	static struct in6_addr zero_addr = {};
- 	struct ethtool_rx_flow_match *match;
- 	struct ethtool_rx_flow_rule *flow;
- 	struct flow_action_entry *act;
-@@ -3196,20 +3196,20 @@ ethtool_rx_flow_rule_create(const struct ethtool_rx_flow_spec_input *input)
- 
- 		v6_spec = &fs->h_u.tcp_ip6_spec;
- 		v6_m_spec = &fs->m_u.tcp_ip6_spec;
--		if (memcmp(v6_m_spec->ip6src, &zero_addr, sizeof(zero_addr))) {
-+		if (!ipv6_addr_any((struct in6_addr *)v6_m_spec->ip6src)) {
- 			memcpy(&match->key.ipv6.src, v6_spec->ip6src,
- 			       sizeof(match->key.ipv6.src));
- 			memcpy(&match->mask.ipv6.src, v6_m_spec->ip6src,
- 			       sizeof(match->mask.ipv6.src));
- 		}
--		if (memcmp(v6_m_spec->ip6dst, &zero_addr, sizeof(zero_addr))) {
-+		if (!ipv6_addr_any((struct in6_addr *)v6_m_spec->ip6dst)) {
- 			memcpy(&match->key.ipv6.dst, v6_spec->ip6dst,
- 			       sizeof(match->key.ipv6.dst));
- 			memcpy(&match->mask.ipv6.dst, v6_m_spec->ip6dst,
- 			       sizeof(match->mask.ipv6.dst));
- 		}
--		if (memcmp(v6_m_spec->ip6src, &zero_addr, sizeof(zero_addr)) ||
--		    memcmp(v6_m_spec->ip6dst, &zero_addr, sizeof(zero_addr))) {
-+		if (!ipv6_addr_any((struct in6_addr *)v6_m_spec->ip6src) ||
-+		    !ipv6_addr_any((struct in6_addr *)v6_m_spec->ip6dst)) {
- 			match->dissector.used_keys |=
- 				BIT(FLOW_DISSECTOR_KEY_IPV6_ADDRS);
- 			match->dissector.offset[FLOW_DISSECTOR_KEY_IPV6_ADDRS] =
 diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index c19b462662ad0..38a92c8c66863 100644
+index 38a92c8c66863..71d77b3b6536f 100644
 --- a/net/ipv4/inet_hashtables.c
 +++ b/net/ipv4/inet_hashtables.c
-@@ -813,13 +813,11 @@ bool inet_bind2_bucket_match_addr_any(const struct inet_bind2_bucket *tb, const
+@@ -795,41 +795,39 @@ static bool inet_bind2_bucket_match(const struct inet_bind2_bucket *tb,
+ 				    const struct net *net, unsigned short port,
+ 				    int l3mdev, const struct sock *sk)
+ {
++	if (!net_eq(ib2_net(tb), net) || tb->port != port ||
++	    tb->l3mdev != l3mdev)
++		return false;
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (sk->sk_family != tb->family)
+ 		return false;
+ 
+ 	if (sk->sk_family == AF_INET6)
+-		return net_eq(ib2_net(tb), net) && tb->port == port &&
+-			tb->l3mdev == l3mdev &&
+-			ipv6_addr_equal(&tb->v6_rcv_saddr, &sk->sk_v6_rcv_saddr);
+-	else
++		return ipv6_addr_equal(&tb->v6_rcv_saddr, &sk->sk_v6_rcv_saddr);
+ #endif
+-		return net_eq(ib2_net(tb), net) && tb->port == port &&
+-			tb->l3mdev == l3mdev && tb->rcv_saddr == sk->sk_rcv_saddr;
++	return tb->rcv_saddr == sk->sk_rcv_saddr;
+ }
+ 
+ bool inet_bind2_bucket_match_addr_any(const struct inet_bind2_bucket *tb, const struct net *net,
  				      unsigned short port, int l3mdev, const struct sock *sk)
  {
++	if (!net_eq(ib2_net(tb), net) || tb->port != port ||
++	    tb->l3mdev != l3mdev)
++		return false;
++
  #if IS_ENABLED(CONFIG_IPV6)
--	struct in6_addr addr_any = {};
--
  	if (sk->sk_family != tb->family) {
  		if (sk->sk_family == AF_INET)
- 			return net_eq(ib2_net(tb), net) && tb->port == port &&
- 				tb->l3mdev == l3mdev &&
--				ipv6_addr_equal(&tb->v6_rcv_saddr, &addr_any);
-+				ipv6_addr_any(&tb->v6_rcv_saddr);
+-			return net_eq(ib2_net(tb), net) && tb->port == port &&
+-				tb->l3mdev == l3mdev &&
+-				ipv6_addr_any(&tb->v6_rcv_saddr);
++			return ipv6_addr_any(&tb->v6_rcv_saddr);
  
  		return false;
  	}
-@@ -827,7 +825,7 @@ bool inet_bind2_bucket_match_addr_any(const struct inet_bind2_bucket *tb, const
- 	if (sk->sk_family == AF_INET6)
- 		return net_eq(ib2_net(tb), net) && tb->port == port &&
- 			tb->l3mdev == l3mdev &&
--			ipv6_addr_equal(&tb->v6_rcv_saddr, &addr_any);
-+			ipv6_addr_any(&tb->v6_rcv_saddr);
- 	else
- #endif
- 		return net_eq(ib2_net(tb), net) && tb->port == port &&
-@@ -853,11 +851,10 @@ inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, in
- {
- 	struct inet_hashinfo *hinfo = tcp_or_dccp_get_hashinfo(sk);
- 	u32 hash;
--#if IS_ENABLED(CONFIG_IPV6)
--	struct in6_addr addr_any = {};
  
-+#if IS_ENABLED(CONFIG_IPV6)
  	if (sk->sk_family == AF_INET6)
--		hash = ipv6_portaddr_hash(net, &addr_any, port);
-+		hash = ipv6_portaddr_hash(net, &in6addr_any, port);
- 	else
+-		return net_eq(ib2_net(tb), net) && tb->port == port &&
+-			tb->l3mdev == l3mdev &&
+-			ipv6_addr_any(&tb->v6_rcv_saddr);
+-	else
++		return ipv6_addr_any(&tb->v6_rcv_saddr);
  #endif
- 		hash = ipv4_portaddr_hash(net, 0, port);
+-		return net_eq(ib2_net(tb), net) && tb->port == port &&
+-			tb->l3mdev == l3mdev && tb->rcv_saddr == 0;
++	return tb->rcv_saddr == 0;
+ }
+ 
+ /* The socket's bhash2 hashbucket spinlock must be held when this is called */
 -- 
 2.40.1
 
