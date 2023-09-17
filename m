@@ -2,98 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E75C7A3A2D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFAD7A37EE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240318AbjIQT7e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42162 "EHLO
+        id S239567AbjIQT05 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240381AbjIQT7Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:59:25 -0400
+        with ESMTP id S239589AbjIQT0c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EB3F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:59:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FFEC433C8;
-        Sun, 17 Sep 2023 19:59:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980760;
-        bh=/krOP+GGNsEKjKDGbzC+iqCYnrhrjQGqXpyKCIDDEhQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j9HQ66k3j4q/NSEYQIQnyikvCN49Se0PDZGpkZDl3Uatt0iwXmFeUp1v2TaHMkRg9
-         K7htJnItowq0ndYYfq/ZZ+feGia87OUJOSYcPt+NbUR45yDT8Qswx2kiF5Fpau1J1A
-         fGurX0KsqmtSGK3UqI9gJPeDi64UtALMCG7835Vk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Jun Lei <jun.lei@amd.com>, Tom Chung <chiahsuan.chung@amd.com>,
-        Wesley Chalmers <wesley.chalmers@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.5 285/285] drm/amd/display: Fix a bug when searching for insert_above_mpcc
-Date:   Sun, 17 Sep 2023 21:14:45 +0200
-Message-ID: <20230917191100.996862643@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A31DB;
+        Sun, 17 Sep 2023 12:26:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E87C433C9;
+        Sun, 17 Sep 2023 19:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1694978786;
+        bh=xNc8Pav5VGgg+pbtdBc2NbIF10LifeeIwqw9491ThOA=;
+        h=Date:To:From:Subject:From;
+        b=kVWdAcFvtqdwAPzq6XagFHtKiVEXEHzsnc4McWN6AJm00vk1Bjy3Fz9KepVacSOLi
+         yk4Nkk36EiW6T64L2bfuBK6ZZGxptPWSKxwOWOpsFmofqqB3uiTChfa6cMAjxcxsnr
+         tiOUQAWN96/BGgP5xaQJEKCigNn3RTBHbtEWcNtg=
+Date:   Sun, 17 Sep 2023 12:26:26 -0700
+To:     mm-commits@vger.kernel.org, viro@zeniv.linux.org.uk,
+        stable@vger.kernel.org, keescook@chromium.org,
+        ebiederm@xmission.com, brauner@kernel.org, gerg@kernel.org,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230917192626.B7E87C433C9@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+The patch titled
+     Subject: fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic.patch
 
-From: Wesley Chalmers <wesley.chalmers@amd.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic.patch
 
-commit 3d028d5d60d516c536de1ddd3ebf3d55f3f8983b upstream.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-[WHY]
-Currently, when insert_plane is called with insert_above_mpcc
-parameter that is equal to tree->opp_list, the function returns NULL.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-[HOW]
-Instead, the function should insert the plane at the top of the tree.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Wesley Chalmers <wesley.chalmers@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Greg Ungerer <gerg@kernel.org>
+Subject: fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
+Date: Thu, 7 Sep 2023 11:18:08 +1000
+
+The elf-fdpic loader hard sets the process personality to either
+PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
+binaries (in this case they would be constant displacement compiled with
+-pie for example).  The problem with that is that it will lose any other
+bits that may be in the ELF header personality (such as the "bug
+emulation" bits).
+
+On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
+normal 32bit binary - as opposed to a legacy 26bit address binary.  This
+matters since start_thread() will set the ARM CPSR register as required
+based on this flag.  If the elf-fdpic loader loses this bit the process
+will be mis-configured and crash out pretty quickly.
+
+Modify elf-fdpic loader personality setting so that it preserves the upper
+three bytes by using the SET_PERSONALITY macro to set it.  This macro in
+the generic case sets PER_LINUX and preserves the upper bytes. 
+Architectures can override this for their specific use case, and ARM does
+exactly this.
+
+The problem shows up quite easily running under qemu using the ARM
+architecture, but not necessarily on all types of real ARM hardware.  If
+the underlying ARM processor does not support the legacy 26-bit addressing
+mode then everything will work as expected.
+
+Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
+Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Greg Ungerer <gerg@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c
-@@ -212,8 +212,9 @@ struct mpcc *mpc1_insert_plane(
- 		/* check insert_above_mpcc exist in tree->opp_list */
- 		struct mpcc *temp_mpcc = tree->opp_list;
+ fs/binfmt_elf_fdpic.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+--- a/fs/binfmt_elf_fdpic.c~fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic
++++ a/fs/binfmt_elf_fdpic.c
+@@ -345,10 +345,9 @@ static int load_elf_fdpic_binary(struct
+ 	/* there's now no turning back... the old userspace image is dead,
+ 	 * defunct, deceased, etc.
+ 	 */
++	SET_PERSONALITY(exec_params.hdr);
+ 	if (elf_check_fdpic(&exec_params.hdr))
+-		set_personality(PER_LINUX_FDPIC);
+-	else
+-		set_personality(PER_LINUX);
++		current->personality |= PER_LINUX_FDPIC;
+ 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
+ 		current->personality |= READ_IMPLIES_EXEC;
  
--		while (temp_mpcc && temp_mpcc->mpcc_bot != insert_above_mpcc)
--			temp_mpcc = temp_mpcc->mpcc_bot;
-+		if (temp_mpcc != insert_above_mpcc)
-+			while (temp_mpcc && temp_mpcc->mpcc_bot != insert_above_mpcc)
-+				temp_mpcc = temp_mpcc->mpcc_bot;
- 		if (temp_mpcc == NULL)
- 			return NULL;
- 	}
+_
 
+Patches currently in -mm which might be from gerg@kernel.org are
+
+fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic.patch
 
