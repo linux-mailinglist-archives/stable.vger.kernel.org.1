@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0417A3C37
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA7EB7A3C35
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240942AbjIQU2R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36266 "EHLO
+        id S240951AbjIQU2S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240975AbjIQU1y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:27:54 -0400
+        with ESMTP id S240988AbjIQU15 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:27:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40035101;
-        Sun, 17 Sep 2023 13:27:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461CCC433CB;
-        Sun, 17 Sep 2023 20:27:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B1610E;
+        Sun, 17 Sep 2023 13:27:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1C4C433CD;
+        Sun, 17 Sep 2023 20:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982468;
-        bh=kkmqUzkEyBJFV3Sd5g8iXUwkdqL4W7+oAIngdk5Nea8=;
+        s=korg; t=1694982472;
+        bh=GRy9kUqjXUS0nN33BgiuzWQkSM1me98uUmQje/eS0S8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tz+OV7d/99uymuPx6hr7V2iz2s2QPGM99WyxL6kR9Vg2xEFdvE+bPSF0P5JzfUP1u
-         Hy0nKvOEJXrHgk/9KlGZo/Wrb/K14JYnEo+QoKTpun/nNryRN2FkE7KO7VW/peI447
-         gI/qNv66DVUYl+pr6fEZNN597/KLeslz6BJzG6Vw=
+        b=xtvCtTQ7ItuNHev2JJh+fXPQT2Dy9mO6YnIzzmMSDIioG5oYdVu7LvZEOmKW19nNW
+         CV3fbWZwmpSOIPB5rc9k1Sydq/uPW/cB567h6+WCDHfaH6rA+f4LyK1Y+D/fBOIRt1
+         vqEdj0aQW7jCnVDDYZsg/FZEqnW3VmLFVoIhZBT0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,9 +38,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Johannes Thumshirn <johannes.thumshirn@wdc.com>,
         Oleksandr Natalenko <oleksandr@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 260/511] scsi: qedf: Do not touch __user pointer in qedf_dbg_stop_io_on_error_cmd_read() directly
-Date:   Sun, 17 Sep 2023 21:11:27 +0200
-Message-ID: <20230917191120.113014752@linuxfoundation.org>
+Subject: [PATCH 5.15 261/511] scsi: qedf: Do not touch __user pointer in qedf_dbg_debug_cmd_read() directly
+Date:   Sun, 17 Sep 2023 21:11:28 +0200
+Message-ID: <20230917191120.138650155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -65,10 +65,10 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit 7d3d20dee4f648ec44e9717d5f647d594d184433 ]
+[ Upstream commit 31b5991a9a91ba97237ac9da509d78eec453ff72 ]
 
-The qedf_dbg_stop_io_on_error_cmd_read() function invokes sprintf()
-directly on a __user pointer, which may crash the kernel.
+The qedf_dbg_debug_cmd_read() function invokes sprintf() directly on a
+__user pointer, which may crash the kernel.
 
 Avoid doing that by using a small on-stack buffer for scnprintf() and then
 calling simple_read_from_buffer() which does a proper copy_to_user() call.
@@ -91,7 +91,7 @@ Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 Tested-by: Laurence Oberman <loberman@redhat.com>
 Acked-by: Saurav Kashyap <skashyap@marvell.com>
 Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-2-oleksandr@redhat.com
+Link: https://lore.kernel.org/r/20230731084034.37021-3-oleksandr@redhat.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -99,23 +99,20 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index a3ed681c8ce3f..3eb4334ac6a32 100644
+index 3eb4334ac6a32..1c5716540e465 100644
 --- a/drivers/scsi/qedf/qedf_debugfs.c
 +++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -185,18 +185,17 @@ qedf_dbg_stop_io_on_error_cmd_read(struct file *filp, char __user *buffer,
- 				   size_t count, loff_t *ppos)
+@@ -138,15 +138,14 @@ qedf_dbg_debug_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 			loff_t *ppos)
  {
  	int cnt;
-+	char cbuf[7];
++	char cbuf[32];
  	struct qedf_dbg_ctx *qedf_dbg =
  				(struct qedf_dbg_ctx *)filp->private_data;
- 	struct qedf_ctx *qedf = container_of(qedf_dbg,
- 	    struct qedf_ctx, dbg_ctx);
  
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
--	cnt = sprintf(buffer, "%s\n",
-+	cnt = scnprintf(cbuf, sizeof(cbuf), "%s\n",
- 	    qedf->stop_io_on_error ? "true" : "false");
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "debug mask=0x%x\n", qedf_debug);
+-	cnt = sprintf(buffer, "debug mask = 0x%x\n", qedf_debug);
++	cnt = scnprintf(cbuf, sizeof(cbuf), "debug mask = 0x%x\n", qedf_debug);
  
 -	cnt = min_t(int, count, cnt - *ppos);
 -	*ppos += cnt;
