@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B9027A3939
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D51F7A381E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239919AbjIQTql (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
+        id S238011AbjIQTbm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240008AbjIQTqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:15 -0400
+        with ESMTP id S239653AbjIQTbP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677C8C6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA81C433CD;
-        Sun, 17 Sep 2023 19:46:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D3811D
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A961BC433CD;
+        Sun, 17 Sep 2023 19:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979970;
-        bh=vHpKZ6ygbD1ryBMjCDdZK3wqDeejLqkGC3/uRtj2/+Y=;
+        s=korg; t=1694979068;
+        bh=EEBaC1bReGpcPXGURcV/U5ykUTv2Bq2j/TJlUcELHzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rRY3LVwiXbRoCtjK7G5bD59PSV+ehW2wfTV1YW5hHnbrfSyhVUIe/Tg0tmVJ7f7Xq
-         A2sGiq95Z+D4J3jjeVtd8VmgWPYqBVQ8u4dekpfHHv63Sp9BmbaO+TmDGmRJCx83Po
-         iCiCTfP7HT33PQ2w0O7S353XLME4Q6Kp/2UqVNtU=
+        b=rUjaQKaSXDC/3dF0S86999oOfmNGCzBAVo9gPUTGG1cDtxCm2oSgmhdao5xYh+Nx0
+         qnhAF0IHCvGliqJidnheWi3J/e7pmMZSLAW5W70fZK8/FFwHjrPrGKIvdIj6nj/Tv4
+         q7MSG3s/p43uFxAR5vmHLuLWnfeIOJ7+csbx0vHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Matthew Garrett <mgarrett@aurora.tech>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 059/285] tpm_crb: Fix an error handling path in crb_acpi_add()
+Subject: [PATCH 5.10 205/406] media: dib7000p: Fix potential division by zero
 Date:   Sun, 17 Sep 2023 21:10:59 +0200
-Message-ID: <20230917191053.738148784@linuxfoundation.org>
+Message-ID: <20230917191106.602111890@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 9c377852ddfdc557b1370f196b0cfdf28d233460 ]
+[ Upstream commit a1db7b2c5533fc67e2681eb5efc921a67bc7d5b8 ]
 
-Some error paths don't call acpi_put_table() before returning.
-Branch to the correct place instead of doing some direct return.
+Variable loopdiv can be assigned 0, then it is used as a denominator,
+without checking it for 0.
 
-Fixes: 4d2732882703 ("tpm_crb: Add support for CRB devices based on Pluton")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Matthew Garrett <mgarrett@aurora.tech>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 713d54a8bd81 ("[media] DiB7090: add support for the dib7090 based")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: (bw != NULL) -> bw]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_crb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-index a5dbebb1acfcf..ea085b14ab7c9 100644
---- a/drivers/char/tpm/tpm_crb.c
-+++ b/drivers/char/tpm/tpm_crb.c
-@@ -775,12 +775,13 @@ static int crb_acpi_add(struct acpi_device *device)
- 				FW_BUG "TPM2 ACPI table has wrong size %u for start method type %d\n",
- 				buf->header.length,
- 				ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON);
--			return -EINVAL;
-+			rc = -EINVAL;
-+			goto out;
- 		}
- 		crb_pluton = ACPI_ADD_PTR(struct tpm2_crb_pluton, buf, sizeof(*buf));
- 		rc = crb_map_pluton(dev, priv, buf, crb_pluton);
- 		if (rc)
--			return rc;
-+			goto out;
- 	}
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index 55bee50aa8716..1f0b0690198ef 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -497,7 +497,7 @@ static int dib7000p_update_pll(struct dvb_frontend *fe, struct dibx000_bandwidth
+ 	prediv = reg_1856 & 0x3f;
+ 	loopdiv = (reg_1856 >> 6) & 0x3f;
  
- 	priv->sm = sm;
+-	if ((bw != NULL) && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
++	if (loopdiv && bw && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
+ 		dprintk("Updating pll (prediv: old =  %d new = %d ; loopdiv : old = %d new = %d)\n", prediv, bw->pll_prediv, loopdiv, bw->pll_ratio);
+ 		reg_1856 &= 0xf000;
+ 		reg_1857 = dib7000p_read_word(state, 1857);
 -- 
 2.40.1
 
