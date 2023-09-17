@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EFA87A3B71
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB5C37A3D42
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240680AbjIQURj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
+        id S241252AbjIQUkg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240709AbjIQURU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:20 -0400
+        with ESMTP id S241268AbjIQUkV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF96101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B469C433C8;
-        Sun, 17 Sep 2023 20:17:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD46101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE62BC433C8;
+        Sun, 17 Sep 2023 20:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981835;
-        bh=2top8UeOQ0/Y7mHJkktQrf/biDP6JXhVrkLlZ676xJU=;
+        s=korg; t=1694983216;
+        bh=YNhDi8nh1SKSGl1/cnV8NVh/b7aX+uRBKmlvWr8gcoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0KM/0nw/7QhNYmRCmc/Ls1oda8C/r/G0w/paaIwp6saV+63y2+57ZyTn0CBIO8DSn
-         Ft6YLxubW4AL85XW86w6UEO4CAs8ZvyOkmegeH5dDUKkaZIZh2oWDtxoHm0fl/VLL/
-         DmyfrBTT0fk1PYgJQeOJjM7bqFOUBwsOJLB9ikbs=
+        b=k7uRoDgQ83AL8s75E/ruQOtebHmP0l5AML3N1H8lQbgMo3fQtDnGC6b3V0O8yKh4r
+         WGD0qbpuDPT02qlyqX3cVi/zB984dkn2+Th+1Htnr3jRXJmqqKGazROPNmUWXp8wQy
+         /BkSqRUvPZM4lsyfKnInaH/8RrvwGwLOfdo5j/U0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.1 178/219] perf hists browser: Fix hierarchy mode header
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 478/511] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in oob write
 Date:   Sun, 17 Sep 2023 21:15:05 +0200
-Message-ID: <20230917191047.399663201@linuxfoundation.org>
+Message-ID: <20230917191125.285479274@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: William Zhang <william.zhang@broadcom.com>
 
-commit e2cabf2a44791f01c21f8d5189b946926e34142e upstream.
+commit 5d53244186c9ac58cb88d76a0958ca55b83a15cd upstream.
 
-The commit ef9ff6017e3c4593 ("perf ui browser: Move the extra title
-lines from the hists browser") introduced ui_browser__gotorc_title() to
-help moving non-title lines easily.  But it missed to update the title
-for the hierarchy mode so it won't print the header line on TUI at all.
+When the oob buffer length is not in multiple of words, the oob write
+function does out-of-bounds read on the oob source buffer at the last
+iteration. Fix that by always checking length limit on the oob buffer
+read and fill with 0xff when reaching the end of the buffer to the oob
+registers.
 
-  $ perf report --hierarchy
-
-Fixes: ef9ff6017e3c4593 ("perf ui browser: Move the extra title lines from the hists browser")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230731094934.1616495-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-5-william.zhang@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browsers/hists.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -1779,7 +1779,7 @@ static void hists_browser__hierarchy_hea
- 	hists_browser__scnprintf_hierarchy_headers(browser, headers,
- 						   sizeof(headers));
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -1432,19 +1432,33 @@ static int write_oob_to_regs(struct brcm
+ 			     const u8 *oob, int sas, int sector_1k)
+ {
+ 	int tbytes = sas << sector_1k;
+-	int j;
++	int j, k = 0;
++	u32 last = 0xffffffff;
++	u8 *plast = (u8 *)&last;
  
--	ui_browser__gotorc(&browser->b, 0, 0);
-+	ui_browser__gotorc_title(&browser->b, 0, 0);
- 	ui_browser__set_color(&browser->b, HE_COLORSET_ROOT);
- 	ui_browser__write_nstring(&browser->b, headers, browser->b.width + 1);
+ 	/* Adjust OOB values for 1K sector size */
+ 	if (sector_1k && (i & 0x01))
+ 		tbytes = max(0, tbytes - (int)ctrl->max_oob);
+ 	tbytes = min_t(int, tbytes, ctrl->max_oob);
+ 
+-	for (j = 0; j < tbytes; j += 4)
++	/*
++	 * tbytes may not be multiple of words. Make sure we don't read out of
++	 * the boundary and stop at last word.
++	 */
++	for (j = 0; (j + 3) < tbytes; j += 4)
+ 		oob_reg_write(ctrl, j,
+ 				(oob[j + 0] << 24) |
+ 				(oob[j + 1] << 16) |
+ 				(oob[j + 2] <<  8) |
+ 				(oob[j + 3] <<  0));
++
++	/* handle the remaing bytes */
++	while (j < tbytes)
++		plast[k++] = oob[j++];
++
++	if (tbytes & 0x3)
++		oob_reg_write(ctrl, (tbytes & ~0x3), (__force u32)cpu_to_be32(last));
++
+ 	return tbytes;
  }
+ 
 
 
