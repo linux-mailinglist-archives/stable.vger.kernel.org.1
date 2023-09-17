@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF177A3881
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B84F7A3A68
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239787AbjIQTgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57420 "EHLO
+        id S239529AbjIQUDP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239896AbjIQTg3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:29 -0400
+        with ESMTP id S240338AbjIQUCw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAE7AC
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03FCC433C7;
-        Sun, 17 Sep 2023 19:36:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502D21AC
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5A2C433CC;
+        Sun, 17 Sep 2023 20:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979383;
-        bh=hZqkfXmm2z0Zu4iTgwMSz52DAc4tyQJdEl8Ghoce75g=;
+        s=korg; t=1694980940;
+        bh=97eQxU2/CPhj49e/Ihl5fJxv5iqhT8EYavOOSrb1zkw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ScL5G0eNT+RLtwanhfO2J6H3qmGYBt4D4OjXMSulds6XmPEkh2jRycmobdTJoAcYO
-         Gy5jz235+IDA2w3Ds4tlyDXr/rVE1/vBbKcbDc1OIq/Dta8fWc+KNF0+SMt3eRwkvG
-         0yjzTFd0xZw7cI/sGCnZ/cDdJqypIIdSGpIjV0oY=
+        b=v5Zmf6YRJbItx0b0a+PHwGg9yXtpwVd82EqpOoz7FCEaZNkdJeAGPlkZkpQIl10EJ
+         BOG16Zo3nyfPiYPlAnwucYwKVq2PqkDR8HpQ2gPQQ3rHdbg+dXJnnCr5CAshpEAl1i
+         JzVjdtWIDR6HaNOrMsfwZZ7yqu9YRxzsoSuJY+WQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 296/406] dccp: Fix out of bounds access in DCCP error handler
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 023/219] scsi: qla2xxx: Error code did not return to upper layer
 Date:   Sun, 17 Sep 2023 21:12:30 +0200
-Message-ID: <20230917191109.128060940@linuxfoundation.org>
+Message-ID: <20230917191041.832254254@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,88 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 977ad86c2a1bcaf58f01ab98df5cc145083c489c upstream.
+commit 0ba0b018f94525a6b32f5930f980ce9b62b72e6f upstream.
 
-There was a previous attempt to fix an out-of-bounds access in the DCCP
-error handlers, but that fix assumed that the error handlers only want
-to access the first 8 bytes of the DCCP header. Actually, they also look
-at the DCCP sequence number, which is stored beyond 8 bytes, so an
-explicit pskb_may_pull() is required.
+TMF was returned with an error code. The error code was not preserved to be
+returned to upper layer. Instead, the error code from the Marker was
+returned.
 
-Fixes: 6706a97fec96 ("dccp: fix out of bound access in dccp_v4_err()")
-Fixes: 1aa9d1a0e7ee ("ipv6: dccp: fix out of bound access in dccp_v6_err()")
+Preserve error code from TMF and return it to upper layer.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dccp/ipv4.c |   13 +++++++++----
- net/dccp/ipv6.c |   15 ++++++++++-----
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -243,12 +243,17 @@ static int dccp_v4_err(struct sk_buff *s
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2224,6 +2224,8 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
+ 			rval = QLA_FUNCTION_FAILED;
+ 		}
+ 	}
++	if (tm_iocb->u.tmf.data)
++		rval = tm_iocb->u.tmf.data;
  
--	/* Only need dccph_dport & dccph_sport which are the first
--	 * 4 bytes in dccp header.
-+	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
-+	 * which is in byte 7 of the dccp header.
- 	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
-+	 *
-+	 * Later on, we want to access the sequence number fields, which are
-+	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
- 	 */
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
-+	dh = (struct dccp_hdr *)(skb->data + offset);
-+	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
-+		return -EINVAL;
-+	iph = (struct iphdr *)skb->data;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 
- 	sk = __inet_lookup_established(net, &dccp_hashinfo,
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -67,7 +67,7 @@ static inline __u64 dccp_v6_init_sequenc
- static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 			u8 type, u8 code, int offset, __be32 info)
- {
--	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
-+	const struct ipv6hdr *hdr;
- 	const struct dccp_hdr *dh;
- 	struct dccp_sock *dp;
- 	struct ipv6_pinfo *np;
-@@ -76,12 +76,17 @@ static int dccp_v6_err(struct sk_buff *s
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
- 
--	/* Only need dccph_dport & dccph_sport which are the first
--	 * 4 bytes in dccp header.
-+	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
-+	 * which is in byte 7 of the dccp header.
- 	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
-+	 *
-+	 * Later on, we want to access the sequence number fields, which are
-+	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
- 	 */
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
-+	dh = (struct dccp_hdr *)(skb->data + offset);
-+	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
-+		return -EINVAL;
-+	hdr = (const struct ipv6hdr *)skb->data;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 
- 	sk = __inet6_lookup_established(net, &dccp_hashinfo,
+ done_free_sp:
+ 	/* ref: INIT */
 
 
