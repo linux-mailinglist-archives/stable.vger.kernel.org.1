@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 098297A3D25
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4C147A3B37
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241184AbjIQUjb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
+        id S240651AbjIQUOb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241257AbjIQUjB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:01 -0400
+        with ESMTP id S240673AbjIQUOW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2666B10E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EC0C433CA;
-        Sun, 17 Sep 2023 20:38:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE22F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:14:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B266C433C8;
+        Sun, 17 Sep 2023 20:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983133;
-        bh=moRk88YUu6uK9aPCDL9/S4gDJr9F8E2HPP8Zm2wGP1E=;
+        s=korg; t=1694981657;
+        bh=R9oCtdVxAPALNyxWSqY9pNAbKAx/hn0r78ZZM8lihu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gcPKcKgZDZzKe4KXP3F9NsjSl7G9vQMT4p6MCdnufXbCvUo18zdnDhE/T0RpWmBpR
-         no3wpjYR3MaLmxfu26Nr1kbpe+Ho7pKcmYZKEyfMidzaJZPpgi2nJTIufdZ8iqz3TM
-         ki5MN+WrXcMQLwNDFLu3mK/yU35f4OSDHEQB4IlI=
+        b=jlLLJzL+y/yQNEep4XP/k2LlkxsJROqZ1uP/GjVWUEr0W8wj0cjp7xCyYxNEXFV0D
+         Szu7NaKZfGoB4Tck+AQzp9EjTOrP6DjTmsxwZmtuK8mfKHdCU4qK+KWIOoHovKrDLA
+         Zw9lJ9b0u5ZrVfojUAlrGAKuB6mkfB7UBJaoCpjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 453/511] net: dsa: sja1105: fix -ENOSPC when replacing the same tc-cbs too many times
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 153/219] ata: pata_ftide010: Add missing MODULE_DESCRIPTION
 Date:   Sun, 17 Sep 2023 21:14:40 +0200
-Message-ID: <20230917191124.698259110@linuxfoundation.org>
+Message-ID: <20230917191046.549025952@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,84 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 894cafc5c62ccced758077bd4e970dc714c42637 ]
+commit 7274eef5729037300f29d14edeb334a47a098f65 upstream.
 
-After running command [2] too many times in a row:
+Add the missing MODULE_DESCRIPTION() to avoid warnings such as:
 
-[1] $ tc qdisc add dev sw2p0 root handle 1: mqprio num_tc 8 \
-	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 hw 0
-[2] $ tc qdisc replace dev sw2p0 parent 1:1 cbs offload 1 \
-	idleslope 120000 sendslope -880000 locredit -1320 hicredit 180
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/ata/pata_ftide010.o
 
-(aka more than priv->info->num_cbs_shapers times)
+when compiling with W=1.
 
-we start seeing the following error message:
-
-Error: Specified device failed to setup cbs hardware offload.
-
-This comes from the fact that ndo_setup_tc(TC_SETUP_QDISC_CBS) presents
-the same API for the qdisc create and replace cases, and the sja1105
-driver fails to distinguish between the 2. Thus, it always thinks that
-it must allocate the same shaper for a {port, queue} pair, when it may
-instead have to replace an existing one.
-
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/ata/pata_ftide010.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 5f70773fa8201..9176bd78b3d61 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2015,6 +2015,18 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+--- a/drivers/ata/pata_ftide010.c
++++ b/drivers/ata/pata_ftide010.c
+@@ -567,6 +567,7 @@ static struct platform_driver pata_ftide
+ };
+ module_platform_driver(pata_ftide010_driver);
  
- #define BYTES_PER_KBIT (1000LL / 8)
- 
-+static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
-+				   int port, int prio)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->info->num_cbs_shapers; i++)
-+		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
-+			return i;
-+
-+	return -1;
-+}
-+
- static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
- {
- 	int i;
-@@ -2055,9 +2067,14 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	if (!offload->enable)
- 		return sja1105_delete_cbs_shaper(priv, port, offload->queue);
- 
--	index = sja1105_find_unused_cbs_shaper(priv);
--	if (index < 0)
--		return -ENOSPC;
-+	/* The user may be replacing an existing shaper */
-+	index = sja1105_find_cbs_shaper(priv, port, offload->queue);
-+	if (index < 0) {
-+		/* That isn't the case - see if we can allocate a new one */
-+		index = sja1105_find_unused_cbs_shaper(priv);
-+		if (index < 0)
-+			return -ENOSPC;
-+	}
- 
- 	cbs = &priv->cbs[index];
- 	cbs->port = port;
--- 
-2.40.1
-
++MODULE_DESCRIPTION("low level driver for Faraday Technology FTIDE010");
+ MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("platform:" DRV_NAME);
 
 
