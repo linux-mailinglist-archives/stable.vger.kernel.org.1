@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D642A7A3CE8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 363007A3AD8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241158AbjIQUgu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:36:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50926 "EHLO
+        id S240458AbjIQUJj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241167AbjIQUgZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:25 -0400
+        with ESMTP id S240523AbjIQUJQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12D110E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84C6C433C7;
-        Sun, 17 Sep 2023 20:36:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D2EF3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DCBC433CA;
+        Sun, 17 Sep 2023 20:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982980;
-        bh=k2ujbRPEzs9At8eKyeaYQw0VPvMAsERtRsQXu65/8mc=;
+        s=korg; t=1694981351;
+        bh=WTgwR3rNVRfS8eiig1YkDVDiY3+72CqaGCymbxshAJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ao62dWKilrNkxryXHJAJGuGoAhjlz8U8ct98azIHhSHv+rAUt9gsaNDjczypsk5XL
-         iG9BiIPrRMlrShWSqk7cLejvBSXznOSIKPXfCge7slHv8vkw7mMdxlJsK7vqMKXf+D
-         AD8Lbh9m+3nfVtB8QzWj38+E9w5N4zKJcHq4V8NA=
+        b=uum7depqfYbCjtOoI2SEW6WfSMKgJFwuZoGaKRvxm1qZ9Zt1jBfoeIFtgL7qgEnng
+         x/l5rE5Fs8MGoRC8eDRmeKc3fJgUJXBtGUb6XFeKiZIPV+oOOSPe8JshLRJ5Y0vo1D
+         Vjc36VycN1PfkNMrR1fMDQ202tw10N4Jqbq4ifNo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Gruenbacher <agruenba@redhat.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 408/511] gfs2: Switch to wait_event in gfs2_logd
+Subject: [PATCH 6.1 108/219] af_unix: Fix data-races around user->unix_inflight.
 Date:   Sun, 17 Sep 2023 21:13:55 +0200
-Message-ID: <20230917191123.639755240@linuxfoundation.org>
+Message-ID: <20230917191044.895133562@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,59 +52,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 6df373b09b1dcf2f7d579f515f653f89a896d417 ]
+[ Upstream commit 0bc36c0650b21df36fbec8136add83936eaf0607 ]
 
-In gfs2_logd(), switch from an open-coded wait loop to
-wait_event_interruptible_timeout().
+user->unix_inflight is changed under spin_lock(unix_gc_lock),
+but too_many_unix_fds() reads it locklessly.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: b74cd55aa9a9 ("gfs2: low-memory forced flush fixes")
+Let's annotate the write/read accesses to user->unix_inflight.
+
+BUG: KCSAN: data-race in unix_attach_fds / unix_inflight
+
+write to 0xffffffff8546f2d0 of 8 bytes by task 44798 on cpu 1:
+ unix_inflight+0x157/0x180 net/unix/scm.c:66
+ unix_attach_fds+0x147/0x1e0 net/unix/scm.c:123
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+read to 0xffffffff8546f2d0 of 8 bytes by task 44814 on cpu 0:
+ too_many_unix_fds net/unix/scm.c:101 [inline]
+ unix_attach_fds+0x54/0x1e0 net/unix/scm.c:110
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+value changed: 0x000000000000000c -> 0x000000000000000d
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 44814 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 712f4aad406b ("unix: properly account for FDs passed over unix sockets")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/log.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ net/unix/scm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index f0ee3ff6f9a87..924d7f0de1e83 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1296,7 +1296,6 @@ int gfs2_logd(void *data)
- {
- 	struct gfs2_sbd *sdp = data;
- 	unsigned long t = 1;
--	DEFINE_WAIT(wait);
- 
- 	while (!kthread_should_stop()) {
- 
-@@ -1333,17 +1332,11 @@ int gfs2_logd(void *data)
- 
- 		try_to_freeze();
- 
--		do {
--			prepare_to_wait(&sdp->sd_logd_waitq, &wait,
--					TASK_INTERRUPTIBLE);
--			if (!gfs2_ail_flush_reqd(sdp) &&
--			    !gfs2_jrnl_flush_reqd(sdp) &&
--			    !kthread_should_stop())
--				t = schedule_timeout(t);
--		} while(t && !gfs2_ail_flush_reqd(sdp) &&
--			!gfs2_jrnl_flush_reqd(sdp) &&
--			!kthread_should_stop());
--		finish_wait(&sdp->sd_logd_waitq, &wait);
-+		t = wait_event_interruptible_timeout(sdp->sd_logd_waitq,
-+				gfs2_ail_flush_reqd(sdp) ||
-+				gfs2_jrnl_flush_reqd(sdp) ||
-+				kthread_should_stop(),
-+				t);
+diff --git a/net/unix/scm.c b/net/unix/scm.c
+index aa27a02478dc1..e8e2a00bb0f58 100644
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -63,7 +63,7 @@ void unix_inflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
  	}
+-	user->unix_inflight++;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
  
- 	return 0;
+@@ -84,7 +84,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
+ 	}
+-	user->unix_inflight--;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
+ 
+@@ -98,7 +98,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
+ {
+ 	struct user_struct *user = current_user();
+ 
+-	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
++	if (unlikely(READ_ONCE(user->unix_inflight) > task_rlimit(p, RLIMIT_NOFILE)))
+ 		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
+ 	return false;
+ }
 -- 
 2.40.1
 
