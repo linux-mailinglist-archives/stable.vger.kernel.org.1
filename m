@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 655107A3938
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35AB7A381C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:31:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240067AbjIQTqk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45702 "EHLO
+        id S239647AbjIQTbO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:31:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238193AbjIQTqJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:09 -0400
+        with ESMTP id S239706AbjIQTbG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB08C13E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18807C433C8;
-        Sun, 17 Sep 2023 19:46:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87FF9DB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6B4C433C8;
+        Sun, 17 Sep 2023 19:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979963;
-        bh=UiBHppHA977Lwrwb+w7YS8NZUHZNwRvM7b9tpGH52/Q=;
+        s=korg; t=1694979061;
+        bh=iefz/O6O6+Zm1BpVrz9AWARai0M8UvXC5hU5VhxNl3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GVRgbZGvPrcYZilzUBoCsoaaz/hfFEXuBm9bGtw8/Hq6ISs5hkuMOshFKK7rmNDxo
-         s6MlAxPU8J8RI0hqPB1K7l83Us4cpGErkZ+FsTzDxviowRq1EexvHpnOcYbcc9QXHH
-         CMC8Smfys13MP08bl/6vgWZuHXtiNXvPwafdZ/7A=
+        b=FnJ2lHepoa6txkIqR3WDfcCY28XhCGAVh7Dcr58WQ1bXH/j14gPErPevmmCPrg8Rf
+         at0w2/01WxG+xn+UiAHChBYs1RjIW6lp+WfWPy4Wr+5syWZWSfTURPaRN3JSni9ukB
+         mjrXaW1KJ19TRvUEjzt6qq8VDMvCBtKDK1k/06k8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 057/285] kbuild: do not run depmod for make modules_sign
+Subject: [PATCH 5.10 203/406] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
 Date:   Sun, 17 Sep 2023 21:10:57 +0200
-Message-ID: <20230917191053.666689864@linuxfoundation.org>
+Message-ID: <20230917191106.551371282@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +52,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2429742e506a2b5939a62c629c4a46d91df0ada8 ]
+[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
 
-Commit 961ab4a3cd66 ("kbuild: merge scripts/Makefile.modsign to
-scripts/Makefile.modinst") started to run depmod at the end of
-'make modules_sign'.
+If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
+so fwnode_handle_put() is a no-op.
 
-Move the depmod rule to scripts/Makefile.modinst and run it only when
-$(modules_sign_only) is empty.
+Release the reference taken from a previous fwnode_graph_get_port_parent()
+call instead.
 
-Fixes: 961ab4a3cd66 ("kbuild: merge scripts/Makefile.modsign to scripts/Makefile.modinst")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Also handle fwnode_graph_get_port_parent() failures.
+
+In order to fix these issues, add an error handling path to the function
+and the needed gotos.
+
+Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 901cdfa5e7d3b..a5178b9863fb2 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1962,7 +1962,9 @@ quiet_cmd_depmod = DEPMOD  $(MODLIB)
+diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+index dfc53d11053fc..1977ce0195fee 100644
+--- a/drivers/media/v4l2-core/v4l2-fwnode.c
++++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+@@ -572,19 +572,29 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
+ 	link->local_id = fwep.id;
+ 	link->local_port = fwep.port;
+ 	link->local_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->local_node)
++		return -ENOLINK;
  
- modules_install:
- 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
-+ifndef modules_sign_only
- 	$(call cmd,depmod)
-+endif
+ 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
+-	if (!fwnode) {
+-		fwnode_handle_put(fwnode);
+-		return -ENOLINK;
+-	}
++	if (!fwnode)
++		goto err_put_local_node;
  
- else # CONFIG_MODULES
+ 	fwnode_graph_parse_endpoint(fwnode, &fwep);
+ 	link->remote_id = fwep.id;
+ 	link->remote_port = fwep.port;
+ 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->remote_node)
++		goto err_put_remote_endpoint;
+ 
+ 	return 0;
++
++err_put_remote_endpoint:
++	fwnode_handle_put(fwnode);
++
++err_put_local_node:
++	fwnode_handle_put(link->local_node);
++
++	return -ENOLINK;
+ }
+ EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
  
 -- 
 2.40.1
