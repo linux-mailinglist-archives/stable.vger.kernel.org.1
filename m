@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0617A3A78
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E737A3CA2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240368AbjIQUEv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:04:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45482 "EHLO
+        id S241056AbjIQUdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240365AbjIQUE3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:04:29 -0400
+        with ESMTP id S241098AbjIQUdM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A07B97
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:04:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B536EC433C7;
-        Sun, 17 Sep 2023 20:04:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA39C10F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02C8C433C7;
+        Sun, 17 Sep 2023 20:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981064;
-        bh=+aKeu1gdyAA4axKXCjIL8fQugs5Vionc2qXBfwyWeZY=;
+        s=korg; t=1694982786;
+        bh=xiFftyu+Oc18rpCNVTWNd49TTDCIAON+ByVjudvIB5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JiQ+A8bZtF/J85jK9Lz6CBoRWx3ND8oOKFgiEP83pvQ+2MUe3oMprczi9liHsqtml
-         zXp92LBBX8vnBsY9LpBGXY/Fo+fQwDuM4B03i1vvliM1wuqehYN9OOhbjys/R8tJGy
-         uteQmy4tYjryEpxkkV922u4eKr052FIYUAEH2zso=
+        b=ULgF8M+VRJMOOLGgzW9jtEY/GJtHffViZ7G6ZvlURwn81rmcmtJJilTdhslQst7ol
+         KAt4fvcXEGqSPpDGfJ7kl1K5hta36hvtRfpDt0GgOpE7Y0EB8OtZcF1uc1Jw+jATB3
+         wz0572tsB+t2Lvz+Oa24PInqobNWWOowBB/c+TWs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Soheil Hassas Yeganeh <soheil@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ajay Kaher <akaher@vmware.com>
-Subject: [PATCH 6.1 052/219] net: add SKB_HEAD_ALIGN() helper
-Date:   Sun, 17 Sep 2023 21:12:59 +0200
-Message-ID: <20230917191042.884108341@linuxfoundation.org>
+        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 5.15 353/511] fsverity: skip PKCS#7 parser when keyring is empty
+Date:   Sun, 17 Sep 2023 21:13:00 +0200
+Message-ID: <20230917191122.328146125@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +49,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 115f1a5c42bdad9a9ea356fc0b4a39ec7537947f upstream.
+commit 919dc320956ea353a7fb2d84265195ad5ef525ac upstream.
 
-We have many places using this expression:
+If an fsverity builtin signature is given for a file but the
+".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+signature support is configured into the kernel but is not being used.
 
- SKB_DATA_ALIGN(sizeof(struct skb_shared_info))
+This is a hardening improvement, not a fix per se, but I've added
+Fixes and Cc stable to get it out to more users.
 
-Use of SKB_HEAD_ALIGN() will allow to clean them.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Ajay: Regenerated the patch for v6.1.y]
-Signed-off-by: Ajay Kaher <akaher@vmware.com>
+Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20230820173237.2579-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skbuff.h |    8 ++++++++
- net/core/skbuff.c      |   18 ++++++------------
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ fs/verity/signature.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -261,6 +261,14 @@
- #define SKB_DATA_ALIGN(X)	ALIGN(X, SMP_CACHE_BYTES)
- #define SKB_WITH_OVERHEAD(X)	\
- 	((X) - SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+
-+/* For X bytes available in skb->head, what is the minimal
-+ * allocation needed, knowing struct skb_shared_info needs
-+ * to be aligned.
-+ */
-+#define SKB_HEAD_ALIGN(X) (SKB_DATA_ALIGN(X) + \
-+	SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+
- #define SKB_MAX_ORDER(X, ORDER) \
- 	SKB_WITH_OVERHEAD((PAGE_SIZE << (ORDER)) - (X))
- #define SKB_MAX_HEAD(X)		(SKB_MAX_ORDER((X), 0))
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -504,8 +504,7 @@ struct sk_buff *__alloc_skb(unsigned int
- 	 * aligned memory blocks, unless SLUB/SLAB debug is enabled.
- 	 * Both skb->head and skb_shared_info are cache line aligned.
- 	 */
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	osize = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(osize, gfp_mask, node, &pfmemalloc);
- 	if (unlikely(!data))
-@@ -578,8 +577,7 @@ struct sk_buff *__netdev_alloc_skb(struc
- 		goto skb_success;
+--- a/fs/verity/signature.c
++++ b/fs/verity/signature.c
+@@ -54,6 +54,22 @@ int fsverity_verify_signature(const stru
+ 		return 0;
  	}
  
--	len += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--	len = SKB_DATA_ALIGN(len);
-+	len = SKB_HEAD_ALIGN(len);
- 
- 	if (sk_memalloc_socks())
- 		gfp_mask |= __GFP_MEMALLOC;
-@@ -678,8 +676,7 @@ struct sk_buff *__napi_alloc_skb(struct
- 		data = page_frag_alloc_1k(&nc->page_small, gfp_mask);
- 		pfmemalloc = NAPI_SMALL_PAGE_PFMEMALLOC(nc->page_small);
- 	} else {
--		len += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--		len = SKB_DATA_ALIGN(len);
-+		len = SKB_HEAD_ALIGN(len);
- 
- 		data = page_frag_alloc(&nc->page, len, gfp_mask);
- 		pfmemalloc = nc->page.pfmemalloc;
-@@ -1837,8 +1834,7 @@ int pskb_expand_head(struct sk_buff *skb
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	size = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
-@@ -6204,8 +6200,7 @@ static int pskb_carve_inside_header(stru
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	size = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
-@@ -6323,8 +6318,7 @@ static int pskb_carve_inside_nonlinear(s
- 	if (skb_pfmemalloc(skb))
- 		gfp_mask |= __GFP_MEMALLOC;
- 
--	size = SKB_DATA_ALIGN(size);
--	size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	size = SKB_HEAD_ALIGN(size);
- 	size = kmalloc_size_roundup(size);
- 	data = kmalloc_reserve(size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
++	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
++		/*
++		 * The ".fs-verity" keyring is empty, due to builtin signatures
++		 * being supported by the kernel but not actually being used.
++		 * In this case, verify_pkcs7_signature() would always return an
++		 * error, usually ENOKEY.  It could also be EBADMSG if the
++		 * PKCS#7 is malformed, but that isn't very important to
++		 * distinguish.  So, just skip to ENOKEY to avoid the attack
++		 * surface of the PKCS#7 parser, which would otherwise be
++		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
++		 */
++		fsverity_err(inode,
++			     "fs-verity keyring is empty, rejecting signed file!");
++		return -ENOKEY;
++	}
++
+ 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
+ 	if (!d)
+ 		return -ENOMEM;
 
 
