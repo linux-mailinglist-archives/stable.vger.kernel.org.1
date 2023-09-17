@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18FE87A3C98
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF9567A3C72
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241080AbjIQUdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
+        id S240937AbjIQUb3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:31:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241144AbjIQUct (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:32:49 -0400
+        with ESMTP id S241041AbjIQUbB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:31:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC51D11B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:32:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F157DC433CB;
-        Sun, 17 Sep 2023 20:32:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BD7810C
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:30:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B4CC433CC;
+        Sun, 17 Sep 2023 20:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982748;
-        bh=BVs8wBCwdQy94Z3nCtwBOmqdjgLPtBv6EgZfKe87sas=;
+        s=korg; t=1694982656;
+        bh=jchJFp7Kz2UbgD5MBJg5a2HngbaQKUO+2sWJJz/+cNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aTNUTkIWuj7gkjdWtulypGEfCGY/QlccBbTV6ooqw5wnPEXjS7+KzAJynwGnA4+9x
-         zVrpaim6xnV5hJBQVHlcRyDcRYl5QoG7UNTMbmNa3ITbdt0ez9OEpoYIQBd1PnSAAg
-         eCrvjZiX1yUZWNv4h7MlgOoN0ayI4CWMkLj1s048=
+        b=e4+vurvFPLUz5pr1LgVS6uPwalK7dtdl2QgNEqwn2gSxeZFFEO97qaalRPL/5YbMR
+         1W0tjFl5BCw4W+cbVRl2firifE3uP3Dgfx4ehp5sM+kHcLodx7XXEV4ccNteSr7JkS
+         W9ELHVdRzRmaYIIX3qzm+GsgRjqiAhICzb94YsUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Yuan Yao <yuanyaogoog@chromium.org>,
+        Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 314/511] cpufreq: Fix the race condition while updating the transition_task of policy
-Date:   Sun, 17 Sep 2023 21:12:21 +0200
-Message-ID: <20230917191121.404860802@linuxfoundation.org>
+Subject: [PATCH 5.15 315/511] virtio_ring: fix avail_wrap_counter in virtqueue_add_packed
+Date:   Sun, 17 Sep 2023 21:12:22 +0200
+Message-ID: <20230917191121.428634704@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -40,6 +40,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,78 +56,75 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Yuan Yao <yuanyaogoog@chromium.org>
 
-[ Upstream commit 61bfbf7951ba561dcbdd5357702d3cbc2d447812 ]
+[ Upstream commit 1acfe2c1225899eab5ab724c91b7e1eb2881b9ab ]
 
-The field 'transition_task' of policy structure is used to track the
-task which is performing the frequency transition. Using this field to
-print a warning once detect a case where the same task is calling
-_begin() again before completing the preivous frequency transition via
-the _end().
+In current packed virtqueue implementation, the avail_wrap_counter won't
+flip, in the case when the driver supplies a descriptor chain with a
+length equals to the queue size; total_sg == vq->packed.vring.num.
 
-However, there is a potential race condition in _end() and _begin() APIs
-while updating the field 'transition_task' of policy, the scenario is
-depicted below:
+Let’s assume the following situation:
+vq->packed.vring.num=4
+vq->packed.next_avail_idx: 1
+vq->packed.avail_wrap_counter: 0
 
-             Task A                            Task B
+Then the driver adds a descriptor chain containing 4 descriptors.
 
-        /* 1st freq transition */
-        Invoke _begin() {
-                ...
-                ...
-        }
-                                        /* 2nd freq transition */
-                                        Invoke _begin() {
-                                                ... //waiting for A to
-                                                ... //clear
-                                                ... //transition_ongoing
-                                                ... //in _end() for
-                                                ... //the 1st transition
-                                                        |
-        Change the frequency                            |
-                                                        |
-        Invoke _end() {                                 |
-                ...                                     |
-                ...                                     |
-                transition_ongoing = false;             V
-                                                transition_ongoing = true;
-                                                transition_task = current;
-                transition_task = NULL;
-                ... //A overwrites the task
-                ... //performing the transition
-                ... //result in error warning.
-        }
+We expect the following result with avail_wrap_counter flipped:
+vq->packed.next_avail_idx: 1
+vq->packed.avail_wrap_counter: 1
 
-To fix this race condition, the transition_lock of policy structure is
-now acquired before updating policy structure in _end() API. Which ensure
-that only one task can update the 'transition_task' field at a time.
+But, the current implementation gives the following result:
+vq->packed.next_avail_idx: 1
+vq->packed.avail_wrap_counter: 0
 
-Link: https://lore.kernel.org/all/b3c61d8a-d52d-3136-fbf0-d1de9f1ba411@huawei.com/
-Fixes: ca654dc3a93d ("cpufreq: Catch double invocations of cpufreq_freq_transition_begin/end")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+To reproduce the bug, you can set a packed queue size as small as
+possible, so that the driver is more likely to provide a descriptor
+chain with a length equal to the packed queue size. For example, in
+qemu run following commands:
+sudo qemu-system-x86_64 \
+-enable-kvm \
+-nographic \
+-kernel "path/to/kernel_image" \
+-m 1G \
+-drive file="path/to/rootfs",if=none,id=disk \
+-device virtio-blk,drive=disk \
+-drive file="path/to/disk_image",if=none,id=rwdisk \
+-device virtio-blk,drive=rwdisk,packed=on,queue-size=4,\
+indirect_desc=off \
+-append "console=ttyS0 root=/dev/vda rw init=/bin/bash"
+
+Inside the VM, create a directory and mount the rwdisk device on it. The
+rwdisk will hang and mount operation will not complete.
+
+This commit fixes the wrap counter error by flipping the
+packed.avail_wrap_counter, when start of descriptor chain equals to the
+end of descriptor chain (head == i).
+
+Fixes: 1ce9e6055fa0 ("virtio_ring: introduce packed ring support")
+Signed-off-by: Yuan Yao <yuanyaogoog@chromium.org>
+Message-Id: <20230808051110.3492693-1-yuanyaogoog@chromium.org>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/virtio/virtio_ring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index ae7b95e15ac7e..c2227be7bad88 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -450,8 +450,10 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
- 			    policy->cur,
- 			    policy->cpuinfo.max_freq);
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index 800df63c58692..067b68168f93e 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -1271,7 +1271,7 @@ static inline int virtqueue_add_packed(struct virtqueue *_vq,
+ 		}
+ 	}
  
-+	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
- 	policy->transition_task = NULL;
-+	spin_unlock(&policy->transition_lock);
+-	if (i < head)
++	if (i <= head)
+ 		vq->packed.avail_wrap_counter ^= 1;
  
- 	wake_up(&policy->transition_wait);
- }
+ 	/* We're using some buffers from the free list. */
 -- 
 2.40.1
 
