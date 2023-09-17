@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C747A3994
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D2137A3A3D
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240092AbjIQTv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54332 "EHLO
+        id S240332AbjIQUAe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:00:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240104AbjIQTvH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:07 -0400
+        with ESMTP id S240373AbjIQUAS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:00:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631E012F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9154AC433C8;
-        Sun, 17 Sep 2023 19:51:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF089138
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EDEC433C7;
+        Sun, 17 Sep 2023 20:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980262;
-        bh=iYUpe5kZJ3oMdcAlZqXhxT7WBguxLoQHREQ8zNrwZeM=;
+        s=korg; t=1694980808;
+        bh=DYbHVSOdOaKMpCfD5hGWuQ+CeVwJaSLyb9lGx56xZfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n/xSioqL1dxrIkf73Se78+ZniB2YlZ5Sp+gktQpIklaZ64piUU5m3aw9zr6WUWPrG
-         fFvDDvMYgkifGeCLjuvBAHE5Fnj2+6X/qa9Rct2bHiX8opfVgYAkkdTKPcD6xu1bYx
-         MyWr2qFzy+Wssc/KMfD3KO0CIXlAoKRFJkjr16t0=
+        b=UJg5bldRtu/HgLZ0GhlnfcsKFhirPkGSGZsa9JnzZkz0PGNK2wrFqGpbpQNS5xAe0
+         V6M0tW323WZ2i9xguF/jH6zgXEIrcRpbNj3aI0+qBGRz3VOM1IvswmqYYrZiPaKWiw
+         1RcosHq9zkd33NbQTG5tb9RZb+psAMt0AC51ncQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 141/285] igc: Change IGC_MIN to allow set rx/tx value between 64 and 80
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 014/219] scsi: qla2xxx: fix inconsistent TMF timeout
 Date:   Sun, 17 Sep 2023 21:12:21 +0200
-Message-ID: <20230917191056.554690673@linuxfoundation.org>
+Message-ID: <20230917191041.499722397@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 5aa48279712e1f134aac908acde4df798955a955 ]
+commit 009e7fe4a1ed52276b332842a6b6e23b07200f2d upstream.
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igc devices can use as low as 64 descriptors.
-This change will unify igc with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+Different behavior were experienced of session being torn down vs not when
+TMF is timed out. When FW detects the time out, the session is torn down.
+When driver detects the time out, the session is not torn down.
 
-Fixes: 0507ef8a0372 ("igc: Add transmit and receive fastpath and interrupt handlers")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allow TMF error to return to upper layer without session tear down.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-10-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_isr.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index 38901d2a46807..b4077c3f62ed1 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -368,11 +368,11 @@ static inline u32 igc_rss_type(const union igc_adv_rx_desc *rx_desc)
- /* TX/RX descriptor defines */
- #define IGC_DEFAULT_TXD		256
- #define IGC_DEFAULT_TX_WORK	128
--#define IGC_MIN_TXD		80
-+#define IGC_MIN_TXD		64
- #define IGC_MAX_TXD		4096
- 
- #define IGC_DEFAULT_RXD		256
--#define IGC_MIN_RXD		80
-+#define IGC_MIN_RXD		64
- #define IGC_MAX_RXD		4096
- 
- /* Supported Rx Buffer Sizes */
--- 
-2.40.1
-
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -2539,7 +2539,6 @@ qla24xx_tm_iocb_entry(scsi_qla_host_t *v
+ 	case CS_PORT_BUSY:
+ 	case CS_INCOMPLETE:
+ 	case CS_PORT_UNAVAILABLE:
+-	case CS_TIMEOUT:
+ 	case CS_RESET:
+ 		if (atomic_read(&fcport->state) == FCS_ONLINE) {
+ 			ql_dbg(ql_dbg_disc, fcport->vha, 0x3021,
 
 
