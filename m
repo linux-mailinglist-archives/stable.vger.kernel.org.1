@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6738C7A3974
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41FFE7A3845
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239472AbjIQTtx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37210 "EHLO
+        id S239730AbjIQTdu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240066AbjIQTtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:24 -0400
+        with ESMTP id S239653AbjIQTdU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 850729F;
-        Sun, 17 Sep 2023 12:49:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B549DC433CD;
-        Sun, 17 Sep 2023 19:49:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C2DD9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82E2C433C8;
+        Sun, 17 Sep 2023 19:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980159;
-        bh=B5DqDUM2XbeQIDrH47tq2TTQ3eVn0cfDgVEFaUw2H6Y=;
+        s=korg; t=1694979194;
+        bh=7U6QlSPgJSNCpp/L1NJJB3NlLFXv0lKl42mAJp0FSUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cjGOI4RMqCPQ8zkmJDgh2WTbiOMp2kNuTEjnwDsZML6g39ylcsdHH14JDbPPspXQY
-         EYkhv8IkkhqZK1EftwkV+vcSFBzpkwc8MzyGO7FuBQppC6vzS0DPpbcZnocfvJX5Dc
-         5q4QuEptukkuaHu1UwQpRaiaHEEdE36Lc7Wzlq8g=
+        b=vzajB2cu54yCwj0M6N+D/oL+lSO6aHuTkPp/EC1hsmk4S3UimKWgHGpKpxilqGCnt
+         iBfpRN3yL2pjkTQQRDNWMMLmc8Vv8E3PpUh713FADq2OkW2MA3DajpNKRUHAbgauqi
+         X31ZA/O4MqJQYPiBBVR6a6SZRbPlVn1+n5o92R88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>,
-        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 094/285] accel/ivpu: refactor deprecated strncpy
-Date:   Sun, 17 Sep 2023 21:11:34 +0200
-Message-ID: <20230917191054.946681501@linuxfoundation.org>
+Subject: [PATCH 5.10 241/406] media: ov2680: Fix ov2680_bayer_order()
+Date:   Sun, 17 Sep 2023 21:11:35 +0200
+Message-ID: <20230917191107.525980384@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,61 +54,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 4b2fd81f2af7147e844ecec0c5c07a16bca6b86e ]
+[ Upstream commit 50a7bad4e0a37d7018ab6fe843dd84bc6b2ecf72 ]
 
-`strncpy` is deprecated for use on NUL-terminated destination strings [1].
+The index into ov2680_hv_flip_bayer_order[] should be 0-3, but
+ov2680_bayer_order() was using 0 + BIT(2) + (BIT(2) << 1) as
+max index, while the intention was to use: 0 + 1 + 2 as max index.
 
-A suitable replacement is `strscpy` [2] due to the fact that it
-guarantees NUL-termination on its destination buffer argument which is
-_not_ the case for `strncpy`!
+Fix the index calculation in ov2680_bayer_order(), while at it
+also just use the ctrl values rather then reading them back using
+a slow i2c-read transaction.
 
-Also remove extraneous if-statement as it can never be entered. The
-return value from `strncpy` is it's first argument. In this case,
-`...dyndbg_cmd` is an array:
-| 	char dyndbg_cmd[VPU_DYNDBG_CMD_MAX_LEN];
-             ^^^^^^^^^^
-This can never be NULL which means `strncpy`'s return value cannot be
-NULL here. Just use `strscpy` which is more robust and results in
-simpler and less ambiguous code.
+This also allows making the function void, since there now are
+no more i2c-reads to error check.
 
-Moreover, remove needless `... - 1` as `strscpy`'s implementation
-ensures NUL-termination and we do not need to carefully dance around
-ending boundaries with a "- 1" anymore.
+Note the check for the ctrls being NULL is there to allow
+adding an ov2680_fill_format() helper later, which will call
+ov2680_set_bayer_order() during probe() before the ctrls are created.
 
-Fixes: 5d7422cfb498 ("accel/ivpu: Add IPC driver and JSM messages")
-Link: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230824-strncpy-drivers-accel-ivpu-ivpu_jsm_msg-c-v1-1-12d9b52d2dff@google.com
+[Sakari Ailus: Change all users of ov2680_set_bayer_order() here]
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_jsm_msg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/i2c/ov2680.c | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_jsm_msg.c b/drivers/accel/ivpu/ivpu_jsm_msg.c
-index 831bfd2b2d39d..bdddef2c59eec 100644
---- a/drivers/accel/ivpu/ivpu_jsm_msg.c
-+++ b/drivers/accel/ivpu/ivpu_jsm_msg.c
-@@ -118,8 +118,7 @@ int ivpu_jsm_dyndbg_control(struct ivpu_device *vdev, char *command, size_t size
- 	struct vpu_jsm_msg resp;
- 	int ret;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index f143e2af0b5fc..a4baf440b9505 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -315,26 +315,17 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
+ 	usleep_range(5000, 10000);
+ }
  
--	if (!strncpy(req.payload.dyndbg_control.dyndbg_cmd, command, VPU_DYNDBG_CMD_MAX_LEN - 1))
--		return -ENOMEM;
-+	strscpy(req.payload.dyndbg_control.dyndbg_cmd, command, VPU_DYNDBG_CMD_MAX_LEN);
+-static int ov2680_bayer_order(struct ov2680_dev *sensor)
++static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+ {
+-	u32 format1;
+-	u32 format2;
+-	u32 hv_flip;
+-	int ret;
+-
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT1, &format1);
+-	if (ret < 0)
+-		return ret;
++	int hv_flip = 0;
  
- 	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_DYNDBG_CONTROL_RSP, &resp,
- 				    VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT2, &format2);
+-	if (ret < 0)
+-		return ret;
++	if (sensor->ctrls.vflip && sensor->ctrls.vflip->val)
++		hv_flip += 1;
+ 
+-	hv_flip = (format2 & BIT(2)  << 1) | (format1 & BIT(2));
++	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
++		hv_flip += 2;
+ 
+ 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
+-
+-	return 0;
+ }
+ 
+ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+@@ -345,7 +336,8 @@ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+@@ -356,7 +348,8 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+@@ -367,7 +360,8 @@ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+@@ -378,7 +372,8 @@ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
 -- 
 2.40.1
 
