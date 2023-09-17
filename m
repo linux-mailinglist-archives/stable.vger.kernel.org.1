@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C74FC7A381F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4C47A393A
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239741AbjIQTbm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:31:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50132 "EHLO
+        id S238193AbjIQTqk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239608AbjIQTbK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:31:10 -0400
+        with ESMTP id S239994AbjIQTqM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:46:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D69111C
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:31:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364B0C433C7;
-        Sun, 17 Sep 2023 19:31:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BB698
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD9CC433CB;
+        Sun, 17 Sep 2023 19:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979064;
-        bh=Rh8dYZqp9TzEbjdcrpx6b7saKvEH6LBixER3MjlAIUA=;
+        s=korg; t=1694979966;
+        bh=jq9VlbIdiTbrxluHWxkWsgBj8lnL+6K8v9C6oZz0OTI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y9Ondd/5F0WEoL5sFVoMU5OcEYPAtmwVALe9HPkGVw5QiqGF2+sek/6OynoViDZoN
-         H0K0Jc6zdnugiZmaw1Cb/xbX6cTVSoepumOmBcGbZNeGtqlOEDuqmbn8dkqByKBysX
-         FA255CA/j9VbIYtt+au6I0Er1PBLulW5YkJEpQ98=
+        b=AgW89mDRQwbNquMkgFevam8aBARuVSDR0FSEnY7tLZt7rBoFgUI9M0VdizL76TyoI
+         rTD5SLbzSpYvGu9Ia4cKN1YMaetcehydfqaUMUcH/cyfX5bDSfLnuaOXfgAu+zWeqS
+         3fDe6BPZEtujrIoqogifMRKHz50DgAnRpr0Z06Fg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Jiri Slaby <jslaby@suse.cz>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/406] drivers: usb: smsusb: fix error handling code in smsusb_init_device
+Subject: [PATCH 6.5 058/285] kbuild: dummy-tools: make MPROFILE_KERNEL checks work on BE
 Date:   Sun, 17 Sep 2023 21:10:58 +0200
-Message-ID: <20230917191106.576993016@linuxfoundation.org>
+Message-ID: <20230917191053.702170726@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: Jiri Slaby <jslaby@suse.cz>
 
-[ Upstream commit b9c7141f384097fa4fa67d2f72e5731d628aef7c ]
+[ Upstream commit bfb41e46d0b040ae83c1c4a50292298208b10f73 ]
 
-The previous commit 4b208f8b561f ("[media] siano: register media controller
-earlier")moves siano_media_device_register before smscore_register_device,
-and adds corresponding error handling code if smscore_register_device
-fails. However, it misses the following error handling code of
-smsusb_init_device.
+Commit 2eab791f940b ("kbuild: dummy-tools: support MPROFILE_KERNEL
+checks for ppc") added support for ppc64le's checks for
+-mprofile-kernel.
 
-Fix this by moving error handling code at the end of smsusb_init_device
-and adding a goto statement in the following error handling parts.
+Now, commit aec0ba7472a7 ("powerpc/64: Use -mprofile-kernel for big
+endian ELFv2 kernels") added support for -mprofile-kernel even on
+big-endian ppc.
 
-Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+So lift the check in gcc-check-mprofile-kernel.sh to support big-endian too.
+
+Fixes: aec0ba7472a7 ("powerpc/64: Use -mprofile-kernel for big endian ELFv2 kernels")
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/siano/smsusb.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ scripts/dummy-tools/gcc | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
-index 5c223b5498b4b..6036ad3b15681 100644
---- a/drivers/media/usb/siano/smsusb.c
-+++ b/drivers/media/usb/siano/smsusb.c
-@@ -455,12 +455,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_register_device(&params, &dev->coredev, 0, mdev);
- 	if (rc < 0) {
- 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
--		smsusb_term_device(intf);
--#ifdef CONFIG_MEDIA_CONTROLLER_DVB
--		media_device_unregister(mdev);
--#endif
--		kfree(mdev);
--		return rc;
-+		goto err_unregister_device;
- 	}
+diff --git a/scripts/dummy-tools/gcc b/scripts/dummy-tools/gcc
+index 1db1889f6d81e..07f6dc4c5cf69 100755
+--- a/scripts/dummy-tools/gcc
++++ b/scripts/dummy-tools/gcc
+@@ -85,8 +85,7 @@ if arg_contain -S "$@"; then
+ 	fi
  
- 	smscore_set_board_id(dev->coredev, board_id);
-@@ -477,8 +472,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smsusb_start_streaming(dev);
- 	if (rc < 0) {
- 		pr_err("smsusb_start_streaming(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	dev->state = SMSUSB_ACTIVE;
-@@ -486,13 +480,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_start_device(dev->coredev);
- 	if (rc < 0) {
- 		pr_err("smscore_start_device(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	pr_debug("device 0x%p created\n", dev);
- 
- 	return rc;
-+
-+err_unregister_device:
-+	smsusb_term_device(intf);
-+#ifdef CONFIG_MEDIA_CONTROLLER_DVB
-+	media_device_unregister(mdev);
-+#endif
-+	kfree(mdev);
-+	return rc;
- }
- 
- static int smsusb_probe(struct usb_interface *intf,
+ 	# For arch/powerpc/tools/gcc-check-mprofile-kernel.sh
+-	if arg_contain -m64 "$@" && arg_contain -mlittle-endian "$@" &&
+-		arg_contain -mprofile-kernel "$@"; then
++	if arg_contain -m64 "$@" && arg_contain -mprofile-kernel "$@"; then
+ 		if ! test -t 0 && ! grep -q notrace; then
+ 			echo "_mcount"
+ 		fi
 -- 
 2.40.1
 
