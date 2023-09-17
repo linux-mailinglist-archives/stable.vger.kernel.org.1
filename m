@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84A957A39F0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 715CB7A38D6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240213AbjIQT4U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35540 "EHLO
+        id S238066AbjIQTlU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240312AbjIQT4J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:09 -0400
+        with ESMTP id S239840AbjIQTku (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48846EE
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8016EC433C8;
-        Sun, 17 Sep 2023 19:56:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19758103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3497CC433C7;
+        Sun, 17 Sep 2023 19:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980562;
-        bh=9G/c5uriNx52j+t/HkMalgzRkIpBJGPfCrvY+blpJr8=;
+        s=korg; t=1694979644;
+        bh=l+71RpglJvj/Nyybl4B6VqFS8YpKPz6U2/5A3cHTKSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tJ/3S0UC+ZZQ3VmL58pIB1zxv7ISl33JotQ3JVy6oxjiCK7gGP6EYbWNCYUccor3S
-         OuhGKVKGKPtdNCVJoEkub8myQBsuKQD9ZxSzTEzSk/2mP2hTIiH6TtVbSv9aXiK2/y
-         uZWgpIz8Ez+gg4HFiF0v6hRe+7gQVcwqE0PSK5wI=
+        b=TV8/mYWWAQPIgAAdPaDeRkItOjjgCbkRWOtwiJgIje3U59G2OeB5Vtn34R3pnrZtN
+         q1AgpmRo7/1e6SS68ucVasHJ8zOMd4yY4CLbA2SjzTX6FHFIEYGjL9bAPjr4hHwTYs
+         3UkoIt3kPhY5EBeHK/bBiQ/0ynSD4q7SqbfGIXqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.5 227/285] KVM: nSVM: Load L1s TSC multiplier based on L1 state, not L2 state
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 373/406] btrfs: use the correct superblock to compare fsid in btrfs_validate_super
 Date:   Sun, 17 Sep 2023 21:13:47 +0200
-Message-ID: <20230917191059.322570745@linuxfoundation.org>
+Message-ID: <20230917191111.120059939@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,75 +52,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-commit 0c94e2468491cbf0754f49a5136ab51294a96b69 upstream.
+commit d167aa76dc0683828588c25767da07fb549e4f48 upstream.
 
-When emulating nested VM-Exit, load L1's TSC multiplier if L1's desired
-ratio doesn't match the current ratio, not if the ratio L1 is using for
-L2 diverges from the default.  Functionally, the end result is the same
-as KVM will run L2 with L1's multiplier if L2's multiplier is the default,
-i.e. checking that L1's multiplier is loaded is equivalent to checking if
-L2 has a non-default multiplier.
+The function btrfs_validate_super() should verify the fsid in the provided
+superblock argument. Because, all its callers expect it to do that.
 
-However, the assertion that TSC scaling is exposed to L1 is flawed, as
-userspace can trigger the WARN at will by writing the MSR and then
-updating guest CPUID to hide the feature (modifying guest CPUID is
-allowed anytime before KVM_RUN).  E.g. hacking KVM's state_test
-selftest to do
+Such as in the following stack:
 
-                vcpu_set_msr(vcpu, MSR_AMD64_TSC_RATIO, 0);
-                vcpu_clear_cpuid_feature(vcpu, X86_FEATURE_TSCRATEMSR);
+   write_all_supers()
+       sb = fs_info->super_for_commit;
+       btrfs_validate_write_super(.., sb)
+         btrfs_validate_super(.., sb, ..)
 
-after restoring state in a new VM+vCPU yields an endless supply of:
+   scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 10 PID: 206939 at arch/x86/kvm/svm/nested.c:1105
-           nested_svm_vmexit+0x6af/0x720 [kvm_amd]
-  Call Trace:
-   nested_svm_exit_handled+0x102/0x1f0 [kvm_amd]
-   svm_handle_exit+0xb9/0x180 [kvm_amd]
-   kvm_arch_vcpu_ioctl_run+0x1eab/0x2570 [kvm]
-   kvm_vcpu_ioctl+0x4c9/0x5b0 [kvm]
-   ? trace_hardirqs_off+0x4d/0xa0
-   __se_sys_ioctl+0x7a/0xc0
-   __x64_sys_ioctl+0x21/0x30
-   do_syscall_64+0x41/0x90
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
 
-Unlike the nested VMRUN path, hoisting the svm->tsc_scaling_enabled check
-into the if-statement is wrong as KVM needs to ensure L1's multiplier is
-loaded in the above scenario.   Alternatively, the WARN_ON() could simply
-be deleted, but that would make KVM's behavior even more subtle, e.g. it's
-not immediately obvious why it's safe to write MSR_AMD64_TSC_RATIO when
-checking only tsc_ratio_msr.
+However, it currently verifies the fs_info::super_copy::fsid instead,
+which is not correct.  Fix this using the correct fsid in the superblock
+argument.
 
-Fixes: 5228eb96a487 ("KVM: x86: nSVM: implement nested TSC scaling")
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230729011608.1065019-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/disk-io.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1100,8 +1100,8 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 		vmcb_mark_dirty(vmcb01, VMCB_INTERCEPTS);
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2496,11 +2496,10 @@ static int validate_super(struct btrfs_f
+ 		ret = -EINVAL;
  	}
  
--	if (svm->tsc_ratio_msr != kvm_caps.default_tsc_scaling_ratio) {
--		WARN_ON(!svm->tsc_scaling_enabled);
-+	if (kvm_caps.has_tsc_control &&
-+	    vcpu->arch.tsc_scaling_ratio != vcpu->arch.l1_tsc_scaling_ratio) {
- 		vcpu->arch.tsc_scaling_ratio = vcpu->arch.l1_tsc_scaling_ratio;
- 		__svm_write_tsc_multiplier(vcpu->arch.tsc_scaling_ratio);
+-	if (memcmp(fs_info->fs_devices->fsid, fs_info->super_copy->fsid,
+-		   BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ 		"superblock fsid doesn't match fsid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->fsid, fs_info->fs_devices->fsid);
++			  sb->fsid, fs_info->fs_devices->fsid);
+ 		ret = -EINVAL;
  	}
+ 
 
 
