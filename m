@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBDE47A38C9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E827A3A72
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239856AbjIQTkV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
+        id S240344AbjIQUDV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239932AbjIQTkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:11 -0400
+        with ESMTP id S240467AbjIQUDF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:03:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB589132
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0994C433C8;
-        Sun, 17 Sep 2023 19:40:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8D0138
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B1CC433D9;
+        Sun, 17 Sep 2023 20:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979605;
-        bh=sMEcIT9qnRRZaNenrMuvlPxwUZb/CYyFjR7xrDGnwX8=;
+        s=korg; t=1694980978;
+        bh=sqnRGiiEFGhGG6ugw0LqK9GGqS8gdF2KOYCRPytx0Hc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ssWdEl568dLe7Udwj9aXU8ykXGVJE3xNMMthTyOGnH03cVQEaGMT8V7fQPN/S/Qq6
-         3MXYf8mrNDObhdOAe2O4F/oUMd0JHDJynBy2dSCjgFtGv7noo4iQ4BOozJa6z0FVnz
-         s0Xo1jnVOZh1v7v+mvILg1Ue3QZr6PEqRGGN4mFs=
+        b=q0ZQFFAzVMMRLM4e86opf47hA9B0rj/rw4fv3whnOXRmPHey8G5RPVJXsLQE0bnH7
+         jQNNCNIBI3ci6DpRwLNGQanxa4llPDgX3z2RP9CoE14IjU2QwkQtVJ9GD8HNIo8fq+
+         RRnTRnSe0U9cNOhwKo6sl3YBJQ0D7LlE8JicBDTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 337/406] x86/virt: Drop unnecessary check on extended CPUID level in cpu_has_svm()
+Subject: [PATCH 6.1 064/219] perf trace: Use zfree() to reduce chances of use after free
 Date:   Sun, 17 Sep 2023 21:13:11 +0200
-Message-ID: <20230917191110.180842830@linuxfoundation.org>
+Message-ID: <20230917191043.315076488@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,46 +50,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 5df8ecfe3632d5879d1f154f7aa8de441b5d1c89 ]
+[ Upstream commit 9997d5dd177c52017fa0541bf236a4232c8148e6 ]
 
-Drop the explicit check on the extended CPUID level in cpu_has_svm(), the
-kernel's cached CPUID info will leave the entire SVM leaf unset if said
-leaf is not supported by hardware.  Prior to using cached information,
-the check was needed to avoid false positives due to Intel's rather crazy
-CPUID behavior of returning the values of the maximum supported leaf if
-the specified leaf is unsupported.
+Do defensive programming by using zfree() to initialize freed pointers
+to NULL, so that eventual use after free result in a NULL pointer deref
+instead of more subtle behaviour.
 
-Fixes: 682a8108872f ("x86/kvm/svm: Simplify cpu_has_svm()")
-Link: https://lore.kernel.org/r/20230721201859.2307736-13-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 7962ef13651a ("perf trace: Really free the evsel->priv area")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/virtext.h | 6 ------
- 1 file changed, 6 deletions(-)
+ tools/perf/builtin-trace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/virtext.h b/arch/x86/include/asm/virtext.h
-index 8eefa3386d8ce..331474296e6f1 100644
---- a/arch/x86/include/asm/virtext.h
-+++ b/arch/x86/include/asm/virtext.h
-@@ -95,12 +95,6 @@ static inline int cpu_has_svm(const char **msg)
- 		return 0;
- 	}
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 97b17f8941dc0..6392fcf2610c4 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2293,7 +2293,7 @@ static void syscall__exit(struct syscall *sc)
+ 	if (!sc)
+ 		return;
  
--	if (boot_cpu_data.extended_cpuid_level < SVM_CPUID_FUNC) {
--		if (msg)
--			*msg = "can't execute cpuid_8000000a";
--		return 0;
--	}
--
- 	if (!boot_cpu_has(X86_FEATURE_SVM)) {
- 		if (msg)
- 			*msg = "svm not available";
+-	free(sc->arg_fmt);
++	zfree(&sc->arg_fmt);
+ }
+ 
+ static int trace__sys_enter(struct trace *trace, struct evsel *evsel,
+@@ -3129,7 +3129,7 @@ static void evlist__free_syscall_tp_fields(struct evlist *evlist)
+ 		if (!et || !evsel->tp_format || strcmp(evsel->tp_format->system, "syscalls"))
+ 			continue;
+ 
+-		free(et->fmt);
++		zfree(&et->fmt);
+ 		free(et);
+ 	}
+ }
+@@ -4765,11 +4765,11 @@ static void trace__exit(struct trace *trace)
+ 	int i;
+ 
+ 	strlist__delete(trace->ev_qualifier);
+-	free(trace->ev_qualifier_ids.entries);
++	zfree(&trace->ev_qualifier_ids.entries);
+ 	if (trace->syscalls.table) {
+ 		for (i = 0; i <= trace->sctbl->syscalls.max_id; i++)
+ 			syscall__exit(&trace->syscalls.table[i]);
+-		free(trace->syscalls.table);
++		zfree(&trace->syscalls.table);
+ 	}
+ 	syscalltbl__delete(trace->sctbl);
+ 	zfree(&trace->perfconfig_events);
 -- 
 2.40.1
 
