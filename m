@@ -2,44 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A9767A3C8B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47AA67A3CC3
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:35:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239608AbjIQUdF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38664 "EHLO
+        id S241098AbjIQUfN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:35:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241060AbjIQUce (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:32:34 -0400
+        with ESMTP id S241165AbjIQUek (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:34:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8644E45;
-        Sun, 17 Sep 2023 13:32:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B7BC433CD;
-        Sun, 17 Sep 2023 20:32:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1353101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:34:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0338DC433C8;
+        Sun, 17 Sep 2023 20:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982724;
-        bh=zEp33Ud01w+7j68B0EhU5mo26tnVXiBzLTHpAFUq+54=;
+        s=korg; t=1694982875;
+        bh=C5wjJUkStjoQ/WgAr1s3+4w3V8ujged+EDTzAD76aCA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SJNo/goDZUoFu3qQWb74KOgh+6FOZCXHAPoi227WECENONNVds2QYYsReiPRc/5oV
-         lGm+WSGHYmoQaizIfRlVxikcG5PXgZvDWVmKThkODDEoYMjXYOoDZ1KLJcW/u41aQR
-         Ievqgo0gKDPUC1OKgqRbyTZc/bCJN/291GpWEBtA=
+        b=eAuClJPCzD5//ae3esgj64uoreMrITv/xzYInVYVAOtTBwRfaO+hQVd73ZX/VQpn7
+         Tu16oBs2GCXyeVMNnuUJo12nnr1NMBbDPbrVcqCp0hcjmjDGbeFXGrUtW7ublfoc0o
+         S9PEb473OlYNiPuU+ktVi2sbBfjekHocYZ88Xu+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 5.15 334/511] backlight/lv5207lp: Compare against struct fb_info.device
-Date:   Sun, 17 Sep 2023 21:12:41 +0200
-Message-ID: <20230917191121.880078650@linuxfoundation.org>
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 5.15 335/511] xtensa: PMU: fix base address for the newer hardware
+Date:   Sun, 17 Sep 2023 21:12:42 +0200
+Message-ID: <20230917191121.904519776@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -62,52 +52,69 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-commit 1ca8819320fd84e7d95b04e7668efc5f9fe9fa5c upstream.
+commit 687eb3c42f4ad81e7c947c50e2d865f692064291 upstream.
 
-Struct lv5207lp_platform_data refers to a platform device within
-the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+With introduction of ERI access control in RG.0 base address of the PMU
+unit registers has changed. Add support for the new PMU configuration.
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
-
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: linux-sh@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-6-tzimmermann@suse.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/lv5207lp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/xtensa/include/asm/core.h  |    9 +++++++++
+ arch/xtensa/kernel/perf_event.c |   17 +++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/video/backlight/lv5207lp.c
-+++ b/drivers/video/backlight/lv5207lp.c
-@@ -67,7 +67,7 @@ static int lv5207lp_backlight_check_fb(s
- {
- 	struct lv5207lp *lv = bl_get_data(backlight);
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -26,4 +26,13 @@
+ #define XCHAL_SPANNING_WAY 0
+ #endif
  
--	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->dev;
-+	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->device;
- }
++#ifndef XCHAL_HW_MIN_VERSION
++#if defined(XCHAL_HW_MIN_VERSION_MAJOR) && defined(XCHAL_HW_MIN_VERSION_MINOR)
++#define XCHAL_HW_MIN_VERSION (XCHAL_HW_MIN_VERSION_MAJOR * 100 + \
++			      XCHAL_HW_MIN_VERSION_MINOR)
++#else
++#define XCHAL_HW_MIN_VERSION 0
++#endif
++#endif
++
+ #endif
+--- a/arch/xtensa/kernel/perf_event.c
++++ b/arch/xtensa/kernel/perf_event.c
+@@ -13,17 +13,26 @@
+ #include <linux/perf_event.h>
+ #include <linux/platform_device.h>
  
- static const struct backlight_ops lv5207lp_backlight_ops = {
++#include <asm/core.h>
+ #include <asm/processor.h>
+ #include <asm/stacktrace.h>
+ 
++#define XTENSA_HWVERSION_RG_2015_0	260000
++
++#if XCHAL_HW_MIN_VERSION >= XTENSA_HWVERSION_RG_2015_0
++#define XTENSA_PMU_ERI_BASE		0x00101000
++#else
++#define XTENSA_PMU_ERI_BASE		0x00001000
++#endif
++
+ /* Global control/status for all perf counters */
+-#define XTENSA_PMU_PMG			0x1000
++#define XTENSA_PMU_PMG			XTENSA_PMU_ERI_BASE
+ /* Perf counter values */
+-#define XTENSA_PMU_PM(i)		(0x1080 + (i) * 4)
++#define XTENSA_PMU_PM(i)		(XTENSA_PMU_ERI_BASE + 0x80 + (i) * 4)
+ /* Perf counter control registers */
+-#define XTENSA_PMU_PMCTRL(i)		(0x1100 + (i) * 4)
++#define XTENSA_PMU_PMCTRL(i)		(XTENSA_PMU_ERI_BASE + 0x100 + (i) * 4)
+ /* Perf counter status registers */
+-#define XTENSA_PMU_PMSTAT(i)		(0x1180 + (i) * 4)
++#define XTENSA_PMU_PMSTAT(i)		(XTENSA_PMU_ERI_BASE + 0x180 + (i) * 4)
+ 
+ #define XTENSA_PMU_PMG_PMEN		0x1
+ 
 
 
