@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 389F17A3D58
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0637A3BCE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241183AbjIQUlh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
+        id S240818AbjIQUW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241266AbjIQUlG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:06 -0400
+        with ESMTP id S240898AbjIQUWl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:22:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625A5115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E95C433C8;
-        Sun, 17 Sep 2023 20:41:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4C2187
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:22:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5B2C433CC;
+        Sun, 17 Sep 2023 20:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983261;
-        bh=+3LqHfeYc0G8S+v7qTEAtLr0U2PV67a3ot8IdKitMLk=;
+        s=korg; t=1694982126;
+        bh=4uFJBeY5p09L9yGuvcYDT9jfsAMQnEz7AuKVoQbdCAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IxCdw4kWeC9Uxt5HVZJNc6TBRLz8gcpEDuA1cc4pgu9/sQePB/oo6PRivIGPY8RrN
-         1Yuns1hrZFwnpmrjc8bc+au/Da4Z6YjCkMvVSUwzewUvDdn60HDooLjsvK8D3FhUWX
-         a3TXQdJU/PXYqETNZ2tXVxBdkRtzpHO2VNU71nxo=
+        b=kq29eax0pWmqafmeox1j/8y53ORyiqSIsXhi96LXjUgCDcmqa3TrScaol3OpePxMF
+         GO/IUdXR5gbMcxdQZSfMBXJL5echJnmz/VoOYCt33ExGA/OriSD8IhjRp5FD1Gpa2C
+         UnIp5S4d5OgBJs6M0U734C7xcu2MAMqX4YmQV3Xc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 490/511] block: dont add or resize partition on the disk with GENHD_FL_NO_PART
+Subject: [PATCH 6.1 190/219] net: stmmac: fix handling of zero coalescing tx-usecs
 Date:   Sun, 17 Sep 2023 21:15:17 +0200
-Message-ID: <20230917191125.565021706@linuxfoundation.org>
+Message-ID: <20230917191047.807462927@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-[ Upstream commit 1a721de8489fa559ff4471f73c58bb74ac5580d3 ]
+[ Upstream commit fa60b8163816f194786f3ee334c9a458da7699c6 ]
 
-Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
-disk_expand_part_tbl() in add_partition(), which means all kinds of
-devices will support extended dynamic `dev_t`.
-However, some devices with GENHD_FL_NO_PART are not expected to add or
-resize partition.
-Fix this by adding check of GENHD_FL_NO_PART before add or resize
-partition.
+Setting ethtool -C eth0 tx-usecs 0 is supposed to disable the use of the
+coalescing timer but currently it gets programmed with zero delay
+instead.
 
-Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Disable the use of the coalescing timer if tx-usecs is zero by
+preventing it from being restarted.  Note that to keep things simple we
+don't start/stop the timer when the coalescing settings are changed, but
+just let that happen on the next transmit or timer expiry.
+
+Fixes: 8fce33317023 ("net: stmmac: Rework coalesce timer and fix multi-queue races")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index cd506a9029630..8f39e413f12a3 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	struct blkpg_partition p;
- 	long long start, length;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index a07bcb2f5d2e2..1559a4dafd413 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2692,9 +2692,7 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue)
  
-+	if (disk->flags & GENHD_FL_NO_PART)
-+		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+ 	/* We still have pending packets, let's call for a new scheduling */
+ 	if (tx_q->dirty_tx != tx_q->cur_tx)
+-		hrtimer_start(&tx_q->txtimer,
+-			      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
+-			      HRTIMER_MODE_REL);
++		stmmac_tx_timer_arm(priv, queue);
+ 
+ 	__netif_tx_unlock_bh(netdev_get_tx_queue(priv->dev, queue));
+ 
+@@ -2975,9 +2973,13 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
+ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
+ {
+ 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
++	u32 tx_coal_timer = priv->tx_coal_timer[queue];
++
++	if (!tx_coal_timer)
++		return;
+ 
+ 	hrtimer_start(&tx_q->txtimer,
+-		      STMMAC_COAL_TIMER(priv->tx_coal_timer[queue]),
++		      STMMAC_COAL_TIMER(tx_coal_timer),
+ 		      HRTIMER_MODE_REL);
+ }
+ 
 -- 
 2.40.1
 
