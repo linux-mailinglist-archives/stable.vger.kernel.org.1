@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2CF47A38C6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41007A39DD
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239845AbjIQTkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35940 "EHLO
+        id S240180AbjIQTzO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239871AbjIQTj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:57 -0400
+        with ESMTP id S240255AbjIQTzI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E93D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B008C433C7;
-        Sun, 17 Sep 2023 19:39:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027C8103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B3BC433C8;
+        Sun, 17 Sep 2023 19:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979591;
-        bh=aLVDQbn0v5+Ay7IMxUCZpHf4zms60DaG9nz773iGfA8=;
+        s=korg; t=1694980501;
+        bh=Ee+0ya1oASvML6lsar80csuRInU+gy5hpNxe71fNiT8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rpbN+ExJyXkQvEaGMgQsJWEIvCIgJgrLoJEm8WoRkXdeNWebLIvYAuSQUtGVWRVeJ
-         /mz3iuh9664gE73TrBd2z91UCO7i6Lpn2Xi/KISfoGXZocpsIaRmm4xhGmm3qx0pfE
-         3Y4u0PzcDuwt8DWHvb0BCWQFEKZqhCpJL+UT1l04=
+        b=Xge3vwcBHOHarh1wKLRwNCgeMkjfU/DeHcP4H51HbsVMN3QO70V++7GGG7i8+/Gyl
+         CM1tRDkVTBbF+ml9qa8j4d8geVWpdH2mzFl5uPZ5+JVPZaJ0NsCgwIpPpt4mcmL8pt
+         cRw5ChAuZOR8m1ataiylP9uFoBiLOc33tvSAivfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 357/406] igc: Change IGC_MIN to allow set rx/tx value between 64 and 80
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 211/285] btrfs: scrub: fix grouping of read IO
 Date:   Sun, 17 Sep 2023 21:13:31 +0200
-Message-ID: <20230917191110.704801202@linuxfoundation.org>
+Message-ID: <20230917191058.870881178@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +49,284 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 5aa48279712e1f134aac908acde4df798955a955 ]
+commit ae76d8e3e1351aa1ba09cc68dab6866d356f2e17 upstream.
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igc devices can use as low as 64 descriptors.
-This change will unify igc with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+[REGRESSION]
+There are several regression reports about the scrub performance with
+v6.4 kernel.
 
-Fixes: 0507ef8a0372 ("igc: Add transmit and receive fastpath and interrupt handlers")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On a PCIe 3.0 device, the old v6.3 kernel can go 3GB/s scrub speed, but
+v6.4 can only go 1GB/s, an obvious 66% performance drop.
+
+[CAUSE]
+Iostat shows a very different behavior between v6.3 and v6.4 kernel:
+
+  Device         r/s      rkB/s   rrqm/s  %rrqm r_await rareq-sz aqu-sz  %util
+  nvme0n1p3  9731.00 3425544.00 17237.00  63.92    2.18   352.02  21.18 100.00
+  nvme0n1p3 15578.00  993616.00     5.00   0.03    0.09    63.78   1.32 100.00
+
+The upper one is v6.3 while the lower one is v6.4.
+
+There are several obvious differences:
+
+- Very few read merges
+  This turns out to be a behavior change that we no longer do bio
+  plug/unplug.
+
+- Very low aqu-sz
+  This is due to the submit-and-wait behavior of flush_scrub_stripes(),
+  and extra extent/csum tree search.
+
+Both behaviors are not that obvious on SATA SSDs, as SATA SSDs have NCQ
+to merge the reads, while SATA SSDs can not handle high queue depth well
+either.
+
+[FIX]
+For now this patch focuses on the read speed fix. Dev-replace replace
+speed needs more work.
+
+For the read part, we go two directions to fix the problems:
+
+- Re-introduce blk plug/unplug to merge read requests
+  This is pretty simple, and the behavior is pretty easy to observe.
+
+  This would enlarge the average read request size to 512K.
+
+- Introduce multi-group reads and no longer wait for each group
+  Instead of the old behavior, which submits 8 stripes and waits for
+  them, here we would enlarge the total number of stripes to 16 * 8.
+  Which is 8M per device, the same limit as the old scrub in-flight
+  bios size limit.
+
+  Now every time we fill a group (8 stripes), we submit them and
+  continue to next stripes.
+
+  Only when the full 16 * 8 stripes are all filled, we submit the
+  remaining ones (the last group), and wait for all groups to finish.
+  Then submit the repair writes and dev-replace writes.
+
+  This should enlarge the queue depth.
+
+This would greatly improve the merge rate (thus read block size) and
+queue depth:
+
+Before (with regression, and cached extent/csum path):
+
+ Device         r/s      rkB/s   rrqm/s  %rrqm r_await rareq-sz aqu-sz  %util
+ nvme0n1p3 20666.00 1318240.00    10.00   0.05    0.08    63.79   1.63 100.00
+
+After (with all patches applied):
+
+ nvme0n1p3  5165.00 2278304.00 30557.00  85.54    0.55   441.10   2.81 100.00
+
+i.e. 1287 to 2224 MB/s.
+
+CC: stable@vger.kernel.org # 6.4+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/scrub.c |   96 ++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 71 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index 33f64c80335d3..31af08ceb36b9 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -319,11 +319,11 @@ static inline u32 igc_rss_type(const union igc_adv_rx_desc *rx_desc)
- /* TX/RX descriptor defines */
- #define IGC_DEFAULT_TXD		256
- #define IGC_DEFAULT_TX_WORK	128
--#define IGC_MIN_TXD		80
-+#define IGC_MIN_TXD		64
- #define IGC_MAX_TXD		4096
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -43,9 +43,20 @@ struct scrub_ctx;
+ /*
+  * The following value only influences the performance.
+  *
+- * This determines the batch size for stripe submitted in one go.
++ * This detemines how many stripes would be submitted in one go,
++ * which is 512KiB (BTRFS_STRIPE_LEN * SCRUB_STRIPES_PER_GROUP).
+  */
+-#define SCRUB_STRIPES_PER_SCTX	8	/* That would be 8 64K stripe per-device. */
++#define SCRUB_STRIPES_PER_GROUP		8
++
++/*
++ * How many groups we have for each sctx.
++ *
++ * This would be 8M per device, the same value as the old scrub in-flight bios
++ * size limit.
++ */
++#define SCRUB_GROUPS_PER_SCTX		16
++
++#define SCRUB_TOTAL_STRIPES		(SCRUB_GROUPS_PER_SCTX * SCRUB_STRIPES_PER_GROUP)
  
- #define IGC_DEFAULT_RXD		256
--#define IGC_MIN_RXD		80
-+#define IGC_MIN_RXD		64
- #define IGC_MAX_RXD		4096
+ /*
+  * The following value times PAGE_SIZE needs to be large enough to match the
+@@ -172,7 +183,7 @@ struct scrub_stripe {
+ };
  
- /* Supported Rx Buffer Sizes */
--- 
-2.40.1
-
+ struct scrub_ctx {
+-	struct scrub_stripe	stripes[SCRUB_STRIPES_PER_SCTX];
++	struct scrub_stripe	stripes[SCRUB_TOTAL_STRIPES];
+ 	struct scrub_stripe	*raid56_data_stripes;
+ 	struct btrfs_fs_info	*fs_info;
+ 	struct btrfs_path	extent_path;
+@@ -317,10 +328,10 @@ static noinline_for_stack void scrub_fre
+ 	if (!sctx)
+ 		return;
+ 
+-	for (i = 0; i < SCRUB_STRIPES_PER_SCTX; i++)
++	for (i = 0; i < SCRUB_TOTAL_STRIPES; i++)
+ 		release_scrub_stripe(&sctx->stripes[i]);
+ 
+-	kfree(sctx);
++	kvfree(sctx);
+ }
+ 
+ static void scrub_put_ctx(struct scrub_ctx *sctx)
+@@ -335,7 +346,10 @@ static noinline_for_stack struct scrub_c
+ 	struct scrub_ctx *sctx;
+ 	int		i;
+ 
+-	sctx = kzalloc(sizeof(*sctx), GFP_KERNEL);
++	/* Since sctx has inline 128 stripes, it can go beyond 64K easily.  Use
++	 * kvzalloc().
++	 */
++	sctx = kvzalloc(sizeof(*sctx), GFP_KERNEL);
+ 	if (!sctx)
+ 		goto nomem;
+ 	refcount_set(&sctx->refs, 1);
+@@ -345,7 +359,7 @@ static noinline_for_stack struct scrub_c
+ 	sctx->extent_path.skip_locking = 1;
+ 	sctx->csum_path.search_commit_root = 1;
+ 	sctx->csum_path.skip_locking = 1;
+-	for (i = 0; i < SCRUB_STRIPES_PER_SCTX; i++) {
++	for (i = 0; i < SCRUB_TOTAL_STRIPES; i++) {
+ 		int ret;
+ 
+ 		ret = init_scrub_stripe(fs_info, &sctx->stripes[i]);
+@@ -1659,6 +1673,28 @@ static bool stripe_has_metadata_error(st
+ 	return false;
+ }
+ 
++static void submit_initial_group_read(struct scrub_ctx *sctx,
++				      unsigned int first_slot,
++				      unsigned int nr_stripes)
++{
++	struct blk_plug plug;
++
++	ASSERT(first_slot < SCRUB_TOTAL_STRIPES);
++	ASSERT(first_slot + nr_stripes <= SCRUB_TOTAL_STRIPES);
++
++	scrub_throttle_dev_io(sctx, sctx->stripes[0].dev,
++			      btrfs_stripe_nr_to_offset(nr_stripes));
++	blk_start_plug(&plug);
++	for (int i = 0; i < nr_stripes; i++) {
++		struct scrub_stripe *stripe = &sctx->stripes[first_slot + i];
++
++		/* Those stripes should be initialized. */
++		ASSERT(test_bit(SCRUB_STRIPE_FLAG_INITIALIZED, &stripe->state));
++		scrub_submit_initial_read(sctx, stripe);
++	}
++	blk_finish_plug(&plug);
++}
++
+ static int flush_scrub_stripes(struct scrub_ctx *sctx)
+ {
+ 	struct btrfs_fs_info *fs_info = sctx->fs_info;
+@@ -1671,11 +1707,11 @@ static int flush_scrub_stripes(struct sc
+ 
+ 	ASSERT(test_bit(SCRUB_STRIPE_FLAG_INITIALIZED, &sctx->stripes[0].state));
+ 
+-	scrub_throttle_dev_io(sctx, sctx->stripes[0].dev,
+-			      btrfs_stripe_nr_to_offset(nr_stripes));
+-	for (int i = 0; i < nr_stripes; i++) {
+-		stripe = &sctx->stripes[i];
+-		scrub_submit_initial_read(sctx, stripe);
++	/* Submit the stripes which are populated but not submitted. */
++	if (nr_stripes % SCRUB_STRIPES_PER_GROUP) {
++		const int first_slot = round_down(nr_stripes, SCRUB_STRIPES_PER_GROUP);
++
++		submit_initial_group_read(sctx, first_slot, nr_stripes - first_slot);
+ 	}
+ 
+ 	for (int i = 0; i < nr_stripes; i++) {
+@@ -1755,21 +1791,19 @@ static void raid56_scrub_wait_endio(stru
+ 
+ static int queue_scrub_stripe(struct scrub_ctx *sctx, struct btrfs_block_group *bg,
+ 			      struct btrfs_device *dev, int mirror_num,
+-			      u64 logical, u32 length, u64 physical)
++			      u64 logical, u32 length, u64 physical,
++			      u64 *found_logical_ret)
+ {
+ 	struct scrub_stripe *stripe;
+ 	int ret;
+ 
+-	/* No available slot, submit all stripes and wait for them. */
+-	if (sctx->cur_stripe >= SCRUB_STRIPES_PER_SCTX) {
+-		ret = flush_scrub_stripes(sctx);
+-		if (ret < 0)
+-			return ret;
+-	}
++	/*
++	 * There should always be one slot left, as caller filling the last
++	 * slot should flush them all.
++	 */
++	ASSERT(sctx->cur_stripe < SCRUB_TOTAL_STRIPES);
+ 
+ 	stripe = &sctx->stripes[sctx->cur_stripe];
+-
+-	/* We can queue one stripe using the remaining slot. */
+ 	scrub_reset_stripe(stripe);
+ 	ret = scrub_find_fill_first_stripe(bg, &sctx->extent_path,
+ 					   &sctx->csum_path, dev, physical,
+@@ -1777,7 +1811,20 @@ static int queue_scrub_stripe(struct scr
+ 	/* Either >0 as no more extents or <0 for error. */
+ 	if (ret)
+ 		return ret;
++	if (found_logical_ret)
++		*found_logical_ret = stripe->logical;
+ 	sctx->cur_stripe++;
++
++	/* We filled one group, submit it. */
++	if (sctx->cur_stripe % SCRUB_STRIPES_PER_GROUP == 0) {
++		const int first_slot = sctx->cur_stripe - SCRUB_STRIPES_PER_GROUP;
++
++		submit_initial_group_read(sctx, first_slot, SCRUB_STRIPES_PER_GROUP);
++	}
++
++	/* Last slot used, flush them all. */
++	if (sctx->cur_stripe == SCRUB_TOTAL_STRIPES)
++		return flush_scrub_stripes(sctx);
+ 	return 0;
+ }
+ 
+@@ -1990,6 +2037,7 @@ static int scrub_simple_mirror(struct sc
+ 	path.skip_locking = 1;
+ 	/* Go through each extent items inside the logical range */
+ 	while (cur_logical < logical_end) {
++		u64 found_logical;
+ 		u64 cur_physical = physical + cur_logical - logical_start;
+ 
+ 		/* Canceled? */
+@@ -2014,7 +2062,7 @@ static int scrub_simple_mirror(struct sc
+ 
+ 		ret = queue_scrub_stripe(sctx, bg, device, mirror_num,
+ 					 cur_logical, logical_end - cur_logical,
+-					 cur_physical);
++					 cur_physical, &found_logical);
+ 		if (ret > 0) {
+ 			/* No more extent, just update the accounting */
+ 			sctx->stat.last_physical = physical + logical_length;
+@@ -2024,9 +2072,7 @@ static int scrub_simple_mirror(struct sc
+ 		if (ret < 0)
+ 			break;
+ 
+-		ASSERT(sctx->cur_stripe > 0);
+-		cur_logical = sctx->stripes[sctx->cur_stripe - 1].logical
+-			      + BTRFS_STRIPE_LEN;
++		cur_logical = found_logical + BTRFS_STRIPE_LEN;
+ 
+ 		/* Don't hold CPU for too long time */
+ 		cond_resched();
 
 
