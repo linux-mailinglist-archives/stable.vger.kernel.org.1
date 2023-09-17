@@ -2,44 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4026F7A37B2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F53C7A37D9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239494AbjIQTXq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55784 "EHLO
+        id S239569AbjIQTZz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239533AbjIQTXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:23:35 -0400
+        with ESMTP id S239627AbjIQTZk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:25:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D93ED9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:23:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A84C433C7;
-        Sun, 17 Sep 2023 19:23:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250E9120
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:25:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E76C433C7;
+        Sun, 17 Sep 2023 19:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978610;
-        bh=cWqanbCUZ92keP0Ma/CSisOTG1nS2oSQgvjl3A/TDqc=;
+        s=korg; t=1694978729;
+        bh=cId8JY4S2CXaRBB3kwes3GF5hNacwQmzllgO+USdvaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1+C/jgo33R+u2XibqBF12ymL3PzcpKkYDHboYhXddCLtYOJYSMCBOPher28037gY9
-         H/+niy39SQWB96ABzEGe8zsYlZG+toFCyr75hWFmwo7LMYjawyvv7PYsIQBEyBhrto
-         FyMakXNJAT6GGocpnQNGERt/Q0GLFtIejpCYVopo=
+        b=pOK94HbJFAJZ9LsJ4NQWaECAlqVio1apXWMaP7r5PiQZ2Xep6SGuiaAt7q/owidsM
+         gBxB94BIJYTpgpulcG4W9SYEtCd81eLVVmhl16/IqSEQaxKQsejpA9a+4vIOhJNi+Y
+         miDQCZp0984e5fDehOq6EKO26bFZdbbrCNAgo4uE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Kurt Hackel <kurt.hackel@oracle.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/406] fs: ocfs2: namei: check return value of ocfs2_add_entry()
-Date:   Sun, 17 Sep 2023 21:09:21 +0200
-Message-ID: <20230917191103.951972691@linuxfoundation.org>
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 108/406] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
+Date:   Sun, 17 Sep 2023 21:09:22 +0200
+Message-ID: <20230917191103.978552171@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
 References: <20230917191101.035638219@linuxfoundation.org>
@@ -62,48 +54,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 6b72e5f9e79360fce4f2be7fe81159fbdf4256a5 ]
+[ Upstream commit 9c8fd72a5c2a031cbc680a2990107ecd958ffcdb ]
 
-Process result of ocfs2_add_entry() in case we have an error
-value.
+Always free the zeroed page on return from 'mwifiex_histogram_read()'.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fixes: cbf6e05527a7 ("mwifiex: add rx histogram statistics support")
 
-Link: https://lkml.kernel.org/r/20230803145417.177649-1-artem.chernyshev@red-soft.ru
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Kurt Hackel <kurt.hackel@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230802160726.85545-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index d6a0e719b1ad9..5c98813b3dcaf 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -1532,6 +1532,10 @@ static int ocfs2_rename(struct inode *old_dir,
- 		status = ocfs2_add_entry(handle, new_dentry, old_inode,
- 					 OCFS2_I(old_inode)->ip_blkno,
- 					 new_dir_bh, &target_insert);
-+		if (status < 0) {
-+			mlog_errno(status);
-+			goto bail;
-+		}
- 	}
+diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+index dded92db1f373..1e7dc724c6a94 100644
+--- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
++++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+@@ -265,8 +265,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	if (!p)
+ 		return -ENOMEM;
  
- 	old_inode->i_ctime = current_time(old_inode);
+-	if (!priv || !priv->hist_data)
+-		return -EFAULT;
++	if (!priv || !priv->hist_data) {
++		ret = -EFAULT;
++		goto free_and_exit;
++	}
++
+ 	phist_data = priv->hist_data;
+ 
+ 	p += sprintf(p, "\n"
+@@ -321,6 +324,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
+ 				      (unsigned long)p - page);
+ 
++free_and_exit:
++	free_page(page);
+ 	return ret;
+ }
+ 
 -- 
 2.40.1
 
