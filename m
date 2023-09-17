@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA62F7A3993
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9A47A396C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjIQTv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48758 "EHLO
+        id S239441AbjIQTtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239483AbjIQTu5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:57 -0400
+        with ESMTP id S240065AbjIQTsu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995519F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D5CC433C8;
-        Sun, 17 Sep 2023 19:50:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD01D103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AB0C433C7;
+        Sun, 17 Sep 2023 19:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980252;
-        bh=+zxxHBPprBkPfKpGfZT04Fuk/UBfcBKT1KbWid0TP1A=;
+        s=korg; t=1694980124;
+        bh=hYB9E8scw4cJFdq7P/p1pG/FTtdBU0w7qYgxobEEkLI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ci5B9QwLF5Xossc/fBBMHhBnzaWszes/pxSLgEcyNGn6HQfW4No7uZO+SKEpKQiUS
-         A1+JR+iR9R/Yvaz7eJ6I2PMHVA3vI5SEDP7qEtZrO0HbFzPx2s8CiE3jsOBP9i1HVv
-         Nkw8OJwQtA2+g1VZyA3n6UboG0mw24vkFyNKRCGc=
+        b=Xw4MYd21uwRgRTLyMCZLKyFBWY+0LUO9CB2tct7KoJ259M4ku2h+6JGwPLdhj5LWy
+         VqNF+mOpFPODut3RYOEYgE9mAzdTWbsifay3AiLsicwGBxAPUSWUuAqyggbj8ihQ89
+         5OIlR+k8U6pleEQ6Y/HfRrn0Kz6AydQ3YAF7Fcis=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chris Wilson <chris.p.wilson@linux.intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 101/285] drm/i915: mark requests for GuC virtual engines to avoid use-after-free
-Date:   Sun, 17 Sep 2023 21:11:41 +0200
-Message-ID: <20230917191055.172929036@linuxfoundation.org>
+Subject: [PATCH 6.5 102/285] blk-throttle: use calculate_io/bytes_allowed() for throtl_trim_slice()
+Date:   Sun, 17 Sep 2023 21:11:42 +0200
+Message-ID: <20230917191055.204445045@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
 References: <20230917191051.639202302@linuxfoundation.org>
@@ -57,85 +54,141 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 5eefc5307c983b59344a4cb89009819f580c84fa ]
+[ Upstream commit e8368b57c006dc0e02dcd8a9dc9f2060ff5476fe ]
 
-References to i915_requests may be trapped by userspace inside a
-sync_file or dmabuf (dma-resv) and held indefinitely across different
-proceses. To counter-act the memory leaks, we try to not to keep
-references from the request past their completion.
-On the other side on fence release we need to know if rq->engine
-is valid and points to hw engine (true for non-virtual requests).
-To make it possible extra bit has been added to rq->execution_mask,
-for marking virtual engines.
+There are no functional changes, just make the code cleaner.
 
-Fixes: bcb9aa45d5a0 ("Revert "drm/i915: Hold reference to intel_context over life of i915_request"")
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230821153035.3903006-1-andrzej.hajda@intel.com
-(cherry picked from commit 280410677af763f3871b93e794a199cfcf6fb580)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20230816012708.1193747-4-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: eead0056648c ("blk-throttle: consider 'carryover_ios/bytes' in throtl_trim_slice()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_types.h      | 1 +
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 3 +++
- drivers/gpu/drm/i915/i915_request.c               | 7 ++-----
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ block/blk-throttle.c | 86 +++++++++++++++++++++-----------------------
+ 1 file changed, 41 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_types.h b/drivers/gpu/drm/i915/gt/intel_engine_types.h
-index e99a6fa03d453..a7e6775980043 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_types.h
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_types.h
-@@ -58,6 +58,7 @@ struct i915_perf_group;
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index 7397ff199d669..b0d9573f1911b 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -697,11 +697,40 @@ static bool throtl_slice_used(struct throtl_grp *tg, bool rw)
+ 	return true;
+ }
  
- typedef u32 intel_engine_mask_t;
- #define ALL_ENGINES ((intel_engine_mask_t)~0ul)
-+#define VIRTUAL_ENGINES BIT(BITS_PER_TYPE(intel_engine_mask_t) - 1)
- 
- struct intel_hw_status_page {
- 	struct list_head timelines;
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index a0e3ef1c65d24..b5b7f2fe8c78e 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -5470,6 +5470,9 @@ guc_create_virtual(struct intel_engine_cs **siblings, unsigned int count,
- 
- 	ve->base.flags = I915_ENGINE_IS_VIRTUAL;
- 
-+	BUILD_BUG_ON(ilog2(VIRTUAL_ENGINES) < I915_NUM_ENGINES);
-+	ve->base.mask = VIRTUAL_ENGINES;
++static unsigned int calculate_io_allowed(u32 iops_limit,
++					 unsigned long jiffy_elapsed)
++{
++	unsigned int io_allowed;
++	u64 tmp;
 +
- 	intel_context_init(&ve->context, &ve->base);
++	/*
++	 * jiffy_elapsed should not be a big value as minimum iops can be
++	 * 1 then at max jiffy elapsed should be equivalent of 1 second as we
++	 * will allow dispatch after 1 second and after that slice should
++	 * have been trimmed.
++	 */
++
++	tmp = (u64)iops_limit * jiffy_elapsed;
++	do_div(tmp, HZ);
++
++	if (tmp > UINT_MAX)
++		io_allowed = UINT_MAX;
++	else
++		io_allowed = tmp;
++
++	return io_allowed;
++}
++
++static u64 calculate_bytes_allowed(u64 bps_limit, unsigned long jiffy_elapsed)
++{
++	return mul_u64_u64_div_u64(bps_limit, (u64)jiffy_elapsed, (u64)HZ);
++}
++
+ /* Trim the used slices and adjust slice start accordingly */
+ static inline void throtl_trim_slice(struct throtl_grp *tg, bool rw)
+ {
+-	unsigned long nr_slices, time_elapsed, io_trim;
+-	u64 bytes_trim, tmp;
++	unsigned long time_elapsed, io_trim;
++	u64 bytes_trim;
  
- 	for (n = 0; n < count; n++) {
-diff --git a/drivers/gpu/drm/i915/i915_request.c b/drivers/gpu/drm/i915/i915_request.c
-index 833b73edefdbb..eb2a3000ad66b 100644
---- a/drivers/gpu/drm/i915/i915_request.c
-+++ b/drivers/gpu/drm/i915/i915_request.c
-@@ -134,9 +134,7 @@ static void i915_fence_release(struct dma_fence *fence)
- 	i915_sw_fence_fini(&rq->semaphore);
+ 	BUG_ON(time_before(tg->slice_end[rw], tg->slice_start[rw]));
  
- 	/*
--	 * Keep one request on each engine for reserved use under mempressure
--	 * do not use with virtual engines as this really is only needed for
--	 * kernel contexts.
-+	 * Keep one request on each engine for reserved use under mempressure.
- 	 *
- 	 * We do not hold a reference to the engine here and so have to be
- 	 * very careful in what rq->engine we poke. The virtual engine is
-@@ -166,8 +164,7 @@ static void i915_fence_release(struct dma_fence *fence)
- 	 * know that if the rq->execution_mask is a single bit, rq->engine
- 	 * can be a physical engine with the exact corresponding mask.
- 	 */
--	if (!intel_engine_is_virtual(rq->engine) &&
--	    is_power_of_2(rq->execution_mask) &&
-+	if (is_power_of_2(rq->execution_mask) &&
- 	    !cmpxchg(&rq->engine->request_pool, NULL, rq))
+@@ -723,19 +752,14 @@ static inline void throtl_trim_slice(struct throtl_grp *tg, bool rw)
+ 
+ 	throtl_set_slice_end(tg, rw, jiffies + tg->td->throtl_slice);
+ 
+-	time_elapsed = jiffies - tg->slice_start[rw];
+-
+-	nr_slices = time_elapsed / tg->td->throtl_slice;
+-
+-	if (!nr_slices)
++	time_elapsed = rounddown(jiffies - tg->slice_start[rw],
++				 tg->td->throtl_slice);
++	if (!time_elapsed)
+ 		return;
+-	tmp = tg_bps_limit(tg, rw) * tg->td->throtl_slice * nr_slices;
+-	do_div(tmp, HZ);
+-	bytes_trim = tmp;
+-
+-	io_trim = (tg_iops_limit(tg, rw) * tg->td->throtl_slice * nr_slices) /
+-		HZ;
+ 
++	bytes_trim = calculate_bytes_allowed(tg_bps_limit(tg, rw),
++					     time_elapsed);
++	io_trim = calculate_io_allowed(tg_iops_limit(tg, rw), time_elapsed);
+ 	if (!bytes_trim && !io_trim)
  		return;
  
+@@ -749,41 +773,13 @@ static inline void throtl_trim_slice(struct throtl_grp *tg, bool rw)
+ 	else
+ 		tg->io_disp[rw] = 0;
+ 
+-	tg->slice_start[rw] += nr_slices * tg->td->throtl_slice;
++	tg->slice_start[rw] += time_elapsed;
+ 
+ 	throtl_log(&tg->service_queue,
+ 		   "[%c] trim slice nr=%lu bytes=%llu io=%lu start=%lu end=%lu jiffies=%lu",
+-		   rw == READ ? 'R' : 'W', nr_slices, bytes_trim, io_trim,
+-		   tg->slice_start[rw], tg->slice_end[rw], jiffies);
+-}
+-
+-static unsigned int calculate_io_allowed(u32 iops_limit,
+-					 unsigned long jiffy_elapsed)
+-{
+-	unsigned int io_allowed;
+-	u64 tmp;
+-
+-	/*
+-	 * jiffy_elapsed should not be a big value as minimum iops can be
+-	 * 1 then at max jiffy elapsed should be equivalent of 1 second as we
+-	 * will allow dispatch after 1 second and after that slice should
+-	 * have been trimmed.
+-	 */
+-
+-	tmp = (u64)iops_limit * jiffy_elapsed;
+-	do_div(tmp, HZ);
+-
+-	if (tmp > UINT_MAX)
+-		io_allowed = UINT_MAX;
+-	else
+-		io_allowed = tmp;
+-
+-	return io_allowed;
+-}
+-
+-static u64 calculate_bytes_allowed(u64 bps_limit, unsigned long jiffy_elapsed)
+-{
+-	return mul_u64_u64_div_u64(bps_limit, (u64)jiffy_elapsed, (u64)HZ);
++		   rw == READ ? 'R' : 'W', time_elapsed / tg->td->throtl_slice,
++		   bytes_trim, io_trim, tg->slice_start[rw], tg->slice_end[rw],
++		   jiffies);
+ }
+ 
+ static void __tg_update_carryover(struct throtl_grp *tg, bool rw)
 -- 
 2.40.1
 
