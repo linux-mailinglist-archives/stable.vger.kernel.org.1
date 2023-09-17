@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC857A3D3A
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22F297A3B5E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241221AbjIQUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48298 "EHLO
+        id S240660AbjIQUQg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241271AbjIQUjr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:47 -0400
+        with ESMTP id S240766AbjIQUQT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E3B115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991F9C433C8;
-        Sun, 17 Sep 2023 20:39:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96EF3101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A47C433C7;
+        Sun, 17 Sep 2023 20:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983182;
-        bh=5EcuEnpxAkPlg5WfpzUy3n76KKPE0LtRHRKPW358mTg=;
+        s=korg; t=1694981774;
+        bh=+YSvmt0ZW6DngcsUv6UHm6opbvIqOxN2huuJEEz+JUw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JaOGz67i2HXHMn84LpazhRUyCyuUFbCSXZXEet/j7QiZbtAYrY5HLKaBo41yBS98P
-         Pvf8lW7XjcZgT4iThue6Un4PIHdiVvzHaB5Q2DKcreZwQoYbHBXiluZpwKLcz85MWu
-         R28BqpbcDpe7wzmSPZNMnn5aVlDGbUo9f0lmgnLg=
+        b=rA9VklqDYYQt2D5joiuxksX6KC99F8Yk/Xpe6aVWLHvlFXG93KDO3oVQVpYOfkRwf
+         k4AB2bXg9/CGbOShVucv3z/pjyNe2aHGBK7iyzf7h2EOI957HLwX23O4lahQHfnxiH
+         85sxlHYQ1fSQLF3Kdf/0aQLHzTPkMdMAsgAPN2m0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Petr Mladek <pmladek@suse.com>
-Subject: [PATCH 5.15 469/511] lib: test_scanf: Add explicit type cast to result initialization in test_number_prefix()
-Date:   Sun, 17 Sep 2023 21:14:56 +0200
-Message-ID: <20230917191125.071908894@linuxfoundation.org>
+        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 170/219] KVM: SVM: Take and hold ir_list_lock when updating vCPUs Physical ID entry
+Date:   Sun, 17 Sep 2023 21:14:57 +0200
+Message-ID: <20230917191047.158597262@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +51,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 92382d744176f230101d54f5c017bccd62770f01 upstream.
+commit 4c08e737f056fec930b416a2bd37ed266d724f95 upstream.
 
-A recent change in clang allows it to consider more expressions as
-compile time constants, which causes it to point out an implicit
-conversion in the scanf tests:
+Hoist the acquisition of ir_list_lock from avic_update_iommu_vcpu_affinity()
+to its two callers, avic_vcpu_load() and avic_vcpu_put(), specifically to
+encapsulate the write to the vCPU's entry in the AVIC Physical ID table.
+This will allow a future fix to pull information from the Physical ID entry
+when updating the IRTE, without potentially consuming stale information,
+i.e. without racing with the vCPU being (un)loaded.
 
-  lib/test_scanf.c:661:2: warning: implicit conversion from 'int' to 'unsigned char' changes value from -168 to 88 [-Wconstant-conversion]
-    661 |         test_number_prefix(unsigned char,       "0xA7", "%2hhx%hhx", 0, 0xa7, 2, check_uchar);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  lib/test_scanf.c:609:29: note: expanded from macro 'test_number_prefix'
-    609 |         T result[2] = {~expect[0], ~expect[1]};                                 \
-        |                       ~            ^~~~~~~~~~
-  1 warning generated.
+Add a comment to call out that ir_list_lock does NOT protect against
+multiple writers, specifically that reading the Physical ID entry in
+avic_vcpu_put() outside of the lock is safe.
 
-The result of the bitwise negation is the type of the operand after
-going through the integer promotion rules, so this truncation is
-expected but harmless, as the initial values in the result array get
-overwritten by _test() anyways. Add an explicit cast to the expected
-type in test_number_prefix() to silence the warning. There is no
-functional change, as all the tests still pass with GCC 13.1.0 and clang
-18.0.0.
+To preserve some semblance of independence from ir_list_lock, keep the
+READ_ONCE() in avic_vcpu_load() even though acuiring the spinlock
+effectively ensures the load(s) will be generated after acquiring the
+lock.
 
 Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linuxq/issues/1899
-Link: https://github.com/llvm/llvm-project/commit/610ec954e1f81c0e8fcadedcd25afe643f5a094e
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230807-test_scanf-wconstant-conversion-v2-1-839ca39083e1@kernel.org
+Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Link: https://lore.kernel.org/r/20230808233132.2499764-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_scanf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/avic.c |   31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
---- a/lib/test_scanf.c
-+++ b/lib/test_scanf.c
-@@ -606,7 +606,7 @@ static void __init numbers_slice(void)
- #define test_number_prefix(T, str, scan_fmt, expect0, expect1, n_args, fn)	\
- do {										\
- 	const T expect[2] = { expect0, expect1 };				\
--	T result[2] = {~expect[0], ~expect[1]};					\
-+	T result[2] = { (T)~expect[0], (T)~expect[1] };				\
- 										\
- 	_test(fn, &expect, str, scan_fmt, n_args, &result[0], &result[1]);	\
- } while (0)
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -1022,10 +1022,11 @@ static inline int
+ avic_update_iommu_vcpu_affinity(struct kvm_vcpu *vcpu, int cpu, bool r)
+ {
+ 	int ret = 0;
+-	unsigned long flags;
+ 	struct amd_svm_iommu_ir *ir;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
++	lockdep_assert_held(&svm->ir_list_lock);
++
+ 	if (!kvm_arch_has_assigned_device(vcpu->kvm))
+ 		return 0;
+ 
+@@ -1033,19 +1034,15 @@ avic_update_iommu_vcpu_affinity(struct k
+ 	 * Here, we go through the per-vcpu ir_list to update all existing
+ 	 * interrupt remapping table entry targeting this vcpu.
+ 	 */
+-	spin_lock_irqsave(&svm->ir_list_lock, flags);
+-
+ 	if (list_empty(&svm->ir_list))
+-		goto out;
++		return 0;
+ 
+ 	list_for_each_entry(ir, &svm->ir_list, node) {
+ 		ret = amd_iommu_update_ga(cpu, r, ir->data);
+ 		if (ret)
+-			break;
++			return ret;
+ 	}
+-out:
+-	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
+-	return ret;
++	return 0;
+ }
+ 
+ void avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+@@ -1053,6 +1050,7 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
+ 	u64 entry;
+ 	int h_physical_id = kvm_cpu_get_apicid(cpu);
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	unsigned long flags;
+ 
+ 	lockdep_assert_preemption_disabled();
+ 
+@@ -1069,6 +1067,8 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
+ 	if (kvm_vcpu_is_blocking(vcpu))
+ 		return;
+ 
++	spin_lock_irqsave(&svm->ir_list_lock, flags);
++
+ 	entry = READ_ONCE(*(svm->avic_physical_id_cache));
+ 
+ 	entry &= ~AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK;
+@@ -1077,25 +1077,40 @@ void avic_vcpu_load(struct kvm_vcpu *vcp
+ 
+ 	WRITE_ONCE(*(svm->avic_physical_id_cache), entry);
+ 	avic_update_iommu_vcpu_affinity(vcpu, h_physical_id, true);
++
++	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
+ }
+ 
+ void avic_vcpu_put(struct kvm_vcpu *vcpu)
+ {
+ 	u64 entry;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	unsigned long flags;
+ 
+ 	lockdep_assert_preemption_disabled();
+ 
++	/*
++	 * Note, reading the Physical ID entry outside of ir_list_lock is safe
++	 * as only the pCPU that has loaded (or is loading) the vCPU is allowed
++	 * to modify the entry, and preemption is disabled.  I.e. the vCPU
++	 * can't be scheduled out and thus avic_vcpu_{put,load}() can't run
++	 * recursively.
++	 */
+ 	entry = READ_ONCE(*(svm->avic_physical_id_cache));
+ 
+ 	/* Nothing to do if IsRunning == '0' due to vCPU blocking. */
+ 	if (!(entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK))
+ 		return;
+ 
++	spin_lock_irqsave(&svm->ir_list_lock, flags);
++
+ 	avic_update_iommu_vcpu_affinity(vcpu, -1, 0);
+ 
+ 	entry &= ~AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK;
+ 	WRITE_ONCE(*(svm->avic_physical_id_cache), entry);
++
++	spin_unlock_irqrestore(&svm->ir_list_lock, flags);
++
+ }
+ 
+ void avic_refresh_virtual_apic_mode(struct kvm_vcpu *vcpu)
 
 
