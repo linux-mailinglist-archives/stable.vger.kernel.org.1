@@ -2,47 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B73807A3967
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6975E7A3837
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240069AbjIQTsu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:48:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40696 "EHLO
+        id S239666AbjIQTdU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239472AbjIQTsi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:48:38 -0400
+        with ESMTP id S239730AbjIQTcw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02329C6
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:48:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25E7C433C9;
-        Sun, 17 Sep 2023 19:48:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C162D18D
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE51C4339A;
+        Sun, 17 Sep 2023 19:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980106;
-        bh=R4P+QAYZA8cVQSdWkPcrpFakoLzNiUhtTQK1L25r++Y=;
+        s=korg; t=1694979143;
+        bh=4ye19IlFEO77DSDXLW8IQ5wvkYkXwYepLOOAQN2eeCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Di7sQX3aDbQ8fWwHV8pEE4RjODYsXejzDZ6zhXyFK0+vzVhzzBz8JzxBkr1lUtR5w
-         yY84oxaB5J5b+/NRnKPxS1v9U3rvekR/KofSs6ATcmIdSt+436Cd+zrasr24oJ89ww
-         LCfVFrATobebkFNPCy0Ley2c/AWyp15GTKLGM47E=
+        b=Mk2HIzhIJNonOte/00rHV+fbREaHhImd59tjSiuHLLPq6atjncTYOUvtF2HQcl7ug
+         q2pE3vJdIYkIjdWU/d2FpcFmtLinpNK5vQvMz7rg5DtxQt7/E9zbLm1J2lvL8mqiq1
+         QiJiWQ10HToEOcwJ5OvI2mXUOK1q9kWuzsyz5mfQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 072/285] perf parse-events: Move instances of YYABORT to YYNOMEM
-Date:   Sun, 17 Sep 2023 21:11:12 +0200
-Message-ID: <20230917191054.210193114@linuxfoundation.org>
+Subject: [PATCH 5.10 219/406] scsi: iscsi: Add length check for nlattr payload
+Date:   Sun, 17 Sep 2023 21:11:13 +0200
+Message-ID: <20230917191106.965109311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,224 +51,308 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 77cdd787fc45e3426b8e0b5038b85c276540dfb4 ]
+[ Upstream commit 971dfcb74a800047952f5288512b9c7ddedb050a ]
 
-Migration to improve error reporting as YYABORT cases should carry
-event parsing errors.
+The current NETLINK_ISCSI netlink parsing loop checks every nlmsg to make
+sure the length is bigger than sizeof(struct iscsi_uevent) and then calls
+iscsi_if_recv_msg().
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: bpf@vger.kernel.org
-Link: https://lore.kernel.org/r/20230627181030.95608-9-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: b30d4f0b6954 ("perf parse-events: Additional error reporting")
+  nlh = nlmsg_hdr(skb);
+  if (nlh->nlmsg_len < sizeof(*nlh) + sizeof(*ev) ||
+    skb->len < nlh->nlmsg_len) {
+    break;
+  }
+  ...
+  err = iscsi_if_recv_msg(skb, nlh, &group);
+
+Hence, in iscsi_if_recv_msg() the nlmsg_data can be safely converted to
+iscsi_uevent as the length is already checked.
+
+However, in other cases the length of nlattr payload is not checked before
+the payload is converted to other data structures. One example is
+iscsi_set_path() which converts the payload to type iscsi_path without any
+checks:
+
+  params = (struct iscsi_path *)((char *)ev + sizeof(*ev));
+
+Whereas iscsi_if_transport_conn() correctly checks the pdu_len:
+
+  pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
+  if ((ev->u.send_pdu.hdr_size > pdu_len) ..
+    err = -EINVAL;
+
+To sum up, some code paths called in iscsi_if_recv_msg() do not check the
+length of the data (see below picture) and directly convert the data to
+another data structure. This could result in an out-of-bound reads and heap
+dirty data leakage.
+
+             _________  nlmsg_len(nlh) _______________
+            /                                         \
++----------+--------------+---------------------------+
+| nlmsghdr | iscsi_uevent |          data              |
++----------+--------------+---------------------------+
+                          \                          /
+                         iscsi_uevent->u.set_param.len
+
+Fix the issue by adding the length check before accessing it. To clean up
+the code, an additional parameter named rlen is added. The rlen is
+calculated at the beginning of iscsi_if_recv_msg() which avoids duplicated
+calculation.
+
+Fixes: ac20c7bf070d ("[SCSI] iscsi_transport: Added Ping support")
+Fixes: 43514774ff40 ("[SCSI] iscsi class: Add new NETLINK_ISCSI messages for cnic/bnx2i driver.")
+Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
+Fixes: 01cb225dad8d ("[SCSI] iscsi: add target discvery event to transport class")
+Fixes: 264faaaa1254 ("[SCSI] iscsi: add transport end point callbacks")
+Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230725024529.428311-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/parse-events.y | 58 +++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 18 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 72 +++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 29 deletions(-)
 
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index 6b996f22dee3a..78c1f49d8d7e4 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -455,7 +455,8 @@ value_sym '/' event_config '/'
- 	bool wildcard = (type == PERF_TYPE_HARDWARE || type == PERF_TYPE_HW_CACHE);
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	err = parse_events_add_numeric(_parse_state, list, type, config, $3, wildcard);
- 	parse_events_terms__delete($3);
- 	if (err) {
-@@ -473,7 +474,8 @@ value_sym sep_slash_slash_dc
- 	bool wildcard = (type == PERF_TYPE_HARDWARE || type == PERF_TYPE_HW_CACHE);
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	ABORT_ON(parse_events_add_numeric(_parse_state, list, type, config,
- 					  /*head_config=*/NULL, wildcard));
- 	$$ = list;
-@@ -484,7 +486,8 @@ PE_VALUE_SYM_TOOL sep_slash_slash_dc
- 	struct list_head *list;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	ABORT_ON(parse_events_add_tool(_parse_state, list, $1));
- 	$$ = list;
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index a22bc594b2d4a..64bc403a4c285 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -2991,14 +2991,15 @@ iscsi_if_destroy_conn(struct iscsi_transport *transport, struct iscsi_uevent *ev
  }
-@@ -497,7 +500,9 @@ PE_LEGACY_CACHE opt_event_config
+ 
+ static int
+-iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
++iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
+ {
+ 	char *data = (char*)ev + sizeof(*ev);
+ 	struct iscsi_cls_conn *conn;
+ 	struct iscsi_cls_session *session;
+ 	int err = 0, value = 0, state;
+ 
+-	if (ev->u.set_param.len > PAGE_SIZE)
++	if (ev->u.set_param.len > rlen ||
++	    ev->u.set_param.len > PAGE_SIZE)
+ 		return -EINVAL;
+ 
+ 	session = iscsi_session_lookup(ev->u.set_param.sid);
+@@ -3095,7 +3096,7 @@ static int iscsi_if_ep_disconnect(struct iscsi_transport *transport,
+ 
+ static int
+ iscsi_if_transport_ep(struct iscsi_transport *transport,
+-		      struct iscsi_uevent *ev, int msg_type)
++		      struct iscsi_uevent *ev, int msg_type, u32 rlen)
+ {
+ 	struct iscsi_endpoint *ep;
+ 	int rc = 0;
+@@ -3103,7 +3104,10 @@ iscsi_if_transport_ep(struct iscsi_transport *transport,
+ 	switch (msg_type) {
+ 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT_THROUGH_HOST:
+ 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT:
+-		rc = iscsi_if_ep_connect(transport, ev, msg_type);
++		if (rlen < sizeof(struct sockaddr))
++			rc = -EINVAL;
++		else
++			rc = iscsi_if_ep_connect(transport, ev, msg_type);
+ 		break;
+ 	case ISCSI_UEVENT_TRANSPORT_EP_POLL:
+ 		if (!transport->ep_poll)
+@@ -3127,12 +3131,15 @@ iscsi_if_transport_ep(struct iscsi_transport *transport,
+ 
+ static int
+ iscsi_tgt_dscvr(struct iscsi_transport *transport,
+-		struct iscsi_uevent *ev)
++		struct iscsi_uevent *ev, u32 rlen)
+ {
+ 	struct Scsi_Host *shost;
+ 	struct sockaddr *dst_addr;
  	int err;
  
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
++	if (rlen < sizeof(*dst_addr))
++		return -EINVAL;
 +
- 	err = parse_events_add_cache(list, &parse_state->idx, $1, parse_state, $2);
+ 	if (!transport->tgt_dscvr)
+ 		return -EINVAL;
  
- 	parse_events_terms__delete($2);
-@@ -516,7 +521,9 @@ PE_PREFIX_MEM PE_VALUE PE_BP_SLASH PE_VALUE PE_BP_COLON PE_MODIFIER_BP opt_event
+@@ -3153,7 +3160,7 @@ iscsi_tgt_dscvr(struct iscsi_transport *transport,
+ 
+ static int
+ iscsi_set_host_param(struct iscsi_transport *transport,
+-		     struct iscsi_uevent *ev)
++		     struct iscsi_uevent *ev, u32 rlen)
+ {
+ 	char *data = (char*)ev + sizeof(*ev);
+ 	struct Scsi_Host *shost;
+@@ -3162,7 +3169,8 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+ 	if (!transport->set_host_param)
+ 		return -ENOSYS;
+ 
+-	if (ev->u.set_host_param.len > PAGE_SIZE)
++	if (ev->u.set_host_param.len > rlen ||
++	    ev->u.set_host_param.len > PAGE_SIZE)
+ 		return -EINVAL;
+ 
+ 	shost = scsi_host_lookup(ev->u.set_host_param.host_no);
+@@ -3179,12 +3187,15 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+ }
+ 
+ static int
+-iscsi_set_path(struct iscsi_transport *transport, struct iscsi_uevent *ev)
++iscsi_set_path(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
+ {
+ 	struct Scsi_Host *shost;
+ 	struct iscsi_path *params;
  	int err;
  
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
++	if (rlen < sizeof(*params))
++		return -EINVAL;
 +
- 	err = parse_events_add_breakpoint(_parse_state, list,
- 					  $2, $6, $4, $7);
- 	parse_events_terms__delete($7);
-@@ -534,7 +541,9 @@ PE_PREFIX_MEM PE_VALUE PE_BP_SLASH PE_VALUE opt_event_config
+ 	if (!transport->set_path)
+ 		return -ENOSYS;
+ 
+@@ -3244,12 +3255,15 @@ iscsi_set_iface_params(struct iscsi_transport *transport,
+ }
+ 
+ static int
+-iscsi_send_ping(struct iscsi_transport *transport, struct iscsi_uevent *ev)
++iscsi_send_ping(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
+ {
+ 	struct Scsi_Host *shost;
+ 	struct sockaddr *dst_addr;
  	int err;
  
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
++	if (rlen < sizeof(*dst_addr))
++		return -EINVAL;
 +
- 	err = parse_events_add_breakpoint(_parse_state, list,
- 					  $2, NULL, $4, $5);
- 	parse_events_terms__delete($5);
-@@ -551,7 +560,9 @@ PE_PREFIX_MEM PE_VALUE PE_BP_COLON PE_MODIFIER_BP opt_event_config
- 	int err;
+ 	if (!transport->send_ping)
+ 		return -ENOSYS;
  
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
+@@ -3747,13 +3761,12 @@ iscsi_get_host_stats(struct iscsi_transport *transport, struct nlmsghdr *nlh)
+ }
+ 
+ static int iscsi_if_transport_conn(struct iscsi_transport *transport,
+-				   struct nlmsghdr *nlh)
++				   struct nlmsghdr *nlh, u32 pdu_len)
+ {
+ 	struct iscsi_uevent *ev = nlmsg_data(nlh);
+ 	struct iscsi_cls_session *session;
+ 	struct iscsi_cls_conn *conn = NULL;
+ 	struct iscsi_endpoint *ep;
+-	uint32_t pdu_len;
+ 	int err = 0;
+ 
+ 	switch (nlh->nlmsg_type) {
+@@ -3833,8 +3846,6 @@ static int iscsi_if_transport_conn(struct iscsi_transport *transport,
+ 
+ 		break;
+ 	case ISCSI_UEVENT_SEND_PDU:
+-		pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
+-
+ 		if ((ev->u.send_pdu.hdr_size > pdu_len) ||
+ 		    (ev->u.send_pdu.data_size > (pdu_len - ev->u.send_pdu.hdr_size))) {
+ 			err = -EINVAL;
+@@ -3864,6 +3875,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 	struct iscsi_internal *priv;
+ 	struct iscsi_cls_session *session;
+ 	struct iscsi_endpoint *ep = NULL;
++	u32 rlen;
+ 
+ 	if (!netlink_capable(skb, CAP_SYS_ADMIN))
+ 		return -EPERM;
+@@ -3883,6 +3895,13 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 
+ 	portid = NETLINK_CB(skb).portid;
+ 
++	/*
++	 * Even though the remaining payload may not be regarded as nlattr,
++	 * (like address or something else), calculate the remaining length
++	 * here to ease following length checks.
++	 */
++	rlen = nlmsg_attrlen(nlh, sizeof(*ev));
 +
- 	err = parse_events_add_breakpoint(_parse_state, list,
- 					  $2, $4, 0, $5);
- 	parse_events_terms__delete($5);
-@@ -569,7 +580,8 @@ PE_PREFIX_MEM PE_VALUE opt_event_config
- 	int err;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	err = parse_events_add_breakpoint(_parse_state, list,
- 					  $2, NULL, 0, $3);
- 	parse_events_terms__delete($3);
-@@ -589,7 +601,8 @@ tracepoint_name opt_event_config
- 	int err;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	if (error)
- 		error->idx = @1.first_column;
- 
-@@ -621,7 +634,8 @@ PE_VALUE ':' PE_VALUE opt_event_config
- 	int err;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	err = parse_events_add_numeric(_parse_state, list, (u32)$1, $3, $4,
- 				       /*wildcard=*/false);
- 	parse_events_terms__delete($4);
-@@ -640,7 +654,8 @@ PE_RAW opt_event_config
- 	u64 num;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	errno = 0;
- 	num = strtoull($1 + 1, NULL, 16);
- 	ABORT_ON(errno);
-@@ -663,7 +678,8 @@ PE_BPF_OBJECT opt_event_config
- 	int err;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	err = parse_events_load_bpf(parse_state, list, $1, false, $2);
- 	parse_events_terms__delete($2);
- 	free($1);
-@@ -680,7 +696,8 @@ PE_BPF_SOURCE opt_event_config
- 	int err;
- 
- 	list = alloc_list();
--	ABORT_ON(!list);
-+	if (!list)
-+		YYNOMEM;
- 	err = parse_events_load_bpf(_parse_state, list, $1, true, $2);
- 	parse_events_terms__delete($2);
- 	if (err) {
-@@ -745,7 +762,8 @@ event_term
- 	struct list_head *head = malloc(sizeof(*head));
- 	struct parse_events_term *term = $1;
- 
--	ABORT_ON(!head);
-+	if (!head)
-+		YYNOMEM;
- 	INIT_LIST_HEAD(head);
- 	list_add_tail(&term->list, head);
- 	$$ = head;
-@@ -922,7 +940,8 @@ PE_DRV_CFG_TERM
- 	struct parse_events_term *term;
- 	char *config = strdup($1);
- 
--	ABORT_ON(!config);
-+	if (!config)
-+		YYNOMEM;
- 	if (parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_DRV_CFG,
- 					config, $1, &@1, NULL)) {
- 		free($1);
-@@ -953,7 +972,8 @@ array_terms ',' array_term
- 	new_array.ranges = realloc($1.ranges,
- 				sizeof(new_array.ranges[0]) *
- 				new_array.nr_ranges);
--	ABORT_ON(!new_array.ranges);
-+	if (!new_array.ranges)
-+		YYNOMEM;
- 	memcpy(&new_array.ranges[$1.nr_ranges], $3.ranges,
- 	       $3.nr_ranges * sizeof(new_array.ranges[0]));
- 	free($3.ranges);
-@@ -969,7 +989,8 @@ PE_VALUE
- 
- 	array.nr_ranges = 1;
- 	array.ranges = malloc(sizeof(array.ranges[0]));
--	ABORT_ON(!array.ranges);
-+	if (!array.ranges)
-+		YYNOMEM;
- 	array.ranges[0].start = $1;
- 	array.ranges[0].length = 1;
- 	$$ = array;
-@@ -982,7 +1003,8 @@ PE_VALUE PE_ARRAY_RANGE PE_VALUE
- 	ABORT_ON($3 < $1);
- 	array.nr_ranges = 1;
- 	array.ranges = malloc(sizeof(array.ranges[0]));
--	ABORT_ON(!array.ranges);
-+	if (!array.ranges)
-+		YYNOMEM;
- 	array.ranges[0].start = $1;
- 	array.ranges[0].length = $3 - $1 + 1;
- 	$$ = array;
+ 	switch (nlh->nlmsg_type) {
+ 	case ISCSI_UEVENT_CREATE_SESSION:
+ 		err = iscsi_if_create_session(priv, ep, ev,
+@@ -3940,7 +3959,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 			err = -EINVAL;
+ 		break;
+ 	case ISCSI_UEVENT_SET_PARAM:
+-		err = iscsi_if_set_param(transport, ev);
++		err = iscsi_if_set_param(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_CREATE_CONN:
+ 	case ISCSI_UEVENT_DESTROY_CONN:
+@@ -3948,7 +3967,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 	case ISCSI_UEVENT_START_CONN:
+ 	case ISCSI_UEVENT_BIND_CONN:
+ 	case ISCSI_UEVENT_SEND_PDU:
+-		err = iscsi_if_transport_conn(transport, nlh);
++		err = iscsi_if_transport_conn(transport, nlh, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_GET_STATS:
+ 		err = iscsi_if_get_stats(transport, nlh);
+@@ -3957,23 +3976,22 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 	case ISCSI_UEVENT_TRANSPORT_EP_POLL:
+ 	case ISCSI_UEVENT_TRANSPORT_EP_DISCONNECT:
+ 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT_THROUGH_HOST:
+-		err = iscsi_if_transport_ep(transport, ev, nlh->nlmsg_type);
++		err = iscsi_if_transport_ep(transport, ev, nlh->nlmsg_type, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_TGT_DSCVR:
+-		err = iscsi_tgt_dscvr(transport, ev);
++		err = iscsi_tgt_dscvr(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_SET_HOST_PARAM:
+-		err = iscsi_set_host_param(transport, ev);
++		err = iscsi_set_host_param(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_PATH_UPDATE:
+-		err = iscsi_set_path(transport, ev);
++		err = iscsi_set_path(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_SET_IFACE_PARAMS:
+-		err = iscsi_set_iface_params(transport, ev,
+-					     nlmsg_attrlen(nlh, sizeof(*ev)));
++		err = iscsi_set_iface_params(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_PING:
+-		err = iscsi_send_ping(transport, ev);
++		err = iscsi_send_ping(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_GET_CHAP:
+ 		err = iscsi_get_chap(transport, nlh);
+@@ -3982,13 +4000,10 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 		err = iscsi_delete_chap(transport, ev);
+ 		break;
+ 	case ISCSI_UEVENT_SET_FLASHNODE_PARAMS:
+-		err = iscsi_set_flashnode_param(transport, ev,
+-						nlmsg_attrlen(nlh,
+-							      sizeof(*ev)));
++		err = iscsi_set_flashnode_param(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_NEW_FLASHNODE:
+-		err = iscsi_new_flashnode(transport, ev,
+-					  nlmsg_attrlen(nlh, sizeof(*ev)));
++		err = iscsi_new_flashnode(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_DEL_FLASHNODE:
+ 		err = iscsi_del_flashnode(transport, ev);
+@@ -4003,8 +4018,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 		err = iscsi_logout_flashnode_sid(transport, ev);
+ 		break;
+ 	case ISCSI_UEVENT_SET_CHAP:
+-		err = iscsi_set_chap(transport, ev,
+-				     nlmsg_attrlen(nlh, sizeof(*ev)));
++		err = iscsi_set_chap(transport, ev, rlen);
+ 		break;
+ 	case ISCSI_UEVENT_GET_HOST_STATS:
+ 		err = iscsi_get_host_stats(transport, nlh);
 -- 
 2.40.1
 
