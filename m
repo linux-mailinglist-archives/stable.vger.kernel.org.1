@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF7D37A37E5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23ED27A391E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:45:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239563AbjIQT01 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:26:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
+        id S239965AbjIQTpH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:45:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239703AbjIQT0N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:26:13 -0400
+        with ESMTP id S240043AbjIQTo6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:44:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717CB120
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:26:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD21C433C8;
-        Sun, 17 Sep 2023 19:26:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FC4103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:44:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE39C433C8;
+        Sun, 17 Sep 2023 19:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694978767;
-        bh=hiWOxdf0sySCw5wRF3dFSlbmQUPTRZISyfpw4+1pysM=;
+        s=korg; t=1694979887;
+        bh=eI+Nt2ftOhc8apddNekfHKsgH/tYI6krpP/BvIylIhE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WQgY+xEtuYeDd97Aau9Us2+SOh4td4KeB+vMFMkzo3qapW9ZpJxinN5NI/wjG6svQ
-         s4vo3Kj2y1l/Xu85sq7Bp0bRLTlb1Zm4S0xHWXeyNDGMTaM3diTVeVB1PTitt5HSmw
-         nDrIXpFzFtBgy+hQ8QGLe/xNDTLAB9NIkLezLvwo=
+        b=2tkyMRrbfBQyHuRtCA9Z243SeJ4r8buCTUWEyLpNyyNxugFVNuXVjIMpDVxhyHtLj
+         UUr7dZS6L9FNSvPQWsnnUcZZJyO4MLQaDbTC/YjbhDQa+eaFwc821fEjNJp0PVgFiI
+         c0HHvv/m49mvodQx9T8oirm8ikRPWFrFtlXqBzM8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/406] drm/panel: simple: Add missing connector type and pixel format for AUO T215HVN01
-Date:   Sun, 17 Sep 2023 21:10:09 +0200
-Message-ID: <20230917191105.266413618@linuxfoundation.org>
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 010/285] scsi: qla2xxx: Turn off noisy message log
+Date:   Sun, 17 Sep 2023 21:10:10 +0200
+Message-ID: <20230917191051.978304965@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +51,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 7a675a8fa598edb29a664a91adb80f0340649f6f ]
+commit 8ebaa45163a3fedc885c1dc7d43ea987a2f00a06 upstream.
 
-The connector type and pixel format are missing for this panel,
-add them to prevent various drivers from failing to determine
-either of those parameters.
+Some consider noisy log as test failure.  Turn off noisy message log.
 
-Fixes: 7ee933a1d5c4 ("drm/panel: simple: Add support for AUO T215HVN01")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230709134914.449328-1-marex@denx.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_nvme.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index e40321d798981..e90b518118881 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1200,7 +1200,9 @@ static const struct panel_desc auo_t215hvn01 = {
- 	.delay = {
- 		.disable = 5,
- 		.unprepare = 1000,
--	}
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -668,7 +668,7 @@ static int qla_nvme_post_cmd(struct nvme
  
- static const struct drm_display_mode avic_tm070ddh03_mode = {
--- 
-2.40.1
-
+ 	rval = qla2x00_start_nvme_mq(sp);
+ 	if (rval != QLA_SUCCESS) {
+-		ql_log(ql_log_warn, vha, 0x212d,
++		ql_dbg(ql_dbg_io + ql_dbg_verbose, vha, 0x212d,
+ 		    "qla2x00_start_nvme_mq failed = %d\n", rval);
+ 		sp->priv = NULL;
+ 		priv->sp = NULL;
 
 
