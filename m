@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C58BC7A394E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E64F7A3853
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239982AbjIQTrp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
+        id S239653AbjIQTeX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240043AbjIQTrZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:25 -0400
+        with ESMTP id S239720AbjIQTd6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32DB59F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:47:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCA3C433C7;
-        Sun, 17 Sep 2023 19:47:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A4AD9;
+        Sun, 17 Sep 2023 12:33:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82B0C433CB;
+        Sun, 17 Sep 2023 19:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980039;
-        bh=D8FTanhLaog0tkefOkcOEUiqo9sH1hFugOgEUEZ/32Q=;
+        s=korg; t=1694979232;
+        bh=ydIS3G4j6y72SW8EBJmKmTkW84zCnaiqG6X+S1yWtqM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uryOUL1cWTXeBMj3+SmMIIChauK+IXwCcX7xLUgQOReTNPywLA6/wcuGzSoisVLRx
-         HEpX/nkMDD94A01CXEPJn+yKb64mqQX5JIBlZtN25g452MhTmHE3QwMvNFM4QO0Op8
-         PPH6VAlAVN6EeCcG2TE1sXwDwzSnFmyMbFZ2yei8=
+        b=ImdZvfPAqMT+wnnzjAAHKnko/hPn1KqFAHhiyy3yVFei9DDShEs1msrKSpgpcnAcL
+         apvRQTjls+gIAhI8Buhl/OHVHnTTqPzNNccW6doyQpFhlJ17NVPBbJwdSpw3+mbdcG
+         5bPSYlBJo5Bm51vWPDB6VamxHB02pY6vn28ce9go=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Babrou <ivan@cloudflare.com>,
-        Ian Rogers <irogers@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        kernel-team@cloudflare.com,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 080/285] perf script: Print "cgroup" field on the same line as "comm"
+Subject: [PATCH 5.10 226/406] scsi: qedf: Do not touch __user pointer in qedf_dbg_stop_io_on_error_cmd_read() directly
 Date:   Sun, 17 Sep 2023 21:11:20 +0200
-Message-ID: <20230917191054.479670333@linuxfoundation.org>
+Message-ID: <20230917191107.143219149@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,111 +59,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Babrou <ivan@cloudflare.com>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit 8c49c6e1a7b790c4cb9f464c5485117451d91c60 ]
+[ Upstream commit 7d3d20dee4f648ec44e9717d5f647d594d184433 ]
 
-Commit 3fd7a168bf51 ("perf script: Add 'cgroup' field for output")
-added support for printing cgroup path in perf script output.
+The qedf_dbg_stop_io_on_error_cmd_read() function invokes sprintf()
+directly on a __user pointer, which may crash the kernel.
 
-It was okay if you didn't want any stacks:
+Avoid doing that by using a small on-stack buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
 
-    $ sudo perf script --comms jpegtran:23f4bf -F comm,tid,cpu,time,cgroup
-    jpegtran:23f4bf 3321915 [013] 404718.587488:  /idle.slice/polish.service
-    jpegtran:23f4bf 3321915 [031] 404718.592073:  /idle.slice/polish.service
-
-With stacks it gets messier as cgroup is printed after the stack:
-
-    $ perf script --comms jpegtran:23f4bf -F comm,tid,cpu,time,cgroup,ip,sym
-    jpegtran:23f4bf 3321915 [013] 404718.587488:
-                    5c554 compress_output
-                    570d9 jpeg_finish_compress
-                    3476e jpegtran_main
-                    330ee jpegtran::main
-                    326e2 core::ops::function::FnOnce::call_once (inlined)
-                    326e2 std::sys_common::backtrace::__rust_begin_short_backtrace
-    /idle.slice/polish.service
-    jpegtran:23f4bf 3321915 [031] 404718.592073:
-                    8474d jsimd_encode_mcu_AC_first_prepare_sse2.PADDING
-                55af68e62fff [unknown]
-    /idle.slice/polish.service
-
-Let's instead print cgroup on the same line as comm:
-
-    $ perf script --comms jpegtran:23f4bf -F comm,tid,cpu,time,cgroup,ip,sym
-    jpegtran:23f4bf 3321915 [013] 404718.587488:  /idle.slice/polish.service
-                    5c554 compress_output
-                    570d9 jpeg_finish_compress
-                    3476e jpegtran_main
-                    330ee jpegtran::main
-                    326e2 core::ops::function::FnOnce::call_once (inlined)
-                    326e2 std::sys_common::backtrace::__rust_begin_short_backtrace
-
-    jpegtran:23f4bf 3321915 [031] 404718.592073:  /idle.slice/polish.service
-                    8474d jsimd_encode_mcu_AC_first_prepare_sse2.PADDING
-                55af68e62fff [unknown]
-
-Fixes: 3fd7a168bf514979 ("perf script: Add 'cgroup' field for output")
-Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: kernel-team@cloudflare.com
-Link: https://lore.kernel.org/r/20230718000737.49077-1-ivan@cloudflare.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-2-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-script.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index 200b3e7ea8dad..517bf25750c8b 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -2199,6 +2199,17 @@ static void process_event(struct perf_script *script,
- 	if (PRINT_FIELD(RETIRE_LAT))
- 		fprintf(fp, "%16" PRIu16, sample->retire_lat);
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index a3ed681c8ce3f..3eb4334ac6a32 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -185,18 +185,17 @@ qedf_dbg_stop_io_on_error_cmd_read(struct file *filp, char __user *buffer,
+ 				   size_t count, loff_t *ppos)
+ {
+ 	int cnt;
++	char cbuf[7];
+ 	struct qedf_dbg_ctx *qedf_dbg =
+ 				(struct qedf_dbg_ctx *)filp->private_data;
+ 	struct qedf_ctx *qedf = container_of(qedf_dbg,
+ 	    struct qedf_ctx, dbg_ctx);
  
-+	if (PRINT_FIELD(CGROUP)) {
-+		const char *cgrp_name;
-+		struct cgroup *cgrp = cgroup__find(machine->env,
-+						   sample->cgroup);
-+		if (cgrp != NULL)
-+			cgrp_name = cgrp->name;
-+		else
-+			cgrp_name = "unknown";
-+		fprintf(fp, " %s", cgrp_name);
-+	}
-+
- 	if (PRINT_FIELD(IP)) {
- 		struct callchain_cursor *cursor = NULL;
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
+-	cnt = sprintf(buffer, "%s\n",
++	cnt = scnprintf(cbuf, sizeof(cbuf), "%s\n",
+ 	    qedf->stop_io_on_error ? "true" : "false");
  
-@@ -2243,17 +2254,6 @@ static void process_event(struct perf_script *script,
- 	if (PRINT_FIELD(CODE_PAGE_SIZE))
- 		fprintf(fp, " %s", get_page_size_name(sample->code_page_size, str));
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
+ }
  
--	if (PRINT_FIELD(CGROUP)) {
--		const char *cgrp_name;
--		struct cgroup *cgrp = cgroup__find(machine->env,
--						   sample->cgroup);
--		if (cgrp != NULL)
--			cgrp_name = cgrp->name;
--		else
--			cgrp_name = "unknown";
--		fprintf(fp, " %s", cgrp_name);
--	}
--
- 	perf_sample__fprintf_ipc(sample, attr, fp);
- 
- 	fprintf(fp, "\n");
+ static ssize_t
 -- 
 2.40.1
 
