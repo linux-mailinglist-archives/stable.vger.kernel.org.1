@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD1CF7A3B62
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F01BE7A3D37
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239681AbjIQURF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46824 "EHLO
+        id S241230AbjIQUkF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240664AbjIQUQg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:36 -0400
+        with ESMTP id S241298AbjIQUj6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91359F4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7057C433C9;
-        Sun, 17 Sep 2023 20:16:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 018F7101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A43C433C8;
+        Sun, 17 Sep 2023 20:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981791;
-        bh=+iNNSGHfsvu21/qK44sJ/ECTob1HgK0GkQsB1PCQ+QQ=;
+        s=korg; t=1694983192;
+        bh=lzFvtkv/uc3oc0akaFE2Ro2ekVwfMpmlzlXwiSCcvME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NfKMmghA4Tt3RjnTMG2LAhtS3YO8lK9IDHMtIwRzl1HrYj8B1goi03I1+RgXANkWR
-         Iy1bO1lDQjXZX7Ie+gqihNKz42kD6C58gbFMfTtIcHsACKo32nb3i8ZGa7ZfKKkpMc
-         FkYsckH91JyxapVEMOcb4AbXSK6TfbcvU3C4NX6s=
+        b=WPgD0DhDdovIMCsYIvccOFnUjFowuNQASosuk6uWsRJlYi0B/p0MvHY2ZCo01ZC8u
+         LwV3G0gRSUloCAmM9uZf72lIUGAxabCEcSKo7N6tSlHrfuJubbw52Wgd7KgX8PUTio
+         ck3d8O7tK9LSDiwrdaIH8E+w8mWhfRAQtldB+PxI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Gonda <pgonda@google.com>,
-        Pankaj Gupta <pankaj.gupta@amd.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 172/219] KVM: SVM: Get source vCPUs from source VM for SEV-ES intrahost migration
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 472/511] ata: pata_ftide010: Add missing MODULE_DESCRIPTION
 Date:   Sun, 17 Sep 2023 21:14:59 +0200
-Message-ID: <20230917191047.220966016@linuxfoundation.org>
+Message-ID: <20230917191125.142799171@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,79 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit f1187ef24eb8f36e8ad8106d22615ceddeea6097 upstream.
+commit 7274eef5729037300f29d14edeb334a47a098f65 upstream.
 
-Fix a goof where KVM tries to grab source vCPUs from the destination VM
-when doing intrahost migration.  Grabbing the wrong vCPU not only hoses
-the guest, it also crashes the host due to the VMSA pointer being left
-NULL.
+Add the missing MODULE_DESCRIPTION() to avoid warnings such as:
 
-  BUG: unable to handle page fault for address: ffffe38687000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] SMP NOPTI
-  CPU: 39 PID: 17143 Comm: sev_migrate_tes Tainted: GO       6.5.0-smp--fff2e47e6c3b-next #151
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 34.28.0 07/10/2023
-  RIP: 0010:__free_pages+0x15/0xd0
-  RSP: 0018:ffff923fcf6e3c78 EFLAGS: 00010246
-  RAX: 0000000000000000 RBX: ffffe38687000000 RCX: 0000000000000100
-  RDX: 0000000000000100 RSI: 0000000000000000 RDI: ffffe38687000000
-  RBP: ffff923fcf6e3c88 R08: ffff923fcafb0000 R09: 0000000000000000
-  R10: 0000000000000000 R11: ffffffff83619b90 R12: ffff923fa9540000
-  R13: 0000000000080007 R14: ffff923f6d35d000 R15: 0000000000000000
-  FS:  0000000000000000(0000) GS:ffff929d0d7c0000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffffe38687000000 CR3: 0000005224c34005 CR4: 0000000000770ee0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   sev_free_vcpu+0xcb/0x110 [kvm_amd]
-   svm_vcpu_free+0x75/0xf0 [kvm_amd]
-   kvm_arch_vcpu_destroy+0x36/0x140 [kvm]
-   kvm_destroy_vcpus+0x67/0x100 [kvm]
-   kvm_arch_destroy_vm+0x161/0x1d0 [kvm]
-   kvm_put_kvm+0x276/0x560 [kvm]
-   kvm_vm_release+0x25/0x30 [kvm]
-   __fput+0x106/0x280
-   ____fput+0x12/0x20
-   task_work_run+0x86/0xb0
-   do_exit+0x2e3/0x9c0
-   do_group_exit+0xb1/0xc0
-   __x64_sys_exit_group+0x1b/0x20
-   do_syscall_64+0x41/0x90
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-   </TASK>
-  CR2: ffffe38687000000
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/ata/pata_ftide010.o
 
-Fixes: 6defa24d3b12 ("KVM: SEV: Init target VMCBs in sev_migrate_from")
+when compiling with W=1.
+
+Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
 Cc: stable@vger.kernel.org
-Cc: Peter Gonda <pgonda@google.com>
-Reviewed-by: Peter Gonda <pgonda@google.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Link: https://lore.kernel.org/r/20230825022357.2852133-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_ftide010.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1723,7 +1723,7 @@ static void sev_migrate_from(struct kvm
- 		 * Note, the source is not required to have the same number of
- 		 * vCPUs as the destination when migrating a vanilla SEV VM.
- 		 */
--		src_vcpu = kvm_get_vcpu(dst_kvm, i);
-+		src_vcpu = kvm_get_vcpu(src_kvm, i);
- 		src_svm = to_svm(src_vcpu);
+--- a/drivers/ata/pata_ftide010.c
++++ b/drivers/ata/pata_ftide010.c
+@@ -570,6 +570,7 @@ static struct platform_driver pata_ftide
+ };
+ module_platform_driver(pata_ftide010_driver);
  
- 		/*
++MODULE_DESCRIPTION("low level driver for Faraday Technology FTIDE010");
+ MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("platform:" DRV_NAME);
 
 
