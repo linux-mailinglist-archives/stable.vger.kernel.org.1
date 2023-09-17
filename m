@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A2BB7A3A83
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FCFA7A3A86
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239547AbjIQUFY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
+        id S240375AbjIQUF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240406AbjIQUFC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:02 -0400
+        with ESMTP id S240443AbjIQUFL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:05:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62CF133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:04:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F0EC433C8;
-        Sun, 17 Sep 2023 20:04:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE1597
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D217C433C7;
+        Sun, 17 Sep 2023 20:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981095;
-        bh=9gr4e9nS4lnp5w4BTZiIuQ3PP4VMbCs4Y+OGGNAv5CM=;
+        s=korg; t=1694981106;
+        bh=gSbxUM7Il9VzKi2xUBFiK7ne8jKvQ1ea6Pke4WTLAvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZQPZ/LQ3Ul1TEQPBJQOyMLDZCqCBp9a/Rz7qzsuW8x7mFd18IVvDFsmgNM9GXzoP8
-         mdtRAcCGwHOZJmWtorweR4G7NjQwliS9Z2KmA9srRs/7FiKfpSw2Py/xNpW68RCHQh
-         PUYI/yXSbDXTG95VbNxhQ3l76wezNQnmCZHChbik=
+        b=HUYKDKds9hni6jgnTzzqkgixAKd5WlEeLpZhVeELsdO7MXZ6iLJJwPGNSV2WvZodq
+         PiXIPV7Th8u6zYi7AxzMyJx33DNL132xwQePR10V/cwN7OP0CRMgxQoILRN1AwVvvj
+         3oGyBbU0hQhbFaS1ylJCKpmYTm/yBsKuUxLdQmD8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/511] phy: qcom-snps-femto-v2: use qcom_snps_hsphy_suspend/resume error code
-Date:   Sun, 17 Sep 2023 21:07:12 +0200
-Message-ID: <20230917191113.964500398@linuxfoundation.org>
+        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 006/511] media: pulse8-cec: handle possible ping error
+Date:   Sun, 17 Sep 2023 21:07:13 +0200
+Message-ID: <20230917191113.988000930@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -53,45 +55,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Adrien Thierry <athierry@redhat.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 8932089b566c24ea19b57e37704c492678de1420 ]
+[ Upstream commit 92cbf865ea2e0f2997ff97815c6db182eb23df1b ]
 
-The return value from qcom_snps_hsphy_suspend/resume is not used. Make
-sure qcom_snps_hsphy_runtime_suspend/resume return this value as well.
+Handle (and warn about) possible error waiting for MSGCODE_PING result.
 
-Signed-off-by: Adrien Thierry <athierry@redhat.com>
-Link: https://lore.kernel.org/r/20230629144542.14906-4-athierry@redhat.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/media/cec/usb/pulse8/pulse8-cec.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index abb9264569336..173d166ed8295 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -171,8 +171,7 @@ static int __maybe_unused qcom_snps_hsphy_runtime_suspend(struct device *dev)
- 	if (!hsphy->phy_initialized)
- 		return 0;
+diff --git a/drivers/media/cec/usb/pulse8/pulse8-cec.c b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+index 04b13cdc38d2c..ba67587bd43ec 100644
+--- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
++++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+@@ -809,8 +809,11 @@ static void pulse8_ping_eeprom_work_handler(struct work_struct *work)
  
--	qcom_snps_hsphy_suspend(hsphy);
--	return 0;
-+	return qcom_snps_hsphy_suspend(hsphy);
- }
+ 	mutex_lock(&pulse8->lock);
+ 	cmd = MSGCODE_PING;
+-	pulse8_send_and_wait(pulse8, &cmd, 1,
+-			     MSGCODE_COMMAND_ACCEPTED, 0);
++	if (pulse8_send_and_wait(pulse8, &cmd, 1,
++				 MSGCODE_COMMAND_ACCEPTED, 0)) {
++		dev_warn(pulse8->dev, "failed to ping EEPROM\n");
++		goto unlock;
++	}
  
- static int __maybe_unused qcom_snps_hsphy_runtime_resume(struct device *dev)
-@@ -182,8 +181,7 @@ static int __maybe_unused qcom_snps_hsphy_runtime_resume(struct device *dev)
- 	if (!hsphy->phy_initialized)
- 		return 0;
- 
--	qcom_snps_hsphy_resume(hsphy);
--	return 0;
-+	return qcom_snps_hsphy_resume(hsphy);
- }
- 
- static int qcom_snps_hsphy_set_mode(struct phy *phy, enum phy_mode mode,
+ 	if (pulse8->vers < 2)
+ 		goto unlock;
 -- 
 2.40.1
 
