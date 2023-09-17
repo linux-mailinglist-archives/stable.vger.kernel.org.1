@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6107A38E5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F01377A39E2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239512AbjIQTmY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:42:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35672 "EHLO
+        id S240191AbjIQTzq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239412AbjIQTlw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:52 -0400
+        with ESMTP id S240261AbjIQTze (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EB01A1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B543C433C7;
-        Sun, 17 Sep 2023 19:41:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736B5EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CA8C433C8;
+        Sun, 17 Sep 2023 19:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979700;
-        bh=go12wEkDgHaeWS6T+51bakePktmj6fGeYCLE2FCIAkU=;
+        s=korg; t=1694980528;
+        bh=qaXNvwKvPu7igrPURBcVebBKZhM5QD6ozMfb7IzxkfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j1s2O/JQAzf7WM89uUtKYaWCEP+l0v2Lpxsgi9w+9d0IwmcotxB/dqRyy0M/AFDx6
-         Ep6axTfQTjn/NoPR6fQmJaYMi9of0+tyXhLIvj8ltH3L1p5epT/TTYdGOJmLbcUVou
-         AeLOs0qmFZSA1uSGAXCB81FU61+7VQTQiiDdY71A=
+        b=HxE0hq41X2Eu3xJyVFzu2D1uGYrt93NIWQc2VhGdGsuQ68Say+pJx2D49jzaFW1Qo
+         MhchRjdbloZeNsnotwbTYLrWX/e1D6lXcehuJzw204IZ/SNVaiCT4WN+78/ipedl+Q
+         t4TXeIAgmSUto+S65ub3qnw07GLThU8l83b1RXPI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 364/406] net: dsa: sja1105: fix -ENOSPC when replacing the same tc-cbs too many times
+        patches@lists.linux.dev, Fangzhi Zuo <jerry.zuo@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 218/285] Revert "drm/amd/display: Remove v_startup workaround for dcn3+"
 Date:   Sun, 17 Sep 2023 21:13:38 +0200
-Message-ID: <20230917191110.882387932@linuxfoundation.org>
+Message-ID: <20230917191059.068490316@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,84 +51,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 894cafc5c62ccced758077bd4e970dc714c42637 ]
+commit a81de4a22bbe3183b7f0d6f13f592b8f5b5a3c18 upstream.
 
-After running command [2] too many times in a row:
+This reverts commit 3a31e8b89b7240d9a17ace8a1ed050bdcb560f9e.
 
-[1] $ tc qdisc add dev sw2p0 root handle 1: mqprio num_tc 8 \
-	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 hw 0
-[2] $ tc qdisc replace dev sw2p0 parent 1:1 cbs offload 1 \
-	idleslope 120000 sendslope -880000 locredit -1320 hicredit 180
+We still need to call dcn20_adjust_freesync_v_startup() for older DCN3+
+ASICs. Otherwise, it can cause DP to HDMI 2.1 PCONs to fail to light up.
 
-(aka more than priv->info->num_cbs_shapers times)
-
-we start seeing the following error message:
-
-Error: Specified device failed to setup cbs hardware offload.
-
-This comes from the fact that ndo_setup_tc(TC_SETUP_QDISC_CBS) presents
-the same API for the qdisc create and replace cases, and the sja1105
-driver fails to distinguish between the 2. Thus, it always thinks that
-it must allocate the same shaper for a {port, queue} pair, when it may
-instead have to replace an existing one.
-
-Fixes: 4d7525085a9b ("net: dsa: sja1105: offload the Credit-Based Shaper qdisc")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2809
+Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.c  | 24 ++++---------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 4c0ee13126e4f..4362fe0f346d2 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1691,6 +1691,18 @@ static void sja1105_bridge_leave(struct dsa_switch *ds, int port,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index 8afda5ecc0cd..d01bc2dff49b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -1099,6 +1099,10 @@ void dcn20_calculate_dlg_params(struct dc *dc,
+ 		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
+ 						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
+ 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
++		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
++			dcn20_adjust_freesync_v_startup(
++				&context->res_ctx.pipe_ctx[i].stream->timing,
++				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
  
- #define BYTES_PER_KBIT (1000LL / 8)
+ 		pipe_idx++;
+ 	}
+@@ -1927,7 +1931,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
+ 	int vlevel = 0;
+ 	int pipe_split_from[MAX_PIPES];
+ 	int pipe_cnt = 0;
+-	int i = 0;
+ 	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
+ 	DC_LOGGER_INIT(dc->ctx->logger);
  
-+static int sja1105_find_cbs_shaper(struct sja1105_private *priv,
-+				   int port, int prio)
-+{
-+	int i;
-+
-+	for (i = 0; i < priv->info->num_cbs_shapers; i++)
-+		if (priv->cbs[i].port == port && priv->cbs[i].prio == prio)
-+			return i;
-+
-+	return -1;
-+}
-+
- static int sja1105_find_unused_cbs_shaper(struct sja1105_private *priv)
- {
- 	int i;
-@@ -1731,9 +1743,14 @@ static int sja1105_setup_tc_cbs(struct dsa_switch *ds, int port,
- 	if (!offload->enable)
- 		return sja1105_delete_cbs_shaper(priv, port, offload->queue);
+@@ -1951,15 +1954,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
+ 	dcn20_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
+ 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
  
--	index = sja1105_find_unused_cbs_shaper(priv);
--	if (index < 0)
--		return -ENOSPC;
-+	/* The user may be replacing an existing shaper */
-+	index = sja1105_find_cbs_shaper(priv, port, offload->queue);
-+	if (index < 0) {
-+		/* That isn't the case - see if we can allocate a new one */
-+		index = sja1105_find_unused_cbs_shaper(priv);
-+		if (index < 0)
-+			return -ENOSPC;
-+	}
+-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (!context->res_ctx.pipe_ctx[i].stream)
+-			continue;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+-			dcn20_adjust_freesync_v_startup(
+-				&context->res_ctx.pipe_ctx[i].stream->timing,
+-				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+-	}
+-
+ 	BW_VAL_TRACE_END_WATERMARKS();
  
- 	cbs = &priv->cbs[index];
- 	cbs->port = port;
+ 	goto validate_out;
+@@ -2232,7 +2226,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
+ 	int vlevel = 0;
+ 	int pipe_split_from[MAX_PIPES];
+ 	int pipe_cnt = 0;
+-	int i = 0;
+ 	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
+ 	DC_LOGGER_INIT(dc->ctx->logger);
+ 
+@@ -2261,15 +2254,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
+ 	dcn21_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
+ 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
+ 
+-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (!context->res_ctx.pipe_ctx[i].stream)
+-			continue;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+-			dcn20_adjust_freesync_v_startup(
+-				&context->res_ctx.pipe_ctx[i].stream->timing,
+-				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+-	}
+-
+ 	BW_VAL_TRACE_END_WATERMARKS();
+ 
+ 	goto validate_out;
 -- 
-2.40.1
+2.42.0
 
 
 
