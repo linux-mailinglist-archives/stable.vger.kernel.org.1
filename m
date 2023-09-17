@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ECCA7A3D62
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 212BD7A3BA2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241272AbjIQUmK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58642 "EHLO
+        id S240770AbjIQUUU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241319AbjIQUlr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:47 -0400
+        with ESMTP id S240774AbjIQUTy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:19:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49BA9133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7E4C433C8;
-        Sun, 17 Sep 2023 20:41:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31455F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:19:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522A8C433C7;
+        Sun, 17 Sep 2023 20:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983301;
-        bh=5VRU9LsGLN2msqDUAqiePfXnrI2p1zGE5om0dtLgd9Q=;
+        s=korg; t=1694981988;
+        bh=HbSmh8oggO+KUKUKboHdlPwc3o76y2lSXGljmAOJZZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vBA2wVud0GAKkmT/hkc1DfVTyNSjDxJpfOxAUzdHZYWFMEkzeX8gMYrUEn/kNt2ui
-         97zyBLHl7BKsIXowmcPd+W/d4OSQh5ZqUYZ3ZxKloV5APZ3vETxt5bOjda/4Vs93sQ
-         GFzH2Ys+So6UgEc84+MTuEgy1ovr2LtWZcojyl50=
+        b=PeXpfV7a7feo10N1g+Ge5T45fbZjUF0a6pe3k2xI1JYd5CnCWmDNEnzNgffLw7Lwm
+         qChSHynlZ9vsEIBQ4LYVLA1JK591qxz0fWnXLfGxQwFq+QrKbcIoiKUlfW9svsjBhM
+         D1eZe7ByQGeEsTYYVILsEwQ3EIyX+hQPTw0kliYg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>,
         syzbot+6f98de741f7dbbfc4ccb@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 501/511] kcm: Fix memory leak in error path of kcm_sendmsg()
-Date:   Sun, 17 Sep 2023 21:15:28 +0200
-Message-ID: <20230917191125.821671555@linuxfoundation.org>
+Subject: [PATCH 6.1 202/219] kcm: Fix memory leak in error path of kcm_sendmsg()
+Date:   Sun, 17 Sep 2023 21:15:29 +0200
+Message-ID: <20230917191048.237909251@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 43005bba2d407..2d06617e89891 100644
+index 6a97662d7548e..dd929a8350740 100644
 --- a/net/kcm/kcmsock.c
 +++ b/net/kcm/kcmsock.c
-@@ -1073,6 +1073,8 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+@@ -1074,6 +1074,8 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
  
  	if (head != kcm->seq_skb)
  		kfree_skb(head);
