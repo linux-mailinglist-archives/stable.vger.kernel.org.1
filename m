@@ -2,36 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C12D7A3BDB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1167E7A3BE5
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239634AbjIQUXa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:23:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36964 "EHLO
+        id S240783AbjIQUYB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240798AbjIQUW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:22:57 -0400
+        with ESMTP id S240832AbjIQUXf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:23:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C5F10A
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:22:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BF6C433C9;
-        Sun, 17 Sep 2023 20:22:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CAD10B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:23:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EAEC433C7;
+        Sun, 17 Sep 2023 20:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982171;
-        bh=cIfQtETr0m5Qlre7gOc8hxHT7p7WjJwCJJsrSOM2/Sw=;
+        s=korg; t=1694982209;
+        bh=rCoEjUX1gteemaD+If/cKeISQG2xl5gtyGaWDyyWBZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ogQxVsNHeYGgGyCXcrDrAesopGWW25xLhfB0AkaA528TC+vd92Pdc/wi1G3d/htUp
-         T7EegG0aJAvHfmItfVzCN9BD2uHwhJGMbS1v85ARtibs7OTv3uyE4L6lcgTm+9K3AO
-         xSmEk4ukHLF0Tlqd5no8EKv53IJhdliwneoAe5uo=
+        b=T85Ics/jDIs7OsYtUH3M8vYAWFAb5blQJc66tPj/aQsPbeo/ZMZ65xLg33xNltXmf
+         NK9MuxfjPAYo8vGYw6t/T7/h9ez8Y00ifWSgurzJy5tIJwVQJ5XKNrXJ8+7NRpg4po
+         5Vk9EdfVXIBUKby7/7y4jS6Gwm+RoV7PbKUEcOYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alim Akhtar <alim.akhtar@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Robert Foss <rfoss@kernel.org>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Bogdan Togorean <bogdan.togorean@analog.com>,
+        Alexandru Ardelean <alex@shruggie.ro>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/511] ARM: dts: samsung: s5pv210-smdkv210: correct ethernet reg addresses (split)
-Date:   Sun, 17 Sep 2023 21:09:42 +0200
-Message-ID: <20230917191117.593086235@linuxfoundation.org>
+Subject: [PATCH 5.15 156/511] drm: adv7511: Fix low refresh rate register for ADV7533/5
+Date:   Sun, 17 Sep 2023 21:09:43 +0200
+Message-ID: <20230917191117.615721241@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,34 +57,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Bogdan Togorean <bogdan.togorean@analog.com>
 
-[ Upstream commit 982655cb0e7f18934d7532c32366e574ad61dbd7 ]
+[ Upstream commit d281eeaa4de2636ff0c8e6ae387bb07b50e5fcbb ]
 
-The davicom,dm9000 Ethernet Controller accepts two reg addresses.
+For ADV7533 and ADV7535 low refresh rate is selected using
+bits [3:2] of 0x4a main register.
+So depending on ADV model write 0xfb or 0x4a register.
 
-Fixes: b672b27d232e ("ARM: dts: Add Device tree for s5pc110/s5pv210 boards")
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Link: https://lore.kernel.org/r/20230713152926.82884-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 2437e7cd88e8 ("drm/bridge: adv7533: Initial support for ADV7533")
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Bogdan Togorean <bogdan.togorean@analog.com>
+Signed-off-by: Alexandru Ardelean <alex@shruggie.ro>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230719060143.63649-1-alex@shruggie.ro
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/s5pv210-smdkv210.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/s5pv210-smdkv210.dts b/arch/arm/boot/dts/s5pv210-smdkv210.dts
-index 6e26c67e0a26e..901e7197b1368 100644
---- a/arch/arm/boot/dts/s5pv210-smdkv210.dts
-+++ b/arch/arm/boot/dts/s5pv210-smdkv210.dts
-@@ -41,7 +41,7 @@ pmic_ap_clk: clock-0 {
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index 44762116aac97..ce40cd1ae1670 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -786,8 +786,13 @@ static void adv7511_mode_set(struct adv7511 *adv7511,
+ 	else
+ 		low_refresh_rate = ADV7511_LOW_REFRESH_RATE_NONE;
  
- 	ethernet@a8000000 {
- 		compatible = "davicom,dm9000";
--		reg = <0xA8000000 0x2 0xA8000002 0x2>;
-+		reg = <0xa8000000 0x2>, <0xa8000002 0x2>;
- 		interrupt-parent = <&gph1>;
- 		interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
- 		local-mac-address = [00 00 de ad be ef];
+-	regmap_update_bits(adv7511->regmap, 0xfb,
+-		0x6, low_refresh_rate << 1);
++	if (adv7511->type == ADV7511)
++		regmap_update_bits(adv7511->regmap, 0xfb,
++				   0x6, low_refresh_rate << 1);
++	else
++		regmap_update_bits(adv7511->regmap, 0x4a,
++				   0xc, low_refresh_rate << 2);
++
+ 	regmap_update_bits(adv7511->regmap, 0x17,
+ 		0x60, (vsync_polarity << 6) | (hsync_polarity << 5));
+ 
 -- 
 2.40.1
 
