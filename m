@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 967407A38E6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23D217A39E8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239887AbjIQTm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
+        id S239500AbjIQT4Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239978AbjIQTmJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:09 -0400
+        with ESMTP id S240184AbjIQTzp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DF95CD0
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F46EC433CA;
-        Sun, 17 Sep 2023 19:41:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F7DEE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7A6C433C7;
+        Sun, 17 Sep 2023 19:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979707;
-        bh=/aFflsaOzerGOL+qZC2G7QOVElX7NvEPu+9RZbpU04Q=;
+        s=korg; t=1694980539;
+        bh=UZo5ZGbLwCgMMBQAqUVR/6DtO3SjelcQCZg/oBdUQ/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pNzpbez4opqbJj/dKiLJOZs5ktSwAwlNZ7xuMLRQ+nBH/gDMaBmKfPJbtvcjqslNH
-         g3hJA0bWJYK2enYt9WCN9icag7ocfR/2sP/UARRlVoN66IXgdRkOV9aVjOuwjtJzd7
-         WKI3c+hR4Av028j1Y1zLbqg6Xq1PXNWnrkH4I7aQ=
+        b=SU0eoLR+VwbYn6iIx3qLkzzQkld9D/VWuX0lI8KMsURbrgMszCJObtMqkeWLjyrCI
+         kebzyjibquXIwP7RKvQde85XtUlCRYXHZGVinDeyekMdQl9EJUBwEn8VJJT1N8aPhs
+         f/5+SPWRst7UieGPp/x2oS3Ioigc8ZumeU3bqW04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 366/406] net: hns3: fix the port information display when sfp is absent
-Date:   Sun, 17 Sep 2023 21:13:40 +0200
-Message-ID: <20230917191110.932701006@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 221/285] drm/amd/display: prevent potential division by zero errors
+Date:   Sun, 17 Sep 2023 21:13:41 +0200
+Message-ID: <20230917191059.151085230@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yisen Zhuang <yisen.zhuang@huawei.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 674d9591a32d01df75d6b5fffed4ef942a294376 ]
+commit 07e388aab042774f284a2ad75a70a194517cdad4 upstream.
 
-When sfp is absent or unidentified, the port type should be
-displayed as PORT_OTHERS, rather than PORT_FIBRE.
+There are two places in apply_below_the_range() where it's possible for
+a divide by zero error to occur. So, to fix this make sure the divisor
+is non-zero before attempting the computation in both cases.
 
-Fixes: 88d10bd6f730 ("net: hns3: add support for multiple media type")
-Signed-off-by: Yisen Zhuang <yisen.zhuang@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2637
+Fixes: a463b263032f ("drm/amd/display: Fix frames_to_insert math")
+Fixes: ded6119e825a ("drm/amd/display: Reinstate LFC optimization")
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index cd0d7a546957a..d35f4b2b480e6 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -704,7 +704,9 @@ static int hns3_get_link_ksettings(struct net_device *netdev,
- 		hns3_get_ksettings(h, cmd);
- 		break;
- 	case HNAE3_MEDIA_TYPE_FIBER:
--		if (module_type == HNAE3_MODULE_TYPE_CR)
-+		if (module_type == HNAE3_MODULE_TYPE_UNKNOWN)
-+			cmd->base.port = PORT_OTHER;
-+		else if (module_type == HNAE3_MODULE_TYPE_CR)
- 			cmd->base.port = PORT_DA;
- 		else
- 			cmd->base.port = PORT_FIBRE;
--- 
-2.40.1
-
+--- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
++++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+@@ -338,7 +338,9 @@ static void apply_below_the_range(struct
+ 		 *  - Delta for CEIL: delta_from_mid_point_in_us_1
+ 		 *  - Delta for FLOOR: delta_from_mid_point_in_us_2
+ 		 */
+-		if ((last_render_time_in_us / mid_point_frames_ceil) < in_out_vrr->min_duration_in_us) {
++		if (mid_point_frames_ceil &&
++		    (last_render_time_in_us / mid_point_frames_ceil) <
++		    in_out_vrr->min_duration_in_us) {
+ 			/* Check for out of range.
+ 			 * If using CEIL produces a value that is out of range,
+ 			 * then we are forced to use FLOOR.
+@@ -385,8 +387,9 @@ static void apply_below_the_range(struct
+ 		/* Either we've calculated the number of frames to insert,
+ 		 * or we need to insert min duration frames
+ 		 */
+-		if (last_render_time_in_us / frames_to_insert <
+-				in_out_vrr->min_duration_in_us){
++		if (frames_to_insert &&
++		    (last_render_time_in_us / frames_to_insert) <
++		    in_out_vrr->min_duration_in_us){
+ 			frames_to_insert -= (frames_to_insert > 1) ?
+ 					1 : 0;
+ 		}
 
 
