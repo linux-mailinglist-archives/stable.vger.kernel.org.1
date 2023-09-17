@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93F7E7A3B2E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09C237A3B31
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240642AbjIQUOE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
+        id S240584AbjIQUO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240786AbjIQUNw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:13:52 -0400
+        with ESMTP id S240633AbjIQUOC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:14:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E67BF3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45742C433C8;
-        Sun, 17 Sep 2023 20:13:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3E3F4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:13:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6C4C433C8;
+        Sun, 17 Sep 2023 20:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981627;
-        bh=Ou9Qh2R4PDZNhfbSDGAOWM2l8QdPQE8+MOPAyl3LlYc=;
+        s=korg; t=1694981637;
+        bh=4pplBei5Wg7KZW7QUqFaQabNJfZX4g5OAjQ7xtKudYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1+thVMLUG9nOBCzur6tsnfCOdh6VJB5YUKRVibzdVBcAjxkPFNHAJCb1hWVFYBWXC
-         fUzKUbQPjvgMgRB5R4cd6ORUpJTg67qp9frubrWIxSM+kfg/uBlTh9ARZT+7A77+qg
-         MH4OWyLG6b+eA33Xo/d8yFFvEm2G08UTs7w9QZ/4=
+        b=WiC5IuzLPz70Vzz+KeI9vs7cM4JFbu21kndRTA/lCMCla6dFR/TucFXEPOCRpsfHL
+         R42GqKK/56SULAzwJeowoFpod4dHGsOo7sGxIoeOho5zZ6sSWSlBsVAlBP7P2+dcVw
+         i/clBovSO0PCiAP/VIulKWqbw2rEFvUKYHCI3U5s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 149/219] hwspinlock: qcom: add missing regmap config for SFPB MMIO implementation
-Date:   Sun, 17 Sep 2023 21:14:36 +0200
-Message-ID: <20230917191046.410804202@linuxfoundation.org>
+        patches@lists.linux.dev, Werner Fischer <devlists@wefi.net>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.1 150/219] ata: ahci: Add Elkhart Lake AHCI controller
+Date:   Sun, 17 Sep 2023 21:14:37 +0200
+Message-ID: <20230917191046.443604604@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -38,6 +38,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,53 +54,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Werner Fischer <devlists@wefi.net>
 
-commit 23316be8a9d450f33a21f1efe7d89570becbec58 upstream.
+commit 2a2df98ec592667927b5c1351afa6493ea125c9f upstream.
 
-Commit 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older
-SoCs") introduced and made regmap_config mandatory in the of_data struct
-but didn't add the regmap_config for sfpb based devices.
+Elkhart Lake is the successor of Apollo Lake and Gemini Lake. These
+CPUs and their PCHs are used in mobile and embedded environments.
 
-SFPB based devices can both use the legacy syscon way to probe or the
-new MMIO way and currently device that use the MMIO way are broken as
-they lack the definition of the now required regmap_config and always
-return -EINVAL (and indirectly makes fail probing everything that
-depends on it, smem, nandc with smem-parser...)
+With this patch I suggest that Elkhart Lake SATA controllers [1] should
+use the default LPM policy for mobile chipsets.
+The disadvantage of missing hot-plug support with this setting should
+not be an issue, as those CPUs are used in embedded environments and
+not in servers with hot-plug backplanes.
 
-Fix this by correctly adding the missing regmap_config and restore
-function of hwspinlock on SFPB based devices with MMIO implementation.
+We discovered that the Elkhart Lake SATA controllers have been missing
+in ahci.c after a customer reported the throttling of his SATA SSD
+after a short period of higher I/O. We determined the high temperature
+of the SSD controller in idle mode as the root cause for that.
 
+Depending on the used SSD, we have seen up to 1.8 Watt lower system
+idle power usage and up to 30°C lower SSD controller temperatures in
+our tests, when we set med_power_with_dipm manually. I have provided a
+table showing seven different SATA SSDs from ATP, Intel/Solidigm and
+Samsung [2].
+
+Intel lists a total of 3 SATA controller IDs (4B60, 4B62, 4B63) in [1]
+for those mobile PCHs.
+This commit just adds 0x4b63 as I do not have test systems with 0x4b60
+and 0x4b62 SATA controllers.
+I have tested this patch with a system which uses 0x4b63 as SATA
+controller.
+
+[1] https://sata-io.org/product/8803
+[2] https://www.thomas-krenn.com/en/wiki/SATA_Link_Power_Management#Example_LES_v4
+
+Signed-off-by: Werner Fischer <devlists@wefi.net>
 Cc: stable@vger.kernel.org
-Fixes: 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older SoCs")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Link: https://lore.kernel.org/r/20230716022804.21239-1-ansuelsmth@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwspinlock/qcom_hwspinlock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/ata/ahci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hwspinlock/qcom_hwspinlock.c
-+++ b/drivers/hwspinlock/qcom_hwspinlock.c
-@@ -69,9 +69,18 @@ static const struct hwspinlock_ops qcom_
- 	.unlock		= qcom_hwspinlock_unlock,
- };
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -422,6 +422,8 @@ static const struct pci_device_id ahci_p
+ 	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_low_power }, /* Ice Lake LP AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_low_power }, /* Comet Lake PCH-U AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_low_power }, /* Comet Lake PCH RAID */
++	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
++	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_low_power }, /* Elkhart Lake AHCI */
  
-+static const struct regmap_config sfpb_mutex_config = {
-+	.reg_bits		= 32,
-+	.reg_stride		= 4,
-+	.val_bits		= 32,
-+	.max_register		= 0x100,
-+	.fast_io		= true,
-+};
-+
- static const struct qcom_hwspinlock_of_data of_sfpb_mutex = {
- 	.offset = 0x4,
- 	.stride = 0x4,
-+	.regmap_config = &sfpb_mutex_config,
- };
- 
- static const struct regmap_config tcsr_msm8226_mutex_config = {
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
+ 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
 
 
