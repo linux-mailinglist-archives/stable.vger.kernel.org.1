@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 118827A390C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9247C7A3816
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239933AbjIQToE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34156 "EHLO
+        id S239634AbjIQTbL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239964AbjIQTns (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:48 -0400
+        with ESMTP id S239653AbjIQTau (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF86DB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF10C433C8;
-        Sun, 17 Sep 2023 19:43:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51426D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:30:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863C9C433C8;
+        Sun, 17 Sep 2023 19:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979822;
-        bh=IhGXr0g6XvYQARCbeRx4gTyRHRK7OujvTCkrP5BsfHE=;
+        s=korg; t=1694979045;
+        bh=/3K/eB+z01JODC12Du3gbF+BuSOFfbuqBhT5scWt1OI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1sExpdvwPByzNeBmYuQmu3ENuARBWmSAJi9DrknvqbiPT8X0a5d345/H0+AWJPBpK
-         r3bREvjFcuQLQiD0j7RA9cspHUZw0I80VqaA/FBjq+Yb4YSe7fTpJ8UraR96hCH4/0
-         uXaxZGl6538CR5PwdBNOtHkFBPQ78MibMsMVNF+4=
+        b=YHTCXyRHDeEA0ldy6/9NiyJRldf3ryMQPR1RPdxaFJ0zpmrzHNcG0N/FSSzzmhFV3
+         Y7JtV6gqwzqgkhWYCC1nXmqHZzSiczd7VKIt8JR9kG5aOYw5i2yecDQ54pcQvVBClM
+         SDD8Zm9hVAna4zeFMRep122o1bXvzZYKRe/hAcPY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 017/285] scsi: qla2xxx: Fix firmware resource tracking
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 163/406] audit: fix possible soft lockup in __audit_inode_child()
 Date:   Sun, 17 Sep 2023 21:10:17 +0200
-Message-ID: <20230917191052.218158876@linuxfoundation.org>
+Message-ID: <20230917191105.483967414@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,205 +50,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-commit e370b64c7db96384a0886a09a9d80406e4c663d7 upstream.
+[ Upstream commit b59bc6e37237e37eadf50cd5de369e913f524463 ]
 
-The storage was not draining I/Os and the work load was not spread out
-across different CPUs evenly. This led to firmware resource counters
-getting overrun on the busy CPU. This overrun prevented error recovery from
-happening in a timely manner.
+Tracefs or debugfs maybe cause hundreds to thousands of PATH records,
+too many PATH records maybe cause soft lockup.
 
-By switching the counter to atomic, it allows the count to be little more
-accurate to prevent the overrun.
+For example:
+  1. CONFIG_KASAN=y && CONFIG_PREEMPTION=n
+  2. auditctl -a exit,always -S open -k key
+  3. sysctl -w kernel.watchdog_thresh=5
+  4. mkdir /sys/kernel/debug/tracing/instances/test
 
-Cc: stable@vger.kernel.org
-Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There may be a soft lockup as follows:
+  watchdog: BUG: soft lockup - CPU#45 stuck for 7s! [mkdir:15498]
+  Kernel panic - not syncing: softlockup: hung tasks
+  Call trace:
+   dump_backtrace+0x0/0x30c
+   show_stack+0x20/0x30
+   dump_stack+0x11c/0x174
+   panic+0x27c/0x494
+   watchdog_timer_fn+0x2bc/0x390
+   __run_hrtimer+0x148/0x4fc
+   __hrtimer_run_queues+0x154/0x210
+   hrtimer_interrupt+0x2c4/0x760
+   arch_timer_handler_phys+0x48/0x60
+   handle_percpu_devid_irq+0xe0/0x340
+   __handle_domain_irq+0xbc/0x130
+   gic_handle_irq+0x78/0x460
+   el1_irq+0xb8/0x140
+   __audit_inode_child+0x240/0x7bc
+   tracefs_create_file+0x1b8/0x2a0
+   trace_create_file+0x18/0x50
+   event_create_dir+0x204/0x30c
+   __trace_add_new_event+0xac/0x100
+   event_trace_add_tracer+0xa0/0x130
+   trace_array_create_dir+0x60/0x140
+   trace_array_create+0x1e0/0x370
+   instance_mkdir+0x90/0xd0
+   tracefs_syscall_mkdir+0x68/0xa0
+   vfs_mkdir+0x21c/0x34c
+   do_mkdirat+0x1b4/0x1d4
+   __arm64_sys_mkdirat+0x4c/0x60
+   el0_svc_common.constprop.0+0xa8/0x240
+   do_el0_svc+0x8c/0xc0
+   el0_svc+0x20/0x30
+   el0_sync_handler+0xb0/0xb4
+   el0_sync+0x160/0x180
+
+Therefore, we add cond_resched() to __audit_inode_child() to fix it.
+
+Fixes: 5195d8e217a7 ("audit: dynamically allocate audit_names when not enough space is in the names array")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h    |   11 +++++++
- drivers/scsi/qla2xxx/qla_dfs.c    |   10 ++++++
- drivers/scsi/qla2xxx/qla_init.c   |    8 +++++
- drivers/scsi/qla2xxx/qla_inline.h |   57 +++++++++++++++++++++++++++++++++++++-
- drivers/scsi/qla2xxx/qla_os.c     |    5 ++-
- 5 files changed, 88 insertions(+), 3 deletions(-)
+ kernel/auditsc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3742,6 +3742,16 @@ struct qla_fw_resources {
- 	u16 pad;
- };
- 
-+struct qla_fw_res {
-+	u16      iocb_total;
-+	u16      iocb_limit;
-+	atomic_t iocb_used;
-+
-+	u16      exch_total;
-+	u16      exch_limit;
-+	atomic_t exch_used;
-+};
-+
- #define QLA_IOCB_PCT_LIMIT 95
- 
- struct  qla_buf_pool {
-@@ -4799,6 +4809,7 @@ struct qla_hw_data {
- 	struct els_reject elsrej;
- 	u8 edif_post_stop_cnt_down;
- 	struct qla_vp_map *vp_map;
-+	struct qla_fw_res fwres ____cacheline_aligned;
- };
- 
- #define RX_ELS_SIZE (roundup(sizeof(struct enode) + ELS_MAX_PAYLOAD, SMP_CACHE_BYTES))
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -276,6 +276,16 @@ qla_dfs_fw_resource_cnt_show(struct seq_
- 
- 		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
- 			   exch_used, ha->base_qpair->fwres.exch_limit);
-+
-+		if (ql2xenforce_iocb_limit == 2) {
-+			iocbs_used = atomic_read(&ha->fwres.iocb_used);
-+			exch_used  = atomic_read(&ha->fwres.exch_used);
-+			seq_printf(s, "        estimate iocb2 used [%d] high water limit [%d]\n",
-+					iocbs_used, ha->fwres.iocb_limit);
-+
-+			seq_printf(s, "        estimate exchange2 used[%d] high water limit [%d] \n",
-+					exch_used, ha->fwres.exch_limit);
-+		}
- 	}
- 
- 	return 0;
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4216,6 +4216,14 @@ void qla_init_iocb_limit(scsi_qla_host_t
- 			ha->queue_pair_map[i]->fwres.exch_used = 0;
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 07e2788bbbf12..57b982b44732e 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2203,6 +2203,8 @@ void __audit_inode_child(struct inode *parent,
  		}
  	}
-+
-+	ha->fwres.iocb_total = ha->orig_fw_iocb_count;
-+	ha->fwres.iocb_limit = (ha->orig_fw_iocb_count * QLA_IOCB_PCT_LIMIT) / 100;
-+	ha->fwres.exch_total = ha->orig_fw_xcb_count;
-+	ha->fwres.exch_limit = (ha->orig_fw_xcb_count * QLA_IOCB_PCT_LIMIT) / 100;
-+
-+	atomic_set(&ha->fwres.iocb_used, 0);
-+	atomic_set(&ha->fwres.exch_used, 0);
- }
  
- void qla_adjust_iocb_limit(scsi_qla_host_t *vha)
---- a/drivers/scsi/qla2xxx/qla_inline.h
-+++ b/drivers/scsi/qla2xxx/qla_inline.h
-@@ -386,6 +386,7 @@ enum {
- 	RESOURCE_IOCB = BIT_0,
- 	RESOURCE_EXCH = BIT_1,  /* exchange */
- 	RESOURCE_FORCE = BIT_2,
-+	RESOURCE_HA = BIT_3,
- };
- 
- static inline int
-@@ -393,7 +394,7 @@ qla_get_fw_resources(struct qla_qpair *q
- {
- 	u16 iocbs_used, i;
- 	u16 exch_used;
--	struct qla_hw_data *ha = qp->vha->hw;
-+	struct qla_hw_data *ha = qp->hw;
- 
- 	if (!ql2xenforce_iocb_limit) {
- 		iores->res_type = RESOURCE_NONE;
-@@ -428,15 +429,69 @@ qla_get_fw_resources(struct qla_qpair *q
- 			return -ENOSPC;
- 		}
- 	}
++	cond_resched();
 +
-+	if (ql2xenforce_iocb_limit == 2) {
-+		if ((iores->iocb_cnt + atomic_read(&ha->fwres.iocb_used)) >=
-+		    ha->fwres.iocb_limit) {
-+			iores->res_type = RESOURCE_NONE;
-+			return -ENOSPC;
-+		}
-+
-+		if (iores->res_type & RESOURCE_EXCH) {
-+			if ((iores->exch_cnt + atomic_read(&ha->fwres.exch_used)) >=
-+			    ha->fwres.exch_limit) {
-+				iores->res_type = RESOURCE_NONE;
-+				return -ENOSPC;
-+			}
-+		}
-+	}
-+
- force:
- 	qp->fwres.iocbs_used += iores->iocb_cnt;
- 	qp->fwres.exch_used += iores->exch_cnt;
-+	if (ql2xenforce_iocb_limit == 2) {
-+		atomic_add(iores->iocb_cnt, &ha->fwres.iocb_used);
-+		atomic_add(iores->exch_cnt, &ha->fwres.exch_used);
-+		iores->res_type |= RESOURCE_HA;
-+	}
- 	return 0;
- }
- 
-+/*
-+ * decrement to zero.  This routine will not decrement below zero
-+ * @v:  pointer of type atomic_t
-+ * @amount: amount to decrement from v
-+ */
-+static void qla_atomic_dtz(atomic_t *v, int amount)
-+{
-+	int c, old, dec;
-+
-+	c = atomic_read(v);
-+	for (;;) {
-+		dec = c - amount;
-+		if (unlikely(dec < 0))
-+			dec = 0;
-+
-+		old = atomic_cmpxchg((v), c, dec);
-+		if (likely(old == c))
-+			break;
-+		c = old;
-+	}
-+}
-+
- static inline void
- qla_put_fw_resources(struct qla_qpair *qp, struct iocb_resource *iores)
- {
-+	struct qla_hw_data *ha = qp->hw;
-+
-+	if (iores->res_type & RESOURCE_HA) {
-+		if (iores->res_type & RESOURCE_IOCB)
-+			qla_atomic_dtz(&ha->fwres.iocb_used, iores->iocb_cnt);
-+
-+		if (iores->res_type & RESOURCE_EXCH)
-+			qla_atomic_dtz(&ha->fwres.exch_used, iores->exch_cnt);
-+	}
-+
- 	if (iores->res_type & RESOURCE_IOCB) {
- 		if (qp->fwres.iocbs_used >= iores->iocb_cnt) {
- 			qp->fwres.iocbs_used -= iores->iocb_cnt;
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -44,10 +44,11 @@ module_param(ql2xfulldump_on_mpifail, in
- MODULE_PARM_DESC(ql2xfulldump_on_mpifail,
- 		 "Set this to take full dump on MPI hang.");
- 
--int ql2xenforce_iocb_limit = 1;
-+int ql2xenforce_iocb_limit = 2;
- module_param(ql2xenforce_iocb_limit, int, S_IRUGO | S_IWUSR);
- MODULE_PARM_DESC(ql2xenforce_iocb_limit,
--		 "Enforce IOCB throttling, to avoid FW congestion. (default: 1)");
-+		 "Enforce IOCB throttling, to avoid FW congestion. (default: 2) "
-+		 "1: track usage per queue, 2: track usage per adapter");
- 
- /*
-  * CT6 CTX allocation cache
+ 	/* is there a matching child entry? */
+ 	list_for_each_entry(n, &context->names_list, list) {
+ 		/* can only match entries that have a name */
+-- 
+2.40.1
+
 
 
