@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F4F7A3A02
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6699A7A38D9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240244AbjIQT5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58818 "EHLO
+        id S239828AbjIQTlW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:41:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240327AbjIQT5O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:14 -0400
+        with ESMTP id S239892AbjIQTlB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473D0F3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:57:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D5AC433C8;
-        Sun, 17 Sep 2023 19:57:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DCF103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:40:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A7AC433C8;
+        Sun, 17 Sep 2023 19:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980628;
-        bh=2fCPe91cI1RkpWo5Ot0ZIaJLfi/YvpxZK5NMETJu4LE=;
+        s=korg; t=1694979655;
+        bh=LRczLULuMx8oK9CBw+MIIl9QH4VnAaYojZAvygiwMho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qd8wR9q4BrtKuWrHO82on6PO8jpqPdtcIS90YamFUlkp/N1p009auuMcJm4ePTqLC
-         48K7JhXPcd4qsJmoei71w7v+zVLVqdNchjopREwOs3vOtWJ3NyrmQ93ifKqDYxZllS
-         5buf0vwb9sYpg6NC6ioXqXlNPht1V8z90W6pIrJc=
+        b=1AhGpiAJ5R7C1QCJY6zjqYtw2DD9vSjxiYA9P4TwAODqoj75GAQcXWlgaLyu/mfq5
+         jL1o1U9o2WcN1x9HNrQV6Mnq9p/DdLlzVu6CcoevQDZNzEeihsqt/+CuTUPCXrWcGb
+         7sfbA+fPNXYlGDLnSxMvuBOfnAAyI/0HShEVLehs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Guillaume Tucker <guillaume.tucker@collabora.com>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        "kernelci.org bot" <bot@kernelci.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.5 230/285] MIPS: Only fiddle with CHECKFLAGS if `need-compiler
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 376/406] mtd: rawnand: brcmnand: Fix potential false time out warning
 Date:   Sun, 17 Sep 2023 21:13:50 +0200
-Message-ID: <20230917191059.403998388@linuxfoundation.org>
+Message-ID: <20230917191111.196738904@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,58 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: William Zhang <william.zhang@broadcom.com>
 
-commit 4fe4a6374c4db9ae2b849b61e84b58685dca565a upstream.
+commit 9cc0a598b944816f2968baf2631757f22721b996 upstream.
 
-We have originally guarded fiddling with CHECKFLAGS in our arch Makefile
-by checking for the CONFIG_MIPS variable, not set for targets such as
-`distclean', etc. that neither include `.config' nor use the compiler.
+If system is busy during the command status polling function, the driver
+may not get the chance to poll the status register till the end of time
+out and return the premature status.  Do a final check after time out
+happens to ensure reading the correct status.
 
-Starting from commit 805b2e1d427a ("kbuild: include Makefile.compiler
-only when compiler is needed") we have had a generic `need-compiler'
-variable explicitly telling us if the compiler will be used and thus its
-capabilities need to be checked and expressed in the form of compilation
-flags.  If this variable is not set, then `make' functions such as
-`cc-option' are undefined, causing all kinds of weirdness to happen if
-we expect specific results to be returned, most recently:
-
-cc1: error: '-mloongson-mmi' must be used with '-mhard-float'
-
-messages with configurations such as `fuloong2e_defconfig' and the
-`modules_install' target, which does include `.config' and yet does not
-use the compiler.
-
-Replace the check for CONFIG_MIPS with one for `need-compiler' instead,
-so as to prevent the compiler from being ever called for CHECKFLAGS when
-not needed.
-
-Reported-by: Guillaume Tucker <guillaume.tucker@collabora.com>
-Closes: https://lore.kernel.org/r/85031c0c-d981-031e-8a50-bc4fad2ddcd8@collabora.com/
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 805b2e1d427a ("kbuild: include Makefile.compiler only when compiler is needed")
-Cc: stable@vger.kernel.org # v5.13+
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 9d2ee0a60b8b ("mtd: nand: brcmnand: Check flash #WP pin status before nand erase/program")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-3-william.zhang@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -341,7 +341,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwin
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -1040,6 +1040,14 @@ static int bcmnand_ctrl_poll_status(stru
+ 		cpu_relax();
+ 	} while (time_after(limit, jiffies));
  
- KBUILD_LDFLAGS		+= -m $(ld-emul)
++	/*
++	 * do a final check after time out in case the CPU was busy and the driver
++	 * did not get enough time to perform the polling to avoid false alarms
++	 */
++	val = brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS);
++	if ((val & mask) == expected_val)
++		return 0;
++
+ 	dev_warn(ctrl->dev, "timeout on status poll (expected %x got %x)\n",
+ 		 expected_val, val & mask);
  
--ifdef CONFIG_MIPS
-+ifdef need-compiler
- CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
- 	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
- 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
 
 
