@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C3CD7A3A63
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80C787A387F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240321AbjIQUCo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40776 "EHLO
+        id S239777AbjIQTgh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240506AbjIQUCg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:36 -0400
+        with ESMTP id S239882AbjIQTgS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:36:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FD919B
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5844C43397;
-        Sun, 17 Sep 2023 20:02:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C779D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:36:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD76C433C9;
+        Sun, 17 Sep 2023 19:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980927;
-        bh=3rZuj05OPg+GwqiSUKVtaAZYu58SdJVi/TUxO1Naw1g=;
+        s=korg; t=1694979372;
+        bh=pX0edh+OHZ+Rby7A1cQUfcEHCE+T2nXNrNwg0WzzAtM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iFfXUXH7NTm9aEehG/xOUumgnB7YtM2Z2uFgfJveWzkGawD+6u/RFXTq74QWcsl/J
-         tK+gMGLx6Z/G5IW83tVSFvsRKBokhYCLoSbRRtVx67NTGb3gaklWMtKOQMlT4m/pom
-         Moe5scOlxRcjU9Q/vqVqrxEgx/16Ve4ALYugX13g=
+        b=LlEc9s4OsBNLUDcK3XO6K0FWm8rNXw6QzpAo7k1a9CvgdKaH1T1qjG3MAajNBz4Qp
+         5GqifyoNFPumsqOmPJFYfvcOrTzUYIx5OnI+h3XihnmIboCEFcpthVGiISJdOVrFNV
+         HDoNKjYfp0/fWA0dA6D+wyKZTp0FqhkW3Jp6o6Go=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <quinn.tran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 021/219] scsi: qla2xxx: Flush mailbox commands on chip reset
+        patches@lists.linux.dev, Yonghong Song <yonghong.song@linux.dev>,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Yafang Shao <laoar.shao@gmail.com>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 5.10 294/406] bpf: Fix issue in verifying allow_ptr_leaks
 Date:   Sun, 17 Sep 2023 21:12:28 +0200
-Message-ID: <20230917191041.763500814@linuxfoundation.org>
+Message-ID: <20230917191109.075455780@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,108 +52,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-commit 6d0b65569c0a10b27c49bacd8d25bcd406003533 upstream.
+commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
 
-Fix race condition between Interrupt thread and Chip reset thread in trying
-to flush the same mailbox. With the race condition, the "ha->mbx_intr_comp"
-will get an extra complete() call. The extra complete call create erroneous
-mailbox timeout condition when the next mailbox is sent where the mailbox
-call does not wait for interrupt to arrive. Instead, it advances without
-waiting.
+After we converted the capabilities of our networking-bpf program from
+cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
+failed to start. Because it failed the bpf verifier, and the error log
+is "R3 pointer comparison prohibited".
 
-Add lock protection around the check for mailbox completion.
+A simple reproducer as follows,
 
+SEC("cls-ingress")
+int ingress(struct __sk_buff *skb)
+{
+	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
+
+	if ((long)(iph + 1) > (long)skb->data_end)
+		return TC_ACT_STOLEN;
+	return TC_ACT_OK;
+}
+
+Per discussion with Yonghong and Alexei [1], comparison of two packet
+pointers is not a pointer leak. This patch fixes it.
+
+Our local kernel is 6.1.y and we expect this fix to be backported to
+6.1.y, so stable is CCed.
+
+[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
+
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: b2000805a975 ("scsi: qla2xxx: Flush mailbox commands on chip reset")
-Signed-off-by: Quinn Tran <quinn.tran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230821130045.34850-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20230823020703.3790-2-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h  |    1 -
- drivers/scsi/qla2xxx/qla_init.c |    7 ++++---
- drivers/scsi/qla2xxx/qla_mbx.c  |    4 ----
- drivers/scsi/qla2xxx/qla_os.c   |    1 -
- 4 files changed, 4 insertions(+), 9 deletions(-)
+ kernel/bpf/verifier.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -4367,7 +4367,6 @@ struct qla_hw_data {
- 	uint8_t		aen_mbx_count;
- 	atomic_t	num_pend_mbx_stage1;
- 	atomic_t	num_pend_mbx_stage2;
--	atomic_t	num_pend_mbx_stage3;
- 	uint16_t	frame_payload_size;
- 
- 	uint32_t	login_retry_count;
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -7444,14 +7444,15 @@ qla2x00_abort_isp_cleanup(scsi_qla_host_
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8178,6 +8178,12 @@ static int check_cond_jmp_op(struct bpf_
+ 		return -EINVAL;
  	}
  
- 	/* purge MBox commands */
--	if (atomic_read(&ha->num_pend_mbx_stage3)) {
-+	spin_lock_irqsave(&ha->hardware_lock, flags);
-+	if (test_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags)) {
- 		clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
- 		complete(&ha->mbx_intr_comp);
- 	}
-+	spin_unlock_irqrestore(&ha->hardware_lock, flags);
++	/* check src2 operand */
++	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
++	if (err)
++		return err;
++
++	dst_reg = &regs[insn->dst_reg];
+ 	if (BPF_SRC(insn->code) == BPF_X) {
+ 		if (insn->imm != 0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -8189,12 +8195,13 @@ static int check_cond_jmp_op(struct bpf_
+ 		if (err)
+ 			return err;
  
- 	i = 0;
--	while (atomic_read(&ha->num_pend_mbx_stage3) ||
--	    atomic_read(&ha->num_pend_mbx_stage2) ||
-+	while (atomic_read(&ha->num_pend_mbx_stage2) ||
- 	    atomic_read(&ha->num_pend_mbx_stage1)) {
- 		msleep(20);
- 		i++;
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -273,7 +273,6 @@ qla2x00_mailbox_command(scsi_qla_host_t
- 		spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 
- 		wait_time = jiffies;
--		atomic_inc(&ha->num_pend_mbx_stage3);
- 		if (!wait_for_completion_timeout(&ha->mbx_intr_comp,
- 		    mcp->tov * HZ)) {
- 			ql_dbg(ql_dbg_mbx, vha, 0x117a,
-@@ -290,7 +289,6 @@ qla2x00_mailbox_command(scsi_qla_host_t
- 				spin_unlock_irqrestore(&ha->hardware_lock,
- 				    flags);
- 				atomic_dec(&ha->num_pend_mbx_stage2);
--				atomic_dec(&ha->num_pend_mbx_stage3);
- 				rval = QLA_ABORTED;
- 				goto premature_exit;
- 			}
-@@ -302,11 +300,9 @@ qla2x00_mailbox_command(scsi_qla_host_t
- 			ha->flags.mbox_busy = 0;
- 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 			atomic_dec(&ha->num_pend_mbx_stage2);
--			atomic_dec(&ha->num_pend_mbx_stage3);
- 			rval = QLA_ABORTED;
- 			goto premature_exit;
+-		if (is_pointer_value(env, insn->src_reg)) {
++		src_reg = &regs[insn->src_reg];
++		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
++		    is_pointer_value(env, insn->src_reg)) {
+ 			verbose(env, "R%d pointer comparison prohibited\n",
+ 				insn->src_reg);
+ 			return -EACCES;
  		}
--		atomic_dec(&ha->num_pend_mbx_stage3);
+-		src_reg = &regs[insn->src_reg];
+ 	} else {
+ 		if (insn->src_reg != BPF_REG_0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -8202,12 +8209,6 @@ static int check_cond_jmp_op(struct bpf_
+ 		}
+ 	}
  
- 		if (time_after(jiffies, wait_time + 5 * HZ))
- 			ql_log(ql_log_warn, vha, 0x1015, "cmd=0x%x, waited %d msecs\n",
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -3000,7 +3000,6 @@ qla2x00_probe_one(struct pci_dev *pdev,
- 	ha->max_exchg = FW_MAX_EXCHANGES_CNT;
- 	atomic_set(&ha->num_pend_mbx_stage1, 0);
- 	atomic_set(&ha->num_pend_mbx_stage2, 0);
--	atomic_set(&ha->num_pend_mbx_stage3, 0);
- 	atomic_set(&ha->zio_threshold, DEFAULT_ZIO_THRESHOLD);
- 	ha->last_zio_threshold = DEFAULT_ZIO_THRESHOLD;
- 	INIT_LIST_HEAD(&ha->tmf_pending);
+-	/* check src2 operand */
+-	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
+-	if (err)
+-		return err;
+-
+-	dst_reg = &regs[insn->dst_reg];
+ 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
+ 
+ 	if (BPF_SRC(insn->code) == BPF_K) {
 
 
