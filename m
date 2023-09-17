@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B7C7A3AEF
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 349367A3CD0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240527AbjIQUKt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55924 "EHLO
+        id S241085AbjIQUfp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:35:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240617AbjIQUKh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:37 -0400
+        with ESMTP id S241126AbjIQUfO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEFFB5
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18232C433C8;
-        Sun, 17 Sep 2023 20:10:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB1B101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817D9C433C7;
+        Sun, 17 Sep 2023 20:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981431;
-        bh=FPMo3cLjyMHVLhRvEtInB8aSkq2WNaxGodpWNHWWZSY=;
+        s=korg; t=1694982909;
+        bh=TZ+GqbaKRkILdJNTNcThnfCBKdDqfJ4NLS5dLs2QZng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aWdigs8rTryv7aUNYny3WC9vNBjAJIQ4Ru1uA2Sfxq3YJOCOhGARcMKeBNr816xv8
-         4DWSTiQIHVfWpfkaGeMGhma6FW+LiHwidvyOrf7iKu8nVfs2eLeOXdXyRL68QMvcn/
-         aCO0NM6bAgA1VgRjfjnWjmZtxbc76xOAftEpTSGM=
+        b=KXRlR3FZJ4MkP/65leIblsAV0zYGWRUrTB5VEOWe5IEad9MLhjY+ApHM7uLhfws/A
+         oJ0luumiEUxR32HLBuuB8SENOYadcJR7PxQNx8h+fIkp2QKdVgxvFWtTsdx55HrpPY
+         7MrpAHcoX+4qB0kb4pC4B2DL92APwhj3AAAhbBzQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/219] ipv4: annotate data-races around fi->fib_dead
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 389/511] scsi: qla2xxx: Fix firmware resource tracking
 Date:   Sun, 17 Sep 2023 21:13:36 +0200
-Message-ID: <20230917191044.190028439@linuxfoundation.org>
+Message-ID: <20230917191123.187689972@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,140 +51,205 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit fce92af1c29d90184dfec638b5738831097d66e9 ]
+commit e370b64c7db96384a0886a09a9d80406e4c663d7 upstream.
 
-syzbot complained about a data-race in fib_table_lookup() [1]
+The storage was not draining I/Os and the work load was not spread out
+across different CPUs evenly. This led to firmware resource counters
+getting overrun on the busy CPU. This overrun prevented error recovery from
+happening in a timely manner.
 
-Add appropriate annotations to document it.
+By switching the counter to atomic, it allows the count to be little more
+accurate to prevent the overrun.
 
-[1]
-BUG: KCSAN: data-race in fib_release_info / fib_table_lookup
-
-write to 0xffff888150f31744 of 1 bytes by task 1189 on cpu 0:
-fib_release_info+0x3a0/0x460 net/ipv4/fib_semantics.c:281
-fib_table_delete+0x8d2/0x900 net/ipv4/fib_trie.c:1777
-fib_magic+0x1c1/0x1f0 net/ipv4/fib_frontend.c:1106
-fib_del_ifaddr+0x8cf/0xa60 net/ipv4/fib_frontend.c:1317
-fib_inetaddr_event+0x77/0x200 net/ipv4/fib_frontend.c:1448
-notifier_call_chain kernel/notifier.c:93 [inline]
-blocking_notifier_call_chain+0x90/0x200 kernel/notifier.c:388
-__inet_del_ifa+0x4df/0x800 net/ipv4/devinet.c:432
-inet_del_ifa net/ipv4/devinet.c:469 [inline]
-inetdev_destroy net/ipv4/devinet.c:322 [inline]
-inetdev_event+0x553/0xaf0 net/ipv4/devinet.c:1606
-notifier_call_chain kernel/notifier.c:93 [inline]
-raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1962 [inline]
-call_netdevice_notifiers_mtu+0xd2/0x130 net/core/dev.c:2037
-dev_set_mtu_ext+0x30b/0x3e0 net/core/dev.c:8673
-do_setlink+0x5be/0x2430 net/core/rtnetlink.c:2837
-rtnl_setlink+0x255/0x300 net/core/rtnetlink.c:3177
-rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6445
-netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2549
-rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6463
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1914
-sock_sendmsg_nosec net/socket.c:725 [inline]
-sock_sendmsg net/socket.c:748 [inline]
-sock_write_iter+0x1aa/0x230 net/socket.c:1129
-do_iter_write+0x4b4/0x7b0 fs/read_write.c:860
-vfs_writev+0x1a8/0x320 fs/read_write.c:933
-do_writev+0xf8/0x220 fs/read_write.c:976
-__do_sys_writev fs/read_write.c:1049 [inline]
-__se_sys_writev fs/read_write.c:1046 [inline]
-__x64_sys_writev+0x45/0x50 fs/read_write.c:1046
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff888150f31744 of 1 bytes by task 21839 on cpu 1:
-fib_table_lookup+0x2bf/0xd50 net/ipv4/fib_trie.c:1585
-fib_lookup include/net/ip_fib.h:383 [inline]
-ip_route_output_key_hash_rcu+0x38c/0x12c0 net/ipv4/route.c:2751
-ip_route_output_key_hash net/ipv4/route.c:2641 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2869
-send4+0x1e7/0x500 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work+0x434/0x860 kernel/workqueue.c:2600
-worker_thread+0x5f2/0xa10 kernel/workqueue.c:2751
-kthread+0x1d7/0x210 kernel/kthread.c:389
-ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-value changed: 0x00 -> 0x01
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 21839 Comm: kworker/u4:18 Tainted: G W 6.5.0-syzkaller #0
-
-Fixes: dccd9ecc3744 ("ipv4: Do not use dead fib_info entries.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230830095520.1046984-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-4-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fib_semantics.c | 5 ++++-
- net/ipv4/fib_trie.c      | 3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_def.h    |   11 +++++++
+ drivers/scsi/qla2xxx/qla_dfs.c    |   10 ++++++
+ drivers/scsi/qla2xxx/qla_init.c   |    8 +++++
+ drivers/scsi/qla2xxx/qla_inline.h |   57 +++++++++++++++++++++++++++++++++++++-
+ drivers/scsi/qla2xxx/qla_os.c     |    5 ++-
+ 5 files changed, 88 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 3bb890a40ed73..3b6e6bc80dc1c 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -278,7 +278,8 @@ void fib_release_info(struct fib_info *fi)
- 				hlist_del(&nexthop_nh->nh_hash);
- 			} endfor_nexthops(fi)
- 		}
--		fi->fib_dead = 1;
-+		/* Paired with READ_ONCE() from fib_table_lookup() */
-+		WRITE_ONCE(fi->fib_dead, 1);
- 		fib_info_put(fi);
- 	}
- 	spin_unlock_bh(&fib_info_lock);
-@@ -1581,6 +1582,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
- link_it:
- 	ofi = fib_find_info(fi);
- 	if (ofi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
- 		refcount_inc(&ofi->fib_treeref);
-@@ -1619,6 +1621,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -3726,6 +3726,16 @@ struct qla_fw_resources {
+ 	u16 pad;
+ };
  
- failure:
- 	if (fi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
++struct qla_fw_res {
++	u16      iocb_total;
++	u16      iocb_limit;
++	atomic_t iocb_used;
++
++	u16      exch_total;
++	u16      exch_limit;
++	atomic_t exch_used;
++};
++
+ #define QLA_IOCB_PCT_LIMIT 95
+ 
+ /*Queue pair data structure */
+@@ -4768,6 +4778,7 @@ struct qla_hw_data {
+ 	spinlock_t sadb_lock;	/* protects list */
+ 	struct els_reject elsrej;
+ 	u8 edif_post_stop_cnt_down;
++	struct qla_fw_res fwres ____cacheline_aligned;
+ };
+ 
+ #define RX_ELS_SIZE (roundup(sizeof(struct enode) + ELS_MAX_PAYLOAD, SMP_CACHE_BYTES))
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -276,6 +276,16 @@ qla_dfs_fw_resource_cnt_show(struct seq_
+ 
+ 		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
+ 			   exch_used, ha->base_qpair->fwres.exch_limit);
++
++		if (ql2xenforce_iocb_limit == 2) {
++			iocbs_used = atomic_read(&ha->fwres.iocb_used);
++			exch_used  = atomic_read(&ha->fwres.exch_used);
++			seq_printf(s, "        estimate iocb2 used [%d] high water limit [%d]\n",
++					iocbs_used, ha->fwres.iocb_limit);
++
++			seq_printf(s, "        estimate exchange2 used[%d] high water limit [%d] \n",
++					exch_used, ha->fwres.exch_limit);
++		}
  	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 74d403dbd2b4e..d13fb9e76b971 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1582,7 +1582,8 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
- 		if (fa->fa_dscp &&
- 		    inet_dscp_to_dsfield(fa->fa_dscp) != flp->flowi4_tos)
- 			continue;
--		if (fi->fib_dead)
-+		/* Paired with WRITE_ONCE() in fib_release_info() */
-+		if (READ_ONCE(fi->fib_dead))
- 			continue;
- 		if (fa->fa_info->fib_scope < flp->flowi4_scope)
- 			continue;
--- 
-2.40.1
-
+ 
+ 	return 0;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -4218,6 +4218,14 @@ void qla_init_iocb_limit(scsi_qla_host_t
+ 			ha->queue_pair_map[i]->fwres.exch_used = 0;
+ 		}
+ 	}
++
++	ha->fwres.iocb_total = ha->orig_fw_iocb_count;
++	ha->fwres.iocb_limit = (ha->orig_fw_iocb_count * QLA_IOCB_PCT_LIMIT) / 100;
++	ha->fwres.exch_total = ha->orig_fw_xcb_count;
++	ha->fwres.exch_limit = (ha->orig_fw_xcb_count * QLA_IOCB_PCT_LIMIT) / 100;
++
++	atomic_set(&ha->fwres.iocb_used, 0);
++	atomic_set(&ha->fwres.exch_used, 0);
+ }
+ 
+ void qla_adjust_iocb_limit(scsi_qla_host_t *vha)
+--- a/drivers/scsi/qla2xxx/qla_inline.h
++++ b/drivers/scsi/qla2xxx/qla_inline.h
+@@ -386,6 +386,7 @@ enum {
+ 	RESOURCE_IOCB = BIT_0,
+ 	RESOURCE_EXCH = BIT_1,  /* exchange */
+ 	RESOURCE_FORCE = BIT_2,
++	RESOURCE_HA = BIT_3,
+ };
+ 
+ static inline int
+@@ -393,7 +394,7 @@ qla_get_fw_resources(struct qla_qpair *q
+ {
+ 	u16 iocbs_used, i;
+ 	u16 exch_used;
+-	struct qla_hw_data *ha = qp->vha->hw;
++	struct qla_hw_data *ha = qp->hw;
+ 
+ 	if (!ql2xenforce_iocb_limit) {
+ 		iores->res_type = RESOURCE_NONE;
+@@ -428,15 +429,69 @@ qla_get_fw_resources(struct qla_qpair *q
+ 			return -ENOSPC;
+ 		}
+ 	}
++
++	if (ql2xenforce_iocb_limit == 2) {
++		if ((iores->iocb_cnt + atomic_read(&ha->fwres.iocb_used)) >=
++		    ha->fwres.iocb_limit) {
++			iores->res_type = RESOURCE_NONE;
++			return -ENOSPC;
++		}
++
++		if (iores->res_type & RESOURCE_EXCH) {
++			if ((iores->exch_cnt + atomic_read(&ha->fwres.exch_used)) >=
++			    ha->fwres.exch_limit) {
++				iores->res_type = RESOURCE_NONE;
++				return -ENOSPC;
++			}
++		}
++	}
++
+ force:
+ 	qp->fwres.iocbs_used += iores->iocb_cnt;
+ 	qp->fwres.exch_used += iores->exch_cnt;
++	if (ql2xenforce_iocb_limit == 2) {
++		atomic_add(iores->iocb_cnt, &ha->fwres.iocb_used);
++		atomic_add(iores->exch_cnt, &ha->fwres.exch_used);
++		iores->res_type |= RESOURCE_HA;
++	}
+ 	return 0;
+ }
+ 
++/*
++ * decrement to zero.  This routine will not decrement below zero
++ * @v:  pointer of type atomic_t
++ * @amount: amount to decrement from v
++ */
++static void qla_atomic_dtz(atomic_t *v, int amount)
++{
++	int c, old, dec;
++
++	c = atomic_read(v);
++	for (;;) {
++		dec = c - amount;
++		if (unlikely(dec < 0))
++			dec = 0;
++
++		old = atomic_cmpxchg((v), c, dec);
++		if (likely(old == c))
++			break;
++		c = old;
++	}
++}
++
+ static inline void
+ qla_put_fw_resources(struct qla_qpair *qp, struct iocb_resource *iores)
+ {
++	struct qla_hw_data *ha = qp->hw;
++
++	if (iores->res_type & RESOURCE_HA) {
++		if (iores->res_type & RESOURCE_IOCB)
++			qla_atomic_dtz(&ha->fwres.iocb_used, iores->iocb_cnt);
++
++		if (iores->res_type & RESOURCE_EXCH)
++			qla_atomic_dtz(&ha->fwres.exch_used, iores->exch_cnt);
++	}
++
+ 	if (iores->res_type & RESOURCE_IOCB) {
+ 		if (qp->fwres.iocbs_used >= iores->iocb_cnt) {
+ 			qp->fwres.iocbs_used -= iores->iocb_cnt;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -40,10 +40,11 @@ module_param(ql2xfulldump_on_mpifail, in
+ MODULE_PARM_DESC(ql2xfulldump_on_mpifail,
+ 		 "Set this to take full dump on MPI hang.");
+ 
+-int ql2xenforce_iocb_limit = 1;
++int ql2xenforce_iocb_limit = 2;
+ module_param(ql2xenforce_iocb_limit, int, S_IRUGO | S_IWUSR);
+ MODULE_PARM_DESC(ql2xenforce_iocb_limit,
+-		 "Enforce IOCB throttling, to avoid FW congestion. (default: 1)");
++		 "Enforce IOCB throttling, to avoid FW congestion. (default: 2) "
++		 "1: track usage per queue, 2: track usage per adapter");
+ 
+ /*
+  * CT6 CTX allocation cache
 
 
