@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 574157A399F
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5FD7A3A6B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240117AbjIQTwD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35332 "EHLO
+        id S239534AbjIQUDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240144AbjIQTvq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:46 -0400
+        with ESMTP id S240339AbjIQUCw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0C3185
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6286C433C8;
-        Sun, 17 Sep 2023 19:51:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E6F103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE410C433C9;
+        Sun, 17 Sep 2023 20:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980299;
-        bh=j6biYPykILApp0VsCJYHbm0sVvGkBZ7WUZmBN+FfqzI=;
+        s=korg; t=1694980944;
+        bh=Tf2zcGLX2R22IhkRfMgby+zBvicJNxjCcSW3sY21fpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q3S89ApB5Cd0WPtSxqDvtCAsaeIK7kWNP5zbZGR5T3qeDXABTHSs+hnvGa569r8YY
-         5/zpzb8YxNK7e6lvJaqimlXX6nJl02knem45HIy2yvRasaaToVIxVIMrG5hZrTKzfQ
-         nAqdv23Trx+0DmTe0PILZZoz9lFRydkuGzJ+ibtU=
+        b=T8aQVm7gsxc/ZGsCGXaMC8D5ViTUmvRBCHn5J0RH7oU6YAiUhweiSHT+5j1wY9fxs
+         8+Hxfj0bBB41hsJ3ErXjEY3F6u6CfXpjolVCUX/epNe03F0lDzQlesKGEHnxDr5Sj0
+         Q18HhTGvjNY8dFVEYFePPdXPv1YB/bLYkBHLEkY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 151/285] net/mlx5: Push devlink port PF/VF init/cleanup calls out of devlink_port_register/unregister()
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 024/219] scsi: qla2xxx: Fix firmware resource tracking
 Date:   Sun, 17 Sep 2023 21:12:31 +0200
-Message-ID: <20230917191056.913593177@linuxfoundation.org>
+Message-ID: <20230917191041.869370875@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,261 +51,205 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit d9833bcfe840fff5d368b1c7c68e05c95be8d19c ]
+commit e370b64c7db96384a0886a09a9d80406e4c663d7 upstream.
 
-In order to prepare for
-mlx5_esw_offloads_devlink_port_register/unregister() to be used
-for SFs as well, push out the PF/VF specific init/cleanup calls outside.
-Introduce mlx5_eswitch_load/unload_pf_vf_vport() and call them from
-there. Use these new helpers of PF/VF loading and make
-mlx5_eswitch_local/unload_vport() reusable for SFs.
+The storage was not draining I/Os and the work load was not spread out
+across different CPUs evenly. This led to firmware resource counters
+getting overrun on the busy CPU. This overrun prevented error recovery from
+happening in a timely manner.
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 344134609a56 ("mlx5/core: E-Switch, Create ACL FT for eswitch manager in switchdev mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By switching the counter to atomic, it allows the count to be little more
+accurate to prevent the overrun.
+
+Cc: stable@vger.kernel.org
+Fixes: da7c21b72aa8 ("scsi: qla2xxx: Fix command flush during TMF")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-4-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/esw/devlink_port.c     | 13 ++----
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 45 ++++++++++++++-----
- .../net/ethernet/mellanox/mlx5/core/eswitch.h |  4 ++
- .../mellanox/mlx5/core/eswitch_offloads.c     | 16 +++++++
- 4 files changed, 58 insertions(+), 20 deletions(-)
+ drivers/scsi/qla2xxx/qla_def.h    |   11 +++++++
+ drivers/scsi/qla2xxx/qla_dfs.c    |   10 ++++++
+ drivers/scsi/qla2xxx/qla_init.c   |    8 +++++
+ drivers/scsi/qla2xxx/qla_inline.h |   57 +++++++++++++++++++++++++++++++++++++-
+ drivers/scsi/qla2xxx/qla_os.c     |    5 ++-
+ 5 files changed, 88 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
-index 463bde802e45e..2170539461fa2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/devlink_port.c
-@@ -62,7 +62,7 @@ static void mlx5_esw_offloads_pf_vf_devlink_port_attrs_set(struct mlx5_eswitch *
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -3740,6 +3740,16 @@ struct qla_fw_resources {
+ 	u16 pad;
+ };
+ 
++struct qla_fw_res {
++	u16      iocb_total;
++	u16      iocb_limit;
++	atomic_t iocb_used;
++
++	u16      exch_total;
++	u16      exch_limit;
++	atomic_t exch_used;
++};
++
+ #define QLA_IOCB_PCT_LIMIT 95
+ 
+ /*Queue pair data structure */
+@@ -4782,6 +4792,7 @@ struct qla_hw_data {
+ 	spinlock_t sadb_lock;	/* protects list */
+ 	struct els_reject elsrej;
+ 	u8 edif_post_stop_cnt_down;
++	struct qla_fw_res fwres ____cacheline_aligned;
+ };
+ 
+ #define RX_ELS_SIZE (roundup(sizeof(struct enode) + ELS_MAX_PAYLOAD, SMP_CACHE_BYTES))
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -276,6 +276,16 @@ qla_dfs_fw_resource_cnt_show(struct seq_
+ 
+ 		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
+ 			   exch_used, ha->base_qpair->fwres.exch_limit);
++
++		if (ql2xenforce_iocb_limit == 2) {
++			iocbs_used = atomic_read(&ha->fwres.iocb_used);
++			exch_used  = atomic_read(&ha->fwres.exch_used);
++			seq_printf(s, "        estimate iocb2 used [%d] high water limit [%d]\n",
++					iocbs_used, ha->fwres.iocb_limit);
++
++			seq_printf(s, "        estimate exchange2 used[%d] high water limit [%d] \n",
++					exch_used, ha->fwres.exch_limit);
++		}
  	}
+ 
+ 	return 0;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -4217,6 +4217,14 @@ void qla_init_iocb_limit(scsi_qla_host_t
+ 			ha->queue_pair_map[i]->fwres.exch_used = 0;
+ 		}
+ 	}
++
++	ha->fwres.iocb_total = ha->orig_fw_iocb_count;
++	ha->fwres.iocb_limit = (ha->orig_fw_iocb_count * QLA_IOCB_PCT_LIMIT) / 100;
++	ha->fwres.exch_total = ha->orig_fw_xcb_count;
++	ha->fwres.exch_limit = (ha->orig_fw_xcb_count * QLA_IOCB_PCT_LIMIT) / 100;
++
++	atomic_set(&ha->fwres.iocb_used, 0);
++	atomic_set(&ha->fwres.exch_used, 0);
  }
  
--static int mlx5_esw_offloads_pf_vf_devlink_port_init(struct mlx5_eswitch *esw, u16 vport_num)
-+int mlx5_esw_offloads_pf_vf_devlink_port_init(struct mlx5_eswitch *esw, u16 vport_num)
+ void qla_adjust_iocb_limit(scsi_qla_host_t *vha)
+--- a/drivers/scsi/qla2xxx/qla_inline.h
++++ b/drivers/scsi/qla2xxx/qla_inline.h
+@@ -386,6 +386,7 @@ enum {
+ 	RESOURCE_IOCB = BIT_0,
+ 	RESOURCE_EXCH = BIT_1,  /* exchange */
+ 	RESOURCE_FORCE = BIT_2,
++	RESOURCE_HA = BIT_3,
+ };
+ 
+ static inline int
+@@ -393,7 +394,7 @@ qla_get_fw_resources(struct qla_qpair *q
  {
- 	struct devlink_port *dl_port;
- 	struct mlx5_vport *vport;
-@@ -84,7 +84,7 @@ static int mlx5_esw_offloads_pf_vf_devlink_port_init(struct mlx5_eswitch *esw, u
+ 	u16 iocbs_used, i;
+ 	u16 exch_used;
+-	struct qla_hw_data *ha = qp->vha->hw;
++	struct qla_hw_data *ha = qp->hw;
+ 
+ 	if (!ql2xenforce_iocb_limit) {
+ 		iores->res_type = RESOURCE_NONE;
+@@ -428,15 +429,69 @@ qla_get_fw_resources(struct qla_qpair *q
+ 			return -ENOSPC;
+ 		}
+ 	}
++
++	if (ql2xenforce_iocb_limit == 2) {
++		if ((iores->iocb_cnt + atomic_read(&ha->fwres.iocb_used)) >=
++		    ha->fwres.iocb_limit) {
++			iores->res_type = RESOURCE_NONE;
++			return -ENOSPC;
++		}
++
++		if (iores->res_type & RESOURCE_EXCH) {
++			if ((iores->exch_cnt + atomic_read(&ha->fwres.exch_used)) >=
++			    ha->fwres.exch_limit) {
++				iores->res_type = RESOURCE_NONE;
++				return -ENOSPC;
++			}
++		}
++	}
++
+ force:
+ 	qp->fwres.iocbs_used += iores->iocb_cnt;
+ 	qp->fwres.exch_used += iores->exch_cnt;
++	if (ql2xenforce_iocb_limit == 2) {
++		atomic_add(iores->iocb_cnt, &ha->fwres.iocb_used);
++		atomic_add(iores->exch_cnt, &ha->fwres.exch_used);
++		iores->res_type |= RESOURCE_HA;
++	}
  	return 0;
  }
  
--static void mlx5_esw_offloads_pf_vf_devlink_port_cleanup(struct mlx5_eswitch *esw, u16 vport_num)
-+void mlx5_esw_offloads_pf_vf_devlink_port_cleanup(struct mlx5_eswitch *esw, u16 vport_num)
++/*
++ * decrement to zero.  This routine will not decrement below zero
++ * @v:  pointer of type atomic_t
++ * @amount: amount to decrement from v
++ */
++static void qla_atomic_dtz(atomic_t *v, int amount)
++{
++	int c, old, dec;
++
++	c = atomic_read(v);
++	for (;;) {
++		dec = c - amount;
++		if (unlikely(dec < 0))
++			dec = 0;
++
++		old = atomic_cmpxchg((v), c, dec);
++		if (likely(old == c))
++			break;
++		c = old;
++	}
++}
++
+ static inline void
+ qla_put_fw_resources(struct qla_qpair *qp, struct iocb_resource *iores)
  {
- 	struct mlx5_vport *vport;
- 
-@@ -118,10 +118,6 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_
- 	if (IS_ERR(vport))
- 		return PTR_ERR(vport);
- 
--	err = mlx5_esw_offloads_pf_vf_devlink_port_init(esw, vport_num);
--	if (err)
--		return err;
--
- 	dl_port = vport->dl_port;
- 	if (!dl_port)
- 		return 0;
-@@ -131,7 +127,7 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_
- 	err = devl_port_register_with_ops(devlink, dl_port, dl_port_index,
- 					  &mlx5_esw_dl_port_ops);
- 	if (err)
--		goto reg_err;
-+		return err;
- 
- 	err = devl_rate_leaf_create(dl_port, vport, NULL);
- 	if (err)
-@@ -141,8 +137,6 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_
- 
- rate_err:
- 	devl_port_unregister(dl_port);
--reg_err:
--	mlx5_esw_offloads_pf_vf_devlink_port_cleanup(esw, vport_num);
- 	return err;
- }
- 
-@@ -160,7 +154,6 @@ void mlx5_esw_offloads_devlink_port_unregister(struct mlx5_eswitch *esw, u16 vpo
- 	}
- 
- 	devl_port_unregister(vport->dl_port);
--	mlx5_esw_offloads_pf_vf_devlink_port_cleanup(esw, vport_num);
- }
- 
- struct devlink_port *mlx5_esw_offloads_devlink_port(struct mlx5_eswitch *esw, u16 vport_num)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 85ddf6f7e37df..591184d892af6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1095,6 +1095,31 @@ void mlx5_eswitch_unload_vport(struct mlx5_eswitch *esw, u16 vport_num)
- 	mlx5_esw_vport_disable(esw, vport_num);
- }
- 
-+static int mlx5_eswitch_load_pf_vf_vport(struct mlx5_eswitch *esw, u16 vport_num,
-+					 enum mlx5_eswitch_vport_event enabled_events)
-+{
-+	int err;
++	struct qla_hw_data *ha = qp->hw;
 +
-+	err = mlx5_esw_offloads_init_pf_vf_rep(esw, vport_num);
-+	if (err)
-+		return err;
++	if (iores->res_type & RESOURCE_HA) {
++		if (iores->res_type & RESOURCE_IOCB)
++			qla_atomic_dtz(&ha->fwres.iocb_used, iores->iocb_cnt);
 +
-+	err = mlx5_eswitch_load_vport(esw, vport_num, enabled_events);
-+	if (err)
-+		goto err_load;
-+	return 0;
++		if (iores->res_type & RESOURCE_EXCH)
++			qla_atomic_dtz(&ha->fwres.exch_used, iores->exch_cnt);
++	}
 +
-+err_load:
-+	mlx5_esw_offloads_cleanup_pf_vf_rep(esw, vport_num);
-+	return err;
-+}
-+
-+static void mlx5_eswitch_unload_pf_vf_vport(struct mlx5_eswitch *esw, u16 vport_num)
-+{
-+	mlx5_eswitch_unload_vport(esw, vport_num);
-+	mlx5_esw_offloads_cleanup_pf_vf_rep(esw, vport_num);
-+}
-+
- void mlx5_eswitch_unload_vf_vports(struct mlx5_eswitch *esw, u16 num_vfs)
- {
- 	struct mlx5_vport *vport;
-@@ -1103,7 +1128,7 @@ void mlx5_eswitch_unload_vf_vports(struct mlx5_eswitch *esw, u16 num_vfs)
- 	mlx5_esw_for_each_vf_vport(esw, i, vport, num_vfs) {
- 		if (!vport->enabled)
- 			continue;
--		mlx5_eswitch_unload_vport(esw, vport->vport);
-+		mlx5_eswitch_unload_pf_vf_vport(esw, vport->vport);
- 	}
- }
+ 	if (iores->res_type & RESOURCE_IOCB) {
+ 		if (qp->fwres.iocbs_used >= iores->iocb_cnt) {
+ 			qp->fwres.iocbs_used -= iores->iocb_cnt;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -44,10 +44,11 @@ module_param(ql2xfulldump_on_mpifail, in
+ MODULE_PARM_DESC(ql2xfulldump_on_mpifail,
+ 		 "Set this to take full dump on MPI hang.");
  
-@@ -1116,7 +1141,7 @@ static void mlx5_eswitch_unload_ec_vf_vports(struct mlx5_eswitch *esw,
- 	mlx5_esw_for_each_ec_vf_vport(esw, i, vport, num_ec_vfs) {
- 		if (!vport->enabled)
- 			continue;
--		mlx5_eswitch_unload_vport(esw, vport->vport);
-+		mlx5_eswitch_unload_pf_vf_vport(esw, vport->vport);
- 	}
- }
+-int ql2xenforce_iocb_limit = 1;
++int ql2xenforce_iocb_limit = 2;
+ module_param(ql2xenforce_iocb_limit, int, S_IRUGO | S_IWUSR);
+ MODULE_PARM_DESC(ql2xenforce_iocb_limit,
+-		 "Enforce IOCB throttling, to avoid FW congestion. (default: 1)");
++		 "Enforce IOCB throttling, to avoid FW congestion. (default: 2) "
++		 "1: track usage per queue, 2: track usage per adapter");
  
-@@ -1128,7 +1153,7 @@ int mlx5_eswitch_load_vf_vports(struct mlx5_eswitch *esw, u16 num_vfs,
- 	int err;
- 
- 	mlx5_esw_for_each_vf_vport(esw, i, vport, num_vfs) {
--		err = mlx5_eswitch_load_vport(esw, vport->vport, enabled_events);
-+		err = mlx5_eswitch_load_pf_vf_vport(esw, vport->vport, enabled_events);
- 		if (err)
- 			goto vf_err;
- 	}
-@@ -1148,7 +1173,7 @@ static int mlx5_eswitch_load_ec_vf_vports(struct mlx5_eswitch *esw, u16 num_ec_v
- 	int err;
- 
- 	mlx5_esw_for_each_ec_vf_vport(esw, i, vport, num_ec_vfs) {
--		err = mlx5_eswitch_load_vport(esw, vport->vport, enabled_events);
-+		err = mlx5_eswitch_load_pf_vf_vport(esw, vport->vport, enabled_events);
- 		if (err)
- 			goto vf_err;
- 	}
-@@ -1190,7 +1215,7 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
- 	int ret;
- 
- 	/* Enable PF vport */
--	ret = mlx5_eswitch_load_vport(esw, MLX5_VPORT_PF, enabled_events);
-+	ret = mlx5_eswitch_load_pf_vf_vport(esw, MLX5_VPORT_PF, enabled_events);
- 	if (ret)
- 		return ret;
- 
-@@ -1201,7 +1226,7 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
- 
- 	/* Enable ECPF vport */
- 	if (mlx5_ecpf_vport_exists(esw->dev)) {
--		ret = mlx5_eswitch_load_vport(esw, MLX5_VPORT_ECPF, enabled_events);
-+		ret = mlx5_eswitch_load_pf_vf_vport(esw, MLX5_VPORT_ECPF, enabled_events);
- 		if (ret)
- 			goto ecpf_err;
- 		if (mlx5_core_ec_sriov_enabled(esw->dev)) {
-@@ -1224,11 +1249,11 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
- 		mlx5_eswitch_unload_ec_vf_vports(esw, esw->esw_funcs.num_ec_vfs);
- ec_vf_err:
- 	if (mlx5_ecpf_vport_exists(esw->dev))
--		mlx5_eswitch_unload_vport(esw, MLX5_VPORT_ECPF);
-+		mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_ECPF);
- ecpf_err:
- 	host_pf_disable_hca(esw->dev);
- pf_hca_err:
--	mlx5_eswitch_unload_vport(esw, MLX5_VPORT_PF);
-+	mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_PF);
- 	return ret;
- }
- 
-@@ -1242,11 +1267,11 @@ void mlx5_eswitch_disable_pf_vf_vports(struct mlx5_eswitch *esw)
- 	if (mlx5_ecpf_vport_exists(esw->dev)) {
- 		if (mlx5_core_ec_sriov_enabled(esw->dev))
- 			mlx5_eswitch_unload_ec_vf_vports(esw, esw->esw_funcs.num_vfs);
--		mlx5_eswitch_unload_vport(esw, MLX5_VPORT_ECPF);
-+		mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_ECPF);
- 	}
- 
- 	host_pf_disable_hca(esw->dev);
--	mlx5_eswitch_unload_vport(esw, MLX5_VPORT_PF);
-+	mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_PF);
- }
- 
- static void mlx5_eswitch_get_devlink_param(struct mlx5_eswitch *esw)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 040ed6d79258f..56d9a261a5c80 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -725,6 +725,8 @@ void mlx5_esw_set_spec_source_port(struct mlx5_eswitch *esw,
- 				   u16 vport,
- 				   struct mlx5_flow_spec *spec);
- 
-+int mlx5_esw_offloads_init_pf_vf_rep(struct mlx5_eswitch *esw, u16 vport_num);
-+void mlx5_esw_offloads_cleanup_pf_vf_rep(struct mlx5_eswitch *esw, u16 vport_num);
- int mlx5_esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num);
- void mlx5_esw_offloads_unload_rep(struct mlx5_eswitch *esw, u16 vport_num);
- 
-@@ -739,6 +741,8 @@ int mlx5_eswitch_load_vf_vports(struct mlx5_eswitch *esw, u16 num_vfs,
- 				enum mlx5_eswitch_vport_event enabled_events);
- void mlx5_eswitch_unload_vf_vports(struct mlx5_eswitch *esw, u16 num_vfs);
- 
-+int mlx5_esw_offloads_pf_vf_devlink_port_init(struct mlx5_eswitch *esw, u16 vport_num);
-+void mlx5_esw_offloads_pf_vf_devlink_port_cleanup(struct mlx5_eswitch *esw, u16 vport_num);
- int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_num);
- void mlx5_esw_offloads_devlink_port_unregister(struct mlx5_eswitch *esw, u16 vport_num);
- struct devlink_port *mlx5_esw_offloads_devlink_port(struct mlx5_eswitch *esw, u16 vport_num);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 1eb49784c0e11..2f8bab73643e2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -2424,6 +2424,22 @@ void mlx5_esw_offloads_rep_unload(struct mlx5_eswitch *esw, u16 vport_num)
- 		__esw_offloads_unload_rep(esw, rep, rep_type);
- }
- 
-+int mlx5_esw_offloads_init_pf_vf_rep(struct mlx5_eswitch *esw, u16 vport_num)
-+{
-+	if (esw->mode != MLX5_ESWITCH_OFFLOADS)
-+		return 0;
-+
-+	return mlx5_esw_offloads_pf_vf_devlink_port_init(esw, vport_num);
-+}
-+
-+void mlx5_esw_offloads_cleanup_pf_vf_rep(struct mlx5_eswitch *esw, u16 vport_num)
-+{
-+	if (esw->mode != MLX5_ESWITCH_OFFLOADS)
-+		return;
-+
-+	mlx5_esw_offloads_pf_vf_devlink_port_cleanup(esw, vport_num);
-+}
-+
- int mlx5_esw_offloads_load_rep(struct mlx5_eswitch *esw, u16 vport_num)
- {
- 	int err;
--- 
-2.40.1
-
+ /*
+  * CT6 CTX allocation cache
 
 
