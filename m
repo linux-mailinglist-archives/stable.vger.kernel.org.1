@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C47B7A3C4B
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00A977A3C2B
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240980AbjIQU3W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:29:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36632 "EHLO
+        id S240929AbjIQU1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241021AbjIQU3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:29:00 -0400
+        with ESMTP id S239691AbjIQU1b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:27:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AB6116
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:28:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE566C433CB;
-        Sun, 17 Sep 2023 20:28:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9008B10F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:27:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB2EC433C7;
+        Sun, 17 Sep 2023 20:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982534;
-        bh=yYh8Gu/RdDYUANlb4Ubcs8TAj2K9Y5EqgiK40stDghQ=;
+        s=korg; t=1694982442;
+        bh=m9BRi6XnsLGUROcWSlO5y8XGYmviE3/tNj5b9ltwsT8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KrobA0Pb97KBRmuwHAVJoTiClAN6RSxPCu5Cq6jLVvkJw/UJPKaL81ttGZqyxsk9v
-         OjI5agY+pN/8p0SNRH0NMxVEx8/YWRAG3tWFNx5QahI2bymDJB5tqWVhtIJ0l6j0vO
-         3CkUQEbvoLaWMkDav6CqGGiJf5WVvFj5W0cGOzRo=
+        b=hRYDlI0ouY8T1HuJYMktF39rUFc+7xEFdZ9DhMZYL/Ynd9DZqwmqRG89Of8ORzIhK
+         UiKW0bgehEHf1YZKmqDsOhOZIykSAK5x0jrPtfStugai6/zXpDrzztkpbHPZpZMPPH
+         mJBjuqeCMtLqK2khZDRMOeoOfpndPuRQTVmWVcW8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Bart Van Assche <bvanassche@acm.org>,
+        patches@lists.linux.dev, Wenchao Hao <haowenchao@huawei.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Lee Duncan <lduncan@suse.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 251/511] scsi: RDMA/srp: Fix residual handling
-Date:   Sun, 17 Sep 2023 21:11:18 +0200
-Message-ID: <20230917191119.882521896@linuxfoundation.org>
+Subject: [PATCH 5.15 252/511] scsi: iscsi: Rename iscsi_set_param() to iscsi_if_set_param()
+Date:   Sun, 17 Sep 2023 21:11:19 +0200
+Message-ID: <20230917191119.907710486@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,47 +56,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Wenchao Hao <haowenchao@huawei.com>
 
-[ Upstream commit 89e637c19b2441aabc8dbf22a8745b932fd6996e ]
+[ Upstream commit 0c26a2d7c98039e913e63f9250fde738a3f88a60 ]
 
-Although the code for residual handling in the SRP initiator follows the
-SCSI documentation, that documentation has never been correct. Because
-scsi_finish_command() starts from the data buffer length and subtracts the
-residual, scsi_set_resid() must not be called if a residual overflow
-occurs. Hence remove the scsi_set_resid() calls from the SRP initiator if a
-residual overflow occurrs.
+There are two iscsi_set_param() functions defined in libiscsi.c and
+scsi_transport_iscsi.c respectively which is confusing.
 
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Fixes: 9237f04e12cc ("scsi: core: Fix scsi_get/set_resid() interface")
-Fixes: e714531a349f ("IB/srp: Fix residual handling")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230724200843.3376570-3-bvanassche@acm.org
-Acked-by: Leon Romanovsky <leon@kernel.org>
+Rename the one in scsi_transport_iscsi.c to iscsi_if_set_param().
+
+Signed-off-by: Wenchao Hao <haowenchao@huawei.com>
+Link: https://lore.kernel.org/r/20221122181105.4123935-1-haowenchao@huawei.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Lee Duncan <lduncan@suse.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 971dfcb74a80 ("scsi: iscsi: Add length check for nlattr payload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-index a6117a7d0ab17..7701204fe5423 100644
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -1978,12 +1978,8 @@ static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp)
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 4d23e5af20d30..2d237246281fb 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3034,7 +3034,7 @@ iscsi_if_destroy_conn(struct iscsi_transport *transport, struct iscsi_uevent *ev
+ }
  
- 		if (unlikely(rsp->flags & SRP_RSP_FLAG_DIUNDER))
- 			scsi_set_resid(scmnd, be32_to_cpu(rsp->data_in_res_cnt));
--		else if (unlikely(rsp->flags & SRP_RSP_FLAG_DIOVER))
--			scsi_set_resid(scmnd, -be32_to_cpu(rsp->data_in_res_cnt));
- 		else if (unlikely(rsp->flags & SRP_RSP_FLAG_DOUNDER))
- 			scsi_set_resid(scmnd, be32_to_cpu(rsp->data_out_res_cnt));
--		else if (unlikely(rsp->flags & SRP_RSP_FLAG_DOOVER))
--			scsi_set_resid(scmnd, -be32_to_cpu(rsp->data_out_res_cnt));
- 
- 		srp_free_req(ch, req, scmnd,
- 			     be32_to_cpu(rsp->req_lim_delta));
+ static int
+-iscsi_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
++iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
+ {
+ 	char *data = (char*)ev + sizeof(*ev);
+ 	struct iscsi_cls_conn *conn;
+@@ -3988,7 +3988,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+ 			err = -EINVAL;
+ 		break;
+ 	case ISCSI_UEVENT_SET_PARAM:
+-		err = iscsi_set_param(transport, ev);
++		err = iscsi_if_set_param(transport, ev);
+ 		break;
+ 	case ISCSI_UEVENT_CREATE_CONN:
+ 	case ISCSI_UEVENT_DESTROY_CONN:
 -- 
 2.40.1
 
