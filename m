@@ -2,40 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD4DC7A3AF0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980CF7A3B0E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240525AbjIQUKt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55914 "EHLO
+        id S240514AbjIQUMu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240613AbjIQUKe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:34 -0400
+        with ESMTP id S240632AbjIQUMe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E99BB5
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B756C433C7;
-        Sun, 17 Sep 2023 20:10:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C1C4CC7
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77CEC433C7;
+        Sun, 17 Sep 2023 20:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981428;
-        bh=OUKDi2uMrP28Uikek4Ixfzm4Qrx1+nRqC0pIgid3PHc=;
+        s=korg; t=1694981520;
+        bh=T7ejpg3fexGo391X7XnwW+7/3BbiAVlvGKveYmZV694=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hZiQTN0TXTreLsE/9zBL5JhlqCbcTlTx2MPJYZzYJQ8K7UKZhxnB1pi4U2N6oY/od
-         LpboRlr9CH+rnwZgsjsGodqBOedKJEVIyVesWEExswtIua95xCl7vnT1PcKlys2LWz
-         jmpkI5wsN0nsxUv2WXAfI3Saz1uaqPyG7M8vgfdc=
+        b=e3lbep6+BBmSb7o5J5QBcY7wV5IffoorrGo8nFWD1TT/28l6gIRsyI7ziOsB37aK4
+         bL8dlKzHjnflFn5+qdh3YMO9ACNvqvuMQHZG7KsF4ZhcprxbbMy4eA54DyAvar9nmg
+         YbE11hBX6pYp2XEzc6qmHD7/12Xc0ESJpbVMsh6g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "stable@vger.kernel.org, robh+dt@kernel.org, frowand.list@gmail.com,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        devicetree@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, Nathan Chancellor" 
-        <nathan@kernel.org>, Rob Herring <robh@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 052/511] of: kexec: Mark ima_{free,stable}_kexec_buffer() as __init
-Date:   Sun, 17 Sep 2023 21:07:59 +0200
-Message-ID: <20230917191115.135922367@linuxfoundation.org>
+        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 053/511] udf: Check consistency of Space Bitmap Descriptor
+Date:   Sun, 17 Sep 2023 21:08:00 +0200
+Message-ID: <20230917191115.161839873@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -58,82 +53,86 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-This commit has no direct upstream equivalent.
+commit 1e0d4adf17e7ef03281d7b16555e7c1508c8ed2d upstream.
 
-After commit d48016d74836 ("mm,ima,kexec,of: use memblock_free_late from
-ima_free_kexec_buffer") in 5.15, there is a modpost warning for certain
-configurations:
+Bits, which are related to Bitmap Descriptor logical blocks,
+are not reset when buffer headers are allocated for them. As the
+result, these logical blocks can be treated as free and
+be used for other blocks.This can cause usage of one buffer header
+for several types of data. UDF issues WARNING in this situation:
 
-  WARNING: modpost: vmlinux.o(.text+0xb14064): Section mismatch in reference from the function ima_free_kexec_buffer() to the function .init.text:__memblock_free_late()
-  The function ima_free_kexec_buffer() references
-  the function __init __memblock_free_late().
-  This is often because ima_free_kexec_buffer lacks a __init
-  annotation or the annotation of __memblock_free_late is wrong.
+WARNING: CPU: 0 PID: 2703 at fs/udf/inode.c:2014
+  __udf_add_aext+0x685/0x7d0 fs/udf/inode.c:2014
 
-In mainline, there is no issue because ima_free_kexec_buffer() is marked
-as __init, which was done as part of commit b69a2afd5afc ("x86/kexec:
-Carry forward IMA measurement log on kexec") in 6.0, which is not
-suitable for stable.
+RIP: 0010:__udf_add_aext+0x685/0x7d0 fs/udf/inode.c:2014
+Call Trace:
+ udf_setup_indirect_aext+0x573/0x880 fs/udf/inode.c:1980
+ udf_add_aext+0x208/0x2e0 fs/udf/inode.c:2067
+ udf_insert_aext fs/udf/inode.c:2233 [inline]
+ udf_update_extents fs/udf/inode.c:1181 [inline]
+ inode_getblk+0x1981/0x3b70 fs/udf/inode.c:885
 
-Mark ima_free_kexec_buffer() and its single caller
-ima_load_kexec_buffer() as __init in 5.15, as ima_load_kexec_buffer() is
-only called from ima_init(), which is __init, clearing up the warning.
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Rob Herring <robh@kernel.org>
+[JK: Somewhat cleaned up the boundary checks]
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/kexec.c                 |    2 +-
- include/linux/of.h                 |    2 +-
- security/integrity/ima/ima.h       |    2 +-
- security/integrity/ima/ima_kexec.c |    2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ fs/udf/balloc.c |   31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -165,7 +165,7 @@ int ima_get_kexec_buffer(void **addr, si
- /**
-  * ima_free_kexec_buffer - free memory used by the IMA buffer
-  */
--int ima_free_kexec_buffer(void)
-+int __init ima_free_kexec_buffer(void)
+--- a/fs/udf/balloc.c
++++ b/fs/udf/balloc.c
+@@ -36,18 +36,41 @@ static int read_block_bitmap(struct supe
+ 			     unsigned long bitmap_nr)
  {
- 	int ret;
- 	unsigned long addr;
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -574,7 +574,7 @@ void *of_kexec_alloc_and_setup_fdt(const
- 				   unsigned long initrd_len,
- 				   const char *cmdline, size_t extra_fdt_size);
- int ima_get_kexec_buffer(void **addr, size_t *size);
--int ima_free_kexec_buffer(void);
-+int __init ima_free_kexec_buffer(void);
- #else /* CONFIG_OF */
+ 	struct buffer_head *bh = NULL;
+-	int retval = 0;
++	int i;
++	int max_bits, off, count;
+ 	struct kernel_lb_addr loc;
  
- static inline void of_core_init(void)
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -122,7 +122,7 @@ struct ima_kexec_hdr {
- extern const int read_idmap[];
+ 	loc.logicalBlockNum = bitmap->s_extPosition;
+ 	loc.partitionReferenceNum = UDF_SB(sb)->s_partition;
  
- #ifdef CONFIG_HAVE_IMA_KEXEC
--void ima_load_kexec_buffer(void);
-+void __init ima_load_kexec_buffer(void);
- #else
- static inline void ima_load_kexec_buffer(void) {}
- #endif /* CONFIG_HAVE_IMA_KEXEC */
---- a/security/integrity/ima/ima_kexec.c
-+++ b/security/integrity/ima/ima_kexec.c
-@@ -137,7 +137,7 @@ void ima_add_kexec_buffer(struct kimage
- /*
-  * Restore the measurement list from the previous kernel.
-  */
--void ima_load_kexec_buffer(void)
-+void __init ima_load_kexec_buffer(void)
- {
- 	void *kexec_buffer = NULL;
- 	size_t kexec_buffer_size = 0;
+ 	bh = udf_tread(sb, udf_get_lb_pblock(sb, &loc, block));
++	bitmap->s_block_bitmap[bitmap_nr] = bh;
+ 	if (!bh)
+-		retval = -EIO;
++		return -EIO;
+ 
+-	bitmap->s_block_bitmap[bitmap_nr] = bh;
+-	return retval;
++	/* Check consistency of Space Bitmap buffer. */
++	max_bits = sb->s_blocksize * 8;
++	if (!bitmap_nr) {
++		off = sizeof(struct spaceBitmapDesc) << 3;
++		count = min(max_bits - off, bitmap->s_nr_groups);
++	} else {
++		/*
++		 * Rough check if bitmap number is too big to have any bitmap
++		 * blocks reserved.
++		 */
++		if (bitmap_nr >
++		    (bitmap->s_nr_groups >> (sb->s_blocksize_bits + 3)) + 2)
++			return 0;
++		off = 0;
++		count = bitmap->s_nr_groups - bitmap_nr * max_bits +
++				(sizeof(struct spaceBitmapDesc) << 3);
++		count = min(count, max_bits);
++	}
++
++	for (i = 0; i < count; i++)
++		if (udf_test_bit(i + off, bh->b_data))
++			return -EFSCORRUPTED;
++	return 0;
+ }
+ 
+ static int __load_block_bitmap(struct super_block *sb,
 
 
