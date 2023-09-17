@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A84217A38C5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A07387A39DC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239851AbjIQTkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36006 "EHLO
+        id S240182AbjIQTzP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239885AbjIQTkB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:40:01 -0400
+        with ESMTP id S240284AbjIQTzL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E79B132
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA05FC433C8;
-        Sun, 17 Sep 2023 19:39:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57ADD103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:55:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DE6C433C8;
+        Sun, 17 Sep 2023 19:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979595;
-        bh=UEO+eg6g4mBa8pLJG92gplXG5KaYQazpUeJrHQ/cZ+o=;
+        s=korg; t=1694980505;
+        bh=8Z29cEQGLL/WMFoYptKbXIxgoVKWzegYp7l6MCQ8xwk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kugPdNV9cS1Osh2c/IkXkiMDWC/LJPsT0jaaOhIsqxCX9EDtN3TTKTIy9b8+Wl8Tg
-         nJq28qBNjfzkMbSyjCFW4G4nQctlg6PIE/pM2MqzaTSBJ9r1wjCCBYupJ3JjzA2QnE
-         6smw2q/6IV/OAcdI8NUIIGmeUQSUWClEtnJSJ3LM=
+        b=aqWN70RR/IJxeiVvTGS37BcOJ15Zc3UgIOZVmm4aBiWgVxCIwUmwPEd6LRuPP+8at
+         fjIfYNuJtjV3dJh76nLahUpFp9EBDnUSRow4vAtHVOjt67NyWvBZ2XnpgqhRowFn+G
+         csE5IZXgGiG+Mb5hqs6XyNNh2OsE5FUolPJhVJhs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 358/406] igbvf: Change IGBVF_MIN to allow set rx/tx value between 64 and 80
+        patches@lists.linux.dev, Liu Ying <victor.liu@nxp.com>,
+        Marek Vasut <marex@denx.de>
+Subject: [PATCH 6.5 212/285] drm/mxsfb: Disable overlay plane in mxsfb_plane_overlay_atomic_disable()
 Date:   Sun, 17 Sep 2023 21:13:32 +0200
-Message-ID: <20230917191110.729193625@linuxfoundation.org>
+Message-ID: <20230917191058.900150919@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit 8360717524a24a421c36ef8eb512406dbd42160a ]
+commit aa656d48e871a1b062e1bbf9474d8b831c35074c upstream.
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igbvf devices can use as low as 64 descriptors.
-This change will unify igbvf with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+When disabling overlay plane in mxsfb_plane_overlay_atomic_update(),
+overlay plane's framebuffer pointer is NULL.  So, dereferencing it would
+cause a kernel Oops(NULL pointer dereferencing).  Fix the issue by
+disabling overlay plane in mxsfb_plane_overlay_atomic_disable() instead.
 
-Fixes: d4e0fe01a38a ("igbvf: add new driver to support 82576 virtual functions")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cb285a5348e7 ("drm: mxsfb: Replace mxsfb_get_fb_paddr() with drm_fb_cma_get_gem_addr()")
+Cc: stable@vger.kernel.org # 5.19+
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230612092359.784115-1-victor.liu@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igbvf/igbvf.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igbvf/igbvf.h b/drivers/net/ethernet/intel/igbvf/igbvf.h
-index 975eb47ee04df..b39fca9827dc2 100644
---- a/drivers/net/ethernet/intel/igbvf/igbvf.h
-+++ b/drivers/net/ethernet/intel/igbvf/igbvf.h
-@@ -39,11 +39,11 @@ enum latency_range {
- /* Tx/Rx descriptor defines */
- #define IGBVF_DEFAULT_TXD	256
- #define IGBVF_MAX_TXD		4096
--#define IGBVF_MIN_TXD		80
-+#define IGBVF_MIN_TXD		64
+--- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+@@ -611,6 +611,14 @@ static void mxsfb_plane_overlay_atomic_u
+ 	writel(ctrl, mxsfb->base + LCDC_AS_CTRL);
+ }
  
- #define IGBVF_DEFAULT_RXD	256
- #define IGBVF_MAX_RXD		4096
--#define IGBVF_MIN_RXD		80
-+#define IGBVF_MIN_RXD		64
++static void mxsfb_plane_overlay_atomic_disable(struct drm_plane *plane,
++					       struct drm_atomic_state *state)
++{
++	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(plane->dev);
++
++	writel(0, mxsfb->base + LCDC_AS_CTRL);
++}
++
+ static bool mxsfb_format_mod_supported(struct drm_plane *plane,
+ 				       uint32_t format,
+ 				       uint64_t modifier)
+@@ -626,6 +634,7 @@ static const struct drm_plane_helper_fun
+ static const struct drm_plane_helper_funcs mxsfb_plane_overlay_helper_funcs = {
+ 	.atomic_check = mxsfb_plane_atomic_check,
+ 	.atomic_update = mxsfb_plane_overlay_atomic_update,
++	.atomic_disable = mxsfb_plane_overlay_atomic_disable,
+ };
  
- #define IGBVF_MIN_ITR_USECS	10 /* 100000 irq/sec */
- #define IGBVF_MAX_ITR_USECS	10000 /* 100    irq/sec */
--- 
-2.40.1
-
+ static const struct drm_plane_funcs mxsfb_plane_funcs = {
 
 
