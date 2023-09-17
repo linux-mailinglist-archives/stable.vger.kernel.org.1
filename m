@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F0E7A3B73
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9808A7A3B75
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240684AbjIQURk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
+        id S239601AbjIQUSJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240724AbjIQURb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:31 -0400
+        with ESMTP id S239593AbjIQURh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4502CF1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEA2C433C8;
-        Sun, 17 Sep 2023 20:17:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76D2F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED22FC433C7;
+        Sun, 17 Sep 2023 20:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981845;
-        bh=YqThmGBH61Y75cGC5KbgzqLkFkQuQRCfp1FiOyFyupA=;
+        s=korg; t=1694981852;
+        bh=ZpsLx2OuMhez4FiCcOHOxDFWdzfGGidvzvkpdrEizks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IJFMXxIO2KyRB6qcshz4666GvWeb9Q844oacuSzukTbS1/+Qzkbgc8Uj02fn4RIy8
-         d/wHXfSCiMxrf+YUeRltrZX52gS7ULqu9oPbP4pRQfrA2Il1vTQ+dZcsHwKwvRAMzG
-         +qSh5Dh7oMKQ0z5FDNBGIoQ3XnfhyoD5qIj1lbTY=
+        b=USwBUEl9XtM1fqNb8bDW/enSwDlXWIbUI9PpE8uctjWz/kEb7xiqf0S/dccgw8nPD
+         7sOrKNE5UGvVGZy+rchXNMaL+NPOxz9DduuvT3Ct4bk5Dwxf2imHXY45R+egZWwgIp
+         sCjiNM5C6jve+zJZdxa5vsZXxXkXVI+x8kB+jXZo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/511] wifi: mwifiex: avoid possible NULL skb pointer dereference
-Date:   Sun, 17 Sep 2023 21:09:01 +0200
-Message-ID: <20230917191116.611157084@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 115/511] Bluetooth: btusb: Do not call kfree_skb() under spin_lock_irqsave()
+Date:   Sun, 17 Sep 2023 21:09:02 +0200
+Message-ID: <20230917191116.653942988@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -54,48 +54,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
+[ Upstream commit 2a05334d7f91ff189692089c05fc48cc1d8204de ]
 
-In 'mwifiex_handle_uap_rx_forward()', always check the value
-returned by 'skb_copy()' to avoid potential NULL pointer
-dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
-original skb in case of copying failure.
+It is not allowed to call kfree_skb() from hardware interrupt
+context or with hardware interrupts being disabled.
+So replace kfree_skb() with dev_kfree_skb_irq() under
+spin_lock_irqsave(). Compile tested only.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
+Fixes: baac6276c0a9 ("Bluetooth: btusb: handle mSBC audio over USB Endpoints")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index d6493638e7028..8a5d0125a1abd 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -265,7 +265,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 15d253325fd8a..84a42348b3bcb 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1756,7 +1756,7 @@ static int btusb_switch_alt_setting(struct hci_dev *hdev, int new_alts)
+ 		 * alternate setting.
+ 		 */
+ 		spin_lock_irqsave(&data->rxlock, flags);
+-		kfree_skb(data->sco_skb);
++		dev_kfree_skb_irq(data->sco_skb);
+ 		data->sco_skb = NULL;
+ 		spin_unlock_irqrestore(&data->rxlock, flags);
  
- 	if (is_multicast_ether_addr(ra)) {
- 		skb_uap = skb_copy(skb, GFP_ATOMIC);
--		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		if (likely(skb_uap)) {
-+			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		} else {
-+			mwifiex_dbg(adapter, ERROR,
-+				    "failed to copy skb for uAP\n");
-+			priv->stats.rx_dropped++;
-+			dev_kfree_skb_any(skb);
-+			return -1;
-+		}
- 	} else {
- 		if (mwifiex_get_sta_entry(priv, ra)) {
- 			/* Requeue Intra-BSS packet */
 -- 
 2.40.1
 
