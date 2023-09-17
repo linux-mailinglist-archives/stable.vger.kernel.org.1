@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B9D7A3D39
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7862B7A3B5C
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241222AbjIQUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48338 "EHLO
+        id S240665AbjIQUQg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241279AbjIQUjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:51 -0400
+        with ESMTP id S240775AbjIQUQ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:16:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB59E10E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029B6C433C8;
-        Sun, 17 Sep 2023 20:39:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E87BF4
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:16:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB14CC433C7;
+        Sun, 17 Sep 2023 20:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983185;
-        bh=XaEI+TgndUjlZQZhtsb7D5kWjtpse4TqUNbcTblMWUg=;
+        s=korg; t=1694981781;
+        bh=L4uBNYbkWTXBQckBCU47VK8f/vLEStjdtjmtZrXrsyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BieFet3kAsmFDz32CM7wCkjw56/R2Wz9PDpLD/k9ppsc5fGhKxNTrUaJ/FZOLSIgm
-         YISPvhVe2v7TOYvjE+vea51PwzcLWtycKY3wo7BmlOLy9TmZNr6Zkfy+5eYToAvfzs
-         8cWgg3ggoqCEsGBm8HutcdllVBs2cymbNk1cVKuk=
+        b=hvf5YSreVWGZugR4wcS7PiLmDohrqPN/8zaaRhLPJnQUjPkzt6Kke1sO/vn/rjXiu
+         jtB03GNxB5Z0Jf8z3GHe6S94zoLHvS4dDgSooHme9ybsZjLebkKEQ7zssjq6o4Tiq2
+         Iwv93fDBGVh3xckk+zS3r3U8A+iqNcc0z/T2Q9rM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William R Sowerbutts <will@sowerbutts.com>,
-        Finn Thain <fthain@linux-m68k.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.15 470/511] ata: pata_falcon: fix IO base selection for Q40
-Date:   Sun, 17 Sep 2023 21:14:57 +0200
-Message-ID: <20230917191125.095785679@linuxfoundation.org>
+        patches@lists.linux.dev, Wu Zongyo <wuzongyo@mail.ustc.edu.cn>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 171/219] KVM: SVM: Dont inject #UD if KVM attempts to skip SEV guest insn
+Date:   Sun, 17 Sep 2023 21:14:58 +0200
+Message-ID: <20230917191047.189175989@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,127 +50,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 8a1f00b753ecfdb117dc1a07e68c46d80e7923ea upstream.
+commit cb49631ad111570f1bad37702c11c2ae07fa2e3c upstream.
 
-With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
-with pata_falcon and falconide"), the Q40 IDE driver was
-replaced by pata_falcon.c.
+Don't inject a #UD if KVM attempts to "emulate" to skip an instruction
+for an SEV guest, and instead resume the guest and hope that it can make
+forward progress.  When commit 04c40f344def ("KVM: SVM: Inject #UD on
+attempted emulation for SEV guest w/o insn buffer") added the completely
+arbitrary #UD behavior, there were no known scenarios where a well-behaved
+guest would induce a VM-Exit that triggered emulation, i.e. it was thought
+that injecting #UD would be helpful.
 
-Both IO and memory resources were defined for the Q40 IDE
-platform device, but definition of the IDE register addresses
-was modeled after the Falcon case, both in use of the memory
-resources and in including register shift and byte vs. word
-offset in the address.
+However, now that KVM (correctly) attempts to re-inject INT3/INTO, e.g. if
+a #NPF is encountered when attempting to deliver the INT3/INTO, an SEV
+guest can trigger emulation without a buffer, through no fault of its own.
+Resuming the guest and retrying the INT3/INTO is architecturally wrong,
+e.g. the vCPU will incorrectly re-hit code #DBs, but for SEV guests there
+is literally no other option that has a chance of making forward progress.
 
-This was correct for the Falcon case, which does not apply
-any address translation to the register addresses. In the
-Q40 case, all of device base address, byte access offset
-and register shift is included in the platform specific
-ISA access translation (in asm/mm_io.h).
+Drop the #UD injection for all "skip" emulation, not just those related to
+INT3/INTO, even though that means that the guest will likely end up in an
+infinite loop instead of getting a #UD (the vCPU may also crash, e.g. if
+KVM emulated everything about an instruction except for advancing RIP).
+There's no evidence that suggests that an unexpected #UD is actually
+better than hanging the vCPU, e.g. a soft-hung vCPU can still respond to
+IRQs and NMIs to generate a backtrace.
 
-As a consequence, such address translation gets applied
-twice, and register addresses are mangled.
-
-Use the device base address from the platform IO resource
-for Q40 (the IO address translation will then add the correct
-ISA window base address and byte access offset), with register
-shift 1. Use MMIO base address and register shift 2 as before
-for Falcon.
-
-Encode PIO_OFFSET into IO port addresses for all registers
-for Q40 except the data transfer register. Encode the MMIO
-offset there (pata_falcon_data_xfer() directly uses raw IO
-with no address translation).
-
-Reported-by: William R Sowerbutts <will@sowerbutts.com>
-Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
+Reported-by: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
+Closes: https://lore.kernel.org/all/8eb933fd-2cf3-d7a9-32fe-2a1d82eac42a@mail.ustc.edu.cn
+Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
 Cc: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20230825013621.2845700-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_falcon.c |   50 ++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
+ arch/x86/kvm/svm/svm.c |   35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(s
- 	struct resource *base_res, *ctl_res, *irq_res;
- 	struct ata_host *host;
- 	struct ata_port *ap;
--	void __iomem *base;
--	int irq = 0;
-+	void __iomem *base, *ctl_base;
-+	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -366,6 +366,8 @@ static void svm_set_interrupt_shadow(str
+ 		svm->vmcb->control.int_state |= SVM_INTERRUPT_SHADOW_MASK;
  
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
+ }
++static bool svm_can_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
++					void *insn, int insn_len);
  
-@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(s
- 	ap->pio_mask = ATA_PIO4;
- 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
+ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
+ 					   bool commit_side_effects)
+@@ -386,6 +388,14 @@ static int __svm_skip_emulated_instructi
+ 	}
  
--	base = (void __iomem *)base_mem_res->start;
- 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
--	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
--	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
--	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
--	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
--	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
--	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
--	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
--	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
--
--	base = (void __iomem *)ctl_mem_res->start;
--	ap->ioaddr.altstatus_addr	= base + 1;
--	ap->ioaddr.ctl_addr		= base + 1;
--
--	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
--		      (unsigned long)base_mem_res->start,
--		      (unsigned long)ctl_mem_res->start);
-+	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
+ 	if (!svm->next_rip) {
++		/*
++		 * FIXME: Drop this when kvm_emulate_instruction() does the
++		 * right thing and treats "can't emulate" as outright failure
++		 * for EMULTYPE_SKIP.
++		 */
++		if (!svm_can_emulate_instruction(vcpu, EMULTYPE_SKIP, NULL, 0))
++			return 0;
 +
-+	if (base_res) {		/* only Q40 has IO resources */
-+		io_offset = 0x10000;
-+		reg_shift = 0;
-+		base = (void __iomem *)base_res->start;
-+		ctl_base = (void __iomem *)ctl_res->start;
-+	} else {
-+		base = (void __iomem *)base_mem_res->start;
-+		ctl_base = (void __iomem *)ctl_mem_res->start;
-+	}
-+
-+	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
-+	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
-+	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
-+	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
-+	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
-+	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
-+	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
-+
-+	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
-+	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
-+
-+	ata_port_desc(ap, "cmd %px ctl %px data %px",
-+		      base, ctl_base, ap->ioaddr.data_addr);
+ 		if (unlikely(!commit_side_effects))
+ 			old_rflags = svm->vmcb->save.rflags;
  
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
+@@ -4592,16 +4602,25 @@ static bool svm_can_emulate_instruction(
+ 	 * and cannot be decrypted by KVM, i.e. KVM would read cyphertext and
+ 	 * decode garbage.
+ 	 *
+-	 * Inject #UD if KVM reached this point without an instruction buffer.
+-	 * In practice, this path should never be hit by a well-behaved guest,
+-	 * e.g. KVM doesn't intercept #UD or #GP for SEV guests, but this path
+-	 * is still theoretically reachable, e.g. via unaccelerated fault-like
+-	 * AVIC access, and needs to be handled by KVM to avoid putting the
+-	 * guest into an infinite loop.   Injecting #UD is somewhat arbitrary,
+-	 * but its the least awful option given lack of insight into the guest.
++	 * If KVM is NOT trying to simply skip an instruction, inject #UD if
++	 * KVM reached this point without an instruction buffer.  In practice,
++	 * this path should never be hit by a well-behaved guest, e.g. KVM
++	 * doesn't intercept #UD or #GP for SEV guests, but this path is still
++	 * theoretically reachable, e.g. via unaccelerated fault-like AVIC
++	 * access, and needs to be handled by KVM to avoid putting the guest
++	 * into an infinite loop.   Injecting #UD is somewhat arbitrary, but
++	 * its the least awful option given lack of insight into the guest.
++	 *
++	 * If KVM is trying to skip an instruction, simply resume the guest.
++	 * If a #NPF occurs while the guest is vectoring an INT3/INTO, then KVM
++	 * will attempt to re-inject the INT3/INTO and skip the instruction.
++	 * In that scenario, retrying the INT3/INTO and hoping the guest will
++	 * make forward progress is the only option that has a chance of
++	 * success (and in practice it will work the vast majority of the time).
+ 	 */
+ 	if (unlikely(!insn)) {
+-		kvm_queue_exception(vcpu, UD_VECTOR);
++		if (!(emul_type & EMULTYPE_SKIP))
++			kvm_queue_exception(vcpu, UD_VECTOR);
+ 		return false;
+ 	}
+ 
 
 
