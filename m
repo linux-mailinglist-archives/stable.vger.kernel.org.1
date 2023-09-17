@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2981C7A3D4A
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF59E7A3B76
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241243AbjIQUlF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
+        id S240702AbjIQUSM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241232AbjIQUkf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:35 -0400
+        with ESMTP id S240706AbjIQUR6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66908101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E779C433CA;
-        Sun, 17 Sep 2023 20:40:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F344E101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F460C433C8;
+        Sun, 17 Sep 2023 20:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983230;
-        bh=p4gP1j1iB/R/SVZeiPJAtnm/A8BC8kNRT0dTgHYrhms=;
+        s=korg; t=1694981865;
+        bh=/2MQFXMdzYNErKNPs6ZlfY7IqlB4H5JrBwSeBL/t0Ro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l2/mb3ETDaVz1w6vdGVIqEOqo4Dqz3QK3ClMvDsu5IR1IQgyaFl+1iOwaKsnOHPnA
-         fdM9xDMRnsdpIbsfKnSN9/EUiejPOahkvdxicDhU2gK43IjvWYuANfhqyRVS1rpKsN
-         1gjL36/uSkcwWZEuwR9tF+YM26H+HLToOm3oc/C4=
+        b=iRtI9eqn44egz6/CCSCk+wtjmxdoEqiOENdPQZOk0xm/67U5ElUgOOumjfzVXIREg
+         lGi6bfxkDoYlaiOWs9yH0r+nEzpv7gNa6pk15IvgY5cYa4MQdhGI7qlwfBCvDACWRV
+         tXoEDC0KSN3MW3pUYJf5FrtFFIl4cIfO9TXC2e0o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.15 482/511] perf hists browser: Fix hierarchy mode header
+        patches@lists.linux.dev, Dillon Varone <dillon.varone@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Wenjing Liu <wenjing.liu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 182/219] drm/amd/display: always switch off ODM before committing more streams
 Date:   Sun, 17 Sep 2023 21:15:09 +0200
-Message-ID: <20230917191125.379322625@linuxfoundation.org>
+Message-ID: <20230917191047.529403133@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-commit e2cabf2a44791f01c21f8d5189b946926e34142e upstream.
+commit 49a30c3d1a2258fc93cfe6eea8e4951dabadc824 upstream.
 
-The commit ef9ff6017e3c4593 ("perf ui browser: Move the extra title
-lines from the hists browser") introduced ui_browser__gotorc_title() to
-help moving non-title lines easily.  But it missed to update the title
-for the hierarchy mode so it won't print the header line on TUI at all.
+ODM power optimization is only supported with single stream. When ODM
+power optimization is enabled, we might not have enough free pipes for
+enabling other stream. So when we are committing more than 1 stream we
+should first switch off ODM power optimization to make room for new
+stream and then allocating pipe resource for the new stream.
 
-  $ perf report --hierarchy
-
-Fixes: ef9ff6017e3c4593 ("perf ui browser: Move the extra title lines from the hists browser")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230731094934.1616495-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 59de751e3845 ("drm/amd/display: add ODM case when looking for first split pipe")
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browsers/hists.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -1779,7 +1779,7 @@ static void hists_browser__hierarchy_hea
- 	hists_browser__scnprintf_hierarchy_headers(browser, headers,
- 						   sizeof(headers));
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1977,12 +1977,12 @@ enum dc_status dc_commit_streams(struct
+ 		}
+ 	}
  
--	ui_browser__gotorc(&browser->b, 0, 0);
-+	ui_browser__gotorc_title(&browser->b, 0, 0);
- 	ui_browser__set_color(&browser->b, HE_COLORSET_ROOT);
- 	ui_browser__write_nstring(&browser->b, headers, browser->b.width + 1);
- }
+-	/* Check for case where we are going from odm 2:1 to max
+-	 *  pipe scenario.  For these cases, we will call
+-	 *  commit_minimal_transition_state() to exit out of odm 2:1
+-	 *  first before processing new streams
++	/* ODM Combine 2:1 power optimization is only applied for single stream
++	 * scenario, it uses extra pipes than needed to reduce power consumption
++	 * We need to switch off this feature to make room for new streams.
+ 	 */
+-	if (stream_count == dc->res_pool->pipe_count) {
++	if (stream_count > dc->current_state->stream_count &&
++			dc->current_state->stream_count == 1) {
+ 		for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 			pipe = &dc->current_state->res_ctx.pipe_ctx[i];
+ 			if (pipe->next_odm_pipe)
 
 
