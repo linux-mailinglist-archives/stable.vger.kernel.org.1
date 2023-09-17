@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA0F7A39C6
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C60A37A3A6E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240148AbjIQTyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44766 "EHLO
+        id S240339AbjIQUDU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:03:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240168AbjIQTxz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:53:55 -0400
+        with ESMTP id S240444AbjIQUC6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6E9132
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271A9C433C8;
-        Sun, 17 Sep 2023 19:53:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755A8137
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0285C433CC;
+        Sun, 17 Sep 2023 20:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980429;
-        bh=7JUK5qU/MgERhMtPsREwjnZL6DhEfEsDOxE2Vw6RNSE=;
+        s=korg; t=1694980971;
+        bh=0bwpiE+GFwfeVeM2cyCfqyqLAivomrjc2cAC/CmkcNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bZizUZPMBnZd3H+KVcMe0aRM++wAyU8yAwN3715A8vFU1s8ZYTbmXWwHFqjNIt6da
-         1GPQ9xMhXv6MsSAZcwy6VsesHH8E/GX/ThG+P7/JUQgsJgavRvK8l4W7tZlNQ/iZ/w
-         Esk1mqby1QF1extV1pjCfM5jYBWzr19anMYGowq8=
+        b=I3ApAOVNYDZCylVoLY5Oxvgb1X7K3+aowwdH2etghwQ3A/gg6z9QQVqDCl1LXrMuC
+         QIp0CnCCTVc3GyErkdygubExUPgRCs9D3kKhHf0gubutAh+VVp+Al4UpqZ7uGbkK81
+         wHWQ93UVB/d+mOGYiN+UtjM1ArJfWovEmNKXt370=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
-        Eric Biggers <ebiggers@google.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.5 189/285] ext4: fix memory leaks in ext4_fname_{setup_filename,prepare_lookup}
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 6.1 062/219] kconfig: fix possible buffer overflow
 Date:   Sun, 17 Sep 2023 21:13:09 +0200
-Message-ID: <20230917191058.146582468@linuxfoundation.org>
+Message-ID: <20230917191043.251193096@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,50 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luís Henriques <lhenriques@suse.de>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-commit 7ca4b085f430f3774c3838b3da569ceccd6a0177 upstream.
+[ Upstream commit a3b7039bb2b22fcd2ad20d59c00ed4e606ce3754 ]
 
-If the filename casefolding fails, we'll be leaking memory from the
-fscrypt_name struct, namely from the 'crypto_buf.name' member.
+Buffer 'new_argv' is accessed without bound check after accessing with
+bound check via 'new_argc' index.
 
-Make sure we free it in the error path on both ext4_fname_setup_filename()
-and ext4_fname_prepare_lookup() functions.
-
-Cc: stable@kernel.org
-Fixes: 1ae98e295fa2 ("ext4: optimize match for casefolded encrypted dirs")
-Signed-off-by: Luís Henriques <lhenriques@suse.de>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20230803091713.13239-1-lhenriques@suse.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e298f3b49def ("kconfig: add built-in function support")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/crypto.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/kconfig/preprocess.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/crypto.c
-+++ b/fs/ext4/crypto.c
-@@ -33,6 +33,8 @@ int ext4_fname_setup_filename(struct ino
+diff --git a/scripts/kconfig/preprocess.c b/scripts/kconfig/preprocess.c
+index 748da578b418c..d1f5bcff4b62d 100644
+--- a/scripts/kconfig/preprocess.c
++++ b/scripts/kconfig/preprocess.c
+@@ -396,6 +396,9 @@ static char *eval_clause(const char *str, size_t len, int argc, char *argv[])
  
- #if IS_ENABLED(CONFIG_UNICODE)
- 	err = ext4_fname_setup_ci_filename(dir, iname, fname);
-+	if (err)
-+		ext4_fname_free_filename(fname);
- #endif
- 	return err;
- }
-@@ -51,6 +53,8 @@ int ext4_fname_prepare_lookup(struct ino
+ 		p++;
+ 	}
++
++	if (new_argc >= FUNCTION_MAX_ARGS)
++		pperror("too many function arguments");
+ 	new_argv[new_argc++] = prev;
  
- #if IS_ENABLED(CONFIG_UNICODE)
- 	err = ext4_fname_setup_ci_filename(dir, &dentry->d_name, fname);
-+	if (err)
-+		ext4_fname_free_filename(fname);
- #endif
- 	return err;
- }
+ 	/*
+-- 
+2.40.1
+
 
 
