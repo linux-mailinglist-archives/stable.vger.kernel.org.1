@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C11A17A38B3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 512B37A39D2
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239829AbjIQTjO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
+        id S240162AbjIQTym (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239851AbjIQTiz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:55 -0400
+        with ESMTP id S240190AbjIQTy0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6077F12F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA15C433C8;
-        Sun, 17 Sep 2023 19:38:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D88F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83539C433C7;
+        Sun, 17 Sep 2023 19:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979530;
-        bh=46ZZA8owG7T1odFulht/ISNEjQsfMa7qCGjLNTVqitI=;
+        s=korg; t=1694980461;
+        bh=iHFNubh9oG6MzJKPGf5stIQyYH+qBewnVirr+30LCpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dtkvHuicy3Q/sxq2v8gCbvVBUIXAbYEx9WjKtvjjeClat0VfZ0Ej+WbVIYi+mhhJi
-         yAnvMjxLe1eoeFqtIPp4/t/+i6UmAmhECp3MX7YMn+U19jNhgZTdly7H9ypTGwXtJi
-         nUiYFgAOv+ksikq0MXwzdfBQFqVWhJ1Je868EDwE=
+        b=bf0i0Or0NhrQEPLZcg3ImxG2s/zJhaYe9t4NtSRxLC8m/uaWyiTdKoi7pPYYv01EX
+         Z3LeaXBQ+TLD4v5D/wD/Dm/3n/q6O/pv7ZxdrFFl71hVaGKnu45XHu+23CDMe3ZMqy
+         lGSB5YyJMVlnnEAvIfjg6nH7BoQwQx3RTIG4wSVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dylan Yudaken <dylany@meta.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 5.10 314/406] io_uring: always lock in io_apoll_task_func
+        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 168/285] net: hns3: fix byte order conversion issue in hclge_dbg_fd_tcam_read()
 Date:   Sun, 17 Sep 2023 21:12:48 +0200
-Message-ID: <20230917191109.591186715@linuxfoundation.org>
+Message-ID: <20230917191057.462477733@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +51,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Hao Chen <chenhao418@huawei.com>
 
-From: Dylan Yudaken <dylany@meta.com>
+[ Upstream commit efccf655e99b6907ca07a466924e91805892e7d3 ]
 
-[ upstream commit c06c6c5d276707e04cedbcc55625e984922118aa ]
+req1->tcam_data is defined as "u8 tcam_data[8]", and we convert it as
+(u32 *) without considerring byte order conversion,
+it may result in printing wrong data for tcam_data.
 
-This is required for the failure case (io_req_complete_failed) and is
-missing.
+Convert tcam_data to (__le32 *) first to fix it.
 
-The alternative would be to only lock in the failure path, however all of
-the non-error paths in io_poll_check_events that do not do not return
-IOU_POLL_NO_ACTION end up locking anyway. The only extraneous lock would
-be for the multishot poll overflowing the CQE ring, however multishot poll
-would probably benefit from being locked as it will allow completions to
-be batched.
-
-So it seems reasonable to lock always.
-
-Signed-off-by: Dylan Yudaken <dylany@meta.com>
-Link: https://lore.kernel.org/r/20221124093559.3780686-3-dylany@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b5a0b70d77b9 ("net: hns3: refactor dump fd tcam of debugfs")
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    1 +
- 1 file changed, 1 insertion(+)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5571,6 +5571,7 @@ static void io_apoll_task_func(struct io
- 	if (ret > 0)
- 		return;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+index f01a7a9ee02ca..ff3f8f424ad90 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+@@ -1519,7 +1519,7 @@ static int hclge_dbg_fd_tcam_read(struct hclge_dev *hdev, bool sel_x,
+ 	struct hclge_desc desc[3];
+ 	int pos = 0;
+ 	int ret, i;
+-	u32 *req;
++	__le32 *req;
  
-+	io_tw_lock(req->ctx, locked);
- 	io_poll_remove_entries(req);
- 	spin_lock(&ctx->completion_lock);
- 	hash_del(&req->hash_node);
+ 	hclge_cmd_setup_basic_desc(&desc[0], HCLGE_OPC_FD_TCAM_OP, true);
+ 	desc[0].flag |= cpu_to_le16(HCLGE_COMM_CMD_FLAG_NEXT);
+@@ -1544,22 +1544,22 @@ static int hclge_dbg_fd_tcam_read(struct hclge_dev *hdev, bool sel_x,
+ 			 tcam_msg.loc);
+ 
+ 	/* tcam_data0 ~ tcam_data1 */
+-	req = (u32 *)req1->tcam_data;
++	req = (__le32 *)req1->tcam_data;
+ 	for (i = 0; i < 2; i++)
+ 		pos += scnprintf(tcam_buf + pos, HCLGE_DBG_TCAM_BUF_SIZE - pos,
+-				 "%08x\n", *req++);
++				 "%08x\n", le32_to_cpu(*req++));
+ 
+ 	/* tcam_data2 ~ tcam_data7 */
+-	req = (u32 *)req2->tcam_data;
++	req = (__le32 *)req2->tcam_data;
+ 	for (i = 0; i < 6; i++)
+ 		pos += scnprintf(tcam_buf + pos, HCLGE_DBG_TCAM_BUF_SIZE - pos,
+-				 "%08x\n", *req++);
++				 "%08x\n", le32_to_cpu(*req++));
+ 
+ 	/* tcam_data8 ~ tcam_data12 */
+-	req = (u32 *)req3->tcam_data;
++	req = (__le32 *)req3->tcam_data;
+ 	for (i = 0; i < 5; i++)
+ 		pos += scnprintf(tcam_buf + pos, HCLGE_DBG_TCAM_BUF_SIZE - pos,
+-				 "%08x\n", *req++);
++				 "%08x\n", le32_to_cpu(*req++));
+ 
+ 	return ret;
+ }
+-- 
+2.40.1
+
 
 
