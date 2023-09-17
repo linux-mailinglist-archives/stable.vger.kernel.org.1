@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 069987A38B9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5814C7A39F1
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239626AbjIQTjp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32874 "EHLO
+        id S240209AbjIQT4t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239845AbjIQTjT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:19 -0400
+        with ESMTP id S240225AbjIQT4X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD48C103
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D203C433C8;
-        Sun, 17 Sep 2023 19:39:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC52101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30F3C433C9;
+        Sun, 17 Sep 2023 19:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979554;
-        bh=UXXKxW93z6LQ0/LMhS1lxjcM/Wb6aUI3BC1ow/fa6Y0=;
+        s=korg; t=1694980577;
+        bh=3/1jqGevn/xrSlRNfQDsOQxoE7oa1VO1U8IF0CTSOtc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n16TZrG58Ms2t05zcwr0YDtHd8v8P7Xgf29UiLvsyqQyhTQwuZ33R0kYrVuWoVlPK
-         mOn+1bThGNQqvBb3W4wKchqqwlf6+yT776nnQEjbVNL+RNcAiGcushJK86GfKsxkjC
-         otRrYru3nxTLsHMlWgUATINkpOI4o83If1uzO7Z0=
+        b=0+pNip40GpXIpoHNpePGdrwWP/GwbmIudUbxb0tCB6MJoap/F4RK9WIstReiHbkMH
+         YlLzjlb+cTTDg1uTyTEC9ge3C7JRiTj/7ezfRT0qwQNR0R+jl1bugS0ubRmWIImtIk
+         w6rs/lWBvqXz5zUEvZG0MO47EEIjiM59soHcNqOY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 347/406] ipv4: ignore dst hint for multipath routes
-Date:   Sun, 17 Sep 2023 21:13:21 +0200
-Message-ID: <20230917191110.437557588@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 202/285] btrfs: zoned: do not zone finish data relocation block group
+Date:   Sun, 17 Sep 2023 21:13:22 +0200
+Message-ID: <20230917191058.571302295@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +51,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 6ac66cb03ae306c2e288a9be18226310529f5b25 ]
+commit 332581bde2a419d5f12a93a1cdc2856af649a3cc upstream.
 
-Route hints when the nexthop is part of a multipath group causes packets
-in the same receive batch to be sent to the same nexthop irrespective of
-the multipath hash of the packet. So, do not extract route hint for
-packets whose destination is part of a multipath group.
+When multiple writes happen at once, we may need to sacrifice a currently
+active block group to be zone finished for a new allocation. We choose a
+block group with the least free space left, and zone finish it.
 
-A new SKB flag IPSKB_MULTIPATH is introduced for this purpose, set the
-flag when route is looked up in ip_mkroute_input() and use it in
-ip_extract_route_hint() to check for the existence of the flag.
+To do the finishing, we need to send IOs for already allocated region
+and wait for them and on-going IOs. Otherwise, these IOs fail because the
+zone is already finished at the time the IO reach a device.
 
-Fixes: 02b24941619f ("ipv4: use dst hint for ipv4 list receive")
-Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, if a block group dedicated to the data relocation is zone
+finished, there is a chance that finishing it before an ongoing write IO
+reaches the device. That is because there is timing gap between an
+allocation is done (block_group->reservations == 0, as pre-allocation is
+done) and an ordered extent is created when the relocation IO starts.
+Thus, if we finish the zone between them, we can fail the IOs.
+
+We cannot simply use "fs_info->data_reloc_bg == block_group->start" to
+avoid the zone finishing. Because, the data_reloc_bg may already switch to
+a new block group, while there are still ongoing write IOs to the old
+data_reloc_bg.
+
+So, this patch reworks the BLOCK_GROUP_FLAG_ZONED_DATA_RELOC bit to
+indicate there is a data relocation allocation and/or ongoing write to the
+block group. The bit is set on allocation and cleared in end_io function of
+the last IO for the currently allocated region.
+
+To change the timing of the bit setting also solves the issue that the bit
+being left even after there is no IO going on. With the current code, if
+the data_reloc_bg switches after the last IO to the current data_reloc_bg,
+the bit is set at this timing and there is no one clearing that bit. As a
+result, that block group is kept unallocatable for anything.
+
+Fixes: 343d8a30851c ("btrfs: zoned: prevent allocation from previous data relocation BG")
+Fixes: 74e91b12b115 ("btrfs: zoned: zone finish unused block group")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip.h    | 1 +
- net/ipv4/ip_input.c | 3 ++-
- net/ipv4/route.c    | 1 +
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c |   43 +++++++++++++++++++++++--------------------
+ fs/btrfs/zoned.c       |   16 +++++++++++++---
+ 2 files changed, 36 insertions(+), 23 deletions(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 8d1173577fb5c..9be2efe00f2c0 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -56,6 +56,7 @@ struct inet_skb_parm {
- #define IPSKB_FRAG_PMTU		BIT(6)
- #define IPSKB_L3SLAVE		BIT(7)
- #define IPSKB_NOPOLICY		BIT(8)
-+#define IPSKB_MULTIPATH		BIT(9)
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -3709,7 +3709,8 @@ static int do_allocation_zoned(struct bt
+ 	       fs_info->data_reloc_bg == 0);
  
- 	u16			frag_max_size;
- };
-diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
-index eccd7897e7aa6..372579686162b 100644
---- a/net/ipv4/ip_input.c
-+++ b/net/ipv4/ip_input.c
-@@ -566,7 +566,8 @@ static void ip_sublist_rcv_finish(struct list_head *head)
- static struct sk_buff *ip_extract_route_hint(const struct net *net,
- 					     struct sk_buff *skb, int rt_type)
- {
--	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST)
-+	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
-+	    IPCB(skb)->flags & IPSKB_MULTIPATH)
- 		return NULL;
- 
- 	return skb;
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 374647693d7ac..3ddeb4fc0d08a 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2066,6 +2066,7 @@ static int ip_mkroute_input(struct sk_buff *skb,
- 		int h = fib_multipath_hash(res->fi->fib_net, NULL, skb, hkeys);
- 
- 		fib_select_multipath(res, h);
-+		IPCB(skb)->flags |= IPSKB_MULTIPATH;
+ 	if (block_group->ro ||
+-	    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
++	    (!ffe_ctl->for_data_reloc &&
++	     test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags))) {
+ 		ret = 1;
+ 		goto out;
  	}
- #endif
+@@ -3752,8 +3753,26 @@ static int do_allocation_zoned(struct bt
+ 	if (ffe_ctl->for_treelog && !fs_info->treelog_bg)
+ 		fs_info->treelog_bg = block_group->start;
  
--- 
-2.40.1
-
+-	if (ffe_ctl->for_data_reloc && !fs_info->data_reloc_bg)
+-		fs_info->data_reloc_bg = block_group->start;
++	if (ffe_ctl->for_data_reloc) {
++		if (!fs_info->data_reloc_bg)
++			fs_info->data_reloc_bg = block_group->start;
++		/*
++		 * Do not allow allocations from this block group, unless it is
++		 * for data relocation. Compared to increasing the ->ro, setting
++		 * the ->zoned_data_reloc_ongoing flag still allows nocow
++		 * writers to come in. See btrfs_inc_nocow_writers().
++		 *
++		 * We need to disable an allocation to avoid an allocation of
++		 * regular (non-relocation data) extent. With mix of relocation
++		 * extents and regular extents, we can dispatch WRITE commands
++		 * (for relocation extents) and ZONE APPEND commands (for
++		 * regular extents) at the same time to the same zone, which
++		 * easily break the write pointer.
++		 *
++		 * Also, this flag avoids this block group to be zone finished.
++		 */
++		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags);
++	}
+ 
+ 	ffe_ctl->found_offset = start + block_group->alloc_offset;
+ 	block_group->alloc_offset += num_bytes;
+@@ -3771,24 +3790,8 @@ static int do_allocation_zoned(struct bt
+ out:
+ 	if (ret && ffe_ctl->for_treelog)
+ 		fs_info->treelog_bg = 0;
+-	if (ret && ffe_ctl->for_data_reloc &&
+-	    fs_info->data_reloc_bg == block_group->start) {
+-		/*
+-		 * Do not allow further allocations from this block group.
+-		 * Compared to increasing the ->ro, setting the
+-		 * ->zoned_data_reloc_ongoing flag still allows nocow
+-		 *  writers to come in. See btrfs_inc_nocow_writers().
+-		 *
+-		 * We need to disable an allocation to avoid an allocation of
+-		 * regular (non-relocation data) extent. With mix of relocation
+-		 * extents and regular extents, we can dispatch WRITE commands
+-		 * (for relocation extents) and ZONE APPEND commands (for
+-		 * regular extents) at the same time to the same zone, which
+-		 * easily break the write pointer.
+-		 */
+-		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags);
++	if (ret && ffe_ctl->for_data_reloc)
+ 		fs_info->data_reloc_bg = 0;
+-	}
+ 	spin_unlock(&fs_info->relocation_bg_lock);
+ 	spin_unlock(&fs_info->treelog_bg_lock);
+ 	spin_unlock(&block_group->lock);
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2017,6 +2017,10 @@ static int do_zone_finish(struct btrfs_b
+ 	 * and block_group->meta_write_pointer for metadata.
+ 	 */
+ 	if (!fully_written) {
++		if (test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
++			spin_unlock(&block_group->lock);
++			return -EAGAIN;
++		}
+ 		spin_unlock(&block_group->lock);
+ 
+ 		ret = btrfs_inc_block_group_ro(block_group, false);
+@@ -2045,7 +2049,9 @@ static int do_zone_finish(struct btrfs_b
+ 			return 0;
+ 		}
+ 
+-		if (block_group->reserved) {
++		if (block_group->reserved ||
++		    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC,
++			     &block_group->runtime_flags)) {
+ 			spin_unlock(&block_group->lock);
+ 			btrfs_dec_block_group_ro(block_group);
+ 			return -EAGAIN;
+@@ -2276,7 +2282,10 @@ void btrfs_zoned_release_data_reloc_bg(s
+ 
+ 	/* All relocation extents are written. */
+ 	if (block_group->start + block_group->alloc_offset == logical + length) {
+-		/* Now, release this block group for further allocations. */
++		/*
++		 * Now, release this block group for further allocations and
++		 * zone finish.
++		 */
+ 		clear_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC,
+ 			  &block_group->runtime_flags);
+ 	}
+@@ -2300,7 +2309,8 @@ int btrfs_zone_finish_one_bg(struct btrf
+ 
+ 		spin_lock(&block_group->lock);
+ 		if (block_group->reserved || block_group->alloc_offset == 0 ||
+-		    (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM)) {
++		    (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM) ||
++		    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
+ 			spin_unlock(&block_group->lock);
+ 			continue;
+ 		}
 
 
