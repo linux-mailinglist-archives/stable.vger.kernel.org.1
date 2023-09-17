@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E077A398C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1169C7A3848
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240089AbjIQTu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:50:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59670 "EHLO
+        id S239698AbjIQTdv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240100AbjIQTup (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:45 -0400
+        with ESMTP id S239707AbjIQTd0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:33:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48FCB133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:50:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18287C433C9;
-        Sun, 17 Sep 2023 19:50:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF845D9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:33:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F85C433C8;
+        Sun, 17 Sep 2023 19:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980238;
-        bh=AzLhrFAyBm4mZ1q04duCq69YE0x3dfw/7favHmn/jX8=;
+        s=korg; t=1694979201;
+        bh=Tl9mebP51bEancblKbWcCq8QD8asn/6aRvfgluZuw0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=by9WHEc4miseZp0EQpzcdkoWwLVqYbfx6+Bco9mGlGqQt/Nr0+IWTjMIL2WdTtM43
-         trndrg+pejZOQ04y0ZcEmaDi4vBVTT1RpHUOFDyuU9MQt9XKyHQt2uYJCrgrAARX2w
-         1ya/w5gcY57PpaRu+SIlbBS6GcNe4R4nBc5XGozw=
+        b=Myo2YPyxaOwd8rKkEGrLjQJr9ia+zRVT4UeIffXWIOMYOY4ChAmYZIPK8891Aghuh
+         tGVYWbVOdhsOBHLvXysLBkvcLUq5w5zvIPG8LsTmxSNZ3gQJPF+0dP/wxF+lLwOjGs
+         bwcEdor4xCulmCS9jorNw/Do5JloSi2aStD7Qx0Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kajol Jain <kjain@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Disha Goel <disgoel@linux.vnet.ibm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 097/285] perf test stat_bpf_counters_cgrp: Fix shellcheck issue about logical operators
+Subject: [PATCH 5.10 243/406] media: ov2680: Fix regulators being left enabled on ov2680_power_on() errors
 Date:   Sun, 17 Sep 2023 21:11:37 +0200
-Message-ID: <20230917191055.046209683@linuxfoundation.org>
+Message-ID: <20230917191107.576945177@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,122 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 0dd1f815545d7210150642741c364521cc5cf116 ]
+[ Upstream commit 84b4bd7e0d98166aa32fd470e672721190492eae ]
 
-Running shellcheck on lock_contention.sh generates below warning:
+When the ov2680_power_on() "sensor soft reset failed" path is hit during
+probe() the WARN() about putting an enabled regulator at
+drivers/regulator/core.c:2398 triggers 3 times (once for each regulator),
+filling dmesg with backtraces.
 
-In stat_bpf_counters_cgrp.sh line 28:
-	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
-                                            ^-- SC2166 (warning): Prefer [ p ] && [ q ] as [ p -a q ] is not well defined.
+Fix this by properly disabling the regulators on ov2680_power_on() errors.
 
-In stat_bpf_counters_cgrp.sh line 34:
-	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
-        ^-------------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
-              ^-------^ SC2155 (warning): Declare and assign separately to avoid masking return values.
-                        ^-- SC2046 (warning): Quote this to prevent word splitting.
-
-In stat_bpf_counters_cgrp.sh line 51:
-	local output
-        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
-
-In stat_bpf_counters_cgrp.sh line 65:
-	local output
-        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
-
-Fixed above warnings by:
-- Changing the expression [p -a q] to [p] && [q].
-- Fixing shellcheck warnings for local usage, by prefixing
-  function name to the variable.
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230709182800.53002-6-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: a84260e31402 ("perf test stat_bpf_counters_cgrp: Enhance perf stat cgroup BPF counter test")
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ drivers/media/i2c/ov2680.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-index d724855d097c2..a74440a00b6b6 100755
---- a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-+++ b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
-@@ -25,22 +25,22 @@ check_bpf_counter()
- find_cgroups()
- {
- 	# try usual systemd slices first
--	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
-+	if [ -d /sys/fs/cgroup/system.slice ] && [ -d /sys/fs/cgroup/user.slice ]; then
- 		test_cgroups="system.slice,user.slice"
- 		return
- 	fi
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 5249a9eb7c81a..731a60f6a59af 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -459,7 +459,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 		ret = ov2680_write_reg(sensor, OV2680_REG_SOFT_RESET, 0x01);
+ 		if (ret != 0) {
+ 			dev_err(dev, "sensor soft reset failed\n");
+-			return ret;
++			goto err_disable_regulators;
+ 		}
+ 		usleep_range(1000, 2000);
+ 	} else {
+@@ -469,7 +469,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
  
- 	# try root and self cgroups
--	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
--	if [ -z ${self_cgrp} ]; then
-+	find_cgroups_self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
-+	if [ -z ${find_cgroups_self_cgrp} ]; then
- 		# cgroup v2 doesn't specify perf_event
--		self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
-+		find_cgroups_self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
- 	fi
+ 	ret = clk_prepare_enable(sensor->xvclk);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
  
--	if [ -z ${self_cgrp} ]; then
-+	if [ -z ${find_cgroups_self_cgrp} ]; then
- 		test_cgroups="/"
- 	else
--		test_cgroups="/,${self_cgrp}"
-+		test_cgroups="/,${find_cgroups_self_cgrp}"
- 	fi
+ 	sensor->is_enabled = true;
+ 
+@@ -479,6 +479,10 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 	ov2680_stream_disable(sensor);
+ 
+ 	return 0;
++
++err_disable_regulators:
++	regulator_bulk_disable(OV2680_NUM_SUPPLIES, sensor->supplies);
++	return ret;
  }
  
-@@ -48,13 +48,11 @@ find_cgroups()
- # Just check if it runs without failure and has non-zero results.
- check_system_wide_counted()
- {
--	local output
--
--	output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
--	if echo ${output} | grep -q -F "<not "; then
-+	check_system_wide_counted_output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
-+	if echo ${check_system_wide_counted_output} | grep -q -F "<not "; then
- 		echo "Some system-wide events are not counted"
- 		if [ "${verbose}" = "1" ]; then
--			echo ${output}
-+			echo ${check_system_wide_counted_output}
- 		fi
- 		exit 1
- 	fi
-@@ -62,13 +60,11 @@ check_system_wide_counted()
- 
- check_cpu_list_counted()
- {
--	local output
--
--	output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
--	if echo ${output} | grep -q -F "<not "; then
-+	check_cpu_list_counted_output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
-+	if echo ${check_cpu_list_counted_output} | grep -q -F "<not "; then
- 		echo "Some CPU events are not counted"
- 		if [ "${verbose}" = "1" ]; then
--			echo ${output}
-+			echo ${check_cpu_list_counted_output}
- 		fi
- 		exit 1
- 	fi
+ static int ov2680_s_power(struct v4l2_subdev *sd, int on)
 -- 
 2.40.1
 
