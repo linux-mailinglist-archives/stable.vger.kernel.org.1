@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6975E7A3837
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D657A3948
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239666AbjIQTdU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:33:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
+        id S239460AbjIQTrR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239730AbjIQTcw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:52 -0400
+        with ESMTP id S240091AbjIQTrB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:47:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C162D18D
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE51C4339A;
-        Sun, 17 Sep 2023 19:32:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C09912F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:46:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36446C433C7;
+        Sun, 17 Sep 2023 19:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979143;
-        bh=4ye19IlFEO77DSDXLW8IQ5wvkYkXwYepLOOAQN2eeCc=;
+        s=korg; t=1694980014;
+        bh=UI1ANk2y2ql1ag9FNhRzwC521dcZPt3dRpUeo0hw6jE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mk2HIzhIJNonOte/00rHV+fbREaHhImd59tjSiuHLLPq6atjncTYOUvtF2HQcl7ug
-         q2pE3vJdIYkIjdWU/d2FpcFmtLinpNK5vQvMz7rg5DtxQt7/E9zbLm1J2lvL8mqiq1
-         QiJiWQ10HToEOcwJ5OvI2mXUOK1q9kWuzsyz5mfQ=
+        b=dnRTikx3B7QKktFsdLhxrzTzwq4Qs/jUmjmg2zJ4zulxhg9ptaWhtuJta4zjVy08b
+         zpSPNWhovo8Xvl0Fg4NSw3tAAVeuvsLmHSgFOl5Wl53LK2f7pz0dXny8lkcbV3wcjX
+         0fw58DoOXRmPdBn1CuS0wqVw+OuKZ2skwZo7yWVM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 219/406] scsi: iscsi: Add length check for nlattr payload
+Subject: [PATCH 6.5 073/285] perf parse-events: Separate ENOMEM memory handling
 Date:   Sun, 17 Sep 2023 21:11:13 +0200
-Message-ID: <20230917191106.965109311@linuxfoundation.org>
+Message-ID: <20230917191054.242299866@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,308 +58,422 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 971dfcb74a800047952f5288512b9c7ddedb050a ]
+[ Upstream commit b52cb995f1a559bc6e1a7cdc0ed0375503528541 ]
 
-The current NETLINK_ISCSI netlink parsing loop checks every nlmsg to make
-sure the length is bigger than sizeof(struct iscsi_uevent) and then calls
-iscsi_if_recv_msg().
+Add PE_ABORT that will YYNOMEM or YYABORT accordingly.
 
-  nlh = nlmsg_hdr(skb);
-  if (nlh->nlmsg_len < sizeof(*nlh) + sizeof(*ev) ||
-    skb->len < nlh->nlmsg_len) {
-    break;
-  }
-  ...
-  err = iscsi_if_recv_msg(skb, nlh, &group);
-
-Hence, in iscsi_if_recv_msg() the nlmsg_data can be safely converted to
-iscsi_uevent as the length is already checked.
-
-However, in other cases the length of nlattr payload is not checked before
-the payload is converted to other data structures. One example is
-iscsi_set_path() which converts the payload to type iscsi_path without any
-checks:
-
-  params = (struct iscsi_path *)((char *)ev + sizeof(*ev));
-
-Whereas iscsi_if_transport_conn() correctly checks the pdu_len:
-
-  pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
-  if ((ev->u.send_pdu.hdr_size > pdu_len) ..
-    err = -EINVAL;
-
-To sum up, some code paths called in iscsi_if_recv_msg() do not check the
-length of the data (see below picture) and directly convert the data to
-another data structure. This could result in an out-of-bound reads and heap
-dirty data leakage.
-
-             _________  nlmsg_len(nlh) _______________
-            /                                         \
-+----------+--------------+---------------------------+
-| nlmsghdr | iscsi_uevent |          data              |
-+----------+--------------+---------------------------+
-                          \                          /
-                         iscsi_uevent->u.set_param.len
-
-Fix the issue by adding the length check before accessing it. To clean up
-the code, an additional parameter named rlen is added. The rlen is
-calculated at the beginning of iscsi_if_recv_msg() which avoids duplicated
-calculation.
-
-Fixes: ac20c7bf070d ("[SCSI] iscsi_transport: Added Ping support")
-Fixes: 43514774ff40 ("[SCSI] iscsi class: Add new NETLINK_ISCSI messages for cnic/bnx2i driver.")
-Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
-Fixes: 01cb225dad8d ("[SCSI] iscsi: add target discvery event to transport class")
-Fixes: 264faaaa1254 ("[SCSI] iscsi: add transport end point callbacks")
-Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230725024529.428311-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627181030.95608-10-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: b30d4f0b6954 ("perf parse-events: Additional error reporting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 72 +++++++++++++++++------------
- 1 file changed, 43 insertions(+), 29 deletions(-)
+ tools/perf/util/parse-events.y | 134 ++++++++++++++++++++-------------
+ 1 file changed, 82 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index a22bc594b2d4a..64bc403a4c285 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -2991,14 +2991,15 @@ iscsi_if_destroy_conn(struct iscsi_transport *transport, struct iscsi_uevent *ev
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index 78c1f49d8d7e4..24274c6cf85f1 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -28,6 +28,13 @@ do { \
+ 		YYABORT; \
+ } while (0)
+ 
++#define PE_ABORT(val) \
++do { \
++	if (val == -ENOMEM) \
++		YYNOMEM; \
++	YYABORT; \
++} while (0)
++
+ static struct list_head* alloc_list(void)
+ {
+ 	struct list_head *list;
+@@ -385,7 +392,7 @@ PE_NAME sep_dc
+ 	err = parse_events_multi_pmu_add(_parse_state, $1, NULL, &list);
+ 	free($1);
+ 	if (err < 0)
+-		YYABORT;
++		PE_ABORT(err);
+ 	$$ = list;
+ }
+ |
+@@ -461,7 +468,7 @@ value_sym '/' event_config '/'
+ 	parse_events_terms__delete($3);
+ 	if (err) {
+ 		free_list_evsel(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -472,23 +479,28 @@ value_sym sep_slash_slash_dc
+ 	int type = $1 >> 16;
+ 	int config = $1 & 255;
+ 	bool wildcard = (type == PERF_TYPE_HARDWARE || type == PERF_TYPE_HW_CACHE);
++	int err;
+ 
+ 	list = alloc_list();
+ 	if (!list)
+ 		YYNOMEM;
+-	ABORT_ON(parse_events_add_numeric(_parse_state, list, type, config,
+-					  /*head_config=*/NULL, wildcard));
++	err = parse_events_add_numeric(_parse_state, list, type, config, /*head_config=*/NULL, wildcard);
++	if (err)
++		PE_ABORT(err);
+ 	$$ = list;
+ }
+ |
+ PE_VALUE_SYM_TOOL sep_slash_slash_dc
+ {
+ 	struct list_head *list;
++	int err;
+ 
+ 	list = alloc_list();
+ 	if (!list)
+ 		YYNOMEM;
+-	ABORT_ON(parse_events_add_tool(_parse_state, list, $1));
++	err = parse_events_add_tool(_parse_state, list, $1);
++	if (err)
++		YYNOMEM;
+ 	$$ = list;
  }
  
- static int
--iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
-+iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
- {
- 	char *data = (char*)ev + sizeof(*ev);
- 	struct iscsi_cls_conn *conn;
- 	struct iscsi_cls_session *session;
- 	int err = 0, value = 0, state;
- 
--	if (ev->u.set_param.len > PAGE_SIZE)
-+	if (ev->u.set_param.len > rlen ||
-+	    ev->u.set_param.len > PAGE_SIZE)
- 		return -EINVAL;
- 
- 	session = iscsi_session_lookup(ev->u.set_param.sid);
-@@ -3095,7 +3096,7 @@ static int iscsi_if_ep_disconnect(struct iscsi_transport *transport,
- 
- static int
- iscsi_if_transport_ep(struct iscsi_transport *transport,
--		      struct iscsi_uevent *ev, int msg_type)
-+		      struct iscsi_uevent *ev, int msg_type, u32 rlen)
- {
- 	struct iscsi_endpoint *ep;
- 	int rc = 0;
-@@ -3103,7 +3104,10 @@ iscsi_if_transport_ep(struct iscsi_transport *transport,
- 	switch (msg_type) {
- 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT_THROUGH_HOST:
- 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT:
--		rc = iscsi_if_ep_connect(transport, ev, msg_type);
-+		if (rlen < sizeof(struct sockaddr))
-+			rc = -EINVAL;
-+		else
-+			rc = iscsi_if_ep_connect(transport, ev, msg_type);
- 		break;
- 	case ISCSI_UEVENT_TRANSPORT_EP_POLL:
- 		if (!transport->ep_poll)
-@@ -3127,12 +3131,15 @@ iscsi_if_transport_ep(struct iscsi_transport *transport,
- 
- static int
- iscsi_tgt_dscvr(struct iscsi_transport *transport,
--		struct iscsi_uevent *ev)
-+		struct iscsi_uevent *ev, u32 rlen)
- {
- 	struct Scsi_Host *shost;
- 	struct sockaddr *dst_addr;
- 	int err;
- 
-+	if (rlen < sizeof(*dst_addr))
-+		return -EINVAL;
-+
- 	if (!transport->tgt_dscvr)
- 		return -EINVAL;
- 
-@@ -3153,7 +3160,7 @@ iscsi_tgt_dscvr(struct iscsi_transport *transport,
- 
- static int
- iscsi_set_host_param(struct iscsi_transport *transport,
--		     struct iscsi_uevent *ev)
-+		     struct iscsi_uevent *ev, u32 rlen)
- {
- 	char *data = (char*)ev + sizeof(*ev);
- 	struct Scsi_Host *shost;
-@@ -3162,7 +3169,8 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 	if (!transport->set_host_param)
- 		return -ENOSYS;
- 
--	if (ev->u.set_host_param.len > PAGE_SIZE)
-+	if (ev->u.set_host_param.len > rlen ||
-+	    ev->u.set_host_param.len > PAGE_SIZE)
- 		return -EINVAL;
- 
- 	shost = scsi_host_lookup(ev->u.set_host_param.host_no);
-@@ -3179,12 +3187,15 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+@@ -509,7 +521,7 @@ PE_LEGACY_CACHE opt_event_config
+ 	free($1);
+ 	if (err) {
+ 		free_list_evsel(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
  }
- 
- static int
--iscsi_set_path(struct iscsi_transport *transport, struct iscsi_uevent *ev)
-+iscsi_set_path(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
- {
- 	struct Scsi_Host *shost;
- 	struct iscsi_path *params;
- 	int err;
- 
-+	if (rlen < sizeof(*params))
-+		return -EINVAL;
-+
- 	if (!transport->set_path)
- 		return -ENOSYS;
- 
-@@ -3244,12 +3255,15 @@ iscsi_set_iface_params(struct iscsi_transport *transport,
+@@ -530,7 +542,7 @@ PE_PREFIX_MEM PE_VALUE PE_BP_SLASH PE_VALUE PE_BP_COLON PE_MODIFIER_BP opt_event
+ 	free($6);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
  }
- 
- static int
--iscsi_send_ping(struct iscsi_transport *transport, struct iscsi_uevent *ev)
-+iscsi_send_ping(struct iscsi_transport *transport, struct iscsi_uevent *ev, u32 rlen)
- {
- 	struct Scsi_Host *shost;
- 	struct sockaddr *dst_addr;
- 	int err;
- 
-+	if (rlen < sizeof(*dst_addr))
-+		return -EINVAL;
-+
- 	if (!transport->send_ping)
- 		return -ENOSYS;
- 
-@@ -3747,13 +3761,12 @@ iscsi_get_host_stats(struct iscsi_transport *transport, struct nlmsghdr *nlh)
+@@ -549,7 +561,7 @@ PE_PREFIX_MEM PE_VALUE PE_BP_SLASH PE_VALUE opt_event_config
+ 	parse_events_terms__delete($5);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
  }
- 
- static int iscsi_if_transport_conn(struct iscsi_transport *transport,
--				   struct nlmsghdr *nlh)
-+				   struct nlmsghdr *nlh, u32 pdu_len)
+@@ -569,7 +581,7 @@ PE_PREFIX_MEM PE_VALUE PE_BP_COLON PE_MODIFIER_BP opt_event_config
+ 	free($4);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -587,7 +599,7 @@ PE_PREFIX_MEM PE_VALUE opt_event_config
+ 	parse_events_terms__delete($3);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -614,7 +626,7 @@ tracepoint_name opt_event_config
+ 	free($1.event);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -641,7 +653,7 @@ PE_VALUE ':' PE_VALUE opt_event_config
+ 	parse_events_terms__delete($4);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -665,7 +677,7 @@ PE_RAW opt_event_config
+ 	parse_events_terms__delete($2);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -685,7 +697,7 @@ PE_BPF_OBJECT opt_event_config
+ 	free($1);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -702,7 +714,7 @@ PE_BPF_SOURCE opt_event_config
+ 	parse_events_terms__delete($2);
+ 	if (err) {
+ 		free(list);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = list;
+ }
+@@ -777,11 +789,12 @@ event_term:
+ PE_RAW
  {
- 	struct iscsi_uevent *ev = nlmsg_data(nlh);
- 	struct iscsi_cls_session *session;
- 	struct iscsi_cls_conn *conn = NULL;
- 	struct iscsi_endpoint *ep;
--	uint32_t pdu_len;
- 	int err = 0;
+ 	struct parse_events_term *term;
++	int err = parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_RAW,
++					 strdup("raw"), $1, &@1, &@1);
  
- 	switch (nlh->nlmsg_type) {
-@@ -3833,8 +3846,6 @@ static int iscsi_if_transport_conn(struct iscsi_transport *transport,
+-	if (parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_RAW,
+-					strdup("raw"), $1, &@1, &@1)) {
++	if (err) {
+ 		free($1);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -789,12 +802,12 @@ PE_RAW
+ name_or_raw '=' name_or_legacy
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER, $1, $3, &@1, &@3);
  
- 		break;
- 	case ISCSI_UEVENT_SEND_PDU:
--		pdu_len = nlh->nlmsg_len - sizeof(*nlh) - sizeof(*ev);
--
- 		if ((ev->u.send_pdu.hdr_size > pdu_len) ||
- 		    (ev->u.send_pdu.data_size > (pdu_len - ev->u.send_pdu.hdr_size))) {
- 			err = -EINVAL;
-@@ -3864,6 +3875,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 	struct iscsi_internal *priv;
- 	struct iscsi_cls_session *session;
- 	struct iscsi_endpoint *ep = NULL;
-+	u32 rlen;
+-	if (parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER,
+-					$1, $3, &@1, &@3)) {
++	if (err) {
+ 		free($1);
+ 		free($3);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -802,11 +815,12 @@ name_or_raw '=' name_or_legacy
+ name_or_raw '=' PE_VALUE
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_USER,
++					 $1, $3, false, &@1, &@3);
  
- 	if (!netlink_capable(skb, CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -3883,6 +3895,13 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
+-	if (parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_USER,
+-					$1, $3, false, &@1, &@3)) {
++	if (err) {
+ 		free($1);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -814,12 +828,13 @@ name_or_raw '=' PE_VALUE
+ name_or_raw '=' PE_TERM_HW
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER,
++					 $1, $3.str, &@1, &@3);
  
- 	portid = NETLINK_CB(skb).portid;
+-	if (parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER,
+-					$1, $3.str, &@1, &@3)) {
++	if (err) {
+ 		free($1);
+ 		free($3.str);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -827,11 +842,12 @@ name_or_raw '=' PE_TERM_HW
+ PE_LEGACY_CACHE
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_LEGACY_CACHE,
++					 $1, 1, true, &@1, NULL);
  
-+	/*
-+	 * Even though the remaining payload may not be regarded as nlattr,
-+	 * (like address or something else), calculate the remaining length
-+	 * here to ease following length checks.
-+	 */
-+	rlen = nlmsg_attrlen(nlh, sizeof(*ev));
+-	if (parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_LEGACY_CACHE,
+-					$1, 1, true, &@1, NULL)) {
++	if (err) {
+ 		free($1);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -839,11 +855,12 @@ PE_LEGACY_CACHE
+ PE_NAME
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_USER,
++					 $1, 1, true, &@1, NULL);
+ 
+-	if (parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_USER,
+-					$1, 1, true, &@1, NULL)) {
++	if (err) {
+ 		free($1);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -851,11 +868,12 @@ PE_NAME
+ PE_TERM_HW
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_HARDWARE,
++					 $1.str, $1.num & 255, false, &@1, NULL);
+ 
+-	if (parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_HARDWARE,
+-				   $1.str, $1.num & 255, false, &@1, NULL)) {
++	if (err) {
+ 		free($1.str);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -863,10 +881,11 @@ PE_TERM_HW
+ PE_TERM '=' name_or_legacy
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__str(&term, (int)$1, NULL, $3, &@1, &@3);
+ 
+-	if (parse_events_term__str(&term, (int)$1, NULL, $3, &@1, &@3)) {
++	if (err) {
+ 		free($3);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -874,10 +893,11 @@ PE_TERM '=' name_or_legacy
+ PE_TERM '=' PE_TERM_HW
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__str(&term, (int)$1, NULL, $3.str, &@1, &@3);
+ 
+-	if (parse_events_term__str(&term, (int)$1, NULL, $3.str, &@1, &@3)) {
++	if (err) {
+ 		free($3.str);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
+@@ -885,37 +905,46 @@ PE_TERM '=' PE_TERM_HW
+ PE_TERM '=' PE_TERM
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__term(&term, (int)$1, (int)$3, &@1, &@3);
 +
- 	switch (nlh->nlmsg_type) {
- 	case ISCSI_UEVENT_CREATE_SESSION:
- 		err = iscsi_if_create_session(priv, ep, ev,
-@@ -3940,7 +3959,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 			err = -EINVAL;
- 		break;
- 	case ISCSI_UEVENT_SET_PARAM:
--		err = iscsi_if_set_param(transport, ev);
-+		err = iscsi_if_set_param(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_CREATE_CONN:
- 	case ISCSI_UEVENT_DESTROY_CONN:
-@@ -3948,7 +3967,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 	case ISCSI_UEVENT_START_CONN:
- 	case ISCSI_UEVENT_BIND_CONN:
- 	case ISCSI_UEVENT_SEND_PDU:
--		err = iscsi_if_transport_conn(transport, nlh);
-+		err = iscsi_if_transport_conn(transport, nlh, rlen);
- 		break;
- 	case ISCSI_UEVENT_GET_STATS:
- 		err = iscsi_if_get_stats(transport, nlh);
-@@ -3957,23 +3976,22 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 	case ISCSI_UEVENT_TRANSPORT_EP_POLL:
- 	case ISCSI_UEVENT_TRANSPORT_EP_DISCONNECT:
- 	case ISCSI_UEVENT_TRANSPORT_EP_CONNECT_THROUGH_HOST:
--		err = iscsi_if_transport_ep(transport, ev, nlh->nlmsg_type);
-+		err = iscsi_if_transport_ep(transport, ev, nlh->nlmsg_type, rlen);
- 		break;
- 	case ISCSI_UEVENT_TGT_DSCVR:
--		err = iscsi_tgt_dscvr(transport, ev);
-+		err = iscsi_tgt_dscvr(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_SET_HOST_PARAM:
--		err = iscsi_set_host_param(transport, ev);
-+		err = iscsi_set_host_param(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_PATH_UPDATE:
--		err = iscsi_set_path(transport, ev);
-+		err = iscsi_set_path(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_SET_IFACE_PARAMS:
--		err = iscsi_set_iface_params(transport, ev,
--					     nlmsg_attrlen(nlh, sizeof(*ev)));
-+		err = iscsi_set_iface_params(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_PING:
--		err = iscsi_send_ping(transport, ev);
-+		err = iscsi_send_ping(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_GET_CHAP:
- 		err = iscsi_get_chap(transport, nlh);
-@@ -3982,13 +4000,10 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 		err = iscsi_delete_chap(transport, ev);
- 		break;
- 	case ISCSI_UEVENT_SET_FLASHNODE_PARAMS:
--		err = iscsi_set_flashnode_param(transport, ev,
--						nlmsg_attrlen(nlh,
--							      sizeof(*ev)));
-+		err = iscsi_set_flashnode_param(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_NEW_FLASHNODE:
--		err = iscsi_new_flashnode(transport, ev,
--					  nlmsg_attrlen(nlh, sizeof(*ev)));
-+		err = iscsi_new_flashnode(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_DEL_FLASHNODE:
- 		err = iscsi_del_flashnode(transport, ev);
-@@ -4003,8 +4018,7 @@ iscsi_if_recv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, uint32_t *group)
- 		err = iscsi_logout_flashnode_sid(transport, ev);
- 		break;
- 	case ISCSI_UEVENT_SET_CHAP:
--		err = iscsi_set_chap(transport, ev,
--				     nlmsg_attrlen(nlh, sizeof(*ev)));
-+		err = iscsi_set_chap(transport, ev, rlen);
- 		break;
- 	case ISCSI_UEVENT_GET_HOST_STATS:
- 		err = iscsi_get_host_stats(transport, nlh);
++	if (err)
++		PE_ABORT(err);
+ 
+-	ABORT_ON(parse_events_term__term(&term, (int)$1, (int)$3, &@1, &@3));
+ 	$$ = term;
+ }
+ |
+ PE_TERM '=' PE_VALUE
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, (int)$1, NULL, $3, false, &@1, &@3);
++
++	if (err)
++		PE_ABORT(err);
+ 
+-	ABORT_ON(parse_events_term__num(&term, (int)$1, NULL, $3, false, &@1, &@3));
+ 	$$ = term;
+ }
+ |
+ PE_TERM
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, (int)$1, NULL, 1, true, &@1, NULL);
++
++	if (err)
++		PE_ABORT(err);
+ 
+-	ABORT_ON(parse_events_term__num(&term, (int)$1, NULL, 1, true, &@1, NULL));
+ 	$$ = term;
+ }
+ |
+ name_or_raw array '=' name_or_legacy
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER, $1, $4, &@1, &@4);
+ 
+-	if (parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER,
+-					$1, $4, &@1, &@4)) {
++	if (err) {
+ 		free($1);
+ 		free($4);
+ 		free($2.ranges);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	term->array = $2;
+ 	$$ = term;
+@@ -924,12 +953,12 @@ name_or_raw array '=' name_or_legacy
+ name_or_raw array '=' PE_VALUE
+ {
+ 	struct parse_events_term *term;
++	int err = parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_USER, $1, $4, false, &@1, &@4);
+ 
+-	if (parse_events_term__num(&term, PARSE_EVENTS__TERM_TYPE_USER,
+-					$1, $4, false, &@1, &@4)) {
++	if (err) {
+ 		free($1);
+ 		free($2.ranges);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	term->array = $2;
+ 	$$ = term;
+@@ -939,14 +968,15 @@ PE_DRV_CFG_TERM
+ {
+ 	struct parse_events_term *term;
+ 	char *config = strdup($1);
++	int err;
+ 
+ 	if (!config)
+ 		YYNOMEM;
+-	if (parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_DRV_CFG,
+-					config, $1, &@1, NULL)) {
++	err = parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_DRV_CFG, config, $1, &@1, NULL);
++	if (err) {
+ 		free($1);
+ 		free(config);
+-		YYABORT;
++		PE_ABORT(err);
+ 	}
+ 	$$ = term;
+ }
 -- 
 2.40.1
 
