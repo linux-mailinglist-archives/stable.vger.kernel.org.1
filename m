@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E697A3D44
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2577A3B74
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241258AbjIQUkj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58830 "EHLO
+        id S239593AbjIQUSK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:18:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241278AbjIQUkc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:40:32 -0400
+        with ESMTP id S240687AbjIQURl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006B4101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:40:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CCEC433C7;
-        Sun, 17 Sep 2023 20:40:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA8EF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C777C433CB;
+        Sun, 17 Sep 2023 20:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983226;
-        bh=JcyYObJsZt/oMTdbKjF6g+xaYPjG+7s2t32q1jQ2TYE=;
+        s=korg; t=1694981855;
+        bh=HjYemQrhHs/MrLAxdbjSwN8PaEIGpwWO5jpPj5fSFJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lAq9E3CeZSJ6PObspRpCv1a/7Ra/UrE9U06kLqCh83YGlqi/dOvyUAP7PiTyaqiMI
-         m0i21luIDLj3tgwM9GOVuwUFNF5UQez8dYWxQE9cWOXEWMp85BpR+wIod/CZEoQFBA
-         M1GGMPHPvRyV2rpxAFXiuyfDVqVXD6rfZfBPWYfk=
+        b=i9YIFMpdAJ5ZuCM7MxmK1tVeIb3DcnYXLNkACoM0a6aybIrTPSOLaBes+85qytdHC
+         TKgPkubIX38uYJyOfRJUCinEkIXsJBcHIhVE8Vv0IYNXODeWEiV29xGCzyMgKUUQci
+         dFFUILbgp6UHS8sBqiL83pIfFUseBiIpgw/fIWo4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan-Benedict Glaw <jbglaw@lug-owl.de>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 481/511] MIPS: Fix CONFIG_CPU_DADDI_WORKAROUNDS `modules_install regression
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.1 181/219] perf hists browser: Fix the number of entries for e key
 Date:   Sun, 17 Sep 2023 21:15:08 +0200
-Message-ID: <20230917191125.355252817@linuxfoundation.org>
+Message-ID: <20230917191047.493650558@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,49 +53,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit a79a404e6c2241ebc528b9ebf4c0832457b498c3 upstream.
+commit f6b8436bede3e80226e8b2100279c4450c73806a upstream.
 
-Remove a build-time check for the presence of the GCC `-msym32' option.
-This option has been there since GCC 4.1.0, which is below the minimum
-required as at commit 805b2e1d427a ("kbuild: include Makefile.compiler
-only when compiler is needed"), when an error message:
+The 'e' key is to toggle expand/collapse the selected entry only.  But
+the current code has a bug that it only increases the number of entries
+by 1 in the hierarchy mode so users cannot move under the current entry
+after the key stroke.  This is due to a wrong assumption in the
+hist_entry__set_folding().
 
-arch/mips/Makefile:306: *** CONFIG_CPU_DADDI_WORKAROUNDS unsupported without -msym32.  Stop.
+The commit b33f922651011eff ("perf hists browser: Put hist_entry folding
+logic into single function") factored out the code, but actually it
+should be handled separately.  The hist_browser__set_folding() is to
+update fold state for each entry so it needs to traverse all (child)
+entries regardless of the current fold state.  So it increases the
+number of entries by 1.
 
-started to trigger for the `modules_install' target with configurations
-such as `decstation_64_defconfig' that set CONFIG_CPU_DADDI_WORKAROUNDS,
-because said commit has made `cc-option-yn' an undefined function for
-non-build targets.
+But the hist_entry__set_folding() only cares the currently selected
+entry and its all children.  So it should count all unfolded child
+entries.  This code is implemented in hist_browser__toggle_fold()
+already so we can just call it.
 
-Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 805b2e1d427a ("kbuild: include Makefile.compiler only when compiler is needed")
-Cc: stable@vger.kernel.org # v5.13+
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: b33f922651011eff ("perf hists browser: Put hist_entry folding logic into single function")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230731094934.1616495-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/ui/browsers/hists.c |   58 ++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 34 deletions(-)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -279,8 +279,8 @@ ifdef CONFIG_64BIT
-     endif
-   endif
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -407,11 +407,6 @@ static bool hist_browser__selection_has_
+ 	return container_of(ms, struct callchain_list, ms)->has_children;
+ }
  
--  ifeq ($(KBUILD_SYM32)$(call cc-option-yn,-msym32), yy)
--    cflags-y += -msym32 -DKBUILD_64BIT_SYM32
-+  ifeq ($(KBUILD_SYM32), y)
-+    cflags-$(KBUILD_SYM32) += -msym32 -DKBUILD_64BIT_SYM32
-   else
-     ifeq ($(CONFIG_CPU_DADDI_WORKAROUNDS), y)
-       $(error CONFIG_CPU_DADDI_WORKAROUNDS unsupported without -msym32)
+-static bool hist_browser__he_selection_unfolded(struct hist_browser *browser)
+-{
+-	return browser->he_selection ? browser->he_selection->unfolded : false;
+-}
+-
+ static bool hist_browser__selection_unfolded(struct hist_browser *browser)
+ {
+ 	struct hist_entry *he = browser->he_selection;
+@@ -584,8 +579,8 @@ static int hierarchy_set_folding(struct
+ 	return n;
+ }
+ 
+-static void __hist_entry__set_folding(struct hist_entry *he,
+-				      struct hist_browser *hb, bool unfold)
++static void hist_entry__set_folding(struct hist_entry *he,
++				    struct hist_browser *hb, bool unfold)
+ {
+ 	hist_entry__init_have_children(he);
+ 	he->unfolded = unfold ? he->has_children : false;
+@@ -603,34 +598,12 @@ static void __hist_entry__set_folding(st
+ 		he->nr_rows = 0;
+ }
+ 
+-static void hist_entry__set_folding(struct hist_entry *he,
+-				    struct hist_browser *browser, bool unfold)
+-{
+-	double percent;
+-
+-	percent = hist_entry__get_percent_limit(he);
+-	if (he->filtered || percent < browser->min_pcnt)
+-		return;
+-
+-	__hist_entry__set_folding(he, browser, unfold);
+-
+-	if (!he->depth || unfold)
+-		browser->nr_hierarchy_entries++;
+-	if (he->leaf)
+-		browser->nr_callchain_rows += he->nr_rows;
+-	else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
+-		browser->nr_hierarchy_entries++;
+-		he->has_no_entry = true;
+-		he->nr_rows = 1;
+-	} else
+-		he->has_no_entry = false;
+-}
+-
+ static void
+ __hist_browser__set_folding(struct hist_browser *browser, bool unfold)
+ {
+ 	struct rb_node *nd;
+ 	struct hist_entry *he;
++	double percent;
+ 
+ 	nd = rb_first_cached(&browser->hists->entries);
+ 	while (nd) {
+@@ -640,6 +613,21 @@ __hist_browser__set_folding(struct hist_
+ 		nd = __rb_hierarchy_next(nd, HMD_FORCE_CHILD);
+ 
+ 		hist_entry__set_folding(he, browser, unfold);
++
++		percent = hist_entry__get_percent_limit(he);
++		if (he->filtered || percent < browser->min_pcnt)
++			continue;
++
++		if (!he->depth || unfold)
++			browser->nr_hierarchy_entries++;
++		if (he->leaf)
++			browser->nr_callchain_rows += he->nr_rows;
++		else if (unfold && !hist_entry__has_hierarchy_children(he, browser->min_pcnt)) {
++			browser->nr_hierarchy_entries++;
++			he->has_no_entry = true;
++			he->nr_rows = 1;
++		} else
++			he->has_no_entry = false;
+ 	}
+ }
+ 
+@@ -659,8 +647,10 @@ static void hist_browser__set_folding_se
+ 	if (!browser->he_selection)
+ 		return;
+ 
+-	hist_entry__set_folding(browser->he_selection, browser, unfold);
+-	browser->b.nr_entries = hist_browser__nr_entries(browser);
++	if (unfold == browser->he_selection->unfolded)
++		return;
++
++	hist_browser__toggle_fold(browser);
+ }
+ 
+ static void ui_browser__warn_lost_events(struct ui_browser *browser)
+@@ -732,8 +722,8 @@ static int hist_browser__handle_hotkey(s
+ 		hist_browser__set_folding(browser, true);
+ 		break;
+ 	case 'e':
+-		/* Expand the selected entry. */
+-		hist_browser__set_folding_selected(browser, !hist_browser__he_selection_unfolded(browser));
++		/* Toggle expand/collapse the selected entry. */
++		hist_browser__toggle_fold(browser);
+ 		break;
+ 	case 'H':
+ 		browser->show_headers = !browser->show_headers;
 
 
