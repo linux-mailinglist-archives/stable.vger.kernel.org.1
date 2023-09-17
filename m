@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2CB47A3AC2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1F47A3CCC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240455AbjIQUIg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37732 "EHLO
+        id S241141AbjIQUfR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240457AbjIQUIR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:08:17 -0400
+        with ESMTP id S241187AbjIQUfK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:35:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745C497
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E493C433C8;
-        Sun, 17 Sep 2023 20:08:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF78B137
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:35:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4E4C433C8;
+        Sun, 17 Sep 2023 20:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981292;
-        bh=nm7ypoet6LR8Dj5Y5Yz7q1nq8X2w+nMdmrB43yrWboA=;
+        s=korg; t=1694982902;
+        bh=IXjzQzFtf5es8UlIDrOficJaFeNEn54V/ymfNSl5JQI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TLLoKEpoLkviHBkSuEokcp3/+tscaKoka3EhUZGawYZG3KvtnLxtUgEhhd+YIZvKv
-         J71AbJaZxS5FsDxu602YnDeo3Udd71Y/ZXc1CBDfwBf9kYExiA9spxmae+mgXU+Jeb
-         +Otz4xw/jdKDzODAedsbeRKOye0yUUjdNWskEjLI=
+        b=l5K1QBEUot7uCCJKTSphsipwxnN+/AkuGiqc0RTlTEmeF6BsPjjQvzjSBkBOjs1H0
+         TpfLXviGIM6u4h9Nto5x3/1gRkL0U9w6bprkrSbaOjlhsAq6pLDrTIUZKVyrzbnqbp
+         sbduPNkJ6/z2Jqj+6Oz2lthxg+CBuKqMxi5PAxD0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+e46fbd5289363464bc13@syzkaller.appspotmail.com,
-        Eric Dumazet <edumazet@google.com>,
-        Michal Kubiak <michal.kubiak@intel.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/219] net/sched: fq_pie: avoid stalls in fq_pie_timer()
+        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 387/511] scsi: qla2xxx: Fix smatch warn for qla_init_iocb_limit()
 Date:   Sun, 17 Sep 2023 21:13:34 +0200
-Message-ID: <20230917191044.122038130@linuxfoundation.org>
+Message-ID: <20230917191123.141329805@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,120 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-[ Upstream commit 8c21ab1bae945686c602c5bfa4e3f3352c2452c5 ]
+commit b496953dd0444001b12f425ea07d78c1f47e3193 upstream.
 
-When setting a high number of flows (limit being 65536),
-fq_pie_timer() is currently using too much time as syzbot reported.
+Fix indentation for warning reported by smatch:
 
-Add logic to yield the cpu every 2048 flows (less than 150 usec
-on debug kernels).
-It should also help by not blocking qdisc fast paths for too long.
-Worst case (65536 flows) would need 31 jiffies for a complete scan.
+drivers/scsi/qla2xxx/qla_init.c:4199 qla_init_iocb_limit() warn: inconsistent indenting
 
-Relevant extract from syzbot report:
-
-rcu: INFO: rcu_preempt detected expedited stalls on CPUs/tasks: { 0-.... } 2663 jiffies s: 873 root: 0x1/.
-rcu: blocking rcu_node structures (internal RCU debug):
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 PID: 5177 Comm: syz-executor273 Not tainted 6.5.0-syzkaller-00453-g727dbda16b83 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-RIP: 0010:check_kcov_mode kernel/kcov.c:173 [inline]
-RIP: 0010:write_comp_data+0x21/0x90 kernel/kcov.c:236
-Code: 2e 0f 1f 84 00 00 00 00 00 65 8b 05 01 b2 7d 7e 49 89 f1 89 c6 49 89 d2 81 e6 00 01 00 00 49 89 f8 65 48 8b 14 25 80 b9 03 00 <a9> 00 01 ff 00 74 0e 85 f6 74 59 8b 82 04 16 00 00 85 c0 74 4f 8b
-RSP: 0018:ffffc90000007bb8 EFLAGS: 00000206
-RAX: 0000000000000101 RBX: ffffc9000dc0d140 RCX: ffffffff885893b0
-RDX: ffff88807c075940 RSI: 0000000000000100 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffc9000dc0d178
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000555555d54380(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6b442f6130 CR3: 000000006fe1c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <IRQ>
- pie_calculate_probability+0x480/0x850 net/sched/sch_pie.c:415
- fq_pie_timer+0x1da/0x4f0 net/sched/sch_fq_pie.c:387
- call_timer_fn+0x1a0/0x580 kernel/time/timer.c:1700
-
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Link: https://lore.kernel.org/lkml/00000000000017ad3f06040bf394@google.com/
-Reported-by: syzbot+e46fbd5289363464bc13@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230829123541.3745013-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: efa74a62aaa2 ("scsi: qla2xxx: Adjust IOCB resource on qpair create")
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_fq_pie.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 591d87d5e5c0f..68e6acd0f130d 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -61,6 +61,7 @@ struct fq_pie_sched_data {
- 	struct pie_params p_params;
- 	u32 ecn_prob;
- 	u32 flows_cnt;
-+	u32 flows_cursor;
- 	u32 quantum;
- 	u32 memory_limit;
- 	u32 new_flow_count;
-@@ -375,22 +376,32 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
- static void fq_pie_timer(struct timer_list *t)
- {
- 	struct fq_pie_sched_data *q = from_timer(q, t, adapt_timer);
-+	unsigned long next, tupdate;
- 	struct Qdisc *sch = q->sch;
- 	spinlock_t *root_lock; /* to lock qdisc for probability calculations */
--	u32 idx;
-+	int max_cnt, i;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -4205,7 +4205,7 @@ void qla_init_iocb_limit(scsi_qla_host_t
+ 	u8 i;
+ 	struct qla_hw_data *ha = vha->hw;
  
- 	rcu_read_lock();
- 	root_lock = qdisc_lock(qdisc_root_sleeping(sch));
- 	spin_lock(root_lock);
+-	 __qla_adjust_iocb_limit(ha->base_qpair);
++	__qla_adjust_iocb_limit(ha->base_qpair);
+ 	ha->base_qpair->fwres.iocbs_used = 0;
+ 	ha->base_qpair->fwres.exch_used  = 0;
  
--	for (idx = 0; idx < q->flows_cnt; idx++)
--		pie_calculate_probability(&q->p_params, &q->flows[idx].vars,
--					  q->flows[idx].backlog);
--
--	/* reset the timer to fire after 'tupdate' jiffies. */
--	if (q->p_params.tupdate)
--		mod_timer(&q->adapt_timer, jiffies + q->p_params.tupdate);
-+	/* Limit this expensive loop to 2048 flows per round. */
-+	max_cnt = min_t(int, q->flows_cnt - q->flows_cursor, 2048);
-+	for (i = 0; i < max_cnt; i++) {
-+		pie_calculate_probability(&q->p_params,
-+					  &q->flows[q->flows_cursor].vars,
-+					  q->flows[q->flows_cursor].backlog);
-+		q->flows_cursor++;
-+	}
- 
-+	tupdate = q->p_params.tupdate;
-+	next = 0;
-+	if (q->flows_cursor >= q->flows_cnt) {
-+		q->flows_cursor = 0;
-+		next = tupdate;
-+	}
-+	if (tupdate)
-+		mod_timer(&q->adapt_timer, jiffies + next);
- 	spin_unlock(root_lock);
- 	rcu_read_unlock();
- }
--- 
-2.40.1
-
 
 
