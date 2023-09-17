@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B887A3AA5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93C207A3CA8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240399AbjIQUHA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:07:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
+        id S241075AbjIQUdk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240467AbjIQUGr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:47 -0400
+        with ESMTP id S241135AbjIQUdc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1DA697
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:06:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D8CC433C7;
-        Sun, 17 Sep 2023 20:06:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42ADF101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E17C433C7;
+        Sun, 17 Sep 2023 20:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981202;
-        bh=QetLoVC385ghN+/3EMSjnvyeY1CFQLcCKZTt7xQT69I=;
+        s=korg; t=1694982806;
+        bh=5t7a6olzgPrYU1NZiLvVfwKUUyYRaTQsVuEx/Xome8I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PrRgyjCOHaUkE7KRfxeE9tmslUcv0GLspyu0+TGVpEOAUxSgZQHU/UaUYKfuy+ZZf
-         7LusWE2Jj9BvEea79mEQyIVtkkhY2UxOkfKeHudzo+JwRyCZ5AazqrEfRX/mrY7K7K
-         P04YYtZiEYmpojvBkTkA6PfNGmFQRlPcPUUwsES0=
+        b=t8XcARMSOgYvMETEqZLnfSH6AxGnFHiJdr7B/wUZ5PTk9JvOyoM2INLuJmeYeH23b
+         rTYN+11VeXAk3y/bDqbCWjrhkJryQpye9pgy53+C4TNZ5ncGGN2OGf5SuwIRto1+D2
+         Xg+K/ZR1PyyYW9UOw4x9VHaSMa5wmHpRvCU38aRE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/219] kbuild: do not run depmod for make modules_sign
-Date:   Sun, 17 Sep 2023 21:13:04 +0200
-Message-ID: <20230917191043.073374017@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 358/511] crypto: stm32 - fix loop iterating through scatterlist for DMA
+Date:   Sun, 17 Sep 2023 21:13:05 +0200
+Message-ID: <20230917191122.444241455@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
 
-[ Upstream commit 2429742e506a2b5939a62c629c4a46d91df0ada8 ]
+commit d9c83f71eeceed2cb54bb78be84f2d4055fd9a1f upstream.
 
-Commit 961ab4a3cd66 ("kbuild: merge scripts/Makefile.modsign to
-scripts/Makefile.modinst") started to run depmod at the end of
-'make modules_sign'.
+We were reading the length of the scatterlist sg after copying value of
+tsg inside.
+So we are using the size of the previous scatterlist and for the first
+one we are using an unitialised value.
+Fix this by copying tsg in sg[0] before reading the size.
 
-Move the depmod rule to scripts/Makefile.modinst and run it only when
-$(modules_sign_only) is empty.
-
-Fixes: 961ab4a3cd66 ("kbuild: merge scripts/Makefile.modsign to scripts/Makefile.modinst")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes : 8a1012d3f2ab ("crypto: stm32 - Support for STM32 HASH module")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/stm32/stm32-hash.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 35fc0d62898dc..f23edaa0e8139 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1939,7 +1939,9 @@ quiet_cmd_depmod = DEPMOD  $(MODLIB)
+--- a/drivers/crypto/stm32/stm32-hash.c
++++ b/drivers/crypto/stm32/stm32-hash.c
+@@ -565,9 +565,9 @@ static int stm32_hash_dma_send(struct st
+ 	}
  
- modules_install:
- 	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
-+ifndef modules_sign_only
- 	$(call cmd,depmod)
-+endif
+ 	for_each_sg(rctx->sg, tsg, rctx->nents, i) {
++		sg[0] = *tsg;
+ 		len = sg->length;
  
- else # CONFIG_MODULES
- 
--- 
-2.40.1
-
+-		sg[0] = *tsg;
+ 		if (sg_is_last(sg)) {
+ 			if (hdev->dma_mode == 1) {
+ 				len = (ALIGN(sg->length, 16) - 16);
 
 
