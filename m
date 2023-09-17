@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809DB7A3C1E
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C9017A3C20
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241049AbjIQU1N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239668AbjIQU1N (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:27:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32982 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240996AbjIQU0k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:26:40 -0400
+        with ESMTP id S240890AbjIQU0n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:26:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A190410C
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:26:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D349EC433C8;
-        Sun, 17 Sep 2023 20:26:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E90A810B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:26:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A689C433C8;
+        Sun, 17 Sep 2023 20:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982394;
-        bh=CGU4xlNLkcZMGKyzywBdtT0is+2gfP8k9Ly1fv8O2kY=;
+        s=korg; t=1694982397;
+        bh=WlkbM/y4MgXfnBX7TtBPeiqWsHjeB5ARgIvN+s7wJXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GrtaIMZipECr+Ry+3kkQN4ivKST6T/sq0R4HIZkcC6PTXjrjjnSUj5CsmxYoD8dDE
-         MHaxUk42GTsEHndGMf3zNcMp80M0ot+uRddh85X8IROAGfrP3FdVl0ic1zxQBWjU0U
-         GsMfKae9IrZ1jsfK4Sx+/kzW73hNsExn7vAel2vM=
+        b=ykI5P8yvdUWCOAQ0SKiDUnZJJN5QHWRzv6trVe1yyg/zFtttYzGbTDk1esV3RHEND
+         LAQGTOYmZcT/yNWV5dEaUYdxVffydWdKbCi5Y/TFGCa742ZtYNBdczM9nNrxY/KwPV
+         OzHkIukTbBCBNKOxDzHkfVEdsPMyMkmtQQnIhA2s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 237/511] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
-Date:   Sun, 17 Sep 2023 21:11:04 +0200
-Message-ID: <20230917191119.535937272@linuxfoundation.org>
+        Daniel Marcovitch <dmarcovitch@nvidia.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 238/511] iommu/amd/iommu_v2: Fix pasid_state refcount dec hit 0 warning on pasid unbind
+Date:   Sun, 17 Sep 2023 21:11:05 +0200
+Message-ID: <20230917191119.561169514@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,67 +55,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Daniel Marcovitch <dmarcovitch@nvidia.com>
 
-[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
+[ Upstream commit 534103bcd52ca9c1fecbc70e717b4a538dc4ded8 ]
 
-If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
-so fwnode_handle_put() is a no-op.
+When unbinding pasid - a race condition exists vs outstanding page faults.
 
-Release the reference taken from a previous fwnode_graph_get_port_parent()
-call instead.
+To prevent this, the pasid_state object contains a refcount.
+    * set to 1 on pasid bind
+    * incremented on each ppr notification start
+    * decremented on each ppr notification done
+    * decremented on pasid unbind
 
-Also handle fwnode_graph_get_port_parent() failures.
+Since refcount_dec assumes that refcount will never reach 0:
+  the current implementation causes the following to be invoked on
+  pasid unbind:
+        REFCOUNT_WARN("decrement hit 0; leaking memory")
 
-In order to fix these issues, add an error handling path to the function
-and the needed gotos.
+Fix this issue by changing refcount_dec to refcount_dec_and_test
+to explicitly handle refcount=1.
 
-Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 8bc54824da4e ("iommu/amd: Convert from atomic_t to refcount_t on pasid_state->count")
+Signed-off-by: Daniel Marcovitch <dmarcovitch@nvidia.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20230609105146.7773-2-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/iommu/amd/iommu_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-index 843259c304bb5..5d2eaad1fa684 100644
---- a/drivers/media/v4l2-core/v4l2-fwnode.c
-+++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-@@ -549,19 +549,29 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
- 	link->local_id = fwep.id;
- 	link->local_port = fwep.port;
- 	link->local_node = fwnode_graph_get_port_parent(fwnode);
-+	if (!link->local_node)
-+		return -ENOLINK;
+diff --git a/drivers/iommu/amd/iommu_v2.c b/drivers/iommu/amd/iommu_v2.c
+index c96cf9b217197..29a3a62b7a3ac 100644
+--- a/drivers/iommu/amd/iommu_v2.c
++++ b/drivers/iommu/amd/iommu_v2.c
+@@ -264,8 +264,8 @@ static void put_pasid_state(struct pasid_state *pasid_state)
  
- 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
--	if (!fwnode) {
--		fwnode_handle_put(fwnode);
--		return -ENOLINK;
--	}
-+	if (!fwnode)
-+		goto err_put_local_node;
- 
- 	fwnode_graph_parse_endpoint(fwnode, &fwep);
- 	link->remote_id = fwep.id;
- 	link->remote_port = fwep.port;
- 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
-+	if (!link->remote_node)
-+		goto err_put_remote_endpoint;
- 
- 	return 0;
-+
-+err_put_remote_endpoint:
-+	fwnode_handle_put(fwnode);
-+
-+err_put_local_node:
-+	fwnode_handle_put(link->local_node);
-+
-+	return -ENOLINK;
+ static void put_pasid_state_wait(struct pasid_state *pasid_state)
+ {
+-	refcount_dec(&pasid_state->count);
+-	wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
++	if (!refcount_dec_and_test(&pasid_state->count))
++		wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
+ 	free_pasid_state(pasid_state);
  }
- EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
  
 -- 
 2.40.1
