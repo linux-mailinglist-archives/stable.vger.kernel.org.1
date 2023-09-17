@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34A427A3862
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA477A3982
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239732AbjIQTe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
+        id S234373AbjIQTuZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:50:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239755AbjIQTen (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:34:43 -0400
+        with ESMTP id S240104AbjIQTuB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:50:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25B111D
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:34:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F84C433C7;
-        Sun, 17 Sep 2023 19:34:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11E32103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47621C433CB;
+        Sun, 17 Sep 2023 19:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979277;
-        bh=PJtX90oCFgo8bR67TKda9EJqvgrO2MIXeZu6OjMfEEk=;
+        s=korg; t=1694980194;
+        bh=ZYATX8wj5Jtp32qeyCUcdaiRWiYgeo/49YsMxxLpJRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OMQuWbaMg9vflX2IR79chcCJNxWukW3cKrKcrXBF0R+tOXHrbVXE6fIAlg15c4Wl1
-         cFA/9BJmYGS7YE2wg7xqwQkSPAPmfn4rk2/9OB/VRP9gHe5TWmUSwY+rRhRvCsV10a
-         7FLvIu+SGIR/+5ApOfF1gaJFmo4MccKpcKMs2Y1g=
+        b=zmrbydBc0HxE7EihJJ7HDLXMx+BkVenZhkwKZDH/NIb8KhYJtZCtvJKxaK1Lwjbwo
+         Mh+5ml+PeZiR0LRr9cDbLpH8SCIsutWwJCvl7Zed9PTVmpOuhv97N2ZVBRbs5UawUJ
+         vlFqp9c3qsFWapcda1+p1BJZ9/jN3+sMwtl/0rZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/406] cpufreq: Fix the race condition while updating the transition_task of policy
+Subject: [PATCH 6.5 120/285] net: annotate data-races around sk->sk_forward_alloc
 Date:   Sun, 17 Sep 2023 21:12:00 +0200
-Message-ID: <20230917191108.248851801@linuxfoundation.org>
+Message-ID: <20230917191055.820650298@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +50,179 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 61bfbf7951ba561dcbdd5357702d3cbc2d447812 ]
+[ Upstream commit 5e6300e7b3a4ab5b72a82079753868e91fbf9efc ]
 
-The field 'transition_task' of policy structure is used to track the
-task which is performing the frequency transition. Using this field to
-print a warning once detect a case where the same task is calling
-_begin() again before completing the preivous frequency transition via
-the _end().
+Every time sk->sk_forward_alloc is read locklessly,
+add a READ_ONCE().
 
-However, there is a potential race condition in _end() and _begin() APIs
-while updating the field 'transition_task' of policy, the scenario is
-depicted below:
+Add sk_forward_alloc_add() helper to centralize updates,
+to reduce number of WRITE_ONCE().
 
-             Task A                            Task B
-
-        /* 1st freq transition */
-        Invoke _begin() {
-                ...
-                ...
-        }
-                                        /* 2nd freq transition */
-                                        Invoke _begin() {
-                                                ... //waiting for A to
-                                                ... //clear
-                                                ... //transition_ongoing
-                                                ... //in _end() for
-                                                ... //the 1st transition
-                                                        |
-        Change the frequency                            |
-                                                        |
-        Invoke _end() {                                 |
-                ...                                     |
-                ...                                     |
-                transition_ongoing = false;             V
-                                                transition_ongoing = true;
-                                                transition_task = current;
-                transition_task = NULL;
-                ... //A overwrites the task
-                ... //performing the transition
-                ... //result in error warning.
-        }
-
-To fix this race condition, the transition_lock of policy structure is
-now acquired before updating policy structure in _end() API. Which ensure
-that only one task can update the 'transition_task' field at a time.
-
-Link: https://lore.kernel.org/all/b3c61d8a-d52d-3136-fbf0-d1de9f1ba411@huawei.com/
-Fixes: ca654dc3a93d ("cpufreq: Catch double invocations of cpufreq_freq_transition_begin/end")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/sock.h    | 12 +++++++++---
+ net/core/sock.c       |  8 ++++----
+ net/ipv4/tcp_output.c |  2 +-
+ net/ipv4/udp.c        |  6 +++---
+ net/mptcp/protocol.c  |  6 +++---
+ 5 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 58342390966b7..5b4bca71f201d 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -450,8 +450,10 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
- 			    policy->cur,
- 			    policy->cpuinfo.max_freq);
- 
-+	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
- 	policy->transition_task = NULL;
-+	spin_unlock(&policy->transition_lock);
- 
- 	wake_up(&policy->transition_wait);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index e8927f2d47a3c..85f9dffde05d0 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1053,6 +1053,12 @@ static inline void sk_wmem_queued_add(struct sock *sk, int val)
+ 	WRITE_ONCE(sk->sk_wmem_queued, sk->sk_wmem_queued + val);
  }
+ 
++static inline void sk_forward_alloc_add(struct sock *sk, int val)
++{
++	/* Paired with lockless reads of sk->sk_forward_alloc */
++	WRITE_ONCE(sk->sk_forward_alloc, sk->sk_forward_alloc + val);
++}
++
+ void sk_stream_write_space(struct sock *sk);
+ 
+ /* OOB backlog add */
+@@ -1377,7 +1383,7 @@ static inline int sk_forward_alloc_get(const struct sock *sk)
+ 	if (sk->sk_prot->forward_alloc_get)
+ 		return sk->sk_prot->forward_alloc_get(sk);
+ #endif
+-	return sk->sk_forward_alloc;
++	return READ_ONCE(sk->sk_forward_alloc);
+ }
+ 
+ static inline bool __sk_stream_memory_free(const struct sock *sk, int wake)
+@@ -1673,14 +1679,14 @@ static inline void sk_mem_charge(struct sock *sk, int size)
+ {
+ 	if (!sk_has_account(sk))
+ 		return;
+-	sk->sk_forward_alloc -= size;
++	sk_forward_alloc_add(sk, -size);
+ }
+ 
+ static inline void sk_mem_uncharge(struct sock *sk, int size)
+ {
+ 	if (!sk_has_account(sk))
+ 		return;
+-	sk->sk_forward_alloc += size;
++	sk_forward_alloc_add(sk, size);
+ 	sk_mem_reclaim(sk);
+ }
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 3109eb0cd512e..5edb17de6d1df 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1045,7 +1045,7 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+ 		mem_cgroup_uncharge_skmem(sk->sk_memcg, pages);
+ 		return -ENOMEM;
+ 	}
+-	sk->sk_forward_alloc += pages << PAGE_SHIFT;
++	sk_forward_alloc_add(sk, pages << PAGE_SHIFT);
+ 
+ 	WRITE_ONCE(sk->sk_reserved_mem,
+ 		   sk->sk_reserved_mem + (pages << PAGE_SHIFT));
+@@ -3138,10 +3138,10 @@ int __sk_mem_schedule(struct sock *sk, int size, int kind)
+ {
+ 	int ret, amt = sk_mem_pages(size);
+ 
+-	sk->sk_forward_alloc += amt << PAGE_SHIFT;
++	sk_forward_alloc_add(sk, amt << PAGE_SHIFT);
+ 	ret = __sk_mem_raise_allocated(sk, size, amt, kind);
+ 	if (!ret)
+-		sk->sk_forward_alloc -= amt << PAGE_SHIFT;
++		sk_forward_alloc_add(sk, -(amt << PAGE_SHIFT));
+ 	return ret;
+ }
+ EXPORT_SYMBOL(__sk_mem_schedule);
+@@ -3173,7 +3173,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
+ void __sk_mem_reclaim(struct sock *sk, int amount)
+ {
+ 	amount >>= PAGE_SHIFT;
+-	sk->sk_forward_alloc -= amount << PAGE_SHIFT;
++	sk_forward_alloc_add(sk, -(amount << PAGE_SHIFT));
+ 	__sk_mem_reduce_allocated(sk, amount);
+ }
+ EXPORT_SYMBOL(__sk_mem_reclaim);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 51d8638d4b4c6..9f9ca68c47026 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3459,7 +3459,7 @@ void sk_forced_mem_schedule(struct sock *sk, int size)
+ 	if (delta <= 0)
+ 		return;
+ 	amt = sk_mem_pages(delta);
+-	sk->sk_forward_alloc += amt << PAGE_SHIFT;
++	sk_forward_alloc_add(sk, amt << PAGE_SHIFT);
+ 	sk_memory_allocated_add(sk, amt);
+ 
+ 	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index b3aa68ea29de2..4c847baf52d1c 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1443,9 +1443,9 @@ static void udp_rmem_release(struct sock *sk, int size, int partial,
+ 		spin_lock(&sk_queue->lock);
+ 
+ 
+-	sk->sk_forward_alloc += size;
++	sk_forward_alloc_add(sk, size);
+ 	amt = (sk->sk_forward_alloc - partial) & ~(PAGE_SIZE - 1);
+-	sk->sk_forward_alloc -= amt;
++	sk_forward_alloc_add(sk, -amt);
+ 
+ 	if (amt)
+ 		__sk_mem_reduce_allocated(sk, amt >> PAGE_SHIFT);
+@@ -1556,7 +1556,7 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 		goto uncharge_drop;
+ 	}
+ 
+-	sk->sk_forward_alloc -= size;
++	sk_forward_alloc_add(sk, -size);
+ 
+ 	/* no need to setup a destructor, we will explicitly release the
+ 	 * forward allocated memory on dequeue
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 0efc52c640b59..996e031dff78a 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1773,7 +1773,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		}
+ 
+ 		/* data successfully copied into the write queue */
+-		sk->sk_forward_alloc -= total_ts;
++		sk_forward_alloc_add(sk, -total_ts);
+ 		copied += psize;
+ 		dfrag->data_len += psize;
+ 		frag_truesize += psize;
+@@ -3242,7 +3242,7 @@ void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
+ 	/* move all the rx fwd alloc into the sk_mem_reclaim_final in
+ 	 * inet_sock_destruct() will dispose it
+ 	 */
+-	sk->sk_forward_alloc += msk->rmem_fwd_alloc;
++	sk_forward_alloc_add(sk, msk->rmem_fwd_alloc);
+ 	msk->rmem_fwd_alloc = 0;
+ 	mptcp_token_destroy(msk);
+ 	mptcp_pm_free_anno_list(msk);
+@@ -3513,7 +3513,7 @@ static void mptcp_shutdown(struct sock *sk, int how)
+ 
+ static int mptcp_forward_alloc_get(const struct sock *sk)
+ {
+-	return sk->sk_forward_alloc + mptcp_sk(sk)->rmem_fwd_alloc;
++	return READ_ONCE(sk->sk_forward_alloc) + mptcp_sk(sk)->rmem_fwd_alloc;
+ }
+ 
+ static int mptcp_ioctl_outq(const struct mptcp_sock *msk, u64 v)
 -- 
 2.40.1
 
