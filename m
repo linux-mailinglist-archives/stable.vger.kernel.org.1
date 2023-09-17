@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6743B7A3BB3
+	by mail.lfdr.de (Postfix) with ESMTP id B10137A3BB4
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240745AbjIQUVX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:21:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52064 "EHLO
+        id S240779AbjIQUVY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:21:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240786AbjIQUUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:20:50 -0400
+        with ESMTP id S240842AbjIQUVA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:21:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60281133
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9041FC433CA;
-        Sun, 17 Sep 2023 20:20:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7601E10B
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:20:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DFFC433C7;
+        Sun, 17 Sep 2023 20:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982044;
-        bh=HYnnRKivZEj5Kd/VP5avnkvVC8SdaXYCVyO0Ty72h+4=;
+        s=korg; t=1694982054;
+        bh=p/L8CC7oO5FkzZbuPJWCjLq5yOslQKgPJugYNVbH3Ag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TSjMg5p7LB2KquqdQCCcjelQjD1ezCbWb1nAOf1yzP/VlIPXsplBiMhF7z9CsuoVi
-         tskaAAVg/H7U2QBGhhCgnzrp06f9yEv721Yl4ksa9EHkCpAxH0UEOo0rzwtyNsayI5
-         5dP2ITMM21VjQOPpMcxskYPDOoT52zwNZ3vtQI8Y=
+        b=AwCeaC4KE4+AYEU+UlYiRTLJ1s06g6xh3xRQTGwl/nFNFaK5EKaDNeBhVrbAVCwcA
+         AzZSQoNcUsWEHbCHGIhUFjCbBWc9i8JlLhbiZSqQ+MORdj8XF3FS6ZIig/Q8q41z4c
+         gv/QsbwTMRADP4PWTuB2f2pkJFj/rw7SXxkPU1fg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/511] arm64: dts: qcom: sm8250-sony-xperia: correct GPIO keys wakeup again
-Date:   Sun, 17 Sep 2023 21:09:30 +0200
-Message-ID: <20230917191117.311747757@linuxfoundation.org>
+Subject: [PATCH 5.15 144/511] arm64: dts: qcom: pmi8998: Add node for WLED
+Date:   Sun, 17 Sep 2023 21:09:31 +0200
+Message-ID: <20230917191117.335283336@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,46 +56,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
-[ Upstream commit b8fbeea0253211d97c579eae787274633d3eaf0d ]
+[ Upstream commit 17d32c10a2880ae7702d8e56128a542d9c6e9c75 ]
 
-gpio-keys,wakeup is a deprecated property:
+The PMI8998 PMIC has a WLED backlight controller, which is used on
+most MSM8998 and SDM845 based devices: add a base configuration for
+it and keep it disabled.
 
-  m8250-sony-xperia-edo-pdx206.dtb: gpio-keys: key-camera-focus: Unevaluated properties are not allowed ('gpio-key,wakeup' was unexpected)
+This contains only the PMIC specific configuration that does not
+change across boards; parameters like number of strings, OVP and
+current limits are product specific and shall be specified in the
+product DT in order to achieve functionality.
 
-Fixes: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230711063011.16222-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Link: https://lore.kernel.org/r/20210909123628.365968-1-angelogioacchino.delregno@somainline.org
+Stable-dep-of: 9a4ac09db3c7 ("arm64: dts: qcom: pm660l: Add missing short interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-index 60c62fbc2650d..e622cbe167b0d 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-@@ -60,7 +60,7 @@ key-camera-focus {
- 			gpios = <&pm8150b_gpios 2 GPIO_ACTIVE_LOW>;
- 			debounce-interval = <15>;
- 			linux,can-disable;
--			gpio-key,wakeup;
-+			wakeup-source;
+diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+index d230c510d4b7d..0fef5f113f05e 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+@@ -41,5 +41,17 @@ lab: lab {
+ 				interrupt-names = "sc-err", "ocp";
+ 			};
  		};
- 
- 		key-camera-snapshot {
-@@ -69,7 +69,7 @@ key-camera-snapshot {
- 			gpios = <&pm8150b_gpios 1 GPIO_ACTIVE_LOW>;
- 			debounce-interval = <15>;
- 			linux,can-disable;
--			gpio-key,wakeup;
-+			wakeup-source;
- 		};
- 
- 		vol-down {
++
++		pmi8998_wled: leds@d800 {
++			compatible = "qcom,pmi8998-wled";
++			reg = <0xd800 0xd900>;
++			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
++				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "ovp", "short";
++			label = "backlight";
++
++			status = "disabled";
++		};
++
+ 	};
+ };
 -- 
 2.40.1
 
