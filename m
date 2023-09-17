@@ -2,36 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 150727A3D15
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5415B7A3D26
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:39:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241219AbjIQUi6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:38:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40528 "EHLO
+        id S241227AbjIQUjc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:39:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241209AbjIQUi2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:38:28 -0400
+        with ESMTP id S241273AbjIQUjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:39:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789E0101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:38:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC73C433CB;
-        Sun, 17 Sep 2023 20:38:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C23B115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:39:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46881C433C9;
+        Sun, 17 Sep 2023 20:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983103;
-        bh=MzY9aITqwwp9wanPtmK2rsmq16UwSymQmGswlrbXVkg=;
+        s=korg; t=1694983140;
+        bh=k5SC0DZnJyiRb+4K+usbP3nppkQwimrd8cTWxJoFBoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zf7/O9Bdhfx5aTQ7Q6xpaYLuhJsoPZZtGqrfl2/A7Ox85c76yBqFHzGRcCQ3VIzY4
-         B322klHH02qoC5vvkk2xi81CXPMLOTUVZK8L3Up+MPYiAqg13g29I3WFI1kGf2q10O
-         1JQGyofv/WmHQpkLlZKR75EEckA8AScgjjr6FH/U=
+        b=PNUNggkwaptishtbqv5Dhm0BvjyCdBkG1sKlQtGrNKIWNH7rjjrgTW83Do9hMZ0wl
+         hiiDtaqh/bRJPoi2YOE43iDUAryyCPzcP0SjgYjpFC4uOAGdbAJO9PR3zKxBxIfz6C
+         9e0uiL5ahN9LD0iPsGsoa2weETfiS/CgebM38gEg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mohamed Mahmoud <mmahmoud@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Dave Tucker <datucker@redhat.com>,
+        Derek Barbosa <debarbos@redhat.com>,
+        Song Liu <songliubraving@fb.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 418/511] Input: tca6416-keypad - fix interrupt enable disbalance
-Date:   Sun, 17 Sep 2023 21:14:05 +0200
-Message-ID: <20230917191123.872695120@linuxfoundation.org>
+Subject: [PATCH 5.15 419/511] perf annotate bpf: Dont enclose non-debug code with an assert()
+Date:   Sun, 17 Sep 2023 21:14:06 +0200
+Message-ID: <20230917191123.895500274@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -39,6 +45,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,50 +61,109 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit cc141c35af873c6796e043adcb820833bd8ef8c5 ]
+[ Upstream commit 979e9c9fc9c2a761303585e07fe2699bdd88182f ]
 
-The driver has been switched to use IRQF_NO_AUTOEN, but in the error
-unwinding and remove paths calls to enable_irq() were left in place, which
-will lead to an incorrect enable counter value.
+In 616b14b47a86d880 ("perf build: Conditionally define NDEBUG") we
+started using NDEBUG=1 when DEBUG=1 isn't present, so code that is
+enclosed with assert() is not called.
 
-Fixes: bcd9730a04a1 ("Input: move to use request_irq by IRQF_NO_AUTOEN flag")
-Link: https://lore.kernel.org/r/20230724053024.352054-3-dmitry.torokhov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+In dd317df072071903 ("perf build: Make binutil libraries opt in") we
+stopped linking against binutils-devel, for licensing reasons.
+
+Recently people asked me why annotation of BPF programs wasn't working,
+i.e. this:
+
+  $ perf annotate bpf_prog_5280546344e3f45c_kfree_skb
+
+was returning:
+
+  case SYMBOL_ANNOTATE_ERRNO__NO_LIBOPCODES_FOR_BPF:
+     scnprintf(buf, buflen, "Please link with binutils's libopcode to enable BPF annotation");
+
+This was on a fedora rpm, so its new enough that I had to try to test by
+rebuilding using BUILD_NONDISTRO=1, only to get it segfaulting on me.
+
+This combination made this libopcode function not to be called:
+
+        assert(bfd_check_format(bfdf, bfd_object));
+
+Changing it to:
+
+	if (!bfd_check_format(bfdf, bfd_object))
+		abort();
+
+Made it work, looking at this "check" function made me realize it
+changes the 'bfdf' internal state, i.e. we better call it.
+
+So stop using assert() on it, just call it and abort if it fails.
+
+Probably it is better to propagate the error, etc, but it seems it is
+unlikely to fail from the usage done so far and we really need to stop
+using libopcodes, so do the quick fix above and move on.
+
+With it we have BPF annotation back working when built with
+BUILD_NONDISTRO=1:
+
+  ⬢[acme@toolbox perf-tools-next]$ perf annotate --stdio2 bpf_prog_5280546344e3f45c_kfree_skb   | head
+  No kallsyms or vmlinux with build-id 939bc71a1a51cdc434e60af93c7e734f7d5c0e7e was found
+  Samples: 12  of event 'cpu-clock:ppp', 4000 Hz, Event count (approx.): 3000000, [percent: local period]
+  bpf_prog_5280546344e3f45c_kfree_skb() bpf_prog_5280546344e3f45c_kfree_skb
+  Percent      int kfree_skb(struct trace_event_raw_kfree_skb *args) {
+                 nop
+   33.33         xchg   %ax,%ax
+                 push   %rbp
+                 mov    %rsp,%rbp
+                 sub    $0x180,%rsp
+                 push   %rbx
+                 push   %r13
+  ⬢[acme@toolbox perf-tools-next]$
+
+Fixes: 6987561c9e86eace ("perf annotate: Enable annotation of BPF programs")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mohamed Mahmoud <mmahmoud@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Dave Tucker <datucker@redhat.com>
+Cc: Derek Barbosa <debarbos@redhat.com>
+Cc: Song Liu <songliubraving@fb.com>
+Link: https://lore.kernel.org/lkml/ZMrMzoQBe0yqMek1@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/tca6416-keypad.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ tools/perf/util/annotate.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/keyboard/tca6416-keypad.c b/drivers/input/keyboard/tca6416-keypad.c
-index d65afa25c2405..508d84f6d00cb 100644
---- a/drivers/input/keyboard/tca6416-keypad.c
-+++ b/drivers/input/keyboard/tca6416-keypad.c
-@@ -292,10 +292,8 @@ static int tca6416_keypad_probe(struct i2c_client *client,
- 	return 0;
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index a5e87c7f4f4eb..60b232eba5c82 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -1729,8 +1729,11 @@ static int symbol__disassemble_bpf(struct symbol *sym,
+ 	perf_exe(tpath, sizeof(tpath));
  
- fail2:
--	if (!chip->use_polling) {
-+	if (!chip->use_polling)
- 		free_irq(client->irq, chip);
--		enable_irq(client->irq);
--	}
- fail1:
- 	input_free_device(input);
- 	kfree(chip);
-@@ -306,10 +304,8 @@ static int tca6416_keypad_remove(struct i2c_client *client)
- {
- 	struct tca6416_keypad_chip *chip = i2c_get_clientdata(client);
+ 	bfdf = bfd_openr(tpath, NULL);
+-	assert(bfdf);
+-	assert(bfd_check_format(bfdf, bfd_object));
++	if (bfdf == NULL)
++		abort();
++
++	if (!bfd_check_format(bfdf, bfd_object))
++		abort();
  
--	if (!chip->use_polling) {
-+	if (!chip->use_polling)
- 		free_irq(client->irq, chip);
--		enable_irq(client->irq);
--	}
+ 	s = open_memstream(&buf, &buf_size);
+ 	if (!s) {
+@@ -1778,7 +1781,8 @@ static int symbol__disassemble_bpf(struct symbol *sym,
+ #else
+ 	disassemble = disassembler(bfdf);
+ #endif
+-	assert(disassemble);
++	if (disassemble == NULL)
++		abort();
  
- 	input_unregister_device(chip->input);
- 	kfree(chip);
+ 	fflush(s);
+ 	do {
 -- 
 2.40.1
 
