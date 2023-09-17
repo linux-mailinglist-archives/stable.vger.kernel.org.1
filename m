@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F437A3971
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F047A3873
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240064AbjIQTtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
+        id S239032AbjIQTgD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240152AbjIQTtP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:49:15 -0400
+        with ESMTP id S239776AbjIQTfh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:35:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 923FC9F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:49:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEE4C433C9;
-        Sun, 17 Sep 2023 19:49:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C814F119
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:35:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5F1C433C9;
+        Sun, 17 Sep 2023 19:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980149;
-        bh=2w6KS/bnavq4oN+O1Yrbi7wxeqhwTN+FtKAFREsZrf8=;
+        s=korg; t=1694979332;
+        bh=iQQKVdXqtENnTGRTMj5DSOcxacoKTtv481bpNwks8z8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jxRyEQ9tCOY4f3Vg6K6jTQIvGp2MfqvnIIwLSh4o8Nf2HhEroP0g3hmIKjuPxNktM
-         3PHdQLZR297/s4lJcFAdSMSYTu/mK4kyi6BQkhocLu0ja48Xyfh1TTCrvGdE31cXzY
-         +6wkmra7Pyfoqpt6Azad1baItZ+JLWjCjSnWiAwg=
+        b=LEH1gOchSvu1smFJNs81WdTiaO8htLaWkHuzQzYe3LSDoGFqR3mFzS0r4RCeCJyoK
+         7fY7VuyfVIJKXeBWxPAJ9JyB3DiYhbiV3pCEyRVs3DDsjrZlHGJ7Y/VTrW1O5AjJBM
+         MWoWhqbajfr0gLM1N4ukWCjLPT2ulsvE1Bu0KK+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 109/285] ipv4: annotate data-races around fi->fib_dead
+Subject: [PATCH 5.10 255/406] tracing: Fix race issue between cpu buffer write and swap
 Date:   Sun, 17 Sep 2023 21:11:49 +0200
-Message-ID: <20230917191055.431648365@linuxfoundation.org>
+Message-ID: <20230917191107.911945682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,138 +51,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit fce92af1c29d90184dfec638b5738831097d66e9 ]
+[ Upstream commit 3163f635b20e9e1fb4659e74f47918c9dddfe64e ]
 
-syzbot complained about a data-race in fib_table_lookup() [1]
+Warning happened in rb_end_commit() at code:
+	if (RB_WARN_ON(cpu_buffer, !local_read(&cpu_buffer->committing)))
 
-Add appropriate annotations to document it.
+  WARNING: CPU: 0 PID: 139 at kernel/trace/ring_buffer.c:3142
+	rb_commit+0x402/0x4a0
+  Call Trace:
+   ring_buffer_unlock_commit+0x42/0x250
+   trace_buffer_unlock_commit_regs+0x3b/0x250
+   trace_event_buffer_commit+0xe5/0x440
+   trace_event_buffer_reserve+0x11c/0x150
+   trace_event_raw_event_sched_switch+0x23c/0x2c0
+   __traceiter_sched_switch+0x59/0x80
+   __schedule+0x72b/0x1580
+   schedule+0x92/0x120
+   worker_thread+0xa0/0x6f0
 
-[1]
-BUG: KCSAN: data-race in fib_release_info / fib_table_lookup
+It is because the race between writing event into cpu buffer and swapping
+cpu buffer through file per_cpu/cpu0/snapshot:
 
-write to 0xffff888150f31744 of 1 bytes by task 1189 on cpu 0:
-fib_release_info+0x3a0/0x460 net/ipv4/fib_semantics.c:281
-fib_table_delete+0x8d2/0x900 net/ipv4/fib_trie.c:1777
-fib_magic+0x1c1/0x1f0 net/ipv4/fib_frontend.c:1106
-fib_del_ifaddr+0x8cf/0xa60 net/ipv4/fib_frontend.c:1317
-fib_inetaddr_event+0x77/0x200 net/ipv4/fib_frontend.c:1448
-notifier_call_chain kernel/notifier.c:93 [inline]
-blocking_notifier_call_chain+0x90/0x200 kernel/notifier.c:388
-__inet_del_ifa+0x4df/0x800 net/ipv4/devinet.c:432
-inet_del_ifa net/ipv4/devinet.c:469 [inline]
-inetdev_destroy net/ipv4/devinet.c:322 [inline]
-inetdev_event+0x553/0xaf0 net/ipv4/devinet.c:1606
-notifier_call_chain kernel/notifier.c:93 [inline]
-raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1962 [inline]
-call_netdevice_notifiers_mtu+0xd2/0x130 net/core/dev.c:2037
-dev_set_mtu_ext+0x30b/0x3e0 net/core/dev.c:8673
-do_setlink+0x5be/0x2430 net/core/rtnetlink.c:2837
-rtnl_setlink+0x255/0x300 net/core/rtnetlink.c:3177
-rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6445
-netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2549
-rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6463
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1914
-sock_sendmsg_nosec net/socket.c:725 [inline]
-sock_sendmsg net/socket.c:748 [inline]
-sock_write_iter+0x1aa/0x230 net/socket.c:1129
-do_iter_write+0x4b4/0x7b0 fs/read_write.c:860
-vfs_writev+0x1a8/0x320 fs/read_write.c:933
-do_writev+0xf8/0x220 fs/read_write.c:976
-__do_sys_writev fs/read_write.c:1049 [inline]
-__se_sys_writev fs/read_write.c:1046 [inline]
-__x64_sys_writev+0x45/0x50 fs/read_write.c:1046
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  Write on CPU 0             Swap buffer by per_cpu/cpu0/snapshot on CPU 1
+  --------                   --------
+                             tracing_snapshot_write()
+                               [...]
 
-read to 0xffff888150f31744 of 1 bytes by task 21839 on cpu 1:
-fib_table_lookup+0x2bf/0xd50 net/ipv4/fib_trie.c:1585
-fib_lookup include/net/ip_fib.h:383 [inline]
-ip_route_output_key_hash_rcu+0x38c/0x12c0 net/ipv4/route.c:2751
-ip_route_output_key_hash net/ipv4/route.c:2641 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2869
-send4+0x1e7/0x500 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work+0x434/0x860 kernel/workqueue.c:2600
-worker_thread+0x5f2/0xa10 kernel/workqueue.c:2751
-kthread+0x1d7/0x210 kernel/kthread.c:389
-ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+  ring_buffer_lock_reserve()
+    cpu_buffer = buffer->buffers[cpu]; // 1. Suppose find 'cpu_buffer_a';
+    [...]
+    rb_reserve_next_event()
+      [...]
 
-value changed: 0x00 -> 0x01
+                               ring_buffer_swap_cpu()
+                                 if (local_read(&cpu_buffer_a->committing))
+                                     goto out_dec;
+                                 if (local_read(&cpu_buffer_b->committing))
+                                     goto out_dec;
+                                 buffer_a->buffers[cpu] = cpu_buffer_b;
+                                 buffer_b->buffers[cpu] = cpu_buffer_a;
+                                 // 2. cpu_buffer has swapped here.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 21839 Comm: kworker/u4:18 Tainted: G W 6.5.0-syzkaller #0
+      rb_start_commit(cpu_buffer);
+      if (unlikely(READ_ONCE(cpu_buffer->buffer)
+          != buffer)) { // 3. This check passed due to 'cpu_buffer->buffer'
+        [...]           //    has not changed here.
+        return NULL;
+      }
+                                 cpu_buffer_b->buffer = buffer_a;
+                                 cpu_buffer_a->buffer = buffer_b;
+                                 [...]
 
-Fixes: dccd9ecc3744 ("ipv4: Do not use dead fib_info entries.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230830095520.1046984-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+      // 4. Reserve event from 'cpu_buffer_a'.
+
+  ring_buffer_unlock_commit()
+    [...]
+    cpu_buffer = buffer->buffers[cpu]; // 5. Now find 'cpu_buffer_b' !!!
+    rb_commit(cpu_buffer)
+      rb_end_commit()  // 6. WARN for the wrong 'committing' state !!!
+
+Based on above analysis, we can easily reproduce by following testcase:
+  ``` bash
+  #!/bin/bash
+
+  dmesg -n 7
+  sysctl -w kernel.panic_on_warn=1
+  TR=/sys/kernel/tracing
+  echo 7 > ${TR}/buffer_size_kb
+  echo "sched:sched_switch" > ${TR}/set_event
+  while [ true ]; do
+          echo 1 > ${TR}/per_cpu/cpu0/snapshot
+  done &
+  while [ true ]; do
+          echo 1 > ${TR}/per_cpu/cpu0/snapshot
+  done &
+  while [ true ]; do
+          echo 1 > ${TR}/per_cpu/cpu0/snapshot
+  done &
+  ```
+
+To fix it, IIUC, we can use smp_call_function_single() to do the swap on
+the target cpu where the buffer is located, so that above race would be
+avoided.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230831132739.4070878-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Fixes: f1affcaaa861 ("tracing: Add snapshot in the per_cpu trace directories")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_semantics.c | 5 ++++-
- net/ipv4/fib_trie.c      | 3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ kernel/trace/trace.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 65ba18a91865a..eafa4a0335157 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -278,7 +278,8 @@ void fib_release_info(struct fib_info *fi)
- 				hlist_del(&nexthop_nh->nh_hash);
- 			} endfor_nexthops(fi)
- 		}
--		fi->fib_dead = 1;
-+		/* Paired with READ_ONCE() from fib_table_lookup() */
-+		WRITE_ONCE(fi->fib_dead, 1);
- 		fib_info_put(fi);
- 	}
- 	spin_unlock_bh(&fib_info_lock);
-@@ -1581,6 +1582,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
- link_it:
- 	ofi = fib_find_info(fi);
- 	if (ofi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
- 		refcount_inc(&ofi->fib_treeref);
-@@ -1619,6 +1621,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 2ded5012543bf..fbe13cfdb85b0 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7164,6 +7164,11 @@ static int tracing_snapshot_open(struct inode *inode, struct file *file)
+ 	return ret;
+ }
  
- failure:
- 	if (fi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
- 	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 74d403dbd2b4e..d13fb9e76b971 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1582,7 +1582,8 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
- 		if (fa->fa_dscp &&
- 		    inet_dscp_to_dsfield(fa->fa_dscp) != flp->flowi4_tos)
- 			continue;
--		if (fi->fib_dead)
-+		/* Paired with WRITE_ONCE() in fib_release_info() */
-+		if (READ_ONCE(fi->fib_dead))
- 			continue;
- 		if (fa->fa_info->fib_scope < flp->flowi4_scope)
- 			continue;
++static void tracing_swap_cpu_buffer(void *tr)
++{
++	update_max_tr_single((struct trace_array *)tr, current, smp_processor_id());
++}
++
+ static ssize_t
+ tracing_snapshot_write(struct file *filp, const char __user *ubuf, size_t cnt,
+ 		       loff_t *ppos)
+@@ -7222,13 +7227,15 @@ tracing_snapshot_write(struct file *filp, const char __user *ubuf, size_t cnt,
+ 			ret = tracing_alloc_snapshot_instance(tr);
+ 		if (ret < 0)
+ 			break;
+-		local_irq_disable();
+ 		/* Now, we're going to swap */
+-		if (iter->cpu_file == RING_BUFFER_ALL_CPUS)
++		if (iter->cpu_file == RING_BUFFER_ALL_CPUS) {
++			local_irq_disable();
+ 			update_max_tr(tr, current, smp_processor_id(), NULL);
+-		else
+-			update_max_tr_single(tr, current, iter->cpu_file);
+-		local_irq_enable();
++			local_irq_enable();
++		} else {
++			smp_call_function_single(iter->cpu_file, tracing_swap_cpu_buffer,
++						 (void *)tr, 1);
++		}
+ 		break;
+ 	default:
+ 		if (tr->allocated_snapshot) {
 -- 
 2.40.1
 
