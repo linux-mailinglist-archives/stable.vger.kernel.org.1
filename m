@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0667A3A59
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E75597A38B4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239541AbjIQUCY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47634 "EHLO
+        id S239826AbjIQTjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240466AbjIQUB6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:58 -0400
+        with ESMTP id S239835AbjIQTiw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:38:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E951189
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17102C433C7;
-        Sun, 17 Sep 2023 20:01:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FDC12F
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:38:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E276C433C7;
+        Sun, 17 Sep 2023 19:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980899;
-        bh=QoTljnFxla4At3mzawmjLwi1Y8Kn9ePbgWrYcL9baIw=;
+        s=korg; t=1694979526;
+        bh=NCktdAvptq8QEQ1CCYoHSb1xKU3ImX2Gc56Fchvjyho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qgpx4bwAvX4nX0+9z462tg2nMUz9T2TCtGWvsrvgLc6HhrvKCTmM1C/LCQXYw4TkO
-         rBXDop2Sni9Ual+nmeY0cjcFxV9fRdMDmAy2ow7vHi3ewPd3kk5BMjAHFWSAJ1Ufo+
-         cRLcP2+hBtv1pOGSmepdiFPJ8lj48vTTtc0Zo9bI=
+        b=afOyPFyOTaTu1/n6MKZ1bx8wH8toSYfXVQHnniKvCsU52ypqjMk7xx8JIq5tZsH/2
+         N/J4qvN+8BwQXfNFzqR5NlXtjO2WeNbkVrvJj8m2LYSz8Ka1L67Q1zqsGsTTgxMLvK
+         17/VfGoCN7Y/cThoWGPvaOnqxCpstyXnHZ3RTahc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.1 040/219] dt-bindings: clock: xlnx,versal-clk: drop select:false
+        patches@lists.linux.dev, Lars Ekman <uablrek@gmail.com>,
+        Quan Tian <qtian@vmware.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 313/406] net/ipv6: SKB symmetric hash should incorporate transport ports
 Date:   Sun, 17 Sep 2023 21:12:47 +0200
-Message-ID: <20230917191042.447858376@linuxfoundation.org>
+Message-ID: <20230917191109.565873918@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +51,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Quan Tian <qtian@vmware.com>
 
-commit 172044e30b00977784269e8ab72132a48293c654 upstream.
+commit a5e2151ff9d5852d0ababbbcaeebd9646af9c8d9 upstream.
 
-select:false makes the schema basically ignored and not effective, which
-is clearly not what we want for a device binding.
+__skb_get_hash_symmetric() was added to compute a symmetric hash over
+the protocol, addresses and transport ports, by commit eb70db875671
+("packet: Use symmetric hash for PACKET_FANOUT_HASH."). It uses
+flow_keys_dissector_symmetric_keys as the flow_dissector to incorporate
+IPv4 addresses, IPv6 addresses and ports. However, it should not specify
+the flag as FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL, which stops further
+dissection when an IPv6 flow label is encountered, making transport
+ports not being incorporated in such case.
 
-Fixes: 352546805a44 ("dt-bindings: clock: Add bindings for versal clock driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230728165923.108589-1-krzysztof.kozlowski@linaro.org
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+As a consequence, the symmetric hash is based on 5-tuple for IPv4 but
+3-tuple for IPv6 when flow label is present. It caused a few problems,
+e.g. when nft symhash and openvswitch l4_sym rely on the symmetric hash
+to perform load balancing as different L4 flows between two given IPv6
+addresses would always get the same symmetric hash, leading to uneven
+traffic distribution.
+
+Removing the use of FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL makes sure the
+symmetric hash is based on 5-tuple for both IPv4 and IPv6 consistently.
+
+Fixes: eb70db875671 ("packet: Use symmetric hash for PACKET_FANOUT_HASH.")
+Reported-by: Lars Ekman <uablrek@gmail.com>
+Closes: https://github.com/antrea-io/antrea/issues/5457
+Signed-off-by: Quan Tian <qtian@vmware.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml |    2 --
- 1 file changed, 2 deletions(-)
+ net/core/flow_dissector.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
-+++ b/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
-@@ -16,8 +16,6 @@ description: |
-   reads required input clock frequencies from the devicetree and acts as clock
-   provider for all clock consumers of PS clocks.
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1589,8 +1589,7 @@ u32 __skb_get_hash_symmetric(const struc
  
--select: false
--
- properties:
-   compatible:
-     const: xlnx,versal-clk
+ 	memset(&keys, 0, sizeof(keys));
+ 	__skb_flow_dissect(NULL, skb, &flow_keys_dissector_symmetric,
+-			   &keys, NULL, 0, 0, 0,
+-			   FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL);
++			   &keys, NULL, 0, 0, 0, 0);
+ 
+ 	return __flow_hash_from_keys(&keys, &hashrnd);
+ }
 
 
