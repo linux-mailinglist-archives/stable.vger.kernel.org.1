@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF0787A3AFE
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F8467A3AFF
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239502AbjIQULp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:11:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60754 "EHLO
+        id S240548AbjIQULq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240530AbjIQULP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:15 -0400
+        with ESMTP id S240505AbjIQULX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:11:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCE2F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4833AC433C9;
-        Sun, 17 Sep 2023 20:11:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6A95F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:11:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCC1C433C7;
+        Sun, 17 Sep 2023 20:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981469;
-        bh=2vtMenHrl21HECctR9PrNxwE4r+FsnVLBiIzzarv9sY=;
+        s=korg; t=1694981476;
+        bh=djLYwqt6oW1+/YXVrMXpuWibjRyabdbuQmkFmOMZRFY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lcsI9ob/o57PYdTKaySjHHdZQGBPZ1MM0jkA8DrQm+NFXtSGPp8KvDzaspz7+I9C1
-         3i2Q9fq7V9Kf6/MHhZz7ipruJvqFpgJ1czeGFWXH2D+g/XVJ9PGIkUyGa4HWCv0F+k
-         7xCpwtX3L+FKUdUTPG+yX1PTDInyDHcPK0Ctq5e8=
+        b=KZ2db/9RDMr/hE2pGJG5Kqz73AodSQWsubNovTtMMHBtmVNMpbvqbfggXojHgjgRl
+         8Ye1ulkX70vzGeoV5zkk0p2Oct/PVVwOKyvEqNRHWs6qsGEyAe7ylAUzOXJgl8Tufe
+         MKSjP7m8HQTsw5VY4vgGO1ZCqKmuM+ZHbdbpxHkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
-        Wander Lairson Costa <wander@redhat.com>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/219] netfilter: nfnetlink_osf: avoid OOB read
-Date:   Sun, 17 Sep 2023 21:14:15 +0200
-Message-ID: <20230917191045.620886898@linuxfoundation.org>
+Subject: [PATCH 6.1 129/219] net: hns3: fix tx timeout issue
+Date:   Sun, 17 Sep 2023 21:14:16 +0200
+Message-ID: <20230917191045.654628882@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -55,57 +55,77 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit f4f8a7803119005e87b716874bec07c751efafec ]
+[ Upstream commit 61a1deacc3d4fd3d57d7fda4d935f7f7503e8440 ]
 
-The opt_num field is controlled by user mode and is not currently
-validated inside the kernel. An attacker can take advantage of this to
-trigger an OOB read and potentially leak information.
+Currently, the driver knocks the ring doorbell before updating
+the ring->last_to_use in tx flow. if the hardware transmiting
+packet and napi poll scheduling are fast enough, it may get
+the old ring->last_to_use in drivers' napi poll.
+In this case, the driver will think the tx is not completed, and
+return directly without clear the flag __QUEUE_STATE_STACK_XOFF,
+which may cause tx timeout.
 
-BUG: KASAN: slab-out-of-bounds in nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
-Read of size 2 at addr ffff88804bc64272 by task poc/6431
-
-CPU: 1 PID: 6431 Comm: poc Not tainted 6.0.0-rc4 #1
-Call Trace:
- nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
- nf_osf_find+0x186/0x2f0 net/netfilter/nfnetlink_osf.c:281
- nft_osf_eval+0x37f/0x590 net/netfilter/nft_osf.c:47
- expr_call_ops_eval net/netfilter/nf_tables_core.c:214
- nft_do_chain+0x2b0/0x1490 net/netfilter/nf_tables_core.c:264
- nft_do_chain_ipv4+0x17c/0x1f0 net/netfilter/nft_chain_filter.c:23
- [..]
-
-Also add validation to genre, subtype and version fields.
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Lucas Leong <wmliang@infosec.exchange>
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 20d06ca2679c ("net: hns3: optimize the tx clean process")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 8f1bfa6ccc2d9..50723ba082890 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -315,6 +315,14 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 61f833d61f583..9942b21cd6193 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -2102,8 +2102,12 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
+ 	 */
+ 	if (test_bit(HNS3_NIC_STATE_TX_PUSH_ENABLE, &priv->state) && num &&
+ 	    !ring->pending_buf && num <= HNS3_MAX_PUSH_BD_NUM && doorbell) {
++		/* This smp_store_release() pairs with smp_load_aquire() in
++		 * hns3_nic_reclaim_desc(). Ensure that the BD valid bit
++		 * is updated.
++		 */
++		smp_store_release(&ring->last_to_use, ring->next_to_use);
+ 		hns3_tx_push_bd(ring, num);
+-		WRITE_ONCE(ring->last_to_use, ring->next_to_use);
+ 		return;
+ 	}
  
- 	f = nla_data(osf_attrs[OSF_ATTR_FINGER]);
+@@ -2114,6 +2118,11 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
+ 		return;
+ 	}
  
-+	if (f->opt_num > ARRAY_SIZE(f->opt))
-+		return -EINVAL;
++	/* This smp_store_release() pairs with smp_load_aquire() in
++	 * hns3_nic_reclaim_desc(). Ensure that the BD valid bit is updated.
++	 */
++	smp_store_release(&ring->last_to_use, ring->next_to_use);
 +
-+	if (!memchr(f->genre, 0, MAXGENRELEN) ||
-+	    !memchr(f->subtype, 0, MAXGENRELEN) ||
-+	    !memchr(f->version, 0, MAXGENRELEN))
-+		return -EINVAL;
-+
- 	kf = kmalloc(sizeof(struct nf_osf_finger), GFP_KERNEL);
- 	if (!kf)
- 		return -ENOMEM;
+ 	if (ring->tqp->mem_base)
+ 		hns3_tx_mem_doorbell(ring);
+ 	else
+@@ -2121,7 +2130,6 @@ static void hns3_tx_doorbell(struct hns3_enet_ring *ring, int num,
+ 		       ring->tqp->io_base + HNS3_RING_TX_RING_TAIL_REG);
+ 
+ 	ring->pending_buf = 0;
+-	WRITE_ONCE(ring->last_to_use, ring->next_to_use);
+ }
+ 
+ static void hns3_tsyn(struct net_device *netdev, struct sk_buff *skb,
+@@ -3562,9 +3570,8 @@ static void hns3_reuse_buffer(struct hns3_enet_ring *ring, int i)
+ static bool hns3_nic_reclaim_desc(struct hns3_enet_ring *ring,
+ 				  int *bytes, int *pkts, int budget)
+ {
+-	/* pair with ring->last_to_use update in hns3_tx_doorbell(),
+-	 * smp_store_release() is not used in hns3_tx_doorbell() because
+-	 * the doorbell operation already have the needed barrier operation.
++	/* This smp_load_acquire() pairs with smp_store_release() in
++	 * hns3_tx_doorbell().
+ 	 */
+ 	int ltu = smp_load_acquire(&ring->last_to_use);
+ 	int ntc = ring->next_to_clean;
 -- 
 2.40.1
 
