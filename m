@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C12167A3B46
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4A147A3B49
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240633AbjIQUPa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40044 "EHLO
+        id S240641AbjIQUPb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240657AbjIQUPI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:08 -0400
+        with ESMTP id S239487AbjIQUPO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:15:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB259F1
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B895AC433C9;
-        Sun, 17 Sep 2023 20:15:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C212F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:15:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9F1C433C7;
+        Sun, 17 Sep 2023 20:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981702;
-        bh=eGZavbAJ/BEdPc48VFJ+yYOoNI2pYU26QiQ4qKJKttY=;
+        s=korg; t=1694981709;
+        bh=gXihEpqpYrg8w0SyLrsh/xdzeqylwrYJHhLWQA8XyZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j4VuRvF2GwwSLz1KvVtAQ5e2py2di3JUw0tTg9widmrBPPSXh0vYgmN+scJt0La7c
-         yTjDsVvSjb0edvG9LPrFgFYZu0jrxtlH8yxGIM1aebzbi1FzR7dTOO5B/7JT8tIqrp
-         pihOtEdrsbODFk2tGqJsZBq/mMhYrPkClkunHBEc=
+        b=T8i4LPe5Fg27OGtwmhClvkjMsFJ+tIK6zf6U08UygOMM237Nt7G51p31+JjFxZAUH
+         tuaoT/VAMuxT4kIVj9Ewja79y6JQOR3lZ2kivWRMNPNxm8VtaCfjii2T2sRFmquBJg
+         YbqGN9KEZf1Cunlg8U+93Nlgt++ak0d5+DX6goBM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        syzbot+d769eed29cc42d75e2a3@syzkaller.appspotmail.com,
+        syzbot+610ec0671f51e838436e@syzkaller.appspotmail.com,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/511] crypto: stm32 - Properly handle pm_runtime_get failing
-Date:   Sun, 17 Sep 2023 21:08:42 +0200
-Message-ID: <20230917191116.160985123@linuxfoundation.org>
+Subject: [PATCH 5.15 096/511] crypto: api - Use work queue in crypto_destroy_instance
+Date:   Sun, 17 Sep 2023 21:08:43 +0200
+Message-ID: <20230917191116.186599404@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -41,7 +41,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,56 +56,93 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit aec48805163338f8413118796c1dd035661b9140 ]
+[ Upstream commit 9ae4577bc077a7e32c3c7d442c95bc76865c0f17 ]
 
-If pm_runtime_get() (disguised as pm_runtime_resume_and_get()) fails, this
-means the clk wasn't prepared and enabled. Returning early in this case
-however is wrong as then the following resource frees are skipped and this
-is never catched up. So do all the cleanups but clk_disable_unprepare().
+The function crypto_drop_spawn expects to be called in process
+context.  However, when an instance is unregistered while it still
+has active users, the last user may cause the instance to be freed
+in atomic context.
 
-Also don't emit a warning, as stm32_hash_runtime_resume() already emitted
-one.
+Fix this by delaying the freeing to a work queue.
 
-Note that the return value of stm32_hash_remove() is mostly ignored by
-the device core. The only effect of returning zero instead of an error
-value is to suppress another warning in platform_remove(). So return 0
-even if pm_runtime_resume_and_get() failed.
-
-Fixes: 8b4d566de6a5 ("crypto: stm32/hash - Add power management support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 6bfd48096ff8 ("[CRYPTO] api: Added spawns")
+Reported-by: Florent Revest <revest@chromium.org>
+Reported-by: syzbot+d769eed29cc42d75e2a3@syzkaller.appspotmail.com
+Reported-by: syzbot+610ec0671f51e838436e@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Tested-by: Florent Revest <revest@chromium.org>
+Acked-by: Florent Revest <revest@chromium.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/stm32/stm32-hash.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ crypto/algapi.c         | 16 ++++++++++++++--
+ include/crypto/algapi.h |  3 +++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/stm32/stm32-hash.c b/drivers/crypto/stm32/stm32-hash.c
-index d33006d43f761..e3f765434d64e 100644
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -1566,9 +1566,7 @@ static int stm32_hash_remove(struct platform_device *pdev)
- 	if (!hdev)
- 		return -ENODEV;
+diff --git a/crypto/algapi.c b/crypto/algapi.c
+index 3920c4b1e9c13..c390a79c5a669 100644
+--- a/crypto/algapi.c
++++ b/crypto/algapi.c
+@@ -16,6 +16,7 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
++#include <linux/workqueue.h>
  
--	ret = pm_runtime_resume_and_get(hdev->dev);
--	if (ret < 0)
--		return ret;
-+	ret = pm_runtime_get_sync(hdev->dev);
+ #include "internal.h"
  
- 	stm32_hash_unregister_algs(hdev);
- 
-@@ -1584,7 +1582,8 @@ static int stm32_hash_remove(struct platform_device *pdev)
- 	pm_runtime_disable(hdev->dev);
- 	pm_runtime_put_noidle(hdev->dev);
- 
--	clk_disable_unprepare(hdev->clk);
-+	if (ret >= 0)
-+		clk_disable_unprepare(hdev->clk);
- 
- 	return 0;
+@@ -68,15 +69,26 @@ static void crypto_free_instance(struct crypto_instance *inst)
+ 	inst->alg.cra_type->free(inst);
  }
+ 
+-static void crypto_destroy_instance(struct crypto_alg *alg)
++static void crypto_destroy_instance_workfn(struct work_struct *w)
+ {
+-	struct crypto_instance *inst = (void *)alg;
++	struct crypto_instance *inst = container_of(w, struct crypto_instance,
++						    free_work);
+ 	struct crypto_template *tmpl = inst->tmpl;
+ 
+ 	crypto_free_instance(inst);
+ 	crypto_tmpl_put(tmpl);
+ }
+ 
++static void crypto_destroy_instance(struct crypto_alg *alg)
++{
++	struct crypto_instance *inst = container_of(alg,
++						    struct crypto_instance,
++						    alg);
++
++	INIT_WORK(&inst->free_work, crypto_destroy_instance_workfn);
++	schedule_work(&inst->free_work);
++}
++
+ /*
+  * This function adds a spawn to the list secondary_spawns which
+  * will be used at the end of crypto_remove_spawns to unregister
+diff --git a/include/crypto/algapi.h b/include/crypto/algapi.h
+index 0ffd61930e180..62fa7e82ff5b9 100644
+--- a/include/crypto/algapi.h
++++ b/include/crypto/algapi.h
+@@ -10,6 +10,7 @@
+ #include <linux/crypto.h>
+ #include <linux/list.h>
+ #include <linux/kernel.h>
++#include <linux/workqueue.h>
+ 
+ /*
+  * Maximum values for blocksize and alignmask, used to allocate
+@@ -55,6 +56,8 @@ struct crypto_instance {
+ 		struct crypto_spawn *spawns;
+ 	};
+ 
++	struct work_struct free_work;
++
+ 	void *__ctx[] CRYPTO_MINALIGN_ATTR;
+ };
+ 
 -- 
 2.40.1
 
