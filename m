@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E827A3A72
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 502117A39C9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240344AbjIQUDV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43082 "EHLO
+        id S240155AbjIQTyK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:54:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240467AbjIQUDF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:03:05 -0400
+        with ESMTP id S240180AbjIQTyC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:54:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8D0138
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:02:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B1CC433D9;
-        Sun, 17 Sep 2023 20:02:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6B4EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:53:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A17C433C8;
+        Sun, 17 Sep 2023 19:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980978;
-        bh=sqnRGiiEFGhGG6ugw0LqK9GGqS8gdF2KOYCRPytx0Hc=;
+        s=korg; t=1694980436;
+        bh=S33edq4/IjUMOqhW+dfkeknk4czdlFWsmC/W88KH/tk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q0ZQFFAzVMMRLM4e86opf47hA9B0rj/rw4fv3whnOXRmPHey8G5RPVJXsLQE0bnH7
-         jQNNCNIBI3ci6DpRwLNGQanxa4llPDgX3z2RP9CoE14IjU2QwkQtVJ9GD8HNIo8fq+
-         RRnTRnSe0U9cNOhwKo6sl3YBJQ0D7LlE8JicBDTs=
+        b=bxQ3NWIGS1uMDK3LXKwTo3tMhWw5Ubrn94Ys9HoVSdnRJ0N8AgecIYWDKuGx2em/Y
+         dsg+stOWly0WMPeDtXwCtf/Lz2aIdtShbY7T2EMfdJjTO1TcvUUwntDlOyQMN8x0tw
+         +XvdGk7cLqpPps0gwqqhhO+rHsGqmx8yiDkd7Zco=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/219] perf trace: Use zfree() to reduce chances of use after free
+        patches@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.5 191/285] f2fs: get out of a repeat loop when getting a locked data page
 Date:   Sun, 17 Sep 2023 21:13:11 +0200
-Message-ID: <20230917191043.315076488@linuxfoundation.org>
+Message-ID: <20230917191058.211820637@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,63 +48,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 9997d5dd177c52017fa0541bf236a4232c8148e6 ]
+commit d2d9bb3b6d2fbccb5b33d3a85a2830971625a4ea upstream.
 
-Do defensive programming by using zfree() to initialize freed pointers
-to NULL, so that eventual use after free result in a NULL pointer deref
-instead of more subtle behaviour.
+https://bugzilla.kernel.org/show_bug.cgi?id=216050
 
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 7962ef13651a ("perf trace: Really free the evsel->priv area")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Somehow we're getting a page which has a different mapping.
+Let's avoid the infinite loop.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-trace.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/f2fs/data.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 97b17f8941dc0..6392fcf2610c4 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2293,7 +2293,7 @@ static void syscall__exit(struct syscall *sc)
- 	if (!sc)
- 		return;
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1389,18 +1389,14 @@ struct page *f2fs_get_lock_data_page(str
+ {
+ 	struct address_space *mapping = inode->i_mapping;
+ 	struct page *page;
+-repeat:
++
+ 	page = f2fs_get_read_data_page(inode, index, 0, for_write, NULL);
+ 	if (IS_ERR(page))
+ 		return page;
  
--	free(sc->arg_fmt);
-+	zfree(&sc->arg_fmt);
- }
- 
- static int trace__sys_enter(struct trace *trace, struct evsel *evsel,
-@@ -3129,7 +3129,7 @@ static void evlist__free_syscall_tp_fields(struct evlist *evlist)
- 		if (!et || !evsel->tp_format || strcmp(evsel->tp_format->system, "syscalls"))
- 			continue;
- 
--		free(et->fmt);
-+		zfree(&et->fmt);
- 		free(et);
+ 	/* wait for read completion */
+ 	lock_page(page);
+-	if (unlikely(page->mapping != mapping)) {
+-		f2fs_put_page(page, 1);
+-		goto repeat;
+-	}
+-	if (unlikely(!PageUptodate(page))) {
++	if (unlikely(page->mapping != mapping || !PageUptodate(page))) {
+ 		f2fs_put_page(page, 1);
+ 		return ERR_PTR(-EIO);
  	}
- }
-@@ -4765,11 +4765,11 @@ static void trace__exit(struct trace *trace)
- 	int i;
- 
- 	strlist__delete(trace->ev_qualifier);
--	free(trace->ev_qualifier_ids.entries);
-+	zfree(&trace->ev_qualifier_ids.entries);
- 	if (trace->syscalls.table) {
- 		for (i = 0; i <= trace->sctbl->syscalls.max_id; i++)
- 			syscall__exit(&trace->syscalls.table[i]);
--		free(trace->syscalls.table);
-+		zfree(&trace->syscalls.table);
- 	}
- 	syscalltbl__delete(trace->sctbl);
- 	zfree(&trace->perfconfig_events);
--- 
-2.40.1
-
 
 
