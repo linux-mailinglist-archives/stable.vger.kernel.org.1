@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 885DC7A3AAB
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD977A3CA0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239563AbjIQUH3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S241137AbjIQUdh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:33:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240391AbjIQUG6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:58 -0400
+        with ESMTP id S241226AbjIQUdF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F5C97
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:06:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600F9C433C8;
-        Sun, 17 Sep 2023 20:06:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F8A10E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:32:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4C7C433C8;
+        Sun, 17 Sep 2023 20:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981212;
-        bh=vM3NlPMb445Y8wmWVtDltNHWj7IX9qKCtfAzYqmAikY=;
+        s=korg; t=1694982779;
+        bh=yIHWEY23J25/LuOmZCcQIa5A9nOjgy6t5p5cswQPxgY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sHC0WIXF6TKeyiEjF50p3MF9M3ziHmBtvJ6mAE5bOot5yRxuSPzByQSVofFCIuVWM
-         QF9bcW224zAtDPFTPcjE/lVrKtNZ693Bw8faujGWpkK+bAoKkEvUNWk5r77XFO+qIp
-         r7xmue8X4r5ejE3gJ7/o0+6tWLavXq+7P/GsSMr4=
+        b=h/AMZXJdtmKiv/m40/O4tSq/MVqTLIHH5ZadZzvl4WO9vJkempcKIwGAsFvfuUHUW
+         9R4BCEnI7JOetBZERBbt0JpTyNUiQSi5y0fsHANbYYnnxnFwvscO8C11LCnROVhkiS
+         8q3JQZVOXpgLoknKa4kBaS+pdNkJdRmEQlcD0y3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 6.1 050/219] NFSv4/pnfs: minor fix for cleanup path in nfs4_get_device_info
-Date:   Sun, 17 Sep 2023 21:12:57 +0200
-Message-ID: <20230917191042.813413605@linuxfoundation.org>
+        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 351/511] X.509: if signature is unsupported skip validation
+Date:   Sun, 17 Sep 2023 21:12:58 +0200
+Message-ID: <20230917191122.281217525@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Thore Sommer <public@thson.de>
 
-commit 96562c45af5c31b89a197af28f79bfa838fb8391 upstream.
+commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
 
-It is an almost improbable error case but when page allocating loop in
-nfs4_get_device_info() fails then we should only free the already
-allocated pages, as __free_page() can't deal with NULL arguments.
+When the hash algorithm for the signature is not available the digest size
+is 0 and the signature in the certificate is marked as unsupported.
 
-Found by Linux Verification Center (linuxtesting.org).
+When validating a self-signed certificate, this needs to be checked,
+because otherwise trying to validate the signature will fail with an
+warning:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Loading compiled-in X.509 certificates
+WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
+pkcs1pad_verify+0x46/0x12c
+...
+Problem loading in-kernel X.509 certificate (-22)
+
+Signed-off-by: Thore Sommer <public@thson.de>
+Cc: stable@vger.kernel.org # v4.7+
+Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs_dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/asymmetric_keys/x509_public_key.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nfs/pnfs_dev.c
-+++ b/fs/nfs/pnfs_dev.c
-@@ -154,7 +154,7 @@ nfs4_get_device_info(struct nfs_server *
- 		set_bit(NFS_DEVICEID_NOCACHE, &d->flags);
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -128,6 +128,11 @@ int x509_check_for_self_signed(struct x5
+ 			goto out;
+ 	}
  
- out_free_pages:
--	for (i = 0; i < max_pages; i++)
-+	while (--i >= 0)
- 		__free_page(pages[i]);
- 	kfree(pages);
- out_free_pdev:
++	if (cert->unsupported_sig) {
++		ret = 0;
++		goto out;
++	}
++
+ 	ret = public_key_verify_signature(cert->pub, cert->sig);
+ 	if (ret < 0) {
+ 		if (ret == -ENOPKG) {
 
 
