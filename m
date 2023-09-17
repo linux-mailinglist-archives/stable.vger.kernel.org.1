@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 836F97A3831
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 808B17A3932
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239636AbjIQTdS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:33:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
+        id S239995AbjIQTqM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239666AbjIQTcr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:32:47 -0400
+        with ESMTP id S240029AbjIQTpw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:45:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C94127
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:32:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B84C433D9;
-        Sun, 17 Sep 2023 19:32:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A10A137
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:45:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B954BC433C8;
+        Sun, 17 Sep 2023 19:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979129;
-        bh=jBHwWXo5SZAQQY+7r3JeTvPQt3Q/6p0Hr/TTu/NmUqI=;
+        s=korg; t=1694979946;
+        bh=5DTWB75qx8b3KJvKtpah4AQjErzVFfeT0gh9ZB+HiY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G1J4HYC0BtkJk54bxdUPvNJKWG61XxEsYwKuVvd51tHmdAg18Eyl6zEZWFS7rAykQ
-         1ZBrhAyZaX4Yv0eVLdfmjt35/1jyBxo8V/DJazqNMWKR3W70PTpktmEW1HgHiD0Kvr
-         vheDdxEvuZ8Q5nE7prHhMLq5+eLnrhplxTLk/E4M=
+        b=qUl1wYdtzldercVbdKqcOWyZgWZEsDEogWJKJH9QcRqZ5Wv7UdUxA0up81slvdN/h
+         9vBYegYEK3XmbHq5krZXBG2tKMQoEvc7O2ZlAUUM1TCXAPPIr9ppQVsY4g6Op+RmHG
+         NEsAhPO90Ees4Y6LDotPmKSSYr9y0JJLbZvp9G58=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/406] fs: lockd: avoid possible wrong NULL parameter
-Date:   Sun, 17 Sep 2023 21:10:51 +0200
-Message-ID: <20230917191106.397241002@linuxfoundation.org>
+        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 052/285] clk: qcom: mss-sc7180: fix missing resume during probe
+Date:   Sun, 17 Sep 2023 21:10:52 +0200
+Message-ID: <20230917191053.487101519@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit de8d38cf44bac43e83bad28357ba84784c412752 ]
+commit e2349da0fa7ca822cda72f427345b95795358fe7 upstream.
 
-clang's static analysis warning: fs/lockd/mon.c: line 293, column 2:
-Null pointer passed as 2nd argument to memory copy function.
+Drivers that enable runtime PM must make sure that the controller is
+runtime resumed before accessing its registers to prevent the power
+domain from being disabled.
 
-Assuming 'hostname' is NULL and calling 'nsm_create_handle()', this will
-pass NULL as 2nd argument to memory copy function 'memcpy()'. So return
-NULL if 'hostname' is invalid.
-
-Fixes: 77a3ef33e2de ("NSM: More clean up of nsm_get_handle()")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8def929c4097 ("clk: qcom: Add modem clock controller driver for SC7180")
+Cc: stable@vger.kernel.org      # 5.7
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-8-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/mon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/mss-sc7180.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/lockd/mon.c b/fs/lockd/mon.c
-index 1d9488cf05348..87a0f207df0b9 100644
---- a/fs/lockd/mon.c
-+++ b/fs/lockd/mon.c
-@@ -276,6 +276,9 @@ static struct nsm_handle *nsm_create_handle(const struct sockaddr *sap,
- {
- 	struct nsm_handle *new;
+--- a/drivers/clk/qcom/mss-sc7180.c
++++ b/drivers/clk/qcom/mss-sc7180.c
+@@ -87,11 +87,22 @@ static int mss_sc7180_probe(struct platf
+ 		return ret;
+ 	}
  
-+	if (!hostname)
-+		return NULL;
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret)
++		return ret;
 +
- 	new = kzalloc(sizeof(*new) + hostname_len + 1, GFP_KERNEL);
- 	if (unlikely(new == NULL))
- 		return NULL;
--- 
-2.40.1
-
+ 	ret = qcom_cc_probe(pdev, &mss_sc7180_desc);
+ 	if (ret < 0)
+-		return ret;
++		goto err_put_rpm;
++
++	pm_runtime_put(&pdev->dev);
+ 
+ 	return 0;
++
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops mss_sc7180_pm_ops = {
 
 
