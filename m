@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 662587A3AA1
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F5027A3AA7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239569AbjIQUG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240398AbjIQUG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36110 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240435AbjIQUGe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:34 -0400
+        with ESMTP id S240442AbjIQUGl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E4D97
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:06:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6B1C433C7;
-        Sun, 17 Sep 2023 20:06:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C56EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:06:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CFEC433C8;
+        Sun, 17 Sep 2023 20:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981189;
-        bh=hgchqwMhRLXTa9gfy3mGsceHiNzAZzYxFMxE2Vcrp9A=;
+        s=korg; t=1694981195;
+        bh=IAq/cjosYB8nS5o8U9XLwgDoa+Y+GvVTWhu0cKlRVjI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KbBnMhfZ2PyrbvjixQ9mGCE+eivixauzF30dlwINIrEI34Ikj8m1KDpAKwAjY6Xup
-         tX0RBZhlekYChXYnVisz3xettBqO4+1QFJXpiDEL3x8d1iJAKG2K+wyuJEqd7N913s
-         C3CDZSbNwFpjisZkQJKar4wX2c4znbI+I9YO7MX4=
+        b=Y4mwlvaS0mMxCv3g+zMRsOTQrrWB8gih1cBts6cDvsX8nkeVM6olYPgwwwtl2b6E1
+         XYgUlLkid1odmvRHGSSB17zN6E8M8q/wUUFvvpB0Ww/9xtrZLki0DZoaUg2lYxc75A
+         0hEuKKMPMqN5PmQvNg2/JCM5a8bkoIRGcJlr+mio=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, zhuxiaohui <zhuxiaohui.400@bytedance.com>,
-        Yu Kuai <yukuai3@huawei.com>, Tejun Heo <tj@kernel.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/219] blk-throttle: consider carryover_ios/bytes in throtl_trim_slice()
-Date:   Sun, 17 Sep 2023 21:13:31 +0200
-Message-ID: <20230917191044.014858635@linuxfoundation.org>
+        patches@lists.linux.dev, "Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/219] cifs: use fs_context for automounts
+Date:   Sun, 17 Sep 2023 21:13:32 +0200
+Message-ID: <20230917191044.048246502@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -54,93 +54,166 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Paulo Alcantara <pc@cjr.nz>
 
-[ Upstream commit eead0056648cef49d7b15c07ae612fa217083165 ]
+[ Upstream commit 9fd29a5bae6e8f94b410374099a6fddb253d2d5f ]
 
-Currently, 'carryover_ios/bytes' is not handled in throtl_trim_slice(),
-for consequence, 'carryover_ios/bytes' will be used to throttle bio
-multiple times, for example:
+Use filesystem context support to handle dfs links.
 
-1) set iops limit to 100, and slice start is 0, slice end is 100ms;
-2) current time is 0, and 10 ios are dispatched, those io won't be
-   throttled and io_disp is 10;
-3) still at current time 0, update iops limit to 1000, carryover_ios is
-   updated to (0 - 10) = -10;
-4) in this slice(0 - 100ms), io_allowed = 100 + (-10) = 90, which means
-   only 90 ios can be dispatched without waiting;
-5) assume that io is throttled in slice(0 - 100ms), and
-   throtl_trim_slice() update silce to (100ms - 200ms). In this case,
-   'carryover_ios/bytes' is not cleared and still only 90 ios can be
-   dispatched between 100ms - 200ms.
-
-Fix this problem by updating 'carryover_ios/bytes' in
-throtl_trim_slice().
-
-Fixes: a880ae93e5b5 ("blk-throttle: fix io hung due to configuration updates")
-Reported-by: zhuxiaohui <zhuxiaohui.400@bytedance.com>
-Link: https://lore.kernel.org/all/20230812072116.42321-1-zhuxiaohui.400@bytedance.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20230816012708.1193747-5-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: efc0b0bcffcb ("smb: propagate error code of extract_sharename()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ fs/smb/client/cifs_dfs_ref.c | 100 ++++++++++++++---------------------
+ 1 file changed, 40 insertions(+), 60 deletions(-)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index 931795da4d65d..1007f80278579 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -729,8 +729,9 @@ static u64 calculate_bytes_allowed(u64 bps_limit, unsigned long jiffy_elapsed)
- /* Trim the used slices and adjust slice start accordingly */
- static inline void throtl_trim_slice(struct throtl_grp *tg, bool rw)
+diff --git a/fs/smb/client/cifs_dfs_ref.c b/fs/smb/client/cifs_dfs_ref.c
+index b0864da9ef434..020e71fe1454e 100644
+--- a/fs/smb/client/cifs_dfs_ref.c
++++ b/fs/smb/client/cifs_dfs_ref.c
+@@ -258,61 +258,23 @@ char *cifs_compose_mount_options(const char *sb_mountdata,
+ 	goto compose_mount_options_out;
+ }
+ 
+-/**
+- * cifs_dfs_do_mount - mounts specified path using DFS full path
+- *
+- * Always pass down @fullpath to smb3_do_mount() so we can use the root server
+- * to perform failover in case we failed to connect to the first target in the
+- * referral.
+- *
+- * @mntpt:		directory entry for the path we are trying to automount
+- * @cifs_sb:		parent/root superblock
+- * @fullpath:		full path in UNC format
+- */
+-static struct vfsmount *cifs_dfs_do_mount(struct dentry *mntpt,
+-					  struct cifs_sb_info *cifs_sb,
+-					  const char *fullpath)
+-{
+-	struct vfsmount *mnt;
+-	char *mountdata;
+-	char *devname;
+-
+-	devname = kstrdup(fullpath, GFP_KERNEL);
+-	if (!devname)
+-		return ERR_PTR(-ENOMEM);
+-
+-	convert_delimiter(devname, '/');
+-
+-	/* TODO: change to call fs_context_for_mount(), fill in context directly, call fc_mount */
+-
+-	/* See afs_mntpt_do_automount in fs/afs/mntpt.c for an example */
+-
+-	/* strip first '\' from fullpath */
+-	mountdata = cifs_compose_mount_options(cifs_sb->ctx->mount_options,
+-					       fullpath + 1, NULL, NULL);
+-	if (IS_ERR(mountdata)) {
+-		kfree(devname);
+-		return (struct vfsmount *)mountdata;
+-	}
+-
+-	mnt = vfs_submount(mntpt, &cifs_fs_type, devname, mountdata);
+-	kfree(mountdata);
+-	kfree(devname);
+-	return mnt;
+-}
+-
+ /*
+  * Create a vfsmount that we can automount
+  */
+-static struct vfsmount *cifs_dfs_do_automount(struct dentry *mntpt)
++static struct vfsmount *cifs_dfs_do_automount(struct path *path)
  {
--	unsigned long time_elapsed, io_trim;
--	u64 bytes_trim;
-+	unsigned long time_elapsed;
-+	long long bytes_trim;
-+	int io_trim;
++	int rc;
++	struct dentry *mntpt = path->dentry;
++	struct fs_context *fc;
+ 	struct cifs_sb_info *cifs_sb;
+-	void *page;
++	void *page = NULL;
++	struct smb3_fs_context *ctx, *cur_ctx;
++	struct smb3_fs_context tmp;
+ 	char *full_path;
+ 	struct vfsmount *mnt;
  
- 	BUG_ON(time_before(tg->slice_end[rw], tg->slice_start[rw]));
+-	cifs_dbg(FYI, "in %s\n", __func__);
+-	BUG_ON(IS_ROOT(mntpt));
++	if (IS_ROOT(mntpt))
++		return ERR_PTR(-ESTALE);
  
-@@ -758,17 +759,21 @@ static inline void throtl_trim_slice(struct throtl_grp *tg, bool rw)
- 		return;
+ 	/*
+ 	 * The MSDFS spec states that paths in DFS referral requests and
+@@ -321,29 +283,47 @@ static struct vfsmount *cifs_dfs_do_automount(struct dentry *mntpt)
+ 	 * gives us the latter, so we must adjust the result.
+ 	 */
+ 	cifs_sb = CIFS_SB(mntpt->d_sb);
+-	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_DFS) {
+-		mnt = ERR_PTR(-EREMOTE);
+-		goto cdda_exit;
+-	}
++	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_DFS)
++		return ERR_PTR(-EREMOTE);
++
++	cur_ctx = cifs_sb->ctx;
++
++	fc = fs_context_for_submount(path->mnt->mnt_sb->s_type, mntpt);
++	if (IS_ERR(fc))
++		return ERR_CAST(fc);
++
++	ctx = smb3_fc2context(fc);
  
- 	bytes_trim = calculate_bytes_allowed(tg_bps_limit(tg, rw),
--					     time_elapsed);
--	io_trim = calculate_io_allowed(tg_iops_limit(tg, rw), time_elapsed);
--	if (!bytes_trim && !io_trim)
-+					     time_elapsed) +
-+		     tg->carryover_bytes[rw];
-+	io_trim = calculate_io_allowed(tg_iops_limit(tg, rw), time_elapsed) +
-+		  tg->carryover_ios[rw];
-+	if (bytes_trim <= 0 && io_trim <= 0)
- 		return;
+ 	page = alloc_dentry_path();
+ 	/* always use tree name prefix */
+ 	full_path = build_path_from_dentry_optional_prefix(mntpt, page, true);
+ 	if (IS_ERR(full_path)) {
+ 		mnt = ERR_CAST(full_path);
+-		goto free_full_path;
++		goto out;
+ 	}
  
--	if (tg->bytes_disp[rw] >= bytes_trim)
-+	tg->carryover_bytes[rw] = 0;
-+	if ((long long)tg->bytes_disp[rw] >= bytes_trim)
- 		tg->bytes_disp[rw] -= bytes_trim;
- 	else
- 		tg->bytes_disp[rw] = 0;
+-	convert_delimiter(full_path, '\\');
++	convert_delimiter(full_path, '/');
+ 	cifs_dbg(FYI, "%s: full_path: %s\n", __func__, full_path);
  
--	if (tg->io_disp[rw] >= io_trim)
-+	tg->carryover_ios[rw] = 0;
-+	if ((int)tg->io_disp[rw] >= io_trim)
- 		tg->io_disp[rw] -= io_trim;
- 	else
- 		tg->io_disp[rw] = 0;
-@@ -776,7 +781,7 @@ static inline void throtl_trim_slice(struct throtl_grp *tg, bool rw)
- 	tg->slice_start[rw] += time_elapsed;
+-	mnt = cifs_dfs_do_mount(mntpt, cifs_sb, full_path);
+-	cifs_dbg(FYI, "%s: cifs_dfs_do_mount:%s , mnt:%p\n", __func__, full_path + 1, mnt);
++	tmp = *cur_ctx;
++	tmp.source = full_path;
++	tmp.UNC = tmp.prepath = NULL;
++
++	rc = smb3_fs_context_dup(ctx, &tmp);
++	if (rc) {
++		mnt = ERR_PTR(rc);
++		goto out;
++	}
++
++	rc = smb3_parse_devname(full_path, ctx);
++	if (!rc)
++		mnt = fc_mount(fc);
++	else
++		mnt = ERR_PTR(rc);
  
- 	throtl_log(&tg->service_queue,
--		   "[%c] trim slice nr=%lu bytes=%llu io=%lu start=%lu end=%lu jiffies=%lu",
-+		   "[%c] trim slice nr=%lu bytes=%lld io=%d start=%lu end=%lu jiffies=%lu",
- 		   rw == READ ? 'R' : 'W', time_elapsed / tg->td->throtl_slice,
- 		   bytes_trim, io_trim, tg->slice_start[rw], tg->slice_end[rw],
- 		   jiffies);
+-free_full_path:
++out:
++	put_fs_context(fc);
+ 	free_dentry_path(page);
+-cdda_exit:
+-	cifs_dbg(FYI, "leaving %s\n" , __func__);
+ 	return mnt;
+ }
+ 
+@@ -354,9 +334,9 @@ struct vfsmount *cifs_dfs_d_automount(struct path *path)
+ {
+ 	struct vfsmount *newmnt;
+ 
+-	cifs_dbg(FYI, "in %s\n", __func__);
++	cifs_dbg(FYI, "%s: %pd\n", __func__, path->dentry);
+ 
+-	newmnt = cifs_dfs_do_automount(path->dentry);
++	newmnt = cifs_dfs_do_automount(path);
+ 	if (IS_ERR(newmnt)) {
+ 		cifs_dbg(FYI, "leaving %s [automount failed]\n" , __func__);
+ 		return newmnt;
 -- 
 2.40.1
 
