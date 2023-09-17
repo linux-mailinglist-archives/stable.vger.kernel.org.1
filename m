@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A216C7A3CF7
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4125E7A3AF8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:11:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241175AbjIQUhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:37:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54122 "EHLO
+        id S240540AbjIQULR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:11:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241222AbjIQUhR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:17 -0400
+        with ESMTP id S240550AbjIQUKy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:10:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B468118
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D13DC433C7;
-        Sun, 17 Sep 2023 20:37:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2E6B5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:10:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59B5C433C7;
+        Sun, 17 Sep 2023 20:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983030;
-        bh=6iRhr2/0+VyBO4nums57KFKh/rkt9OoxmxpItoO7pzg=;
+        s=korg; t=1694981449;
+        bh=sRlh+OtRaEJGGS1KCDe7nDzhEKHPAfyJpOKDsIbllvc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TuIvF6cVzqyBXBQBRaGYMI7UdnZVOdsoeKXq6MMfpMfgkHtM8WFYRm+7w6k/o21al
-         Ocr0gRwd1rSTaurVgD7q2ZzeMOhUdTqxHHXvAtzwPvn5qXmidYmJR77TctF4APe3yh
-         HcUsSu2Zwku5rvQBa7Vq0gefn2QChHRw1jn2VIPc=
+        b=qpBbhzmEiNbKXplpEOVoBGKPoHbEnwgoDf9E/4RH0iSWRfzWn1YNGOjYNPk9YyCqT
+         RwI9SSbCoXrhcDab0E8M8ZpnFdq7HZ9G78FL5emE/84/mJtVUbBjVcJesnViiyvWZm
+         9U9VH+DrGTc8pibzo0bzMeQeVy2nqGUWRQN/0DGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 425/511] pwm: lpc32xx: Remove handling of PWM channels
+        patches@lists.linux.dev,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 125/219] bpf: Invoke __bpf_prog_exit_sleepable_recur() on recursion in kern_sys_bpf().
 Date:   Sun, 17 Sep 2023 21:14:12 +0200
-Message-ID: <20230917191124.034652354@linuxfoundation.org>
+Message-ID: <20230917191045.504071998@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,87 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vz@mleia.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 4aae44f65827f0213a7361cf9c32cfe06114473f ]
+[ Upstream commit 7645629f7dc88cd777f98970134bf1a54c8d77e3 ]
 
-Because LPC32xx PWM controllers have only a single output which is
-registered as the only PWM device/channel per controller, it is known in
-advance that pwm->hwpwm value is always 0. On basis of this fact
-simplify the code by removing operations with pwm->hwpwm, there is no
-controls which require channel number as input.
+If __bpf_prog_enter_sleepable_recur() detects recursion then it returns
+0 without undoing rcu_read_lock_trace(), migrate_disable() or
+decrementing the recursion counter. This is fine in the JIT case because
+the JIT code will jump in the 0 case to the end and invoke the matching
+exit trampoline (__bpf_prog_exit_sleepable_recur()).
 
-Even though I wasn't aware at the time when I forward ported that patch,
-this fixes a null pointer dereference as lpc32xx->chip.pwms is NULL
-before devm_pwmchip_add() is called.
+This is not the case in kern_sys_bpf() which returns directly to the
+caller with an error code.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 3d2813fb17e5 ("pwm: lpc32xx: Don't modify HW state in .probe() after the PWM chip was registered")
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Add __bpf_prog_exit_sleepable_recur() as clean up in the recursion case.
+
+Fixes: b1d18a7574d0d ("bpf: Extend sys_bpf commands for bpf_syscall programs.")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230830080405.251926-2-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-lpc32xx.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/bpf/syscall.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pwm/pwm-lpc32xx.c b/drivers/pwm/pwm-lpc32xx.c
-index ddeab5687cb81..45b613dbc1c7b 100644
---- a/drivers/pwm/pwm-lpc32xx.c
-+++ b/drivers/pwm/pwm-lpc32xx.c
-@@ -51,10 +51,10 @@ static int lpc32xx_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (duty_cycles > 255)
- 		duty_cycles = 255;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~0xFFFF;
- 	val |= (period_cycles << 8) | duty_cycles;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	return 0;
- }
-@@ -69,9 +69,9 @@ static int lpc32xx_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	if (ret)
- 		return ret;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val |= PWM_ENABLE;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	return 0;
- }
-@@ -81,9 +81,9 @@ static void lpc32xx_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	struct lpc32xx_pwm_chip *lpc32xx = to_lpc32xx_pwm_chip(chip);
- 	u32 val;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~PWM_ENABLE;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	clk_disable_unprepare(lpc32xx->clk);
- }
-@@ -118,9 +118,9 @@ static int lpc32xx_pwm_probe(struct platform_device *pdev)
- 	lpc32xx->chip.npwm = 1;
- 
- 	/* If PWM is disabled, configure the output to the default value */
--	val = readl(lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~PWM_PIN_LEVEL;
--	writel(val, lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	ret = devm_pwmchip_add(&pdev->dev, &lpc32xx->chip);
- 	if (ret < 0) {
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 7afec961c5728..76484137233a3 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -5138,6 +5138,7 @@ int kern_sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
+ 		run_ctx.saved_run_ctx = NULL;
+ 		if (!__bpf_prog_enter_sleepable_recur(prog, &run_ctx)) {
+ 			/* recursion detected */
++			__bpf_prog_exit_sleepable_recur(prog, 0, &run_ctx);
+ 			bpf_prog_put(prog);
+ 			return -EBUSY;
+ 		}
 -- 
 2.40.1
 
