@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6507A39B5
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 367BE7A3A5E
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240144AbjIQTxK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:53:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46914 "EHLO
+        id S239532AbjIQUCm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:02:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240313AbjIQTwx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:53 -0400
+        with ESMTP id S240473AbjIQUCb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:02:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A662132
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53319C433C7;
-        Sun, 17 Sep 2023 19:52:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E6C101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:01:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE3BC433C7;
+        Sun, 17 Sep 2023 20:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980367;
-        bh=yDFPGxL67fpqAfmQfZgOT/rDaOHK5kwCYQU6xvdrBew=;
+        s=korg; t=1694980916;
+        bh=5Nh7GdhbZ+FDoz7i3707jjPjHB3RVISB1Ali4HcFezo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tS5OiS1xQn4Ide887qVV0snqwjbX1TQveQfK8nW4rNHK8X9QigqlH56K4GPIz/Tls
-         zjW9KMw2hYSWxEjyhoAXkeB5EfjEppRjpgLZoxU/Id8aKAgmFYff6hkFY/pPzaT9vg
-         Jb5CAftT2CQE8rCnm2vzhKLasb5Qke/Z8ihjpuxs=
+        b=iv0E1QMkzgrV84y+NOnAZVk8+DeLhLvrKUURszw8MnV8Z8lzu+1e4l/FmKOcyr4+G
+         Vona0c761yVnn6oxgsKO29ciO2oRCUaf8f6VX0iDN8eGPHPZ6niSt8xYtntB4kNHed
+         2xRZYFtLLfNPk243ZK6GLxXytqik0z7Mtc/PV6QM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 172/285] net: hns3: remove GSO partial feature bit
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 045/219] clk: qcom: dispcc-sm8450: fix runtime PM imbalance on probe errors
 Date:   Sun, 17 Sep 2023 21:12:52 +0200
-Message-ID: <20230917191057.588500162@linuxfoundation.org>
+Message-ID: <20230917191042.630354457@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +51,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 60326634f6c54528778de18bfef1e8a7a93b3771 ]
+commit b0f3d01bda6c3f6f811e70f76d2040ae81f64565 upstream.
 
-HNS3 NIC does not support GSO partial packets segmentation. Actually tunnel
-packets for example NvGRE packets segment offload and checksum offload is
-already supported. There is no need to keep gso partial feature bit. So
-this patch removes it.
+Make sure to decrement the runtime PM usage count before returning in
+case regmap initialisation fails.
 
-Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
+Cc: stable@vger.kernel.org      # 6.1
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230718132902.21430-3-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/clk/qcom/dispcc-sm8450.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 71772213b4448..613d0a779cef2 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -3315,8 +3315,6 @@ static void hns3_set_default_feature(struct net_device *netdev)
+--- a/drivers/clk/qcom/dispcc-sm8450.c
++++ b/drivers/clk/qcom/dispcc-sm8450.c
+@@ -1783,8 +1783,10 @@ static int disp_cc_sm8450_probe(struct p
+ 		return ret;
  
- 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 	regmap = qcom_cc_map(pdev, &disp_cc_sm8450_desc);
+-	if (IS_ERR(regmap))
+-		return PTR_ERR(regmap);
++	if (IS_ERR(regmap)) {
++		ret = PTR_ERR(regmap);
++		goto err_put_rpm;
++	}
  
--	netdev->gso_partial_features |= NETIF_F_GSO_GRE_CSUM;
--
- 	netdev->features |= NETIF_F_HW_VLAN_CTAG_FILTER |
- 		NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
- 		NETIF_F_RXCSUM | NETIF_F_SG | NETIF_F_GSO |
--- 
-2.40.1
-
+ 	clk_lucid_evo_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
+ 	clk_lucid_evo_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
+@@ -1799,9 +1801,16 @@ static int disp_cc_sm8450_probe(struct p
+ 	regmap_update_bits(regmap, 0xe05c, BIT(0), BIT(0));
+ 
+ 	ret = qcom_cc_really_probe(pdev, &disp_cc_sm8450_desc, regmap);
++	if (ret)
++		goto err_put_rpm;
+ 
+ 	pm_runtime_put(&pdev->dev);
+ 
++	return 0;
++
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++
+ 	return ret;
+ }
+ 
 
 
