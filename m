@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A64E7A3A01
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF5F87A38FC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240225AbjIQT5W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:57:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
+        id S239882AbjIQTn2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:43:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240305AbjIQT5E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:04 -0400
+        with ESMTP id S239896AbjIQTm7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C342FF3
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0500BC433C8;
-        Sun, 17 Sep 2023 19:56:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFE06DB
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF114C433C8;
+        Sun, 17 Sep 2023 19:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980618;
-        bh=c0XpvEZyVkD1UMLnB4D088iBpGM6Lv7hcNfm1QUQ3WE=;
+        s=korg; t=1694979774;
+        bh=FpSPxfm3VxP98PpFKXPHPL1zOXRWtlRJWFLPSm5doO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U6+LWLMbkxJrO18hBTtGAYP1fJnbxGIC1tZT1hxcRFNifeM6pZM1A1c6ILH7YWJs9
-         AkDSjS4BxpNQnUEQ3tTRGg4t9b8vXCRyBSkSrsr/8cWKCGsETpcfPcHWKajyUQT+Bj
-         O7l8lILe4hm0igzpcAphMXhU8+Z2+6Qu3nOwNjCc=
+        b=J1Yr8iUy09OnBYlJy9/t07bda3s5D710YEpP7DyPNPXKSglbIME85P6aeF0OvMVNW
+         5KaDE2iK/GjddkRJiDDpE2eTDWqWh0KlfP4gYbzY5fHFgSHLqHuOcktpFulN5zIRsQ
+         QAqydtpFEtnes8/nkMzfJ6yRvMn1D2oZF8tSL+mM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        kernel test robot <lkp@intel.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 245/285] parisc: sba_iommu: Fix build warning if procfs if disabled
-Date:   Sun, 17 Sep 2023 21:14:05 +0200
-Message-ID: <20230917191059.825159734@linuxfoundation.org>
+Subject: [PATCH 5.10 392/406] kselftest/runner.sh: Propagate SIGTERM to runner child
+Date:   Sun, 17 Sep 2023 21:14:06 +0200
+Message-ID: <20230917191111.616204672@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+References: <20230917191101.035638219@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,92 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 6428bc7bd3f35e43c8cb7359cb89d83248d339d2 ]
+[ Upstream commit 9616cb34b08ec86642b162eae75c5a7ca8debe3c ]
 
-Clean up the code, e.g. make proc_mckinley_root static, drop the now
-empty mckinley header file and remove some unneeded ifdefs around procfs
-functions.
+Timeouts in kselftest are done using the "timeout" command with the
+"--foreground" option. Without the "foreground" option, it is not
+possible for a user to cancel the runner using SIGINT, because the
+signal is not propagated to timeout which is running in a different
+process group. The "forground" options places the timeout in the same
+process group as its parent, but only sends the SIGTERM (on timeout)
+signal to the forked process. Unfortunately, this does not play nice
+with all kselftests, e.g. "net:fcnal-test.sh", where the child
+processes will linger because timeout does not send SIGTERM to the
+group.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308300800.Jod4sHzM-lkp@intel.com/
-Fixes: 77e0ddf097d6 ("parisc: ccio-dma: Create private runway procfs root entry")
+Some users have noted these hangs [1].
+
+Fix this by nesting the timeout with an additional timeout without the
+foreground option.
+
+Link: https://lore.kernel.org/all/7650b2eb-0aee-a2b0-2e64-c9bc63210f67@alu.unizg.hr/ # [1]
+Fixes: 651e0d881461 ("kselftest/runner: allow to properly deliver signals to tests")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/mckinley.h |  8 --------
- drivers/parisc/sba_iommu.c         | 10 ++--------
- 2 files changed, 2 insertions(+), 16 deletions(-)
- delete mode 100644 arch/parisc/include/asm/mckinley.h
+ tools/testing/selftests/kselftest/runner.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/include/asm/mckinley.h b/arch/parisc/include/asm/mckinley.h
-deleted file mode 100644
-index 1314390b9034b..0000000000000
---- a/arch/parisc/include/asm/mckinley.h
-+++ /dev/null
-@@ -1,8 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef ASM_PARISC_MCKINLEY_H
--#define ASM_PARISC_MCKINLEY_H
--
--/* declared in arch/parisc/kernel/setup.c */
--extern struct proc_dir_entry * proc_mckinley_root;
--
--#endif /*ASM_PARISC_MCKINLEY_H*/
-diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-index 8f28f8696bf32..b8e91cbb60567 100644
---- a/drivers/parisc/sba_iommu.c
-+++ b/drivers/parisc/sba_iommu.c
-@@ -46,8 +46,6 @@
- #include <linux/module.h>
- 
- #include <asm/ropes.h>
--#include <asm/mckinley.h>	/* for proc_mckinley_root */
--#include <asm/runway.h>		/* for proc_runway_root */
- #include <asm/page.h>		/* for PAGE0 */
- #include <asm/pdc.h>		/* for PDC_MODEL_* */
- #include <asm/pdcpat.h>		/* for is_pdc_pat() */
-@@ -122,7 +120,7 @@ MODULE_PARM_DESC(sba_reserve_agpgart, "Reserve half of IO pdir as AGPGART");
- #endif
- 
- static struct proc_dir_entry *proc_runway_root __ro_after_init;
--struct proc_dir_entry *proc_mckinley_root __ro_after_init;
-+static struct proc_dir_entry *proc_mckinley_root __ro_after_init;
- 
- /************************************
- ** SBA register read and write support
-@@ -1899,9 +1897,7 @@ static int __init sba_driver_callback(struct parisc_device *dev)
- 	int i;
- 	char *version;
- 	void __iomem *sba_addr = ioremap(dev->hpa.start, SBA_FUNC_SIZE);
--#ifdef CONFIG_PROC_FS
--	struct proc_dir_entry *root;
--#endif
-+	struct proc_dir_entry *root __maybe_unused;
- 
- 	sba_dump_ranges(sba_addr);
- 
-@@ -1967,7 +1963,6 @@ static int __init sba_driver_callback(struct parisc_device *dev)
- 
- 	hppa_dma_ops = &sba_ops;
- 
--#ifdef CONFIG_PROC_FS
- 	switch (dev->id.hversion) {
- 	case PLUTO_MCKINLEY_PORT:
- 		if (!proc_mckinley_root)
-@@ -1985,7 +1980,6 @@ static int __init sba_driver_callback(struct parisc_device *dev)
- 
- 	proc_create_single("sba_iommu", 0, root, sba_proc_info);
- 	proc_create_single("sba_iommu-bitmap", 0, root, sba_proc_bitmap_info);
--#endif
- 	return 0;
- }
- 
+diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
+index a9ba782d8ca0f..83616f0779a7e 100644
+--- a/tools/testing/selftests/kselftest/runner.sh
++++ b/tools/testing/selftests/kselftest/runner.sh
+@@ -33,7 +33,8 @@ tap_timeout()
+ {
+ 	# Make sure tests will time out if utility is available.
+ 	if [ -x /usr/bin/timeout ] ; then
+-		/usr/bin/timeout --foreground "$kselftest_timeout" $1
++		/usr/bin/timeout --foreground "$kselftest_timeout" \
++			/usr/bin/timeout "$kselftest_timeout" $1
+ 	else
+ 		$1
+ 	fi
 -- 
 2.40.1
 
