@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DECFE7A3B70
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F0E7A3B73
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240681AbjIQURj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52406 "EHLO
+        id S240684AbjIQURk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:17:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240716AbjIQURY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:24 -0400
+        with ESMTP id S240724AbjIQURb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:17:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67099F4
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B60BC433C7;
-        Sun, 17 Sep 2023 20:17:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4502CF1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:17:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEA2C433C8;
+        Sun, 17 Sep 2023 20:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981839;
-        bh=rKMqKMYtPuHxuvWgsRpj7pbF/B5Vln81ztXoh/FcueA=;
+        s=korg; t=1694981845;
+        bh=YqThmGBH61Y75cGC5KbgzqLkFkQuQRCfp1FiOyFyupA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gBGZYIK2e5KbZNGgf9bNHv00YsRbFE82/oWnghl9Bh0KPEmjXMHgZz0Ho/TMKYYpH
-         TRj2J1k5W9YNiiu3B0r+Qrhfyf4NIX9g/KlKLarNheN6Gpi1XchNZmmndGMhin3AK6
-         Mn+PONdvtRpBcVs1+K81gNa/NdYGzC3fv6uOb9Do=
+        b=IJFMXxIO2KyRB6qcshz4666GvWeb9Q844oacuSzukTbS1/+Qzkbgc8Uj02fn4RIy8
+         d/wHXfSCiMxrf+YUeRltrZX52gS7ULqu9oPbP4pRQfrA2Il1vTQ+dZcsHwKwvRAMzG
+         +qSh5Dh7oMKQ0z5FDNBGIoQ3XnfhyoD5qIj1lbTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Simon Horman <horms@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/511] wifi: nl80211/cfg80211: add forgotten nla_policy for BSS color attribute
-Date:   Sun, 17 Sep 2023 21:09:00 +0200
-Message-ID: <20230917191116.585562351@linuxfoundation.org>
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 114/511] wifi: mwifiex: avoid possible NULL skb pointer dereference
+Date:   Sun, 17 Sep 2023 21:09:01 +0200
+Message-ID: <20230917191116.611157084@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -55,41 +54,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 218d690c49b7e9c94ad0d317adbdd4af846ea0dc ]
+[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
 
-The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
-NDP ranging parameters") adds a parameter for NDP ranging by introducing
-a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
+In 'mwifiex_handle_uap_rx_forward()', always check the value
+returned by 'skb_copy()' to avoid potential NULL pointer
+dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
+original skb in case of copying failure.
 
-However, the author forgot to also describe the nla_policy at
-nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
-complement it to avoid malformed attribute that causes out-of-attribute
-access.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809033151.768910-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1b91a9c208969..ed3ec7e320ced 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -314,6 +314,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
- };
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index d6493638e7028..8a5d0125a1abd 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -265,7 +265,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
  
- static const struct nla_policy
+ 	if (is_multicast_ether_addr(ra)) {
+ 		skb_uap = skb_copy(skb, GFP_ATOMIC);
+-		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		if (likely(skb_uap)) {
++			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		} else {
++			mwifiex_dbg(adapter, ERROR,
++				    "failed to copy skb for uAP\n");
++			priv->stats.rx_dropped++;
++			dev_kfree_skb_any(skb);
++			return -1;
++		}
+ 	} else {
+ 		if (mwifiex_get_sta_entry(priv, ra)) {
+ 			/* Requeue Intra-BSS packet */
 -- 
 2.40.1
 
