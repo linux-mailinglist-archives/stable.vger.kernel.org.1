@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C207A3CA8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DEFC7A3AA4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241075AbjIQUdk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
+        id S240403AbjIQUHA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241135AbjIQUdc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:32 -0400
+        with ESMTP id S240471AbjIQUGv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42ADF101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E17C433C7;
-        Sun, 17 Sep 2023 20:33:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FACFB5
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:06:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F2EC433C7;
+        Sun, 17 Sep 2023 20:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982806;
-        bh=5t7a6olzgPrYU1NZiLvVfwKUUyYRaTQsVuEx/Xome8I=;
+        s=korg; t=1694981206;
+        bh=CoDla67E2KTpErJuLyOZc/REx67UTwKy4aJABHsKSN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t8XcARMSOgYvMETEqZLnfSH6AxGnFHiJdr7B/wUZ5PTk9JvOyoM2INLuJmeYeH23b
-         rTYN+11VeXAk3y/bDqbCWjrhkJryQpye9pgy53+C4TNZ5ncGGN2OGf5SuwIRto1+D2
-         Xg+K/ZR1PyyYW9UOw4x9VHaSMa5wmHpRvCU38aRE=
+        b=uk+COaFAtvCGTTRcu6duxiwEwTDCfeIQU6M9bpX2g5PlNTPpeQe1+dKUaZVzTyA19
+         tUbUR72A97fxIPCtYl3wj17/+ai41K/9cAZAo+iqC21ahHKUMYfRxn2YhRynCB5LSh
+         1moTlyXnBkrmlqWndY61bjjHWn8i9RPZxDEQbuXc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 358/511] crypto: stm32 - fix loop iterating through scatterlist for DMA
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Matthew Garrett <mgarrett@aurora.tech>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 058/219] tpm_crb: Fix an error handling path in crb_acpi_add()
 Date:   Sun, 17 Sep 2023 21:13:05 +0200
-Message-ID: <20230917191122.444241455@linuxfoundation.org>
+Message-ID: <20230917191043.115814523@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit d9c83f71eeceed2cb54bb78be84f2d4055fd9a1f upstream.
+[ Upstream commit 9c377852ddfdc557b1370f196b0cfdf28d233460 ]
 
-We were reading the length of the scatterlist sg after copying value of
-tsg inside.
-So we are using the size of the previous scatterlist and for the first
-one we are using an unitialised value.
-Fix this by copying tsg in sg[0] before reading the size.
+Some error paths don't call acpi_put_table() before returning.
+Branch to the correct place instead of doing some direct return.
 
-Fixes : 8a1012d3f2ab ("crypto: stm32 - Support for STM32 HASH module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d2732882703 ("tpm_crb: Add support for CRB devices based on Pluton")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Matthew Garrett <mgarrett@aurora.tech>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/stm32/stm32-hash.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/tpm/tpm_crb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -565,9 +565,9 @@ static int stm32_hash_dma_send(struct st
+diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+index db0b774207d35..f45239e73c4ca 100644
+--- a/drivers/char/tpm/tpm_crb.c
++++ b/drivers/char/tpm/tpm_crb.c
+@@ -775,12 +775,13 @@ static int crb_acpi_add(struct acpi_device *device)
+ 				FW_BUG "TPM2 ACPI table has wrong size %u for start method type %d\n",
+ 				buf->header.length,
+ 				ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON);
+-			return -EINVAL;
++			rc = -EINVAL;
++			goto out;
+ 		}
+ 		crb_pluton = ACPI_ADD_PTR(struct tpm2_crb_pluton, buf, sizeof(*buf));
+ 		rc = crb_map_pluton(dev, priv, buf, crb_pluton);
+ 		if (rc)
+-			return rc;
++			goto out;
  	}
  
- 	for_each_sg(rctx->sg, tsg, rctx->nents, i) {
-+		sg[0] = *tsg;
- 		len = sg->length;
- 
--		sg[0] = *tsg;
- 		if (sg_is_last(sg)) {
- 			if (hdev->dma_mode == 1) {
- 				len = (ALIGN(sg->length, 16) - 16);
+ 	priv->sm = sm;
+-- 
+2.40.1
+
 
 
