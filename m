@@ -2,120 +2,236 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8E67A3D93
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 468417A3DB4
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 23:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238918AbjIQUtF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:49:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44368 "EHLO
+        id S238857AbjIQVAU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 17:00:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241266AbjIQUsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:48:50 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FEF5D1;
-        Sun, 17 Sep 2023 13:48:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D245BC433C7;
-        Sun, 17 Sep 2023 20:48:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694983725;
-        bh=I8aQ44ZQ4i+K3hpbPAyOZKD9gkS29MWEjszUUgf/Kt4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=am4rIWATfHb7net4lH3vkzoLOp6TAVy5kTBRvqpfeqO6ui3+WKFCnsKPR6GMQpMsZ
-         h3X+nUDP16HzVFLLBjELwV98LhARPwR6c3AmElwO3i+iEo76J52phGrBAAWTZIoSCI
-         2fZ1OG2l/irR8MkHgZs0n7yzwm5EO2IYCvvt1Z7OJE2gSjP3FMKpLAgIspKpMIfMN5
-         2pVGgtiswOYvaCrum4Rib2mifV49JVAx1e62RhjWgWKSMpmc9pt+zU116p6EKEP8zi
-         bavcg7J/jy2k1S9ox6PUWDL58EdgOZ2MLmaor7kLu/LyXJJ2TrY+fm66/qZQqLHEkV
-         dToe5MzyUXyKw==
-From:   SeongJae Park <sj@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, damon@lists.linux.dev,
-        SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
-Date:   Sun, 17 Sep 2023 20:48:42 +0000
-Message-Id: <20230917204842.104983-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-References: 
+        with ESMTP id S229949AbjIQU7u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:59:50 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A94798
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:59:44 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-577f6205f42so2778184a12.1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:59:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694984383; x=1695589183; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YwMysGThmi0yAXjk+7gsYzEFpvJP7zHTAAvan0K8v38=;
+        b=ttg8nAWnPA0hKvK+A7v7hjGMO48zbkSUejp4Z3sHrBbEqaNJeiQ1QIwd1NZeIx6UzE
+         HgpVDanv2gx0Fq8wkchVsrIg6eXKpqgkPNtn15Arx2iaEZT7cFBoCaq2rdS+sL/VUJY4
+         Dy1SVCVEMJicekTKBR+ys4ByGG8/ueOfkxP3kfin08bZKVgpf/5X9nS2Ba2YuAcsdeDU
+         6vY4vWRvwUiCYs5Zx9mvG7QTU+ffiVOxgaA9T9ggUZ9qrpIdO6ywk620BS9vJF1F+Iu7
+         cZMIu7p5eKv9jfRxNAdmvCoKA77/J+u+7W7uFDSoMiABxQd1BMWSL/BPeJU8Xrz6VWhL
+         3Ppg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694984383; x=1695589183;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YwMysGThmi0yAXjk+7gsYzEFpvJP7zHTAAvan0K8v38=;
+        b=oaL5OwCo5ULm2uE1Ew1FnEfLyxnwbiicP0R0tu70lvBZQ1p3Qe1efMcka5ytW83rUp
+         hYtyylZXQuolFYtjec8CAFgHX9VIgpAx+AgjIYZQTr6Q8V4Ir/U3CqDkLOY0UQFEKXS/
+         S7nToB27yzw7sgAQeP61syq8ktOPvUuofxwfQrxs6fXOgnKtXpbAoYCQSBw9S+4GL9C1
+         NodzT6V3RXueLoSdbGERWi6AifTOAQDS+LFGUWiWDYECZt+/eab7cWn8veotgrvUz0Qj
+         /OlCiKLS4bE4E3Scsg6YGO6UisHwh9sITxuQqTzNs6id0OzsgKZTqHODy/nGRMl6x/Lx
+         msKA==
+X-Gm-Message-State: AOJu0YzBGB1YFSEB4K43nQzwcbDIysvbEnwDBuaVOL2coTUI9q3+9TX1
+        eYa/FIrW0lCt0NbbXbXQ0L8RTVliFicIs6PU/awe95kO
+X-Google-Smtp-Source: AGHT+IFlJ5LAuJFL7/e3HSXrYCm2elZ0MVSrM7pXDE5bKE4N20P6KT4sBRFYi7pLlR1XNI/lcVFs4w==
+X-Received: by 2002:a05:6a20:2594:b0:154:c959:f157 with SMTP id k20-20020a056a20259400b00154c959f157mr6014809pzd.30.1694984383063;
+        Sun, 17 Sep 2023 13:59:43 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id l21-20020a170902d35500b001bee782a1desm7014265plk.181.2023.09.17.13.59.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Sep 2023 13:59:42 -0700 (PDT)
+Message-ID: <650768be.170a0220.d9653.9031@mx.google.com>
+Date:   Sun, 17 Sep 2023 13:59:42 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.15.131-512-ga8d93816a2f2
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.131-512-ga8d93816a2f2)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.131-512-ga8d93816a2f2)
 
-On Sun, 17 Sep 2023 21:10:00 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.131-512-ga8d93816a2f2/
 
-> This is the start of the stable review cycle for the 6.5.4 release.
-> There are 285 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
-> 
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.131-512-ga8d93816a2f2
+Git Commit: a8d93816a2f2942906a99b5ea77dcc87c483e56e
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+Warnings Detected:
 
-Tested-by: SeongJae Park <sj@kernel.org>
+arc:
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] e5d077fb1eae ("Linux 6.5.4-rc1")
+arm64:
 
-Thanks,
-SJ
+arm:
 
-[...]
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
 
 ---
-
- [32m
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_m68k.sh
-ok 12 selftests: damon-tests: build_arm64.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
-_remote_run_corr.sh SUCCESS
+For more info write to <info@kernelci.org>
