@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 632AE7A3D55
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED147A3B87
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241261AbjIQUli (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
+        id S240696AbjIQUTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241320AbjIQUlR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:41:17 -0400
+        with ESMTP id S240739AbjIQUSx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:18:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A083912F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:41:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D697DC433C7;
-        Sun, 17 Sep 2023 20:41:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E895F1
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:18:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE57C433C7;
+        Sun, 17 Sep 2023 20:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983271;
-        bh=dW/vucEDjBMUCTZ+P5SQlbZEhMFaOzIVcIE8Oc13YJQ=;
+        s=korg; t=1694981927;
+        bh=/dt2wDhwFmLPeLXKqaZBrgCOpmHNwUDPBUu1PAUPcNg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1xgSfDyslD0jWuIBXqTruPBIhsIZ0xg+Lfm56zntW+9F0/A/TbOK9IOH4YN9Ymr79
-         ZBwBYcXebjFcVgIIuNaarPX49D8dRudwdqp6OE2goboTqfJJF/S9noSpKh+HbNHeTb
-         z1V+vuY+pyYzmfMtpQi8gXgu6YufjLID1A8dVavo=
+        b=c/mz5BfaAhmpvkGsnk7kfNKb+rewAxf595jb9H4qIHEa2UoLeiguLeE1eWOnpLGan
+         SnU/AcOZM8SXFUT2IlOKB7s7INaosqB/UEhZHaxwP+Z1Nt+k0E4nxJrWTjWOoRY9YQ
+         a1BPRNCOhGKExj063S0hp43EGZEJM7M6m0TAGnMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Julian Anastasov <ja@ssi.bg>,
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Simon Horman <horms@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 493/511] net: ipv4: fix one memleak in __inet_del_ifa()
-Date:   Sun, 17 Sep 2023 21:15:20 +0200
-Message-ID: <20230917191125.635188170@linuxfoundation.org>
+Subject: [PATCH 6.1 194/219] net: ethernet: adi: adin1110: use eth_broadcast_addr() to assign broadcast address
+Date:   Sun, 17 Sep 2023 21:15:21 +0200
+Message-ID: <20230917191047.952536716@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,87 +51,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit ac28b1ec6135649b5d78b028e47264cb3ebca5ea ]
+[ Upstream commit 54024dbec95585243391caeb9f04a2620e630765 ]
 
-I got the below warning when do fuzzing test:
-unregister_netdevice: waiting for bond0 to become free. Usage count = 2
+Use eth_broadcast_addr() to assign broadcast address instead
+of memset().
 
-It can be repoduced via:
-
-ip link add bond0 type bond
-sysctl -w net.ipv4.conf.bond0.promote_secondaries=1
-ip addr add 4.117.174.103/0 scope 0x40 dev bond0
-ip addr add 192.168.100.111/255.255.255.254 scope 0 dev bond0
-ip addr add 0.0.0.4/0 scope 0x40 secondary dev bond0
-ip addr del 4.117.174.103/0 scope 0x40 dev bond0
-ip link delete bond0 type bond
-
-In this reproduction test case, an incorrect 'last_prim' is found in
-__inet_del_ifa(), as a result, the secondary address(0.0.0.4/0 scope 0x40)
-is lost. The memory of the secondary address is leaked and the reference of
-in_device and net_device is leaked.
-
-Fix this problem:
-Look for 'last_prim' starting at location of the deleted IP and inserting
-the promoted IP into the location of 'last_prim'.
-
-Fixes: 0ff60a45678e ("[IPV4]: Fix secondary IP addresses after promotion")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 32530dba1bd4 ("net:ethernet:adi:adin1110: Fix forwarding offload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/adi/adin1110.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 9ac41ffdc6344..c511751c2f41a 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -351,14 +351,14 @@ static void __inet_del_ifa(struct in_device *in_dev,
- {
- 	struct in_ifaddr *promote = NULL;
- 	struct in_ifaddr *ifa, *ifa1;
--	struct in_ifaddr *last_prim;
-+	struct in_ifaddr __rcu **last_prim;
- 	struct in_ifaddr *prev_prom = NULL;
- 	int do_promote = IN_DEV_PROMOTE_SECONDARIES(in_dev);
+diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
+index ecce5f7a549f2..cc026780ee0e8 100644
+--- a/drivers/net/ethernet/adi/adin1110.c
++++ b/drivers/net/ethernet/adi/adin1110.c
+@@ -740,7 +740,7 @@ static int adin1110_broadcasts_filter(struct adin1110_port_priv *port_priv,
+ 	u32 port_rules = 0;
+ 	u8 mask[ETH_ALEN];
  
- 	ASSERT_RTNL();
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
  
- 	ifa1 = rtnl_dereference(*ifap);
--	last_prim = rtnl_dereference(in_dev->ifa_list);
-+	last_prim = ifap;
- 	if (in_dev->dead)
- 		goto no_promotions;
+ 	if (accept_broadcast && port_priv->state == BR_STATE_FORWARDING)
+ 		port_rules = adin1110_port_rules(port_priv, true, true);
+@@ -761,7 +761,7 @@ static int adin1110_set_mac_address(struct net_device *netdev,
+ 		return -EADDRNOTAVAIL;
  
-@@ -372,7 +372,7 @@ static void __inet_del_ifa(struct in_device *in_dev,
- 		while ((ifa = rtnl_dereference(*ifap1)) != NULL) {
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) &&
- 			    ifa1->ifa_scope <= ifa->ifa_scope)
--				last_prim = ifa;
-+				last_prim = &ifa->ifa_next;
+ 	eth_hw_addr_set(netdev, dev_addr);
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
  
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) ||
- 			    ifa1->ifa_mask != ifa->ifa_mask ||
-@@ -436,9 +436,9 @@ static void __inet_del_ifa(struct in_device *in_dev,
+ 	mac_slot = (!port_priv->nr) ?  ADIN_MAC_P1_ADDR_SLOT : ADIN_MAC_P2_ADDR_SLOT;
+ 	port_rules = adin1110_port_rules(port_priv, true, false);
+@@ -1251,7 +1251,7 @@ static int adin1110_port_set_blocking_state(struct adin1110_port_priv *port_priv
+ 		goto out;
  
- 			rcu_assign_pointer(prev_prom->ifa_next, next_sec);
+ 	/* Allow only BPDUs to be passed to the CPU */
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
+ 	port_rules = adin1110_port_rules(port_priv, true, false);
+ 	ret = adin1110_write_mac_address(port_priv, mac_slot, mac,
+ 					 mask, port_rules);
+@@ -1366,7 +1366,7 @@ static int adin1110_fdb_add(struct adin1110_port_priv *port_priv,
  
--			last_sec = rtnl_dereference(last_prim->ifa_next);
-+			last_sec = rtnl_dereference(*last_prim);
- 			rcu_assign_pointer(promote->ifa_next, last_sec);
--			rcu_assign_pointer(last_prim->ifa_next, promote);
-+			rcu_assign_pointer(*last_prim, promote);
- 		}
+ 	other_port = priv->ports[!port_priv->nr];
+ 	port_rules = adin1110_port_rules(port_priv, false, true);
+-	memset(mask, 0xFF, ETH_ALEN);
++	eth_broadcast_addr(mask);
  
- 		promote->ifa_flags &= ~IFA_F_SECONDARY;
+ 	return adin1110_write_mac_address(other_port, mac_nr, (u8 *)fdb->addr,
+ 					  mask, port_rules);
 -- 
 2.40.1
 
