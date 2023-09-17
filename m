@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 070957A3A93
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ECCF7A3A98
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:06:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240383AbjIQUG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:06:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38830 "EHLO
+        id S240386AbjIQUG1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:06:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240406AbjIQUGA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:00 -0400
+        with ESMTP id S240468AbjIQUGJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41C4137
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF52C433C9;
-        Sun, 17 Sep 2023 20:05:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC94F3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:05:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11306C433CA;
+        Sun, 17 Sep 2023 20:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981147;
-        bh=K0iLyIxIV6VeFnS7XYHAMJym+dRvVQYbtW/4zXPihnY=;
+        s=korg; t=1694981157;
+        bh=AcUDdRyH7qYeCFpzWUgeeRK7h+hUf9upgMa7Ss0V+XQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RdtLSHJdD7B4v+HMRGQ2U5Rx1Nn+T4Vv95Yrp6Qmjz5HFMIdJKjddLzkU+QCKx0nt
-         fomXCzeztOcvYrc/k1nB0ayYoLC/uPUJ76yh3pYAuQiGcbvExyLlYnLUctFccAXdyT
-         Mf3BCB6SmPWPWpm9Ll5zJQKxPFNzA7xpY1UFIvYU=
+        b=VMoFO+O82FEk+MmW9FYv3h0Snra3ykzPhJdE2oLmMOibKPwAJvTg4M0b0ThF7I5YV
+         iK0Q+Iyvv2O85R1mArP25O0oPWOSaVOlBtgsPKGkONq5VgpU4Cus4LfRNle1ssmkeC
+         2mCnRKUfG5Bn1a8L2ulNam/JNmP4zyjlHmEqDDVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        patches@lists.linux.dev, Kajol Jain <kjain@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>,
+        Disha Goel <disgoel@linux.vnet.ibm.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/219] pwm: lpc32xx: Remove handling of PWM channels
-Date:   Sun, 17 Sep 2023 21:13:26 +0200
-Message-ID: <20230917191043.835547885@linuxfoundation.org>
+Subject: [PATCH 6.1 080/219] perf test stat_bpf_counters_cgrp: Fix shellcheck issue about logical operators
+Date:   Sun, 17 Sep 2023 21:13:27 +0200
+Message-ID: <20230917191043.869526841@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -42,7 +46,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -58,83 +61,118 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Vladimir Zapolskiy <vz@mleia.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 4aae44f65827f0213a7361cf9c32cfe06114473f ]
+[ Upstream commit 0dd1f815545d7210150642741c364521cc5cf116 ]
 
-Because LPC32xx PWM controllers have only a single output which is
-registered as the only PWM device/channel per controller, it is known in
-advance that pwm->hwpwm value is always 0. On basis of this fact
-simplify the code by removing operations with pwm->hwpwm, there is no
-controls which require channel number as input.
+Running shellcheck on lock_contention.sh generates below warning:
 
-Even though I wasn't aware at the time when I forward ported that patch,
-this fixes a null pointer dereference as lpc32xx->chip.pwms is NULL
-before devm_pwmchip_add() is called.
+In stat_bpf_counters_cgrp.sh line 28:
+	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
+                                            ^-- SC2166 (warning): Prefer [ p ] && [ q ] as [ p -a q ] is not well defined.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 3d2813fb17e5 ("pwm: lpc32xx: Don't modify HW state in .probe() after the PWM chip was registered")
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+In stat_bpf_counters_cgrp.sh line 34:
+	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
+        ^-------------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+              ^-------^ SC2155 (warning): Declare and assign separately to avoid masking return values.
+                        ^-- SC2046 (warning): Quote this to prevent word splitting.
+
+In stat_bpf_counters_cgrp.sh line 51:
+	local output
+        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+
+In stat_bpf_counters_cgrp.sh line 65:
+	local output
+        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+
+Fixed above warnings by:
+- Changing the expression [p -a q] to [p] && [q].
+- Fixing shellcheck warnings for local usage, by prefixing
+  function name to the variable.
+
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/r/20230709182800.53002-6-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: a84260e31402 ("perf test stat_bpf_counters_cgrp: Enhance perf stat cgroup BPF counter test")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-lpc32xx.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/pwm/pwm-lpc32xx.c b/drivers/pwm/pwm-lpc32xx.c
-index 86a0ea0f6955c..806f0bb3ad6d8 100644
---- a/drivers/pwm/pwm-lpc32xx.c
-+++ b/drivers/pwm/pwm-lpc32xx.c
-@@ -51,10 +51,10 @@ static int lpc32xx_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (duty_cycles > 255)
- 		duty_cycles = 255;
+diff --git a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
+index d724855d097c2..a74440a00b6b6 100755
+--- a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
++++ b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
+@@ -25,22 +25,22 @@ check_bpf_counter()
+ find_cgroups()
+ {
+ 	# try usual systemd slices first
+-	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
++	if [ -d /sys/fs/cgroup/system.slice ] && [ -d /sys/fs/cgroup/user.slice ]; then
+ 		test_cgroups="system.slice,user.slice"
+ 		return
+ 	fi
  
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~0xFFFF;
- 	val |= (period_cycles << 8) | duty_cycles;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
+ 	# try root and self cgroups
+-	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
+-	if [ -z ${self_cgrp} ]; then
++	find_cgroups_self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
++	if [ -z ${find_cgroups_self_cgrp} ]; then
+ 		# cgroup v2 doesn't specify perf_event
+-		self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
++		find_cgroups_self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
+ 	fi
  
- 	return 0;
+-	if [ -z ${self_cgrp} ]; then
++	if [ -z ${find_cgroups_self_cgrp} ]; then
+ 		test_cgroups="/"
+ 	else
+-		test_cgroups="/,${self_cgrp}"
++		test_cgroups="/,${find_cgroups_self_cgrp}"
+ 	fi
  }
-@@ -69,9 +69,9 @@ static int lpc32xx_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	if (ret)
- 		return ret;
  
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val |= PWM_ENABLE;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
+@@ -48,13 +48,11 @@ find_cgroups()
+ # Just check if it runs without failure and has non-zero results.
+ check_system_wide_counted()
+ {
+-	local output
+-
+-	output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
+-	if echo ${output} | grep -q -F "<not "; then
++	check_system_wide_counted_output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
++	if echo ${check_system_wide_counted_output} | grep -q -F "<not "; then
+ 		echo "Some system-wide events are not counted"
+ 		if [ "${verbose}" = "1" ]; then
+-			echo ${output}
++			echo ${check_system_wide_counted_output}
+ 		fi
+ 		exit 1
+ 	fi
+@@ -62,13 +60,11 @@ check_system_wide_counted()
  
- 	return 0;
- }
-@@ -81,9 +81,9 @@ static void lpc32xx_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	struct lpc32xx_pwm_chip *lpc32xx = to_lpc32xx_pwm_chip(chip);
- 	u32 val;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~PWM_ENABLE;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	clk_disable_unprepare(lpc32xx->clk);
- }
-@@ -141,9 +141,9 @@ static int lpc32xx_pwm_probe(struct platform_device *pdev)
- 	lpc32xx->chip.npwm = 1;
- 
- 	/* If PWM is disabled, configure the output to the default value */
--	val = readl(lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~PWM_PIN_LEVEL;
--	writel(val, lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	ret = devm_pwmchip_add(&pdev->dev, &lpc32xx->chip);
- 	if (ret < 0) {
+ check_cpu_list_counted()
+ {
+-	local output
+-
+-	output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
+-	if echo ${output} | grep -q -F "<not "; then
++	check_cpu_list_counted_output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
++	if echo ${check_cpu_list_counted_output} | grep -q -F "<not "; then
+ 		echo "Some CPU events are not counted"
+ 		if [ "${verbose}" = "1" ]; then
+-			echo ${output}
++			echo ${check_cpu_list_counted_output}
+ 		fi
+ 		exit 1
+ 	fi
 -- 
 2.40.1
 
