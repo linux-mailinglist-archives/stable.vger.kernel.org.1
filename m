@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 352377A38E0
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3F597A39F6
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239874AbjIQTlx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44380 "EHLO
+        id S240236AbjIQT4v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239900AbjIQTlc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:41:32 -0400
+        with ESMTP id S240292AbjIQT4o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:56:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4428DDB
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:41:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2DAC433C7;
-        Sun, 17 Sep 2023 19:41:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52CB103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076FAC433C7;
+        Sun, 17 Sep 2023 19:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979686;
-        bh=EcL+1UK9YJWiq0zB2VSW1ZJ1R1vWWVUdzxMZWiXNnYk=;
+        s=korg; t=1694980597;
+        bh=t0ADtEMZeSpPpCt2lSEiR9eqniKKvUksSq7dIt0NDQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vENt+k8KXwAR0eTbw8zTIeoD2f1ihFyNpfBlLmixK2WANchTbHFB9IXtlodIYVsJW
-         QnrgvVx9reX0sQG0sc1tEbJpqSnt/tJlzlxQnBx618l3oTrQT+JmFsa3cc4qslMP70
-         coXIVpZFenT/G0arPbJnjVMI1Fl8Q6w7xqokOEjw=
+        b=jyOrM52MtAgJPX5XK3oqrktDvrFeERxI5HLnbo4CLZZnxllOwAsuWgenIRE5Vt4oS
+         wJEEFMwdvhqa/gkmPNPHV+yOTCryGFnKy0atTNW/nSfQNxyLK55xR+xP/My8ey+05D
+         m+XzLT7bi+bAEO6/STSR7Y+xx3DnYztq326tC/34=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 384/406] scsi: qla2xxx: Consolidate zio threshold setting for both FCP & NVMe
-Date:   Sun, 17 Sep 2023 21:13:58 +0200
-Message-ID: <20230917191111.400324136@linuxfoundation.org>
+        patches@lists.linux.dev, Jun Lei <jun.lei@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Gabe Teeger <gabe.teeger@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 239/285] drm/amd/display: Remove wait while locked
+Date:   Sun, 17 Sep 2023 21:13:59 +0200
+Message-ID: <20230917191059.656512219@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,105 +51,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Gabe Teeger <gabe.teeger@amd.com>
 
-[ Upstream commit 5777fef788a59f5ac9ab6661988a95a045fc0574 ]
+commit 5a3ccb1400339268c5e3dc1fa044a7f6c7f59a02 upstream.
 
-Consolidate zio threshold setting for both FCP & NVMe to prevent one
-protocol from clobbering the setting of the other protocol.
+[Why]
+We wait for mpc idle while in a locked state, leading to potential
+deadlock.
 
-Link: https://lore.kernel.org/r/20210329085229.4367-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 6d0b65569c0a ("scsi: qla2xxx: Flush mailbox commands on chip reset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[What]
+Move the wait_for_idle call to outside of HW lock. This and a
+call to wait_drr_doublebuffer_pending_clear are moved added to a new
+static helper function called wait_for_outstanding_hw_updates, to make
+the interface clearer.
+
+Cc: stable@vger.kernel.org
+Fixes: 8f0d304d21b3 ("drm/amd/display: Do not commit pipe when updating DRR")
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h |  1 -
- drivers/scsi/qla2xxx/qla_os.c  | 34 ++++++++++++++--------------------
- 2 files changed, 14 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/amd/display/dc/Makefile            |    1 
+ drivers/gpu/drm/amd/display/dc/core/dc.c           |   58 ++++++++++++++-------
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c |   11 ---
+ 3 files changed, 42 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 06b0ad2b51bb4..676e50142baaf 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -4706,7 +4706,6 @@ typedef struct scsi_qla_host {
- #define FX00_CRITEMP_RECOVERY	25
- #define FX00_HOST_INFO_RESEND	26
- #define QPAIR_ONLINE_CHECK_NEEDED	27
--#define SET_NVME_ZIO_THRESHOLD_NEEDED	28
- #define DETECT_SFP_CHANGE	29
- #define N2N_LOGIN_NEEDED	30
- #define IOCB_WORK_ACTIVE	31
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 78a335f862cee..bf40b293dcea6 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -6973,28 +6973,23 @@ qla2x00_do_dpc(void *data)
- 			mutex_unlock(&ha->mq_lock);
- 		}
- 
--		if (test_and_clear_bit(SET_NVME_ZIO_THRESHOLD_NEEDED,
--		    &base_vha->dpc_flags)) {
-+		if (test_and_clear_bit(SET_ZIO_THRESHOLD_NEEDED,
-+				       &base_vha->dpc_flags)) {
-+			u16 threshold = ha->nvme_last_rptd_aen + ha->last_zio_threshold;
+--- a/drivers/gpu/drm/amd/display/dc/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/Makefile
+@@ -78,3 +78,4 @@ DC_EDID += dc_edid_parser.o
+ AMD_DISPLAY_DMUB = $(addprefix $(AMDDALPATH)/dc/,$(DC_DMUB))
+ AMD_DISPLAY_EDID = $(addprefix $(AMDDALPATH)/dc/,$(DC_EDID))
+ AMD_DISPLAY_FILES += $(AMD_DISPLAY_DMUB) $(AMD_DISPLAY_EDID)
 +
-+			if (threshold > ha->orig_fw_xcb_count)
-+				threshold = ha->orig_fw_xcb_count;
-+
- 			ql_log(ql_log_info, base_vha, 0xffffff,
--				"nvme: SET ZIO Activity exchange threshold to %d.\n",
--						ha->nvme_last_rptd_aen);
--			if (qla27xx_set_zio_threshold(base_vha,
--			    ha->nvme_last_rptd_aen)) {
-+			       "SET ZIO Activity exchange threshold to %d.\n",
-+			       threshold);
-+			if (qla27xx_set_zio_threshold(base_vha, threshold)) {
- 				ql_log(ql_log_info, base_vha, 0xffffff,
--				    "nvme: Unable to SET ZIO Activity exchange threshold to %d.\n",
--				    ha->nvme_last_rptd_aen);
-+				       "Unable to SET ZIO Activity exchange threshold to %d.\n",
-+				       threshold);
- 			}
- 		}
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3589,6 +3589,45 @@ static void commit_planes_for_stream_fas
+ 		top_pipe_to_program->stream->update_flags.raw = 0;
+ }
  
--		if (test_and_clear_bit(SET_ZIO_THRESHOLD_NEEDED,
--		    &base_vha->dpc_flags)) {
--			ql_log(ql_log_info, base_vha, 0xffffff,
--			    "SET ZIO Activity exchange threshold to %d.\n",
--			    ha->last_zio_threshold);
--			qla27xx_set_zio_threshold(base_vha,
--			    ha->last_zio_threshold);
--		}
++static void wait_for_outstanding_hw_updates(struct dc *dc, const struct dc_state *dc_context)
++{
++/*
++ * This function calls HWSS to wait for any potentially double buffered
++ * operations to complete. It should be invoked as a pre-amble prior
++ * to full update programming before asserting any HW locks.
++ */
++	int pipe_idx;
++	int opp_inst;
++	int opp_count = dc->res_pool->pipe_count;
++	struct hubp *hubp;
++	int mpcc_inst;
++	const struct pipe_ctx *pipe_ctx;
++
++	for (pipe_idx = 0; pipe_idx < dc->res_pool->pipe_count; pipe_idx++) {
++		pipe_ctx = &dc_context->res_ctx.pipe_ctx[pipe_idx];
++
++		if (!pipe_ctx->stream)
++			continue;
++
++		if (pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear)
++			pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear(pipe_ctx->stream_res.tg);
++
++		hubp = pipe_ctx->plane_res.hubp;
++		if (!hubp)
++			continue;
++
++		mpcc_inst = hubp->inst;
++		// MPCC inst is equal to pipe index in practice
++		for (opp_inst = 0; opp_inst < opp_count; opp_inst++) {
++			if (dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst]) {
++				dc->res_pool->mpc->funcs->wait_for_idle(dc->res_pool->mpc, mpcc_inst);
++				dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst] = false;
++				break;
++			}
++		}
++	}
++}
++
+ static void commit_planes_for_stream(struct dc *dc,
+ 		struct dc_surface_update *srf_updates,
+ 		int surface_count,
+@@ -3607,24 +3646,9 @@ static void commit_planes_for_stream(str
+ 	// dc->current_state anymore, so we have to cache it before we apply
+ 	// the new SubVP context
+ 	subvp_prev_use = false;
 -
- 		if (!IS_QLAFX00(ha))
- 			qla2x00_do_dpc_all_vps(base_vha);
+-
+ 	dc_z10_restore(dc);
+-
+-	if (update_type == UPDATE_TYPE_FULL) {
+-		/* wait for all double-buffer activity to clear on all pipes */
+-		int pipe_idx;
+-
+-		for (pipe_idx = 0; pipe_idx < dc->res_pool->pipe_count; pipe_idx++) {
+-			struct pipe_ctx *pipe_ctx = &context->res_ctx.pipe_ctx[pipe_idx];
+-
+-			if (!pipe_ctx->stream)
+-				continue;
+-
+-			if (pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear)
+-				pipe_ctx->stream_res.tg->funcs->wait_drr_doublebuffer_pending_clear(pipe_ctx->stream_res.tg);
+-		}
+-	}
++	if (update_type == UPDATE_TYPE_FULL)
++		wait_for_outstanding_hw_updates(dc, context);
  
-@@ -7210,14 +7205,13 @@ qla2x00_timer(struct timer_list *t)
- 	index = atomic_read(&ha->nvme_active_aen_cnt);
- 	if (!vha->vp_idx &&
- 	    (index != ha->nvme_last_rptd_aen) &&
--	    (index >= DEFAULT_ZIO_THRESHOLD) &&
- 	    ha->zio_mode == QLA_ZIO_MODE_6 &&
- 	    !ha->flags.host_shutting_down) {
-+		ha->nvme_last_rptd_aen = atomic_read(&ha->nvme_active_aen_cnt);
- 		ql_log(ql_log_info, vha, 0x3002,
- 		    "nvme: Sched: Set ZIO exchange threshold to %d.\n",
- 		    ha->nvme_last_rptd_aen);
--		ha->nvme_last_rptd_aen = atomic_read(&ha->nvme_active_aen_cnt);
--		set_bit(SET_NVME_ZIO_THRESHOLD_NEEDED, &vha->dpc_flags);
-+		set_bit(SET_ZIO_THRESHOLD_NEEDED, &vha->dpc_flags);
- 		start_dpc++;
+ 	if (update_type == UPDATE_TYPE_FULL) {
+ 		dc_allow_idle_optimizations(dc, false);
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -1580,17 +1580,6 @@ static void dcn20_update_dchubp_dpp(
+ 			|| plane_state->update_flags.bits.global_alpha_change
+ 			|| plane_state->update_flags.bits.per_pixel_alpha_change) {
+ 		// MPCC inst is equal to pipe index in practice
+-		int mpcc_inst = hubp->inst;
+-		int opp_inst;
+-		int opp_count = dc->res_pool->pipe_count;
+-
+-		for (opp_inst = 0; opp_inst < opp_count; opp_inst++) {
+-			if (dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst]) {
+-				dc->res_pool->mpc->funcs->wait_for_idle(dc->res_pool->mpc, mpcc_inst);
+-				dc->res_pool->opps[opp_inst]->mpcc_disconnect_pending[mpcc_inst] = false;
+-				break;
+-			}
+-		}
+ 		hws->funcs.update_mpcc(dc, pipe_ctx);
  	}
  
--- 
-2.40.1
-
 
 
