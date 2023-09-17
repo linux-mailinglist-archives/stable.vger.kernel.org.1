@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B088F7A3A50
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 566E87A3998
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240345AbjIQUCT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59322 "EHLO
+        id S240104AbjIQTvc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240352AbjIQUBo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:44 -0400
+        with ESMTP id S240158AbjIQTvY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:51:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E1C4CC7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B57FC433C7;
-        Sun, 17 Sep 2023 20:00:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B541EE
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:51:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A042C433C8;
+        Sun, 17 Sep 2023 19:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980851;
-        bh=3BuIeEZ+h1AZRxxHCLICoaIOcEjWLb/9ZH3tT+COXtM=;
+        s=korg; t=1694980278;
+        bh=C7jq7DX6llGX0IMpQoljnL3oWC6J6Hxvh4USsKvZpzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YD5eDvpLD+YnuUtuJy6NRCNy1QCLE2Ot0HBAYb786tBcwB6YxVo3t+CkRVIOhqdxN
-         X+BymY47uVgtIJzhhOyWYT+LLsmMYs9HElGyhyOzRfprBf6yIJJCRvBl8s5KgnKnpr
-         /XGsINVhnToLLcUu1lC8XvET9yVo4LWXJiDB3jXM=
+        b=qjVhusaB0MKsQbM0MqU2ZAX9TmT7hl/A+Gjm6y2H12kEO+uxXOTu9EdEt/jk8t/WJ
+         CQu4YngUlb/zUsheCdJlXJFNgHiQlshPL/OROUHdDhAhSF9e3Wmy5v0WlAPGuIIgyB
+         r+nDBE9QOnWnTzlhozcYs4yQ5KwHwPLujvfXqtJU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 019/219] scsi: qla2xxx: Fix TMF leak through
+        patches@lists.linux.dev,
+        Ariel Marcovitch <arielmarcovitch@gmail.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 146/285] idr: fix param name in idr_alloc_cyclic() doc
 Date:   Sun, 17 Sep 2023 21:12:26 +0200
-Message-ID: <20230917191041.691321661@linuxfoundation.org>
+Message-ID: <20230917191056.739316256@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,105 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Ariel Marcovitch <arielmarcovitch@gmail.com>
 
-commit 5d3148d8e8b05f084e607ac3bd55a4c317a9f934 upstream.
+[ Upstream commit 2a15de80dd0f7e04a823291aa9eb49c5294f56af ]
 
-Task management can retry up to 5 times when FW resource becomes bottle
-neck. Between the retries, there is a short sleep.  Current code assumes
-the chip has not reset or session has not changed.
+The relevant parameter is 'start' and not 'nextid'
 
-Check for chip reset or session change before sending Task management.
-
-Cc: stable@vger.kernel.org
-Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230714070104.40052-9-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 460488c58ca8 ("idr: Remove idr_alloc_ext")
+Signed-off-by: Ariel Marcovitch <arielmarcovitch@gmail.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ lib/idr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2039,10 +2039,14 @@ static void qla_marker_sp_done(srb_t *sp
- 	complete(&tmf->u.tmf.comp);
- }
- 
--#define  START_SP_W_RETRIES(_sp, _rval) \
-+#define  START_SP_W_RETRIES(_sp, _rval, _chip_gen, _login_gen) \
- {\
- 	int cnt = 5; \
- 	do { \
-+		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
-+			_rval = EINVAL; \
-+			break; \
-+		} \
- 		_rval = qla2x00_start_sp(_sp); \
- 		if (_rval == EAGAIN) \
- 			msleep(1); \
-@@ -2065,6 +2069,7 @@ qla26xx_marker(struct tmf_arg *arg)
- 	srb_t *sp;
- 	int rval = QLA_FUNCTION_FAILED;
- 	fc_port_t *fcport = arg->fcport;
-+	u32 chip_gen, login_gen;
- 
- 	if (TMF_NOT_READY(arg->fcport)) {
- 		ql_dbg(ql_dbg_taskm, vha, 0x8039,
-@@ -2074,6 +2079,9 @@ qla26xx_marker(struct tmf_arg *arg)
- 		return QLA_SUSPENDED;
- 	}
- 
-+	chip_gen = vha->hw->chip_reset;
-+	login_gen = fcport->login_gen;
-+
- 	/* ref: INIT */
- 	sp = qla2xxx_get_qpair_sp(vha, arg->qpair, fcport, GFP_KERNEL);
- 	if (!sp)
-@@ -2091,7 +2099,7 @@ qla26xx_marker(struct tmf_arg *arg)
- 	tm_iocb->u.tmf.loop_id = fcport->loop_id;
- 	tm_iocb->u.tmf.vp_index = vha->vp_idx;
- 
--	START_SP_W_RETRIES(sp, rval);
-+	START_SP_W_RETRIES(sp, rval, chip_gen, login_gen);
- 
- 	ql_dbg(ql_dbg_taskm, vha, 0x8006,
- 	    "Async-marker hdl=%x loop-id=%x portid=%06x modifier=%x lun=%lld qp=%d rval %d.\n",
-@@ -2160,6 +2168,9 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
- 		return QLA_SUSPENDED;
- 	}
- 
-+	chip_gen = vha->hw->chip_reset;
-+	login_gen = fcport->login_gen;
-+
- 	/* ref: INIT */
- 	sp = qla2xxx_get_qpair_sp(vha, arg->qpair, fcport, GFP_KERNEL);
- 	if (!sp)
-@@ -2177,7 +2188,7 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
- 	tm_iocb->u.tmf.flags = arg->flags;
- 	tm_iocb->u.tmf.lun = arg->lun;
- 
--	START_SP_W_RETRIES(sp, rval);
-+	START_SP_W_RETRIES(sp, rval, chip_gen, login_gen);
- 
- 	ql_dbg(ql_dbg_taskm, vha, 0x802f,
- 	    "Async-tmf hdl=%x loop-id=%x portid=%06x ctrl=%x lun=%lld qp=%d rval=%x.\n",
-@@ -2196,9 +2207,6 @@ __qla2x00_async_tm_cmd(struct tmf_arg *a
- 	}
- 
- 	if (!test_bit(UNLOADING, &vha->dpc_flags) && !IS_QLAFX00(vha->hw)) {
--		chip_gen = vha->hw->chip_reset;
--		login_gen = fcport->login_gen;
--
- 		jif = jiffies;
- 		if (qla_tmf_wait(arg)) {
- 			ql_log(ql_log_info, vha, 0x803e,
+diff --git a/lib/idr.c b/lib/idr.c
+index 7ecdfdb5309e7..13f2758c23773 100644
+--- a/lib/idr.c
++++ b/lib/idr.c
+@@ -100,7 +100,7 @@ EXPORT_SYMBOL_GPL(idr_alloc);
+  * @end: The maximum ID (exclusive).
+  * @gfp: Memory allocation flags.
+  *
+- * Allocates an unused ID in the range specified by @nextid and @end.  If
++ * Allocates an unused ID in the range specified by @start and @end.  If
+  * @end is <= 0, it is treated as one larger than %INT_MAX.  This allows
+  * callers to use @start + N as @end as long as N is within integer range.
+  * The search for an unused ID will start at the last ID allocated and will
+-- 
+2.40.1
+
 
 
