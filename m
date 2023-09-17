@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53CEF7A3C0C
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C2A7A3BEE
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239654AbjIQU0J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:26:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59534 "EHLO
+        id S239647AbjIQUYd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240868AbjIQUZi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:25:38 -0400
+        with ESMTP id S240823AbjIQUYC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:24:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B738101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:25:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846FCC433C7;
-        Sun, 17 Sep 2023 20:25:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2CA10A
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:23:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE59C433C7;
+        Sun, 17 Sep 2023 20:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982332;
-        bh=80GwFUNwt+1ilv/SmM761ph9FAs4ARABJiWj0TZZVjo=;
+        s=korg; t=1694982236;
+        bh=hWj8oB3GCUHxxY8NYMKacFgVqS/jagG3B6kZs/VEciY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zRA9liqcFvj80JEJkCmYsSvlI412VVhK96EL9UfcRvVImh64esskZoTipBHUnv3pr
-         CNDdHcwnrn9ZejNIAmXK5VM9fgjZCMB4OV65aTjmusAYZ4rB36IcSNe8GDPPJ1iPkY
-         m2h5FqMwMGp4pND5tTTGVHNe8IhK6fQw+d0fEOys=
+        b=qvr4WxNjsY30FEY46VcGr9a8WPIDQCaWe2L6MA8GIFT8tx4+PKiSot0yW+OaiKS2Z
+         9gA5dXrMOCPMPIlj2eh5b3PacWrHuUKRtQ+wiPI/r2SqGn6xnY7iClRtLvmTPcyuVZ
+         5xOn1hDCvMWUEmB2/4C9r6ntiFIwB/strhcNsGbA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        kernel test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/511] arm64: dts: qcom: apq8016-sbc: Fix ov5640 regulator supply names
-Date:   Sun, 17 Sep 2023 21:10:10 +0200
-Message-ID: <20230917191118.248468700@linuxfoundation.org>
+Subject: [PATCH 5.15 184/511] bus: ti-sysc: Fix cast to enum warning
+Date:   Sun, 17 Sep 2023 21:10:11 +0200
+Message-ID: <20230917191118.271411092@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,47 +55,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 43a684580819e7f35b6cb38236be63c4cba26ef4 ]
+[ Upstream commit de44bf2f7683347f75690ef6cf61a1d5ba8f0891 ]
 
-The ov5640 driver expects DOVDD, AVDD and DVDD as regulator supply names.
+Fix warning for "cast to smaller integer type 'enum sysc_soc' from 'const
+void *'".
 
-The ov5640 has depended on these names since the driver was committed
-upstream in 2017. Similarly apq8016-sbc.dtsi has had completely different
-regulator names since its own initial commit in 2020.
-
-Perhaps the regulators were left on in previous 410c bootloaders. In any
-case today on 6.5 we won't switch on the ov5640 without correctly naming
-the regulators.
-
-Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811234738.2859417-3-bryan.odonoghue@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Nishanth Menon <nm@ti.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308150723.ziuGCdM3-lkp@intel.com/
+Fixes: e1e1e9bb9d94 ("bus: ti-sysc: Fix build warning for 64-bit build")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index c6e8bf18defc6..ad4c2ccec63ee 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -280,9 +280,9 @@ camera_rear@3b {
- 		clock-names = "xclk";
- 		clock-frequency = <23880000>;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index b756807501f69..436c0f3563d79 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -3055,7 +3055,7 @@ static int sysc_init_static_data(struct sysc *ddata)
  
--		vdddo-supply = <&camera_vdddo_1v8>;
--		vdda-supply = <&camera_vdda_2v8>;
--		vddd-supply = <&camera_vddd_1v5>;
-+		DOVDD-supply = <&camera_vdddo_1v8>;
-+		AVDD-supply = <&camera_vdda_2v8>;
-+		DVDD-supply = <&camera_vddd_1v5>;
+ 	match = soc_device_match(sysc_soc_match);
+ 	if (match && match->data)
+-		sysc_soc->soc = (enum sysc_soc)match->data;
++		sysc_soc->soc = (enum sysc_soc)(uintptr_t)match->data;
  
- 		/* No camera mezzanine by default */
- 		status = "disabled";
+ 	/*
+ 	 * Check and warn about possible old incomplete dtb. We now want to see
 -- 
 2.40.1
 
