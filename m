@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 958C07A3A49
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE0487A39AA
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:53:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239519AbjIQUCN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:02:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
+        id S240112AbjIQTxG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239532AbjIQUBm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:01:42 -0400
+        with ESMTP id S240141AbjIQTwr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:52:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C494E18E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:00:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33755C433C9;
-        Sun, 17 Sep 2023 20:00:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCD1CC9
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:52:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C28C43395;
+        Sun, 17 Sep 2023 19:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694980841;
-        bh=xPm0lTU5o2YrqLTlw+9gI99rehl2ucUuKVkEJBxS2so=;
+        s=korg; t=1694980344;
+        bh=c/Pq3ONvogiTewuMHzVqvi9Tku0vxISGyTeqNah8ANc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SOtv6sJAEC6KgxSsekioZC0lI9e0ez654dvjxtQt0wireDnzZBQ/U3APe4N/z1M5d
-         izcwX57adL0s+bEAqCoekE31AuADXYg6jVIl4u7a1MhusfkwU3yVHxsin33R9srePd
-         Ef2yfgeA8U1kHsgEMWGaXL+qCLLVdTpAelFXGwbU=
+        b=wcrHaK2C1+q2aaM7L7bMFIFHj/r2kiMIb+LzSZJmJt3jzibOjWfyuZkw3xIf0nFTG
+         NBiuDm5PUWQ8It51aEn3DvbyERxF+W29qSny6WU0LXs1g35vPCnuTr3am/R9LGYjJ0
+         wpKZOrk6j4t000ejdyXvShKLmfzXHQ3ie72a2m+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 6.1 008/219] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used
-Date:   Sun, 17 Sep 2023 21:12:15 +0200
-Message-ID: <20230917191041.271186853@linuxfoundation.org>
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 136/285] af_unix: Fix data-races around sk->sk_shutdown.
+Date:   Sun, 17 Sep 2023 21:12:16 +0200
+Message-ID: <20230917191056.371564164@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,154 +52,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-From: Jens Axboe <axboe@kernel.dk>
+[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
 
-[ upstream commit ebdfefc09c6de7897962769bd3e63a2ff443ebf5 ]
+sk->sk_shutdown is changed under unix_state_lock(sk), but
+unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
 
-If we setup the ring with SQPOLL, then that polling thread has its
-own io-wq setup. This means that if the application uses
-IORING_REGISTER_IOWQ_AFF to set the io-wq affinity, we should not be
-setting it for the invoking task, but rather the sqpoll task.
+  sock_alloc_send_pskb
+  `- sock_wait_for_wmem
 
-Add an sqpoll helper that parks the thread and updates the affinity,
-and use that one if we're using SQPOLL.
+Let's use READ_ONCE() there.
 
-Fixes: fe76421d1da1 ("io_uring: allow user configurable IO thread CPU affinity")
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/discussions/884
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
+Fix data races around sk->sk_shutdown.").
+
+BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
+
+write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
+ unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
+ unix_release+0x59/0x80 net/unix/af_unix.c:1053
+ __sock_release+0x7d/0x170 net/socket.c:654
+ sock_close+0x19/0x30 net/socket.c:1386
+ __fput+0x2a3/0x680 fs/file_table.c:384
+ ____fput+0x15/0x20 fs/file_table.c:412
+ task_work_run+0x116/0x1a0 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
+ do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
+ sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
+ unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+value changed: 0x00 -> 0x03
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c    |    7 +++++--
- io_uring/io-wq.h    |    2 +-
- io_uring/io_uring.c |   29 ++++++++++++++++++-----------
- io_uring/sqpoll.c   |   15 +++++++++++++++
- io_uring/sqpoll.h   |    1 +
- 5 files changed, 40 insertions(+), 14 deletions(-)
+ net/core/sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1350,13 +1350,16 @@ static int io_wq_cpu_offline(unsigned in
- 	return __io_wq_cpu_online(wq, cpu, false);
- }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 0a687c8fbed7f..2a78e47f76dba 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2746,7 +2746,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
+ 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
+ 			break;
+-		if (sk->sk_shutdown & SEND_SHUTDOWN)
++		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			break;
+ 		if (sk->sk_err)
+ 			break;
+@@ -2776,7 +2776,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
+ 			goto failure;
  
--int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask)
-+int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
- {
- 	int i;
+ 		err = -EPIPE;
+-		if (sk->sk_shutdown & SEND_SHUTDOWN)
++		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			goto failure;
  
-+	if (!tctx || !tctx->io_wq)
-+		return -EINVAL;
-+
- 	rcu_read_lock();
- 	for_each_node(i) {
--		struct io_wqe *wqe = wq->wqes[i];
-+		struct io_wqe *wqe = tctx->io_wq->wqes[i];
- 
- 		if (mask)
- 			cpumask_copy(wqe->cpu_mask, mask);
---- a/io_uring/io-wq.h
-+++ b/io_uring/io-wq.h
-@@ -50,7 +50,7 @@ void io_wq_put_and_exit(struct io_wq *wq
- void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work);
- void io_wq_hash_work(struct io_wq_work *work, void *val);
- 
--int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask);
-+int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask);
- int io_wq_max_workers(struct io_wq *wq, int *new_count);
- bool io_wq_worker_stopped(void);
- 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3835,16 +3835,28 @@ static int io_register_enable_rings(stru
- 	return 0;
- }
- 
-+static __cold int __io_register_iowq_aff(struct io_ring_ctx *ctx,
-+					 cpumask_var_t new_mask)
-+{
-+	int ret;
-+
-+	if (!(ctx->flags & IORING_SETUP_SQPOLL)) {
-+		ret = io_wq_cpu_affinity(current->io_uring, new_mask);
-+	} else {
-+		mutex_unlock(&ctx->uring_lock);
-+		ret = io_sqpoll_wq_cpu_affinity(ctx, new_mask);
-+		mutex_lock(&ctx->uring_lock);
-+	}
-+
-+	return ret;
-+}
-+
- static __cold int io_register_iowq_aff(struct io_ring_ctx *ctx,
- 				       void __user *arg, unsigned len)
- {
--	struct io_uring_task *tctx = current->io_uring;
- 	cpumask_var_t new_mask;
- 	int ret;
- 
--	if (!tctx || !tctx->io_wq)
--		return -EINVAL;
--
- 	if (!alloc_cpumask_var(&new_mask, GFP_KERNEL))
- 		return -ENOMEM;
- 
-@@ -3865,19 +3877,14 @@ static __cold int io_register_iowq_aff(s
- 		return -EFAULT;
- 	}
- 
--	ret = io_wq_cpu_affinity(tctx->io_wq, new_mask);
-+	ret = __io_register_iowq_aff(ctx, new_mask);
- 	free_cpumask_var(new_mask);
- 	return ret;
- }
- 
- static __cold int io_unregister_iowq_aff(struct io_ring_ctx *ctx)
- {
--	struct io_uring_task *tctx = current->io_uring;
--
--	if (!tctx || !tctx->io_wq)
--		return -EINVAL;
--
--	return io_wq_cpu_affinity(tctx->io_wq, NULL);
-+	return __io_register_iowq_aff(ctx, NULL);
- }
- 
- static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -423,3 +423,18 @@ err:
- 	io_sq_thread_finish(ctx);
- 	return ret;
- }
-+
-+__cold int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx,
-+				     cpumask_var_t mask)
-+{
-+	struct io_sq_data *sqd = ctx->sq_data;
-+	int ret = -EINVAL;
-+
-+	if (sqd) {
-+		io_sq_thread_park(sqd);
-+		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
-+		io_sq_thread_unpark(sqd);
-+	}
-+
-+	return ret;
-+}
---- a/io_uring/sqpoll.h
-+++ b/io_uring/sqpoll.h
-@@ -27,3 +27,4 @@ void io_sq_thread_park(struct io_sq_data
- void io_sq_thread_unpark(struct io_sq_data *sqd);
- void io_put_sq_data(struct io_sq_data *sqd);
- int io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
-+int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
+ 		if (sk_wmem_alloc_get(sk) < READ_ONCE(sk->sk_sndbuf))
+-- 
+2.40.1
+
 
 
