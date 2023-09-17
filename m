@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3FA97A3C4D
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A8F07A3C57
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240988AbjIQU3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46372 "EHLO
+        id S240995AbjIQU3z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241047AbjIQU3H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:29:07 -0400
+        with ESMTP id S241047AbjIQU3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:29:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686C610A
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:29:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9806CC433C8;
-        Sun, 17 Sep 2023 20:29:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A57EC10A
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:29:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA236C433C8;
+        Sun, 17 Sep 2023 20:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982541;
-        bh=uzJyNjGzGmSqLZZ20L8p3R8jATjTVy3ma1K6XLL4qQc=;
+        s=korg; t=1694982578;
+        bh=yGXWSIxvLGoUipriWYiqlBjohYqmmF1ADQ/VIPkZ/M4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KCa2t46CYtNcjP16xOoYZwgBZvE+vTh7HzYti7kelVsG0oRcezcZjcAYRAzvarmoW
-         Ins4Ne8DdxLoV+svLArWvONOcgHgrNHsLS+mWoUvmPSiHTXNLYgQ6RPIqhCjXveP49
-         /cnW8u++8DOEroWZmnRkmLAwRLAT6mKKgxsYHSSQ=
+        b=UEZalphbE7o0/f10Cqa5vk5wfkvRQEbzefMvxEBSsX9e8tJ+rxnqMGF/IkldMzJBp
+         V+mh0fFli63+PQH22BoRxzsUkC9oCdJL2J39IwwZvIXrk5l6NOnvD8DN6vkDb55QTc
+         B17yxvuNI3XT7qW4Tc7VaGurChipmiWpdE7GeNcM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 273/511] iommu/qcom: Disable and reset context bank before programming
-Date:   Sun, 17 Sep 2023 21:11:40 +0200
-Message-ID: <20230917191120.432473010@linuxfoundation.org>
+        patches@lists.linux.dev, Lu Baolu <baolu.lu@linux.intel.com>,
+        Yanfei Xu <yanfei.xu@intel.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 274/511] iommu/vt-d: Fix to flush cache of PASID directory table
+Date:   Sun, 17 Sep 2023 21:11:41 +0200
+Message-ID: <20230917191120.455571693@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,45 +54,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Yanfei Xu <yanfei.xu@intel.com>
 
-[ Upstream commit 9f3fef23d9b5a858a6e6d5f478bb1b6b76265e76 ]
+[ Upstream commit 8a3b8e63f8371c1247b7aa24ff9c5312f1a6948b ]
 
-Writing	the new	TTBRs, TCRs and MAIRs on a previously enabled
-context bank may trigger a context fault, resulting in firmware
-driven AP resets: change the domain initialization programming
-sequence to disable the context bank(s) and to also clear the
-related fault address (CB_FAR) and fault status (CB_FSR)
-registers before writing new values to TTBR0/1, TCR/TCR2, MAIR0/1.
+Even the PCI devices don't support pasid capability, PASID table is
+mandatory for a PCI device in scalable mode. However flushing cache
+of pasid directory table for these devices are not taken after pasid
+table is allocated as the "size" of table is zero. Fix it by
+calculating the size by page order.
 
-Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230622092742.74819-4-angelogioacchino.delregno@collabora.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Found this when reading the code, no real problem encountered for now.
+
+Fixes: 194b3348bdbb ("iommu/vt-d: Fix PASID directory pointer coherency")
+Suggested-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
+Link: https://lore.kernel.org/r/20230616081045.721873-1-yanfei.xu@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/qcom_iommu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iommu/intel/pasid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-index a47cb654b7048..9438203f08de7 100644
---- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-+++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -273,6 +273,13 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
- 			ctx->secure_init = true;
- 		}
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 6dbc43b414ca3..dc9d665d7365c 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -187,7 +187,7 @@ int intel_pasid_alloc_table(struct device *dev)
+ 	device_attach_pasid_table(info, pasid_table);
  
-+		/* Disable context bank before programming */
-+		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
-+
-+		/* Clear context bank fault address fault status registers */
-+		iommu_writel(ctx, ARM_SMMU_CB_FAR, 0);
-+		iommu_writel(ctx, ARM_SMMU_CB_FSR, ARM_SMMU_FSR_FAULT);
-+
- 		/* TTBRs */
- 		iommu_writeq(ctx, ARM_SMMU_CB_TTBR0,
- 				pgtbl_cfg.arm_lpae_s1_cfg.ttbr |
+ 	if (!ecap_coherent(info->iommu->ecap))
+-		clflush_cache_range(pasid_table->table, size);
++		clflush_cache_range(pasid_table->table, (1 << order) * PAGE_SIZE);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
