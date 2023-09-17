@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B98F67A3CA9
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 932BC7A3AA8
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:07:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241081AbjIQUdk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55552 "EHLO
+        id S240413AbjIQUHA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241136AbjIQUdf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:33:35 -0400
+        with ESMTP id S240472AbjIQUGz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:06:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F97101
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:33:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7133C433C9;
-        Sun, 17 Sep 2023 20:33:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F234A97
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:06:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A63C433C7;
+        Sun, 17 Sep 2023 20:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982810;
-        bh=ywKYbJgICIrX+LOId+wci4bTzKj2k78XzpQOtegAPxA=;
+        s=korg; t=1694981209;
+        bh=CBj0fMDm8TFafK74/N2USeIxosUOiYYnDc9/cniEeNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=py9dFMeD3VjYKuhk6rq8xrC33Vgo/6qCFASMWquMX/H0FW+X/g+b0Nzv0sLC9kaUN
-         CYR6bdbtqiwrjvoatfE7K+94AWKCohtFPcYNGk/lK5A0z50q2yJRO0ry4D+dYtCBaV
-         hNj7SZTAG11yjnJd06t9iyiYp7OfW2u3eF+jM9eM=
+        b=VEmjFVSb2PmExflFcQ88t9nYge4vMKmvuDLXfIts0uNG15JzrGul77SlIF4zLcGTy
+         CAg/AuIR46v0OliAIZrW0hphBdsVkJERWHXxSkJcbY9FgpDUowDvnxFHVFyLKQK1iu
+         hWWSUpBpVYXig0GpkRVuECnMnHigwanoZ81pltqw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.15 359/511] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
+        patches@lists.linux.dev, Andreas Gruenbacher <agruenba@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 059/219] gfs2: Switch to wait_event in gfs2_logd
 Date:   Sun, 17 Sep 2023 21:13:06 +0200
-Message-ID: <20230917191122.467110610@linuxfoundation.org>
+Message-ID: <20230917191043.147481622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,68 +49,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit e520d0b6be950ce3738cf4b9bd3b392be818f1dc upstream.
+[ Upstream commit 6df373b09b1dcf2f7d579f515f653f89a896d417 ]
 
-Allocate extra space for terminating element at:
+In gfs2_logd(), switch from an open-coded wait loop to
+wait_event_interruptible_timeout().
 
-drivers/cpufreq/brcmstb-avs-cpufreq.c:
-449         table[i].frequency = CPUFREQ_TABLE_END;
-
-and add code comment to make this clear.
-
-This fixes the following -Warray-bounds warning seen after building
-ARM with multi_v7_defconfig (GCC 13):
-In function 'brcm_avs_get_freq_table',
-    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
-drivers/cpufreq/brcmstb-avs-cpufreq.c:449:28: warning: array subscript 5 is outside array bounds of 'void[60]' [-Warray-bounds=]
-  449 |         table[i].frequency = CPUFREQ_TABLE_END;
-In file included from include/linux/node.h:18,
-                 from include/linux/cpu.h:17,
-                 from include/linux/cpufreq.h:12,
-                 from drivers/cpufreq/brcmstb-avs-cpufreq.c:44:
-In function 'devm_kmalloc_array',
-    inlined from 'devm_kcalloc' at include/linux/device.h:328:9,
-    inlined from 'brcm_avs_get_freq_table' at drivers/cpufreq/brcmstb-avs-cpufreq.c:437:10,
-    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
-include/linux/device.h:323:16: note: at offset 60 into object of size 60 allocated by 'devm_kmalloc'
-  323 |         return devm_kmalloc(dev, bytes, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -Warray-bounds.
-
-Link: https://github.com/KSPP/linux/issues/324
-Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: b74cd55aa9a9 ("gfs2: low-memory forced flush fixes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/brcmstb-avs-cpufreq.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/gfs2/log.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -434,7 +434,11 @@ brcm_avs_get_freq_table(struct device *d
- 	if (ret)
- 		return ERR_PTR(ret);
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 61323deb80bc7..69c3facfcbef4 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1304,7 +1304,6 @@ int gfs2_logd(void *data)
+ {
+ 	struct gfs2_sbd *sdp = data;
+ 	unsigned long t = 1;
+-	DEFINE_WAIT(wait);
  
--	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1, sizeof(*table),
-+	/*
-+	 * We allocate space for the 5 different P-STATES AVS,
-+	 * plus extra space for a terminating element.
-+	 */
-+	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1 + 1, sizeof(*table),
- 			     GFP_KERNEL);
- 	if (!table)
- 		return ERR_PTR(-ENOMEM);
+ 	while (!kthread_should_stop()) {
+ 
+@@ -1341,17 +1340,11 @@ int gfs2_logd(void *data)
+ 
+ 		try_to_freeze();
+ 
+-		do {
+-			prepare_to_wait(&sdp->sd_logd_waitq, &wait,
+-					TASK_INTERRUPTIBLE);
+-			if (!gfs2_ail_flush_reqd(sdp) &&
+-			    !gfs2_jrnl_flush_reqd(sdp) &&
+-			    !kthread_should_stop())
+-				t = schedule_timeout(t);
+-		} while(t && !gfs2_ail_flush_reqd(sdp) &&
+-			!gfs2_jrnl_flush_reqd(sdp) &&
+-			!kthread_should_stop());
+-		finish_wait(&sdp->sd_logd_waitq, &wait);
++		t = wait_event_interruptible_timeout(sdp->sd_logd_waitq,
++				gfs2_ail_flush_reqd(sdp) ||
++				gfs2_jrnl_flush_reqd(sdp) ||
++				kthread_should_stop(),
++				t);
+ 	}
+ 
+ 	return 0;
+-- 
+2.40.1
+
 
 
