@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 873517A38F8
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC68F7A39FC
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239922AbjIQTnE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56246 "EHLO
+        id S240217AbjIQT5V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240079AbjIQTmw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:52 -0400
+        with ESMTP id S240299AbjIQT5B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B3AE7
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9D7C433C9;
-        Sun, 17 Sep 2023 19:42:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D00E138
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75964C433C8;
+        Sun, 17 Sep 2023 19:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979767;
-        bh=nKg0LR51CqFQaZ7KBf8mSVgSXyLc7pwwV+BcnboE+E4=;
+        s=korg; t=1694980615;
+        bh=P/7bbUwXrpb4PrL0+RkWVpGg1KozRuNksUEphJvx7M4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bx6GsCihp7/4D2svzAKzwdZ6JUkKIIaXInqqFo3Nn4ISgF7v+uBiFmD5j9JKpu+m1
-         FgNTug1Ym+YcQ5yiglqNU2g3ocLRWhiXf+AsnidCH+tEe1tsgxwxQ0j/B0aXqo5ZP1
-         CNRZ0HwAjM2utW72qpRTAHaODv76CitQ9PHboQf8=
+        b=V1JsKey2i8AK3U2hjLgA6qufc304g4f00OG2IT2wuXUCil3NH/2jEqDWPTue7nYrF
+         ouxb77betP6JZR3zY+eI4ufSlCi8bFqHulhII6JS1s4UGO8hcEZnFvjrkCL/VD7YZy
+         byPdxccyf6z0OohxtClLi6z8xTu3dWXT6xwrF7uM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Julian Anastasov <ja@ssi.bg>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, stable@kernel.org,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 390/406] net: ipv4: fix one memleak in __inet_del_ifa()
+Subject: [PATCH 6.5 244/285] regulator: raa215300: Fix resource leak in case of error
 Date:   Sun, 17 Sep 2023 21:14:04 +0200
-Message-ID: <20230917191111.563185983@linuxfoundation.org>
+Message-ID: <20230917191059.797074808@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,87 +52,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit ac28b1ec6135649b5d78b028e47264cb3ebca5ea ]
+[ Upstream commit e21ac64e669e960688e79bf5babeed63132dac8a ]
 
-I got the below warning when do fuzzing test:
-unregister_netdevice: waiting for bond0 to become free. Usage count = 2
+The clk_register_clkdev() allocates memory by calling vclkdev_alloc() and
+this memory is not freed in the error path. Similarly, resources allocated
+by clk_register_fixed_rate() are not freed in the error path.
 
-It can be repoduced via:
+Fix these issues by using devm_clk_hw_register_fixed_rate() and
+devm_clk_hw_register_clkdev().
 
-ip link add bond0 type bond
-sysctl -w net.ipv4.conf.bond0.promote_secondaries=1
-ip addr add 4.117.174.103/0 scope 0x40 dev bond0
-ip addr add 192.168.100.111/255.255.255.254 scope 0 dev bond0
-ip addr add 0.0.0.4/0 scope 0x40 secondary dev bond0
-ip addr del 4.117.174.103/0 scope 0x40 dev bond0
-ip link delete bond0 type bond
+After this, the static variable clk is not needed. Replace it with 
+local variable hw in probe() and drop calling clk_unregister_fixed_rate()
+from raa215300_rtc_unregister_device().
 
-In this reproduction test case, an incorrect 'last_prim' is found in
-__inet_del_ifa(), as a result, the secondary address(0.0.0.4/0 scope 0x40)
-is lost. The memory of the secondary address is leaked and the reference of
-in_device and net_device is leaked.
-
-Fix this problem:
-Look for 'last_prim' starting at location of the deleted IP and inserting
-the promoted IP into the location of 'last_prim'.
-
-Fixes: 0ff60a45678e ("[IPV4]: Fix secondary IP addresses after promotion")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 7bce16630837 ("regulator: Add Renesas PMIC RAA215300 driver")
+Cc: stable@kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20230816135550.146657-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/regulator/raa215300.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 88b6120878cd9..da1ca8081c035 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -351,14 +351,14 @@ static void __inet_del_ifa(struct in_device *in_dev,
+diff --git a/drivers/regulator/raa215300.c b/drivers/regulator/raa215300.c
+index 8e1a4c86b9789..253645696d0bb 100644
+--- a/drivers/regulator/raa215300.c
++++ b/drivers/regulator/raa215300.c
+@@ -38,8 +38,6 @@
+ #define RAA215300_REG_BLOCK_EN_RTC_EN	BIT(6)
+ #define RAA215300_RTC_DEFAULT_ADDR	0x6f
+ 
+-static struct clk *clk;
+-
+ static const struct regmap_config raa215300_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+@@ -49,10 +47,6 @@ static const struct regmap_config raa215300_regmap_config = {
+ static void raa215300_rtc_unregister_device(void *data)
  {
- 	struct in_ifaddr *promote = NULL;
- 	struct in_ifaddr *ifa, *ifa1;
--	struct in_ifaddr *last_prim;
-+	struct in_ifaddr __rcu **last_prim;
- 	struct in_ifaddr *prev_prom = NULL;
- 	int do_promote = IN_DEV_PROMOTE_SECONDARIES(in_dev);
+ 	i2c_unregister_device(data);
+-	if (!clk) {
+-		clk_unregister_fixed_rate(clk);
+-		clk = NULL;
+-	}
+ }
  
- 	ASSERT_RTNL();
+ static int raa215300_clk_present(struct i2c_client *client, const char *name)
+@@ -130,10 +124,16 @@ static int raa215300_i2c_probe(struct i2c_client *client)
+ 		u32 addr = RAA215300_RTC_DEFAULT_ADDR;
+ 		struct i2c_board_info info = {};
+ 		struct i2c_client *rtc_client;
++		struct clk_hw *hw;
+ 		ssize_t size;
  
- 	ifa1 = rtnl_dereference(*ifap);
--	last_prim = rtnl_dereference(in_dev->ifa_list);
-+	last_prim = ifap;
- 	if (in_dev->dead)
- 		goto no_promotions;
+-		clk = clk_register_fixed_rate(NULL, clk_name, NULL, 0, 32000);
+-		clk_register_clkdev(clk, clk_name, NULL);
++		hw = devm_clk_hw_register_fixed_rate(dev, clk_name, NULL, 0, 32000);
++		if (IS_ERR(hw))
++			return PTR_ERR(hw);
++
++		ret = devm_clk_hw_register_clkdev(dev, hw, clk_name, NULL);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to initialize clkdev\n");
  
-@@ -372,7 +372,7 @@ static void __inet_del_ifa(struct in_device *in_dev,
- 		while ((ifa = rtnl_dereference(*ifap1)) != NULL) {
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) &&
- 			    ifa1->ifa_scope <= ifa->ifa_scope)
--				last_prim = ifa;
-+				last_prim = &ifa->ifa_next;
- 
- 			if (!(ifa->ifa_flags & IFA_F_SECONDARY) ||
- 			    ifa1->ifa_mask != ifa->ifa_mask ||
-@@ -436,9 +436,9 @@ static void __inet_del_ifa(struct in_device *in_dev,
- 
- 			rcu_assign_pointer(prev_prom->ifa_next, next_sec);
- 
--			last_sec = rtnl_dereference(last_prim->ifa_next);
-+			last_sec = rtnl_dereference(*last_prim);
- 			rcu_assign_pointer(promote->ifa_next, last_sec);
--			rcu_assign_pointer(last_prim->ifa_next, promote);
-+			rcu_assign_pointer(*last_prim, promote);
- 		}
- 
- 		promote->ifa_flags &= ~IFA_F_SECONDARY;
+ 		if (np) {
+ 			int i;
 -- 
 2.40.1
 
