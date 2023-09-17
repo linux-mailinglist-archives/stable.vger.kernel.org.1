@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EBE27A3AD3
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D58A97A3AD7
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:10:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240509AbjIQUJK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:09:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
+        id S239504AbjIQUJi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:09:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240528AbjIQUJC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:02 -0400
+        with ESMTP id S240505AbjIQUJK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:09:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E3B97
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:08:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F0AC433C8;
-        Sun, 17 Sep 2023 20:08:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3BE101
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:09:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905BFC433CA;
+        Sun, 17 Sep 2023 20:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694981337;
-        bh=VtLKBdObbWHe/GGDUYC7SuJxfar+R9cBqj/otcSw+L8=;
+        s=korg; t=1694981344;
+        bh=Z4rAYBhErl/55ysdholWsiDYl1cOT33ndSa/SGvIy3E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZBZORtP0PZ33Okijxg27D6pU9h5RnusLCHRcFdP6P1WMhN0cX/ZUpkradK6aETyAu
-         RhWDWoDNXUstYhVC82PYmJjCrUIaG/nnDB2M0mYpXIzAV6lJLnI7gT1WgZ7MgD8Evf
-         TbTpWhbzugBSfLsMgPdd8wovzBpnrjiET7xdYyis=
+        b=1GdTLfvKfO2n55oYKRcS8mtPUAVUBHdbgSVbJza8OXlx61FKSu0qSieUuwG6y0Nwm
+         6gQse0CShyHk4NFjUJs2KTWbbnxIHj6AqOtXpK4ZqspXHnAlPbwWx8y7gsg2H24ply
+         XOy4vqRaVzYv7QXtDIP32WWMRtahgizHWsS4vwro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oleksij Rempel <o.rempel@pengutronix.de>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jiri Olsa <jolsa@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Xu Kuohai <xukuohai@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/219] net: phy: micrel: Correct bit assignments for phy_device flags
-Date:   Sun, 17 Sep 2023 21:13:53 +0200
-Message-ID: <20230917191044.825922349@linuxfoundation.org>
+Subject: [PATCH 6.1 107/219] bpf, sockmap: Fix skb refcnt race after locking changes
+Date:   Sun, 17 Sep 2023 21:13:54 +0200
+Message-ID: <20230917191044.861055247@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -55,52 +56,122 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit 719c5e37e99d2fd588d1c994284d17650a66354c ]
+[ Upstream commit a454d84ee20baf7bd7be90721b9821f73c7d23d9 ]
 
-Previously, the defines for phy_device flags in the Micrel driver were
-ambiguous in their representation. They were intended to be bit masks
-but were mistakenly defined as bit positions. This led to the following
-issues:
+There is a race where skb's from the sk_psock_backlog can be referenced
+after userspace side has already skb_consumed() the sk_buff and its refcnt
+dropped to zer0 causing use after free.
 
-- MICREL_KSZ8_P1_ERRATA, designated for KSZ88xx switches, overlapped
-  with MICREL_PHY_FXEN and MICREL_PHY_50MHZ_CLK.
-- Due to this overlap, the code path for MICREL_PHY_FXEN, tailored for
-  the KSZ8041 PHY, was not executed for KSZ88xx PHYs.
-- Similarly, the code associated with MICREL_PHY_50MHZ_CLK wasn't
-  triggered for KSZ88xx.
+The flow is the following:
 
-To rectify this, all three flags have now been explicitly converted to
-use the `BIT()` macro, ensuring they are defined as bit masks and
-preventing potential overlaps in the future.
+  while ((skb = skb_peek(&psock->ingress_skb))
+    sk_psock_handle_Skb(psock, skb, ..., ingress)
+    if (!ingress) ...
+    sk_psock_skb_ingress
+       sk_psock_skb_ingress_enqueue(skb)
+          msg->skb = skb
+          sk_psock_queue_msg(psock, msg)
+    skb_dequeue(&psock->ingress_skb)
 
-Fixes: 49011e0c1555 ("net: phy: micrel: ksz886x/ksz8081: add cabletest support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The sk_psock_queue_msg() puts the msg on the ingress_msg queue. This is
+what the application reads when recvmsg() is called. An application can
+read this anytime after the msg is placed on the queue. The recvmsg hook
+will also read msg->skb and then after user space reads the msg will call
+consume_skb(skb) on it effectively free'ing it.
+
+But, the race is in above where backlog queue still has a reference to
+the skb and calls skb_dequeue(). If the skb_dequeue happens after the
+user reads and free's the skb we have a use after free.
+
+The !ingress case does not suffer from this problem because it uses
+sendmsg_*(sk, msg) which does not pass the sk_buff further down the
+stack.
+
+The following splat was observed with 'test_progs -t sockmap_listen':
+
+  [ 1022.710250][ T2556] general protection fault, ...
+  [...]
+  [ 1022.712830][ T2556] Workqueue: events sk_psock_backlog
+  [ 1022.713262][ T2556] RIP: 0010:skb_dequeue+0x4c/0x80
+  [ 1022.713653][ T2556] Code: ...
+  [...]
+  [ 1022.720699][ T2556] Call Trace:
+  [ 1022.720984][ T2556]  <TASK>
+  [ 1022.721254][ T2556]  ? die_addr+0x32/0x80^M
+  [ 1022.721589][ T2556]  ? exc_general_protection+0x25a/0x4b0
+  [ 1022.722026][ T2556]  ? asm_exc_general_protection+0x22/0x30
+  [ 1022.722489][ T2556]  ? skb_dequeue+0x4c/0x80
+  [ 1022.722854][ T2556]  sk_psock_backlog+0x27a/0x300
+  [ 1022.723243][ T2556]  process_one_work+0x2a7/0x5b0
+  [ 1022.723633][ T2556]  worker_thread+0x4f/0x3a0
+  [ 1022.723998][ T2556]  ? __pfx_worker_thread+0x10/0x10
+  [ 1022.724386][ T2556]  kthread+0xfd/0x130
+  [ 1022.724709][ T2556]  ? __pfx_kthread+0x10/0x10
+  [ 1022.725066][ T2556]  ret_from_fork+0x2d/0x50
+  [ 1022.725409][ T2556]  ? __pfx_kthread+0x10/0x10
+  [ 1022.725799][ T2556]  ret_from_fork_asm+0x1b/0x30
+  [ 1022.726201][ T2556]  </TASK>
+
+To fix we add an skb_get() before passing the skb to be enqueued in the
+engress queue. This bumps the skb->users refcnt so that consume_skb()
+and kfree_skb will not immediately free the sk_buff. With this we can
+be sure the skb is still around when we do the dequeue. Then we just
+need to decrement the refcnt or free the skb in the backlog case which
+we do by calling kfree_skb() on the ingress case as well as the sendmsg
+case.
+
+Before locking change from fixes tag we had the sock locked so we
+couldn't race with user and there was no issue here.
+
+Fixes: 799aa7f98d53e ("skmsg: Avoid lock_sock() in sk_psock_backlog()")
+Reported-by: Jiri Olsa  <jolsa@kernel.org>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Xu Kuohai <xukuohai@huawei.com>
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230901202137.214666-1-john.fastabend@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/micrel_phy.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/skmsg.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
-index 1f7c33b2f5a3f..e164facb0f363 100644
---- a/include/linux/micrel_phy.h
-+++ b/include/linux/micrel_phy.h
-@@ -38,9 +38,9 @@
- #define	PHY_ID_KSZ9477		0x00221631
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 296e45b6c3c0d..a5c1f67dc96ec 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -611,12 +611,18 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
+ 			       u32 off, u32 len, bool ingress)
+ {
++	int err = 0;
++
+ 	if (!ingress) {
+ 		if (!sock_writeable(psock->sk))
+ 			return -EAGAIN;
+ 		return skb_send_sock(psock->sk, skb, off, len);
+ 	}
+-	return sk_psock_skb_ingress(psock, skb, off, len);
++	skb_get(skb);
++	err = sk_psock_skb_ingress(psock, skb, off, len);
++	if (err < 0)
++		kfree_skb(skb);
++	return err;
+ }
  
- /* struct phy_device dev_flags definitions */
--#define MICREL_PHY_50MHZ_CLK	0x00000001
--#define MICREL_PHY_FXEN		0x00000002
--#define MICREL_KSZ8_P1_ERRATA	0x00000003
-+#define MICREL_PHY_50MHZ_CLK	BIT(0)
-+#define MICREL_PHY_FXEN		BIT(1)
-+#define MICREL_KSZ8_P1_ERRATA	BIT(2)
+ static void sk_psock_skb_state(struct sk_psock *psock,
+@@ -684,9 +690,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 		} while (len);
  
- #define MICREL_KSZ9021_EXTREG_CTRL	0xB
- #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+ 		skb = skb_dequeue(&psock->ingress_skb);
+-		if (!ingress) {
+-			kfree_skb(skb);
+-		}
++		kfree_skb(skb);
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
 -- 
 2.40.1
 
