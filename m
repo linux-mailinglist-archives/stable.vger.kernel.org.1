@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D35AF7A3C49
+	by mail.lfdr.de (Postfix) with ESMTP id 8787A7A3C48
 	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:29:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239663AbjIQU3V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S240963AbjIQU3V (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 17 Sep 2023 16:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52012 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241015AbjIQU2t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:28:49 -0400
+        with ESMTP id S240984AbjIQU25 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:28:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419FA10E
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:28:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697B5C433C8;
-        Sun, 17 Sep 2023 20:28:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7498A138
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:28:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C27C433C7;
+        Sun, 17 Sep 2023 20:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694982523;
-        bh=TaM01ilJyzsR+S4nyZ1rs+22fa318bbfF+T0NWDzin0=;
+        s=korg; t=1694982527;
+        bh=LVjsaNlDxYQFNpdiV3U1zFKaRYzwnDubz6i5Jrb9HRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iuU4YUZerp4HOtP+oPBfnyjlUOI1ektA22KnTh5XyIZYH85h6zMWWHDo4nobdPrBS
-         V1AoYaIhLX2nSYqCToUXlcF1RdlplPse6/URISC1fN0sPWICBj8rRzfDsNrH8MjWDG
-         LPZvidROMRFwRMZNBFQfHV12QYl/eM/si9Dn5iQA=
+        b=y0m95bciancUIN4at3hxUIfsB8w16mDST4/xlvaFGXiamd6lddPzhfw97QAhOM3bD
+         y24CUTDg/rEI5mzTUHFjDUH4d8Ns0LMZlGJUf29vPalNXfXV0FU7hN4fPE336meqB4
+         scvI7FplPgfi2HU2akQgaMKqP9ukuRuDgeU3FwUw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        patches@lists.linux.dev, Irui Wang <irui.wang@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 248/511] media: rkvdec: increase max supported height for H.264
-Date:   Sun, 17 Sep 2023 21:11:15 +0200
-Message-ID: <20230917191119.807735797@linuxfoundation.org>
+Subject: [PATCH 5.15 249/511] media: mediatek: vcodec: Return NULL if no vdec_fb is found
+Date:   Sun, 17 Sep 2023 21:11:16 +0200
+Message-ID: <20230917191119.832631539@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -56,35 +56,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+From: Irui Wang <irui.wang@mediatek.com>
 
-[ Upstream commit f000e6ca2d60fefd02a180a57df2c4162fa0c1b7 ]
+[ Upstream commit dfa2d6e07432270330ae191f50a0e70636a4cd2b ]
 
-After testing it is possible for the hardware to decode H264
-bistream with a height up to 2560.
+"fb_use_list" is used to store used or referenced frame buffers for
+vp9 stateful decoder. "NULL" should be returned when getting target
+frame buffer failed from "fb_use_list", not a random unexpected one.
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Fixes: cd33c830448ba ("media: rkvdec: Add the rkvdec driver")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Fixes: f77e89854b3e ("[media] vcodec: mediatek: Add Mediatek VP9 Video Decoder Driver")
+Signed-off-by: Irui Wang <irui.wang@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/rkvdec/rkvdec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-index bc4683a75e61f..29b68a13674ee 100644
---- a/drivers/staging/media/rkvdec/rkvdec.c
-+++ b/drivers/staging/media/rkvdec/rkvdec.c
-@@ -111,7 +111,7 @@ static const struct rkvdec_coded_fmt_desc rkvdec_coded_fmts[] = {
- 			.max_width = 4096,
- 			.step_width = 16,
- 			.min_height = 48,
--			.max_height = 2304,
-+			.max_height = 2560,
- 			.step_height = 16,
- 		},
- 		.ctrls = &rkvdec_h264_ctrls,
+diff --git a/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c b/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
+index 71cdc3ddafcbb..0b2cde3b3439a 100644
+--- a/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
++++ b/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
+@@ -226,10 +226,11 @@ static struct vdec_fb *vp9_rm_from_fb_use_list(struct vdec_vp9_inst
+ 		if (fb->base_y.va == addr) {
+ 			list_move_tail(&node->list,
+ 				       &inst->available_fb_node_list);
+-			break;
++			return fb;
+ 		}
+ 	}
+-	return fb;
++
++	return NULL;
+ }
+ 
+ static void vp9_add_to_fb_free_list(struct vdec_vp9_inst *inst,
 -- 
 2.40.1
 
