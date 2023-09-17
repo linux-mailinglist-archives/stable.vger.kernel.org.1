@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5EA37A38C2
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0337A39D9
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239838AbjIQTkT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58234 "EHLO
+        id S240175AbjIQTzO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239855AbjIQTjw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:39:52 -0400
+        with ESMTP id S240225AbjIQTzB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:55:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E2BD9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:39:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE126C433C7;
-        Sun, 17 Sep 2023 19:39:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF49103
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:54:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690E7C433C8;
+        Sun, 17 Sep 2023 19:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979585;
-        bh=ZDvNwj2gMTq7dAYC3jfJx99jvuqNWWa6WwMFfSOGJr4=;
+        s=korg; t=1694980494;
+        bh=InQwO+an6PriVyx20EoSkB1WhajxKdwF3HV6Sy8v6bk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=okFz17n0xUYQNdWDZM95bComUN7Xi9NEKsbGuh3MVnDa0G9t+V0EVmEjpBYUTmLA5
-         A7gYSqw1OA/x30uSHPJESFUCAopNo0+Gkmjw7P2fCp5qphKJQNbjJatn72BIyD6G/K
-         YnqSRjkDKNbPLzKEL9SLy1tCJdeeIsfzMg6zT974=
+        b=2uS0TLPcp3s1xByZmOqZYs+6WMKneCfZSMo+mXdWysgotUF4L7tnGYCSKDBfYzqVG
+         SN6AjB/rXnvC2SETUCCEXfaCp+J0ByGuVpd05ij4nJ7prT+qEwptXB6jFEXd0f0n3S
+         QaJEGhOtoFglOI7MN2JSnLglXp6qAefQ+xYl1OoI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 355/406] net: sched: sch_qfq: Fix UAF in qfq_dequeue()
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.5 209/285] btrfs: scrub: avoid unnecessary extent tree search preparing stripes
 Date:   Sun, 17 Sep 2023 21:13:29 +0200
-Message-ID: <20230917191110.653082775@linuxfoundation.org>
+Message-ID: <20230917191058.803978787@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,246 +49,196 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: valis <sec@valis.email>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 8fc134fee27f2263988ae38920bc03da416b03d8 ]
+commit 1dc4888e725dc748b82858984f2a5bd41efc5201 upstream.
 
-When the plug qdisc is used as a class of the qfq qdisc it could trigger a
-UAF. This issue can be reproduced with following commands:
+Since commit e02ee89baa66 ("btrfs: scrub: switch scrub_simple_mirror()
+to scrub_stripe infrastructure"), scrub no longer re-use the same path
+for extent tree search.
 
-  tc qdisc add dev lo root handle 1: qfq
-  tc class add dev lo parent 1: classid 1:1 qfq weight 1 maxpkt 512
-  tc qdisc add dev lo parent 1:1 handle 2: plug
-  tc filter add dev lo parent 1: basic classid 1:1
-  ping -c1 127.0.0.1
+This can lead to unnecessary extent tree search, especially for the new
+stripe based scrub, as we have way more stripes to prepare.
 
-and boom:
+This patch would re-introduce a shared path for extent tree search, and
+properly release it when the block group is scrubbed.
 
-[  285.353793] BUG: KASAN: slab-use-after-free in qfq_dequeue+0xa7/0x7f0
-[  285.354910] Read of size 4 at addr ffff8880bad312a8 by task ping/144
-[  285.355903]
-[  285.356165] CPU: 1 PID: 144 Comm: ping Not tainted 6.5.0-rc3+ #4
-[  285.357112] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-[  285.358376] Call Trace:
-[  285.358773]  <IRQ>
-[  285.359109]  dump_stack_lvl+0x44/0x60
-[  285.359708]  print_address_description.constprop.0+0x2c/0x3c0
-[  285.360611]  kasan_report+0x10c/0x120
-[  285.361195]  ? qfq_dequeue+0xa7/0x7f0
-[  285.361780]  qfq_dequeue+0xa7/0x7f0
-[  285.362342]  __qdisc_run+0xf1/0x970
-[  285.362903]  net_tx_action+0x28e/0x460
-[  285.363502]  __do_softirq+0x11b/0x3de
-[  285.364097]  do_softirq.part.0+0x72/0x90
-[  285.364721]  </IRQ>
-[  285.365072]  <TASK>
-[  285.365422]  __local_bh_enable_ip+0x77/0x90
-[  285.366079]  __dev_queue_xmit+0x95f/0x1550
-[  285.366732]  ? __pfx_csum_and_copy_from_iter+0x10/0x10
-[  285.367526]  ? __pfx___dev_queue_xmit+0x10/0x10
-[  285.368259]  ? __build_skb_around+0x129/0x190
-[  285.368960]  ? ip_generic_getfrag+0x12c/0x170
-[  285.369653]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  285.370390]  ? csum_partial+0x8/0x20
-[  285.370961]  ? raw_getfrag+0xe5/0x140
-[  285.371559]  ip_finish_output2+0x539/0xa40
-[  285.372222]  ? __pfx_ip_finish_output2+0x10/0x10
-[  285.372954]  ip_output+0x113/0x1e0
-[  285.373512]  ? __pfx_ip_output+0x10/0x10
-[  285.374130]  ? icmp_out_count+0x49/0x60
-[  285.374739]  ? __pfx_ip_finish_output+0x10/0x10
-[  285.375457]  ip_push_pending_frames+0xf3/0x100
-[  285.376173]  raw_sendmsg+0xef5/0x12d0
-[  285.376760]  ? do_syscall_64+0x40/0x90
-[  285.377359]  ? __static_call_text_end+0x136578/0x136578
-[  285.378173]  ? do_syscall_64+0x40/0x90
-[  285.378772]  ? kasan_enable_current+0x11/0x20
-[  285.379469]  ? __pfx_raw_sendmsg+0x10/0x10
-[  285.380137]  ? __sock_create+0x13e/0x270
-[  285.380673]  ? __sys_socket+0xf3/0x180
-[  285.381174]  ? __x64_sys_socket+0x3d/0x50
-[  285.381725]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  285.382425]  ? __rcu_read_unlock+0x48/0x70
-[  285.382975]  ? ip4_datagram_release_cb+0xd8/0x380
-[  285.383608]  ? __pfx_ip4_datagram_release_cb+0x10/0x10
-[  285.384295]  ? preempt_count_sub+0x14/0xc0
-[  285.384844]  ? __list_del_entry_valid+0x76/0x140
-[  285.385467]  ? _raw_spin_lock_bh+0x87/0xe0
-[  285.386014]  ? __pfx__raw_spin_lock_bh+0x10/0x10
-[  285.386645]  ? release_sock+0xa0/0xd0
-[  285.387148]  ? preempt_count_sub+0x14/0xc0
-[  285.387712]  ? freeze_secondary_cpus+0x348/0x3c0
-[  285.388341]  ? aa_sk_perm+0x177/0x390
-[  285.388856]  ? __pfx_aa_sk_perm+0x10/0x10
-[  285.389441]  ? check_stack_object+0x22/0x70
-[  285.390032]  ? inet_send_prepare+0x2f/0x120
-[  285.390603]  ? __pfx_inet_sendmsg+0x10/0x10
-[  285.391172]  sock_sendmsg+0xcc/0xe0
-[  285.391667]  __sys_sendto+0x190/0x230
-[  285.392168]  ? __pfx___sys_sendto+0x10/0x10
-[  285.392727]  ? kvm_clock_get_cycles+0x14/0x30
-[  285.393328]  ? set_normalized_timespec64+0x57/0x70
-[  285.393980]  ? _raw_spin_unlock_irq+0x1b/0x40
-[  285.394578]  ? __x64_sys_clock_gettime+0x11c/0x160
-[  285.395225]  ? __pfx___x64_sys_clock_gettime+0x10/0x10
-[  285.395908]  ? _copy_to_user+0x3e/0x60
-[  285.396432]  ? exit_to_user_mode_prepare+0x1a/0x120
-[  285.397086]  ? syscall_exit_to_user_mode+0x22/0x50
-[  285.397734]  ? do_syscall_64+0x71/0x90
-[  285.398258]  __x64_sys_sendto+0x74/0x90
-[  285.398786]  do_syscall_64+0x64/0x90
-[  285.399273]  ? exit_to_user_mode_prepare+0x1a/0x120
-[  285.399949]  ? syscall_exit_to_user_mode+0x22/0x50
-[  285.400605]  ? do_syscall_64+0x71/0x90
-[  285.401124]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  285.401807] RIP: 0033:0x495726
-[  285.402233] Code: ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 11 b8 2c 00 00 00 0f 09
-[  285.404683] RSP: 002b:00007ffcc25fb618 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[  285.405677] RAX: ffffffffffffffda RBX: 0000000000000040 RCX: 0000000000495726
-[  285.406628] RDX: 0000000000000040 RSI: 0000000002518750 RDI: 0000000000000000
-[  285.407565] RBP: 00000000005205ef R08: 00000000005f8838 R09: 000000000000001c
-[  285.408523] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000002517634
-[  285.409460] R13: 00007ffcc25fb6f0 R14: 0000000000000003 R15: 0000000000000000
-[  285.410403]  </TASK>
-[  285.410704]
-[  285.410929] Allocated by task 144:
-[  285.411402]  kasan_save_stack+0x1e/0x40
-[  285.411926]  kasan_set_track+0x21/0x30
-[  285.412442]  __kasan_slab_alloc+0x55/0x70
-[  285.412973]  kmem_cache_alloc_node+0x187/0x3d0
-[  285.413567]  __alloc_skb+0x1b4/0x230
-[  285.414060]  __ip_append_data+0x17f7/0x1b60
-[  285.414633]  ip_append_data+0x97/0xf0
-[  285.415144]  raw_sendmsg+0x5a8/0x12d0
-[  285.415640]  sock_sendmsg+0xcc/0xe0
-[  285.416117]  __sys_sendto+0x190/0x230
-[  285.416626]  __x64_sys_sendto+0x74/0x90
-[  285.417145]  do_syscall_64+0x64/0x90
-[  285.417624]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  285.418306]
-[  285.418531] Freed by task 144:
-[  285.418960]  kasan_save_stack+0x1e/0x40
-[  285.419469]  kasan_set_track+0x21/0x30
-[  285.419988]  kasan_save_free_info+0x27/0x40
-[  285.420556]  ____kasan_slab_free+0x109/0x1a0
-[  285.421146]  kmem_cache_free+0x1c2/0x450
-[  285.421680]  __netif_receive_skb_core+0x2ce/0x1870
-[  285.422333]  __netif_receive_skb_one_core+0x97/0x140
-[  285.423003]  process_backlog+0x100/0x2f0
-[  285.423537]  __napi_poll+0x5c/0x2d0
-[  285.424023]  net_rx_action+0x2be/0x560
-[  285.424510]  __do_softirq+0x11b/0x3de
-[  285.425034]
-[  285.425254] The buggy address belongs to the object at ffff8880bad31280
-[  285.425254]  which belongs to the cache skbuff_head_cache of size 224
-[  285.426993] The buggy address is located 40 bytes inside of
-[  285.426993]  freed 224-byte region [ffff8880bad31280, ffff8880bad31360)
-[  285.428572]
-[  285.428798] The buggy address belongs to the physical page:
-[  285.429540] page:00000000f4b77674 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xbad31
-[  285.430758] flags: 0x100000000000200(slab|node=0|zone=1)
-[  285.431447] page_type: 0xffffffff()
-[  285.431934] raw: 0100000000000200 ffff88810094a8c0 dead000000000122 0000000000000000
-[  285.432757] raw: 0000000000000000 00000000800c000c 00000001ffffffff 0000000000000000
-[  285.433562] page dumped because: kasan: bad access detected
-[  285.434144]
-[  285.434320] Memory state around the buggy address:
-[  285.434828]  ffff8880bad31180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  285.435580]  ffff8880bad31200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  285.436264] >ffff8880bad31280: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  285.436777]                                   ^
-[  285.437106]  ffff8880bad31300: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[  285.437616]  ffff8880bad31380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  285.438126] ==================================================================
-[  285.438662] Disabling lock debugging due to kernel taint
+This change alone can improve scrub performance slightly by reducing the
+time spend preparing the stripe thus improving the queue depth.
 
-Fix this by:
-1. Changing sch_plug's .peek handler to qdisc_peek_dequeued(), a
-function compatible with non-work-conserving qdiscs
-2. Checking the return value of qdisc_dequeue_peeked() in sch_qfq.
+Before (with regression):
 
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Reported-by: valis <sec@valis.email>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230901162237.11525-1-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Device         r/s      rkB/s   rrqm/s  %rrqm r_await rareq-sz aqu-sz  %util
+ nvme0n1p3 15578.00  993616.00     5.00   0.03    0.09    63.78   1.32 100.00
+
+After (with this patch):
+
+ nvme0n1p3 15875.00 1013328.00    12.00   0.08    0.08    63.83   1.35 100.00
+
+Fixes: e02ee89baa66 ("btrfs: scrub: switch scrub_simple_mirror() to scrub_stripe infrastructure")
+CC: stable@vger.kernel.org # 6.4+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_plug.c |  2 +-
- net/sched/sch_qfq.c  | 22 +++++++++++++++++-----
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ fs/btrfs/scrub.c |   41 +++++++++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/net/sched/sch_plug.c b/net/sched/sch_plug.c
-index cbc2ebca4548c..339990bb59817 100644
---- a/net/sched/sch_plug.c
-+++ b/net/sched/sch_plug.c
-@@ -210,7 +210,7 @@ static struct Qdisc_ops plug_qdisc_ops __read_mostly = {
- 	.priv_size   =       sizeof(struct plug_sched_data),
- 	.enqueue     =       plug_enqueue,
- 	.dequeue     =       plug_dequeue,
--	.peek        =       qdisc_peek_head,
-+	.peek        =       qdisc_peek_dequeued,
- 	.init        =       plug_init,
- 	.change      =       plug_change,
- 	.reset       =	     qdisc_reset_queue,
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index d5a1e4b237b18..ebf9f473c9392 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -979,10 +979,13 @@ static void qfq_update_eligible(struct qfq_sched *q)
- }
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -175,6 +175,7 @@ struct scrub_ctx {
+ 	struct scrub_stripe	stripes[SCRUB_STRIPES_PER_SCTX];
+ 	struct scrub_stripe	*raid56_data_stripes;
+ 	struct btrfs_fs_info	*fs_info;
++	struct btrfs_path	extent_path;
+ 	int			first_free;
+ 	int			cur_stripe;
+ 	atomic_t		cancel_req;
+@@ -339,6 +340,8 @@ static noinline_for_stack struct scrub_c
+ 	refcount_set(&sctx->refs, 1);
+ 	sctx->is_dev_replace = is_dev_replace;
+ 	sctx->fs_info = fs_info;
++	sctx->extent_path.search_commit_root = 1;
++	sctx->extent_path.skip_locking = 1;
+ 	for (i = 0; i < SCRUB_STRIPES_PER_SCTX; i++) {
+ 		int ret;
  
- /* Dequeue head packet of the head class in the DRR queue of the aggregate. */
--static void agg_dequeue(struct qfq_aggregate *agg,
--			struct qfq_class *cl, unsigned int len)
-+static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
-+				   struct qfq_class *cl, unsigned int len)
- {
--	qdisc_dequeue_peeked(cl->qdisc);
-+	struct sk_buff *skb = qdisc_dequeue_peeked(cl->qdisc);
-+
-+	if (!skb)
-+		return NULL;
+@@ -1468,6 +1471,7 @@ static void scrub_stripe_reset_bitmaps(s
+  * Return <0 for error.
+  */
+ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
++					struct btrfs_path *extent_path,
+ 					struct btrfs_device *dev, u64 physical,
+ 					int mirror_num, u64 logical_start,
+ 					u32 logical_len,
+@@ -1477,7 +1481,6 @@ static int scrub_find_fill_first_stripe(
+ 	struct btrfs_root *extent_root = btrfs_extent_root(fs_info, bg->start);
+ 	struct btrfs_root *csum_root = btrfs_csum_root(fs_info, bg->start);
+ 	const u64 logical_end = logical_start + logical_len;
+-	struct btrfs_path path = { 0 };
+ 	u64 cur_logical = logical_start;
+ 	u64 stripe_end;
+ 	u64 extent_start;
+@@ -1493,14 +1496,13 @@ static int scrub_find_fill_first_stripe(
+ 	/* The range must be inside the bg. */
+ 	ASSERT(logical_start >= bg->start && logical_end <= bg->start + bg->length);
  
- 	cl->deficit -= (int) len;
+-	path.search_commit_root = 1;
+-	path.skip_locking = 1;
+-
+-	ret = find_first_extent_item(extent_root, &path, logical_start, logical_len);
++	ret = find_first_extent_item(extent_root, extent_path, logical_start,
++				     logical_len);
+ 	/* Either error or not found. */
+ 	if (ret)
+ 		goto out;
+-	get_extent_info(&path, &extent_start, &extent_len, &extent_flags, &extent_gen);
++	get_extent_info(extent_path, &extent_start, &extent_len, &extent_flags,
++			&extent_gen);
+ 	if (extent_flags & BTRFS_EXTENT_FLAG_TREE_BLOCK)
+ 		stripe->nr_meta_extents++;
+ 	if (extent_flags & BTRFS_EXTENT_FLAG_DATA)
+@@ -1528,7 +1530,7 @@ static int scrub_find_fill_first_stripe(
  
-@@ -992,6 +995,8 @@ static void agg_dequeue(struct qfq_aggregate *agg,
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
+ 	/* Fill the extent info for the remaining sectors. */
+ 	while (cur_logical <= stripe_end) {
+-		ret = find_first_extent_item(extent_root, &path, cur_logical,
++		ret = find_first_extent_item(extent_root, extent_path, cur_logical,
+ 					     stripe_end - cur_logical + 1);
+ 		if (ret < 0)
+ 			goto out;
+@@ -1536,7 +1538,7 @@ static int scrub_find_fill_first_stripe(
+ 			ret = 0;
+ 			break;
+ 		}
+-		get_extent_info(&path, &extent_start, &extent_len,
++		get_extent_info(extent_path, &extent_start, &extent_len,
+ 				&extent_flags, &extent_gen);
+ 		if (extent_flags & BTRFS_EXTENT_FLAG_TREE_BLOCK)
+ 			stripe->nr_meta_extents++;
+@@ -1576,7 +1578,6 @@ static int scrub_find_fill_first_stripe(
  	}
-+
-+	return skb;
+ 	set_bit(SCRUB_STRIPE_FLAG_INITIALIZED, &stripe->state);
+ out:
+-	btrfs_release_path(&path);
+ 	return ret;
  }
  
- static inline struct sk_buff *qfq_peek_skb(struct qfq_aggregate *agg,
-@@ -1137,11 +1142,18 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
- 	if (!skb)
- 		return NULL;
+@@ -1766,8 +1767,9 @@ static int queue_scrub_stripe(struct scr
  
--	qdisc_qstats_backlog_dec(sch, skb);
- 	sch->q.qlen--;
-+
-+	skb = agg_dequeue(in_serv_agg, cl, len);
-+
-+	if (!skb) {
-+		sch->q.qlen++;
-+		return NULL;
-+	}
-+
-+	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_bstats_update(sch, skb);
+ 	/* We can queue one stripe using the remaining slot. */
+ 	scrub_reset_stripe(stripe);
+-	ret = scrub_find_fill_first_stripe(bg, dev, physical, mirror_num,
+-					   logical, length, stripe);
++	ret = scrub_find_fill_first_stripe(bg, &sctx->extent_path, dev,
++					   physical, mirror_num, logical,
++					   length, stripe);
+ 	/* Either >0 as no more extents or <0 for error. */
+ 	if (ret)
+ 		return ret;
+@@ -1785,6 +1787,7 @@ static int scrub_raid56_parity_stripe(st
+ 	struct btrfs_fs_info *fs_info = sctx->fs_info;
+ 	struct btrfs_raid_bio *rbio;
+ 	struct btrfs_io_context *bioc = NULL;
++	struct btrfs_path extent_path = { 0 };
+ 	struct bio *bio;
+ 	struct scrub_stripe *stripe;
+ 	bool all_empty = true;
+@@ -1795,6 +1798,14 @@ static int scrub_raid56_parity_stripe(st
  
--	agg_dequeue(in_serv_agg, cl, len);
- 	/* If lmax is lowered, through qfq_change_class, for a class
- 	 * owning pending packets with larger size than the new value
- 	 * of lmax, then the following condition may hold.
--- 
-2.40.1
-
+ 	ASSERT(sctx->raid56_data_stripes);
+ 
++	/*
++	 * For data stripe search, we cannot re-use the same extent path, as
++	 * the data stripe bytenr may be smaller than previous extent.  Thus we
++	 * have to use our own extent path.
++	 */
++	extent_path.search_commit_root = 1;
++	extent_path.skip_locking = 1;
++
+ 	for (int i = 0; i < data_stripes; i++) {
+ 		int stripe_index;
+ 		int rot;
+@@ -1809,7 +1820,7 @@ static int scrub_raid56_parity_stripe(st
+ 
+ 		scrub_reset_stripe(stripe);
+ 		set_bit(SCRUB_STRIPE_FLAG_NO_REPORT, &stripe->state);
+-		ret = scrub_find_fill_first_stripe(bg,
++		ret = scrub_find_fill_first_stripe(bg, &extent_path,
+ 				map->stripes[stripe_index].dev, physical, 1,
+ 				full_stripe_start + btrfs_stripe_nr_to_offset(i),
+ 				BTRFS_STRIPE_LEN, stripe);
+@@ -1937,6 +1948,7 @@ static int scrub_raid56_parity_stripe(st
+ 	bio_put(bio);
+ 	btrfs_bio_counter_dec(fs_info);
+ 
++	btrfs_release_path(&extent_path);
+ out:
+ 	return ret;
+ }
+@@ -2109,6 +2121,9 @@ static noinline_for_stack int scrub_stri
+ 	u64 stripe_logical;
+ 	int stop_loop = 0;
+ 
++	/* Extent_path should be released by now. */
++	ASSERT(sctx->extent_path.nodes[0] == NULL);
++
+ 	scrub_blocked_if_needed(fs_info);
+ 
+ 	if (sctx->is_dev_replace &&
+@@ -2227,6 +2242,8 @@ out:
+ 	ret2 = flush_scrub_stripes(sctx);
+ 	if (!ret)
+ 		ret = ret2;
++	btrfs_release_path(&sctx->extent_path);
++
+ 	if (sctx->raid56_data_stripes) {
+ 		for (int i = 0; i < nr_data_stripes(map); i++)
+ 			release_scrub_stripe(&sctx->raid56_data_stripes[i]);
 
 
