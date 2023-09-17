@@ -2,40 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2CB7A3D09
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597A97A3B13
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:13:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241192AbjIQUi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
+        id S240539AbjIQUMu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241209AbjIQUh5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:37:57 -0400
+        with ESMTP id S240654AbjIQUMh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:12:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B42F9115
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:37:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE015C433C8;
-        Sun, 17 Sep 2023 20:37:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C4A13E
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:12:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B45C433C9;
+        Sun, 17 Sep 2023 20:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983072;
-        bh=ep9o6iEzAwIGsRM8e4QpC2fMicVo/vY4zMvHzTvnsEg=;
+        s=korg; t=1694981530;
+        bh=pYUG/cUpxhip6HrE2ZQIxOF8iVMv7avuRzXti6Xd1XA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FmoBVCUkQIc4JIXfqzr/Ysbln+oH6bAhMTODO36wNupKH+3HPhdV7wcPGV3pnPb8k
-         LTQA/6vtlM/b4LwSt+Z+OL2rVZRe7gqwRqWmX91V3/i4q0Gps4gcmzeD3nFRfRMHgZ
-         Qy6aE/LnGocNokB/kUo8VIrRzfOl04squP5nLhCA=
+        b=cjuEC8Tx0PFgH8mBRTkkRp775ukVUU1pAp3fV7YeJ0cREV7Fgc/XwNRX9qseeab1q
+         mUEgFwv84YdRAEjipc1tY/ewbrIw1INVrvqJkhiKA7rKQdZJI8VLQid1jdUqPwltkz
+         YNZVhhx1UCi1x4Ek41u8ExKCTIbTTzNTfcstai8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Chen <liangchen.linux@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 436/511] veth: Fixing transmit return status for dropped packets
+        patches@lists.linux.dev, Kalesh Singh <kaleshsingh@google.com>,
+        Charan Teja Kalla <quic_charante@quicinc.com>,
+        Yu Zhao <yuzhao@google.com>,
+        Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
+        Barry Song <baohua@kernel.org>,
+        Brian Geffon <bgeffon@google.com>,
+        "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Steven Barrett <steven@liquorix.net>,
+        Suleiman Souhlal <suleiman@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.1 136/219] Multi-gen LRU: avoid race in inc_min_seq()
 Date:   Sun, 17 Sep 2023 21:14:23 +0200
-Message-ID: <20230917191124.289090326@linuxfoundation.org>
+Message-ID: <20230917191045.908251759@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+References: <20230917191040.964416434@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +64,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liang Chen <liangchen.linux@gmail.com>
+From: Kalesh Singh <kaleshsingh@google.com>
 
-[ Upstream commit 151e887d8ff97e2e42110ffa1fb1e6a2128fb364 ]
+commit bb5e7f234eacf34b65be67ebb3613e3b8cf11b87 upstream.
 
-The veth_xmit function returns NETDEV_TX_OK even when packets are dropped.
-This behavior leads to incorrect calculations of statistics counts, as
-well as things like txq->trans_start updates.
+inc_max_seq() will try to inc_min_seq() if nr_gens == MAX_NR_GENS. This
+is because the generations are reused (the last oldest now empty
+generation will become the next youngest generation).
 
-Fixes: e314dbdc1c0d ("[NET]: Virtual ethernet device driver.")
-Signed-off-by: Liang Chen <liangchen.linux@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+inc_min_seq() is retried until successful, dropping the lru_lock
+and yielding the CPU on each failure, and retaking the lock before
+trying again:
+
+        while (!inc_min_seq(lruvec, type, can_swap)) {
+                spin_unlock_irq(&lruvec->lru_lock);
+                cond_resched();
+                spin_lock_irq(&lruvec->lru_lock);
+        }
+
+However, the initial condition that required incrementing the min_seq
+(nr_gens == MAX_NR_GENS) is not retested. This can change by another
+call to inc_max_seq() from run_aging() with force_scan=true from the
+debugfs interface.
+
+Since the eviction stalls when the nr_gens == MIN_NR_GENS, avoid
+unnecessarily incrementing the min_seq by rechecking the number of
+generations before each attempt.
+
+This issue was uncovered in previous discussion on the list by Yu Zhao
+and Aneesh Kumar [1].
+
+[1] https://lore.kernel.org/linux-mm/CAOUHufbO7CaVm=xjEb1avDhHVvnC8pJmGyKcFf2iY_dpf+zR3w@mail.gmail.com/
+
+Link: https://lkml.kernel.org/r/20230802025606.346758-2-kaleshsingh@google.com
+Fixes: d6c3af7d8a2b ("mm: multi-gen LRU: debugfs interface")
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
+Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Steven Barrett <steven@liquorix.net>
+Cc: Suleiman Souhlal <suleiman@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/vmscan.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 45ee44f66e77d..984a153804096 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -320,6 +320,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
- 	struct veth_rq *rq = NULL;
-+	int ret = NETDEV_TX_OK;
- 	struct net_device *rcv;
- 	int length = skb->len;
- 	bool use_napi = false;
-@@ -352,6 +353,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	} else {
- drop:
- 		atomic64_inc(&priv->dropped);
-+		ret = NET_XMIT_DROP;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4331,6 +4331,7 @@ static void inc_max_seq(struct lruvec *l
+ 	int type, zone;
+ 	struct lru_gen_struct *lrugen = &lruvec->lrugen;
+ 
++restart:
+ 	spin_lock_irq(&lruvec->lru_lock);
+ 
+ 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+@@ -4341,11 +4342,12 @@ static void inc_max_seq(struct lruvec *l
+ 
+ 		VM_WARN_ON_ONCE(!force_scan && (type == LRU_GEN_FILE || can_swap));
+ 
+-		while (!inc_min_seq(lruvec, type, can_swap)) {
+-			spin_unlock_irq(&lruvec->lru_lock);
+-			cond_resched();
+-			spin_lock_irq(&lruvec->lru_lock);
+-		}
++		if (inc_min_seq(lruvec, type, can_swap))
++			continue;
++
++		spin_unlock_irq(&lruvec->lru_lock);
++		cond_resched();
++		goto restart;
  	}
  
- 	if (use_napi)
-@@ -359,7 +361,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	rcu_read_unlock();
- 
--	return NETDEV_TX_OK;
-+	return ret;
- }
- 
- static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
--- 
-2.40.1
-
+ 	/*
 
 
