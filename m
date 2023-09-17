@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05EB87A38FD
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A64E7A3A01
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232790AbjIQTn2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56282 "EHLO
+        id S240225AbjIQT5W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239627AbjIQTm4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:42:56 -0400
+        with ESMTP id S240305AbjIQT5E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:57:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24300126
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:42:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414CDC433C8;
-        Sun, 17 Sep 2023 19:42:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C342FF3
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:56:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0500BC433C8;
+        Sun, 17 Sep 2023 19:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979770;
-        bh=4ISxu4GT0rr/bUagCwkDwlOkr7cizbNOUAoXNke0mS8=;
+        s=korg; t=1694980618;
+        bh=c0XpvEZyVkD1UMLnB4D088iBpGM6Lv7hcNfm1QUQ3WE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H010ptV4xK4o93IaY5aaFNOlQsqPDfWf1uv0zmCT3lBlGjS10G1EsHF7+MTBx5WY0
-         o03QhwUSQgIgE9EGiIS+I8kwsfLeR7gl50P/GmK6DI0jyBxO04pXtLZSWe5C72uqbf
-         I/IbY94PZktM5pTw54gVj9JDmDNrUrRhMTpBfGLE=
+        b=U6+LWLMbkxJrO18hBTtGAYP1fJnbxGIC1tZT1hxcRFNifeM6pZM1A1c6ILH7YWJs9
+         AkDSjS4BxpNQnUEQ3tTRGg4t9b8vXCRyBSkSrsr/8cWKCGsETpcfPcHWKajyUQT+Bj
+         O7l8lILe4hm0igzpcAphMXhU8+Z2+6Qu3nOwNjCc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, SeongJae Park <sjpark@amazon.de>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        kernel test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 391/406] selftests/kselftest/runner/run_one(): allow running non-executable files
+Subject: [PATCH 6.5 245/285] parisc: sba_iommu: Fix build warning if procfs if disabled
 Date:   Sun, 17 Sep 2023 21:14:05 +0200
-Message-ID: <20230917191111.589444867@linuxfoundation.org>
+Message-ID: <20230917191059.825159734@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,90 +50,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sjpark@amazon.de>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 303f8e2d02002dbe331cab7813ee091aead3cd39 ]
+[ Upstream commit 6428bc7bd3f35e43c8cb7359cb89d83248d339d2 ]
 
-When running a test program, 'run_one()' checks if the program has the
-execution permission and fails if it doesn't.  However, it's easy to
-mistakenly lose the permissions, as some common tools like 'diff' don't
-support the permission change well[1].  Compared to that, making mistakes
-in the test program's path would only rare, as those are explicitly listed
-in 'TEST_PROGS'.  Therefore, it might make more sense to resolve the
-situation on our own and run the program.
+Clean up the code, e.g. make proc_mckinley_root static, drop the now
+empty mckinley header file and remove some unneeded ifdefs around procfs
+functions.
 
-For this reason, this commit makes the test program runner function still
-print the warning message but to try parsing the interpreter of the
-program and to explicitly run it with the interpreter, in this case.
-
-[1] https://lore.kernel.org/mm-commits/YRJisBs9AunccCD4@kroah.com/
-
-Link: https://lkml.kernel.org/r/20210810164534.25902-1-sj38.park@gmail.com
-Signed-off-by: SeongJae Park <sjpark@amazon.de>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 9616cb34b08e ("kselftest/runner.sh: Propagate SIGTERM to runner child")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308300800.Jod4sHzM-lkp@intel.com/
+Fixes: 77e0ddf097d6 ("parisc: ccio-dma: Create private runway procfs root entry")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest/runner.sh | 28 +++++++++++++--------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ arch/parisc/include/asm/mckinley.h |  8 --------
+ drivers/parisc/sba_iommu.c         | 10 ++--------
+ 2 files changed, 2 insertions(+), 16 deletions(-)
+ delete mode 100644 arch/parisc/include/asm/mckinley.h
 
-diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
-index cc9c846585f05..a9ba782d8ca0f 100644
---- a/tools/testing/selftests/kselftest/runner.sh
-+++ b/tools/testing/selftests/kselftest/runner.sh
-@@ -33,9 +33,9 @@ tap_timeout()
- {
- 	# Make sure tests will time out if utility is available.
- 	if [ -x /usr/bin/timeout ] ; then
--		/usr/bin/timeout --foreground "$kselftest_timeout" "$1"
-+		/usr/bin/timeout --foreground "$kselftest_timeout" $1
- 	else
--		"$1"
-+		$1
- 	fi
+diff --git a/arch/parisc/include/asm/mckinley.h b/arch/parisc/include/asm/mckinley.h
+deleted file mode 100644
+index 1314390b9034b..0000000000000
+--- a/arch/parisc/include/asm/mckinley.h
++++ /dev/null
+@@ -1,8 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef ASM_PARISC_MCKINLEY_H
+-#define ASM_PARISC_MCKINLEY_H
+-
+-/* declared in arch/parisc/kernel/setup.c */
+-extern struct proc_dir_entry * proc_mckinley_root;
+-
+-#endif /*ASM_PARISC_MCKINLEY_H*/
+diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+index 8f28f8696bf32..b8e91cbb60567 100644
+--- a/drivers/parisc/sba_iommu.c
++++ b/drivers/parisc/sba_iommu.c
+@@ -46,8 +46,6 @@
+ #include <linux/module.h>
+ 
+ #include <asm/ropes.h>
+-#include <asm/mckinley.h>	/* for proc_mckinley_root */
+-#include <asm/runway.h>		/* for proc_runway_root */
+ #include <asm/page.h>		/* for PAGE0 */
+ #include <asm/pdc.h>		/* for PDC_MODEL_* */
+ #include <asm/pdcpat.h>		/* for is_pdc_pat() */
+@@ -122,7 +120,7 @@ MODULE_PARM_DESC(sba_reserve_agpgart, "Reserve half of IO pdir as AGPGART");
+ #endif
+ 
+ static struct proc_dir_entry *proc_runway_root __ro_after_init;
+-struct proc_dir_entry *proc_mckinley_root __ro_after_init;
++static struct proc_dir_entry *proc_mckinley_root __ro_after_init;
+ 
+ /************************************
+ ** SBA register read and write support
+@@ -1899,9 +1897,7 @@ static int __init sba_driver_callback(struct parisc_device *dev)
+ 	int i;
+ 	char *version;
+ 	void __iomem *sba_addr = ioremap(dev->hpa.start, SBA_FUNC_SIZE);
+-#ifdef CONFIG_PROC_FS
+-	struct proc_dir_entry *root;
+-#endif
++	struct proc_dir_entry *root __maybe_unused;
+ 
+ 	sba_dump_ranges(sba_addr);
+ 
+@@ -1967,7 +1963,6 @@ static int __init sba_driver_callback(struct parisc_device *dev)
+ 
+ 	hppa_dma_ops = &sba_ops;
+ 
+-#ifdef CONFIG_PROC_FS
+ 	switch (dev->id.hversion) {
+ 	case PLUTO_MCKINLEY_PORT:
+ 		if (!proc_mckinley_root)
+@@ -1985,7 +1980,6 @@ static int __init sba_driver_callback(struct parisc_device *dev)
+ 
+ 	proc_create_single("sba_iommu", 0, root, sba_proc_info);
+ 	proc_create_single("sba_iommu-bitmap", 0, root, sba_proc_bitmap_info);
+-#endif
+ 	return 0;
  }
  
-@@ -65,17 +65,25 @@ run_one()
- 
- 	TEST_HDR_MSG="selftests: $DIR: $BASENAME_TEST"
- 	echo "# $TEST_HDR_MSG"
--	if [ ! -x "$TEST" ]; then
--		echo -n "# Warning: file $TEST is "
--		if [ ! -e "$TEST" ]; then
--			echo "missing!"
--		else
--			echo "not executable, correct this."
--		fi
-+	if [ ! -e "$TEST" ]; then
-+		echo "# Warning: file $TEST is missing!"
- 		echo "not ok $test_num $TEST_HDR_MSG"
- 	else
-+		cmd="./$BASENAME_TEST"
-+		if [ ! -x "$TEST" ]; then
-+			echo "# Warning: file $TEST is not executable"
-+
-+			if [ $(head -n 1 "$TEST" | cut -c -2) = "#!" ]
-+			then
-+				interpreter=$(head -n 1 "$TEST" | cut -c 3-)
-+				cmd="$interpreter ./$BASENAME_TEST"
-+			else
-+				echo "not ok $test_num $TEST_HDR_MSG"
-+				return
-+			fi
-+		fi
- 		cd `dirname $TEST` > /dev/null
--		((((( tap_timeout ./$BASENAME_TEST 2>&1; echo $? >&3) |
-+		((((( tap_timeout "$cmd" 2>&1; echo $? >&3) |
- 			tap_prefix >&4) 3>&1) |
- 			(read xs; exit $xs)) 4>>"$logfile" &&
- 		echo "ok $test_num $TEST_HDR_MSG") ||
 -- 
 2.40.1
 
