@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9906F7A3CED
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2E47A3CF0
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 22:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239704AbjIQUgx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 16:36:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
+        id S241124AbjIQUhV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 16:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241192AbjIQUgq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:46 -0400
+        with ESMTP id S241149AbjIQUgt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 16:36:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D630110F
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C99C433C8;
-        Sun, 17 Sep 2023 20:36:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5B2115
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 13:36:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80793C433C7;
+        Sun, 17 Sep 2023 20:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694983000;
-        bh=SuwNVi/udvkiZb8ECgsul+BwfIoLx1mcmqpiU1n/ujQ=;
+        s=korg; t=1694983004;
+        bh=ABup56S0kjlT3CPPEAyTtfI2Dr22DNGZUqTfa5vtL5o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UKUdM/4lB/5Hi6t1plB+qFVHHthNJJqi+pUsoNc8B+1HrHoZfprE9IblvGatwOSwF
-         te3GURjYgnVkJCabZTREMY1iqRbdgR07QcXbOEb2kxWek1m0eimwwODstzD3A45PbP
-         pW6GtjtgF6wsOWhWY71zTFmjEylpUhkCnWuMc4GE=
+        b=vPjuV0s9mksWXpbreYUNyHFY7IjjyCBX0/pVicgCumzCp4Wb838qvectAA8Jrw9YY
+         Hh+fZnDflrShn42nTVdc0HP/nOUjfglbF6e+8fc9d15T3EDuy9a4n3SuqpS8voOqVa
+         N3eoW2UXz8H+AhxbcWBQ8uIaVqFf6gH7Q8w1J3K0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 413/511] pwm: atmel-tcb: Convert to platform remove callback returning void
-Date:   Sun, 17 Sep 2023 21:14:00 +0200
-Message-ID: <20230917191123.755480885@linuxfoundation.org>
+Subject: [PATCH 5.15 414/511] pwm: atmel-tcb: Harmonize resource allocation order
+Date:   Sun, 17 Sep 2023 21:14:01 +0200
+Message-ID: <20230917191123.779402717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
 References: <20230917191113.831992765@linuxfoundation.org>
@@ -60,59 +59,117 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 9609284a76978daf53a54e05cff36873a75e4d13 ]
+[ Upstream commit 0323e8fedd1ef25342cf7abf3a2024f5670362b8 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
-
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Allocate driver data as first resource in the probe function. This way it
+can be used during allocation of the other resources (instead of assigning
+these to local variables first and update driver data only when it's
+allocated). Also as driver data is allocated using a devm function this
+should happen first to have the order of freeing resources in the error
+path and the remove function in reverse.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Stable-dep-of: c11622324c02 ("pwm: atmel-tcb: Fix resource freeing in error path and remove")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pwm/pwm-atmel-tcb.c | 49 +++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index 36f7ea381838d..2a06b7dd224c9 100644
+index 2a06b7dd224c9..4e07d4694bb60 100644
 --- a/drivers/pwm/pwm-atmel-tcb.c
 +++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -500,7 +500,7 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+@@ -422,13 +422,14 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	struct atmel_tcb_pwm_chip *tcbpwm;
+ 	const struct atmel_tcb_config *config;
+ 	struct device_node *np = pdev->dev.of_node;
+-	struct regmap *regmap;
+-	struct clk *clk, *gclk = NULL;
+-	struct clk *slow_clk;
+ 	char clk_name[] = "t0_clk";
+ 	int err;
+ 	int channel;
+ 
++	tcbpwm = devm_kzalloc(&pdev->dev, sizeof(*tcbpwm), GFP_KERNEL);
++	if (tcbpwm == NULL)
++		return -ENOMEM;
++
+ 	err = of_property_read_u32(np, "reg", &channel);
+ 	if (err < 0) {
+ 		dev_err(&pdev->dev,
+@@ -437,47 +438,37 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 		return err;
+ 	}
+ 
+-	regmap = syscon_node_to_regmap(np->parent);
+-	if (IS_ERR(regmap))
+-		return PTR_ERR(regmap);
++	tcbpwm->regmap = syscon_node_to_regmap(np->parent);
++	if (IS_ERR(tcbpwm->regmap))
++		return PTR_ERR(tcbpwm->regmap);
+ 
+-	slow_clk = of_clk_get_by_name(np->parent, "slow_clk");
+-	if (IS_ERR(slow_clk))
+-		return PTR_ERR(slow_clk);
++	tcbpwm->slow_clk = of_clk_get_by_name(np->parent, "slow_clk");
++	if (IS_ERR(tcbpwm->slow_clk))
++		return PTR_ERR(tcbpwm->slow_clk);
+ 
+ 	clk_name[1] += channel;
+-	clk = of_clk_get_by_name(np->parent, clk_name);
+-	if (IS_ERR(clk))
+-		clk = of_clk_get_by_name(np->parent, "t0_clk");
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++	tcbpwm->clk = of_clk_get_by_name(np->parent, clk_name);
++	if (IS_ERR(tcbpwm->clk))
++		tcbpwm->clk = of_clk_get_by_name(np->parent, "t0_clk");
++	if (IS_ERR(tcbpwm->clk))
++		return PTR_ERR(tcbpwm->clk);
+ 
+ 	match = of_match_node(atmel_tcb_of_match, np->parent);
+ 	config = match->data;
+ 
+ 	if (config->has_gclk) {
+-		gclk = of_clk_get_by_name(np->parent, "gclk");
+-		if (IS_ERR(gclk))
+-			return PTR_ERR(gclk);
+-	}
+-
+-	tcbpwm = devm_kzalloc(&pdev->dev, sizeof(*tcbpwm), GFP_KERNEL);
+-	if (tcbpwm == NULL) {
+-		err = -ENOMEM;
+-		goto err_slow_clk;
++		tcbpwm->gclk = of_clk_get_by_name(np->parent, "gclk");
++		if (IS_ERR(tcbpwm->gclk))
++			return PTR_ERR(tcbpwm->gclk);
+ 	}
+ 
+ 	tcbpwm->chip.dev = &pdev->dev;
+ 	tcbpwm->chip.ops = &atmel_tcb_pwm_ops;
+ 	tcbpwm->chip.npwm = NPWM;
+ 	tcbpwm->channel = channel;
+-	tcbpwm->regmap = regmap;
+-	tcbpwm->clk = clk;
+-	tcbpwm->gclk = gclk;
+-	tcbpwm->slow_clk = slow_clk;
+ 	tcbpwm->width = config->counter_width;
+ 
+-	err = clk_prepare_enable(slow_clk);
++	err = clk_prepare_enable(tcbpwm->slow_clk);
+ 	if (err)
+ 		goto err_slow_clk;
+ 
+@@ -495,7 +486,7 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(tcbpwm->slow_clk);
+ 
+ err_slow_clk:
+-	clk_put(slow_clk);
++	clk_put(tcbpwm->slow_clk);
+ 
  	return err;
  }
- 
--static int atmel_tcb_pwm_remove(struct platform_device *pdev)
-+static void atmel_tcb_pwm_remove(struct platform_device *pdev)
- {
- 	struct atmel_tcb_pwm_chip *tcbpwm = platform_get_drvdata(pdev);
- 
-@@ -509,8 +509,6 @@ static int atmel_tcb_pwm_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(tcbpwm->slow_clk);
- 	clk_put(tcbpwm->slow_clk);
- 	clk_put(tcbpwm->clk);
--
--	return 0;
- }
- 
- static const struct of_device_id atmel_tcb_pwm_dt_ids[] = {
-@@ -564,7 +562,7 @@ static struct platform_driver atmel_tcb_pwm_driver = {
- 		.pm = &atmel_tcb_pwm_pm_ops,
- 	},
- 	.probe = atmel_tcb_pwm_probe,
--	.remove = atmel_tcb_pwm_remove,
-+	.remove_new = atmel_tcb_pwm_remove,
- };
- module_platform_driver(atmel_tcb_pwm_driver);
- 
 -- 
 2.40.1
 
