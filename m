@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E38D87A3810
-	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EE67A390F
+	for <lists+stable@lfdr.de>; Sun, 17 Sep 2023 21:44:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239611AbjIQTak (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 15:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56054 "EHLO
+        id S239952AbjIQToI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 17 Sep 2023 15:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239639AbjIQTa0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:30:26 -0400
+        with ESMTP id S239999AbjIQTn6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 15:43:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C930D9
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:30:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F2C433C7;
-        Sun, 17 Sep 2023 19:30:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C818126
+        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 12:43:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD8EC433C8;
+        Sun, 17 Sep 2023 19:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694979020;
-        bh=lhPawx+RErCG3RF54TGHwf9QLxH2qoSkk/W7g3CmzUg=;
+        s=korg; t=1694979833;
+        bh=bOx6OVQ/EzRsL5UEYpuaMUibkjHD6ba9HV+1AMifxZ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yLbi05yA3p04M1iIOzm9Di4akQW+lFf0XaFpkliJ+V5uQplZrRtE8/W0UnWlioDkQ
-         ZKPiVQy5jA2kY13ym5JQGOal343xN/Xsa4TJ4aqXCH4oyy5UDnjvoTJLXytQn5cGSS
-         Qfwu6/uMVBm1tKW8Qnhgu4MDBnRSiA3Y5v6Teu9Q=
+        b=I2Vw1V/HJDVdwkuWsiJrTW+i0k4f87e9aN1OfVdR6vtdiREPS4tRdTnlt8RYX1HA4
+         4slNUBoZcK9e/xiZOIR5G2m5I8X0z/6srdbtuEWt0Y1GemP8LYvQ0FeGZyLu+Wkhl/
+         8As0vO5l2NkevE50QFQhDu86V6BzRjTdTyvq9HOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        kernel test robot <lkp@intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/406] bus: ti-sysc: Fix cast to enum warning
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 6.5 020/285] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
 Date:   Sun, 17 Sep 2023 21:10:20 +0200
-Message-ID: <20230917191105.566003625@linuxfoundation.org>
+Message-ID: <20230917191052.327556609@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit de44bf2f7683347f75690ef6cf61a1d5ba8f0891 ]
+commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
 
-Fix warning for "cast to smaller integer type 'enum sysc_soc' from 'const
-void *'".
+Do not assing the Linux device to struct fb_info.dev. The call to
+register_framebuffer() initializes the field to the fbdev device.
+Drivers should not override its value.
 
-Cc: Nishanth Menon <nm@ti.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308150723.ziuGCdM3-lkp@intel.com/
-Fixes: e1e1e9bb9d94 ("bus: ti-sysc: Fix build warning for 64-bit build")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes a bug where the driver incorrectly decreases the hardware
+device's reference counter and leaks the fbdev device.
+
+v2:
+	* add Fixes tag (Dan)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 88017bda96a5 ("ep93xx video driver")
+Cc: <stable@vger.kernel.org> # v2.6.32+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/ep93xx-fb.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index fa7894cab2152..c8e0f8cb9aa32 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3041,7 +3041,7 @@ static int sysc_init_static_data(struct sysc *ddata)
+--- a/drivers/video/fbdev/ep93xx-fb.c
++++ b/drivers/video/fbdev/ep93xx-fb.c
+@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
+ 	if (!info)
+ 		return -ENOMEM;
  
- 	match = soc_device_match(sysc_soc_match);
- 	if (match && match->data)
--		sysc_soc->soc = (enum sysc_soc)match->data;
-+		sysc_soc->soc = (enum sysc_soc)(uintptr_t)match->data;
- 
- 	/* Ignore devices that are not available on HS and EMU SoCs */
- 	if (!sysc_soc->general_purpose) {
--- 
-2.40.1
-
+-	info->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, info);
+ 	fbi = info->par;
+ 	fbi->mach_info = mach_info;
 
 
