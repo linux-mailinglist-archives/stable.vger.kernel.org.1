@@ -2,48 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65B967A4FA9
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDCE07A4FB4
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230288AbjIRQsq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 12:48:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50584 "EHLO
+        id S229781AbjIRQux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 12:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230364AbjIRQsY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:48:24 -0400
+        with ESMTP id S229744AbjIRQuw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:50:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A78210A;
-        Mon, 18 Sep 2023 09:47:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACDC433C7;
-        Mon, 18 Sep 2023 16:47:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BE094;
+        Mon, 18 Sep 2023 09:50:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70B6C433C7;
+        Mon, 18 Sep 2023 16:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695055662;
-        bh=Offg6VmtFe2UBByUqEhSGUwj6q3tNukHJa7EtuPg/UE=;
+        s=k20201202; t=1695055847;
+        bh=8JxeeNt0YIANYdkuILxO1QdRpilUqSWyV1gcj/PegTo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SfmpFokFWz+1524hZtLpJ7zeYbI902PzYuG/+6N96zVgQWjmAsmsjrUqQaewh+kOj
-         8hfV9Rt1PQVZcFai8A+RqKiDo2LNo6AUCGpwljNQoAPchhFxgtRyRxpoBkygHVoGfY
-         iMRarhhfX7ThGSQTLJQ2saAh7xn6wI2pIbhzQxZCb1CLGm2KhZb26lNmePFv9zs3l0
-         Vw73HQ6L4/XH6bGA4QGFiKnzQ6rNz9M7Yz9dAM+YI+fq/7Wl8PVKWhVl0eA+1Oz8Xk
-         mb0LMwINAOiMQCByIQ7xBdm4suF54dGa9YH/42BaXwMNViy23JrZQG8R7D5rWspNDT
-         TwpzGrIpVmfXg==
-Date:   Mon, 18 Sep 2023 12:47:41 -0400
+        b=JlpAl0p0ot/ZdMds5/dzHxWvSvCvoB6UFz2DNFt8l8uvRG06FlLRX1IMnpZk5FAWt
+         xp0hbr0IHEFQ8Fc9h3/iFakdDYOh+hd7LgzCYbXYqenvfRcEONW4VaxI42nvK2WIZZ
+         0Qr1iqebzd7NopusIhwRMtqzJSmzNtRUve6/yNd/Fc3zlQ1DesWAeVlu/qQ0Cf7puc
+         5/ZrtsowpVcbuRfia4JAsYX+W/BVhF9UFxa9SiAAx+NIbe3W5bA5S0KuHJ9fybFKPZ
+         CPO1pzBAZTZXVwmZhaqHYiWkwPs6RrmFUErlYXc8RYn6MYkOpjlgGUWaqpHI9NmPkD
+         x9hzbmwpPZKJg==
+Date:   Mon, 18 Sep 2023 12:50:45 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Dan Drown <dan-netdev@drown.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.4 24/25] usb: cdc-acm: move ldisc dcd
- notification outside of acm's read lock
-Message-ID: <ZQh/LTtayWgQ/BrS@sashalap>
-References: <20230909003715.3579761-1-sashal@kernel.org>
- <20230909003715.3579761-24-sashal@kernel.org>
- <ZP7bkRc-1U8-M6X1@hovoldconsulting.com>
+To:     Sami Tolvanen <samitolvanen@google.com>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, keescook@chromium.org,
+        Conor Dooley <conor.dooley@microchip.com>, nathan@kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, ndesaulniers@google.com,
+        peterz@infradead.org, ajones@ventanamicro.com, heiko@sntech.de,
+        prabhakar.mahadev-lad.rj@bp.renesas.com, liaochang1@huawei.com,
+        namcaov@gmail.com, andy.chiu@sifive.com, guoren@kernel.org,
+        alexghiti@rivosinc.com, Bjorn Topel <bjorn@rivosinc.com>,
+        jeeheng.sia@starfivetech.com, jszhang@kernel.org,
+        greentime.hu@sifive.com, masahiroy@kernel.org,
+        apatel@ventanamicro.com, mnissler@rivosinc.com,
+        coelacanthushex@gmail.com, linux-riscv@lists.infradead.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.4 25/25] riscv: Add CFI error handling
+Message-ID: <ZQh/5ZnoI6dnTonS@sashalap>
+References: <20230909003715.3579761-25-sashal@kernel.org>
+ <mhng-e2cedb63-0933-4752-bfd8-592e4e1f6e2c@palmer-ri-x1c9>
+ <CABCJKucm3KjYKgjP9OT4GLe8KZ3QxpRk9GqPD5JgwMaoZumnQQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZP7bkRc-1U8-M6X1@hovoldconsulting.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABCJKucm3KjYKgjP9OT4GLe8KZ3QxpRk9GqPD5JgwMaoZumnQQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -54,52 +63,15 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 11:19:13AM +0200, Johan Hovold wrote:
->On Fri, Sep 08, 2023 at 08:37:12PM -0400, Sasha Levin wrote:
->> From: Dan Drown <dan-netdev@drown.org>
->>
->> [ Upstream commit f72ae60881ff685004d7de7152517607fcd9968f ]
->>
->> dcd_change notification call moved outside of the acm->read_lock
->> to protect any future tty ldisc that calls wait_serial_change()
->>
->> Signed-off-by: Dan Drown <dan-netdev@drown.org>
->> Acked-by: Oliver Neukum <oneukum@suse.com>
->> Link: https://lore.kernel.org/r/ZN1zV/zjPgpGlHXo@vps3.drown.org
->> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/usb/class/cdc-acm.c | 10 ++++++++++
->>  1 file changed, 10 insertions(+)
->>
->> diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
->> index 11da5fb284d0a..ca51230f44409 100644
->> --- a/drivers/usb/class/cdc-acm.c
->> +++ b/drivers/usb/class/cdc-acm.c
->> @@ -318,6 +318,16 @@ static void acm_process_notification(struct acm *acm, unsigned char *buf)
->>  		}
->>
->>  		difference = acm->ctrlin ^ newctrl;
->> +
->> +		if ((difference & USB_CDC_SERIAL_STATE_DCD) && acm->port.tty) {
->> +			struct tty_ldisc *ld = tty_ldisc_ref(acm->port.tty);
->> +			if (ld) {
->> +				if (ld->ops->dcd_change)
->> +					ld->ops->dcd_change(acm->port.tty, newctrl & USB_CDC_SERIAL_STATE_DCD);
->> +				tty_ldisc_deref(ld);
->> +			}
->> +		}
->> +
->>  		spin_lock_irqsave(&acm->read_lock, flags);
->>  		acm->ctrlin = newctrl;
->>  		acm->oldcount = acm->iocount;
+On Mon, Sep 11, 2023 at 08:03:38AM -0700, Sami Tolvanen wrote:
+>On Fri, Sep 8, 2023 at 8:33 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>> Sami probably understands the dependencies better than I do, but I don't
+>> think this one is sane to just backport -- there's a whole series here,
+>> and IIRC we had to set up some clang bits for it to work correctly.
 >
->This is a fix for a commit in 6.6-rc1 (3b563b901eef ("usb: cdc-acm: add
->PPS support")) so a backport of it makes no sense.
->
->Please drop.
+>Agreed, it doesn't really make sense to backport this patch.
 
-Done, thanks!
+Ack, it's gone :)
 
 -- 
 Thanks,
