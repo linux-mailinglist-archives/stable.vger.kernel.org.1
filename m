@@ -2,148 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD6A7A45D2
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 11:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83FCA7A4700
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 12:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbjIRJYc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 05:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
+        id S239656AbjIRKbX convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Mon, 18 Sep 2023 06:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238417AbjIRJYF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 05:24:05 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B97D3
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 02:24:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A280C433C8;
-        Mon, 18 Sep 2023 09:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695029039;
-        bh=llZZQL/PdWEgNFjxTV9qwEIAzivsRdBxp4Q040xeUrw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=duFVSpsv4dn4noctJQvV+jtXcpWNBq/lCSucxpLOUMZ/daHY/V6lKQowvjPLf/4pI
-         QTypfxPKZNWRpvwCuj8/30p0qhieHbVF1fJM/YdqjQwU6hmPNE+Cvr4YYxS86U7G8N
-         /DN/M4eTwMstYy96rxCPfsvi5DbVT4reUJ54hDfY=
-Date:   Mon, 18 Sep 2023 11:23:56 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ilya Dryomov <idryomov@gmail.com>
-Cc:     Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org,
-        patches@lists.linux.dev, Milind Changire <mchangir@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.5 113/285] ceph: make members in struct
- ceph_mds_request_args_ext a union
-Message-ID: <2023091848-spiritual-foyer-7ce6@gregkh>
-References: <20230917191051.639202302@linuxfoundation.org>
- <20230917191055.579497834@linuxfoundation.org>
- <CAOi1vP9Mh02NB4-n5Wy3Zs1Y8M33qJsZzd12Y6k991jubQVzwQ@mail.gmail.com>
- <90c74084-d3dc-e1cf-0d9a-a244529f7779@redhat.com>
- <CAOi1vP9UU+GHn+rygfNgCdFMBCdgbB4h6FkzBOA56j9CesHBXA@mail.gmail.com>
+        with ESMTP id S241367AbjIRKbT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 06:31:19 -0400
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA163DB;
+        Mon, 18 Sep 2023 03:31:13 -0700 (PDT)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5711d5dac14so1115020eaf.0;
+        Mon, 18 Sep 2023 03:31:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695033073; x=1695637873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ErCjYPZb5R42qd/bAiuaTdy6BusCKRPj6SWml5/mG+w=;
+        b=kYiCcVp5Qfeq7r0DFhe/6Da+Ib83s9UHWbz6MoSQUpPgbkX+SRhpPukmTwRX+/gMtU
+         kVrfTK6/r4Elb8+JhHKTxDB1un+3RRtVS2lmSjh2gOybBqJQcYARfBHNmbNlQpQjztlq
+         dvlheDfXPZ6ndOpY1RNziS64B4H5i179+CYcIZ6wceOQq+pL6KpPUWFPXnHn9rHnGFLA
+         8tq95clpBE+LtXQQyKUrPqP2qf2Q3AXpxvHYPCjmxwUIXMbWDj5JM8E9iuKWRFE0FeuR
+         wmgd+PqruiacRX8VjJ2SvU8lRgVkYUwIKZV7OnkHcLJM3kZKFa+vZtNN4FgfFbDeiqHD
+         Myag==
+X-Gm-Message-State: AOJu0YzyRIr0QKOsRpkSr5Iv/MAlG9iJQ3t02I89ZVK5hEgmza/6J46r
+        U0C8KgNfzUB8pfRxwOn3a0pb9idPqRmJWbonhbQ=
+X-Google-Smtp-Source: AGHT+IGzicJIqnssObKvtpvoT+dKnNeRslejH1qfRD7ABvvgWon4Kl1kDhUo6Y/cnfvI6Y18Oa+llsz3SLwS5MWYg7g=
+X-Received: by 2002:a4a:b483:0:b0:578:a06a:5d8f with SMTP id
+ b3-20020a4ab483000000b00578a06a5d8fmr7599276ooo.1.1695033073091; Mon, 18 Sep
+ 2023 03:31:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOi1vP9UU+GHn+rygfNgCdFMBCdgbB4h6FkzBOA56j9CesHBXA@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
+In-Reply-To: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 18 Sep 2023 12:30:58 +0200
+Message-ID: <CAJZ5v0j+L=a0UEiCEXUYDtvscaVF29FPro9FNupMkJ7do2eBGw@mail.gmail.com>
+Subject: Re: [PATCH v5] driver core: platform: set numa_node before platform_add_device()
+To:     Jinhui Guo <guojinhui.liam@bytedance.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org,
+        lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 18, 2023 at 10:43:08AM +0200, Ilya Dryomov wrote:
-> On Mon, Sep 18, 2023 at 10:20 AM Xiubo Li <xiubli@redhat.com> wrote:
-> >
-> >
-> > On 9/18/23 16:04, Ilya Dryomov wrote:
-> > > On Sun, Sep 17, 2023 at 9:49 PM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > >> 6.5-stable review patch.  If anyone has any objections, please let me know.
-> > >>
-> > >> ------------------
-> > >>
-> > >> From: Xiubo Li <xiubli@redhat.com>
-> > >>
-> > >> [ Upstream commit 3af5ae22030cb59fab4fba35f5a2b62f47e14df9 ]
-> > >>
-> > >> In ceph mainline it will allow to set the btime in the setattr request
-> > >> and just add a 'btime' member in the union 'ceph_mds_request_args' and
-> > >> then bump up the header version to 4. That means the total size of union
-> > >> 'ceph_mds_request_args' will increase sizeof(struct ceph_timespec) bytes,
-> > >> but in kclient it will increase the sizeof(setattr_ext) bytes for each
-> > >> request.
-> > >>
-> > >> Since the MDS will always depend on the header's vesion and front_len
-> > >> members to decode the 'ceph_mds_request_head' struct, at the same time
-> > >> kclient hasn't supported the 'btime' feature yet in setattr request,
-> > >> so it's safe to do this change here.
-> > >>
-> > >> This will save 48 bytes memories for each request.
-> > >>
-> > >> Fixes: 4f1ddb1ea874 ("ceph: implement updated ceph_mds_request_head structure")
-> > >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> > >> Reviewed-by: Milind Changire <mchangir@redhat.com>
-> > >> Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-> > >> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > >> ---
-> > >>   include/linux/ceph/ceph_fs.h | 24 +++++++++++++-----------
-> > >>   1 file changed, 13 insertions(+), 11 deletions(-)
-> > >>
-> > >> diff --git a/include/linux/ceph/ceph_fs.h b/include/linux/ceph/ceph_fs.h
-> > >> index 49586ff261520..b4fa2a25b7d95 100644
-> > >> --- a/include/linux/ceph/ceph_fs.h
-> > >> +++ b/include/linux/ceph/ceph_fs.h
-> > >> @@ -462,17 +462,19 @@ union ceph_mds_request_args {
-> > >>   } __attribute__ ((packed));
-> > >>
-> > >>   union ceph_mds_request_args_ext {
-> > >> -       union ceph_mds_request_args old;
-> > >> -       struct {
-> > >> -               __le32 mode;
-> > >> -               __le32 uid;
-> > >> -               __le32 gid;
-> > >> -               struct ceph_timespec mtime;
-> > >> -               struct ceph_timespec atime;
-> > >> -               __le64 size, old_size;       /* old_size needed by truncate */
-> > >> -               __le32 mask;                 /* CEPH_SETATTR_* */
-> > >> -               struct ceph_timespec btime;
-> > >> -       } __attribute__ ((packed)) setattr_ext;
-> > >> +       union {
-> > >> +               union ceph_mds_request_args old;
-> > >> +               struct {
-> > >> +                       __le32 mode;
-> > >> +                       __le32 uid;
-> > >> +                       __le32 gid;
-> > >> +                       struct ceph_timespec mtime;
-> > >> +                       struct ceph_timespec atime;
-> > >> +                       __le64 size, old_size;       /* old_size needed by truncate */
-> > >> +                       __le32 mask;                 /* CEPH_SETATTR_* */
-> > >> +                       struct ceph_timespec btime;
-> > >> +               } __attribute__ ((packed)) setattr_ext;
-> > >> +       };
-> > > Hi Xiubo,
-> > >
-> > > I was going to ask whether it makes sense to backport this change, but,
-> > > after looking at it, the change seems bogus to me even in mainline.  You
-> > > added a union inside siting memory use but ceph_mds_request_args_ext was
-> > > already a union before:
-> > >
-> > >      union ceph_mds_request_args_ext {
-> > >          union ceph_mds_request_args old;
-> > >          struct { ... } __attribute__ ((packed)) setattr_ext;
-> > >      }
-> > >
-> > > What is being achieved here?
-> >
-> > As I remembered there has other changes in this union in the beginning.
-> > And that patch seems being abandoned and missing this one.
-> >
-> > Let's skip backporting this one and in the upstream just revert it.
-> 
-> OK, I will send a revert to ceph-devel list.
-> 
-> Greg, please drop this one from all stable branches.
+On Thu, Sep 14, 2023 at 11:32 PM Jinhui Guo
+<guojinhui.liam@bytedance.com> wrote:
+>
+> platform_add_device()
 
-Now dropped, thanks.
+According to "git grep" this function is not present in 6.6-rc2.
 
-greg k-h
+If you mean platform_device_add(), please update the patch subject and
+changelog accordingly.
+
+> creates the numa_node attribute of sysfs according
+> to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
+> of device before creating numa_node attribute of sysfs.
+
+It would be good to also say that this needs to be done in
+platform_device_register_full(), because that's where the platform
+device object is allocated.
+
+However, what about adding the NUMA node information to pdevinfo?  It
+would be more straightforward to handle it then AFAICS.
+
+> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> ---
+> V4 -> V5: Add Cc: stable line and changes from the previous submited
+> patches
+> V3 -> V4: Refactor code to be an ACPI function call
+> V2 -> V3: Fix Signed-off name
+> V1 -> V2: Fix compile error without enabling CONFIG_ACPI
+>
+>  drivers/acpi/acpi_platform.c | 4 +---
+>  drivers/base/platform.c      | 1 +
+>  include/linux/acpi.h         | 5 +++++
+>  3 files changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+> index 48d15dd785f6..adcbfbdc343f 100644
+> --- a/drivers/acpi/acpi_platform.c
+> +++ b/drivers/acpi/acpi_platform.c
+> @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+>         if (IS_ERR(pdev))
+>                 dev_err(&adev->dev, "platform device creation failed: %ld\n",
+>                         PTR_ERR(pdev));
+> -       else {
+> -               set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+> +       else
+>                 dev_dbg(&adev->dev, "created platform device %s\n",
+>                         dev_name(&pdev->dev));
+> -       }
+>
+>         kfree(resources);
+>
+> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> index 76bfcba25003..35c891075d95 100644
+> --- a/drivers/base/platform.c
+> +++ b/drivers/base/platform.c
+> @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
+>                         goto err;
+>         }
+>
+> +       set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
+>         ret = platform_device_add(pdev);
+>         if (ret) {
+>  err:
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index a73246c3c35e..6a349d53f19e 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
+>         return 0;
+>  }
+>  #endif
+> +
+> +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
+> +       acpi_get_node((adev)->handle) : NUMA_NO_NODE)
+> +
+>  extern int pnpacpi_disabled;
+>
+>  #define PXM_INVAL      (-1)
+> @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+>  #define ACPI_COMPANION_SET(dev, adev)  do { } while (0)
+>  #define ACPI_HANDLE(dev)               (NULL)
+>  #define ACPI_HANDLE_FWNODE(fwnode)     (NULL)
+> +#define ACPI_NODE_GET(adev)            NUMA_NO_NODE
+>
+>  #include <acpi/acpi_numa.h>
+>
+> --
+> 2.20.1
+>
