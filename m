@@ -2,101 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73D8F7A4869
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 13:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC6E7A48C1
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 13:51:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239751AbjIRL3k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 07:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
+        id S240483AbjIRLu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 07:50:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241665AbjIRL3W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 07:29:22 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D59C9170E;
-        Mon, 18 Sep 2023 04:26:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1695036364; x=1726572364;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AWntqZbkSbmn/MP084Ke+21jIISRxqv10eVOLcv87Cg=;
-  b=Qj+5+KAx12ZCiTlyjbahquryCZLowDVu7pXazF7ojV41uBpaFFPBiN6S
-   +xfqb/Ushei6391FOHvkgsiHE4Twpls+tOuh8Pyy9EGrsTuTmqadwpUEX
-   nWo7ZQlFhJJZ8AXcCZdwqk483s8fhR4Y18/Tuj639nKEjkktMJEUT6zL5
-   QT7pNmsF0wNeeiK6O2c85alSRTN+Vs9B8fSL3F5/nym7IWWJajlNrXFx8
-   psfrcd70r5pXglB/l99ZtP6ThlQ2jYBRMlMMRjpQNCHrrpPNIGfRNZV3b
-   aaqwAuRVuusSL/4kvAuKiXwECtJec7OuZQaCeHCBvicqn6fjm7XZIQKKK
-   g==;
-X-CSE-ConnectionGUID: pIJvHuS8Qpmn2ZqRa9Ey8Q==
-X-CSE-MsgGUID: czKlEAplTfmnmjX5f1zEGw==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="asc'?scan'208";a="235738003"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Sep 2023 04:25:28 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 18 Sep 2023 04:24:45 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 18 Sep 2023 04:24:40 -0700
-Date:   Mon, 18 Sep 2023 12:24:23 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.1 000/219] 6.1.54-rc1 review
-Message-ID: <20230918-animal-reword-a5ec304ea2fa@wendy>
-References: <20230917191040.964416434@linuxfoundation.org>
+        with ESMTP id S231971AbjIRLub (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 07:50:31 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B53E3;
+        Mon, 18 Sep 2023 04:50:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B14C7C433C7;
+        Mon, 18 Sep 2023 11:50:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695037824;
+        bh=lLmkRmQrVDMuWLiRnc6WZi6wkS4qkGabF5MldHO9ynE=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=XMsUM/6PTgmQgGOOp+k7DuQuDMgisWtNdzkwmPbc9znYTejBeA+hsBwQw3bKOTREQ
+         gw/88uAwnjD/eBg5/DaeyqOfGKRvuutbX4nMRIL3elp/RoyhlzIPMeRFx+BTfIVpEA
+         lGC7Y/mu+YyXSR3UY7IJF2t3xHwj26jtDMSa2kNablJvBh402XtE76bGbdXeYxTvky
+         WcSEacr2gCfOqDXYr6jwORaRCG2EFYBzeqyvdsgPUVWpYbJ7YDaxEEWDGgo88Xtpc0
+         xT2b6SQzQyW5I0JAzykFpg8Ml9NRGr2tfwZkXFgUgZQpXdgf6wuy7SqgKWd7eQg0Po
+         KWftbkmHd8jCA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 909DFE11F41;
+        Mon, 18 Sep 2023 11:50:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="L1qguHOKtswDYfDE"
-Content-Disposition: inline
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/5] mptcp: fix stalled connections
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169503782458.2272.14155670573882201410.git-patchwork-notify@kernel.org>
+Date:   Mon, 18 Sep 2023 11:50:24 +0000
+References: <20230916-upstream-net-20230915-mptcp-hanging-conn-v1-0-05d1a8b851a8@tessares.net>
+In-Reply-To: <20230916-upstream-net-20230915-mptcp-hanging-conn-v1-0-05d1a8b851a8@tessares.net>
+To:     Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        dcaratti@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---L1qguHOKtswDYfDE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hello:
 
-On Sun, Sep 17, 2023 at 09:12:07PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.54 release.
-> There are 219 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+This series was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+On Sat, 16 Sep 2023 12:52:44 +0200 you wrote:
+> Daire reported a few issues with MPTCP where some connections were
+> stalled in different states. Paolo did a great job fixing them.
+> 
+> Patch 1 fixes bogus receive window shrinkage with multiple subflows. Due
+> to a race condition and unlucky circumstances, that may lead to
+> TCP-level window shrinkage, and the connection being stalled on the
+> sender end.
+> 
+> [...]
 
-Thanks,
-Conor.
+Here is the summary with links:
+  - [net,1/5] mptcp: fix bogus receive window shrinkage with multiple subflows
+    https://git.kernel.org/netdev/net/c/6bec041147a2
+  - [net,2/5] mptcp: move __mptcp_error_report in protocol.c
+    https://git.kernel.org/netdev/net/c/d5fbeff1ab81
+  - [net,3/5] mptcp: process pending subflow error on close
+    https://git.kernel.org/netdev/net/c/9f1a98813b4b
+  - [net,4/5] mptcp: rename timer related helper to less confusing names
+    https://git.kernel.org/netdev/net/c/f6909dc1c1f4
+  - [net,5/5] mptcp: fix dangling connection hang-up
+    https://git.kernel.org/netdev/net/c/27e5ccc2d5a5
 
---L1qguHOKtswDYfDE
-Content-Type: application/pgp-signature; name="signature.asc"
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZQgzZwAKCRB4tDGHoIJi
-0n9rAQDyO31hBrEBGohyj30+1d1XuQqiDNG/YXHlnmVow396PAEA+fI0RYn3NHCA
-oPrx6vr3yfObwpH43oN6c5ToK2iUtAI=
-=42Pv
------END PGP SIGNATURE-----
-
---L1qguHOKtswDYfDE--
