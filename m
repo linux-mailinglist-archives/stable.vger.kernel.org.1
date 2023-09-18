@@ -2,176 +2,178 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D06C7A4BB0
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C31F67A4C42
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233992AbjIRPUz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 11:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43652 "EHLO
+        id S229545AbjIRP36 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 11:29:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234346AbjIRPUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:20:50 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB5A123;
-        Mon, 18 Sep 2023 08:19:01 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38IEfb5o008143;
-        Mon, 18 Sep 2023 15:18:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=sNZugfDj0EUXzn0lGOUGppcQYeOxKSNN7aJIe/l8fAU=;
- b=BM5TRVH1EmWNOXCgNxBmxBW19IvPEqX/nUk2xVdWXwHLinf16ZB0KImLTX+GI3InKBnb
- 9iLk9dw4KkXjj8rXjz0s756nKi2wU3EnxX5ayj8FF/a1klYmuucKIfF6qTOteo15pTYe
- FYIf10uVabqUMn046JPp1bfn8pnJUWffS93ONxtW2IroQFL4sC7I1oQaIuV80EMpF+eF
- 1mZ6BEh232cPEa1wWsOIVEgswS8VSwu7Sz+CdLPO+ZZVJ6K80h4YYrJeAN9kFecCXIGE
- fhE0P07RnZ5XzVAHaGDrdK8tHbipcPfKRr0sl5LsRuFqUPb8Uz8Zt3lPBwGjvP9veir5 VQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6nh78drg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 Sep 2023 15:18:51 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38IFIo3i028903
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 Sep 2023 15:18:50 GMT
-Received: from [10.216.52.36] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 18 Sep
- 2023 08:18:48 -0700
-Message-ID: <e753bc37-5fe7-0962-00e7-2df0de49c20f@quicinc.com>
-Date:   Mon, 18 Sep 2023 20:48:44 +0530
+        with ESMTP id S229664AbjIRP3m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:29:42 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A59E78
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:27:56 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c364fb8a4cso43481225ad.1
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:27:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1695050707; x=1695655507; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pudypFwSwvYWUA8GZ6yWJQWZyEDdbHX7BphECmHVSNw=;
+        b=QimgOvFpmjMbI25FGHNAb4EU9OVm5BesSOwBaeQKNXBzh9Cs/0fA2EuSCY61vT2b0a
+         1zy1Kk9k8hr3gXUcQUnLqiRc7O1m9ZmlK7AsY6WGx1Aur2wQ+CS4AP9wPKKS5jpExQ5B
+         TYwiAf1fO5Xu5OF4g+CoIAekC9V3R0kg62t6c4ZGaezkMxnw4blt8t+3X+nlUnIDsdST
+         jjHsI9Y2nc1zs+U7ZhP2mdLjpjrgAs5vxAZaTKnwLVYh09Qt9A7AEdEE/KFkYleapepA
+         v28t0TYarg3nWTK5MgjqNI9EQQrEpsR7VOZJM5Rlmq/zUktlD7/43nZ7l1q1szbD2XkZ
+         pprg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695050707; x=1695655507;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pudypFwSwvYWUA8GZ6yWJQWZyEDdbHX7BphECmHVSNw=;
+        b=pwJV9Ol5lkutMvsd8SIeSs1mjexEFWw97119jI7R9jEMqmNASVj4FBnDUDGMoNJL6n
+         A6m4jVxRG0dHBvMgd4QhdyjjYuV16Oca+1OBW/QdN+i34tLTG9apWUbjqpV46JPy0uh9
+         MtUxD4f9v9itxyKkPaa0vN2/Y5E9WYipYvzLhC8aGLzvn+dTciOrJnb5k1pGpBnhaviz
+         /JaAmFaLlUY7ki/bFJnPKIKyrvMZQzMSlhWjViNJvlT5AfuZcUDgAVxydHvmvKBhgNgK
+         xWjMSJ7YNgcFY17NzK4+fKwZ4vvY9dqZCmzkvV4k9Rs1DeCFtr2GslNWkEKHwuFRSnIm
+         QPTw==
+X-Gm-Message-State: AOJu0YyjwPh5Kp+rArU6Q4/HOjIcQyCnvEOJv1jVt147gFapkzEqpdkQ
+        PCMbFaZbNjShldEXdIM5gEfv7A==
+X-Google-Smtp-Source: AGHT+IExjXc7IVtiPsvm4aeJW5nIUZKxHF7MeFoJNQs3pxieErXLk9RYT1n73k5aZDfIEpUzQJO4bQ==
+X-Received: by 2002:a17:903:60e:b0:1c4:6cc2:a27e with SMTP id kg14-20020a170903060e00b001c46cc2a27emr4245837plb.69.1695050707125;
+        Mon, 18 Sep 2023 08:25:07 -0700 (PDT)
+Received: from PF2LML5M-SMJ.lan ([103.175.14.91])
+        by smtp.gmail.com with ESMTPSA id b6-20020a170902ed0600b001b9ecee459csm3031991pld.34.2023.09.18.08.25.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Sep 2023 08:25:06 -0700 (PDT)
+From:   Jinhui Guo <guojinhui.liam@bytedance.com>
+To:     rafael@kernel.org
+Cc:     guojinhui.liam@bytedance.com, gregkh@linuxfoundation.org,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lizefan.x@bytedance.com,
+        lkp@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH v6] driver core: platform: set numa_node before platform_device_add()
+Date:   Mon, 18 Sep 2023 23:25:02 +0800
+Message-Id: <20230918152502.316-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230918134527.252-1-guojinhui.liam@bytedance.com>
+References: <20230918134527.252-1-guojinhui.liam@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command
- fails
-Content-Language: en-US
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "# 5 . 16" <stable@vger.kernel.org>
-References: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
- <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
- <21d247d3-83be-ba53-c982-2ab0e2e4ffb3@quicinc.com>
- <ZQROzNqr7fbmJC87@kuha.fi.intel.com>
- <4e876097-aed1-2b0d-ecb4-6434add4ef26@quicinc.com>
- <ZQRi20nC0j5c4LGI@kuha.fi.intel.com>
- <d0c27255-fcd2-39ed-f7af-b3b79d965ddf@quicinc.com>
- <ZQhd0qic2wGvCoUo@kuha.fi.intel.com>
-From:   Prashanth K <quic_prashk@quicinc.com>
-In-Reply-To: <ZQhd0qic2wGvCoUo@kuha.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: cwjP36aFSjAg90LUWnvfML0geSJOkLMG
-X-Proofpoint-GUID: cwjP36aFSjAg90LUWnvfML0geSJOkLMG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-18_08,2023-09-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 spamscore=0
- adultscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
- clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309180134
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 18-09-23 07:55 pm, Heikki Krogerus wrote:
-> On Sat, Sep 16, 2023 at 01:58:30PM +0530, Prashanth K wrote:
->>
->>
->> On 15-09-23 07:27 pm, Heikki Krogerus wrote:
->>> Hi Prashanth,
->>>
->>> On Fri, Sep 15, 2023 at 07:10:25PM +0530, Prashanth K wrote:
->>>> On 15-09-23 06:02 pm, Heikki Krogerus wrote:
->>>>> On Tue, Sep 12, 2023 at 04:37:47PM +0530, Prashanth K wrote:
->>>>>>
->>>>>>
->>>>>> On 11-09-23 06:19 pm, Heikki Krogerus wrote:
->>>>>>> On Mon, Sep 11, 2023 at 02:34:15PM +0530, Prashanth K wrote:
->>>>>>>> Currently if ucsi_send_command() fails, then we bail out without
->>>>>>>> clearing EVENT_PENDING flag. So when the next connector change
->>>>>>>> event comes, ucsi_connector_change() won't queue the con->work,
->>>>>>>> because of which none of the new events will be processed.
->>>>>>>>
->>>>>>>> Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
->>>>>>>> fails.
->>>>>>>>
->>>>>>>> Cc: <stable@vger.kernel.org> # 5.16
->>>>>>>> Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
->>>>>>>> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
->>>>>>>> ---
->>>>>>>>      drivers/usb/typec/ucsi/ucsi.c | 1 +
->>>>>>>>      1 file changed, 1 insertion(+)
->>>>>>>>
->>>>>>>> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
->>>>>>>> index c6dfe3d..509c67c 100644
->>>>>>>> --- a/drivers/usb/typec/ucsi/ucsi.c
->>>>>>>> +++ b/drivers/usb/typec/ucsi/ucsi.c
->>>>>>>> @@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
->>>>>>>>      	if (ret < 0) {
->>>>>>>>      		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
->>>>>>>>      			__func__, ret);
->>>>>>>> +		clear_bit(EVENT_PENDING, &con->ucsi->flags);
->>>>>>>>      		goto out_unlock;
->>>>>>>>      	}
->>>>>>>
->>>>>>> I think it would be better to just move that label (out_unlock) above
->>>>>>> the point where clear_bit() is already called instead of separately
->>>>>>> calling it like that. That way the Connector Change Event will
->>>>>>> also get acknowledged.
->>>>>> Do we really need to ACK in this case since we didn't process the current
->>>>>> connector change event
->>>>>
->>>>> You won't get the next event before the first one was ACK'd, right?
->>>>>
->>>>
->>>> The spec says that we need to ACK if we received AND processed a CCI
->>>>
->>>> "4.5.4 Acknowledge Command Completion and/or Change Indication (R)
->>>> This command is used to acknowledge to the PPM that the OPM received and
->>>> processed a Command Completion and/or a Connector Change Indication."
->>>>
->>>> And here in this case, we have received, but not processed the event.
->>>> So I'm not really sure what to do here in this case. If we don't send an
->>>> ACK, then would the PPM think that OPM is not responding and reset it?
->>>> OR would it resend the previous event again since we didn't ACK?
->>>
->>> Every PPM behaves differently.
->>>
->>> Did you actually see that happening - GET_CONNECTOR_STATUS failed? Can
->>> you reproduce it?
->>>
->>
->> Yea we actually hit the issue once where GET_CONNECTOR_STATUS failed and
->> subsequent events didn't get queued since EVENT_PENDING wasn't cleared. Its
->> not easily reproducible (<1%) though.
->>
->> [4948:kworker/0:3]UCSI: ucsi_qti_glink_write: timed out
->> [4948:kworker/0:3]ucsi_glink soc:qcom,pmic_glink:qcom,ucsi:
->> ucsi_handle_connector_change: GET_CONNECTOR_STATUS failed (-110)
+> On Mon, Sep 18, 2023 at 3:46 PM Jinhui Guo <guojinhui.liam@bytedance.com> wrote:
+> >
+> > Setting the devices' numa_node needs to be done in
+> > platform_device_register_full(), because that's where the
+> > platform device object is allocated.
+> >
+> > Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
 > 
-> Okay. It would be really interesting to know why is it failing.
-> But let's just go with this for now.
+> No, I haven't given you this tag.
 > 
-> thanks,
+> I don't think that Greg has given you the one above either.
 > 
+> Please don't add tage that you haven't received to your patches,
+> because they are not applicable with incorrect tags.
+>
 
-Agreed, I'm not really sure why its failing, because its in happening 
-the lower layers. Anyways thanks for the comments and review!
-
-Regards,
+I appologize to it. I just misunderstand what it means. I will drop it out soon.
+ 
+> > Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> > ---
+> > V5 -> V6:
+> >   1. Update subject to correct function name platform_device_add().
+> >   2. Provide a more clear and accurate description of the changes
+> >      made in commit (suggested by Rafael J. Wysocki).
+> >   3. Add reviewer name.
+> >
+> > V4 -> V5:
+> >   Add Cc: stable line and changes from the previous submited patches.
+> >
+> > V3 -> V4:
+> >   Refactor code to be an ACPI function call.
+> >
+> > V2 -> V3:
+> >   Fix Signed-off name.
+> >
+> > V1 -> V2:
+> >   Fix compile error without enabling CONFIG_ACPI.
+> > ---
+> >
+> >  drivers/acpi/acpi_platform.c | 4 +---
+> >  drivers/base/platform.c      | 1 +
+> >  include/linux/acpi.h         | 5 +++++
+> >  3 files changed, 7 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+> > index 48d15dd785f6..adcbfbdc343f 100644
+> > --- a/drivers/acpi/acpi_platform.c
+> > +++ b/drivers/acpi/acpi_platform.c
+> > @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+> >         if (IS_ERR(pdev))
+> >                 dev_err(&adev->dev, "platform device creation failed: %ld\n",
+> >                         PTR_ERR(pdev));
+> > -       else {
+> > -               set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+> > +       else
+> >                 dev_dbg(&adev->dev, "created platform device %s\n",
+> >                         dev_name(&pdev->dev));
+> > -       }
+> >
+> >         kfree(resources);
+> >
+> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> > index 76bfcba25003..35c891075d95 100644
+> > --- a/drivers/base/platform.c
+> > +++ b/drivers/base/platform.c
+> > @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
+> >                         goto err;
+> >         }
+> >
+> > +       set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
+> >         ret = platform_device_add(pdev);
+> >         if (ret) {
+> >  err:
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index a73246c3c35e..6a349d53f19e 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
+> >         return 0;
+> >  }
+> >  #endif
+> > +
+> > +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
+> > +       acpi_get_node((adev)->handle) : NUMA_NO_NODE)
+> > +
+> >  extern int pnpacpi_disabled;
+> >
+> >  #define PXM_INVAL      (-1)
+> > @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+> >  #define ACPI_COMPANION_SET(dev, adev)  do { } while (0)
+> >  #define ACPI_HANDLE(dev)               (NULL)
+> >  #define ACPI_HANDLE_FWNODE(fwnode)     (NULL)
+> > +#define ACPI_NODE_GET(adev)            NUMA_NO_NODE
+> >
+> >  #include <acpi/acpi_numa.h>
+> >
+> > --
+> > 2.20.1
+> >
