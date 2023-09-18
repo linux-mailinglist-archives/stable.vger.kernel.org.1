@@ -2,106 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 411847A5060
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 522C07A5098
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:09:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbjIRREP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 13:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51250 "EHLO
+        id S231546AbjIRRJu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 13:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbjIRREC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:04:02 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21197CE7;
-        Mon, 18 Sep 2023 10:03:27 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id ca18e2360f4ac-7927952ca67so161267039f.2;
-        Mon, 18 Sep 2023 10:03:27 -0700 (PDT)
+        with ESMTP id S230006AbjIRRJj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:09:39 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE8B91
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 10:09:32 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-68fc9e0e22eso3622970b3a.1
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 10:09:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695056607; x=1695661407; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LAN6eFd4fB8Jue9t+rReqiCy+eBs2TmxKe/oinfuoLE=;
-        b=OIzQcl97ZRLQ+WGRsaq65pyKTVZo6eClWd58KvfDPmxx6VjTkuHQoHEFBUUNXtDAuM
-         bmzqfUWOsVOrM0FeUTx08ZSyD8KtYM4iAP7mH21K5qcGVEZb4f5gfP2cFlKWZrt7QO7c
-         vo6+Dg6Xq4MtgueNP8fsO5rYRtmyg6ABFDBoY2yAsVDZSkst8c0dV2mN1sx3qtxFFuTQ
-         e2DT3yrzzfDOsF+IF8VZtN/SlVRmlSfrX4frPtxnU2rWAALdlInEPFBXlpV+RX+Ps/3O
-         fLfIqAMktWGIJgClt8v/zO4WpHf8aqrM63ivNjPXQMRoKW6Ydiuc8/9W3G7kxz0fSMzW
-         Z+aA==
+        d=jade-fyi.20230601.gappssmtp.com; s=20230601; t=1695056972; x=1695661772; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AYQSn+OIzp01ryaAaejSH+/Rdtrl+ucwSOYu4Xut+PI=;
+        b=X8YWCr0Ar0M1UQ5IUxcRBTS/fDaYLt8TsxUTJMRMpvqZiWlgAganoFHBs9khj1ZK80
+         zIXGzByKPMK44TGLaROEwf0oY8XUqjzKIU+rOxUb58M725WPaaII839uYkGJsLosrsgF
+         MC2i8W1rEGyOyU6NfeVAbhSg7QsVCxfkAhJXeUKn85/ZO54A+PjSrAVsaZZCDZthVidh
+         TxluZV0tUnsraf/JG1Dmxi6kuM+xU4dg0jcRA+lCbPQ18j3CWuj7XvgE4ruAASuHeiGY
+         HK/jjXavA6OL0erb3ziOWBE/Qr3UOA+KC8k+4l6Q97u4P9UGWG90gyIoBvP1nHSdxDZQ
+         JkKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695056607; x=1695661407;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1695056972; x=1695661772;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LAN6eFd4fB8Jue9t+rReqiCy+eBs2TmxKe/oinfuoLE=;
-        b=dx9mWWl3u1CQ2y8md6NcZw9gOWdf5/ny7hThuquLQe6D2f2x2QAM+k84+5cVhGNQr4
-         0f9ISDxR7R9K2UB0eL2Q0dlN5ynmah8aWiTJKgwEnAZmIX75w1r2UKI5FTs061+OrGIg
-         wYh/JsUDHtojs3MPpBAuaMxBqW9zDed+YWksy3FuPpbqLyRc7Xmd/m0UA4XnOrwT1x10
-         x9xKhwBAVOpKNQ3mq2ze53LT7ThdmLVHwnc9P0ApY1UVGEWx75jIhviMhHLGoLrrZDRG
-         DzYnRBypfpFXsvyU3P/gdMREMoClEfhLbXx3FDA7OdmUoxEAikdvpfwOadBJwCSQoabM
-         4SBw==
-X-Gm-Message-State: AOJu0YytRH8EAB3SthYak3baUgt9JMu4xC2r/dRjTSXNGQXdTnpzkYFj
-        r1pXfO1ScylLmoASIj2cEU6gCfVHhRc=
-X-Google-Smtp-Source: AGHT+IGK7meVu2qpFrRpwKHUVrO55cSDbF7VstRtUdvHnRD8iWEdQS7od9KpvMDyXqsrVafFxATjhA==
-X-Received: by 2002:a6b:5c18:0:b0:795:16b8:85fc with SMTP id z24-20020a6b5c18000000b0079516b885fcmr10619896ioh.0.1695056606987;
-        Mon, 18 Sep 2023 10:03:26 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id gw23-20020a0566381ef700b00439e20a2c59sm672740jab.144.2023.09.18.10.03.25
+        bh=AYQSn+OIzp01ryaAaejSH+/Rdtrl+ucwSOYu4Xut+PI=;
+        b=kpeo9sBFHbopppyMqPjRoJ8ne37kEOk7O8A+4qzyriv8xQgmJoZA5paae59GzXgZks
+         VZ6XqIlVEF7tslkWijr8D35X5SgRJ+mID3rlf9zwRHDV9Yg2TAgJYBhXJ8K+LzFN7Rm5
+         b/7ZVCBVsFh+GSY7PYXKloyJmZ+3D6KhTslemAb8EPNFCIVAxkoQ1EwW1amv38Xz9X50
+         ipWR+Sh8qCJPSX96auuQnuR3cVWclJEOBA1HKoRzAfBFFyeAYe6PiB8R3Xz1J5yYQcqs
+         lIAChH+7Skn7tOZ7NJ28/JS+sjdanlegMDr2MwcNcQ6gYOXHN5fTrJEOJDGQaafYgDly
+         0mXA==
+X-Gm-Message-State: AOJu0YyyAqGi+/4B2P18KLImSSS8vvM5hgRKaboizEUU4L5SUoZzS2cb
+        +8w6YKW99pLCK+laYsEMQz9cug==
+X-Google-Smtp-Source: AGHT+IGtUIR1rYu6U73lUGcuPGDdUrU80/1dpmLzoWH5zRK9YDq6P1xbXkYrEtqDzirwAafIJfYUyg==
+X-Received: by 2002:a05:6a20:7288:b0:157:e4c6:766a with SMTP id o8-20020a056a20728800b00157e4c6766amr9410730pzk.41.1695056972113;
+        Mon, 18 Sep 2023 10:09:32 -0700 (PDT)
+Received: from localhost ([172.103.222.8])
+        by smtp.gmail.com with ESMTPSA id x14-20020a056a00270e00b0068fe7c4148fsm7330361pfv.57.2023.09.18.10.09.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 10:03:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 18 Sep 2023 10:03:24 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.15 000/511] 5.15.132-rc1 review
-Message-ID: <79a88da2-70cc-4d4d-b322-c44135365969@roeck-us.net>
-References: <20230917191113.831992765@linuxfoundation.org>
+        Mon, 18 Sep 2023 10:09:31 -0700 (PDT)
+From:   Jade Lovelace <lists@jade.fyi>
+To:     Gene <lists@sapience.com>, Ricky WU <ricky_wu@realtek.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        linux-kernel@vger.kernel.org
+Cc:     regressions@lists.linux.dev, Alyssa Ross <hi@alyssa.is>,
+        Michal Suchanek <msuchanek@suse.de>,
+        "axboe @ kernel . dk " <axboe@kernel.dk>,
+        "sagi @ grimberg . me " <sagi@grimberg.me>,
+        "linux-nvme @ lists . infradead . org " 
+        <linux-nvme@lists.infradead.org>, "hch@lst.de" <hch@lst.de>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Subject: [Revert] Re: Possible nvme regression in 6.4.11
+Date:   Mon, 18 Sep 2023 10:07:38 -0700
+Message-ID: <20230918170831.1677690-2-lists@jade.fyi>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <66bc5229-8131-4111-96fe-bd5ee90314b0@leemhuis.info>
+References: <66bc5229-8131-4111-96fe-bd5ee90314b0@leemhuis.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 17, 2023 at 09:07:07PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.132 release.
-> There are 511 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> Anything received after that time might be too late.
-> 
+This regression affects all copies of the Dell XPS 15 9560 and Dell Precision
+5520 with any SSD including aftermarket ones.
 
-ChromeOS build tests complain:
+Per the bugzilla discussion here:
+https://bugzilla.kernel.org/show_bug.cgi?id=217802 this regression has
+been confirmed to also affect 6.5.2 and 6.6-rc1, and affects several
+distros.
 
-fs/ksmbd/smb2pdu.c:6256:6: error: variable 'fp' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-        if (work->next_smb2_rcv_hdr_off) {
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-fs/ksmbd/smb2pdu.c:6367:21: note: uninitialized use occurs here
-        ksmbd_fd_put(work, fp);
+Known affected branches: 6.1, 6.4, 6.5, 6.6.
 
-That is caused by
+It has already been reverted by OpenSUSE and is soon to be reverted in
+NixOS. A patch follows, hopefully with the right metadata tags.
 
-> Namjae Jeon <linkinjeon@kernel.org>
->     ksmbd: no response from compound read
-> 
+I have compiled a kernel 6.1 with the revert and confirmed it now boots
+again.
 
-The compiler suggests to initialize fp with NULL. That _might_ be
-a feasible solution.
+p.s. this is my first time pointing git-send-email at this particular
+list, so I'm sorry if I got anything wrong.
 
-Guenter
+Jade
+
+
