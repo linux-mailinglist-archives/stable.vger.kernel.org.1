@@ -2,98 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9587A4C51
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8937A4C96
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbjIRPbO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 11:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60670 "EHLO
+        id S229480AbjIRPhG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 11:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIRPbN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:31:13 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E110C1AE
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:29:13 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6c0c6370e5eso2952710a34.3
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:29:13 -0700 (PDT)
+        with ESMTP id S229458AbjIRPhF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:37:05 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33122D40
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:32:16 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c43b4b02c1so18822835ad.3
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:32:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1695050751; x=1695655551; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YVKIu2PP2j4ok3fw5mLN5mcVXh2mH1/J+kvJoPupo4Y=;
-        b=eTFlzsNVq5npy8Lw9LUug4dHHPrXPsPUBADl2YmNCSosHQQrZQVN9Fv5scHw859Ugi
-         t6BgoZiAF0ocgGcAAPdHbZKuJuMDoe1KsPWNUba5dke/izsCzoyhIaSJL7aX9ND1kpM3
-         ls+M0A7SzRMwHvCzEm654o+tzKrTsxU0DHGtk=
+        d=bytedance.com; s=google; t=1695050957; x=1695655757; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=abFxBMLmE6je9n8ycRrpCecvQlEihPWZd75zj0mwVu4=;
+        b=EDhQGbodftuX73rYdR+tx5Pq4K1UkSoQcqUdaxgRfTX/w0QUxtnKxt5U8DWaVrpTbS
+         UzJlpoB9KuPO1xen69/QOA/odWqR9Y6pqEK0TFtVYZsKI7zFMhdIp6ZCR65Ku+W9oAcr
+         XdQjUK0q8YQrdQSwoi8BJGw9q6kTOcPdnB8r8utjr3nrzeD9QS8S9VqrR//T8Um28l/I
+         Rdt+s36QnjaNhVl5bdSJ+fsULH2p2jHsNRFIiBR8pJL01EA/+9hTdEt9LUcKvJSp3Scv
+         FTAm36NUUgzKFzHD9+NOSCpMiy+HDfC8ygj0GTg6uWJNt4Suf9FSjwoEhZxkvZGRUe2V
+         O+hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695050751; x=1695655551;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1695050957; x=1695655757;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YVKIu2PP2j4ok3fw5mLN5mcVXh2mH1/J+kvJoPupo4Y=;
-        b=WsYz8teqbJ+gQmQOlJhyIyhBabx/LAPK6iAMwL0tg0ZvG/wHWeAkLUBEbr0srRRpfY
-         ODGIEe4PDTT6CTgfQBzLWEtou+gmOdB9opUcOwxdRagMyzxgRH6RXZC4f37Mw4Qzt7pC
-         Par+jGho7GBU2ydzH9hbh2ELVlXElhn+rgpTY2Po0IX5wmH9HRK64pLec2gmNaxXap3Z
-         H/Kpnxi56fL9hWKyZAcXKpePoNcQmrSeNjKm8/WD4M5dMuHU0iyIYyvoO3eFxE9K6mK7
-         pAo4F8OVgydYCKY2UUviY15zD5wiFDwqiEqXMbLJU3hKNNCsF/dD6O9+u8GA380gYaFF
-         xWHA==
-X-Gm-Message-State: AOJu0YzQuglmjrl/j4zPesdrGrWPMmhTP7xZ1YObFWjPKv085150Xc2D
-        Am2xhNpUiVasViwvpdxmIS51+A==
-X-Google-Smtp-Source: AGHT+IGe9SqnHwSEgpsYlD4JGoZ7FIJxs+MdYsxgK7B+OtUSYfkXctreGRJaR9bm+s8ZbO3v7rj0GQ==
-X-Received: by 2002:a05:6830:2014:b0:6b7:1d93:72e0 with SMTP id e20-20020a056830201400b006b71d9372e0mr9169561otp.32.1695050751405;
-        Mon, 18 Sep 2023 08:25:51 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id e14-20020a4aaace000000b0054f85f67f31sm4217899oon.46.2023.09.18.08.25.50
+        bh=abFxBMLmE6je9n8ycRrpCecvQlEihPWZd75zj0mwVu4=;
+        b=cgwu0sWCnrfpP5QTA3Z9aQukXVlSkPWSbsjbdgfrgb/Mg4LbXEIAN6M41hof32m8EQ
+         VirXx24l6g+NkcxLJGOyAEGKgDnr4crnble2ZfoIMvHr53OxY6lo4jfa7PGY/r3cUPrd
+         o9UpmuvQRnKGaESAx/2AauEJ0/GUmGJzUzUPny5DUMhscbCP/vhjBhz7lUEx9oGM/L8r
+         X5dIuEdM0WQNyg8hAcyhWlumAOHVsGspZPJgdFVm2JBhIPokTn4sYBRz2nCzf1OubR2s
+         pAUdSt9Q4/4H+LRvZbDkhK7MRDlDKhaWze+uqdDC2SB8YUX3AyfE34LqDvZdbnfbntcT
+         eD5Q==
+X-Gm-Message-State: AOJu0Yz7CaPrwNrZn4QdgPHdhRZeTGXEIG10pYtZIB+RRTuKQXzol4nf
+        VzRW7CfMdpehcjvbWKRXoMhGsw==
+X-Google-Smtp-Source: AGHT+IGkPPsGvQqcYFLf0KZSE5Yj/heR0ybdwdNcnZm27VTPIfhhzJx659QcINaY6lgh47ehEn1O7Q==
+X-Received: by 2002:a17:902:9b83:b0:1b3:8862:9823 with SMTP id y3-20020a1709029b8300b001b388629823mr7240901plp.28.1695050957414;
+        Mon, 18 Sep 2023 08:29:17 -0700 (PDT)
+Received: from PF2LML5M-SMJ.lan ([103.175.14.91])
+        by smtp.gmail.com with ESMTPSA id n6-20020a170902968600b001bdcde49bc3sm8407895plp.119.2023.09.18.08.29.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 08:25:50 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Mon, 18 Sep 2023 10:25:49 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
-Message-ID: <ZQhr/TN/taOKqYIm@fedora64.linuxtx.org>
-References: <20230917191051.639202302@linuxfoundation.org>
+        Mon, 18 Sep 2023 08:29:17 -0700 (PDT)
+From:   Jinhui Guo <guojinhui.liam@bytedance.com>
+To:     gregkh@linuxfoundation.org
+Cc:     guojinhui.liam@bytedance.com, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lizefan.x@bytedance.com, lkp@intel.com, rafael@kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v6] driver core: platform: set numa_node before platform_device_add()
+Date:   Mon, 18 Sep 2023 23:29:12 +0800
+Message-Id: <20230918152912.378-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230918134527.252-1-guojinhui.liam@bytedance.com>
+References: <20230918134527.252-1-guojinhui.liam@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 17, 2023 at 09:10:00PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.4 release.
-> There are 285 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Mon, Sep 18, 2023 at 09:45:27PM +0800, Jinhui Guo wrote:
+> > Setting the devices' numa_node needs to be done in
+> > platform_device_register_full(), because that's where the
+> > platform device object is allocated.
+> > 
+> > Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > 
-> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Where did I provide this tag?
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
-
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+I appologize to it. I just misunderstand what it means. I will drop it out soon.
