@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19D327A4E91
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B967A4FA9
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjIRQTZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 12:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
+        id S230288AbjIRQsq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 12:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230000AbjIRQS5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:18:57 -0400
+        with ESMTP id S230364AbjIRQsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:48:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1DF83C3
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 09:17:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0C0C433CB;
-        Mon, 18 Sep 2023 16:17:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A78210A;
+        Mon, 18 Sep 2023 09:47:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACDC433C7;
+        Mon, 18 Sep 2023 16:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695053852;
-        bh=DQQ6e5dUAGAEmHLUF+dLJ6eP+3jZnMJLKtK6MB24T8A=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=as5A4WtXZ8nNG6ESDvjGEal20NONI6D/wFrUdtWOSW0wM7nw76n9M2Nbv4ettHLSn
-         fM+hHfKJGN5QRIQvDlWvxNxFLjBseestJr4hva2awD+zIPWqORaTZiCfqck5ojaF6x
-         oeZ9+3OlNBrTv/rVkfcBxPy7mwpWcQYRy8NKo9LrK+x9d3gMGwjxPJ3tMBETONw5JL
-         YWquEwNNB5VLS7l1+PnSWHCJnhgUCf9qg8GTxvTWJgUPNZkFPPwah1foDZqTIUvp45
-         syRNHdHTC0eOVeogx0X6pDsYtoK6XmU/V0f7teDBKOIpnffzQiYGcO1Ihbg3UG8P9H
-         wMpIkFCkP9/0A==
-Date:   Mon, 18 Sep 2023 18:17:27 +0200
-From:   Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 261/406] leds: Fix BUG_ON check for
- LED_COLOR_ID_MULTI that is always false
-Message-ID: <20230918181727.74a28f4a@dellmb>
-In-Reply-To: <2023091836-papaya-jackknife-2867@gregkh>
-References: <20230917191101.035638219@linuxfoundation.org>
-        <20230917191108.094879104@linuxfoundation.org>
-        <20230918160004.3511ae2e@dellmb>
-        <2023091836-papaya-jackknife-2867@gregkh>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        s=k20201202; t=1695055662;
+        bh=Offg6VmtFe2UBByUqEhSGUwj6q3tNukHJa7EtuPg/UE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SfmpFokFWz+1524hZtLpJ7zeYbI902PzYuG/+6N96zVgQWjmAsmsjrUqQaewh+kOj
+         8hfV9Rt1PQVZcFai8A+RqKiDo2LNo6AUCGpwljNQoAPchhFxgtRyRxpoBkygHVoGfY
+         iMRarhhfX7ThGSQTLJQ2saAh7xn6wI2pIbhzQxZCb1CLGm2KhZb26lNmePFv9zs3l0
+         Vw73HQ6L4/XH6bGA4QGFiKnzQ6rNz9M7Yz9dAM+YI+fq/7Wl8PVKWhVl0eA+1Oz8Xk
+         mb0LMwINAOiMQCByIQ7xBdm4suF54dGa9YH/42BaXwMNViy23JrZQG8R7D5rWspNDT
+         TwpzGrIpVmfXg==
+Date:   Mon, 18 Sep 2023 12:47:41 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Dan Drown <dan-netdev@drown.org>,
+        Oliver Neukum <oneukum@suse.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.4 24/25] usb: cdc-acm: move ldisc dcd
+ notification outside of acm's read lock
+Message-ID: <ZQh/LTtayWgQ/BrS@sashalap>
+References: <20230909003715.3579761-1-sashal@kernel.org>
+ <20230909003715.3579761-24-sashal@kernel.org>
+ <ZP7bkRc-1U8-M6X1@hovoldconsulting.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <ZP7bkRc-1U8-M6X1@hovoldconsulting.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -53,33 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 18 Sep 2023 17:22:59 +0200
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Mon, Sep 11, 2023 at 11:19:13AM +0200, Johan Hovold wrote:
+>On Fri, Sep 08, 2023 at 08:37:12PM -0400, Sasha Levin wrote:
+>> From: Dan Drown <dan-netdev@drown.org>
+>>
+>> [ Upstream commit f72ae60881ff685004d7de7152517607fcd9968f ]
+>>
+>> dcd_change notification call moved outside of the acm->read_lock
+>> to protect any future tty ldisc that calls wait_serial_change()
+>>
+>> Signed-off-by: Dan Drown <dan-netdev@drown.org>
+>> Acked-by: Oliver Neukum <oneukum@suse.com>
+>> Link: https://lore.kernel.org/r/ZN1zV/zjPgpGlHXo@vps3.drown.org
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  drivers/usb/class/cdc-acm.c | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+>> index 11da5fb284d0a..ca51230f44409 100644
+>> --- a/drivers/usb/class/cdc-acm.c
+>> +++ b/drivers/usb/class/cdc-acm.c
+>> @@ -318,6 +318,16 @@ static void acm_process_notification(struct acm *acm, unsigned char *buf)
+>>  		}
+>>
+>>  		difference = acm->ctrlin ^ newctrl;
+>> +
+>> +		if ((difference & USB_CDC_SERIAL_STATE_DCD) && acm->port.tty) {
+>> +			struct tty_ldisc *ld = tty_ldisc_ref(acm->port.tty);
+>> +			if (ld) {
+>> +				if (ld->ops->dcd_change)
+>> +					ld->ops->dcd_change(acm->port.tty, newctrl & USB_CDC_SERIAL_STATE_DCD);
+>> +				tty_ldisc_deref(ld);
+>> +			}
+>> +		}
+>> +
+>>  		spin_lock_irqsave(&acm->read_lock, flags);
+>>  		acm->ctrlin = newctrl;
+>>  		acm->oldcount = acm->iocount;
+>
+>This is a fix for a commit in 6.6-rc1 (3b563b901eef ("usb: cdc-acm: add
+>PPS support")) so a backport of it makes no sense.
+>
+>Please drop.
 
-> On Mon, Sep 18, 2023 at 04:00:04PM +0200, Marek Beh=C3=BAn wrote:
-> > Greg, please drop this patch from both 5.10 and 5.15.
-> >=20
-> > Reference:=20
-> >   https://lore.kernel.org/linux-leds/ZQLelWcNjjp2xndY@duo.ucw.cz/T/ =20
->=20
-> But this is already in released kernels:
-> 	6.1.53 6.4.16 6.5.3 6.6-rc1
->=20
-> > I am going to send a fix to drop the check altogether. =20
->=20
-> We will be glad to queue up the fix as well when it hits Linus's tree,
-> please be sure to tag it for stable backporting so we can get it in all
-> locations.
->=20
-> But for now, being bug-compatible makes more sense, right?  Or is this
-> really critical and should not be in these kernels now?
+Done, thanks!
 
-According to that e-mail, the patch breaks booting for some systems, so
-if it would be possible to avoid it...
-
-I've sent a fixup patch which removes the BUG_ON altogether, and
-referenced the patch that broke booting in the Fixes tag. But I don't
-know how long it will take to hit Linus' tree, it may take several
-weeks.
-
-Marek
+-- 
+Thanks,
+Sasha
