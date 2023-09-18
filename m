@@ -2,49 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6027A3F83
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 04:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55D487A4080
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 07:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbjIRCxh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 17 Sep 2023 22:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
+        id S238301AbjIRFhK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 01:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235866AbjIRCxZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 17 Sep 2023 22:53:25 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 808B298
-        for <stable@vger.kernel.org>; Sun, 17 Sep 2023 19:53:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA78DC433C7;
-        Mon, 18 Sep 2023 02:53:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695005600;
-        bh=GJjOhUP4OKDfkDNhn3pYK9zC2cKS3WVCHaHu8CtXp2w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eYXQOChEKhGUCuReprgPoeSS9k2OlXKjRVPcKueJJMmFRqhnxdCalw2wowD6ApjLC
-         qzof5cpD21OmyUDih5Vs3dEnrk0EhitbOftxbULF0ad4FaiJWOib/0rvQwNwNk/7OK
-         sA7CdeDvDxOKe0f8eS3L+08a3zfAxul7fDVeHAousNvgXm6T6Qo0YMB+PsB4uW4M0j
-         fHPNzbYhTIB346x/IoZV+cYdano9Tsw7DNzn575Bu06ZlAqmq+AOYpLm9V97hmrajm
-         3o+i8AD4YNdPDlKTje/LIO0PLawT0cFqQzFoOxMkIcTclQiJoOWAO2Q4ZhI+6gMFC+
-         KsSBpjddvdyZQ==
-Date:   Sun, 17 Sep 2023 19:53:18 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 096/406] crypto: blake2b - sync with blake2s
- implementation
-Message-ID: <20230918025318.GA5356@sol.localdomain>
-References: <20230917191101.035638219@linuxfoundation.org>
- <20230917191103.663752909@linuxfoundation.org>
+        with ESMTP id S239666AbjIRFgq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 01:36:46 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C8ED2;
+        Sun, 17 Sep 2023 22:36:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695015401; x=1726551401;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Xb/dp+do5fxvyOyftlUPUmIspOQcsSZjn7fEnjla9E0=;
+  b=lWbffep6TGu0QrqbGYM5YgwRCdOx2oIEmK/K9NpUauC0ehQUz3nIJ0hy
+   IhAfCIBg/3HTxGrwJUYCi4SFzjVGnsR8OH4DsRzGtluJiPVoIjBnHRPP3
+   OzTYNLYHzYX9M2v7J6yj8j76QswCTD139YgeOGY+C5DF2yzC0A1ub+PhH
+   J7u0OhzCuvrl42Esi8lNkfxLsQGGDkU9Vk7IpkrSTcpJb8vh0Em7AtB7g
+   dREJrinoG5t9/ti/5AawoXohxx1XZQTXvB6s2eNZBFa5kTTdDnabMx93S
+   A8xSdZkcn7EWtUvRFKRgjoZHzOlK03kMZHkT/kebsOJDGQOe1Jo8kh6Ui
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="465914704"
+X-IronPort-AV: E=Sophos;i="6.02,155,1688454000"; 
+   d="scan'208";a="465914704"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2023 22:36:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="738994554"
+X-IronPort-AV: E=Sophos;i="6.02,155,1688454000"; 
+   d="scan'208";a="738994554"
+Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
+  by orsmga007.jf.intel.com with ESMTP; 17 Sep 2023 22:36:37 -0700
+Message-ID: <9334dfcd-7749-6ae1-1170-b4952f2b8181@linux.intel.com>
+Date:   Mon, 18 Sep 2023 13:33:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230917191103.663752909@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Cc:     baolu.lu@linux.intel.com, joro@8bytes.org, jgg@nvidia.com,
+        jean-philippe@linaro.org, apopple@nvidia.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/arm-smmu-v3: Fix soft lockup triggered by
+ arm_smmu_mm_invalidate_range
+Content-Language: en-US
+To:     Nicolin Chen <nicolinc@nvidia.com>, will@kernel.org,
+        robin.murphy@arm.com
+References: <20230901203904.4073-1-nicolinc@nvidia.com>
+ <ZQQLNmmAOsNmvtDs@Asurada-Nvidia>
+From:   Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <ZQQLNmmAOsNmvtDs@Asurada-Nvidia>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,64 +68,29 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 17, 2023 at 09:09:10PM +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
+On 9/15/23 3:43 PM, Nicolin Chen wrote:
+> I found this patch cannot be applied to v6.6-rc1 due to conflicts
+> with some new commits that were merged during the previous cycle.
 > 
-> ------------------
-> 
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> [ Upstream commit 28dcca4cc0c01e2467549a36b1b0eacfdb01236c ]
-> 
-> Sync the BLAKE2b code with the BLAKE2s code as much as possible:
-> 
-> - Move a lot of code into new headers <crypto/blake2b.h> and
->   <crypto/internal/blake2b.h>, and adjust it to be like the
->   corresponding BLAKE2s code, i.e. like <crypto/blake2s.h> and
->   <crypto/internal/blake2s.h>.
-> 
-> - Rename constants, e.g. BLAKE2B_*_DIGEST_SIZE => BLAKE2B_*_HASH_SIZE.
-> 
-> - Use a macro BLAKE2B_ALG() to define the shash_alg structs.
-> 
-> - Export blake2b_compress_generic() for use as a fallback.
-> 
-> This makes it much easier to add optimized implementations of BLAKE2b,
-> as optimized implementations can use the helper functions
-> crypto_blake2b_{setkey,init,update,final}() and
-> blake2b_compress_generic().  The ARM implementation will use these.
-> 
-> But this change is also helpful because it eliminates unnecessary
-> differences between the BLAKE2b and BLAKE2s code, so that the same
-> improvements can easily be made to both.  (The two algorithms are
-> basically identical, except for the word size and constants.)  It also
-> makes it straightforward to add a library API for BLAKE2b in the future
-> if/when it's needed.
-> 
-> This change does make the BLAKE2b code slightly more complicated than it
-> needs to be, as it doesn't actually provide a library API yet.  For
-> example, __blake2b_update() doesn't really need to exist yet; it could
-> just be inlined into crypto_blake2b_update().  But I believe this is
-> outweighed by the benefits of keeping the code in sync.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> Stable-dep-of: 9ae4577bc077 ("crypto: api - Use work queue in crypto_destroy_instance")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> I can redo a version rebasing on the v6.6-rc1, yet the new version
+> won't apply to earlier kernel stable trees. Is there a way to make
+> it happen that both mainline and earlier trees can have this fix?
 
-1.) This isn't a Stable-dep-of 9ae4577bc077.   I don't see why this is being
-backported.
+Normally, bug fixes should first be submitted to the mainline kernel
+(also known as Linus's tree). If you use the "Fixes" and "CC-stable"
+tags, the patch will be automatically picked up for the appropriate
+stable kernels.
 
-2.) On lore.kernel.org, there is no record of this patch being queued to 5.10.
-See https://lore.kernel.org/all/?q=%22sync+with+blake2s+implementation%22.  The
-first mention of 5.10 and this patch is this thread, which is already the -rc1
-review.  I guess the only list that the initial "patch was queued" email was
-sent to is stable-commits, and stable-commits is not archived on
-lore.kernel.org.  That is surprising and makes it harder for people to give
-feedback on patches going into stable.  stable-commits should be archived on
-lore.kernel.lorg, and patches should generally be sent to more lists as well.
-(I'm probably shouting into a void here as I've given this same feedback on
-other patches before and nothing changed, but here it is again...)
+If the patch does not apply to any stable kernel that you want it to be
+there, you can then post a back-ported patch to the stable mailing list.
 
-- Eric
+When doing so, it's better to include the following information:
+
+- The mainline commit ID of the back-ported patch.
+- The versions of the stable kernel(s) to which you want the back-ported
+   patch to be applied.
+
+Hope this helps.
+
+Best regards,
+baolu
