@@ -2,74 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADA0B7A5212
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 20:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4626E7A5218
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 20:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjIRSdn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 14:33:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
+        id S229485AbjIRSe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 14:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjIRSdm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 14:33:42 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E970E10D;
-        Mon, 18 Sep 2023 11:33:34 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-34fe5d0f0ffso4828065ab.1;
-        Mon, 18 Sep 2023 11:33:34 -0700 (PDT)
+        with ESMTP id S229470AbjIRSeZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 14:34:25 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A3D10D;
+        Mon, 18 Sep 2023 11:34:20 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-690b85eb2dcso487355b3a.0;
+        Mon, 18 Sep 2023 11:34:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695062014; x=1695666814; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JTA1VVN3J1MjDZguKA7jeRxj5alEQOs99WsJuGyCrjY=;
-        b=mDvtjFXufbYDzjwsspzT9YtgDG5kuY1CQF9cm5IT0XA2/g412vZcXuIcM3T39BQfrW
-         V/TWkKnUUULs1t/ZxZ78YJKpVc79aB8/ZnmH0YKOMTE1yT+c42CzjMbZ6m2hT/mjxBAC
-         SVT9ISlyQQ0oRdOGQ0weCyXw6wZyF0/GkZi8IBD2lqL1UFWVWWp3Vj6FoxTk5xaDN7eQ
-         WCmkVlvYDj7akOAE9qw5aEXi+bodfLEslJf+o0j8mjNDIoB1la5/3rOk+i9En+Xc3IZU
-         QPN+zUWY/ASg2/OLm5ArcqI8D71wkQ5KTMt68UOBJJeUx0IEVlOJQmG/x10WTdgOkJWY
-         tG+A==
+        d=gmail.com; s=20230601; t=1695062060; x=1695666860; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FklHMNqNjRSEiP2yIY2hQ7L26kuoNsBASX7uOWLkP/A=;
+        b=nUEH49ltPPhjlMSu0pXp3Pztz4c0XsZnyrdHPHm5d/cz80hwMKRZ0KSGaGEB5/xPVo
+         VPH840f8iUbWG6rMNIBjv2TQKxOTQCWw5Zzz2oPeMQA1Fh5/m29yG/HZuDabj7krVIPy
+         jkaGRRi2YNufCMztQGM9Pr7k0urlOWZHnTrcHc5qi6kGDyT2alHBixn1FFbj747C+FQh
+         oth/izvZTtiBD7vD6JTiRuLVScmlb+Ll/YorsO15zs+7ku7z9YdYdRMi476X2e+j4+a+
+         9ovWQLWIaEmLFVh38Y0Da7b2cyNm+6UvCUZF7zsTgUz5lbS7sjc5VFz2U/KjSsj0Quf9
+         vwIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695062014; x=1695666814;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JTA1VVN3J1MjDZguKA7jeRxj5alEQOs99WsJuGyCrjY=;
-        b=Gp8Bw7pdhD1MPaAX5WEVfq/fMItIZHfpq49Wx3a6pQQSQbDhHJov6NJWaEBzAhxBmL
-         HsgXB7DL0JsoMVOMJjQ2iGgKg9j/44EdmfwbV6DJUr8+8mpZzsEhpE94/rjXql8/iwsU
-         RkZDuFcdWhQTPCK9px7FdzVB9O8qc+mmcP6v7jSvgVkl5JMdLhjp6Kj1YgIHSHm5tCsP
-         9+eFkx5aP8pwCZ4tDFsBRDPbeE0Q81RI04ASeCPiAuyru+b+mYiznTq3qgaugPOXw+TC
-         ztaFr1H2giHUl2ufdwq+P7AbWy2prprEHfxZq2iPJsCUD0yaT82v8YJAjCP0W2rbnp2U
-         D0ZA==
-X-Gm-Message-State: AOJu0YwU879rsWvt6mxJvRejq/4jDUjpN/byHULD8bAc6Ya0aQiFf3aj
-        zXNqVNyl4wElFNU9eLrFXb8=
-X-Google-Smtp-Source: AGHT+IG+I26s4WOtf06vG+cUHmLc7QxIV17q4Uw/P9uvCip5VKX/U1XMB4ehHMXJaS4+IFeGa50bwA==
-X-Received: by 2002:a05:6e02:1d8c:b0:34f:75cb:7f0 with SMTP id h12-20020a056e021d8c00b0034f75cb07f0mr14265147ila.12.1695062014195;
-        Mon, 18 Sep 2023 11:33:34 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id x59-20020a0294c1000000b0042bae96eba7sm267655jah.7.2023.09.18.11.33.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 11:33:33 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 18 Sep 2023 11:33:32 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.10 000/406] 5.10.195-rc1 review
-Message-ID: <562e05d9-8559-430d-95d6-8873bed61223@roeck-us.net>
-References: <20230917191101.035638219@linuxfoundation.org>
+        d=1e100.net; s=20230601; t=1695062060; x=1695666860;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FklHMNqNjRSEiP2yIY2hQ7L26kuoNsBASX7uOWLkP/A=;
+        b=UDDQTRVHq/8WFhbI7dLiuHtSK2RG5Hy1OgEfWt5NRKCe+Sqn9uaQYFNXKWmv3BhR0A
+         EE6eUZoq2TIkjJVHTKTvOY5ifpTj06azRfU8WMgTY9Xnygeo0HutcWRZNlyga6wuNI+0
+         faoeqw/JWrntxxT3BCLI/zu7e8/zJYa5YVYzetqIUir8oFCdqOqdI3PE3ah1+LtPhAdi
+         KyVerZPcsAybBSIouI7+L6mbPeSl2pZD2EHvXZaY7P32vKwAws05wP/fyZgRRRiL9NS1
+         Y51IYxedaLb0aN4en+JR3HDJGRYXEexquBhePvAmSa/RoqMNJBe9HXS54d69pQZ6m71g
+         lNWA==
+X-Gm-Message-State: AOJu0YxF76Fk62zUk6p3nLF9PsqbbgXaUV81xARopmFvj3r8ZJOTv4Zq
+        OV6JpJrdBS+I1rtFBGRURKo=
+X-Google-Smtp-Source: AGHT+IFwXJYVQv7z5guUlBHJTzNuMu1g2FRKkARGo7K/d5Yx3WlGOhxJ8DgFkGmY2CmJxSK9DFz1DQ==
+X-Received: by 2002:a05:6a00:21d5:b0:690:2ecd:a597 with SMTP id t21-20020a056a0021d500b006902ecda597mr12245813pfj.21.1695062060007;
+        Mon, 18 Sep 2023 11:34:20 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id r11-20020a62e40b000000b006879493aca0sm7395460pfh.26.2023.09.18.11.34.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Sep 2023 11:34:19 -0700 (PDT)
+Message-ID: <51d7f8b8-13c8-7350-53eb-1f1e09f1b683@gmail.com>
+Date:   Mon, 18 Sep 2023 11:34:17 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.1 000/219] 6.1.54-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230917191040.964416434@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,21 +79,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 17, 2023 at 09:07:34PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.195 release.
-> There are 406 patches in this series, all will be posted as a response
+
+
+On 9/17/2023 12:12 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.54 release.
+> There are 219 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
 > Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
 > Anything received after that time might be too late.
 > 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.54-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Build results:
-	total: 159 pass: 159 fail: 0
-Qemu test results:
-	total: 495 pass: 495 fail: 0
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Guenter
