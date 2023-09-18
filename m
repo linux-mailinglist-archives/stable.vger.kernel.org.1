@@ -2,118 +2,233 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 307557A547A
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 22:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4AB7A548E
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 22:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbjIRUwg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 16:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
+        id S230054AbjIRU5P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 16:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230031AbjIRUwe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 16:52:34 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30151133;
-        Mon, 18 Sep 2023 13:52:28 -0700 (PDT)
-Received: from localhost.localdomain (178.176.74.219) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Mon, 18 Sep
- 2023 23:52:17 +0300
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-To:     Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
-        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-CC:     <stable@vger.kernel.org>
-Subject: [PATCH 2/2] video: fbdev: core: syscopyarea: fix sloppy typing
-Date:   Mon, 18 Sep 2023 23:52:09 +0300
-Message-ID: <20230918205209.11709-3-s.shtylyov@omp.ru>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20230918205209.11709-1-s.shtylyov@omp.ru>
-References: <20230918205209.11709-1-s.shtylyov@omp.ru>
+        with ESMTP id S230049AbjIRU5O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 16:57:14 -0400
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48BD10F
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 13:57:08 -0700 (PDT)
+Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-493a661d7b6so3894690e0c.1
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 13:57:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695070627; x=1695675427; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g7HIuecrhu5r9aHSQmQWLOoPGbrYoLIj45CPxPWw+d4=;
+        b=hMzlX+q52LUz+/lEj2iY77uQB/wnOHnY7RIyfXrFCAuX7NFWgbGYOcqOanejNgQSw0
+         zGQL7TTsnT4K8b4oVP8mpCiyDpSeJ3HeXt15OM0fN0FFl4yhccLiD/+3DpN1XtxcYoPV
+         ymGmDM44PeXUDZdcYA0iyubM05+QFOTUyIdDlZy3HWIx0+mXxENur2nQ8yDBRbxDjEUQ
+         wqVfHq4Frzq8pZl6gtb81LrdvY2PVHFTjHcfeF1a0f4pEK+UjEjWpjIZKmSyrqjeGdPm
+         aU/FVAgK4GrSNNT0guKtQ/fIUlGpGMS+XuK/ZuTH2uA1URTQBVYkF1aqHUKqIP+Krn7k
+         ChWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695070627; x=1695675427;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g7HIuecrhu5r9aHSQmQWLOoPGbrYoLIj45CPxPWw+d4=;
+        b=KqF386Q8dKobok7s9XSzHEMHzj/S8kBuAQgrGo+deKUlS2ztchLMJmKDyGsGpmXnJa
+         BAWBrkqMUBTNj7KxiZk3HQoIflrFLMP/DWsGumYROQREZ8f92Jsh2eMGKvTXcHSUrQ5T
+         u6QB2tYRziXpJf+B7aBinVlkYUz6FJdhSD4S6edGeSLXgf096x4tWOv08Ar50s9SBN7A
+         +6GbXfQpjfAOxDHqQphiZC4V9reOrVV6Qw3XfmQmW78xShHTX5j2ZicshTEdwo4MRHwI
+         HCJhsO5kpzhAStIBn8qnIagPIbjxgBVs/noiukK9AXaw/HQDl+JVwqDzB267JAvVwBve
+         bVaQ==
+X-Gm-Message-State: AOJu0Yys0ti2H7xLvLYnkAMUKp4nuC8K2LxpaQ7F6xJtmyg+z8u1eQuJ
+        WuZ4GdV1XegHYFfqRNrxCH+iSrcLoeX6HoBG4H2ELA==
+X-Google-Smtp-Source: AGHT+IETthXK4kpJkr3Nqn++h7nQNja9kGkbPN70yjl8ZqaStFD6X4yEiZ5/Mrbu4I58Zyv2h4DaAo4uwfDROlim1HA=
+X-Received: by 2002:a05:6122:4682:b0:493:7ce8:9851 with SMTP id
+ di2-20020a056122468200b004937ce89851mr607642vkb.8.1695070627549; Mon, 18 Sep
+ 2023 13:57:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [178.176.74.219]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 09/18/2023 20:36:01
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 179936 [Sep 18 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 530 530 ecb1547b3f72d1df4c71c0b60e67ba6b4aea5432
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.219 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.219 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: {rdns complete}
-X-KSE-AntiSpam-Info: {fromrtbl complete}
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.219
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/18/2023 20:41:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/18/2023 6:04:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230917191040.964416434@linuxfoundation.org>
+In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 19 Sep 2023 02:26:56 +0530
+Message-ID: <CA+G9fYtP+n7P7Nx-kb6wzRNb=nJ9ZW5faQ6s_vH=JQBHoqemvg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/219] 6.1.54-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In sys_copyarea(), when initializing *unsigned long const* bits_per_line
-__u32 typed fb_fix_screeninfo::line_length gets multiplied by 8u -- which
-might overflow __u32; multiplying by 8UL instead should fix that...
-Also, that bits_per_line constant is used to advance *unsigned* src_idx
-and dst_idx variables -- which might be overflowed as well; declaring
-them as *unsigned long* should fix that too...
+On Mon, 18 Sept 2023 at 01:30, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.54 release.
+> There are 219 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.54-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Cc: stable@vger.kernel.org
----
- drivers/video/fbdev/core/syscopyarea.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-diff --git a/drivers/video/fbdev/core/syscopyarea.c b/drivers/video/fbdev/core/syscopyarea.c
-index c1eda3190968..1035131383a6 100644
---- a/drivers/video/fbdev/core/syscopyarea.c
-+++ b/drivers/video/fbdev/core/syscopyarea.c
-@@ -316,10 +316,11 @@ void sys_copyarea(struct fb_info *p, const struct fb_copyarea *area)
- {
- 	u32 dx = area->dx, dy = area->dy, sx = area->sx, sy = area->sy;
- 	u32 height = area->height, width = area->width;
--	unsigned long const bits_per_line = p->fix.line_length*8u;
-+	unsigned long const bits_per_line = p->fix.line_length * 8UL;
- 	unsigned long *base = NULL;
- 	int bits = BITS_PER_LONG, bytes = bits >> 3;
--	unsigned dst_idx = 0, src_idx = 0, rev_copy = 0;
-+	unsigned long dst_idx = 0, src_idx = 0;
-+	unsigned int rev_copy = 0;
- 
- 	if (p->state != FBINFO_STATE_RUNNING)
- 		return;
--- 
-2.26.3
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.1.54-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 89fc7c511aa5cd0b21e82ec42611db04d9e3b7c2
+* git describe: v6.1.52-813-g89fc7c511aa5
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.5=
+2-813-g89fc7c511aa5
+
+## Test Regressions (compared to v6.1.52)
+
+## Metric Regressions (compared to v6.1.52)
+
+## Test Fixes (compared to v6.1.52)
+
+## Metric Fixes (compared to v6.1.52)
+
+## Test result summary
+total: 206086, pass: 176646, fail: 2859, skip: 26303, xfail: 278
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 284 total, 283 passed, 1 failed
+* arm64: 89 total, 87 passed, 2 failed
+* i386: 67 total, 65 passed, 2 failed
+* mips: 56 total, 54 passed, 2 failed
+* parisc: 7 total, 7 passed, 0 failed
+* powerpc: 70 total, 68 passed, 2 failed
+* riscv: 28 total, 26 passed, 2 failed
+* s390: 28 total, 27 passed, 1 failed
+* sh: 26 total, 24 passed, 2 failed
+* sparc: 14 total, 14 passed, 0 failed
+* x86_64: 76 total, 72 passed, 4 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-drivers-dma-buf
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
