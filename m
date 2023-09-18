@@ -2,154 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF01E7A4526
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 10:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71ABD7A45C9
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 11:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240835AbjIRIu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 04:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59874 "EHLO
+        id S229739AbjIRJW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 05:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238919AbjIRIuD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 04:50:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 504BE126
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 01:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695026945;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XjrLFNKkiROohp1YQUFUAWvCAJRc18i6LWfUqVeHSNg=;
-        b=bDdp5CEZbVauUXjOX1O7JtjLZlU71hvHnnIGiPPqn0l4V/wmsNWY2AtSV9MACqZloGF3J0
-        Pr0GxwphfyKLnL8wDpUYA/Bfib+9skyD+2QlmnEHaPPnnbpXUxytw8GYnzj09anw9FST1r
-        x0aXAby2yrHzg5pDRXFCaDnK4ZxQMeQ=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-381-PwkYnek2PhKjRScfelfk3w-1; Mon, 18 Sep 2023 04:49:01 -0400
-X-MC-Unique: PwkYnek2PhKjRScfelfk3w-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5007f3d3255so3208934e87.3
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 01:49:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695026940; x=1695631740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XjrLFNKkiROohp1YQUFUAWvCAJRc18i6LWfUqVeHSNg=;
-        b=bJo1y269S0hhMV4924Ii+CqMvVZLRF2BZNGGa9Sg0LdOKNhD6KapM6JxRhQ5MWF5ni
-         czUD4wJVSxyWL2/NX1G14I4O+NyWDSDtazAB7KAsfNAR9LrD4oxmtCXJhAlCD5cqic+d
-         lI8mPgdcbHXaXATzEZbsVrLQx5D7mry7WZQQhLnOyzD0F4Zt7uYsOVPIIFHm6RSbTLV9
-         utjjvMIWbo4RUxNM+ZiM/1/wk/qKX1/KzG+50WKgK27fD3tQ6cG+IZcMlct+YGs4ckSo
-         yOQwT4dqLXga/59ONr+5hPKoOHbK0buNDV2xPR27NWwDdFVpnbgdSHjTFUQqWIspBxs3
-         oDWQ==
-X-Gm-Message-State: AOJu0YzbU5h1bxAE09Y5w4Vmq1HB6PUFn+mEguxI7TCkTShIVGLiB6CQ
-        A/GbsxWW/wOxZVrZPMwXYMAb7IyLiN1RCDuE2lBRYx78ewGqmEd+nqd4nLRovfNwz/QLoYrLhzB
-        Axg9xuqH5qB01HtDi9yUI3i1q83Ngqz/m
-X-Received: by 2002:a05:6512:454:b0:500:9a45:63b with SMTP id y20-20020a056512045400b005009a45063bmr6257564lfk.13.1695026940422;
-        Mon, 18 Sep 2023 01:49:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcNhH5iIOphVoYXcP9ThVDZ+q8P4m1obQ5qx04ejzkKLACIx/Lt0O6PKx0zAhN2vKlafazLnuEdoCmJbrjonc=
-X-Received: by 2002:a05:6512:454:b0:500:9a45:63b with SMTP id
- y20-20020a056512045400b005009a45063bmr6257546lfk.13.1695026940132; Mon, 18
- Sep 2023 01:49:00 -0700 (PDT)
+        with ESMTP id S239142AbjIRJWr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 05:22:47 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EB0B6;
+        Mon, 18 Sep 2023 02:22:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA2BC433C8;
+        Mon, 18 Sep 2023 09:22:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695028961;
+        bh=3asbmydlTrYFQRQpW0z4htJw7Y1DdXlksy2ai5XGF3s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=U25Zl5wBkmgG4S5D9v0GeETOwm362dPqsm8gwoZXWJh4l3byhm9EgT1BwFqHZOeKR
+         fSGfllCESBDbOTHY1G0yHaXNxdLZoVCarINWv/nLFxGTa7n1SUpmdQg3oobp8fY/LL
+         ZDtpNX+4fOJJvGAqIiYzKC5jp60c69w2d7LPsfjqWnYYTpT5gCzFU7eaP4RLD7DPj6
+         D7dHkVO7YCKCUESf4O9sm5lngD2eWblC9J6fLNvnamEiB9f3/6FPTOXjqNLmeQ9hXF
+         /iGpvnUTLXv03IYu6FJ9bxoLuj6kWGWZE543AA4NgoQZDDV2XoDbbeyn56jnGbXeyT
+         6CUbBv/LoNErQ==
+Date:   Mon, 18 Sep 2023 10:22:36 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Nicolin Chen <nicolinc@nvidia.com>
+Cc:     robin.murphy@arm.com, joro@8bytes.org, jgg@nvidia.com,
+        jean-philippe@linaro.org, apopple@nvidia.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/arm-smmu-v3: Fix soft lockup triggered by
+ arm_smmu_mm_invalidate_range
+Message-ID: <20230918092235.GA17341@willie-the-truck>
+References: <20230901203904.4073-1-nicolinc@nvidia.com>
 MIME-Version: 1.0
-References: <20230912030008.3599514-1-lulu@redhat.com> <20230912030008.3599514-5-lulu@redhat.com>
-In-Reply-To: <20230912030008.3599514-5-lulu@redhat.com>
-From:   Jason Wang <jasowang@redhat.com>
-Date:   Mon, 18 Sep 2023 16:48:49 +0800
-Message-ID: <CACGkMEtCYG8-Pt+V-OOwUV7fYFp_cnxU68Moisfxju9veJ-=qw@mail.gmail.com>
-Subject: Re: [RFC v2 4/4] vduse: Add new ioctl VDUSE_GET_RECONNECT_INFO
-To:     Cindy Lu <lulu@redhat.com>
-Cc:     mst@redhat.com, maxime.coquelin@redhat.com,
-        xieyongji@bytedance.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230901203904.4073-1-nicolinc@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 11:01=E2=80=AFAM Cindy Lu <lulu@redhat.com> wrote:
->
-> In VDUSE_GET_RECONNECT_INFO, the Userspace App can get the map size
-> and The number of mapping memory pages from the kernel. The userspace
-> App can use this information to map the pages.
->
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
+On Fri, Sep 01, 2023 at 01:39:04PM -0700, Nicolin Chen wrote:
+> When running an SVA case, the following soft lockup is triggered:
+> --------------------------------------------------------------------
+> watchdog: BUG: soft lockup - CPU#244 stuck for 26s!
+> pstate: 83400009 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+> pc : arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
+> lr : arm_smmu_cmdq_issue_cmdlist+0x150/0xa50
+> sp : ffff8000d83ef290
+> x29: ffff8000d83ef290 x28: 000000003b9aca00 x27: 0000000000000000
+> x26: ffff8000d83ef3c0 x25: da86c0812194a0e8 x24: 0000000000000000
+> x23: 0000000000000040 x22: ffff8000d83ef340 x21: ffff0000c63980c0
+> x20: 0000000000000001 x19: ffff0000c6398080 x18: 0000000000000000
+> x17: 0000000000000000 x16: 0000000000000000 x15: ffff3000b4a3bbb0
+> x14: ffff3000b4a30888 x13: ffff3000b4a3cf60 x12: 0000000000000000
+> x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc08120e4d6bc
+> x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000048cfa
+> x5 : 0000000000000000 x4 : 0000000000000001 x3 : 000000000000000a
+> x2 : 0000000080000000 x1 : 0000000000000000 x0 : 0000000000000001
+> Call trace:
+>  arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
+>  __arm_smmu_tlb_inv_range+0x118/0x254
+>  arm_smmu_tlb_inv_range_asid+0x6c/0x130
+>  arm_smmu_mm_invalidate_range+0xa0/0xa4
+>  __mmu_notifier_invalidate_range_end+0x88/0x120
+>  unmap_vmas+0x194/0x1e0
+>  unmap_region+0xb4/0x144
+>  do_mas_align_munmap+0x290/0x490
+>  do_mas_munmap+0xbc/0x124
+>  __vm_munmap+0xa8/0x19c
+>  __arm64_sys_munmap+0x28/0x50
+>  invoke_syscall+0x78/0x11c
+>  el0_svc_common.constprop.0+0x58/0x1c0
+>  do_el0_svc+0x34/0x60
+>  el0_svc+0x2c/0xd4
+>  el0t_64_sync_handler+0x114/0x140
+>  el0t_64_sync+0x1a4/0x1a8
+> --------------------------------------------------------------------
+> 
+> The commit 06ff87bae8d3 ("arm64: mm: remove unused functions and variable
+> protoypes") fixed a similar lockup on the CPU MMU side. Yet, it can occur
+> to SMMU too since arm_smmu_mm_invalidate_range() is typically called next
+> to MMU tlb flush function, e.g.
+> 	tlb_flush_mmu_tlbonly {
+> 		tlb_flush {
+> 			__flush_tlb_range {
+> 				// check MAX_TLBI_OPS
+> 			}
+> 		}
+> 		mmu_notifier_invalidate_range {
+> 			arm_smmu_mm_invalidate_range {
+> 				// does not check MAX_TLBI_OPS
+> 			}
+> 		}
+> 	}
+> 
+> Clone a CMDQ_MAX_TLBI_OPS from the MAX_TLBI_OPS in tlbflush.h, since in an
+> SVA case SMMU uses the CPU page table, so it makes sense to align with the
+> tlbflush code. Then, replace per-page TLBI commands with a single per-asid
+> TLBI command, if the request size hits this threshold.
+> 
+> Fixes: 51d113c3be09 ("iommu/arm-smmu-v3: Make BTM optional for SVA")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
 > ---
->  drivers/vdpa/vdpa_user/vduse_dev.c | 15 +++++++++++++++
->  include/uapi/linux/vduse.h         | 15 +++++++++++++++
->  2 files changed, 30 insertions(+)
->
-> diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/=
-vduse_dev.c
-> index 680b23dbdde2..c99f99892b5c 100644
-> --- a/drivers/vdpa/vdpa_user/vduse_dev.c
-> +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-> @@ -1368,6 +1368,21 @@ static long vduse_dev_ioctl(struct file *file, uns=
-igned int cmd,
->                 ret =3D 0;
->                 break;
->         }
-> +       case VDUSE_GET_RECONNECT_INFO: {
-> +               struct vduse_reconnect_mmap_info info;
-> +
-> +               ret =3D -EFAULT;
-> +               if (copy_from_user(&info, argp, sizeof(info)))
-> +                       break;
-> +
-> +               info.size =3D PAGE_SIZE;
-> +               info.max_index =3D dev->vq_num + 1;
-> +
-> +               if (copy_to_user(argp, &info, sizeof(info)))
-> +                       break;
-> +               ret =3D 0;
-> +               break;
-> +       }
->         default:
->                 ret =3D -ENOIOCTLCMD;
->                 break;
-> diff --git a/include/uapi/linux/vduse.h b/include/uapi/linux/vduse.h
-> index d585425803fd..ce55e34f63d7 100644
-> --- a/include/uapi/linux/vduse.h
-> +++ b/include/uapi/linux/vduse.h
-> @@ -356,4 +356,19 @@ struct vhost_reconnect_vring {
->         _Bool avail_wrap_counter;
->  };
->
-> +/**
-> + * struct vduse_reconnect_mmap_info
-> + * @size: mapping memory size, always page_size here
-> + * @max_index: the number of pages allocated in kernel,just
-> + * use for check
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c | 11 ++++++++---
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h     |  9 +++++++++
+>  2 files changed, 17 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+> index a5a63b1c947e..7ec3f5219250 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+> @@ -201,9 +201,14 @@ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
+>  	 */
+>  	size = end - start;
+>  
+> -	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM))
+> -		arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
+> -					    PAGE_SIZE, false, smmu_domain);
+> +	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM)) {
+> +		if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_RANGE_INV) &&
+> +		    size >= CMDQ_MAX_TLBI_OPS * PAGE_SIZE)
+> +			arm_smmu_tlb_inv_asid(smmu_domain->smmu, smmu_mn->cd->asid);
+> +		else
+> +			arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
+> +						    PAGE_SIZE, false, smmu_domain);
+
+cosmetic nit: Please use braces for the multi-line conditionals.
+
+> +	}
+>  	arm_smmu_atc_inv_domain(smmu_domain, mm->pasid, start, size);
+>  }
+>  
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> index dcab85698a4e..79a81eed1dcc 100644
+> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> @@ -326,6 +326,15 @@
+>   */
+>  #define CMDQ_BATCH_ENTRIES		BITS_PER_LONG
+>  
+> +/*
+> + * Cloned from the MAX_TLBI_OPS in arch/arm64/include/asm/tlbflush.h, this
+> + * is used as a threshold to replace per-page TLBI commands to issue in the
+> + * command queue with an address-space TLBI command, when SMMU w/o a range
+> + * invalidation feature handles too many per-page TLBI commands, which will
+> + * otherwise result in a soft lockup.
 > + */
-> +
-> +struct vduse_reconnect_mmap_info {
-> +       __u32 size;
-> +       __u32 max_index;
-> +};
+> +#define CMDQ_MAX_TLBI_OPS		(1 << (PAGE_SHIFT - 3))
 
-One thing I didn't understand is that, aren't the things we used to
-store connection info belong to uAPI? If not, how can we make sure the
-connections work across different vendors/implementations. If yes,
-where?
+Maybe stick "SVA" in the name of this somewhere, since that's the reason why
+looking at PAGE_SHIFT is relevant?
 
-Thanks
-
-> +
-> +#define VDUSE_GET_RECONNECT_INFO \
-> +       _IOWR(VDUSE_BASE, 0x1b, struct vduse_reconnect_mmap_info)
-> +
->  #endif /* _UAPI_VDUSE_H_ */
-> --
-> 2.34.3
->
-
+Will
