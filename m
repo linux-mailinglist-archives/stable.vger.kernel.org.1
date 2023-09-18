@@ -2,78 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 748A27A50F8
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F647A5131
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjIRR2L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 13:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
+        id S230262AbjIRRqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 13:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjIRR2K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:28:10 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B797101;
-        Mon, 18 Sep 2023 10:28:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D89C433C7;
-        Mon, 18 Sep 2023 17:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695058085;
-        bh=eyW6d2pjl5JU+Oz+ApgrqSfhAmLNl4BcssGT7YSphc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IbB1z5mkBAWHsfRvsZjvsxYzLRw0rJ3dlSLzqGZnFL0OiHGKU3XT0Ar4D1kXG4XD7
-         xFhrMDdEpKDXiHg6+K0ZGUdAZluvjGTxJrf3FHpDD+OP0fVavsq2DCxh7xTcgDg7Gg
-         u1DgU/jXP8TnhGe7nQ4bpE9xGBEeqxo2+lypfx/Dhk3H3XXNSwQ3ZrQHscqeavAkXl
-         nPz4N6yoaiRK/1ob/iNTjYnWCI7Th9DJdC/D+JtX3EbwSSrstUNkWdFe3gVdWSwv+z
-         nSoOBPoE+Cc3NjcINchZDJ9IUvvPlk9+ByFtJVC0QGLh1UyAlAZiRmAVMrvMqezNZJ
-         XnVkn/8Z+6KEA==
-Date:   Mon, 18 Sep 2023 13:28:02 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>, anarsoul@gmail.com,
-        tiny.windzz@gmail.com, rafael@kernel.org, wens@csie.org,
-        samuel@sholland.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH AUTOSEL 6.5 6/6] thermal/drivers/sun8i: Free calibration
- nvmem after reading it
-Message-ID: <ZQiHrd0BH9f8OAQa@sashalap>
-References: <20230909011254.3581788-1-sashal@kernel.org>
- <20230909011254.3581788-6-sashal@kernel.org>
- <ZPxm/xjvsI24JWkB@finisterre.sirena.org.uk>
+        with ESMTP id S230151AbjIRRqT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:46:19 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EC82114;
+        Mon, 18 Sep 2023 10:46:14 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1c43b4b02c1so20320065ad.3;
+        Mon, 18 Sep 2023 10:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695059173; x=1695663973; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2CcOTnEgUoTNMyg7Li7SLw44CUpQbtm5k7rtpHppxpI=;
+        b=Da/W84KPFrcTpvPeEdCwB3kOSxk4TL8s+HWH8GVtwmZannqSTkNM4KtDdALjhBajUO
+         z9SQYe2tlaal7cwe2ePLd94GslejYy9BkPRomi+BRVKUk4v5wKSdyhHZY478fCf9nA7C
+         NM7UJr1LfM+d7wdfAiNsUzWJrhr1n3if3BdoKfj7y0Ba9c3nQf9HMdl6vAkQ90o/M+Cj
+         Gntq7KTlCpGobcnEavZ8Le7n1PGpN2EYeaHtp+atj6dX0Xf7PLI+JddEoqfR+TUAZAPm
+         FsjaIxlbfMJ5NJG+wCRABHiSATQknKjN3L8l8tFwg/eM80Euz4ZJcATBXfRsb7I3icQc
+         +c8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695059173; x=1695663973;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2CcOTnEgUoTNMyg7Li7SLw44CUpQbtm5k7rtpHppxpI=;
+        b=X9htd8r8pgbnjp9BM8BqHQjqL/QwGoXnpv0rOOr6lWzrMHLGdIqbm/gdaryYinj9iY
+         1K4IyRoANeeAOzJiHOcStPMHqC8AKJ1lciBKaQ1D5JYdMXgPQpKkVEoEajjnJ0LmkxbL
+         Zh2y7hS0ZObm4FlBfUDapb5c/3SKX6y9KSWWAWGSIrJfEZbKmwW9seqJuJm3fXxcOTWW
+         rsq3htGCprzG2Ij4PVPwIYwjpjrOpfkaOSgpozQeQAXMDs9/eJvSBQMx9PIPeNv5qXJy
+         8vbNM86BgiVklsh6Mi29jw3YJzCgnPHZ+Cw54dOSms+XUhl3dmjcdfARxFRmlw92/GH3
+         S39w==
+X-Gm-Message-State: AOJu0YzgDeEfpnGVsCwmhFBT12LP5nf4LossezOzFbPUkHrB37fuitno
+        ECvwpKzuUc0VvW0Azjdm8Aw=
+X-Google-Smtp-Source: AGHT+IGk3ewbfzHW2WRQS+m1g6CW4GIWtkM0uJSbYwzCwwNQpt4lq4j12/S2RFTJCVhrljnuLpVDZA==
+X-Received: by 2002:a17:903:1107:b0:1c4:3294:74ca with SMTP id n7-20020a170903110700b001c4329474camr8553475plh.17.1695059173413;
+        Mon, 18 Sep 2023 10:46:13 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id b15-20020a170902d50f00b001bf846dd2d0sm8598504plg.13.2023.09.18.10.46.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Sep 2023 10:46:11 -0700 (PDT)
+Message-ID: <8a57183d-49c0-066b-fcc0-d378aa80cbe1@gmail.com>
+Date:   Mon, 18 Sep 2023 10:46:08 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ZPxm/xjvsI24JWkB@finisterre.sirena.org.uk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 5.10 000/406] 5.10.195-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230917191101.035638219@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Sep 09, 2023 at 01:37:19PM +0100, Mark Brown wrote:
->On Fri, Sep 08, 2023 at 09:12:54PM -0400, Sasha Levin wrote:
->> From: Mark Brown <broonie@kernel.org>
->>
->> [ Upstream commit c51592a95f360aabf2b8a5691c550e1749dc41eb ]
->>
->> The sun8i thermal driver reads calibration data via the nvmem API at
->> startup, updating the device configuration and not referencing the data
->> again.  Rather than explicitly freeing the nvmem data the driver relies
->> on devm_ to release it, even though the data is never referenced again.
->> The allocation is still tracked so it's not leaked but this is notable
->> when looking at the code and is a little wasteful so let's instead
->> explicitly free the nvmem after we're done with it.
->
->This is a minor cleanup which as with so much of what's come in today's
->backports seems very questionable for stable.
 
-I'll drop this, thanks!
 
+On 9/17/2023 12:07 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.195 release.
+> There are 406 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.195-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Thanks,
-Sasha
+Florian
+
