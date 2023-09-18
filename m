@@ -2,130 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0E1E7A51BC
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 20:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5DA7A51C0
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 20:10:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229503AbjIRSJ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 14:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42152 "EHLO
+        id S229610AbjIRSKN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 14:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229556AbjIRSJ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 14:09:29 -0400
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B75115
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 11:09:23 -0700 (PDT)
+        with ESMTP id S229558AbjIRSKL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 14:10:11 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BFB0106;
+        Mon, 18 Sep 2023 11:10:05 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-68fb85afef4so4421930b3a.1;
+        Mon, 18 Sep 2023 11:10:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1695060564; x=1726596564;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mGVD83ek5ThwcMZR9IY+TwFuTT5gBh13JZXfxw80e9o=;
-  b=X1auLxDfy18TbuYesgoEKT+9Ul63niuyCWZJs1WpugLN3PVYQdE5wsdl
-   ows5Aw03S5dFXPgKk+ASHHoJRN46IyAXEshNuXshOoYQQr2rc5VB0ix9X
-   yp0aALrBw5ewm3N/KjRRZ65wJzCCWqRIFvvTc9gd77r4/h36uMwlq4loz
-   E=;
-X-IronPort-AV: E=Sophos;i="6.02,157,1688428800"; 
-   d="scan'208";a="155039045"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-b538c141.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 18:09:22 +0000
-Received: from EX19MTAUEC002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1e-m6i4x-b538c141.us-east-1.amazon.com (Postfix) with ESMTPS id 846C4A09D9;
-        Mon, 18 Sep 2023 18:09:19 +0000 (UTC)
-Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Mon, 18 Sep 2023 18:09:19 +0000
-Received: from dev-dsk-luizcap-1d-37beaf15.us-east-1.amazon.com (10.39.210.33)
- by EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Mon, 18 Sep 2023 18:09:17 +0000
-From:   Luiz Capitulino <luizcap@amazon.com>
-To:     <stable@vger.kernel.org>, <sec@valis.email>
-CC:     Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATH 4.14.y] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
-Date:   Mon, 18 Sep 2023 18:08:59 +0000
-Message-ID: <20230918180859.24397-1-luizcap@amazon.com>
-X-Mailer: git-send-email 2.40.1
+        d=gmail.com; s=20230601; t=1695060605; x=1695665405; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6maznjEXgWDHtf3uPCnCDUhsx4nCL1qmfuNmzcDHoYs=;
+        b=lKBC25hPAR4xxyS49nD13nFf2jCL9ahimSmLXdsNARPDbmMf671y1PfquXIEYJfY5q
+         ziScMz5TUBTSzk1Azy35SezHGzGPm3kU4KpZxMk2kM9M7xT4HWkk4gXo2scxk2wXyd56
+         2o2VZA9KkKIj1tYAiDFiaZLlDS4jC3pMyDI0Zo6mslbQoVswJTRQRBbDd8Ka8BriR1ja
+         GHJ75CSeO6zn2Pg1MfySIRb/6sO5Zhw7Sh4A33oLMMynVBxlbbjGYWQEHgnh1M1RJ40N
+         ugVc5zNW+bzTuBxMIdEC8fZjDFXnl97q/ySbkQl/Yn78V6sc5/E3OMjHqg/vD5s5p5tU
+         PR0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695060605; x=1695665405;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6maznjEXgWDHtf3uPCnCDUhsx4nCL1qmfuNmzcDHoYs=;
+        b=H4KEY95BYSi49B951OuRu+3vJiMYcFY10IM1lGxbBRoNdYpQ3RFarZMrQT/Z89Z8c2
+         MmY6dA/Jivmu4vm0OVk3Om3rJ6xU6LZnhV3rnuo6UX7FvvH3k3l5gv8uDN9RdksWQuzY
+         eVtJWSEmYjvJMFNpxzYUdIdw/YK1XqK6o5V/WiiShV9gdvo/pUmeU3iobk/+ar5xAper
+         A2wFq+sBrEolDh2rC3W6i+kVDYkdoq6oVXQSIzbmuDU9gZoqKVwFFPynJ84AtUP4/OgT
+         c1Z1x4QG6Y6DXVUMVyCL+tDYxCfcUo+KJBjjnmciaoqkvF7zcALPELH8gKaPcHZtLLyS
+         F5sg==
+X-Gm-Message-State: AOJu0YzMnNoiCnOSzluQ55zLVa1e0tGlc+uXlKlICJA0Jh3LDYSd3GVh
+        wMhAwZQg9vTVPBvoC2zZu4M=
+X-Google-Smtp-Source: AGHT+IHPHNj2H2G7P5W1DsuqTkz5X25XRN2Oiv+LRznZx5p1RsnN4Ts0LllmXBFdo/bKA45M5il7uA==
+X-Received: by 2002:a05:6a21:a103:b0:154:d3ac:2063 with SMTP id aq3-20020a056a21a10300b00154d3ac2063mr7008057pzc.27.1695060604872;
+        Mon, 18 Sep 2023 11:10:04 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id c10-20020a62e80a000000b0064fd4a6b306sm7402910pfi.76.2023.09.18.11.10.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Sep 2023 11:10:04 -0700 (PDT)
+Message-ID: <936cf5f4-1025-02a8-6bd2-dff755fa9ed7@gmail.com>
+Date:   Mon, 18 Sep 2023 11:10:02 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.39.210.33]
-X-ClientProxiedBy: EX19D043UWC002.ant.amazon.com (10.13.139.222) To
- EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 5.15 000/511] 5.15.132-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230917191113.831992765@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
 
-Commit 76e42ae831991c828cffa8c37736ebfb831ad5ec upstream.
 
-[ Fixed small conflict as 'fnew->ifindex' assignment is not protected by
-  CONFIG_NET_CLS_IND on upstream since a51486266c3 ]
+On 9/17/2023 12:07 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.132 release.
+> There are 511 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.132-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-When fw_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
-
-Fix this by no longer copying the tcf_result struct from the old filter.
-
-Fixes: e35a8ee5993b ("net: sched: fw use RCU")
-Reported-by: valis <sec@valis.email>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
----
- net/sched/cls_fw.c | 1 -
- 1 file changed, 1 deletion(-)
-
-Valis, Greg,
-
-I noticed that 4.14 is missing this fix while we backported all three fixes
-from this series to all stable kernels:
-
-https://lore.kernel.org/all/20230729123202.72406-1-jhs@mojatatu.com
-
-Is there a reason to have skipped 4.14 for this fix? It seems we need it.
-
-This is only compiled-tested though, would be good to have a confirmation
-from Valis that the issue is present on 4.14 before applying.
-
-- Luiz
-
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index e63f9c2e37e5..7b04b315b2bd 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -281,7 +281,6 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 			return -ENOBUFS;
- 
- 		fnew->id = f->id;
--		fnew->res = f->res;
- #ifdef CONFIG_NET_CLS_IND
- 		fnew->ifindex = f->ifindex;
- #endif /* CONFIG_NET_CLS_IND */
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.40.1
+Florian
 
