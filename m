@@ -2,118 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A2D7A4949
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 14:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D132B7A49A0
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 14:30:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241910AbjIRMJk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 08:09:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58596 "EHLO
+        id S240281AbjIRM3e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 08:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241919AbjIRMJI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 08:09:08 -0400
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5B89F
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 05:09:03 -0700 (PDT)
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-        by cmsmtp with ESMTP
-        id i12qq8mUUDKaKiD3mqVvxw; Mon, 18 Sep 2023 12:09:02 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id iD3lq5q2tqP3viD3mqwATp; Mon, 18 Sep 2023 12:09:02 +0000
-X-Authority-Analysis: v=2.4 cv=Po6A0iA3 c=1 sm=1 tr=0 ts=65083dde
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=nCsS+8kDeErjzm9UgwJIdFzQmv07gfYFiEWxFt+ijPs=; b=zm2/GLJAw2W5pz52xvH4w9ydA0
-        Ix00RVPFLou4p6gRW7cDGZ96f8P/jlG5eomM1flKTgkglMtJKgQFCq+wmTuUOOZuoUTVR4zv8/6Tq
-        XvnHVFW1vI0Z4TdFqwCTUq5E6x1cgQ+8VzWwgiDeWgWzuuNMfhCaQg0oEiFwR+Qu1N+PPNjkobKsh
-        Ontd11oWGkADrl3zUq0Et3O2SDTB1J2wn5U7weUhyxV8QgxjQmzRYwyvfEdiI0d/+UCoeFXzrN2Hq
-        UDxf6XfWgxXBOutABgoQRKwHKsYbk6ND9Ej1TY8jqcyQvSfZw8Y4YZDJnxLnPD59xPtcsyGmX1WwH
-        QqnJRvAA==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:40840 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qiD3j-000hLX-0s;
-        Mon, 18 Sep 2023 06:08:59 -0600
-Subject: Re: [PATCH 6.1 000/219] 6.1.54-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230917191040.964416434@linuxfoundation.org>
-In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <6c63ed7b-237e-4a90-a15b-cf6e3f60d5a5@w6rz.net>
-Date:   Mon, 18 Sep 2023 05:08:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S241970AbjIRM3H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 08:29:07 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B983B5;
+        Mon, 18 Sep 2023 05:28:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01981C433C8;
+        Mon, 18 Sep 2023 12:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1695040137;
+        bh=/zHWfRhhpSRxTBXH3tr4O5+a7KoRhJVWXPMMdPu8//s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pElYJfPpuHfl24j4ZRw6ZTvuejQelCFomSPBlJV/210KYH4EPSTIinDSTz1ew0twS
+         TGlG+BW+2UqSRkxR9obicO9V0MKY+1leG85W+WpQOSuZuw5O+Lt2wk4kHKokIsVdcR
+         Y7Kct5yo+Do9MN4KuHjW1Y9yiNzXQi6Yb4nHq6t0=
+Date:   Mon, 18 Sep 2023 14:28:52 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
+        sashal@kernel.org
+Subject: Re: [PATCH -stable,4.19 0/2] netfilter stable fixes for 4.19
+Message-ID: <2023091843-luncheon-football-41be@gregkh>
+References: <20230918120656.218135-1-pablo@netfilter.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qiD3j-000hLX-0s
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:40840
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfInkjVD2ysx4HrDEnl/VRE+8tNaDV1wCzyOzu4565qL2B+DXMgCrL+3iEE1Uz3iQxply7jy4gDOIsjglnDFpa7tr2AJ70auJqVHYj/3YjWnlVdEffxqX
- NPbtidUrcGJBiWn96b3IBq81hSq1XISlPw2Afqrm3p01FDcjQQCcqn2eJGB++WylDjiHACbAlVhlYw==
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230918120656.218135-1-pablo@netfilter.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/17/23 12:12 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.54 release.
-> There are 219 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.54-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Mon, Sep 18, 2023 at 02:06:54PM +0200, Pablo Neira Ayuso wrote:
+> Hi Greg, Sasha,
+> 
+> This batch contains a fixes for 4.19:
+> 
+> 1) Missing fix in 4.19, you can cherry-pick it from
+>    8ca79606cdfd ("netfilter: nft_flow_offload: fix underflow in flowtable reference counter")
+> 
+> 2) Oneliner that includes missing chunk in 4.19 backport.
+>    Fixes: 1df28fde1270 ("netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain") in 4.19
+>    This patch you have to manually apply it.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+All now queued up, thanks.
 
-Tested-by: Ron Economos <re@w6rz.net>
-
+greg k-h
