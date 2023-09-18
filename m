@@ -2,181 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8A87A4BF1
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C1B07A4C45
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240575AbjIRPXv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 11:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58906 "EHLO
+        id S229523AbjIRP37 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 11:29:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240063AbjIRPXt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:23:49 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2041.outbound.protection.outlook.com [40.107.94.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16D110D8;
-        Mon, 18 Sep 2023 08:20:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GAKIfFHDms5iSd/uDjlL1IkgYBv++kfDs+COYLes9iSPDnSQv+DAPuuaGtzvGy6Yg1xODGciWa/cU5Z5S8vBaf/zqt0YDVwv92Ioeikp9tjL22OpE6ZYqro4nYnDuc2pnphUr/TJQIAFeEpnfG4J7JK0mow7irjxu8GBmRBB+/o4ZHiA0NgvY2W5rwL2y08QzPkjDGXhvqD+is3BuS/WplkTdXf1Nv8GnOgwdLuQwnI0PnlStLPI942wffd3BH1a5poEgRQYkYtzrpQGHhbnJj7M9ZbdbUMQmnbGHH70C+epNXmvxpQnDyjKigo/Uj7Bveem53FT9CVwjuBQR/ImlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J9J/kcn12pcwQxtwIeqY0dQuViN7dGtoTOrVIBuOQEI=;
- b=GohMkFBy7HcbPvAgqVBadOEtknsIkxQbUG6muvh+v2W1t7dJeu/fXclSNt6LA8igDAoDLX3e7DD9ZoXwKzJQxGf7d4riCD2TV27FobzNjfk/z8k+M9nTUn8aY/CE96V8X8DJQ0sKvYSWg5Vr+O6FG9fmP2T1PYGMDEEC1dUPMLyC5uqoGB4Q0PTk7fo22SLm1wayeCXO3F03EoORtIReNehSslQbbCa87jdpSJmB5WN0sglYDmgUTEAxPJTfRpjFX+y3+rE5Rl6WIxB7uQNiCt4u0UwIVK0+CX2059cd1r9Ki44ie/GmeqzZGFcudywXAKRrd4cG99B+PjggeLPm2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J9J/kcn12pcwQxtwIeqY0dQuViN7dGtoTOrVIBuOQEI=;
- b=VPyWJsGa0eikNqvw6QWT08XHzfhU4Q7E2AH2jJGizeuZyFs72lro0dvlGZDSohFBaKIyUHy9KaC4dsV5KccldfbE6hiAmJfMG75fqWjPrsAlgWnGSqFVmPJcRJLXCi1/d6u/Jw4eKHLwCdQAd6CZ6KqB+fPujIS24M4z51xKDzdBOIbHRJeo4VRaTj/k7GVx06wIBsYLf6gbfsbedfnVnRrFQzovXP9wJsP0nftni2wnPXGgdhUwXTMbdH9ivahRV4ypxxFQxR4cGbsNKbnClZQwk5KBpd6KrK1js6JKPtdGqXhuZswBKZ6QEZUo9YW+VrsPXLSiLpHERAu47PRUqA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CO6PR12MB5444.namprd12.prod.outlook.com (2603:10b6:5:35e::8) by
- IA1PR12MB9032.namprd12.prod.outlook.com (2603:10b6:208:3f3::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Mon, 18 Sep
- 2023 13:04:36 +0000
-Received: from CO6PR12MB5444.namprd12.prod.outlook.com
- ([fe80::1d1b:2ca4:1600:a865]) by CO6PR12MB5444.namprd12.prod.outlook.com
- ([fe80::1d1b:2ca4:1600:a865%4]) with mapi id 15.20.6792.026; Mon, 18 Sep 2023
- 13:04:36 +0000
-Message-ID: <e5a0e1cc-1360-23fe-408d-03f46dd76c5f@nvidia.com>
-Date:   Mon, 18 Sep 2023 14:04:27 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
-Content-Language: en-US
-From:   Jon Hunter <jonathanh@nvidia.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Sameer Pujar <spujar@nvidia.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-References: <20230917191051.639202302@linuxfoundation.org>
- <dfe78c1a-8322-413b-f1b7-3a6a307a831c@nvidia.com>
-In-Reply-To: <dfe78c1a-8322-413b-f1b7-3a6a307a831c@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO2P265CA0324.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a4::24) To CO6PR12MB5444.namprd12.prod.outlook.com
- (2603:10b6:5:35e::8)
+        with ESMTP id S229580AbjIRP3e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:29:34 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C03B710D3
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:27:30 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id d75a77b69052e-414b3da2494so28784611cf.3
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:27:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1695050682; x=1695655482; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tpm5xcoWaqPutX8hLc4KJDonfYY31uGnLv5B+/F01yU=;
+        b=jpwyvR486eA3/0+CZQTOIZdWlIm3Zxsf0y0VVzPcEPBOdbXaZhd9Wa28Ne+0OBsCBL
+         qB0Dsb7Zbn/ddzdr6Kw0+KOSCvRzrq4x2KcVEbo5bcFTVHtQkifJiumJDpqFINr2opjz
+         9+Ql6KIUF9uCCJXrjM4OLhlzrzA3WwF3+dnzfAxCTq8SU6c9qSwbnLUm2BLtr8sXT5pz
+         dKoewRPwW/DrxXj6XE7XpP5JQm0J661eFKiJvpqrFYZC00bOxYQ7xJGdzw6dQFHq/myf
+         0o5cqsd9+Vrc4KrHtbzO1vMhLOIMnk75AP1/H1KhNq29CPOgNPBsikMSWOiNfwiooOQz
+         5tMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695050682; x=1695655482;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tpm5xcoWaqPutX8hLc4KJDonfYY31uGnLv5B+/F01yU=;
+        b=om7H6xTr/pqyYZQpMdnCjb8fRakUde+18NStdWc3gsJxBEsFmeoU6nVN3yUmeClWs+
+         2jDtkK73TERNU3fgFRbKrbPNo5KiSDHmr+KD/sO7M+UFaDMwbLwnxZcXw0ILnMIyyvlq
+         cy9AG18WU9f2g+3aNUMAfL1ehwACZ+uujqlsJ4pmTvvZeoH9MmmOkppm2jlKFhMLVjxL
+         fVUNezE58QmHS7JWBva+QmC8mL+8lCA01ewxpCJZn79Z0Uglc39nZDtnmZ/hebTrsWSP
+         7tthgFGoqRNMna6rq3Cqvf3QjQw6yqL86XrC6WobCgPgn1yQ1tXiF7gnfnlNgRKm9SgV
+         jaPQ==
+X-Gm-Message-State: AOJu0YxN4c+88Y4/Z4EVHrH+dbJz+B+sW7pOtSdrcvv/WiU4jZ/bOVqg
+        KXwmXdig1H2AAxIGzea7eL2+SOYNXK9F23X5oYEKZRGP
+X-Google-Smtp-Source: AGHT+IFMTkNiPkvXGoZsRsx+w1ypzJpo0ABobTPJaedpSaKBIFdLxBCcgXUiIKDqPqlVTW1PXE0tng==
+X-Received: by 2002:a17:902:c1cc:b0:1c5:72cc:1b65 with SMTP id c12-20020a170902c1cc00b001c572cc1b65mr2361443plc.44.1695044757485;
+        Mon, 18 Sep 2023 06:45:57 -0700 (PDT)
+Received: from PF2LML5M-SMJ.bytedance.net ([203.208.189.7])
+        by smtp.gmail.com with ESMTPSA id h7-20020a170902ac8700b001bc59cd718asm3420818plr.278.2023.09.18.06.45.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Sep 2023 06:45:57 -0700 (PDT)
+From:   Jinhui Guo <guojinhui.liam@bytedance.com>
+To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
+Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jinhui Guo <guojinhui.liam@bytedance.com>,
+        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: [PATCH v6] driver core: platform: set numa_node before platform_device_add()
+Date:   Mon, 18 Sep 2023 21:45:27 +0800
+Message-Id: <20230918134527.252-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR12MB5444:EE_|IA1PR12MB9032:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a9fcbe0-1726-48e7-59f3-08dbb847cf59
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: B9YEXbPyCcoesxlGR4sK1YMc4yRZTgrYRVQ1FdMI1RdDaflnriXf4o9lC6iFvPLsIOATzYlbUzyxVDM9FlibOjq74x+F7sBlBd5nThO+hf77k3AK/A/yIfFfJDmqZDop+eMkiq29HlwHjoe7KPZKqDJf2/69w3dNCRi2xst9NtKS2kasUlrccAzTiw8fC99WWAx6/N28KkMdjF3wqnK+gAHp7qagRdh1QTxbv6ThEnTCI/C2iTfw7Fwmbs88/mCrYevi/6ksRRVctFUM9UE8Hj87yPqBVcnileeVWe1f7QN8KOSLz8lyK9X+oXbQ2xe4yBrqkkBVHKUZ8UIEkk3Ihxuviil1ygCiedGqUKRuWUxEci26jqsimyuKMXgPqzQuxvb7hy/rDaTw2fdmLuzBnJzVL2t6F1jZl0j5w/24K67+ujhH1LBofq1xY09YW2cuUGPX8qZorhjhKGHOr1pPtC9gB3HjCdb+HW+jRz4satkJN/c4fFZc824lUMtSoZ5xO2CQMJUnPmDCNjeFcL6P1P0le9FdcZhGurHrv0lwghOEmR/HrNTnpL1PzK+RIA6GtypET3RGsj7OT3luK5kDbJITRUQpYwgZHDkedD/qnWqBNPlTqYgau16doCphwFC1+POjUcNeiGIHcCjRnWAqvnrP/loeZdyPyoYG9+pgpU7nsCX3oBu3muHdOp0qucLA
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5444.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(346002)(366004)(376002)(39860400002)(451199024)(1800799009)(186009)(38100700002)(36756003)(86362001)(31696002)(478600001)(966005)(66946007)(66556008)(66476007)(54906003)(2906002)(6512007)(6666004)(53546011)(6506007)(6486002)(8676002)(8936002)(4326008)(5660300002)(31686004)(41300700001)(7416002)(316002)(2616005)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UE1jMkh0aG9JTzRrZGZDdHVTSVJ4QThJMm53U3pBTmRhTlhza0xWcjBUNVBD?=
- =?utf-8?B?cUJrakRVYWZjUDZrSHo3bzdQb3ZKQ0dKVnErTTZzUnlmQm14ZUx6Umg5TS9C?=
- =?utf-8?B?ZTFweWpqZjB5ZVdjOVg3b1BTRTNJV2I0MG5xSTZaV1V0WnFscll4eCtxdDhL?=
- =?utf-8?B?a2xhTlpzdHg5b2tRQW1WSlcxV2lIY3lGaDI5VWxSd2doWWRwakt5cWgydVFE?=
- =?utf-8?B?T1VoSWthU1pNU3Z0RFdTSk8venhKNXg1Uk9OTTFPVW14dFFoK0VDSlYrbHQ3?=
- =?utf-8?B?VzJ5NHFRTU83eW9nVzExUTlqbkJ6UEN0TUgrVlp6YXVXUDhFT1R2YkQrSGJu?=
- =?utf-8?B?aitxc3YxSXNZU3QweG5hUk13UXlPRVBaa2dnK1RiOVFoTWhoUGU2RnhFZE91?=
- =?utf-8?B?UG9JbE02KzM4aDZRTGJqV1l2S1gxN2xHczBqcWJLRzAyY2tGK043SE8zK0NK?=
- =?utf-8?B?K3hLdWFnNkxkTE9KN2NPamQ3emZHR0RZWm1hL3k3Vkd4V2xoWjJhK2hubEpa?=
- =?utf-8?B?Y0xvZC8zb25yUFhZanhGcHQyZXpjSU83cEs1bGJ6dk5BWEQzUWI5dnArZFpn?=
- =?utf-8?B?NVV4c3lPUEV6OFd6NGVPREx0WDRwNGp3TUtlQ2lWR0pLcjJjZ2ZhbXJOc3NF?=
- =?utf-8?B?YWszRHVHYWtJOThqeWdlMVlRdXZmRWQ0czA0a013eGVBdnpVUnFPbTZFLzdk?=
- =?utf-8?B?cXRNMjdTYmZjWUFUTHFkVm5aZ21Nb2RuMEVZYnBqc3dqcTZ6MW9sOUYzVnRa?=
- =?utf-8?B?K3hwWjdEaGVTSWNTTnJzMXExUHpraXBRTUpIN243SWsvdjZxNmZVdVFWSHlE?=
- =?utf-8?B?dElWWGYvOXhyWThLQmtHZUVwYi9NYTdCUjJqMk9MWmUrQWx0TWZNWmE3TGZ6?=
- =?utf-8?B?V25qbjMrWXNrYWk1eEdoQkpUZDE2VkFSb3VZbExsQ3lqcDRyUW9HZWovUnJS?=
- =?utf-8?B?VkFsaTZyRDBaeE5lcEh6WnM0cHRpOC92V3FMTkFDU2hjd3VwNnV4NzI5Qllr?=
- =?utf-8?B?c0dmeFBMeFZ6NFovaVB6K2F5REEzczdkK0NxSlNTUUhWcW9wNzRMWXFCNmxp?=
- =?utf-8?B?Q01OSDhoODB6ZEZaMTdTVVRObllLRUR1S2ZDREF4Rko0eTJLS0NPdmRyWExJ?=
- =?utf-8?B?d3BTb0RRbUNkL1RqM29HWENaTzVtQ24vSUVCck04T0lNdmxhV2ZmSkEvK2FM?=
- =?utf-8?B?TkR3WkJiUTRFdTRpSEFkeTZvREQ0UFVLUi9xZTE5ZTh5empBTFpKUStRcm1u?=
- =?utf-8?B?YktJbk53b3FSQm5qamQ4aDRiVEt3am5CWllnV3M1OEM2UUpEejEzcjZVT3hm?=
- =?utf-8?B?b1VoSG9KNFg5VjV6N1BiZW13MmI0SjJUVXJIL2xBVjBCOXlUZ2VHTnFZRlBt?=
- =?utf-8?B?Y1dNbldaVVlUOXo5SDJma2pUTkxpSkZ6T3dCaHFCWXR5TC96dnNLTW1VWHVB?=
- =?utf-8?B?YU9BcVhsZWw3UG1FMDJoKzZQN3RISnAxR09GbkVDd29vYnNRQzNNQ2xRcTZv?=
- =?utf-8?B?L0pBbFNRQmxJTitsREI3QUZIQ043bUU1bjJvcEdXNXQvRUVJOFVnSlJCY29G?=
- =?utf-8?B?ZlQxcStUZWhYcXd6VlIxVUJHVjMvZmwrMUNQRFNWRTkrYk1zNlp4dWFIMElY?=
- =?utf-8?B?MGJzUlBhT1g2U0E0ZFZWRXIwMFVzQUdYYXpoYVJIZjR1VittZ2lOUTNyOGw1?=
- =?utf-8?B?QUdEYk5YczladXJaSWxiZ1hrcDlpTGwySndLbkl4bFdxU3REU0wrTm5zeVlG?=
- =?utf-8?B?RHI2U3FGT3phN3RYR3pXUkhVOWkybnAraXoyazhiQWRHMlNzc2NXejIzcGpI?=
- =?utf-8?B?ZzA5WGJjWU8rZEpuK2IvQkw2K3lMYnJzOE1laXlBRVFkSm5TSjF6dFFXaTB3?=
- =?utf-8?B?R0xRSzcvbUUvS2kzZDZTZnZOUXVaSlFMdlJmZlZBVGRBZVdVZkFaNlFreFdE?=
- =?utf-8?B?R0tjaEU4UHpSQTY3enF6cUtFNEpuUGM3MmczYmhzNUtjTVA4M3BpQUgrcXpQ?=
- =?utf-8?B?NHNVVnBEdDlUQm4xOVVab0NTS3J1Um5KZm93dllqbHlNeTlFeHc2NEg3akxJ?=
- =?utf-8?B?ZWhwN0xuQ2hYNGdhZVZvNlRRU2s3ZnBlWFcvU0tGWHVUbGV3M0lBTVFlYUlL?=
- =?utf-8?B?dzU5MXEranhuOHFob3h2TlpiNmNpTm95U2lFS1FPSVAzQXV4OWRGSTNRMk1D?=
- =?utf-8?B?WGRaOVpxSVRHOFVreE42aGVJaXBUeTB4b1ZxWGEzd2plYm9YaXlFRTR4Rk15?=
- =?utf-8?B?TzhGOWQ3dXZQZ3YvSGZnMTc2S1l3PT0=?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a9fcbe0-1726-48e7-59f3-08dbb847cf59
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5444.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 13:04:36.6349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4yWrefq2ODcoNI+8XpvEvsNItdfR5SDr/b/hTkM3ttxZEZlbCrNfmquIhTkSLashMS6unuDCMW83zq5ITHOfQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9032
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Setting the devices' numa_node needs to be done in
+platform_device_register_full(), because that's where the
+platform device object is allocated.
 
-On 18/09/2023 13:52, Jon Hunter wrote:
-> Hi Greg,
-> 
-> On 17/09/2023 20:10, Greg Kroah-Hartman wrote:
->> This is the start of the stable review cycle for the 6.5.4 release.
->> There are 285 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->>
->> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
->> Anything received after that time might be too late.
->>
->> The whole patch series can be found in one patch at:
->>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
->> or in the git tree and branch at:
->>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
->> and the diffstat can be found below.
->>
->> thanks,
->>
->> greg k-h
->>
->> -------------
->> Pseudo-Shortlog of commits:
-> 
-> ...
-> 
->> Sameer Pujar <spujar@nvidia.com>
->>      arm64: tegra: Update AHUB clock parent and rate
-> 
-> 
-> Unfortunately, the above change is causing a regression in one of our 
-> audio tests and we are looking into why this is.
-> 
-> Can we drop this from stable for now?
+Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+---
+V5 -> V6:
+  1. Update subject to correct function name platform_device_add().
+  2. Provide a more clear and accurate description of the changes
+     made in commit (suggested by Rafael J. Wysocki).
+  3. Add reviewer name.
 
+V4 -> V5:
+  Add Cc: stable line and changes from the previous submited patches.
 
-An alternative to dropping this change is to pull in the following fixes ...
+V3 -> V4:
+  Refactor code to be an ACPI function call.
 
-https://lore.kernel.org/linux-tegra/169447691068.2390116.10518505217580469969.b4-ty@kernel.org/T/#t
+V2 -> V3:
+  Fix Signed-off name.
 
-Thanks
-Jon
+V1 -> V2:
+  Fix compile error without enabling CONFIG_ACPI.
+---
 
+ drivers/acpi/acpi_platform.c | 4 +---
+ drivers/base/platform.c      | 1 +
+ include/linux/acpi.h         | 5 +++++
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 48d15dd785f6..adcbfbdc343f 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	if (IS_ERR(pdev))
+ 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
+ 			PTR_ERR(pdev));
+-	else {
+-		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
++	else
+ 		dev_dbg(&adev->dev, "created platform device %s\n",
+ 			dev_name(&pdev->dev));
+-	}
+ 
+ 	kfree(resources);
+ 
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 76bfcba25003..35c891075d95 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
+ 			goto err;
+ 	}
+ 
++	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
+ 	ret = platform_device_add(pdev);
+ 	if (ret) {
+ err:
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index a73246c3c35e..6a349d53f19e 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
+ 	return 0;
+ }
+ #endif
++
++#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
++	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
++
+ extern int pnpacpi_disabled;
+ 
+ #define PXM_INVAL	(-1)
+@@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+ #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
+ #define ACPI_HANDLE(dev)		(NULL)
+ #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
++#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
+ 
+ #include <acpi/acpi_numa.h>
+ 
 -- 
-nvpublic
+2.20.1
+
