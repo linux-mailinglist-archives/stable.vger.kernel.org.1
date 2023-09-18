@@ -2,80 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 637AB7A50AE
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748A27A50F8
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231390AbjIRRMK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 13:12:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32886 "EHLO
+        id S229648AbjIRR2L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 13:28:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231462AbjIRRMH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:12:07 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5806CBF
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 10:12:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695057121; x=1726593121;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=bhsO3UK/tiC8VZSa32uhHY21Knn6aajSceTjYxVjDPs=;
-  b=d8GOSw/M811ENZuy5hNKqG2ieEBIUpZH6wKdYJQ5tFehysjeDnpl7zc5
-   rsN7bRASs80XTn7PzU/A5QVmTapIY2HLXXCeE3Ih0zAJRu46f+7wugvpY
-   C+AsO3D24EWTXiXKnl1fgFcDN1Y7O7ma/bqoRAFz4Q9QAhh9b+vC9oXgk
-   8EW+8UqMdYCsppwrkvxVp6CDbmDb4k4P/MOkMNdiaRpIb9+Ki1jgbf4Bw
-   /ralxPIRuLirXpvyyI/h60nKgF4XfbZxov+lNoXzYqwzq9rhFUTQOrASa
-   940fkGC2oLX1VvZKZAC/4zBdZfBxL0rc70seZSd2zFK5A4vcUTRSAh1hw
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="377038073"
-X-IronPort-AV: E=Sophos;i="6.02,157,1688454000"; 
-   d="scan'208";a="377038073"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 10:12:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="775204993"
-X-IronPort-AV: E=Sophos;i="6.02,157,1688454000"; 
-   d="scan'208";a="775204993"
-Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 18 Sep 2023 10:11:59 -0700
-Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qiHmu-0006JU-2e;
-        Mon, 18 Sep 2023 17:11:56 +0000
-Date:   Tue, 19 Sep 2023 01:11:15 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jade Lovelace <lists@jade.fyi>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] Revert "misc: rtsx: judge ASPM Mode to set PETXCFG Reg"
-Message-ID: <ZQiEsy+j14XWevqZ@6fe19fc45f19>
+        with ESMTP id S229608AbjIRR2K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:28:10 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B797101;
+        Mon, 18 Sep 2023 10:28:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D89C433C7;
+        Mon, 18 Sep 2023 17:28:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695058085;
+        bh=eyW6d2pjl5JU+Oz+ApgrqSfhAmLNl4BcssGT7YSphc4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IbB1z5mkBAWHsfRvsZjvsxYzLRw0rJ3dlSLzqGZnFL0OiHGKU3XT0Ar4D1kXG4XD7
+         xFhrMDdEpKDXiHg6+K0ZGUdAZluvjGTxJrf3FHpDD+OP0fVavsq2DCxh7xTcgDg7Gg
+         u1DgU/jXP8TnhGe7nQ4bpE9xGBEeqxo2+lypfx/Dhk3H3XXNSwQ3ZrQHscqeavAkXl
+         nPz4N6yoaiRK/1ob/iNTjYnWCI7Th9DJdC/D+JtX3EbwSSrstUNkWdFe3gVdWSwv+z
+         nSoOBPoE+Cc3NjcINchZDJ9IUvvPlk9+ByFtJVC0QGLh1UyAlAZiRmAVMrvMqezNZJ
+         XnVkn/8Z+6KEA==
+Date:   Mon, 18 Sep 2023 13:28:02 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, anarsoul@gmail.com,
+        tiny.windzz@gmail.com, rafael@kernel.org, wens@csie.org,
+        samuel@sholland.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH AUTOSEL 6.5 6/6] thermal/drivers/sun8i: Free calibration
+ nvmem after reading it
+Message-ID: <ZQiHrd0BH9f8OAQa@sashalap>
+References: <20230909011254.3581788-1-sashal@kernel.org>
+ <20230909011254.3581788-6-sashal@kernel.org>
+ <ZPxm/xjvsI24JWkB@finisterre.sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20230918170831.1677690-3-lists@jade.fyi>
+In-Reply-To: <ZPxm/xjvsI24JWkB@finisterre.sirena.org.uk>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Sat, Sep 09, 2023 at 01:37:19PM +0100, Mark Brown wrote:
+>On Fri, Sep 08, 2023 at 09:12:54PM -0400, Sasha Levin wrote:
+>> From: Mark Brown <broonie@kernel.org>
+>>
+>> [ Upstream commit c51592a95f360aabf2b8a5691c550e1749dc41eb ]
+>>
+>> The sun8i thermal driver reads calibration data via the nvmem API at
+>> startup, updating the device configuration and not referencing the data
+>> again.  Rather than explicitly freeing the nvmem data the driver relies
+>> on devm_ to release it, even though the data is never referenced again.
+>> The allocation is still tracked so it's not leaked but this is notable
+>> when looking at the code and is a little wasteful so let's instead
+>> explicitly free the nvmem after we're done with it.
+>
+>This is a minor cleanup which as with so much of what's come in today's
+>backports seems very questionable for stable.
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] Revert "misc: rtsx: judge ASPM Mode to set PETXCFG Reg"
-Link: https://lore.kernel.org/stable/20230918170831.1677690-3-lists%40jade.fyi
+I'll drop this, thanks!
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Thanks,
+Sasha
