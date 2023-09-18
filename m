@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF65C7A4FCE
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535147A5037
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 19:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbjIRQwk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 12:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37952 "EHLO
+        id S229508AbjIRRCj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 13:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbjIRQwi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:52:38 -0400
+        with ESMTP id S230355AbjIRRCi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 13:02:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67758A3;
-        Mon, 18 Sep 2023 09:52:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E745DC433CA;
-        Mon, 18 Sep 2023 13:14:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695042862;
-        bh=XDOvjrjguMe0O3jeSSKS15M6Sp7a2R6O1nCtq8TDOqo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=moy/uvBgM6HQA8GWIujBSefdQevbL1rDY6drGoWCOGAlRwHdu8P/KHLhnJT+tInE4
-         l44tiN9OEtrlAXsiw2qAUwUR3MtgNqen8AbL2Z/IhiGH2naAKgbsQ3QAv8hSXmVk/3
-         HibdaCy/zzKUZszzEX+CwGKBdA4qiQizGxtg7aBQ=
-Date:   Mon, 18 Sep 2023 15:14:19 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jon Hunter <jonathanh@nvidia.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Sameer Pujar <spujar@nvidia.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
-Message-ID: <2023091850-gossip-denatured-ce2b@gregkh>
-References: <20230917191051.639202302@linuxfoundation.org>
- <dfe78c1a-8322-413b-f1b7-3a6a307a831c@nvidia.com>
- <e5a0e1cc-1360-23fe-408d-03f46dd76c5f@nvidia.com>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EBFE93;
+        Mon, 18 Sep 2023 10:02:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D542C43391;
+        Mon, 18 Sep 2023 13:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695043234;
+        bh=ij64horHxqCr6tNsHUKw9q182XiZPq+6TuHedYlAa8A=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=bJ7yDdHKoHkvsLxRuIHaF8svocpAFG573VOvgpGy2veP6jiXsKZrk6j8En2Agh4Wb
+         3FcoC9RO7PUyVPvlKlgmbMho9gEGeW+2tZUaj7Wl5Uk7SKbyaFSDSxjDApZvDRY/O8
+         Ctg/DyPa54XDpujgjx1ff/ccB/x69Qn5RCM6R4+ij9qqbkUlPYPHD11xb+zMwQ+daL
+         YMpG9u2AtWV7Ks3X95Pr4MAnQOrH6gI96LOnzRC58RZBrhm+tlaGOd2ysygxd8qE88
+         BjFdEK9G9xNHZOoJ7jtu+6+6wc5CubsvBdYzsKNaWrFgEs+0g35TgJe+jPSFGfls4N
+         IM4UHjRe1trHQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e5a0e1cc-1360-23fe-408d-03f46dd76c5f@nvidia.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with flexible
+ arrays
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230914070227.12028-1-juerg.haefliger@canonical.com>
+References: <20230914070227.12028-1-juerg.haefliger@canonical.com>
+To:     Juerg Haefliger <juerg.haefliger@canonical.com>
+Cc:     juerg.haefliger@canonical.com, SHA-cyfmac-dev-list@infineon.com,
+        aspriel@gmail.com, brcm80211-dev-list.pdl@broadcom.com,
+        franky.lin@broadcom.com, gustavoars@kernel.org,
+        hante.meuleman@broadcom.com, hdegoede@redhat.com,
+        keescook@chromium.org, linus.walleij@linaro.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        marcan@marcan.st, ryohei.kondo@cypress.com, stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169504322899.617522.3173548821985178100.kvalo@kernel.org>
+Date:   Mon, 18 Sep 2023 13:20:30 +0000 (UTC)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,53 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 18, 2023 at 02:04:27PM +0100, Jon Hunter wrote:
-> 
-> On 18/09/2023 13:52, Jon Hunter wrote:
-> > Hi Greg,
-> > 
-> > On 17/09/2023 20:10, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.5.4 release.
-> > > There are 285 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > > The whole patch series can be found in one patch at:
-> > >     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
-> > > or in the git tree and branch at:
-> > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> > > and the diffstat can be found below.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > > 
-> > > -------------
-> > > Pseudo-Shortlog of commits:
-> > 
-> > ...
-> > 
-> > > Sameer Pujar <spujar@nvidia.com>
-> > >      arm64: tegra: Update AHUB clock parent and rate
-> > 
-> > 
-> > Unfortunately, the above change is causing a regression in one of our
-> > audio tests and we are looking into why this is.
-> > 
-> > Can we drop this from stable for now?
-> 
-> 
-> An alternative to dropping this change is to pull in the following fixes ...
-> 
-> https://lore.kernel.org/linux-tegra/169447691068.2390116.10518505217580469969.b4-ty@kernel.org/T/#t
+Juerg Haefliger <juerg.haefliger@canonical.com> wrote:
 
-they aren't in Linus's tree yet, any plans on when that will happen?
+> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
+> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
+> 'element' and 'channel_list' will trigger warnings, so make them proper
+> flexible arrays.
+> 
+> False positive warnings were:
+> 
+>   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
+>   index 1 is out of range for type '__le32 [1]'
+> 
+>   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
+>   index 1 is out of range for type '__le16 [1]'
+> 
+> for these lines of code:
+> 
+>   6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
+> 
+>   1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
+> 
+> Cc: stable@vger.kernel.org # 6.5+
+> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-And to confirm, what are the git ids of these in linux-next?
+Patch applied to wireless.git, thanks.
 
-thanks,
+4fed494abcd4 wifi: brcmfmac: Replace 1-element arrays with flexible arrays
 
-greg k-h
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230914070227.12028-1-juerg.haefliger@canonical.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
