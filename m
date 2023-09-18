@@ -2,75 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 191BC7A5326
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 21:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCD87A5341
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 21:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229379AbjIRTet (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 15:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35398 "EHLO
+        id S229627AbjIRTsE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 15:48:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjIRTet (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 15:34:49 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7DF310E
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 12:34:43 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id a640c23a62f3a-9ad8bf9bfabso642245366b.3
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 12:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695065682; x=1695670482; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2JyPo7jaUiq0wJr1OF6TcXlU8z+VRIh1LsJzTpMsTwI=;
-        b=CTmV8TwHI2KeYmqEjpprDWvElyKW7PBYGzilKUCiXf/nbLsGtq5xkRY979bk3s5Wv1
-         lluSYFo8Xp5MD4442ZvRrfk1gC5tjttDePnNtSOGiPCJE0qxrJ1aHcggdoQFr2gFgm+X
-         09NEoH7YiR1A/dNgXaH8v5ZtaioZ2rYJLDzVtSH1ew7KzgU8LRWnaWVqWxtZifcjY2AU
-         FB/GKYa9oqGA8o6t0MpNMJ8UbtGcpvSW46qFcGGIXRyO7kDOpNqJpJNjCwMRsdC/hl/T
-         UE02/orLnZK/XJ/Dae9T03k5pdXdBGArZP8eWlp6aARyueFX9ZYaQsjmlCcmd0+BvtoG
-         UUjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695065682; x=1695670482;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2JyPo7jaUiq0wJr1OF6TcXlU8z+VRIh1LsJzTpMsTwI=;
-        b=JFDw4AyPUCCZHhxfc0/KkdZ7sqKrJtl7Lces6u3aVIDH5jQuhBcfwLLTM+RmJITlHk
-         ezVyCxnefP92mvguwl0jWr4UD00UmGWOmLhZ5qbTrYpMnoXng/xZ872glDdEKcb1W6fj
-         rrwMH1MtYMZ1x30uTmJd98lS0NAhZXdsl6DJz9j0YCad73gcpVJPLCn8Q30B+3O8TUf+
-         ec9xlhbvHl25U2xK2dnnhqt6sEJt1786nYcMb+fLiLTjIaeMgRdECKWDaozIXzYf9q9J
-         N25cy6w6bSQg9cTxEOr9ZlnsF19yI+hhDR3dpvHHHuQ1poBnAmV5mjPIIfc5ja58Lhdr
-         efFQ==
-X-Gm-Message-State: AOJu0YwhSX7YnV+RtsYXn+TXUbtLwODyKFEWxJcrB3QvxOOEq5pd4Cbk
-        jURb5T2DHETWMVUsEvGdtksj5dkCobJ2AWwU+GQ=
-X-Google-Smtp-Source: AGHT+IEEsHDVkz8G+dSha8966949Nc7O95mJuj/515LLyysCGAQEV7Stbc1+bN7AyvGGs4di35u48F66vfbUdv2B1mk=
-X-Received: by 2002:a17:906:846b:b0:9a1:eb67:c0cc with SMTP id
- hx11-20020a170906846b00b009a1eb67c0ccmr8801684ejc.34.1695065682117; Mon, 18
- Sep 2023 12:34:42 -0700 (PDT)
+        with ESMTP id S229554AbjIRTsA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 15:48:00 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28808F;
+        Mon, 18 Sep 2023 12:47:49 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 0C9DC1C0006; Mon, 18 Sep 2023 21:47:48 +0200 (CEST)
+Date:   Mon, 18 Sep 2023 21:47:47 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Jon Hunter <jonathanh@nvidia.com>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Sameer Pujar <spujar@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
+Message-ID: <ZQipY8MUrNSpOBOB@duo.ucw.cz>
+References: <20230917191051.639202302@linuxfoundation.org>
+ <dfe78c1a-8322-413b-f1b7-3a6a307a831c@nvidia.com>
+ <2023091846-cabbage-imagines-3fde@gregkh>
 MIME-Version: 1.0
-From:   Kris jenner <krisj8863@gmail.com>
-Date:   Mon, 18 Sep 2023 14:34:29 -0500
-Message-ID: <CAH2n4g92ydksRJoj2k4o9afGVkYCw5h0CvbmZ8M+ERPkiaH+wg@mail.gmail.com>
-Subject: RE: HIMSS Global Health Conference Attendees List 2023
-To:     Kris jenner <krisj8863@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="RsvENpkY97gWjqyL"
+Content-Disposition: inline
+In-Reply-To: <2023091846-cabbage-imagines-3fde@gregkh>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,T_SPF_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-Would you be interested in acquiring the Healthcare Information and
-Management Systems Society Attendees List 2023?
+--RsvENpkY97gWjqyL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Number of Contacts: 45,789
-Cost: $ 2,175
+Hi!
 
-Interested? Email me back; I would love to provide more information on the list.
+> > > Sameer Pujar <spujar@nvidia.com>
+> > >      arm64: tegra: Update AHUB clock parent and rate
+> >=20
+> >=20
+> > Unfortunately, the above change is causing a regression in one of our a=
+udio
+> > tests and we are looking into why this is.
+> >=20
+> > Can we drop this from stable for now?
+>=20
+> Is it also a problem in Linus's tree?  Keeping bug-compatible is always
+> good :)
 
-Kind Regards,
-Kris jenner
-Marketing Coordinator
+Please update Documentation/process/stable-kernel-rules.rst
+accordingly. People expect certain properties from stable tree, and of
+the rules written there only "It or an equivalent fix must already
+exist in Linus' tree (upstream)." is followed.
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--RsvENpkY97gWjqyL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZQipYwAKCRAw5/Bqldv6
+8ga/AJ4rIhtWw5HCsxMcbFWd/XpshfXZXQCfWx27itd90g0HydpGZLqxlqrRFJQ=
+=JZbM
+-----END PGP SIGNATURE-----
+
+--RsvENpkY97gWjqyL--
