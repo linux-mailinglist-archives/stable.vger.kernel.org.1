@@ -2,76 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD127A52C7
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 21:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D6D7A52C9
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 21:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbjIRTOE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 15:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35612 "EHLO
+        id S229931AbjIRTOX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 15:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjIRTOD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 15:14:03 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E454B10D;
-        Mon, 18 Sep 2023 12:13:57 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-68fb79ef55eso4452130b3a.0;
-        Mon, 18 Sep 2023 12:13:57 -0700 (PDT)
+        with ESMTP id S229770AbjIRTOX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 15:14:23 -0400
+Received: from mail-lj1-x263.google.com (mail-lj1-x263.google.com [IPv6:2a00:1450:4864:20::263])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A7C114
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 12:14:15 -0700 (PDT)
+Received: by mail-lj1-x263.google.com with SMTP id 38308e7fff4ca-2bffdf50212so27907851fa.1
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 12:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695064437; x=1695669237; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dBgll0vV+9Vhff8vKZmdxvYEuk870/D/EdkI0S+iCj4=;
-        b=F2fsigFUj5Svrxbg5msXILOystSHnAv7eHqXkE6U6zz5eFxvqTi5Eqw96abtd2nEt6
-         zx+L6BOaqXu05UibJguLUHRl57B70Wrisf1RKIx7JDhIbWyCLm2ZA47osPpcev2VPfem
-         KLOJbYZLkiuizTbTMQB6VVcvbNVMtYx9J8PuC5fhLV4YpmgUQB/E5UM/D7nbyHlKdXve
-         r/pgH9pJkaobSDUAo+EqIz+/IYyEkrdL2dDb10I5d2kn8ANJPTKHFu4kgTOw+v5AQdHg
-         c8JtJou7Gb17kDgC/1oJXflVhqeROhrlBFF0Yjk3TryIU3wmRFHtxN3EnKlq22e+ycU5
-         /HOw==
+        d=valis-email.20230601.gappssmtp.com; s=20230601; t=1695064454; x=1695669254; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ycWlLp+ly44V6fwuApdFKo/ERnrPwmBjEIYtwLm8qg8=;
+        b=gkG2B8Bd7GO5qa8PBuubMAvtlAiojA4HiYyQgsEUB9Id9h+wQLUYKdlCuN0/t7NYjx
+         Ahqwg2ElkAJA2ylMIcR19wP40d/uqaR+p+N3slzjhinv9OWeN872OgwDteKxH17mhpal
+         3GHV/UvdvoYBEBBgT0Q4xaQ2potaJ7M8J5bNxgxInZ0k45J/9UAuN/L+IrRSNPKJlbZj
+         7t6H/hlSLZXEOQqZl+x8JvSXvnEApZ5a+OE5wsXDac1UuOKrxEOfLT4oLCjLFtZGuCvV
+         jCNSMxQMqiOJ5g9ddTA9SPxKRegFbHUykcVO7oPvrWa+Fzchucd/eDZxW5FHaVT0uFW6
+         tSEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695064437; x=1695669237;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dBgll0vV+9Vhff8vKZmdxvYEuk870/D/EdkI0S+iCj4=;
-        b=CSb+Ln5OguYZfVnB23xwakDTBxO1DWPAxGTbfrZWf9SsnE5B8WJSHGakguSypzKild
-         61zIEBEZZYPUUbq0i8qW03ZRCZoMhI8Yiaf5vu9JBZaThjOeFrImTyWj/cJR1K3vM0mO
-         pLJIAqLZzRcHiuwRnTI7KAid2++uz7R/OdjTi41smHgZ7/wFOHG9Y60dsVwxF+3OsBie
-         6wEoKYPgpkhsmveLSHuoiWsn5pvw4osEelKR8Tye4Owd8zBnEWUu/PNIOSVa+lh8ws+t
-         nFzSgzNZE8Aacrjh7b/QtV+PUKGb1P02ayhA7A/0c/WDDBIIJBuekue8jUi6Mv1UutDb
-         bSgQ==
-X-Gm-Message-State: AOJu0YyX/8dlvq5dJNfDdsPIYzrUuQGmLr7m6FNU4DigrvXFn4/rWlZh
-        C8wydtWo/qdJsdh8HgxLW0I=
-X-Google-Smtp-Source: AGHT+IEtPQ2gcwZwvuxi1RJu0eheIDLvUbluLfxgaER7RLlWeuh5FuziT2DXJl1qR/5NlGU6wAT+sA==
-X-Received: by 2002:a05:6a00:18a5:b0:68e:2d9d:b0cc with SMTP id x37-20020a056a0018a500b0068e2d9db0ccmr13002251pfh.6.1695064437259;
-        Mon, 18 Sep 2023 12:13:57 -0700 (PDT)
-Received: from [10.67.49.139] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id de11-20020a056a00468b00b00686236718d8sm334088pfb.41.2023.09.18.12.13.55
+        d=1e100.net; s=20230601; t=1695064454; x=1695669254;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ycWlLp+ly44V6fwuApdFKo/ERnrPwmBjEIYtwLm8qg8=;
+        b=TYmuM2JVlBMu3QB1zTBLzUqlAu0msZePLsegbfb+vPPIRJKl1J1QL/iuKD3a0UQ818
+         imI/alkPLG9u0cBa6rekFE+VMt+2vH5kd6csaPs8t0ANSTffX1Dd6GVnLjAKubySXA+B
+         jyhfkbG2ZHia8bqfMd3kBd7fJpinstPHJwylzIwdoRQkB2Idmu/OqwI55Ttml9mywAh3
+         hBFNPd2gzyEG2xkGP2dfU9cayRxg6MwG9zE+Fz5oiIGhnBCjr/9O5KKJDPxIos6lcIi/
+         Qb3FjAj8NXfvOs/P68oT4IRXNxgbAj1fPrdOHJlbx2DIPewotVkld/YaxcggGwUHn+gd
+         p1Ug==
+X-Gm-Message-State: AOJu0YxPjn558D5W1Hf7S7u2NBoXxnLhikBSu20SbC+ahSP0GfSRN3Lz
+        2VH9kcAMAshYkf9JeeeqDAK54jnmB4ctLs2QSpsOeN/yeMLPSIIJyEVJ
+X-Google-Smtp-Source: AGHT+IGpHNuOZcVnZy+CqtdkxWVhB9tBtptbFrk4zwXjNv1snyItEe6bR+CwuStDpBkNgaRrTqIxrXx1bBLJ
+X-Received: by 2002:a2e:96cf:0:b0:2bf:a961:2374 with SMTP id d15-20020a2e96cf000000b002bfa9612374mr9043545ljj.47.1695064453717;
+        Mon, 18 Sep 2023 12:14:13 -0700 (PDT)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
+        by smtp-relay.gmail.com with ESMTPS id qt6-20020a170906ece600b00991e20d3befsm1462429ejb.119.2023.09.18.12.14.13
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 12:13:56 -0700 (PDT)
-Message-ID: <ce0230eb-8bd4-a587-c034-f390337d8b3c@gmail.com>
-Date:   Mon, 18 Sep 2023 12:13:54 -0700
+        Mon, 18 Sep 2023 12:14:13 -0700 (PDT)
+X-Relaying-Domain: valis.email
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-9a6190af24aso653348266b.0
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 12:14:13 -0700 (PDT)
+X-Received: by 2002:a17:907:775a:b0:9a2:16e2:353 with SMTP id
+ kx26-20020a170907775a00b009a216e20353mr9200235ejc.6.1695064453158; Mon, 18
+ Sep 2023 12:14:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230917191051.639202302@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230918180859.24397-1-luizcap@amazon.com>
+In-Reply-To: <20230918180859.24397-1-luizcap@amazon.com>
+From:   valis <sec@valis.email>
+Date:   Mon, 18 Sep 2023 21:17:30 +0200
+X-Gmail-Original-Message-ID: <CAEBa_SCoUVCwVAZOtYfdtinbnF85-0fCYVbT-KAiBi4f75fWtQ@mail.gmail.com>
+Message-ID: <CAEBa_SCoUVCwVAZOtYfdtinbnF85-0fCYVbT-KAiBi4f75fWtQ@mail.gmail.com>
+Subject: Re: [PATH 4.14.y] net/sched: cls_fw: No longer copy tcf_result on
+ update to avoid use-after-free
+To:     Luiz Capitulino <luizcap@amazon.com>
+Cc:     stable@vger.kernel.org, Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
+        Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,31 +83,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Sep 18, 2023 at 8:09=E2=80=AFPM Luiz Capitulino <luizcap@amazon.com=
+> wrote:
+
+> Valis, Greg,
+>
+> I noticed that 4.14 is missing this fix while we backported all three fix=
+es
+> from this series to all stable kernels:
+>
+> https://lore.kernel.org/all/20230729123202.72406-1-jhs@mojatatu.com
+>
+> Is there a reason to have skipped 4.14 for this fix? It seems we need it.
+
+Hi Luiz!
+
+I see no reason why it should be skipped for 4.14
+I've just checked 4.14.325 - it is vulnerable and needs this fix.
+
+Best regards,
+
+valis
 
 
-On 9/17/2023 12:10 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.4 release.
-> There are 285 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
-
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
+>
+> This is only compiled-tested though, would be good to have a confirmation
+> from Valis that the issue is present on 4.14 before applying.
+>
+> - Luiz
+>
+> diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+> index e63f9c2e37e5..7b04b315b2bd 100644
+> --- a/net/sched/cls_fw.c
+> +++ b/net/sched/cls_fw.c
+> @@ -281,7 +281,6 @@ static int fw_change(struct net *net, struct sk_buff =
+*in_skb,
+>                         return -ENOBUFS;
+>
+>                 fnew->id =3D f->id;
+> -               fnew->res =3D f->res;
+>  #ifdef CONFIG_NET_CLS_IND
+>                 fnew->ifindex =3D f->ifindex;
+>  #endif /* CONFIG_NET_CLS_IND */
+> --
+> 2.40.1
+>
