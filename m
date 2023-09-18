@@ -2,138 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5D107A4BB4
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D06C7A4BB0
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232220AbjIRPVQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 11:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
+        id S233992AbjIRPUz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 11:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234410AbjIRPVP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:21:15 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E91B118;
-        Mon, 18 Sep 2023 08:17:47 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68fbd5cd0ceso4082977b3a.1;
-        Mon, 18 Sep 2023 08:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695050266; x=1695655066; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=81F5bCn6l0BRx0w8BQQ9iQyXJ5D/anBMfPMtaxEr1bY=;
-        b=lngoXJXSEQ7orSWO53FHWUP/8fXxl4OR6PDRaO1KvLfSNI1Ji8U3EtBYi+wmP+J/va
-         vcGF9s7GBveOZUpWx8SVA6lIzwQ6tFSMpfB+99kkgYQ3nvh9NpXiLmbG2Pa0jHbJK3yT
-         DncaEPCCAuNZJE13XvqAH0T0Zpl0QSy/eJutNUSydIhTJHCaNQLIslFdpx3YvS0Dc3fQ
-         +/6c6dPhe+9v1TsFgni32Hfz5hxZNQmjrLiFqJBZmBObzxxjp+BFIrp8LJEQabtkUqJQ
-         acYU0te/hJV7wtc8GF0fc7/OWamTq6QOZia5aLACuyykYqNOS4SS42NJD/eNl92oEa9U
-         REbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695050266; x=1695655066;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=81F5bCn6l0BRx0w8BQQ9iQyXJ5D/anBMfPMtaxEr1bY=;
-        b=lM/dic5aaWjPrwcJRwQ8a5EO5YtoYOQwL7xQWy/3ihCctliV2K6Zd7rXYIILnQQAgp
-         f0J0BK8tQ3gK+w/JdfXYinj8yAAHopzIpdy9zYx898WE7TOIQwCFuh+uiChipRioaQa0
-         Tu1aKSQAQ6LfiWxUlccif7fHHvOAg6S9a1N/nvq6pAPFqGwRlwOMiK9YONuMlqiT1vLz
-         9IsxNID+9Oyq9AIoI4Di5+KkY2PeYz444XaPgWCLTOQFykn/u5cpn/bIadfgJsYAT5KE
-         SK4N2eNmkd5+9yH9UDlnTTq4qZQBNxwYAHMmtgLvHElyboXIORB/C397i0H4wXyKqqS5
-         WODw==
-X-Gm-Message-State: AOJu0YymIBnCA6APRzjnhygw5rEsHIe7SRow7neYQm8Dh0qVJ2DgmM7h
-        FU2LPwx1S3TiekrM+hPzwWI=
-X-Google-Smtp-Source: AGHT+IEEHnstItrfV2ospP26Zbe9echZD3JFu/HZ+3QxynojEh6WWiPS31m7MAaP+EWyKGulJBd4Xw==
-X-Received: by 2002:a05:6a00:1912:b0:68e:23c9:b306 with SMTP id y18-20020a056a00191200b0068e23c9b306mr12385588pfi.30.1695050266548;
-        Mon, 18 Sep 2023 08:17:46 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id p15-20020a62ab0f000000b0067aea93af40sm7310632pff.2.2023.09.18.08.17.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 08:17:45 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <bae1a61f-ab9d-2560-9c70-e09092363467@roeck-us.net>
-Date:   Mon, 18 Sep 2023 08:17:43 -0700
+        with ESMTP id S234346AbjIRPUu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:20:50 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB5A123;
+        Mon, 18 Sep 2023 08:19:01 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38IEfb5o008143;
+        Mon, 18 Sep 2023 15:18:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=sNZugfDj0EUXzn0lGOUGppcQYeOxKSNN7aJIe/l8fAU=;
+ b=BM5TRVH1EmWNOXCgNxBmxBW19IvPEqX/nUk2xVdWXwHLinf16ZB0KImLTX+GI3InKBnb
+ 9iLk9dw4KkXjj8rXjz0s756nKi2wU3EnxX5ayj8FF/a1klYmuucKIfF6qTOteo15pTYe
+ FYIf10uVabqUMn046JPp1bfn8pnJUWffS93ONxtW2IroQFL4sC7I1oQaIuV80EMpF+eF
+ 1mZ6BEh232cPEa1wWsOIVEgswS8VSwu7Sz+CdLPO+ZZVJ6K80h4YYrJeAN9kFecCXIGE
+ fhE0P07RnZ5XzVAHaGDrdK8tHbipcPfKRr0sl5LsRuFqUPb8Uz8Zt3lPBwGjvP9veir5 VQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6nh78drg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 Sep 2023 15:18:51 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38IFIo3i028903
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 Sep 2023 15:18:50 GMT
+Received: from [10.216.52.36] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 18 Sep
+ 2023 08:18:48 -0700
+Message-ID: <e753bc37-5fe7-0962-00e7-2df0de49c20f@quicinc.com>
+Date:   Mon, 18 Sep 2023 20:48:44 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command
+ fails
 Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jon Hunter <jonathanh@nvidia.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Sameer Pujar <spujar@nvidia.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-References: <20230917191051.639202302@linuxfoundation.org>
- <dfe78c1a-8322-413b-f1b7-3a6a307a831c@nvidia.com>
- <2023091846-cabbage-imagines-3fde@gregkh>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
-In-Reply-To: <2023091846-cabbage-imagines-3fde@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "# 5 . 16" <stable@vger.kernel.org>
+References: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
+ <ZP8M6zqgsLTK25PI@kuha.fi.intel.com>
+ <21d247d3-83be-ba53-c982-2ab0e2e4ffb3@quicinc.com>
+ <ZQROzNqr7fbmJC87@kuha.fi.intel.com>
+ <4e876097-aed1-2b0d-ecb4-6434add4ef26@quicinc.com>
+ <ZQRi20nC0j5c4LGI@kuha.fi.intel.com>
+ <d0c27255-fcd2-39ed-f7af-b3b79d965ddf@quicinc.com>
+ <ZQhd0qic2wGvCoUo@kuha.fi.intel.com>
+From:   Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <ZQhd0qic2wGvCoUo@kuha.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: cwjP36aFSjAg90LUWnvfML0geSJOkLMG
+X-Proofpoint-GUID: cwjP36aFSjAg90LUWnvfML0geSJOkLMG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-18_08,2023-09-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 spamscore=0
+ adultscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309180134
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/18/23 05:56, Greg Kroah-Hartman wrote:
-> On Mon, Sep 18, 2023 at 01:52:10PM +0100, Jon Hunter wrote:
->> Hi Greg,
+
+
+On 18-09-23 07:55 pm, Heikki Krogerus wrote:
+> On Sat, Sep 16, 2023 at 01:58:30PM +0530, Prashanth K wrote:
 >>
->> On 17/09/2023 20:10, Greg Kroah-Hartman wrote:
->>> This is the start of the stable review cycle for the 6.5.4 release.
->>> There are 285 patches in this series, all will be posted as a response
->>> to this one.  If anyone has any issues with these being applied, please
->>> let me know.
+>>
+>> On 15-09-23 07:27 pm, Heikki Krogerus wrote:
+>>> Hi Prashanth,
 >>>
->>> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
->>> Anything received after that time might be too late.
+>>> On Fri, Sep 15, 2023 at 07:10:25PM +0530, Prashanth K wrote:
+>>>> On 15-09-23 06:02 pm, Heikki Krogerus wrote:
+>>>>> On Tue, Sep 12, 2023 at 04:37:47PM +0530, Prashanth K wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 11-09-23 06:19 pm, Heikki Krogerus wrote:
+>>>>>>> On Mon, Sep 11, 2023 at 02:34:15PM +0530, Prashanth K wrote:
+>>>>>>>> Currently if ucsi_send_command() fails, then we bail out without
+>>>>>>>> clearing EVENT_PENDING flag. So when the next connector change
+>>>>>>>> event comes, ucsi_connector_change() won't queue the con->work,
+>>>>>>>> because of which none of the new events will be processed.
+>>>>>>>>
+>>>>>>>> Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
+>>>>>>>> fails.
+>>>>>>>>
+>>>>>>>> Cc: <stable@vger.kernel.org> # 5.16
+>>>>>>>> Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
+>>>>>>>> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+>>>>>>>> ---
+>>>>>>>>      drivers/usb/typec/ucsi/ucsi.c | 1 +
+>>>>>>>>      1 file changed, 1 insertion(+)
+>>>>>>>>
+>>>>>>>> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+>>>>>>>> index c6dfe3d..509c67c 100644
+>>>>>>>> --- a/drivers/usb/typec/ucsi/ucsi.c
+>>>>>>>> +++ b/drivers/usb/typec/ucsi/ucsi.c
+>>>>>>>> @@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+>>>>>>>>      	if (ret < 0) {
+>>>>>>>>      		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+>>>>>>>>      			__func__, ret);
+>>>>>>>> +		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+>>>>>>>>      		goto out_unlock;
+>>>>>>>>      	}
+>>>>>>>
+>>>>>>> I think it would be better to just move that label (out_unlock) above
+>>>>>>> the point where clear_bit() is already called instead of separately
+>>>>>>> calling it like that. That way the Connector Change Event will
+>>>>>>> also get acknowledged.
+>>>>>> Do we really need to ACK in this case since we didn't process the current
+>>>>>> connector change event
+>>>>>
+>>>>> You won't get the next event before the first one was ACK'd, right?
+>>>>>
+>>>>
+>>>> The spec says that we need to ACK if we received AND processed a CCI
+>>>>
+>>>> "4.5.4 Acknowledge Command Completion and/or Change Indication (R)
+>>>> This command is used to acknowledge to the PPM that the OPM received and
+>>>> processed a Command Completion and/or a Connector Change Indication."
+>>>>
+>>>> And here in this case, we have received, but not processed the event.
+>>>> So I'm not really sure what to do here in this case. If we don't send an
+>>>> ACK, then would the PPM think that OPM is not responding and reset it?
+>>>> OR would it resend the previous event again since we didn't ACK?
 >>>
->>> The whole patch series can be found in one patch at:
->>> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
->>> or in the git tree and branch at:
->>> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
->>> and the diffstat can be found below.
+>>> Every PPM behaves differently.
 >>>
->>> thanks,
+>>> Did you actually see that happening - GET_CONNECTOR_STATUS failed? Can
+>>> you reproduce it?
 >>>
->>> greg k-h
->>>
->>> -------------
->>> Pseudo-Shortlog of commits:
 >>
->> ...
+>> Yea we actually hit the issue once where GET_CONNECTOR_STATUS failed and
+>> subsequent events didn't get queued since EVENT_PENDING wasn't cleared. Its
+>> not easily reproducible (<1%) though.
 >>
->>> Sameer Pujar <spujar@nvidia.com>
->>>       arm64: tegra: Update AHUB clock parent and rate
->>
->>
->> Unfortunately, the above change is causing a regression in one of our audio
->> tests and we are looking into why this is.
->>
->> Can we drop this from stable for now?
+>> [4948:kworker/0:3]UCSI: ucsi_qti_glink_write: timed out
+>> [4948:kworker/0:3]ucsi_glink soc:qcom,pmic_glink:qcom,ucsi:
+>> ucsi_handle_connector_change: GET_CONNECTOR_STATUS failed (-110)
 > 
-> Is it also a problem in Linus's tree?  Keeping bug-compatible is always
-> good :)
+> Okay. It would be really interesting to know why is it failing.
+> But let's just go with this for now.
+> 
+> thanks,
 > 
 
-Sorry, no, it isn't, especially in the context of at the same time suggesting
-that everyone should start using the most recent stable release immediately
-(instead of, say, selectively picking security patches).
+Agreed, I'm not really sure why its failing, because its in happening 
+the lower layers. Anyways thanks for the comments and review!
 
-I don't think Tegra users would be happy if their audio stopped working,
-and it seems unlikely that they would accept the argument that they should
-be happy to be bug-compatible with the latest upstream kernel - even more so
-if that latest upstream kernel is a release candidate and the problem was
-introduced in the commit window.
-
-Guenter
-
+Regards,
