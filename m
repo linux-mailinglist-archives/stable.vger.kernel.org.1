@@ -2,152 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83FCA7A4700
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 12:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 785C57A4836
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 13:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239656AbjIRKbX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 18 Sep 2023 06:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
+        id S239235AbjIRLUT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 07:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241367AbjIRKbT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 06:31:19 -0400
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA163DB;
-        Mon, 18 Sep 2023 03:31:13 -0700 (PDT)
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5711d5dac14so1115020eaf.0;
-        Mon, 18 Sep 2023 03:31:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695033073; x=1695637873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ErCjYPZb5R42qd/bAiuaTdy6BusCKRPj6SWml5/mG+w=;
-        b=kYiCcVp5Qfeq7r0DFhe/6Da+Ib83s9UHWbz6MoSQUpPgbkX+SRhpPukmTwRX+/gMtU
-         kVrfTK6/r4Elb8+JhHKTxDB1un+3RRtVS2lmSjh2gOybBqJQcYARfBHNmbNlQpQjztlq
-         dvlheDfXPZ6ndOpY1RNziS64B4H5i179+CYcIZ6wceOQq+pL6KpPUWFPXnHn9rHnGFLA
-         8tq95clpBE+LtXQQyKUrPqP2qf2Q3AXpxvHYPCjmxwUIXMbWDj5JM8E9iuKWRFE0FeuR
-         wmgd+PqruiacRX8VjJ2SvU8lRgVkYUwIKZV7OnkHcLJM3kZKFa+vZtNN4FgfFbDeiqHD
-         Myag==
-X-Gm-Message-State: AOJu0YzyRIr0QKOsRpkSr5Iv/MAlG9iJQ3t02I89ZVK5hEgmza/6J46r
-        U0C8KgNfzUB8pfRxwOn3a0pb9idPqRmJWbonhbQ=
-X-Google-Smtp-Source: AGHT+IGzicJIqnssObKvtpvoT+dKnNeRslejH1qfRD7ABvvgWon4Kl1kDhUo6Y/cnfvI6Y18Oa+llsz3SLwS5MWYg7g=
-X-Received: by 2002:a4a:b483:0:b0:578:a06a:5d8f with SMTP id
- b3-20020a4ab483000000b00578a06a5d8fmr7599276ooo.1.1695033073091; Mon, 18 Sep
- 2023 03:31:13 -0700 (PDT)
+        with ESMTP id S241437AbjIRLUQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 07:20:16 -0400
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07129E1
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 04:20:09 -0700 (PDT)
+Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
+        by cmsmtp with ESMTP
+        id iBXQqAOFFDKaKiCISqVX2F; Mon, 18 Sep 2023 11:20:08 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id iCIRqrMt5dzp4iCIRqo6f8; Mon, 18 Sep 2023 11:20:07 +0000
+X-Authority-Analysis: v=2.4 cv=UdNC9YeN c=1 sm=1 tr=0 ts=65083267
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=A8hhA0xKOrAuU+Gm1IuefMwmNPbEdpwZ1JE6l7dMRg8=; b=DFBY+heH+LMU75a+xmj9w6Sejb
+        QwTxWXQOcFqiFoKG166jcSsvjsUjr3GDiSsyx6WbbtyNazzSHdeZWpQammM3UnuFzmxLnwia4WzXn
+        2psGeYpvsDrOo/OnIat5DKyIXlhkJy6ipi5tzDeWUvvzolQHZsEeouK1778dRGx+eb4L69a76osH4
+        Uq3mkNOEfy7yHP/fi9T27KIPaKrLeIGfKhqTcwtb/Ff55vBVVly5vq/XwfTPnaWF2G69GuAcs34n0
+        Yfe33nZlulaITZ8haM+22IMp2jfZ6rJ98mxYd0yAnwiJbbWceePkXuPyaNTuPMBR6SOvWx29o2X2X
+        FbIRSZbg==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:40824 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qiCIP-000Oa0-0c;
+        Mon, 18 Sep 2023 05:20:05 -0600
+Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230917191051.639202302@linuxfoundation.org>
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <01385204-3046-cc93-7e49-6d9c0fe4ad1b@w6rz.net>
+Date:   Mon, 18 Sep 2023 04:20:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-References: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
-In-Reply-To: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 18 Sep 2023 12:30:58 +0200
-Message-ID: <CAJZ5v0j+L=a0UEiCEXUYDtvscaVF29FPro9FNupMkJ7do2eBGw@mail.gmail.com>
-Subject: Re: [PATCH v5] driver core: platform: set numa_node before platform_add_device()
-To:     Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org,
-        lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qiCIP-000Oa0-0c
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:40824
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfFUknqHlgh4XYyQ+xrjisy0Cyv4niRNpeU0LOQZ9rBHFlO+XAIa86GvED9TMCqliJ5xn0fd5X4tvWmQuGOsnlHP/iJ+wl9Wa4m8IPa7c6wG/Y3OZBhZo
+ hCmaCI6YXqR/B6QbbFeicSMVo+YM8UKTbG5gCZBIYeUH4AAgykv66BaS9ne3EmEUFkXuz9MdA/MiYg==
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 11:32 PM Jinhui Guo
-<guojinhui.liam@bytedance.com> wrote:
+On 9/17/23 12:10 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.4 release.
+> There are 285 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> platform_add_device()
+> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-According to "git grep" this function is not present in 6.6-rc2.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-If you mean platform_device_add(), please update the patch subject and
-changelog accordingly.
+Tested-by: Ron Economos <re@w6rz.net>
 
-> creates the numa_node attribute of sysfs according
-> to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-> of device before creating numa_node attribute of sysfs.
-
-It would be good to also say that this needs to be done in
-platform_device_register_full(), because that's where the platform
-device object is allocated.
-
-However, what about adding the NUMA node information to pdevinfo?  It
-would be more straightforward to handle it then AFAICS.
-
-> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> ---
-> V4 -> V5: Add Cc: stable line and changes from the previous submited
-> patches
-> V3 -> V4: Refactor code to be an ACPI function call
-> V2 -> V3: Fix Signed-off name
-> V1 -> V2: Fix compile error without enabling CONFIG_ACPI
->
->  drivers/acpi/acpi_platform.c | 4 +---
->  drivers/base/platform.c      | 1 +
->  include/linux/acpi.h         | 5 +++++
->  3 files changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 48d15dd785f6..adcbfbdc343f 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->         if (IS_ERR(pdev))
->                 dev_err(&adev->dev, "platform device creation failed: %ld\n",
->                         PTR_ERR(pdev));
-> -       else {
-> -               set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +       else
->                 dev_dbg(&adev->dev, "created platform device %s\n",
->                         dev_name(&pdev->dev));
-> -       }
->
->         kfree(resources);
->
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 76bfcba25003..35c891075d95 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
->                         goto err;
->         }
->
-> +       set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
->         ret = platform_device_add(pdev);
->         if (ret) {
->  err:
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index a73246c3c35e..6a349d53f19e 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
->         return 0;
->  }
->  #endif
-> +
-> +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-> +       acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-> +
->  extern int pnpacpi_disabled;
->
->  #define PXM_INVAL      (-1)
-> @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
->  #define ACPI_COMPANION_SET(dev, adev)  do { } while (0)
->  #define ACPI_HANDLE(dev)               (NULL)
->  #define ACPI_HANDLE_FWNODE(fwnode)     (NULL)
-> +#define ACPI_NODE_GET(adev)            NUMA_NO_NODE
->
->  #include <acpi/acpi_numa.h>
->
-> --
-> 2.20.1
->
