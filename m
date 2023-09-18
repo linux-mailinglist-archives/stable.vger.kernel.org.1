@@ -2,178 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C31F67A4C42
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9587A4C51
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 17:31:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbjIRP36 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 11:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50294 "EHLO
+        id S229480AbjIRPbO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 11:31:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjIRP3m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:29:42 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A59E78
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:27:56 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c364fb8a4cso43481225ad.1
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:27:56 -0700 (PDT)
+        with ESMTP id S229437AbjIRPbN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 11:31:13 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E110C1AE
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:29:13 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6c0c6370e5eso2952710a34.3
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 08:29:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1695050707; x=1695655507; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pudypFwSwvYWUA8GZ6yWJQWZyEDdbHX7BphECmHVSNw=;
-        b=QimgOvFpmjMbI25FGHNAb4EU9OVm5BesSOwBaeQKNXBzh9Cs/0fA2EuSCY61vT2b0a
-         1zy1Kk9k8hr3gXUcQUnLqiRc7O1m9ZmlK7AsY6WGx1Aur2wQ+CS4AP9wPKKS5jpExQ5B
-         TYwiAf1fO5Xu5OF4g+CoIAekC9V3R0kg62t6c4ZGaezkMxnw4blt8t+3X+nlUnIDsdST
-         jjHsI9Y2nc1zs+U7ZhP2mdLjpjrgAs5vxAZaTKnwLVYh09Qt9A7AEdEE/KFkYleapepA
-         v28t0TYarg3nWTK5MgjqNI9EQQrEpsR7VOZJM5Rlmq/zUktlD7/43nZ7l1q1szbD2XkZ
-         pprg==
+        d=linuxtx.org; s=google; t=1695050751; x=1695655551; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YVKIu2PP2j4ok3fw5mLN5mcVXh2mH1/J+kvJoPupo4Y=;
+        b=eTFlzsNVq5npy8Lw9LUug4dHHPrXPsPUBADl2YmNCSosHQQrZQVN9Fv5scHw859Ugi
+         t6BgoZiAF0ocgGcAAPdHbZKuJuMDoe1KsPWNUba5dke/izsCzoyhIaSJL7aX9ND1kpM3
+         ls+M0A7SzRMwHvCzEm654o+tzKrTsxU0DHGtk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695050707; x=1695655507;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1695050751; x=1695655551;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pudypFwSwvYWUA8GZ6yWJQWZyEDdbHX7BphECmHVSNw=;
-        b=pwJV9Ol5lkutMvsd8SIeSs1mjexEFWw97119jI7R9jEMqmNASVj4FBnDUDGMoNJL6n
-         A6m4jVxRG0dHBvMgd4QhdyjjYuV16Oca+1OBW/QdN+i34tLTG9apWUbjqpV46JPy0uh9
-         MtUxD4f9v9itxyKkPaa0vN2/Y5E9WYipYvzLhC8aGLzvn+dTciOrJnb5k1pGpBnhaviz
-         /JaAmFaLlUY7ki/bFJnPKIKyrvMZQzMSlhWjViNJvlT5AfuZcUDgAVxydHvmvKBhgNgK
-         xWjMSJ7YNgcFY17NzK4+fKwZ4vvY9dqZCmzkvV4k9Rs1DeCFtr2GslNWkEKHwuFRSnIm
-         QPTw==
-X-Gm-Message-State: AOJu0YyjwPh5Kp+rArU6Q4/HOjIcQyCnvEOJv1jVt147gFapkzEqpdkQ
-        PCMbFaZbNjShldEXdIM5gEfv7A==
-X-Google-Smtp-Source: AGHT+IExjXc7IVtiPsvm4aeJW5nIUZKxHF7MeFoJNQs3pxieErXLk9RYT1n73k5aZDfIEpUzQJO4bQ==
-X-Received: by 2002:a17:903:60e:b0:1c4:6cc2:a27e with SMTP id kg14-20020a170903060e00b001c46cc2a27emr4245837plb.69.1695050707125;
-        Mon, 18 Sep 2023 08:25:07 -0700 (PDT)
-Received: from PF2LML5M-SMJ.lan ([103.175.14.91])
-        by smtp.gmail.com with ESMTPSA id b6-20020a170902ed0600b001b9ecee459csm3031991pld.34.2023.09.18.08.25.04
+        bh=YVKIu2PP2j4ok3fw5mLN5mcVXh2mH1/J+kvJoPupo4Y=;
+        b=WsYz8teqbJ+gQmQOlJhyIyhBabx/LAPK6iAMwL0tg0ZvG/wHWeAkLUBEbr0srRRpfY
+         ODGIEe4PDTT6CTgfQBzLWEtou+gmOdB9opUcOwxdRagMyzxgRH6RXZC4f37Mw4Qzt7pC
+         Par+jGho7GBU2ydzH9hbh2ELVlXElhn+rgpTY2Po0IX5wmH9HRK64pLec2gmNaxXap3Z
+         H/Kpnxi56fL9hWKyZAcXKpePoNcQmrSeNjKm8/WD4M5dMuHU0iyIYyvoO3eFxE9K6mK7
+         pAo4F8OVgydYCKY2UUviY15zD5wiFDwqiEqXMbLJU3hKNNCsF/dD6O9+u8GA380gYaFF
+         xWHA==
+X-Gm-Message-State: AOJu0YzQuglmjrl/j4zPesdrGrWPMmhTP7xZ1YObFWjPKv085150Xc2D
+        Am2xhNpUiVasViwvpdxmIS51+A==
+X-Google-Smtp-Source: AGHT+IGe9SqnHwSEgpsYlD4JGoZ7FIJxs+MdYsxgK7B+OtUSYfkXctreGRJaR9bm+s8ZbO3v7rj0GQ==
+X-Received: by 2002:a05:6830:2014:b0:6b7:1d93:72e0 with SMTP id e20-20020a056830201400b006b71d9372e0mr9169561otp.32.1695050751405;
+        Mon, 18 Sep 2023 08:25:51 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id e14-20020a4aaace000000b0054f85f67f31sm4217899oon.46.2023.09.18.08.25.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 08:25:06 -0700 (PDT)
-From:   Jinhui Guo <guojinhui.liam@bytedance.com>
-To:     rafael@kernel.org
-Cc:     guojinhui.liam@bytedance.com, gregkh@linuxfoundation.org,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lizefan.x@bytedance.com,
-        lkp@intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH v6] driver core: platform: set numa_node before platform_device_add()
-Date:   Mon, 18 Sep 2023 23:25:02 +0800
-Message-Id: <20230918152502.316-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230918134527.252-1-guojinhui.liam@bytedance.com>
-References: <20230918134527.252-1-guojinhui.liam@bytedance.com>
+        Mon, 18 Sep 2023 08:25:50 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Mon, 18 Sep 2023 10:25:49 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
+Message-ID: <ZQhr/TN/taOKqYIm@fedora64.linuxtx.org>
+References: <20230917191051.639202302@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> On Mon, Sep 18, 2023 at 3:46 PM Jinhui Guo <guojinhui.liam@bytedance.com> wrote:
-> >
-> > Setting the devices' numa_node needs to be done in
-> > platform_device_register_full(), because that's where the
-> > platform device object is allocated.
-> >
-> > Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+On Sun, Sep 17, 2023 at 09:10:00PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.4 release.
+> There are 285 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> No, I haven't given you this tag.
+> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> Anything received after that time might be too late.
 > 
-> I don't think that Greg has given you the one above either.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
 > 
-> Please don't add tage that you haven't received to your patches,
-> because they are not applicable with incorrect tags.
->
+> thanks,
+> 
+> greg k-h
 
-I appologize to it. I just misunderstand what it means. I will drop it out soon.
- 
-> > Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> > ---
-> > V5 -> V6:
-> >   1. Update subject to correct function name platform_device_add().
-> >   2. Provide a more clear and accurate description of the changes
-> >      made in commit (suggested by Rafael J. Wysocki).
-> >   3. Add reviewer name.
-> >
-> > V4 -> V5:
-> >   Add Cc: stable line and changes from the previous submited patches.
-> >
-> > V3 -> V4:
-> >   Refactor code to be an ACPI function call.
-> >
-> > V2 -> V3:
-> >   Fix Signed-off name.
-> >
-> > V1 -> V2:
-> >   Fix compile error without enabling CONFIG_ACPI.
-> > ---
-> >
-> >  drivers/acpi/acpi_platform.c | 4 +---
-> >  drivers/base/platform.c      | 1 +
-> >  include/linux/acpi.h         | 5 +++++
-> >  3 files changed, 7 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> > index 48d15dd785f6..adcbfbdc343f 100644
-> > --- a/drivers/acpi/acpi_platform.c
-> > +++ b/drivers/acpi/acpi_platform.c
-> > @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
-> >         if (IS_ERR(pdev))
-> >                 dev_err(&adev->dev, "platform device creation failed: %ld\n",
-> >                         PTR_ERR(pdev));
-> > -       else {
-> > -               set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> > +       else
-> >                 dev_dbg(&adev->dev, "created platform device %s\n",
-> >                         dev_name(&pdev->dev));
-> > -       }
-> >
-> >         kfree(resources);
-> >
-> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> > index 76bfcba25003..35c891075d95 100644
-> > --- a/drivers/base/platform.c
-> > +++ b/drivers/base/platform.c
-> > @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
-> >                         goto err;
-> >         }
-> >
-> > +       set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
-> >         ret = platform_device_add(pdev);
-> >         if (ret) {
-> >  err:
-> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > index a73246c3c35e..6a349d53f19e 100644
-> > --- a/include/linux/acpi.h
-> > +++ b/include/linux/acpi.h
-> > @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
-> >         return 0;
-> >  }
-> >  #endif
-> > +
-> > +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-> > +       acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-> > +
-> >  extern int pnpacpi_disabled;
-> >
-> >  #define PXM_INVAL      (-1)
-> > @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
-> >  #define ACPI_COMPANION_SET(dev, adev)  do { } while (0)
-> >  #define ACPI_HANDLE(dev)               (NULL)
-> >  #define ACPI_HANDLE_FWNODE(fwnode)     (NULL)
-> > +#define ACPI_NODE_GET(adev)            NUMA_NO_NODE
-> >
-> >  #include <acpi/acpi_numa.h>
-> >
-> > --
-> > 2.20.1
-> >
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
+
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
