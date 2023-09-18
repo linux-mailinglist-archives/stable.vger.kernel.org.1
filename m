@@ -2,104 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 532087A55C5
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 00:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59FF07A55FF
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 01:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjIRW1T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 18:27:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57612 "EHLO
+        id S229450AbjIRXB5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 19:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjIRW1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 18:27:19 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 259F9C0
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 15:27:14 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-760dff4b701so64293039f.0
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 15:27:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1695076033; x=1695680833; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3rqIWrOLYqD06it1VsQqnd3u9qXxj+oJZ3vgSdaTqjM=;
-        b=Z+7if4xDN3LbFs1ffI94vmbQcddHx/c3lz2ERSvTqnL7N2FCJ1RRX1dYkOu9nUwzvH
-         o4lsrt+91ec2Sl2TaBAh43HsjFIqQyROxT1w0EBzWdT5R00cwD+gQrxXAffmmaNUFrU5
-         cPY38kV4WNyK+FAzbnFZArNeEHE/K6xpapSZE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695076033; x=1695680833;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3rqIWrOLYqD06it1VsQqnd3u9qXxj+oJZ3vgSdaTqjM=;
-        b=rme3tTbEjgDPaX9O/o3igflBwh8SB4Kg3rwK3dNYLLcJNbmUWNBRhKj/hnGAe8bdLP
-         5WJ4D9u41+MX1m1zYA+SjWgmTyQwASpBmEexEIpff8u81DUOCCDZcpQ9fXbplbTUxPSJ
-         pzcYW7BGRz3+5wPoVEHb0YObo/GsunTOi33TiK5G6fXIBn6vQxzoSjMkd3anxpAaf5Vx
-         9pv4LVw/tfSc8l33ZCiX+Obto+Z+W3B9t8Kfegyujw/4qQ/yMK77+6ZZ23+Uj9j5LJzL
-         vGQ5oLwknXXP8lLswYchtGoptcXU+30/+7Jt/ERBInr0iVMbkVgY8JgGye/3PBAflI9q
-         Wyow==
-X-Gm-Message-State: AOJu0YzreQRfh/dfwqu9V59ej/qrxityDdrmgWa0+JrOS5GKn8RobhV7
-        diRf8BS1YdZl5D7N/az4QExdPA==
-X-Google-Smtp-Source: AGHT+IHDpo6xjPia1Y9rnAdAv6S0PeTNKEuHYXTuoeaPDZGV2nE4B6rRETLt6m8zSLY+XF35iwe/gw==
-X-Received: by 2002:a6b:3bce:0:b0:790:958e:a667 with SMTP id i197-20020a6b3bce000000b00790958ea667mr11843320ioa.2.1695076033510;
-        Mon, 18 Sep 2023 15:27:13 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id h6-20020a02c726000000b0042b3a328ee0sm3089190jao.166.2023.09.18.15.27.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 15:27:13 -0700 (PDT)
-Message-ID: <0b0a02b9-3693-bec6-d200-ec1ccb7b9ccb@linuxfoundation.org>
-Date:   Mon, 18 Sep 2023 16:27:12 -0600
+        with ESMTP id S229907AbjIRXB4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 19:01:56 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E40A4;
+        Mon, 18 Sep 2023 16:01:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4E2C433C8;
+        Mon, 18 Sep 2023 23:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695078111;
+        bh=zSXhmBZjcS1+bDylN7SmZFG7tHyEZB1dLv1a5/mX3nQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Btpz06nz9uY6r0f9cSMpBPRNwKTYLDYZmWrXKYdqXoCKUQc+NK0xI58AH8sOLxKEA
+         a2SyI1Rme9gyGtUl1fcb53baa1uOGXRUJuYWXEIkdqIBOo/l0pkaNsydhbEsPnGIDp
+         mpdmHbdUFVi/20fvBR/EsFUaZcxIyLypGLlb7xjJZ8pvMdB523DsV6Uo5f90GFoQSO
+         YwwwhjYlv3sLLPH+lSVoI8GJD5XTKMq9wrfYgffHxyybvrWir5JJF/F6Gy703ib1nh
+         CCvGi07CFU5DvLie8VoVTk/R6D4GjtUd6uDpRDljPdUqwcRLtk1EEkXD3DlPbXXBvP
+         f7jN9f5cwmniQ==
+Date:   Mon, 18 Sep 2023 19:01:49 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Filipe Manana <fdmanana@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>, clm@fb.com,
+        josef@toxicpanda.com, linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 2/4] btrfs: return real error when orphan
+ cleanup fails due to a transaction abort
+Message-ID: <ZQjW3b/Sw8VoKfT7@sashalap>
+References: <20230907154400.3421858-1-sashal@kernel.org>
+ <20230907154400.3421858-2-sashal@kernel.org>
+ <ZPn911P6vnhfuJ3T@debian0.Home>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 5.10 000/406] 5.10.195-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20230917191101.035638219@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230917191101.035638219@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <ZPn911P6vnhfuJ3T@debian0.Home>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/17/23 13:07, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.195 release.
-> There are 406 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.195-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Thu, Sep 07, 2023 at 05:44:07PM +0100, Filipe Manana wrote:
+>On Thu, Sep 07, 2023 at 11:43:58AM -0400, Sasha Levin wrote:
+>> From: Filipe Manana <fdmanana@suse.com>
+>>
+>> [ Upstream commit a7f8de500e28bb227e02a7bd35988cf37b816c86 ]
+>
+>Please don't add this patch to any stable release.
+>Besides not being that important for stable, backporting it alone would not
+>be correct as it depends on:
 
-Compiled and booted on my test system. No dmesg regressions.
+Dropped, thanks!
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+-- 
+Thanks,
+Sasha
