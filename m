@@ -2,93 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 722707A4F85
-	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB0A7A4E11
+	for <lists+stable@lfdr.de>; Mon, 18 Sep 2023 18:06:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230473AbjIRQp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 12:45:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57248 "EHLO
+        id S230037AbjIRQGK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 12:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230495AbjIRQpR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:45:17 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6594F2723;
-        Mon, 18 Sep 2023 09:37:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DA2C3277D;
-        Mon, 18 Sep 2023 14:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695046299;
-        bh=AaTX2phhCUtPw9lbKF7scrtBDHqfwrjWgr4HRiqVU9E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WDYp+Cu5is1eQJc2E1ihlpN0xCm1i6XxOIKrpDdDUU0vluWEg1NNVqSJK8ilROFzi
-         47QcUYJHToFdoEWwIYsSXib8EcR04/G+GfSSffF6fvXjEhGwsHeh8KuUPIMvhYuAUx
-         ngj80IvrPh1NScrRbgTQuhWk8Vv6zhjE0quZ1NC/FWX94GkNxmWSfb6zE2uoy1p5pU
-         NKHgxXsiGmvgo8tSTzUeatoRvGFMYxQXn8y3ty50fJtwt2/4JohiICbuIou0XBgefM
-         KLCvNnmYaIOPM3hX8o9l1AKiLkCnQJ5LLI8nt0ceKCpfYVouRmrTd28zFuQXTfZMyU
-         nlsFj886WOczA==
-Date:   Mon, 18 Sep 2023 16:11:33 +0200
-From:   Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Da Xue <da@libre.computer>, lee@kernel.org, sashal@kernel.org,
-        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stable <stable@vger.kernel.org>
-Subject: Re: linux-stable 6.1.53 kernel crash on COLOR_ID_MULTI handling
- change
-Message-ID: <20230918161133.4c32a0e6@dellmb>
-In-Reply-To: <ZQLelWcNjjp2xndY@duo.ucw.cz>
-References: <CACqvRUb_X14pjaxA0Q7bQf53TAFmk5rjQOSWqx3Tvi4g+vcNMw@mail.gmail.com>
-        <ZQLelWcNjjp2xndY@duo.ucw.cz>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229926AbjIRQGE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 12:06:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F5C230DD;
+        Mon, 18 Sep 2023 09:05:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695053114; x=1726589114;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xUKO1lA8xYmCgJHL6wMNL16CXTAfwplxErKfnHb19GI=;
+  b=f1i6XjRvUTd3EiAj/632XiBuujLOiU6CwE3rfX6xJv0zvlh1ovP4iRCa
+   5T2PjGPdWbjm6KjONegS5CJGE8p4U4iV648hFc4fhHkp4b8oKvaKHizxZ
+   pZAg8didG0TZZEjlBO1rOuOj+d+wsADtwHRSEavTWM4D7HhPG1N40LZqB
+   f9TUEtwJNWXfS3KzBTdLVYcTLi+ttJTRq9i3fu1ACAbSxlxe4Ib04hkMg
+   SeffLr0mMNQ7xsjxIq+vxrM9srWO7Ue+QZH6E1Hst9V7lXz41ltqeEaq8
+   4PVvzFGjcdDD1h0UelZa9Rq71pFdpA/wxFr3uf+9xuVDvU5GU6hsZ8S4H
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="382417277"
+X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
+   d="scan'208";a="382417277"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 07:26:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="749040284"
+X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
+   d="scan'208";a="749040284"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga007.fm.intel.com with SMTP; 18 Sep 2023 07:26:13 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 18 Sep 2023 17:26:12 +0300
+Date:   Mon, 18 Sep 2023 17:26:12 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Prashanth K <quic_prashk@quicinc.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "# 5 . 16" <stable@vger.kernel.org>
+Subject: Re: usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command
+ fails
+Message-ID: <ZQheBL4jjXUbNQ3M@kuha.fi.intel.com>
+References: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1694423055-8440-1-git-send-email-quic_prashk@quicinc.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 14 Sep 2023 12:21:09 +0200
-Pavel Machek <pavel@ucw.cz> wrote:
-
-> Hi!
+On Mon, Sep 11, 2023 at 02:34:15PM +0530, Prashanth K wrote:
+> Currently if ucsi_send_command() fails, then we bail out without
+> clearing EVENT_PENDING flag. So when the next connector change
+> event comes, ucsi_connector_change() won't queue the con->work,
+> because of which none of the new events will be processed.
 > 
-> > We have running systems that use COLOR_ID_MULTI. The GPIO toggles
-> > between two colors and we have used the identifier. RGB is not a good
-> > fit since it is not a RGB LED. Please provide guidance.
-> > 
-> > This patch causes the system to not start: f741121a2251 leds: Fix
-> > BUG_ON check for LED_COLOR_ID_MULTI that is always false
-> > 
-> > It was also backported to stable causing previously booting systems to
-> > no longer boot.  
+> Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
+> fails.
 > 
-> Lets cc patch authors.
+> Cc: <stable@vger.kernel.org> # 5.16
+> Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
+> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/usb/typec/ucsi/ucsi.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> And please drop this from stable, it does not belong there.
-> 
-> Best regards,
-> 								Pavel
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index c6dfe3d..509c67c 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -884,6 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+>  	if (ret < 0) {
+>  		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+>  			__func__, ret);
+> +		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+>  		goto out_unlock;
+>  	}
+>  
 
-The BUG_ON was a no-op since it was introduced. It's purpose was to
-prevent people from using LED_COLOR_ID_MULTI since it was thought that
-non-RGB LEDs are not yet completely agreed on, or something.
+thanks,
 
-But since the BUG_ON was a no-op, someone started using
-LED_COLOR_ID_MULTI without noticing that they should not. There are now
-even some in-tree device-tree files using LED_COLOR_ID_MULTI.
-
-My patch that fixes the BUG_ON uncovered this and caused a regression
-for some people.
-
-I think we have to drop the BUG_ON altoghether now.
-
-I've sent a patch to linux-leds doing just that.
-
-Sorry for the incovenience.
-
-Marek
+-- 
+heikki
