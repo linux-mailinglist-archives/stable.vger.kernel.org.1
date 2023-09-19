@@ -2,120 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 918057A568F
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 02:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F21A67A574F
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 04:21:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbjISA1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 20:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
+        id S230463AbjISCV3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 22:21:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjISA1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 20:27:37 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036198E;
-        Mon, 18 Sep 2023 17:27:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97964C433C7;
-        Tue, 19 Sep 2023 00:27:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695083251;
-        bh=g3ABoZpTXRrJ3m0aZJ0JzRedadCHAOBBwtRrIrrlKUk=;
-        h=Date:To:From:Subject:From;
-        b=zLyemXFk3z5hG1CEUS4eh98G7++NXQ0btTJVUzSHJvsFwpkMrqE6ScPaNS5atOEyf
-         niJodp7Lm0iQmXnYP84QXjWu5jfORwWyMyrC/g1NZACXwClbPC3yFBnP1+VqYwadpr
-         IZ+kj+bNq3OordQGQfFIRRO6gp+uPGKX+1MK6bdI=
-Date:   Mon, 18 Sep 2023 17:27:31 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org, vbabka@suse.cz,
-        stable@vger.kernel.org, shy828301@gmail.com, mhocko@suse.com,
-        hughd@google.com, surenb@google.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230919002731.97964C433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230453AbjISCV2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 22:21:28 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B55CD10A
+        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 19:21:18 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38J2KtHR22873115, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38J2KtHR22873115
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 19 Sep 2023 10:20:55 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 19 Sep 2023 10:20:55 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Tue, 19 Sep 2023 10:20:53 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::9cb8:8d5:b6b3:213b]) by
+ RTEXMBS01.realtek.com.tw ([fe80::9cb8:8d5:b6b3:213b%5]) with mapi id
+ 15.01.2375.007; Tue, 19 Sep 2023 10:20:53 +0800
+From:   Ricky WU <ricky_wu@realtek.com>
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+CC:     Paul Grandperrin <paul.grandperrin@gmail.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Wei_wang <wei_wang@realsil.com.cn>,
+        Roger Tseng <rogerable@realtek.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: RE: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from drivers/misc/cardreader breaks NVME power state, preventing system boot
+Thread-Topic: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
+ drivers/misc/cardreader breaks NVME power state, preventing system boot
+Thread-Index: AQHZ5XTPQHzxhN3m602gmLzU6tUtJLAYNE4TgAk8SwA=
+Date:   Tue, 19 Sep 2023 02:20:53 +0000
+Message-ID: <7991b5bd7fb5469c971a2984194e815f@realtek.com>
+References: <5DHV0S.D0F751ZF65JA1@gmail.com>
+ <82469f2f-59e4-49d5-823d-344589cbb119@leemhuis.info>
+ <2023091333-fiftieth-trustless-d69d@gregkh>
+In-Reply-To: <2023091333-fiftieth-trustless-d69d@gregkh>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-originating-ip: [172.22.81.100]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-The patch titled
-     Subject: mm: lock VMAs skipped by a failed queue_pages_range()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: mm: lock VMAs skipped by a failed queue_pages_range()
-Date: Mon, 18 Sep 2023 14:16:08 -0700
-
-When queue_pages_range() encounters an unmovable page, it terminates its
-page walk.  This walk, among other things, locks the VMAs in the range. 
-This termination might result in some VMAs being left unlocked after
-queue_pages_range() completes.  Since do_mbind() continues to operate on
-these VMAs despite the failure from queue_pages_range(), it will encounter
-an unlocked VMA, leading to a BUG().
-
-This mbind() behavior has been modified several times before and might
-need some changes to either finish the page walk even in the presence of
-unmovable pages or to error out immediately after the failure to
-queue_pages_range().  However that requires more discussions, so to fix
-the immediate issue, explicitly lock the VMAs in the range if
-queue_pages_range() failed.  The added condition does not save much but is
-added for documentation purposes to understand when this extra locking is
-needed.
-
-Link: https://lkml.kernel.org/r/20230918211608.3580629-1-surenb@google.com
-Fixes: 49b0638502da ("mm: enable page walking API to lock vmas during the walk")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: syzbot+b591856e0f0139f83023@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000f392a60604a65085@google.com/
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mempolicy.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/mm/mempolicy.c~mm-lock-vmas-skipped-by-a-failed-queue_pages_range
-+++ a/mm/mempolicy.c
-@@ -1342,6 +1342,9 @@ static long do_mbind(unsigned long start
- 	vma_iter_init(&vmi, mm, start);
- 	prev = vma_prev(&vmi);
- 	for_each_vma_range(vmi, vma, end) {
-+		/* If queue_pages_range failed then not all VMAs might be locked */
-+		if (ret)
-+			vma_start_write(vma);
- 		err = mbind_range(&vmi, vma, &prev, start, end, new);
- 		if (err)
- 			break;
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
-
+SGkgR3JlZyBrLWihQQ0KDQpJbiBvcmRlciB0byBjb3ZlciB0aGUgdGhvc2UgcGxhdGZvcm0gUG93
+ZXIgc2F2aW5nIGlzc3VlLCANCm91ciBhcHByb2FjaCBvbiBuZXcgcGF0Y2ggd2lsbCBiZSBkaWZm
+ZXJlbnQgZnJvbSB0aGUgcHJldmlvdXMgcGF0Y2ggKDEwMWJkOTA3YjQyNDRhNzI2OTgwZWU2N2Y5
+NWVkOWNhZmFiNmZmN2EpLg0KDQpTbyB3ZSBuZWVkIHVzZWQgZml4ZWQgVGFnIG9uIDEwMWJkOTA3
+YjQyNDRhNzI2OTgwZWU2N2Y5NWVkOWNhZmFiNmZmN2EgDQpvciBhIG5ldyBwYXRjaCBmb3IgdGhp
+cyBwcm9ibGVtPw0KDQpSaWNreQ0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZy
+b206IEdyZWcgS0ggPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPg0KPiBTZW50OiBXZWRuZXNk
+YXksIFNlcHRlbWJlciAxMywgMjAyMyAxOjAzIFBNDQo+IFRvOiBMaW51eCByZWdyZXNzaW9ucyBt
+YWlsaW5nIGxpc3QgPHJlZ3Jlc3Npb25zQGxpc3RzLmxpbnV4LmRldj4NCj4gQ2M6IFBhdWwgR3Jh
+bmRwZXJyaW4gPHBhdWwuZ3JhbmRwZXJyaW5AZ21haWwuY29tPjsgc3RhYmxlQHZnZXIua2VybmVs
+Lm9yZzsNCj4gV2VpX3dhbmcgPHdlaV93YW5nQHJlYWxzaWwuY29tLmNuPjsgUm9nZXIgVHNlbmcN
+Cj4gPHJvZ2VyYWJsZUByZWFsdGVrLmNvbT47IFJpY2t5IFdVIDxyaWNreV93dUByZWFsdGVrLmNv
+bT47IExpbnVzIFRvcnZhbGRzDQo+IDx0b3J2YWxkc0BsaW51eC1mb3VuZGF0aW9uLm9yZz4NCj4g
+U3ViamVjdDogUmU6IFJlZ3Jlc3Npb24gc2luY2UgNi4xLjQ2IChjb21taXQgOGVlMzllYyk6IHJ0
+c3hfcGNpIGZyb20NCj4gZHJpdmVycy9taXNjL2NhcmRyZWFkZXIgYnJlYWtzIE5WTUUgcG93ZXIg
+c3RhdGUsIHByZXZlbnRpbmcgc3lzdGVtIGJvb3QNCj4gDQo+IA0KPiBFeHRlcm5hbCBtYWlsLg0K
+PiANCj4gDQo+IA0KPiBPbiBUdWUsIFNlcCAxMiwgMjAyMyBhdCAwNzoxMDozOFBNICswMjAwLCBM
+aW51eCByZWdyZXNzaW9uIHRyYWNraW5nIChUaG9yc3Rlbg0KPiBMZWVtaHVpcykgd3JvdGU6DQo+
+ID4gKENDaW5nIEdyZWcsIGFzIGhlIG1lcmdlZCB0aGUgY3VscHJpdCwgYW5kIExpbnVzLCBpbiBj
+YXNlIGhlIHdhbnRzIHRvDQo+ID4gcmV2ZXJ0IHRoaXMgZnJvbSBtYWlubGluZSBkaXJlY3RseSBh
+cyB0aGlzIGFwcGFyZW50bHkgYWZmZWN0cyBhbmQNCj4gPiBhbm5veXMgcXVpdGUgYSBmZXcgcGVv
+cGxlKQ0KPiANCj4gVGhlIGRyaXZlciBhdXRob3JzIGtub3cgYWJvdXQgdGhpcyBhbmQgaGF2ZSBz
+YWlkIHRoZXkgYXJlIHdvcmtpbmcgb24gYQ0KPiBzb2x1dGlvbi4gIExldCdzIGdpdmUgdGhlbSBh
+IGZldyBtb3JlIGRheXMgb24gaXQgYmVmb3JlIHJldmVydGluZyBzdHVmZi4NCj4gDQo+IHRoYW5r
+cywNCj4gDQo+IGdyZWcgay1oDQo=
