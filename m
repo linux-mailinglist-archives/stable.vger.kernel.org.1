@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E40417A6AA1
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 20:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01DB57A6A90
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 20:18:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232002AbjISSYK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 14:24:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36274 "EHLO
+        id S231921AbjISSSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 14:18:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjISSYJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 14:24:09 -0400
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4297390
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 11:24:04 -0700 (PDT)
+        with ESMTP id S229853AbjISSSQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 14:18:16 -0400
+X-Greylist: delayed 125 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 19 Sep 2023 11:18:10 PDT
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52C58F
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 11:18:10 -0700 (PDT)
 Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 6C2A6C0019A3;
-        Tue, 19 Sep 2023 11:16:04 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 6C2A6C0019A3
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 6BFFBC0019A4;
+        Tue, 19 Sep 2023 11:18:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 6BFFBC0019A4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1695147364;
-        bh=SKNywjMDlIhDM4LGitYH1ovoA87rLwWDY1EAJnrUbHw=;
+        s=dkimrelay; t=1695147490;
+        bh=J4TE+RH45S5ziuzqP5Hp6uQGgZ92z9N5QWBAry+usqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Eb4ge94VGLuqagUV/W2ZaMl/ZzmdgEABURtcglbqwtA2fPmf43uSMRp3UqCgDDOUN
-         AjnBFVt5u5J5wL1lGTCeHPzO4hk4VuauOblQ948kBmEV+D2aNt1/3LR32OWKeqkFRE
-         MKveGuF02VCA5B5SGfMVABiGU9XF2QQkNa+UhZH4=
+        b=MRKXvAwe7DDd5G+0J85gC9XTn9zh2rwgYO3CZVIFo572X2GBzAmG2McCHh38U5Ptp
+         GI9PvC42eKj4MJJ3bCfKMQGHZ4RqKFx91i2pwxjg1v/XcX3FWopoTAqX8OFTNPiAdG
+         rjQGbbQ9m8iEdYEu7b1wiTPVCEZsPK/k5mkiNMh4=
 Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 5CD3518728C;
-        Tue, 19 Sep 2023 11:16:04 -0700 (PDT)
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 5765B18728C;
+        Tue, 19 Sep 2023 11:18:10 -0700 (PDT)
 From:   William Zhang <william.zhang@broadcom.com>
 To:     stable@vger.kernel.org
 Cc:     William Zhang <william.zhang@broadcom.com>,
         Florian Fainelli <florian.fainelli@broadcom.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 4.14.y] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in oob write
-Date:   Tue, 19 Sep 2023 11:15:44 -0700
-Message-Id: <20230919181544.188110-1-william.zhang@broadcom.com>
+Subject: [PATCH 4.14.y] mtd: rawnand: brcmnand: Fix potential false time out warning
+Date:   Tue, 19 Sep 2023 11:18:00 -0700
+Message-Id: <20230919181800.188471-1-william.zhang@broadcom.com>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <2023091632-marauding-viable-2fad@gregkh>
-References: <2023091632-marauding-viable-2fad@gregkh>
+In-Reply-To: <2023091616-equipment-bucktooth-6ae5@gregkh>
+References: <2023091616-equipment-bucktooth-6ae5@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -51,62 +52,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When the oob buffer length is not in multiple of words, the oob write
-function does out-of-bounds read on the oob source buffer at the last
-iteration. Fix that by always checking length limit on the oob buffer
-read and fill with 0xff when reaching the end of the buffer to the oob
-registers.
+If system is busy during the command status polling function, the driver
+may not get the chance to poll the status register till the end of time
+out and return the premature status.  Do a final check after time out
+happens to ensure reading the correct status.
 
-Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
+Fixes: 9d2ee0a60b8b ("mtd: nand: brcmnand: Check flash #WP pin status before nand erase/program")
 Signed-off-by: William Zhang <william.zhang@broadcom.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-5-william.zhang@broadcom.com
-(cherry picked from commit 5d53244186c9ac58cb88d76a0958ca55b83a15cd)
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-3-william.zhang@broadcom.com
+(cherry picked from commit 9cc0a598b944816f2968baf2631757f22721b996)
 ---
- drivers/mtd/nand/brcmnand/brcmnand.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/brcmnand/brcmnand.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/mtd/nand/brcmnand/brcmnand.c b/drivers/mtd/nand/brcmnand/brcmnand.c
-index 8ebc23041194..2ab03ac409f8 100644
+index 2ab03ac409f8..3676a38fafe9 100644
 --- a/drivers/mtd/nand/brcmnand/brcmnand.c
 +++ b/drivers/mtd/nand/brcmnand/brcmnand.c
-@@ -1213,19 +1213,33 @@ static int write_oob_to_regs(struct brcmnand_controller *ctrl, int i,
- 			     const u8 *oob, int sas, int sector_1k)
- {
- 	int tbytes = sas << sector_1k;
--	int j;
-+	int j, k = 0;
-+	u32 last = 0xffffffff;
-+	u8 *plast = (u8 *)&last;
+@@ -836,6 +836,14 @@ static int bcmnand_ctrl_poll_status(struct brcmnand_controller *ctrl,
+ 		cpu_relax();
+ 	} while (time_after(limit, jiffies));
  
- 	/* Adjust OOB values for 1K sector size */
- 	if (sector_1k && (i & 0x01))
- 		tbytes = max(0, tbytes - (int)ctrl->max_oob);
- 	tbytes = min_t(int, tbytes, ctrl->max_oob);
- 
--	for (j = 0; j < tbytes; j += 4)
 +	/*
-+	 * tbytes may not be multiple of words. Make sure we don't read out of
-+	 * the boundary and stop at last word.
++	 * do a final check after time out in case the CPU was busy and the driver
++	 * did not get enough time to perform the polling to avoid false alarms
 +	 */
-+	for (j = 0; (j + 3) < tbytes; j += 4)
- 		oob_reg_write(ctrl, j,
- 				(oob[j + 0] << 24) |
- 				(oob[j + 1] << 16) |
- 				(oob[j + 2] <<  8) |
- 				(oob[j + 3] <<  0));
++	val = brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS);
++	if ((val & mask) == expected_val)
++		return 0;
 +
-+	/* handle the remaing bytes */
-+	while (j < tbytes)
-+		plast[k++] = oob[j++];
-+
-+	if (tbytes & 0x3)
-+		oob_reg_write(ctrl, (tbytes & ~0x3), (__force u32)cpu_to_be32(last));
-+
- 	return tbytes;
- }
+ 	dev_warn(ctrl->dev, "timeout on status poll (expected %x got %x)\n",
+ 		 expected_val, val & mask);
  
 -- 
 2.37.3
