@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAD4F7A6D0C
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 23:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E7FB7A6E95
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 00:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229853AbjISVn0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 17:43:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55376 "EHLO
+        id S232153AbjISWUs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 18:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229690AbjISVnZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 17:43:25 -0400
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF6DBD
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 14:43:19 -0700 (PDT)
+        with ESMTP id S229887AbjISWUs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 18:20:48 -0400
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33767BA
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 15:20:42 -0700 (PDT)
 Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id B5742C0000E3;
-        Tue, 19 Sep 2023 14:43:18 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com B5742C0000E3
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id DC403C002E40;
+        Tue, 19 Sep 2023 15:20:41 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com DC403C002E40
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1695159798;
-        bh=d+Xt1ikwiwOvcbJr0YM8YEgD9jmiwaK/vG/QCXw+Zp0=;
+        s=dkimrelay; t=1695162041;
+        bh=mVM545IJC6zLEBuuz/qYO5BsW2x1X+xB4RkYJPUC/w4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vtfosu/BcZuQ7ZAjkXfIeOkGuL+3BFt1GAyM5pfbD4Kkiywp+MOtsbG/zTg964+jn
-         i8Xm9ScCdVsxEav4Z7B2ebo4b8HsyztLaekQs9+iivYTp7SVDp+jSsSCCig6cYWdI7
-         MnynJhAtdZU4zxeLl1U1NkethclnDFZKZK2LWUb4=
+        b=h1Xr0fVsvR0LFPBfBrc/MbH3ULke873+pPhisyPE8yysIFoYPHVKJKfs3jiYXfEBe
+         iVvWCu9Rl7CVhu+W1ZHH7kFxCFa5C4/sanq4fDQZj6tM9OQ7D1YDsY6hCESy3KivpT
+         tUDBqMg4DYRYf0kNMISL/QdtBiihki9wkJw3h8io=
 Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 7C6AE18728C;
-        Tue, 19 Sep 2023 14:43:18 -0700 (PDT)
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id D74B918728C;
+        Tue, 19 Sep 2023 15:20:41 -0700 (PDT)
 From:   William Zhang <william.zhang@broadcom.com>
 To:     stable@vger.kernel.org
 Cc:     William Zhang <william.zhang@broadcom.com>,
         Florian Fainelli <florian.fainelli@broadcom.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 4.19.y] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
-Date:   Tue, 19 Sep 2023 14:43:02 -0700
-Message-Id: <20230919214302.309705-1-william.zhang@broadcom.com>
+Subject: [PATCH 5.4.y] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
+Date:   Tue, 19 Sep 2023 15:20:35 -0700
+Message-Id: <20230919222035.225613-1-william.zhang@broadcom.com>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <2023091634-friday-olive-b032@gregkh>
-References: <2023091634-friday-olive-b032@gregkh>
+In-Reply-To: <2023091633-negative-unashamed-87b9@gregkh>
+References: <2023091633-negative-unashamed-87b9@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -63,14 +63,14 @@ Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
 (cherry picked from commit 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b)
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 75 +++++++++++++-----------
- 1 file changed, 42 insertions(+), 33 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 74 +++++++++++++-----------
+ 1 file changed, 41 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 27bafb8fc35a..b4ed6961a092 100644
+index bd9f45edc9a3..a6f5706d2745 100644
 --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
 +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -152,6 +152,7 @@ struct brcmnand_controller {
+@@ -197,6 +197,7 @@ struct brcmnand_controller {
  	unsigned int		max_page_size;
  	const unsigned int	*page_sizes;
  	unsigned int		max_oob;
@@ -78,7 +78,7 @@ index 27bafb8fc35a..b4ed6961a092 100644
  	u32			features;
  
  	/* for low-power standby/resume only */
-@@ -441,6 +442,34 @@ enum {
+@@ -487,6 +488,34 @@ enum {
  	INTFC_CTLR_READY		= BIT(31),
  };
  
@@ -113,7 +113,7 @@ index 27bafb8fc35a..b4ed6961a092 100644
  static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
  {
  	return brcmnand_readl(ctrl->nand_base + offs);
-@@ -544,6 +573,12 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
+@@ -590,6 +619,12 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
  	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
  		ctrl->features |= BRCMNAND_HAS_WP;
  
@@ -126,7 +126,7 @@ index 27bafb8fc35a..b4ed6961a092 100644
  	return 0;
  }
  
-@@ -697,30 +732,6 @@ static inline int brcmnand_cmd_shift(struct brcmnand_controller *ctrl)
+@@ -752,30 +787,6 @@ static inline int brcmnand_cmd_shift(struct brcmnand_controller *ctrl)
  	return 0;
  }
  
@@ -156,8 +156,8 @@ index 27bafb8fc35a..b4ed6961a092 100644
 -
  static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
  {
- 	if (ctrl->nand_version >= 0x0702)
-@@ -731,18 +742,15 @@ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
+ 	if (ctrl->nand_version == 0x0702)
+@@ -786,18 +797,15 @@ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
  		return GENMASK(5, 0);
  }
  
@@ -179,7 +179,7 @@ index 27bafb8fc35a..b4ed6961a092 100644
  
  	return mask;
  }
-@@ -756,8 +764,8 @@ static void brcmnand_set_ecc_enabled(struct brcmnand_host *host, int en)
+@@ -811,8 +819,8 @@ static void brcmnand_set_ecc_enabled(struct brcmnand_host *host, int en)
  
  	if (en) {
  		acc_control |= ecc_flags; /* enable RD/WR ECC */
@@ -190,7 +190,7 @@ index 27bafb8fc35a..b4ed6961a092 100644
  	} else {
  		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
  		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
-@@ -2071,9 +2079,10 @@ static int brcmnand_set_cfg(struct brcmnand_host *host,
+@@ -2161,7 +2169,7 @@ static int brcmnand_set_cfg(struct brcmnand_host *host,
  
  	tmp = nand_readreg(ctrl, acc_control_offs);
  	tmp &= ~brcmnand_ecc_level_mask(ctrl);
@@ -198,10 +198,7 @@ index 27bafb8fc35a..b4ed6961a092 100644
 +	tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
  	tmp &= ~brcmnand_spare_area_mask(ctrl);
  	tmp |= cfg->spare_area_size;
-+
  	nand_writereg(ctrl, acc_control_offs, tmp);
- 
- 	brcmnand_set_sector_size_1k(host, cfg->sector_size_1k);
 -- 
 2.37.3
 
