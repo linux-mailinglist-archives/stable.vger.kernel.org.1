@@ -2,101 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C955C7A59EB
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 08:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D267A5A73
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 09:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjISG0t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 02:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49686 "EHLO
+        id S231558AbjISHGH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 03:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjISG0s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 02:26:48 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E450102
-        for <stable@vger.kernel.org>; Mon, 18 Sep 2023 23:26:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=BCMWKUwenmSGfoWqKlw1rkFMGJz45d8jKoWrJi9VHg8=; b=UPYu75ZYtWoHQ4eexBy2gI17Ku
-        aQKu9+TBEfoeSGLWsrMPcvRFiyz3ahew6IuQRy2MwSN8ci93riXJ1QETCsmrylFdJZGzO3UAh+Ey6
-        WFz92SogHRAYxU/saUC6k8GfC8JM9TLs8s2dAD4BsuecZ0QPLJcJdTL77nGWLmBNIcXdFfXNCXNoZ
-        /WDwE+WVRDzBvtoUWZi+Lsa3QfbqQAuqs9ZlxFZjvnIxjNqAfv9Q/brD99KBIEyrQULdf3FDZk1Vm
-        KUl2MZz3R6PzusgVAJDueeHCpNE323EaqnQETaBif9Yg/EIczaQvMAkswp02zKpM6geozsIysJBGD
-        cxCZFPtw==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qiUBp-000ARY-C0; Tue, 19 Sep 2023 08:26:29 +0200
-Received: from [85.1.206.226] (helo=linux-3.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qiUBo-000AHq-S0; Tue, 19 Sep 2023 08:26:28 +0200
-Subject: Re: [PATCH 6.1 562/600] bpf: Fix issue in verifying allow_ptr_leaks
-To:     Greg KH <gregkh@linuxfoundation.org>, gerhorst@cs.fau.de
-Cc:     alexei.starovoitov@gmail.com, ast@kernel.org, eddyz87@gmail.com,
-        laoar.shao@gmail.com, patches@lists.linux.dev,
-        stable@vger.kernel.org, yonghong.song@linux.dev,
-        hagarhem@amazon.de, puranjay12@gmail.com,
-        Luis Gerhorst <gerhorst@amazon.de>
-References: <20230911134650.200439213@linuxfoundation.org>
- <20230914085131.40974-1-gerhorst@amazon.de>
- <2023091653-peso-sprint-889d@gregkh>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <b927046b-d1e7-8adf-ebc0-37b92d8d4390@iogearbox.net>
-Date:   Tue, 19 Sep 2023 08:26:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        with ESMTP id S229853AbjISHGG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 03:06:06 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1A5115;
+        Tue, 19 Sep 2023 00:05:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1695107154; x=1695711954; i=deller@gmx.de;
+ bh=Zb8UbBJCHEgdL43lsa3Niz8Ev8QPFiNTo7x+pbv3iGI=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=HkV7kl3a0VMXqvZ2IhZUQFFjznapvW4AvwJk+Lazzh90Xvy/23rLHi4KLLLXhQCWG6VI+m/o/tm
+ cTiKNIraQIj/pzBkZNAoih0F1eAyDlay1XIYocusinqqc1zSYbXbpe8SSO1OMfy+h/xa1IyLlk4bF
+ Q38I0SNHn8OITKjBs4Duc9dfCwRgDiZji8UiUC9boshLTJO8b6wvwXP4TFi+7KPf3xgLkE/xay9gO
+ OF5kii2DwZxLIyupLbv8ja6X5zV78aNnO+l/c4YzguyFmQlSQaDLrjtlCQDohqO3u0sFXJsD/rSI0
+ 3S1d3zk1xgcYAMhLuk5EvxPF8A/leR3ba5kA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.149.158]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mn2aD-1rS32T1ljD-00kBbM; Tue, 19
+ Sep 2023 09:05:54 +0200
+Message-ID: <d436d191-9580-c3ca-1583-02c9cff58494@gmx.de>
+Date:   Tue, 19 Sep 2023 09:05:54 +0200
 MIME-Version: 1.0
-In-Reply-To: <2023091653-peso-sprint-889d@gregkh>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] video: fbdev: core: cfbcopyarea: fix sloppy typing
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27035/Mon Sep 18 09:40:43 2023)
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Daniel Vetter <daniel@ffwll.ch>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Cc:     stable@vger.kernel.org
+References: <20230918205209.11709-1-s.shtylyov@omp.ru>
+ <20230918205209.11709-2-s.shtylyov@omp.ru>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20230918205209.11709-2-s.shtylyov@omp.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lVjQ7lcRchmjcsTxUJBEj88dbvm3qtopU+G1P9tSGeXbqJ/KIvz
+ MVvqf/DcicD5urzpRkJOppGcNEg8lGSgui0/h1/w6IZSylX/KgJSS8Us+6qAi002JlpIq+l
+ t2oTERmW9LplOuy6e3dtzJcSaOv8dCpstwGJHbGc0YLsWzm22s9vSX0uSAumYsLOAoXjSPr
+ x0h16h1sMj0zOslXymwNg==
+UI-OutboundReport: notjunk:1;M01:P0:U70Dlbn1t0A=;5o6mtjsjRDBjB0nNRSGG474TNsF
+ yC7U4RblR+FYUpFFIiFojFpIJ0wsEzRy1PlTzjyUSL62gtJN1MRpo4Y4HMB5WuAZuSzwQiSjd
+ vJxr5lX/N+JkZtVYaJIa64GWh1wNZuWI7ys/xVYCOk5eZS69vQtPyyRnqv1vtiwp8cf8z0N/z
+ iPT/8wm0VQvzoNEahwRyyUZsolmJXsAYV4rUBsjk5PuQX3xGHMIQ8T07MKby518CKbCAKjHe1
+ GjyRUQCKkfDEVim/OkNZDKDQCaVJlGK706tO9v5wysctwxI8tBHuDeDUOPAYvi1UJi7OBFAgg
+ Twj6TyX9bHS/FKKGQNyuAHwPVPhBG6DsZOxiXdojNrplqgu8HhXVOLoIoFEYUJo/t4IxMQIMg
+ JknpVTs79u5cLpj4R1oSBQG2aeEpGsqQS15fgKFWFctnr5v1OrcB+saNXUA/fQq87SunAqxry
+ Q963E9vCz7SuN0zvEGlyG7nszX56YikUxI/D1uHizVDd3iM1Pf8pe5IeUH3qyqjcMFbdpwoLe
+ 4r3rG5IX2aGV+DkkEbF1Qq5Fb11GGEWAw1DP8cApByctK2iYF/gtBnMjDEGA16wvXoj5bFC+R
+ N1T7dNYBkZuYpV3QDU/BxknOz+VrlWXqMnxyb7P11ldOtQaAvClpEq/8SvjQeuxvQq/sZWE4S
+ HbUsJ6DGz0uh6M8I+FIP0dkl1spQBNZeAapc84CUnqwIm27CiPrJApZ/7vtYKNmPRVukVf7Ag
+ +TfMVtcFtzFcbhdP3DpFKOuhDPkaE9toHKWQv5eBm0VCNk3QQ+J1ctDE4NbruUltvNOJPdS04
+ es0pxSlS95biVOZlgzYxxTpZDJtWKt2moIIH05/eFEtbrKdLTYfg84JMsOLML2HApbu+5QRnR
+ 1b69zbn8QyyeogOEb6kdJ12MwFhCtSPJtOkK8JuMP9Ynm4vYYo9qVimdF+A2waLDwPhPzPO2l
+ 8gui9HZyZDFeSz8QSpyl+eh6tn0=
 X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/16/23 1:35 PM, Greg KH wrote:
-> On Thu, Sep 14, 2023 at 08:51:32AM +0000, Luis Gerhorst wrote:
->>> 6.1-stable review patch.  If anyone has any objections, please let me know.
->>>
->>> From: Yafang Shao <laoar.shao@gmail.com>
->>>
->>> commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
->>
->> I unfortunately have objections, they are pending discussion at [1].
->>
->> Same applies to the 6.4-stable review patch [2] and all other backports.
->>
->> [1] https://lore.kernel.org/bpf/20230913122827.91591-1-gerhorst@amazon.de/
->> [2] https://lore.kernel.org/stable/20230911134709.834278248@linuxfoundation.org/
-> 
-> As this is in the tree already, and in Linus's tree, I'll wait to see
-> if any changes are merged into Linus's tree for this before removing it
-> from the stable trees.
-> 
-> Let us know if there's a commit that resolves this and we will be glad
-> to queue that up.
+On 9/18/23 22:52, Sergey Shtylyov wrote:
+> In cfb_copyarea(), when initializing *unsigned long const* bits_per_line
+> __u32 typed fb_fix_screeninfo::line_length gets multiplied by 8u -- whic=
+h
+> might overflow __u32; multiplying by 8UL instead should fix that...
+> Also, that bits_per_line constant is used to advance *unsigned* src_idx
+> and dst_idx variables -- which might be overflowed as well; declaring
+> them as *unsigned long* should fix that too...
+>
+> Found by Linux Verification Center (linuxtesting.org) with the Svace sta=
+tic
+> analysis tool.
+>
+> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> Cc: stable@vger.kernel.org
+> ---
+>   drivers/video/fbdev/core/cfbcopyarea.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/core/cfbcopyarea.c b/drivers/video/fbde=
+v/core/cfbcopyarea.c
+> index 6d4bfeecee35..b67ba69ea2fb 100644
+> --- a/drivers/video/fbdev/core/cfbcopyarea.c
+> +++ b/drivers/video/fbdev/core/cfbcopyarea.c
+> @@ -382,10 +382,11 @@ void cfb_copyarea(struct fb_info *p, const struct =
+fb_copyarea *area)
+>   {
+>   	u32 dx =3D area->dx, dy =3D area->dy, sx =3D area->sx, sy =3D area->s=
+y;
+>   	u32 height =3D area->height, width =3D area->width;
+> -	unsigned long const bits_per_line =3D p->fix.line_length*8u;
+> +	unsigned long const bits_per_line =3D p->fix.line_length * 8UL;
 
-Commit d75e30dddf73 ("bpf: Fix issue in verifying allow_ptr_leaks") is not
-stable material. It's not really a "fix", but it will simply make direct
-packet access available to applications without CAP_PERFMON - the latter
-was required so far given Spectre v1. However, there is ongoing discussion [1]
-that potentially not much useful information can be leaked out and therefore
-lifting it may or may not be ok. If we queue this to stable and later figure
-we need to revert the whole thing again because someone managed to come up
-with a PoC in the meantime, then there's higher risk of breakage.
+you wrote:
+> __u32 typed fb_fix_screeninfo::line_length gets multiplied by 8u -- whic=
+h
+> might overflow __u32; multiplying by 8UL instead should fix that...
 
-Thanks,
-Daniel
+This would only be true on 64-bit CPUs, where unsigned long is 64 bits,
+while on 32-bit CPUs, it's still 32 bits (same as _u32).
+
+Instead we could make bits_per_line __u32 (or unsigned int) too.
+
+>   	unsigned long __iomem *base =3D NULL;
+>   	int bits =3D BITS_PER_LONG, bytes =3D bits >> 3;
+> -	unsigned dst_idx =3D 0, src_idx =3D 0, rev_copy =3D 0;
+> +	unsigned long dst_idx =3D 0, src_idx =3D 0;
+
+An "unsigned int" can address at least up to 4GB, which is fully sufficent=
+ here.
+
+So, both patches don't have any real effect.
+NAK.
+
+Helge
+
