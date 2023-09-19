@@ -2,80 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92EEC7A5C51
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E86B7A5C56
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230348AbjISISw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 04:18:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39334 "EHLO
+        id S230517AbjISITB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 04:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230196AbjISISs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:18:48 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 454B2128
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:42 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-31f7638be6eso5084522f8f.3
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:42 -0700 (PDT)
+        with ESMTP id S231133AbjISIS4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:18:56 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0BC123
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:49 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3ff1c397405so58199175e9.3
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1695111520; x=1695716320; darn=vger.kernel.org;
+        d=ionos.com; s=google; t=1695111528; x=1695716328; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=S4D5C4k+i1eZNnOt391w1UuQt6K8OH0zFNJfwEYdVWU=;
-        b=WobcBBhesTQqSlnbhexk2H1g4bS1LGtSdk3OQrg9ZNUcizwt5Cov1yiEqYDtrULg5A
-         r6gy7DzGAjdDOslkSEQ3/aKkIrj4fBMRsffOPF3cLSQrQoUrTJlAcbIJYZvpIZmvnOj8
-         KtKV7Sd745CgU9RvivoKxsVGC3/iA7K0NfLNPTW3ZNRxr9101Q3+DZetFpF3XwKJNRga
-         A1dGZhEXVcGfORsjN7d5y5+2VhFA4WshraOUNugNFP6moZLYniy46n7EnWuF0MSCXeRl
-         rv3YQY7HmeVGYAvs5IWqWWpFD/52ZPoYBIgW3mSnUgTZXjj8bxuVKyWbICem1/QrbXDn
-         l7+A==
+        bh=F+wCHIzCyfEvs4AM6zK3GKbsAFgsIIPQRu0jrjTdhgs=;
+        b=G/g/RpYRSbRVxX2yo5b7MFQEa5GckhzUjYC64KNyOaRyJ1gkEVFapJ+aylrT1W55ys
+         jIHmOXbeGF0bFSI1rxQI3CPGbUsNTbQRcc0JpokO99q7i3dtIIhCIELTRP+sp+gUSPId
+         B3dL+JEqicQ6Mmr9UX5Ij7eu8I9d+/iYwPrn63A2AtlyIVLAsUIfI+SHLGp/Hy8hklI6
+         s94WmIbY+W8EOxBmTZuwrQyOy1wjkoCyAgeDSMO58/RZUU3QvQmDMJFbyDgWaGuDLgWK
+         YYwhK/AJk8DAmbuWEB/H+3u+Y2aA1eQmHN9mEdxad81+e1FJxbYDT1aDcbG89FuWfv0O
+         IQZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695111520; x=1695716320;
+        d=1e100.net; s=20230601; t=1695111528; x=1695716328;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=S4D5C4k+i1eZNnOt391w1UuQt6K8OH0zFNJfwEYdVWU=;
-        b=mpMYCDVP9z5qbslJMVYSD2JVH3dS1qi8rqO3Du/kJp+5IBYGlXJnaXqcsk6MICBwW/
-         6tBztM+dM+2u9fMUZX1hd80YloL6q852UwQ/x4BWc0J4UhABS+NyRLi+pQMBrkX0pd+o
-         U58+GY3JYu0+iGFt3xSwBbg+x5JQiy1GWUGCx9MNAb0vvR31dwefS7Aa7aS8r9m2Zo4s
-         TMQECjkYF1yeNG1Q5rttLKN9FdvAjVmKUhbCfk9GxrNwr3apPgmpeQzPHci0MKFhHZj5
-         z97KlyZyeHphVgwmZKrTtAb6beO0+Y7+J3M1YQd7Auj235cAZf1NJZo66VBmfcZ4xgTn
-         T2sA==
-X-Gm-Message-State: AOJu0Yz4HM7DOO737zwT1H8nWNwx5BLhDOBdU3FpxFwxaym6ps7H2gN2
-        NoNNJNU3+/SieXBExNFIio2dUw==
-X-Google-Smtp-Source: AGHT+IFgGC81/nJ2d++KHzxJtc6SLDcCl27ekDZ3S/J8hiT6jN1P+ZI78aDTSEFf1H1SXmXg9JaVCQ==
-X-Received: by 2002:a5d:66c3:0:b0:317:c2a9:9b0c with SMTP id k3-20020a5d66c3000000b00317c2a99b0cmr9403458wrw.50.1695111520707;
-        Tue, 19 Sep 2023 01:18:40 -0700 (PDT)
+        bh=F+wCHIzCyfEvs4AM6zK3GKbsAFgsIIPQRu0jrjTdhgs=;
+        b=ghFZf3FEkB8nKFlPp66DdMaUNNWyEtmIlwiMWHtupS+FajcTktnXh8ZFet1+naNPyF
+         2iebRquhDlvwVCxWxCQ5DrhEtnU1Mn1fvSGO+qqRiAw5OYXzVMvVR+qxW6VQ2lfEGfRQ
+         I0CaP5C7IyqhLaSBz2QrfGD34PV/mqbqWlAINrAcUvJ0tUVHNDFV0uPGy4PagU65yiaJ
+         BLqjyHNr9NHEcDUzJ4BU3zSVX9FRcterj4pe1pusGbD7QcbBgulzDkzQXVDJnUbLPlIE
+         e139KqHc1Y3Wa92ETDjBjKxPqK/VEW13I/2Sd50PUNmBEm/gGPttOj/fVRJ/HcHPuJ2d
+         4+mw==
+X-Gm-Message-State: AOJu0Yx8cD/ReolU0vszw08iur/rtg4hhGjq36V3z60tmAiihT02lqcb
+        iUi6LX+WDLjsbthNZzTZG8i6fw==
+X-Google-Smtp-Source: AGHT+IHEV2O4XGsf35LqTv0FhrmFGfe1icqH1CrFMUp1Q1RiZsPjfqFCcMFLM44ZaeuR8y5V8PCrLQ==
+X-Received: by 2002:a05:600c:152:b0:401:bcb4:f119 with SMTP id w18-20020a05600c015200b00401bcb4f119mr11605148wmm.3.1695111527914;
+        Tue, 19 Sep 2023 01:18:47 -0700 (PDT)
 Received: from heron.intern.cm-ag (p200300dc6f209c00529a4cfffe3dd983.dip0.t-ipconnect.de. [2003:dc:6f20:9c00:529a:4cff:fe3d:d983])
-        by smtp.gmail.com with ESMTPSA id f7-20020adff987000000b0031c8a43712asm14783219wrr.69.2023.09.19.01.18.38
+        by smtp.gmail.com with ESMTPSA id p14-20020a1c740e000000b003fe407ca05bsm17424445wmc.37.2023.09.19.01.18.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 01:18:39 -0700 (PDT)
+        Tue, 19 Sep 2023 01:18:47 -0700 (PDT)
 From:   Max Kellermann <max.kellermann@ionos.com>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>
+To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna@kernel.org>
 Cc:     Max Kellermann <max.kellermann@ionos.com>,
-        "J . Bruce Fields" <bfields@redhat.com>, Jan Kara <jack@suse.cz>,
-        stable@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] linux/fs.h: fix umask on NFS with CONFIG_FS_POSIX_ACL=n
-Date:   Tue, 19 Sep 2023 10:18:36 +0200
-Message-Id: <20230919081837.1096695-1-max.kellermann@ionos.com>
+        "J . Bruce Fields" <bfields@redhat.com>, stable@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] nfs/super: check NFS_CAP_ACLS instead of the NFS version
+Date:   Tue, 19 Sep 2023 10:18:44 +0200
+Message-Id: <20230919081844.1096767-1-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Make IS_POSIXACL() return false if POSIX ACL support is disabled and
-ignore SB_POSIXACL/MS_POSIXACL.
+This sets SB_POSIXACL only if ACL support is really enabled, instead
+of always setting SB_POSIXACL if the NFS protocol version
+theoretically supports ACL.
 
-Never skip applying the umask in namei.c and never bother to do any
-ACL specific checks if the filesystem falsely indicates it has ACLs
-enabled when the feature is completely disabled in the kernel.
+The code comment says "We will [apply the umask] ourselves", but that
+happens in posix_acl_create() only if the kernel has POSIX ACL
+support.  Without it, posix_acl_create() is an empty dummy function.
+
+So let's not pretend we will apply the umask if we can already know
+that we will never.
 
 This fixes a problem where the umask is always ignored in the NFS
 client when compiled without CONFIG_FS_POSIX_ACL.  This is a 4 year
@@ -83,62 +87,39 @@ old regression caused by commit 013cdf1088d723 which itself was not
 completely wrong, but failed to consider all the side effects by
 misdesigned VFS code.
 
-Prior to that commit, there were two places where the umask could be
-applied, for example when creating a directory:
-
- 1. in the VFS layer in SYSCALL_DEFINE3(mkdirat), but only if
-    !IS_POSIXACL()
-
- 2. again (unconditionally) in nfs3_proc_mkdir()
-
-The first one does not apply, because even without
-CONFIG_FS_POSIX_ACL, the NFS client sets MS_POSIXACL in
-nfs_fill_super().
-
-After that commit, (2.) was replaced by:
-
- 2b. in posix_acl_create(), called by nfs3_proc_mkdir()
-
-There's one branch in posix_acl_create() which applies the umask;
-however, without CONFIG_FS_POSIX_ACL, posix_acl_create() is an empty
-dummy function which does not apply the umask.
-
-The approach chosen by this patch is to make IS_POSIXACL() always
-return false when POSIX ACL support is disabled, so the umask always
-gets applied by the VFS layer.  This is consistent with the (regular)
-behavior of posix_acl_create(): that function returns early if
-IS_POSIXACL() is false, before applying the umask.
-
-Therefore, posix_acl_create() is responsible for applying the umask if
-there is ACL support enabled in the file system (SB_POSIXACL), and the
-VFS layer is responsible for all other cases (no SB_POSIXACL or no
-CONFIG_FS_POSIX_ACL).
-
 Reviewed-by: J. Bruce Fields <bfields@redhat.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
 Cc: stable@vger.kernel.org
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- include/linux/fs.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfs/super.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 4aeb3fa11927..c1a4bc5c2e95 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2110,7 +2110,12 @@ static inline bool sb_rdonly(const struct super_block *sb) { return sb->s_flags
- #define IS_NOQUOTA(inode)	((inode)->i_flags & S_NOQUOTA)
- #define IS_APPEND(inode)	((inode)->i_flags & S_APPEND)
- #define IS_IMMUTABLE(inode)	((inode)->i_flags & S_IMMUTABLE)
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 0d6473cb00cb..051986b422b0 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1064,14 +1064,19 @@ static void nfs_fill_super(struct super_block *sb, struct nfs_fs_context *ctx)
+ 		 * The VFS shouldn't apply the umask to mode bits.
+ 		 * We will do so ourselves when necessary.
+ 		 */
+-		sb->s_flags |= SB_POSIXACL;
++		if (NFS_SB(sb)->caps & NFS_CAP_ACLS) {
++			sb->s_flags |= SB_POSIXACL;
++		}
 +
-+#ifdef CONFIG_FS_POSIX_ACL
- #define IS_POSIXACL(inode)	__IS_FLG(inode, SB_POSIXACL)
-+#else
-+#define IS_POSIXACL(inode)	0
-+#endif
- 
- #define IS_DEADDIR(inode)	((inode)->i_flags & S_DEAD)
- #define IS_NOCMTIME(inode)	((inode)->i_flags & S_NOCMTIME)
+ 		sb->s_time_gran = 1;
+ 		sb->s_time_min = 0;
+ 		sb->s_time_max = U32_MAX;
+ 		sb->s_export_op = &nfs_export_ops;
+ 		break;
+ 	case 4:
+-		sb->s_flags |= SB_POSIXACL;
++		if (NFS_SB(sb)->caps & NFS_CAP_ACLS) {
++			sb->s_flags |= SB_POSIXACL;
++		}
+ 		sb->s_time_gran = 1;
+ 		sb->s_time_min = S64_MIN;
+ 		sb->s_time_max = S64_MAX;
 -- 
 2.39.2
 
