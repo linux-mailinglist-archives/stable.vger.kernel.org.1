@@ -2,264 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C6957A691D
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 18:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9227A692A
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 18:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231208AbjISQpE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 12:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39168 "EHLO
+        id S229648AbjISQtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 12:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231819AbjISQpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 12:45:04 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3364190
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 09:44:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F5AC433CC;
-        Tue, 19 Sep 2023 16:44:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695141897;
-        bh=4Vt/9lD5DB3ZJEoOomWzzOOL25FgVec6P5ay8sThhMk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E+k9faAaZN5a4mpNVzVO0N1eA5fjgj+hohWmi7LVeZdKpxDTGHQcfjcBs5Kc3I20t
-         AORQODc/JRc5CLkNO5SJylwWFg0H4+fiostW7rV4JZmsWNNSXfsftN2TDcLcglt8SX
-         fWknHk+wzRWvlgvStF2ecsMEcyvT4uHHWjT1DLvRg7AXaD9rD6ci8NnnYZ159Gz4b2
-         ZDN+l66ekLaaT+AAtIT7YyiUnYwnyv64QETP3QTduBM5ZzO4lhZHxlYkTQYlnxij4I
-         xDovDy6IjaFU09pis9wALf/HuLarfkcLau+Y3wYtdrTRaj1ZO6P/d/ofjsED8hpKTp
-         XA9EsUjuR52jA==
-From:   Lee Jones <lee@kernel.org>
-To:     lee@kernel.org, stable@vger.kernel.org
-Cc:     pablo@netfilter.org, fw@strlen.de, Lee Jones <joneslee@google.com>
-Subject: [PATCH 5/5] netfilter: nf_tables: remove busy mark and gc batch API
-Date:   Tue, 19 Sep 2023 17:44:33 +0100
-Message-ID: <20230919164437.3297021-6-lee@kernel.org>
-X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-In-Reply-To: <20230919164437.3297021-1-lee@kernel.org>
+        with ESMTP id S230137AbjISQtP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 12:49:15 -0400
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [IPv6:2001:780:45:1d:225:90ff:fe52:c662])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1CA790
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 09:49:09 -0700 (PDT)
+Received: from [78.30.34.192] (port=46926 helo=gnumonks.org)
+        by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <pablo@gnumonks.org>)
+        id 1qiduL-00GgZv-U3; Tue, 19 Sep 2023 18:49:08 +0200
+Date:   Tue, 19 Sep 2023 18:49:04 +0200
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     Lee Jones <lee@kernel.org>
+Cc:     stable@vger.kernel.org, fw@strlen.de
+Subject: Re: [PATCH 0/5] netfilter: Reinstate dropped Stable patches
+Message-ID: <ZQnRAGKWu5Nm/qLw@calendula>
 References: <20230919164437.3297021-1-lee@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230919164437.3297021-1-lee@kernel.org>
+X-Spam-Score: -1.9 (-)
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+Hi,
 
-[ Upstream commit a2dd0233cbc4d8a0abb5f64487487ffc9265beb5 ]
+On Tue, Sep 19, 2023 at 05:44:28PM +0100, Lee Jones wrote:
+> Dropped in August:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=da9e96b4de57f6621f21e682bad92b5ffed0eeee
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=8d1dbdfdd7612a9ea73b005f75a3b2b8b0610d4e
+> 
+> Only re-applied and build tested against v6.1.53.
+> 
+> If they do apply and test well against linux-5.{4,10,15}, all the better.
 
-Ditch it, it has been replace it by the GC transaction API and it has no
-clients anymore.
+I have a pending queue of patches for all these trees.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Lee Jones <joneslee@google.com>
----
- include/net/netfilter/nf_tables.h | 98 +------------------------------
- net/netfilter/nf_tables_api.c     | 48 +--------------
- 2 files changed, 4 insertions(+), 142 deletions(-)
-
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 3b76370683c82..2d501dd901521 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -594,7 +594,6 @@ struct nft_set *nft_set_lookup_global(const struct net *net,
- 
- struct nft_set_ext *nft_set_catchall_lookup(const struct net *net,
- 					    const struct nft_set *set);
--void *nft_set_catchall_gc(const struct nft_set *set);
- 
- static inline unsigned long nft_set_gc_interval(const struct nft_set *set)
- {
-@@ -811,62 +810,6 @@ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
- void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
- 				const struct nft_set *set, void *elem);
- 
--/**
-- *	struct nft_set_gc_batch_head - nf_tables set garbage collection batch
-- *
-- *	@rcu: rcu head
-- *	@set: set the elements belong to
-- *	@cnt: count of elements
-- */
--struct nft_set_gc_batch_head {
--	struct rcu_head			rcu;
--	const struct nft_set		*set;
--	unsigned int			cnt;
--};
--
--#define NFT_SET_GC_BATCH_SIZE	((PAGE_SIZE -				  \
--				  sizeof(struct nft_set_gc_batch_head)) / \
--				 sizeof(void *))
--
--/**
-- *	struct nft_set_gc_batch - nf_tables set garbage collection batch
-- *
-- * 	@head: GC batch head
-- * 	@elems: garbage collection elements
-- */
--struct nft_set_gc_batch {
--	struct nft_set_gc_batch_head	head;
--	void				*elems[NFT_SET_GC_BATCH_SIZE];
--};
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp);
--void nft_set_gc_batch_release(struct rcu_head *rcu);
--
--static inline void nft_set_gc_batch_complete(struct nft_set_gc_batch *gcb)
--{
--	if (gcb != NULL)
--		call_rcu(&gcb->head.rcu, nft_set_gc_batch_release);
--}
--
--static inline struct nft_set_gc_batch *
--nft_set_gc_batch_check(const struct nft_set *set, struct nft_set_gc_batch *gcb,
--		       gfp_t gfp)
--{
--	if (gcb != NULL) {
--		if (gcb->head.cnt + 1 < ARRAY_SIZE(gcb->elems))
--			return gcb;
--		nft_set_gc_batch_complete(gcb);
--	}
--	return nft_set_gc_batch_alloc(set, gfp);
--}
--
--static inline void nft_set_gc_batch_add(struct nft_set_gc_batch *gcb,
--					void *elem)
--{
--	gcb->elems[gcb->head.cnt++] = elem;
--}
--
- struct nft_expr_ops;
- /**
-  *	struct nft_expr_type - nf_tables expression type
-@@ -1545,47 +1488,12 @@ static inline void nft_set_elem_change_active(const struct net *net,
- 
- #endif /* IS_ENABLED(CONFIG_NF_TABLES) */
- 
--/*
-- * We use a free bit in the genmask field to indicate the element
-- * is busy, meaning it is currently being processed either by
-- * the netlink API or GC.
-- *
-- * Even though the genmask is only a single byte wide, this works
-- * because the extension structure if fully constant once initialized,
-- * so there are no non-atomic write accesses unless it is already
-- * marked busy.
-- */
--#define NFT_SET_ELEM_BUSY_MASK	(1 << 2)
--
--#if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	2
--#elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
--#else
--#error
--#endif
--
--static inline int nft_set_elem_mark_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	BUILD_BUG_ON(offsetof(struct nft_set_ext, genmask) != 0);
--	return test_and_set_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	clear_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--#define NFT_SET_ELEM_DEAD_MASK	(1 << 3)
-+#define NFT_SET_ELEM_DEAD_MASK	(1 << 2)
- 
- #if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	3
-+#define NFT_SET_ELEM_DEAD_BIT	2
- #elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 3)
-+#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
- #else
- #error
- #endif
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e179d1132f2fb..a38d87256b8fb 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6069,29 +6069,6 @@ struct nft_set_ext *nft_set_catchall_lookup(const struct net *net,
- }
- EXPORT_SYMBOL_GPL(nft_set_catchall_lookup);
- 
--void *nft_set_catchall_gc(const struct nft_set *set)
--{
--	struct nft_set_elem_catchall *catchall, *next;
--	struct nft_set_ext *ext;
--	void *elem = NULL;
--
--	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
--		ext = nft_set_elem_ext(set, catchall->elem);
--
--		if (!nft_set_elem_expired(ext) ||
--		    nft_set_elem_mark_busy(ext))
--			continue;
--
--		elem = catchall->elem;
--		list_del_rcu(&catchall->list);
--		kfree_rcu(catchall, rcu);
--		break;
--	}
--
--	return elem;
--}
--EXPORT_SYMBOL_GPL(nft_set_catchall_gc);
--
- static int nft_setelem_catchall_insert(const struct net *net,
- 				       struct nft_set *set,
- 				       const struct nft_set_elem *elem,
-@@ -6562,7 +6539,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_elem_free;
- 	}
- 
--	ext->genmask = nft_genmask_cur(ctx->net) | NFT_SET_ELEM_BUSY_MASK;
-+	ext->genmask = nft_genmask_cur(ctx->net);
- 
- 	err = nft_setelem_insert(ctx->net, set, &elem, &ext2, flags);
- 	if (err) {
-@@ -6949,29 +6926,6 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
- 	return err;
- }
- 
--void nft_set_gc_batch_release(struct rcu_head *rcu)
--{
--	struct nft_set_gc_batch *gcb;
--	unsigned int i;
--
--	gcb = container_of(rcu, struct nft_set_gc_batch, head.rcu);
--	for (i = 0; i < gcb->head.cnt; i++)
--		nft_set_elem_destroy(gcb->head.set, gcb->elems[i], true);
--	kfree(gcb);
--}
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp)
--{
--	struct nft_set_gc_batch *gcb;
--
--	gcb = kzalloc(sizeof(*gcb), gfp);
--	if (gcb == NULL)
--		return gcb;
--	gcb->head.set = set;
--	return gcb;
--}
--
- /*
-  * Stateful objects
-  */
--- 
-2.42.0.459.ge4e396fd5e-goog
-
+I will follow up asap, please hold on with this.
