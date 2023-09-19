@@ -2,132 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D377A6354
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88C87A63AF
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232125AbjISMmt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 08:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53350 "EHLO
+        id S231676AbjISMuD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 08:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232147AbjISMms (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:42:48 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0B4135
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 05:42:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695127361; x=1726663361;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vBKQwdegdCh2J7T7Rwh8O/CTG5o6wANbnNbVpQVFRWk=;
-  b=MxKzW0S62ks1KNFNV5cueopIq/2sjw44yyrEyIKex9ZWSxCUe9UcAuXD
-   IadZEjIEl17RyK4uxo1cXKW15OuJI2nTD6K3+8OXK9YbJmek/rt98ocfs
-   GCEa60jaZAQL+7gsw+QG14AG/7DsO8aL/UvUy9pqLvDI2i1NO0Oa//Tn0
-   EsSxba2sodnNCwXTg22uhxsCAJXo29NrfOikCtDxD77z6Wwnoe8mZGE7z
-   dDh/sJUBd3mvFptL7Gu+pzHSRBrSogcQjG3e60SS6qRV3pVJWGhSywsQ6
-   rezcjYusIHdRKmvSvijSjBUvRFqrKuUNyS9vzTpindNkQSP78TaME/ROu
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="410858822"
-X-IronPort-AV: E=Sophos;i="6.02,159,1688454000"; 
-   d="scan'208";a="410858822"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 05:42:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="722859934"
-X-IronPort-AV: E=Sophos;i="6.02,159,1688454000"; 
-   d="scan'208";a="722859934"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.8.52]) ([10.213.8.52])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 05:42:36 -0700
-Message-ID: <db23e7bf-eb94-8f74-ca45-340b9a9db278@intel.com>
-Date:   Tue, 19 Sep 2023 14:42:23 +0200
+        with ESMTP id S230021AbjISMuC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:50:02 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFCA99;
+        Tue, 19 Sep 2023 05:49:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C8CC433C7;
+        Tue, 19 Sep 2023 12:49:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1695127797;
+        bh=JUAIkivzZFdjelGUSm1sQTkEx/N2qNbb9nGvT13IC/0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aXwBUh4LoeHqJV4bFo4tzQERSFMfD1BzXyAsNY110PsvvxE856//bXnX0511Lqzxg
+         LvmvOtWQQTF6c0FDLXiF13sw+gJuzoNt6j9iGN386/CP6FVoK8Lin5aYu5crlnnBmu
+         MorFgaDy5AGCryX+g5x1Rfra1o7sKp8r+4zvYpes=
+Date:   Tue, 19 Sep 2023 14:49:51 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Manivannan Sadhasivam <mani@kernel.org>
+Cc:     Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh@kernel.org, lpieralisi@kernel.org, bhelgaas@google.com,
+        kw@linux.com, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        dmitry.baryshkov@linaro.org, stable@vger.kernel.org,
+        robimarko@gmail.com
+Subject: Re: [PATCH V6] PCI: qcom: Fix broken pcie enumeration for 2_3_3
+ configs ops
+Message-ID: <2023091931-undermine-lethargic-e1cd@gregkh>
+References: <20230919102948.1844909-1-quic_srichara@quicinc.com>
+ <20230919121909.GF4732@thinkpad>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [PATCH] drm/i915: Fix aux invalidation with proper pipe_control
- flag
-To:     Nirmoy Das <nirmoy.das@intel.com>, intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        stable@vger.kernel.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        Tejas Upadhyay <tejas.upadhyay@intel.com>,
-        Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
-References: <20230919114716.19378-1-nirmoy.das@intel.com>
-Content-Language: en-US
-From:   Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20230919114716.19378-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230919121909.GF4732@thinkpad>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Sep 19, 2023 at 02:19:09PM +0200, Manivannan Sadhasivam wrote:
+> On Tue, Sep 19, 2023 at 03:59:48PM +0530, Sricharan Ramabadhran wrote:
+> > PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for qcom_pcie_post_init_2_3_3.
+> > PCIe slave address space size register offset is 0x358, but was wrongly
+> > changed to 0x16c as a part of commit 39171b33f652 ("PCI: qcom: Remove
+> > PCIE20_ prefix from register definitions"). Fixing it, by using the right
+> > macro and remove the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
+> > 
+> > Without this access to the registers of slave addr space like iATU etc
+> > are broken leading to PCIe enumeration failure on IPQ8074.
+> > 
+> > Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
+> > Cc: <Stable@vger.kernel.org>
+> 
+> Please fix the stable list address: stable@vger.kernel.org
 
-
-On 19.09.2023 13:47, Nirmoy Das wrote:
-> The suggestion from the spec is to do l3 fabric flush not L3 flush.
->
-> Fixes: 78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before
-> invalidation")
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v5.8+
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> Cc: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-
-Regards
-Andrzej
-
-> ---
->   drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 6 +++++-
->   drivers/gpu/drm/i915/gt/intel_gpu_commands.h | 1 +
->   2 files changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> index 0143445dba83..a4b241d502c8 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> @@ -272,7 +272,11 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->   			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
->   
->   		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
-> -		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
-> +		if (mode & EMIT_FLUSH)
-> +			bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
-> +		else if (gen12_needs_ccs_aux_inv(engine))
-> +			bit_group_1 |= PIPE_CONTROL_L3_FABRIC_FLUSH;
-> +
->   		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
->   		bit_group_1 |= PIPE_CONTROL_DEPTH_CACHE_FLUSH;
->   		/* Wa_1409600907:tgl,adl-p */
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-> index 2bd8d98d2110..12e8dc481c53 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-> @@ -284,6 +284,7 @@
->   #define   DISPLAY_PLANE_A           (0<<20)
->   #define   DISPLAY_PLANE_B           (1<<20)
->   #define GFX_OP_PIPE_CONTROL(len)	((0x3<<29)|(0x3<<27)|(0x2<<24)|((len)-2))
-> +#define   PIPE_CONTROL_L3_FABRIC_FLUSH			(1<<30)
->   #define   PIPE_CONTROL_COMMAND_CACHE_INVALIDATE		(1<<29) /* gen11+ */
->   #define   PIPE_CONTROL_TILE_CACHE_FLUSH			(1<<28) /* gen11+ */
->   #define   PIPE_CONTROL_FLUSH_L3				(1<<27)
-
+Either works!
