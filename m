@@ -2,118 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B75ED7A5C02
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2897A5C49
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:18:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjISIKU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 04:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35638 "EHLO
+        id S230338AbjISISY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 04:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjISIKT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:10:19 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574A7102
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:10:13 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1c434c33ec0so28480745ad.3
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:10:13 -0700 (PDT)
+        with ESMTP id S230348AbjISISX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:18:23 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA65118
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:16 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-405082a8c77so21309535e9.0
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jade-fyi.20230601.gappssmtp.com; s=20230601; t=1695111013; x=1695715813; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XDaVHG8otiJPEb7VvRQaEf7e+HpyXbPyMYQtyJhoTbE=;
-        b=BqkDDc4hcdGymnRWmUOU0a2m1HV3yBwcwzzJN2GbUzGxMnMlDm44GSOTaMkJZdhrcg
-         1M/dYgPpdz6hEsH1ydJqpDiZ4Madx5sOV99S2/TOpnyjDt2kN2yx8/XgC/UIosGJwTaU
-         jDDLaaZaYB97IY2ANzd3EyxDLElBfBumlJ4UNz22mk/4TMTf9jIn56gVxCIwcCvurzIc
-         bbpq/UL+wYPBx5Hcxu+suuSpr7Dqu05dF5uTtL0XWV7ifG4iAYypkbHhn5E1m0+y1f3F
-         okDUw2Hcsn+PFmIihn4qpR7pspsqUIpKyPuTd2e3iGn3ECF85/Gj29ERKIHdm/tl24z8
-         Ixsw==
+        d=ionos.com; s=google; t=1695111495; x=1695716295; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1gAr+spSxhyFbhqTlLTsUHb79LCXE+R6cPkLBxMk/S0=;
+        b=a6Px7MKbWj9XN89Vv2RGeM7Tcww6D+O+V6x+isuBPEM0nJtB4HOp+iN6RJj33H6srq
+         qYIjfTpZPCqzy2+Xa8U6lCDzb1VhwT2QZN+08uOpRIAYt5N6dkzxMun7CpV4s3b6aAqu
+         rmTbvGLJmIsE9z8DOuYTsfvo/J48WclbZuoNQKsnEsq/gP+zvxQSRpQckTJzel9fXROP
+         x1Odydqt41yZpy+yPMog78EX6B+3Eh9IEL0DRZ4oLdEyzmCsAIT2GiaTzNLsuUqzH12Z
+         5bT1Ahvx8iBVzxJ+j910NVViwI3Z3kjYWzl4h9tRRUbgI7qWO1w1ZbyMl184+pk2i2dT
+         aEaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695111013; x=1695715813;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XDaVHG8otiJPEb7VvRQaEf7e+HpyXbPyMYQtyJhoTbE=;
-        b=K5xnTgCbuGzgcBlGl0JAIr3Ave8Zl3SmZPY0Scbdj9I+Ncqve6iOEpmE7Y+a2xDrAd
-         dwex4zFPAdZxvOsUFoIt2NvDrilXlOdZqjiSFTw2Z02DUJjX3He6CqDEkKgzVZEwl2Xw
-         hM0xMHnKhThu63GmCNhL5yWywwud+PqGbhV8lXGfs1jkVId33fODoh9usA6la3SGKGfl
-         3rHe/DALyjLAe+NBg8zb0wVOQAOxX5ZRDRd9TwmdzEvm9uS6CYm+FerTJVaS7z9fd3wb
-         4O5gVvhOGs2N/uc3hfz5Ve3zySbiJ6t2HtHKYnSdUE3+CD6R1Bd76ZbyILcF6iY1F6d1
-         WG8g==
-X-Gm-Message-State: AOJu0Yz59uB9T6H52/MJKY1MM9MNWkv4+SgtCV1tg+lcolWvgDlPgeLc
-        hEaIZy+QOKlOSJ317HhGRZdFGQ==
-X-Google-Smtp-Source: AGHT+IGVJowM4/9XEQHW4+PaTqlhWRPWK+4eWaInB4DrrZBm59Vtc7nXUAWRCf4YZwM6CZm0oVKf5g==
-X-Received: by 2002:a17:902:d485:b0:1c3:9764:764f with SMTP id c5-20020a170902d48500b001c39764764fmr10700562plg.48.1695111012747;
-        Tue, 19 Sep 2023 01:10:12 -0700 (PDT)
-Received: from localhost ([172.103.222.8])
-        by smtp.gmail.com with ESMTPSA id y10-20020a170902b48a00b001bdc8a5e96csm9491983plr.169.2023.09.19.01.10.12
+        d=1e100.net; s=20230601; t=1695111495; x=1695716295;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1gAr+spSxhyFbhqTlLTsUHb79LCXE+R6cPkLBxMk/S0=;
+        b=BL4qnG7l86bdEmEbxu7edTNqAhTXOrFvCpgKjdOy0qNm7YxrkSy4ybxZ+gV11e/pVJ
+         pOARuFfmrFh0jO5Ds0bdyD+8b81dbEazlGaABurf8sNx5jYAhTq5y3V8Pq/VcljIQuyg
+         fc41fShIeGNX9o19PsD9plVQipJEGsA3QM/U9JzBaPmHndvPnL3lVbd54P0kf3ybioba
+         BC9L1ckUKlNWoGT5H2zPTr9BxeV4zEaR+R93JREp5yPyreLXpuO+GZS9TW1Zz6ou2hsO
+         zUTkAiIiyMSc5wMdWb0tnUi3W//KVneJ8RvbYhaqrALqgsmjmZPDjBqpoXt4YBYKgvLc
+         wMeg==
+X-Gm-Message-State: AOJu0YyzG7WwPgsFaAc1ZhMVBk5xi1vRnjDHSlluI9CxvZwyAJ7KVgL0
+        nvROOTbz6n7t7hXDXWQiPFtCSw==
+X-Google-Smtp-Source: AGHT+IG5VEm9hgImnF5v/c+C1fp7ixIrprGYP5WLwWP+P7ukaYzOA2c8Th+LPLSPi3vygtcDYT1eyA==
+X-Received: by 2002:a7b:cd1a:0:b0:3fe:d630:f568 with SMTP id f26-20020a7bcd1a000000b003fed630f568mr8617755wmj.39.1695111495235;
+        Tue, 19 Sep 2023 01:18:15 -0700 (PDT)
+Received: from heron.intern.cm-ag (p200300dc6f209c00529a4cfffe3dd983.dip0.t-ipconnect.de. [2003:dc:6f20:9c00:529a:4cff:fe3d:d983])
+        by smtp.gmail.com with ESMTPSA id e13-20020a05600c218d00b00402f745c5ffsm14451531wme.8.2023.09.19.01.18.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 01:10:12 -0700 (PDT)
-From:   Jade Lovelace <lists@jade.fyi>
-To:     ricky_wu@realtek.com
-Cc:     paul.grandperrin@gmail.com, regressions@lists.linux.dev,
-        rogerable@realtek.com, stable@vger.kernel.org,
-        wei_wang@realsil.com.cn
-Subject: RE: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from drivers/misc/cardreader breaks NVME power state, preventing system boot
-Date:   Tue, 19 Sep 2023 01:04:49 -0700
-Message-ID: <20230919080447.2594902-3-lists@jade.fyi>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <c7bdd821686e496eb31e4298050dfb72@realtek.com>
-References: <c7bdd821686e496eb31e4298050dfb72@realtek.com>
+        Tue, 19 Sep 2023 01:18:14 -0700 (PDT)
+From:   Max Kellermann <max.kellermann@ionos.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     Max Kellermann <max.kellermann@ionos.com>,
+        "J . Bruce Fields" <bfields@redhat.com>, stable@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] fs/posix_acl: apply umask if superblock disables ACL support
+Date:   Tue, 19 Sep 2023 10:18:07 +0200
+Message-Id: <20230919081808.1096542-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,=0D
-=0D
-> In the past if the BIOS(config space) not set L1-substate our driver will=
- keep drive low CLKREQ# when HOST want to enter power saving state that mak=
-e whole system not enter the power saving state.=0D
-> But this patch we release the CLKREQ# to HOST, make whole system can ente=
-r power saving state success when the HOST want to enter the power saving s=
-tate, but I don't  know why this system can not wake out success from power=
- saving state"=0D
-> =0D
-> This is a PCIE CLKREQ# design problem on those platform, the pcie spec al=
-low device release the CLKREQ# to HOST, this patch only do this....=0D
-=0D
-I spent some time debugging today but I am not a PCIe expert. I think=0D
-that the card reader is actually violating the PCIe spec by not forcing=0D
-CLKREQ# low on systems that don't support ASPM, as appears to be done=0D
-(accidentally?) by the regressing driver change.=0D
-=0D
-The kernel logs on the affected system states the following:=0D
-[    0.142326] ACPI FADT declares the system doesn't support PCIe ASPM, so =
-disable it=0D
-=0D
-The PCIe 3.0 spec states (in the description of the Link Control=0D
-Register), regarding enabling clock power management:=0D
-> Enable Clock Power Management =E2=80=93 Applicable only for Upstream Port=
-s and with form factors that support a =E2=80=9CClock Request=E2=80=9D (CLK=
-REQ#) mechanism, this bit operates as follows: =0D
-> 0b Clock power management is disabled and device must hold CLKREQ# signal=
- low. =0D
-> 1b When this bit is Set, the device is permitted to use CLKREQ# signal to=
- power manage Link clock=0D
-> according to protocol defined in appropriate form factor specification.=0D
-=0D
-My reading of this is that on this system which does not support ASPM=0D
-and therefore also does not support clock PM, the driver must have the=0D
-device hold the line low, but I may be wrong.=0D
-=0D
-It's still unclear to me based on studying the schematic of the laptop=0D
-and the PCH datasheet why the one PCIe port is able to break the other=0D
-one like it does. The CLKREQ# lines are simply connected directly to the=0D
-SRCCLKREQ# lines of the PCH, plus a 10k pull-up to 3v3, which seems=0D
-entirely reasonable; any breakage surely would be some software/firmware le=
-vel=0D
-misconfiguration.=0D
-=0D
-Jade=0D
+The function posix_acl_create() applies the umask only if the inode
+has no ACL (= NULL) or if ACLs are not supported by the filesystem
+driver (= -EOPNOTSUPP).
+
+However, this happens only after after the IS_POSIXACL() check
+succeeded.  If the superblock doesn't enable ACL support, umask will
+never be applied.  A filesystem which has no ACL support will of
+course not enable SB_POSIXACL, rendering the umask-applying code path
+unreachable.
+
+This fixes a bug which causes the umask to be ignored with O_TMPFILE
+on tmpfs:
+
+ https://github.com/MusicPlayerDaemon/MPD/issues/558
+ https://bugs.gentoo.org/show_bug.cgi?id=686142#c3
+ https://bugzilla.kernel.org/show_bug.cgi?id=203625
+
+Reviewed-by: J. Bruce Fields <bfields@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/posix_acl.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/posix_acl.c b/fs/posix_acl.c
+index a05fe94970ce..79831269dd2f 100644
+--- a/fs/posix_acl.c
++++ b/fs/posix_acl.c
+@@ -642,9 +642,14 @@ posix_acl_create(struct inode *dir, umode_t *mode,
+ 	*acl = NULL;
+ 	*default_acl = NULL;
+ 
+-	if (S_ISLNK(*mode) || !IS_POSIXACL(dir))
++	if (S_ISLNK(*mode))
+ 		return 0;
+ 
++	if (!IS_POSIXACL(dir)) {
++		*mode &= ~current_umask();
++		return 0;
++	}
++
+ 	p = get_inode_acl(dir, ACL_TYPE_DEFAULT);
+ 	if (!p || p == ERR_PTR(-EOPNOTSUPP)) {
+ 		*mode &= ~current_umask();
+-- 
+2.39.2
+
