@@ -2,164 +2,206 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5F467A6C46
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 22:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAD4F7A6D0C
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 23:43:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232649AbjISUWl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 16:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
+        id S229853AbjISVn0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 17:43:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233237AbjISUWU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 16:22:20 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F0EC4;
-        Tue, 19 Sep 2023 13:22:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D00AC433C7;
-        Tue, 19 Sep 2023 20:22:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695154934;
-        bh=0SMFxmVNcx2Z9vxI52Pe+o2YA1Is7m6lpkBHQUToLhA=;
-        h=Date:To:From:Subject:From;
-        b=DIbOJqKkRhMYd09t1XhB5fMhm0eRzhC/5Qdei8Y+uOAWDnr/+gK/tJYyl8j0HQlTh
-         PYIexkRY4zqIXE894YkJP52/QK1acwTB1tFttinM0BqrnSBGp8G6p7q2BcT1E0I6BK
-         e6jZfNWU71Npxfl7SuEH6hsXpr+l2NMrY/cZ+oz8=
-Date:   Tue, 19 Sep 2023 13:22:13 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        oleg@redhat.com, giulio.benetti@benettiengineering.com,
-        gerg@uclinux.org, ben.wolsieffer@hefring.com,
-        Ben.Wolsieffer@hefring.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] proc-nommu-proc-pid-maps-release-mmap-read-lock.patch removed from -mm tree
-Message-Id: <20230919202214.4D00AC433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229690AbjISVnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 17:43:25 -0400
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF6DBD
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 14:43:19 -0700 (PDT)
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id B5742C0000E3;
+        Tue, 19 Sep 2023 14:43:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com B5742C0000E3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1695159798;
+        bh=d+Xt1ikwiwOvcbJr0YM8YEgD9jmiwaK/vG/QCXw+Zp0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=vtfosu/BcZuQ7ZAjkXfIeOkGuL+3BFt1GAyM5pfbD4Kkiywp+MOtsbG/zTg964+jn
+         i8Xm9ScCdVsxEav4Z7B2ebo4b8HsyztLaekQs9+iivYTp7SVDp+jSsSCCig6cYWdI7
+         MnynJhAtdZU4zxeLl1U1NkethclnDFZKZK2LWUb4=
+Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 7C6AE18728C;
+        Tue, 19 Sep 2023 14:43:18 -0700 (PDT)
+From:   William Zhang <william.zhang@broadcom.com>
+To:     stable@vger.kernel.org
+Cc:     William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 4.19.y] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
+Date:   Tue, 19 Sep 2023 14:43:02 -0700
+Message-Id: <20230919214302.309705-1-william.zhang@broadcom.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <2023091634-friday-olive-b032@gregkh>
+References: <2023091634-friday-olive-b032@gregkh>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+v7.2 controller has different ECC level field size and shift in the acc
+control register than its predecessor and successor controller. It needs
+to be set specifically.
 
-The quilt patch titled
-     Subject: proc: nommu: /proc/<pid>/maps: release mmap read lock
-has been removed from the -mm tree.  Its filename was
-     proc-nommu-proc-pid-maps-release-mmap-read-lock.patch
-
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
-Subject: proc: nommu: /proc/<pid>/maps: release mmap read lock
-Date: Thu, 14 Sep 2023 12:30:20 -0400
-
-The no-MMU implementation of /proc/<pid>/map doesn't normally release
-the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
-whether to release the lock.  Since _vml is NULL when the end of the
-mappings is reached, the lock is not released.
-
-Reading /proc/1/maps twice doesn't cause a hang because it only
-takes the read lock, which can be taken multiple times and therefore
-doesn't show any problem if the lock isn't released. Instead, you need
-to perform some operation that attempts to take the write lock after
-reading /proc/<pid>/maps. To actually reproduce the bug, compile the
-following code as 'proc_maps_bug':
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/mman.h>
-
-int main(int argc, char *argv[]) {
-        void *buf;
-        sleep(1);
-        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        puts("mmap returned");
-        return 0;
-}
-
-Then, run:
-
-  ./proc_maps_bug &; cat /proc/$!/maps; fg
-
-Without this patch, mmap() will hang and the command will never
-complete.
-	
-This code was incorrectly adapted from the MMU implementation, which at
-the time released the lock in m_next() before returning the last entry.
-
-The MMU implementation has diverged further from the no-MMU version since
-then, so this patch brings their locking and error handling into sync,
-fixing the bug and hopefully avoiding similar issues in the future.
-
-Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
-Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc: Greg Ungerer <gerg@uclinux.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: decba6d47869 ("mtd: brcmnand: Add v7.2 controller support")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
+(cherry picked from commit 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b)
 ---
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 75 +++++++++++++-----------
+ 1 file changed, 42 insertions(+), 33 deletions(-)
 
- fs/proc/task_nommu.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
---- a/fs/proc/task_nommu.c~proc-nommu-proc-pid-maps-release-mmap-read-lock
-+++ a/fs/proc/task_nommu.c
-@@ -192,11 +192,16 @@ static void *m_start(struct seq_file *m,
- 		return ERR_PTR(-ESRCH);
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 27bafb8fc35a..b4ed6961a092 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -152,6 +152,7 @@ struct brcmnand_controller {
+ 	unsigned int		max_page_size;
+ 	const unsigned int	*page_sizes;
+ 	unsigned int		max_oob;
++	u32			ecc_level_shift;
+ 	u32			features;
  
- 	mm = priv->mm;
--	if (!mm || !mmget_not_zero(mm))
-+	if (!mm || !mmget_not_zero(mm)) {
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return NULL;
-+	}
+ 	/* for low-power standby/resume only */
+@@ -441,6 +442,34 @@ enum {
+ 	INTFC_CTLR_READY		= BIT(31),
+ };
  
- 	if (mmap_read_lock_killable(mm)) {
- 		mmput(mm);
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return ERR_PTR(-EINTR);
- 	}
- 
-@@ -205,23 +210,21 @@ static void *m_start(struct seq_file *m,
- 	if (vma)
- 		return vma;
- 
--	mmap_read_unlock(mm);
--	mmput(mm);
- 	return NULL;
- }
- 
--static void m_stop(struct seq_file *m, void *_vml)
-+static void m_stop(struct seq_file *m, void *v)
- {
- 	struct proc_maps_private *priv = m->private;
-+	struct mm_struct *mm = priv->mm;
- 
--	if (!IS_ERR_OR_NULL(_vml)) {
--		mmap_read_unlock(priv->mm);
--		mmput(priv->mm);
--	}
--	if (priv->task) {
--		put_task_struct(priv->task);
--		priv->task = NULL;
--	}
-+	if (!priv->task)
-+		return;
++/***********************************************************************
++ * NAND ACC CONTROL bitfield
++ *
++ * Some bits have remained constant throughout hardware revision, while
++ * others have shifted around.
++ ***********************************************************************/
 +
-+	mmap_read_unlock(mm);
-+	mmput(mm);
-+	put_task_struct(priv->task);
-+	priv->task = NULL;
++/* Constant for all versions (where supported) */
++enum {
++	/* See BRCMNAND_HAS_CACHE_MODE */
++	ACC_CONTROL_CACHE_MODE				= BIT(22),
++
++	/* See BRCMNAND_HAS_PREFETCH */
++	ACC_CONTROL_PREFETCH				= BIT(23),
++
++	ACC_CONTROL_PAGE_HIT				= BIT(24),
++	ACC_CONTROL_WR_PREEMPT				= BIT(25),
++	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
++	ACC_CONTROL_RD_ERASED				= BIT(27),
++	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
++	ACC_CONTROL_WR_ECC				= BIT(30),
++	ACC_CONTROL_RD_ECC				= BIT(31),
++};
++
++#define	ACC_CONTROL_ECC_SHIFT			16
++/* Only for v7.2 */
++#define	ACC_CONTROL_ECC_EXT_SHIFT		13
++
+ static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
+ {
+ 	return brcmnand_readl(ctrl->nand_base + offs);
+@@ -544,6 +573,12 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
+ 	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
+ 		ctrl->features |= BRCMNAND_HAS_WP;
+ 
++	/* v7.2 has different ecc level shift in the acc register */
++	if (ctrl->nand_version == 0x0702)
++		ctrl->ecc_level_shift = ACC_CONTROL_ECC_EXT_SHIFT;
++	else
++		ctrl->ecc_level_shift = ACC_CONTROL_ECC_SHIFT;
++
+ 	return 0;
  }
  
- static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
-_
-
-Patches currently in -mm which might be from Ben.Wolsieffer@hefring.com are
-
+@@ -697,30 +732,6 @@ static inline int brcmnand_cmd_shift(struct brcmnand_controller *ctrl)
+ 	return 0;
+ }
+ 
+-/***********************************************************************
+- * NAND ACC CONTROL bitfield
+- *
+- * Some bits have remained constant throughout hardware revision, while
+- * others have shifted around.
+- ***********************************************************************/
+-
+-/* Constant for all versions (where supported) */
+-enum {
+-	/* See BRCMNAND_HAS_CACHE_MODE */
+-	ACC_CONTROL_CACHE_MODE				= BIT(22),
+-
+-	/* See BRCMNAND_HAS_PREFETCH */
+-	ACC_CONTROL_PREFETCH				= BIT(23),
+-
+-	ACC_CONTROL_PAGE_HIT				= BIT(24),
+-	ACC_CONTROL_WR_PREEMPT				= BIT(25),
+-	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
+-	ACC_CONTROL_RD_ERASED				= BIT(27),
+-	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
+-	ACC_CONTROL_WR_ECC				= BIT(30),
+-	ACC_CONTROL_RD_ECC				= BIT(31),
+-};
+-
+ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
+ {
+ 	if (ctrl->nand_version >= 0x0702)
+@@ -731,18 +742,15 @@ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
+ 		return GENMASK(5, 0);
+ }
+ 
+-#define NAND_ACC_CONTROL_ECC_SHIFT	16
+-#define NAND_ACC_CONTROL_ECC_EXT_SHIFT	13
+-
+ static inline u32 brcmnand_ecc_level_mask(struct brcmnand_controller *ctrl)
+ {
+ 	u32 mask = (ctrl->nand_version >= 0x0600) ? 0x1f : 0x0f;
+ 
+-	mask <<= NAND_ACC_CONTROL_ECC_SHIFT;
++	mask <<= ACC_CONTROL_ECC_SHIFT;
+ 
+ 	/* v7.2 includes additional ECC levels */
+-	if (ctrl->nand_version >= 0x0702)
+-		mask |= 0x7 << NAND_ACC_CONTROL_ECC_EXT_SHIFT;
++	if (ctrl->nand_version == 0x0702)
++		mask |= 0x7 << ACC_CONTROL_ECC_EXT_SHIFT;
+ 
+ 	return mask;
+ }
+@@ -756,8 +764,8 @@ static void brcmnand_set_ecc_enabled(struct brcmnand_host *host, int en)
+ 
+ 	if (en) {
+ 		acc_control |= ecc_flags; /* enable RD/WR ECC */
+-		acc_control |= host->hwcfg.ecc_level
+-			       << NAND_ACC_CONTROL_ECC_SHIFT;
++		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
++		acc_control |= host->hwcfg.ecc_level << ctrl->ecc_level_shift;
+ 	} else {
+ 		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
+ 		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
+@@ -2071,9 +2079,10 @@ static int brcmnand_set_cfg(struct brcmnand_host *host,
+ 
+ 	tmp = nand_readreg(ctrl, acc_control_offs);
+ 	tmp &= ~brcmnand_ecc_level_mask(ctrl);
+-	tmp |= cfg->ecc_level << NAND_ACC_CONTROL_ECC_SHIFT;
++	tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
+ 	tmp &= ~brcmnand_spare_area_mask(ctrl);
+ 	tmp |= cfg->spare_area_size;
++
+ 	nand_writereg(ctrl, acc_control_offs, tmp);
+ 
+ 	brcmnand_set_sector_size_1k(host, cfg->sector_size_1k);
+-- 
+2.37.3
 
