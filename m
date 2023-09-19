@@ -2,239 +2,200 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 013BE7A61A5
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 13:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF2F27A61FC
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:04:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjISLrq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 07:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35732 "EHLO
+        id S231130AbjISMEq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 08:04:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjISLrp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 07:47:45 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06DB2BA
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 04:47:40 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c0ecb9a075so43571385ad.2
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 04:47:40 -0700 (PDT)
+        with ESMTP id S231194AbjISMEl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:04:41 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AF9E3
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 05:04:12 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id d2e1a72fcca58-690bc3f8326so1004883b3a.0
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 05:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1695124059; x=1695728859; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bvIjtbAo9oelKznV2zfSE18vuRrlS1+y7fdyWD9x62Y=;
-        b=ZzyJAhUmDDMtpHOQQmIVVnjEjCwcdZYJjnpUesozWAS2kJtRX+DVxM3R3fV3rhr+3M
-         RBV/jbQyf3i13jAVtBqgd5h3Ws1LXQHgcLIbaBbV3xjvBPsS4SMWz+ATQerB2zHNbqnr
-         K8RKlkQQfYRfHmhSW8h4eXXl5eudAdfNJVg0oDkKtXluPw3U/J7d0v5OVZ1e0uD8HxH5
-         f0gPOuVH0f0d3yenMEefmCc5SR+5NalRK6TdluUQGiJxQwh4ciJn803sgfdOUgkyvDJq
-         2czA4CWRo+JM8vD7IMafF7sW3k0ELN36BQDtO6anHQu4d6sdhhmFANsH/PxNhIqb19wi
-         Td0A==
+        d=bytedance.com; s=google; t=1695125052; x=1695729852; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EV4P0PSru4UH0ozpkdrOaK/8aWGZrWYEEtd5JODaw80=;
+        b=Zpcz45FtKplDwQTe+kSyWwU7SOETQwlPIvWVOShAITiAihxv9fP6SXrLKUQUqziBHk
+         oJ49KdiieVssDi/VF51EdWSgJBb3k95B27tVrHuxuWbD8Yj3TiWSfWBwrTYW5ip+AGOe
+         pHTXlyZ448csqLCdlYywbKirHV+DumCBbxCyRyYZkTXFTUvrqejJR63O89hIQyPHaMbd
+         wuzSSqpC6Y2AEioXAIUU8FCmoQ/qwHof/RmZ88bE2cPwcQgPSmHGUGCIIfUV9viFI2vM
+         Mk6gT/I54w6QVP5mWcTy9XbtsEw4Vv9VfRAPYDB7GSP9Un8Myk2CY1udXYxvo0A5aRSW
+         FYNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695124059; x=1695728859;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1695125052; x=1695729852;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bvIjtbAo9oelKznV2zfSE18vuRrlS1+y7fdyWD9x62Y=;
-        b=DulvIWibZj2S92NqHpU0pGWoMZDw4jyoLsKlsntlyLjmCJVxKLi+A1hRwmnXBDfKTZ
-         o4kzhTKCHqqIzA8/0lHQ2dB59vJCOETPLtyrCr7K171l6iZq37YvM0y5pNsvmOtf+nEP
-         aMTcoPQPzyhSYyI8k+gldSdpC9lVuAduWeb7AZ5dIS5MnieXuI9+Ih2Kvo1fd42sv0k/
-         KzU/Xx8B+j4k2slTfc9+1UBFktIHptzm2ix4Gc32EbUp2tCqexdg32z/KlT1sPyi591v
-         uUqg+Xvto+vnmtfGHWelP7NIqa4K+lBMXOfLEc+gwKWAK4LJJwfWgoaKSzHoZMeay18F
-         c3bg==
-X-Gm-Message-State: AOJu0YyzvgIFleJpVcsZ1KhfnY8JgBE7Rs1rPWXXiseSGRi7SlhEqRbF
-        e+ZhYkJPso2PikgN+4wg+urxX/EHS0j5JqsqiO0bQg==
-X-Google-Smtp-Source: AGHT+IFIvychCHKZOriSvILvz9nzeplmO2IXyayZJyJvL2VaoosocUnE2K3x6Ir+hmJWS0CxudVXdQ==
-X-Received: by 2002:a17:903:192:b0:1bb:994c:bc43 with SMTP id z18-20020a170903019200b001bb994cbc43mr11954916plg.18.1695124059121;
-        Tue, 19 Sep 2023 04:47:39 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id iy19-20020a170903131300b001bb04755212sm9881657plb.228.2023.09.19.04.47.38
+        bh=EV4P0PSru4UH0ozpkdrOaK/8aWGZrWYEEtd5JODaw80=;
+        b=oVT0CU8bAjHSyCg1P4eUiS+x8na7BSuW6XEHv/E691t3wDX1fIN4pI7n815iH6OiqF
+         +Kt0sSRpc55D6RpQ/DITIN4z/cSoc+sjd4Est2EWWYhZ24NBg9j3cr6A8MODpQQocP7z
+         zlYV0qSimbMjm1fSFlvAFJ2Oa8jpgIWM/J1nKgeictOVoIYRhyzM9wPpjhRB6YcRZwrr
+         d9r2qsPOiyyo8nJ7pFAVsmT0N8JTHg+ns1FI9LKcD092UAxfAmKtLYgXievqjp+MCK/V
+         SukwwObB6nXTV8n0skCdizmA0oKzFgUwep7pNx4spilHxgpzn2D5vvXoVPrTMEMFfxmG
+         xE/A==
+X-Gm-Message-State: AOJu0YwMq44GuPYOelT9KS8JtfDETVaAJi30mbKBoR4vQc6VL0q3js6m
+        NKPoADA33Izy1wdxVaytj6EnUg==
+X-Google-Smtp-Source: AGHT+IEkiPegAbY0xMGT5Vhlpoxfden1WRFEh8Yps+ddWo+NzQcAFlFPrZFYwKYziezSXfaMk4zpFQ==
+X-Received: by 2002:a17:90a:bb98:b0:26d:3458:7a61 with SMTP id v24-20020a17090abb9800b0026d34587a61mr9014596pjr.5.1695125052290;
+        Tue, 19 Sep 2023 05:04:12 -0700 (PDT)
+Received: from PF2LML5M-SMJ.bytedance.net ([203.208.189.7])
+        by smtp.gmail.com with ESMTPSA id gv4-20020a17090b11c400b00273f65fa424sm8494694pjb.8.2023.09.19.05.04.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 04:47:38 -0700 (PDT)
-Message-ID: <65098a5a.170a0220.13c05.2616@mx.google.com>
-Date:   Tue, 19 Sep 2023 04:47:38 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Tue, 19 Sep 2023 05:04:11 -0700 (PDT)
+From:   Jinhui Guo <guojinhui.liam@bytedance.com>
+To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
+Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jinhui Guo <guojinhui.liam@bytedance.com>,
+        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: [PATCH v7] driver core: platform: set numa_node before platform_device_add()
+Date:   Tue, 19 Sep 2023 20:03:41 +0800
+Message-Id: <20230919120341.533-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable
-X-Kernelci-Kernel: v5.10.195
-X-Kernelci-Report-Type: build
-Subject: stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 6 warnings (v5.10.195)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 6 warnings (v5.1=
-0.195)
+Setting the devices' numa_node needs to be done in
+platform_device_register_full(), because that's where the
+platform device object is allocated.
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.10.y/k=
-ernel/v5.10.195/
-
-Tree: stable
-Branch: linux-5.10.y
-Git Describe: v5.10.195
-Git Commit: 5452d1be676cb0fb9dc417f7b48a917c9d020420
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig+arm64-chromebook (gcc-10): 1 warning
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =
-=E2=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=
-=80=99 makes pointer from integer without a cast [-Wint-conversion]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
-ing, 0 section mismatches
-
-Warnings:
-    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =E2=
-=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=80=
-=99 makes pointer from integer without a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
+Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
 ---
-For more info write to <info@kernelci.org>
+V6 -> V7
+  1. Fix bug directly by adding numa_node to struct
+     platform_device_info (suggested by Rafael J. Wysocki).
+  2. Remove reviewer name.
+
+V5 -> V6:
+  1. Update subject to correct function name platform_device_add().
+  2. Provide a more clear and accurate description of the changes
+     made in commit (suggested by Rafael J. Wysocki).
+  3. Add reviewer name.
+
+V4 -> V5:
+  Add Cc: stable line and changes from the previous submited patches.
+
+V3 -> V4:
+  Refactor code to be an ACPI function call (suggested by Greg Kroah-Hartman).
+
+V2 -> V3:
+  Fix Signed-off name.
+
+V1 -> V2:
+  Fix compile error without enabling CONFIG_ACPI.
+---
+
+ drivers/acpi/acpi_platform.c    |  5 ++---
+ drivers/base/platform.c         |  4 ++++
+ include/linux/platform_device.h | 26 ++++++++++++++++++++++++++
+ 3 files changed, 32 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 48d15dd785f6..1ae7449f70dc 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -168,6 +168,7 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	pdevinfo.num_res = count;
+ 	pdevinfo.fwnode = acpi_fwnode_handle(adev);
+ 	pdevinfo.properties = properties;
++	platform_devinfo_set_node(&pdevinfo, acpi_get_node(adev->handle));
+ 
+ 	if (acpi_dma_supported(adev))
+ 		pdevinfo.dma_mask = DMA_BIT_MASK(32);
+@@ -178,11 +179,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	if (IS_ERR(pdev))
+ 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
+ 			PTR_ERR(pdev));
+-	else {
+-		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
++	else
+ 		dev_dbg(&adev->dev, "created platform device %s\n",
+ 			dev_name(&pdev->dev));
+-	}
+ 
+ 	kfree(resources);
+ 
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 76bfcba25003..c733bfb26149 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -808,6 +808,7 @@ struct platform_device *platform_device_register_full(
+ {
+ 	int ret;
+ 	struct platform_device *pdev;
++	int numa_node = platform_devinfo_get_node(pdevinfo);
+ 
+ 	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
+ 	if (!pdev)
+@@ -841,6 +842,9 @@ struct platform_device *platform_device_register_full(
+ 			goto err;
+ 	}
+ 
++	if (numa_node >= 0)
++		set_dev_node(&pdev->dev, numa_node);
++
+ 	ret = platform_device_add(pdev);
+ 	if (ret) {
+ err:
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 7a41c72c1959..78e11b79f1af 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -132,10 +132,36 @@ struct platform_device_info {
+ 		u64 dma_mask;
+ 
+ 		const struct property_entry *properties;
++
++#ifdef CONFIG_NUMA
++		int numa_node;	/* NUMA node this platform device is close to plus 1 */
++#endif
+ };
+ extern struct platform_device *platform_device_register_full(
+ 		const struct platform_device_info *pdevinfo);
+ 
++#ifdef CONFIG_NUMA
++static inline int platform_devinfo_get_node(const struct platform_device_info *pdevinfo)
++{
++	return pdevinfo ? pdevinfo->numa_node - 1 : NUMA_NO_NODE;
++}
++
++static inline void platform_devinfo_set_node(struct platform_device_info *pdevinfo,
++					     int node)
++{
++	pdevinfo->numa_node = node + 1;
++}
++#else
++static inline int platform_devinfo_get_node(const struct platform_device_info *pdevinfo)
++{
++	return NUMA_NO_NODE;
++}
++
++static inline void platform_devinfo_set_node(struct platform_device_info *pdevinfo,
++					     int node)
++{}
++#endif
++
+ /**
+  * platform_device_register_resndata - add a platform-level device with
+  * resources and platform-specific data
+-- 
+2.20.1
+
