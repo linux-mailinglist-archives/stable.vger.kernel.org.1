@@ -2,49 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E88C87A63AF
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B1F97A63EB
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:55:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231676AbjISMuD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 08:50:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
+        id S232093AbjISMzG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 08:55:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230021AbjISMuC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:50:02 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFCA99;
-        Tue, 19 Sep 2023 05:49:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C8CC433C7;
-        Tue, 19 Sep 2023 12:49:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695127797;
-        bh=JUAIkivzZFdjelGUSm1sQTkEx/N2qNbb9nGvT13IC/0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aXwBUh4LoeHqJV4bFo4tzQERSFMfD1BzXyAsNY110PsvvxE856//bXnX0511Lqzxg
-         LvmvOtWQQTF6c0FDLXiF13sw+gJuzoNt6j9iGN386/CP6FVoK8Lin5aYu5crlnnBmu
-         MorFgaDy5AGCryX+g5x1Rfra1o7sKp8r+4zvYpes=
-Date:   Tue, 19 Sep 2023 14:49:51 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Manivannan Sadhasivam <mani@kernel.org>
-Cc:     Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        robh@kernel.org, lpieralisi@kernel.org, bhelgaas@google.com,
-        kw@linux.com, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        dmitry.baryshkov@linaro.org, stable@vger.kernel.org,
-        robimarko@gmail.com
-Subject: Re: [PATCH V6] PCI: qcom: Fix broken pcie enumeration for 2_3_3
- configs ops
-Message-ID: <2023091931-undermine-lethargic-e1cd@gregkh>
-References: <20230919102948.1844909-1-quic_srichara@quicinc.com>
- <20230919121909.GF4732@thinkpad>
+        with ESMTP id S232209AbjISMzF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:55:05 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9F1E3
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 05:54:59 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c337aeefbdso52659525ad.0
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 05:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1695128098; x=1695732898; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jKGSR9GpISfgC7TqPqrDJpFg/LVh+aKEEgytVfUZ3Kc=;
+        b=E0wK0eMi7LBnbhGTlo6nZr3Ip48x4hXzWU6sf09ymKz/GugsR54rETIAHAxJv49Wln
+         TV9IEcjnAeEOvEcUnh5kgR2HDgTb1iqm9AuYp4G/6vyoQTbBNV92ZcNkTOaLRCJ2Udna
+         0mcMVvyfRRJXQDJRg6COxfGKsQBpNnK+tF1tYcwyDKj/rk/ukrYptd83uUJ6bTactkth
+         K4h5eHNpQLyzC5eThWb2q0GCLqCe1EQFYy74GO92Xpkq/bb/EJDpQSy1ci4WPboo5+nw
+         bkhT/kh7MTJc5xwSTi08+7j9igkpP4UkIVxaBuZeeLXdMRiv0w33Dt1HgjApxFz4kg+C
+         G3kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695128098; x=1695732898;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jKGSR9GpISfgC7TqPqrDJpFg/LVh+aKEEgytVfUZ3Kc=;
+        b=Ei18fnDclvC82TRtdFJishhmhsUwUBC6FD6+CP22aZw7oj8ITtAAl1pQTSvgBtWsma
+         9YJsmc/Zije+t1zEXr5HUr30/r7xGPtUCa1pxkV/RJFa436LFAwLKBsXEJOkLj68sQ0P
+         aJTYdZxzBiTagsfq5jIvlA8Hv7XdPrdFaQDT0QFwkmeEM5Xn9HxPP3G05eTuMgTIB3QL
+         /o00l8pxFd7IgCGUkr6W7X8pchRM+mweSVUBPD+4fIcmaOafzNuvDULP+oPI4MCf7Mkt
+         Dllg7B+89s7y9kPdKScYywMAqvCrbxI7HscyBKF0YBZNibuCkWnYMliHciWsVF5C2apz
+         yArA==
+X-Gm-Message-State: AOJu0YwrMVlSoPOByIsWaLYSaKZAGB/iiE9NJNZxTjRQywcRk6z5G9fh
+        qAxgSafclKsGpFRjyr+z/Tf48znTUXBXMO2J22LVlA==
+X-Google-Smtp-Source: AGHT+IE5tQUHnzet9I5RQR8ooGkuGAw7BC5/hnl0oZhIfkkEGuYwIBJbGyNDax4wdlt21bYt0INZgA==
+X-Received: by 2002:a17:902:ec8a:b0:1c4:2260:1c29 with SMTP id x10-20020a170902ec8a00b001c422601c29mr11819291plg.64.1695128098232;
+        Tue, 19 Sep 2023 05:54:58 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id p4-20020a1709026b8400b001c3bc7b880csm9956794plk.256.2023.09.19.05.54.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Sep 2023 05:54:57 -0700 (PDT)
+Message-ID: <65099a21.170a0220.cd321.27f4@mx.google.com>
+Date:   Tue, 19 Sep 2023 05:54:57 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230919121909.GF4732@thinkpad>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.15.132
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.15.y build: 19 builds: 0 failed, 19 passed,
+ 3 warnings (v5.15.132)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,20 +71,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 19, 2023 at 02:19:09PM +0200, Manivannan Sadhasivam wrote:
-> On Tue, Sep 19, 2023 at 03:59:48PM +0530, Sricharan Ramabadhran wrote:
-> > PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for qcom_pcie_post_init_2_3_3.
-> > PCIe slave address space size register offset is 0x358, but was wrongly
-> > changed to 0x16c as a part of commit 39171b33f652 ("PCI: qcom: Remove
-> > PCIE20_ prefix from register definitions"). Fixing it, by using the right
-> > macro and remove the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
-> > 
-> > Without this access to the registers of slave addr space like iATU etc
-> > are broken leading to PCIe enumeration failure on IPQ8074.
-> > 
-> > Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
-> > Cc: <Stable@vger.kernel.org>
-> 
-> Please fix the stable list address: stable@vger.kernel.org
+stable-rc/linux-5.15.y build: 19 builds: 0 failed, 19 passed, 3 warnings (v=
+5.15.132)
 
-Either works!
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.132/
+
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.132
+Git Commit: 35ecaa3632bff102decb9f2277cf99150b2bf690
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
