@@ -2,92 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B567A694C
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 19:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1754D7A6968
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 19:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231703AbjISRAD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 13:00:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41686 "EHLO
+        id S229969AbjISROg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 13:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjISRAC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 13:00:02 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE912C6
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 09:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=99fPj2MgU9tusLfYHkaJeeuM630Yqz5EtvySwyGZINc=; b=Om1NuPvj11aP03F3jZnT8ZZd0K
-        6sT8D8hpmrAUHhLvtB8e802ghhPOLcBAaAZPgItiDjfQmT0ZfcohUUYjK7IWg5gFGMA1nuwT8DC+i
-        npY60kOOxaPt8DlIo5z40kkT5Y0JPGPzcOGvJnUaJsJNzDMoaGbLX+Ra+3aegIaEekP27dwvF2I21
-        N+2dxN0dzPAcWWIqQGWvfoMdezZyHCQUyPZ5pDuWQhk9K/OLObI+ju5bKiqfLkXtcrx90+6/6LvMl
-        SVWTZj7bckLV7F2kr4LvmIMePR7iPZEaQEnKAqxv2gTxf5GF2/ulkbgOyEIhFRpcL1KYm7xcLQMLM
-        1BZbiPRQ==;
-Received: from [38.44.68.151] (helo=killbill.home)
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1qie4m-006Bal-3d; Tue, 19 Sep 2023 18:59:52 +0200
-From:   Melissa Wen <mwen@igalia.com>
-To:     stable@vger.kernel.org
-Cc:     Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10.y] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy gamma
-Date:   Tue, 19 Sep 2023 15:59:36 -0100
-Message-Id: <20230919165936.1256007-1-mwen@igalia.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <2023091622-outpost-audio-2222@gregkh>
-References: <2023091622-outpost-audio-2222@gregkh>
+        with ESMTP id S229690AbjISROf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 13:14:35 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91FF4AD;
+        Tue, 19 Sep 2023 10:14:30 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c4194f769fso42845265ad.3;
+        Tue, 19 Sep 2023 10:14:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695143670; x=1695748470; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qilWP4l16Pko8V2zY8Gw+Fh5MGg9mIKSWEZuLvQUUxU=;
+        b=g9jbY5BCYmwwVNUnGV8/OnCdacwv646PwYclMM7yqnzVdl9RgznHcRL3I3TpnW42nA
+         4ZhAu8nx5phoGMzzYktJnUyZaNZfw4JbiNOFOJCj3DAFGhaCirRporskT6hZ6thtsVz7
+         TlWddy89FCyyeaw70n3HiPCFECIquXHKF8dB3enJC9K0am5Xn2Hs4EU1zkwoZHrIVnH1
+         pSbqm9ne+ktRKXhmbmixrmBylpAmq6qB0T63Gaw/Pq0nHEupV5qXlxDY7WeJ41cOhheM
+         2YywFz6yk9sDcgF3+NUpp4Xi6eYbMQ5q0HkhCWx83HdZ57u9w4rUvGIw9ZjT5bbiuDDb
+         GQpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695143670; x=1695748470;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qilWP4l16Pko8V2zY8Gw+Fh5MGg9mIKSWEZuLvQUUxU=;
+        b=Juk+K/2v9gPBQ/Xp87UF9yofctuSnKmGvY6u4UgG0kbTIhXoFF94T2aQO7ZG8Fqb5i
+         bY1KVE45y+C8xBtkSlBFNWEHNLT5AaWQiXS/jfKq88Xbew/YROLddhPuZ7AzoHDAS31u
+         JLKK15V0QuFh1FUcMkhPn6fer2OajrkaAFmncGS7OKSUcWA8X/olRl1jCHoH3Ca6ZNIx
+         iORUOF1vhgV2RSBrOA6mf29WRSrceZ7uIYLVHdyOikThYh7KW/DyD1tVTTF0oNd8HMJx
+         PQpepe0PkD3WQc5iyjPuDoI3puM5+paFlIG2GpbPzoscI5l8TO3IzvS8sv0cVPywEO9q
+         iMUg==
+X-Gm-Message-State: AOJu0YyS4faCuIwJjG35FUuNqNCDe0piYd4utFhXZCsonF94ZICnlfiv
+        L8Bp6g2PrpSdSowqps3OtXkd9Ztmac+doG653cY=
+X-Google-Smtp-Source: AGHT+IHHUaQ/wQAHUHYD4e4oP+9he47YSvDdrnOdpG6XSIk6oKvwiWwLqQknQFLVEBdSb3rmyCX02ogBy5WeRcq4XQc=
+X-Received: by 2002:a17:903:18e:b0:1c5:66d4:b302 with SMTP id
+ z14-20020a170903018e00b001c566d4b302mr58839plg.16.1695143669921; Tue, 19 Sep
+ 2023 10:14:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230917191113.831992765@linuxfoundation.org>
+In-Reply-To: <20230917191113.831992765@linuxfoundation.org>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Tue, 19 Sep 2023 10:14:18 -0700
+Message-ID: <CAJq+SaD7MCJCTRGpV_UVhkfixKoQtdGpFjaD03QX4Q7fwZEByQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/511] 5.15.132-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-For DRM legacy gamma, AMD display manager applies implicit sRGB degamma
-using a pre-defined sRGB transfer function. It works fine for DCN2
-family where degamma ROM and custom curves go to the same color block.
-But, on DCN3+, degamma is split into two blocks: degamma ROM for
-pre-defined TFs and `gamma correction` for user/custom curves and
-degamma ROM settings doesn't apply to cursor plane. To get DRM legacy
-gamma working as expected, enable cursor degamma ROM for implict sRGB
-degamma on HW with this configuration.
+> This is the start of the stable review cycle for the 5.15.132 release.
+> There are 511 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.132-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
-Fixes: 96b020e2163f ("drm/amd/display: check attr flag before set cursor degamma on DCN3+")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 57a943ebfcdb4a97fbb409640234bdb44bfa1953)
-Signed-off-by: Melissa Wen <mwen@igalia.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 0bdc83d89946..652ddec18838 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6971,6 +6971,13 @@ static void handle_cursor_update(struct drm_plane *plane,
- 	attributes.rotation_angle    = 0;
- 	attributes.attribute_flags.value = 0;
- 
-+	/* Enable cursor degamma ROM on DCN3+ for implicit sRGB degamma in DRM
-+	 * legacy gamma setup.
-+	 */
-+	if (crtc_state->cm_is_degamma_srgb &&
-+	    adev->dm.dc->caps.color.dpp.gamma_corr)
-+		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
-+
- 	attributes.pitch = attributes.width;
- 
- 	if (crtc_state->stream) {
--- 
-2.40.1
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
+Thanks.
