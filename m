@@ -2,235 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF4A7A6F6E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 01:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF84C7A6F73
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 01:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229988AbjISXd6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 19:33:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48986 "EHLO
+        id S230189AbjISXfF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 19:35:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjISXd6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 19:33:58 -0400
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0651383;
-        Tue, 19 Sep 2023 16:33:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1695166432; x=1726702432;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jhUxzf1WAjnmOPmNQMlxxqCSn6QXjVFZ7KYA9//gvkQ=;
-  b=I+fEtXYL7TH/x0VNNuERTX3UcSH5FNXy6cW0ZL7n2kXPnr2LQwkqfK22
-   BhXkXKh2IoG0qinyu7D3wBYsG6HnqWMkKZQn5OahX9PSB+viHOsOI3cZo
-   7u/PNGYOcmsMDhlphhfdhQi/gEteDgeO7iU7WAwot6So5HpMT5DwlMdcK
-   s=;
-X-IronPort-AV: E=Sophos;i="6.02,160,1688428800"; 
-   d="scan'208";a="30115787"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-ed19f671.us-west-2.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 23:33:51 +0000
-Received: from EX19MTAUWC002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2b-m6i4x-ed19f671.us-west-2.amazon.com (Postfix) with ESMTPS id E19E48A5E4;
-        Tue, 19 Sep 2023 23:33:50 +0000 (UTC)
-Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Tue, 19 Sep 2023 23:33:45 +0000
-Received: from u1e958862c3245e.ant.amazon.com (10.88.167.207) by
- EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Tue, 19 Sep 2023 23:33:45 +0000
-From:   Suraj Jitindar Singh <surajjs@amazon.com>
-To:     <stable@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <adobriyan@gmail.com>,
-        <sjitindarsingh@gmail.com>, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Zhang Yi <yi.zhang@huawei.com>,
-        Brian Foster <bfoster@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Eric Biederman <ebiederm@xmission.com>,
-        "Matthew Wilcox" <willy@infradead.org>,
-        Baoquan He <bhe@redhat.com>,
-        Kalesh Singh <kaleshsingh@google.com>,
-        Yu Kuai <yukuai3@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH stable 5.10.y] proc: fix a dentry lock race between release_task and lookup
-Date:   Tue, 19 Sep 2023 16:33:35 -0700
-Message-ID: <20230919233335.170835-1-surajjs@amazon.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229521AbjISXfF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 19:35:05 -0400
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7016283
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 16:34:59 -0700 (PDT)
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 2100FC00D201;
+        Tue, 19 Sep 2023 16:34:59 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 2100FC00D201
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1695166499;
+        bh=Skra1HgI+ug2pQFwdQvfXfDF7jaAIMf9LoXwJ9QIHMo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=fEaqIFDhFLf7k005MkzIzf5dlc9POnPZSTPMHo8pO8BgGmHgJ5FLLCNNowf+JUBDW
+         5GEHtzjeURed8OT3Hhe6FMruu+ELuHAMAA8BQA8SQyXxczR5Cu7pI26h3MHV2L/cCR
+         F3bHT/cm/hgRrzldi115gqBT4xvTIspUSJjMBQig=
+Received: from bcacpedev-irv-3.lvn.broadcom.net (bcacpedev-irv-3.lvn.broadcom.net [10.75.138.105])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 0A54A18728C;
+        Tue, 19 Sep 2023 16:34:59 -0700 (PDT)
+From:   William Zhang <william.zhang@broadcom.com>
+To:     stable@vger.kernel.org
+Cc:     William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15.y] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
+Date:   Tue, 19 Sep 2023 16:34:54 -0700
+Message-Id: <20230919233454.320656-1-william.zhang@broadcom.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <2023091631-footwear-unclip-740c@gregkh>
+References: <2023091631-footwear-unclip-740c@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.88.167.207]
-X-ClientProxiedBy: EX19D033UWC002.ant.amazon.com (10.13.139.196) To
- EX19D030UWB002.ant.amazon.com (10.13.139.182)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+v7.2 controller has different ECC level field size and shift in the acc
+control register than its predecessor and successor controller. It needs
+to be set specifically.
 
-commit d919a1e79bac890421537cf02ae773007bf55e6b upstream.
-
-Commit 7bc3e6e55acf06 ("proc: Use a list of inodes to flush from proc")
-moved proc_flush_task() behind __exit_signal().  Then, process systemd can
-take long period high cpu usage during releasing task in following
-concurrent processes:
-
-  systemd                                 ps
-kernel_waitid                 stat(/proc/tgid)
-  do_wait                       filename_lookup
-    wait_consider_task            lookup_fast
-      release_task
-        __exit_signal
-          __unhash_process
-            detach_pid
-              __change_pid // remove task->pid_links
-                                     d_revalidate -> pid_revalidate  // 0
-                                     d_invalidate(/proc/tgid)
-                                       shrink_dcache_parent(/proc/tgid)
-                                         d_walk(/proc/tgid)
-                                           spin_lock_nested(/proc/tgid/fd)
-                                           // iterating opened fd
-        proc_flush_pid                                    |
-           d_invalidate (/proc/tgid/fd)                   |
-              shrink_dcache_parent(/proc/tgid/fd)         |
-                shrink_dentry_list(subdirs)               ↓
-                  shrink_lock_dentry(/proc/tgid/fd) --> race on dentry lock
-
-Function d_invalidate() will remove dentry from hash firstly, but why does
-proc_flush_pid() process dentry '/proc/tgid/fd' before dentry
-'/proc/tgid'?  That's because proc_pid_make_inode() adds proc inode in
-reverse order by invoking hlist_add_head_rcu().  But proc should not add
-any inodes under '/proc/tgid' except '/proc/tgid/task/pid', fix it by
-adding inode into 'pid->inodes' only if the inode is /proc/tgid or
-/proc/tgid/task/pid.
-
-Performance regression:
-Create 200 tasks, each task open one file for 50,000 times. Kill all
-tasks when opened files exceed 10,000,000 (cat /proc/sys/fs/file-nr).
-
-Before fix:
-$ time killall -wq aa
-  real    4m40.946s   # During this period, we can see 'ps' and 'systemd'
-			taking high cpu usage.
-
-After fix:
-$ time killall -wq aa
-  real    1m20.732s   # During this period, we can see 'systemd' taking
-			high cpu usage.
-
-Link: https://lkml.kernel.org/r/20220713130029.4133533-1-chengzhihao1@huawei.com
-Fixes: 7bc3e6e55acf06 ("proc: Use a list of inodes to flush from proc")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216054
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Suggested-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ bp: Context adjustments ]
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Fixes: decba6d47869 ("mtd: brcmnand: Add v7.2 controller support")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
+(cherry picked from commit 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b)
 ---
- fs/proc/base.c | 46 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 38 insertions(+), 8 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 74 +++++++++++++-----------
+ 1 file changed, 41 insertions(+), 33 deletions(-)
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index a484c30bd5cf..712948e97991 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -1881,7 +1881,7 @@ void proc_pid_evict_inode(struct proc_inode *ei)
- 	put_pid(pid);
- }
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index c1afadb50eec..f74cbb7b0676 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -268,6 +268,7 @@ struct brcmnand_controller {
+ 	const unsigned int	*page_sizes;
+ 	unsigned int		page_size_shift;
+ 	unsigned int		max_oob;
++	u32			ecc_level_shift;
+ 	u32			features;
  
--struct inode *proc_pid_make_inode(struct super_block * sb,
-+struct inode *proc_pid_make_inode(struct super_block *sb,
- 				  struct task_struct *task, umode_t mode)
- {
- 	struct inode * inode;
-@@ -1910,11 +1910,6 @@ struct inode *proc_pid_make_inode(struct super_block * sb,
+ 	/* for low-power standby/resume only */
+@@ -592,6 +593,34 @@ enum {
+ 	INTFC_CTLR_READY		= BIT(31),
+ };
  
- 	/* Let the pid remember us for quick removal */
- 	ei->pid = pid;
--	if (S_ISDIR(mode)) {
--		spin_lock(&pid->lock);
--		hlist_add_head_rcu(&ei->sibling_inodes, &pid->inodes);
--		spin_unlock(&pid->lock);
--	}
- 
- 	task_dump_owner(task, 0, &inode->i_uid, &inode->i_gid);
- 	security_task_to_inode(task, inode);
-@@ -1927,6 +1922,39 @@ struct inode *proc_pid_make_inode(struct super_block * sb,
- 	return NULL;
- }
- 
-+/*
-+ * Generating an inode and adding it into @pid->inodes, so that task will
-+ * invalidate inode's dentry before being released.
++/***********************************************************************
++ * NAND ACC CONTROL bitfield
 + *
-+ * This helper is used for creating dir-type entries under '/proc' and
-+ * '/proc/<tgid>/task'. Other entries(eg. fd, stat) under '/proc/<tgid>'
-+ * can be released by invalidating '/proc/<tgid>' dentry.
-+ * In theory, dentries under '/proc/<tgid>/task' can also be released by
-+ * invalidating '/proc/<tgid>' dentry, we reserve it to handle single
-+ * thread exiting situation: Any one of threads should invalidate its
-+ * '/proc/<tgid>/task/<pid>' dentry before released.
-+ */
-+static struct inode *proc_pid_make_base_inode(struct super_block *sb,
-+				struct task_struct *task, umode_t mode)
-+{
-+	struct inode *inode;
-+	struct proc_inode *ei;
-+	struct pid *pid;
++ * Some bits have remained constant throughout hardware revision, while
++ * others have shifted around.
++ ***********************************************************************/
 +
-+	inode = proc_pid_make_inode(sb, task, mode);
-+	if (!inode)
-+		return NULL;
++/* Constant for all versions (where supported) */
++enum {
++	/* See BRCMNAND_HAS_CACHE_MODE */
++	ACC_CONTROL_CACHE_MODE				= BIT(22),
 +
-+	/* Let proc_flush_pid find this directory inode */
-+	ei = PROC_I(inode);
-+	pid = ei->pid;
-+	spin_lock(&pid->lock);
-+	hlist_add_head_rcu(&ei->sibling_inodes, &pid->inodes);
-+	spin_unlock(&pid->lock);
++	/* See BRCMNAND_HAS_PREFETCH */
++	ACC_CONTROL_PREFETCH				= BIT(23),
 +
-+	return inode;
-+}
++	ACC_CONTROL_PAGE_HIT				= BIT(24),
++	ACC_CONTROL_WR_PREEMPT				= BIT(25),
++	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
++	ACC_CONTROL_RD_ERASED				= BIT(27),
++	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
++	ACC_CONTROL_WR_ECC				= BIT(30),
++	ACC_CONTROL_RD_ECC				= BIT(31),
++};
 +
- int pid_getattr(const struct path *path, struct kstat *stat,
- 		u32 request_mask, unsigned int query_flags)
++#define	ACC_CONTROL_ECC_SHIFT			16
++/* Only for v7.2 */
++#define	ACC_CONTROL_ECC_EXT_SHIFT		13
++
+ static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
  {
-@@ -3341,7 +3369,8 @@ static struct dentry *proc_pid_instantiate(struct dentry * dentry,
+ 	return brcmnand_readl(ctrl->nand_base + offs);
+@@ -719,6 +748,12 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
+ 	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
+ 		ctrl->features |= BRCMNAND_HAS_WP;
+ 
++	/* v7.2 has different ecc level shift in the acc register */
++	if (ctrl->nand_version == 0x0702)
++		ctrl->ecc_level_shift = ACC_CONTROL_ECC_EXT_SHIFT;
++	else
++		ctrl->ecc_level_shift = ACC_CONTROL_ECC_SHIFT;
++
+ 	return 0;
+ }
+ 
+@@ -902,30 +937,6 @@ static inline int brcmnand_cmd_shift(struct brcmnand_controller *ctrl)
+ 	return 0;
+ }
+ 
+-/***********************************************************************
+- * NAND ACC CONTROL bitfield
+- *
+- * Some bits have remained constant throughout hardware revision, while
+- * others have shifted around.
+- ***********************************************************************/
+-
+-/* Constant for all versions (where supported) */
+-enum {
+-	/* See BRCMNAND_HAS_CACHE_MODE */
+-	ACC_CONTROL_CACHE_MODE				= BIT(22),
+-
+-	/* See BRCMNAND_HAS_PREFETCH */
+-	ACC_CONTROL_PREFETCH				= BIT(23),
+-
+-	ACC_CONTROL_PAGE_HIT				= BIT(24),
+-	ACC_CONTROL_WR_PREEMPT				= BIT(25),
+-	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
+-	ACC_CONTROL_RD_ERASED				= BIT(27),
+-	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
+-	ACC_CONTROL_WR_ECC				= BIT(30),
+-	ACC_CONTROL_RD_ECC				= BIT(31),
+-};
+-
+ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
  {
- 	struct inode *inode;
+ 	if (ctrl->nand_version == 0x0702)
+@@ -938,18 +949,15 @@ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
+ 		return GENMASK(4, 0);
+ }
  
--	inode = proc_pid_make_inode(dentry->d_sb, task, S_IFDIR | S_IRUGO | S_IXUGO);
-+	inode = proc_pid_make_base_inode(dentry->d_sb, task,
-+					 S_IFDIR | S_IRUGO | S_IXUGO);
- 	if (!inode)
- 		return ERR_PTR(-ENOENT);
- 
-@@ -3637,7 +3666,8 @@ static struct dentry *proc_task_instantiate(struct dentry *dentry,
- 	struct task_struct *task, const void *ptr)
+-#define NAND_ACC_CONTROL_ECC_SHIFT	16
+-#define NAND_ACC_CONTROL_ECC_EXT_SHIFT	13
+-
+ static inline u32 brcmnand_ecc_level_mask(struct brcmnand_controller *ctrl)
  {
- 	struct inode *inode;
--	inode = proc_pid_make_inode(dentry->d_sb, task, S_IFDIR | S_IRUGO | S_IXUGO);
-+	inode = proc_pid_make_base_inode(dentry->d_sb, task,
-+					 S_IFDIR | S_IRUGO | S_IXUGO);
- 	if (!inode)
- 		return ERR_PTR(-ENOENT);
+ 	u32 mask = (ctrl->nand_version >= 0x0600) ? 0x1f : 0x0f;
  
+-	mask <<= NAND_ACC_CONTROL_ECC_SHIFT;
++	mask <<= ACC_CONTROL_ECC_SHIFT;
+ 
+ 	/* v7.2 includes additional ECC levels */
+-	if (ctrl->nand_version >= 0x0702)
+-		mask |= 0x7 << NAND_ACC_CONTROL_ECC_EXT_SHIFT;
++	if (ctrl->nand_version == 0x0702)
++		mask |= 0x7 << ACC_CONTROL_ECC_EXT_SHIFT;
+ 
+ 	return mask;
+ }
+@@ -963,8 +971,8 @@ static void brcmnand_set_ecc_enabled(struct brcmnand_host *host, int en)
+ 
+ 	if (en) {
+ 		acc_control |= ecc_flags; /* enable RD/WR ECC */
+-		acc_control |= host->hwcfg.ecc_level
+-			       << NAND_ACC_CONTROL_ECC_SHIFT;
++		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
++		acc_control |= host->hwcfg.ecc_level << ctrl->ecc_level_shift;
+ 	} else {
+ 		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
+ 		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
+@@ -2564,7 +2572,7 @@ static int brcmnand_set_cfg(struct brcmnand_host *host,
+ 	tmp &= ~brcmnand_ecc_level_mask(ctrl);
+ 	tmp &= ~brcmnand_spare_area_mask(ctrl);
+ 	if (ctrl->nand_version >= 0x0302) {
+-		tmp |= cfg->ecc_level << NAND_ACC_CONTROL_ECC_SHIFT;
++		tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
+ 		tmp |= cfg->spare_area_size;
+ 	}
+ 	nand_writereg(ctrl, acc_control_offs, tmp);
 -- 
-2.34.1
+2.37.3
 
