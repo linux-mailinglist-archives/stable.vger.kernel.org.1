@@ -2,212 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 807137A5D78
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 11:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0265C7A5D7B
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 11:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjISJLX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 05:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58204 "EHLO
+        id S231239AbjISJLd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 05:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjISJLX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 05:11:23 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACADEC
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 02:11:17 -0700 (PDT)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mgr@pengutronix.de>)
-        id 1qiWkz-0005cz-Do; Tue, 19 Sep 2023 11:10:58 +0200
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <mgr@pengutronix.de>)
-        id 1qiWkx-009bvA-FK; Tue, 19 Sep 2023 11:10:55 +0200
-Date:   Tue, 19 Sep 2023 11:10:55 +0200
-From:   Michael Grzeschik <mgr@pengutronix.de>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc:     Jeff Vanhoof <jdv1029@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Vacura <w36195@motorola.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Jeff Vanhoof <qjv001@motorola.com>,
+        with ESMTP id S230349AbjISJLc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 05:11:32 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3599EF0
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 02:11:23 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38J9B5dF43369498, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38J9B5dF43369498
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 19 Sep 2023 17:11:05 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 19 Sep 2023 17:11:05 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Tue, 19 Sep 2023 17:11:04 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::9cb8:8d5:b6b3:213b]) by
+ RTEXMBS01.realtek.com.tw ([fe80::9cb8:8d5:b6b3:213b%5]) with mapi id
+ 15.01.2375.007; Tue, 19 Sep 2023 17:11:04 +0800
+From:   Ricky WU <ricky_wu@realtek.com>
+To:     Jade Lovelace <lists@jade.fyi>
+CC:     "paul.grandperrin@gmail.com" <paul.grandperrin@gmail.com>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        Roger Tseng <rogerable@realtek.com>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Paul Elder <paul.elder@ideasonboard.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Message-ID: <ZQlln94I7MPlX0ff@pengutronix.de>
-References: <20221018215044.765044-1-w36195@motorola.com>
- <20221018215044.765044-3-w36195@motorola.com>
- <Y1PUjO99fcgaN0tc@kroah.com>
- <20221022133541.GA26431@qjv001-XeonWs>
- <20221024224748.3aao6cox5y4ptmob@synopsys.com>
+        Wei_wang <wei_wang@realsil.com.cn>
+Subject: RE: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from drivers/misc/cardreader breaks NVME power state, preventing system boot
+Thread-Topic: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
+ drivers/misc/cardreader breaks NVME power state, preventing system boot
+Thread-Index: AQHZ5XTPQHzxhN3m602gmLzU6tUtJLAYEMCAgAk+JoCAAJGokA==
+Date:   Tue, 19 Sep 2023 09:11:04 +0000
+Message-ID: <5acda839bf8b4d5f960d623662b001ec@realtek.com>
+References: <c7bdd821686e496eb31e4298050dfb72@realtek.com>
+ <20230919080447.2594902-3-lists@jade.fyi>
+In-Reply-To: <20230919080447.2594902-3-lists@jade.fyi>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-originating-ip: [172.22.81.100]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bRXcAQdk//FytMnP"
-Content-Disposition: inline
-In-Reply-To: <20221024224748.3aao6cox5y4ptmob@synopsys.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:2:b01:1d::c5
-X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
-Subject: Re: [PATCH v4 2/6] usb: dwc3: gadget: cancel requests instead of
- release after missed isoc
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
-X-PTX-Original-Recipient: stable@vger.kernel.org
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
---bRXcAQdk//FytMnP
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Thinh,
-
-On Mon, Oct 24, 2022 at 10:47:53PM +0000, Thinh Nguyen wrote:
->On Sat, Oct 22, 2022, Jeff Vanhoof wrote:
->> Hi Greg,
->>
->> On Sat, Oct 22, 2022 at 01:31:24PM +0200, Greg Kroah-Hartman wrote:
->> > On Tue, Oct 18, 2022 at 04:50:38PM -0500, Dan Vacura wrote:
->> > > From: Jeff Vanhoof <qjv001@motorola.com>
->> > >
->> > > arm-smmu related crashes seen after a Missed ISOC interrupt when
->> > > no_interrupt=3D1 is used. This can happen if the hardware is still u=
-sing
->> > > the data associated with a TRB after the usb_request's ->complete ca=
-ll
->> > > has been made.  Instead of immediately releasing a request when a Mi=
-ssed
->> > > ISOC interrupt has occurred, this change will add logic to cancel the
->> > > request instead where it will eventually be released when the
->> > > END_TRANSFER command has completed. This logic is similar to some of=
- the
->> > > cleanup done in dwc3_gadget_ep_dequeue.
->> > >
->> > > Fixes: 6d8a019614f3 ("usb: dwc3: gadget: check for Missed Isoc from =
-event status")
->> > > Cc: <stable@vger.kernel.org>
->> > > Signed-off-by: Jeff Vanhoof <qjv001@motorola.com>
->> > > Co-developed-by: Dan Vacura <w36195@motorola.com>
->> > > Signed-off-by: Dan Vacura <w36195@motorola.com>
->> > > ---
->> > > V1 -> V3:
->> > > - no change, new patch in series
->> > > V3 -> V4:
->> > > - no change
->> >
->> > I need an ack from the dwc3 maintainer before I can take this one.
->> >
->> > thanks,
->> >
->> > greg k-h
->>
->> Thinh has rejected this version of the patch. He has provided an alterna=
-tive
->> implementation which has been testing well for us so far. Either Thinh o=
-r Dan
->> will formalize this patch within the next few days.
->> The latest proposed changes are:
->>
->> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
->> index dfaf9ac24c4f..50287437d6de 100644
->> --- a/drivers/usb/dwc3/gadget.c
->> +++ b/drivers/usb/dwc3/gadget.c
->> @@ -3195,6 +3195,9 @@ static int dwc3_gadget_ep_reclaim_completed_trb(st=
-ruct dwc3_ep *dep,
->>         if (event->status & DEPEVT_STATUS_SHORT && !chain)
->>                 return 1;
->>
->> +       if (DWC3_TRB_SIZE_TRBSTS(trb->size) =3D=3D DWC3_TRBSTS_MISSED_IS=
-OC && !chain)
->> +               return 1;
->> +
->>         if ((trb->ctrl & DWC3_TRB_CTRL_IOC) ||
->>             (trb->ctrl & DWC3_TRB_CTRL_LST))
->>                 return 1;
->> @@ -3211,6 +3214,7 @@ static int dwc3_gadget_ep_reclaim_trb_sg(struct dw=
-c3_ep *dep,
->>         struct scatterlist *s;
->>         unsigned int num_queued =3D req->num_queued_sgs;
->>         unsigned int i;
->> +       bool missed_isoc =3D false;
->>         int ret =3D 0;
->>
->>         for_each_sg(sg, s, num_queued, i) {
->> @@ -3219,12 +3223,18 @@ static int dwc3_gadget_ep_reclaim_trb_sg(struct =
-dwc3_ep *dep,
->>                 req->sg =3D sg_next(s);
->>                 req->num_queued_sgs--;
->>
->> +               if (DWC3_TRB_SIZE_TRBSTS(trb->size) =3D=3D DWC3_TRBSTS_M=
-ISSED_ISOC)
->> +                       missed_isoc =3D true;
->> +
->>                 ret =3D dwc3_gadget_ep_reclaim_completed_trb(dep, req,
->>                                 trb, event, status, true);
->>                 if (ret)
->>                         break;
->>         }
->>
->> +       if (missed_isoc)
->> +               ret =3D 1;
->> +
->>         return ret;
->>  }
->>
->>
->
->That's just a debug patch. I'll send out proper fix patches.
-
-Ping!
-
-While digging out this thread, I did not find any followup patch
-for this suggestion. Did it hit the mailinglist anywhere?
-
-If not, will you send one?
-
-Regards,
-Michael
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---bRXcAQdk//FytMnP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmUJZZwACgkQC+njFXoe
-LGQ7Ig/9GozjAnT6NFjzYyTGvlTT7H0jEst0JphQh/9L5PKmA7UAUOdEGeV3WIss
-YtiyMhLdz/StZzXnLzhwk2DfO5pSMCoY+l5X8LnMj4zI7X+QHj/yxxdv+2sJ+tPV
-SJhHU2TRb+JI0tQ1Ec0rPOTIr+Ci41guOirc5xVnVYds26xsUJ8sHHw6fY4i5kNZ
-GRAI7yj4a/Fj8qWxVHOsAtlbTp3Zz+AW27qTbaupwVoLjEM59Mmi6JdxOjrIJEoL
-KyzlbsDgK99Lm3ghV/GebrCwv7U/qxVLVp5nxzQDzGv4g49u4VfXKUDG0deFG1bk
-H81vx2Z0KHbbwRX1lFb/xXDX/42mqmUOE25gZnZYfIzr7kPq4+pRiMi9DlL9fwBi
-zle2mfLbfEeCs2yofWeZKMPxaJMmBL2ylMXtGoODRf06IVTprM8uXNdadgJ/ahQA
-7Vecv4L73p+ghQF5vWwY0hubGfijy7zrarheR7FLvxKDxdXUjTtaEfVF+vBgm+Zx
-SEUh9x2O9a5fTo2bQ4RFopMYV/DWfddlzIaup8OA6jsyyvZHEQ2YDCEPJOXvoTir
-6/bpEaAnia5D+QPYiU5uBjsyZ0jFSfdr0qxhTtOxXge1/81ECsBT8LNaRVaHdtCv
-Ay8EQ+gjPMoaqESuRQXqY53wQ3RwApUdS8fF1PgpPtwTM4SpuGk=
-=PJ/C
------END PGP SIGNATURE-----
-
---bRXcAQdk//FytMnP--
+DQpIaSBKYWRl77yMDQoNCkkgdGhpbmsgeW91IGhhdmUgc29tZSBtaXN1bmRlcnN0YW5kLCBvdXIg
+c2V0IGNsa3JlZyByZWdpc3RlciBpcyBub3QgZ28gZGlyZWN0bHkgdG8gY29udHJvbCBDTEtSRVEj
+IGFmdGVyIHNldHRpbmcuLi4uDQpPdXIgZGV2aWNlIGtlZXAgQ0xLUkVRIyBsb3cgdW50aWwgZW50
+ZXIgQVNQTSwgc28gdGhlIHN5c3RlbSBsZXQgb3VyIGRldmljZSB0byBBU1BNIG1vZGUgdGhlbiB3
+ZSByZWxlYXNlIHRoaXMgQ0xLUkVRIyBwaW4NCg0KPiANCj4gPiBJbiB0aGUgcGFzdCBpZiB0aGUg
+QklPUyhjb25maWcgc3BhY2UpIG5vdCBzZXQgTDEtc3Vic3RhdGUgb3VyIGRyaXZlciB3aWxsIGtl
+ZXANCj4gZHJpdmUgbG93IENMS1JFUSMgd2hlbiBIT1NUIHdhbnQgdG8gZW50ZXIgcG93ZXIgc2F2
+aW5nIHN0YXRlIHRoYXQgbWFrZQ0KPiB3aG9sZSBzeXN0ZW0gbm90IGVudGVyIHRoZSBwb3dlciBz
+YXZpbmcgc3RhdGUuDQo+IA0KPiA+IEJ1dCB0aGlzIHBhdGNoIHdlIHJlbGVhc2UgdGhlIENMS1JF
+USMgdG8gSE9TVCwgbWFrZSB3aG9sZSBzeXN0ZW0gY2FuDQo+IGVudGVyIHBvd2VyIHNhdmluZyBz
+dGF0ZSBzdWNjZXNzIHdoZW4gdGhlIEhPU1Qgd2FudCB0byBlbnRlciB0aGUgcG93ZXINCj4gc2F2
+aW5nIHN0YXRlLCBidXQgSSBkb24ndCAga25vdyB3aHkgdGhpcyBzeXN0ZW0gY2FuIG5vdCB3YWtl
+IG91dCBzdWNjZXNzIGZyb20NCj4gcG93ZXIgc2F2aW5nIHN0YXRlIg0KPiANCj4gPg0KPiANCj4g
+PiBUaGlzIGlzIGEgUENJRSBDTEtSRVEjIGRlc2lnbiBwcm9ibGVtIG9uIHRob3NlIHBsYXRmb3Jt
+LCB0aGUgcGNpZSBzcGVjDQo+IGFsbG93IGRldmljZSByZWxlYXNlIHRoZSBDTEtSRVEjIHRvIEhP
+U1QsIHRoaXMgcGF0Y2ggb25seSBkbyB0aGlzLi4uLg0KPiANCj4gDQo+IA0KPiBJIHNwZW50IHNv
+bWUgdGltZSBkZWJ1Z2dpbmcgdG9kYXkgYnV0IEkgYW0gbm90IGEgUENJZSBleHBlcnQuIEkgdGhp
+bmsNCj4gDQo+IHRoYXQgdGhlIGNhcmQgcmVhZGVyIGlzIGFjdHVhbGx5IHZpb2xhdGluZyB0aGUg
+UENJZSBzcGVjIGJ5IG5vdCBmb3JjaW5nDQo+IA0KPiBDTEtSRVEjIGxvdyBvbiBzeXN0ZW1zIHRo
+YXQgZG9uJ3Qgc3VwcG9ydCBBU1BNLCBhcyBhcHBlYXJzIHRvIGJlIGRvbmUNCj4gDQo+IChhY2Np
+ZGVudGFsbHk/KSBieSB0aGUgcmVncmVzc2luZyBkcml2ZXIgY2hhbmdlLg0KPiANCj4gDQo+IA0K
+PiBUaGUga2VybmVsIGxvZ3Mgb24gdGhlIGFmZmVjdGVkIHN5c3RlbSBzdGF0ZXMgdGhlIGZvbGxv
+d2luZzoNCj4gDQo+IFsgICAgMC4xNDIzMjZdIEFDUEkgRkFEVCBkZWNsYXJlcyB0aGUgc3lzdGVt
+IGRvZXNuJ3Qgc3VwcG9ydCBQQ0llIEFTUE0sIHNvDQo+IGRpc2FibGUgaXQNCj4gDQo+IA0KPiAN
+Cj4gVGhlIFBDSWUgMy4wIHNwZWMgc3RhdGVzIChpbiB0aGUgZGVzY3JpcHRpb24gb2YgdGhlIExp
+bmsgQ29udHJvbA0KPiANCj4gUmVnaXN0ZXIpLCByZWdhcmRpbmcgZW5hYmxpbmcgY2xvY2sgcG93
+ZXIgbWFuYWdlbWVudDoNCj4gDQo+ID4gRW5hYmxlIENsb2NrIFBvd2VyIE1hbmFnZW1lbnQg4oCT
+IEFwcGxpY2FibGUgb25seSBmb3IgVXBzdHJlYW0gUG9ydHMgYW5kDQo+IHdpdGggZm9ybSBmYWN0
+b3JzIHRoYXQgc3VwcG9ydCBhIOKAnENsb2NrIFJlcXVlc3TigJ0gKENMS1JFUSMpIG1lY2hhbmlz
+bSwgdGhpcw0KPiBiaXQgb3BlcmF0ZXMgYXMgZm9sbG93czoNCj4gDQo+ID4gMGIgQ2xvY2sgcG93
+ZXIgbWFuYWdlbWVudCBpcyBkaXNhYmxlZCBhbmQgZGV2aWNlIG11c3QgaG9sZCBDTEtSRVEjDQo+
+IHNpZ25hbCBsb3cuDQo+IA0KPiA+IDFiIFdoZW4gdGhpcyBiaXQgaXMgU2V0LCB0aGUgZGV2aWNl
+IGlzIHBlcm1pdHRlZCB0byB1c2UgQ0xLUkVRIyBzaWduYWwgdG8NCj4gcG93ZXIgbWFuYWdlIExp
+bmsgY2xvY2sNCj4gDQo+ID4gYWNjb3JkaW5nIHRvIHByb3RvY29sIGRlZmluZWQgaW4gYXBwcm9w
+cmlhdGUgZm9ybSBmYWN0b3Igc3BlY2lmaWNhdGlvbi4NCj4gDQo+IA0KPiANCj4gTXkgcmVhZGlu
+ZyBvZiB0aGlzIGlzIHRoYXQgb24gdGhpcyBzeXN0ZW0gd2hpY2ggZG9lcyBub3Qgc3VwcG9ydCBB
+U1BNDQo+IA0KPiBhbmQgdGhlcmVmb3JlIGFsc28gZG9lcyBub3Qgc3VwcG9ydCBjbG9jayBQTSwg
+dGhlIGRyaXZlciBtdXN0IGhhdmUgdGhlDQo+IA0KPiBkZXZpY2UgaG9sZCB0aGUgbGluZSBsb3cs
+IGJ1dCBJIG1heSBiZSB3cm9uZy4NCj4gDQo+IA0KPiANCj4gSXQncyBzdGlsbCB1bmNsZWFyIHRv
+IG1lIGJhc2VkIG9uIHN0dWR5aW5nIHRoZSBzY2hlbWF0aWMgb2YgdGhlIGxhcHRvcA0KPiANCj4g
+YW5kIHRoZSBQQ0ggZGF0YXNoZWV0IHdoeSB0aGUgb25lIFBDSWUgcG9ydCBpcyBhYmxlIHRvIGJy
+ZWFrIHRoZSBvdGhlcg0KPiANCj4gb25lIGxpa2UgaXQgZG9lcy4gVGhlIENMS1JFUSMgbGluZXMg
+YXJlIHNpbXBseSBjb25uZWN0ZWQgZGlyZWN0bHkgdG8gdGhlDQo+IA0KPiBTUkNDTEtSRVEjIGxp
+bmVzIG9mIHRoZSBQQ0gsIHBsdXMgYSAxMGsgcHVsbC11cCB0byAzdjMsIHdoaWNoIHNlZW1zDQo+
+IA0KPiBlbnRpcmVseSByZWFzb25hYmxlOyBhbnkgYnJlYWthZ2Ugc3VyZWx5IHdvdWxkIGJlIHNv
+bWUgc29mdHdhcmUvZmlybXdhcmUNCj4gbGV2ZWwNCj4gDQo+IG1pc2NvbmZpZ3VyYXRpb24uDQo+
+IA0KPiANCj4gDQo+IEphZGUNCg0K
