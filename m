@@ -2,58 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A30A37A676D
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 16:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2C37A679C
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 17:10:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232960AbjISO6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 10:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51720 "EHLO
+        id S233061AbjISPKC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 11:10:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232132AbjISO6k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 10:58:40 -0400
+        with ESMTP id S232994AbjISPKB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 11:10:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A8192;
-        Tue, 19 Sep 2023 07:58:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54F5C433C7;
-        Tue, 19 Sep 2023 14:58:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CEC294;
+        Tue, 19 Sep 2023 08:09:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2014C433C8;
+        Tue, 19 Sep 2023 15:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695135514;
-        bh=iGa9mOvxXrr916ZLBDwrxfoGhDEaWcNjxHwM+NjsHok=;
+        s=k20201202; t=1695136196;
+        bh=lzPcxfCap55Dxo+6HC5drOWps2iDeLT2c0Yt2wUaUyE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TQTE17aEj0vvKuho86KYfIFl0ILTGLi4u9jdY0svVQd20e5Crn53DxoJVp+8frWLw
-         aIIUaHUu30ruCIsjyyyd/z98bMHBu/NqU2NnqnZzTEViIGYTrFK1XVC0OyeDdjLC2Q
-         3701nf8nUiS13I2oDgS8cI7rDyHHAlbQuGQLZxK2Mh7wj8sGuY5MQhZrw4/MB7N0Lo
-         JdFNt3betV9cBJmZWEw+ym63hiZsjbvNBRDJm+Hw3iQeUt6G0ZhXpR+w++m1BYhsPC
-         oK2a0UOMcGuISe6XloughLjbyCZvNNZ5tedJPaiC+R+cnsUnBMCXdT39cSKSgzZn21
-         FtMCus3hbZe/A==
-Date:   Tue, 19 Sep 2023 16:58:30 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Lee Jones <lee@kernel.org>
-Cc:     Benjamin Bara <bbara93@gmail.com>, rafael.j.wysocki@intel.com,
-        dmitry.osipenko@collabora.com, peterz@infradead.org,
-        jonathanh@nvidia.com, richard.leitner@linux.dev,
-        treding@nvidia.com, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Benjamin Bara <benjamin.bara@skidata.com>,
-        stable@vger.kernel.org, Nishanth Menon <nm@ti.com>
-Subject: Re: [GIT PULL] Immutable branch between MFD, I2C and Reboot due for
- the v6.7 merge window
-Message-ID: <ZQm3FgIH+bQb8emb@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>, Lee Jones <lee@kernel.org>,
-        Benjamin Bara <bbara93@gmail.com>, rafael.j.wysocki@intel.com,
-        dmitry.osipenko@collabora.com, peterz@infradead.org,
-        jonathanh@nvidia.com, richard.leitner@linux.dev, treding@nvidia.com,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-tegra@vger.kernel.org,
-        Benjamin Bara <benjamin.bara@skidata.com>, stable@vger.kernel.org,
-        Nishanth Menon <nm@ti.com>
-References: <20230327-tegra-pmic-reboot-v7-0-18699d5dcd76@skidata.com>
- <20230919144644.GX13143@google.com>
+        b=XyIoIYQw5QkJmMJ3CfKfg5P2JB3FtwWC7umWODkwtVO11Ya2bqYxzOt3vfcRJtZdd
+         ONOEqK2jpzooHLUO7wRK+HGL0isQuQ6tF08A9u3pdweXiEUCGUdUAFoiINlxDCstlY
+         BHScbVF2ij1bMlL0mFC+Vp7H5WX6Q++SoGeQiXSiYBRvSfTWAGRMQZ81Su9EAxTHFC
+         Zq/Xjv6xxaIgx4OS4B1WD4a9S/nlJnb3oSkuWYX2x/xn6XfFyI39tS5PXr3xKTpX6P
+         8IEJFvm4dXs0hM/k05SiGWjEHyAvNThQPM5acLaQFcfeasPlpQhp2IncxkRo9ChQet
+         9Pk9xW1ZYiLSw==
+Date:   Tue, 19 Sep 2023 11:09:54 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>, agross@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.5 30/36] arm64: dts: qcom: sc8280xp-x13s: Add
+ camera activity LED
+Message-ID: <ZQm5woD5zwRIG9cf@sashalap>
+References: <20230908192848.3462476-1-sashal@kernel.org>
+ <20230908192848.3462476-30-sashal@kernel.org>
+ <ZP60ngCV3hhNZiX5@hovoldconsulting.com>
+ <ZQjEEt7sB2M5EO53@sashalap>
+ <ZQk8aJx268Soy4yH@hovoldconsulting.com>
+ <ZQmc7hznPpIh6iwP@sashalap>
+ <ZQmh-DaBTwMuOLHe@hovoldconsulting.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="K5ChaIBwZ+fsUzNw"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20230919144644.GX13143@google.com>
+In-Reply-To: <ZQmh-DaBTwMuOLHe@hovoldconsulting.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -64,50 +59,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Sep 19, 2023 at 03:28:24PM +0200, Johan Hovold wrote:
+>On Tue, Sep 19, 2023 at 09:06:54AM -0400, Sasha Levin wrote:
+>> On Tue, Sep 19, 2023 at 08:15:04AM +0200, Johan Hovold wrote:
+>> >On Mon, Sep 18, 2023 at 05:41:38PM -0400, Sasha Levin wrote:
+>> >> On Mon, Sep 11, 2023 at 08:33:02AM +0200, Johan Hovold wrote:
+>> >> >On Fri, Sep 08, 2023 at 03:28:41PM -0400, Sasha Levin wrote:
+>> >> >> From: Konrad Dybcio <konrad.dybcio@linaro.org>
+>> >> >>
+>> >> >> [ Upstream commit 1c63dd1c5fdafa8854526d7d60d2b741c813678d ]
+>> >> >>
+>> >> >> Disappointigly, the camera activity LED is implemented in software.
+>> >> >> Hook it up as a gpio-led and (until we have camera *and* a "camera on"
+>> >> >> LED trigger) configure it as a panic indicator.
+>> >> >>
+>> >> >> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>> >> >> Link: https://lore.kernel.org/r/20230805-topic-x13s_cam_led-v1-1-443d752158c4@linaro.org
+>> >> >> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+>> >> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> >> >
+>> >> >This is a new feature if anything, not a fix. Please drop from all
+>> >> >autosel queues.
+>> >>
+>> >> Not a feature, but hardware enablement.
+>> >
+>> >Call it what you will, but please drop it. Otherwise by that logic you'd
+>> >need to backport all devicetree patches (as well as most driver changes)
+>> >since they ultimately aim at enabling hardware.
+>>
+>> Not all, only ones that re-use existing kernel driver but enable it for
+>> new hardware (i.e. adding a new pci-id/usb-id/dts entries).
+>
+>Again, that's basically all our device-tree patches. And that can break
+>in all sorts of ways. So again, please drop. This does not belong in
+>stable.
 
---K5ChaIBwZ+fsUzNw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is part of the criteria we use to select patches, yes? If you have
+an objection around this particular patch then please let me know, or if
+you have an objection around hardware enablement patches in stable then
+we can have a bigger discussion around that one.
 
-On Tue, Sep 19, 2023 at 03:46:44PM +0100, Lee Jones wrote:
-> Enjoy!
->=20
-> The following changes since commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaa=
-a5:
->=20
->   Linux 6.5-rc1 (2023-07-09 13:53:13 -0700)
->=20
-> are available in the Git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-i2c-re=
-boot-v6.7
->=20
-> for you to fetch changes up to 510f276df2b91efd73f6c53be62b7e692ff533c1:
->=20
->   mfd: tps6586x: Register restart handler (2023-07-28 11:33:20 +0100)
+However, just dropping this one for no particular reasonisn't the right
+approach: we've been using this selection criteria for quite a few years
+now.
 
-Pulled, thanks!
-
-
---K5ChaIBwZ+fsUzNw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmUJtxYACgkQFA3kzBSg
-KbYomQ/+I1i6wa9VyhVNrsIjBWBmYsLnZcvqk0cK2TwYmYoQnnvjPOyuoYKDRVZR
-TBYgPogyQFyqNG5hxmqt3J5QunnaxrcdY2zWyG+kOb9m4T/bISfImOyWpDVoFP+z
-E09z6ny5WQGsCSn/FSsRrKxQm/g40Jr9kUiWsd/mrHBOP3TP2mDQBpkhX3OPdW+d
-Dm0FzWbUY3CJtvYtVS7EWGYUthitZh8cyp7TUTgd/k50H/9nyhrEf0xn95FyoNQL
-BN3nJeuJ+sR3YNxknJAYuI3nEmjTt17rgIGSR0q0Y83C85NDBf3WCD1IbvJjXz3c
-UVrYL4R6jFPZ4Gfc2wLCyk4ZTNGNU+p/o5chiLfOL60skBigeLxOyduN1dVea1rB
-OcHbCu2T5d7LCgjcUBVUwJg3A/HZKKOz3q9/e3q4W1altwpgKcJ3D9XNxf8GWGgq
-ic/9iPcs4CujyfsSnIMt2BH1+wACqc/tPr7jyRq7Sy6nIJkOnafh/pnivM6oGNNl
-BLQCgBbkXAefXQwAD0b7PH/IBIO3WuIsaPmAzLq8oUFixPzp4RaFSNARLYAOwlVY
-BxdfQwa8LEXYVq63zFkZ7TbG7BdRtXc9agOXLNHYH2wtMPNsfc9pEqS8d8BVDszD
-2O/US/Y1kMAVly5hJzW1EXrlnleK79Wna9mDa4F4flyzVEit4rM=
-=db+7
------END PGP SIGNATURE-----
-
---K5ChaIBwZ+fsUzNw--
+-- 
+Thanks,
+Sasha
