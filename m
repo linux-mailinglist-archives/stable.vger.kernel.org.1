@@ -2,41 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7767A623D
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4CA67A62A8
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 14:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229969AbjISMM3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 08:12:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49412 "EHLO
+        id S232169AbjISMUV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 08:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjISMM3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:12:29 -0400
+        with ESMTP id S232023AbjISMUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 08:20:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08A3E3;
-        Tue, 19 Sep 2023 05:12:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD00C433C9;
-        Tue, 19 Sep 2023 12:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695125543;
-        bh=AFPLIFGXLWjw+0e/AtMKe0zpKJuMhC228OrlJTVOcQc=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E18DCD2;
+        Tue, 19 Sep 2023 05:19:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C8BC433C8;
+        Tue, 19 Sep 2023 12:19:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695125956;
+        bh=KWxrBE8BT1ctag8F1WD5tAIg+4DrPuUNHnklsRSxoSE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gp9KXJK4C9ujRIw+cq2kcj4fiAyk6Wt2bWZex8pIQqKeJc/8Y6j1fny3ip6k00TAb
-         L0XgEGURDvrztnTp1aW9mOvmA7mdp9ut9SeM93uwevpZfUDpRhfPGLKryS1Nr+imm1
-         1QNPk2KkEpIV4ufXanEsSA6zbytT4M6vtIcZs5qo=
-Date:   Tue, 19 Sep 2023 14:12:20 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, lizefan.x@bytedance.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v7] driver core: platform: set numa_node before
- platform_device_add()
-Message-ID: <2023091942-punk-naturist-8028@gregkh>
-References: <20230919120341.533-1-guojinhui.liam@bytedance.com>
+        b=h1ieTEC7kJrlAKkCSFGmz/GMmrgdOneAwxqrwiVeVtI3H3Dkr2DNMYY/5iwe3nZkt
+         fQHHEPjl+1pbSu4IJq6W8Tz9NI/LyHwt387rujE6jlckQxZiH3LBmPucwpZyDpaq18
+         /TYlcLKZL5VipVjjoO9GtRfmWQC4q60qPg2QaDhcll/Md8NTQHx19m99AVVeUlHEot
+         Rekfq1IZJnmZoRijp2A5ITBcdker3hovduuu3e1SvQ0TTrTxHZzgTuQVDakxfIwWuh
+         Rj8fs9xIs20S+5Berz5mxpfU/6HOHzU0KRrgqxGzpdT9jZhUjr5dDRAI8+9k3Wwxe3
+         VCOOvbi8K+duw==
+Date:   Tue, 19 Sep 2023 14:19:09 +0200
+From:   Manivannan Sadhasivam <mani@kernel.org>
+To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>
+Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh@kernel.org, lpieralisi@kernel.org, bhelgaas@google.com,
+        kw@linux.com, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        gregkh@linuxfoundation.org, dmitry.baryshkov@linaro.org,
+        stable@vger.kernel.org, robimarko@gmail.com
+Subject: Re: [PATCH V6] PCI: qcom: Fix broken pcie enumeration for 2_3_3
+ configs ops
+Message-ID: <20230919121909.GF4732@thinkpad>
+References: <20230919102948.1844909-1-quic_srichara@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230919120341.533-1-guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230919102948.1844909-1-quic_srichara@quicinc.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -47,137 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 19, 2023 at 08:03:41PM +0800, Jinhui Guo wrote:
-> Setting the devices' numa_node needs to be done in
-> platform_device_register_full(), because that's where the
-> platform device object is allocated.
+On Tue, Sep 19, 2023 at 03:59:48PM +0530, Sricharan Ramabadhran wrote:
+> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for qcom_pcie_post_init_2_3_3.
+> PCIe slave address space size register offset is 0x358, but was wrongly
+> changed to 0x16c as a part of commit 39171b33f652 ("PCI: qcom: Remove
+> PCIE20_ prefix from register definitions"). Fixing it, by using the right
+> macro and remove the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
 > 
-> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
+> Without this access to the registers of slave addr space like iATU etc
+> are broken leading to PCIe enumeration failure on IPQ8074.
+> 
+> Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
+> Cc: <Stable@vger.kernel.org>
 
-The test robot did not report the original problem, that was a problem
-with your potential change.
+Please fix the stable list address: stable@vger.kernel.org
 
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+- Mani
 
-Likewise, this is not a real issue, it was a problem with your previous
-submission.
-
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> Tested-by: Robert Marko <robimarko@gmail.com>
+> Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
 > ---
-> V6 -> V7
->   1. Fix bug directly by adding numa_node to struct
->      platform_device_info (suggested by Rafael J. Wysocki).
->   2. Remove reviewer name.
+>  [V6] Fixed subject and commit text as per Bjorn Helgaas
 > 
-> V5 -> V6:
->   1. Update subject to correct function name platform_device_add().
->   2. Provide a more clear and accurate description of the changes
->      made in commit (suggested by Rafael J. Wysocki).
->   3. Add reviewer name.
+>  drivers/pci/controller/dwc/pcie-qcom.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> V4 -> V5:
->   Add Cc: stable line and changes from the previous submited patches.
-> 
-> V3 -> V4:
->   Refactor code to be an ACPI function call (suggested by Greg Kroah-Hartman).
-> 
-> V2 -> V3:
->   Fix Signed-off name.
-> 
-> V1 -> V2:
->   Fix compile error without enabling CONFIG_ACPI.
-> ---
-> 
->  drivers/acpi/acpi_platform.c    |  5 ++---
->  drivers/base/platform.c         |  4 ++++
->  include/linux/platform_device.h | 26 ++++++++++++++++++++++++++
->  3 files changed, 32 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 48d15dd785f6..1ae7449f70dc 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -168,6 +168,7 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	pdevinfo.num_res = count;
->  	pdevinfo.fwnode = acpi_fwnode_handle(adev);
->  	pdevinfo.properties = properties;
-> +	platform_devinfo_set_node(&pdevinfo, acpi_get_node(adev->handle));
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> index e2f29404c84e..64420ecc24d1 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> @@ -43,7 +43,6 @@
+>  #define PARF_PHY_REFCLK				0x4c
+>  #define PARF_CONFIG_BITS			0x50
+>  #define PARF_DBI_BASE_ADDR			0x168
+> -#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
+>  #define PARF_MHI_CLOCK_RESET_CTRL		0x174
+>  #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
+>  #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
+> @@ -797,8 +796,7 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+>  	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>  	u32 val;
 >  
->  	if (acpi_dma_supported(adev))
->  		pdevinfo.dma_mask = DMA_BIT_MASK(32);
-> @@ -178,11 +179,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	if (IS_ERR(pdev))
->  		dev_err(&adev->dev, "platform device creation failed: %ld\n",
->  			PTR_ERR(pdev));
-> -	else {
-> -		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +	else
->  		dev_dbg(&adev->dev, "created platform device %s\n",
->  			dev_name(&pdev->dev));
-> -	}
+> -	writel(SLV_ADDR_SPACE_SZ,
+> -		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
+> +	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
 >  
->  	kfree(resources);
->  
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 76bfcba25003..c733bfb26149 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -808,6 +808,7 @@ struct platform_device *platform_device_register_full(
->  {
->  	int ret;
->  	struct platform_device *pdev;
-> +	int numa_node = platform_devinfo_get_node(pdevinfo);
->  
->  	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
->  	if (!pdev)
-> @@ -841,6 +842,9 @@ struct platform_device *platform_device_register_full(
->  			goto err;
->  	}
->  
-> +	if (numa_node >= 0)
-> +		set_dev_node(&pdev->dev, numa_node);
+>  	val = readl(pcie->parf + PARF_PHY_CTRL);
+>  	val &= ~PHY_TEST_PWR_DOWN;
+> -- 
+> 2.34.1
+> 
 
-Why not just always set it?  Why check?  Would that matter?
-
-
-> +
->  	ret = platform_device_add(pdev);
->  	if (ret) {
->  err:
-> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-> index 7a41c72c1959..78e11b79f1af 100644
-> --- a/include/linux/platform_device.h
-> +++ b/include/linux/platform_device.h
-> @@ -132,10 +132,36 @@ struct platform_device_info {
->  		u64 dma_mask;
->  
->  		const struct property_entry *properties;
-> +
-> +#ifdef CONFIG_NUMA
-> +		int numa_node;	/* NUMA node this platform device is close to plus 1 */
-> +#endif
-
-Why #ifdef?
-
-And why an int?
-
-And why +1?
-
-And what do you mean by "close to"?
-
-And why would a platform device care about a numa node?  These are
-devices that should NEVER care about numa things as they are not on a
-real bus, or should care about performance things.  If they are, then
-the device is on the wrong bus, right?
-
-What device are you having numa problems with?  Why would acpi devices
-care?
-
-The node number in the device itself should be all that you need here,
-no need to duplicate it, right?
-
-thanks,
-
-greg k-h
+-- 
+மணிவண்ணன் சதாசிவம்
