@@ -2,49 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FF07A55FF
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 01:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 918057A568F
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 02:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbjIRXB5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 18 Sep 2023 19:01:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57962 "EHLO
+        id S230145AbjISA1i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 18 Sep 2023 20:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjIRXB4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 19:01:56 -0400
+        with ESMTP id S229508AbjISA1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 18 Sep 2023 20:27:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E40A4;
-        Mon, 18 Sep 2023 16:01:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4E2C433C8;
-        Mon, 18 Sep 2023 23:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695078111;
-        bh=zSXhmBZjcS1+bDylN7SmZFG7tHyEZB1dLv1a5/mX3nQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Btpz06nz9uY6r0f9cSMpBPRNwKTYLDYZmWrXKYdqXoCKUQc+NK0xI58AH8sOLxKEA
-         a2SyI1Rme9gyGtUl1fcb53baa1uOGXRUJuYWXEIkdqIBOo/l0pkaNsydhbEsPnGIDp
-         mpdmHbdUFVi/20fvBR/EsFUaZcxIyLypGLlb7xjJZ8pvMdB523DsV6Uo5f90GFoQSO
-         YwwwhjYlv3sLLPH+lSVoI8GJD5XTKMq9wrfYgffHxyybvrWir5JJF/F6Gy703ib1nh
-         CCvGi07CFU5DvLie8VoVTk/R6D4GjtUd6uDpRDljPdUqwcRLtk1EEkXD3DlPbXXBvP
-         f7jN9f5cwmniQ==
-Date:   Mon, 18 Sep 2023 19:01:49 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Filipe Manana <fdmanana@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>, clm@fb.com,
-        josef@toxicpanda.com, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.1 2/4] btrfs: return real error when orphan
- cleanup fails due to a transaction abort
-Message-ID: <ZQjW3b/Sw8VoKfT7@sashalap>
-References: <20230907154400.3421858-1-sashal@kernel.org>
- <20230907154400.3421858-2-sashal@kernel.org>
- <ZPn911P6vnhfuJ3T@debian0.Home>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ZPn911P6vnhfuJ3T@debian0.Home>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036198E;
+        Mon, 18 Sep 2023 17:27:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97964C433C7;
+        Tue, 19 Sep 2023 00:27:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1695083251;
+        bh=g3ABoZpTXRrJ3m0aZJ0JzRedadCHAOBBwtRrIrrlKUk=;
+        h=Date:To:From:Subject:From;
+        b=zLyemXFk3z5hG1CEUS4eh98G7++NXQ0btTJVUzSHJvsFwpkMrqE6ScPaNS5atOEyf
+         niJodp7Lm0iQmXnYP84QXjWu5jfORwWyMyrC/g1NZACXwClbPC3yFBnP1+VqYwadpr
+         IZ+kj+bNq3OordQGQfFIRRO6gp+uPGKX+1MK6bdI=
+Date:   Mon, 18 Sep 2023 17:27:31 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org, vbabka@suse.cz,
+        stable@vger.kernel.org, shy828301@gmail.com, mhocko@suse.com,
+        hughd@google.com, surenb@google.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230919002731.97964C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,18 +39,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 05:44:07PM +0100, Filipe Manana wrote:
->On Thu, Sep 07, 2023 at 11:43:58AM -0400, Sasha Levin wrote:
->> From: Filipe Manana <fdmanana@suse.com>
->>
->> [ Upstream commit a7f8de500e28bb227e02a7bd35988cf37b816c86 ]
->
->Please don't add this patch to any stable release.
->Besides not being that important for stable, backporting it alone would not
->be correct as it depends on:
 
-Dropped, thanks!
+The patch titled
+     Subject: mm: lock VMAs skipped by a failed queue_pages_range()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
 
--- 
-Thanks,
-Sasha
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: mm: lock VMAs skipped by a failed queue_pages_range()
+Date: Mon, 18 Sep 2023 14:16:08 -0700
+
+When queue_pages_range() encounters an unmovable page, it terminates its
+page walk.  This walk, among other things, locks the VMAs in the range. 
+This termination might result in some VMAs being left unlocked after
+queue_pages_range() completes.  Since do_mbind() continues to operate on
+these VMAs despite the failure from queue_pages_range(), it will encounter
+an unlocked VMA, leading to a BUG().
+
+This mbind() behavior has been modified several times before and might
+need some changes to either finish the page walk even in the presence of
+unmovable pages or to error out immediately after the failure to
+queue_pages_range().  However that requires more discussions, so to fix
+the immediate issue, explicitly lock the VMAs in the range if
+queue_pages_range() failed.  The added condition does not save much but is
+added for documentation purposes to understand when this extra locking is
+needed.
+
+Link: https://lkml.kernel.org/r/20230918211608.3580629-1-surenb@google.com
+Fixes: 49b0638502da ("mm: enable page walking API to lock vmas during the walk")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: syzbot+b591856e0f0139f83023@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000f392a60604a65085@google.com/
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mempolicy.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/mm/mempolicy.c~mm-lock-vmas-skipped-by-a-failed-queue_pages_range
++++ a/mm/mempolicy.c
+@@ -1342,6 +1342,9 @@ static long do_mbind(unsigned long start
+ 	vma_iter_init(&vmi, mm, start);
+ 	prev = vma_prev(&vmi);
+ 	for_each_vma_range(vmi, vma, end) {
++		/* If queue_pages_range failed then not all VMAs might be locked */
++		if (ret)
++			vma_start_write(vma);
+ 		err = mbind_range(&vmi, vma, &prev, start, end, new);
+ 		if (err)
+ 			break;
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
+
