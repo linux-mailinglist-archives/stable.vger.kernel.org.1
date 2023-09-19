@@ -2,116 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB8EE7A5F46
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 12:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B468B7A5F8C
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 12:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjISKQC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 06:16:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41544 "EHLO
+        id S230287AbjISKal (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 06:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbjISKQB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 06:16:01 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADFEAE8
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 03:15:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=aIQOB48bI/MFjGoY4oDKGUiOlcn6mIR+zgNw1c4ehnw=; b=HEzK36QtTIDNvoaO6f9z7vc780
-        j/vTwQI6TNF16zmsTFDGDhF+B9xcdwuKVM/Jua1RST9DS4QBUMx4DNgeWFDYizi8COW+nL476TwME
-        xNEht5FCmmtO9ip+kYBtjpT/yiiNukHioHKeo9hXOcPxtJbx7HuyYujT7rPSjnG7cMDq/vI1uOw6j
-        XXNrqkO+mO/s+tHtWa7SaoSWxjwsSOrTm7rELgPTGUZN2HIQgFugqEVSKk/RH9h5V1V7tt8s/w1sF
-        LktjK++4lcg7rQNMswoaSNegP4AlaGtVPrm15UVMj8+ufuV3wlx/TMXHTm6rW6pl7UwJMDFHk4gq/
-        tnHzCqHA==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qiXld-000E0R-8G; Tue, 19 Sep 2023 12:15:41 +0200
-Received: from [85.1.206.226] (helo=linux-3.home)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qiXlc-000AMG-Pk; Tue, 19 Sep 2023 12:15:40 +0200
-Subject: Re: [PATCH 6.1 562/600] bpf: Fix issue in verifying allow_ptr_leaks
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     Luis Gerhorst <gerhorst@cs.fau.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Eddy Z <eddyz87@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
-        patches@lists.linux.dev, stable <stable@vger.kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        Hagar Gamal Halim Hemdan <hagarhem@amazon.de>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Luis Gerhorst <gerhorst@amazon.de>
-References: <20230911134650.200439213@linuxfoundation.org>
- <20230914085131.40974-1-gerhorst@amazon.de>
- <2023091653-peso-sprint-889d@gregkh>
- <b927046b-d1e7-8adf-ebc0-37b92d8d4390@iogearbox.net>
- <2023091959-heroics-banister-7d6d@gregkh>
- <CAADnVQKXqaEC3SOP9eNQH1f3YF0E3A_54kSEsU2LvCL_4Awe8g@mail.gmail.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <7ae0274b-7a46-7fef-1a7b-0999d21a4099@iogearbox.net>
-Date:   Tue, 19 Sep 2023 12:15:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        with ESMTP id S229641AbjISKak (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 06:30:40 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F96E8;
+        Tue, 19 Sep 2023 03:30:35 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38J3wpiX010036;
+        Tue, 19 Sep 2023 10:30:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=J4hOINlXke9uREob4JWDzUId/9wjHUUxaSUVg5YcoIM=;
+ b=Ba/uSBhA5GPVKW2xU6y+vkppV/ZxqEe9gaOV7c+ZS+PuuncYajMujbUDdQwr5m7fNMLL
+ wBx9nbhuCI9cb05hX6w5s4xG6Vv4rl9iSINpFmBD207vLZAnp3ggKf1Q0pMzm5VSdBoH
+ 6yzRKnEniDr62lZhnf3xHlgZZJE5f5FYxhCQIyzaY56XAJYD4y/iBZ0cEgy4mvN/xNEq
+ Uj3YgPniqt/OYWk8GNp5yvurcoPY3Xvv35B4XmXYYFH2QcYjeC17jyaDpPP7/buTfnhN
+ fSY6b7eJabq274+EURFUp0xPw515+JdUETPFMAB23YVRPh0s//3VtD+jwLtC8f9fz4dX dg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6pmq2b0n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 19 Sep 2023 10:30:12 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38JAUBq8009078
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 19 Sep 2023 10:30:11 GMT
+Received: from win-platform-upstream01.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 19 Sep 2023 03:30:06 -0700
+From:   Sricharan Ramabadhran <quic_srichara@quicinc.com>
+To:     <agross@kernel.org>, <andersson@kernel.org>,
+        <konrad.dybcio@linaro.org>, <robh@kernel.org>, <mani@kernel.org>,
+        <lpieralisi@kernel.org>, <bhelgaas@google.com>, <kw@linux.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+        <dmitry.baryshkov@linaro.org>, <stable@vger.kernel.org>,
+        <robimarko@gmail.com>, <quic_srichara@quicinc.com>
+CC:     <Stable@vger.kernel.org>
+Subject: [PATCH V6] PCI: qcom: Fix broken pcie enumeration for 2_3_3 configs ops
+Date:   Tue, 19 Sep 2023 15:59:48 +0530
+Message-ID: <20230919102948.1844909-1-quic_srichara@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <CAADnVQKXqaEC3SOP9eNQH1f3YF0E3A_54kSEsU2LvCL_4Awe8g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27036/Tue Sep 19 09:42:31 2023)
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: f00P1RcoxC1xV01SXBnn0XiJmT3ATX3I
+X-Proofpoint-ORIG-GUID: f00P1RcoxC1xV01SXBnn0XiJmT3ATX3I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_05,2023-09-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
+ clxscore=1011 lowpriorityscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309190089
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/19/23 10:39 AM, Alexei Starovoitov wrote:
-> On Tue, Sep 19, 2023 at 1:34 AM Greg KH <gregkh@linuxfoundation.org> wrote:
->>
->> On Tue, Sep 19, 2023 at 08:26:28AM +0200, Daniel Borkmann wrote:
->>> On 9/16/23 1:35 PM, Greg KH wrote:
->>>> On Thu, Sep 14, 2023 at 08:51:32AM +0000, Luis Gerhorst wrote:
->>>>>> 6.1-stable review patch.  If anyone has any objections, please let me know.
->>>>>>
->>>>>> From: Yafang Shao <laoar.shao@gmail.com>
->>>>>>
->>>>>> commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
->>>>>
->>>>> I unfortunately have objections, they are pending discussion at [1].
->>>>>
->>>>> Same applies to the 6.4-stable review patch [2] and all other backports.
->>>>>
->>>>> [1] https://lore.kernel.org/bpf/20230913122827.91591-1-gerhorst@amazon.de/
->>>>> [2] https://lore.kernel.org/stable/20230911134709.834278248@linuxfoundation.org/
->>>>
->>>> As this is in the tree already, and in Linus's tree, I'll wait to see
->>>> if any changes are merged into Linus's tree for this before removing it
->>>> from the stable trees.
->>>>
->>>> Let us know if there's a commit that resolves this and we will be glad
->>>> to queue that up.
->>>
->>> Commit d75e30dddf73 ("bpf: Fix issue in verifying allow_ptr_leaks") is not
->>> stable material. It's not really a "fix", but it will simply make direct
->>> packet access available to applications without CAP_PERFMON - the latter
->>> was required so far given Spectre v1. However, there is ongoing discussion [1]
->>> that potentially not much useful information can be leaked out and therefore
->>> lifting it may or may not be ok. If we queue this to stable and later figure
->>> we need to revert the whole thing again because someone managed to come up
->>> with a PoC in the meantime, then there's higher risk of breakage.
->>
->> Ick, ok, so just this one commit should be reverted?  Or any others as
->> well?
-> 
-> I don't think revert is necessary. Just don't backport any further.
+PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for qcom_pcie_post_init_2_3_3.
+PCIe slave address space size register offset is 0x358, but was wrongly
+changed to 0x16c as a part of commit 39171b33f652 ("PCI: qcom: Remove
+PCIE20_ prefix from register definitions"). Fixing it, by using the right
+macro and remove the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
 
-Yeah agree lets not backport further.
+Without this access to the registers of slave addr space like iATU etc
+are broken leading to PCIe enumeration failure on IPQ8074.
+
+Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
+Cc: <Stable@vger.kernel.org>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Tested-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
+---
+ [V6] Fixed subject and commit text as per Bjorn Helgaas
+
+ drivers/pci/controller/dwc/pcie-qcom.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index e2f29404c84e..64420ecc24d1 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -43,7 +43,6 @@
+ #define PARF_PHY_REFCLK				0x4c
+ #define PARF_CONFIG_BITS			0x50
+ #define PARF_DBI_BASE_ADDR			0x168
+-#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
+ #define PARF_MHI_CLOCK_RESET_CTRL		0x174
+ #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
+ #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
+@@ -797,8 +796,7 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+ 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+ 	u32 val;
+ 
+-	writel(SLV_ADDR_SPACE_SZ,
+-		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
++	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
+ 
+ 	val = readl(pcie->parf + PARF_PHY_CTRL);
+ 	val &= ~PHY_TEST_PWR_DOWN;
+-- 
+2.34.1
+
