@@ -2,124 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E86B7A5C56
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9C497A5C79
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230517AbjISITB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 04:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
+        id S230306AbjISI14 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 04:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231133AbjISIS4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:18:56 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0BC123
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:49 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3ff1c397405so58199175e9.3
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:18:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1695111528; x=1695716328; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F+wCHIzCyfEvs4AM6zK3GKbsAFgsIIPQRu0jrjTdhgs=;
-        b=G/g/RpYRSbRVxX2yo5b7MFQEa5GckhzUjYC64KNyOaRyJ1gkEVFapJ+aylrT1W55ys
-         jIHmOXbeGF0bFSI1rxQI3CPGbUsNTbQRcc0JpokO99q7i3dtIIhCIELTRP+sp+gUSPId
-         B3dL+JEqicQ6Mmr9UX5Ij7eu8I9d+/iYwPrn63A2AtlyIVLAsUIfI+SHLGp/Hy8hklI6
-         s94WmIbY+W8EOxBmTZuwrQyOy1wjkoCyAgeDSMO58/RZUU3QvQmDMJFbyDgWaGuDLgWK
-         YYwhK/AJk8DAmbuWEB/H+3u+Y2aA1eQmHN9mEdxad81+e1FJxbYDT1aDcbG89FuWfv0O
-         IQZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695111528; x=1695716328;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F+wCHIzCyfEvs4AM6zK3GKbsAFgsIIPQRu0jrjTdhgs=;
-        b=ghFZf3FEkB8nKFlPp66DdMaUNNWyEtmIlwiMWHtupS+FajcTktnXh8ZFet1+naNPyF
-         2iebRquhDlvwVCxWxCQ5DrhEtnU1Mn1fvSGO+qqRiAw5OYXzVMvVR+qxW6VQ2lfEGfRQ
-         I0CaP5C7IyqhLaSBz2QrfGD34PV/mqbqWlAINrAcUvJ0tUVHNDFV0uPGy4PagU65yiaJ
-         BLqjyHNr9NHEcDUzJ4BU3zSVX9FRcterj4pe1pusGbD7QcbBgulzDkzQXVDJnUbLPlIE
-         e139KqHc1Y3Wa92ETDjBjKxPqK/VEW13I/2Sd50PUNmBEm/gGPttOj/fVRJ/HcHPuJ2d
-         4+mw==
-X-Gm-Message-State: AOJu0Yx8cD/ReolU0vszw08iur/rtg4hhGjq36V3z60tmAiihT02lqcb
-        iUi6LX+WDLjsbthNZzTZG8i6fw==
-X-Google-Smtp-Source: AGHT+IHEV2O4XGsf35LqTv0FhrmFGfe1icqH1CrFMUp1Q1RiZsPjfqFCcMFLM44ZaeuR8y5V8PCrLQ==
-X-Received: by 2002:a05:600c:152:b0:401:bcb4:f119 with SMTP id w18-20020a05600c015200b00401bcb4f119mr11605148wmm.3.1695111527914;
-        Tue, 19 Sep 2023 01:18:47 -0700 (PDT)
-Received: from heron.intern.cm-ag (p200300dc6f209c00529a4cfffe3dd983.dip0.t-ipconnect.de. [2003:dc:6f20:9c00:529a:4cff:fe3d:d983])
-        by smtp.gmail.com with ESMTPSA id p14-20020a1c740e000000b003fe407ca05bsm17424445wmc.37.2023.09.19.01.18.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 01:18:47 -0700 (PDT)
-From:   Max Kellermann <max.kellermann@ionos.com>
-To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna@kernel.org>
-Cc:     Max Kellermann <max.kellermann@ionos.com>,
-        "J . Bruce Fields" <bfields@redhat.com>, stable@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] nfs/super: check NFS_CAP_ACLS instead of the NFS version
-Date:   Tue, 19 Sep 2023 10:18:44 +0200
-Message-Id: <20230919081844.1096767-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229772AbjISI1z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:27:55 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D141B114;
+        Tue, 19 Sep 2023 01:27:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584ACC433C9;
+        Tue, 19 Sep 2023 08:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695112069;
+        bh=r9QmRiJyr9c37QRlvNa9jFqmNAcuHpDN6UqmEzIp5+Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DlruwKHYAp31M/iXfDTCorbUUH+CU0dunFIulD2ze06+jZHoRLOBLwSRvJAm3vrW0
+         CvzcXAh+qnyIz6HOH5DKgfM5sCeD4FT17xt3WyXOA8Z9RogVyr4LE3gL1GZV8xD0p6
+         yW1hsBWb/57dl9aS9IX2+seqnTCZsRnrkOkurP58+913zCBaipaO+KyMyS3fgivZXW
+         0tHj9P0h6AU5uEtMnxhMD4HjnYgjo/9THqCYSzcjabVP9A1OEdqz2hflR6+7d2wpA3
+         kO2rcc+QfspIDfKOOZe3Iy1GKu91AHfx6CTEDEozE/09XfN7BjnlQf7bVg/VfL7K1B
+         6lACX+wSfQNQA==
+Date:   Tue, 19 Sep 2023 09:27:43 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.5 000/285] 6.5.4-rc1 review
+Message-ID: <20230919-7d5bab0ca9c321711183986d@fedora>
+References: <20230917191051.639202302@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="HKSILnXlAUrk7SQC"
+Content-Disposition: inline
+In-Reply-To: <20230917191051.639202302@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This sets SB_POSIXACL only if ACL support is really enabled, instead
-of always setting SB_POSIXACL if the NFS protocol version
-theoretically supports ACL.
 
-The code comment says "We will [apply the umask] ourselves", but that
-happens in posix_acl_create() only if the kernel has POSIX ACL
-support.  Without it, posix_acl_create() is an empty dummy function.
+--HKSILnXlAUrk7SQC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So let's not pretend we will apply the umask if we can already know
-that we will never.
+On Sun, Sep 17, 2023 at 09:10:00PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.4 release.
+> There are 285 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-This fixes a problem where the umask is always ignored in the NFS
-client when compiled without CONFIG_FS_POSIX_ACL.  This is a 4 year
-old regression caused by commit 013cdf1088d723 which itself was not
-completely wrong, but failed to consider all the side effects by
-misdesigned VFS code.
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-Reviewed-by: J. Bruce Fields <bfields@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- fs/nfs/super.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Thanks,
+Conor.
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 0d6473cb00cb..051986b422b0 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1064,14 +1064,19 @@ static void nfs_fill_super(struct super_block *sb, struct nfs_fs_context *ctx)
- 		 * The VFS shouldn't apply the umask to mode bits.
- 		 * We will do so ourselves when necessary.
- 		 */
--		sb->s_flags |= SB_POSIXACL;
-+		if (NFS_SB(sb)->caps & NFS_CAP_ACLS) {
-+			sb->s_flags |= SB_POSIXACL;
-+		}
-+
- 		sb->s_time_gran = 1;
- 		sb->s_time_min = 0;
- 		sb->s_time_max = U32_MAX;
- 		sb->s_export_op = &nfs_export_ops;
- 		break;
- 	case 4:
--		sb->s_flags |= SB_POSIXACL;
-+		if (NFS_SB(sb)->caps & NFS_CAP_ACLS) {
-+			sb->s_flags |= SB_POSIXACL;
-+		}
- 		sb->s_time_gran = 1;
- 		sb->s_time_min = S64_MIN;
- 		sb->s_time_max = S64_MAX;
--- 
-2.39.2
+--HKSILnXlAUrk7SQC
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZQlbfAAKCRB4tDGHoIJi
+0tVmAQDk/UG5t/KFl7SOZULlFzBXgShCiqSp0muNy7tfz3vDkwD+O3oEMXLDBPrU
+WmASn9Q7QJ8eVH/SBxneFnDd7uIfsAI=
+=Um8+
+-----END PGP SIGNATURE-----
+
+--HKSILnXlAUrk7SQC--
