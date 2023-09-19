@@ -2,36 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB3C7A6C39
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 22:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B3D57A6C45
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 22:22:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232036AbjISUT4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 16:19:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57850 "EHLO
+        id S232960AbjISUWO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 16:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjISUTz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 16:19:55 -0400
+        with ESMTP id S229853AbjISUWK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 16:22:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA72393;
-        Tue, 19 Sep 2023 13:19:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406FDC433C8;
-        Tue, 19 Sep 2023 20:19:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67B7ABE;
+        Tue, 19 Sep 2023 13:22:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D7FC433C7;
+        Tue, 19 Sep 2023 20:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695154789;
-        bh=MFRflf02psEDADtPzRYWjnW+ykkxML+k7Ux7IEy1sDE=;
+        s=korg; t=1695154924;
+        bh=e7S7nVIr3nALEilcG/xKD2sdIhh9bFdJNA9D3o6VlVg=;
         h=Date:To:From:Subject:From;
-        b=BJ69u5bu7nNj/RWeT6IkHJ01ba02YjCXXxrLOqT7JeaClthTU6UDKij6B9aNtc//h
-         P2nixlyXHNxLx1rnF6X7//0Cq35hiVLHSkFx/Wofx6jXdDToBywHg+tfkY2yeuLd3f
-         0LLo9dYhZPYPXbdN3AKMCXU5thwKPeeSuQf0DFyM=
-Date:   Tue, 19 Sep 2023 13:19:48 -0700
-To:     mm-commits@vger.kernel.org, tvrtko.ursulin@linux.intel.com,
-        stable@vger.kernel.org, rodrigo.vivi@intel.com,
-        oleksandr@natalenko.name, joonas.lahtinen@linux.intel.com,
-        jani.nikula@linux.intel.com, willy@infradead.org,
-        akpm@linux-foundation.org
+        b=KEI9aY3RrTvAzJSyFZaIoFkdvUZuxblrICcNoqiu8x/6VWv6xlZKA7fmcYo178vfS
+         HKS8yZRXJOesEhxYGHLH+Kx0dApnbHB5mwLfpYigXo7a31Za+rqc5vU6bJ9k5mbeeE
+         hd7zc2X1X30GqP5STZ6oRlS8vcUo9Iv0orIP2DcI=
+Date:   Tue, 19 Sep 2023 13:22:03 -0700
+To:     mm-commits@vger.kernel.org, vbabka@suse.cz, stable@vger.kernel.org,
+        joe.liu@mediatek.com, hannes@cmpxchg.org, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + i915-limit-the-length-of-an-sg-list-to-the-requested-length.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230919201949.406FDC433C8@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch removed from -mm tree
+Message-Id: <20230919202204.00D7FC433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -42,113 +39,100 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch titled
-     Subject: i915: limit the length of an sg list to the requested length
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     i915-limit-the-length-of-an-sg-list-to-the-requested-length.patch
+The quilt patch titled
+     Subject: mm: page_alloc: fix CMA and HIGHATOMIC landing on the wrong buddy list
+has been removed from the -mm tree.  Its filename was
+     mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/i915-limit-the-length-of-an-sg-list-to-the-requested-length.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: i915: limit the length of an sg list to the requested length
-Date: Tue, 19 Sep 2023 20:48:55 +0100
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: mm: page_alloc: fix CMA and HIGHATOMIC landing on the wrong buddy list
+Date: Mon, 11 Sep 2023 14:11:08 -0400
 
-The folio conversion changed the behaviour of shmem_sg_alloc_table() to
-put the entire length of the last folio into the sg list, even if the sg
-list should have been shorter.  gen8_ggtt_insert_entries() relied on the
-list being the right langth and would overrun the end of the page tables. 
-Other functions may also have been affected.
+Commit 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
+bypasses the pcplist on lock contention and returns the page directly to
+the buddy list of the page's migratetype.
 
-Clamp the length of the last entry in the sg list to be the expected
-length.
+For pages that don't have their own pcplist, such as CMA and HIGHATOMIC,
+the migratetype is temporarily updated such that the page can hitch a ride
+on the MOVABLE pcplist.  Their true type is later reassessed when flushing
+in free_pcppages_bulk().  However, when lock contention is detected after
+the type was already overridden, the bypass will then put the page on the
+wrong buddy list.
 
-Link: https://lkml.kernel.org/r/20230919194855.347582-1-willy@infradead.org
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9256
-Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Closes: https://lore.kernel.org/lkml/6287208.lOV4Wx5bFT@natalenko.name/
-Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: <stable@vger.kernel.org>	[6.5.x]
+Once on the MOVABLE buddy list, the page becomes eligible for fallbacks
+and even stealing.  In the case of HIGHATOMIC, otherwise ineligible
+allocations can dip into the highatomic reserves.  In the case of CMA, the
+page can be lost from the CMA region permanently.
+
+Use a separate pcpmigratetype variable for the pcplist override.  Use the
+original migratetype when going directly to the buddy.  This fixes the bug
+and should make the intentions more obvious in the code.
+
+Originally sent here to address the HIGHATOMIC case:
+https://lore.kernel.org/lkml/20230821183733.106619-4-hannes@cmpxchg.org/
+
+Changelog updated in response to the CMA-specific bug report.
+
+[mgorman@techsingularity.net: updated changelog]
+Link: https://lkml.kernel.org/r/20230911181108.GA104295@cmpxchg.org
+Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reported-by: Joe Liu <joe.liu@mediatek.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/page_alloc.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c~i915-limit-the-length-of-an-sg-list-to-the-requested-length
-+++ a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -100,6 +100,7 @@ int shmem_sg_alloc_table(struct drm_i915
- 	st->nents = 0;
- 	for (i = 0; i < page_count; i++) {
- 		struct folio *folio;
-+		unsigned long nr_pages;
- 		const unsigned int shrink[] = {
- 			I915_SHRINK_BOUND | I915_SHRINK_UNBOUND,
- 			0,
-@@ -150,6 +151,8 @@ int shmem_sg_alloc_table(struct drm_i915
- 			}
- 		} while (1);
+--- a/mm/page_alloc.c~mm-page_alloc-fix-cma-and-highatomic-landing-on-the-wrong-buddy-list
++++ a/mm/page_alloc.c
+@@ -2400,7 +2400,7 @@ void free_unref_page(struct page *page,
+ 	struct per_cpu_pages *pcp;
+ 	struct zone *zone;
+ 	unsigned long pfn = page_to_pfn(page);
+-	int migratetype;
++	int migratetype, pcpmigratetype;
  
-+		nr_pages = min_t(unsigned long,
-+				folio_nr_pages(folio), page_count - i);
- 		if (!i ||
- 		    sg->length >= max_segment ||
- 		    folio_pfn(folio) != next_pfn) {
-@@ -157,13 +160,13 @@ int shmem_sg_alloc_table(struct drm_i915
- 				sg = sg_next(sg);
- 
- 			st->nents++;
--			sg_set_folio(sg, folio, folio_size(folio), 0);
-+			sg_set_folio(sg, folio, nr_pages * PAGE_SIZE, 0);
- 		} else {
- 			/* XXX: could overflow? */
--			sg->length += folio_size(folio);
-+			sg->length += nr_pages * PAGE_SIZE;
+ 	if (!free_unref_page_prepare(page, pfn, order))
+ 		return;
+@@ -2408,24 +2408,24 @@ void free_unref_page(struct page *page,
+ 	/*
+ 	 * We only track unmovable, reclaimable and movable on pcp lists.
+ 	 * Place ISOLATE pages on the isolated list because they are being
+-	 * offlined but treat HIGHATOMIC as movable pages so we can get those
+-	 * areas back if necessary. Otherwise, we may have to free
++	 * offlined but treat HIGHATOMIC and CMA as movable pages so we can
++	 * get those areas back if necessary. Otherwise, we may have to free
+ 	 * excessively into the page allocator
+ 	 */
+-	migratetype = get_pcppage_migratetype(page);
++	migratetype = pcpmigratetype = get_pcppage_migratetype(page);
+ 	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
+ 		if (unlikely(is_migrate_isolate(migratetype))) {
+ 			free_one_page(page_zone(page), page, pfn, order, migratetype, FPI_NONE);
+ 			return;
  		}
--		next_pfn = folio_pfn(folio) + folio_nr_pages(folio);
--		i += folio_nr_pages(folio) - 1;
-+		next_pfn = folio_pfn(folio) + nr_pages;
-+		i += nr_pages - 1;
+-		migratetype = MIGRATE_MOVABLE;
++		pcpmigratetype = MIGRATE_MOVABLE;
+ 	}
  
- 		/* Check that the i965g/gm workaround works. */
- 		GEM_BUG_ON(gfp & __GFP_DMA32 && next_pfn >= 0x00100000UL);
+ 	zone = page_zone(page);
+ 	pcp_trylock_prepare(UP_flags);
+ 	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 	if (pcp) {
+-		free_unref_page_commit(zone, pcp, page, migratetype, order);
++		free_unref_page_commit(zone, pcp, page, pcpmigratetype, order);
+ 		pcp_spin_unlock(pcp);
+ 	} else {
+ 		free_one_page(zone, page, pfn, order, migratetype, FPI_NONE);
 _
 
-Patches currently in -mm which might be from willy@infradead.org are
+Patches currently in -mm which might be from hannes@cmpxchg.org are
 
-i915-limit-the-length-of-an-sg-list-to-the-requested-length.patch
-mm-convert-dax-lock-unlock-page-to-lock-unlock-folio.patch
-buffer-pass-gfp-flags-to-folio_alloc_buffers.patch
-buffer-hoist-gfp-flags-from-grow_dev_page-to-__getblk_gfp.patch
-ext4-use-bdev_getblk-to-avoid-memory-reclaim-in-readahead-path.patch
-buffer-use-bdev_getblk-to-avoid-memory-reclaim-in-readahead-path.patch
-buffer-convert-getblk_unmovable-and-__getblk-to-use-bdev_getblk.patch
-buffer-convert-sb_getblk-to-call-__getblk.patch
-ext4-call-bdev_getblk-from-sb_getblk_gfp.patch
-buffer-remove-__getblk_gfp.patch
-hugetlb-use-a-folio-in-free_hpage_workfn.patch
-hugetlb-remove-a-few-calls-to-page_folio.patch
-hugetlb-convert-remove_pool_huge_page-to-remove_pool_hugetlb_folio.patch
 
