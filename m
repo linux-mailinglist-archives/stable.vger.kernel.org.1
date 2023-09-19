@@ -2,131 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535AF7A5CBE
-	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E24427A5CF8
+	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 10:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjISIkF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 04:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46132 "EHLO
+        id S231177AbjISIw0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 04:52:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbjISIkF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:40:05 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC8DE6
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:39:58 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-32003aae100so1727358f8f.0
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 01:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695112797; x=1695717597; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JrX/o9IaaLd8C3/27VSA5k/8nslPmD25D5g+cKSefCE=;
-        b=TkRNeB1LjZRKGNt2hb+BeHF1q7PTgHitFR1/x4BUsqVk72e1mmeLC8dvyov4ghKyB0
-         CIfg+YOGbs9az9EiGjyuktglOPhg28Nh8PSWG2g7qbHqahcJt51k98iP1dNm1xhIyJo2
-         382W6F+Ubmi1Ip5BQ+5reGsgRh7jV+5VpVHjphXEfHpCwXRuebbkQiSz0v7C90IBjId+
-         QzRiuC9vtJy31v7HJM1w6Oku0cThIuktdtJVIbDW8x0vUB4Egjq/tTA92nagK9+jqoWS
-         IMBIhNnNhda80fEi1qHdcyIQtT60UWzvyuqrGprWEB1Vgt2e7jen11yU11js4qRr9diI
-         vUxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695112797; x=1695717597;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JrX/o9IaaLd8C3/27VSA5k/8nslPmD25D5g+cKSefCE=;
-        b=Gvh5RrJvFCH/cDeS5vU5Rt8MT26Gnt6qi9rMdl8KvktM6ePDGc9SZTKTTJ1s1FAbz+
-         XJnkh2EzVkqp4/DIUjH+WSZ70XK4Y22WEsLZbvO8Mgwy0Iui+EHfQQ7otCRq9iTMJ+lb
-         uh4FbXIfugSB/elwkFmuNhzMc37XDWs1GeQvHZAvD3kHtY7skis14N7p9A4OvEIcAZPj
-         34OYdqUKPcNvdJJ+E+fxEiiS29ntzfFo6ly0wuZ6gRwp5dbfkVWe00TTI+DuvhR5LhPf
-         pTxw3EutfmsfZJb5QzT5oYve5qv5MXlmMmRkY08InQEVFa1Mz4AH7p6NrdcbXkajuZd2
-         rCTQ==
-X-Gm-Message-State: AOJu0Yyh7Ekh3JKrlDJ54my74ALBcJy4LmKZU0vh44/9BgkiLwprECC4
-        uTpvDMgiYJPaWTAg/x97iSs8wo4UqqMQ0CKr+fA=
-X-Google-Smtp-Source: AGHT+IG8fnudphfgdHldNvvN6b9HAIfRVnw9j+S5EodSB92Oy7omzXNzKjvaXZIc8FjPg6CYiCvZuPP1S4vu4R1ZY4M=
-X-Received: by 2002:adf:ed02:0:b0:31d:db2d:27c6 with SMTP id
- a2-20020adfed02000000b0031ddb2d27c6mr1286973wro.30.1695112797112; Tue, 19 Sep
- 2023 01:39:57 -0700 (PDT)
+        with ESMTP id S230523AbjISIwP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 04:52:15 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E36128;
+        Tue, 19 Sep 2023 01:52:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=D0J+Cns0mkEWbetgv3wNhMNFLngmF0J05SNVGokTFs8=; b=Q4zp/1xVc7F+bIIs1U06af6OFD
+        bHO1KEq7Qn+nbKoGHCc/YuSqafkrGq24k7iXZRUEOrinUSpwTxTR2ShMHBv0auoVzDiMJ+JWbY+BN
+        etQp7Gs3QpCoCOQPr+A9XW2NOeThdlJz0KNKFLvm4m5OdDbOevzjpOUVkDL+nr25+zEpKsWTH+rDH
+        rZps5Q2kO9XXYJfz98r+q982/sN2ERMqkQR9MhmO1W84XWVEmpT0q/mAFWXhOFxvuVtg9kztGzdOt
+        0tIfg5CRAEwjV/FI4/lfxRsUGWDXiBd79hz49wD1Kq072LKL5FSFsT1bxHThgohfVovlDC268HnkY
+        czcYnIaw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qiWQ7-00DT7s-1W;
+        Tue, 19 Sep 2023 08:51:26 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 8F86430042E; Tue, 19 Sep 2023 10:49:24 +0200 (CEST)
+Date:   Tue, 19 Sep 2023 10:49:24 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Peng Zhang <zhangpeng.00@bytedance.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v2] kernel/sched: Modify initial boot task idle setup
+Message-ID: <20230919084924.GB21729@noisy.programming.kicks-ass.net>
+References: <20230915174444.2835306-1-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-References: <20230911134650.200439213@linuxfoundation.org> <20230914085131.40974-1-gerhorst@amazon.de>
- <2023091653-peso-sprint-889d@gregkh> <b927046b-d1e7-8adf-ebc0-37b92d8d4390@iogearbox.net>
- <2023091959-heroics-banister-7d6d@gregkh>
-In-Reply-To: <2023091959-heroics-banister-7d6d@gregkh>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Tue, 19 Sep 2023 01:39:44 -0700
-Message-ID: <CAADnVQKXqaEC3SOP9eNQH1f3YF0E3A_54kSEsU2LvCL_4Awe8g@mail.gmail.com>
-Subject: Re: [PATCH 6.1 562/600] bpf: Fix issue in verifying allow_ptr_leaks
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Daniel Borkmann <daniel@iogearbox.net>,
-        Luis Gerhorst <gerhorst@cs.fau.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Eddy Z <eddyz87@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
-        patches@lists.linux.dev, stable <stable@vger.kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        Hagar Gamal Halim Hemdan <hagarhem@amazon.de>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Luis Gerhorst <gerhorst@amazon.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230915174444.2835306-1-Liam.Howlett@oracle.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 19, 2023 at 1:34=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Tue, Sep 19, 2023 at 08:26:28AM +0200, Daniel Borkmann wrote:
-> > On 9/16/23 1:35 PM, Greg KH wrote:
-> > > On Thu, Sep 14, 2023 at 08:51:32AM +0000, Luis Gerhorst wrote:
-> > > > > 6.1-stable review patch.  If anyone has any objections, please le=
-t me know.
-> > > > >
-> > > > > From: Yafang Shao <laoar.shao@gmail.com>
-> > > > >
-> > > > > commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
-> > > >
-> > > > I unfortunately have objections, they are pending discussion at [1]=
-.
-> > > >
-> > > > Same applies to the 6.4-stable review patch [2] and all other backp=
-orts.
-> > > >
-> > > > [1] https://lore.kernel.org/bpf/20230913122827.91591-1-gerhorst@ama=
-zon.de/
-> > > > [2] https://lore.kernel.org/stable/20230911134709.834278248@linuxfo=
-undation.org/
-> > >
-> > > As this is in the tree already, and in Linus's tree, I'll wait to see
-> > > if any changes are merged into Linus's tree for this before removing =
-it
-> > > from the stable trees.
-> > >
-> > > Let us know if there's a commit that resolves this and we will be gla=
-d
-> > > to queue that up.
-> >
-> > Commit d75e30dddf73 ("bpf: Fix issue in verifying allow_ptr_leaks") is =
-not
-> > stable material. It's not really a "fix", but it will simply make direc=
-t
-> > packet access available to applications without CAP_PERFMON - the latte=
-r
-> > was required so far given Spectre v1. However, there is ongoing discuss=
-ion [1]
-> > that potentially not much useful information can be leaked out and ther=
-efore
-> > lifting it may or may not be ok. If we queue this to stable and later f=
-igure
-> > we need to revert the whole thing again because someone managed to come=
- up
-> > with a PoC in the meantime, then there's higher risk of breakage.
->
-> Ick, ok, so just this one commit should be reverted?  Or any others as
-> well?
+On Fri, Sep 15, 2023 at 01:44:44PM -0400, Liam R. Howlett wrote:
+> Initial booting is setting the task flag to idle (PF_IDLE) by the call
+> path sched_init() -> init_idle().  Having the task idle and calling
+> call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
+> set.  Subsequent calls to any cond_resched() will enable IRQs,
+> potentially earlier than the IRQ setup has completed.  Recent changes
+> have caused just this scenario and IRQs have been enabled early.
+> 
+> This causes a warning later in start_kernel() as interrupts are enabled
+> before they are fully set up.
+> 
+> Fix this issue by setting the PF_IDLE flag later in the boot sequence.
+> 
+> Although the boot task was marked as idle since (at least) d80e4fda576d,
+> I am not sure that it is wrong to do so.  The forced context-switch on
+> idle task was introduced in the tiny_rcu update, so I'm going to claim
+> this fixes 5f6130fa52ee.
+> 
+> Link: https://lore.kernel.org/linux-mm/87v8cv22jh.fsf@mail.lhotse/
+> Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
+> Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> ---
 
-I don't think revert is necessary. Just don't backport any further.
+Thanks!, I've queued this up for sched/urgent but will let the robots at
+it before I push it out to -tip.
+
+
