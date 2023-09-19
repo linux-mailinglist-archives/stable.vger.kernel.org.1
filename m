@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F093B7A6C47
+	by mail.lfdr.de (Postfix) with ESMTP id A5F467A6C46
 	for <lists+stable@lfdr.de>; Tue, 19 Sep 2023 22:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233248AbjISUWl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S232649AbjISUWl (ORCPT <rfc822;lists+stable@lfdr.de>);
         Tue, 19 Sep 2023 16:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44574 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233231AbjISUWT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 16:22:19 -0400
+        with ESMTP id S233237AbjISUWU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 16:22:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62A84BA;
-        Tue, 19 Sep 2023 13:22:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CD0C433C9;
-        Tue, 19 Sep 2023 20:22:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F0EC4;
+        Tue, 19 Sep 2023 13:22:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D00AC433C7;
+        Tue, 19 Sep 2023 20:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695154933;
-        bh=FCVyl8Koq9FR5WErkAR2OpPGhLWtHWyj+8NwXjQ1Qmc=;
+        s=korg; t=1695154934;
+        bh=0SMFxmVNcx2Z9vxI52Pe+o2YA1Is7m6lpkBHQUToLhA=;
         h=Date:To:From:Subject:From;
-        b=cuj0mIglBe2ggxDq4Y6Stlr5auyPLlHgl7I1WadLfpQklt+esJfgqw3jvdbsO110G
-         +ydMg/d+sqWOOuv+oai6cCR4kAaOTa77bracFwm6oi+u9eXsZDA1p0/mVC8mOkFXZ4
-         Dp8eBweu6z/03glv3qpXP5cUz1d5ZuVNHFpjVXso=
-Date:   Tue, 19 Sep 2023 13:22:12 -0700
+        b=DIbOJqKkRhMYd09t1XhB5fMhm0eRzhC/5Qdei8Y+uOAWDnr/+gK/tJYyl8j0HQlTh
+         PYIexkRY4zqIXE894YkJP52/QK1acwTB1tFttinM0BqrnSBGp8G6p7q2BcT1E0I6BK
+         e6jZfNWU71Npxfl7SuEH6hsXpr+l2NMrY/cZ+oz8=
+Date:   Tue, 19 Sep 2023 13:22:13 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        songmuchun@bytedance.com, shakeelb@google.com,
-        roman.gushchin@linux.dev, mhocko@suse.com, leitao@debian.org,
-        josef@toxicpanda.com, hannes@cmpxchg.org, akpm@linux-foundation.org
+        oleg@redhat.com, giulio.benetti@benettiengineering.com,
+        gerg@uclinux.org, ben.wolsieffer@hefring.com,
+        Ben.Wolsieffer@hefring.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement.patch removed from -mm tree
-Message-Id: <20230919202213.21CD0C433C9@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] proc-nommu-proc-pid-maps-release-mmap-read-lock.patch removed from -mm tree
+Message-Id: <20230919202214.4D00AC433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -42,145 +42,124 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm: memcontrol: fix GFP_NOFS recursion in memory.high enforcement
+     Subject: proc: nommu: /proc/<pid>/maps: release mmap read lock
 has been removed from the -mm tree.  Its filename was
-     mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement.patch
+     proc-nommu-proc-pid-maps-release-mmap-read-lock.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Johannes Weiner <hannes@cmpxchg.org>
-Subject: mm: memcontrol: fix GFP_NOFS recursion in memory.high enforcement
-Date: Thu, 14 Sep 2023 11:21:39 -0400
+From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
+Subject: proc: nommu: /proc/<pid>/maps: release mmap read lock
+Date: Thu, 14 Sep 2023 12:30:20 -0400
 
-Breno and Josef report a deadlock scenario from cgroup reclaim
-re-entering the filesystem:
+The no-MMU implementation of /proc/<pid>/map doesn't normally release
+the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
+whether to release the lock.  Since _vml is NULL when the end of the
+mappings is reached, the lock is not released.
 
-[  361.546690] ======================================================
-[  361.559210] WARNING: possible circular locking dependency detected
-[  361.571703] 6.5.0-0_fbk700_debug_rc0_kbuilder_13159_gbf787a128001 #1 Tainted: G S          E
-[  361.589704] ------------------------------------------------------
-[  361.602277] find/9315 is trying to acquire lock:
-[  361.611625] ffff88837ba140c0 (&delayed_node->mutex){+.+.}-{4:4}, at: __btrfs_release_delayed_node+0x68/0x4f0
-[  361.631437]
-[  361.631437] but task is already holding lock:
-[  361.643243] ffff8881765b8678 (btrfs-tree-01){++++}-{4:4}, at: btrfs_tree_read_lock+0x1e/0x40
+Reading /proc/1/maps twice doesn't cause a hang because it only
+takes the read lock, which can be taken multiple times and therefore
+doesn't show any problem if the lock isn't released. Instead, you need
+to perform some operation that attempts to take the write lock after
+reading /proc/<pid>/maps. To actually reproduce the bug, compile the
+following code as 'proc_maps_bug':
 
-[  362.904457]  mutex_lock_nested+0x1c/0x30
-[  362.912414]  __btrfs_release_delayed_node+0x68/0x4f0
-[  362.922460]  btrfs_evict_inode+0x301/0x770
-[  362.982726]  evict+0x17c/0x380
-[  362.988944]  prune_icache_sb+0x100/0x1d0
-[  363.005559]  super_cache_scan+0x1f8/0x260
-[  363.013695]  do_shrink_slab+0x2a2/0x540
-[  363.021489]  shrink_slab_memcg+0x237/0x3d0
-[  363.050606]  shrink_slab+0xa7/0x240
-[  363.083382]  shrink_node_memcgs+0x262/0x3b0
-[  363.091870]  shrink_node+0x1a4/0x720
-[  363.099150]  shrink_zones+0x1f6/0x5d0
-[  363.148798]  do_try_to_free_pages+0x19b/0x5e0
-[  363.157633]  try_to_free_mem_cgroup_pages+0x266/0x370
-[  363.190575]  reclaim_high+0x16f/0x1f0
-[  363.208409]  mem_cgroup_handle_over_high+0x10b/0x270
-[  363.246678]  try_charge_memcg+0xaf2/0xc70
-[  363.304151]  charge_memcg+0xf0/0x350
-[  363.320070]  __mem_cgroup_charge+0x28/0x40
-[  363.328371]  __filemap_add_folio+0x870/0xd50
-[  363.371303]  filemap_add_folio+0xdd/0x310
-[  363.399696]  __filemap_get_folio+0x2fc/0x7d0
-[  363.419086]  pagecache_get_page+0xe/0x30
-[  363.427048]  alloc_extent_buffer+0x1cd/0x6a0
-[  363.435704]  read_tree_block+0x43/0xc0
-[  363.443316]  read_block_for_search+0x361/0x510
-[  363.466690]  btrfs_search_slot+0xc8c/0x1520
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/mman.h>
 
-This is caused by the mem_cgroup_handle_over_high() not respecting the
-gfp_mask of the allocation context.  We used to only call this function on
-resume to userspace, where no locks were held.  But c9afe31ec443 ("memcg:
-synchronously enforce memory.high for large overcharges") added a call
-from the allocation context without considering the gfp.
+int main(int argc, char *argv[]) {
+        void *buf;
+        sleep(1);
+        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        puts("mmap returned");
+        return 0;
+}
 
-Link: https://lkml.kernel.org/r/20230914152139.100822-1-hannes@cmpxchg.org
-Fixes: c9afe31ec443 ("memcg: synchronously enforce memory.high for large overcharges")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: <stable@vger.kernel.org>	[5.17+]
+Then, run:
+
+  ./proc_maps_bug &; cat /proc/$!/maps; fg
+
+Without this patch, mmap() will hang and the command will never
+complete.
+	
+This code was incorrectly adapted from the MMU implementation, which at
+the time released the lock in m_next() before returning the last entry.
+
+The MMU implementation has diverged further from the no-MMU version since
+then, so this patch brings their locking and error handling into sync,
+fixing the bug and hopefully avoiding similar issues in the future.
+
+Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
+Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc: Greg Ungerer <gerg@uclinux.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/memcontrol.h       |    4 ++--
- include/linux/resume_user_mode.h |    2 +-
- mm/memcontrol.c                  |    6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ fs/proc/task_nommu.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/include/linux/memcontrol.h~mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement
-+++ a/include/linux/memcontrol.h
-@@ -920,7 +920,7 @@ unsigned long mem_cgroup_get_zone_lru_si
- 	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
- }
+--- a/fs/proc/task_nommu.c~proc-nommu-proc-pid-maps-release-mmap-read-lock
++++ a/fs/proc/task_nommu.c
+@@ -192,11 +192,16 @@ static void *m_start(struct seq_file *m,
+ 		return ERR_PTR(-ESRCH);
  
--void mem_cgroup_handle_over_high(void);
-+void mem_cgroup_handle_over_high(gfp_t gfp_mask);
+ 	mm = priv->mm;
+-	if (!mm || !mmget_not_zero(mm))
++	if (!mm || !mmget_not_zero(mm)) {
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return NULL;
++	}
  
- unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
- 
-@@ -1458,7 +1458,7 @@ static inline void mem_cgroup_unlock_pag
- 	rcu_read_unlock();
- }
- 
--static inline void mem_cgroup_handle_over_high(void)
-+static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
- {
- }
- 
---- a/include/linux/resume_user_mode.h~mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement
-+++ a/include/linux/resume_user_mode.h
-@@ -55,7 +55,7 @@ static inline void resume_user_mode_work
+ 	if (mmap_read_lock_killable(mm)) {
+ 		mmput(mm);
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return ERR_PTR(-EINTR);
  	}
- #endif
  
--	mem_cgroup_handle_over_high();
-+	mem_cgroup_handle_over_high(GFP_KERNEL);
- 	blkcg_maybe_throttle_current();
+@@ -205,23 +210,21 @@ static void *m_start(struct seq_file *m,
+ 	if (vma)
+ 		return vma;
  
- 	rseq_handle_notify_resume(NULL, regs);
---- a/mm/memcontrol.c~mm-memcontrol-fix-gfp_nofs-recursion-in-memoryhigh-enforcement
-+++ a/mm/memcontrol.c
-@@ -2555,7 +2555,7 @@ static unsigned long calculate_high_dela
-  * Scheduled by try_charge() to be executed from the userland return path
-  * and reclaims memory over the high limit.
-  */
--void mem_cgroup_handle_over_high(void)
-+void mem_cgroup_handle_over_high(gfp_t gfp_mask)
- {
- 	unsigned long penalty_jiffies;
- 	unsigned long pflags;
-@@ -2583,7 +2583,7 @@ retry_reclaim:
- 	 */
- 	nr_reclaimed = reclaim_high(memcg,
- 				    in_retry ? SWAP_CLUSTER_MAX : nr_pages,
--				    GFP_KERNEL);
-+				    gfp_mask);
- 
- 	/*
- 	 * memory.high is breached and reclaim is unable to keep up. Throttle
-@@ -2819,7 +2819,7 @@ done_restock:
- 	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
- 	    !(current->flags & PF_MEMALLOC) &&
- 	    gfpflags_allow_blocking(gfp_mask)) {
--		mem_cgroup_handle_over_high();
-+		mem_cgroup_handle_over_high(gfp_mask);
- 	}
- 	return 0;
+-	mmap_read_unlock(mm);
+-	mmput(mm);
+ 	return NULL;
  }
+ 
+-static void m_stop(struct seq_file *m, void *_vml)
++static void m_stop(struct seq_file *m, void *v)
+ {
+ 	struct proc_maps_private *priv = m->private;
++	struct mm_struct *mm = priv->mm;
+ 
+-	if (!IS_ERR_OR_NULL(_vml)) {
+-		mmap_read_unlock(priv->mm);
+-		mmput(priv->mm);
+-	}
+-	if (priv->task) {
+-		put_task_struct(priv->task);
+-		priv->task = NULL;
+-	}
++	if (!priv->task)
++		return;
++
++	mmap_read_unlock(mm);
++	mmput(mm);
++	put_task_struct(priv->task);
++	priv->task = NULL;
+ }
+ 
+ static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
 _
 
-Patches currently in -mm which might be from hannes@cmpxchg.org are
+Patches currently in -mm which might be from Ben.Wolsieffer@hefring.com are
 
 
