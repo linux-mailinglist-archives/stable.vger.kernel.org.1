@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0487A8179
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6AFD7A7D49
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236334AbjITMpv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:45:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35786 "EHLO
+        id S235233AbjITMIL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236336AbjITMpu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:50 -0400
+        with ESMTP id S234459AbjITMIL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D51D7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F33CC433C7;
-        Wed, 20 Sep 2023 12:45:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65966AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93A3C433C8;
+        Wed, 20 Sep 2023 12:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213942;
-        bh=ll3FKMyD5EVNDqGVBPEvDAL5IjisCnfhJYdplfgu9gM=;
+        s=korg; t=1695211685;
+        bh=PJ9Nq/H5upNZPZTQZXR9gkuX8LyqZh8HyozPcS47KkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ilbdZCC/kmZKR7Sl3IJPppmBN6EKeXyfXV0kqgSO9geo/DERWV6Hh6uk24GO5HBAV
-         CK/lof5mtQz5t3KOydNlLf9uasglrFmjnXTgfeaQJWCXGzN6rDLVA/BLj/FuWQSSnl
-         YjxccJ9JirS+xi3c6p84T+qlZm1o+zmRn7vgPYQk=
+        b=OI7uSbsJvlhxYVLX2TIJVjpTfrMtv2H0Lr7SglezunJPhDx7Qck5c2+QF9Jq5aPoP
+         OqVHwgbbRQ3fyDanTSU4QHyOEbMfQJ01ziUb8XUodHYgim4Krul2gYGs1jvqM8AmqZ
+         RnGkj8ZtU4V7c93iQ2oJ/rm5mgCeGNXeKIjNiQZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/110] arm64: dts: qcom: sm8150-kumano: correct ramoops pmsg-size
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 4.14 184/186] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in oob write
 Date:   Wed, 20 Sep 2023 13:31:27 +0200
-Message-ID: <20230920112831.471692450@linuxfoundation.org>
+Message-ID: <20230920112843.523779453@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: William Zhang <william.zhang@broadcom.com>
 
-[ Upstream commit 4e6b942f092653ebcdbbc0819b2d1f08ab415bdc ]
+commit 5d53244186c9ac58cb88d76a0958ca55b83a15cd upstream.
 
-There is no 'msg-size' property in ramoops, so assume intention was for
-'pmsg-size':
+When the oob buffer length is not in multiple of words, the oob write
+function does out-of-bounds read on the oob source buffer at the last
+iteration. Fix that by always checking length limit on the oob buffer
+read and fill with 0xff when reaching the end of the buffer to the oob
+registers.
 
-  sm8150-sony-xperia-kumano-griffin.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230618114442.140185-6-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-5-william.zhang@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/brcmnand/brcmnand.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi b/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi
-index 04c71f74ab72d..c9aa7764fc59a 100644
---- a/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi
-@@ -127,7 +127,7 @@ ramoops@ffc00000 {
- 			reg = <0x0 0xffc00000 0x0 0x100000>;
- 			record-size = <0x1000>;
- 			console-size = <0x40000>;
--			msg-size = <0x20000 0x20000>;
-+			pmsg-size = <0x20000>;
- 			ecc-size = <16>;
- 			no-map;
- 		};
--- 
-2.40.1
-
+--- a/drivers/mtd/nand/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/brcmnand/brcmnand.c
+@@ -1229,19 +1229,33 @@ static int write_oob_to_regs(struct brcm
+ 			     const u8 *oob, int sas, int sector_1k)
+ {
+ 	int tbytes = sas << sector_1k;
+-	int j;
++	int j, k = 0;
++	u32 last = 0xffffffff;
++	u8 *plast = (u8 *)&last;
+ 
+ 	/* Adjust OOB values for 1K sector size */
+ 	if (sector_1k && (i & 0x01))
+ 		tbytes = max(0, tbytes - (int)ctrl->max_oob);
+ 	tbytes = min_t(int, tbytes, ctrl->max_oob);
+ 
+-	for (j = 0; j < tbytes; j += 4)
++	/*
++	 * tbytes may not be multiple of words. Make sure we don't read out of
++	 * the boundary and stop at last word.
++	 */
++	for (j = 0; (j + 3) < tbytes; j += 4)
+ 		oob_reg_write(ctrl, j,
+ 				(oob[j + 0] << 24) |
+ 				(oob[j + 1] << 16) |
+ 				(oob[j + 2] <<  8) |
+ 				(oob[j + 3] <<  0));
++
++	/* handle the remaing bytes */
++	while (j < tbytes)
++		plast[k++] = oob[j++];
++
++	if (tbytes & 0x3)
++		oob_reg_write(ctrl, (tbytes & ~0x3), (__force u32)cpu_to_be32(last));
++
+ 	return tbytes;
+ }
+ 
 
 
