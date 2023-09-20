@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8E47A7E64
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09C757A80A3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235557AbjITMRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
+        id S236102AbjITMin (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235563AbjITMRq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:46 -0400
+        with ESMTP id S236075AbjITMii (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CC0119
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA72C43397;
-        Wed, 20 Sep 2023 12:17:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97E99C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C894FC433C8;
+        Wed, 20 Sep 2023 12:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212239;
-        bh=1XKlxmZPQASdpuT/1P4u/+1Ahwq3QTYJ5JknPYxWjIA=;
+        s=korg; t=1695213510;
+        bh=4YNDHH3FZwaBSxquhsqjfTff/znAzS3Knm34d/9cka8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J0q7fnUgHNZr+F4tOkcFgtZavK9XrRuvLepJMKjQZrfZqI6XpEpgM/cUhRrUgdMFq
-         zy5sge18omn8YCcP3mq+3jtHImwUsmS6mDhkv71qjlF8iCp3YgY6x4EF8stmbwlF5v
-         Vn15RhtmBv7qYIZNJTtvuVbWyIofSEKgXDbfZbWY=
+        b=2PC01INyzyKv856Mh4C6WOabIz55nOTRzNhlR82AjBPqCls5wIwvZM1eJ2ODp5YGr
+         DEXzUv1O2/UdsdG9pY5JjmPUNANrjst0fwl1EGqvw1BieNflsm00CsfS7bLsoDp8Uc
+         giZuWVpUk+ZMcCeS9vcEwzriIxxgskWyjcrblIYc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Dave Airlie <airlied@redhat.com>,
-        dri-devel@lists.freedesktop.org,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH 4.19 200/273] drm/ast: Fix DRAM init on AST2200
+        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
+        David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 263/367] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
 Date:   Wed, 20 Sep 2023 13:30:40 +0200
-Message-ID: <20230920112852.673594848@linuxfoundation.org>
+Message-ID: <20230920112905.371217790@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-commit 4cfe75f0f14f044dae66ad0e6eea812d038465d9 upstream.
+[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
 
-Fix the test for the AST2200 in the DRAM initialization. The value
-in ast->chip has to be compared against an enum constant instead of
-a numerical value.
+The existing code incorrectly casted a negative value (the result of a
+subtraction) to an unsigned value without checking. For example, if
+/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
+lifetime would jump to 4 billion seconds. On my machine and network the
+shortest lifetime that avoided underflow was 3 seconds.
 
-This bug got introduced when the driver was first imported into the
-kernel.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Tested-by: Jocelyn Falempe <jfalempe@redhat.com> # AST2600
-Link: https://patchwork.freedesktop.org/patch/msgid/20230621130032.3568-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_post.c |    2 +-
+ net/ipv6/addrconf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/ast/ast_post.c
-+++ b/drivers/gpu/drm/ast/ast_post.c
-@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm
- 				;
- 			} while (ast_read32(ast, 0x10100) != 0xa8);
- 		} else {/* AST2100/1100 */
--			if (ast->chip == AST2100 || ast->chip == 2200)
-+			if (ast->chip == AST2100 || ast->chip == AST2200)
- 				dram_reg_info = ast2100_dram_table_data;
- 			else
- 				dram_reg_info = ast1100_dram_table_data;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index a4c3cb72bdc6a..c523236d934eb 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1367,7 +1367,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp,
+ 	 * idev->desync_factor if it's larger
+ 	 */
+ 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
+-	max_desync_factor = min_t(__u32,
++	max_desync_factor = min_t(long,
+ 				  idev->cnf.max_desync_factor,
+ 				  cnf_temp_preferred_lft - regen_advance);
+ 
+-- 
+2.40.1
+
 
 
