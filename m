@@ -2,33 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DF97A7801
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 464A67A7808
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234218AbjITJxt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:53:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49872 "EHLO
+        id S234210AbjITJy2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:54:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjITJxr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:47 -0400
+        with ESMTP id S234216AbjITJy2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:54:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381A48F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D446C433C7;
-        Wed, 20 Sep 2023 09:53:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C940A9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:54:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB2CC433C8;
+        Wed, 20 Sep 2023 09:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203620;
-        bh=f2F0xZDXGFosSf/PbRxW00vJh7XmfKG8yPqs3NTwncs=;
+        s=korg; t=1695203662;
+        bh=UijQaiH2RmXRUbpOnCfE9gpygHJG2x36unTTA2kizuE=;
         h=Subject:To:Cc:From:Date:From;
-        b=YSEmDinhWUN00thbRM2yR6QUfpN5TrMAwG545iN/RaW2GN+Lxg7vCReoID0++qbR4
-         rOQKI89YjbQA9Yyf1DIvVN4ypLldqUjd84dlAH8wSArTa/zMaPDkkSGztXNiFLpahG
-         IVZDCcwB48KUu/hwk2T4NkPCqiWACL2PqURauyVM=
-Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 5.4-stable tree
-To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
+        b=zGaSERRzzJwXqe1TReJ9X5h7jybH+nVggbrADjwKvMaKQ4kqdocMF40l4BwnOWiR4
+         45Ie1t7WO3CBIqmVtZMPbIHI6RpnDgBFE2k3MCKECpm/PdnzEE928nQuQMUKQ8jvWf
+         oZbHncOMwbJUrZi0XcSLxIjftaX/kifmDRqCZWkI=
+Subject: FAILED: patch "[PATCH] tracing: Have tracing_max_latency inc the trace array ref" failed to apply to 5.10-stable tree
+To:     rostedt@goodmis.org, akpm@linux-foundation.org, lkft@linaro.org,
+        mark.rutland@arm.com, mhiramat@kernel.org,
+        naresh.kamboju@linaro.org, zhengyejian1@huawei.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:53:28 +0200
-Message-ID: <2023092028-purveyor-limpness-f224@gregkh>
+Date:   Wed, 20 Sep 2023 11:54:19 +0200
+Message-ID: <2023092019-glamour-railroad-a36d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,42 +44,34 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2c58c3931ede7cd08cbecf1f1a4acaf0a04a41a9
+git cherry-pick -x 7d660c9b2bc95107f90a9f4c4759be85309a6550
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092028-purveyor-limpness-f224@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092019-glamour-railroad-a36d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-2c58c3931ede ("btrfs: remove BUG() after failure to insert delayed dir index item")
-91bfe3104b8d ("btrfs: improve error message after failure to add delayed dir index item")
-763748b238ef ("btrfs: reduce amount of reserved metadata for delayed item insertion")
-c9d02ab4b436 ("btrfs: set delayed item type when initializing it")
-3bae13e9d42e ("btrfs: do not BUG_ON() on failure to reserve metadata for delayed item")
-a176affe547c ("btrfs: assert that delayed item is a dir index item when adding it")
-b7ef5f3a6f37 ("btrfs: loop only once over data sizes array when inserting an item batch")
-086dcbfa50d3 ("btrfs: insert items in batches when logging a directory when possible")
-eb10d85ee77f ("btrfs: factor out the copying loop of dir items from log_dir_items()")
-289cffcb0399 ("btrfs: remove no longer needed checks for NULL log context")
-5a656c3628b2 ("btrfs: stop doing GFP_KERNEL memory allocations in the ref verify tool")
-506650dcb3a7 ("btrfs: improve the batch insertion of delayed items")
-bfaa324e9a80 ("btrfs: remove total_data_size variable in btrfs_batch_insert_items()")
-bb385bedded3 ("btrfs: fix error handling in __btrfs_update_delayed_inode")
-64d6b281ba4d ("btrfs: remove unnecessary check_parent_dirs_for_sync()")
-3e6a86a193b0 ("btrfs: skip logging directories already logged when logging all parents")
-ab12313a9f56 ("btrfs: avoid logging new ancestor inodes when logging new inode")
-47d3db41e190 ("btrfs: fix race that makes inode logging fallback to transaction commit")
-4d6221d7d831 ("btrfs: fix race that causes unnecessary logging of ancestor inodes")
-5893dfb98f25 ("btrfs: refactor btrfs_drop_extents() to make it easier to extend")
+7d660c9b2bc9 ("tracing: Have tracing_max_latency inc the trace array ref count")
+21ccc9cd7211 ("tracing: Disable "other" permission bits in the tracefs files")
+a955d7eac177 ("trace: Add timerlat tracer")
+bce29ac9ce0b ("trace: Add osnoise tracer")
+6880c987e451 ("tracing: Add LATENCY_FS_NOTIFY to define if latency_fsnotify() is defined")
+8fa826b7344d ("trace/hwlat: Implement the mode config option")
+f689e4f280b6 ("tracing: Define new ftrace event "func_repeats"")
+f2cc020d7876 ("tracing: Fix various typos in comments")
+2d396cb3b126 ("tracing: Do not create "enable" or "filter" files for ftrace event subsystem")
+0c02006e6f5b ("tracing: Inline tracing_gen_ctx_flags()")
+36590c50b2d0 ("tracing: Merge irqflags + preempt counter.")
+09c0796adf0c ("Merge tag 'trace-v5.11' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace")
 
 thanks,
 
@@ -85,134 +79,85 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2c58c3931ede7cd08cbecf1f1a4acaf0a04a41a9 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Mon, 28 Aug 2023 09:06:43 +0100
-Subject: [PATCH] btrfs: remove BUG() after failure to insert delayed dir index
- item
+From 7d660c9b2bc95107f90a9f4c4759be85309a6550 Mon Sep 17 00:00:00 2001
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Date: Wed, 6 Sep 2023 22:47:13 -0400
+Subject: [PATCH] tracing: Have tracing_max_latency inc the trace array ref
+ count
 
-Instead of calling BUG() when we fail to insert a delayed dir index item
-into the delayed node's tree, we can just release all the resources we
-have allocated/acquired before and return the error to the caller. This is
-fine because all existing call chains undo anything they have done before
-calling btrfs_insert_delayed_dir_index() or BUG_ON (when creating pending
-snapshots in the transaction commit path).
+The tracing_max_latency file points to the trace_array max_latency field.
+For an instance, if the file is opened and the instance is deleted,
+reading or writing to the file will cause a use after free.
 
-So remove the BUG() call and do proper error handling.
+Up the ref count of the trace_array when tracing_max_latency is opened.
 
-This relates to a syzbot report linked below, but does not fix it because
-it only prevents hitting a BUG(), it does not fix the issue where somehow
-we attempt to use twice the same index number for different index items.
+Link: https://lkml.kernel.org/r/20230907024803.666889383@goodmis.org
+Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
 
-Link: https://lore.kernel.org/linux-btrfs/00000000000036e1290603e097e0@google.com/
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index bb9908cbabfe..6e779bc16340 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1426,7 +1426,29 @@ void btrfs_balance_delayed_items(struct btrfs_fs_info *fs_info)
- 	btrfs_wq_run_delayed_node(delayed_root, fs_info, BTRFS_DELAYED_BATCH);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 0827037ee3b8..c8b8b4c6feaf 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1772,7 +1772,7 @@ static void trace_create_maxlat_file(struct trace_array *tr,
+ 	init_irq_work(&tr->fsnotify_irqwork, latency_fsnotify_workfn_irq);
+ 	tr->d_max_latency = trace_create_file("tracing_max_latency",
+ 					      TRACE_MODE_WRITE,
+-					      d_tracer, &tr->max_latency,
++					      d_tracer, tr,
+ 					      &tracing_max_lat_fops);
  }
  
--/* Will return 0 or -ENOMEM */
-+static void btrfs_release_dir_index_item_space(struct btrfs_trans_handle *trans)
-+{
-+	struct btrfs_fs_info *fs_info = trans->fs_info;
-+	const u64 bytes = btrfs_calc_insert_metadata_size(fs_info, 1);
-+
-+	if (test_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags))
-+		return;
-+
-+	/*
-+	 * Adding the new dir index item does not require touching another
-+	 * leaf, so we can release 1 unit of metadata that was previously
-+	 * reserved when starting the transaction. This applies only to
-+	 * the case where we had a transaction start and excludes the
-+	 * transaction join case (when replaying log trees).
-+	 */
-+	trace_btrfs_space_reservation(fs_info, "transaction",
-+				      trans->transid, bytes, 0);
-+	btrfs_block_rsv_release(fs_info, trans->block_rsv, bytes, NULL);
-+	ASSERT(trans->bytes_reserved >= bytes);
-+	trans->bytes_reserved -= bytes;
-+}
-+
-+/* Will return 0, -ENOMEM or -EEXIST (index number collision, unexpected). */
- int btrfs_insert_delayed_dir_index(struct btrfs_trans_handle *trans,
- 				   const char *name, int name_len,
- 				   struct btrfs_inode *dir,
-@@ -1468,6 +1490,27 @@ int btrfs_insert_delayed_dir_index(struct btrfs_trans_handle *trans,
+@@ -1805,7 +1805,7 @@ void latency_fsnotify(struct trace_array *tr)
  
- 	mutex_lock(&delayed_node->mutex);
+ #define trace_create_maxlat_file(tr, d_tracer)				\
+ 	trace_create_file("tracing_max_latency", TRACE_MODE_WRITE,	\
+-			  d_tracer, &tr->max_latency, &tracing_max_lat_fops)
++			  d_tracer, tr, &tracing_max_lat_fops)
  
-+	/*
-+	 * First attempt to insert the delayed item. This is to make the error
-+	 * handling path simpler in case we fail (-EEXIST). There's no risk of
-+	 * any other task coming in and running the delayed item before we do
-+	 * the metadata space reservation below, because we are holding the
-+	 * delayed node's mutex and that mutex must also be locked before the
-+	 * node's delayed items can be run.
-+	 */
-+	ret = __btrfs_add_delayed_item(delayed_node, delayed_item);
-+	if (unlikely(ret)) {
-+		btrfs_err(trans->fs_info,
-+"error adding delayed dir index item, name: %.*s, index: %llu, root: %llu, dir: %llu, dir->index_cnt: %llu, delayed_node->index_cnt: %llu, error: %d",
-+			  name_len, name, index, btrfs_root_id(delayed_node->root),
-+			  delayed_node->inode_id, dir->index_cnt,
-+			  delayed_node->index_cnt, ret);
-+		btrfs_release_delayed_item(delayed_item);
-+		btrfs_release_dir_index_item_space(trans);
-+		mutex_unlock(&delayed_node->mutex);
-+		goto release_node;
-+	}
+ #endif
+ 
+@@ -6717,14 +6717,18 @@ static ssize_t
+ tracing_max_lat_read(struct file *filp, char __user *ubuf,
+ 		     size_t cnt, loff_t *ppos)
+ {
+-	return tracing_nsecs_read(filp->private_data, ubuf, cnt, ppos);
++	struct trace_array *tr = filp->private_data;
 +
- 	if (delayed_node->index_item_leaves == 0 ||
- 	    delayed_node->curr_index_batch_size + data_len > leaf_data_size) {
- 		delayed_node->curr_index_batch_size = data_len;
-@@ -1485,37 +1528,14 @@ int btrfs_insert_delayed_dir_index(struct btrfs_trans_handle *trans,
- 		 * impossible.
- 		 */
- 		if (WARN_ON(ret)) {
--			mutex_unlock(&delayed_node->mutex);
- 			btrfs_release_delayed_item(delayed_item);
-+			mutex_unlock(&delayed_node->mutex);
- 			goto release_node;
- 		}
++	return tracing_nsecs_read(&tr->max_latency, ubuf, cnt, ppos);
+ }
  
- 		delayed_node->index_item_leaves++;
--	} else if (!test_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags)) {
--		const u64 bytes = btrfs_calc_insert_metadata_size(fs_info, 1);
--
--		/*
--		 * Adding the new dir index item does not require touching another
--		 * leaf, so we can release 1 unit of metadata that was previously
--		 * reserved when starting the transaction. This applies only to
--		 * the case where we had a transaction start and excludes the
--		 * transaction join case (when replaying log trees).
--		 */
--		trace_btrfs_space_reservation(fs_info, "transaction",
--					      trans->transid, bytes, 0);
--		btrfs_block_rsv_release(fs_info, trans->block_rsv, bytes, NULL);
--		ASSERT(trans->bytes_reserved >= bytes);
--		trans->bytes_reserved -= bytes;
--	}
--
--	ret = __btrfs_add_delayed_item(delayed_node, delayed_item);
--	if (unlikely(ret)) {
--		btrfs_err(trans->fs_info,
--"error adding delayed dir index item, name: %.*s, index: %llu, root: %llu, dir: %llu, dir->index_cnt: %llu, delayed_node->index_cnt: %llu, error: %d",
--			  name_len, name, index, btrfs_root_id(delayed_node->root),
--			  delayed_node->inode_id, dir->index_cnt,
--			  delayed_node->index_cnt, ret);
--		BUG();
-+	} else {
-+		btrfs_release_dir_index_item_space(trans);
- 	}
- 	mutex_unlock(&delayed_node->mutex);
+ static ssize_t
+ tracing_max_lat_write(struct file *filp, const char __user *ubuf,
+ 		      size_t cnt, loff_t *ppos)
+ {
+-	return tracing_nsecs_write(filp->private_data, ubuf, cnt, ppos);
++	struct trace_array *tr = filp->private_data;
++
++	return tracing_nsecs_write(&tr->max_latency, ubuf, cnt, ppos);
+ }
+ 
+ #endif
+@@ -7778,10 +7782,11 @@ static const struct file_operations tracing_thresh_fops = {
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+ static const struct file_operations tracing_max_lat_fops = {
+-	.open		= tracing_open_generic,
++	.open		= tracing_open_generic_tr,
+ 	.read		= tracing_max_lat_read,
+ 	.write		= tracing_max_lat_write,
+ 	.llseek		= generic_file_llseek,
++	.release	= tracing_release_generic_tr,
+ };
+ #endif
  
 
