@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FAED7A7EA9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E64A7A817C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235584AbjITMTf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37658 "EHLO
+        id S236343AbjITMp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235628AbjITMTc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:32 -0400
+        with ESMTP id S236338AbjITMp5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F3C4DD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7238BC433CD;
-        Wed, 20 Sep 2023 12:19:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592969E
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D72C433C9;
+        Wed, 20 Sep 2023 12:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212366;
-        bh=pZi/gmQCapbaVNrbZaML49GlsUteIclpEGoYiO4m2ug=;
+        s=korg; t=1695213951;
+        bh=fCNenHqlXaWMIPj7Z7UG2zwaS+U01nnHg8mOm2+lfVY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M4FDzA1NB5o7XI9koz6CyhVTvZ/I2OGij84GznKg5hxW2LHN6gpwQrlVLeC770Kjl
-         0SJatmklIK1SvTAEoPBvsE/dqec/0hu5NLPFikJw8x3Bd/Q0XzXbVHLQM6X4o3/R5Y
-         tyZuHcpU98AQVOkrrw/fKskLoEnaTAgXo7IkJ0jA=
+        b=0MVHNzN6BmUdVClr9CJRhLH9NSAq1BSU7aIUw39Cw0LnY84IipOTWPSOs4P+uq9Kz
+         UyW7lng3pEfrAJDM9PQkc3nIpXr+F7hyNFWEoCQr4CE42UQJwtWnXepV+7L5x6EB6V
+         CHhmO5mbQ0iUOvsF8QJ15cjh5H04fhBuGbH00gDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
-        Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+6a93efb725385bc4b2e9@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 250/273] fs/jfs: prevent double-free in dbUnmount() after failed jfs_remount()
+        patches@lists.linux.dev,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/110] ALSA: hda: intel-dsp-cfg: add LunarLake support
 Date:   Wed, 20 Sep 2023 13:31:30 +0200
-Message-ID: <20230920112854.028214261@linuxfoundation.org>
+Message-ID: <20230920112831.574978974@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,123 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit cade5397e5461295f3cb87880534b6a07cafa427 ]
+[ Upstream commit d2852b8c045ebd31d753b06f2810df5be30ed56a ]
 
-Syzkaller reported the following issue:
-==================================================================
-BUG: KASAN: double-free in slab_free mm/slub.c:3787 [inline]
-BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3800
-Free of addr ffff888086408000 by task syz-executor.4/12750
-[...]
-Call Trace:
- <TASK>
-[...]
- kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:482
- ____kasan_slab_free+0xfb/0x120
- kasan_slab_free include/linux/kasan.h:177 [inline]
- slab_free_hook mm/slub.c:1781 [inline]
- slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1807
- slab_free mm/slub.c:3787 [inline]
- __kmem_cache_free+0x71/0x110 mm/slub.c:3800
- dbUnmount+0xf4/0x110 fs/jfs/jfs_dmap.c:264
- jfs_umount+0x248/0x3b0 fs/jfs/jfs_umount.c:87
- jfs_put_super+0x86/0x190 fs/jfs/super.c:194
- generic_shutdown_super+0x130/0x310 fs/super.c:492
- kill_block_super+0x79/0xd0 fs/super.c:1386
- deactivate_locked_super+0xa7/0xf0 fs/super.c:332
- cleanup_mnt+0x494/0x520 fs/namespace.c:1291
- task_work_run+0x243/0x300 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop+0x124/0x150 kernel/entry/common.c:171
- exit_to_user_mode_prepare+0xb2/0x140 kernel/entry/common.c:203
- __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x26/0x60 kernel/entry/common.c:296
- do_syscall_64+0x49/0xb0 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[...]
- </TASK>
+One more PCI ID for the road.
 
-Allocated by task 13352:
- kasan_save_stack mm/kasan/common.c:45 [inline]
- kasan_set_track+0x3d/0x60 mm/kasan/common.c:52
- ____kasan_kmalloc mm/kasan/common.c:371 [inline]
- __kasan_kmalloc+0x97/0xb0 mm/kasan/common.c:380
- kmalloc include/linux/slab.h:580 [inline]
- dbMount+0x54/0x980 fs/jfs/jfs_dmap.c:164
- jfs_mount+0x1dd/0x830 fs/jfs/jfs_mount.c:121
- jfs_fill_super+0x590/0xc50 fs/jfs/super.c:556
- mount_bdev+0x26c/0x3a0 fs/super.c:1359
- legacy_get_tree+0xea/0x180 fs/fs_context.c:610
- vfs_get_tree+0x88/0x270 fs/super.c:1489
- do_new_mount+0x289/0xad0 fs/namespace.c:3145
- do_mount fs/namespace.c:3488 [inline]
- __do_sys_mount fs/namespace.c:3697 [inline]
- __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Freed by task 13352:
- kasan_save_stack mm/kasan/common.c:45 [inline]
- kasan_set_track+0x3d/0x60 mm/kasan/common.c:52
- kasan_save_free_info+0x27/0x40 mm/kasan/generic.c:518
- ____kasan_slab_free+0xd6/0x120 mm/kasan/common.c:236
- kasan_slab_free include/linux/kasan.h:177 [inline]
- slab_free_hook mm/slub.c:1781 [inline]
- slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1807
- slab_free mm/slub.c:3787 [inline]
- __kmem_cache_free+0x71/0x110 mm/slub.c:3800
- dbUnmount+0xf4/0x110 fs/jfs/jfs_dmap.c:264
- jfs_mount_rw+0x545/0x740 fs/jfs/jfs_mount.c:247
- jfs_remount+0x3db/0x710 fs/jfs/super.c:454
- reconfigure_super+0x3bc/0x7b0 fs/super.c:935
- vfs_fsconfig_locked fs/fsopen.c:254 [inline]
- __do_sys_fsconfig fs/fsopen.c:439 [inline]
- __se_sys_fsconfig+0xad5/0x1060 fs/fsopen.c:314
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[...]
-
-JFS_SBI(ipbmap->i_sb)->bmap wasn't set to NULL after kfree() in
-dbUnmount().
-
-Syzkaller uses faultinject to reproduce this KASAN double-free
-warning. The issue is triggered if either diMount() or dbMount() fail
-in jfs_remount(), since diUnmount() or dbUnmount() already happened in
-such a case - they will do double-free on next execution: jfs_umount
-or jfs_remount.
-
-Tested on both upstream and jfs-next by syzkaller.
-
-Reported-and-tested-by: syzbot+6a93efb725385bc4b2e9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000471f2d05f1ce8bad@google.com/T/
-Link: https://syzkaller.appspot.com/bug?extid=6a93efb725385bc4b2e9
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20230802150105.24604-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/hda/intel-dsp-config.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 63ad6b1d575a5..b20fffc8b4c13 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -282,6 +282,7 @@ int dbUnmount(struct inode *ipbmap, int mounterror)
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index 513eadcc38d90..c69d069b3f2b6 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -385,6 +385,14 @@ static const struct config_entry config_table[] = {
+ 	},
+ #endif
  
- 	/* free the memory for the in-memory bmap. */
- 	kfree(bmp);
-+	JFS_SBI(ipbmap->i_sb)->bmap = NULL;
++/* Lunar Lake */
++#if IS_ENABLED(CONFIG_SND_SOC_SOF_LUNARLAKE)
++	/* Lunarlake-P */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_LNL_P,
++	},
++#endif
+ };
  
- 	return (0);
- }
+ static const struct config_entry *snd_intel_dsp_find_config
 -- 
 2.40.1
 
