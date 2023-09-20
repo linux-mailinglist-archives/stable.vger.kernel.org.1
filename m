@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0FBC7A7F08
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F360C7A8152
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235674AbjITMXN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S236239AbjITMoX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235687AbjITMXM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:12 -0400
+        with ESMTP id S236264AbjITMoV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA797AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABECC433CB;
-        Wed, 20 Sep 2023 12:23:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFF5AA9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1162C433CC;
+        Wed, 20 Sep 2023 12:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212586;
-        bh=k3E+vNULP8HnhXGSTqukk/eBSm1QoA/Q3yBigUt69CM=;
+        s=korg; t=1695213855;
+        bh=Kl5rY9gq4fw4JgCbhnCDDyifrjjlLUeBbJQ0TqU/AMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DGFPUOkpEUJ1gNUhDcb6q45nMfttsmdV6WyW566WAEi5NBZmKSETmr31sbOglUw/z
-         FKcadm57uXFGwogKFrdQJmfB94g08XHnSu8Z2/5ipleAaZskT5uW8Z2w7bD/ZCu1Eo
-         pO2VhsaHiQ1ICCg12TpIAtywtrwEynSJ0LknIdSA=
+        b=uRvz7zl97mrP3lyHYnISYKYf875ZdWp+zoKZCoSS2/4uXsE+UYNg8Gb9SqVnj42fT
+         70xfL+hGQluQuSuPJTCZMzAi9GR2CwjrOkEG5z0juTawfkAqRztPfpyRmTg6rAkl8p
+         h72qKmRjoaPpkFGnlLh8+BIu6y36/WD1t9tfT1d0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 30/83] bus: ti-sysc: Configure uart quirks for k3 SoC
+        patches@lists.linux.dev, "GONG, Ruiqi" <gongruiqi1@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>, GONG@vger.kernel.org
+Subject: [PATCH 5.15 022/110] alx: fix OOB-read compiler warning
 Date:   Wed, 20 Sep 2023 13:31:20 +0200
-Message-ID: <20230920112827.865485736@linuxfoundation.org>
+Message-ID: <20230920112831.229498388@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,41 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: GONG, Ruiqi <gongruiqi1@huawei.com>
 
-[ Upstream commit 03a711d3cb83692733f865312f49e665c49de6de ]
+[ Upstream commit 3a198c95c95da10ad844cbeade2fe40bdf14c411 ]
 
-Enable the uart quirks similar to the earlier SoCs. Let's assume we are
-likely going to need a k3 specific quirk mask separate from the earlier
-SoCs, so let's not start changing the revision register mask at this point.
+The following message shows up when compiling with W=1:
 
-Note that SYSC_QUIRK_LEGACY_IDLE will be needed until we can remove the
-need for pm_runtime_irq_safe() from 8250_omap driver.
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘alx_get_ethtool_stats’ at drivers/net/ethernet/atheros/alx/ethtool.c:297:2:
+./include/linux/fortify-string.h:592:4: error: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Werror=attribute-warning]
+  592 |    __read_overflow2_field(q_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+In order to get alx stats altogether, alx_get_ethtool_stats() reads
+beyond hw->stats.rx_ok. Fix this warning by directly copying hw->stats,
+and refactor the unnecessarily complicated BUILD_BUG_ON btw.
+
+Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821013218.1614265-1-gongruiqi@huaweicloud.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/atheros/alx/ethtool.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index c8e0f8cb9aa32..5e8c078efd22a 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1504,6 +1504,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47422e03, 0xffffffff,
- 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47424e03, 0xffffffff,
-+		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
+diff --git a/drivers/net/ethernet/atheros/alx/ethtool.c b/drivers/net/ethernet/atheros/alx/ethtool.c
+index b716adacd8159..7f6b69a523676 100644
+--- a/drivers/net/ethernet/atheros/alx/ethtool.c
++++ b/drivers/net/ethernet/atheros/alx/ethtool.c
+@@ -292,9 +292,8 @@ static void alx_get_ethtool_stats(struct net_device *netdev,
+ 	spin_lock(&alx->stats_lock);
  
- 	/* Quirks that need to be set based on the module address */
- 	SYSC_QUIRK("mcpdm", 0x40132000, 0, 0x10, -ENODEV, 0x50000800, 0xffffffff,
+ 	alx_update_hw_stats(hw);
+-	BUILD_BUG_ON(sizeof(hw->stats) - offsetof(struct alx_hw_stats, rx_ok) <
+-		     ALX_NUM_STATS * sizeof(u64));
+-	memcpy(data, &hw->stats.rx_ok, ALX_NUM_STATS * sizeof(u64));
++	BUILD_BUG_ON(sizeof(hw->stats) != ALX_NUM_STATS * sizeof(u64));
++	memcpy(data, &hw->stats, sizeof(hw->stats));
+ 
+ 	spin_unlock(&alx->stats_lock);
+ }
 -- 
 2.40.1
 
