@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9A27A77F0
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 404017A77F1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234178AbjITJvy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43912 "EHLO
+        id S233999AbjITJv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:51:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233999AbjITJvx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:51:53 -0400
+        with ESMTP id S233753AbjITJv7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:51:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE019E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:51:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02416C433C7;
-        Wed, 20 Sep 2023 09:51:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EBB8B9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:51:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA320C433C7;
+        Wed, 20 Sep 2023 09:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203500;
-        bh=pstjqN73Icn3DFPC6yWiS2Oz9m7/j7IxrIQzY2YXsu8=;
+        s=korg; t=1695203509;
+        bh=ZG7zapP4zYPJydVik+s+/WIoPVNOGvffIF8iEmGMyL0=;
         h=Subject:To:Cc:From:Date:From;
-        b=C4ZJP9rfB6QB/bE26q1OcTXHPbbD3v+RpocL64z5mZw4XGAl7B77A7wgc8qHzNo1/
-         +gYQ7o4HnATD+Xs9fsGYfaMgDySYJefn0op1mxzEBtD9030d8viRqzK9D0lbO9fdQZ
-         BsK5lBCknpZXPfzzrPriycv068+tIQuUJFDLwk8I=
-Subject: FAILED: patch "[PATCH] dm: fix a race condition in retrieve_deps" failed to apply to 6.1-stable tree
+        b=Tji3eJLYBEHGdZ+jIYXq4CgDnsnMd7TzqlUflsABa3r9ccKYuVFx9lOiy0DVwsSex
+         zheo32FXdbszZf820dNCJDkW30B5uc/tsSIoekMv+/U02fekTIH5TQU9M2Uvx3xx2y
+         KrAab6Xkc7qzfAWHVSRSwuDuxiUKrUrW2Tm7RB14=
+Subject: FAILED: patch "[PATCH] dm: fix a race condition in retrieve_deps" failed to apply to 5.15-stable tree
 To:     mpatocka@redhat.com, lilingfeng3@huawei.com, luomeng12@huawei.com,
         snitzer@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:51:38 +0200
-Message-ID: <2023092038-jingle-defuse-c9fa@gregkh>
+Date:   Wed, 20 Sep 2023 11:51:39 +0200
+Message-ID: <2023092039-pulmonary-map-20ae@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,23 +43,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f6007dce0cd35d634d9be91ef3515a6385dcee16
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092038-jingle-defuse-c9fa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092039-pulmonary-map-20ae@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 f6007dce0cd3 ("dm: fix a race condition in retrieve_deps")
+43e6c111824c ("dm: change from DMWARN to DMERR or DMCRIT for fatal errors")
+564b5c5476cd ("dm table: audit all dm_table_get_target() callers")
+2aec377a2925 ("dm table: remove dm_table_get_num_targets() wrapper")
+e810cb78bc4b ("dm: refactor dm_md_mempool allocation")
+9571f829f30a ("dm table: fix dm_table_supports_poll to return false if no data devices")
+0f14d60a023c ("dm: improve dm_io reference counting")
+3b03f7c1242c ("dm: simplify dm_start_io_acct")
+4857abf66434 ("dm: simplify dm_io access in dm_split_and_process_bio")
+84b98f4ce4d1 ("dm: factor out dm_io_set_error and __dm_io_dec_pending")
+cfc97abcbe0b ("dm: conditionally enable BIOSET_PERCPU_CACHE for dm_io bioset")
+7dd06a2548b2 ("dm: allow dm_accept_partial_bio() for dm_io without duplicate bios")
+5291984004ed ("dm: fix bio polling to handle possibile BLK_STS_AGAIN")
+4d7bca13dd9a ("dm: consolidate spinlocks in dm_io struct")
+bd4a6dd241ae ("dm: reduce size of dm_io and dm_target_io structs")
+655f3aad7aa4 ("dm: switch dm_target_io booleans over to proper flags")
+82f6cdcc3676 ("dm: switch dm_io booleans over to proper flags")
+e27363472f9b ("dm: factor out dm_io_complete")
+b7f8dff09827 ("dm: simplify dm_sumbit_bio_remap interface")
+a92512819b1f ("dm thin: use dm_submit_bio_remap")
 
 thanks,
 
