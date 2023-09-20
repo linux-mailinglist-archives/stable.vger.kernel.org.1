@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40FEE7A7FAC
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2B647A7D94
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235870AbjITM3Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:29:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
+        id S235371AbjITMKb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235859AbjITM3X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:23 -0400
+        with ESMTP id S235669AbjITMKT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1313AAD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574B6C433C9;
-        Wed, 20 Sep 2023 12:29:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6BFF93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D342C433C7;
+        Wed, 20 Sep 2023 12:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212956;
-        bh=O5dZADeKv3e6Tpy/5ua1Asnk07NoBz8V5I7zxj7ASGA=;
+        s=korg; t=1695211812;
+        bh=cKDgjJx+8fivy1Bm7W1ma+rnxqKe3HrZ/7cRpBhKk0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JM5Tfm9WqI8vEPLYzclSh0hKM/g0Fu3TQDZzahfKqXxqnR8HlUNWbdgUCKmRY1esE
-         EyZkcw0nC2jLwQzwAuk+2KvTpPLvcjm7fPg6cyoT6oIw5QLf2meLIMAJKx7GVGOyEp
-         8aACz1X8f6hN8hUlFG25PY3OKHm8IqdRIs9Vy71g=
+        b=bN+Zb0YUzHC7YNHlBqKI06Do6Dhg/A2L2k85FzIJePaBhqYwy5kr0VKr373k2X8I9
+         iqqPI42u8jQhFgGP74Ec4o4mB76ObNoZM8wcVAu5u5PiJRUk0pf7qBD1BDV0HR2Kvh
+         KqEd+zy2xhiFyIQwSbLeEd/IKr2UCuOELPUr2Oqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
+        patches@lists.linux.dev, Al Viro <viro@zeniv.linux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 108/367] ARM: dts: BCM53573: Fix Ethernet info for Luxul devices
+Subject: [PATCH 4.19 045/273] new helper: lookup_positive_unlocked()
 Date:   Wed, 20 Sep 2023 13:28:05 +0200
-Message-ID: <20230920112901.387921535@linuxfoundation.org>
+Message-ID: <20230920112847.810073707@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,88 +49,274 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 44ad8207806973f4e4f7d870fff36cc01f494250 ]
+[ Upstream commit 6c2d4798a8d16cf4f3a28c3cd4af4f1dcbbb4d04 ]
 
-Both Luxul's XAP devices (XAP-810 and XAP-1440) are access points that
-use a non-default design. They don't include switch but have a single
-Ethernet port and BCM54210E PHY connected to the Ethernet controller's
-MDIO bus.
+Most of the callers of lookup_one_len_unlocked() treat negatives are
+ERR_PTR(-ENOENT).  Provide a helper that would do just that.  Note
+that a pinned positive dentry remains positive - it's ->d_inode is
+stable, etc.; a pinned _negative_ dentry can become positive at any
+point as long as you are not holding its parent at least shared.
+So using lookup_one_len_unlocked() needs to be careful;
+lookup_positive_unlocked() is safer and that's what the callers
+end up open-coding anyway.
 
-Support for those devices regressed due to two changes:
-
-1. Describing MDIO bus with switch
-After commit 9fb90ae6cae7 ("ARM: dts: BCM53573: Describe on-SoC BCM53125
-rev 4 switch") Linux stopped probing for MDIO devices.
-
-2. Dropping hardcoded BCM54210E delays
-In commit fea7fda7f50a ("net: phy: broadcom: Fix RGMII delays
-configuration for BCM54210E") support for other PHY modes was added but
-that requires a proper "phy-mode" value in DT.
-
-Both above changes are correct (they don't need to be reverted or
-anything) but they need this fix for DT data to be correct and for Linux
-to work properly.
-
-Fixes: 9fb90ae6cae7 ("ARM: dts: BCM53573: Describe on-SoC BCM53125 rev 4 switch")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230713111145.14864-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Stable-dep-of: 0d5a4f8f775f ("fs: Fix error checking for d_hash_and_lookup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts | 13 +++++++++++++
- arch/arm/boot/dts/bcm47189-luxul-xap-810.dts  | 13 +++++++++++++
- 2 files changed, 26 insertions(+)
+ fs/cifs/cifsfs.c      |    7 +------
+ fs/debugfs/inode.c    |    6 +-----
+ fs/kernfs/mount.c     |    2 +-
+ fs/namei.c            |   20 ++++++++++++++++++++
+ fs/nfsd/nfs3xdr.c     |    4 +---
+ fs/nfsd/nfs4xdr.c     |   11 +----------
+ fs/overlayfs/namei.c  |   24 ++++++++----------------
+ fs/quota/dquot.c      |    8 +-------
+ include/linux/namei.h |    1 +
+ 9 files changed, 35 insertions(+), 48 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
-index 02957850c88a8..5901160919dcd 100644
---- a/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
-+++ b/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
-@@ -45,3 +45,16 @@ restart {
- 		};
- 	};
- };
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -663,11 +663,6 @@ cifs_get_root(struct smb_vol *vol, struc
+ 		struct inode *dir = d_inode(dentry);
+ 		struct dentry *child;
+ 
+-		if (!dir) {
+-			dput(dentry);
+-			dentry = ERR_PTR(-ENOENT);
+-			break;
+-		}
+ 		if (!S_ISDIR(dir->i_mode)) {
+ 			dput(dentry);
+ 			dentry = ERR_PTR(-ENOTDIR);
+@@ -684,7 +679,7 @@ cifs_get_root(struct smb_vol *vol, struc
+ 		while (*s && *s != sep)
+ 			s++;
+ 
+-		child = lookup_one_len_unlocked(p, dentry, s - p);
++		child = lookup_positive_unlocked(p, dentry, s - p);
+ 		dput(dentry);
+ 		dentry = child;
+ 	} while (!IS_ERR(dentry));
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -275,13 +275,9 @@ struct dentry *debugfs_lookup(const char
+ 	if (!parent)
+ 		parent = debugfs_mount->mnt_root;
+ 
+-	dentry = lookup_one_len_unlocked(name, parent, strlen(name));
++	dentry = lookup_positive_unlocked(name, parent, strlen(name));
+ 	if (IS_ERR(dentry))
+ 		return NULL;
+-	if (!d_really_is_positive(dentry)) {
+-		dput(dentry);
+-		return NULL;
+-	}
+ 	return dentry;
+ }
+ EXPORT_SYMBOL_GPL(debugfs_lookup);
+--- a/fs/kernfs/mount.c
++++ b/fs/kernfs/mount.c
+@@ -212,7 +212,7 @@ struct dentry *kernfs_node_dentry(struct
+ 			dput(dentry);
+ 			return ERR_PTR(-EINVAL);
+ 		}
+-		dtmp = lookup_one_len_unlocked(kntmp->name, dentry,
++		dtmp = lookup_positive_unlocked(kntmp->name, dentry,
+ 					       strlen(kntmp->name));
+ 		dput(dentry);
+ 		if (IS_ERR(dtmp))
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -2575,6 +2575,26 @@ struct dentry *lookup_one_len_unlocked(c
+ }
+ EXPORT_SYMBOL(lookup_one_len_unlocked);
+ 
++/*
++ * Like lookup_one_len_unlocked(), except that it yields ERR_PTR(-ENOENT)
++ * on negatives.  Returns known positive or ERR_PTR(); that's what
++ * most of the users want.  Note that pinned negative with unlocked parent
++ * _can_ become positive at any time, so callers of lookup_one_len_unlocked()
++ * need to be very careful; pinned positives have ->d_inode stable, so
++ * this one avoids such problems.
++ */
++struct dentry *lookup_positive_unlocked(const char *name,
++				       struct dentry *base, int len)
++{
++	struct dentry *ret = lookup_one_len_unlocked(name, base, len);
++	if (!IS_ERR(ret) && d_is_negative(ret)) {
++		dput(ret);
++		ret = ERR_PTR(-ENOENT);
++	}
++	return ret;
++}
++EXPORT_SYMBOL(lookup_positive_unlocked);
 +
-+&gmac0 {
-+	phy-mode = "rgmii";
-+	phy-handle = <&bcm54210e>;
-+
-+	mdio {
-+		/delete-node/ switch@1e;
-+
-+		bcm54210e: ethernet-phy@0 {
-+			reg = <0>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts b/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
-index d68e9dbebf26b..8e7483272d47d 100644
---- a/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
-+++ b/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
-@@ -81,3 +81,16 @@ pcie0_chipcommon: chipcommon@0 {
- 		};
- 	};
- };
-+
-+&gmac0 {
-+	phy-mode = "rgmii";
-+	phy-handle = <&bcm54210e>;
-+
-+	mdio {
-+		/delete-node/ switch@1e;
-+
-+		bcm54210e: ethernet-phy@0 {
-+			reg = <0>;
-+		};
-+	};
-+};
--- 
-2.40.1
-
+ #ifdef CONFIG_UNIX98_PTYS
+ int path_pts(struct path *path)
+ {
+--- a/fs/nfsd/nfs3xdr.c
++++ b/fs/nfsd/nfs3xdr.c
+@@ -855,13 +855,11 @@ compose_entry_fh(struct nfsd3_readdirres
+ 		} else
+ 			dchild = dget(dparent);
+ 	} else
+-		dchild = lookup_one_len_unlocked(name, dparent, namlen);
++		dchild = lookup_positive_unlocked(name, dparent, namlen);
+ 	if (IS_ERR(dchild))
+ 		return rv;
+ 	if (d_mountpoint(dchild))
+ 		goto out;
+-	if (d_really_is_negative(dchild))
+-		goto out;
+ 	if (dchild->d_inode->i_ino != ino)
+ 		goto out;
+ 	rv = fh_compose(fhp, exp, dchild, &cd->fh);
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -2984,18 +2984,9 @@ nfsd4_encode_dirent_fattr(struct xdr_str
+ 	__be32 nfserr;
+ 	int ignore_crossmnt = 0;
+ 
+-	dentry = lookup_one_len_unlocked(name, cd->rd_fhp->fh_dentry, namlen);
++	dentry = lookup_positive_unlocked(name, cd->rd_fhp->fh_dentry, namlen);
+ 	if (IS_ERR(dentry))
+ 		return nfserrno(PTR_ERR(dentry));
+-	if (d_really_is_negative(dentry)) {
+-		/*
+-		 * we're not holding the i_mutex here, so there's
+-		 * a window where this directory entry could have gone
+-		 * away.
+-		 */
+-		dput(dentry);
+-		return nfserr_noent;
+-	}
+ 
+ 	exp_get(exp);
+ 	/*
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -203,7 +203,7 @@ static int ovl_lookup_single(struct dent
+ 	int err;
+ 	bool last_element = !post[0];
+ 
+-	this = lookup_one_len_unlocked(name, base, namelen);
++	this = lookup_positive_unlocked(name, base, namelen);
+ 	if (IS_ERR(this)) {
+ 		err = PTR_ERR(this);
+ 		this = NULL;
+@@ -211,8 +211,6 @@ static int ovl_lookup_single(struct dent
+ 			goto out;
+ 		goto out_err;
+ 	}
+-	if (!this->d_inode)
+-		goto put_and_out;
+ 
+ 	if (ovl_dentry_weird(this)) {
+ 		/* Don't support traversing automounts and other weirdness */
+@@ -654,7 +652,7 @@ struct dentry *ovl_get_index_fh(struct o
+ 	if (err)
+ 		return ERR_PTR(err);
+ 
+-	index = lookup_one_len_unlocked(name.name, ofs->indexdir, name.len);
++	index = lookup_positive_unlocked(name.name, ofs->indexdir, name.len);
+ 	kfree(name.name);
+ 	if (IS_ERR(index)) {
+ 		if (PTR_ERR(index) == -ENOENT)
+@@ -662,9 +660,7 @@ struct dentry *ovl_get_index_fh(struct o
+ 		return index;
+ 	}
+ 
+-	if (d_is_negative(index))
+-		err = 0;
+-	else if (ovl_is_whiteout(index))
++	if (ovl_is_whiteout(index))
+ 		err = -ESTALE;
+ 	else if (ovl_dentry_weird(index))
+ 		err = -EIO;
+@@ -688,7 +684,7 @@ struct dentry *ovl_lookup_index(struct o
+ 	if (err)
+ 		return ERR_PTR(err);
+ 
+-	index = lookup_one_len_unlocked(name.name, ofs->indexdir, name.len);
++	index = lookup_positive_unlocked(name.name, ofs->indexdir, name.len);
+ 	if (IS_ERR(index)) {
+ 		err = PTR_ERR(index);
+ 		if (err == -ENOENT) {
+@@ -703,9 +699,7 @@ struct dentry *ovl_lookup_index(struct o
+ 	}
+ 
+ 	inode = d_inode(index);
+-	if (d_is_negative(index)) {
+-		goto out_dput;
+-	} else if (ovl_is_whiteout(index) && !verify) {
++	if (ovl_is_whiteout(index) && !verify) {
+ 		/*
+ 		 * When index lookup is called with !verify for decoding an
+ 		 * overlay file handle, a whiteout index implies that decode
+@@ -1134,7 +1128,7 @@ bool ovl_lower_positive(struct dentry *d
+ 		struct dentry *this;
+ 		struct dentry *lowerdir = poe->lowerstack[i].dentry;
+ 
+-		this = lookup_one_len_unlocked(name->name, lowerdir,
++		this = lookup_positive_unlocked(name->name, lowerdir,
+ 					       name->len);
+ 		if (IS_ERR(this)) {
+ 			switch (PTR_ERR(this)) {
+@@ -1151,10 +1145,8 @@ bool ovl_lower_positive(struct dentry *d
+ 				break;
+ 			}
+ 		} else {
+-			if (this->d_inode) {
+-				positive = !ovl_is_whiteout(this);
+-				done = true;
+-			}
++			positive = !ovl_is_whiteout(this);
++			done = true;
+ 			dput(this);
+ 		}
+ 	}
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2535,21 +2535,15 @@ int dquot_quota_on_mount(struct super_bl
+ 	struct dentry *dentry;
+ 	int error;
+ 
+-	dentry = lookup_one_len_unlocked(qf_name, sb->s_root, strlen(qf_name));
++	dentry = lookup_positive_unlocked(qf_name, sb->s_root, strlen(qf_name));
+ 	if (IS_ERR(dentry))
+ 		return PTR_ERR(dentry);
+ 
+-	if (d_really_is_negative(dentry)) {
+-		error = -ENOENT;
+-		goto out;
+-	}
+-
+ 	error = security_quota_on(dentry);
+ 	if (!error)
+ 		error = vfs_load_quota_inode(d_inode(dentry), type, format_id,
+ 				DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
+ 
+-out:
+ 	dput(dentry);
+ 	return error;
+ }
+--- a/include/linux/namei.h
++++ b/include/linux/namei.h
+@@ -84,6 +84,7 @@ extern int kern_path_mountpoint(int, con
+ extern struct dentry *try_lookup_one_len(const char *, struct dentry *, int);
+ extern struct dentry *lookup_one_len(const char *, struct dentry *, int);
+ extern struct dentry *lookup_one_len_unlocked(const char *, struct dentry *, int);
++extern struct dentry *lookup_positive_unlocked(const char *, struct dentry *, int);
+ 
+ extern int follow_down_one(struct path *);
+ extern int follow_down(struct path *);
 
 
