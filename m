@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED887A8149
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F4E77A7D39
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236222AbjITMoM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43172 "EHLO
+        id S235152AbjITMHl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236264AbjITMoI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:08 -0400
+        with ESMTP id S235195AbjITMHk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8D2C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F25C433CA;
-        Wed, 20 Sep 2023 12:44:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A4AE0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62471C433C8;
+        Wed, 20 Sep 2023 12:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213841;
-        bh=lm0rIrvoKbF/7VlKe65QLL9oO9/0DuF/ERQmNeUyEwg=;
+        s=korg; t=1695211652;
+        bh=1njgD6quAz4ONoxLNtNnNla7rZ23tdZhxP5akXix670=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nL2yoy9SvkTmOAuJ8ezk0hSWY2+yAuZ3h/IscBMY0RfQBZw7er0D+d6n+QUEtq6p+
-         6yrKrFWw1035mxLz64bDixOVRSc/kTmRJJpNnVpkydw3pTnNPcBrxHoLIT+0sMgvhh
-         8QfgrFEEUzW1VhAMbqFOJLbblWR1xUvfZDp/imWY=
+        b=k+TuxMwZRCjCj6f+XYZfbXmpyowdKRbme0ydmgXcpzX9cK9+DrpkevGz7UUnRQKd+
+         GnunjKMvtTuzdd9zmLR8naq5vniaZJE1uOgaZ8fz3IUXfkudwrklV5wnd3Hu7qDyqH
+         ljx7RHBGJbL9Kq6PstbkoFHQMGdX6Vy4/5A3k9qE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/110] wifi: wil6210: fix fortify warnings
+        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
+        Li Yang <leoyang.li@nxp.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 173/186] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
 Date:   Wed, 20 Sep 2023 13:31:16 +0200
-Message-ID: <20230920112831.074239779@linuxfoundation.org>
+Message-ID: <20230920112843.130308512@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,126 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit 1ad8237e971630c66a1a6194491e0837b64d00e0 ]
+[ Upstream commit ce9daa2efc0872a9a68ea51dc8000df05893ef2e ]
 
-When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
-I've noticed the following:
+We should verify the bound of the array to assure that host
+may not manipulate the index to point past endpoint array.
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘wil_rx_crypto_check_edma’ at drivers/net/wireless/ath/wil6210/txrx_edma.c:566:2:
-./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  529 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-where the compiler complains on:
-
-const u8 *pn;
-...
-pn = (u8 *)&st->ext.pn_15_0;
-...
-memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
-
-and:
-
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘wil_rx_crypto_check’ at drivers/net/wireless/ath/wil6210/txrx.c:684:2:
-./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  529 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-where the compiler complains on:
-
-const u8 *pn = (u8 *)&d->mac.pn_15_0;
-...
-memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
-
-In both cases, the fortification logic interprets 'memcpy()' as 6-byte
-overread of 2-byte field 'pn_15_0' of 'struct wil_rx_status_extension'
-and 'pn_15_0' of 'struct vring_rx_mac', respectively. To silence
-these warnings, last two fields of the aforementioned structures
-are grouped using 'struct_group_attr(pn, __packed' quirk.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230621093711.80118-1-dmantipov@yandex.ru
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Acked-by: Li Yang <leoyang.li@nxp.com>
+Link: https://lore.kernel.org/r/20230628081511.186850-1-make_ruc2021@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/txrx.c      | 2 +-
- drivers/net/wireless/ath/wil6210/txrx.h      | 6 ++++--
- drivers/net/wireless/ath/wil6210/txrx_edma.c | 2 +-
- drivers/net/wireless/ath/wil6210/txrx_edma.h | 6 ++++--
- 4 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
-index cc830c795b33c..5b2de4f3fa0bd 100644
---- a/drivers/net/wireless/ath/wil6210/txrx.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx.c
-@@ -666,7 +666,7 @@ static int wil_rx_crypto_check(struct wil6210_priv *wil, struct sk_buff *skb)
- 	struct wil_tid_crypto_rx *c = mc ? &s->group_crypto_rx :
- 				      &s->tid_crypto_rx[tid];
- 	struct wil_tid_crypto_rx_single *cc = &c->key_id[key_id];
--	const u8 *pn = (u8 *)&d->mac.pn_15_0;
-+	const u8 *pn = (u8 *)&d->mac.pn;
+diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
+index a3e72d690eef9..962e3ea4dc147 100644
+--- a/drivers/usb/gadget/udc/fsl_qe_udc.c
++++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
+@@ -1954,6 +1954,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
+ 	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
+ 		/* Get endpoint status */
+ 		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
++		if (pipe >= USB_MAX_ENDPOINTS)
++			goto stall;
+ 		struct qe_ep *target_ep = &udc->eps[pipe];
+ 		u16 usep;
  
- 	if (!cc->key_set) {
- 		wil_err_ratelimited(wil,
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wireless/ath/wil6210/txrx.h
-index 1f4c8ec75be87..0f6f6b62bfc9a 100644
---- a/drivers/net/wireless/ath/wil6210/txrx.h
-+++ b/drivers/net/wireless/ath/wil6210/txrx.h
-@@ -343,8 +343,10 @@ struct vring_rx_mac {
- 	u32 d0;
- 	u32 d1;
- 	u16 w4;
--	u16 pn_15_0;
--	u32 pn_47_16;
-+	struct_group_attr(pn, __packed,
-+		u16 pn_15_0;
-+		u32 pn_47_16;
-+	);
- } __packed;
- 
- /* Rx descriptor - DMA part
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-index 201c8c35e0c9e..1ba1f21ebea26 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-@@ -548,7 +548,7 @@ static int wil_rx_crypto_check_edma(struct wil6210_priv *wil,
- 	s = &wil->sta[cid];
- 	c = mc ? &s->group_crypto_rx : &s->tid_crypto_rx[tid];
- 	cc = &c->key_id[key_id];
--	pn = (u8 *)&st->ext.pn_15_0;
-+	pn = (u8 *)&st->ext.pn;
- 
- 	if (!cc->key_set) {
- 		wil_err_ratelimited(wil,
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-index c736f7413a35f..ee90e225bb050 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-@@ -330,8 +330,10 @@ struct wil_rx_status_extension {
- 	u32 d0;
- 	u32 d1;
- 	__le16 seq_num; /* only lower 12 bits */
--	u16 pn_15_0;
--	u32 pn_47_16;
-+	struct_group_attr(pn, __packed,
-+		u16 pn_15_0;
-+		u32 pn_47_16;
-+	);
- } __packed;
- 
- struct wil_rx_status_extended {
 -- 
 2.40.1
 
