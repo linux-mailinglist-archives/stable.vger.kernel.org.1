@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB4EA7A7F2F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9AD87A8125
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235766AbjITMZV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43280 "EHLO
+        id S236116AbjITMm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235815AbjITMYr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:47 -0400
+        with ESMTP id S236294AbjITMm5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DBBA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A97C433C8;
-        Wed, 20 Sep 2023 12:24:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 462278F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCF9C433C8;
+        Wed, 20 Sep 2023 12:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212681;
-        bh=wyvhGkxzERvVB+2/KnUqy8RZ/dJuEfrE4MwLnJDD0ro=;
+        s=korg; t=1695213770;
+        bh=eVTltBm92bpieE8i7TUOQdBzDMqYhaEdsr85W+aLCJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l6dzqMQrAk6yxY3H8q3mOHg8wB6gT3vZeQiwp/8tqbxV2Ou5BH5lw3eeeYf7D6Cy/
-         hayYmkUKhPyJUD/QmZQXURro2AxwCdO9qYEXX0w0illYOqK1XcL/YWVzaGA8/qjWbV
-         5tSZGjskFWqWeRTlzRFx3UGX1FsHda/GZlp05Hno=
+        b=NUbxsuuQseNpd8LL69F+bO/0uRv2QhwYMoHeKJnK3jnLrjHh3J0hcpk6LtEAFZ2Xq
+         Vj/dtSppFDqnoMnbRoHnXtwWkQkmWSGhWYfLWqtu5s3i911bYq4NqRsiMo/NypI/bt
+         T/O2dpMDD3R7y/FnkK074SsnYRw47ONN+gKR4wfk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tommy Huang <tommy_huang@aspeedtech.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.10 79/83] i2c: aspeed: Reset the i2c controller when timeout occurs
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 352/367] btrfs: add a helper to read the superblock metadata_uuid
 Date:   Wed, 20 Sep 2023 13:32:09 +0200
-Message-ID: <20230920112829.780940639@linuxfoundation.org>
+Message-ID: <20230920112907.601726775@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommy Huang <tommy_huang@aspeedtech.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-commit fee465150b458351b6d9b9f66084f3cc3022b88b upstream.
+[ Upstream commit 4844c3664a72d36cc79752cb651c78860b14c240 ]
 
-Reset the i2c controller when an i2c transfer timeout occurs.
-The remaining interrupts and device should be reset to avoid
-unpredictable controller behavior.
+In some cases, we need to read the FSID from the superblock when the
+metadata_uuid is not set, and otherwise, read the metadata_uuid. So,
+add a helper.
 
-Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
-Cc: <stable@vger.kernel.org> # v5.1+
-Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/btrfs/volumes.c | 8 ++++++++
+ fs/btrfs/volumes.h | 1 +
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -693,13 +693,16 @@ static int aspeed_i2c_master_xfer(struct
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 0d4afeacb237b..f9192dcb9208b 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -895,6 +895,14 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
+ 	return -EINVAL;
+ }
  
- 	if (time_left == 0) {
- 		/*
--		 * If timed out and bus is still busy in a multi master
--		 * environment, attempt recovery at here.
-+		 * In a multi-master setup, if a timeout occurs, attempt
-+		 * recovery. But if the bus is idle, we still need to reset the
-+		 * i2c controller to clear the remaining interrupts.
- 		 */
- 		if (bus->multi_master &&
- 		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
- 		     ASPEED_I2CD_BUS_BUSY_STS))
- 			aspeed_i2c_recover_bus(bus);
-+		else
-+			aspeed_i2c_reset(bus);
++u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb)
++{
++	bool has_metadata_uuid = (btrfs_super_incompat_flags(sb) &
++				  BTRFS_FEATURE_INCOMPAT_METADATA_UUID);
++
++	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
++}
++
+ /*
+  * Handle scanned device having its CHANGING_FSID_V2 flag set and the fs_devices
+  * being created with a disk that has already completed its fsid change.
+diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
+index fd8fdaa4b0cdf..762c0a3754982 100644
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -582,5 +582,6 @@ const char *btrfs_bg_type_to_raid_name(u64 flags);
+ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
  
- 		/*
- 		 * If timed out and the state is still pending, drop the pending
+ bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
++u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb);
+ 
+ #endif
+-- 
+2.40.1
+
 
 
