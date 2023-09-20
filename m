@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47CA7A8074
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF17B7A7E11
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235953AbjITMh2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58888 "EHLO
+        id S235405AbjITMP3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235537AbjITMh1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:27 -0400
+        with ESMTP id S235706AbjITMPB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84E5C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD2AC433C7;
-        Wed, 20 Sep 2023 12:37:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E8BAD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93387C433C8;
+        Wed, 20 Sep 2023 12:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213441;
-        bh=VaBzKS+1x3gRRNsFQ+e2kY6YpLTRSBPlH4MWMpLcONE=;
+        s=korg; t=1695212095;
+        bh=Vh4xpK3o0vymehyig9r9WAU9+xCjMBU+vcglOIQn9VQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gn1HMF92Z56A172D4+hFvc6GZldgSHxNY03RzfN1RdYoXQaVq1jNfnDe5GEwooXxW
-         1jU8+BTwIC7xGmmUmuQ6nvbNn2uKX8sW9Tahm/2/PfuSRKJt07IlNNIw8hdIV7WmsW
-         wH4QrD+B12Rk4OPpqHKcn+SNgPvEs1SGAwGkwKS8=
+        b=o8aIFl5Gu0QzeKstt+YF4Zb2uz+cCmUYYBE+ijXh9M8FZFL8M3Dt6FKn/QQb9jPiN
+         BDyAV+9wIwY1u+hWZOfE1AakXf8ckFhzajr+t56yeNWmnrhn9sUYoo74ujx5Jqfe4G
+         YN8RYxrVYZoh0A+lWopeyPjfWZ6KAGK97YbfMNC8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
-        Corey Minyard <minyard@acm.org>, GONG@vger.kernel.org
-Subject: [PATCH 5.4 212/367] ipmi_si: fix a memleak in try_smi_init()
+        patches@lists.linux.dev,
+        Dave Stevenson <dave.stevenson@raspberrypi.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 149/273] media: i2c: ov2680: Set V4L2_CTRL_FLAG_MODIFY_LAYOUT on flips
 Date:   Wed, 20 Sep 2023 13:29:49 +0200
-Message-ID: <20230920112904.094678322@linuxfoundation.org>
+Message-ID: <20230920112851.138676621@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-commit 6cf1a126de2992b4efe1c3c4d398f8de4aed6e3f upstream.
+[ Upstream commit 66274280b2c745d380508dc27b9a4dfd736e5eda ]
 
-Kmemleak reported the following leak info in try_smi_init():
+The driver changes the Bayer order based on the flips, but
+does not define the control correctly with the
+V4L2_CTRL_FLAG_MODIFY_LAYOUT flag.
 
-unreferenced object 0xffff00018ecf9400 (size 1024):
-  comm "modprobe", pid 2707763, jiffies 4300851415 (age 773.308s)
-  backtrace:
-    [<000000004ca5b312>] __kmalloc+0x4b8/0x7b0
-    [<00000000953b1072>] try_smi_init+0x148/0x5dc [ipmi_si]
-    [<000000006460d325>] 0xffff800081b10148
-    [<0000000039206ea5>] do_one_initcall+0x64/0x2a4
-    [<00000000601399ce>] do_init_module+0x50/0x300
-    [<000000003c12ba3c>] load_module+0x7a8/0x9e0
-    [<00000000c246fffe>] __se_sys_init_module+0x104/0x180
-    [<00000000eea99093>] __arm64_sys_init_module+0x24/0x30
-    [<0000000021b1ef87>] el0_svc_common.constprop.0+0x94/0x250
-    [<0000000070f4f8b7>] do_el0_svc+0x48/0xe0
-    [<000000005a05337f>] el0_svc+0x24/0x3c
-    [<000000005eb248d6>] el0_sync_handler+0x160/0x164
-    [<0000000030a59039>] el0_sync+0x160/0x180
+Add the V4L2_CTRL_FLAG_MODIFY_LAYOUT flag.
 
-The problem was that when an error occurred before handlers registration
-and after allocating `new_smi->si_sm`, the variable wouldn't be freed in
-the error handling afterwards since `shutdown_smi()` hadn't been
-registered yet. Fix it by adding a `kfree()` in the error handling path
-in `try_smi_init()`.
-
-Cc: stable@vger.kernel.org # 4.19+
-Fixes: 7960f18a5647 ("ipmi_si: Convert over to a shutdown handler")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Co-developed-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
-Signed-off-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
-Message-Id: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
-Signed-off-by: Corey Minyard <minyard@acm.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Stable-dep-of: 7b5a42e6ae71 ("media: ov2680: Remove auto-gain and auto-exposure controls")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/i2c/ov2680.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -2086,6 +2086,11 @@ static int try_smi_init(struct smi_info
- 		new_smi->io.io_cleanup = NULL;
- 	}
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index d8798fb714ba8..426386b94fff4 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -969,6 +969,8 @@ static int ov2680_v4l2_init(struct ov2680_dev *sensor)
  
-+	if (rv && new_smi->si_sm) {
-+		kfree(new_smi->si_sm);
-+		new_smi->si_sm = NULL;
-+	}
-+
- 	return rv;
- }
+ 	ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
+ 	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
++	ctrls->vflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
++	ctrls->hflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
  
+ 	v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
+ 	v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
+-- 
+2.40.1
+
 
 
