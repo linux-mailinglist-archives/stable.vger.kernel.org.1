@@ -2,140 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D1DC7A7290
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 08:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D5C7A73A8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 09:06:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbjITGI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 02:08:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
+        id S233553AbjITHGS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 03:06:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233013AbjITGI2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 02:08:28 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4878BAF;
-        Tue, 19 Sep 2023 23:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695190102; x=1726726102;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GIaIXCqIGoxl1rQ/uxCgQqfwjzyvj08lMJhHPrSZpx0=;
-  b=VZItf5AcbtNRS7v/SopXlt85Tm/OWsFU6Wbc6I4u8tStGPmuAIeoGpJm
-   luNigWzawQxcfIid+OlYRABkHQT8w7mCACvhzdkH17FNBUhv5o4ZFDXQm
-   xCOLEQkfN6H7PWcXKEfbCtYThw4KQ85B2yB/qrsgPkC1gqz2JlUDgQpqd
-   92LckcTZeb6ooki12ug1mckXMxJPz/iKqH7TdmUESKvRdWJGLiKXfF0UM
-   YdRCCHg2W+MhW03yUNMrdmddlquVb2Wm4BUHSGEB5hsIb4f3co9ALZ2k/
-   u2u/G7pBbs/BQuDPLebFNPIkJgVSHuL7PilkCgMX4fX77BP4u4LXhdP+X
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="382880382"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; 
-   d="scan'208";a="382880382"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 23:08:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="1077294545"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; 
-   d="scan'208";a="1077294545"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.213.20.10]) ([10.213.20.10])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 23:08:17 -0700
-Message-ID: <81f332a3-2b30-465d-f026-bc203aada32d@intel.com>
-Date:   Wed, 20 Sep 2023 08:08:15 +0200
+        with ESMTP id S233534AbjITHGR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 03:06:17 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ABF0D3;
+        Wed, 20 Sep 2023 00:06:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37770C433C8;
+        Wed, 20 Sep 2023 07:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695193571;
+        bh=oP8IOTnoBTPkWHwbE/Ttl2bM4z0e2euCv1MOLa8xiQ8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nB4zsdTGma4GSVOYF2SuvKyMbcwprZ6OnV+6KgOiU9jbXCL/l/GMvdkeQ9jDt04cs
+         IxrIJs/SgtQ4csPLTqYH4xZqrx63YQVBhtmeWvsvX/GwIMj2ZkUOASmR8VxoX0kQLO
+         wiklitpBAb/pH9KMdBbFElzy9aI9RIg5F2Dc35GuYfYsS9DDXxZ4Gg+O/F26zx13k0
+         zR++Jyu4YrjcMdJxQYIndkxMO3m8snde7Yz2IeJ6OhsG4/qvAn0+XJnePUFmX4kJuc
+         oG9TU2TdYUznrq3PFq+TddhzeI0L8ER2/zurSlfAVcRL52q3w15jdA+QIo2SEXVNRx
+         08isUZ6AK3Ipg==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qirI2-0002mU-3D;
+        Wed, 20 Sep 2023 09:06:27 +0200
+Date:   Wed, 20 Sep 2023 09:06:26 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Thorsten Leemhuis <linux@leemhuis.info>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>, agross@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.5 30/36] arm64: dts: qcom: sc8280xp-x13s: Add
+ camera activity LED
+Message-ID: <ZQqZ8uYegx7PABnw@hovoldconsulting.com>
+References: <20230908192848.3462476-30-sashal@kernel.org>
+ <ZP60ngCV3hhNZiX5@hovoldconsulting.com>
+ <ZQjEEt7sB2M5EO53@sashalap>
+ <ZQk8aJx268Soy4yH@hovoldconsulting.com>
+ <ZQmc7hznPpIh6iwP@sashalap>
+ <ZQmh-DaBTwMuOLHe@hovoldconsulting.com>
+ <ZQm5woD5zwRIG9cf@sashalap>
+ <ZQnA4o7G4A3YC-pe@hovoldconsulting.com>
+ <ZQnFj6g4pbwMz69C@hovoldconsulting.com>
+ <bd906454-8949-38d6-9327-d640468b6c3d@leemhuis.info>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [Intel-gfx] [PATCH] i915: Limit the length of an sg list to the
- requested length
-Content-Language: en-US
-To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        dri-devel@lists.freedesktop.org,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org
-References: <20230919194855.347582-1-willy@infradead.org>
-From:   Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20230919194855.347582-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd906454-8949-38d6-9327-d640468b6c3d@leemhuis.info>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 19.09.2023 21:48, Matthew Wilcox (Oracle) wrote:
-> The folio conversion changed the behaviour of shmem_sg_alloc_table() to
-> put the entire length of the last folio into the sg list, even if the sg
-> list should have been shorter.  gen8_ggtt_insert_entries() relied on the
-> list being the right langth and would overrun the end of the page tables.
+On Wed, Sep 20, 2023 at 06:53:09AM +0200, Thorsten Leemhuis wrote:
+> On 19.09.23 18:00, Johan Hovold wrote:
+> > On Tue, Sep 19, 2023 at 05:40:18PM +0200, Johan Hovold wrote:
 
-s/langth/length/, I can fix it on applying.
-
-> Other functions may also have been affected.
+> > You also seem to have made up new stable kernel rules
 > 
-> Clamp the length of the last entry in the sg list to be the expected
-> length.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
-> Cc: stable@vger.kernel.org # 6.5.x
-> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9256
-> Link: https://lore.kernel.org/lkml/6287208.lOV4Wx5bFT@natalenko.name/
-> Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> No, it was me who changed the text, as I saw people struggling with it
+> and noticed that's partly due to problems in the text. But just like
+> with code changes there's always a risk that slight changes to a text
+> result in unwanted effects. Not yet sure if that's the case here.
 
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+No, the updated text is just fine. My point was that Sasha's wish to
+backport devicetree changes to enable hardware features violates the
+stable kernel rules.
 
-Regards
-Andrzej
+> > as adding device
+> > tree nodes clearly doesn't fit the description in
+> > stable-kernel-rules.rst:
+> > 
+> > 	It must either fix a real bug that bothers people or just add a
+> > 	device ID.
+> > 
+> > (This used to say "New device IDs and quirks are also accepted.")
 
-> ---
->   drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> index 8f1633c3fb93..73a4a4eb29e0 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> @@ -100,6 +100,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
->   	st->nents = 0;
->   	for (i = 0; i < page_count; i++) {
->   		struct folio *folio;
-> +		unsigned long nr_pages;
->   		const unsigned int shrink[] = {
->   			I915_SHRINK_BOUND | I915_SHRINK_UNBOUND,
->   			0,
-> @@ -150,6 +151,8 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
->   			}
->   		} while (1);
->   
-> +		nr_pages = min_t(unsigned long,
-> +				folio_nr_pages(folio), page_count - i);
->   		if (!i ||
->   		    sg->length >= max_segment ||
->   		    folio_pfn(folio) != next_pfn) {
-> @@ -157,13 +160,13 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
->   				sg = sg_next(sg);
->   
->   			st->nents++;
-> -			sg_set_folio(sg, folio, folio_size(folio), 0);
-> +			sg_set_folio(sg, folio, nr_pages * PAGE_SIZE, 0);
->   		} else {
->   			/* XXX: could overflow? */
-> -			sg->length += folio_size(folio);
-> +			sg->length += nr_pages * PAGE_SIZE;
->   		}
-> -		next_pfn = folio_pfn(folio) + folio_nr_pages(folio);
-> -		i += folio_nr_pages(folio) - 1;
-> +		next_pfn = folio_pfn(folio) + nr_pages;
-> +		i += nr_pages - 1;
->   
->   		/* Check that the i965g/gm workaround works. */
->   		GEM_BUG_ON(gfp & __GFP_DMA32 && next_pfn >= 0x00100000UL);
+I just put the old formulation in parentheses for reference to avoid
+having anyone think this was something new.
 
+Johan
