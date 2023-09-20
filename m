@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AB87A7CC9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCB97A7E1B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235008AbjITMEK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39318 "EHLO
+        id S235383AbjITMPg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235096AbjITMEJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:09 -0400
+        with ESMTP id S235260AbjITMP0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE1A9E9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F71C433C7;
-        Wed, 20 Sep 2023 12:04:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745B893
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26EAC433CA;
+        Wed, 20 Sep 2023 12:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211442;
-        bh=WfYmQjZR/NGYR80Piv9eIjeyk62dyot+UWTZ75Pz2/g=;
+        s=korg; t=1695212120;
+        bh=LwBPq+eNK0+ERTpDRLT0ZcAisYCxwwz8URDXd41hAw8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7CBiJnjso9UuOCyMovWMNq5uTTpTCvFxk1lStNvckn+Q1PSEUhFJXlmye8J6ujAX
-         G/+1In6aSa2IFFdjginfQ9X3RBEHyhE0QRiI++4r9VN9Gn5b54eAH6O9ANUeezoaLT
-         CHE17hhf5YwfA/b7X6dha4SJLmJZw0vO3EWcltjA=
+        b=CqvF802w35zLYwlFsk4adUIDRfgqCLQWCY4i3nJE1NmyTSR7sB71czWszLDN2MGV8
+         lW20IgZRl8M+iuAAsWFhlbe70AsnkTvGf6NGXn0Q1xpXFTzcZP0RVNqOdLnTBck9R9
+         aCkDCu0Jy9n3GgxDx1ITUY4g5V0A8Uj4TE5xFRkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxime Ripard <mripard@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-        Benjamin Tissoires <bentiss@kernel.org>,
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 094/186] HID: multitouch: Correct devm device reference for hidinput input_dev name
+Subject: [PATCH 4.19 157/273] serial: tegra: handle clk prepare error in tegra_uart_hw_init()
 Date:   Wed, 20 Sep 2023 13:29:57 +0200
-Message-ID: <20230920112840.339251756@linuxfoundation.org>
+Message-ID: <20230920112851.381853847@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,68 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 4794394635293a3e74591351fff469cea7ad15a2 ]
+[ Upstream commit 5abd01145d0cc6cd1b7c2fe6ee0b9ea0fa13671e ]
 
-Reference the HID device rather than the input device for the devm
-allocation of the input_dev name. Referencing the input_dev would lead to a
-use-after-free when the input_dev was unregistered and subsequently fires a
-uevent that depends on the name. At the point of firing the uevent, the
-name would be freed by devres management.
+In tegra_uart_hw_init(), the return value of clk_prepare_enable() should
+be checked since it might fail.
 
-Use devm_kasprintf to simplify the logic for allocating memory and
-formatting the input_dev name string.
-
-Reported-by: Maxime Ripard <mripard@kernel.org>
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
-Fixes: c08d46aa805b ("HID: multitouch: devm conversion")
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230824061308.222021-3-sergeantsagara@protonmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: e9ea096dd225 ("serial: tegra: add serial driver")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Link: https://lore.kernel.org/r/20230817105406.228674-1-yiyang13@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/tty/serial/serial-tegra.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 0fa3bd2b035e7..55b1023af31fa 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1136,7 +1136,6 @@ static void mt_post_parse(struct mt_device *td)
- static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- {
- 	struct mt_device *td = hid_get_drvdata(hdev);
--	char *name;
- 	const char *suffix = NULL;
- 	struct hid_field *field = hi->report->field[0];
- 	int ret;
-@@ -1196,15 +1195,9 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		}
- 	}
+diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
+index 41fe45f2349ef..a30f7ed123469 100644
+--- a/drivers/tty/serial/serial-tegra.c
++++ b/drivers/tty/serial/serial-tegra.c
+@@ -944,7 +944,11 @@ static int tegra_uart_hw_init(struct tegra_uart_port *tup)
+ 	tup->ier_shadow = 0;
+ 	tup->current_baud = 0;
  
--	if (suffix) {
--		name = devm_kzalloc(&hi->input->dev,
--				    strlen(hdev->name) + strlen(suffix) + 2,
--				    GFP_KERNEL);
--		if (name) {
--			sprintf(name, "%s %s", hdev->name, suffix);
--			hi->input->name = name;
--		}
--	}
-+	if (suffix)
-+		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
-+						 "%s %s", hdev->name, suffix);
+-	clk_prepare_enable(tup->uart_clk);
++	ret = clk_prepare_enable(tup->uart_clk);
++	if (ret) {
++		dev_err(tup->uport.dev, "could not enable clk\n");
++		return ret;
++	}
  
- 	return 0;
- }
+ 	/* Reset the UART controller to clear all previous status.*/
+ 	reset_control_assert(tup->rst);
 -- 
 2.40.1
 
