@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11AA67A800E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 509DD7A7DEA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236151AbjITMce (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
+        id S235398AbjITMNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235887AbjITMcd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:33 -0400
+        with ESMTP id S235475AbjITMN2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673AF99
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9EFC433CA;
-        Wed, 20 Sep 2023 12:32:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 268AEEA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AFBC433C8;
+        Wed, 20 Sep 2023 12:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213146;
-        bh=43dHqUYP1r0ujWB506H6HVIAmA9nl2buwvogBkinecU=;
+        s=korg; t=1695212001;
+        bh=brNkEfFda+Ni6D7Klp57cyX8BnmEPHtiS7x2iX5ZIB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KWN6aihOdrkg4EMGJMoxmuw3Q/bW9hYZaL46hn2U+5ysDAE2NOQa6J+W03M3eFpCw
-         mmYE9eoi6h3Jqzy5jisBH+dM4JbonV/m8Ll1aG//YeC4AP+YQtjsfwEq54KIyIfYlo
-         Wi85WGUclw6eSJnnp/oaClV8AOn22l5cKMxJOtRQ=
+        b=cAnjGmkF8NediQbDmWjjMrhtQmSyg8z1wkQ8zRc4F5KDJjU3uA9nhedAxX3yMdP7K
+         5Y5CTH4BwcMaHi+JC2WbydD7raV1ZSwYaTAifTFNZpJBSj0ug9YlciMqpriFPGTPkJ
+         IGBPnYFMbqgI60uKRD9OmYT4zpnxo/PDKO26GOGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 177/367] media: i2c: ov5640: Configure HVP lines in s_power callback
+Subject: [PATCH 4.19 114/273] PCI: Add #defines for Enter Compliance, Transmit Margin
 Date:   Wed, 20 Sep 2023 13:29:14 +0200
-Message-ID: <20230920112903.219452099@linuxfoundation.org>
+Message-ID: <20230920112850.011206612@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,180 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 311a6408f8d46d47e35d3bf598dced39af4ce087 ]
+[ Upstream commit bbdb2f5ecdf1e66b2f09710134db3c2e5c43a958 ]
 
-Configure HVP lines in s_power callback instead of configuring everytime
-in ov5640_set_stream_dvp().
+Add definitions for the Enter Compliance and Transmit Margin fields of the
+PCIe Link Control 2 register.
 
-Alongside also disable MIPI in DVP mode.
-
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Tested-by: Jacopo Mondi <jacopo@jmondi.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 98cb72d3b9c5 ("media: ov5640: Enable MIPI interface in ov5640_set_power_mipi()")
+Link: https://lore.kernel.org/r/20191112173503.176611-2-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ce7d88110b9e ("drm/amdgpu: Use RMW accessors for changing LNKCTL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5640.c | 123 +++++++++++++++++--------------------
- 1 file changed, 58 insertions(+), 65 deletions(-)
+ include/uapi/linux/pci_regs.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
-index 087fb464ffc12..76a9fa6d6d5c0 100644
---- a/drivers/media/i2c/ov5640.c
-+++ b/drivers/media/i2c/ov5640.c
-@@ -1206,71 +1206,6 @@ static int ov5640_set_autogain(struct ov5640_dev *sensor, bool on)
- 
- static int ov5640_set_stream_dvp(struct ov5640_dev *sensor, bool on)
- {
--	int ret;
--	unsigned int flags = sensor->ep.bus.parallel.flags;
--	u8 pclk_pol = 0;
--	u8 hsync_pol = 0;
--	u8 vsync_pol = 0;
--
--	/*
--	 * Note about parallel port configuration.
--	 *
--	 * When configured in parallel mode, the OV5640 will
--	 * output 10 bits data on DVP data lines [9:0].
--	 * If only 8 bits data are wanted, the 8 bits data lines
--	 * of the camera interface must be physically connected
--	 * on the DVP data lines [9:2].
--	 *
--	 * Control lines polarity can be configured through
--	 * devicetree endpoint control lines properties.
--	 * If no endpoint control lines properties are set,
--	 * polarity will be as below:
--	 * - VSYNC:	active high
--	 * - HREF:	active low
--	 * - PCLK:	active low
--	 */
--
--	if (on) {
--		/*
--		 * configure parallel port control lines polarity
--		 *
--		 * POLARITY CTRL0
--		 * - [5]:	PCLK polarity (0: active low, 1: active high)
--		 * - [1]:	HREF polarity (0: active low, 1: active high)
--		 * - [0]:	VSYNC polarity (mismatch here between
--		 *		datasheet and hardware, 0 is active high
--		 *		and 1 is active low...)
--		 */
--		if (flags & V4L2_MBUS_PCLK_SAMPLE_RISING)
--			pclk_pol = 1;
--		if (flags & V4L2_MBUS_HSYNC_ACTIVE_HIGH)
--			hsync_pol = 1;
--		if (flags & V4L2_MBUS_VSYNC_ACTIVE_LOW)
--			vsync_pol = 1;
--
--		ret = ov5640_write_reg(sensor,
--				       OV5640_REG_POLARITY_CTRL00,
--				       (pclk_pol << 5) |
--				       (hsync_pol << 1) |
--				       vsync_pol);
--
--		if (ret)
--			return ret;
--	}
--
--	/*
--	 * powerdown MIPI TX/RX PHY & disable MIPI
--	 *
--	 * MIPI CONTROL 00
--	 * 4:	 PWDN PHY TX
--	 * 3:	 PWDN PHY RX
--	 * 2:	 MIPI enable
--	 */
--	ret = ov5640_write_reg(sensor,
--			       OV5640_REG_IO_MIPI_CTRL00, on ? 0x18 : 0);
--	if (ret)
--		return ret;
--
- 	return ov5640_write_reg(sensor, OV5640_REG_SYS_CTRL0, on ?
- 				OV5640_REG_SYS_CTRL0_SW_PWUP :
- 				OV5640_REG_SYS_CTRL0_SW_PWDN);
-@@ -2029,15 +1964,73 @@ static int ov5640_set_power_mipi(struct ov5640_dev *sensor, bool on)
- 
- static int ov5640_set_power_dvp(struct ov5640_dev *sensor, bool on)
- {
-+	unsigned int flags = sensor->ep.bus.parallel.flags;
-+	u8 pclk_pol = 0;
-+	u8 hsync_pol = 0;
-+	u8 vsync_pol = 0;
- 	int ret;
- 
- 	if (!on) {
- 		/* Reset settings to their default values. */
-+		ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x58);
-+		ov5640_write_reg(sensor, OV5640_REG_POLARITY_CTRL00, 0x20);
- 		ov5640_write_reg(sensor, OV5640_REG_PAD_OUTPUT_ENABLE01, 0x00);
- 		ov5640_write_reg(sensor, OV5640_REG_PAD_OUTPUT_ENABLE02, 0x00);
- 		return 0;
- 	}
- 
-+	/*
-+	 * Note about parallel port configuration.
-+	 *
-+	 * When configured in parallel mode, the OV5640 will
-+	 * output 10 bits data on DVP data lines [9:0].
-+	 * If only 8 bits data are wanted, the 8 bits data lines
-+	 * of the camera interface must be physically connected
-+	 * on the DVP data lines [9:2].
-+	 *
-+	 * Control lines polarity can be configured through
-+	 * devicetree endpoint control lines properties.
-+	 * If no endpoint control lines properties are set,
-+	 * polarity will be as below:
-+	 * - VSYNC:	active high
-+	 * - HREF:	active low
-+	 * - PCLK:	active low
-+	 */
-+	/*
-+	 * configure parallel port control lines polarity
-+	 *
-+	 * POLARITY CTRL0
-+	 * - [5]:	PCLK polarity (0: active low, 1: active high)
-+	 * - [1]:	HREF polarity (0: active low, 1: active high)
-+	 * - [0]:	VSYNC polarity (mismatch here between
-+	 *		datasheet and hardware, 0 is active high
-+	 *		and 1 is active low...)
-+	 */
-+	if (flags & V4L2_MBUS_PCLK_SAMPLE_RISING)
-+		pclk_pol = 1;
-+	if (flags & V4L2_MBUS_HSYNC_ACTIVE_HIGH)
-+		hsync_pol = 1;
-+	if (flags & V4L2_MBUS_VSYNC_ACTIVE_LOW)
-+		vsync_pol = 1;
-+
-+	ret = ov5640_write_reg(sensor, OV5640_REG_POLARITY_CTRL00,
-+			       (pclk_pol << 5) | (hsync_pol << 1) | vsync_pol);
-+
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * powerdown MIPI TX/RX PHY & disable MIPI
-+	 *
-+	 * MIPI CONTROL 00
-+	 * 4:	 PWDN PHY TX
-+	 * 3:	 PWDN PHY RX
-+	 * 2:	 MIPI enable
-+	 */
-+	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x18);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * enable VSYNC/HREF/PCLK DVP control lines
- 	 * & D[9:6] DVP data lines
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index c47dbeeb02318..39c69235a3843 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -671,6 +671,8 @@
+ #define  PCI_EXP_LNKCTL2_TLS_8_0GT	0x0003 /* Supported Speed 8GT/s */
+ #define  PCI_EXP_LNKCTL2_TLS_16_0GT	0x0004 /* Supported Speed 16GT/s */
+ #define  PCI_EXP_LNKCTL2_TLS_32_0GT	0x0005 /* Supported Speed 32GT/s */
++#define  PCI_EXP_LNKCTL2_ENTER_COMP	0x0010 /* Enter Compliance */
++#define  PCI_EXP_LNKCTL2_TX_MARGIN	0x0380 /* Transmit Margin */
+ #define PCI_EXP_LNKSTA2		50	/* Link Status 2 */
+ #define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2	52	/* v2 endpoints with link end here */
+ #define PCI_EXP_SLTCAP2		52	/* Slot Capabilities 2 */
 -- 
 2.40.1
 
