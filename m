@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 546197A80B9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 058257A7D0F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235943AbjITMk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
+        id S234561AbjITMGP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236225AbjITMjq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:46 -0400
+        with ESMTP id S235160AbjITMGN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C201BC2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F378BC433C7;
-        Wed, 20 Sep 2023 12:39:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A590ED
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24018C433CC;
+        Wed, 20 Sep 2023 12:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213567;
-        bh=4yJlWzKLsZbCCemWXBCK0kS0tLkAVIjQaOmG9GspWrM=;
+        s=korg; t=1695211566;
+        bh=eZ62FzJig4SyPTE3y4FtgQ3g9FhAnqUKDkaUuquGI7g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=anhnH87/SZVd9IegxQ9bKlAEdBEtcS90cVi4prhiavVgkfHbpjvoxSgnqBMNdE+Ds
-         4y9PnepBqAWFqdzed0pO7wbG3QjGjb6lb7bxnPODfD1nHAaDsJD6UzfbCB4D6fuPm+
-         nFEwDA9uh+Pvrw0SHL9b1PRwlv1CT4gjeZ0WNbz8=
+        b=S77dsq9uYlUKKuB410TJLZWkTWn255pqUMSV9N6Tyg2X/pALgI+VONgLvGyLXhP5y
+         RpRIzj6MUBS8xiJXo3OzlqtgSL7Wil6RiDM1P9hPKr/mHbyhfmNuJOFa1WpXDAwt2r
+         cUJSz6aR1TMw2LBKh1ih+dYYZXgCcPtKK41oC/R4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 267/367] af_unix: Fix data race around sk->sk_err.
+        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 4.14 141/186] igb: Change IGB_MIN to allow set rx/tx value between 64 and 80
 Date:   Wed, 20 Sep 2023 13:30:44 +0200
-Message-ID: <20230920112905.477008286@linuxfoundation.org>
+Message-ID: <20230920112842.081904609@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Olga Zaborska <olga.zaborska@intel.com>
 
-[ Upstream commit b192812905e4b134f7b7994b079eb647e9d2d37e ]
+[ Upstream commit 6319685bdc8ad5310890add907b7c42f89302886 ]
 
-As with sk->sk_shutdown shown in the previous patch, sk->sk_err can be
-read locklessly by unix_dgram_sendmsg().
+Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
+value between 64 and 80. All igb devices can use as low as 64 descriptors.
+This change will unify igb with other drivers.
+Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
 
-Let's use READ_ONCE() for sk_err as well.
-
-Note that the writer side is marked by commit cc04410af7de ("af_unix:
-annotate lockless accesses to sk->sk_err").
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 79d61be285186..9979cd602dfac 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2225,7 +2225,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 			break;
- 		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			break;
--		if (sk->sk_err)
-+		if (READ_ONCE(sk->sk_err))
- 			break;
- 		timeo = schedule_timeout(timeo);
- 	}
+diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
+index 1113bf322f45b..a1e924391ae5b 100644
+--- a/drivers/net/ethernet/intel/igb/igb.h
++++ b/drivers/net/ethernet/intel/igb/igb.h
+@@ -52,11 +52,11 @@ struct igb_adapter;
+ /* TX/RX descriptor defines */
+ #define IGB_DEFAULT_TXD		256
+ #define IGB_DEFAULT_TX_WORK	128
+-#define IGB_MIN_TXD		80
++#define IGB_MIN_TXD		64
+ #define IGB_MAX_TXD		4096
+ 
+ #define IGB_DEFAULT_RXD		256
+-#define IGB_MIN_RXD		80
++#define IGB_MIN_RXD		64
+ #define IGB_MAX_RXD		4096
+ 
+ #define IGB_DEFAULT_ITR		3 /* dynamic */
 -- 
 2.40.1
 
