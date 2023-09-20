@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5787A7D3D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 119FA7A7EBD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235193AbjITMHr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40776 "EHLO
+        id S235619AbjITMUV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235211AbjITMHq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:46 -0400
+        with ESMTP id S235638AbjITMUQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2378B92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6827BC433CB;
-        Wed, 20 Sep 2023 12:07:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE1283
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FECC433C8;
+        Wed, 20 Sep 2023 12:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211660;
-        bh=Fvf9/DSqtBXdCBxQzC92ulSBuMJWTL/mA8CuIE6M4oA=;
+        s=korg; t=1695212410;
+        bh=Cs1HhAb0Y+qQ8OxoLbwOsGjCDkHou7Jm65Ktn7jRWno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ciVDSlOd8v6BO8Jf378WN5+iYQYO6d77gPnWueIgy2itJ8oFSHTBpuSi46oaLSPRB
-         p3a6GwOy7eBQwNMi1aY+8+kjSPf11mdxYuSHqD5kq5iAI2RW5pEocDyYW65B23psfA
-         BIHgX6thdQe7VKtLUGqP4/pDO6EwLZtKZGi0eaWE=
+        b=xumm16bggbC7qsDVau5wDnyf3MN7cParobeyKbtPcHDprMOQXqQCSrt7LllOvNIyS
+         FdPcMG0LeuOJHKsvK4O1PvP6xBG5R9ewG3sIJ7Al7FH76g9ui+54SAivKJZbLyz8Ap
+         bZy40W0/WJymKN+8urHsqj6vkZe2toHGnGOEtAss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
+        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 176/186] kobject: Add sanity check for kset->kobj.ktype in kset_register()
+Subject: [PATCH 4.19 239/273] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
 Date:   Wed, 20 Sep 2023 13:31:19 +0200
-Message-ID: <20230920112843.240593473@linuxfoundation.org>
+Message-ID: <20230920112853.732099674@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,62 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Abhishek Mainkar <abmainkar@nvidia.com>
 
-[ Upstream commit 4d0fe8c52bb3029d83e323c961221156ab98680b ]
+[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
 
-When I register a kset in the following way:
-	static struct kset my_kset;
-	kobject_set_name(&my_kset.kobj, "my_kset");
-        ret = kset_register(&my_kset);
+ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
 
-A null pointer dereference exception is occurred:
-[ 4453.568337] Unable to handle kernel NULL pointer dereference at \
-virtual address 0000000000000028
-... ...
-[ 4453.810361] Call trace:
-[ 4453.813062]  kobject_get_ownership+0xc/0x34
-[ 4453.817493]  kobject_add_internal+0x98/0x274
-[ 4453.822005]  kset_register+0x5c/0xb4
-[ 4453.825820]  my_kobj_init+0x44/0x1000 [my_kset]
-... ...
+According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
 
-Because I didn't initialize my_kset.kobj.ktype.
+When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
 
-According to the description in Documentation/core-api/kobject.rst:
- - A ktype is the type of object that embeds a kobject.  Every structure
-   that embeds a kobject needs a corresponding ktype.
+=============================================================
+UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
+CPU: 37 PID: 1678 Comm: cat Not tainted
+6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+ dump_backtrace+0xe0/0x130
+ show_stack+0x20/0x60
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x18/0x34
+ ubsan_epilogue+0x10/0x50
+ __ubsan_handle_out_of_bounds+0x80/0x90
+ acpi_ds_exec_end_op+0x1bc/0x6d8
+ acpi_ps_parse_loop+0x57c/0x618
+ acpi_ps_parse_aml+0x1e0/0x4b4
+ acpi_ps_execute_method+0x24c/0x2b8
+ acpi_ns_evaluate+0x3a8/0x4bc
+ acpi_evaluate_object+0x15c/0x37c
+ acpi_evaluate_integer+0x54/0x15c
+ show_power+0x8c/0x12c [acpi_power_meter]
 
-So add sanity check to make sure kset->kobj.ktype is not NULL.
-
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20230805084114.1298-2-thunder.leizhen@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/acpica/acpica/commit/90310989
+Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kobject.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/acpi/acpica/psopcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/kobject.c b/lib/kobject.c
-index bbbb067de8ecd..b908655c58123 100644
---- a/lib/kobject.c
-+++ b/lib/kobject.c
-@@ -814,6 +814,11 @@ int kset_register(struct kset *k)
- 	if (!k)
- 		return -EINVAL;
+diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+index 8d7dc98bad17b..ca01e02af9cba 100644
+--- a/drivers/acpi/acpica/psopcode.c
++++ b/drivers/acpi/acpica/psopcode.c
+@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
  
-+	if (!k->kobj.ktype) {
-+		pr_err("must have a ktype to be initialized properly!\n");
-+		return -EINVAL;
-+	}
-+
- 	kset_init(k);
- 	err = kobject_add_internal(&k->kobj);
- 	if (err)
+ /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+ 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+-			 AML_FLAGS_EXEC_0A_0T_1R),
++			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+ 
+ /* ACPI 5.0 opcodes */
+ 
 -- 
 2.40.1
 
