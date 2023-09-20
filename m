@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6C67A77FD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71477A77FE
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233864AbjITJxh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57716 "EHLO
+        id S234197AbjITJxm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjITJxh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:37 -0400
+        with ESMTP id S234114AbjITJxl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A533A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955F0C433C8;
-        Wed, 20 Sep 2023 09:53:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDF08F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EB8C433CB;
+        Wed, 20 Sep 2023 09:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203610;
-        bh=1OSIhmnjY0TGTstpZYKEptvPyvp2yoAXMidMc/yNqFA=;
+        s=korg; t=1695203615;
+        bh=C644hhr4KLULhVB2UHqWWsiSZy5dt1EtcNwxLiTTwvE=;
         h=Subject:To:Cc:From:Date:From;
-        b=M9fx2ATbynRdqsfhYgHOJf6TNb1F6ZEzau+Dxnm42Yv+V9V7+2o2cz6TMGlJMqG2N
-         EDzJa+T3qF/M4osXALzsBGkuYB2A08qrGM/1WLMPDajIg89cg53Qia+am+YpLLWjxy
-         hWvfvCh0wlAMzikcEwQRstf/9DXr5We+CjqYRFs0=
-Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 6.1-stable tree
+        b=AC0KIazn5Bpa9kbjP8OcdCCgEWz3ZQcfyhjSdf6RLpai+NUiOWFhgYUqWMmTTlqqJ
+         UxuUb70un7E8ClVLjw+i+EslnrnA4Q9XAUSYoQGUMx8XPkGucolaHD1ldkpcRDNwLR
+         yiaTZllJrig4JEvwfvDhAN8sdza3NgLIpmaoVX8E=
+Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 5.15-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:53:25 +0200
-Message-ID: <2023092025-unwell-virtual-9c97@gregkh>
+Date:   Wed, 20 Sep 2023 11:53:26 +0200
+Message-ID: <2023092026-anemia-unwanted-1c2a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,32 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2c58c3931ede7cd08cbecf1f1a4acaf0a04a41a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092025-unwell-virtual-9c97@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092026-anemia-unwanted-1c2a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 2c58c3931ede ("btrfs: remove BUG() after failure to insert delayed dir index item")
 91bfe3104b8d ("btrfs: improve error message after failure to add delayed dir index item")
+763748b238ef ("btrfs: reduce amount of reserved metadata for delayed item insertion")
+c9d02ab4b436 ("btrfs: set delayed item type when initializing it")
+3bae13e9d42e ("btrfs: do not BUG_ON() on failure to reserve metadata for delayed item")
+a176affe547c ("btrfs: assert that delayed item is a dir index item when adding it")
+b7ef5f3a6f37 ("btrfs: loop only once over data sizes array when inserting an item batch")
+086dcbfa50d3 ("btrfs: insert items in batches when logging a directory when possible")
+eb10d85ee77f ("btrfs: factor out the copying loop of dir items from log_dir_items()")
+289cffcb0399 ("btrfs: remove no longer needed checks for NULL log context")
 
 thanks,
 
