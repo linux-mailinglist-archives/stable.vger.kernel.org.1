@@ -2,96 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3087A7AAB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A227A7A6B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234465AbjITLoz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58934 "EHLO
+        id S233786AbjITL2M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234471AbjITLoz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:44:55 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6864F2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:44:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B0FC433C8;
-        Wed, 20 Sep 2023 11:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210287;
-        bh=vEn0YEfMj/eShRok9dUFyD0uq1mnKSjwHcn/uVEClew=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gL0JPVYo8+BickPkj/9Ac5KJUgmA04jhzuvurcRGxmAZxfLKNxcCkpoKGXMq8n8EN
-         xg2v55aVI5lha+OadBq+Vt5Jjq9yy42L9vhidMcVwDDgoW1Wbq+pkKm1XhtLIkNc51
-         uFiIXSWtpg9Qw3gOgkJSKgQ9vivJzlvstWnQpog8=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        with ESMTP id S232327AbjITL2M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:28:12 -0400
+Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13398A9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:28:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1695209285; x=1726745285;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=OwYxfNMAvLPySsToAAeJAxdm8BOe3vV6MO0rHehrKNc=;
+  b=iVmLfDETzYd3hMgtzmc0KoUod87/aXpldu9ZMNStf1Cn1hUPxdCaAQew
+   6gsVKjMCDJ8D3fKKppVNMq74wCxovCGP8/CkmwOnOxFbOdGDasZ7wyOVE
+   Y8OU5aOZ8lzoqbtiCQyKlASnlLXii0S+FL8mPLoKgvFXBrAE0SJOVcHlj
+   jS18eSstCJLbSVYodWvsmPFIVncfEeGGzdzVoPLY4LjWPMi6DTouKC35r
+   uOiEbidlg/IcFI8FYcLEDPl9jrvLsiBl7ADNazRQPPoIonGRmUkW9UHyn
+   9Ikk6trrjVQsxjrqwBUS6ZJ+ZW9/+8oQSxS6xhts77jeV8oxVYIeUYc3n
+   w==;
+X-CSE-ConnectionGUID: MK5HLT0zRCuWkMJ2hXkdQA==
+X-CSE-MsgGUID: lyId3GgITZOrC+x042WBMw==
+X-IronPort-AV: E=Sophos;i="6.02,161,1688400000"; 
+   d="scan'208";a="242621967"
+Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 20 Sep 2023 19:28:05 +0800
+IronPort-SDR: bAR9aEHc1t6FWJio7N2u36lH3QyqykEBZT33Z3ZPANr41z+SOttc8OyhHAVlFlWF1Sc8v+ncEc
+ Rva+MYz8beuQfg7G9MaLldu4ACbhjGHVvKC069tOn+0axw3kN3oprViQroOKkj+o+ojQIkMXvg
+ 2Lqp69qgbNp+GBw0kQvO/X7Zli78eMvH3NPW0O78PXR2Pra12AWpVkh6R3P9Sdnf5uII2bPMZ0
+ 3OjCTjERNyYw9XvQVpUl7xqMkBNv7/iuxErSeaj99V7W4Vv8EYYs0JDTi9zt2SWEvA4FCT3uNs
+ FhE=
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Sep 2023 03:34:59 -0700
+IronPort-SDR: IVZ6B/9n7/esE0G4kKLNSBk2Nwbjgtee7+EKcr6NTt6Elg7qfrr113FHQBdDwsJs/Ewq8Jxkhq
+ 9f20xHTQpZdMsgqCe2TwyJfvYfjy2mLCfsqVSPwGPzPQVLayftwXeQLgjNV91Lykm2ZB+8LCC/
+ KupzsClh4xpl5NYSelEvqbbD8eVFPhIUAFBfSXKw+40mWfcGxE5dbBrgQKIDymd+cfxNHPgZV5
+ AQb/R0RcqeujfodERB7SmYusEJa2yo7RNl05v44cdVc8V/OzvKs+W7AtYSYTCdEHZ1ufZMTFd0
+ 4NQ=
+WDCIronportException: Internal
+Received: from unknown (HELO x1-carbon.lan) ([10.225.163.91])
+  by uls-op-cesaip01.wdc.com with ESMTP; 20 Sep 2023 04:28:01 -0700
+From:   Niklas Cassel <niklas.cassel@wdc.com>
 To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Willy Tarreau <w@1wt.eu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 021/211] selftests/nolibc: prevent out of bounds access in expect_vfprintf
+Cc:     Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH] ata: libata: disallow dev-initiated LPM transitions to unsupported states
 Date:   Wed, 20 Sep 2023 13:27:45 +0200
-Message-ID: <20230920112846.462961982@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+Message-ID: <20230920112745.125794-1-niklas.cassel@wdc.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023092002-mobster-onset-2af9@gregkh>
+References: <2023092002-mobster-onset-2af9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+In AHCI 1.3.1, the register description for CAP.SSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Slumber state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Slumber requests."
 
-------------------
+In AHCI 1.3.1, the register description for CAP.PSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Partial state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Partial requests."
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
+a device is not allowed to initiate transitions to power states which are
+unsupported by the HBA.
 
-[ Upstream commit 9c5e490093e83e165022e0311bd7df5aa06cc860 ]
+DevSleep is always initiated by the HBA, however, for completeness, set the
+corresponding bit in PxSCTL.IPM such that agressive link power management
+cannot transition to DevSleep if DevSleep is not supported.
 
-If read() fails and returns -1 (or returns garbage for some other
-reason) buf would be accessed out of bounds.
-Only use the return value of read() after it has been validated.
+sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
+However, only libahci has the ability to read the CAP/CAP2 register to see
+if these features are supported. Therefore, in order to not introduce any
+regressions on ata_piix or libata-pmp, create flags that indicate that the
+respective feature is NOT supported. This way, the behavior for ata_piix
+and libata-pmp should remain unchanged.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change is based on a patch originally submitted by Runa Guo-oc.
+
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+(cherry picked from commit 24e0e61db3cb86a66824531989f1df80e0939f26)
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/ahci.c        |  9 +++++++++
+ drivers/ata/libata-core.c | 19 ++++++++++++++++---
+ include/linux/libata.h    |  4 ++++
+ 3 files changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 55628a25df0a3..8e7750e2eb97c 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -769,7 +769,6 @@ static int expect_vfprintf(int llen, size_t c, const char *expected, const char
- 	lseek(fd, 0, SEEK_SET);
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 0905c07b8c7e..abb3dd048556 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1777,6 +1777,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	else
+ 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
  
- 	r = read(fd, buf, sizeof(buf) - 1);
--	buf[r] = '\0';
++	if (!(hpriv->cap & HOST_CAP_PART))
++		host->flags |= ATA_HOST_NO_PART;
++
++	if (!(hpriv->cap & HOST_CAP_SSC))
++		host->flags |= ATA_HOST_NO_SSC;
++
++	if (!(hpriv->cap2 & HOST_CAP2_SDS))
++		host->flags |= ATA_HOST_NO_DEVSLP;
++
+ 	if (pi.flags & ATA_FLAG_EM)
+ 		ahci_reset_em(host);
  
- 	fclose(memfile);
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 08dc37a62f5a..69002ad15500 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3993,10 +3993,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+ 		scontrol |= (0x6 << 8);
+ 		break;
+ 	case ATA_LPM_MIN_POWER:
+-		if (ata_link_nr_enabled(link) > 0)
+-			/* no restrictions on LPM transitions */
++		if (ata_link_nr_enabled(link) > 0) {
++			/* assume no restrictions on LPM transitions */
+ 			scontrol &= ~(0x7 << 8);
+-		else {
++
++			/*
++			 * If the controller does not support partial, slumber,
++			 * or devsleep, then disallow these transitions.
++			 */
++			if (link->ap->host->flags & ATA_HOST_NO_PART)
++				scontrol |= (0x1 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_SSC)
++				scontrol |= (0x2 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
++				scontrol |= (0x4 << 8);
++		} else {
+ 			/* empty port, power off */
+ 			scontrol &= ~0xf;
+ 			scontrol |= (0x1 << 2);
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 0e9f8fd37eb9..ab2c5d6cabed 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -279,6 +279,10 @@ enum {
+ 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
+ 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
  
-@@ -779,6 +778,7 @@ static int expect_vfprintf(int llen, size_t c, const char *expected, const char
- 		return 1;
- 	}
++	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
++	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
++	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
++
+ 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
  
-+	buf[r] = '\0';
- 	llen += printf(" \"%s\" = \"%s\"", expected, buf);
- 	ret = strncmp(expected, buf, c);
- 
+ 	/* various lengths of time */
 -- 
-2.40.1
-
-
+2.41.0
 
