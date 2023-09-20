@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01DAA7A8159
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F22BC7A7ED8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236264AbjITMoh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
+        id S234635AbjITMVY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236315AbjITMog (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:36 -0400
+        with ESMTP id S235765AbjITMVU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C4FD9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC63C433C8;
-        Wed, 20 Sep 2023 12:44:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C05E189
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5087C433D9;
+        Wed, 20 Sep 2023 12:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213868;
-        bh=3EM78+EkQ0Jf+QvOmiCvBpDE22eTVW3s6FwEpNvYIRA=;
+        s=korg; t=1695212468;
+        bh=vLp8/PXrhm+HA/bmGsb7n9MbaOKzmXw8BbZlOSpPdaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X7mp/tbn0TmCpXc9f2anbv9+ce0pgo0pBkV2mimgUwp+NcLi+VOZfbLaAkxLBpFhb
-         U7jLWCFsgvFmBoA3F7O52amN2ycRFk+4WQTx3Z79OyBHGEZtqd+C4EcVt7iu68rSuB
-         JkhMoC3pgZc4k5Hrympq4k1JULE0uXZOO8zl4F84=
+        b=Nqg0xljo/n74ODy/vf6ki3TsGawVbAJef9waT81/enCHXDJXcEqq690Up0UmztskT
+         Ww+jqtAkqcPz9maBV9WkZwySmxhr1rjyBbA8BFoc5LNsW8qGRiz219Kzbw/aTyHim3
+         +Bz0BVy/5Ba0Pz0TNFlOSz2t6kcYJFmFf59cATRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Azeem Shaikh <azeemshaikh38@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/110] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
-Date:   Wed, 20 Sep 2023 13:31:02 +0200
-Message-ID: <20230920112830.548764406@linuxfoundation.org>
+Subject: [PATCH 5.10 13/83] crypto: lrw,xts - Replace strlcpy with strscpy
+Date:   Wed, 20 Sep 2023 13:31:03 +0200
+Message-ID: <20230920112827.201845018@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Mainkar <abmainkar@nvidia.com>
+From: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
+[ Upstream commit babb80b3ecc6f40c962e13c654ebcd27f25ee327 ]
 
-ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
 
-According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
+Direct replacement is safe here since return value of -errno
+is used to check for truncation instead of sizeof(dest).
 
-When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-=============================================================
-UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
-CPU: 37 PID: 1678 Comm: cat Not tainted
-6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
-HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
- dump_backtrace+0xe0/0x130
- show_stack+0x20/0x60
- dump_stack_lvl+0x68/0x84
- dump_stack+0x18/0x34
- ubsan_epilogue+0x10/0x50
- __ubsan_handle_out_of_bounds+0x80/0x90
- acpi_ds_exec_end_op+0x1bc/0x6d8
- acpi_ps_parse_loop+0x57c/0x618
- acpi_ps_parse_aml+0x1e0/0x4b4
- acpi_ps_execute_method+0x24c/0x2b8
- acpi_ns_evaluate+0x3a8/0x4bc
- acpi_evaluate_object+0x15c/0x37c
- acpi_evaluate_integer+0x54/0x15c
- show_power+0x8c/0x12c [acpi_power_meter]
-
-Link: https://github.com/acpica/acpica/commit/90310989
-Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psopcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/lrw.c | 6 +++---
+ crypto/xts.c | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index 3e80eb1a5f35c..590326c200a28 100644
---- a/drivers/acpi/acpica/psopcode.c
-+++ b/drivers/acpi/acpica/psopcode.c
-@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+diff --git a/crypto/lrw.c b/crypto/lrw.c
+index bcf09fbc750af..80d9076e42e0b 100644
+--- a/crypto/lrw.c
++++ b/crypto/lrw.c
+@@ -357,10 +357,10 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 	 * cipher name.
+ 	 */
+ 	if (!strncmp(cipher_name, "ecb(", 4)) {
+-		unsigned len;
++		int len;
  
- /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
- 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
--			 AML_FLAGS_EXEC_0A_0T_1R),
-+			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+-		len = strlcpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
+-		if (len < 2 || len >= sizeof(ecb_name))
++		len = strscpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
++		if (len < 2)
+ 			goto err_free_inst;
  
- /* ACPI 5.0 opcodes */
+ 		if (ecb_name[len - 1] != ')')
+diff --git a/crypto/xts.c b/crypto/xts.c
+index c6a105dba38b9..74dc199d54867 100644
+--- a/crypto/xts.c
++++ b/crypto/xts.c
+@@ -395,10 +395,10 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 	 * cipher name.
+ 	 */
+ 	if (!strncmp(cipher_name, "ecb(", 4)) {
+-		unsigned len;
++		int len;
  
+-		len = strlcpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
+-		if (len < 2 || len >= sizeof(ctx->name))
++		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
++		if (len < 2)
+ 			goto err_free_inst;
+ 
+ 		if (ctx->name[len - 1] != ')')
 -- 
 2.40.1
 
