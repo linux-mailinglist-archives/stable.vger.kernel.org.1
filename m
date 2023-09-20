@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D42377A7BC9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1A57A7B00
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234638AbjITLz2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53830 "EHLO
+        id S234617AbjITLsV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234834AbjITLz1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:27 -0400
+        with ESMTP id S234621AbjITLsU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B4ED7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEFAC433CA;
-        Wed, 20 Sep 2023 11:55:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59926B0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D43C433C9;
+        Wed, 20 Sep 2023 11:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210920;
-        bh=gyJo1wT2TvXs8kbyhTBBgu17yQ+hzKBHvPevIiS4f5I=;
+        s=korg; t=1695210494;
+        bh=Lqplz51n2Yy8GLjR907fqWtoD+2t2iSJSfeINJx4Drk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DAeagGtHKG4nE81o8uwEtPyblZUx6HpB0+JLZwxTJqsOh6GZqKLjwgmno/8drMvWX
-         qrz8quV8lEA35P5H+Oo+Lpuq0wzkYoRLvTw4NEv7TAIVDZtZTM+SWnYMDHmogoPWK0
-         Xg2pAKcO2dxSezdCtvvblT0DI+0qx1OV7jny37SM=
+        b=LAbshIt3oT5fQH8e7uROH4IlrUg3GA4PgtBJkAg3xMMqfpOcy4TYooT3vkIY9kXM9
+         BXsiJrrLtqVk8IV/Oc1qXxu6i9j3yArQhW0yI0bkcPBubITBFBve1lnMp1muaJUZ3q
+         5YUz0L1079grV8VyWFJHMQHrNdwIy+MQYrxEO2rk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zqiang <qiang.zhang1211@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com,
+        Liu Shixin <liushixin2@huawei.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/139] rcuscale: Move rcu_scale_writer() schedule_timeout_uninterruptible() to _idle()
+Subject: [PATCH 6.5 096/211] jfs: fix invalid free of JFS_IP(ipimap)->i_imap in diUnmount
 Date:   Wed, 20 Sep 2023 13:29:00 +0200
-Message-ID: <20230920112835.810847954@linuxfoundation.org>
+Message-ID: <20230920112848.785596657@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,72 +52,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Liu Shixin via Jfs-discussion <jfs-discussion@lists.sourceforge.net>
 
-[ Upstream commit e60c122a1614b4f65b29a7bef9d83b9fd30e937a ]
+[ Upstream commit 6e2bda2c192d0244b5a78b787ef20aa10cb319b7 ]
 
-The rcuscale.holdoff module parameter can be used to delay the start
-of rcu_scale_writer() kthread.  However, the hung-task timeout will
-trigger when the timeout specified by rcuscale.holdoff is greater than
-hung_task_timeout_secs:
+syzbot found an invalid-free in diUnmount:
 
-runqemu kvm nographic slirp qemuparams="-smp 4 -m 2048M"
-bootparams="rcuscale.shutdown=0 rcuscale.holdoff=300"
+BUG: KASAN: double-free in slab_free mm/slub.c:3661 [inline]
+BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3674
+Free of addr ffff88806f410000 by task syz-executor131/3632
 
-[  247.071753] INFO: task rcu_scale_write:59 blocked for more than 122 seconds.
-[  247.072529]       Not tainted 6.4.0-rc1-00134-gb9ed6de8d4ff #7
-[  247.073400] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[  247.074331] task:rcu_scale_write state:D stack:30144 pid:59    ppid:2      flags:0x00004000
-[  247.075346] Call Trace:
-[  247.075660]  <TASK>
-[  247.075965]  __schedule+0x635/0x1280
-[  247.076448]  ? __pfx___schedule+0x10/0x10
-[  247.076967]  ? schedule_timeout+0x2dc/0x4d0
-[  247.077471]  ? __pfx_lock_release+0x10/0x10
-[  247.078018]  ? enqueue_timer+0xe2/0x220
-[  247.078522]  schedule+0x84/0x120
-[  247.078957]  schedule_timeout+0x2e1/0x4d0
-[  247.079447]  ? __pfx_schedule_timeout+0x10/0x10
-[  247.080032]  ? __pfx_rcu_scale_writer+0x10/0x10
-[  247.080591]  ? __pfx_process_timeout+0x10/0x10
-[  247.081163]  ? __pfx_sched_set_fifo_low+0x10/0x10
-[  247.081760]  ? __pfx_rcu_scale_writer+0x10/0x10
-[  247.082287]  rcu_scale_writer+0x6b1/0x7f0
-[  247.082773]  ? mark_held_locks+0x29/0xa0
-[  247.083252]  ? __pfx_rcu_scale_writer+0x10/0x10
-[  247.083865]  ? __pfx_rcu_scale_writer+0x10/0x10
-[  247.084412]  kthread+0x179/0x1c0
-[  247.084759]  ? __pfx_kthread+0x10/0x10
-[  247.085098]  ret_from_fork+0x2c/0x50
-[  247.085433]  </TASK>
+ CPU: 0 PID: 3632 Comm: syz-executor131 Not tainted 6.1.0-rc7-syzkaller-00012-gca57f02295f1 #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+ Call Trace:
+  <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+  print_address_description+0x74/0x340 mm/kasan/report.c:284
+  print_report+0x107/0x1f0 mm/kasan/report.c:395
+  kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:460
+  ____kasan_slab_free+0xfb/0x120
+  kasan_slab_free include/linux/kasan.h:177 [inline]
+  slab_free_hook mm/slub.c:1724 [inline]
+  slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1750
+  slab_free mm/slub.c:3661 [inline]
+  __kmem_cache_free+0x71/0x110 mm/slub.c:3674
+  diUnmount+0xef/0x100 fs/jfs/jfs_imap.c:195
+  jfs_umount+0x108/0x370 fs/jfs/jfs_umount.c:63
+  jfs_put_super+0x86/0x190 fs/jfs/super.c:194
+  generic_shutdown_super+0x130/0x310 fs/super.c:492
+  kill_block_super+0x79/0xd0 fs/super.c:1428
+  deactivate_locked_super+0xa7/0xf0 fs/super.c:332
+  cleanup_mnt+0x494/0x520 fs/namespace.c:1186
+  task_work_run+0x243/0x300 kernel/task_work.c:179
+  exit_task_work include/linux/task_work.h:38 [inline]
+  do_exit+0x664/0x2070 kernel/exit.c:820
+  do_group_exit+0x1fd/0x2b0 kernel/exit.c:950
+  __do_sys_exit_group kernel/exit.c:961 [inline]
+  __se_sys_exit_group kernel/exit.c:959 [inline]
+  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:959
+  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+  do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
 
-This commit therefore replaces schedule_timeout_uninterruptible() with
-schedule_timeout_idle().
+JFS_IP(ipimap)->i_imap is not setting to NULL after free in diUnmount.
+If jfs_remount() free JFS_IP(ipimap)->i_imap but then failed at diMount().
+JFS_IP(ipimap)->i_imap will be freed once again.
+Fix this problem by setting JFS_IP(ipimap)->i_imap to NULL after free.
 
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reported-by: syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcuscale.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_imap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
-index 7854dc3226e1b..0b88d96511adc 100644
---- a/kernel/rcu/rcuscale.c
-+++ b/kernel/rcu/rcuscale.c
-@@ -423,7 +423,7 @@ rcu_scale_writer(void *arg)
- 	sched_set_fifo_low(current);
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 390cbfce391fc..6fb28572cb2c6 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -193,6 +193,7 @@ int diUnmount(struct inode *ipimap, int mounterror)
+ 	 * free in-memory control structure
+ 	 */
+ 	kfree(imap);
++	JFS_IP(ipimap)->i_imap = NULL;
  
- 	if (holdoff)
--		schedule_timeout_uninterruptible(holdoff * HZ);
-+		schedule_timeout_idle(holdoff * HZ);
- 
- 	/*
- 	 * Wait until rcu_end_inkernel_boot() is called for normal GP tests
+ 	return (0);
+ }
 -- 
 2.40.1
 
