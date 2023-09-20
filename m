@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B3FB7A7D35
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01DAA7A8159
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234598AbjITMHg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S236264AbjITMoh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235310AbjITMHY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:24 -0400
+        with ESMTP id S236315AbjITMog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074651A4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E050C433CA;
-        Wed, 20 Sep 2023 12:07:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C4FD9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC63C433C8;
+        Wed, 20 Sep 2023 12:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211636;
-        bh=XYNBgtuVza/eLnvouYKCByeJ5dv4N6FfnWSbqoN1JQA=;
+        s=korg; t=1695213868;
+        bh=3EM78+EkQ0Jf+QvOmiCvBpDE22eTVW3s6FwEpNvYIRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KYO/S1E5nHBCjaFLyRz+yC0pEzeIA6Wy+WfzBMd9LH1+5AIXyUmzoYBPZOt0FSQA1
-         0GxWAeWzcyKpisjdzRVTKH2hD0zkrk1Fjsx0jpeVQYCoAgE7oyIDJX69LSTGqGhZ2B
-         Krn+DLk20KJoOg/D8KvoqZ/6frGnvAXvYAsi6AOY=
+        b=X7mp/tbn0TmCpXc9f2anbv9+ce0pgo0pBkV2mimgUwp+NcLi+VOZfbLaAkxLBpFhb
+         U7jLWCFsgvFmBoA3F7O52amN2ycRFk+4WQTx3Z79OyBHGEZtqd+C4EcVt7iu68rSuB
+         JkhMoC3pgZc4k5Hrympq4k1JULE0uXZOO8zl4F84=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Inki Dae <inki.dae@samsung.com>,
+        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 159/186] drm/exynos: fix a possible null-pointer dereference due to data race in exynos_drm_crtc_atomic_disable()
+Subject: [PATCH 5.15 004/110] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
 Date:   Wed, 20 Sep 2023 13:31:02 +0200
-Message-ID: <20230920112842.673747666@linuxfoundation.org>
+Message-ID: <20230920112830.548764406@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Abhishek Mainkar <abmainkar@nvidia.com>
 
-[ Upstream commit 2e63972a2de14482d0eae1a03a73e379f1c3f44c ]
+[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
 
-The variable crtc->state->event is often protected by the lock
-crtc->dev->event_lock when is accessed. However, it is accessed as a
-condition of an if statement in exynos_drm_crtc_atomic_disable() without
-holding the lock:
+ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
 
-  if (crtc->state->event && !crtc->state->active)
+According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
 
-However, if crtc->state->event is changed to NULL by another thread right
-after the conditions of the if statement is checked to be true, a
-null-pointer dereference can occur in drm_crtc_send_vblank_event():
+When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
 
-  e->pipe = pipe;
+=============================================================
+UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
+CPU: 37 PID: 1678 Comm: cat Not tainted
+6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+ dump_backtrace+0xe0/0x130
+ show_stack+0x20/0x60
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x18/0x34
+ ubsan_epilogue+0x10/0x50
+ __ubsan_handle_out_of_bounds+0x80/0x90
+ acpi_ds_exec_end_op+0x1bc/0x6d8
+ acpi_ps_parse_loop+0x57c/0x618
+ acpi_ps_parse_aml+0x1e0/0x4b4
+ acpi_ps_execute_method+0x24c/0x2b8
+ acpi_ns_evaluate+0x3a8/0x4bc
+ acpi_evaluate_object+0x15c/0x37c
+ acpi_evaluate_integer+0x54/0x15c
+ show_power+0x8c/0x12c [acpi_power_meter]
 
-To fix this possible null-pointer dereference caused by data race, the
-spin lock coverage is extended to protect the if statement as well as the
-function call to drm_crtc_send_vblank_event().
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Link: https://sites.google.com/view/basscheck/home
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Added relevant link.
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Link: https://github.com/acpica/acpica/commit/90310989
+Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_crtc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/acpi/acpica/psopcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_crtc.c b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-index 4787560bf93e7..e1aa518ea0ba1 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-@@ -43,13 +43,12 @@ static void exynos_drm_crtc_atomic_disable(struct drm_crtc *crtc,
- 	if (exynos_crtc->ops->disable)
- 		exynos_crtc->ops->disable(exynos_crtc);
+diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+index 3e80eb1a5f35c..590326c200a28 100644
+--- a/drivers/acpi/acpica/psopcode.c
++++ b/drivers/acpi/acpica/psopcode.c
+@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
  
-+	spin_lock_irq(&crtc->dev->event_lock);
- 	if (crtc->state->event && !crtc->state->active) {
--		spin_lock_irq(&crtc->dev->event_lock);
- 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
--		spin_unlock_irq(&crtc->dev->event_lock);
--
- 		crtc->state->event = NULL;
- 	}
-+	spin_unlock_irq(&crtc->dev->event_lock);
- }
+ /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+ 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+-			 AML_FLAGS_EXEC_0A_0T_1R),
++			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
  
- static int exynos_crtc_atomic_check(struct drm_crtc *crtc,
+ /* ACPI 5.0 opcodes */
+ 
 -- 
 2.40.1
 
