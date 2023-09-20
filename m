@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78F117A7834
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED727A7835
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234228AbjITJ5b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:57:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46362 "EHLO
+        id S234132AbjITJ5d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:57:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbjITJ53 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:29 -0400
+        with ESMTP id S234275AbjITJ5c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB02CD3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1061BC433C7;
-        Wed, 20 Sep 2023 09:57:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80249B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BEAC433C7;
+        Wed, 20 Sep 2023 09:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203843;
-        bh=YTpk3WqcKUrLTd9SXMB7ERk6Kq3+HL2YbQiUv7ChRI4=;
+        s=korg; t=1695203846;
+        bh=FcTf7x5Ol+O8HIzhwcK0V+7CSZzP0ZUGgaNkUYdAVj0=;
         h=Subject:To:Cc:From:Date:From;
-        b=phywYo5xJpsvDIJgmNBhlmW/s4RPQXh0QMgAND5+gV+nx6YYTSboatUUh9ljV3N7d
-         ErGGliAghbTT/mGPoLJ04zLGsOadiESnhzI6wDgpDoo7EebQTDR0m7B3xbSD9l6g+w
-         3OfItewJrJNr/cKYGE0M41jBhN/J1f+r1NPS4vPU=
-Subject: FAILED: patch "[PATCH] ata: libahci: clear pending interrupt status" failed to apply to 5.4-stable tree
+        b=Slt9mabwvuzz3+QbKerpE9BAcejCnB6SRhlJIvaazFb1T3kO6wybbl+DF9MzyBdeh
+         OrOx01ExEsyFJLC3hBSLpCc9BnMpgopKZOlJVV7Bp0UxZv6FCbpQQK9TdfXvkSDzR6
+         m48d2rZURiv7+/dggiPsPzpqE79jeVCDJBxzbbjs=
+Subject: FAILED: patch "[PATCH] ata: libahci: clear pending interrupt status" failed to apply to 4.19-stable tree
 To:     chensiying21@gmail.com, Chloe_Chen@asmedia.com.tw,
         dlemoal@kernel.org, niklas.cassel@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:57:16 +0200
-Message-ID: <2023092016-cut-spearfish-b5dd@gregkh>
+Date:   Wed, 20 Sep 2023 11:57:18 +0200
+Message-ID: <2023092018-italics-animation-cbfc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 737dd811a3dbfd7edd4ad2ba5152e93d99074f83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092016-cut-spearfish-b5dd@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092018-italics-animation-cbfc@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
