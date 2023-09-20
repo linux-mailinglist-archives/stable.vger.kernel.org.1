@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F0E7A8135
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC3ED7A8199
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236086AbjITMnf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
+        id S234837AbjITMq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236099AbjITMnc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:32 -0400
+        with ESMTP id S234865AbjITMq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BD183
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB407C433C9;
-        Wed, 20 Sep 2023 12:43:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB01F0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CF7C433C9;
+        Wed, 20 Sep 2023 12:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213806;
-        bh=7DBcIs+l5UQcNoEwCpR4OsUDuWLNTqM0sCwuDSVqM6s=;
+        s=korg; t=1695214008;
+        bh=FahHsDQSP6+LADn7SLu9YfE/TioKtwIz62K1syrOa/8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AXz8BmkdmavAM1ON5h0E8RUmNR6hIn6yU19Q1dkKBQEaA6gO3fqaw0iYnCfO498we
-         LkoH/yUiojMbuhE9BCUVZ4LcAhJFYC7RJ3yetYXv0DF7qBsifiZx48IxWynsI2ILBw
-         jbGJDUnJUn/O31w/vQuv/iyI+8yQIk81GVAseCAY=
+        b=T2LPLrAUlRevqd7MKdMljvjlkPj3Dami6wM7uLJhBHZjlN0y61YL7pSk4vCzIzEN8
+         PRm5NAcwsTLu9pGZiWjvucVx84atOyHr85xwGPAvIXa3bhXaFJq3k/YU+KRww88tdr
+         bAEg72bP+f4PsMVd9UXPMMe8Hi10sRD5JeLjsuhA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 358/367] tracing: Have current_trace inc the trace array ref count
-Date:   Wed, 20 Sep 2023 13:32:15 +0200
-Message-ID: <20230920112907.755850583@linuxfoundation.org>
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 078/110] selftests: tracing: Fix to unmount tracefs for recovering environment
+Date:   Wed, 20 Sep 2023 13:32:16 +0200
+Message-ID: <20230920112833.341062378@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +52,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 9b37febc578b2e1ad76a105aab11d00af5ec3d27 upstream.
+[ Upstream commit 7e021da80f48582171029714f8a487347f29dddb ]
 
-The current_trace updates the trace array tracer. For an instance, if the
-file is opened and the instance is deleted, reading or writing to the file
-will cause a use after free.
+Fix to unmount the tracefs if the ftracetest mounted it for recovering
+system environment. If the tracefs is already mounted, this does nothing.
 
-Up the ref count of the trace array when current_trace is opened.
-
-Link: https://lkml.kernel.org/r/20230907024803.877687227@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/all/29fce076-746c-4650-8358-b4e0fa215cf7@sirena.org.uk/
+Fixes: cbd965bde74c ("ftrace/selftests: Return the skip code when tracing directory not configured in kernel")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/ftrace/ftracetest | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6951,10 +6951,11 @@ static const struct file_operations trac
- #endif
+diff --git a/tools/testing/selftests/ftrace/ftracetest b/tools/testing/selftests/ftrace/ftracetest
+index 8ec1922e974eb..55314cd197ab9 100755
+--- a/tools/testing/selftests/ftrace/ftracetest
++++ b/tools/testing/selftests/ftrace/ftracetest
+@@ -30,6 +30,9 @@ err_ret=1
+ # kselftest skip code is 4
+ err_skip=4
  
- static const struct file_operations set_tracer_fops = {
--	.open		= tracing_open_generic,
-+	.open		= tracing_open_generic_tr,
- 	.read		= tracing_set_trace_read,
- 	.write		= tracing_set_trace_write,
- 	.llseek		= generic_file_llseek,
-+	.release	= tracing_release_generic_tr,
- };
++# umount required
++UMOUNT_DIR=""
++
+ # cgroup RT scheduling prevents chrt commands from succeeding, which
+ # induces failures in test wakeup tests.  Disable for the duration of
+ # the tests.
+@@ -44,6 +47,9 @@ setup() {
  
- static const struct file_operations tracing_pipe_fops = {
+ cleanup() {
+   echo $sched_rt_runtime_orig > $sched_rt_runtime
++  if [ -n "${UMOUNT_DIR}" ]; then
++    umount ${UMOUNT_DIR} ||:
++  fi
+ }
+ 
+ errexit() { # message
+@@ -155,11 +161,13 @@ if [ -z "$TRACING_DIR" ]; then
+ 	    mount -t tracefs nodev /sys/kernel/tracing ||
+ 	      errexit "Failed to mount /sys/kernel/tracing"
+ 	    TRACING_DIR="/sys/kernel/tracing"
++	    UMOUNT_DIR=${TRACING_DIR}
+ 	# If debugfs exists, then so does /sys/kernel/debug
+ 	elif [ -d "/sys/kernel/debug" ]; then
+ 	    mount -t debugfs nodev /sys/kernel/debug ||
+ 	      errexit "Failed to mount /sys/kernel/debug"
+ 	    TRACING_DIR="/sys/kernel/debug/tracing"
++	    UMOUNT_DIR=${TRACING_DIR}
+ 	else
+ 	    err_ret=$err_skip
+ 	    errexit "debugfs and tracefs are not configured in this kernel"
+-- 
+2.40.1
+
 
 
