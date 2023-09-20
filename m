@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B72D67A7817
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD0947A782E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234231AbjITJzQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:55:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        id S234281AbjITJ5J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:57:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234229AbjITJzN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:55:13 -0400
+        with ESMTP id S234274AbjITJ5I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E209B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:55:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA06AC433CA;
-        Wed, 20 Sep 2023 09:55:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B048F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682EDC433C8;
+        Wed, 20 Sep 2023 09:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203707;
-        bh=Yf5doKIWKEqqOEAK8kHc2vm6YgN8X5lM4EuQC+DAo+Y=;
+        s=korg; t=1695203821;
+        bh=qROhzAEtHcgpJgbGuai6wgukn5/kB2BxMwyxtP8v9ic=;
         h=Subject:To:Cc:From:Date:From;
-        b=LhrsoRrDLwMv7B1s9jxjOqrGNixQTl0WW46tjbZuSGPp9TNDs8JRcAynEQ+dLq7tu
-         qgc5SkhXJ0FCQZ+MrknENdCRmvCSVVB4ioi84c31LxqaWUy2KHd4g/N2SrBNNqHUlC
-         /Dvy30bEG5QfFwzx5H03jljfQguH4KYX27aZ1fHc=
-Subject: FAILED: patch "[PATCH] tracing: Increase trace array ref count on enable and filter" failed to apply to 5.4-stable tree
-To:     rostedt@goodmis.org, akpm@linux-foundation.org, lkft@linaro.org,
-        mark.rutland@arm.com, mhiramat@kernel.org,
-        naresh.kamboju@linaro.org, zhengyejian1@huawei.com
+        b=hADSmgen+VC0Cr4Rl0zyyV8cRHwwMjY4l5fu1DwpCCvmOwXvuH7ZwdLohZJ/1nPr1
+         MBU0+Q4lZP3sntjSzvJPxlKqzSmqXFYvljfyngKhn6jyIR2uhvpKEZuXqK1UuKOHxt
+         VsCYzMIXo2LBNIDuAWEAeENZqja3oaCDkmAl2I+w=
+Subject: FAILED: patch "[PATCH] ata: libata: disallow dev-initiated LPM transitions to" failed to apply to 5.4-stable tree
+To:     niklas.cassel@wdc.com, dlemoal@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:54:54 +0200
-Message-ID: <2023092054-outthink-cake-de5c@gregkh>
+Date:   Wed, 20 Sep 2023 11:56:59 +0200
+Message-ID: <2023092059-broiling-pumice-a10f@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,15 +51,18 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x f5ca233e2e66dc1c249bf07eefa37e34a6c9346a
+git cherry-pick -x 24e0e61db3cb86a66824531989f1df80e0939f26
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092054-outthink-cake-de5c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092059-broiling-pumice-a10f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-f5ca233e2e66 ("tracing: Increase trace array ref count on enable and filter files")
-2972e3050e35 ("tracing: Make trace_marker{,_raw} stream-like")
+24e0e61db3cb ("ata: libata: disallow dev-initiated LPM transitions to unsupported states")
+7fe183c773c4 ("ata: start separating SATA specific code from libata-core.c")
+a52fbcfc7b38 ("ata: move EXPORT_SYMBOL_GPL()s close to exported code")
+10a663a1b151 ("ata: ahci: Add shutdown to freeze hardware resources of ahci")
+95364f36701e ("ata: make qc_prep return ata_completion_errors")
 
 thanks,
 
@@ -69,107 +70,113 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f5ca233e2e66dc1c249bf07eefa37e34a6c9346a Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Wed, 6 Sep 2023 22:47:12 -0400
-Subject: [PATCH] tracing: Increase trace array ref count on enable and filter
- files
+From 24e0e61db3cb86a66824531989f1df80e0939f26 Mon Sep 17 00:00:00 2001
+From: Niklas Cassel <niklas.cassel@wdc.com>
+Date: Mon, 4 Sep 2023 22:42:56 +0200
+Subject: [PATCH] ata: libata: disallow dev-initiated LPM transitions to
+ unsupported states
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When the trace event enable and filter files are opened, increment the
-trace array ref counter, otherwise they can be accessed when the trace
-array is being deleted. The ref counter keeps the trace array from being
-deleted while those files are opened.
+In AHCI 1.3.1, the register description for CAP.SSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Slumber state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Slumber requests."
 
-Link: https://lkml.kernel.org/r/20230907024803.456187066@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
+In AHCI 1.3.1, the register description for CAP.PSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Partial state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Partial requests."
 
+Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
+a device is not allowed to initiate transitions to power states which are
+unsupported by the HBA.
+
+DevSleep is always initiated by the HBA, however, for completeness, set the
+corresponding bit in PxSCTL.IPM such that agressive link power management
+cannot transition to DevSleep if DevSleep is not supported.
+
+sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
+However, only libahci has the ability to read the CAP/CAP2 register to see
+if these features are supported. Therefore, in order to not introduce any
+regressions on ata_piix or libata-pmp, create flags that indicate that the
+respective feature is NOT supported. This way, the behavior for ata_piix
+and libata-pmp should remain unchanged.
+
+This change is based on a patch originally submitted by Runa Guo-oc.
+
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Reported-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 35783a7baf15..0827037ee3b8 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4973,6 +4973,33 @@ int tracing_open_generic_tr(struct inode *inode, struct file *filp)
- 	return 0;
- }
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index abb5911c9d09..08745e7db820 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1883,6 +1883,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	else
+ 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
  
-+/*
-+ * The private pointer of the inode is the trace_event_file.
-+ * Update the tr ref count associated to it.
-+ */
-+int tracing_open_file_tr(struct inode *inode, struct file *filp)
-+{
-+	struct trace_event_file *file = inode->i_private;
-+	int ret;
++	if (!(hpriv->cap & HOST_CAP_PART))
++		host->flags |= ATA_HOST_NO_PART;
 +
-+	ret = tracing_check_open_get_tr(file->tr);
-+	if (ret)
-+		return ret;
++	if (!(hpriv->cap & HOST_CAP_SSC))
++		host->flags |= ATA_HOST_NO_SSC;
 +
-+	filp->private_data = inode->i_private;
++	if (!(hpriv->cap2 & HOST_CAP2_SDS))
++		host->flags |= ATA_HOST_NO_DEVSLP;
 +
-+	return 0;
-+}
-+
-+int tracing_release_file_tr(struct inode *inode, struct file *filp)
-+{
-+	struct trace_event_file *file = inode->i_private;
-+
-+	trace_array_put(file->tr);
-+
-+	return 0;
-+}
-+
- static int tracing_mark_open(struct inode *inode, struct file *filp)
- {
- 	stream_open(inode, filp);
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 5669dd1f90d9..77debe53f07c 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -610,6 +610,8 @@ void tracing_reset_all_online_cpus(void);
- void tracing_reset_all_online_cpus_unlocked(void);
- int tracing_open_generic(struct inode *inode, struct file *filp);
- int tracing_open_generic_tr(struct inode *inode, struct file *filp);
-+int tracing_open_file_tr(struct inode *inode, struct file *filp);
-+int tracing_release_file_tr(struct inode *inode, struct file *filp);
- bool tracing_is_disabled(void);
- bool tracer_tracing_is_on(struct trace_array *tr);
- void tracer_tracing_on(struct trace_array *tr);
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index ed367d713be0..2af92177b765 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -2103,9 +2103,10 @@ static const struct file_operations ftrace_set_event_notrace_pid_fops = {
- };
+ 	if (pi.flags & ATA_FLAG_EM)
+ 		ahci_reset_em(host);
  
- static const struct file_operations ftrace_enable_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_file_tr,
- 	.read = event_enable_read,
- 	.write = event_enable_write,
-+	.release = tracing_release_file_tr,
- 	.llseek = default_llseek,
- };
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 5d31c08be013..a701e1538482 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -396,10 +396,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+ 	case ATA_LPM_MED_POWER_WITH_DIPM:
+ 	case ATA_LPM_MIN_POWER_WITH_PARTIAL:
+ 	case ATA_LPM_MIN_POWER:
+-		if (ata_link_nr_enabled(link) > 0)
+-			/* no restrictions on LPM transitions */
++		if (ata_link_nr_enabled(link) > 0) {
++			/* assume no restrictions on LPM transitions */
+ 			scontrol &= ~(0x7 << 8);
+-		else {
++
++			/*
++			 * If the controller does not support partial, slumber,
++			 * or devsleep, then disallow these transitions.
++			 */
++			if (link->ap->host->flags & ATA_HOST_NO_PART)
++				scontrol |= (0x1 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_SSC)
++				scontrol |= (0x2 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
++				scontrol |= (0x4 << 8);
++		} else {
+ 			/* empty port, power off */
+ 			scontrol &= ~0xf;
+ 			scontrol |= (0x1 << 2);
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 52d58b13e5ee..bf4913f4d7ac 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -222,6 +222,10 @@ enum {
+ 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
+ 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
  
-@@ -2122,9 +2123,10 @@ static const struct file_operations ftrace_event_id_fops = {
- };
++	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
++	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
++	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
++
+ 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
  
- static const struct file_operations ftrace_event_filter_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_file_tr,
- 	.read = event_filter_read,
- 	.write = event_filter_write,
-+	.release = tracing_release_file_tr,
- 	.llseek = default_llseek,
- };
- 
+ 	/* various lengths of time */
 
