@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 119FA7A7EBD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154867A8151
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235619AbjITMUV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41302 "EHLO
+        id S234714AbjITMoU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235638AbjITMUQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:16 -0400
+        with ESMTP id S236294AbjITMoS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE1283
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FECC433C8;
-        Wed, 20 Sep 2023 12:20:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1D5C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210C8C433C7;
+        Wed, 20 Sep 2023 12:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212410;
-        bh=Cs1HhAb0Y+qQ8OxoLbwOsGjCDkHou7Jm65Ktn7jRWno=;
+        s=korg; t=1695213852;
+        bh=5vBlaaDvWD3iyLbcS1cviDUrE7HlxfijrHEPM/t/GcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xumm16bggbC7qsDVau5wDnyf3MN7cParobeyKbtPcHDprMOQXqQCSrt7LllOvNIyS
-         FdPcMG0LeuOJHKsvK4O1PvP6xBG5R9ewG3sIJ7Al7FH76g9ui+54SAivKJZbLyz8Ap
-         bZy40W0/WJymKN+8urHsqj6vkZe2toHGnGOEtAss=
+        b=RNkarLNbTqfPFKQgeLRonL+7GXAgN2cmr+PlXyK6LMeBBMjSb3U/ZYuRPAMAQvYeQ
+         cJzrFjudmLgK/lNVJcAglxhprC1VZZDpjYjcdXwKPUIjGnftkZ/974WNMnMMxrnElX
+         2kw5nlfAnlhX+jNix9CjCCX8iBEKIgGeI7yDLs8Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Jim Reinhart <jimr@tekvox.com>,
+        James Autry <jautry@tekvox.com>,
+        Matthew Maron <matthewm@tekvox.com>,
+        Giulio Benetti <giulio.benetti@benettiengineering.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 239/273] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Subject: [PATCH 5.15 021/110] mmc: sdhci-esdhc-imx: improve ESDHC_FLAG_ERR010450
 Date:   Wed, 20 Sep 2023 13:31:19 +0200
-Message-ID: <20230920112853.732099674@linuxfoundation.org>
+Message-ID: <20230920112831.189528841@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Mainkar <abmainkar@nvidia.com>
+From: Giulio Benetti <giulio.benetti@benettiengineering.com>
 
-[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
+[ Upstream commit 5ae4b0d8875caa44946e579420c7fd5740d58653 ]
 
-ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
+Errata ERR010450 only shows up if voltage is 1.8V, but if the device is
+supplied by 3v3 the errata can be ignored. So let's check for if quirk
+SDHCI_QUIRK2_NO_1_8_V is defined or not before limiting the frequency.
 
-According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
-
-When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
-
-=============================================================
-UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
-CPU: 37 PID: 1678 Comm: cat Not tainted
-6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
-HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
- dump_backtrace+0xe0/0x130
- show_stack+0x20/0x60
- dump_stack_lvl+0x68/0x84
- dump_stack+0x18/0x34
- ubsan_epilogue+0x10/0x50
- __ubsan_handle_out_of_bounds+0x80/0x90
- acpi_ds_exec_end_op+0x1bc/0x6d8
- acpi_ps_parse_loop+0x57c/0x618
- acpi_ps_parse_aml+0x1e0/0x4b4
- acpi_ps_execute_method+0x24c/0x2b8
- acpi_ns_evaluate+0x3a8/0x4bc
- acpi_evaluate_object+0x15c/0x37c
- acpi_evaluate_integer+0x54/0x15c
- show_power+0x8c/0x12c [acpi_power_meter]
-
-Link: https://github.com/acpica/acpica/commit/90310989
-Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Jim Reinhart <jimr@tekvox.com>
+Cc: James Autry <jautry@tekvox.com>
+Cc: Matthew Maron <matthewm@tekvox.com>
+Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Acked-by: Haibo Chen <haibo.chen@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230811214853.8623-1-giulio.benetti@benettiengineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psopcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index 8d7dc98bad17b..ca01e02af9cba 100644
---- a/drivers/acpi/acpica/psopcode.c
-+++ b/drivers/acpi/acpica/psopcode.c
-@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index a6aa33dcd2a2e..d8a4080712365 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -171,8 +171,8 @@
+ #define ESDHC_FLAG_HS400		BIT(9)
+ /*
+  * The IP has errata ERR010450
+- * uSDHC: Due to the I/O timing limit, for SDR mode, SD card clock can't
+- * exceed 150MHz, for DDR mode, SD card clock can't exceed 45MHz.
++ * uSDHC: At 1.8V due to the I/O timing limit, for SDR mode, SD card
++ * clock can't exceed 150MHz, for DDR mode, SD card clock can't exceed 45MHz.
+  */
+ #define ESDHC_FLAG_ERR010450		BIT(10)
+ /* The IP supports HS400ES mode */
+@@ -917,7 +917,8 @@ static inline void esdhc_pltfm_set_clock(struct sdhci_host *host,
+ 		| ESDHC_CLOCK_MASK);
+ 	sdhci_writel(host, temp, ESDHC_SYSTEM_CONTROL);
  
- /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
- 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
--			 AML_FLAGS_EXEC_0A_0T_1R),
-+			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+-	if (imx_data->socdata->flags & ESDHC_FLAG_ERR010450) {
++	if ((imx_data->socdata->flags & ESDHC_FLAG_ERR010450) &&
++	    (!(host->quirks2 & SDHCI_QUIRK2_NO_1_8_V))) {
+ 		unsigned int max_clock;
  
- /* ACPI 5.0 opcodes */
- 
+ 		max_clock = imx_data->is_ddr ? 45000000 : 150000000;
 -- 
 2.40.1
 
