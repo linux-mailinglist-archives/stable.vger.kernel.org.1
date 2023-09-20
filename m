@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ABC47A8191
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90757A8131
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234832AbjITMqk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35290 "EHLO
+        id S236164AbjITMnW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:43:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234840AbjITMqj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:39 -0400
+        with ESMTP id S236186AbjITMnV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C392EF0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D5AC433CA;
-        Wed, 20 Sep 2023 12:46:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAE183
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAC3C433C7;
+        Wed, 20 Sep 2023 12:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213989;
-        bh=GhHn7z7pT4T8Lyy/OVsC4TQSNE5PsW5IxF4LHM9Lm6o=;
+        s=korg; t=1695213795;
+        bh=x0SDCVU+RgaM4CufiBDuZz0KTutPK9nU5EeHNBG9DX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HS0KJ3chT1Retjubs86OdDEMvBxu7zbkKziXbJlKGR4HdamQLXS1rXIgB8RMJoeZR
-         NSK+h9Zl8oq7coDf33mYxo3jCa/H0wSbH+cmNT0XJAKs6rBD8YMEL77p9xQFzReSQS
-         P4ynJD32fOl178ygwg6cGJ/nx+TGGVnt80eDPXFY=
+        b=ij4qUL85xybhhLXIHwnFAFYeBQvaCYOey9oBizgUhgG/Ktbb+LNb0M958/3r68M1g
+         Ttf5o3iM8SWK7KIfHgCGinJ19BmpEKQM8dQuMdvaJaWfCBd5a1b8FgfaTh3RtzNQoX
+         XD0Hj8Ne8JCBTf/zLdc2sx+9oHgy4CmfvB7yshNc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/110] perf test shell stat_bpf_counters: Fix test on Intel
-Date:   Wed, 20 Sep 2023 13:32:10 +0200
-Message-ID: <20230920112833.126246427@linuxfoundation.org>
+Subject: [PATCH 5.4 354/367] selftests: tracing: Fix to unmount tracefs for recovering environment
+Date:   Wed, 20 Sep 2023 13:32:11 +0200
+Message-ID: <20230920112907.651760045@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,58 +52,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 68ca249c964f520af7f8763e22f12bd26b57b870 ]
+[ Upstream commit 7e021da80f48582171029714f8a487347f29dddb ]
 
-As of now, bpf counters (bperf) don't support event groups.  But the
-default perf stat includes topdown metrics if supported (on recent Intel
-machines) which require groups.  That makes perf stat exiting.
+Fix to unmount the tracefs if the ftracetest mounted it for recovering
+system environment. If the tracefs is already mounted, this does nothing.
 
-  $ sudo perf stat --bpf-counter true
-  bpf managed perf events do not yet support groups.
-
-Actually the test explicitly uses cycles event only, but it missed to
-pass the option when it checks the availability of the command.
-
-Fixes: 2c0cb9f56020d2ea ("perf test: Add a shell test for 'perf stat --bpf-counters' new option")
-Reviewed-by: Song Liu <song@kernel.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: bpf@vger.kernel.org
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230825164152.165610-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Suggested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/all/29fce076-746c-4650-8358-b4e0fa215cf7@sirena.org.uk/
+Fixes: cbd965bde74c ("ftrace/selftests: Return the skip code when tracing directory not configured in kernel")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/stat_bpf_counters.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/ftrace/ftracetest | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/perf/tests/shell/stat_bpf_counters.sh b/tools/perf/tests/shell/stat_bpf_counters.sh
-index 13473aeba489c..6bf24b85294c7 100755
---- a/tools/perf/tests/shell/stat_bpf_counters.sh
-+++ b/tools/perf/tests/shell/stat_bpf_counters.sh
-@@ -22,10 +22,10 @@ compare_number()
+diff --git a/tools/testing/selftests/ftrace/ftracetest b/tools/testing/selftests/ftrace/ftracetest
+index 19e9236dec5e2..f2e1b2bfcf0b0 100755
+--- a/tools/testing/selftests/ftrace/ftracetest
++++ b/tools/testing/selftests/ftrace/ftracetest
+@@ -30,6 +30,9 @@ err_ret=1
+ # kselftest skip code is 4
+ err_skip=4
+ 
++# umount required
++UMOUNT_DIR=""
++
+ # cgroup RT scheduling prevents chrt commands from succeeding, which
+ # induces failures in test wakeup tests.  Disable for the duration of
+ # the tests.
+@@ -44,6 +47,9 @@ setup() {
+ 
+ cleanup() {
+   echo $sched_rt_runtime_orig > $sched_rt_runtime
++  if [ -n "${UMOUNT_DIR}" ]; then
++    umount ${UMOUNT_DIR} ||:
++  fi
  }
  
- # skip if --bpf-counters is not supported
--if ! perf stat --bpf-counters true > /dev/null 2>&1; then
-+if ! perf stat -e cycles --bpf-counters true > /dev/null 2>&1; then
- 	if [ "$1" = "-v" ]; then
- 		echo "Skipping: --bpf-counters not supported"
--		perf --no-pager stat --bpf-counters true || true
-+		perf --no-pager stat -e cycles --bpf-counters true || true
- 	fi
- 	exit 2
- fi
+ errexit() { # message
+@@ -155,11 +161,13 @@ if [ -z "$TRACING_DIR" ]; then
+ 	    mount -t tracefs nodev /sys/kernel/tracing ||
+ 	      errexit "Failed to mount /sys/kernel/tracing"
+ 	    TRACING_DIR="/sys/kernel/tracing"
++	    UMOUNT_DIR=${TRACING_DIR}
+ 	# If debugfs exists, then so does /sys/kernel/debug
+ 	elif [ -d "/sys/kernel/debug" ]; then
+ 	    mount -t debugfs nodev /sys/kernel/debug ||
+ 	      errexit "Failed to mount /sys/kernel/debug"
+ 	    TRACING_DIR="/sys/kernel/debug/tracing"
++	    UMOUNT_DIR=${TRACING_DIR}
+ 	else
+ 	    err_ret=$err_skip
+ 	    errexit "debugfs and tracefs are not configured in this kernel"
 -- 
 2.40.1
 
