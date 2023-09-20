@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB5FA7A8175
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A60B7A7F25
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236221AbjITMpj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:45:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60752 "EHLO
+        id S235724AbjITMY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:24:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236285AbjITMpi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:38 -0400
+        with ESMTP id S235730AbjITMY2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8538783
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D78C433C9;
-        Wed, 20 Sep 2023 12:45:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16EF992
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5468EC433CB;
+        Wed, 20 Sep 2023 12:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213932;
-        bh=hcjBAqvoXCtqXSKYlcsq/UitnjH7Yr4vT5uuiMFMpO4=;
+        s=korg; t=1695212662;
+        bh=Vg+qD+3JFAvI/C8ntOl697ujw7lHy8zEP12qSzlfMwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QmK5Cpze/omE5/fbaP4mOuXjeb39tsxpgrVlPGWu1a/DtdUYOE4eiMpRoRvH8iu1e
-         TlaOkVXhCoDwPUWx97TBPBllGF3sz5gEs5lDfgr43zRiJqFGHDn745NFzoj9inBRRY
-         fC7U0W6yB0UAYQsjxvf97NOlhlqajW5+5ncoe46U=
+        b=TgGiBOxD4LkRkR8cHFOrfGeLUkzNkBFFAwdZza1S3zONFQLU5y/MnuEhyp0AR92EP
+         fYn3O33n7vj1E+oOWnznQsKk80tgfNDiNyR76MzXeP0tx9iBCHcfO9ojzOX1pqn7ya
+         cCHJHlJf5m82q+Sn9oocmyRM7pfG9Q4JStdmZNIU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/110] media: pci: cx23885: replace BUG with error return
+Subject: [PATCH 5.10 58/83] btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super
 Date:   Wed, 20 Sep 2023 13:31:48 +0200
-Message-ID: <20230920112832.243951038@linuxfoundation.org>
+Message-ID: <20230920112828.951189500@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +53,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit 2e1796fd4904fdd6062a8e4589778ea899ea0c8d ]
+[ Upstream commit 6bfe3959b0e7a526f5c64747801a8613f002f05a ]
 
-It was completely unnecessary to use BUG in buffer_prepare().
-Just replace it with an error return. This also fixes a smatch warning:
+The function btrfs_validate_super() should verify the metadata_uuid in
+the provided superblock argument. Because, all its callers expect it to
+do that.
 
-drivers/media/pci/cx23885/cx23885-video.c:422 buffer_prepare() error: uninitialized symbol 'ret'.
+Such as in the following stacks:
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+  write_all_supers()
+   sb = fs_info->super_for_commit;
+   btrfs_validate_write_super(.., sb)
+     btrfs_validate_super(.., sb, ..)
+
+  scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
+
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
+
+However, it currently verifies the fs_info::super_copy::metadata_uuid
+instead.  Fix this using the correct metadata_uuid in the superblock
+argument.
+
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx23885/cx23885-video.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/disk-io.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
-index b01499f810697..6851e01da1c5b 100644
---- a/drivers/media/pci/cx23885/cx23885-video.c
-+++ b/drivers/media/pci/cx23885/cx23885-video.c
-@@ -413,7 +413,7 @@ static int buffer_prepare(struct vb2_buffer *vb)
- 				dev->height >> 1);
- 		break;
- 	default:
--		BUG();
-+		return -EINVAL; /* should not happen */
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 1bc6909d4de94..0e25a3f64b2e0 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2503,13 +2503,11 @@ static int validate_super(struct btrfs_fs_info *fs_info,
+ 		ret = -EINVAL;
  	}
- 	dprintk(2, "[%p/%d] buffer_init - %dx%d %dbpp 0x%08x - dma=0x%08lx\n",
- 		buf, buf->vb.vb2_buf.index,
+ 
+-	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
+-	    memcmp(fs_info->fs_devices->metadata_uuid,
+-		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
++		   BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->metadata_uuid,
+-			fs_info->fs_devices->metadata_uuid);
++			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
+ 		ret = -EINVAL;
+ 	}
+ 
 -- 
 2.40.1
 
