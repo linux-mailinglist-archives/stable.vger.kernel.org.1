@@ -2,50 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D8B47A7750
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18EBE7A777F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233907AbjITJZx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:25:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55684 "EHLO
+        id S234141AbjITJ3f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:29:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234071AbjITJZu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:25:50 -0400
+        with ESMTP id S234044AbjITJ3b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:29:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60EDA12F;
-        Wed, 20 Sep 2023 02:25:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0BEC433C9;
-        Wed, 20 Sep 2023 09:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695201910;
-        bh=+Vx4pZyRUu1fyYPhOi72zytZP5DFTTN2SI/8tCaJRjg=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46959D3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:29:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168EFC433C7;
+        Wed, 20 Sep 2023 09:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695202164;
+        bh=opUZe8KOB8c38Djs4O6OFWzIGscsq6EqXBH1itvaXvk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NvoSEPeffyivIH5CT28GoxlHRWvGT8nI6rZcrGnSCP6Lnm79ksnS8+6TA8PxN+yi3
-         0KQ5ntj66H6wThAh66/jNwsM7jK10nRNss2HY4PTf1Zz8rlT8jUkwcY1pywD/KVdw0
-         2pxPMqnHxiFvS8l7uCnCacHDJvfR0m35IK2MZ7lM=
-Date:   Wed, 20 Sep 2023 11:25:08 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Michal Hocko <mhocko@suse.com>,
-        Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Shakeel Butt <shakeelb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
- kmem.limit_in_bytes
-Message-ID: <2023092032-applied-gave-0bff@gregkh>
-References: <20230917191040.964416434@linuxfoundation.org>
- <20230917191042.204185566@linuxfoundation.org>
- <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
+        b=GURHlvpCRcS2WI8D7eckgGqIaKVUUCYrM3/dbQDhNHX7OMJX58PIYdzW7QYruJJwo
+         qxxVLh7dZpxSmj6tICnZKYfSNLlDhbAn4mhJu/O/HqHeB2EX3DBPJKfQ4kJS4sQZ+Q
+         BNqevOqCsHCJJ6LEZ6SQJfcRUjy2Q6nt8UySnLabWrUrk7OW9bMCXdh3QE/+O8934S
+         Ic9ALP99oLn6Nf4sONtpRKPKg8s9OiLu+be29GarMcEx6bxpqMFKmZ0mb6U3l3oKMN
+         Zyxuf4vueI5ZT2mrYTV/2jU9KMnYvhj8jLnfAb9XC5iNgUWgvNHgNEyPykscf1MJD6
+         nj59PpHuRpvzg==
+Date:   Wed, 20 Sep 2023 10:29:20 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     stable@vger.kernel.org, fw@strlen.de
+Subject: Re: [PATCH 0/5] netfilter: Reinstate dropped Stable patches
+Message-ID: <20230920092920.GB13143@google.com>
+References: <20230919164437.3297021-1-lee@kernel.org>
+ <ZQnRAGKWu5Nm/qLw@calendula>
+ <ZQnRkDY8YTysf1mo@calendula>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZQnRkDY8YTysf1mo@calendula>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,47 +49,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 20, 2023 at 10:43:56AM +0200, Michal Hocko wrote:
-> On Wed 20-09-23 01:11:01, Jeremi Piotrowski wrote:
-> > On Sun, Sep 17, 2023 at 09:12:40PM +0200, Greg Kroah-Hartman wrote:
-> > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+On Tue, 19 Sep 2023, Pablo Neira Ayuso wrote:
+
+> On Tue, Sep 19, 2023 at 06:49:08PM +0200, Pablo Neira Ayuso wrote:
+> > Hi,
+> > 
+> > On Tue, Sep 19, 2023 at 05:44:28PM +0100, Lee Jones wrote:
+> > > Dropped in August:
 > > > 
-> > > ------------------
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=da9e96b4de57f6621f21e682bad92b5ffed0eeee
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=8d1dbdfdd7612a9ea73b005f75a3b2b8b0610d4e
+> > > 
+> > > Only re-applied and build tested against v6.1.53.
+> > > 
+> > > If they do apply and test well against linux-5.{4,10,15}, all the better.
 > > 
-> > Hi Greg/Michal,
+> > I have a pending queue of patches for all these trees.
 > > 
-> > This commit breaks userspace which makes it a bad commit for mainline and an
-> > even worse commit for stable.
-> > 
-> > We ingested 6.1.54 into our nightly testing and found that runc fails to gather
-> > cgroup statistics (when reading kmem.limit_in_bytes). The same code is vendored
-> > into kubelet and kubelet fails to start if this operation fails. 6.1.53 is
-> > fine.
+> > I will follow up asap, please hold on with this.
 > 
-> Could you expand some more on why is the file read? It doesn't support
-> writing to it for some time so how does reading it helps in any sense?
+> For the record, this is my pending list of -stable patches:
 > 
-> Anyway, I do agree that the stable backport should be reverted.
+> https://people.netfilter.org/pablo/linux-stable/
+> 
+> I will rebase on top of current -stable releases and post them. There
+> is also a few more recent fixes not yet in that queue that are also
+> good to have.
+> 
+> so, please, let me take care of this.
 
-That will just postpone the breakage, we really shouldn't break
-userspace.
+Sure.
 
-That being said, having userspace "break" because a file is no longer
-present is not good coding style on the userspace side at all.  That's
-why we have sysfs and single-value-files now, if the file isn't present,
-then userspace instantly notices and can handle it.  Much easier than
-the old-style multi-fields-in-one-file problem.
-
-> > > Address this by wiping out the file completely and effectively get back to
-> > > pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
-
-The fact that this is a valid option (i.e. no file) with that config
-option disabled makes me want to keep this as well, as how does
-userspace handle this option disabled at all?  Or old kernels?
-
-I can drop this from stable kernels, but again, this feels like the runc
-developers are just postponing the problem...
-
-thanks,
-
-greg k-h
+-- 
+Lee Jones [李琼斯]
