@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB69E7A7F96
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8618B7A7D78
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235789AbjITM2X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:28:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49262 "EHLO
+        id S235298AbjITMJa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:09:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234472AbjITM2X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:28:23 -0400
+        with ESMTP id S235333AbjITMJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419C98F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E19C433C7;
-        Wed, 20 Sep 2023 12:28:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB0F122
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E8C433C9;
+        Wed, 20 Sep 2023 12:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212896;
-        bh=yxvfs1nP7lTzWDhGKu/JxruC3FrTDSRp9FCYxilF9T4=;
+        s=korg; t=1695211753;
+        bh=TKkXIHZIxzqgVKhndOW2t4z/r+g0kbgTxLkQlGgVf6Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Hq3qdJ0GPmjAZpdXjYS8JOFjTAFt/z4T+fsrym33W+DYUr+l6Ft2QChwrM0Afyrv
-         DfY69MMGR96oINSfpkROdO/3CRay6P2NnaRdQtq5ERMo49GwDDl6K/A8Att38eEP3i
-         NfU27L56OYKnDkTvekKz8uQs5WzuMa8NHfXSrVcE=
+        b=vTBGwBqR7Ly7ctUsytJddD17lIdxwCIvLZlEioeYqOhm4/wyTEX+lWUORb1EwVnF1
+         M1+XZrq7/673dpN4Lzh2bCo3Hd7mMdxFfszyGB6/L2/m/MxNEctebTup1Z0O6O/whl
+         nFFKWN+XkK6jJ+I5FhqaZUggk5Rk9RdYQ5LDjwgI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Budimir Markovic <markovicbudimir@gmail.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/367] net/sched: sch_hfsc: Ensure inner classes have fsc curve
+        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 022/273] s390/dasd: fix hanging device after request requeue
 Date:   Wed, 20 Sep 2023 13:27:42 +0200
-Message-ID: <20230920112900.744027753@linuxfoundation.org>
+Message-ID: <20230920112847.116161932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +50,224 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Budimir Markovic <markovicbudimir@gmail.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-[ Upstream commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f ]
+[ Upstream commit 8a2278ce9c25048d999fe1a3561def75d963f471 ]
 
-HFSC assumes that inner classes have an fsc curve, but it is currently
-possible for classes without an fsc curve to become parents. This leads
-to bugs including a use-after-free.
+The DASD device driver has a function to requeue requests to the
+blocklayer.
+This function is used in various cases when basic settings for the device
+have to be changed like High Performance Ficon related parameters or copy
+pair settings.
 
-Don't allow non-root classes without HFSC_FSC to become parents.
+The functions iterates over the device->ccw_queue and also removes the
+requests from the block->ccw_queue.
+In case the device is started on an alias device instead of the base
+device it might be removed from the block->ccw_queue without having it
+canceled properly before. This might lead to a hanging device since the
+request is no longer on a queue and can not be handled properly.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230824084905.422-1-markovicbudimir@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix by iterating over the block->ccw_queue instead of the
+device->ccw_queue. This will take care of all blocklayer related requests
+and handle them on all associated DASD devices.
+
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230721193647.3889634-4-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/s390/block/dasd.c | 125 +++++++++++++++-----------------------
+ 1 file changed, 48 insertions(+), 77 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 92ad4115e473c..2af4adb7e84e4 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1012,6 +1012,10 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 		if (parent == NULL)
- 			return -ENOENT;
- 	}
-+	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
-+		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
-+		return -EINVAL;
-+	}
+diff --git a/drivers/s390/block/dasd.c b/drivers/s390/block/dasd.c
+index c1cf277d0d89a..c0eee7b00442e 100644
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -2826,41 +2826,32 @@ static void _dasd_wake_block_flush_cb(struct dasd_ccw_req *cqr, void *data)
+  * Requeue a request back to the block request queue
+  * only works for block requests
+  */
+-static int _dasd_requeue_request(struct dasd_ccw_req *cqr)
++static void _dasd_requeue_request(struct dasd_ccw_req *cqr)
+ {
+-	struct dasd_block *block = cqr->block;
+ 	struct request *req;
  
- 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
- 		return -EINVAL;
+-	if (!block)
+-		return -EINVAL;
+ 	/*
+ 	 * If the request is an ERP request there is nothing to requeue.
+ 	 * This will be done with the remaining original request.
+ 	 */
+ 	if (cqr->refers)
+-		return 0;
++		return;
+ 	spin_lock_irq(&cqr->dq->lock);
+ 	req = (struct request *) cqr->callback_data;
+ 	blk_mq_requeue_request(req, true);
+ 	spin_unlock_irq(&cqr->dq->lock);
+ 
+-	return 0;
++	return;
+ }
+ 
+-/*
+- * Go through all request on the dasd_block request queue, cancel them
+- * on the respective dasd_device, and return them to the generic
+- * block layer.
+- */
+-static int dasd_flush_block_queue(struct dasd_block *block)
++static int _dasd_requests_to_flushqueue(struct dasd_block *block,
++					struct list_head *flush_queue)
+ {
+ 	struct dasd_ccw_req *cqr, *n;
+-	int rc, i;
+-	struct list_head flush_queue;
+ 	unsigned long flags;
++	int rc, i;
+ 
+-	INIT_LIST_HEAD(&flush_queue);
+-	spin_lock_bh(&block->queue_lock);
++	spin_lock_irqsave(&block->queue_lock, flags);
+ 	rc = 0;
+ restart:
+ 	list_for_each_entry_safe(cqr, n, &block->ccw_queue, blocklist) {
+@@ -2875,13 +2866,32 @@ static int dasd_flush_block_queue(struct dasd_block *block)
+ 		 * is returned from the dasd_device layer.
+ 		 */
+ 		cqr->callback = _dasd_wake_block_flush_cb;
+-		for (i = 0; cqr != NULL; cqr = cqr->refers, i++)
+-			list_move_tail(&cqr->blocklist, &flush_queue);
++		for (i = 0; cqr; cqr = cqr->refers, i++)
++			list_move_tail(&cqr->blocklist, flush_queue);
+ 		if (i > 1)
+ 			/* moved more than one request - need to restart */
+ 			goto restart;
+ 	}
+-	spin_unlock_bh(&block->queue_lock);
++	spin_unlock_irqrestore(&block->queue_lock, flags);
++
++	return rc;
++}
++
++/*
++ * Go through all request on the dasd_block request queue, cancel them
++ * on the respective dasd_device, and return them to the generic
++ * block layer.
++ */
++static int dasd_flush_block_queue(struct dasd_block *block)
++{
++	struct dasd_ccw_req *cqr, *n;
++	struct list_head flush_queue;
++	unsigned long flags;
++	int rc;
++
++	INIT_LIST_HEAD(&flush_queue);
++	rc = _dasd_requests_to_flushqueue(block, &flush_queue);
++
+ 	/* Now call the callback function of flushed requests */
+ restart_cb:
+ 	list_for_each_entry_safe(cqr, n, &flush_queue, blocklist) {
+@@ -3832,75 +3842,36 @@ EXPORT_SYMBOL_GPL(dasd_generic_verify_path);
+  */
+ static int dasd_generic_requeue_all_requests(struct dasd_device *device)
+ {
++	struct dasd_block *block = device->block;
+ 	struct list_head requeue_queue;
+ 	struct dasd_ccw_req *cqr, *n;
+-	struct dasd_ccw_req *refers;
+ 	int rc;
+ 
+-	INIT_LIST_HEAD(&requeue_queue);
+-	spin_lock_irq(get_ccwdev_lock(device->cdev));
+-	rc = 0;
+-	list_for_each_entry_safe(cqr, n, &device->ccw_queue, devlist) {
+-		/* Check status and move request to flush_queue */
+-		if (cqr->status == DASD_CQR_IN_IO) {
+-			rc = device->discipline->term_IO(cqr);
+-			if (rc) {
+-				/* unable to terminate requeust */
+-				dev_err(&device->cdev->dev,
+-					"Unable to terminate request %p "
+-					"on suspend\n", cqr);
+-				spin_unlock_irq(get_ccwdev_lock(device->cdev));
+-				dasd_put_device(device);
+-				return rc;
+-			}
+-		}
+-		list_move_tail(&cqr->devlist, &requeue_queue);
+-	}
+-	spin_unlock_irq(get_ccwdev_lock(device->cdev));
+-
+-	list_for_each_entry_safe(cqr, n, &requeue_queue, devlist) {
+-		wait_event(dasd_flush_wq,
+-			   (cqr->status != DASD_CQR_CLEAR_PENDING));
++	if (!block)
++		return 0;
+ 
+-		/*
+-		 * requeue requests to blocklayer will only work
+-		 * for block device requests
+-		 */
+-		if (_dasd_requeue_request(cqr))
+-			continue;
++	INIT_LIST_HEAD(&requeue_queue);
++	rc = _dasd_requests_to_flushqueue(block, &requeue_queue);
+ 
+-		/* remove requests from device and block queue */
+-		list_del_init(&cqr->devlist);
+-		while (cqr->refers != NULL) {
+-			refers = cqr->refers;
+-			/* remove the request from the block queue */
+-			list_del(&cqr->blocklist);
+-			/* free the finished erp request */
+-			dasd_free_erp_request(cqr, cqr->memdev);
+-			cqr = refers;
++	/* Now call the callback function of flushed requests */
++restart_cb:
++	list_for_each_entry_safe(cqr, n, &requeue_queue, blocklist) {
++		wait_event(dasd_flush_wq, (cqr->status < DASD_CQR_QUEUED));
++		/* Process finished ERP request. */
++		if (cqr->refers) {
++			spin_lock_bh(&block->queue_lock);
++			__dasd_process_erp(block->base, cqr);
++			spin_unlock_bh(&block->queue_lock);
++			/* restart list_for_xx loop since dasd_process_erp
++			 * might remove multiple elements
++			 */
++			goto restart_cb;
+ 		}
+-
+-		/*
+-		 * _dasd_requeue_request already checked for a valid
+-		 * blockdevice, no need to check again
+-		 * all erp requests (cqr->refers) have a cqr->block
+-		 * pointer copy from the original cqr
+-		 */
++		_dasd_requeue_request(cqr);
+ 		list_del_init(&cqr->blocklist);
+ 		cqr->block->base->discipline->free_cp(
+ 			cqr, (struct request *) cqr->callback_data);
+ 	}
+-
+-	/*
+-	 * if requests remain then they are internal request
+-	 * and go back to the device queue
+-	 */
+-	if (!list_empty(&requeue_queue)) {
+-		/* move freeze_queue to start of the ccw_queue */
+-		spin_lock_irq(get_ccwdev_lock(device->cdev));
+-		list_splice_tail(&requeue_queue, &device->ccw_queue);
+-		spin_unlock_irq(get_ccwdev_lock(device->cdev));
+-	}
+ 	dasd_schedule_device_bh(device);
+ 	return rc;
+ }
 -- 
 2.40.1
 
