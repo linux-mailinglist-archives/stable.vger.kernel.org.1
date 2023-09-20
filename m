@@ -2,292 +2,688 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCF77A8A9B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 19:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C82A7A8AA2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 19:30:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229503AbjITR2d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 13:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49228 "EHLO
+        id S229463AbjITRaT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 13:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjITR22 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 13:28:28 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FCEAF
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695230902; x=1726766902;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=QLfbJMzfEW923AVE/5cA3PClkh/kwTCMfn2afGMt3ys=;
-  b=W5Qg4a69imTe1z05cZdHxTxPQKtjyyYrOnjgVhYrGENNIliSWp2N65ZB
-   SUfpx8uK+voPKALxhFNoC6wr2YhwcjI5cbERlsbAL2bPG0ZjL0ErdmWr7
-   wNl3MPGlbWm0i6c/al4xmln56+n1Bty0UhnSrs1fWDx9DLfICgjnQrkuo
-   eVpPvIYTVtQHJUa4Ru3iP4No6LIL8QZ4sK3/ar9BPtjmiOokEUbUqPIfk
-   +t1vF2TcZIZAwwkXSGTd13cP7lSsYMel2mkmH6NNL/98eXv58hCWqNPPr
-   CUmalR8WiTU2LTS7kdOik2SVcu4/zrUB6h9+5kBY9Jx+hz++WWyLBqGTs
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="446762626"
-X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
-   d="scan'208";a="446762626"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 10:28:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="781799564"
-X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
-   d="scan'208";a="781799564"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Sep 2023 10:28:21 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 20 Sep 2023 10:28:20 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 20 Sep 2023 10:28:20 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Wed, 20 Sep 2023 10:28:20 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Wed, 20 Sep 2023 10:28:20 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OjhcO+rcUaBZGkCuY6/2mUvtRdL6bo+Amn6TXvMvfQ2mfsAdOqHefWPEaRDL34NIrTjGOzXPktVTigaekfc451zxDV7SA/XKNubI/Es+Ht5HF4hDBWHlTZFXz/3aSCJWQF58Ly8B0gi1ZAOEd4Xm3QkISOpcaxk6Z7MPPgWK+KXKpLu1OLHvBprYElMDQrjtlHitYvpV1Cx0hJVI/uI6zfbKX5LW4r6Jy7Fhi1to9GGsQom2CFV5DPHcfJXTb7GK4CtBapeyWBz2PyRbKYqkvJFdnovUdBqW7Dg241EdSNIadF7VcQjP+0wED5B+ANYIRn6th56bjl/GpB+4+G/F1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dpG02xW8/GgSmqs6fE4Cglh8uTofWw6bTWZFcY2kX/I=;
- b=dip0g2iv789WfblLQVlbS68JHWX398/G8TVYYf0m4ir68hhIHnbIj7J3phatOobmxwgjaMcDaKdkE8MvxOQkwR1wOSp6AFdypdP9wkcx8S8SEaUvV8BQv4vfprii/x1tvH4uRQAhcVHnMHMaYhCSsUXlQJxOqcibzUR46mdIiEh2sZ5s9d4MvsIYDhixexExyAOb4qzFfnaSlm7WiiKL8ggla6IGF4x7tm9PtmyCGB+RDvJgZuPUdoWeDZkjUtS+uTghvf6BjtPtbTnty/UeqjCZUNfAuuzILhvgZZb7IJatM0+UDgG/y5fhz1V1yDBcU7olCeQDaVf758FSrYqUOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB7859.namprd11.prod.outlook.com (2603:10b6:8:da::22) by
- PH0PR11MB5831.namprd11.prod.outlook.com (2603:10b6:510:14b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Wed, 20 Sep
- 2023 17:28:17 +0000
-Received: from DS7PR11MB7859.namprd11.prod.outlook.com
- ([fe80::48d9:4c34:35b:f66]) by DS7PR11MB7859.namprd11.prod.outlook.com
- ([fe80::48d9:4c34:35b:f66%4]) with mapi id 15.20.6768.029; Wed, 20 Sep 2023
- 17:28:16 +0000
-Date:   Wed, 20 Sep 2023 10:28:13 -0700
-From:   Matt Roper <matthew.d.roper@intel.com>
-To:     Nirmoy Das <nirmoy.das@intel.com>
-CC:     <intel-gfx@lists.freedesktop.org>,
-        <dri-devel@lists.freedesktop.org>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        <stable@vger.kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        "Tejas Upadhyay" <tejas.upadhyay@intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>,
-        Tapani =?iso-8859-1?Q?P=E4lli?= <tapani.palli@intel.com>,
-        Mark Janes <mark.janes@intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [PATCH] drm/i915: Remove unnecessary memory quiescing for aux
- inval
-Message-ID: <20230920172813.GQ2706891@mdroper-desk1.amr.corp.intel.com>
-References: <20230920111131.2696-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230920111131.2696-1-nirmoy.das@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0221.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::16) To DS7PR11MB7859.namprd11.prod.outlook.com
- (2603:10b6:8:da::22)
+        with ESMTP id S229458AbjITRaT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 13:30:19 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8C0A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:30:11 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-68fb98745c1so28618b3a.1
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:30:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1695231011; x=1695835811; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lc/yVaT51sw1mW3WGesxFhbkJ2M2f6yNX2lvO23F4bE=;
+        b=xaRnEGxksoQ0rYk/9E8g+bqiuuT3x2BV5A+Gy7m5EeBWdAZGyrMAKTQZ6o1NI3AbQx
+         ZBYpM3eXmgOztQ61SY6NP7TbVDB2a0Adq2yzVNNjj0YHKd6ECF0EmPEcRIpgK56hYZLA
+         wFjOvVT9zgyUkGK9xufa8A6O3BhKqZ+BEACe+tSs2lTXq9BofUHxHyFdMT8P9Wfhf8Lb
+         UPPXWHj+4Yh1SOPQfrKqf6tvnhE9MgpmuGJ6RRPZG2SHwuBXmZsLdXKww6M9fOL3rAAs
+         KrZ2a24f5IR0Oxj+AEhCpFkNOFsYcj/1jnWER2vwNA1vwlXQBO2oRvEJ5KvajwwJyT+r
+         HqSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695231011; x=1695835811;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lc/yVaT51sw1mW3WGesxFhbkJ2M2f6yNX2lvO23F4bE=;
+        b=RfPC16DRXjTA95GvlLJUByyGelB7I61atFzdG6NVgX6WJzYtytw/FLwEnG9UIiTXU/
+         fFv74/E1nnjaArAnTlSEx9uuIbN7SH4S6mxSe/6u0/Dx5s3ttVCJTOiedmIBgou+4ayY
+         U44ZqNZIBnyZyfJE9ZORFxmgySglwJ3R99FFBB9eGJCVdvqQKeqN6k38tAwjvvtepbRm
+         4QpxYrBHrbHCJePVV4jwMteuYcCsD1ZvTyj0qfFjRyJ5TxzkXFi7cd0aIVHpM4HWui5l
+         A35KFAXxLt2elTyY3kiL/XasBdDwiTfgiPJsfEw1uV3zdzKq7O0oiWVLo/wllrAnAuaJ
+         RJpQ==
+X-Gm-Message-State: AOJu0YyU2H1XkBYyXNfFbmrA2INSh3edBUp/6vAgWIBV8PtrhFfeCVQF
+        j7a/GezIxCiBZwTdFgXBIy8Ij78XWnWIY9kITjVMPg==
+X-Google-Smtp-Source: AGHT+IEPxWL1BfSliXNUKLeGEUBGMVz5tx57kkCbXa1pX5HXujIL4biOcIYj7qQE/X4YSXySmcm1MA==
+X-Received: by 2002:a05:6a00:1995:b0:68f:c9df:2ccb with SMTP id d21-20020a056a00199500b0068fc9df2ccbmr3435266pfl.1.1695231010687;
+        Wed, 20 Sep 2023 10:30:10 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id t13-20020a63b70d000000b005741b5eee47sm8573053pgf.10.2023.09.20.10.30.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Sep 2023 10:30:10 -0700 (PDT)
+Message-ID: <650b2c22.630a0220.4b7f1.a864@mx.google.com>
+Date:   Wed, 20 Sep 2023 10:30:10 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB7859:EE_|PH0PR11MB5831:EE_
-X-MS-Office365-Filtering-Correlation-Id: f512ddac-e85a-4096-9b2f-08dbb9fef98c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TVd1HJ58G9fGDNI2X9ao4IJjuc1/LMReqBxfMfVRchXwIdTNGXeD3mMb3mfw6w/+5AzfHfJhJ3vudhmOi1Hl5SWObYCpr0qSLjnUDkA8RstqaS0TYSBCqbXhId6+DDN8BLosDOqqdOc1JCUHtgVRRPATLYuAtMWeDix30KStKwwar9eZ4Jf0GVQdh7n3rNJvhK44RCS/vERmUP1/1aaqOCZp8K+RzNrgt3AvA12LEhKYabJYNBoLYQN14RPPeaBMa7t55SfY1ZmkxEoDzRU89KOESMDcXcamqAdbQJ/rOFZAdf5+FOIlCDDM1FMuwutyQ+8I/1BKjhw/ja532g71eDAQ+L6dHKnUHiznbjWIVJi84fOlU7MN/EMp4CVv+8ITkYB2H/TyTYrKmmrvh5Th5dBfePehdR33V41TgWbUkX+TL7m4rkqY6wVLLVMnSmerGdhu05geF/evABOEBZm07e9M9AnxBju/whQgu5bv3WpLyJ8vXKfLgNAF7FcssR+Hn29F0vB7TbKvo9ABKJGw+6grg/bpwyI0Q/+cZ/pUjEaD9kSAe7xROHQ6W2bGksOd+moYsjGf/xXxMqsy0FR/u4xGY23GwjSGfzrQ0EV8mwQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB7859.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(136003)(39860400002)(376002)(346002)(451199024)(186009)(1800799009)(38100700002)(82960400001)(33656002)(86362001)(478600001)(54906003)(6636002)(66556008)(66476007)(6666004)(66946007)(2906002)(316002)(6512007)(6506007)(8676002)(6486002)(5660300002)(8936002)(4326008)(6862004)(41300700001)(1076003)(66574015)(26005)(83380400001)(21314003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?iqKIitoZzkGK6QOVKK2Scb48SizcBFQ4T7lxQ57ndfpS5lhgh1e196ekOS?=
- =?iso-8859-1?Q?O7vHeP0Hb53ew1L6dF+ZmByRc5+t449s0dcIYoI9ncr2Ghg5Z7pmz9PEgi?=
- =?iso-8859-1?Q?PzbT6jnGX78q4Qi4WIrPmQrkx95vD1Qfl5LdehU084lkIOyekOgMyF88Zc?=
- =?iso-8859-1?Q?eeldmnIMfuZ1fhXd1pXSSXQ5oFonfaUoCAoiH2rFrksFuxBAl0PwLmz30o?=
- =?iso-8859-1?Q?li72NjYcJiVZjfOzp7nG6oGtHN1zwzjdZUJsygVGVzkTG4xSC6KZU4uPeL?=
- =?iso-8859-1?Q?9Hch1pctJtce8mYrHIeKk2OlUb1OxJI4/D2Q4CkXSkVLrjhJEgJvssPpOS?=
- =?iso-8859-1?Q?6ueHCSYzhhMqVpad23FRJ3KFMfKUTlYQLePuufoLzDpZCbTj3z7H5wT5gu?=
- =?iso-8859-1?Q?3FgpDT7Ve1joXcCEjRObZt1uFtmtELIyZfilUKHEbC057r5Qhrt7EqxTjn?=
- =?iso-8859-1?Q?4YNDvhub94+OIIS0LpjpHZCqT6sUt9lfxU73a0b9X3jJV/+UAkgmkMG3+y?=
- =?iso-8859-1?Q?4bohzkOWifRBSjos9RWZqQoiGhKLjTItxf/+9e3Qr+clPKHZdITYPuE7Tz?=
- =?iso-8859-1?Q?uyhGQgp79srNsNWeKVdxa3Z7oW+QiT7TnqTeVKCCRJVirBuh1p2i4NUTRX?=
- =?iso-8859-1?Q?WHwdxP5tvpC6cY2vjMkVMD9NLAmU+nVMwHDVtsFPGTcUvd6L/Dej5PVBUl?=
- =?iso-8859-1?Q?qt8NREO21XcGNZAQJlkZIksxoy+OX2fupRSNtslJ5H7aWMgVOnNaG/Q+6I?=
- =?iso-8859-1?Q?zhrR9XkUPSRxKzHbnj+aAF2LAuXVHfHQQdpKDYMryvmCdqVq1pSSM9n+Bs?=
- =?iso-8859-1?Q?1OVth8UjpJTtiTcx+mzmJ8UUxtjuAatlY4ISCQFKuT8mpk6FGOARnOvgY0?=
- =?iso-8859-1?Q?U7medXqyOU/gHMTh6E/3kOMUZj55DD257EEmgDp91t8WQ4iNR2erl9ZoAa?=
- =?iso-8859-1?Q?sBrfpIWjAtwiSzKKEovnc67qgnuszvIoqOoO+g4kRf3KJAN76qtiO9xLd+?=
- =?iso-8859-1?Q?FsaTfuaOdg6CN7g2xPPbpA/WuVaVbeBfCvIXxpGwZAAMQTi2xYXiIrX4WS?=
- =?iso-8859-1?Q?gUSnoMgzLZbGXyv3aHTVMgPVMqfbHAeIl8g9blBffjwPkcrmZkTWRMeNd7?=
- =?iso-8859-1?Q?7pfoBtNdS1/jhdliSbIaScznUjfflMtPc8P6CAn+U/1tB9HuMX2sb0dVSR?=
- =?iso-8859-1?Q?eYJ+XERllbS94KZxhA5nqkt2I0N7HJyvFkZfqXvGK8Ge+PJ2M8BNd2GOgq?=
- =?iso-8859-1?Q?QY+ZN51zKP/4gT9XdsV7qYQ0UlVWN0AWdQj26/KhtiN5J3ILltHnizLW4d?=
- =?iso-8859-1?Q?DnrVZhvZtIVs0TqnNyn5uZejf6TTsOvA0bfQVsrcdaW8ci0XX82tHQnWMc?=
- =?iso-8859-1?Q?kAUeEbGbaKeQ5vJWWzNYi692Brzzj8iZpq9Qa+d8RnsM4n+H6fOtN4J4fW?=
- =?iso-8859-1?Q?42r4D2jTdcS2+iRp9U96DommUjHkuD2AkbfoD2rGLO0ZjwRRWDx3guRUU+?=
- =?iso-8859-1?Q?pM/Jj049GJVomiTvNLldRZdH10fYFYs7yf5P0weQZXRLILZhmiVfyv2rdc?=
- =?iso-8859-1?Q?e5gfsV4wPpTx3FYQv7FvHoOohvAi4YoDsZ6rlm/QDnqhk45oML/OyQXpcU?=
- =?iso-8859-1?Q?lrORJ7datNASmiFhFWHnSaXAVwvFamA5f2e4Iu90Rw4Bahr7lxi1pcyA?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f512ddac-e85a-4096-9b2f-08dbb9fef98c
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB7859.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 17:28:16.4185
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6k1Kb1WeCvcJhC1Hw4V5cUwPRQ1oil9Jf7C7Gk3uNcgw9hY1fooC4f9xa3UFfYoXjisoWO82tUW9gjij2s9ka0TKAL1H9L7fZG7HeObRbLc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5831
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.10.195-84-gf147286de8e5
+X-Kernelci-Report-Type: test
+Subject: stable-rc/linux-5.10.y baseline: 119 runs,
+ 10 regressions (v5.10.195-84-gf147286de8e5)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 20, 2023 at 01:11:31PM +0200, Nirmoy Das wrote:
-> i915 already does memory quiesce before signaling
-> breadcrumb so remove extra memory quiescing for aux
-> invalidation which can cause unnecessary side effects.
+stable-rc/linux-5.10.y baseline: 119 runs, 10 regressions (v5.10.195-84-gf1=
+47286de8e5)
 
-This explanation seems confusing to me.  If we've already performed the
-necessary flushing and quiesced all cache<->memory traffic, then
-performing another flush should just be a noop, right?  If we're seeing
-side effects, then doesn't that imply that there was still something in
-the cache that hadn't made its way to memory yet?
+Regressions Summary
+-------------------
 
-Is the breadcrumb code flushing all the necessary bits?  What about
-PIPE_CONTROL_CCS_FLUSH?
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+juno-uboot                   | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+r8a774a1-hihope-rzg2m-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+r8a774b1-hihope-rzg2n-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+g                    | 1          =
+
+r8a77960-ulcb                | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+rk3399-rock-pi-4b            | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+sun50i-h6-pine-h64           | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
 
 
-Matt
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
+nel/v5.10.195-84-gf147286de8e5/plan/baseline/
 
-> 
-> Fixes: 78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before invalidation")
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v5.8+
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
-> Cc: Tapani Pälli <tapani.palli@intel.com>
-> Cc: Mark Janes <mark.janes@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 50 ++++++++++++------------
->  1 file changed, 26 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> index 0143445dba83..5001670046a0 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-> @@ -248,11 +248,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->  {
->  	struct intel_engine_cs *engine = rq->engine;
->  
-> -	/*
-> -	 * On Aux CCS platforms the invalidation of the Aux
-> -	 * table requires quiescing memory traffic beforehand
-> -	 */
-> -	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
-> +	if (mode & EMIT_FLUSH) {
->  		u32 bit_group_0 = 0;
->  		u32 bit_group_1 = 0;
->  		int err;
-> @@ -264,13 +260,6 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
->  
->  		bit_group_0 |= PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
->  
-> -		/*
-> -		 * When required, in MTL and beyond platforms we
-> -		 * need to set the CCS_FLUSH bit in the pipe control
-> -		 */
-> -		if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
-> -			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
-> -
->  		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
->  		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
->  		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
-> @@ -800,14 +789,15 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs)
->  {
->  	struct drm_i915_private *i915 = rq->i915;
->  	struct intel_gt *gt = rq->engine->gt;
-> -	u32 flags = (PIPE_CONTROL_CS_STALL |
-> -		     PIPE_CONTROL_TLB_INVALIDATE |
-> -		     PIPE_CONTROL_TILE_CACHE_FLUSH |
-> -		     PIPE_CONTROL_FLUSH_L3 |
-> -		     PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH |
-> -		     PIPE_CONTROL_DEPTH_CACHE_FLUSH |
-> -		     PIPE_CONTROL_DC_FLUSH_ENABLE |
-> -		     PIPE_CONTROL_FLUSH_ENABLE);
-> +	u32 bit_group_0 = PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
-> +	u32 bit_group_1 = (PIPE_CONTROL_CS_STALL |
-> +			   PIPE_CONTROL_TLB_INVALIDATE |
-> +			   PIPE_CONTROL_TILE_CACHE_FLUSH |
-> +			   PIPE_CONTROL_FLUSH_L3 |
-> +			   PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH |
-> +			   PIPE_CONTROL_DEPTH_CACHE_FLUSH |
-> +			   PIPE_CONTROL_DC_FLUSH_ENABLE |
-> +			   PIPE_CONTROL_FLUSH_ENABLE);
->  
->  	/* Wa_14016712196 */
->  	if (IS_GFX_GT_IP_RANGE(gt, IP_VER(12, 70), IP_VER(12, 71)) || IS_DG2(i915))
-> @@ -817,14 +807,26 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs)
->  
->  	if (GRAPHICS_VER(i915) == 12 && GRAPHICS_VER_FULL(i915) < IP_VER(12, 50))
->  		/* Wa_1409600907 */
-> -		flags |= PIPE_CONTROL_DEPTH_STALL;
-> +		bit_group_1 |= PIPE_CONTROL_DEPTH_STALL;
->  
->  	if (!HAS_3D_PIPELINE(rq->i915))
-> -		flags &= ~PIPE_CONTROL_3D_ARCH_FLAGS;
-> +		bit_group_1 &= ~PIPE_CONTROL_3D_ARCH_FLAGS;
->  	else if (rq->engine->class == COMPUTE_CLASS)
-> -		flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
-> +		bit_group_1 &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
-> +
-> +	/*
-> +	 * On Aux CCS platforms the invalidation of the Aux
-> +	 * table requires quiescing memory traffic beforehand.
-> +	 * gen12_emit_fini_breadcrumb_rcs() does this for us as
-> +	 * all memory traffic has to be completed before we signal
-> +	 * the breadcrumb. In MTL and beyond platforms, we need to also
-> +	 * add CCS_FLUSH bit in the pipe control for that purpose.
-> +	 */
-> +
-> +	if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
-> +		bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
->  
-> -	cs = gen12_emit_pipe_control(cs, PIPE_CONTROL0_HDC_PIPELINE_FLUSH, flags, 0);
-> +	cs = gen12_emit_pipe_control(cs, bit_group_0, bit_group_1, 0);
->  
->  	/*XXX: Look at gen8_emit_fini_breadcrumb_rcs */
->  	cs = gen12_emit_ggtt_write_rcs(cs,
-> -- 
-> 2.41.0
-> 
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.10.y
+  Describe: v5.10.195-84-gf147286de8e5
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      f147286de8e534b063d97de0c66a4a5895bfc6ad =
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af5fc92fd6e9cb38a0a7f
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af5fc92fd6e9cb38a0a88
+        failing since 175 days (last pass: v5.10.176, first fail: v5.10.176=
+-105-g18265b240021)
+
+    2023-09-20T13:38:53.242229  + set +x
+
+    2023-09-20T13:38:53.248846  <8>[   11.001455] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 11579502_1.4.2.3.1>
+
+    2023-09-20T13:38:53.356687  / # #
+
+    2023-09-20T13:38:53.458929  export SHELL=3D/bin/sh
+
+    2023-09-20T13:38:53.459667  #
+
+    2023-09-20T13:38:53.561355  / # export SHELL=3D/bin/sh. /lava-11579502/=
+environment
+
+    2023-09-20T13:38:53.562140  =
+
+
+    2023-09-20T13:38:53.663943  / # . /lava-11579502/environment/lava-11579=
+502/bin/lava-test-runner /lava-11579502/1
+
+    2023-09-20T13:38:53.665175  =
+
+
+    2023-09-20T13:38:53.670276  / # /lava-11579502/bin/lava-test-runner /la=
+va-11579502/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af5b4008ac9c8148a0a68
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-14-G1-sona.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af5b4008ac9c8148a0a71
+        failing since 175 days (last pass: v5.10.176, first fail: v5.10.176=
+-105-g18265b240021)
+
+    2023-09-20T13:39:05.437111  + set +x<8>[   12.855022] <LAVA_SIGNAL_ENDR=
+UN 0_dmesg 11579490_1.4.2.3.1>
+
+    2023-09-20T13:39:05.437195  =
+
+
+    2023-09-20T13:39:05.538732  #
+
+    2023-09-20T13:39:05.639500  / # #export SHELL=3D/bin/sh
+
+    2023-09-20T13:39:05.639685  =
+
+
+    2023-09-20T13:39:05.740263  / # export SHELL=3D/bin/sh. /lava-11579490/=
+environment
+
+    2023-09-20T13:39:05.740423  =
+
+
+    2023-09-20T13:39:05.840945  / # . /lava-11579490/environment/lava-11579=
+490/bin/lava-test-runner /lava-11579490/1
+
+    2023-09-20T13:39:05.841266  =
+
+
+    2023-09-20T13:39:05.846334  / # /lava-11579490/bin/lava-test-runner /la=
+va-11579490/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+juno-uboot                   | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af7e28a9dbe61b18a0a46
+
+  Results:     50 PASS, 11 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.=
+txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.=
+html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af7e28a9dbe61b18a0a86
+        new failure (last pass: v5.10.195)
+
+    2023-09-20T13:46:49.641406  / # #
+    2023-09-20T13:46:49.744476  export SHELL=3D/bin/sh
+    2023-09-20T13:46:49.745291  #
+    2023-09-20T13:46:49.847303  / # export SHELL=3D/bin/sh. /lava-120288/en=
+vironment
+    2023-09-20T13:46:49.848093  =
+
+    2023-09-20T13:46:49.950082  / # . /lava-120288/environment/lava-120288/=
+bin/lava-test-runner /lava-120288/1
+    2023-09-20T13:46:49.951419  =
+
+    2023-09-20T13:46:49.964098  / # /lava-120288/bin/lava-test-runner /lava=
+-120288/1
+    2023-09-20T13:46:50.023898  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-09-20T13:46:50.024410  + cd /lava-120288/1/tests/1_bootrr =
+
+    ... (10 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+r8a774a1-hihope-rzg2m-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af745c1b9fa35b08a0a45
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baselin=
+e-r8a774a1-hihope-rzg2m-ex.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baselin=
+e-r8a774a1-hihope-rzg2m-ex.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af745c1b9fa35b08a0a4c
+        failing since 64 days (last pass: v5.10.186-221-gf178eace6e074, fir=
+st fail: v5.10.186-332-gf98a4d3a5cec)
+
+    2023-09-20T13:44:02.009083  + set +x
+    2023-09-20T13:44:02.009199  <8>[   83.880822] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 1010924_1.5.2.4.1>
+    2023-09-20T13:44:02.115183  / # #
+    2023-09-20T13:44:03.574721  export SHELL=3D/bin/sh
+    2023-09-20T13:44:03.595130  #
+    2023-09-20T13:44:03.595259  / # export SHELL=3D/bin/sh
+    2023-09-20T13:44:05.547607  / # . /lava-1010924/environment
+    2023-09-20T13:44:09.141046  /lava-1010924/bin/lava-test-runner /lava-10=
+10924/1
+    2023-09-20T13:44:09.161650  . /lava-1010924/environment
+    2023-09-20T13:44:09.161760  / # /lava-1010924/bin/lava-test-runner /lav=
+a-1010924/1 =
+
+    ... (28 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+r8a774b1-hihope-rzg2n-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af72d9d69b01c1c8a0a7c
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baselin=
+e-r8a774b1-hihope-rzg2n-ex.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baselin=
+e-r8a774b1-hihope-rzg2n-ex.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af72d9d69b01c1c8a0a83
+        failing since 64 days (last pass: v5.10.186-221-gf178eace6e074, fir=
+st fail: v5.10.186-332-gf98a4d3a5cec)
+
+    2023-09-20T13:43:55.369548  + set +x
+    2023-09-20T13:43:55.369673  <8>[   84.236307] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 1010925_1.5.2.4.1>
+    2023-09-20T13:43:55.475410  / # #
+    2023-09-20T13:43:56.936522  export SHELL=3D/bin/sh
+    2023-09-20T13:43:56.956979  #
+    2023-09-20T13:43:56.957105  / # export SHELL=3D/bin/sh
+    2023-09-20T13:43:58.909916  / # . /lava-1010925/environment
+    2023-09-20T13:44:02.502386  /lava-1010925/bin/lava-test-runner /lava-10=
+10925/1
+    2023-09-20T13:44:02.523138  . /lava-1010925/environment
+    2023-09-20T13:44:02.523291  / # /lava-1010925/bin/lava-test-runner /lav=
+a-1010925/1 =
+
+    ... (15 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af7443490a496458a0a52
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baselin=
+e-r8a774c0-ek874.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baselin=
+e-r8a774c0-ek874.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af7443490a496458a0a59
+        failing since 64 days (last pass: v5.10.186-221-gf178eace6e074, fir=
+st fail: v5.10.186-332-gf98a4d3a5cec)
+
+    2023-09-20T13:44:16.396471  / # #
+    2023-09-20T13:44:17.856570  export SHELL=3D/bin/sh
+    2023-09-20T13:44:17.877034  #
+    2023-09-20T13:44:17.877165  / # export SHELL=3D/bin/sh
+    2023-09-20T13:44:19.829715  / # . /lava-1010923/environment
+    2023-09-20T13:44:23.422978  /lava-1010923/bin/lava-test-runner /lava-10=
+10923/1
+    2023-09-20T13:44:23.443538  . /lava-1010923/environment
+    2023-09-20T13:44:23.443648  / # /lava-1010923/bin/lava-test-runner /lav=
+a-1010923/1
+    2023-09-20T13:44:23.520407  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-09-20T13:44:23.520535  + cd /lava-1010923/1/tests/1_bootrr =
+
+    ... (25 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af83264d9fce5e38a0a46
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-cip/baseline-r8a774c0-ek874.=
+txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-cip/baseline-r8a774c0-ek874.=
+html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af83264d9fce5e38a0a4d
+        failing since 64 days (last pass: v5.10.186-221-gf178eace6e074, fir=
+st fail: v5.10.186-332-gf98a4d3a5cec)
+
+    2023-09-20T13:48:20.464991  / # #
+    2023-09-20T13:48:21.927285  export SHELL=3D/bin/sh
+    2023-09-20T13:48:21.947834  #
+    2023-09-20T13:48:21.948060  / # export SHELL=3D/bin/sh
+    2023-09-20T13:48:23.904922  / # . /lava-1010935/environment
+    2023-09-20T13:48:27.504231  /lava-1010935/bin/lava-test-runner /lava-10=
+10935/1
+    2023-09-20T13:48:27.525132  . /lava-1010935/environment
+    2023-09-20T13:48:27.525242  / # /lava-1010935/bin/lava-test-runner /lav=
+a-1010935/1
+    2023-09-20T13:48:27.604988  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-09-20T13:48:27.605294  + cd /lava-1010935/1/tests/1_bootrr =
+
+    ... (25 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+r8a77960-ulcb                | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af749c2f9283d178a0a4e
+
+  Results:     4 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-=
+ulcb.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-=
+ulcb.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af749c2f9283d178a0a57
+        failing since 64 days (last pass: v5.10.186-221-gf178eace6e074, fir=
+st fail: v5.10.186-332-gf98a4d3a5cec)
+
+    2023-09-20T13:48:37.962149  / # #
+
+    2023-09-20T13:48:38.062551  export SHELL=3D/bin/sh
+
+    2023-09-20T13:48:38.062655  #
+
+    2023-09-20T13:48:38.163057  / # export SHELL=3D/bin/sh. /lava-11579539/=
+environment
+
+    2023-09-20T13:48:38.163152  =
+
+
+    2023-09-20T13:48:38.263745  / # . /lava-11579539/environment/lava-11579=
+539/bin/lava-test-runner /lava-11579539/1
+
+    2023-09-20T13:48:38.264696  =
+
+
+    2023-09-20T13:48:38.276599  / # /lava-11579539/bin/lava-test-runner /la=
+va-11579539/1
+
+    2023-09-20T13:48:38.330424  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-09-20T13:48:38.331110  + cd /lav<8>[   16.408274] <LAVA_SIGNAL_STA=
+RTRUN 1_bootrr 11579539_1.5.2.4.5>
+ =
+
+    ... (28 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+rk3399-rock-pi-4b            | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af770c1b9fa35b08a0ac6
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-collabora/baseline-rk3399-ro=
+ck-pi-4b.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-collabora/baseline-rk3399-ro=
+ck-pi-4b.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af770c1b9fa35b08a0acf
+        failing since 26 days (last pass: v5.10.191, first fail: v5.10.190-=
+136-gda59b7b5c515e)
+
+    2023-09-20T13:45:09.719198  / # #
+
+    2023-09-20T13:45:10.979000  export SHELL=3D/bin/sh
+
+    2023-09-20T13:45:10.990016  #
+
+    2023-09-20T13:45:10.990493  / # export SHELL=3D/bin/sh
+
+    2023-09-20T13:45:12.732925  / # . /lava-11579541/environment
+
+    2023-09-20T13:45:15.937124  /lava-11579541/bin/lava-test-runner /lava-1=
+1579541/1
+
+    2023-09-20T13:45:15.948148  . /lava-11579541/environment
+
+    2023-09-20T13:45:15.950555  / # /lava-11579541/bin/lava-test-runner /la=
+va-11579541/1
+
+    2023-09-20T13:45:16.001492  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-09-20T13:45:16.001983  + cd /lava-11579541/1/tests/1_bootrr
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+sun50i-h6-pine-h64           | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/650af74ac1b9fa35b08a0a53
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6=
+-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+95-84-gf147286de8e5/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6=
+-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/650af74ac1b9fa35b08a0a5c
+        failing since 64 days (last pass: v5.10.186-221-gf178eace6e074, fir=
+st fail: v5.10.186-332-gf98a4d3a5cec)
+
+    2023-09-20T13:48:54.872011  / # #
+
+    2023-09-20T13:48:54.972679  export SHELL=3D/bin/sh
+
+    2023-09-20T13:48:54.973290  #
+
+    2023-09-20T13:48:55.074522  / # export SHELL=3D/bin/sh. /lava-11579543/=
+environment
+
+    2023-09-20T13:48:55.075221  =
+
+
+    2023-09-20T13:48:55.176657  / # . /lava-11579543/environment/lava-11579=
+543/bin/lava-test-runner /lava-11579543/1
+
+    2023-09-20T13:48:55.177716  =
+
+
+    2023-09-20T13:48:55.186587  / # /lava-11579543/bin/lava-test-runner /la=
+va-11579543/1
+
+    2023-09-20T13:48:55.251415  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-09-20T13:48:55.251966  + cd /lava-1157954<8>[   18.284887] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 11579543_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
