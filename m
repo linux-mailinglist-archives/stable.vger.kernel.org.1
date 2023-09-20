@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B5C27A7E5E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96D687A80A1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235543AbjITMRh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40606 "EHLO
+        id S236039AbjITMic (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:38:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235501AbjITMRh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:37 -0400
+        with ESMTP id S236057AbjITMib (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325DFD7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C6FC433A9;
-        Wed, 20 Sep 2023 12:17:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD7FB6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E031C433C8;
+        Wed, 20 Sep 2023 12:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212228;
-        bh=uId82rZBSMtFzbLOI1qZzLDD9d3ZzgPXz8auF1jiNFw=;
+        s=korg; t=1695213504;
+        bh=9JTiAXyJi503yV2kfi2QCIXdSn7kFPdtmYpfVTU85VA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M+lUcUbMR0hAWS9Sbz9QcXre1IA01YCyfLwAt8dB+shzZVQrQKrMnolD9ikbulkVS
-         6fNaNh1f9NgleTzpL4yvqNQxqV3Rg5E5MpE6fUN52iY1LSipKfoEzo/BSBr/5OzPF3
-         f06o+o0uwysq95SWYsQWDrWtLFwrRJv3DSpEzxLA=
+        b=uXpOYPyqhmRAhTSRXj0iCxNFPOV+RjmBWIpbSzsqJmrIDCzCnyNPxwjmHijmwb6GY
+         yXmHnJ+qQE22VyNHVqsK5zcSFt+qVP+awxPlyBU/gtCYV2xfOTDtSW7P2x7BXSbxuC
+         GKEW/8NJO29eq/FEHY00vonGabKqKJ2IPl2GKxAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 197/273] scsi: qla2xxx: fix inconsistent TMF timeout
-Date:   Wed, 20 Sep 2023 13:30:37 +0200
-Message-ID: <20230920112852.587924844@linuxfoundation.org>
+        patches@lists.linux.dev, Corinna Vinschen <vinschen@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 261/367] igb: disable virtualization features on 82580
+Date:   Wed, 20 Sep 2023 13:30:38 +0200
+Message-ID: <20230920112905.319062947@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Corinna Vinschen <vinschen@redhat.com>
 
-commit 009e7fe4a1ed52276b332842a6b6e23b07200f2d upstream.
+[ Upstream commit fa09bc40b21a33937872c4c4cf0f266ec9fa4869 ]
 
-Different behavior were experienced of session being torn down vs not when
-TMF is timed out. When FW detects the time out, the session is torn down.
-When driver detects the time out, the session is not torn down.
+Disable virtualization features on 82580 just as on i210/i211.
+This avoids that virt functions are acidentally called on 82850.
 
-Allow TMF error to return to upper layer without session tear down.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230714070104.40052-10-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 55cac248caa4 ("igb: Add full support for 82580 devices")
+Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_isr.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -2673,7 +2673,6 @@ check_scsi_status:
- 	case CS_PORT_BUSY:
- 	case CS_INCOMPLETE:
- 	case CS_PORT_UNAVAILABLE:
--	case CS_TIMEOUT:
- 	case CS_RESET:
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index b8113235f281f..6638d314c811c 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -3710,8 +3710,9 @@ static void igb_probe_vfs(struct igb_adapter *adapter)
+ 	struct pci_dev *pdev = adapter->pdev;
+ 	struct e1000_hw *hw = &adapter->hw;
  
- 		/*
+-	/* Virtualization features not supported on i210 family. */
+-	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211))
++	/* Virtualization features not supported on i210 and 82580 family. */
++	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211) ||
++	    (hw->mac.type == e1000_82580))
+ 		return;
+ 
+ 	/* Of the below we really only want the effect of getting
+-- 
+2.40.1
+
 
 
