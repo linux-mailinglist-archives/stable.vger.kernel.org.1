@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA6037A7BCA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F26F7A7B08
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234844AbjITLzc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
+        id S234625AbjITLsm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234851AbjITLza (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:30 -0400
+        with ESMTP id S234624AbjITLsm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E140D7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D50C433C9;
-        Wed, 20 Sep 2023 11:55:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765E1CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF303C433C9;
+        Wed, 20 Sep 2023 11:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210923;
-        bh=tSHD87igLk4pcFiXigZnBP6BYYRhURcYrhMcLHMnwig=;
+        s=korg; t=1695210516;
+        bh=5/tUgDrIE/OQZXPMYtVAdKkyb3+WTteRR82p0thjGII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FlaXIXOarqgjCOWmnRnq8o99L0z0j95N5CNLNEces5Gm6aJs1+OM9XrmevVCWwzWE
-         ZKrsRz0GsMxwbPz4eSKwvtVGzej8dqNsDiKIE/Erp1YRu6ikV9XAPfMy+0einxipK+
-         MGpgv4Rx59CAAeqf7EovwSrSYZzl+f9T7gQuETPY=
+        b=G30jk9vwO9Wf3TEG1uKNSrFLqq5pQCuZPAiSzDc7xtIxRcGeCVjT42KA1WFiyW6pr
+         osCKpgFedIEzBWO8O4hhKUFlCZ/QDQLYsmaoj4yQs20K++5hifG6EDLxHPqn4vd6um
+         +l7PXGoJURiDd6DZXwv13ZSdeusq+td/gGueXX0U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/139] scftorture: Forgive memory-allocation failure if KASAN
-Date:   Wed, 20 Sep 2023 13:29:01 +0200
-Message-ID: <20230920112835.853306717@linuxfoundation.org>
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 098/211] ext4: avoid overlapping preallocations due to overflow
+Date:   Wed, 20 Sep 2023 13:29:02 +0200
+Message-ID: <20230920112848.845873803@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +50,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 013608cd0812bdb21fc26d39ed8fdd2fc76e8b9b ]
+[ Upstream commit bedc5d34632c21b5adb8ca7143d4c1f794507e4c ]
 
-Kernels built with CONFIG_KASAN=y quarantine newly freed memory in order
-to better detect use-after-free errors.  However, this can exhaust memory
-more quickly in allocator-heavy tests, which can result in spurious
-scftorture failure.  This commit therefore forgives memory-allocation
-failure in kernels built with CONFIG_KASAN=y, but continues counting
-the errors for use in detailed test-result analyses.
+Let's say we want to allocate 2 blocks starting from 4294966386, after
+predicting the file size, start is aligned to 4294965248, len is changed
+to 2048, then end = start + size = 0x100000000. Since end is of
+type ext4_lblk_t, i.e. uint, end is truncated to 0.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+This causes (pa->pa_lstart >= end) to always hold when checking if the
+current extent to be allocated crosses already preallocated blocks, so the
+resulting ac_g_ex may cross already preallocated blocks. Hence we convert
+the end type to loff_t and use pa_logical_end() to avoid overflow.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230724121059.11834-4-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/scftorture.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/scftorture.c b/kernel/scftorture.c
-index 5d113aa59e773..83c33ba0ca7e0 100644
---- a/kernel/scftorture.c
-+++ b/kernel/scftorture.c
-@@ -171,7 +171,8 @@ static void scf_torture_stats_print(void)
- 		scfs.n_all_wait += scf_stats_p[i].n_all_wait;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 627c813cf0759..5c3055a32e57a 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4223,12 +4223,13 @@ ext4_mb_pa_rb_next_iter(ext4_lblk_t new_start, ext4_lblk_t cur_start, struct rb_
+ 
+ static inline void
+ ext4_mb_pa_assert_overlap(struct ext4_allocation_context *ac,
+-			  ext4_lblk_t start, ext4_lblk_t end)
++			  ext4_lblk_t start, loff_t end)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
+ 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
+ 	struct ext4_prealloc_space *tmp_pa;
+-	ext4_lblk_t tmp_pa_start, tmp_pa_end;
++	ext4_lblk_t tmp_pa_start;
++	loff_t tmp_pa_end;
+ 	struct rb_node *iter;
+ 
+ 	read_lock(&ei->i_prealloc_lock);
+@@ -4237,7 +4238,7 @@ ext4_mb_pa_assert_overlap(struct ext4_allocation_context *ac,
+ 		tmp_pa = rb_entry(iter, struct ext4_prealloc_space,
+ 				  pa_node.inode_node);
+ 		tmp_pa_start = tmp_pa->pa_lstart;
+-		tmp_pa_end = tmp_pa->pa_lstart + EXT4_C2B(sbi, tmp_pa->pa_len);
++		tmp_pa_end = pa_logical_end(sbi, tmp_pa);
+ 
+ 		spin_lock(&tmp_pa->pa_lock);
+ 		if (tmp_pa->pa_deleted == 0)
+@@ -4259,14 +4260,14 @@ ext4_mb_pa_assert_overlap(struct ext4_allocation_context *ac,
+  */
+ static inline void
+ ext4_mb_pa_adjust_overlap(struct ext4_allocation_context *ac,
+-			  ext4_lblk_t *start, ext4_lblk_t *end)
++			  ext4_lblk_t *start, loff_t *end)
+ {
+ 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
+ 	struct ext4_prealloc_space *tmp_pa = NULL, *left_pa = NULL, *right_pa = NULL;
+ 	struct rb_node *iter;
+-	ext4_lblk_t new_start, new_end;
+-	ext4_lblk_t tmp_pa_start, tmp_pa_end, left_pa_end = -1, right_pa_start = -1;
++	ext4_lblk_t new_start, tmp_pa_start, right_pa_start = -1;
++	loff_t new_end, tmp_pa_end, left_pa_end = -1;
+ 
+ 	new_start = *start;
+ 	new_end = *end;
+@@ -4285,7 +4286,7 @@ ext4_mb_pa_adjust_overlap(struct ext4_allocation_context *ac,
+ 		tmp_pa = rb_entry(iter, struct ext4_prealloc_space,
+ 				  pa_node.inode_node);
+ 		tmp_pa_start = tmp_pa->pa_lstart;
+-		tmp_pa_end = tmp_pa->pa_lstart + EXT4_C2B(sbi, tmp_pa->pa_len);
++		tmp_pa_end = pa_logical_end(sbi, tmp_pa);
+ 
+ 		/* PA must not overlap original request */
+ 		spin_lock(&tmp_pa->pa_lock);
+@@ -4365,8 +4366,7 @@ ext4_mb_pa_adjust_overlap(struct ext4_allocation_context *ac,
  	}
- 	if (atomic_read(&n_errs) || atomic_read(&n_mb_in_errs) ||
--	    atomic_read(&n_mb_out_errs) || atomic_read(&n_alloc_errs))
-+	    atomic_read(&n_mb_out_errs) ||
-+	    (!IS_ENABLED(CONFIG_KASAN) && atomic_read(&n_alloc_errs)))
- 		bangstr = "!!! ";
- 	pr_alert("%s %sscf_invoked_count %s: %lld resched: %lld single: %lld/%lld single_ofl: %lld/%lld single_rpc: %lld single_rpc_ofl: %lld many: %lld/%lld all: %lld/%lld ",
- 		 SCFTORT_FLAG, bangstr, isdone ? "VER" : "ver", invoked_count, scfs.n_resched,
-@@ -323,7 +324,8 @@ static void scftorture_invoke_one(struct scf_statistics *scfp, struct torture_ra
- 		preempt_disable();
- 	if (scfsp->scfs_prim == SCF_PRIM_SINGLE || scfsp->scfs_wait) {
- 		scfcp = kmalloc(sizeof(*scfcp), GFP_ATOMIC);
--		if (WARN_ON_ONCE(!scfcp)) {
-+		if (!scfcp) {
-+			WARN_ON_ONCE(!IS_ENABLED(CONFIG_KASAN));
- 			atomic_inc(&n_alloc_errs);
- 		} else {
- 			scfcp->scfc_cpu = -1;
+ 
+ 	if (left_pa) {
+-		left_pa_end =
+-			left_pa->pa_lstart + EXT4_C2B(sbi, left_pa->pa_len);
++		left_pa_end = pa_logical_end(sbi, left_pa);
+ 		BUG_ON(left_pa_end > ac->ac_o_ex.fe_logical);
+ 	}
+ 
+@@ -4405,8 +4405,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+ 	int bsbits, max;
+-	ext4_lblk_t end;
+-	loff_t size, start_off;
++	loff_t size, start_off, end;
+ 	loff_t orig_size __maybe_unused;
+ 	ext4_lblk_t start;
+ 
 -- 
 2.40.1
 
