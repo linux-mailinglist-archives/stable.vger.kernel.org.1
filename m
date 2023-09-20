@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6F97A8127
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA847A819D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:47:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236108AbjITMnC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38504 "EHLO
+        id S234924AbjITMrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:47:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236115AbjITMnC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:02 -0400
+        with ESMTP id S234911AbjITMrG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:47:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABFE88F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34F1C433C8;
-        Wed, 20 Sep 2023 12:42:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC40D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBB9C433C8;
+        Wed, 20 Sep 2023 12:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213776;
-        bh=2YbsDd+qphnJgvqKWnV2aN18d5wWIHl3ITBXWdXgi00=;
+        s=korg; t=1695214016;
+        bh=Mi8brR+j9h9EyPvu/PcGfQVwyz++fSg+ogHFkfsOB3E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hoiOU6dHqJizSgO1zawibWXk9fMK0sjV1e/30+EkbaxvHhVl6Mc8Jg9NnOTc/cx9j
-         RwuuD2y1PFCwVhUQUP/hmNdHSffZ3vhlup2DtknuQfZVFxSksRB+Ab+ssxF36MHBxU
-         oYRXkuhkDjnBBvcUDKqjgM5I6PAM2kZCeXb5QABg=
+        b=HYz+j9Py0R5LrWaiGPNGyxvbbrUoRNd64eTZQP8BymUWDzVPPyBTo7d6gcvDBoJo2
+         HJqfNGjwcGSTaaXigOGXniEA9au3NMFWSbjUYxPrdq0Wymwn0RMXSNOs3otBVuTikx
+         o1flF/RgVdVRC0iRi8UzfHctgruvG8mWQlnAgQ5w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tommy Huang <tommy_huang@aspeedtech.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.4 362/367] i2c: aspeed: Reset the i2c controller when timeout occurs
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 081/110] x86/purgatory: Remove LTO flags
 Date:   Wed, 20 Sep 2023 13:32:19 +0200
-Message-ID: <20230920112907.856127571@linuxfoundation.org>
+Message-ID: <20230920112833.450985490@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +52,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommy Huang <tommy_huang@aspeedtech.com>
+From: Song Liu <song@kernel.org>
 
-commit fee465150b458351b6d9b9f66084f3cc3022b88b upstream.
+[ Upstream commit 75b2f7e4c9e0fd750a5a27ca9736d1daa7a3762a ]
 
-Reset the i2c controller when an i2c transfer timeout occurs.
-The remaining interrupts and device should be reset to avoid
-unpredictable controller behavior.
+-flto* implies -ffunction-sections. With LTO enabled, ld.lld generates
+multiple .text sections for purgatory.ro:
 
-Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
-Cc: <stable@vger.kernel.org> # v5.1+
-Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ readelf -S purgatory.ro  | grep " .text"
+    [ 1] .text             PROGBITS         0000000000000000  00000040
+    [ 7] .text.purgatory   PROGBITS         0000000000000000  000020e0
+    [ 9] .text.warn        PROGBITS         0000000000000000  000021c0
+    [13] .text.sha256_upda PROGBITS         0000000000000000  000022f0
+    [15] .text.sha224_upda PROGBITS         0000000000000000  00002be0
+    [17] .text.sha256_fina PROGBITS         0000000000000000  00002bf0
+    [19] .text.sha224_fina PROGBITS         0000000000000000  00002cc0
+
+This causes WARNING from kexec_purgatory_setup_sechdrs():
+
+  WARNING: CPU: 26 PID: 110894 at kernel/kexec_file.c:919
+  kexec_load_purgatory+0x37f/0x390
+
+Fix this by disabling LTO for purgatory.
+
+[ AFAICT, x86 is the only arch that supports LTO and purgatory. ]
+
+We could also fix this with an explicit linker script to rejoin .text.*
+sections back into .text. However, given the benefit of LTOing purgatory
+is small, simply disable the production of more .text.* sections for now.
+
+Fixes: b33fff07e3e3 ("x86, build: allow LTO to be selected")
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Link: https://lore.kernel.org/r/20230914170138.995606-1-song@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/purgatory/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -693,13 +693,16 @@ static int aspeed_i2c_master_xfer(struct
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index dc0b91c1db04b..7a7701d1e18d0 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -19,6 +19,10 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
+ # optimization flags.
+ KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
  
- 	if (time_left == 0) {
- 		/*
--		 * If timed out and bus is still busy in a multi master
--		 * environment, attempt recovery at here.
-+		 * In a multi-master setup, if a timeout occurs, attempt
-+		 * recovery. But if the bus is idle, we still need to reset the
-+		 * i2c controller to clear the remaining interrupts.
- 		 */
- 		if (bus->multi_master &&
- 		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
- 		     ASPEED_I2CD_BUS_BUSY_STS))
- 			aspeed_i2c_recover_bus(bus);
-+		else
-+			aspeed_i2c_reset(bus);
- 
- 		/*
- 		 * If timed out and the state is still pending, drop the pending
++# When LTO is enabled, llvm emits many text sections, which is not supported
++# by kexec. Remove -flto=* flags.
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS))
++
+ # When linking purgatory.ro with -r unresolved symbols are not checked,
+ # also link a purgatory.chk binary without -r to check for unresolved symbols.
+ PURGATORY_LDFLAGS := -e purgatory_start -nostdlib -z nodefaultlib
+-- 
+2.40.1
+
 
 
