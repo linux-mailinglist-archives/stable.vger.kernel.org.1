@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AD507A7EFC
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A697A7EB0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234645AbjITMWl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
+        id S235625AbjITMUQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235549AbjITMWk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:40 -0400
+        with ESMTP id S235694AbjITMTq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4502097
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB1EC433C9;
-        Wed, 20 Sep 2023 12:22:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E755B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB69AC433C8;
+        Wed, 20 Sep 2023 12:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212554;
-        bh=r3t9h9BVaHceX8Lqo4LMUoigG+i1kckgVeZd5ENxpN0=;
+        s=korg; t=1695212380;
+        bh=JiMCInmM9NAzPTKBQ7NQecn2eQ4fSil+1mKGbqjyDVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sbxprqo//UC+ItcNlKO1sYa4q+mQxmqGjFlATbkYsCUl6VuFeniIXaUHUoPt9JKvv
-         nq5ZI3ymx2PutWkShZhG2iYECEY3PY7hp3R/g8FLReSepCz7Qaf4Emx3ux3aNvkH2W
-         VPD+hVSstoddS67vfUtc/oqH1CrxhCKVf2+05cuo=
+        b=fE1i7l3VJ4Im+TJxIZrxQbVJ7OHdWmATMezADHdDkRBiEmJ0oj895j2v1MQ3I6n+h
+         T4lQNfsP6rjOI0N2ddzDsEZ8RBlY5SAuJ2SZav2opu20F3TPFB5aRhBI9jeusSttyN
+         uoj334/A4L7cWjKRpkH+7ykWOvGFurb0MW+lntUY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
-        Li Yang <leoyang.li@nxp.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 44/83] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 254/273] media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:34 +0200
-Message-ID: <20230920112828.411552744@linuxfoundation.org>
+Message-ID: <20230920112854.132331954@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +50,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit ce9daa2efc0872a9a68ea51dc8000df05893ef2e ]
+[ Upstream commit 7bf744f2de0a848fb1d717f5831b03db96feae89 ]
 
-We should verify the bound of the array to assure that host
-may not manipulate the index to point past endpoint array.
+In af9035_i2c_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach af9035_i2c_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Acked-by: Li Yang <leoyang.li@nxp.com>
-Link: https://lore.kernel.org/r/20230628081511.186850-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ moved variable declaration to fix build issues in older kernels - gregkh ]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/usb/dvb-usb-v2/af9035.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
-index fa66449b39075..f3388c720e0fa 100644
---- a/drivers/usb/gadget/udc/fsl_qe_udc.c
-+++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-@@ -1950,6 +1950,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
- 	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
- 		/* Get endpoint status */
- 		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
-+		if (pipe >= USB_MAX_ENDPOINTS)
-+			goto stall;
- 		struct qe_ep *target_ep = &udc->eps[pipe];
- 		u16 usep;
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -284,6 +284,7 @@ static int af9035_i2c_master_xfer(struct
+ 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
+ 	struct state *state = d_to_priv(d);
+ 	int ret;
++	u32 reg;
  
--- 
-2.40.1
-
+ 	if (mutex_lock_interruptible(&d->i2c_mutex) < 0)
+ 		return -EAGAIN;
+@@ -336,8 +337,10 @@ static int af9035_i2c_master_xfer(struct
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			if (msg[0].len < 3 || msg[1].len < 1)
++				return -EOPNOTSUPP;
+ 			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+ 
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+@@ -395,17 +398,16 @@ static int af9035_i2c_master_xfer(struct
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			if (msg[0].len < 3)
++				return -EOPNOTSUPP;
+ 			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+ 
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+ 				reg |= 0x100000;
+ 
+-			ret = (msg[0].len >= 3) ? af9035_wr_regs(d, reg,
+-							         &msg[0].buf[3],
+-							         msg[0].len - 3)
+-					        : -EOPNOTSUPP;
++			ret = af9035_wr_regs(d, reg, &msg[0].buf[3], msg[0].len - 3);
+ 		} else {
+ 			/* I2C write */
+ 			u8 buf[MAX_XFER_SIZE];
 
 
