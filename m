@@ -2,38 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB9B7A806A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD867A7CF9
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235735AbjITMhI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36220 "EHLO
+        id S235169AbjITMFt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235915AbjITMhI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:08 -0400
+        with ESMTP id S235166AbjITMFs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8119E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033A7C433C7;
-        Wed, 20 Sep 2023 12:37:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6898AD7;
+        Wed, 20 Sep 2023 05:05:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F06C433CA;
+        Wed, 20 Sep 2023 12:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213422;
-        bh=PIPzzZvT1S8P/by49wgV1B76lJCgZ8TcQQ4uUIpQNoM=;
+        s=korg; t=1695211542;
+        bh=fRh4nCHMuv5Igb9bLNs/psMrZT+6tF6KHgf4Cja3qaM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xq5gilwl3odDLry+ztPhRPsGmEzoCiDQGr/v96Fwcky5/wjAefxnqhPmoUX28YZ7d
-         HdK6vCyUEWozm3plFs1um9jJX02u3+yQrx22PrpZE5d3dQp93c/Z269sTYudZ4m4iD
-         P18HwIj2y+2GVg2e4MMPuhp8PzyAkECN8EoipEio=
+        b=CfZDZOgETCxERt/CTtgrm1cr84WwdRekBdGg/3ZOlSg2vKDRsVSmhSCLO68T7xnN3
+         4TUNt8kMs9Gy0mC3GKw86jqxDrYpZvsu5qeKtzRyy3QSuTCCYHMx5+DF8XJA2uAPnb
+         6FOrq7RCLlwcIjFpaZy2sArtACG9V3FBPC2nJ9rM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Schnelle <svens@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.4 231/367] s390/ipl: add missing secure/has_secure file to ipl type unknown
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 4.14 105/186] backlight/gpio_backlight: Compare against struct fb_info.device
 Date:   Wed, 20 Sep 2023 13:30:08 +0200
-Message-ID: <20230920112904.559735861@linuxfoundation.org>
+Message-ID: <20230920112840.794288117@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit ea5717cb13468323a7c3dd394748301802991f39 upstream.
+commit 7b91d017f77c1bda56f27c2f4bbb70de7c6eca08 upstream.
 
-OS installers are relying on /sys/firmware/ipl/has_secure to be
-present on machines supporting secure boot. This file is present
-for all IPL types, but not the unknown type, which prevents a secure
-installation when an LPAR is booted in HMC via FTP(s), because
-this is an unknown IPL type in linux. While at it, also add the secure
-file.
+Struct gpio_backlight_platform_data refers to a platform device within
+the Linux device hierarchy. The test in gpio_backlight_check_fb()
+compares it against the fbdev device in struct fb_info.dev, which
+is different. Fix the test by comparing to struct fb_info.device.
 
-Fixes: c9896acc7851 ("s390/ipl: Provide has_secure sysfs attribute")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes a bug in the backlight driver and prepares fbdev for making
+struct fb_info.dev optional.
+
+v2:
+	* move renames into separate patch (Javier, Sam, Michael)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: linux-sh@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.12+
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-4-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/ipl.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/backlight/gpio_backlight.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -429,6 +429,8 @@ static struct attribute_group ipl_ccw_at
+--- a/drivers/video/backlight/gpio_backlight.c
++++ b/drivers/video/backlight/gpio_backlight.c
+@@ -48,7 +48,7 @@ static int gpio_backlight_check_fb(struc
+ {
+ 	struct gpio_backlight *gbl = bl_get_data(bl);
  
- static struct attribute *ipl_unknown_attrs[] = {
- 	&sys_ipl_type_attr.attr,
-+	&sys_ipl_secure_attr.attr,
-+	&sys_ipl_has_secure_attr.attr,
- 	NULL,
- };
+-	return gbl->fbdev == NULL || gbl->fbdev == info->dev;
++	return gbl->fbdev == NULL || gbl->fbdev == info->device;
+ }
  
+ static const struct backlight_ops gpio_backlight_ops = {
 
 
