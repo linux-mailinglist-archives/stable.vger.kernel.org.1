@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B49F47A7FEF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1797A7DCD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235991AbjITMb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54658 "EHLO
+        id S235246AbjITMM1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:12:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236079AbjITMb1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:27 -0400
+        with ESMTP id S235399AbjITMM0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7645893
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D390C433C8;
-        Wed, 20 Sep 2023 12:31:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EBB2AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D5DC433CA;
+        Wed, 20 Sep 2023 12:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213081;
-        bh=Nti33WSmxl5x5/m8rJ5OFj1PR0716Ga6tOw0TFK2ruo=;
+        s=korg; t=1695211939;
+        bh=8YHdEDzc1bqH6tF6K6Z2yabx8kcr57XeSM9uOeFJZGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dIW42tXwXAHFNANgn4DU+cqVm2I8PAPcKVZZlbhQInIRXe6HvzNTdBZH6+ZiSgnM4
-         b6SdZqM3T/MzHG97afc4XDF548QOf1yNOeMhFzCjJWAa2B6X/xyW3X2AsAaC8Vyp0A
-         CmYBHFnevMwaEL4QgESCYfc9jG2UKP0UOYVWl1wM=
+        b=mYv5dlzoHpcVuUYl0ARN7suwppXOd4HOQZTDzRZosRo7JaZ4MtzjvGgxhWB9czu6G
+         0CkFxwQ29/9aSFdaeRm5CPtZPkA6wHjccpSJSRYQ0Oo+YRZZiKlbzMkklK8ApHpZiy
+         cN4971qxIeHk5CYgJs8aVzrOJydJ8VKccChKfqAM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Jianhua <chris.zjh@huawei.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 128/367] clk: sunxi-ng: Modify mismatched function name
+Subject: [PATCH 4.19 065/273] wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
 Date:   Wed, 20 Sep 2023 13:28:25 +0200
-Message-ID: <20230920112901.991272691@linuxfoundation.org>
+Message-ID: <20230920112848.471489794@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,41 +52,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Jianhua <chris.zjh@huawei.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 075d9ca5b4e17f84fd1c744a405e69ec743be7f0 ]
+[ Upstream commit b674fb513e2e7a514fcde287c0f73915d393fdb6 ]
 
-No functional modification involved.
+Currently, the synchronization between ath9k_wmi_cmd() and
+ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
+rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
 
-drivers/clk/sunxi-ng/ccu_mmc_timing.c:54: warning: expecting prototype for sunxi_ccu_set_mmc_timing_mode(). Prototype was for sunxi_ccu_get_mmc_timing_mode() instead
+Consider the following scenario:
 
-Fixes: f6f64ed868d3 ("clk: sunxi-ng: Add interface to query or configure MMC timing modes.")
-Signed-off-by: Zhang Jianhua <chris.zjh@huawei.com>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20230722153107.2078179-1-chris.zjh@huawei.com
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+CPU0					CPU1
+
+ath9k_wmi_cmd(...)
+  mutex_lock(&wmi->op_mutex)
+  ath9k_wmi_cmd_issue(...)
+  wait_for_completion_timeout(...)
+  ---
+  timeout
+  ---
+					/* the callback is being processed
+					 * before last_seq_id became zero
+					 */
+					ath9k_wmi_ctrl_rx(...)
+					  spin_lock_irqsave(...)
+					  /* wmi->last_seq_id check here
+					   * doesn't detect timeout yet
+					   */
+					  spin_unlock_irqrestore(...)
+  /* last_seq_id is zeroed to
+   * indicate there was a timeout
+   */
+  wmi->last_seq_id = 0
+  mutex_unlock(&wmi->op_mutex)
+  return -ETIMEDOUT
+
+ath9k_wmi_cmd(...)
+  mutex_lock(&wmi->op_mutex)
+  /* the buffer is replaced with
+   * another one
+   */
+  wmi->cmd_rsp_buf = rsp_buf
+  wmi->cmd_rsp_len = rsp_len
+  ath9k_wmi_cmd_issue(...)
+    spin_lock_irqsave(...)
+    spin_unlock_irqrestore(...)
+  wait_for_completion_timeout(...)
+					/* the continuation of the
+					 * callback left after the first
+					 * ath9k_wmi_cmd call
+					 */
+					  ath9k_wmi_rsp_callback(...)
+					    /* copying data designated
+					     * to already timeouted
+					     * WMI command into an
+					     * inappropriate wmi_cmd_buf
+					     */
+					    memcpy(...)
+					    complete(&wmi->cmd_wait)
+  /* awakened by the bogus callback
+   * => invalid return result
+   */
+  mutex_unlock(&wmi->op_mutex)
+  return 0
+
+To fix this, update last_seq_id on timeout path inside ath9k_wmi_cmd()
+under the wmi_lock. Move ath9k_wmi_rsp_callback() under wmi_lock inside
+ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
+initially designated wmi_cmd call, otherwise the path would be rejected
+with last_seq_id check.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230425192607.18015-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu_mmc_timing.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu_mmc_timing.c b/drivers/clk/sunxi-ng/ccu_mmc_timing.c
-index de33414fc5c28..c6a6ce98ca03a 100644
---- a/drivers/clk/sunxi-ng/ccu_mmc_timing.c
-+++ b/drivers/clk/sunxi-ng/ccu_mmc_timing.c
-@@ -43,7 +43,7 @@ int sunxi_ccu_set_mmc_timing_mode(struct clk *clk, bool new_mode)
- EXPORT_SYMBOL_GPL(sunxi_ccu_set_mmc_timing_mode);
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index 5e2a610df61cf..44faa12a7205c 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -239,10 +239,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
+ 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 		goto free_skb;
+ 	}
+-	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
  
- /**
-- * sunxi_ccu_set_mmc_timing_mode: Get the current MMC clock timing mode
-+ * sunxi_ccu_get_mmc_timing_mode: Get the current MMC clock timing mode
-  * @clk: clock to query
-  *
-  * Returns 0 if the clock is in old timing mode, > 0 if it is in
+ 	/* WMI command response */
+ 	ath9k_wmi_rsp_callback(wmi, skb);
++	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 
+ free_skb:
+ 	kfree_skb(skb);
+@@ -305,8 +305,8 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	u16 headroom = sizeof(struct htc_frame_hdr) +
+ 		       sizeof(struct wmi_cmd_hdr);
++	unsigned long time_left, flags;
+ 	struct sk_buff *skb;
+-	unsigned long time_left;
+ 	int ret = 0;
+ 
+ 	if (ah->ah_flags & AH_UNPLUGGED)
+@@ -342,7 +342,9 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	if (!time_left) {
+ 		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
+ 			wmi_cmd_to_name(cmd_id));
++		spin_lock_irqsave(&wmi->wmi_lock, flags);
+ 		wmi->last_seq_id = 0;
++		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 		mutex_unlock(&wmi->op_mutex);
+ 		kfree_skb(skb);
+ 		return -ETIMEDOUT;
 -- 
 2.40.1
 
