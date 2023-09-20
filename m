@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0667A7E67
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E63707A7D0C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235544AbjITMRt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
+        id S234527AbjITMGI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235556AbjITMRs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:48 -0400
+        with ESMTP id S235195AbjITMGG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5185B19A
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC057C43395;
-        Wed, 20 Sep 2023 12:17:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 776C7C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF8C433C8;
+        Wed, 20 Sep 2023 12:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212242;
-        bh=WRz8UVfeemSG99wJoF+C9JCmE6dnogbZgLpnIpvLnOs=;
+        s=korg; t=1695211561;
+        bh=aJ2AW15UlcfTlkob27RfHqGjGCXVNYcQ4ycT4C+syH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SFx8k/2nbdkmlOtAqUhUh6XyfFeQpv3BuhKtPryEB8g/BgveWk/MtPjwgTwqbygDg
-         4V3rzSeYZy5BEAuMijEzxnyx30kpSxt1Vwi+yjsFF7iNmiBDhGMW87xWpQl9Z+MJG5
-         pouAkK83HrbRf+ZU4g6T9BENy1p76lY9J5QwASFc=
+        b=mCnXhnF7CzsjfLkBoR1hYslHgFpapEFM9N3fXDhDpJw0EmQz4GVCOBOuUrq7NQjzA
+         Pu434f+Bpk68sv9hxxK9IQtR55uWPcBBUSRFih4FQ12gpx2jYyekdDfuVfOADJz4Y9
+         gjgCWe76GTtCtAoMcJiqwF2f/0+DS8eY9sSaqxps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.19 201/273] parisc: led: Fix LAN receive and transmit LEDs
-Date:   Wed, 20 Sep 2023 13:30:41 +0200
-Message-ID: <20230920112852.702874730@linuxfoundation.org>
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 139/186] kcm: Destroy mutex in kcm_exit_net()
+Date:   Wed, 20 Sep 2023 13:30:42 +0200
+Message-ID: <20230920112842.013032158@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,36 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 4db89524b084f712a887256391fc19d9f66c8e55 upstream.
+[ Upstream commit 6ad40b36cd3b04209e2d6c89d252c873d8082a59 ]
 
-Fix the LAN receive and LAN transmit LEDs, which where swapped
-up to now.
+kcm_exit_net() should call mutex_destroy() on knet->mutex. This is especially
+needed if CONFIG_DEBUG_MUTEXES is enabled.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Link: https://lore.kernel.org/r/20230902170708.1727999-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/led.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/kcm/kcmsock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/parisc/include/asm/led.h
-+++ b/arch/parisc/include/asm/led.h
-@@ -11,8 +11,8 @@
- #define	LED1		0x02
- #define	LED0		0x01		/* bottom (or furthest left) LED */
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index fdce053f1099d..0589b6b560eca 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -1988,6 +1988,8 @@ static __net_exit void kcm_exit_net(struct net *net)
+ 	 * that all multiplexors and psocks have been destroyed.
+ 	 */
+ 	WARN_ON(!list_empty(&knet->mux_list));
++
++	mutex_destroy(&knet->mutex);
+ }
  
--#define	LED_LAN_TX	LED0		/* for LAN transmit activity */
--#define	LED_LAN_RCV	LED1		/* for LAN receive activity */
-+#define	LED_LAN_RCV	LED0		/* for LAN receive activity */
-+#define	LED_LAN_TX	LED1		/* for LAN transmit activity */
- #define	LED_DISK_IO	LED2		/* for disk activity */
- #define	LED_HEARTBEAT	LED3		/* heartbeat */
- 
+ static struct pernet_operations kcm_net_ops = {
+-- 
+2.40.1
+
 
 
