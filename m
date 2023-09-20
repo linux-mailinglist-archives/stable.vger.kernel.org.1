@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27F87A8101
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76FDA7A7F0E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236241AbjITMmA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:42:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46664 "EHLO
+        id S235690AbjITMX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236248AbjITMlz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:55 -0400
+        with ESMTP id S235688AbjITMX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E73AF3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7E8C433CB;
-        Wed, 20 Sep 2023 12:41:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F8F083
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9683DC433C8;
+        Wed, 20 Sep 2023 12:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213706;
-        bh=0t4tEukaTNWpjQ8Y1gh5JvTtFituAW2LbxaSGrwOp60=;
+        s=korg; t=1695212603;
+        bh=YoKuYUjsJEte10xex38grSD15gKO0cehWpFwonMkdqQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=siIm8zUSb7RWbaiUV1nyOpGuCgCO4EHhNSEOi1ZPGwni89CrbQ///737qI9Kbz5j4
-         G6Dg4E1jZLbF9nqJRQm33E2eCnA/W8VhEsB2d9Xw4qb83nJadTG0hRLaG1SY7yMt7L
-         sdb3YGC2zU6DKpavvbXXzQSCqi5B6/dFERXICQBg=
+        b=bgXhEznhVJk1bl2KEEMd1GSKt+hppolQhuenxNbt9Aj9hneaKVfyAMhQ1nuxf+RXx
+         bduOdfGFOiSH6Q9z+QgT8Cl+aYRdPcfNpxLMOEzjSph/YUDMmJm9QZzuCYeghuriBx
+         15YqNnThNHDqX1D+QFnDvgzj+WcymbTiJtoVaDx4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 336/367] media: af9005: Fix null-ptr-deref in af9005_i2c_xfer
+        patches@lists.linux.dev, Aaron Lu <aaron.lu@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 63/83] x86/boot/compressed: Reserve more memory for page tables
 Date:   Wed, 20 Sep 2023 13:31:53 +0200
-Message-ID: <20230920112907.216811710@linuxfoundation.org>
+Message-ID: <20230920112829.151273638@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +50,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit f4ee84f27625ce1fdf41e8483fa0561a1b837d10 ]
+[ Upstream commit f530ee95b72e77b09c141c4b1a4b94d1199ffbd9 ]
 
-In af9005_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach af9005_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+The decompressor has a hard limit on the number of page tables it can
+allocate. This limit is defined at compile-time and will cause boot
+failure if it is reached.
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+The kernel is very strict and calculates the limit precisely for the
+worst-case scenario based on the current configuration. However, it is
+easy to forget to adjust the limit when a new use-case arises. The
+worst-case scenario is rarely encountered during sanity checks.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In the case of enabling 5-level paging, a use-case was overlooked. The
+limit needs to be increased by one to accommodate the additional level.
+This oversight went unnoticed until Aaron attempted to run the kernel
+via kexec with 5-level paging and unaccepted memory enabled.
+
+Update wost-case calculations to include 5-level paging.
+
+To address this issue, let's allocate some extra space for page tables.
+128K should be sufficient for any use-case. The logic can be simplified
+by using a single value for all kernel configurations.
+
+[ Also add a warning, should this memory run low - by Dave Hansen. ]
+
+Fixes: 34bbb0009f3b ("x86/boot/compressed: Enable 5-level paging during decompression stage")
+Reported-by: Aaron Lu <aaron.lu@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230915070221.10266-1-kirill.shutemov@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/af9005.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/boot/compressed/ident_map_64.c |  8 +++++
+ arch/x86/include/asm/boot.h             | 45 +++++++++++++++++--------
+ 2 files changed, 39 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/af9005.c b/drivers/media/usb/dvb-usb/af9005.c
-index 89b4b5d84cdff..827f9db16aa10 100644
---- a/drivers/media/usb/dvb-usb/af9005.c
-+++ b/drivers/media/usb/dvb-usb/af9005.c
-@@ -422,6 +422,10 @@ static int af9005_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 		if (ret == 0)
- 			ret = 2;
- 	} else {
-+		if (msg[0].len < 2) {
-+			ret = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 		/* write one or more registers */
- 		reg = msg[0].buf[0];
- 		addr = msg[0].addr;
-@@ -431,6 +435,7 @@ static int af9005_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = 1;
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 39b2eded7bc2b..f4a2e6d373b29 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -67,6 +67,14 @@ static void *alloc_pgt_page(void *context)
+ 		return NULL;
  	}
  
-+unlock:
- 	mutex_unlock(&d->i2c_mutex);
- 	return ret;
- }
++	/* Consumed more tables than expected? */
++	if (pages->pgt_buf_offset == BOOT_PGT_SIZE_WARN) {
++		debug_putstr("pgt_buf running low in " __FILE__ "\n");
++		debug_putstr("Need to raise BOOT_PGT_SIZE?\n");
++		debug_putaddr(pages->pgt_buf_offset);
++		debug_putaddr(pages->pgt_buf_size);
++	}
++
+ 	entry = pages->pgt_buf + pages->pgt_buf_offset;
+ 	pages->pgt_buf_offset += PAGE_SIZE;
+ 
+diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
+index 9191280d9ea31..215d37f7dde8a 100644
+--- a/arch/x86/include/asm/boot.h
++++ b/arch/x86/include/asm/boot.h
+@@ -40,23 +40,40 @@
+ #ifdef CONFIG_X86_64
+ # define BOOT_STACK_SIZE	0x4000
+ 
++/*
++ * Used by decompressor's startup_32() to allocate page tables for identity
++ * mapping of the 4G of RAM in 4-level paging mode:
++ * - 1 level4 table;
++ * - 1 level3 table;
++ * - 4 level2 table that maps everything with 2M pages;
++ *
++ * The additional level5 table needed for 5-level paging is allocated from
++ * trampoline_32bit memory.
++ */
+ # define BOOT_INIT_PGT_SIZE	(6*4096)
+-# ifdef CONFIG_RANDOMIZE_BASE
++
+ /*
+- * Assuming all cross the 512GB boundary:
+- * 1 page for level4
+- * (2+2)*4 pages for kernel, param, cmd_line, and randomized kernel
+- * 2 pages for first 2M (video RAM: CONFIG_X86_VERBOSE_BOOTUP).
+- * Total is 19 pages.
++ * Total number of page tables kernel_add_identity_map() can allocate,
++ * including page tables consumed by startup_32().
++ *
++ * Worst-case scenario:
++ *  - 5-level paging needs 1 level5 table;
++ *  - KASLR needs to map kernel, boot_params, cmdline and randomized kernel,
++ *    assuming all of them cross 256T boundary:
++ *    + 4*2 level4 table;
++ *    + 4*2 level3 table;
++ *    + 4*2 level2 table;
++ *  - X86_VERBOSE_BOOTUP needs to map the first 2M (video RAM):
++ *    + 1 level4 table;
++ *    + 1 level3 table;
++ *    + 1 level2 table;
++ * Total: 28 tables
++ *
++ * Add 4 spare table in case decompressor touches anything beyond what is
++ * accounted above. Warn if it happens.
+  */
+-#  ifdef CONFIG_X86_VERBOSE_BOOTUP
+-#   define BOOT_PGT_SIZE	(19*4096)
+-#  else /* !CONFIG_X86_VERBOSE_BOOTUP */
+-#   define BOOT_PGT_SIZE	(17*4096)
+-#  endif
+-# else /* !CONFIG_RANDOMIZE_BASE */
+-#  define BOOT_PGT_SIZE		BOOT_INIT_PGT_SIZE
+-# endif
++# define BOOT_PGT_SIZE_WARN	(28*4096)
++# define BOOT_PGT_SIZE		(32*4096)
+ 
+ #else /* !CONFIG_X86_64 */
+ # define BOOT_STACK_SIZE	0x1000
 -- 
 2.40.1
 
