@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3FBB7A8080
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2024C7A7E16
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235984AbjITMhj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49898 "EHLO
+        id S235354AbjITMPc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235939AbjITMhi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:38 -0400
+        with ESMTP id S235823AbjITMPP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B509E;
-        Wed, 20 Sep 2023 05:37:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCF2C433CB;
-        Wed, 20 Sep 2023 12:37:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C2E93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEF3C433C8;
+        Wed, 20 Sep 2023 12:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213452;
-        bh=N2Q3thzPsD1IOXoqeJopgy4EfF0bxTXrEYdfZbDLFYM=;
+        s=korg; t=1695212109;
+        bh=Gb87cSX5pUjp8WfQv3AdkKMc9Ovnt/s9vXCj9nUwjGs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yp7RXF7oxUVf3qi8I3OS3K45JinmueT/Joozr3+FP/FNFt7Wdwx+P2mlzM28Oyd0m
-         aK065R9Px+WRpeGdHE9Ur8mCehSj1+ub7XUSmcHrgpx/aEe8lqp3yCgicuLgEcvSEv
-         lT+u15VQS1p2BwXDuntgDeZiN26ttNTZqcsB5D30=
+        b=vBA70NJUygV1ix7jYY4DfGrzbYmQI7RI4BbBEidzpXkf0lOtcuggW7zi/8mRes3iH
+         WAzWCQmtvs7PjaNGVMm7/25KgYrusfJjg9KOqlQg7QD57TfSZ5XgvGVGrTd4ahsLBW
+         013+tzFFsUKUz+WL9oqtvUJiENpWT3hxZCLcHkDo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 5.4 216/367] backlight/lv5207lp: Compare against struct fb_info.device
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 153/273] media: ov2680: Fix regulators being left enabled on ov2680_power_on() errors
 Date:   Wed, 20 Sep 2023 13:29:53 +0200
-Message-ID: <20230920112904.192991206@linuxfoundation.org>
+Message-ID: <20230920112851.263589135@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,56 +54,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 1ca8819320fd84e7d95b04e7668efc5f9fe9fa5c upstream.
+[ Upstream commit 84b4bd7e0d98166aa32fd470e672721190492eae ]
 
-Struct lv5207lp_platform_data refers to a platform device within
-the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+When the ov2680_power_on() "sensor soft reset failed" path is hit during
+probe() the WARN() about putting an enabled regulator at
+drivers/regulator/core.c:2398 triggers 3 times (once for each regulator),
+filling dmesg with backtraces.
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
+Fix this by properly disabling the regulators on ov2680_power_on() errors.
 
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: linux-sh@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-6-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/lv5207lp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov2680.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/video/backlight/lv5207lp.c
-+++ b/drivers/video/backlight/lv5207lp.c
-@@ -72,7 +72,7 @@ static int lv5207lp_backlight_check_fb(s
- {
- 	struct lv5207lp *lv = bl_get_data(backlight);
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 142c6c1721649..40d583a972a41 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -459,7 +459,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 		ret = ov2680_write_reg(sensor, OV2680_REG_SOFT_RESET, 0x01);
+ 		if (ret != 0) {
+ 			dev_err(dev, "sensor soft reset failed\n");
+-			return ret;
++			goto err_disable_regulators;
+ 		}
+ 		usleep_range(1000, 2000);
+ 	} else {
+@@ -469,7 +469,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
  
--	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->dev;
-+	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->device;
+ 	ret = clk_prepare_enable(sensor->xvclk);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
+ 
+ 	sensor->is_enabled = true;
+ 
+@@ -479,6 +479,10 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 	ov2680_stream_disable(sensor);
+ 
+ 	return 0;
++
++err_disable_regulators:
++	regulator_bulk_disable(OV2680_NUM_SUPPLIES, sensor->supplies);
++	return ret;
  }
  
- static const struct backlight_ops lv5207lp_backlight_ops = {
+ static int ov2680_s_power(struct v4l2_subdev *sd, int on)
+-- 
+2.40.1
+
 
 
