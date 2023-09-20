@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAD177A7DF6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316577A8017
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235475AbjITMN7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39610 "EHLO
+        id S236163AbjITMcx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235494AbjITMN6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:58 -0400
+        with ESMTP id S236152AbjITMcu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD10110
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D318DC433C7;
-        Wed, 20 Sep 2023 12:13:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E0AE6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52977C433CA;
+        Wed, 20 Sep 2023 12:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212028;
-        bh=gfBPQlogCmkgoElZM/vnkDbrNj2bI8fWa222YHCPnpw=;
+        s=korg; t=1695213162;
+        bh=rT8BCKw/8rMhg8qcetgvaRdSW05dbSRlxEC0hadKJYA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rBslKlac70kEg382EkUJP9a1UuOTBlYMt6oXasP4UjW6vIcinQPPoP7iDtxY1anPs
-         Rga1F5qzBAstc/wtSNCVOF04rR/n7hNvoTrFq6abq9+90E0rYg2Ttin9itZFbAzh9W
-         16SQuTPSD9itCN29EAKt17WIpPlxkTC3r4R+whvI=
+        b=BmfzumJGxSvx0Mz3Y71Q1UtpqDOtt/jJ7MpDnya8IwF8ylS0k/g0bhv2MQ7/+sFeG
+         77FSmMxjRaf6VBh1N6kqI6Bl4of1zVEJhdanEHpkZkENaKj7BH4AxCihWmIr74CPHZ
+         z6QzTlDDFm+c9T4Up+YHyUijc12YC5AfxHOSAxtE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alim Akhtar <alim.akhtar@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Irui Wang <irui.wang@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 094/273] ARM: dts: samsung: s5pv210-smdkv210: correct ethernet reg addresses (split)
+Subject: [PATCH 5.4 157/367] media: mediatek: vcodec: Return NULL if no vdec_fb is found
 Date:   Wed, 20 Sep 2023 13:28:54 +0200
-Message-ID: <20230920112849.346057496@linuxfoundation.org>
+Message-ID: <20230920112902.717183935@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Irui Wang <irui.wang@mediatek.com>
 
-[ Upstream commit 982655cb0e7f18934d7532c32366e574ad61dbd7 ]
+[ Upstream commit dfa2d6e07432270330ae191f50a0e70636a4cd2b ]
 
-The davicom,dm9000 Ethernet Controller accepts two reg addresses.
+"fb_use_list" is used to store used or referenced frame buffers for
+vp9 stateful decoder. "NULL" should be returned when getting target
+frame buffer failed from "fb_use_list", not a random unexpected one.
 
-Fixes: b672b27d232e ("ARM: dts: Add Device tree for s5pc110/s5pv210 boards")
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Link: https://lore.kernel.org/r/20230713152926.82884-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: f77e89854b3e ("[media] vcodec: mediatek: Add Mediatek VP9 Video Decoder Driver")
+Signed-off-by: Irui Wang <irui.wang@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/s5pv210-smdkv210.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/s5pv210-smdkv210.dts b/arch/arm/boot/dts/s5pv210-smdkv210.dts
-index ec5e18c59d3cf..53a841ecf7a44 100644
---- a/arch/arm/boot/dts/s5pv210-smdkv210.dts
-+++ b/arch/arm/boot/dts/s5pv210-smdkv210.dts
-@@ -41,7 +41,7 @@ pmic_ap_clk: clock-0 {
+diff --git a/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c b/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
+index 5066c283d86d1..2fd7d913fd640 100644
+--- a/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
++++ b/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
+@@ -222,10 +222,11 @@ static struct vdec_fb *vp9_rm_from_fb_use_list(struct vdec_vp9_inst
+ 		if (fb->base_y.va == addr) {
+ 			list_move_tail(&node->list,
+ 				       &inst->available_fb_node_list);
+-			break;
++			return fb;
+ 		}
+ 	}
+-	return fb;
++
++	return NULL;
+ }
  
- 	ethernet@a8000000 {
- 		compatible = "davicom,dm9000";
--		reg = <0xA8000000 0x2 0xA8000002 0x2>;
-+		reg = <0xa8000000 0x2>, <0xa8000002 0x2>;
- 		interrupt-parent = <&gph1>;
- 		interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
- 		local-mac-address = [00 00 de ad be ef];
+ static void vp9_add_to_fb_free_list(struct vdec_vp9_inst *inst,
 -- 
 2.40.1
 
