@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC517A8105
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E797A81A0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236215AbjITMmE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46892 "EHLO
+        id S234911AbjITMrN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236248AbjITMmA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:00 -0400
+        with ESMTP id S234930AbjITMrK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:47:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF16BC9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12459C433C9;
-        Wed, 20 Sep 2023 12:41:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C720492
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:47:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F83DC433C7;
+        Wed, 20 Sep 2023 12:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213714;
-        bh=kaz6L+HFJXvCCYkS81j8c1Ym1+hozxz8ApU/ugS4d5Q=;
+        s=korg; t=1695214024;
+        bh=Wjd1lFa+i7IUVhilRJKd2GdDqXhs4vvViuqZuIkxGyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0SME8FqOgqbGC5aBSk0d2Va6RDekm2UcL8oNBKluGDYAbvcXfAPloKhtR88/Kypo3
-         Uj2xBTT57Eqh5U+GV3LA9SFi29KG6QTn5xSINQ93MM4rZZImr0Medo2f/r4wyPEPAD
-         zW07MS8b/PiRMutSUCEqh8dG8k8Nr/L1S5xv2smU=
+        b=p6bi8tD/NN7HHlopyUYvVJ16cU90WO+QyB7vn0s3LXaYgdQ8gHttZrIXVoJvBaj52
+         /mcifmmlfc/9DrUbBVlKeyHqfoyBlzDhUSYuREcws3n6vGntYEMQy0RGtE+R7z757P
+         GvOX5KvvIllgd/UpJxSbxKdVpvKBMA1QLMMrYPvY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 339/367] media: tuners: qt1010: replace BUG_ON with a regular error
+Subject: [PATCH 5.15 058/110] kobject: Add sanity check for kset->kobj.ktype in kset_register()
 Date:   Wed, 20 Sep 2023 13:31:56 +0200
-Message-ID: <20230920112907.288604822@linuxfoundation.org>
+Message-ID: <20230920112832.571026227@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,48 +49,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit ee630b29ea44d1851bb6c903f400956604834463 ]
+[ Upstream commit 4d0fe8c52bb3029d83e323c961221156ab98680b ]
 
-BUG_ON is unnecessary here, and in addition it confuses smatch.
-Replacing this with an error return help resolve this smatch
-warning:
+When I register a kset in the following way:
+	static struct kset my_kset;
+	kobject_set_name(&my_kset.kobj, "my_kset");
+        ret = kset_register(&my_kset);
 
-drivers/media/tuners/qt1010.c:350 qt1010_init() error: buffer overflow 'i2c_data' 34 <= 34
+A null pointer dereference exception is occurred:
+[ 4453.568337] Unable to handle kernel NULL pointer dereference at \
+virtual address 0000000000000028
+... ...
+[ 4453.810361] Call trace:
+[ 4453.813062]  kobject_get_ownership+0xc/0x34
+[ 4453.817493]  kobject_add_internal+0x98/0x274
+[ 4453.822005]  kset_register+0x5c/0xb4
+[ 4453.825820]  my_kobj_init+0x44/0x1000 [my_kset]
+... ...
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Because I didn't initialize my_kset.kobj.ktype.
+
+According to the description in Documentation/core-api/kobject.rst:
+ - A ktype is the type of object that embeds a kobject.  Every structure
+   that embeds a kobject needs a corresponding ktype.
+
+So add sanity check to make sure kset->kobj.ktype is not NULL.
+
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20230805084114.1298-2-thunder.leizhen@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/tuners/qt1010.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ lib/kobject.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/tuners/qt1010.c b/drivers/media/tuners/qt1010.c
-index fa5d2692131f9..f7516cb52436e 100644
---- a/drivers/media/tuners/qt1010.c
-+++ b/drivers/media/tuners/qt1010.c
-@@ -342,11 +342,12 @@ static int qt1010_init(struct dvb_frontend *fe)
- 			else
- 				valptr = &tmpval;
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 184a3dab26991..b6ccb4cced635 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -882,6 +882,11 @@ int kset_register(struct kset *k)
+ 	if (!k)
+ 		return -EINVAL;
  
--			BUG_ON(i >= ARRAY_SIZE(i2c_data) - 1);
--
--			err = qt1010_init_meas1(priv, i2c_data[i+1].reg,
--						i2c_data[i].reg,
--						i2c_data[i].val, valptr);
-+			if (i >= ARRAY_SIZE(i2c_data) - 1)
-+				err = -EIO;
-+			else
-+				err = qt1010_init_meas1(priv, i2c_data[i + 1].reg,
-+							i2c_data[i].reg,
-+							i2c_data[i].val, valptr);
- 			i++;
- 			break;
- 		}
++	if (!k->kobj.ktype) {
++		pr_err("must have a ktype to be initialized properly!\n");
++		return -EINVAL;
++	}
++
+ 	kset_init(k);
+ 	err = kobject_add_internal(&k->kobj);
+ 	if (err)
 -- 
 2.40.1
 
