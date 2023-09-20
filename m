@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50ADA7A809F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA3707A7D2C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236067AbjITMi2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:38:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46970 "EHLO
+        id S234580AbjITMH1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:07:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236096AbjITMi1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:27 -0400
+        with ESMTP id S235254AbjITMHK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C79D7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBDBC433C8;
-        Wed, 20 Sep 2023 12:38:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE555F3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B63C433C9;
+        Wed, 20 Sep 2023 12:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213499;
-        bh=k/IX7BLKwcqTvHlJZw451odjbrioplZoxxDzV4Jyzpo=;
+        s=korg; t=1695211620;
+        bh=WRn7PIyBnkiA6piR7BfQhhjGy2BEH1qeAer5TqS+yrQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JXpzasY4vULRLsphq8b807q3mA0BAAv3TXr/YfcImE30XzC+l8MWskZpF8VIbWCh8
-         THIny6WW9wDHWYinRH1zeQdgVGVQzdCgJKNf+ob/v2aqfoTZwG4a4DrKwDwH9G5cX0
-         FuIE3MM35ToxiEs5oiDUCcPe4hAk/7v7iEdd/avk=
+        b=X/QcpPGkUu8uNhgNMwx7wEXxdq321iyitKuXxCH6s4CcMsAZsgHdERUauZQ+CTFWU
+         zIlIba4EQLrJBC8qXNfmop7Hv6UV0q/lRKS8KC+3l6bx/bMt1KqO7MEP8SH6fUuraS
+         9CBF4gTOizuB/BCpaAUra3PsxsvDy7YP1d1QODp4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 259/367] ipv4: annotate data-races around fi->fib_dead
-Date:   Wed, 20 Sep 2023 13:30:36 +0200
-Message-ID: <20230920112905.266606699@linuxfoundation.org>
+Subject: [PATCH 4.14 134/186] af_unix: Fix data-races around user->unix_inflight.
+Date:   Wed, 20 Sep 2023 13:30:37 +0200
+Message-ID: <20230920112841.847287461@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,138 +52,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit fce92af1c29d90184dfec638b5738831097d66e9 ]
+[ Upstream commit 0bc36c0650b21df36fbec8136add83936eaf0607 ]
 
-syzbot complained about a data-race in fib_table_lookup() [1]
+user->unix_inflight is changed under spin_lock(unix_gc_lock),
+but too_many_unix_fds() reads it locklessly.
 
-Add appropriate annotations to document it.
+Let's annotate the write/read accesses to user->unix_inflight.
 
-[1]
-BUG: KCSAN: data-race in fib_release_info / fib_table_lookup
+BUG: KCSAN: data-race in unix_attach_fds / unix_inflight
 
-write to 0xffff888150f31744 of 1 bytes by task 1189 on cpu 0:
-fib_release_info+0x3a0/0x460 net/ipv4/fib_semantics.c:281
-fib_table_delete+0x8d2/0x900 net/ipv4/fib_trie.c:1777
-fib_magic+0x1c1/0x1f0 net/ipv4/fib_frontend.c:1106
-fib_del_ifaddr+0x8cf/0xa60 net/ipv4/fib_frontend.c:1317
-fib_inetaddr_event+0x77/0x200 net/ipv4/fib_frontend.c:1448
-notifier_call_chain kernel/notifier.c:93 [inline]
-blocking_notifier_call_chain+0x90/0x200 kernel/notifier.c:388
-__inet_del_ifa+0x4df/0x800 net/ipv4/devinet.c:432
-inet_del_ifa net/ipv4/devinet.c:469 [inline]
-inetdev_destroy net/ipv4/devinet.c:322 [inline]
-inetdev_event+0x553/0xaf0 net/ipv4/devinet.c:1606
-notifier_call_chain kernel/notifier.c:93 [inline]
-raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1962 [inline]
-call_netdevice_notifiers_mtu+0xd2/0x130 net/core/dev.c:2037
-dev_set_mtu_ext+0x30b/0x3e0 net/core/dev.c:8673
-do_setlink+0x5be/0x2430 net/core/rtnetlink.c:2837
-rtnl_setlink+0x255/0x300 net/core/rtnetlink.c:3177
-rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6445
-netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2549
-rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6463
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0x56f/0x640 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x665/0x770 net/netlink/af_netlink.c:1914
-sock_sendmsg_nosec net/socket.c:725 [inline]
-sock_sendmsg net/socket.c:748 [inline]
-sock_write_iter+0x1aa/0x230 net/socket.c:1129
-do_iter_write+0x4b4/0x7b0 fs/read_write.c:860
-vfs_writev+0x1a8/0x320 fs/read_write.c:933
-do_writev+0xf8/0x220 fs/read_write.c:976
-__do_sys_writev fs/read_write.c:1049 [inline]
-__se_sys_writev fs/read_write.c:1046 [inline]
-__x64_sys_writev+0x45/0x50 fs/read_write.c:1046
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+write to 0xffffffff8546f2d0 of 8 bytes by task 44798 on cpu 1:
+ unix_inflight+0x157/0x180 net/unix/scm.c:66
+ unix_attach_fds+0x147/0x1e0 net/unix/scm.c:123
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-read to 0xffff888150f31744 of 1 bytes by task 21839 on cpu 1:
-fib_table_lookup+0x2bf/0xd50 net/ipv4/fib_trie.c:1585
-fib_lookup include/net/ip_fib.h:383 [inline]
-ip_route_output_key_hash_rcu+0x38c/0x12c0 net/ipv4/route.c:2751
-ip_route_output_key_hash net/ipv4/route.c:2641 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2869
-send4+0x1e7/0x500 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work+0x434/0x860 kernel/workqueue.c:2600
-worker_thread+0x5f2/0xa10 kernel/workqueue.c:2751
-kthread+0x1d7/0x210 kernel/kthread.c:389
-ret_from_fork+0x2e/0x40 arch/x86/kernel/process.c:145
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+read to 0xffffffff8546f2d0 of 8 bytes by task 44814 on cpu 0:
+ too_many_unix_fds net/unix/scm.c:101 [inline]
+ unix_attach_fds+0x54/0x1e0 net/unix/scm.c:110
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-value changed: 0x00 -> 0x01
+value changed: 0x000000000000000c -> 0x000000000000000d
 
 Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 21839 Comm: kworker/u4:18 Tainted: G W 6.5.0-syzkaller #0
+CPU: 0 PID: 44814 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
 
-Fixes: dccd9ecc3744 ("ipv4: Do not use dead fib_info entries.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230830095520.1046984-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 712f4aad406b ("unix: properly account for FDs passed over unix sockets")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_semantics.c | 5 ++++-
- net/ipv4/fib_trie.c      | 3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ net/unix/scm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 42a4ee192f8dc..51cfb650060ba 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -275,7 +275,8 @@ void fib_release_info(struct fib_info *fi)
- 				hlist_del(&nexthop_nh->nh_hash);
- 			} endfor_nexthops(fi)
- 		}
--		fi->fib_dead = 1;
-+		/* Paired with READ_ONCE() from fib_table_lookup() */
-+		WRITE_ONCE(fi->fib_dead, 1);
- 		fib_info_put(fi);
+diff --git a/net/unix/scm.c b/net/unix/scm.c
+index 6c10af6037e39..c4dde276fea56 100644
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -60,7 +60,7 @@ void unix_inflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
  	}
- 	spin_unlock_bh(&fib_info_lock);
-@@ -1586,6 +1587,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
- link_it:
- 	ofi = fib_find_info(fi);
- 	if (ofi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
- 		ofi->fib_treeref++;
-@@ -1623,6 +1625,7 @@ struct fib_info *fib_create_info(struct fib_config *cfg,
+-	user->unix_inflight++;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
  
- failure:
- 	if (fi) {
-+		/* fib_table_lookup() should not see @fi yet. */
- 		fi->fib_dead = 1;
- 		free_fib_info(fi);
+@@ -81,7 +81,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
  	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index a1f830da4ad30..7f933ead3bf4c 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1448,7 +1448,8 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
- 		}
- 		if (fa->fa_tos && fa->fa_tos != flp->flowi4_tos)
- 			continue;
--		if (fi->fib_dead)
-+		/* Paired with WRITE_ONCE() in fib_release_info() */
-+		if (READ_ONCE(fi->fib_dead))
- 			continue;
- 		if (fa->fa_info->fib_scope < flp->flowi4_scope)
- 			continue;
+-	user->unix_inflight--;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
+ 
+@@ -95,7 +95,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
+ {
+ 	struct user_struct *user = current_user();
+ 
+-	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
++	if (unlikely(READ_ONCE(user->unix_inflight) > task_rlimit(p, RLIMIT_NOFILE)))
+ 		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
+ 	return false;
+ }
 -- 
 2.40.1
 
