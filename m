@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A64AA7A8146
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 218117A7F02
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236242AbjITMoD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41994 "EHLO
+        id S235669AbjITMW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236236AbjITMoC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:02 -0400
+        with ESMTP id S235663AbjITMW4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F58999
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB35EC433C7;
-        Wed, 20 Sep 2023 12:43:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D41D693
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0EBC433C7;
+        Wed, 20 Sep 2023 12:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213836;
-        bh=SGV7f+EAbau1W13NoT07g3J1VLveWqN+bMKVRj5o1NQ=;
+        s=korg; t=1695212570;
+        bh=/kMXrJ8P+88eKyoRjYpc5mrLm1GKkaKuAuPOBD9Bgxg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0IAFfoaRep7AeeIcAOPWr2443LfTKgSooUgZpMVFz2VNlRkBE/Rssqd3uP1OgVEaA
-         +G+zjvwySW7WsYx+XR90ZCuc3SUV4LaMPQs/hOm4EE5hsilfdAAcJyDgP9mV+PsHdg
-         aEmBo1dSLYk5AdXSlUKP2bN0qQdWYJ2BbYQlf5dc=
+        b=E6+T6rM1KCz2pnhQGHWhiH/pAXowHXSEwMqL49PSAhhqcyb5zcPQGPElN1lD15zqq
+         lXoHPCYxqeMGNMeC6tXLlCUgITEuhYmlqBOsxn0gjFP+eaTQDH934i48ZAeszQcAd4
+         Vc5xnQcT9eFgsHCLxPpIEXq+PHUacVCcAmdrUqOQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Hao Luo <haoluo@google.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/110] wifi: ath9k: fix printk specifier
+Subject: [PATCH 5.10 24/83] libbpf: Free btf_vmlinux when closing bpf_object
 Date:   Wed, 20 Sep 2023 13:31:14 +0200
-Message-ID: <20230920112830.999079246@linuxfoundation.org>
+Message-ID: <20230920112827.625163235@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,67 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: Hao Luo <haoluo@google.com>
 
-[ Upstream commit 061115fbfb2ce5870c9a004d68dc63138c07c782 ]
+[ Upstream commit 29d67fdebc42af6466d1909c60fdd1ef4f3e5240 ]
 
-Smatch reports:
+I hit a memory leak when testing bpf_program__set_attach_target().
+Basically, set_attach_target() may allocate btf_vmlinux, for example,
+when setting attach target for bpf_iter programs. But btf_vmlinux
+is freed only in bpf_object_load(), which means if we only open
+bpf object but not load it, setting attach target may leak
+btf_vmlinux.
 
-ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
-ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+So let's free btf_vmlinux in bpf_object__close() anyway.
 
-Fix it by modifying %lx to %p in the printk format string.
-
-Note that with this change, the pointer address will be printed as a
-hashed value by default. This is appropriate because the kernel
-should not leak kernel pointers to user space in an informational
-message. If someone wants to see the real address for debugging
-purposes, this can be achieved with the no_hash_pointers kernel option.
-
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230723040403.296723-1-dzm91@hust.edu.cn
+Signed-off-by: Hao Luo <haoluo@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230822193840.1509809-1-haoluo@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ahb.c | 4 ++--
- drivers/net/wireless/ath/ath9k/pci.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tools/lib/bpf/libbpf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index cdefb8e2daf14..05fb76a4e144e 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -136,8 +136,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 015ed8253f739..44646c5286fbe 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -7962,6 +7962,7 @@ void bpf_object__close(struct bpf_object *obj)
+ 	bpf_object__elf_finish(obj);
+ 	bpf_object__unload(obj);
+ 	btf__free(obj->btf);
++	btf__free(obj->btf_vmlinux);
+ 	btf_ext__free(obj->btf_ext);
  
- 	ah = sc->sc_ah;
- 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
--	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
--		   hw_name, (unsigned long)mem, irq);
-+	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
-+		   hw_name, mem, irq);
- 
- 	return 0;
- 
-diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
-index a074e23013c58..f0e3901e8182a 100644
---- a/drivers/net/wireless/ath/ath9k/pci.c
-+++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -988,8 +988,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	sc->sc_ah->msi_reg = 0;
- 
- 	ath9k_hw_name(sc->sc_ah, hw_name, sizeof(hw_name));
--	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
--		   hw_name, (unsigned long)sc->mem, pdev->irq);
-+	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
-+		   hw_name, sc->mem, pdev->irq);
- 
- 	return 0;
- 
+ 	for (i = 0; i < obj->nr_maps; i++)
 -- 
 2.40.1
 
