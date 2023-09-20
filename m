@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DD427A7EE3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB937A7D1D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235637AbjITMVl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42194 "EHLO
+        id S235154AbjITMGr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235762AbjITMVi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:38 -0400
+        with ESMTP id S235162AbjITMGq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C77C97
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BB0C433CA;
-        Wed, 20 Sep 2023 12:21:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00FBBF9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEF3C433C8;
+        Wed, 20 Sep 2023 12:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212492;
-        bh=i8zctY06lwaeasOYIWSNQ+KvGcxFO6xc0GJZDe9vcqs=;
+        s=korg; t=1695211593;
+        bh=hPA21x/qxxXXCRBKvyhKEXCfQQx6nWH5W/sjrkEbJDI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Umrdjua8fLZm0m19umgk6rn1sTwy+D6LG1go9BU501HAPy2Q1+mpiVHB4aGVVv30q
-         v0qp+rTcCNjjrZgbSBRPGBRwxoOi5ggfKytVdmyuSEqywzO69yU4XBwVlmCHYRvZdZ
-         COEgPTpcWJvW6TUyC4CGPMvHqtL4qj603bW7eeoQ=
+        b=ogLcJVrQvEsukfGhbqYWZZbZJMHt8+4eDTj+Rbzxyycu4yMO/FVS44hNyZSm58DQ4
+         G25BW8eVPtqzJ5tZU9y+pIAXFCEsnLZXSTwTkdKlt6FFhR8NmlfA7xoQ06uJZI0hpO
+         63MZ4KftLTgOgfVLBgwF+WPvIvQ4QTAt9a1QuGho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Will Shiu <Will.Shiu@mediatek.com>,
-        Jeff Layton <jlayton@kernel.org>,
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 03/83] locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock
+Subject: [PATCH 4.14 150/186] btrfs: output extra debug info if we failed to find an inline backref
 Date:   Wed, 20 Sep 2023 13:30:53 +0200
-Message-ID: <20230920112826.783263085@linuxfoundation.org>
+Message-ID: <20230920112842.385259756@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,89 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Shiu <Will.Shiu@mediatek.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 74f6f5912693ce454384eaeec48705646a21c74f ]
+[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
 
-As following backtrace, the struct file_lock request , in posix_lock_inode
-is free before ftrace function using.
-Replace the ftrace function ahead free flow could fix the use-after-free
-issue.
+[BUG]
+Syzbot reported several warning triggered inside
+lookup_inline_extent_backref().
 
-[name:report&]===============================================
-BUG:KASAN: use-after-free in trace_event_raw_event_filelock_lock+0x80/0x12c
-[name:report&]Read at addr f6ffff8025622620 by task NativeThread/16753
-[name:report_hw_tags&]Pointer tag: [f6], memory tag: [fe]
-[name:report&]
-BT:
-Hardware name: MT6897 (DT)
-Call trace:
- dump_backtrace+0xf8/0x148
- show_stack+0x18/0x24
- dump_stack_lvl+0x60/0x7c
- print_report+0x2c8/0xa08
- kasan_report+0xb0/0x120
- __do_kernel_fault+0xc8/0x248
- do_bad_area+0x30/0xdc
- do_tag_check_fault+0x1c/0x30
- do_mem_abort+0x58/0xbc
- el1_abort+0x3c/0x5c
- el1h_64_sync_handler+0x54/0x90
- el1h_64_sync+0x68/0x6c
- trace_event_raw_event_filelock_lock+0x80/0x12c
- posix_lock_inode+0xd0c/0xd60
- do_lock_file_wait+0xb8/0x190
- fcntl_setlk+0x2d8/0x440
-...
-[name:report&]
-[name:report&]Allocated by task 16752:
-...
- slab_post_alloc_hook+0x74/0x340
- kmem_cache_alloc+0x1b0/0x2f0
- posix_lock_inode+0xb0/0xd60
-...
- [name:report&]
- [name:report&]Freed by task 16752:
-...
-  kmem_cache_free+0x274/0x5b0
-  locks_dispose_list+0x3c/0x148
-  posix_lock_inode+0xc40/0xd60
-  do_lock_file_wait+0xb8/0x190
-  fcntl_setlk+0x2d8/0x440
-  do_fcntl+0x150/0xc18
-...
+[CAUSE]
+As usual, the reproducer doesn't reliably trigger locally here, but at
+least we know the WARN_ON() is triggered when an inline backref can not
+be found, and it can only be triggered when @insert is true. (I.e.
+inserting a new inline backref, which means the backref should already
+exist)
 
-Signed-off-by: Will Shiu <Will.Shiu@mediatek.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+[ENHANCEMENT]
+After the WARN_ON(), dump all the parameters and the extent tree
+leaf to help debug.
+
+Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/locks.c b/fs/locks.c
-index 12d72c3d8756c..cbb5701ce9f37 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -1339,6 +1339,7 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
-  out:
- 	spin_unlock(&ctx->flc_lock);
- 	percpu_up_read(&file_rwsem);
-+	trace_posix_lock_inode(inode, request, error);
- 	/*
- 	 * Free any unused locks.
- 	 */
-@@ -1347,7 +1348,6 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 	if (new_fl2)
- 		locks_free_lock(new_fl2);
- 	locks_dispose_list(&dispose);
--	trace_posix_lock_inode(inode, request, error);
- 
- 	return error;
- }
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index e59987385673f..deb01e59da027 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1703,6 +1703,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
+ 		err = -ENOENT;
+ 		goto out;
+ 	} else if (WARN_ON(ret)) {
++		btrfs_print_leaf(path->nodes[0]);
++		btrfs_err(fs_info,
++"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
++			  bytenr, num_bytes, parent, root_objectid, owner,
++			  offset);
+ 		err = -EIO;
+ 		goto out;
+ 	}
 -- 
 2.40.1
 
