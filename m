@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC8D7A7F14
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9A77A8109
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235701AbjITMXq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57296 "EHLO
+        id S236216AbjITMmM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:42:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjITMXp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:45 -0400
+        with ESMTP id S236266AbjITMmL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DA992
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6496C433C7;
-        Wed, 20 Sep 2023 12:23:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A01A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89798C433C8;
+        Wed, 20 Sep 2023 12:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212619;
-        bh=gQCH4LooJKg1GJPuR7DUuXR5FFSGgnylso7hOR22lpI=;
+        s=korg; t=1695213724;
+        bh=wxijHFU779rBhF+yNAVQQWjkNsN+uJlnbjkOAwEdSU0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zQveou/ACvUDGzpa4hX8/WJujHQ2tkPkRHtfSf5SoK/jJldR6nxLIbn8+wAv1BSWr
-         O21LW/k/mc0PzxOezOb6n/UcJrQ6XBtfbV9F/YcRksHBeVTdJfWEVKh2kQnTEA8UF7
-         8ej17lDs9swk8KaVH4IFymCIkc2PtTanNIg2CRKU=
+        b=c53AZGn2MQunSmC/0m1zJk4Ql/q/aLQVTGmdbeyMwoS0a4POZNlwyFlY9+ERYIw9C
+         DAz9HJNQGVGMqNrlRNN4ot6xnrID40Y/dCUYm4ApTlJ/xHCih9IJilkbxSk43ZDukY
+         dcyLyuRRUdwTXYYJeTbQC3MVZYn5udrSZFnb0Tt8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+bf66ad948981797d2f1d@syzkaller.appspotmail.com,
-        Josef Bacik <josef@toxicpanda.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 69/83] btrfs: release path before inode lookup during the ino lookup ioctl
+        Konstantin Shelekhin <k.shelekhin@yadro.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 342/367] scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
 Date:   Wed, 20 Sep 2023 13:31:59 +0200
-Message-ID: <20230920112829.384312324@linuxfoundation.org>
+Message-ID: <20230920112907.359356898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,173 +51,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Konstantin Shelekhin <k.shelekhin@yadro.com>
 
-commit ee34a82e890a7babb5585daf1a6dd7d4d1cf142a upstream.
+[ Upstream commit 801f287c93ff95582b0a2d2163f12870a2f076d4 ]
 
-During the ino lookup ioctl we can end up calling btrfs_iget() to get an
-inode reference while we are holding on a root's btree. If btrfs_iget()
-needs to lookup the inode from the root's btree, because it's not
-currently loaded in memory, then it will need to lock another or the
-same path in the same root btree. This may result in a deadlock and
-trigger the following lockdep splat:
+The function lio_target_nacl_info_show() uses sprintf() in a loop to print
+details for every iSCSI connection in a session without checking for the
+buffer length. With enough iSCSI connections it's possible to overflow the
+buffer provided by configfs and corrupt the memory.
 
-  WARNING: possible circular locking dependency detected
-  6.5.0-rc7-syzkaller-00004-gf7757129e3de #0 Not tainted
-  ------------------------------------------------------
-  syz-executor277/5012 is trying to acquire lock:
-  ffff88802df41710 (btrfs-tree-01){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
+This patch replaces sprintf() with sysfs_emit_at() that checks for buffer
+boundries.
 
-  but task is already holding lock:
-  ffff88802df418e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (btrfs-tree-00){++++}-{3:3}:
-         down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
-         __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-         btrfs_search_slot+0x13a4/0x2f80 fs/btrfs/ctree.c:2302
-         btrfs_init_root_free_objectid+0x148/0x320 fs/btrfs/disk-io.c:4955
-         btrfs_init_fs_root fs/btrfs/disk-io.c:1128 [inline]
-         btrfs_get_root_ref+0x5ae/0xae0 fs/btrfs/disk-io.c:1338
-         btrfs_get_fs_root fs/btrfs/disk-io.c:1390 [inline]
-         open_ctree+0x29c8/0x3030 fs/btrfs/disk-io.c:3494
-         btrfs_fill_super+0x1c7/0x2f0 fs/btrfs/super.c:1154
-         btrfs_mount_root+0x7e0/0x910 fs/btrfs/super.c:1519
-         legacy_get_tree+0xef/0x190 fs/fs_context.c:611
-         vfs_get_tree+0x8c/0x270 fs/super.c:1519
-         fc_mount fs/namespace.c:1112 [inline]
-         vfs_kern_mount+0xbc/0x150 fs/namespace.c:1142
-         btrfs_mount+0x39f/0xb50 fs/btrfs/super.c:1579
-         legacy_get_tree+0xef/0x190 fs/fs_context.c:611
-         vfs_get_tree+0x8c/0x270 fs/super.c:1519
-         do_new_mount+0x28f/0xae0 fs/namespace.c:3335
-         do_mount fs/namespace.c:3675 [inline]
-         __do_sys_mount fs/namespace.c:3884 [inline]
-         __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3861
-         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-         entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  -> #0 (btrfs-tree-01){++++}-{3:3}:
-         check_prev_add kernel/locking/lockdep.c:3142 [inline]
-         check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-         validate_chain kernel/locking/lockdep.c:3876 [inline]
-         __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
-         lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
-         down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
-         __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-         btrfs_tree_read_lock fs/btrfs/locking.c:142 [inline]
-         btrfs_read_lock_root_node+0x292/0x3c0 fs/btrfs/locking.c:281
-         btrfs_search_slot_get_root fs/btrfs/ctree.c:1832 [inline]
-         btrfs_search_slot+0x4ff/0x2f80 fs/btrfs/ctree.c:2154
-         btrfs_lookup_inode+0xdc/0x480 fs/btrfs/inode-item.c:412
-         btrfs_read_locked_inode fs/btrfs/inode.c:3892 [inline]
-         btrfs_iget_path+0x2d9/0x1520 fs/btrfs/inode.c:5716
-         btrfs_search_path_in_tree_user fs/btrfs/ioctl.c:1961 [inline]
-         btrfs_ioctl_ino_lookup_user+0x77a/0xf50 fs/btrfs/ioctl.c:2105
-         btrfs_ioctl+0xb0b/0xd40 fs/btrfs/ioctl.c:4683
-         vfs_ioctl fs/ioctl.c:51 [inline]
-         __do_sys_ioctl fs/ioctl.c:870 [inline]
-         __se_sys_ioctl+0xf8/0x170 fs/ioctl.c:856
-         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-         entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  other info that might help us debug this:
-
-   Possible unsafe locking scenario:
-
-         CPU0                    CPU1
-         ----                    ----
-    rlock(btrfs-tree-00);
-                                 lock(btrfs-tree-01);
-                                 lock(btrfs-tree-00);
-    rlock(btrfs-tree-01);
-
-   *** DEADLOCK ***
-
-  1 lock held by syz-executor277/5012:
-   #0: ffff88802df418e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-
-  stack backtrace:
-  CPU: 1 PID: 5012 Comm: syz-executor277 Not tainted 6.5.0-rc7-syzkaller-00004-gf7757129e3de #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
-   check_noncircular+0x375/0x4a0 kernel/locking/lockdep.c:2195
-   check_prev_add kernel/locking/lockdep.c:3142 [inline]
-   check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-   validate_chain kernel/locking/lockdep.c:3876 [inline]
-   __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
-   lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
-   down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
-   __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-   btrfs_tree_read_lock fs/btrfs/locking.c:142 [inline]
-   btrfs_read_lock_root_node+0x292/0x3c0 fs/btrfs/locking.c:281
-   btrfs_search_slot_get_root fs/btrfs/ctree.c:1832 [inline]
-   btrfs_search_slot+0x4ff/0x2f80 fs/btrfs/ctree.c:2154
-   btrfs_lookup_inode+0xdc/0x480 fs/btrfs/inode-item.c:412
-   btrfs_read_locked_inode fs/btrfs/inode.c:3892 [inline]
-   btrfs_iget_path+0x2d9/0x1520 fs/btrfs/inode.c:5716
-   btrfs_search_path_in_tree_user fs/btrfs/ioctl.c:1961 [inline]
-   btrfs_ioctl_ino_lookup_user+0x77a/0xf50 fs/btrfs/ioctl.c:2105
-   btrfs_ioctl+0xb0b/0xd40 fs/btrfs/ioctl.c:4683
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:870 [inline]
-   __se_sys_ioctl+0xf8/0x170 fs/ioctl.c:856
-   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-   do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  RIP: 0033:0x7f0bec94ea39
-
-Fix this simply by releasing the path before calling btrfs_iget() as at
-point we don't need the path anymore.
-
-Reported-by: syzbot+bf66ad948981797d2f1d@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/00000000000045fa140603c4a969@google.com/
-Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
+Link: https://lore.kernel.org/r/20230722152657.168859-2-k.shelekhin@yadro.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/target/iscsi/iscsi_target_configfs.c | 54 ++++++++++----------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2550,6 +2550,13 @@ static int btrfs_search_path_in_tree_use
- 				goto out_put;
+diff --git a/drivers/target/iscsi/iscsi_target_configfs.c b/drivers/target/iscsi/iscsi_target_configfs.c
+index 0fa1d57b26fa8..3cd671bbb9a41 100644
+--- a/drivers/target/iscsi/iscsi_target_configfs.c
++++ b/drivers/target/iscsi/iscsi_target_configfs.c
+@@ -508,102 +508,102 @@ static ssize_t lio_target_nacl_info_show(struct config_item *item, char *page)
+ 	spin_lock_bh(&se_nacl->nacl_sess_lock);
+ 	se_sess = se_nacl->nacl_sess;
+ 	if (!se_sess) {
+-		rb += sprintf(page+rb, "No active iSCSI Session for Initiator"
++		rb += sysfs_emit_at(page, rb, "No active iSCSI Session for Initiator"
+ 			" Endpoint: %s\n", se_nacl->initiatorname);
+ 	} else {
+ 		sess = se_sess->fabric_sess_ptr;
+ 
+-		rb += sprintf(page+rb, "InitiatorName: %s\n",
++		rb += sysfs_emit_at(page, rb, "InitiatorName: %s\n",
+ 			sess->sess_ops->InitiatorName);
+-		rb += sprintf(page+rb, "InitiatorAlias: %s\n",
++		rb += sysfs_emit_at(page, rb, "InitiatorAlias: %s\n",
+ 			sess->sess_ops->InitiatorAlias);
+ 
+-		rb += sprintf(page+rb,
++		rb += sysfs_emit_at(page, rb,
+ 			      "LIO Session ID: %u   ISID: 0x%6ph  TSIH: %hu  ",
+ 			      sess->sid, sess->isid, sess->tsih);
+-		rb += sprintf(page+rb, "SessionType: %s\n",
++		rb += sysfs_emit_at(page, rb, "SessionType: %s\n",
+ 				(sess->sess_ops->SessionType) ?
+ 				"Discovery" : "Normal");
+-		rb += sprintf(page+rb, "Session State: ");
++		rb += sysfs_emit_at(page, rb, "Session State: ");
+ 		switch (sess->session_state) {
+ 		case TARG_SESS_STATE_FREE:
+-			rb += sprintf(page+rb, "TARG_SESS_FREE\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_FREE\n");
+ 			break;
+ 		case TARG_SESS_STATE_ACTIVE:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_ACTIVE\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_ACTIVE\n");
+ 			break;
+ 		case TARG_SESS_STATE_LOGGED_IN:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_LOGGED_IN\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_LOGGED_IN\n");
+ 			break;
+ 		case TARG_SESS_STATE_FAILED:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_FAILED\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_FAILED\n");
+ 			break;
+ 		case TARG_SESS_STATE_IN_CONTINUE:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_IN_CONTINUE\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_IN_CONTINUE\n");
+ 			break;
+ 		default:
+-			rb += sprintf(page+rb, "ERROR: Unknown Session"
++			rb += sysfs_emit_at(page, rb, "ERROR: Unknown Session"
+ 					" State!\n");
+ 			break;
+ 		}
+ 
+-		rb += sprintf(page+rb, "---------------------[iSCSI Session"
++		rb += sysfs_emit_at(page, rb, "---------------------[iSCSI Session"
+ 				" Values]-----------------------\n");
+-		rb += sprintf(page+rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
++		rb += sysfs_emit_at(page, rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
+ 				"  :  MaxCmdSN  :     ITT    :     TTT\n");
+ 		max_cmd_sn = (u32) atomic_read(&sess->max_cmd_sn);
+-		rb += sprintf(page+rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
++		rb += sysfs_emit_at(page, rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
+ 				"   0x%08x   0x%08x\n",
+ 			sess->cmdsn_window,
+ 			(max_cmd_sn - sess->exp_cmd_sn) + 1,
+ 			sess->exp_cmd_sn, max_cmd_sn,
+ 			sess->init_task_tag, sess->targ_xfer_tag);
+-		rb += sprintf(page+rb, "----------------------[iSCSI"
++		rb += sysfs_emit_at(page, rb, "----------------------[iSCSI"
+ 				" Connections]-------------------------\n");
+ 
+ 		spin_lock(&sess->conn_lock);
+ 		list_for_each_entry(conn, &sess->sess_conn_list, conn_list) {
+-			rb += sprintf(page+rb, "CID: %hu  Connection"
++			rb += sysfs_emit_at(page, rb, "CID: %hu  Connection"
+ 					" State: ", conn->cid);
+ 			switch (conn->conn_state) {
+ 			case TARG_CONN_STATE_FREE:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_FREE\n");
+ 				break;
+ 			case TARG_CONN_STATE_XPT_UP:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_XPT_UP\n");
+ 				break;
+ 			case TARG_CONN_STATE_IN_LOGIN:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_IN_LOGIN\n");
+ 				break;
+ 			case TARG_CONN_STATE_LOGGED_IN:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_LOGGED_IN\n");
+ 				break;
+ 			case TARG_CONN_STATE_IN_LOGOUT:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_IN_LOGOUT\n");
+ 				break;
+ 			case TARG_CONN_STATE_LOGOUT_REQUESTED:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_LOGOUT_REQUESTED\n");
+ 				break;
+ 			case TARG_CONN_STATE_CLEANUP_WAIT:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_CLEANUP_WAIT\n");
+ 				break;
+ 			default:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"ERROR: Unknown Connection State!\n");
+ 				break;
  			}
  
-+			/*
-+			 * We don't need the path anymore, so release it and
-+			 * avoid deadlocks and lockdep warnings in case
-+			 * btrfs_iget() needs to lookup the inode from its root
-+			 * btree and lock the same leaf.
-+			 */
-+			btrfs_release_path(path);
- 			temp_inode = btrfs_iget(sb, key2.objectid, root);
- 			if (IS_ERR(temp_inode)) {
- 				ret = PTR_ERR(temp_inode);
-@@ -2569,7 +2576,6 @@ static int btrfs_search_path_in_tree_use
- 				goto out_put;
- 			}
- 
--			btrfs_release_path(path);
- 			key.objectid = key.offset;
- 			key.offset = (u64)-1;
- 			dirid = key.objectid;
+-			rb += sprintf(page+rb, "   Address %pISc %s", &conn->login_sockaddr,
++			rb += sysfs_emit_at(page, rb, "   Address %pISc %s", &conn->login_sockaddr,
+ 				(conn->network_transport == ISCSI_TCP) ?
+ 				"TCP" : "SCTP");
+-			rb += sprintf(page+rb, "  StatSN: 0x%08x\n",
++			rb += sysfs_emit_at(page, rb, "  StatSN: 0x%08x\n",
+ 				conn->stat_sn);
+ 		}
+ 		spin_unlock(&sess->conn_lock);
+-- 
+2.40.1
+
 
 
