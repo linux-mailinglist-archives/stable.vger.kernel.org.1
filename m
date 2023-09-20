@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64D4D7A7AF9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF2F7A7C71
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234608AbjITLsB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
+        id S234983AbjITMBY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234609AbjITLsA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:00 -0400
+        with ESMTP id S235124AbjITMBS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4798AA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D717C433C9;
-        Wed, 20 Sep 2023 11:47:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5F51A1
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0641C433C7;
+        Wed, 20 Sep 2023 12:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210474;
-        bh=LE6hLMirQgfIt3AcuWItRPfHEk/nKinhNTP9Za7SyLs=;
+        s=korg; t=1695211269;
+        bh=bdyUFRELWyCdoqWpdFQ6nBazi+eMuLgC/tyU2qmkrqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m6ovABBlg1TsrN0QGcOcyEifBxn/K6Spz+iEM8LbLvls3pP5NPk4rYPq/F73tD8Bt
-         xLVTPerbKVkHwLlZFHCnwEvM93PmikTeDFtncjabmP8A55ipoTigl533z10wZkG6Jq
-         o6rutuFnkey6yFumNBAQCvShxNZzi3h1ItM3SqUk=
+        b=UbBXqRPBgnMwVcmDsHvD0DNaia9R4OqeBrdo3HMtK1XQ5kKCHZe25Lf2hKmnVF0iK
+         BNkxTkuYWtgvI+quf41jCryEjd5cexE0ktB4J2iSnOJaBZLDXsYZZXH8dG0Gwg7xdT
+         F28mzg2nN6wb5GPigyrc593XKQ4xmXLCBSbQ3yOk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 090/211] md: raid1: fix potential OOB in raid1_remove_disk()
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 4.14 031/186] powerpc/32s: Fix assembler warning about r0
 Date:   Wed, 20 Sep 2023 13:28:54 +0200
-Message-ID: <20230920112848.603039710@linuxfoundation.org>
+Message-ID: <20230920112838.056033510@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 8b0472b50bcf0f19a5119b00a53b63579c8e1e4d ]
+commit b51ba4fe2e134b631f9c8f45423707aab71449b5 upstream.
 
-If rddev->raid_disk is greater than mddev->raid_disks, there will be
-an out-of-bounds in raid1_remove_disk(). We have already found
-similar reports as follows:
+The assembler says:
+  arch/powerpc/kernel/head_32.S:1095: Warning: invalid register expression
 
-1) commit d17f744e883b ("md-raid10: fix KASAN warning")
-2) commit 1ebc2cec0b7d ("dm raid: fix KASAN warning in raid5_remove_disk")
+It's objecting to the use of r0 as the RA argument. That's because
+when RA = 0 the literal value 0 is used, rather than the content of
+r0, making the use of r0 in the source potentially confusing.
 
-Fix this bug by checking whether the "number" variable is
-valid.
+Fix it to use a literal 0, the generated code is identical.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/tencent_0D24426FAC6A21B69AC0C03CE4143A508F09@qq.com
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/2b69ac8e1cddff6f808fc7415907179eab4aae9e.1596693679.git.christophe.leroy@csgroup.eu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kernel/head_32.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index dd25832eb0452..80aeee63dfb78 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1829,6 +1829,10 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
- 	struct r1conf *conf = mddev->private;
- 	int err = 0;
- 	int number = rdev->raid_disk;
-+
-+	if (unlikely(number >= conf->raid_disks))
-+		goto abort;
-+
- 	struct raid1_info *p = conf->mirrors + number;
- 
- 	if (rdev != p->rdev)
--- 
-2.40.1
-
+--- a/arch/powerpc/kernel/head_32.S
++++ b/arch/powerpc/kernel/head_32.S
+@@ -986,7 +986,7 @@ start_here:
+ 	 */
+ 	lis	r5, abatron_pteptrs@h
+ 	ori	r5, r5, abatron_pteptrs@l
+-	stw	r5, 0xf0(r0)	/* This much match your Abatron config */
++	stw	r5, 0xf0(0)	/* This much match your Abatron config */
+ 	lis	r6, swapper_pg_dir@h
+ 	ori	r6, r6, swapper_pg_dir@l
+ 	tophys(r5, r5)
 
 
