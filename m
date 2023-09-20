@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7B17A7EEF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 895E97A8180
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234977AbjITMWN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
+        id S236211AbjITMqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235645AbjITMWM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:12 -0400
+        with ESMTP id S236336AbjITMqI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79EE9B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A1C433BB;
-        Wed, 20 Sep 2023 12:22:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60DAD83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DB4C433C7;
+        Wed, 20 Sep 2023 12:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212525;
-        bh=37h1AA7FHgmwqL/mXTkYMvPpNuOwUvR/+XT+0xN9zBI=;
+        s=korg; t=1695213961;
+        bh=gb/9KbYFJda2RGS9+9OmK+OUO4aRO61jO+0M6J5s4xE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qUJh/l1vxDdMv/Y3SHWQKS3vFbLi2ag7AmYN0ad4N0/E8GZEsanyNdboHzvKouUMZ
-         +Cka5vD/yVBStc9uIWRC7dQRc2WrEtbC0Oz5NNZvlX9eJ3P/IKNmsahJVONvcDi8iy
-         loEgcCKZw76rY2GmltQFOXaRthE3kYzbGYbouIHw=
+        b=x308yKWLmrITKYwEUOmsszaIMMXOdYXPU47miTTG3ySPX5U7iUBaeqMCG6VPEEpvw
+         411XRNmWb96Dh8QNTeZ8hyjThCz5JV9m9IfdmBmWUtjwKLmMzaVX0es2tgF/d5s//x
+         BHTD0ndPL0QsHy+2RDj2I52/Bvn2aOLegwlUvLxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com,
-        Liu Shixin <liushixin2@huawei.com>,
-        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        patches@lists.linux.dev, Hao Luo <haoluo@google.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 34/83] jfs: fix invalid free of JFS_IP(ipimap)->i_imap in diUnmount
+Subject: [PATCH 5.15 026/110] libbpf: Free btf_vmlinux when closing bpf_object
 Date:   Wed, 20 Sep 2023 13:31:24 +0200
-Message-ID: <20230920112828.026172314@linuxfoundation.org>
+Message-ID: <20230920112831.374505602@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin via Jfs-discussion <jfs-discussion@lists.sourceforge.net>
+From: Hao Luo <haoluo@google.com>
 
-[ Upstream commit 6e2bda2c192d0244b5a78b787ef20aa10cb319b7 ]
+[ Upstream commit 29d67fdebc42af6466d1909c60fdd1ef4f3e5240 ]
 
-syzbot found an invalid-free in diUnmount:
+I hit a memory leak when testing bpf_program__set_attach_target().
+Basically, set_attach_target() may allocate btf_vmlinux, for example,
+when setting attach target for bpf_iter programs. But btf_vmlinux
+is freed only in bpf_object_load(), which means if we only open
+bpf object but not load it, setting attach target may leak
+btf_vmlinux.
 
-BUG: KASAN: double-free in slab_free mm/slub.c:3661 [inline]
-BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3674
-Free of addr ffff88806f410000 by task syz-executor131/3632
+So let's free btf_vmlinux in bpf_object__close() anyway.
 
- CPU: 0 PID: 3632 Comm: syz-executor131 Not tainted 6.1.0-rc7-syzkaller-00012-gca57f02295f1 #0
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
- Call Trace:
-  <TASK>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
-  print_address_description+0x74/0x340 mm/kasan/report.c:284
-  print_report+0x107/0x1f0 mm/kasan/report.c:395
-  kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:460
-  ____kasan_slab_free+0xfb/0x120
-  kasan_slab_free include/linux/kasan.h:177 [inline]
-  slab_free_hook mm/slub.c:1724 [inline]
-  slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1750
-  slab_free mm/slub.c:3661 [inline]
-  __kmem_cache_free+0x71/0x110 mm/slub.c:3674
-  diUnmount+0xef/0x100 fs/jfs/jfs_imap.c:195
-  jfs_umount+0x108/0x370 fs/jfs/jfs_umount.c:63
-  jfs_put_super+0x86/0x190 fs/jfs/super.c:194
-  generic_shutdown_super+0x130/0x310 fs/super.c:492
-  kill_block_super+0x79/0xd0 fs/super.c:1428
-  deactivate_locked_super+0xa7/0xf0 fs/super.c:332
-  cleanup_mnt+0x494/0x520 fs/namespace.c:1186
-  task_work_run+0x243/0x300 kernel/task_work.c:179
-  exit_task_work include/linux/task_work.h:38 [inline]
-  do_exit+0x664/0x2070 kernel/exit.c:820
-  do_group_exit+0x1fd/0x2b0 kernel/exit.c:950
-  __do_sys_exit_group kernel/exit.c:961 [inline]
-  __se_sys_exit_group kernel/exit.c:959 [inline]
-  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:959
-  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-  do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[...]
-
-JFS_IP(ipimap)->i_imap is not setting to NULL after free in diUnmount.
-If jfs_remount() free JFS_IP(ipimap)->i_imap but then failed at diMount().
-JFS_IP(ipimap)->i_imap will be freed once again.
-Fix this problem by setting JFS_IP(ipimap)->i_imap to NULL after free.
-
-Reported-by: syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Hao Luo <haoluo@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230822193840.1509809-1-haoluo@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_imap.c | 1 +
+ tools/lib/bpf/libbpf.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 937ca07b58b1d..67c67604b8c85 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -195,6 +195,7 @@ int diUnmount(struct inode *ipimap, int mounterror)
- 	 * free in-memory control structure
- 	 */
- 	kfree(imap);
-+	JFS_IP(ipimap)->i_imap = NULL;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index f87a15bbf53b3..9b8a0fe0eb1c3 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -7559,6 +7559,7 @@ void bpf_object__close(struct bpf_object *obj)
+ 	bpf_object__elf_finish(obj);
+ 	bpf_object__unload(obj);
+ 	btf__free(obj->btf);
++	btf__free(obj->btf_vmlinux);
+ 	btf_ext__free(obj->btf_ext);
  
- 	return (0);
- }
+ 	for (i = 0; i < obj->nr_maps; i++)
 -- 
 2.40.1
 
