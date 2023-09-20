@@ -2,38 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 025C77A7F1A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AEEE7A8111
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235707AbjITMYD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33688 "EHLO
+        id S234648AbjITMmZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:42:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235705AbjITMYC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:02 -0400
+        with ESMTP id S236256AbjITMmY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FEB93
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3305AC433CA;
-        Wed, 20 Sep 2023 12:23:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A79CF92
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8986C433C7;
+        Wed, 20 Sep 2023 12:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212635;
-        bh=r7sYNdA6PodDS4OprRBccx/TvwygNjVOn0PFzqhcfXQ=;
+        s=korg; t=1695213738;
+        bh=a6V905g0m1ULMyIdxFjEVL3vrqAwCqaasRZZjEzpWrc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=knlOoeTKgxzAwBgUrLxRcAp//Hhd3rCFR3NVFhvjUVQMZpp0xCL3GCPfsZxBeoS9k
-         SAHu10Rq02xv1yceFrXs5mckEwUp/99btoKLrbpx1az75UmIN8vx9dsiLk8tsZTvAg
-         aiIvVygWKSyoMREE2pOmoxDsTO5RlhyPEZ6JpV48=
+        b=QL4jlv76w/v4L7Q+TuLcWUrOETM4x6g3nhG0YYqB3fWRuo9gjfalzkf5+FxlzhTpa
+         3nrDcZgX6OdEyHNlucQE561bY89OOgHE7Wb9I/Wczv0o09Myq9u3653fGksKqnLURw
+         tVKzBvzsZvRXXxceyqAclaHfw3SYxO10d0GSrz1w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Melissa Wen <mwen@igalia.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 74/83] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy gamma
+        patches@lists.linux.dev, John Garry <john.garry@huawei.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, linuxarm@huawei.com,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 347/367] perf jevents: Make build dependency on test JSONs
 Date:   Wed, 20 Sep 2023 13:32:04 +0200
-Message-ID: <20230920112829.575850763@linuxfoundation.org>
+Message-ID: <20230920112907.480737592@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,48 +58,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: John Garry <john.garry@huawei.com>
 
-commit 57a943ebfcdb4a97fbb409640234bdb44bfa1953 upstream.
+[ Upstream commit 517db3b59537a59f6cc251b1926df93e93bb9c87 ]
 
-For DRM legacy gamma, AMD display manager applies implicit sRGB degamma
-using a pre-defined sRGB transfer function. It works fine for DCN2
-family where degamma ROM and custom curves go to the same color block.
-But, on DCN3+, degamma is split into two blocks: degamma ROM for
-pre-defined TFs and `gamma correction` for user/custom curves and
-degamma ROM settings doesn't apply to cursor plane. To get DRM legacy
-gamma working as expected, enable cursor degamma ROM for implict sRGB
-degamma on HW with this configuration.
+Currently all JSONs and the mapfile for an arch are dependencies for
+building pmu-events.c
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
-Fixes: 96b020e2163f ("drm/amd/display: check attr flag before set cursor degamma on DCN3+")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The test JSONs are missing as a dependency, so add them.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linuxarm@huawei.com
+Link: http://lore.kernel.org/lkml/90094733-741c-50e5-ac7d-f5640b5f0bdd@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 7822a8913f4c ("perf build: Update build rule for generated files")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/pmu-events/Build | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6971,6 +6971,13 @@ static void handle_cursor_update(struct
- 	attributes.rotation_angle    = 0;
- 	attributes.attribute_flags.value = 0;
+diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+index 215ba30b85343..a055dee6a46af 100644
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -6,10 +6,13 @@ pmu-events-y	+= pmu-events.o
+ JDIR		=  pmu-events/arch/$(SRCARCH)
+ JSON		=  $(shell [ -d $(JDIR) ] &&				\
+ 			find $(JDIR) -name '*.json' -o -name 'mapfile.csv')
++JDIR_TEST	=  pmu-events/arch/test
++JSON_TEST	=  $(shell [ -d $(JDIR_TEST) ] &&			\
++			find $(JDIR_TEST) -name '*.json')
  
-+	/* Enable cursor degamma ROM on DCN3+ for implicit sRGB degamma in DRM
-+	 * legacy gamma setup.
-+	 */
-+	if (crtc_state->cm_is_degamma_srgb &&
-+	    adev->dm.dc->caps.color.dpp.gamma_corr)
-+		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
-+
- 	attributes.pitch = attributes.width;
- 
- 	if (crtc_state->stream) {
+ #
+ # Locate/process JSON files in pmu-events/arch/
+ # directory and create tables in pmu-events.c.
+ #
+-$(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JEVENTS)
++$(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS)
+ 	$(Q)$(call echo-cmd,gen)$(JEVENTS) $(SRCARCH) pmu-events/arch $(OUTPUT)pmu-events/pmu-events.c $(V)
+-- 
+2.40.1
+
 
 
