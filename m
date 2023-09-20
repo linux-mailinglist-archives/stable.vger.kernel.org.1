@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0F67A7CA6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A87A77A7BC3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235037AbjITMDD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45286 "EHLO
+        id S234826AbjITLzT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:55:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235096AbjITMCv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:51 -0400
+        with ESMTP id S235125AbjITLzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10F2ED8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F86C433CA;
-        Wed, 20 Sep 2023 12:02:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6810BB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EB9C433C7;
+        Wed, 20 Sep 2023 11:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211363;
-        bh=svs4PDXZG0SfnPz16z/dqTKUtec5PbyQOkwlFWnoDCM=;
+        s=korg; t=1695210904;
+        bh=EsNr+rOY+QaczB4BgH0xskAe7Wf9yIUZ3QsjFBOX+E4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uI/af8lnWXkEepKQ4ddG6rDTcSMDm0Pp7aJnQHsiOsYTOvGPMdIP2bdT5WqR3Zs9E
-         9UmuMcdcrKNxxoZr3Tp22jXMpM/L/ZpHLN+XNGrbkoxiP5Z8neVAS3DZRs5s6Hg3lO
-         mA40BGXtDKR02N5RmkuYinp8/vMlh7/8J1Ig25g8=
+        b=LhWiPcrGTbiumPkshsjFM+FjeFd9JvuLDGwmITTKU30e6lC3UxZ0umjS+2iU77vw1
+         zjVovj+FLHbqyjPb9TEL3nn9mCn1EdX8L785lnN0OTiWBlvmmwD2N7baXZWzGmJQMc
+         ArpF8ueTZ7uigYk7E0zTZvfLj+yYlnb9l/dZQrgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Wu Zongyong <wuzongyong@linux.alibaba.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        syzbot+2676771ed06a6df166ad@syzkaller.appspotmail.com,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 065/186] PCI: Mark NVIDIA T4 GPUs to avoid bus reset
+Subject: [PATCH 6.1 034/139] wifi: cfg80211: reject auth/assoc to AP with our address
 Date:   Wed, 20 Sep 2023 13:29:28 +0200
-Message-ID: <20230920112839.228285087@linuxfoundation.org>
+Message-ID: <20230920112836.891109207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wu Zongyong <wuzongyong@linux.alibaba.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d5af729dc2071273f14cbb94abbc60608142fd83 ]
+[ Upstream commit 5d4e04bf3a0f098bd9033de3a5291810fa14c7a6 ]
 
-NVIDIA T4 GPUs do not work with SBR. This problem is found when the T4 card
-is direct attached to a Root Port only. Avoid bus reset by marking T4 GPUs
-PCI_DEV_FLAGS_NO_BUS_RESET.
+If the AP uses our own address as its MLD address or BSSID, then
+clearly something's wrong. Reject such connections so we don't
+try and fail later.
 
-Fixes: 4c207e7121fa ("PCI: Mark some NVIDIA GPUs to avoid bus reset")
-Link: https://lore.kernel.org/r/2dcebea53a6eb9bd212ec6d8974af2e5e0333ef6.1681129861.git.wuzongyong@linux.alibaba.com
-Signed-off-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reported-by: syzbot+2676771ed06a6df166ad@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/mlme.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 7ca82b8c5c37e..b61e6587e9d72 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3396,7 +3396,7 @@ static void quirk_no_bus_reset(struct pci_dev *dev)
-  */
- static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
- {
--	if ((dev->device & 0xffc0) == 0x2340)
-+	if ((dev->device & 0xffc0) == 0x2340 || dev->device == 0x1eb8)
- 		quirk_no_bus_reset(dev);
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 581df7f4c5240..e7fa0608341d8 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -277,6 +277,11 @@ int cfg80211_mlme_auth(struct cfg80211_registered_device *rdev,
+ 	    ether_addr_equal(req->bss->bssid, wdev->u.client.connected_addr))
+ 		return -EALREADY;
+ 
++	if (ether_addr_equal(req->bss->bssid, dev->dev_addr) ||
++	    (req->link_id >= 0 &&
++	     ether_addr_equal(req->ap_mld_addr, dev->dev_addr)))
++		return -EINVAL;
++
+ 	return rdev_auth(rdev, dev, req);
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
+ 
+@@ -331,6 +336,9 @@ int cfg80211_mlme_assoc(struct cfg80211_registered_device *rdev,
+ 			if (req->links[i].bss == req->links[j].bss)
+ 				return -EINVAL;
+ 		}
++
++		if (ether_addr_equal(req->links[i].bss->bssid, dev->dev_addr))
++			return -EINVAL;
+ 	}
+ 
+ 	if (wdev->connected &&
+@@ -338,6 +346,11 @@ int cfg80211_mlme_assoc(struct cfg80211_registered_device *rdev,
+ 	     !ether_addr_equal(wdev->u.client.connected_addr, req->prev_bssid)))
+ 		return -EALREADY;
+ 
++	if ((req->bss && ether_addr_equal(req->bss->bssid, dev->dev_addr)) ||
++	    (req->link_id >= 0 &&
++	     ether_addr_equal(req->ap_mld_addr, dev->dev_addr)))
++		return -EINVAL;
++
+ 	cfg80211_oper_and_ht_capa(&req->ht_capa_mask,
+ 				  rdev->wiphy.ht_capa_mod_mask);
+ 	cfg80211_oper_and_vht_capa(&req->vht_capa_mask,
 -- 
 2.40.1
 
