@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA4A7A7B03
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 937BA7A7C66
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234622AbjITLs3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33162 "EHLO
+        id S234866AbjITMAw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:00:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234621AbjITLs2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:28 -0400
+        with ESMTP id S235188AbjITMAs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828C6B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF0FC433CA;
-        Wed, 20 Sep 2023 11:48:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A692132
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738D8C433C9;
+        Wed, 20 Sep 2023 12:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210502;
-        bh=32fRLq7fECwMe/Iv23V+keNqnMYx2jprI4hCThvn0mk=;
+        s=korg; t=1695211241;
+        bh=Nm68toKpyzulpn0QZT1GyvuS/ZGqo+msQLYOotqMp2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oqm5yWjMjFfCfTsF8jQUQ6pdVqs89ebS8WUwpplfBgKfb5DUXXCHmE87rz9CglGrv
-         3BS4wU2gWlVf+lJzEAIQGwIX/3rz3pKcFflKqU8GihlP6QZVhaz4wG363H0RkiKwvH
-         /azPkAfvDLQiqPq0ofZEwT59LHQhj3UQo6X4uJyY=
+        b=rQi4GDEP2qj5/2NWP6Hjvd75QUoZMj/rbRXu3RZALw6QcPEld3kcR/s7OYgZPfXhm
+         vgnYv7RxtIUhjal1s/WxOlv8tKiiqEFpYSpLEglxN57VfVeaQ0i2Ghb0iWWgV6f78B
+         jzWqxnst7AcxpfiUk1ZzQLVbpM4whI2gJqnuvGOs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 068/211] arm64: dts: qcom: sm6125-sprout: correct ramoops pmsg-size
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Subject: [PATCH 4.14 009/186] serial: sc16is7xx: fix bug when first setting GPIO direction
 Date:   Wed, 20 Sep 2023 13:28:32 +0200
-Message-ID: <20230920112847.880569414@linuxfoundation.org>
+Message-ID: <20230920112837.183097279@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +50,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 2951e7e7611a3ea04de98d0f1bfc4e7ec609ef29 ]
+commit 9baeea723c0fb9c3ba9a336369f758ed9bc6831d upstream.
 
-There is no 'msg-size' property in ramoops, so assume intention was for
-'pmsg-size':
+When configuring a pin as an output pin with a value of logic 0, we
+end up as having a value of logic 1 on the output pin. Setting a
+logic 0 a second time (or more) after that will correctly output a
+logic 0 on the output pin.
 
-  sm6125-xiaomi-laurel-sprout.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
+By default, all GPIO pins are configured as inputs. When we enter
+sc16is7xx_gpio_direction_output() for the first time, we first set the
+desired value in IOSTATE, and then we configure the pin as an output.
+The datasheet states that writing to IOSTATE register will trigger a
+transfer of the value to the I/O pin configured as output, so if the
+pin is configured as an input, nothing will be transferred.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230618114442.140185-4-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, set the direction first in IODIR, and then set the desired
+value in IOSTATE.
+
+This is what is done in NXP application note AN10587.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+Link: https://lore.kernel.org/r/20230807214556.540627-6-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts
-index a7f4aeae9c1a5..7c58d1299a609 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts
-@@ -52,7 +52,7 @@ pstore_mem: ramoops@ffc00000 {
- 			reg = <0x0 0xffc40000 0x0 0xc0000>;
- 			record-size = <0x1000>;
- 			console-size = <0x40000>;
--			msg-size = <0x20000 0x20000>;
-+			pmsg-size = <0x20000>;
- 		};
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1171,9 +1171,18 @@ static int sc16is7xx_gpio_direction_outp
+ 		state |= BIT(offset);
+ 	else
+ 		state &= ~BIT(offset);
+-	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
++
++	/*
++	 * If we write IOSTATE first, and then IODIR, the output value is not
++	 * transferred to the corresponding I/O pin.
++	 * The datasheet states that each register bit will be transferred to
++	 * the corresponding I/O pin programmed as output when writing to
++	 * IOSTATE. Therefore, configure direction first with IODIR, and then
++	 * set value after with IOSTATE.
++	 */
+ 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
+ 			      BIT(offset));
++	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
  
- 		cmdline_mem: memory@ffd00000 {
--- 
-2.40.1
-
+ 	return 0;
+ }
 
 
