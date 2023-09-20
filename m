@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D34EF7A7B92
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9EA7A7C2E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234750AbjITLx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54538 "EHLO
+        id S234803AbjITL6z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjITLx0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:26 -0400
+        with ESMTP id S234827AbjITL6y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2216D92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B1EC433C9;
-        Wed, 20 Sep 2023 11:53:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6161B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108A2C433C7;
+        Wed, 20 Sep 2023 11:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210800;
-        bh=FTPkM7qBNY85lgEHBouOnm0QUdNyKd/pZVrLO/9ZZJU=;
+        s=korg; t=1695211128;
+        bh=5y6jJylfFCDO4rRCM9gnavNhQETWKhxE0bsACB4DqsY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XYwD+TSLcD88MJ5I5hxa2+Fosgc4nRkqVAvWJSDuAQXoZuUKA1JWgNHgEcsjLxzj5
-         RIENaFdaPuavj+2MJYcqG4vZfAafr/wMBp9OmOn+mvjrtn8JCE1LIF0a9tCixxhbpd
-         Klb2jC1TVEvBPrJMAVW/lVcJkU/JAygn+SxnQG4k=
+        b=UOkVTPuyTAQL+/n4BjbTciyzihV0xXhbrtOzB+0Lo/uidVM8GyESp78s46cPX9220
+         rqSro2Gz35IbsNcXgpygpiwMEQl9iP2n3/IFIZJqvDywAbe70c8sdCFci+6WE2bdft
+         CkWEyJXDxukZBnxuNVmaFVGFQuyVL0TUOVfU/Jp8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cruise Hung <cruise.hung@amd.com>,
-        Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Mustapha Ghaddar <mghaddar@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.5 209/211] drm/amd/display: Fix 2nd DPIA encoder Assignment
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 119/139] btrfs: fix a compilation error if DEBUG is defined in btree_dirty_folio
 Date:   Wed, 20 Sep 2023 13:30:53 +0200
-Message-ID: <20230920112852.341132893@linuxfoundation.org>
+Message-ID: <20230920112840.002064413@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +49,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mustapha Ghaddar <mghaddar@amd.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 29319378449035c6fc6391b31a3c2cbaf75be221 upstream.
+commit 5e0e879926c1ce7e1f5e0dfaacaf2d105f7d8a05 upstream.
 
-[HOW & Why]
-There seems to be an issue with 2nd DPIA acquiring link encoder for tiled displays.
-Solution is to remove check for eng_id before we get first dynamic encoder for it
+[BUG]
+After commit 72a69cd03082 ("btrfs: subpage: pack all subpage bitmaps
+into a larger bitmap"), the DEBUG section of btree_dirty_folio() would
+no longer compile.
 
-Reviewed-by: Cruise Hung <cruise.hung@amd.com>
-Reviewed-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Mustapha Ghaddar <mghaddar@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[CAUSE]
+If DEBUG is defined, we would do extra checks for btree_dirty_folio(),
+mostly to make sure the range we marked dirty has an extent buffer and
+that extent buffer is dirty.
+
+For subpage, we need to iterate through all the extent buffers covered
+by that page range, and make sure they all matches the criteria.
+
+However commit 72a69cd03082 ("btrfs: subpage: pack all subpage bitmaps
+into a larger bitmap") changes how we store the bitmap, we pack all the
+16 bits bitmaps into a larger bitmap, which would save some space.
+
+This means we no longer have btrfs_subpage::dirty_bitmap, instead the
+dirty bitmap is starting at btrfs_subpage_info::dirty_offset, and has a
+length of btrfs_subpage_info::bitmap_nr_bits.
+
+[FIX]
+Although I'm not sure if it still makes sense to maintain such code, at
+least let it compile.
+
+This patch would let us test the bits one by one through the bitmaps.
+
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/btrfs/disk-io.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
-@@ -395,8 +395,7 @@ void link_enc_cfg_link_encs_assign(
- 					stream->link->dpia_preferred_eng_id != ENGINE_ID_UNKNOWN)
- 				eng_id_req = stream->link->dpia_preferred_eng_id;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -859,6 +859,7 @@ static bool btree_dirty_folio(struct add
+ 		struct folio *folio)
+ {
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(mapping->host->i_sb);
++	struct btrfs_subpage_info *spi = fs_info->subpage_info;
+ 	struct btrfs_subpage *subpage;
+ 	struct extent_buffer *eb;
+ 	int cur_bit = 0;
+@@ -872,18 +873,19 @@ static bool btree_dirty_folio(struct add
+ 		btrfs_assert_tree_write_locked(eb);
+ 		return filemap_dirty_folio(mapping, folio);
+ 	}
++
++	ASSERT(spi);
+ 	subpage = folio_get_private(folio);
  
--			if (eng_id == ENGINE_ID_UNKNOWN)
--				eng_id = find_first_avail_link_enc(stream->ctx, state, eng_id_req);
-+			eng_id = find_first_avail_link_enc(stream->ctx, state, eng_id_req);
+-	ASSERT(subpage->dirty_bitmap);
+-	while (cur_bit < BTRFS_SUBPAGE_BITMAP_SIZE) {
++	for (cur_bit = spi->dirty_offset;
++	     cur_bit < spi->dirty_offset + spi->bitmap_nr_bits;
++	     cur_bit++) {
+ 		unsigned long flags;
+ 		u64 cur;
+-		u16 tmp = (1 << cur_bit);
+ 
+ 		spin_lock_irqsave(&subpage->lock, flags);
+-		if (!(tmp & subpage->dirty_bitmap)) {
++		if (!test_bit(cur_bit, subpage->bitmaps)) {
+ 			spin_unlock_irqrestore(&subpage->lock, flags);
+-			cur_bit++;
+ 			continue;
  		}
- 		else
- 			eng_id =  link_enc->preferred_engine;
-@@ -501,7 +500,6 @@ struct dc_link *link_enc_cfg_get_link_us
- 	if (stream)
- 		link = stream->link;
+ 		spin_unlock_irqrestore(&subpage->lock, flags);
+@@ -896,7 +898,7 @@ static bool btree_dirty_folio(struct add
+ 		btrfs_assert_tree_write_locked(eb);
+ 		free_extent_buffer(eb);
  
--	// dm_output_to_console("%s: No link using DIG(%d).\n", __func__, eng_id);
- 	return link;
+-		cur_bit += (fs_info->nodesize >> fs_info->sectorsize_bits);
++		cur_bit += (fs_info->nodesize >> fs_info->sectorsize_bits) - 1;
+ 	}
+ 	return filemap_dirty_folio(mapping, folio);
  }
- 
 
 
