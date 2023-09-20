@@ -2,67 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1A697A75EE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 10:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 238797A7635
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 10:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232192AbjITIck convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 20 Sep 2023 04:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42270 "EHLO
+        id S232327AbjITIoF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 04:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbjITIcj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 04:32:39 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 095389E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 01:32:33 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38K8WIZ00869755, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38K8WIZ00869755
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 Sep 2023 16:32:18 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 20 Sep 2023 16:32:18 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 20 Sep 2023 16:32:17 +0800
-Received: from RTEXMBS01.realtek.com.tw ([fe80::9cb8:8d5:b6b3:213b]) by
- RTEXMBS01.realtek.com.tw ([fe80::9cb8:8d5:b6b3:213b%5]) with mapi id
- 15.01.2375.007; Wed, 20 Sep 2023 16:32:17 +0800
-From:   Ricky WU <ricky_wu@realtek.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        "Paul Grandperrin" <paul.grandperrin@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Wei_wang <wei_wang@realsil.com.cn>,
-        Roger Tseng <rogerable@realtek.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: RE: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from drivers/misc/cardreader breaks NVME power state, preventing system boot
-Thread-Topic: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
- drivers/misc/cardreader breaks NVME power state, preventing system boot
-Thread-Index: AQHZ5XTPQHzxhN3m602gmLzU6tUtJLAYNE4TgAk8SwD//83wgIACG3Pg//9+6YCAAIkp0A==
-Date:   Wed, 20 Sep 2023 08:32:17 +0000
-Message-ID: <3ddcf5fae0164fbda79081650da79600@realtek.com>
-References: <5DHV0S.D0F751ZF65JA1@gmail.com>
- <82469f2f-59e4-49d5-823d-344589cbb119@leemhuis.info>
- <2023091333-fiftieth-trustless-d69d@gregkh>
- <7991b5bd7fb5469c971a2984194e815f@realtek.com>
- <2023091921-unscented-renegade-6495@gregkh>
- <995632624f0e4d26b73fb934a8eeaebc@realtek.com>
- <2023092041-shopper-prozac-0640@gregkh>
-In-Reply-To: <2023092041-shopper-prozac-0640@gregkh>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-x-originating-ip: [172.22.81.100]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S231269AbjITIoE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 04:44:04 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C7994;
+        Wed, 20 Sep 2023 01:43:59 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id A55041FDDA;
+        Wed, 20 Sep 2023 08:43:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1695199437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=GjxBNZGORuJZTEppU8GKxjtCs5dciR43Qw/lEOGS50I=;
+        b=EQnrAlU/3fuFatTWKEmawTXMpJeQzH/U6qvScECWhU41Pu6gX6JI12bG3Nr+YOhd9n7IOo
+        q8G2eBepsmnJIuhaaiZ09mWIDB/3QPPqGQwfCCcOqZZEnyN5J9MY7jj18kpt1ks8tb3pEO
+        K+ubfa53ezr2wkkyOZuUPYWxTXmLf34=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7EDBD132C7;
+        Wed, 20 Sep 2023 08:43:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id ZkT2G82wCmWvXQAAMHmgww
+        (envelope-from <mhocko@suse.com>); Wed, 20 Sep 2023 08:43:57 +0000
+Date:   Wed, 20 Sep 2023 10:43:56 +0200
+From:   Michal Hocko <mhocko@suse.com>
+To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Shakeel Butt <shakeelb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+        mathieu.tortuyaux@gmail.com
+Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
+ kmem.limit_in_bytes
+Message-ID: <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
+References: <20230917191040.964416434@linuxfoundation.org>
+ <20230917191042.204185566@linuxfoundation.org>
+ <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,23 +69,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> On Wed, Sep 20, 2023 at 07:30:00AM +0000, Ricky WU wrote:
-> > Hi Greg k-h,
-> >
-> > This patch is our solution for this issue...
-> > And now how can I push this?
+On Wed 20-09-23 01:11:01, Jeremi Piotrowski wrote:
+> On Sun, Sep 17, 2023 at 09:12:40PM +0200, Greg Kroah-Hartman wrote:
+> > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
 > 
-> Submit it properly like any other patch, what is preventing that from
-> happening?
+> Hi Greg/Michal,
 > 
-
-(commit 8ee39ec) some reader no longer force #CLKREQ to low when system need to enter ASPM.
-But some platform maybe not implement complete ASPM? I don't know..... it causes problems...
-
-Like in the past Only the platform support L1ss we release the #CLKREQ.
-But new patch we move the judgment (L1ss) to probe, because we met some host will clean the config space from S3 or some power saving mode 
-And also we think just to read config space one time when the driver start is enough  
-
-> thanks,
+> This commit breaks userspace which makes it a bad commit for mainline and an
+> even worse commit for stable.
 > 
-> greg k-h
+> We ingested 6.1.54 into our nightly testing and found that runc fails to gather
+> cgroup statistics (when reading kmem.limit_in_bytes). The same code is vendored
+> into kubelet and kubelet fails to start if this operation fails. 6.1.53 is
+> fine.
+
+Could you expand some more on why is the file read? It doesn't support
+writing to it for some time so how does reading it helps in any sense?
+
+Anyway, I do agree that the stable backport should be reverted.
+
+> > Address this by wiping out the file completely and effectively get back to
+> > pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
+> 
+> On reads, the runc code checks for MEMCG_KMEM=n by checking
+> kmem.usage_in_bytes. If it is present then runc expects the other cgroup files
+> to be there (including kmem.limit_in_bytes). So this change is not effectively
+> the same.
+> 
+> Here's a link to the PR that would be needed to handle this change in userspace
+> (not merged yet and would need to be propagated through the ecosystem):
+> 
+> https://github.com/opencontainers/runc/pull/4018.
+
+Thanks. Does that mean the revert is still necessary for the Linus tree
+or do you expect that the fix can be merged and propagated in a
+reasonable time?
+
+-- 
+Michal Hocko
+SUSE Labs
