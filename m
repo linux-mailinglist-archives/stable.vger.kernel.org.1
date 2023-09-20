@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C6867A7FFC
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B11A87A7DDF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236128AbjITMcB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37588 "EHLO
+        id S235496AbjITMNE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236114AbjITMb7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:59 -0400
+        with ESMTP id S235500AbjITMNA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03EE8A1
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27795C433C8;
-        Wed, 20 Sep 2023 12:31:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E47E6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB50C433CA;
+        Wed, 20 Sep 2023 12:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213113;
-        bh=m8jSHZaPARI/d01xfNTz741VrIGTMS4EVQ/Qhl5wkgw=;
+        s=korg; t=1695211972;
+        bh=JkToc9ncsC+usYSYMaCRMwy/NfbG5W6ysNWHV8MkrhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p66f9X+OwdVHd2nSD9sPwZzsBwhu2k0Gt13mMnAehjFTrGuL+hYMYxRb0VNI0vGjY
-         RIC16aGD/ZvAHHAJrWnChTCcBctsY8UEbtB+mplXJ9y7qhBbvWVoBg73b06t3z/f9l
-         pdw3JIS5kry3J8zu5vx0i5q+PNqr2vZJJs8e0yPw=
+        b=b/tq6Hie99jUuwgMGStK9ymDQ/HbIF1h874sogiarkpKH+AgnzmCV3ZiaIo9Ik/9m
+         FwXG6D3p19NiyeMGMwdGnO2NX3acHEB7Cq4cwQX0T059I1MixDkW5nP73IoPS+CouJ
+         oDpRHoYLTIneNKdjU7pdBM//bUpRaBAAqQKEIH+c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Kosina <jikos@kernel.org>, x86@kernel.org,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 166/367] x86/APM: drop the duplicate APM_MINOR_DEV macro
-Date:   Wed, 20 Sep 2023 13:29:03 +0200
-Message-ID: <20230920112902.942765790@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 104/273] of: unittest: Fix overlay type in apply/revert check
+Date:   Wed, 20 Sep 2023 13:29:04 +0200
+Message-ID: <20230920112849.679836691@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 4ba2909638a29630a346d6c4907a3105409bee7d ]
+[ Upstream commit 6becf8f845ae1f0b1cfed395bbeccbd23654162d ]
 
-This source file already includes <linux/miscdevice.h>, which contains
-the same macro. It doesn't need to be defined here again.
+The removal check in of_unittest_apply_revert_overlay_check()
+always uses the platform device overlay type, while it should use the
+actual overlay type, as passed as a parameter to the function.
 
-Fixes: 874bcd00f520 ("apm-emulation: move APM_MINOR_DEV to include/linux/miscdevice.h")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: x86@kernel.org
-Cc: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/r/20230728011120.759-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This has no impact on any current test, as all tests calling
+of_unittest_apply_revert_overlay_check() use the platform device overlay
+type.
+
+Fixes: d5e75500ca401d31 ("of: unitest: Add I2C overlay unit tests.")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/ba0234c41ba808f10112094f88792beeb6dbaedf.1690533838.git.geert+renesas@glider.be
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apm_32.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/of/unittest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apm_32.c b/arch/x86/kernel/apm_32.c
-index 660270359d393..166d9991e7111 100644
---- a/arch/x86/kernel/apm_32.c
-+++ b/arch/x86/kernel/apm_32.c
-@@ -237,12 +237,6 @@
- extern int (*console_blank_hook)(int);
- #endif
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 59dc68a1d8ff3..2515ce3930059 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -1573,7 +1573,7 @@ static int __init of_unittest_apply_revert_overlay_check(int overlay_nr,
+ 	}
  
--/*
-- * The apm_bios device is one of the misc char devices.
-- * This is its minor number.
-- */
--#define	APM_MINOR_DEV	134
--
- /*
-  * Various options can be changed at boot time as follows:
-  * (We allow underscores for compatibility with the modules code)
+ 	/* unittest device must be again in before state */
+-	if (of_unittest_device_exists(unittest_nr, PDEV_OVERLAY) != before) {
++	if (of_unittest_device_exists(unittest_nr, ovtype) != before) {
+ 		unittest(0, "%s with device @\"%s\" %s\n",
+ 				overlay_name_from_nr(overlay_nr),
+ 				unittest_path(unittest_nr, ovtype),
 -- 
 2.40.1
 
