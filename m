@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 850867A7B98
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD9D7A7C1A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234778AbjITLxl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
+        id S234906AbjITL6B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234780AbjITLxl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:41 -0400
+        with ESMTP id S234941AbjITL6A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD13CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F7EC433C9;
-        Wed, 20 Sep 2023 11:53:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF37C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E47BC433C8;
+        Wed, 20 Sep 2023 11:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210814;
-        bh=3Q/9w5AseCaa1OAzom0zxia1A8SM0ZdgiG0W8GW1z3I=;
+        s=korg; t=1695211073;
+        bh=wtp7m1tIqYg5rtYum8HRT9sExXFJNcO+tLJM4fFuy5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ea3+3QS3wMshDWJ7VigW/kvPlatxHXI1i/v5eNyfE0xfDmJYrImQnsENDBqA5vhnr
-         JYugsAIWxDV3kTGhZiYtxx2p9DW8RQpOwJ36WEU2IScVQlzTCpWP2aiKaaLvNWAxdx
-         1hNXF81/V9QUUtaaquvcq9DDEgjVSLPFlhdohECQ=
+        b=fS65QK2NY3Nqq3k+gQLlpPywG1nBhSRbTooHiiP8EbrThPEua00kvXKHX00ftRJx0
+         AbiEk+UqPSEZqYBekguKIU4EZ4uM/92aQPP4vE2SG7yVs3Ti1/I/39swVAhDZW18Qg
+         xXRaFE2i+cFgmDPk0vU5Es/8yuJdMEnJr3Cq7Av4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 188/211] tracing: Increase trace array ref count on enable and filter files
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 098/139] scsi: qla2xxx: Fix NULL vs IS_ERR() bug for debugfs_create_dir()
 Date:   Wed, 20 Sep 2023 13:30:32 +0200
-Message-ID: <20230920112851.702163219@linuxfoundation.org>
+Message-ID: <20230920112839.237227508@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,110 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit f5ca233e2e66dc1c249bf07eefa37e34a6c9346a upstream.
+[ Upstream commit d0b0822e32dbae80bbcb3cc86f34d28539d913df ]
 
-When the trace event enable and filter files are opened, increment the
-trace array ref counter, otherwise they can be accessed when the trace
-array is being deleted. The ref counter keeps the trace array from being
-deleted while those files are opened.
+Since both debugfs_create_dir() and debugfs_create_file() return ERR_PTR
+and never NULL, use IS_ERR() instead of checking for NULL.
 
-Link: https://lkml.kernel.org/r/20230907024803.456187066@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Reported-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e98fb0f9208 ("scsi: qla2xxx: Setup debugfs entries for remote ports")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230831140930.3166359-1-ruanjinjie@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c        |   27 +++++++++++++++++++++++++++
- kernel/trace/trace.h        |    2 ++
- kernel/trace/trace_events.c |    6 ++++--
- 3 files changed, 33 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_dfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4987,6 +4987,33 @@ int tracing_open_generic_tr(struct inode
- 	return 0;
- }
+diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
+index f060e593685de..a7a364760b800 100644
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -116,7 +116,7 @@ qla2x00_dfs_create_rport(scsi_qla_host_t *vha, struct fc_port *fp)
  
-+/*
-+ * The private pointer of the inode is the trace_event_file.
-+ * Update the tr ref count associated to it.
-+ */
-+int tracing_open_file_tr(struct inode *inode, struct file *filp)
-+{
-+	struct trace_event_file *file = inode->i_private;
-+	int ret;
-+
-+	ret = tracing_check_open_get_tr(file->tr);
-+	if (ret)
-+		return ret;
-+
-+	filp->private_data = inode->i_private;
-+
-+	return 0;
-+}
-+
-+int tracing_release_file_tr(struct inode *inode, struct file *filp)
-+{
-+	struct trace_event_file *file = inode->i_private;
-+
-+	trace_array_put(file->tr);
-+
-+	return 0;
-+}
-+
- static int tracing_mark_open(struct inode *inode, struct file *filp)
- {
- 	stream_open(inode, filp);
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -601,6 +601,8 @@ void tracing_reset_all_online_cpus(void)
- void tracing_reset_all_online_cpus_unlocked(void);
- int tracing_open_generic(struct inode *inode, struct file *filp);
- int tracing_open_generic_tr(struct inode *inode, struct file *filp);
-+int tracing_open_file_tr(struct inode *inode, struct file *filp);
-+int tracing_release_file_tr(struct inode *inode, struct file *filp);
- bool tracing_is_disabled(void);
- bool tracer_tracing_is_on(struct trace_array *tr);
- void tracer_tracing_on(struct trace_array *tr);
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -2103,9 +2103,10 @@ static const struct file_operations ftra
- };
- 
- static const struct file_operations ftrace_enable_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_file_tr,
- 	.read = event_enable_read,
- 	.write = event_enable_write,
-+	.release = tracing_release_file_tr,
- 	.llseek = default_llseek,
- };
- 
-@@ -2122,9 +2123,10 @@ static const struct file_operations ftra
- };
- 
- static const struct file_operations ftrace_event_filter_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_file_tr,
- 	.read = event_filter_read,
- 	.write = event_filter_write,
-+	.release = tracing_release_file_tr,
- 	.llseek = default_llseek,
- };
- 
+ 	sprintf(wwn, "pn-%016llx", wwn_to_u64(fp->port_name));
+ 	fp->dfs_rport_dir = debugfs_create_dir(wwn, vha->dfs_rport_root);
+-	if (!fp->dfs_rport_dir)
++	if (IS_ERR(fp->dfs_rport_dir))
+ 		return;
+ 	if (NVME_TARGET(vha->hw, fp))
+ 		debugfs_create_file("dev_loss_tmo", 0600, fp->dfs_rport_dir,
+@@ -708,14 +708,14 @@ qla2x00_dfs_setup(scsi_qla_host_t *vha)
+ 	if (IS_QLA27XX(ha) || IS_QLA83XX(ha) || IS_QLA28XX(ha)) {
+ 		ha->tgt.dfs_naqp = debugfs_create_file("naqp",
+ 		    0400, ha->dfs_dir, vha, &dfs_naqp_ops);
+-		if (!ha->tgt.dfs_naqp) {
++		if (IS_ERR(ha->tgt.dfs_naqp)) {
+ 			ql_log(ql_log_warn, vha, 0xd011,
+ 			       "Unable to create debugFS naqp node.\n");
+ 			goto out;
+ 		}
+ 	}
+ 	vha->dfs_rport_root = debugfs_create_dir("rports", ha->dfs_dir);
+-	if (!vha->dfs_rport_root) {
++	if (IS_ERR(vha->dfs_rport_root)) {
+ 		ql_log(ql_log_warn, vha, 0xd012,
+ 		       "Unable to create debugFS rports node.\n");
+ 		goto out;
+-- 
+2.40.1
+
 
 
