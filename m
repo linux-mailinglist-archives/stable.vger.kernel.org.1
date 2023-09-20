@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6D77A7BE2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5D287A7B46
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234870AbjITL4X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33574 "EHLO
+        id S234586AbjITLuu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234890AbjITL4V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:21 -0400
+        with ESMTP id S234588AbjITLut (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD73C2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAEBC433C8;
-        Wed, 20 Sep 2023 11:56:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC85A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4B6C433C7;
+        Wed, 20 Sep 2023 11:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210974;
-        bh=1eRRs5MrpOY8nc7Lu0j3x+GS+NqKow5uEZRCgY31twQ=;
+        s=korg; t=1695210644;
+        bh=NYnmvtAcI5LqQK8oCvpjduPimbFHidSbl1JmRELVe7g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a+x79I109jwiGJg3A09aG44UuX6KVFLhy3f2G4EL2XMj3sqjDYi3OMOshSRxsADLp
-         L7dBv1T8ibtZBNoq6HPyd7bnIstjMEc6rmdLYUic3M8rR94TXHNfgDl4TEjW0+3FyN
-         26ecY8m3CqCrxKVX7zviqC/CdxuHM+vG+tkxjW50=
+        b=vPaRzsSJ7+iPVReNcR6B7FVjspmLxQs4iL5mgeKC76x3ExKx6YOiOGK9Nnv7GQQlv
+         WdQKs6Zs/Wj9XpAsNeW8Yawc3BNrgTpRlzHiuMU9Yn/rlHplbx839llzEcVGZgS2OV
+         L+UruuuYuBQhz2y8DVIUBSO/1vIsO9LSBVBggD6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/139] ARM: 9317/1: kexec: Make smp stop calls asynchronous
+        patches@lists.linux.dev, David Kaplan <David.Kaplan@amd.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 151/211] x86/ibt: Suppress spurious ENDBR
 Date:   Wed, 20 Sep 2023 13:29:55 +0200
-Message-ID: <20230920112837.972951044@linuxfoundation.org>
+Message-ID: <20230920112850.551707213@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,80 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mårten Lindahl <marten.lindahl@axis.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 8922ba71c969d2a0c01a94372a71477d879470de ]
+[ Upstream commit 25e73b7e3f72a25aa30cbb2eecb49036e0acf066 ]
 
-If a panic is triggered by a hrtimer interrupt all online cpus will be
-notified and set offline. But as highlighted by commit 19dbdcb8039c
-("smp: Warn on function calls from softirq context") this call should
-not be made synchronous with disabled interrupts:
+It was reported that under certain circumstances GCC emits ENDBR
+instructions for _THIS_IP_ usage. Specifically, when it appears at the
+start of a basic block -- but not elsewhere.
 
- softdog: Initiating panic
- Kernel panic - not syncing: Software Watchdog Timer expired
- WARNING: CPU: 1 PID: 0 at kernel/smp.c:753 smp_call_function_many_cond
-   unwind_backtrace:
-     show_stack
-     dump_stack_lvl
-     __warn
-     warn_slowpath_fmt
-     smp_call_function_many_cond
-     smp_call_function
-     crash_smp_send_stop.part.0
-     machine_crash_shutdown
-     __crash_kexec
-     panic
-     softdog_fire
-     __hrtimer_run_queues
-     hrtimer_interrupt
+Since _THIS_IP_ is never used for control flow, these ENDBR
+instructions are completely superfluous. Override the _THIS_IP_
+definition for x86_64 to avoid this.
 
-Make the smp call for machine_crash_nonpanic_core() asynchronous.
+Less ENDBR instructions is better.
 
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 156ff4a544ae ("x86/ibt: Base IBT bits")
+Reported-by: David Kaplan <David.Kaplan@amd.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230802110323.016197440@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/machine_kexec.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/linkage.h      | 8 ++++++++
+ include/linux/instruction_pointer.h | 5 +++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
-index f567032a09c0b..6d1938d1b4df7 100644
---- a/arch/arm/kernel/machine_kexec.c
-+++ b/arch/arm/kernel/machine_kexec.c
-@@ -92,16 +92,28 @@ void machine_crash_nonpanic_core(void *unused)
- 	}
- }
+diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
+index 97a3de7892d3f..5ff49fd67732e 100644
+--- a/arch/x86/include/asm/linkage.h
++++ b/arch/x86/include/asm/linkage.h
+@@ -8,6 +8,14 @@
+ #undef notrace
+ #define notrace __attribute__((no_instrument_function))
  
-+static DEFINE_PER_CPU(call_single_data_t, cpu_stop_csd) =
-+	CSD_INIT(machine_crash_nonpanic_core, NULL);
++#ifdef CONFIG_64BIT
++/*
++ * The generic version tends to create spurious ENDBR instructions under
++ * certain conditions.
++ */
++#define _THIS_IP_ ({ unsigned long __here; asm ("lea 0(%%rip), %0" : "=r" (__here)); __here; })
++#endif
 +
- void crash_smp_send_stop(void)
- {
- 	static int cpus_stopped;
- 	unsigned long msecs;
-+	call_single_data_t *csd;
-+	int cpu, this_cpu = raw_smp_processor_id();
+ #ifdef CONFIG_X86_32
+ #define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
+ #endif /* CONFIG_X86_32 */
+diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
+index cda1f706eaeb1..aa0b3ffea9353 100644
+--- a/include/linux/instruction_pointer.h
++++ b/include/linux/instruction_pointer.h
+@@ -2,7 +2,12 @@
+ #ifndef _LINUX_INSTRUCTION_POINTER_H
+ #define _LINUX_INSTRUCTION_POINTER_H
  
- 	if (cpus_stopped)
- 		return;
++#include <asm/linkage.h>
++
+ #define _RET_IP_		(unsigned long)__builtin_return_address(0)
++
++#ifndef _THIS_IP_
+ #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
++#endif
  
- 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
--	smp_call_function(machine_crash_nonpanic_core, NULL, false);
-+	for_each_online_cpu(cpu) {
-+		if (cpu == this_cpu)
-+			continue;
-+
-+		csd = &per_cpu(cpu_stop_csd, cpu);
-+		smp_call_function_single_async(cpu, csd);
-+	}
-+
- 	msecs = 1000; /* Wait at most a second for the other cpus to stop */
- 	while ((atomic_read(&waiting_for_crash_ipi) > 0) && msecs) {
- 		mdelay(1);
+ #endif /* _LINUX_INSTRUCTION_POINTER_H */
 -- 
 2.40.1
 
