@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C35227A7BA5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C587A7B2B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234794AbjITLyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
+        id S234681AbjITLtv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234791AbjITLyI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:08 -0400
+        with ESMTP id S234719AbjITLtp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2E6D8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6037DC433C7;
-        Wed, 20 Sep 2023 11:54:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF19ECA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2678EC433C8;
+        Wed, 20 Sep 2023 11:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210841;
-        bh=iQRFsRwKGwhEZzvsQaInc/4XYUR9jj/XHwakKiNJ/L4=;
+        s=korg; t=1695210578;
+        bh=Z35EEmi/+HMboqqxlSAKhVlLitRsTj5aiyUUM0CsTk4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UiEpFvaH5lmk7owvUx1/xhFQamscizrUBmfV4Ll/vNOSapQhn8/tTDhaC8mfrehs6
-         MGaJfruYX9TgCvKFjoyOnL3109b0Z/m9hN09i/8e7LMzKQnazYUSmRrBGNj2xc7eP3
-         Ep1EDWQorAAFQzy04F5YcUz95wLsTHWIQ+394w3g=
+        b=F8hWseIHyQI/b1rUipWD/Y6pp66RG0ZWu9u0pQLBqGimXVbyn8pg5vWjYOijRzuOX
+         gcQ3Bd9h6tFBHoU+y7qD+Etpne4xXB6tHSsp2pGn2XYB8Y2F1rh2l3bFIrMqvpfkCd
+         YvO/+UMHgGorZ+oNB8R6gdlbua3+hHuPHJd/bRJQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Zhangjin Wu <falcon@tinylab.org>, Willy Tarreau <w@1wt.eu>,
+        patches@lists.linux.dev, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/139] selftests/nolibc: fix up kernel parameters support
+Subject: [PATCH 6.5 103/211] PCI: fu740: Set the number of MSI vectors
 Date:   Wed, 20 Sep 2023 13:29:07 +0200
-Message-ID: <20230920112836.097539996@linuxfoundation.org>
+Message-ID: <20230920112848.993250896@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,104 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhangjin Wu <falcon@tinylab.org>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-[ Upstream commit c388c9920da2679f62bec48d00ca9e80e9d0a364 ]
+[ Upstream commit 551a60e1225e71fff8efd9390204c505b0870e0f ]
 
-kernel parameters allow pass two types of strings, one type is like
-'noapic', another type is like 'panic=5', the first type is passed as
-arguments of the init program, the second type is passed as environment
-variables of the init program.
+The iMSI-RX module of the DW PCIe controller provides multiple sets of
+MSI_CTRL_INT_i_* registers, and each set is capable of handling 32 MSI
+interrupts. However, the fu740 PCIe controller driver only enabled one set
+of MSI_CTRL_INT_i_* registers, as the total number of supported interrupts
+was not specified.
 
-when users pass kernel parameters like this:
+Set the supported number of MSI vectors to enable all the MSI_CTRL_INT_i_*
+registers on the fu740 PCIe core, allowing the system to fully utilize the
+available MSI interrupts.
 
-    noapic NOLIBC_TEST=syscall
-
-our nolibc-test program will use the test setting from argv[1] and
-ignore the one from NOLIBC_TEST environment variable, and at last, it
-will print the following line and ignore the whole test setting.
-
-    Ignoring unknown test name 'noapic'
-
-reversing the parsing order does solve the above issue:
-
-    test = getenv("NOLIBC_TEST");
-    if (test)
-        test = argv[1];
-
-but it still doesn't work with such kernel parameters (without
-NOLIBC_TEST environment variable):
-
-    noapic FOO=bar
-
-To support all of the potential kernel parameters, let's verify the test
-setting from both of argv[1] and NOLIBC_TEST environment variable.
-
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
+Link: https://lore.kernel.org/r/20230807055621.2431-1-yongxuan.wang@sifive.com
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 33 ++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-fu740.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 78bced95ac630..f8e8e8d2a5e18 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -630,6 +630,35 @@ static struct test test_names[] = {
- 	{ 0 }
- };
+diff --git a/drivers/pci/controller/dwc/pcie-fu740.c b/drivers/pci/controller/dwc/pcie-fu740.c
+index 0c90583c078bf..1e9b44b8bba48 100644
+--- a/drivers/pci/controller/dwc/pcie-fu740.c
++++ b/drivers/pci/controller/dwc/pcie-fu740.c
+@@ -299,6 +299,7 @@ static int fu740_pcie_probe(struct platform_device *pdev)
+ 	pci->dev = dev;
+ 	pci->ops = &dw_pcie_ops;
+ 	pci->pp.ops = &fu740_pcie_host_ops;
++	pci->pp.num_vectors = MAX_MSI_IRQS;
  
-+int is_setting_valid(char *test)
-+{
-+	int idx, len, test_len, valid = 0;
-+	char delimiter;
-+
-+	if (!test)
-+		return valid;
-+
-+	test_len = strlen(test);
-+
-+	for (idx = 0; test_names[idx].name; idx++) {
-+		len = strlen(test_names[idx].name);
-+		if (test_len < len)
-+			continue;
-+
-+		if (strncmp(test, test_names[idx].name, len) != 0)
-+			continue;
-+
-+		delimiter = test[len];
-+		if (delimiter != ':' && delimiter != ',' && delimiter != '\0')
-+			continue;
-+
-+		valid = 1;
-+		break;
-+	}
-+
-+	return valid;
-+}
-+
- int main(int argc, char **argv, char **envp)
- {
- 	int min = 0;
-@@ -655,10 +684,10 @@ int main(int argc, char **argv, char **envp)
- 	 *    syscall:5-15[:.*],stdlib:8-10
- 	 */
- 	test = argv[1];
--	if (!test)
-+	if (!is_setting_valid(test))
- 		test = getenv("NOLIBC_TEST");
- 
--	if (test) {
-+	if (is_setting_valid(test)) {
- 		char *comma, *colon, *dash, *value;
- 
- 		do {
+ 	/* SiFive specific region: mgmt */
+ 	afp->mgmt_base = devm_platform_ioremap_resource_byname(pdev, "mgmt");
 -- 
 2.40.1
 
