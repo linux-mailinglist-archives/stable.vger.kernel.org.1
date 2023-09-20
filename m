@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38E8B7A7EC4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D62D7A8171
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234634AbjITMUe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
+        id S236123AbjITMpc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:45:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235687AbjITMUd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:33 -0400
+        with ESMTP id S236358AbjITMpb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69570CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4BEC433C7;
-        Wed, 20 Sep 2023 12:20:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20A0C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92A3C433C8;
+        Wed, 20 Sep 2023 12:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212427;
-        bh=Cq01sCi9B6NTPpql0haHiVIYmoVmQe8f7I/dHpLSHNE=;
+        s=korg; t=1695213921;
+        bh=Tfy/nct77lGBxEWbMXYIM6y12gHTnO0xNo1cz5iN1jc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xb3fDqjd4eEkUl9PTci3rBBPEAC6mDqpLZlXu14V2yFymIDkmGkhxk6BYIVjDAcDq
-         fi6z5jKeSkn6C97X8XoIQdsJ1ZMEfGc5KcvpiTJxENhaU0d9oS4R3YWXh/wrNNGC0J
-         A1RoAN7UuDRln+VOVnr9+Y9vOdAjew8pUIkZDqFA=
+        b=ZD6JLHJwpkS/Ydxkr2zCO328T54E2eTZOhUCQkjw0U+cBlDoRnOtLyOakn7Rc1VdK
+         kTY6IxW2i6hE4kbqfW2RWfh7PpH0zs2ZDMqpZAs2Lt7prxe+C2jsU3pT8gFGv/F7Vh
+         edZBxEeimocBWsEaK3PEnS4mCFr75BWu+LJ2rNrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 264/273] serial: cpm_uart: Avoid suspicious locking
+Subject: [PATCH 5.15 046/110] media: anysee: fix null-ptr-deref in anysee_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:44 +0200
-Message-ID: <20230920112854.400913936@linuxfoundation.org>
+Message-ID: <20230920112832.110561959@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 36ef11d311f405e55ad8e848c19b212ff71ef536 ]
+[ Upstream commit c30411266fd67ea3c02a05c157231654d5a3bdc9 ]
 
-  CHECK   drivers/tty/serial/cpm_uart/cpm_uart_core.c
-drivers/tty/serial/cpm_uart/cpm_uart_core.c:1271:39: warning: context imbalance in 'cpm_uart_console_write' - unexpected unlock
+In anysee_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach anysee_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Allthough 'nolock' is not expected to change, sparse find the following
-form suspicious:
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-	if (unlikely(nolock)) {
-		local_irq_save(flags);
-	} else {
-		spin_lock_irqsave(&pinfo->port.lock, flags);
-	}
-
-	cpm_uart_early_write(pinfo, s, count, true);
-
-	if (unlikely(nolock)) {
-		local_irq_restore(flags);
-	} else {
-		spin_unlock_irqrestore(&pinfo->port.lock, flags);
-	}
-
-Rewrite it a more obvious form:
-
-	if (unlikely(oops_in_progress)) {
-		local_irq_save(flags);
-		cpm_uart_early_write(pinfo, s, count, true);
-		local_irq_restore(flags);
-	} else {
-		spin_lock_irqsave(&pinfo->port.lock, flags);
-		cpm_uart_early_write(pinfo, s, count, true);
-		spin_unlock_irqrestore(&pinfo->port.lock, flags);
-	}
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f7da5cdc9287960185829cfef681a7d8614efa1f.1691068700.git.christophe.leroy@csgroup.eu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: add spaces around +]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/cpm_uart/cpm_uart_core.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/media/usb/dvb-usb-v2/anysee.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-index ad40c75bb58f8..375d4790e058b 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-@@ -1269,19 +1269,14 @@ static void cpm_uart_console_write(struct console *co, const char *s,
- {
- 	struct uart_cpm_port *pinfo = &cpm_uart_ports[co->index];
- 	unsigned long flags;
--	int nolock = oops_in_progress;
+diff --git a/drivers/media/usb/dvb-usb-v2/anysee.c b/drivers/media/usb/dvb-usb-v2/anysee.c
+index aa45b5d263f6b..a1235d0cce92f 100644
+--- a/drivers/media/usb/dvb-usb-v2/anysee.c
++++ b/drivers/media/usb/dvb-usb-v2/anysee.c
+@@ -202,7 +202,7 @@ static int anysee_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
  
--	if (unlikely(nolock)) {
-+	if (unlikely(oops_in_progress)) {
- 		local_irq_save(flags);
--	} else {
--		spin_lock_irqsave(&pinfo->port.lock, flags);
--	}
--
--	cpm_uart_early_write(pinfo, s, count, true);
--
--	if (unlikely(nolock)) {
-+		cpm_uart_early_write(pinfo, s, count, true);
- 		local_irq_restore(flags);
- 	} else {
-+		spin_lock_irqsave(&pinfo->port.lock, flags);
-+		cpm_uart_early_write(pinfo, s, count, true);
- 		spin_unlock_irqrestore(&pinfo->port.lock, flags);
- 	}
- }
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+-			if (msg[i].len > 2 || msg[i+1].len > 60) {
++			if (msg[i].len != 2 || msg[i + 1].len > 60) {
+ 				ret = -EOPNOTSUPP;
+ 				break;
+ 			}
 -- 
 2.40.1
 
