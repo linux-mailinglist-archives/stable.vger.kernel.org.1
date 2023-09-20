@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 755CA7A7C56
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 056377A7B05
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234925AbjITMAV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38040 "EHLO
+        id S234623AbjITLse (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235095AbjITMAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:20 -0400
+        with ESMTP id S234465AbjITLse (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0F092
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FD1C433C7;
-        Wed, 20 Sep 2023 12:00:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB4AA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588A9C433C7;
+        Wed, 20 Sep 2023 11:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211214;
-        bh=EpKiPwjLFOF7EI+/a5iS4+V6XoWVodtXYusZpqGg7ls=;
+        s=korg; t=1695210507;
+        bh=626rWdayD3OHWAvUZkthqJ484LU4uTxeo1RiMiSaVOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=koOowAn06qGKAAYSvmkAbtXFP/v7hsNUw4dP36ctLSfPxFNQhFHJLfz/FFUz3PRrY
-         eq63QA4ENWcoeqAXNttkiJ4ydruDPMLyuDvMnB5pgakSPuWbs2ABLGgVcWMQVcK6+K
-         0s0SC1MLjyo+LCFDlhCodogW2gzJNF1alcKqL5PI=
+        b=glOtcpU+bLDQBz41EG00aglTRveDxZpCQODTW22wx60eba6ikZ5MvdmoQ340RyN9n
+         LVNsZZnhZHE7UDo+NmJA+5B4QvtA5JgF7cDb+g14RpjNtN7YG5n79gZVOuJuDyn/xO
+         XOTUwiO9qrmyebAMdgL9BE5dWrF7vD+qhU813kHk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 011/186] nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 070/211] arm64: dts: qcom: sm8150-kumano: correct ramoops pmsg-size
 Date:   Wed, 20 Sep 2023 13:28:34 +0200
-Message-ID: <20230920112837.263015836@linuxfoundation.org>
+Message-ID: <20230920112847.949653620@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit cdaac8e7e5a059f9b5e816cda257f08d0abffacd upstream.
+[ Upstream commit 4e6b942f092653ebcdbbc0819b2d1f08ab415bdc ]
 
-A syzbot stress test using a corrupted disk image reported that
-mark_buffer_dirty() called from __nilfs_mark_inode_dirty() or
-nilfs_palloc_commit_alloc_entry() may output a kernel warning, and can
-panic if the kernel is booted with panic_on_warn.
+There is no 'msg-size' property in ramoops, so assume intention was for
+'pmsg-size':
 
-This is because nilfs2 keeps buffer pointers in local structures for some
-metadata and reuses them, but such buffers may be forcibly discarded by
-nilfs_clear_dirty_page() in some critical situations.
+  sm8150-sony-xperia-kumano-griffin.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
 
-This issue is reported to appear after commit 28a65b49eb53 ("nilfs2: do
-not write dirty data after degenerating to read-only"), but the issue has
-potentially existed before.
-
-Fix this issue by checking the uptodate flag when attempting to reuse an
-internally held buffer, and reloading the metadata instead of reusing the
-buffer if the flag was lost.
-
-Link: https://lkml.kernel.org/r/20230818131804.7758-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000003da75f05fdeffd12@google.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 3.10+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230618114442.140185-6-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/alloc.c |    3 ++-
- fs/nilfs2/inode.c |    7 +++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/alloc.c
-+++ b/fs/nilfs2/alloc.c
-@@ -214,7 +214,8 @@ static int nilfs_palloc_get_block(struct
- 	int ret;
- 
- 	spin_lock(lock);
--	if (prev->bh && blkoff == prev->blkoff) {
-+	if (prev->bh && blkoff == prev->blkoff &&
-+	    likely(buffer_uptodate(prev->bh))) {
- 		get_bh(prev->bh);
- 		*bhp = prev->bh;
- 		spin_unlock(lock);
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1045,7 +1045,7 @@ int nilfs_load_inode_block(struct inode
- 	int err;
- 
- 	spin_lock(&nilfs->ns_inode_lock);
--	if (ii->i_bh == NULL) {
-+	if (ii->i_bh == NULL || unlikely(!buffer_uptodate(ii->i_bh))) {
- 		spin_unlock(&nilfs->ns_inode_lock);
- 		err = nilfs_ifile_get_inode_block(ii->i_root->ifile,
- 						  inode->i_ino, pbh);
-@@ -1054,7 +1054,10 @@ int nilfs_load_inode_block(struct inode
- 		spin_lock(&nilfs->ns_inode_lock);
- 		if (ii->i_bh == NULL)
- 			ii->i_bh = *pbh;
--		else {
-+		else if (unlikely(!buffer_uptodate(ii->i_bh))) {
-+			__brelse(ii->i_bh);
-+			ii->i_bh = *pbh;
-+		} else {
- 			brelse(*pbh);
- 			*pbh = ii->i_bh;
- 		}
+diff --git a/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi b/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi
+index baafea53770bf..ae0ca48b89a59 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150-sony-xperia-kumano.dtsi
+@@ -222,7 +222,7 @@ ramoops@ffc00000 {
+ 			reg = <0x0 0xffc00000 0x0 0x100000>;
+ 			record-size = <0x1000>;
+ 			console-size = <0x40000>;
+-			msg-size = <0x20000 0x20000>;
++			pmsg-size = <0x20000>;
+ 			ecc-size = <16>;
+ 			no-map;
+ 		};
+-- 
+2.40.1
+
 
 
