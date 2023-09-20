@@ -2,103 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0216A7A8AE3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 19:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 733747A8AEA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 19:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229508AbjITRwM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 13:52:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49868 "EHLO
+        id S229605AbjITRy5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 13:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjITRwL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 13:52:11 -0400
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCA1594
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:52:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1695232326; x=1726768326;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=G52RA9Oxwi3Ae8oA2Q20EXNBVX6Kl5t2/hFkYK2oD3o=;
-  b=ANnUuYL7VPQIn6ncek9GnRuEYfP5plCw2WNuEUyS5Tm8UMPqz3welzK6
-   IW5Wu67lILhE8YrSFS2wR7rJkAy4zPenWwKu8OQcKSuzi90Tt9pBbwW+n
-   uyCjjLgmUa+tYoGmsGYSZepfGROaR35VtC5nm+7HyOG6v9zNadooXM0oh
-   U=;
-X-IronPort-AV: E=Sophos;i="6.03,162,1694736000"; 
-   d="scan'208";a="605570610"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-5eae960a.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 17:52:05 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2c-m6i4x-5eae960a.us-west-2.amazon.com (Postfix) with ESMTPS id 0D84F40D90;
-        Wed, 20 Sep 2023 17:52:04 +0000 (UTC)
-Received: from EX19D046UWB004.ant.amazon.com (10.13.139.164) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 20 Sep 2023 17:52:01 +0000
-Received: from dev-dsk-shaoyi-2b-b6ac9e9c.us-west-2.amazon.com (10.189.91.91)
- by EX19D046UWB004.ant.amazon.com (10.13.139.164) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 20 Sep 2023 17:52:00 +0000
-From:   Shaoying Xu <shaoyi@amazon.com>
-To:     <stable@vger.kernel.org>, <markovicbudimir@gmail.com>
-CC:     <shaoyi@amazon.com>, Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14] net/sched: sch_hfsc: Ensure inner classes have fsc curve
-Date:   Wed, 20 Sep 2023 17:51:45 +0000
-Message-ID: <20230920175145.23384-1-shaoyi@amazon.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S229572AbjITRy4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 13:54:56 -0400
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB1194
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:54:08 -0700 (PDT)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-773ac11de71so1060185a.2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:54:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695232448; x=1695837248;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sMUjbe6jAZJm7ZNBEI2GzRHbQh/3nvCFD3HmyB44o2Y=;
+        b=H3E9L1zPrTtpd7OvT1y2H5I85MF4HV4pxHNfE6K1QbA4qukSE1KyBY/q/Iq8scHmex
+         sfTukDy3vfERJUxWnWPpOW9GeBkgoZ8OyfiaW3Kw8iZg1M7MAsT/kxz5+IxUO1hzoVIP
+         AjBKQELJByTUNXGqOgYsU6JhZsIFIWGnGWqJ49ekISC5Ai7u4NMhzou7E8oWBYnd5ne7
+         Q6fiUW5m6AycCHD/fUGJnlQEaYFproRF55hS/gJxb/CopqzP4U66TG8SeJM4AuukVeIp
+         zYfae84VtAU8AIyvQD7z+lMsW2mrv03Ylmw61MNw9W5Vo2jWLJPzZaTafmU2B08pgp0Q
+         EfpA==
+X-Gm-Message-State: AOJu0YyG9Dg7ueXqGhGTr5k42QBAEcjfjQ7bKxmNsp+jTcU0FUXR0A2K
+        8YkhQpO5H6S6MDGKdAXXd/0z
+X-Google-Smtp-Source: AGHT+IEak9SOm9Pps/WpGIUms89fzDOBjAMtv3am2s1xZcN9i58NixmmmksMVtNi4wnk9/5qJ6K1AQ==
+X-Received: by 2002:a05:620a:3890:b0:76f:19fd:5058 with SMTP id qp16-20020a05620a389000b0076f19fd5058mr2422766qkn.78.1695232447730;
+        Wed, 20 Sep 2023 10:54:07 -0700 (PDT)
+Received: from localhost (pool-68-160-141-91.bstnma.fios.verizon.net. [68.160.141.91])
+        by smtp.gmail.com with ESMTPSA id d21-20020a05620a159500b007710052789dsm4986047qkk.94.2023.09.20.10.54.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Sep 2023 10:54:07 -0700 (PDT)
+Date:   Wed, 20 Sep 2023 13:54:05 -0400
+From:   Mike Snitzer <snitzer@kernel.org>
+To:     Fedor Pchelkin <pchelkin@ispras.ru>
+Cc:     Hannes Reinecke <hare@suse.de>, Alasdair Kergon <agk@redhat.com>,
+        dm-devel@redhat.com, linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: dm-zoned: free dmz->ddev array in dmz_put_zoned_device
+Message-ID: <ZQsxvY12z+/yYcR6@redhat.com>
+References: <20230920105119.21276-1-pchelkin@ispras.ru>
+ <c7818967-1fea-45da-9713-20de4bcb1c44@suse.de>
+ <vdtvo2av3upya6mugjyiqo2hfnn6q4dpofoku6rvrtgmycgbrp@scpcnu3ta7ch>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.189.91.91]
-X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
- EX19D046UWB004.ant.amazon.com (10.13.139.164)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <vdtvo2av3upya6mugjyiqo2hfnn6q4dpofoku6rvrtgmycgbrp@scpcnu3ta7ch>
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Budimir Markovic <markovicbudimir@gmail.com>
+On Wed, Sep 20 2023 at 10:35P -0400,
+Fedor Pchelkin <pchelkin@ispras.ru> wrote:
 
-[ Upstream commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f ]
+> On 23/09/20 04:06PM, Hannes Reinecke wrote:
+> > On 9/20/23 12:51, Fedor Pchelkin wrote:
+> > > Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+> > > made the pointers to additional zoned devices to be stored in a
+> > > dynamically allocated dmz->ddev array. However, this array is not freed.
+> > > 
+> > > Free it when cleaning up zoned device information inside
+> > > dmz_put_zoned_device(). Assigning NULL to dmz->ddev elements doesn't make
+> > > sense there as they are not supposed to be reused later and the whole dmz
+> > > target structure is being cleaned anyway.
+> > > 
+> > > Found by Linux Verification Center (linuxtesting.org).
+> > > 
+> > > Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> > > ---
+> > >   drivers/md/dm-zoned-target.c | 8 +++-----
+> > >   1 file changed, 3 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
+> > > index ad8e670a2f9b..e25cd9db6275 100644
+> > > --- a/drivers/md/dm-zoned-target.c
+> > > +++ b/drivers/md/dm-zoned-target.c
+> > > @@ -753,12 +753,10 @@ static void dmz_put_zoned_device(struct dm_target *ti)
+> > >   	struct dmz_target *dmz = ti->private;
+> > >   	int i;
+> > > -	for (i = 0; i < dmz->nr_ddevs; i++) {
+> > > -		if (dmz->ddev[i]) {
+> > > +	for (i = 0; i < dmz->nr_ddevs; i++)
+> > > +		if (dmz->ddev[i])
+> > >   			dm_put_device(ti, dmz->ddev[i]);
+> > > -			dmz->ddev[i] = NULL;
+> > > -		}
+> > > -	}
+> > > +	kfree(dmz->ddev);
+> > >   }
+> > >   static int dmz_fixup_devices(struct dm_target *ti)
+> > 
+> > Hmm. I'm not that happy with it; dmz_put_zoned_device() is using dm_target
+> > as an argument, whereas all of the functions surrounding the call sites is
+> > using the dmz_target directly.
+> > 
+> > Mind to modify the function to use 'struct dmz_target' as an argument?
+> 
+> dm_target is required inside dmz_put_zoned_device() for dm_put_device()
+> calls. I can't see a way for referencing it via dmz_target. Do you mean
+> passing additional second argument like
+>   dmz_put_zoned_device(struct dmz_target *dmz, struct dm_target *ti) ?
 
-HFSC assumes that inner classes have an fsc curve, but it is currently
-possible for classes without an fsc curve to become parents. This leads
-to bugs including a use-after-free.
+No, what you did is fine.  Not sure what Hannes is saying given only
+passing dm_target has symmetry with dm_get_zoned_device (and
+dmz_fixup_devices).
 
-Don't allow non-root classes without HFSC_FSC to become parents.
+> BTW, I also think it can be renamed to dmz_put_zoned_devices().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230824084905.422-1-markovicbudimir@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ v4.14: Delete NL_SET_ERR_MSG because extack is not added to hfsc_change_class ]
-Cc: <stable@vger.kernel.org> # 4.14 
-Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
----
- net/sched/sch_hfsc.c | 2 ++
- 1 file changed, 2 insertions(+)
+I've renamed like you suggested and added a newline to
+dmz_put_zoned_devices() and staged this fix in linux-next for
+upstream inclusion before 6.6 final releases.
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 3f88b75488b0..3a43abe4d9c4 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1020,6 +1020,8 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 		if (parent == NULL)
- 			return -ENOENT;
- 	}
-+	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root)
-+		return -EINVAL;
- 
- 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
- 		return -EINVAL;
--- 
-2.40.1
-
+Mike
