@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F4C7A7E74
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DD427A7EE3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235581AbjITMSD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        id S235637AbjITMVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235577AbjITMSC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:02 -0400
+        with ESMTP id S235762AbjITMVi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E50CA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B4AC433CA;
-        Wed, 20 Sep 2023 12:17:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C77C97
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BB0C433CA;
+        Wed, 20 Sep 2023 12:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212266;
-        bh=WGAOGvdBT7egE/L6hnA0Y+A1kDM/UpYojw4Ope5mXuU=;
+        s=korg; t=1695212492;
+        bh=i8zctY06lwaeasOYIWSNQ+KvGcxFO6xc0GJZDe9vcqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dofm6TOcoYLKayA56SWxNuN4A0nvHGr/utFR9bahqwSlzmLcC41jtaZVhHea/JCJf
-         0VHLEIssyUuvA1ZIYlGCneH/4p3KAKcCz4txtoLd/jnV6Jasmn7hSA7HdOHvrjlthR
-         9C0oBe6y81xXaPD8KYMHdcA6vp/MOKKjgRZI5ZE8=
+        b=Umrdjua8fLZm0m19umgk6rn1sTwy+D6LG1go9BU501HAPy2Q1+mpiVHB4aGVVv30q
+         v0qp+rTcCNjjrZgbSBRPGBRwxoOi5ggfKytVdmyuSEqywzO69yU4XBwVlmCHYRvZdZ
+         COEgPTpcWJvW6TUyC4CGPMvHqtL4qj603bW7eeoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Henrie <alexhenrie24@gmail.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Will Shiu <Will.Shiu@mediatek.com>,
+        Jeff Layton <jlayton@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 213/273] net: ipv6/addrconf: avoid integer underflow in ipv6_create_tempaddr
+Subject: [PATCH 5.10 03/83] locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock
 Date:   Wed, 20 Sep 2023 13:30:53 +0200
-Message-ID: <20230920112853.043454947@linuxfoundation.org>
+Message-ID: <20230920112826.783263085@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Will Shiu <Will.Shiu@mediatek.com>
 
-[ Upstream commit f31867d0d9d82af757c1e0178b659438f4c1ea3c ]
+[ Upstream commit 74f6f5912693ce454384eaeec48705646a21c74f ]
 
-The existing code incorrectly casted a negative value (the result of a
-subtraction) to an unsigned value without checking. For example, if
-/proc/sys/net/ipv6/conf/*/temp_prefered_lft was set to 1, the preferred
-lifetime would jump to 4 billion seconds. On my machine and network the
-shortest lifetime that avoided underflow was 3 seconds.
+As following backtrace, the struct file_lock request , in posix_lock_inode
+is free before ftrace function using.
+Replace the ftrace function ahead free flow could fix the use-after-free
+issue.
 
-Fixes: 76506a986dc3 ("IPv6: fix DESYNC_FACTOR")
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[name:report&]===============================================
+BUG:KASAN: use-after-free in trace_event_raw_event_filelock_lock+0x80/0x12c
+[name:report&]Read at addr f6ffff8025622620 by task NativeThread/16753
+[name:report_hw_tags&]Pointer tag: [f6], memory tag: [fe]
+[name:report&]
+BT:
+Hardware name: MT6897 (DT)
+Call trace:
+ dump_backtrace+0xf8/0x148
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x60/0x7c
+ print_report+0x2c8/0xa08
+ kasan_report+0xb0/0x120
+ __do_kernel_fault+0xc8/0x248
+ do_bad_area+0x30/0xdc
+ do_tag_check_fault+0x1c/0x30
+ do_mem_abort+0x58/0xbc
+ el1_abort+0x3c/0x5c
+ el1h_64_sync_handler+0x54/0x90
+ el1h_64_sync+0x68/0x6c
+ trace_event_raw_event_filelock_lock+0x80/0x12c
+ posix_lock_inode+0xd0c/0xd60
+ do_lock_file_wait+0xb8/0x190
+ fcntl_setlk+0x2d8/0x440
+...
+[name:report&]
+[name:report&]Allocated by task 16752:
+...
+ slab_post_alloc_hook+0x74/0x340
+ kmem_cache_alloc+0x1b0/0x2f0
+ posix_lock_inode+0xb0/0xd60
+...
+ [name:report&]
+ [name:report&]Freed by task 16752:
+...
+  kmem_cache_free+0x274/0x5b0
+  locks_dispose_list+0x3c/0x148
+  posix_lock_inode+0xc40/0xd60
+  do_lock_file_wait+0xb8/0x190
+  fcntl_setlk+0x2d8/0x440
+  do_fcntl+0x150/0xc18
+...
+
+Signed-off-by: Will Shiu <Will.Shiu@mediatek.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 2 +-
+ fs/locks.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 5c5c5736f6892..5ffa8777ab098 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1321,7 +1321,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp,
- 	 * idev->desync_factor if it's larger
+diff --git a/fs/locks.c b/fs/locks.c
+index 12d72c3d8756c..cbb5701ce9f37 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -1339,6 +1339,7 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
+  out:
+ 	spin_unlock(&ctx->flc_lock);
+ 	percpu_up_read(&file_rwsem);
++	trace_posix_lock_inode(inode, request, error);
+ 	/*
+ 	 * Free any unused locks.
  	 */
- 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
--	max_desync_factor = min_t(__u32,
-+	max_desync_factor = min_t(long,
- 				  idev->cnf.max_desync_factor,
- 				  cnf_temp_preferred_lft - regen_advance);
+@@ -1347,7 +1348,6 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
+ 	if (new_fl2)
+ 		locks_free_lock(new_fl2);
+ 	locks_dispose_list(&dispose);
+-	trace_posix_lock_inode(inode, request, error);
  
+ 	return error;
+ }
 -- 
 2.40.1
 
