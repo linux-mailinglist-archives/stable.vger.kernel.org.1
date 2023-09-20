@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A4CF7A7B9A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6437A7C1C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234789AbjITLxt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41656 "EHLO
+        id S234982AbjITL6G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjITLxt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:49 -0400
+        with ESMTP id S234941AbjITL6F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2519CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05611C433C9;
-        Wed, 20 Sep 2023 11:53:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C94892
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3543C433CA;
+        Wed, 20 Sep 2023 11:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210820;
-        bh=MAOLaL/okPiSwnXLO+yigENIP+2FHsUntLc8wqNmO8s=;
+        s=korg; t=1695211079;
+        bh=n9zMEk8uOA4N+BZrDZbMtN9ZFGSKpvYuuSrovOYzHI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oApV2wbSWxbBT7W3Ts6XWslzOFikzrNeqxEQMNjeI2JNumGi1w0BAk7kxlvELrXfl
-         lSn/J2d1gkPkRZb1kImaM4tHz/MmHqmS927qhYSTN3hXtGXaR5+uRVaMrWOixE9DeX
-         B/lDGOvShMhvFlb/EkagDsTrs0QYVwlPADf1KsHo=
+        b=OJqAiYz+eAs3QQTFELzT13jB12AjEe/yP+blV3syPEDJR6FQ7Q6g5eU5i+EHF8Jcz
+         6xUChVctjOn20RjllAPH8gy+imt2hWf7QoyhrejjDCu0L84oA8sVFv2H/tG2IwvXVy
+         +q18Bu66Xi7gfMIo8QsXEGpwaVx5HGfMKf697s+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 190/211] tracing: Have option files inc the trace array ref count
+        patches@lists.linux.dev, David Kaplan <David.Kaplan@amd.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 100/139] x86/ibt: Suppress spurious ENDBR
 Date:   Wed, 20 Sep 2023 13:30:34 +0200
-Message-ID: <20230920112851.762249725@linuxfoundation.org>
+Message-ID: <20230920112839.302512456@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,73 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 7e2cfbd2d3c86afcd5c26b5c4b1dd251f63c5838 upstream.
+[ Upstream commit 25e73b7e3f72a25aa30cbb2eecb49036e0acf066 ]
 
-The option files update the options for a given trace array. For an
-instance, if the file is opened and the instance is deleted, reading or
-writing to the file will cause a use after free.
+It was reported that under certain circumstances GCC emits ENDBR
+instructions for _THIS_IP_ usage. Specifically, when it appears at the
+start of a basic block -- but not elsewhere.
 
-Up the ref count of the trace_array when an option file is opened.
+Since _THIS_IP_ is never used for control flow, these ENDBR
+instructions are completely superfluous. Override the _THIS_IP_
+definition for x86_64 to avoid this.
 
-Link: https://lkml.kernel.org/r/20230907024804.086679464@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
+Less ENDBR instructions is better.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 156ff4a544ae ("x86/ibt: Base IBT bits")
+Reported-by: David Kaplan <David.Kaplan@amd.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230802110323.016197440@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/linkage.h      | 8 ++++++++
+ include/linux/instruction_pointer.h | 5 +++++
+ 2 files changed, 13 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -9007,12 +9007,33 @@ trace_options_write(struct file *filp, c
- 	return cnt;
- }
+diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
+index f484d656d34ee..3a0282a6a55df 100644
+--- a/arch/x86/include/asm/linkage.h
++++ b/arch/x86/include/asm/linkage.h
+@@ -8,6 +8,14 @@
+ #undef notrace
+ #define notrace __attribute__((no_instrument_function))
  
-+static int tracing_open_options(struct inode *inode, struct file *filp)
-+{
-+	struct trace_option_dentry *topt = inode->i_private;
-+	int ret;
++#ifdef CONFIG_64BIT
++/*
++ * The generic version tends to create spurious ENDBR instructions under
++ * certain conditions.
++ */
++#define _THIS_IP_ ({ unsigned long __here; asm ("lea 0(%%rip), %0" : "=r" (__here)); __here; })
++#endif
 +
-+	ret = tracing_check_open_get_tr(topt->tr);
-+	if (ret)
-+		return ret;
-+
-+	filp->private_data = inode->i_private;
-+	return 0;
-+}
-+
-+static int tracing_release_options(struct inode *inode, struct file *file)
-+{
-+	struct trace_option_dentry *topt = file->private_data;
-+
-+	trace_array_put(topt->tr);
-+	return 0;
-+}
+ #ifdef CONFIG_X86_32
+ #define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
+ #endif /* CONFIG_X86_32 */
+diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
+index cda1f706eaeb1..aa0b3ffea9353 100644
+--- a/include/linux/instruction_pointer.h
++++ b/include/linux/instruction_pointer.h
+@@ -2,7 +2,12 @@
+ #ifndef _LINUX_INSTRUCTION_POINTER_H
+ #define _LINUX_INSTRUCTION_POINTER_H
  
- static const struct file_operations trace_options_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_options,
- 	.read = trace_options_read,
- 	.write = trace_options_write,
- 	.llseek	= generic_file_llseek,
-+	.release = tracing_release_options,
- };
++#include <asm/linkage.h>
++
+ #define _RET_IP_		(unsigned long)__builtin_return_address(0)
++
++#ifndef _THIS_IP_
+ #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
++#endif
  
- /*
+ #endif /* _LINUX_INSTRUCTION_POINTER_H */
+-- 
+2.40.1
+
 
 
