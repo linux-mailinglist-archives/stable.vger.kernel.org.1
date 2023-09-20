@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F5A7A7E63
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC5E7A7CF2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235524AbjITMRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
+        id S235171AbjITMFi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235558AbjITMRp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:45 -0400
+        with ESMTP id S235202AbjITMFf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36A212D
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC771C433CA;
-        Wed, 20 Sep 2023 12:16:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEB86AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17902C433C7;
+        Wed, 20 Sep 2023 12:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212207;
-        bh=R0fsE5n/eUPvE4j8Wohajgb5K5qZfja0pIHDh3L1HlI=;
+        s=korg; t=1695211528;
+        bh=ntfZm0ZW+58OBQ4A6RTV6ezv6GqAjGDTiQbEB66CZVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qOzte4dMwSBcUDUQXCuZyzCyB1IuGF+wl6P9yrPePPEW4AKB+6tEzmIAtVbrgmCiw
-         Yf9QArsAvU4kyS0iyjYlf68GOKSHh4BXyy9sFtvUJLGLGhswUF7Tzx1dtOpKm/HcT0
-         hSARomWIKAljFJuhR4euFYyD90bZn8dbXz/QFXnY=
+        b=Z638NopWijlN2M/9ro7SHEBI9+9A7MSeWt/FaUgHyY4u/G9wg7Fxghs4JMIZQ7S59
+         xh6Af1ztr6q3VKUB5NLxT2LeYc3bq7JIJfRLlGziuNm38KJwDBcBc0nQ4ddhI9W0yG
+         uj4h3grDSvGJ/OMKAsswbsO17E/ae2D87COe8YAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.19 189/273] X.509: if signature is unsupported skip validation
+        patches@lists.linux.dev, stable@kernel.org,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 4.14 126/186] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
 Date:   Wed, 20 Sep 2023 13:30:29 +0200
-Message-ID: <20230920112852.352037706@linuxfoundation.org>
+Message-ID: <20230920112841.581746553@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thore Sommer <public@thson.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
+commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
 
-When the hash algorithm for the signature is not available the digest size
-is 0 and the signature in the certificate is marked as unsupported.
+The pll0_vote clock definitely should have pll0 as a parent (instead of
+pll8).
 
-When validating a self-signed certificate, this needs to be checked,
-because otherwise trying to validate the signature will fail with an
-warning:
-
-Loading compiled-in X.509 certificates
-WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
-pkcs1pad_verify+0x46/0x12c
-...
-Problem loading in-kernel X.509 certificate (-22)
-
-Signed-off-by: Thore Sommer <public@thson.de>
-Cc: stable@vger.kernel.org # v4.7+
-Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
+Cc: stable@kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/asymmetric_keys/x509_public_key.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/clk/qcom/gcc-mdm9615.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -134,6 +134,11 @@ int x509_check_for_self_signed(struct x5
- 	if (strcmp(cert->pub->pkey_algo, cert->sig->pkey_algo) != 0)
- 		goto out;
- 
-+	if (cert->unsupported_sig) {
-+		ret = 0;
-+		goto out;
-+	}
-+
- 	ret = public_key_verify_signature(cert->pub, cert->sig);
- 	if (ret < 0) {
- 		if (ret == -ENOPKG) {
+--- a/drivers/clk/qcom/gcc-mdm9615.c
++++ b/drivers/clk/qcom/gcc-mdm9615.c
+@@ -66,7 +66,7 @@ static struct clk_regmap pll0_vote = {
+ 	.enable_mask = BIT(0),
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "pll0_vote",
+-		.parent_names = (const char *[]){ "pll8" },
++		.parent_names = (const char *[]){ "pll0" },
+ 		.num_parents = 1,
+ 		.ops = &clk_pll_vote_ops,
+ 	},
 
 
