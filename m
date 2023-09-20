@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3264B7A7D59
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CDD7A7F8B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235264AbjITMIu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:08:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57528 "EHLO
+        id S235755AbjITM1x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235263AbjITMIu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:50 -0400
+        with ESMTP id S235749AbjITM1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:27:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC462B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB20DC433C9;
-        Wed, 20 Sep 2023 12:08:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52082CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:27:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F146C433C7;
+        Wed, 20 Sep 2023 12:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211723;
-        bh=dGgfLtYnJse9Nzoc36KI5g/+boAc6h3BgB2TT1rsKWo=;
+        s=korg; t=1695212867;
+        bh=Zi6BEGV7YyeqlKMKDRRYVaCAOTxPti04IHSU/6t5Umo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2wAUxQMUsXje0cGJxZLAtK4610YbLJL6Ie+o2JUqeiNJ7Rq6l0Iu/G4O260M9loC2
-         n9sntD8rnGKo+t80txSzFv/TGaA2AD0b/6uvfh7jvf7UZwJYGmpq4zIDDxFCo2fpCw
-         HekH+2ajGtNvYjWS26rgW91rZEz4Krd+aRJ/uWX0=
+        b=B0+7njSpqx+bSzLLcKfB0j768QiaFCBuA5dNR9YTzgY0+Pu4HuquoexeyuDZpjiyb
+         gHSz9KsEGq0zjngu5jkI+AfbKchjYgdVO0iYwA+jHw6r4YetGZenuv5cBYc2NIIWFg
+         aNb6V9iQ2t6Kf1ZsTIu+iyECI+bb95yUO+QG6bHw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 012/273] nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Kurt Hackel <kurt.hackel@oracle.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Junxiao Bi <junxiao.bi@oracle.com>,
+        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
+        Jun Piao <piaojun@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 075/367] fs: ocfs2: namei: check return value of ocfs2_add_entry()
 Date:   Wed, 20 Sep 2023 13:27:32 +0200
-Message-ID: <20230920112846.809663482@linuxfoundation.org>
+Message-ID: <20230920112900.473368466@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +58,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-commit f83913f8c5b882a312e72b7669762f8a5c9385e4 upstream.
+[ Upstream commit 6b72e5f9e79360fce4f2be7fe81159fbdf4256a5 ]
 
-A syzbot stress test reported that create_empty_buffers() called from
-nilfs_lookup_dirty_data_buffers() can cause a general protection fault.
+Process result of ocfs2_add_entry() in case we have an error
+value.
 
-Analysis using its reproducer revealed that the back reference "mapping"
-from a page/folio has been changed to NULL after dirty page/folio gang
-lookup in nilfs_lookup_dirty_data_buffers().
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fix this issue by excluding pages/folios from being collected if, after
-acquiring a lock on each page/folio, its back reference "mapping" differs
-from the pointer to the address space struct that held the page/folio.
-
-Link: https://lkml.kernel.org/r/20230805132038.6435-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000002930a705fc32b231@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20230803145417.177649-1-artem.chernyshev@red-soft.ru
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-fs/nilfs2/segment.c | 5 +++++
- fs/nilfs2/segment.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ocfs2/namei.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -730,6 +730,11 @@ static size_t nilfs_lookup_dirty_data_bu
- 		struct page *page = pvec.pages[i];
- 
- 		lock_page(page);
-+		if (unlikely(page->mapping != mapping)) {
-+			/* Exclude pages removed from the address space */
-+			unlock_page(page);
-+			continue;
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index fb284bf3aed15..cd6a214398266 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -1524,6 +1524,10 @@ static int ocfs2_rename(struct inode *old_dir,
+ 		status = ocfs2_add_entry(handle, new_dentry, old_inode,
+ 					 OCFS2_I(old_inode)->ip_blkno,
+ 					 new_dir_bh, &target_insert);
++		if (status < 0) {
++			mlog_errno(status);
++			goto bail;
 +		}
- 		if (!page_has_buffers(page))
- 			create_empty_buffers(page, i_blocksize(inode), 0);
- 		unlock_page(page);
+ 	}
+ 
+ 	old_inode->i_ctime = current_time(old_inode);
+-- 
+2.40.1
+
 
 
