@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 203CD7A7BC7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E847A7C76
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234824AbjITLzW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
+        id S234916AbjITMBg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234835AbjITLzV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:21 -0400
+        with ESMTP id S234896AbjITMBa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A01DFCE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7824C433C9;
-        Wed, 20 Sep 2023 11:55:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E704C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3A6C433CC;
+        Wed, 20 Sep 2023 12:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210915;
-        bh=Ih4OcJdGsuEfQoTWCbQOkx2XEfadUfPa6SMG54cMLr0=;
+        s=korg; t=1695211282;
+        bh=HOZmDHy5ZqT6wFrjS1nTowMW/QTvO7d82jwRbjaWDz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vreVI4sMFSCz6jxbheY0uJrWerD2Qba/kDl3w7CTcsWuE4WqCGV/rTE2ZdL7HgSTS
-         Z0uJpFbqg8WUZnwOAe571bPQ8TK29zNGxuzBIU7RbLnm+wfbA64eBBcg7jfvqmZzT+
-         K01N1uMVTfu886MssUikJUUiCDe43yIt54hnWL5c=
+        b=Je+79GxDvFpxGRohP78jsEwbX+itE2jhtyFf76CjmhyM4btl8UYKIC1bsYjPkait2
+         IUHsC27/dXFgLwr628S5Bk/2MYtLMQKIAzfSr0mROZ1ajtrmCuOfLieubv9DgD2mE7
+         ndO5bx0i+WZCKMEjA+blqawYTprfluqPNfoz5Olk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        butt3rflyh4ck <butterflyhuangxx@gmail.com>,
+        Edward Shishkin <edward.shishkin@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/139] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Subject: [PATCH 4.14 035/186] reiserfs: Check the return value from __getblk()
 Date:   Wed, 20 Sep 2023 13:28:58 +0200
-Message-ID: <20230920112835.731881476@linuxfoundation.org>
+Message-ID: <20230920112838.212573254@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Mainkar <abmainkar@nvidia.com>
+From: Matthew Wilcox <willy@infradead.org>
 
-[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
+[ Upstream commit ba38980add7ffc9e674ada5b4ded4e7d14e76581 ]
 
-ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
+__getblk() can return a NULL pointer if we run out of memory or if we
+try to access beyond the end of the device; check it and handle it
+appropriately.
 
-According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
-
-When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
-
-=============================================================
-UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
-CPU: 37 PID: 1678 Comm: cat Not tainted
-6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
-HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
- dump_backtrace+0xe0/0x130
- show_stack+0x20/0x60
- dump_stack_lvl+0x68/0x84
- dump_stack+0x18/0x34
- ubsan_epilogue+0x10/0x50
- __ubsan_handle_out_of_bounds+0x80/0x90
- acpi_ds_exec_end_op+0x1bc/0x6d8
- acpi_ps_parse_loop+0x57c/0x618
- acpi_ps_parse_aml+0x1e0/0x4b4
- acpi_ps_execute_method+0x24c/0x2b8
- acpi_ns_evaluate+0x3a8/0x4bc
- acpi_evaluate_object+0x15c/0x37c
- acpi_evaluate_integer+0x54/0x15c
- show_power+0x8c/0x12c [acpi_power_meter]
-
-Link: https://github.com/acpica/acpica/commit/90310989
-Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/lkml/CAFcO6XOacq3hscbXevPQP7sXRoYFz34ZdKPYjmd6k5sZuhGFDw@mail.gmail.com/
+Tested-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") # probably introduced in 2002
+Acked-by: Edward Shishkin <edward.shishkin@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psopcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/reiserfs/journal.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index bef69e87a0a29..8c34c0ffb1d93 100644
---- a/drivers/acpi/acpica/psopcode.c
-+++ b/drivers/acpi/acpica/psopcode.c
-@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+diff --git a/fs/reiserfs/journal.c b/fs/reiserfs/journal.c
+index 1a6e6343fed36..53d2e397c123e 100644
+--- a/fs/reiserfs/journal.c
++++ b/fs/reiserfs/journal.c
+@@ -2333,7 +2333,7 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
+ 	int i, j;
  
- /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
- 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
--			 AML_FLAGS_EXEC_0A_0T_1R),
-+			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+ 	bh = __getblk(dev, block, bufsize);
+-	if (buffer_uptodate(bh))
++	if (!bh || buffer_uptodate(bh))
+ 		return (bh);
  
- /* ACPI 5.0 opcodes */
- 
+ 	if (block + BUFNR > max_block) {
+@@ -2343,6 +2343,8 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
+ 	j = 1;
+ 	for (i = 1; i < blocks; i++) {
+ 		bh = __getblk(dev, block + i, bufsize);
++		if (!bh)
++			break;
+ 		if (buffer_uptodate(bh)) {
+ 			brelse(bh);
+ 			break;
 -- 
 2.40.1
 
