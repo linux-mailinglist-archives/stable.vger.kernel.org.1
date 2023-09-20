@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4747A7D79
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29F817A7F97
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235212AbjITMJa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53804 "EHLO
+        id S235801AbjITM22 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:28:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235311AbjITMJX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:23 -0400
+        with ESMTP id S235783AbjITM21 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:28:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62454B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C71C433D9;
-        Wed, 20 Sep 2023 12:09:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360B7AB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1A5C433C9;
+        Wed, 20 Sep 2023 12:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211755;
-        bh=pSGPtrB5sUzMdJ9C5ja0g8rf0oaYPkoFGoyy1T/4boU=;
+        s=korg; t=1695212899;
+        bh=qJoHPG1HxlJGczO3pD+8hk0owUtyAtBgrPI1hNjODEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dE2qKcoYDKCsvNuqFEUJ8H63e/v8RyXUeSShRvpVNUBVcZLbU2SHT59apQXdhXy8Y
-         FqKFZ8l9MgN4mDNINeSocOWsJT/57vXmG7fvQpKKLHhk1BLzITslEZ39txQTjxZ9jb
-         c/0D/R/u//eThR+rfYHq0cxTEgUi0asWtVJKjqC0=
+        b=aUJKehjn2dZTGSeQdW9idXGBQZFjgwic+fvLe4YyWbMMqUgpSrfgQW+qq+0eBMpHU
+         Y+2zzOCBIVx9S9N2o4UxWOZedywc6apOqjnbL6k4yKxtjNBEBMhZzDnJQxehrj/2zm
+         I1LYsjj+4BQvrOnqRYtCzjYe7q4eO/NtO6VNW6/A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Rothwell <sfr@canb.auug.org.au>,
-        Winston Wen <wentao@uniontech.com>,
-        Paulo Alcantara <pc@manguebit.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev,
+        syzbot+666c97e4686410e79649@syzkaller.appspotmail.com,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 023/273] fs/nls: make load_nls() take a const parameter
+Subject: [PATCH 5.4 086/367] netrom: Deny concurrent connect().
 Date:   Wed, 20 Sep 2023 13:27:43 +0200
-Message-ID: <20230920112847.146691095@linuxfoundation.org>
+Message-ID: <20230920112900.771999128@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,68 +52,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Winston Wen <wentao@uniontech.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit c1ed39ec116272935528ca9b348b8ee79b0791da ]
+[ Upstream commit c2f8fd7949603efb03908e05abbf7726748c8de3 ]
 
-load_nls() take a char * parameter, use it to find nls module in list or
-construct the module name to load it.
+syzkaller reported null-ptr-deref [0] related to AF_NETROM.
+This is another self-accept issue from the strace log. [1]
 
-This change make load_nls() take a const parameter, so we don't need do
-some cast like this:
+syz-executor creates an AF_NETROM socket and calls connect(), which
+is blocked at that time.  Then, sk->sk_state is TCP_SYN_SENT and
+sock->state is SS_CONNECTING.
 
-        ses->local_nls = load_nls((char *)ctx->local_nls->charset);
+  [pid  5059] socket(AF_NETROM, SOCK_SEQPACKET, 0) = 4
+  [pid  5059] connect(4, {sa_family=AF_NETROM, sa_data="..." <unfinished ...>
 
-Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Winston Wen <wentao@uniontech.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Another thread calls connect() concurrently, which finally fails
+with -EINVAL.  However, the problem here is the socket state is
+reset even while the first connect() is blocked.
+
+  [pid  5060] connect(4, NULL, 0 <unfinished ...>
+  [pid  5060] <... connect resumed>)      = -1 EINVAL (Invalid argument)
+
+As sk->state is TCP_CLOSE and sock->state is SS_UNCONNECTED, the
+following listen() succeeds.  Then, the first connect() looks up
+itself as a listener and puts skb into the queue with skb->sk itself.
+As a result, the next accept() gets another FD of itself as 3, and
+the first connect() finishes.
+
+  [pid  5060] listen(4, 0 <unfinished ...>
+  [pid  5060] <... listen resumed>)       = 0
+  [pid  5060] accept(4, NULL, NULL <unfinished ...>
+  [pid  5060] <... accept resumed>)       = 3
+  [pid  5059] <... connect resumed>)      = 0
+
+Then, accept4() is called but blocked, which causes the general protection
+fault later.
+
+  [pid  5059] accept4(4, NULL, 0x20000400, SOCK_NONBLOCK <unfinished ...>
+
+After that, another self-accept occurs by accept() and writev().
+
+  [pid  5060] accept(4, NULL, NULL <unfinished ...>
+  [pid  5061] writev(3, [{iov_base=...}] <unfinished ...>
+  [pid  5061] <... writev resumed>)       = 99
+  [pid  5060] <... accept resumed>)       = 6
+
+Finally, the leader thread close()s all FDs.  Since the three FDs
+reference the same socket, nr_release() does the cleanup for it
+three times, and the remaining accept4() causes the following fault.
+
+  [pid  5058] close(3)                    = 0
+  [pid  5058] close(4)                    = 0
+  [pid  5058] close(5)                    = -1 EBADF (Bad file descriptor)
+  [pid  5058] close(6)                    = 0
+  [pid  5058] <... exit_group resumed>)   = ?
+  [   83.456055][ T5059] general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+
+To avoid the issue, we need to return an error for connect() if
+another connect() is in progress, as done in __inet_stream_connect().
+
+[0]:
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 0 PID: 5059 Comm: syz-executor.0 Not tainted 6.5.0-rc5-syzkaller-00194-gace0ab3a4b54 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:__lock_acquire+0x109/0x5de0 kernel/locking/lockdep.c:5012
+Code: 45 85 c9 0f 84 cc 0e 00 00 44 8b 05 11 6e 23 0b 45 85 c0 0f 84 be 0d 00 00 48 ba 00 00 00 00 00 fc ff df 4c 89 d1 48 c1 e9 03 <80> 3c 11 00 0f 85 e8 40 00 00 49 81 3a a0 69 48 90 0f 84 96 0d 00
+RSP: 0018:ffffc90003d6f9e0 EFLAGS: 00010006
+RAX: ffff8880244c8000 RBX: 1ffff920007adf6c RCX: 0000000000000003
+RDX: dffffc0000000000 RSI: 0000000000000000 RDI: 0000000000000018
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
+R10: 0000000000000018 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f51d519a6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f51d5158d58 CR3: 000000002943f000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5761 [inline]
+ lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x50 kernel/locking/spinlock.c:162
+ prepare_to_wait+0x47/0x380 kernel/sched/wait.c:269
+ nr_accept+0x20d/0x650 net/netrom/af_netrom.c:798
+ do_accept+0x3a6/0x570 net/socket.c:1872
+ __sys_accept4_file net/socket.c:1913 [inline]
+ __sys_accept4+0x99/0x120 net/socket.c:1943
+ __do_sys_accept4 net/socket.c:1954 [inline]
+ __se_sys_accept4 net/socket.c:1951 [inline]
+ __x64_sys_accept4+0x96/0x100 net/socket.c:1951
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f51d447cae9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f51d519a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000120
+RAX: ffffffffffffffda RBX: 00007f51d459bf80 RCX: 00007f51d447cae9
+RDX: 0000000020000400 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f51d44c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000800 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f51d459bf80 R15: 00007ffc25c34e48
+ </TASK>
+
+Link: https://syzkaller.appspot.com/text?tag=CrashLog&x=152cdb63a80000 [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+666c97e4686410e79649@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=666c97e4686410e79649
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c   | 4 ++--
- include/linux/nls.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/netrom/af_netrom.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index 52ccd34b1e792..a026dbd3593f6 100644
---- a/fs/nls/nls_base.c
-+++ b/fs/nls/nls_base.c
-@@ -272,7 +272,7 @@ int unregister_nls(struct nls_table * nls)
- 	return -EINVAL;
- }
+diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
+index 7da77ddba5f4d..e18a73264c103 100644
+--- a/net/netrom/af_netrom.c
++++ b/net/netrom/af_netrom.c
+@@ -638,6 +638,11 @@ static int nr_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto out_release;
+ 	}
  
--static struct nls_table *find_nls(char *charset)
-+static struct nls_table *find_nls(const char *charset)
- {
- 	struct nls_table *nls;
- 	spin_lock(&nls_lock);
-@@ -288,7 +288,7 @@ static struct nls_table *find_nls(char *charset)
- 	return nls;
- }
++	if (sock->state == SS_CONNECTING) {
++		err = -EALREADY;
++		goto out_release;
++	}
++
+ 	sk->sk_state   = TCP_CLOSE;
+ 	sock->state = SS_UNCONNECTED;
  
--struct nls_table *load_nls(char *charset)
-+struct nls_table *load_nls(const char *charset)
- {
- 	return try_then_request_module(find_nls(charset), "nls_%s", charset);
- }
-diff --git a/include/linux/nls.h b/include/linux/nls.h
-index 499e486b3722d..e0bf8367b274a 100644
---- a/include/linux/nls.h
-+++ b/include/linux/nls.h
-@@ -47,7 +47,7 @@ enum utf16_endian {
- /* nls_base.c */
- extern int __register_nls(struct nls_table *, struct module *);
- extern int unregister_nls(struct nls_table *);
--extern struct nls_table *load_nls(char *);
-+extern struct nls_table *load_nls(const char *charset);
- extern void unload_nls(struct nls_table *);
- extern struct nls_table *load_nls_default(void);
- #define register_nls(nls) __register_nls((nls), THIS_MODULE)
 -- 
 2.40.1
 
