@@ -2,181 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A227A7A6B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC33B7A7AAC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233786AbjITL2M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34798 "EHLO
+        id S234481AbjITLo7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:44:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232327AbjITL2M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:28:12 -0400
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13398A9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:28:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1695209285; x=1726745285;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=OwYxfNMAvLPySsToAAeJAxdm8BOe3vV6MO0rHehrKNc=;
-  b=iVmLfDETzYd3hMgtzmc0KoUod87/aXpldu9ZMNStf1Cn1hUPxdCaAQew
-   6gsVKjMCDJ8D3fKKppVNMq74wCxovCGP8/CkmwOnOxFbOdGDasZ7wyOVE
-   Y8OU5aOZ8lzoqbtiCQyKlASnlLXii0S+FL8mPLoKgvFXBrAE0SJOVcHlj
-   jS18eSstCJLbSVYodWvsmPFIVncfEeGGzdzVoPLY4LjWPMi6DTouKC35r
-   uOiEbidlg/IcFI8FYcLEDPl9jrvLsiBl7ADNazRQPPoIonGRmUkW9UHyn
-   9Ikk6trrjVQsxjrqwBUS6ZJ+ZW9/+8oQSxS6xhts77jeV8oxVYIeUYc3n
-   w==;
-X-CSE-ConnectionGUID: MK5HLT0zRCuWkMJ2hXkdQA==
-X-CSE-MsgGUID: lyId3GgITZOrC+x042WBMw==
-X-IronPort-AV: E=Sophos;i="6.02,161,1688400000"; 
-   d="scan'208";a="242621967"
-Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 20 Sep 2023 19:28:05 +0800
-IronPort-SDR: bAR9aEHc1t6FWJio7N2u36lH3QyqykEBZT33Z3ZPANr41z+SOttc8OyhHAVlFlWF1Sc8v+ncEc
- Rva+MYz8beuQfg7G9MaLldu4ACbhjGHVvKC069tOn+0axw3kN3oprViQroOKkj+o+ojQIkMXvg
- 2Lqp69qgbNp+GBw0kQvO/X7Zli78eMvH3NPW0O78PXR2Pra12AWpVkh6R3P9Sdnf5uII2bPMZ0
- 3OjCTjERNyYw9XvQVpUl7xqMkBNv7/iuxErSeaj99V7W4Vv8EYYs0JDTi9zt2SWEvA4FCT3uNs
- FhE=
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Sep 2023 03:34:59 -0700
-IronPort-SDR: IVZ6B/9n7/esE0G4kKLNSBk2Nwbjgtee7+EKcr6NTt6Elg7qfrr113FHQBdDwsJs/Ewq8Jxkhq
- 9f20xHTQpZdMsgqCe2TwyJfvYfjy2mLCfsqVSPwGPzPQVLayftwXeQLgjNV91Lykm2ZB+8LCC/
- KupzsClh4xpl5NYSelEvqbbD8eVFPhIUAFBfSXKw+40mWfcGxE5dbBrgQKIDymd+cfxNHPgZV5
- AQb/R0RcqeujfodERB7SmYusEJa2yo7RNl05v44cdVc8V/OzvKs+W7AtYSYTCdEHZ1ufZMTFd0
- 4NQ=
-WDCIronportException: Internal
-Received: from unknown (HELO x1-carbon.lan) ([10.225.163.91])
-  by uls-op-cesaip01.wdc.com with ESMTP; 20 Sep 2023 04:28:01 -0700
-From:   Niklas Cassel <niklas.cassel@wdc.com>
+        with ESMTP id S234492AbjITLo6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:44:58 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F30EF0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:44:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EA6C433C7;
+        Wed, 20 Sep 2023 11:44:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1695210290;
+        bh=LmrYutY7fbdfmSy5hGpZfYmPKAYUdg5rW0P7QuJh5Ss=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=aXfFgOpiOkn3+QZ9IARv9whPXwGxc+lrd/NSQKRMBxlx9sqnE9InHTvHlmJ+tk8Ea
+         bx+tjDijnKoWRyHlVqQaJHepnPAXkkMDUG58gL7iGifZxL/r7fdtfS9wqc8xlae3dG
+         Yz99OUGzbZjiRXjM3bLZ66uIcXSmeNU7Bbxf5KqM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
-Cc:     Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH] ata: libata: disallow dev-initiated LPM transitions to unsupported states
-Date:   Wed, 20 Sep 2023 13:27:45 +0200
-Message-ID: <20230920112745.125794-1-niklas.cassel@wdc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023092002-mobster-onset-2af9@gregkh>
-References: <2023092002-mobster-onset-2af9@gregkh>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Maksim Kiselev <bigunclemax@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 022/211] spi: sun6i: add quirk for dual and quad SPI modes support
+Date:   Wed, 20 Sep 2023 13:27:46 +0200
+Message-ID: <20230920112846.490787190@linuxfoundation.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In AHCI 1.3.1, the register description for CAP.SSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Slumber state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Slumber requests."
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
-In AHCI 1.3.1, the register description for CAP.PSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Partial state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Partial requests."
+------------------
 
-Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
-a device is not allowed to initiate transitions to power states which are
-unsupported by the HBA.
+From: Maksim Kiselev <bigunclemax@gmail.com>
 
-DevSleep is always initiated by the HBA, however, for completeness, set the
-corresponding bit in PxSCTL.IPM such that agressive link power management
-cannot transition to DevSleep if DevSleep is not supported.
+[ Upstream commit 0605d9fb411f3337482976842a3901d6c125d298 ]
 
-sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
-However, only libahci has the ability to read the CAP/CAP2 register to see
-if these features are supported. Therefore, in order to not introduce any
-regressions on ata_piix or libata-pmp, create flags that indicate that the
-respective feature is NOT supported. This way, the behavior for ata_piix
-and libata-pmp should remain unchanged.
+New Allwinner's SPI controllers can support dual and quad SPI modes.
+To enable one of these modes, we should set the corresponding bit in
+the SUN6I_BURST_CTL_CNT_REG register. DRM (28 bits) for dual mode and
+Quad_EN (29 bits) for quad transmission.
 
-This change is based on a patch originally submitted by Runa Guo-oc.
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-(cherry picked from commit 24e0e61db3cb86a66824531989f1df80e0939f26)
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
+Link: https://lore.kernel.org/r/20230624131632.2972546-2-bigunclemax@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c        |  9 +++++++++
- drivers/ata/libata-core.c | 19 ++++++++++++++++---
- include/linux/libata.h    |  4 ++++
- 3 files changed, 29 insertions(+), 3 deletions(-)
+ drivers/spi/spi-sun6i.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 0905c07b8c7e..abb3dd048556 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1777,6 +1777,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	else
- 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 30d541612253e..cec2747235abf 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -83,6 +83,9 @@
+ #define SUN6I_XMIT_CNT_REG		0x34
  
-+	if (!(hpriv->cap & HOST_CAP_PART))
-+		host->flags |= ATA_HOST_NO_PART;
-+
-+	if (!(hpriv->cap & HOST_CAP_SSC))
-+		host->flags |= ATA_HOST_NO_SSC;
-+
-+	if (!(hpriv->cap2 & HOST_CAP2_SDS))
-+		host->flags |= ATA_HOST_NO_DEVSLP;
-+
- 	if (pi.flags & ATA_FLAG_EM)
- 		ahci_reset_em(host);
+ #define SUN6I_BURST_CTL_CNT_REG		0x38
++#define SUN6I_BURST_CTL_CNT_STC_MASK		GENMASK(23, 0)
++#define SUN6I_BURST_CTL_CNT_DRM			BIT(28)
++#define SUN6I_BURST_CTL_CNT_QUAD_EN		BIT(29)
  
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 08dc37a62f5a..69002ad15500 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -3993,10 +3993,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
- 		scontrol |= (0x6 << 8);
- 		break;
- 	case ATA_LPM_MIN_POWER:
--		if (ata_link_nr_enabled(link) > 0)
--			/* no restrictions on LPM transitions */
-+		if (ata_link_nr_enabled(link) > 0) {
-+			/* assume no restrictions on LPM transitions */
- 			scontrol &= ~(0x7 << 8);
--		else {
-+
-+			/*
-+			 * If the controller does not support partial, slumber,
-+			 * or devsleep, then disallow these transitions.
-+			 */
-+			if (link->ap->host->flags & ATA_HOST_NO_PART)
-+				scontrol |= (0x1 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_SSC)
-+				scontrol |= (0x2 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
-+				scontrol |= (0x4 << 8);
-+		} else {
- 			/* empty port, power off */
- 			scontrol &= ~0xf;
- 			scontrol |= (0x1 << 2);
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 0e9f8fd37eb9..ab2c5d6cabed 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -279,6 +279,10 @@ enum {
- 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
- 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+ #define SUN6I_TXDATA_REG		0x200
+ #define SUN6I_RXDATA_REG		0x300
+@@ -90,6 +93,7 @@
+ struct sun6i_spi_cfg {
+ 	unsigned long		fifo_depth;
+ 	bool			has_clk_ctl;
++	u32			mode_bits;
+ };
  
-+	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
-+	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
-+	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
-+
- 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+ struct sun6i_spi {
+@@ -266,7 +270,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	unsigned int div, div_cdr1, div_cdr2, timeout;
+ 	unsigned int start, end, tx_time;
+ 	unsigned int trig_level;
+-	unsigned int tx_len = 0, rx_len = 0;
++	unsigned int tx_len = 0, rx_len = 0, nbits = 0;
+ 	bool use_dma;
+ 	int ret = 0;
+ 	u32 reg;
+@@ -418,13 +422,29 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG, reg);
  
- 	/* various lengths of time */
+ 	/* Setup the transfer now... */
+-	if (sspi->tx_buf)
++	if (sspi->tx_buf) {
+ 		tx_len = tfr->len;
++		nbits = tfr->tx_nbits;
++	} else if (tfr->rx_buf) {
++		nbits = tfr->rx_nbits;
++	}
++
++	switch (nbits) {
++	case SPI_NBITS_DUAL:
++		reg = SUN6I_BURST_CTL_CNT_DRM;
++		break;
++	case SPI_NBITS_QUAD:
++		reg = SUN6I_BURST_CTL_CNT_QUAD_EN;
++		break;
++	case SPI_NBITS_SINGLE:
++	default:
++		reg = FIELD_PREP(SUN6I_BURST_CTL_CNT_STC_MASK, tx_len);
++	}
+ 
+ 	/* Setup the counters */
++	sun6i_spi_write(sspi, SUN6I_BURST_CTL_CNT_REG, reg);
+ 	sun6i_spi_write(sspi, SUN6I_BURST_CNT_REG, tfr->len);
+ 	sun6i_spi_write(sspi, SUN6I_XMIT_CNT_REG, tx_len);
+-	sun6i_spi_write(sspi, SUN6I_BURST_CTL_CNT_REG, tx_len);
+ 
+ 	if (!use_dma) {
+ 		/* Fill the TX FIFO */
+@@ -623,7 +643,8 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	master->set_cs = sun6i_spi_set_cs;
+ 	master->transfer_one = sun6i_spi_transfer_one;
+ 	master->num_chipselect = 4;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
++			    sspi->cfg->mode_bits;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->auto_runtime_pm = true;
 -- 
-2.41.0
+2.40.1
+
+
 
