@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95AF37A7BE9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F007A7B53
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234563AbjITL4r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39134 "EHLO
+        id S234720AbjITLvJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234898AbjITL4o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:44 -0400
+        with ESMTP id S234697AbjITLvG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE66CE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A23C433CA;
-        Wed, 20 Sep 2023 11:56:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A73BA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70AFC433C8;
+        Wed, 20 Sep 2023 11:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210993;
-        bh=LRHoVk6omr8VQ1gmpf6THNRg9z1ipGoChiZS10DDBWI=;
+        s=korg; t=1695210660;
+        bh=gj6lxyVyVE8hY2Z2Wa5I7y34AEQavXnUpuar/2EDPpA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y/GMFQTivUtzp5UGzGAxHZC0aT7Ra9yxoColwRl7swuNplPr2UjCNqUh3BPmEAhmz
-         HATf33CLYzuBpqHZI5cGQ4HWc8xc5LxsLdN46HAsz8mGrtlSF4WTaSppzE062Vfis0
-         8YKl7ZONWdaPbKhAcvNvNCOTiPojeNBBQIAvevU4=
+        b=vEsH5nY7qBRtta8H1hkGebp1t8qT+DpPEY5UbLxGESQfzp27LX0vO8FORPsu1ns97
+         UvLnHEz5DqHYwL3/Hb9QUOcDnH5DRaUGHFT+lsNQKp/C2/UOMzcVQaBd7k9bkdrheO
+         zACPhARsf/zZ2wZPotyJ+O5lXehU2uFyzXzH4jCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/139] arm64: dts: qcom: sm6125-pdx201: correct ramoops pmsg-size
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 131/211] printk: Consolidate console deferred printing
 Date:   Wed, 20 Sep 2023 13:29:35 +0200
-Message-ID: <20230920112837.168933032@linuxfoundation.org>
+Message-ID: <20230920112849.878290815@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +50,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit c42f5452de6ad2599c6e5e2a64c180a4ac835d27 ]
+[ Upstream commit 696ffaf50e1f8dbc66223ff614473f945f5fb8d8 ]
 
-There is no 'msg-size' property in ramoops, so assume intention was for
-'pmsg-size':
+Printing to consoles can be deferred for several reasons:
 
-  sm6125-sony-xperia-seine-pdx201.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
+- explicitly with printk_deferred()
+- printk() in NMI context
+- recursive printk() calls
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230618114442.140185-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The current implementation is not consistent. For printk_deferred(),
+irq work is scheduled twice. For NMI und recursive, panic CPU
+suppression and caller delays are not properly enforced.
+
+Correct these inconsistencies by consolidating the deferred printing
+code so that vprintk_deferred() is the top-level function for
+deferred printing and vprintk_emit() will perform whichever irq_work
+queueing is appropriate.
+
+Also add kerneldoc for wake_up_klogd() and defer_console_output() to
+clarify their differences and appropriate usage.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-6-john.ogness@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/printk/printk.c      | 35 ++++++++++++++++++++++++++++-------
+ kernel/printk/printk_safe.c |  9 ++-------
+ 2 files changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-index e1ab5b5189949..4a77b650c0d8d 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-@@ -73,7 +73,7 @@ pstore_mem: ramoops@ffc00000 {
- 			reg = <0x0 0xffc40000 0x0 0xc0000>;
- 			record-size = <0x1000>;
- 			console-size = <0x40000>;
--			msg-size = <0x20000 0x20000>;
-+			pmsg-size = <0x20000>;
- 		};
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 88770561c4350..d5e29fad84234 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2308,7 +2308,11 @@ asmlinkage int vprintk_emit(int facility, int level,
+ 		preempt_enable();
+ 	}
  
- 		cmdline_mem: memory@ffd00000 {
+-	wake_up_klogd();
++	if (in_sched)
++		defer_console_output();
++	else
++		wake_up_klogd();
++
+ 	return printed_len;
+ }
+ EXPORT_SYMBOL(vprintk_emit);
+@@ -3843,11 +3847,33 @@ static void __wake_up_klogd(int val)
+ 	preempt_enable();
+ }
+ 
++/**
++ * wake_up_klogd - Wake kernel logging daemon
++ *
++ * Use this function when new records have been added to the ringbuffer
++ * and the console printing of those records has already occurred or is
++ * known to be handled by some other context. This function will only
++ * wake the logging daemon.
++ *
++ * Context: Any context.
++ */
+ void wake_up_klogd(void)
+ {
+ 	__wake_up_klogd(PRINTK_PENDING_WAKEUP);
+ }
+ 
++/**
++ * defer_console_output - Wake kernel logging daemon and trigger
++ *	console printing in a deferred context
++ *
++ * Use this function when new records have been added to the ringbuffer,
++ * this context is responsible for console printing those records, but
++ * the current context is not allowed to perform the console printing.
++ * Trigger an irq_work context to perform the console printing. This
++ * function also wakes the logging daemon.
++ *
++ * Context: Any context.
++ */
+ void defer_console_output(void)
+ {
+ 	/*
+@@ -3864,12 +3890,7 @@ void printk_trigger_flush(void)
+ 
+ int vprintk_deferred(const char *fmt, va_list args)
+ {
+-	int r;
+-
+-	r = vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);
+-	defer_console_output();
+-
+-	return r;
++	return vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);
+ }
+ 
+ int _printk_deferred(const char *fmt, ...)
+diff --git a/kernel/printk/printk_safe.c b/kernel/printk/printk_safe.c
+index ef0f9a2044da1..6d10927a07d83 100644
+--- a/kernel/printk/printk_safe.c
++++ b/kernel/printk/printk_safe.c
+@@ -38,13 +38,8 @@ asmlinkage int vprintk(const char *fmt, va_list args)
+ 	 * Use the main logbuf even in NMI. But avoid calling console
+ 	 * drivers that might have their own locks.
+ 	 */
+-	if (this_cpu_read(printk_context) || in_nmi()) {
+-		int len;
+-
+-		len = vprintk_store(0, LOGLEVEL_DEFAULT, NULL, fmt, args);
+-		defer_console_output();
+-		return len;
+-	}
++	if (this_cpu_read(printk_context) || in_nmi())
++		return vprintk_deferred(fmt, args);
+ 
+ 	/* No obstacles. */
+ 	return vprintk_default(fmt, args);
 -- 
 2.40.1
 
