@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F30C37A819E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6B0D7A812A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235055AbjITMrL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42530 "EHLO
+        id S234540AbjITMnG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:43:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235368AbjITMrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:47:08 -0400
+        with ESMTP id S236115AbjITMnG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48041DC
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71D5C433CB;
-        Wed, 20 Sep 2023 12:46:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BF98F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1ADAC433C9;
+        Wed, 20 Sep 2023 12:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695214019;
-        bh=06kRVzEeMqIj8oxoBuN3s9RA3eQDIm4tenDzwULI4OU=;
+        s=korg; t=1695213779;
+        bh=l9dB67RVYPzmCQG74kHEafPEivCS0KyI8cBlOdsH1os=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z5QO3uARW30Rt60MmJwE7otggzLcY2rz2sQwPDeGZCBM6n79bU8UrrggKZBv5TU6m
-         nufuqQDJiDqWi57Rv0qpCvMPCzT4DwB8FtWgQndAtf7n0ma/q7G+0rliLlPlhaHBlj
-         neaLdB6bzEscjWYSseJSwCmpJdDROjmBzCjhbZsM=
+        b=lGqGOSiPyLSm6cdOFhXkwipNwLHmft+W4+hIdNRFaSWYUL1VEcIIB+WsPkN/LM4Bf
+         +kqXFLwNqOVSxFnK8jm3mhE+mD36loayKQCjyCkMSQsTpPJoRhvZ47P2okkH5ZBAnb
+         /UZd92l51QNz1l3d8aJHgE4uIyGeUMre/wBT8aso=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/110] netfilter: nf_tables: make validation state per table
+        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 363/367] scsi: megaraid_sas: Fix deadlock on firmware crashdump
 Date:   Wed, 20 Sep 2023 13:32:20 +0200
-Message-ID: <20230920112833.489041399@linuxfoundation.org>
+Message-ID: <20230920112907.881410516@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,176 +50,179 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit 00c320f9b75560628e840bef027a27c746706759 ]
+commit 0b0747d507bffb827e40fc0f9fb5883fffc23477 upstream.
 
-We only need to validate tables that saw changes in the current
-transaction.
+The following processes run into a deadlock. CPU 41 was waiting for CPU 29
+to handle a CSD request while holding spinlock "crashdump_lock", but CPU 29
+was hung by that spinlock with IRQs disabled.
 
-The existing code revalidates all tables, but this isn't needed as
-cross-table jumps are not allowed (chains have table scope).
+  PID: 17360    TASK: ffff95c1090c5c40  CPU: 41  COMMAND: "mrdiagd"
+  !# 0 [ffffb80edbf37b58] __read_once_size at ffffffff9b871a40 include/linux/compiler.h:185:0
+  !# 1 [ffffb80edbf37b58] atomic_read at ffffffff9b871a40 arch/x86/include/asm/atomic.h:27:0
+  !# 2 [ffffb80edbf37b58] dump_stack at ffffffff9b871a40 lib/dump_stack.c:54:0
+   # 3 [ffffb80edbf37b78] csd_lock_wait_toolong at ffffffff9b131ad5 kernel/smp.c:364:0
+   # 4 [ffffb80edbf37b78] __csd_lock_wait at ffffffff9b131ad5 kernel/smp.c:384:0
+   # 5 [ffffb80edbf37bf8] csd_lock_wait at ffffffff9b13267a kernel/smp.c:394:0
+   # 6 [ffffb80edbf37bf8] smp_call_function_many at ffffffff9b13267a kernel/smp.c:843:0
+   # 7 [ffffb80edbf37c50] smp_call_function at ffffffff9b13279d kernel/smp.c:867:0
+   # 8 [ffffb80edbf37c50] on_each_cpu at ffffffff9b13279d kernel/smp.c:976:0
+   # 9 [ffffb80edbf37c78] flush_tlb_kernel_range at ffffffff9b085c4b arch/x86/mm/tlb.c:742:0
+   #10 [ffffb80edbf37cb8] __purge_vmap_area_lazy at ffffffff9b23a1e0 mm/vmalloc.c:701:0
+   #11 [ffffb80edbf37ce0] try_purge_vmap_area_lazy at ffffffff9b23a2cc mm/vmalloc.c:722:0
+   #12 [ffffb80edbf37ce0] free_vmap_area_noflush at ffffffff9b23a2cc mm/vmalloc.c:754:0
+   #13 [ffffb80edbf37cf8] free_unmap_vmap_area at ffffffff9b23bb3b mm/vmalloc.c:764:0
+   #14 [ffffb80edbf37cf8] remove_vm_area at ffffffff9b23bb3b mm/vmalloc.c:1509:0
+   #15 [ffffb80edbf37d18] __vunmap at ffffffff9b23bb8a mm/vmalloc.c:1537:0
+   #16 [ffffb80edbf37d40] vfree at ffffffff9b23bc85 mm/vmalloc.c:1612:0
+   #17 [ffffb80edbf37d58] megasas_free_host_crash_buffer [megaraid_sas] at ffffffffc020b7f2 drivers/scsi/megaraid/megaraid_sas_fusion.c:3932:0
+   #18 [ffffb80edbf37d80] fw_crash_state_store [megaraid_sas] at ffffffffc01f804d drivers/scsi/megaraid/megaraid_sas_base.c:3291:0
+   #19 [ffffb80edbf37dc0] dev_attr_store at ffffffff9b56dd7b drivers/base/core.c:758:0
+   #20 [ffffb80edbf37dd0] sysfs_kf_write at ffffffff9b326acf fs/sysfs/file.c:144:0
+   #21 [ffffb80edbf37de0] kernfs_fop_write at ffffffff9b325fd4 fs/kernfs/file.c:316:0
+   #22 [ffffb80edbf37e20] __vfs_write at ffffffff9b29418a fs/read_write.c:480:0
+   #23 [ffffb80edbf37ea8] vfs_write at ffffffff9b294462 fs/read_write.c:544:0
+   #24 [ffffb80edbf37ee8] SYSC_write at ffffffff9b2946ec fs/read_write.c:590:0
+   #25 [ffffb80edbf37ee8] SyS_write at ffffffff9b2946ec fs/read_write.c:582:0
+   #26 [ffffb80edbf37f30] do_syscall_64 at ffffffff9b003ca9 arch/x86/entry/common.c:298:0
+   #27 [ffffb80edbf37f58] entry_SYSCALL_64 at ffffffff9ba001b1 arch/x86/entry/entry_64.S:238:0
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  PID: 17355    TASK: ffff95c1090c3d80  CPU: 29  COMMAND: "mrdiagd"
+  !# 0 [ffffb80f2d3c7d30] __read_once_size at ffffffff9b0f2ab0 include/linux/compiler.h:185:0
+  !# 1 [ffffb80f2d3c7d30] native_queued_spin_lock_slowpath at ffffffff9b0f2ab0 kernel/locking/qspinlock.c:368:0
+   # 2 [ffffb80f2d3c7d58] pv_queued_spin_lock_slowpath at ffffffff9b0f244b arch/x86/include/asm/paravirt.h:674:0
+   # 3 [ffffb80f2d3c7d58] queued_spin_lock_slowpath at ffffffff9b0f244b arch/x86/include/asm/qspinlock.h:53:0
+   # 4 [ffffb80f2d3c7d68] queued_spin_lock at ffffffff9b8961a6 include/asm-generic/qspinlock.h:90:0
+   # 5 [ffffb80f2d3c7d68] do_raw_spin_lock_flags at ffffffff9b8961a6 include/linux/spinlock.h:173:0
+   # 6 [ffffb80f2d3c7d68] __raw_spin_lock_irqsave at ffffffff9b8961a6 include/linux/spinlock_api_smp.h:122:0
+   # 7 [ffffb80f2d3c7d68] _raw_spin_lock_irqsave at ffffffff9b8961a6 kernel/locking/spinlock.c:160:0
+   # 8 [ffffb80f2d3c7d88] fw_crash_buffer_store [megaraid_sas] at ffffffffc01f8129 drivers/scsi/megaraid/megaraid_sas_base.c:3205:0
+   # 9 [ffffb80f2d3c7dc0] dev_attr_store at ffffffff9b56dd7b drivers/base/core.c:758:0
+   #10 [ffffb80f2d3c7dd0] sysfs_kf_write at ffffffff9b326acf fs/sysfs/file.c:144:0
+   #11 [ffffb80f2d3c7de0] kernfs_fop_write at ffffffff9b325fd4 fs/kernfs/file.c:316:0
+   #12 [ffffb80f2d3c7e20] __vfs_write at ffffffff9b29418a fs/read_write.c:480:0
+   #13 [ffffb80f2d3c7ea8] vfs_write at ffffffff9b294462 fs/read_write.c:544:0
+   #14 [ffffb80f2d3c7ee8] SYSC_write at ffffffff9b2946ec fs/read_write.c:590:0
+   #15 [ffffb80f2d3c7ee8] SyS_write at ffffffff9b2946ec fs/read_write.c:582:0
+   #16 [ffffb80f2d3c7f30] do_syscall_64 at ffffffff9b003ca9 arch/x86/entry/common.c:298:0
+   #17 [ffffb80f2d3c7f58] entry_SYSCALL_64 at ffffffff9ba001b1 arch/x86/entry/entry_64.S:238:0
+
+The lock is used to synchronize different sysfs operations, it doesn't
+protect any resource that will be touched by an interrupt. Consequently
+it's not required to disable IRQs. Replace the spinlock with a mutex to fix
+the deadlock.
+
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Link: https://lore.kernel.org/r/20230828221018.19471-1-junxiao.bi@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  3 ++-
- net/netfilter/nf_tables_api.c     | 38 +++++++++++++++----------------
- 2 files changed, 20 insertions(+), 21 deletions(-)
+ drivers/scsi/megaraid/megaraid_sas.h      |    2 +-
+ drivers/scsi/megaraid/megaraid_sas_base.c |   21 +++++++++------------
+ 2 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 1458b3eae8ada..b8d967e0eb1e2 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1183,6 +1183,7 @@ static inline void nft_use_inc_restore(u32 *use)
-  *	@genmask: generation mask
-  *	@afinfo: address family info
-  *	@name: name of the table
-+ *	@validate_state: internal, set when transaction adds jumps
-  */
- struct nft_table {
- 	struct list_head		list;
-@@ -1201,6 +1202,7 @@ struct nft_table {
- 	char				*name;
- 	u16				udlen;
- 	u8				*udata;
-+	u8				validate_state;
- };
+--- a/drivers/scsi/megaraid/megaraid_sas.h
++++ b/drivers/scsi/megaraid/megaraid_sas.h
+@@ -2324,7 +2324,7 @@ struct megasas_instance {
+ 	u32 support_morethan256jbod; /* FW support for more than 256 PD/JBOD */
+ 	bool use_seqnum_jbod_fp;   /* Added for PD sequence */
+ 	bool smp_affinity_enable;
+-	spinlock_t crashdump_lock;
++	struct mutex crashdump_lock;
  
- static inline bool nft_table_has_owner(const struct nft_table *table)
-@@ -1682,7 +1684,6 @@ struct nftables_pernet {
- 	struct mutex		commit_mutex;
- 	u64			table_handle;
- 	unsigned int		base_seq;
--	u8			validate_state;
- };
+ 	struct megasas_register_set __iomem *reg_set;
+ 	u32 __iomem *reply_post_host_index_addr[MR_MAX_MSIX_REG_ARRAY];
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -3208,14 +3208,13 @@ fw_crash_buffer_store(struct device *cde
+ 	struct megasas_instance *instance =
+ 		(struct megasas_instance *) shost->hostdata;
+ 	int val = 0;
+-	unsigned long flags;
  
- extern unsigned int nf_tables_net_id;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index d84da11aaee5c..dde19be41610d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -102,11 +102,9 @@ static const u8 nft2audit_op[NFT_MSG_MAX] = { // enum nf_tables_msg_types
- 	[NFT_MSG_DELFLOWTABLE]	= AUDIT_NFT_OP_FLOWTABLE_UNREGISTER,
- };
+ 	if (kstrtoint(buf, 0, &val) != 0)
+ 		return -EINVAL;
  
--static void nft_validate_state_update(struct net *net, u8 new_validate_state)
-+static void nft_validate_state_update(struct nft_table *table, u8 new_validate_state)
- {
--	struct nftables_pernet *nft_net = nft_pernet(net);
--
--	switch (nft_net->validate_state) {
-+	switch (table->validate_state) {
- 	case NFT_VALIDATE_SKIP:
- 		WARN_ON_ONCE(new_validate_state == NFT_VALIDATE_DO);
- 		break;
-@@ -117,7 +115,7 @@ static void nft_validate_state_update(struct net *net, u8 new_validate_state)
- 			return;
- 	}
- 
--	nft_net->validate_state = new_validate_state;
-+	table->validate_state = new_validate_state;
+-	spin_lock_irqsave(&instance->crashdump_lock, flags);
++	mutex_lock(&instance->crashdump_lock);
+ 	instance->fw_crash_buffer_offset = val;
+-	spin_unlock_irqrestore(&instance->crashdump_lock, flags);
++	mutex_unlock(&instance->crashdump_lock);
+ 	return strlen(buf);
  }
- static void nf_tables_trans_destroy_work(struct work_struct *w);
- static DECLARE_WORK(trans_destroy_work, nf_tables_trans_destroy_work);
-@@ -1286,6 +1284,7 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (table == NULL)
- 		goto err_kzalloc;
  
-+	table->validate_state = NFT_VALIDATE_SKIP;
- 	table->name = nla_strdup(attr, GFP_KERNEL);
- 	if (table->name == NULL)
- 		goto err_strdup;
-@@ -3650,7 +3649,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 		}
+@@ -3230,24 +3229,23 @@ fw_crash_buffer_show(struct device *cdev
+ 	unsigned long dmachunk = CRASH_DMA_BUF_SIZE;
+ 	unsigned long chunk_left_bytes;
+ 	unsigned long src_addr;
+-	unsigned long flags;
+ 	u32 buff_offset;
  
- 		if (expr_info[i].ops->validate)
--			nft_validate_state_update(net, NFT_VALIDATE_NEED);
-+			nft_validate_state_update(table, NFT_VALIDATE_NEED);
- 
- 		expr_info[i].ops = NULL;
- 		expr = nft_expr_next(expr);
-@@ -3704,7 +3703,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (flow)
- 		nft_trans_flow_rule(trans) = flow;
- 
--	if (nft_net->validate_state == NFT_VALIDATE_DO)
-+	if (table->validate_state == NFT_VALIDATE_DO)
- 		return nft_table_validate(net, table);
- 
- 	return 0;
-@@ -6347,7 +6346,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			if (desc.type == NFT_DATA_VERDICT &&
- 			    (elem.data.val.verdict.code == NFT_GOTO ||
- 			     elem.data.val.verdict.code == NFT_JUMP))
--				nft_validate_state_update(ctx->net,
-+				nft_validate_state_update(ctx->table,
- 							  NFT_VALIDATE_NEED);
- 		}
- 
-@@ -6465,7 +6464,6 @@ static int nf_tables_newsetelem(struct sk_buff *skb,
- 				const struct nfnl_info *info,
- 				const struct nlattr * const nla[])
- {
--	struct nftables_pernet *nft_net = nft_pernet(info->net);
- 	struct netlink_ext_ack *extack = info->extack;
- 	u8 genmask = nft_genmask_next(info->net);
- 	u8 family = info->nfmsg->nfgen_family;
-@@ -6503,7 +6501,7 @@ static int nf_tables_newsetelem(struct sk_buff *skb,
- 			return err;
+-	spin_lock_irqsave(&instance->crashdump_lock, flags);
++	mutex_lock(&instance->crashdump_lock);
+ 	buff_offset = instance->fw_crash_buffer_offset;
+ 	if (!instance->crash_dump_buf ||
+ 		!((instance->fw_crash_state == AVAILABLE) ||
+ 		(instance->fw_crash_state == COPYING))) {
+ 		dev_err(&instance->pdev->dev,
+ 			"Firmware crash dump is not available\n");
+-		spin_unlock_irqrestore(&instance->crashdump_lock, flags);
++		mutex_unlock(&instance->crashdump_lock);
+ 		return -EINVAL;
  	}
  
--	if (nft_net->validate_state == NFT_VALIDATE_DO)
-+	if (table->validate_state == NFT_VALIDATE_DO)
- 		return nft_table_validate(net, table);
- 
- 	return 0;
-@@ -8600,19 +8598,20 @@ static int nf_tables_validate(struct net *net)
- 	struct nftables_pernet *nft_net = nft_pernet(net);
- 	struct nft_table *table;
- 
--	switch (nft_net->validate_state) {
--	case NFT_VALIDATE_SKIP:
--		break;
--	case NFT_VALIDATE_NEED:
--		nft_validate_state_update(net, NFT_VALIDATE_DO);
--		fallthrough;
--	case NFT_VALIDATE_DO:
--		list_for_each_entry(table, &nft_net->tables, list) {
-+	list_for_each_entry(table, &nft_net->tables, list) {
-+		switch (table->validate_state) {
-+		case NFT_VALIDATE_SKIP:
-+			continue;
-+		case NFT_VALIDATE_NEED:
-+			nft_validate_state_update(table, NFT_VALIDATE_DO);
-+			fallthrough;
-+		case NFT_VALIDATE_DO:
- 			if (nft_table_validate(net, table) < 0)
- 				return -EAGAIN;
-+
-+			nft_validate_state_update(table, NFT_VALIDATE_SKIP);
- 		}
- 
--		nft_validate_state_update(net, NFT_VALIDATE_SKIP);
- 		break;
+ 	if (buff_offset > (instance->fw_crash_buffer_size * dmachunk)) {
+ 		dev_err(&instance->pdev->dev,
+ 			"Firmware crash dump offset is out of range\n");
+-		spin_unlock_irqrestore(&instance->crashdump_lock, flags);
++		mutex_unlock(&instance->crashdump_lock);
+ 		return 0;
  	}
  
-@@ -10344,7 +10343,6 @@ static int __net_init nf_tables_init_net(struct net *net)
- 	INIT_LIST_HEAD(&nft_net->notify_list);
- 	mutex_init(&nft_net->commit_mutex);
- 	nft_net->base_seq = 1;
--	nft_net->validate_state = NFT_VALIDATE_SKIP;
+@@ -3259,7 +3257,7 @@ fw_crash_buffer_show(struct device *cdev
+ 	src_addr = (unsigned long)instance->crash_buf[buff_offset / dmachunk] +
+ 		(buff_offset % dmachunk);
+ 	memcpy(buf, (void *)src_addr, size);
+-	spin_unlock_irqrestore(&instance->crashdump_lock, flags);
++	mutex_unlock(&instance->crashdump_lock);
  
- 	return 0;
+ 	return size;
  }
--- 
-2.40.1
-
+@@ -3284,7 +3282,6 @@ fw_crash_state_store(struct device *cdev
+ 	struct megasas_instance *instance =
+ 		(struct megasas_instance *) shost->hostdata;
+ 	int val = 0;
+-	unsigned long flags;
+ 
+ 	if (kstrtoint(buf, 0, &val) != 0)
+ 		return -EINVAL;
+@@ -3298,9 +3295,9 @@ fw_crash_state_store(struct device *cdev
+ 	instance->fw_crash_state = val;
+ 
+ 	if ((val == COPIED) || (val == COPY_ERROR)) {
+-		spin_lock_irqsave(&instance->crashdump_lock, flags);
++		mutex_lock(&instance->crashdump_lock);
+ 		megasas_free_host_crash_buffer(instance);
+-		spin_unlock_irqrestore(&instance->crashdump_lock, flags);
++		mutex_unlock(&instance->crashdump_lock);
+ 		if (val == COPY_ERROR)
+ 			dev_info(&instance->pdev->dev, "application failed to "
+ 				"copy Firmware crash dump\n");
+@@ -7301,7 +7298,7 @@ static inline void megasas_init_ctrl_par
+ 	init_waitqueue_head(&instance->int_cmd_wait_q);
+ 	init_waitqueue_head(&instance->abort_cmd_wait_q);
+ 
+-	spin_lock_init(&instance->crashdump_lock);
++	mutex_init(&instance->crashdump_lock);
+ 	spin_lock_init(&instance->mfi_pool_lock);
+ 	spin_lock_init(&instance->hba_lock);
+ 	spin_lock_init(&instance->stream_lock);
 
 
