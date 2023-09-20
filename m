@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D1C7A7C3A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41047A7C3B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234827AbjITL7W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:59:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43132 "EHLO
+        id S234838AbjITL7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234833AbjITL7V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:21 -0400
+        with ESMTP id S234833AbjITL7X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7BD9B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD30C433C7;
-        Wed, 20 Sep 2023 11:59:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D56AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9844C433C9;
+        Wed, 20 Sep 2023 11:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211155;
-        bh=8kjsbFNqtsodVIeP9za1wknHTp3983FKw78oZMKVN2I=;
+        s=korg; t=1695211158;
+        bh=beDzYf9ypK2ZIwWEF+v1TPKNgKJtZENmJ+H+EcUOKio=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y/Sac+qs4iyyAezTvhK2lCCaXmtlHE9eArKSfVtA3u3m8GaN1+dOZY6bL6tbB5eSw
-         scXhQQ9zM9EPHItPKRkBfv8PH6NiVDNakLKnKVA+LM61RmLUWfUVcYtdoUdOUe9xSo
-         GSNEsUSds+yaeys9mH7wNF3FJVWu80IKdaRhDxfQ=
+        b=Cx3caVxxs708ojvHrCO5vv7vOV/QgPv4y1+dAQt5hwUUfpP7Y7hZsHIaMBvaR4u0f
+         Q6utAhR4qBdTYBr2MSPS1w43rx/Erd4njs3NH8SMNHzdBgeZfYdrwDrX/z9LelPviu
+         huECcLXx+9De9eHbK7r1WAlFfGeRtDzEg+USCuBY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhi Li <yieli@redhat.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 128/139] nfsd: fix change_info in NFSv4 RENAME replies
-Date:   Wed, 20 Sep 2023 13:31:02 +0200
-Message-ID: <20230920112840.373411990@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ajay Kaher <akaher@vmware.com>,
+        Ching-lin Yu <chinglinyu@google.com>,
+        kernel test robot <oliver.sang@intel.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 129/139] tracefs: Add missing lockdown check to tracefs_create_dir()
+Date:   Wed, 20 Sep 2023 13:31:03 +0200
+Message-ID: <20230920112840.415499331@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
 References: <20230920112835.549467415@linuxfoundation.org>
@@ -55,35 +58,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit fdd2630a7398191e84822612e589062063bd4f3d upstream.
+commit 51aab5ffceb43e05119eb059048fd75765d2bc21 upstream.
 
-nfsd sends the transposed directory change info in the RENAME reply. The
-source directory is in save_fh and the target is in current_fh.
+The function tracefs_create_dir() was missing a lockdown check and was
+called by the RV code. This gave an inconsistent behavior of this function
+returning success while other tracefs functions failed. This caused the
+inode being freed by the wrong kmem_cache.
 
-Reported-by: Zhi Li <yieli@redhat.com>
-Reported-by: Benjamin Coddington <bcodding@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2218844
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lkml.kernel.org/r/20230905182711.692687042@goodmis.org
+Link: https://lore.kernel.org/all/202309050916.58201dc6-oliver.sang@intel.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ajay Kaher <akaher@vmware.com>
+Cc: Ching-lin Yu <chinglinyu@google.com>
+Fixes: bf8e602186ec4 ("tracing: Do not create tracefs files if tracefs lockdown is in effect")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/tracefs/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1029,8 +1029,8 @@ nfsd4_rename(struct svc_rqst *rqstp, str
- 			     rename->rn_tname, rename->rn_tnamelen);
- 	if (status)
- 		return status;
--	set_change_info(&rename->rn_sinfo, &cstate->current_fh);
--	set_change_info(&rename->rn_tinfo, &cstate->save_fh);
-+	set_change_info(&rename->rn_sinfo, &cstate->save_fh);
-+	set_change_info(&rename->rn_tinfo, &cstate->current_fh);
- 	return nfs_ok;
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -556,6 +556,9 @@ static struct dentry *__create_dir(const
+  */
+ struct dentry *tracefs_create_dir(const char *name, struct dentry *parent)
+ {
++	if (security_locked_down(LOCKDOWN_TRACEFS))
++		return NULL;
++
+ 	return __create_dir(name, parent, &simple_dir_inode_operations);
  }
  
 
