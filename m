@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 156CA7A7FC3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE3DB7A7DA9
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235867AbjITMaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:30:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38472 "EHLO
+        id S234749AbjITMLL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235914AbjITMaO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:14 -0400
+        with ESMTP id S235260AbjITMLK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E97392
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4374C433C8;
-        Wed, 20 Sep 2023 12:30:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980F6125
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D424CC433C9;
+        Wed, 20 Sep 2023 12:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213008;
-        bh=wQVnXmrr8WNGwJrcebX2/6pwjC+PwV3S6A4APRZthaY=;
+        s=korg; t=1695211858;
+        bh=4yHi2933vqK0q5Hn6XxmuZ3oGQWFPtcAksbRD+8MfAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CZkcTcuF2L5i7HPXZwi1TfxMwyxDpsf6zbVU9CzbHB8QQzR6lbPMiEaelIA/286yB
-         A+BEbD4FDlUWECRRrGr93Xvc9p7fo+6lrRyd/m22SOCGTg1qtw4HpsKqXabCtfPQph
-         RGwPIOfyQvZ06esiQJrqem+QX2orpQE63efZ9daM=
+        b=XGbmREHR/uKUStrmaHbDQ0AW1cF8SRdSoCr9cioCq2v1pfJ9QHj8ihsvLaej1dqdz
+         2YKF1nIH9CBybH4oL8AW8Gist0iMTTxZFOhMezAM96hanQyfCf/+PlxJmIIv6gIvth
+         iY0Mi8wwfmNF17ANhlWzQKk+8SQiz371IMdutb7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 099/367] ARM: dts: s3c6410: align node SROM bus node name with dtschema in Mini6410
+        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 036/273] net: Avoid address overwrite in kernel_connect
 Date:   Wed, 20 Sep 2023 13:27:56 +0200
-Message-ID: <20230920112901.123321400@linuxfoundation.org>
+Message-ID: <20230920112847.535756275@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +49,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit 5911622eff5134c4bf1e16e4e1e2fd18c4f24889 ]
+commit 0bdf399342c5acbd817c9098b6c7ed21f1974312 upstream.
 
-The SROM controller is modeled with a bus so align the device node name
-with dtschema to fix warning:
+BPF programs that run on connect can rewrite the connect address. For
+the connect system call this isn't a problem, because a copy of the address
+is made when it is moved into kernel space. However, kernel_connect
+simply passes through the address it is given, so the caller may observe
+its address value unexpectedly change.
 
-  srom-cs1@18000000: $nodename:0: 'srom-cs1@18000000'
-    does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
+A practical example where this is problematic is where NFS is combined
+with a system such as Cilium which implements BPF-based load balancing.
+A common pattern in software-defined storage systems is to have an NFS
+mount that connects to a persistent virtual IP which in turn maps to an
+ephemeral server IP. This is usually done to achieve high availability:
+if your server goes down you can quickly spin up a replacement and remap
+the virtual IP to that endpoint. With BPF-based load balancing, mounts
+will forget the virtual IP address when the address rewrite occurs
+because a pointer to the only copy of that address is passed down the
+stack. Server failover then breaks, because clients have forgotten the
+virtual IP address. Reconnects fail and mounts remain broken. This patch
+was tested by setting up a scenario like this and ensuring that NFS
+reconnects worked after applying the patch.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20200907183313.29234-5-krzk@kernel.org
-Stable-dep-of: cf0cb2af6a18 ("ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/s3c6410-mini6410.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/socket.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
-index 75067dbcf7e83..285555b9ed943 100644
---- a/arch/arm/boot/dts/s3c6410-mini6410.dts
-+++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
-@@ -42,7 +42,7 @@ xusbxti: oscillator-1 {
- 		#clock-cells = <0>;
- 	};
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -3468,7 +3468,11 @@ EXPORT_SYMBOL(kernel_accept);
+ int kernel_connect(struct socket *sock, struct sockaddr *addr, int addrlen,
+ 		   int flags)
+ {
+-	return sock->ops->connect(sock, addr, addrlen, flags);
++	struct sockaddr_storage address;
++
++	memcpy(&address, addr, addrlen);
++
++	return sock->ops->connect(sock, (struct sockaddr *)&address, addrlen, flags);
+ }
+ EXPORT_SYMBOL(kernel_connect);
  
--	srom-cs1@18000000 {
-+	srom-cs1-bus@18000000 {
- 		compatible = "simple-bus";
- 		#address-cells = <1>;
- 		#size-cells = <1>;
--- 
-2.40.1
-
 
 
