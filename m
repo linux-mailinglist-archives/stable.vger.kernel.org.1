@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 348047A7C53
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97D37A7C4F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235088AbjITMAP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50196 "EHLO
+        id S235063AbjITMAL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:00:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235095AbjITMAM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:12 -0400
+        with ESMTP id S235119AbjITL77 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE79A92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462A0C433C8;
-        Wed, 20 Sep 2023 12:00:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4705DB4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D931C433C7;
+        Wed, 20 Sep 2023 11:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211206;
-        bh=InXAawHOZ2Sf7D0QcGjngxF1hUMKADQ5DBL60qE49sk=;
+        s=korg; t=1695211192;
+        bh=sVJOjGWxGh/RPHd2B/1v9nuHNLh9PAE0403d48EPFhs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O6ld72/CBRe8t7sHQmcGxp6pQaEanpbLs4Z3XOF7v7XZsku2W9kHQk9QTb2IiCWGU
-         P0ROAu4sxgzLjEzvm3/P8C55zTyMOnb3wPNnCwwEnmx90ln7xvVigvnqakP+6I2cXp
-         RbGuo0dWr1t5IELdIrUktTkLZj73zIlLh/70KyBE=
+        b=wcp3KJNZ8bd4gxEI8VTDlGzTBXbYHJFB8bHopI05yJtwR+Abmr90qUqGgh7SN8JEy
+         NZTnhJL1Ow9gIG+XQ5lW/1f75Mtc5d7SM3hhLAWRU0UWzmovszLV4wuHSxc0JJRcIy
+         k3FrEKU89kBeXzx35cf86nnSVzJIeYhuoW/V9OnU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 134/139] scsi: pm8001: Setup IRQs on resume
-Date:   Wed, 20 Sep 2023 13:31:08 +0200
-Message-ID: <20230920112840.628726222@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Shida Zhang <zhangshida@kylinos.cn>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 135/139] ext4: fix rec_len verify error
+Date:   Wed, 20 Sep 2023 13:31:09 +0200
+Message-ID: <20230920112840.669486016@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
 References: <20230920112835.549467415@linuxfoundation.org>
@@ -54,117 +56,122 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-commit c91774818b041ed290df29fb1dc0725be9b12e83 upstream.
+commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 upstream.
 
-The function pm8001_pci_resume() only calls pm8001_request_irq() without
-calling pm8001_setup_irq(). This causes the IRQ allocation to fail, which
-leads all drives being removed from the system.
+With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+a problem occurred when more than 13 million files were directly created
+under a directory:
 
-Fix this issue by integrating the code for pm8001_setup_irq() directly
-inside pm8001_request_irq() so that MSI-X setup is performed both during
-normal initialization and resume operations.
+EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
 
-Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230911232745.325149-2-dlemoal@kernel.org
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+When enough files are created, the fake_dirent->reclen will be 0xffff.
+it doesn't equal to the blocksize 65536, i.e. 0x10000.
+
+But it is not the same condition when blocksize equals to 4k.
+when enough files are created, the fake_dirent->reclen will be 0x1000.
+it equals to the blocksize 4k, i.e. 0x1000.
+
+The problem seems to be related to the limitation of the 16-bit field
+when the blocksize is set to 64k.
+To address this, helpers like ext4_rec_len_{from,to}_disk has already
+been introduced to complete the conversion between the encoded and the
+plain form of rec_len.
+
+So fix this one by using the helper, and all the other in this file too.
+
+Cc: stable@kernel.org
+Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+Suggested-by: Andreas Dilger <adilger@dilger.ca>
+Suggested-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/pm8001/pm8001_init.c |   51 ++++++++++++--------------------------
- 1 file changed, 17 insertions(+), 34 deletions(-)
+ fs/ext4/namei.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -274,7 +274,6 @@ static irqreturn_t pm8001_interrupt_hand
- 	return ret;
- }
- 
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha);
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha);
- 
- /**
-@@ -295,13 +294,6 @@ static int pm8001_alloc(struct pm8001_hb
- 	pm8001_dbg(pm8001_ha, INIT, "pm8001_alloc: PHY:%x\n",
- 		   pm8001_ha->chip->n_phy);
- 
--	/* Setup Interrupt */
--	rc = pm8001_setup_irq(pm8001_ha);
--	if (rc) {
--		pm8001_dbg(pm8001_ha, FAIL,
--			   "pm8001_setup_irq failed [ret: %d]\n", rc);
--		goto err_out;
--	}
- 	/* Request Interrupt */
- 	rc = pm8001_request_irq(pm8001_ha);
- 	if (rc)
-@@ -1021,47 +1013,38 @@ static u32 pm8001_request_msix(struct pm
- }
- #endif
- 
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha)
--{
--	struct pci_dev *pdev;
--
--	pdev = pm8001_ha->pdev;
--
--#ifdef PM8001_USE_MSIX
--	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX))
--		return pm8001_setup_msix(pm8001_ha);
--	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--#endif
--	return 0;
--}
--
- /**
-  * pm8001_request_irq - register interrupt
-  * @pm8001_ha: our ha struct.
-  */
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha)
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -343,17 +343,17 @@ static struct ext4_dir_entry_tail *get_d
+ 						   struct buffer_head *bh)
  {
--	struct pci_dev *pdev;
-+	struct pci_dev *pdev = pm8001_ha->pdev;
-+#ifdef PM8001_USE_MSIX
- 	int rc;
+ 	struct ext4_dir_entry_tail *t;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
  
--	pdev = pm8001_ha->pdev;
-+	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX)) {
-+		rc = pm8001_setup_msix(pm8001_ha);
-+		if (rc) {
-+			pm8001_dbg(pm8001_ha, FAIL,
-+				   "pm8001_setup_irq failed [ret: %d]\n", rc);
-+			return rc;
-+		}
+ #ifdef PARANOID
+ 	struct ext4_dir_entry *d, *top;
  
--#ifdef PM8001_USE_MSIX
--	if (pdev->msix_cap && pci_msi_enabled())
--		return pm8001_request_msix(pm8001_ha);
--	else {
--		pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--		goto intx;
-+		if (pdev->msix_cap && pci_msi_enabled())
-+			return pm8001_request_msix(pm8001_ha);
- 	}
-+
-+	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+ 	d = (struct ext4_dir_entry *)bh->b_data;
+ 	top = (struct ext4_dir_entry *)(bh->b_data +
+-		(EXT4_BLOCK_SIZE(inode->i_sb) -
+-		 sizeof(struct ext4_dir_entry_tail)));
+-	while (d < top && d->rec_len)
++		(blocksize - sizeof(struct ext4_dir_entry_tail)));
++	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
+ 		d = (struct ext4_dir_entry *)(((void *)d) +
+-		    le16_to_cpu(d->rec_len));
++		    ext4_rec_len_from_disk(d->rec_len, blocksize));
+ 
+ 	if (d != top)
+ 		return NULL;
+@@ -364,7 +364,8 @@ static struct ext4_dir_entry_tail *get_d
  #endif
  
--intx:
- 	/* initialize the INT-X interrupt */
- 	pm8001_ha->irq_vector[0].irq_id = 0;
- 	pm8001_ha->irq_vector[0].drv_inst = pm8001_ha;
--	rc = request_irq(pdev->irq, pm8001_interrupt_handler_intx, IRQF_SHARED,
--		pm8001_ha->name, SHOST_TO_SAS_HA(pm8001_ha->shost));
--	return rc;
-+
-+	return request_irq(pdev->irq, pm8001_interrupt_handler_intx,
-+			   IRQF_SHARED, pm8001_ha->name,
-+			   SHOST_TO_SAS_HA(pm8001_ha->shost));
- }
+ 	if (t->det_reserved_zero1 ||
+-	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
++	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
++	     sizeof(struct ext4_dir_entry_tail)) ||
+ 	    t->det_reserved_zero2 ||
+ 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
+ 		return NULL;
+@@ -445,13 +446,14 @@ static struct dx_countlimit *get_dx_coun
+ 	struct ext4_dir_entry *dp;
+ 	struct dx_root_info *root;
+ 	int count_offset;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
++	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
  
- /**
+-	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
++	if (rlen == blocksize)
+ 		count_offset = 8;
+-	else if (le16_to_cpu(dirent->rec_len) == 12) {
++	else if (rlen == 12) {
+ 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
+-		if (le16_to_cpu(dp->rec_len) !=
+-		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
++		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
+ 			return NULL;
+ 		root = (struct dx_root_info *)(((void *)dp + 12));
+ 		if (root->reserved_zero ||
+@@ -1315,6 +1317,7 @@ static int dx_make_map(struct inode *dir
+ 	unsigned int buflen = bh->b_size;
+ 	char *base = bh->b_data;
+ 	struct dx_hash_info h = *hinfo;
++	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
+ 
+ 	if (ext4_has_metadata_csum(dir->i_sb))
+ 		buflen -= sizeof(struct ext4_dir_entry_tail);
+@@ -1335,11 +1338,12 @@ static int dx_make_map(struct inode *dir
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+-			map_tail->size = le16_to_cpu(de->rec_len);
++			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
++								blocksize);
+ 			count++;
+ 			cond_resched();
+ 		}
+-		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
++		de = ext4_next_entry(de, blocksize);
+ 	}
+ 	return count;
+ }
 
 
