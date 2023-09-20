@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 269D87A7FDA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC7247A7DB7
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235974AbjITMar (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
+        id S234613AbjITMLl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235996AbjITMao (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:44 -0400
+        with ESMTP id S235335AbjITMLk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B1C083
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA367C433C7;
-        Wed, 20 Sep 2023 12:30:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7442983
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9329C433CA;
+        Wed, 20 Sep 2023 12:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213038;
-        bh=yR6rQxc/n8nJdjUFWsyaRp3N2LssOGQV3rZJ5ZE7FIM=;
+        s=korg; t=1695211893;
+        bh=M7dJOcigRTvdx5E7AbLqkf1FeRg0bJk0cOa/ol5SxVQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GjSug76iwCaokatfW3UV8nObQF7fO06fj94jVGW4Hw4wau+R7MQ4M0Scl5GOslCs+
-         4vta+6pQ64H4sKz4GDsM0sXPa7ej+MamVpkkN9V7OdlXCoYjPaOcxUoLdfxXEBPiz8
-         hK73b2v48kzTKmbN/LbBJh4YhORMpCNlGFzTwolU=
+        b=0jJouzl1Exw+0NChZLMUwXPhX9qTOJOflYguwgHVv0vawtQxP+DaSyKxtIidfN8c0
+         x6RGrQa0G++k2IwusM859aRvp95vJ2S2nwm1xJ+QEEITGoClxJRm50mWZJQJOw4xNO
+         VgR6IxvhkbwMnfpGt3j7DDJQ0y94yEEQLCE6Bhrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/367] drm/amdgpu: Use RMW accessors for changing LNKCTL
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 075/273] quota: rename dquot_active() to inode_quota_active()
 Date:   Wed, 20 Sep 2023 13:28:35 +0200
-Message-ID: <20230920112902.263177641@linuxfoundation.org>
+Message-ID: <20230920112848.777306554@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,143 +49,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit ce7d88110b9ed5f33fe79ea6d4ed049fb0e57bce ]
+[ Upstream commit 4b9bdfa16535de8f49bf954aeed0f525ee2fc322 ]
 
-Don't assume that only the driver would be accessing LNKCTL. ASPM policy
-changes can trigger write to LNKCTL outside of driver's control.  And in
-the case of upstream bridge, the driver does not even own the device it's
-changing the registers for.
+Now we have a helper function dquot_dirty() to determine if dquot has
+DQ_MOD_B bit. dquot_active() can easily be misunderstood as a helper
+function to determine if dquot has DQ_ACTIVE_B bit. So we avoid this by
+renaming it to inode_quota_active() and later on we will add the helper
+function dquot_active() to determine if dquot has DQ_ACTIVE_B bit.
 
-Use RMW capability accessors which do proper locking to avoid losing
-concurrent updates to the register value.
-
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
-Fixes: 62a37553414a ("drm/amdgpu: add si implementation v10")
-Link: https://lore.kernel.org/r/20230717120503.15276-6-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230630110822.3881712-3-libaokun1@huawei.com>
+Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/cik.c | 36 +++++++++-----------------------
- drivers/gpu/drm/amd/amdgpu/si.c  | 36 +++++++++-----------------------
- 2 files changed, 20 insertions(+), 52 deletions(-)
+ fs/quota/dquot.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/cik.c b/drivers/gpu/drm/amd/amdgpu/cik.c
-index 38b06ae6357a7..ee7e218c7daef 100644
---- a/drivers/gpu/drm/amd/amdgpu/cik.c
-+++ b/drivers/gpu/drm/amd/amdgpu/cik.c
-@@ -1428,17 +1428,8 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 			u16 bridge_cfg2, gpu_cfg2;
- 			u32 max_lw, current_lw, tmp;
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index aa9d3c4bf0872..368e344b12951 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -1404,7 +1404,7 @@ static int info_bdq_free(struct dquot *dquot, qsize_t space)
+ 	return QUOTA_NL_NOWARN;
+ }
  
--			pcie_capability_read_word(root, PCI_EXP_LNKCTL,
--						  &bridge_cfg);
--			pcie_capability_read_word(adev->pdev, PCI_EXP_LNKCTL,
--						  &gpu_cfg);
--
--			tmp16 = bridge_cfg | PCI_EXP_LNKCTL_HAWD;
--			pcie_capability_write_word(root, PCI_EXP_LNKCTL, tmp16);
--
--			tmp16 = gpu_cfg | PCI_EXP_LNKCTL_HAWD;
--			pcie_capability_write_word(adev->pdev, PCI_EXP_LNKCTL,
--						   tmp16);
-+			pcie_capability_set_word(root, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_HAWD);
-+			pcie_capability_set_word(adev->pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_HAWD);
+-static int dquot_active(const struct inode *inode)
++static int inode_quota_active(const struct inode *inode)
+ {
+ 	struct super_block *sb = inode->i_sb;
  
- 			tmp = RREG32_PCIE(ixPCIE_LC_STATUS1);
- 			max_lw = (tmp & PCIE_LC_STATUS1__LC_DETECTED_LINK_WIDTH_MASK) >>
-@@ -1491,21 +1482,14 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 				msleep(100);
+@@ -1427,7 +1427,7 @@ static int __dquot_initialize(struct inode *inode, int type)
+ 	qsize_t rsv;
+ 	int ret = 0;
  
- 				/* linkctl */
--				pcie_capability_read_word(root, PCI_EXP_LNKCTL,
--							  &tmp16);
--				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
--				tmp16 |= (bridge_cfg & PCI_EXP_LNKCTL_HAWD);
--				pcie_capability_write_word(root, PCI_EXP_LNKCTL,
--							   tmp16);
--
--				pcie_capability_read_word(adev->pdev,
--							  PCI_EXP_LNKCTL,
--							  &tmp16);
--				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
--				tmp16 |= (gpu_cfg & PCI_EXP_LNKCTL_HAWD);
--				pcie_capability_write_word(adev->pdev,
--							   PCI_EXP_LNKCTL,
--							   tmp16);
-+				pcie_capability_clear_and_set_word(root, PCI_EXP_LNKCTL,
-+								   PCI_EXP_LNKCTL_HAWD,
-+								   bridge_cfg &
-+								   PCI_EXP_LNKCTL_HAWD);
-+				pcie_capability_clear_and_set_word(adev->pdev, PCI_EXP_LNKCTL,
-+								   PCI_EXP_LNKCTL_HAWD,
-+								   gpu_cfg &
-+								   PCI_EXP_LNKCTL_HAWD);
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return 0;
  
- 				/* linkctl2 */
- 				pcie_capability_read_word(root, PCI_EXP_LNKCTL2,
-diff --git a/drivers/gpu/drm/amd/amdgpu/si.c b/drivers/gpu/drm/amd/amdgpu/si.c
-index 9f82be879224a..53f7719d688eb 100644
---- a/drivers/gpu/drm/amd/amdgpu/si.c
-+++ b/drivers/gpu/drm/amd/amdgpu/si.c
-@@ -1676,17 +1676,8 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 			u16 bridge_cfg2, gpu_cfg2;
- 			u32 max_lw, current_lw, tmp;
+ 	dquots = i_dquot(inode);
+@@ -1535,7 +1535,7 @@ bool dquot_initialize_needed(struct inode *inode)
+ 	struct dquot **dquots;
+ 	int i;
  
--			pcie_capability_read_word(root, PCI_EXP_LNKCTL,
--						  &bridge_cfg);
--			pcie_capability_read_word(adev->pdev, PCI_EXP_LNKCTL,
--						  &gpu_cfg);
--
--			tmp16 = bridge_cfg | PCI_EXP_LNKCTL_HAWD;
--			pcie_capability_write_word(root, PCI_EXP_LNKCTL, tmp16);
--
--			tmp16 = gpu_cfg | PCI_EXP_LNKCTL_HAWD;
--			pcie_capability_write_word(adev->pdev, PCI_EXP_LNKCTL,
--						   tmp16);
-+			pcie_capability_set_word(root, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_HAWD);
-+			pcie_capability_set_word(adev->pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_HAWD);
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return false;
  
- 			tmp = RREG32_PCIE(PCIE_LC_STATUS1);
- 			max_lw = (tmp & LC_DETECTED_LINK_WIDTH_MASK) >> LC_DETECTED_LINK_WIDTH_SHIFT;
-@@ -1731,21 +1722,14 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
+ 	dquots = i_dquot(inode);
+@@ -1646,7 +1646,7 @@ int __dquot_alloc_space(struct inode *inode, qsize_t number, int flags)
+ 	int reserve = flags & DQUOT_SPACE_RESERVE;
+ 	struct dquot **dquots;
  
- 				mdelay(100);
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		if (reserve) {
+ 			spin_lock(&inode->i_lock);
+ 			*inode_reserved_space(inode) += number;
+@@ -1718,7 +1718,7 @@ int dquot_alloc_inode(struct inode *inode)
+ 	struct dquot_warn warn[MAXQUOTAS];
+ 	struct dquot * const *dquots;
  
--				pcie_capability_read_word(root, PCI_EXP_LNKCTL,
--							  &tmp16);
--				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
--				tmp16 |= (bridge_cfg & PCI_EXP_LNKCTL_HAWD);
--				pcie_capability_write_word(root, PCI_EXP_LNKCTL,
--							   tmp16);
--
--				pcie_capability_read_word(adev->pdev,
--							  PCI_EXP_LNKCTL,
--							  &tmp16);
--				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
--				tmp16 |= (gpu_cfg & PCI_EXP_LNKCTL_HAWD);
--				pcie_capability_write_word(adev->pdev,
--							   PCI_EXP_LNKCTL,
--							   tmp16);
-+				pcie_capability_clear_and_set_word(root, PCI_EXP_LNKCTL,
-+								   PCI_EXP_LNKCTL_HAWD,
-+								   bridge_cfg &
-+								   PCI_EXP_LNKCTL_HAWD);
-+				pcie_capability_clear_and_set_word(adev->pdev, PCI_EXP_LNKCTL,
-+								   PCI_EXP_LNKCTL_HAWD,
-+								   gpu_cfg &
-+								   PCI_EXP_LNKCTL_HAWD);
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return 0;
+ 	for (cnt = 0; cnt < MAXQUOTAS; cnt++)
+ 		warn[cnt].w_type = QUOTA_NL_NOWARN;
+@@ -1761,7 +1761,7 @@ int dquot_claim_space_nodirty(struct inode *inode, qsize_t number)
+ 	struct dquot **dquots;
+ 	int cnt, index;
  
- 				pcie_capability_read_word(root, PCI_EXP_LNKCTL2,
- 							  &tmp16);
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		spin_lock(&inode->i_lock);
+ 		*inode_reserved_space(inode) -= number;
+ 		__inode_add_bytes(inode, number);
+@@ -1803,7 +1803,7 @@ void dquot_reclaim_space_nodirty(struct inode *inode, qsize_t number)
+ 	struct dquot **dquots;
+ 	int cnt, index;
+ 
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		spin_lock(&inode->i_lock);
+ 		*inode_reserved_space(inode) += number;
+ 		__inode_sub_bytes(inode, number);
+@@ -1847,7 +1847,7 @@ void __dquot_free_space(struct inode *inode, qsize_t number, int flags)
+ 	struct dquot **dquots;
+ 	int reserve = flags & DQUOT_SPACE_RESERVE, index;
+ 
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		if (reserve) {
+ 			spin_lock(&inode->i_lock);
+ 			*inode_reserved_space(inode) -= number;
+@@ -1902,7 +1902,7 @@ void dquot_free_inode(struct inode *inode)
+ 	struct dquot * const *dquots;
+ 	int index;
+ 
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return;
+ 
+ 	dquots = i_dquot(inode);
+@@ -2073,7 +2073,7 @@ int dquot_transfer(struct inode *inode, struct iattr *iattr)
+ 	struct super_block *sb = inode->i_sb;
+ 	int ret;
+ 
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return 0;
+ 
+ 	if (iattr->ia_valid & ATTR_UID && !uid_eq(iattr->ia_uid, inode->i_uid)){
 -- 
 2.40.1
 
