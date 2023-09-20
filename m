@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5798B7A7C7E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ADA57A7B2C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234993AbjITMBv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49422 "EHLO
+        id S234500AbjITLtt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234988AbjITMBq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:46 -0400
+        with ESMTP id S234688AbjITLtn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C89B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6ABC433CB;
-        Wed, 20 Sep 2023 12:01:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE0BE0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2D5C433CA;
+        Wed, 20 Sep 2023 11:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211298;
-        bh=47QLw4VOeypdYHuLb/OPGynRhOOw+UUUkrnyX5apZd0=;
+        s=korg; t=1695210570;
+        bh=ctD8l2F3t+oh9RylGTef0QBlCP/1zCQJxjJ7B8bC3BY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SMUAXxbih4K+/F1j9tvbBy+CKMtpJFSgRB2Pkpl8IlXB3kteoFAMGy1OunxHx2135
-         TZd5PREx3TJOx40Gp327uDq6D3XS/x5QgnpPLOF+MAL/zWuqjGwX2VyMYOyebtEojR
-         9KDiAiz9xTMx3AMPd91FTo8QUAO+whRdy1p+sjQc=
+        b=HN1Kim09LAdSpkXEJn2IrsMchujR3gDDtqdvWeRGanxr0xyIIw7YzqinDl8esT3Nd
+         P8MSqahEZZ7oLSzrVK5w3XByzmG7ZBqJ+EgUUvdea8t5wuFR9I5usR14se8Mps1TTd
+         t62YmTir9phZWnoJjjauFBBwP3a0zG237LQ8xRw8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
-        Matthew Wang <matthewmwang@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 041/186] wifi: mwifiex: Fix OOB and integer underflow when rx packets
+        patches@lists.linux.dev,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 100/211] ARM: 9317/1: kexec: Make smp stop calls asynchronous
 Date:   Wed, 20 Sep 2023 13:29:04 +0200
-Message-ID: <20230920112838.431098249@linuxfoundation.org>
+Message-ID: <20230920112848.905096072@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,129 +52,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Polaris Pi <pinkperfect2021@gmail.com>
+From: Mårten Lindahl <marten.lindahl@axis.com>
 
-[ Upstream commit 11958528161731c58e105b501ed60b83a91ea941 ]
+[ Upstream commit 8922ba71c969d2a0c01a94372a71477d879470de ]
 
-Make sure mwifiex_process_mgmt_packet,
-mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
-mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
-not out-of-bounds access the skb->data buffer.
+If a panic is triggered by a hrtimer interrupt all online cpus will be
+notified and set offline. But as highlighted by commit 19dbdcb8039c
+("smp: Warn on function calls from softirq context") this call should
+not be made synchronous with disabled interrupts:
 
-Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230723070741.1544662-1-pinkperfect2021@gmail.com
+ softdog: Initiating panic
+ Kernel panic - not syncing: Software Watchdog Timer expired
+ WARNING: CPU: 1 PID: 0 at kernel/smp.c:753 smp_call_function_many_cond
+   unwind_backtrace:
+     show_stack
+     dump_stack_lvl
+     __warn
+     warn_slowpath_fmt
+     smp_call_function_many_cond
+     smp_call_function
+     crash_smp_send_stop.part.0
+     machine_crash_shutdown
+     __crash_kexec
+     panic
+     softdog_fire
+     __hrtimer_run_queues
+     hrtimer_interrupt
+
+Make the smp call for machine_crash_nonpanic_core() asynchronous.
+
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
- .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
- drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
- 3 files changed, 36 insertions(+), 4 deletions(-)
+ arch/arm/kernel/machine_kexec.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 00fcbda09349e..a3d716a215ef2 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -98,6 +98,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
+index 46364b699cc30..5d07cf9e0044d 100644
+--- a/arch/arm/kernel/machine_kexec.c
++++ b/arch/arm/kernel/machine_kexec.c
+@@ -94,16 +94,28 @@ static void machine_crash_nonpanic_core(void *unused)
+ 	}
+ }
  
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+		mwifiex_dbg(priv->adapter, ERROR,
-+			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
-+			    skb->len, rx_pkt_off);
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
++static DEFINE_PER_CPU(call_single_data_t, cpu_stop_csd) =
++	CSD_INIT(machine_crash_nonpanic_core, NULL);
 +
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -203,7 +211,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
+ void crash_smp_send_stop(void)
+ {
+ 	static int cpus_stopped;
+ 	unsigned long msecs;
++	call_single_data_t *csd;
++	int cpu, this_cpu = raw_smp_processor_id();
  
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
- 
--	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-+	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-+	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
- 			    skb->len, rx_pkt_offset, rx_pkt_length);
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index 1e6a62c69ac52..09243e6d8ba9a 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -116,6 +116,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
+ 	if (cpus_stopped)
  		return;
- 	}
  
-+	if (sizeof(*rx_pkt_hdr) +
-+	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
+ 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
+-	smp_call_function(machine_crash_nonpanic_core, NULL, false);
++	for_each_online_cpu(cpu) {
++		if (cpu == this_cpu)
++			continue;
++
++		csd = &per_cpu(cpu_stop_csd, cpu);
++		smp_call_function_single_async(cpu, csd);
 +	}
 +
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -385,6 +394,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
- 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
- 
-+	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-+	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
- 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
- 
- 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 51ccf10f44132..4fccdf01b8a05 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -403,11 +403,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 	}
- 
- 	rx_pd = (struct rxpd *)skb->data;
-+	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
-+		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
-+		return -1;
-+	}
- 
- 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
- 	skb_pull(skb, sizeof(pkt_len));
--
--	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	pkt_len -= sizeof(pkt_len);
- 
- 	ieee_hdr = (void *)skb->data;
- 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
-@@ -420,7 +424,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 		skb->data + sizeof(struct ieee80211_hdr),
- 		pkt_len - sizeof(struct ieee80211_hdr));
- 
--	pkt_len -= ETH_ALEN + sizeof(pkt_len);
-+	pkt_len -= ETH_ALEN;
- 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
- 
- 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
+ 	msecs = 1000; /* Wait at most a second for the other cpus to stop */
+ 	while ((atomic_read(&waiting_for_crash_ipi) > 0) && msecs) {
+ 		mdelay(1);
 -- 
 2.40.1
 
