@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 410637A7AEF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB4597A7C87
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234587AbjITLrf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59898 "EHLO
+        id S235005AbjITMCK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234594AbjITLre (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:34 -0400
+        with ESMTP id S235016AbjITMCI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5481AB0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A047BC433C8;
-        Wed, 20 Sep 2023 11:47:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38D2EC;
+        Wed, 20 Sep 2023 05:02:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EBBC433C9;
+        Wed, 20 Sep 2023 12:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210448;
-        bh=BRTuajSlhE3Wy9rZ7+fHgTuLtlOpCQxSCIEiP5ci8Qs=;
+        s=korg; t=1695211320;
+        bh=XUcMT0bDd+UoXkmF2GndNAzBNPVExvoM29bcpyxPnhg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cTnKpGPOQ1qEFvIl315/PmKb+xW2l3PQzCD6de2TZLHDV7adUfDnBGmKIFh50/Qmh
-         5qiimP0ZZqtEyVe4tfYZaCF5kO+j/WMSbpkgwCSOSEJ7N3K7Gz2HFTRJQ8Yfn3A/mW
-         /Hz/EzW5zFutZGkmHAz/Xpg+ANrnqMG4VKwJMuvg=
+        b=iDuw/+TQ+p/Z2uvaD1ikG8qhtNE0GvBa7C5Z9Guq+M50mq53OkSa3S7b2MvUPSjwr
+         kNtiGAS10gn8b06sjxMX/fZQ+7tfnJ32VxW1O+vhxY5VHBibLZ0qJUMNyeux5VgsY9
+         4Tw6iqdKnbL1zxO8nFZmb2x72eHjL82jL4ZQqSvw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Tom Chung <chiahsuan.chung@amd.com>,
-        Leo Chen <sancchen@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 081/211] drm/amd/display: Blocking invalid 420 modes on HDMI TMDS for DCN314
-Date:   Wed, 20 Sep 2023 13:28:45 +0200
-Message-ID: <20230920112848.320730913@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Baoquan He <bhe@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+        dmaengine@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 023/186] idmaengine: make FSL_EDMA and INTEL_IDMA64 depends on HAS_IOMEM
+Date:   Wed, 20 Sep 2023 13:28:46 +0200
+Message-ID: <20230920112837.734244634@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +50,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Chen <sancchen@amd.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 4c6107a653ccf361cb1b6ba35d558a1a5e6e57ac ]
+[ Upstream commit b1e213a9e31c20206f111ec664afcf31cbfe0dbb ]
 
-[Why & How]
-HDMI TMDS does not have ODM support. Filtering 420 modes that
-exceed the 4096 FMT limitation on DCN314 will resolve
-intermittent corruptions issues.
+On s390 systems (aka mainframes), it has classic channel devices for
+networking and permanent storage that are currently even more common
+than PCI devices. Hence it could have a fully functional s390 kernel
+with CONFIG_PCI=n, then the relevant iomem mapping functions
+[including ioremap(), devm_ioremap(), etc.] are not available.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Leo Chen <sancchen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Here let FSL_EDMA and INTEL_IDMA64 depend on HAS_IOMEM so that it
+won't be built to cause below compiling error if PCI is unset.
+
+--------
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/dma/fsl-edma.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/dma/idma64.ko] undefined!
+--------
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306211329.ticOJCSv-lkp@intel.com/
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: dmaengine@vger.kernel.org
+Link: https://lore.kernel.org/r/20230707135852.24292-2-bhe@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c  | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/dma/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
-index 9010c47476e92..b763786bfcc85 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
-@@ -4227,7 +4227,9 @@ void dml314_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_
- 				}
- 				if (v->OutputFormat[k] == dm_420 && v->HActive[k] > DCN314_MAX_FMT_420_BUFFER_WIDTH
- 						&& v->ODMCombineEnablePerState[i][k] != dm_odm_combine_mode_4to1) {
--					if (v->HActive[k] / 2 > DCN314_MAX_FMT_420_BUFFER_WIDTH) {
-+					if (v->Output[k] == dm_hdmi) {
-+						FMTBufferExceeded = true;
-+					} else if (v->HActive[k] / 2 > DCN314_MAX_FMT_420_BUFFER_WIDTH) {
- 						v->ODMCombineEnablePerState[i][k] = dm_odm_combine_mode_4to1;
- 						v->PlaneRequiredDISPCLK = v->PlaneRequiredDISPCLKWithODMCombine4To1;
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+index 5ea37d133f241..6abb80b09db3b 100644
+--- a/drivers/dma/Kconfig
++++ b/drivers/dma/Kconfig
+@@ -209,6 +209,7 @@ config FSL_DMA
+ config FSL_EDMA
+ 	tristate "Freescale eDMA engine support"
+ 	depends on OF
++	depends on HAS_IOMEM
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
+@@ -254,6 +255,7 @@ config IMX_SDMA
  
+ config INTEL_IDMA64
+ 	tristate "Intel integrated DMA 64-bit support"
++	depends on HAS_IOMEM
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
 -- 
 2.40.1
 
