@@ -2,58 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA5C7A704D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BED7A704E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjITCXG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 22:23:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
+        id S229648AbjITCX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 22:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231260AbjITCXF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:23:05 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 326E8AB
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:58 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1c3f97f2239so57403315ad.0
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:58 -0700 (PDT)
+        with ESMTP id S229641AbjITCX7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:23:59 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 324CDAB
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:23:51 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-690d2441b95so311768b3a.1
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:23:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695176577; x=1695781377; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695176630; x=1695781430; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Whj9+me5OBt781yiMR5QCY5/rWsVABuE4Yd6OOrVj3g=;
-        b=gxnUgDbfZCLAFfCWVYUc+Die6dX9dsUUM6PMvjXLuB55Fn6efDwNwEAGTNsiiAM1Dj
-         iKya80tXAhd3FGLYbSTrEic6vHls3LYv+YfQIhdxTxfJrZX4Lv9NDQ/BJyEDpMZC0Jxp
-         bh9lkRcP7ZUvDAsVeoUoqp0sixu1qOaYdpM3J1y+VG0Ioua3ShQHyDrw8hCDxy0+bg+l
-         fLEll6HVkYI6y0bZgCJQWgw+R4Hh/jMDzIRATAYn9TDxhMIXJsy8q9/JvtU/tGm3mv5J
-         d7IqFlUQsvr0PNUvQiFxxQRz8dLMF7h58yEI/cIxjDfd4nNDTGVfB4xwmWsR/LAI4DGL
-         SarQ==
+        bh=nedbOMPeeQpC25LSQsTVxt4t5MLIeHQJxw3pIg2r6CY=;
+        b=GH275Nb4fSqq7zlrmXBXaePuDQPCRpMk9YOCAo3NG+jqBI8SXDd+DmAVMff2dQg+4s
+         8WF7WJRN5sLQNUjy5l0OlMJDIe8yCeDrqwaH+6fk4DJriDP53UyvJfKJ7ag1qcJ0eCG9
+         lTGM65240u0NG7PvhfnOytvuF8mqypyxpFcBlkrNe2x0g5jZQuiWXs+yUG1a5RF5jUbG
+         s/mHayROgALyFHXyeQ4gQMgfLXWYqDrOS1/6tHa7x91E8cauawxYUiPiRLx/dTwDgaBI
+         DuId+58w0SVAtj6+XL/ygZM9AeDxQPn6SR6WVurlZEvFqOKjJPYMOwTM2glMvcMGCrK1
+         aRdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695176577; x=1695781377;
+        d=1e100.net; s=20230601; t=1695176630; x=1695781430;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Whj9+me5OBt781yiMR5QCY5/rWsVABuE4Yd6OOrVj3g=;
-        b=U7JxqQ/dYxkucYOwUD8oCgkEn/BWqgXihV+6hiTe20m03lglE8OQOCQAX8lLgzESYd
-         P+J2qIPbd+Yk7+do1+3XuO2zQdBEjTz2pjynCdngwpOq6IOepT4WTtx1X5tSh3Vygagd
-         +qjjnUeUuv62FoXwndDN8Pip3xNnNMMT602ZceEw7H6FlpMKteeF4pp7UDZCENohdxST
-         Fh7fU+x03IPi7Gidcgy4RdFk5hmUQAH6xtr4l60X2IHcDEkLdGe76x+4s0B9ZS5jDxDl
-         6rKUnGSRRazyXbEkKaFn+5mdRi5iO1q2e80n1DPoGmPzfxTqUTB/55VP8XDXQ1Utnp1H
-         8LMQ==
-X-Gm-Message-State: AOJu0Yw3D3p2vkL4Goq5YBkcMKAVGQ8PUqXDv0IU7BCutIDghaDg5EyQ
-        TTj+3kYtlHiZ7BMR3JXzb/W+c4yAFKz42NeV17o=
-X-Google-Smtp-Source: AGHT+IFMFR5qxDsyrYBknSnZc1N2AsJ9VsZjM/XQaw+/ZqP7RdT1UyNze68jtCjcIFNrciFPoagC5w==
-X-Received: by 2002:a17:902:c40a:b0:1bc:2d43:c747 with SMTP id k10-20020a170902c40a00b001bc2d43c747mr1272541plk.38.1695176577398;
-        Tue, 19 Sep 2023 19:22:57 -0700 (PDT)
+        bh=nedbOMPeeQpC25LSQsTVxt4t5MLIeHQJxw3pIg2r6CY=;
+        b=IDBhiL0PQ4UTSn2zwl/JkuR0wanOEcT7giNhwdt8/UEj8PPNpWE55XnM1u/FUqjxz8
+         CxKrsWT0rXpXnniL/RGT8cUHBv+I6r+JT+XvR+5FFpqQIAfBvwOcVmpaXfb9vq7fDu8T
+         wkJoJ2U9dRGA8E7f8aqubVV6Pvq0TAI2/pzPvvUZxaRatergh0v6AI9t1Ytm/vK3EEWb
+         gektd4XVZPQXWt59b4aRdlt5XB5BU9tctccWIAdJSKrV7TjifREupRy+KMF+M1bO1cVb
+         DALxuVkUQHlU/+qzBDeNgkK7KT6zGCSRrmCu1vPG/GlAf8mXc1kbLvnLCuCz/A3tqmJB
+         bBmw==
+X-Gm-Message-State: AOJu0YzqWlkRFvp0Mfy+WvY+tgAGSGi1OO3tMC5c/UDcxo6bzh3WhZ5c
+        Rhq/aQ7Vy+Z+MzKrURe4zxk=
+X-Google-Smtp-Source: AGHT+IGsiA7ACmhVMxkn8YR7ZjVfpbFSSE9v5MeRjfTIOMa8A8zh1DeCtxDAsImhlekPxf7rpnD8cg==
+X-Received: by 2002:a05:6a20:7487:b0:159:d061:58e9 with SMTP id p7-20020a056a20748700b00159d06158e9mr5186894pzd.26.1695176630258;
+        Tue, 19 Sep 2023 19:23:50 -0700 (PDT)
 Received: from westworld (209-147-138-147.nat.asu.edu. [209.147.138.147])
-        by smtp.gmail.com with ESMTPSA id ik26-20020a170902ab1a00b001b89b7e208fsm10824774plb.88.2023.09.19.19.22.56
+        by smtp.gmail.com with ESMTPSA id x4-20020a656aa4000000b0056428865aadsm7688837pgu.82.2023.09.19.19.23.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 19:22:57 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 19:22:54 -0700
+        Tue, 19 Sep 2023 19:23:49 -0700 (PDT)
+Date:   Tue, 19 Sep 2023 19:23:47 -0700
 From:   Kyle Zeng <zengyhkyle@gmail.com>
 To:     gregkh@linuxfoundation.org
 Cc:     stable@vger.kernel.org, jhs@mojatatu.com, jiri@nvidia.com,
         pabeni@redhat.com
-Subject: [PATCH v5.15.y] net/sched: Retire rsvp classifier
-Message-ID: <ZQpXfmVBR48IqPfZ@westworld>
+Subject: [PATCH v6.1.y] net/sched: Retire rsvp classifier
+Message-ID: <ZQpXs74FJVbjm9Qo@westworld>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -77,21 +77,23 @@ Acked-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
 ---
-Please apply this patch to v5.15.y. This patch adapts the original patch
-to v5.15.y considering codebase change.
-This patch retires rsvp classifier which is what the upstream patch did. 
+Please apply this patch to v6.1.y. This patch adapts the original patch
+to v6.1.y considering codebase change.
+This patch retires rsvp classifier which is what the upstream patch did.
 
-This patch has been tested against the v5.15.y stable tree.
+This patch has been tested against the v6.1.y stable tree.
 
- net/sched/Kconfig     |  28 --
- net/sched/Makefile    |   2 -
- net/sched/cls_rsvp.c  |  24 --
- net/sched/cls_rsvp.h  | 776 ------------------------------------------
- net/sched/cls_rsvp6.c |  24 --
- 5 files changed, 854 deletions(-)
+ net/sched/Kconfig                             |  28 -
+ net/sched/Makefile                            |   2 -
+ net/sched/cls_rsvp.c                          |  24 -
+ net/sched/cls_rsvp.h                          | 764 ------------------
+ net/sched/cls_rsvp6.c                         |  24 -
+ .../tc-testing/tc-tests/filters/rsvp.json     | 203 -----
+ 6 files changed, 1045 deletions(-)
  delete mode 100644 net/sched/cls_rsvp.c
  delete mode 100644 net/sched/cls_rsvp.h
  delete mode 100644 net/sched/cls_rsvp6.c
+ delete mode 100644 tools/testing/selftests/tc-testing/tc-tests/filters/rsvp.json
 
 diff --git a/net/sched/Kconfig b/net/sched/Kconfig
 index bcdd6e925343..24cf0bf7c80e 100644
@@ -177,10 +179,10 @@ index de1c1d4da597..000000000000
 -MODULE_LICENSE("GPL");
 diff --git a/net/sched/cls_rsvp.h b/net/sched/cls_rsvp.h
 deleted file mode 100644
-index 5cd9d6b143c4..000000000000
+index b00a7dbd0587..000000000000
 --- a/net/sched/cls_rsvp.h
 +++ /dev/null
-@@ -1,776 +0,0 @@
+@@ -1,764 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0-or-later */
 -/*
 - * net/sched/cls_rsvp.h	Template file for RSVPv[46] classifiers.
@@ -854,15 +856,8 @@ index 5cd9d6b143c4..000000000000
 -
 -				for (f = rtnl_dereference(s->ht[h1]); f;
 -				     f = rtnl_dereference(f->next)) {
--					if (arg->count < arg->skip) {
--						arg->count++;
--						continue;
--					}
--					if (arg->fn(tp, f, arg) < 0) {
--						arg->stop = 1;
+-					if (!tc_cls_stats_dump(tp, arg, f))
 -						return;
--					}
--					arg->count++;
 -				}
 -			}
 -		}
@@ -923,12 +918,7 @@ index 5cd9d6b143c4..000000000000
 -{
 -	struct rsvp_filter *f = fh;
 -
--	if (f && f->res.classid == classid) {
--		if (cl)
--			__tcf_bind_filter(q, &f->res, base);
--		else
--			__tcf_unbind_filter(q, &f->res);
--	}
+-	tc_cls_bind_class(classid, cl, q, &f->res, base);
 -}
 -
 -static struct tcf_proto_ops RSVP_OPS __read_mostly = {
@@ -987,6 +977,215 @@ index 64078846000e..000000000000
 -
 -#include "cls_rsvp.h"
 -MODULE_LICENSE("GPL");
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/rsvp.json b/tools/testing/selftests/tc-testing/tc-tests/filters/rsvp.json
+deleted file mode 100644
+index bdcbaa4c5663..000000000000
+--- a/tools/testing/selftests/tc-testing/tc-tests/filters/rsvp.json
++++ /dev/null
+@@ -1,203 +0,0 @@
+-[
+-    {
+-        "id": "2141",
+-        "name": "Add rsvp filter with tcp proto and specific IP address",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto tcp session 198.168.10.64",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*session 198.168.10.64 ipproto tcp",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "5267",
+-        "name": "Add rsvp filter with udp proto and specific IP address",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*session 1.1.1.1 ipproto udp",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "2819",
+-        "name": "Add rsvp filter with src ip and src port",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1 sender 2.2.2.2/5021 classid 1:1",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*flowid 1:1 session 1.1.1.1 ipproto udp sender  2.2.2.2/5021",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "c967",
+-        "name": "Add rsvp filter with tunnelid and continue action",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1 tunnelid 2 classid 1:1 action continue",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*flowid 1:1 session 1.1.1.1 ipproto udp tunnelid 2.*action order [0-9]+: gact action continue",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "5463",
+-        "name": "Add rsvp filter with tunnel and pipe action",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1 tunnel 2 skip 1 action pipe",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*tunnel 2 skip 1 session 1.1.1.1 ipproto udp.*action order [0-9]+: gact action pipe",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "2332",
+-        "name": "Add rsvp filter with miltiple actions",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 7 rsvp ipproto udp session 1.1.1.1 classid 1:1 action skbedit mark 7 pipe action gact drop",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*flowid 1:1 session 1.1.1.1 ipproto udp.*action order [0-9]+: skbedit  mark 7 pipe.*action order [0-9]+: gact action drop",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "8879",
+-        "name": "Add rsvp filter with tunnel and skp flag",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress"
+-        ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1 tunnel 2 skip 1 action pipe",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*tunnel 2 skip 1 session 1.1.1.1 ipproto udp.*action order [0-9]+: gact action pipe",
+-        "matchCount": "1",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "8261",
+-        "name": "List rsvp filters",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress",
+-            "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1/1234 classid 1:1",
+-            "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto tcp session 2.2.2.2/1234 classid 2:1"
+-        ],
+-        "cmdUnderTest": "$TC filter show dev $DEV1 parent ffff:",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "^filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh",
+-        "matchCount": "2",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    },
+-    {
+-        "id": "8989",
+-        "name": "Delete rsvp filter",
+-        "category": [
+-            "filter",
+-            "rsvp"
+-        ],
+-        "plugins": {
+-            "requires": "nsPlugin"
+-        },
+-        "setup": [
+-            "$TC qdisc add dev $DEV1 ingress",
+-            "$TC filter add dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1/1234 tunnelid 9 classid 2:1"
+-        ],
+-        "cmdUnderTest": "$TC filter del dev $DEV1 parent ffff: protocol ip prio 1 rsvp ipproto udp session 1.1.1.1/1234 tunnelid 9 classid 2:1",
+-        "expExitCode": "0",
+-        "verifyCmd": "$TC filter show dev $DEV1 parent ffff:",
+-        "matchPattern": "filter protocol ip pref [0-9]+ rsvp chain [0-9]+ fh 0x.*flowid 2:1 session 1.1.1.1/1234 ipproto udp tunnelid 9",
+-        "matchCount": "0",
+-        "teardown": [
+-            "$TC qdisc del dev $DEV1 ingress"
+-        ]
+-    }
+-]
 -- 
 2.34.1
 
