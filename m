@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E322A7A7D87
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDCBA7A7F8A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:27:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235342AbjITMK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40124 "EHLO
+        id S235499AbjITM1v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235515AbjITMJ7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:59 -0400
+        with ESMTP id S235755AbjITM1u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:27:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D18C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA9BC433C8;
-        Wed, 20 Sep 2023 12:09:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86079E
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:27:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB548C433C9;
+        Wed, 20 Sep 2023 12:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211793;
-        bh=ln68n/gqB9Oo1fYsZLLmcZmST/N/GTT+qPyB+pBgQTE=;
+        s=korg; t=1695212864;
+        bh=405JFM+RB1RBYEWjwxsbnJmV7oAHnYtTYGD7slnJw8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ihoEuUuOE5es5htKT1173YcSnriYovaojrSxiAIOEtXnjTEYarVTWEFsWgIZI8J7V
-         9+C6xfjq8DJDEkGV8snuGVEKCRb/I9p3rvW4cNA8yFV2WknVRCQMOP4N5IfcPRJpbW
-         5Az4YzpxZlz4WFwDEI7UtGv/BoN+80AOAn4aUG94=
+        b=13akY1w5lgxjd5fyAg5gHl7dcc4xvuxtUNzfIWlXgK240I9p5GJmbYXXfi7ZJxajs
+         upeOiFHyNFyLENdSTrJ8/Z3s9p9GKDjnLg+Z13py1+TvoBUE/5lyT6hfKVAnNYMgp7
+         ds571BvE6NzKhTA4txPZEJzuDf5YDFKbQ0k9mLdI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Juerg Haefliger <juerg.haefliger@canonical.com>,
-        Joel Stanley <joel@jms.id.au>
-Subject: [PATCH 4.19 011/273] fsi: master-ast-cf: Add MODULE_FIRMWARE macro
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Yan Zhai <yan@cloudflare.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 074/367] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
 Date:   Wed, 20 Sep 2023 13:27:31 +0200
-Message-ID: <20230920112846.778657187@linuxfoundation.org>
+Message-ID: <20230920112900.442730402@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,33 +51,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juerg Haefliger <juerg.haefliger@canonical.com>
+From: Yan Zhai <yan@cloudflare.com>
 
-commit 3a1d7aff6e65ad6e285e28abe55abbfd484997ee upstream.
+[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
 
-The module loads firmware so add a MODULE_FIRMWARE macro to provide that
-information via modinfo.
+LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
+such that any positive return value from a xmit hook could cause
+unexpected continue behavior, despite that related skb may have been
+freed. This could be error-prone for future xmit hook ops. One of the
+possible errors is to return statuses of dst_output directly.
 
-Fixes: 6a794a27daca ("fsi: master-ast-cf: Add new FSI master using Aspeed ColdFire")
-Cc: stable@vger.kernel.org # 4.19+
-Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-Link: https://lore.kernel.org/r/20230628095039.26218-1-juerg.haefliger@canonical.com
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
+distinguish from dst_output statuses and check the continue
+condition explicitly.
+
+Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fsi/fsi-master-ast-cf.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/lwtunnel.h | 5 ++++-
+ net/ipv4/ip_output.c   | 2 +-
+ net/ipv6/ip6_output.c  | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/fsi/fsi-master-ast-cf.c
-+++ b/drivers/fsi/fsi-master-ast-cf.c
-@@ -1438,3 +1438,4 @@ static struct platform_driver fsi_master
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index 5d6c5b1fc6955..ed1cd431e2b3b 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -16,9 +16,12 @@
+ #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
+ #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
  
- module_platform_driver(fsi_master_acf);
- MODULE_LICENSE("GPL");
-+MODULE_FIRMWARE(FW_FILE_NAME);
++/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
++ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
++ */
+ enum {
+ 	LWTUNNEL_XMIT_DONE,
+-	LWTUNNEL_XMIT_CONTINUE,
++	LWTUNNEL_XMIT_CONTINUE = 0x100,
+ };
+ 
+ 
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 08ccb501ff0cc..bf7c2333bc236 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -222,7 +222,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 8231a7a3dd035..816275b2135fe 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -130,7 +130,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
+-- 
+2.40.1
+
 
 
