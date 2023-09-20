@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82DA07A7CAA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C20AA7A7B4B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235041AbjITMDJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49404 "EHLO
+        id S234588AbjITLu7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235086AbjITMDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:02 -0400
+        with ESMTP id S234689AbjITLu7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13B67ED
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B14DC433C7;
-        Wed, 20 Sep 2023 12:02:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7753ECE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEB5C433CA;
+        Wed, 20 Sep 2023 11:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211374;
-        bh=BMj1D4yh1OrmzT5tzFwT68LDvKlXDVh0+zbfzknStxE=;
+        s=korg; t=1695210652;
+        bh=fynoGi+yC/8/EvXwM4C73jpsbYDbZslyGIcSbDJHpO0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E5t4+1vrdgL8fc68nqcJpiWRldA8DbOB5zgnP7iRXgobJkPovkcEUuhjt8Y9U73D0
-         IKfBnVoW7l2HXiecmhAVXWcoQms2dehcKbP0iFoORLv4TRsPgDgYTrOvDN9cbxKKkA
-         5Rl1TkVdPNlkELKbD5PH6uQZig2upUJ7xV9CoLH8=
+        b=Asm/bIm2XOOO6bQ9qA5HVmsDU1+zYyMKNzwdI4KvMf1u7gxhfIAxBOKHOKTTfTTZd
+         iCIFXfZe0o6yOC2P61FVUZZzE8VjwewIU6QtPYLyipy9yN1p6863nn2EXtpR2nU+NP
+         xfpaD8cPuv4KnTyGmqG3AQYYa8JjdZ2CPCwxHhxo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nageswara R Sastry <rnsastry@linux.ibm.com>,
-        Russell Currey <ruscur@russell.cc>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 069/186] powerpc/iommu: Fix notifiers being shared by PCI and VIO buses
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 128/211] printk: Reduce console_unblank() usage in unsafe scenarios
 Date:   Wed, 20 Sep 2023 13:29:32 +0200
-Message-ID: <20230920112839.365452718@linuxfoundation.org>
+Message-ID: <20230920112849.781543688@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,98 +50,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Currey <ruscur@russell.cc>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit c37b6908f7b2bd24dcaaf14a180e28c9132b9c58 ]
+[ Upstream commit 7b23a66db55ed0a55b020e913f0d6f6d52a1ad2c ]
 
-fail_iommu_setup() registers the fail_iommu_bus_notifier struct to both
-PCI and VIO buses.  struct notifier_block is a linked list node, so this
-causes any notifiers later registered to either bus type to also be
-registered to the other since they share the same node.
+A semaphore is not NMI-safe, even when using down_trylock(). Both
+down_trylock() and up() are using internal spinlocks and up()
+might even call wake_up_process().
 
-This causes issues in (at least) the vgaarb code, which registers a
-notifier for PCI buses.  pci_notify() ends up being called on a vio
-device, converted with to_pci_dev() even though it's not a PCI device,
-and finally makes a bad access in vga_arbiter_add_pci_device() as
-discovered with KASAN:
+In the panic() code path it gets even worse because the internal
+spinlocks of the semaphore may have been taken by a CPU that has
+been stopped.
 
- BUG: KASAN: slab-out-of-bounds in vga_arbiter_add_pci_device+0x60/0xe00
- Read of size 4 at addr c000000264c26fdc by task swapper/0/1
+To reduce the risk of deadlocks caused by the console semaphore in
+the panic path, make the following changes:
 
- Call Trace:
-   dump_stack_lvl+0x1bc/0x2b8 (unreliable)
-   print_report+0x3f4/0xc60
-   kasan_report+0x244/0x698
-   __asan_load4+0xe8/0x250
-   vga_arbiter_add_pci_device+0x60/0xe00
-   pci_notify+0x88/0x444
-   notifier_call_chain+0x104/0x320
-   blocking_notifier_call_chain+0xa0/0x140
-   device_add+0xac8/0x1d30
-   device_register+0x58/0x80
-   vio_register_device_node+0x9ac/0xce0
-   vio_bus_scan_register_devices+0xc4/0x13c
-   __machine_initcall_pseries_vio_device_init+0x94/0xf0
-   do_one_initcall+0x12c/0xaa8
-   kernel_init_freeable+0xa48/0xba8
-   kernel_init+0x64/0x400
-   ret_from_kernel_thread+0x5c/0x64
+- First check if any consoles have implemented the unblank()
+  callback. If not, then there is no reason to take the console
+  semaphore anyway. (This check is also useful for the non-panic
+  path since the locking/unlocking of the console lock can be
+  quite expensive due to console printing.)
 
-Fix this by creating separate notifier_block structs for each bus type.
+- If the panic path is in NMI context, bail out without attempting
+  to take the console semaphore or calling any unblank() callbacks.
+  Bailing out is acceptable because console_unblank() would already
+  bail out if the console semaphore is contended. The alternative of
+  ignoring the console semaphore and calling the unblank() callbacks
+  anyway is a bad idea because these callbacks are also not NMI-safe.
 
-Fixes: d6b9a81b2a45 ("powerpc: IOMMU fault injection")
-Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-[mpe: Add #ifdef to fix CONFIG_IBMVIO=n build]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230322035322.328709-1-ruscur@russell.cc
+If consoles with unblank() callbacks exist and console_unblank() is
+called from a non-NMI panic context, it will still attempt a
+down_trylock(). This could still result in a deadlock if one of the
+stopped CPUs is holding the semaphore internal spinlock. But this
+is a risk that the kernel has been (and continues to be) willing
+to take.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-3-john.ogness@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/iommu.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ kernel/printk/printk.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 87af91937c8a9..410fb08a2c31b 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -145,17 +145,28 @@ static int fail_iommu_bus_notify(struct notifier_block *nb,
- 	return 0;
- }
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 357a4d18f6387..7d3f30eb35862 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3045,9 +3045,27 @@ EXPORT_SYMBOL(console_conditional_schedule);
  
--static struct notifier_block fail_iommu_bus_notifier = {
-+/*
-+ * PCI and VIO buses need separate notifier_block structs, since they're linked
-+ * list nodes.  Sharing a notifier_block would mean that any notifiers later
-+ * registered for PCI buses would also get called by VIO buses and vice versa.
-+ */
-+static struct notifier_block fail_iommu_pci_bus_notifier = {
- 	.notifier_call = fail_iommu_bus_notify
- };
- 
-+#ifdef CONFIG_IBMVIO
-+static struct notifier_block fail_iommu_vio_bus_notifier = {
-+	.notifier_call = fail_iommu_bus_notify
-+};
-+#endif
-+
- static int __init fail_iommu_setup(void)
+ void console_unblank(void)
  {
- #ifdef CONFIG_PCI
--	bus_register_notifier(&pci_bus_type, &fail_iommu_bus_notifier);
-+	bus_register_notifier(&pci_bus_type, &fail_iommu_pci_bus_notifier);
- #endif
- #ifdef CONFIG_IBMVIO
--	bus_register_notifier(&vio_bus_type, &fail_iommu_bus_notifier);
-+	bus_register_notifier(&vio_bus_type, &fail_iommu_vio_bus_notifier);
- #endif
++	bool found_unblank = false;
+ 	struct console *c;
+ 	int cookie;
  
- 	return 0;
++	/*
++	 * First check if there are any consoles implementing the unblank()
++	 * callback. If not, there is no reason to continue and take the
++	 * console lock, which in particular can be dangerous if
++	 * @oops_in_progress is set.
++	 */
++	cookie = console_srcu_read_lock();
++	for_each_console_srcu(c) {
++		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank) {
++			found_unblank = true;
++			break;
++		}
++	}
++	console_srcu_read_unlock(cookie);
++	if (!found_unblank)
++		return;
++
+ 	/*
+ 	 * Stop console printing because the unblank() callback may
+ 	 * assume the console is not within its write() callback.
+@@ -3056,6 +3074,16 @@ void console_unblank(void)
+ 	 * In that case, attempt a trylock as best-effort.
+ 	 */
+ 	if (oops_in_progress) {
++		/* Semaphores are not NMI-safe. */
++		if (in_nmi())
++			return;
++
++		/*
++		 * Attempting to trylock the console lock can deadlock
++		 * if another CPU was stopped while modifying the
++		 * semaphore. "Hope and pray" that this is not the
++		 * current situation.
++		 */
+ 		if (down_trylock_console_sem() != 0)
+ 			return;
+ 	} else
 -- 
 2.40.1
 
