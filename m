@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 671B67A7CAB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD487A7B4E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235103AbjITMDK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
+        id S234647AbjITLvD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235102AbjITMDE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:04 -0400
+        with ESMTP id S234694AbjITLvA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 922E9D3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97A3C433C9;
-        Wed, 20 Sep 2023 12:02:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 279F3B0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747EAC433CA;
+        Wed, 20 Sep 2023 11:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211377;
-        bh=GFapavElACLxw57aL1dQkEN9iSYsl3DxJF+5BuLC4F0=;
+        s=korg; t=1695210654;
+        bh=qHO0HX9tfEgjznSU8AiSAdEcVJyet80SRSypOr0Q/HA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rECUz5YQbj5m8Fc2NpUR874MzEqdHD1fx9r3SMnCS04SBJ9BQoXAKRnuWn+kP+APL
-         X4ZnJiRN4N4NjxRbSp4spYffGQ+3nKFuiMkQUP+8R3c9OeWAptmj79tTAqb6GcjD5/
-         tCva0VaiOrjCmQ5xB+Wc3p9jYypXqbp+c8qnJA+k=
+        b=AdXUAfASItVGgZYsENdrQOd+UZR/xVzUlyLH88YVlLDDIuxNX7jBYDwwpF7Ys0xnf
+         PohlvFkW7eoDfQYhtTpM9bQZru7tizuL21tCxxJAKI8kHva22eFcHgSaxGKlFnuAK9
+         pdMJZ+cH31JebqsyZQMlMsTv0KRdPuTb+MEheZQc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksei Filippov <halip0503@gmail.com>,
-        Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 070/186] jfs: validate max amount of blocks before allocation.
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 129/211] printk: Keep non-panic-CPUs out of console lock
 Date:   Wed, 20 Sep 2023 13:29:33 +0200
-Message-ID: <20230920112839.400122369@linuxfoundation.org>
+Message-ID: <20230920112849.813436213@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Filippov <halip0503@gmail.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit 0225e10972fa809728b8d4c1bd2772b3ec3fdb57 ]
+[ Upstream commit 51a1d258e50e03a0216bf42b6af9ff34ec402ac1 ]
 
-The lack of checking bmp->db_max_freebud in extBalloc() can lead to
-shift out of bounds, so this patch prevents undefined behavior, because
-bmp->db_max_freebud == -1 only if there is no free space.
+When in a panic situation, non-panic CPUs should avoid holding the
+console lock so as not to contend with the panic CPU. This is already
+implemented with abandon_console_lock_in_panic(), which is checked
+after each printed line. However, non-panic CPUs should also avoid
+trying to acquire the console lock during a panic.
 
-Signed-off-by: Aleksei Filippov <halip0503@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-and-tested-by: syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=01abadbd6ae6a08b1f1987aa61554c6b3ac19ff2
+Modify console_trylock() to fail and console_lock() to block() when
+called from a non-panic CPU during a panic.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-4-john.ogness@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_extent.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/printk/printk.c | 45 ++++++++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/fs/jfs/jfs_extent.c b/fs/jfs/jfs_extent.c
-index 2ae7d59ab10a5..c971e8a6525de 100644
---- a/fs/jfs/jfs_extent.c
-+++ b/fs/jfs/jfs_extent.c
-@@ -521,6 +521,11 @@ extBalloc(struct inode *ip, s64 hint, s64 * nblocks, s64 * blkno)
- 	 * blocks in the map. in that case, we'll start off with the
- 	 * maximum free.
- 	 */
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 7d3f30eb35862..591c11888200d 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2585,6 +2585,25 @@ static int console_cpu_notify(unsigned int cpu)
+ 	return 0;
+ }
+ 
++/*
++ * Return true when this CPU should unlock console_sem without pushing all
++ * messages to the console. This reduces the chance that the console is
++ * locked when the panic CPU tries to use it.
++ */
++static bool abandon_console_lock_in_panic(void)
++{
++	if (!panic_in_progress())
++		return false;
 +
-+	/* give up if no space left */
-+	if (bmp->db_maxfreebud == -1)
-+		return -ENOSPC;
++	/*
++	 * We can use raw_smp_processor_id() here because it is impossible for
++	 * the task to be migrated to the panic_cpu, or away from it. If
++	 * panic_cpu has already been set, and we're not currently executing on
++	 * that CPU, then we never will be.
++	 */
++	return atomic_read(&panic_cpu) != raw_smp_processor_id();
++}
 +
- 	max = (s64) 1 << bmp->db_maxfreebud;
- 	if (*nblocks >= max && *nblocks > nbperpage)
- 		nb = nblks = (max > nbperpage) ? max : nbperpage;
+ /**
+  * console_lock - block the console subsystem from printing
+  *
+@@ -2597,6 +2616,10 @@ void console_lock(void)
+ {
+ 	might_sleep();
+ 
++	/* On panic, the console_lock must be left to the panic cpu. */
++	while (abandon_console_lock_in_panic())
++		msleep(1000);
++
+ 	down_console_sem();
+ 	if (console_suspended)
+ 		return;
+@@ -2615,6 +2638,9 @@ EXPORT_SYMBOL(console_lock);
+  */
+ int console_trylock(void)
+ {
++	/* On panic, the console_lock must be left to the panic cpu. */
++	if (abandon_console_lock_in_panic())
++		return 0;
+ 	if (down_trylock_console_sem())
+ 		return 0;
+ 	if (console_suspended) {
+@@ -2633,25 +2659,6 @@ int is_console_locked(void)
+ }
+ EXPORT_SYMBOL(is_console_locked);
+ 
+-/*
+- * Return true when this CPU should unlock console_sem without pushing all
+- * messages to the console. This reduces the chance that the console is
+- * locked when the panic CPU tries to use it.
+- */
+-static bool abandon_console_lock_in_panic(void)
+-{
+-	if (!panic_in_progress())
+-		return false;
+-
+-	/*
+-	 * We can use raw_smp_processor_id() here because it is impossible for
+-	 * the task to be migrated to the panic_cpu, or away from it. If
+-	 * panic_cpu has already been set, and we're not currently executing on
+-	 * that CPU, then we never will be.
+-	 */
+-	return atomic_read(&panic_cpu) != raw_smp_processor_id();
+-}
+-
+ /*
+  * Check if the given console is currently capable and allowed to print
+  * records.
 -- 
 2.40.1
 
