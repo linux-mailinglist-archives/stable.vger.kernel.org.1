@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB687A7E1E
+	by mail.lfdr.de (Postfix) with ESMTP id B706D7A7E1F
 	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235467AbjITMPk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54582 "EHLO
+        id S235449AbjITMPl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235449AbjITMPh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:37 -0400
+        with ESMTP id S235471AbjITMPi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4214B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4E9C433C7;
-        Wed, 20 Sep 2023 12:15:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C489AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0156C433CC;
+        Wed, 20 Sep 2023 12:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212128;
-        bh=s7IIMGTK21Rt4jDSGGzPGXwp3vsRutxOIhKOXSrbbUE=;
+        s=korg; t=1695212131;
+        bh=EQKLc9Bm7mS8wKrlJ7OBZwK7UlLnpyavN/Pzut/zor0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vGbcAQso7H0/yOZenSdDbNaSZV+CyEmCz9Sbb/A3l9b2YvvnEVOKCy1OHgvezDlg1
-         N8jEd7BsPHQi7vPmE6zSjcQhbvctPSbGXvNyah4KJuLbur5nXpF8X/aRRdaIw9Yr89
-         i47zukWaH+YutFP1SopPeW/4tJSM8O0i68a66kBY=
+        b=E1+jo70UbHbsywQ1gi5MzbDbFdpy4XiuapUp59uUClYDi+bg60qRMRAumyAeoWaF9
+         3/GVpAR++XXGJrz7nPN61cqUl5fyfkjYafgwkv78YZqoC6QnEj1oqrVxeFfmD5vsy/
+         euvjf7KZ3ybQKsRNeYe2hL+sr5ft4stY0OEZ6Zeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Jeff Layton <jlayton@kernel.org>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Tom Haynes <loghyr@gmail.com>,
         Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 127/273] fs: lockd: avoid possible wrong NULL parameter
-Date:   Wed, 20 Sep 2023 13:29:27 +0200
-Message-ID: <20230920112850.427604383@linuxfoundation.org>
+Subject: [PATCH 4.19 128/273] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
+Date:   Wed, 20 Sep 2023 13:29:28 +0200
+Message-ID: <20230920112850.465894357@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
 References: <20230920112846.440597133@linuxfoundation.org>
@@ -56,41 +55,137 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit de8d38cf44bac43e83bad28357ba84784c412752 ]
+[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
 
-clang's static analysis warning: fs/lockd/mon.c: line 293, column 2:
-Null pointer passed as 2nd argument to memory copy function.
+The XDR specification in RFC 8881 looks like this:
 
-Assuming 'hostname' is NULL and calling 'nsm_create_handle()', this will
-pass NULL as 2nd argument to memory copy function 'memcpy()'. So return
-NULL if 'hostname' is invalid.
+struct device_addr4 {
+	layouttype4	da_layout_type;
+	opaque		da_addr_body<>;
+};
 
-Fixes: 77a3ef33e2de ("NSM: More clean up of nsm_get_handle()")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+struct GETDEVICEINFO4resok {
+	device_addr4	gdir_device_addr;
+	bitmap4		gdir_notification;
+};
+
+union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
+case NFS4_OK:
+	GETDEVICEINFO4resok gdir_resok4;
+case NFS4ERR_TOOSMALL:
+	count4		gdir_mincount;
+default:
+	void;
+};
+
+Looking at nfsd4_encode_getdeviceinfo() ....
+
+When the client provides a zero gd_maxcount, then the Linux NFS
+server implementation encodes the da_layout_type field and then
+skips the da_addr_body field completely, proceeding directly to
+encode gdir_notification field.
+
+There does not appear to be an option in the specification to skip
+encoding da_addr_body. Moreover, Section 18.40.3 says:
+
+> If the client wants to just update or turn off notifications, it
+> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
+> In that event, if the device ID is valid, the reply's da_addr_body
+> field of the gdir_device_addr field will be of zero length.
+
+Since the layout drivers are responsible for encoding the
+da_addr_body field, put this fix inside the ->encode_getdeviceinfo
+methods.
+
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Tom Haynes <loghyr@gmail.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/mon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
+ fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
+ fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
+ 3 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/fs/lockd/mon.c b/fs/lockd/mon.c
-index 654594ef4f945..68a2eac548c3c 100644
---- a/fs/lockd/mon.c
-+++ b/fs/lockd/mon.c
-@@ -275,6 +275,9 @@ static struct nsm_handle *nsm_create_handle(const struct sockaddr *sap,
- {
- 	struct nsm_handle *new;
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index 442543304930b..2455dc8be18a8 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -82,6 +82,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int len = sizeof(__be32), ret, i;
+ 	__be32 *p;
  
-+	if (!hostname)
-+		return NULL;
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
 +
- 	new = kzalloc(sizeof(*new) + hostname_len + 1, GFP_KERNEL);
- 	if (unlikely(new == NULL))
- 		return NULL;
+ 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
+ 	if (!p)
+ 		return nfserr_resource;
+diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
+index e81d2a5cf381e..bb205328e043d 100644
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int addr_len;
+ 	__be32 *p;
+ 
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	/* len + padding for two strings */
+ 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
+ 	ver_len = 20;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index bceb99a8a814a..33827cdd8066f 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4126,20 +4126,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
+ 
+ 	*p++ = cpu_to_be32(gdev->gd_layout_type);
+ 
+-	/* If maxcount is 0 then just update notifications */
+-	if (gdev->gd_maxcount != 0) {
+-		ops = nfsd4_layout_ops[gdev->gd_layout_type];
+-		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
+-		if (nfserr) {
+-			/*
+-			 * We don't bother to burden the layout drivers with
+-			 * enforcing gd_maxcount, just tell the client to
+-			 * come back with a bigger buffer if it's not enough.
+-			 */
+-			if (xdr->buf->len + 4 > gdev->gd_maxcount)
+-				goto toosmall;
+-			return nfserr;
+-		}
++	ops = nfsd4_layout_ops[gdev->gd_layout_type];
++	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
++	if (nfserr) {
++		/*
++		 * We don't bother to burden the layout drivers with
++		 * enforcing gd_maxcount, just tell the client to
++		 * come back with a bigger buffer if it's not enough.
++		 */
++		if (xdr->buf->len + 4 > gdev->gd_maxcount)
++			goto toosmall;
++		return nfserr;
+ 	}
+ 
+ 	if (gdev->gd_notify_types) {
 -- 
 2.40.1
 
