@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8794C7A7D41
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B747A7EBF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235225AbjITMH5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41510 "EHLO
+        id S235655AbjITMUY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235198AbjITMH4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:56 -0400
+        with ESMTP id S235688AbjITMUY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE643B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69997C433C7;
-        Wed, 20 Sep 2023 12:07:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 698CF93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1241C433BA;
+        Wed, 20 Sep 2023 12:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211668;
-        bh=+/2o15hCehJmDj354QiBgvhI3Qhja+fa/WlILr7aIxI=;
+        s=korg; t=1695212416;
+        bh=c54qSLbn44zabGJFkntSEv1q3nNL/PqslYpdaIVajSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Be5QayGatIe/0m+NONsuPVQ1h55B5fAPRitLG3pvkj301ucVpqpxen+uWKZ5dCNS2
-         gRbaMg6oTfUzJPGOmuDRZ/4LanhUUodQX6RoJJhHahN3LE2+myZ78r3Bw1+49FsOm6
-         nCvYzCJKhFyUgA76/pz4JW3U6xsis1vRW6bdK+Zo=
+        b=uOSYna7JaLmVDAcHSGxO8Ft7Cg07gqGFxyl1VorIeZV75NFZ7K8SiMchp7rR1GB0O
+         5qadab1n1lt/fCIg0t7TuT0dP7xjOcSSTDlv3g/Mes8sjjwo+oO5ojoIcBnCNMHRYa
+         32afCuWIpBXJQU8yxwuNJAookpMfcYEnyC2rcdOQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Weimer <fweimer@redhat.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 4.14 178/186] attr: block mode changes of symlinks
+        patches@lists.linux.dev, Tomislav Novak <tnovak@meta.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        Samuel Gosselin <sgosselin@google.com>
+Subject: [PATCH 4.19 241/273] hw_breakpoint: fix single-stepping when using bpf_overflow_handler
 Date:   Wed, 20 Sep 2023 13:31:21 +0200
-Message-ID: <20230920112843.314932283@linuxfoundation.org>
+Message-ID: <20230920112853.790639624@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,144 +52,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Tomislav Novak <tnovak@meta.com>
 
-commit 5d1f903f75a80daa4dfb3d84e114ec8ecbf29956 upstream.
+[ Upstream commit d11a69873d9a7435fe6a48531e165ab80a8b1221 ]
 
-Changing the mode of symlinks is meaningless as the vfs doesn't take the
-mode of a symlink into account during path lookup permission checking.
+Arm platforms use is_default_overflow_handler() to determine if the
+hw_breakpoint code should single-step over the breakpoint trigger or
+let the custom handler deal with it.
 
-However, the vfs doesn't block mode changes on symlinks. This however,
-has lead to an untenable mess roughly classifiable into the following
-two categories:
+Since bpf_overflow_handler() currently isn't recognized as a default
+handler, attaching a BPF program to a PERF_TYPE_BREAKPOINT event causes
+it to keep firing (the instruction triggering the data abort exception
+is never skipped). For example:
 
-(1) Filesystems that don't implement a i_op->setattr() for symlinks.
+  # bpftrace -e 'watchpoint:0x10000:4:w { print("hit") }' -c ./test
+  Attaching 1 probe...
+  hit
+  hit
+  [...]
+  ^C
 
-    Such filesystems may or may not know that without i_op->setattr()
-    defined, notify_change() falls back to simple_setattr() causing the
-    inode's mode in the inode cache to be changed.
+(./test performs a single 4-byte store to 0x10000)
 
-    That's a generic issue as this will affect all non-size changing
-    inode attributes including ownership changes.
+This patch replaces the check with uses_default_overflow_handler(),
+which accounts for the bpf_overflow_handler() case by also testing
+if one of the perf_event_output functions gets invoked indirectly,
+via orig_default_handler.
 
-    Example: afs
-
-(2) Filesystems that fail with EOPNOTSUPP but change the mode of the
-    symlink nonetheless.
-
-    Some filesystems will happily update the mode of a symlink but still
-    return EOPNOTSUPP. This is the biggest source of confusion for
-    userspace.
-
-    The EOPNOTSUPP in this case comes from POSIX ACLs. Specifically it
-    comes from filesystems that call posix_acl_chmod(), e.g., btrfs via
-
-        if (!err && attr->ia_valid & ATTR_MODE)
-                err = posix_acl_chmod(idmap, dentry, inode->i_mode);
-
-    Filesystems including btrfs don't implement i_op->set_acl() so
-    posix_acl_chmod() will report EOPNOTSUPP.
-
-    When posix_acl_chmod() is called, most filesystems will have
-    finished updating the inode.
-
-    Perversely, this has the consequences that this behavior may depend
-    on two kconfig options and mount options:
-
-    * CONFIG_POSIX_ACL={y,n}
-    * CONFIG_${FSTYPE}_POSIX_ACL={y,n}
-    * Opt_acl, Opt_noacl
-
-    Example: btrfs, ext4, xfs
-
-The only way to change the mode on a symlink currently involves abusing
-an O_PATH file descriptor in the following manner:
-
-        fd = openat(-1, "/path/to/link", O_CLOEXEC | O_PATH | O_NOFOLLOW);
-
-        char path[PATH_MAX];
-        snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-        chmod(path, 0000);
-
-But for most major filesystems with POSIX ACL support such as btrfs,
-ext4, ceph, tmpfs, xfs and others this will fail with EOPNOTSUPP with
-the mode still updated due to the aforementioned posix_acl_chmod()
-nonsense.
-
-So, given that for all major filesystems this would fail with EOPNOTSUPP
-and that both glibc (cf. [1]) and musl (cf. [2]) outright block mode
-changes on symlinks we should just try and block mode changes on
-symlinks directly in the vfs and have a clean break with this nonsense.
-
-If this causes any regressions, we do the next best thing and fix up all
-filesystems that do return EOPNOTSUPP with the mode updated to not call
-posix_acl_chmod() on symlinks.
-
-But as usual, let's try the clean cut solution first. It's a simple
-patch that can be easily reverted. Not marking this for backport as I'll
-do that manually if we're reasonably sure that this works and there are
-no strong objections.
-
-We could block this in chmod_common() but it's more appropriate to do it
-notify_change() as it will also mean that we catch filesystems that
-change symlink permissions explicitly or accidently.
-
-Similar proposals were floated in the past as in [3] and [4] and again
-recently in [5]. There's also a couple of bugs about this inconsistency
-as in [6] and [7].
-
-Link: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=99527a3727e44cb8661ee1f743068f108ec93979;hb=HEAD [1]
-Link: https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c [2]
-Link: https://lore.kernel.org/all/20200911065733.GA31579@infradead.org [3]
-Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00518.html [4]
-Link: https://lore.kernel.org/lkml/87lefmbppo.fsf@oldenburg.str.redhat.com [5]
-Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html [6]
-Link: https://sourceware.org/bugzilla/show_bug.cgi?id=14578#c17 [7]
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org # please backport to all LTSes but not before v6.6-rc2 is tagged
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Florian Weimer <fweimer@redhat.com>
-Message-Id: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomislav Novak <tnovak@meta.com>
+Tested-by: Samuel Gosselin <sgosselin@google.com> # arm64
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/linux-arm-kernel/20220923203644.2731604-1-tnovak@fb.com/
+Link: https://lore.kernel.org/r/20230605191923.1219974-1-tnovak@meta.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/attr.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ arch/arm/kernel/hw_breakpoint.c   |  8 ++++----
+ arch/arm64/kernel/hw_breakpoint.c |  4 ++--
+ include/linux/perf_event.h        | 22 +++++++++++++++++++---
+ 3 files changed, 25 insertions(+), 9 deletions(-)
 
---- a/fs/attr.c
-+++ b/fs/attr.c
-@@ -235,9 +235,25 @@ int notify_change(struct dentry * dentry
+diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
+index 2ee5b7f5e7ad0..c71ecd06131ca 100644
+--- a/arch/arm/kernel/hw_breakpoint.c
++++ b/arch/arm/kernel/hw_breakpoint.c
+@@ -631,7 +631,7 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 	hw->address &= ~alignment_mask;
+ 	hw->ctrl.len <<= offset;
+ 
+-	if (is_default_overflow_handler(bp)) {
++	if (uses_default_overflow_handler(bp)) {
+ 		/*
+ 		 * Mismatch breakpoints are required for single-stepping
+ 		 * breakpoints.
+@@ -803,7 +803,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		 * Otherwise, insert a temporary mismatch breakpoint so that
+ 		 * we can single-step over the watchpoint trigger.
+ 		 */
+-		if (!is_default_overflow_handler(wp))
++		if (!uses_default_overflow_handler(wp))
+ 			continue;
+ step:
+ 		enable_single_step(wp, instruction_pointer(regs));
+@@ -816,7 +816,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		info->trigger = addr;
+ 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
+ 		perf_bp_event(wp, regs);
+-		if (is_default_overflow_handler(wp))
++		if (uses_default_overflow_handler(wp))
+ 			enable_single_step(wp, instruction_pointer(regs));
  	}
  
- 	if ((ia_valid & ATTR_MODE)) {
--		umode_t amode = attr->ia_mode;
-+		/*
-+		 * Don't allow changing the mode of symlinks:
-+		 *
-+		 * (1) The vfs doesn't take the mode of symlinks into account
-+		 *     during permission checking.
-+		 * (2) This has never worked correctly. Most major filesystems
-+		 *     did return EOPNOTSUPP due to interactions with POSIX ACLs
-+		 *     but did still updated the mode of the symlink.
-+		 *     This inconsistency led system call wrapper providers such
-+		 *     as libc to block changing the mode of symlinks with
-+		 *     EOPNOTSUPP already.
-+		 * (3) To even do this in the first place one would have to use
-+		 *     specific file descriptors and quite some effort.
-+		 */
-+		if (S_ISLNK(inode->i_mode))
-+			return -EOPNOTSUPP;
+@@ -891,7 +891,7 @@ static void breakpoint_handler(unsigned long unknown, struct pt_regs *regs)
+ 			info->trigger = addr;
+ 			pr_debug("breakpoint fired: address = 0x%x\n", addr);
+ 			perf_bp_event(bp, regs);
+-			if (is_default_overflow_handler(bp))
++			if (uses_default_overflow_handler(bp))
+ 				enable_single_step(bp, addr);
+ 			goto unlock;
+ 		}
+diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
+index 9f105fe58595d..5d120e39bf61a 100644
+--- a/arch/arm64/kernel/hw_breakpoint.c
++++ b/arch/arm64/kernel/hw_breakpoint.c
+@@ -661,7 +661,7 @@ static int breakpoint_handler(unsigned long unused, unsigned int esr,
+ 		perf_bp_event(bp, regs);
+ 
+ 		/* Do we need to handle the stepping? */
+-		if (is_default_overflow_handler(bp))
++		if (uses_default_overflow_handler(bp))
+ 			step = 1;
+ unlock:
+ 		rcu_read_unlock();
+@@ -740,7 +740,7 @@ static u64 get_distance_from_watchpoint(unsigned long addr, u64 val,
+ static int watchpoint_report(struct perf_event *wp, unsigned long addr,
+ 			     struct pt_regs *regs)
+ {
+-	int step = is_default_overflow_handler(wp);
++	int step = uses_default_overflow_handler(wp);
+ 	struct arch_hw_breakpoint *info = counter_arch_bp(wp);
+ 
+ 	info->trigger = addr;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index efe30b9b11908..f17e08bd294c2 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -998,15 +998,31 @@ extern void perf_event_output(struct perf_event *event,
+ 			      struct pt_regs *regs);
+ 
+ static inline bool
+-is_default_overflow_handler(struct perf_event *event)
++__is_default_overflow_handler(perf_overflow_handler_t overflow_handler)
+ {
+-	if (likely(event->overflow_handler == perf_event_output_forward))
++	if (likely(overflow_handler == perf_event_output_forward))
+ 		return true;
+-	if (unlikely(event->overflow_handler == perf_event_output_backward))
++	if (unlikely(overflow_handler == perf_event_output_backward))
+ 		return true;
+ 	return false;
+ }
+ 
++#define is_default_overflow_handler(event) \
++	__is_default_overflow_handler((event)->overflow_handler)
 +
- 		/* Flag setting protected by i_mutex */
--		if (is_sxid(amode))
-+		if (is_sxid(attr->ia_mode))
- 			inode->i_flags &= ~S_NOSEC;
- 	}
- 
++#ifdef CONFIG_BPF_SYSCALL
++static inline bool uses_default_overflow_handler(struct perf_event *event)
++{
++	if (likely(is_default_overflow_handler(event)))
++		return true;
++
++	return __is_default_overflow_handler(event->orig_overflow_handler);
++}
++#else
++#define uses_default_overflow_handler(event) \
++	is_default_overflow_handler(event)
++#endif
++
+ extern void
+ perf_event_header__init_id(struct perf_event_header *header,
+ 			   struct perf_sample_data *data,
+-- 
+2.40.1
+
 
 
