@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 995037A7C04
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EAE17A7B37
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235045AbjITL51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56108 "EHLO
+        id S234472AbjITLuK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234884AbjITL5V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:21 -0400
+        with ESMTP id S229648AbjITLuK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FA412F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DA2C433CC;
-        Wed, 20 Sep 2023 11:57:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52388DC
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721B4C433C7;
+        Wed, 20 Sep 2023 11:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211025;
-        bh=tc35an1yL6bdqHVeKrwODlFTyysbOo07uho2dXSYu0k=;
+        s=korg; t=1695210602;
+        bh=nhyjApE0O9F4m5n4pLA4NI/jdMn/ByzqC0MhHYUuqjM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V5040v+h11bmrTfUh0WXzy6MkeWFC9XAetNLe9MU2eYGXG4utFKYqu4Pbx9AvrQGb
-         /GhMClqRT1OIBbB6i3jIPdAfdsDKhveIq3dBYB9lw6LW85v1wgB+Dgd0ikPmTr+Bmu
-         GIFnfwyD2cq/UioWTG+jsKP7kxyUthlR79nNWroc=
+        b=LP16F//lOhi3uEUI9gxtiieOqt3Nfys65VPZodRqVemZfXtVgncY+fS3pPUrctRLB
+         5ulwHTaWCsL+pPls6vS8LF3txTys5Jypj5BsV5epNd49/I+sMueTPm7mQxmJ2/0gRU
+         PiwKe5JFXOz0k29ebhwpY5/iZl5vHjkJRQM7Hksw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Rander Wang <rander.wang@intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Yaochun Hung <yc.hung@mediatek.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/139] ASoC: SOF: topology: simplify code to prevent static analysis warnings
-Date:   Wed, 20 Sep 2023 13:29:41 +0200
-Message-ID: <20230920112837.387018223@linuxfoundation.org>
+Subject: [PATCH 6.5 138/211] btrfs: zoned: activate metadata block group on write time
+Date:   Wed, 20 Sep 2023 13:29:42 +0200
+Message-ID: <20230920112850.117164831@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,60 +50,187 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 55cb3dc271d81f1982c949a2ac483a6daf613b92 ]
+[ Upstream commit 13bb483d32abb6f8ebd40141d87eb68f11cc2dd2 ]
 
-make KCFLAGS='-fanalyzer' sound/soc/sof/intel/ reports a possible NULL
-pointer dereference.
+In the current implementation, block groups are activated at reservation
+time to ensure that all reserved bytes can be written to an active metadata
+block group. However, this approach has proven to be less efficient, as it
+activates block groups more frequently than necessary, putting pressure on
+the active zone resource and leading to potential issues such as early
+ENOSPC or hung_task.
 
-sound/soc/sof/topology.c:1136:21: error: dereference of NULL ‘w’
-[CWE-476] [-Werror=analyzer-null-dereference]
+Another drawback of the current method is that it hampers metadata
+over-commit, and necessitates additional flush operations and block group
+allocations, resulting in decreased overall performance.
 
- 1136 |     strcmp(w->sname, rtd->dai_link->stream_name))
+To address these issues, this commit introduces a write-time activation of
+metadata and system block group. This involves reserving at least one
+active block group specifically for a metadata and system block group.
 
-The code is rather confusing and can be simplified to make static
-analysis happy. No functionality change.
+Since metadata write-out is always allocated sequentially, when we need to
+write to a non-active block group, we can wait for the ongoing IOs to
+complete, activate a new block group, and then proceed with writing to the
+new block group.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Yaochun Hung <yc.hung@mediatek.com>
-Link: https://lore.kernel.org/r/20230731213748.440285-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b09315139136 ("btrfs: zoned: activate metadata block group on flush_space")
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/topology.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/block-group.c | 11 ++++++
+ fs/btrfs/fs.h          |  3 ++
+ fs/btrfs/zoned.c       | 81 ++++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 93 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 872e44408298f..e7305ce57ea1f 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -1086,16 +1086,17 @@ static void sof_disconnect_dai_widget(struct snd_soc_component *scomp,
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 82324c327a502..75385503a35b6 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -4273,6 +4273,17 @@ int btrfs_free_block_groups(struct btrfs_fs_info *info)
+ 	struct btrfs_caching_control *caching_ctl;
+ 	struct rb_node *n;
+ 
++	if (btrfs_is_zoned(info)) {
++		if (info->active_meta_bg) {
++			btrfs_put_block_group(info->active_meta_bg);
++			info->active_meta_bg = NULL;
++		}
++		if (info->active_system_bg) {
++			btrfs_put_block_group(info->active_system_bg);
++			info->active_system_bg = NULL;
++		}
++	}
++
+ 	write_lock(&info->block_group_cache_lock);
+ 	while (!list_empty(&info->caching_block_groups)) {
+ 		caching_ctl = list_entry(info->caching_block_groups.next,
+diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
+index 203d2a2678287..1f2d331121064 100644
+--- a/fs/btrfs/fs.h
++++ b/fs/btrfs/fs.h
+@@ -766,6 +766,9 @@ struct btrfs_fs_info {
+ 	u64 data_reloc_bg;
+ 	struct mutex zoned_data_reloc_io_lock;
+ 
++	struct btrfs_block_group *active_meta_bg;
++	struct btrfs_block_group *active_system_bg;
++
+ 	u64 nr_global_roots;
+ 
+ 	spinlock_t zone_active_bgs_lock;
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index cc117283d0c88..f97e927499d7a 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -65,6 +65,9 @@
+ 
+ #define SUPER_INFO_SECTORS	((u64)BTRFS_SUPER_INFO_SIZE >> SECTOR_SHIFT)
+ 
++static void wait_eb_writebacks(struct btrfs_block_group *block_group);
++static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_written);
++
+ static inline bool sb_zone_is_full(const struct blk_zone *zone)
  {
- 	struct snd_soc_card *card = scomp->card;
- 	struct snd_soc_pcm_runtime *rtd;
-+	const char *sname = w->sname;
- 	struct snd_soc_dai *cpu_dai;
- 	int i;
+ 	return (zone->cond == BLK_ZONE_COND_FULL) ||
+@@ -1758,6 +1761,62 @@ void btrfs_finish_ordered_zoned(struct btrfs_ordered_extent *ordered)
+ 	}
+ }
  
--	if (!w->sname)
-+	if (!sname)
- 		return;
++static bool check_bg_is_active(struct btrfs_eb_write_context *ctx,
++			       struct btrfs_block_group **active_bg)
++{
++	const struct writeback_control *wbc = ctx->wbc;
++	struct btrfs_block_group *block_group = ctx->zoned_bg;
++	struct btrfs_fs_info *fs_info = block_group->fs_info;
++
++	if (test_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags))
++		return true;
++
++	if (fs_info->treelog_bg == block_group->start) {
++		if (!btrfs_zone_activate(block_group)) {
++			int ret_fin = btrfs_zone_finish_one_bg(fs_info);
++
++			if (ret_fin != 1 || !btrfs_zone_activate(block_group))
++				return false;
++		}
++	} else if (*active_bg != block_group) {
++		struct btrfs_block_group *tgt = *active_bg;
++
++		/* zoned_meta_io_lock protects fs_info->active_{meta,system}_bg. */
++		lockdep_assert_held(&fs_info->zoned_meta_io_lock);
++
++		if (tgt) {
++			/*
++			 * If there is an unsent IO left in the allocated area,
++			 * we cannot wait for them as it may cause a deadlock.
++			 */
++			if (tgt->meta_write_pointer < tgt->start + tgt->alloc_offset) {
++				if (wbc->sync_mode == WB_SYNC_NONE ||
++				    (wbc->sync_mode == WB_SYNC_ALL && !wbc->for_sync))
++					return false;
++			}
++
++			/* Pivot active metadata/system block group. */
++			btrfs_zoned_meta_io_unlock(fs_info);
++			wait_eb_writebacks(tgt);
++			do_zone_finish(tgt, true);
++			btrfs_zoned_meta_io_lock(fs_info);
++			if (*active_bg == tgt) {
++				btrfs_put_block_group(tgt);
++				*active_bg = NULL;
++			}
++		}
++		if (!btrfs_zone_activate(block_group))
++			return false;
++		if (*active_bg != block_group) {
++			ASSERT(*active_bg == NULL);
++			*active_bg = block_group;
++			btrfs_get_block_group(block_group);
++		}
++	}
++
++	return true;
++}
++
+ /*
+  * Check if @ctx->eb is aligned to the write pointer.
+  *
+@@ -1792,8 +1851,26 @@ int btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
+ 		ctx->zoned_bg = block_group;
+ 	}
  
- 	list_for_each_entry(rtd, &card->rtd_list, list) {
- 		/* does stream match DAI link ? */
- 		if (!rtd->dai_link->stream_name ||
--		    strcmp(w->sname, rtd->dai_link->stream_name))
-+		    strcmp(sname, rtd->dai_link->stream_name))
- 			continue;
+-	if (block_group->meta_write_pointer == eb->start)
+-		return 0;
++	if (block_group->meta_write_pointer == eb->start) {
++		struct btrfs_block_group **tgt;
++
++		if (!test_bit(BTRFS_FS_ACTIVE_ZONE_TRACKING, &fs_info->flags))
++			return 0;
++
++		if (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM)
++			tgt = &fs_info->active_system_bg;
++		else
++			tgt = &fs_info->active_meta_bg;
++		if (check_bg_is_active(ctx, tgt))
++			return 0;
++	}
++
++	/*
++	 * Since we may release fs_info->zoned_meta_io_lock, someone can already
++	 * start writing this eb. In that case, we can just bail out.
++	 */
++	if (block_group->meta_write_pointer > eb->start)
++		return -EBUSY;
  
- 		switch (w->id) {
+ 	/* If for_sync, this hole will be filled with trasnsaction commit. */
+ 	if (wbc->sync_mode == WB_SYNC_ALL && !wbc->for_sync)
 -- 
 2.40.1
 
