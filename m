@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7AF67A8064
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E51947A7E10
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235767AbjITMg6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
+        id S235404AbjITMP2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235918AbjITMg5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:57 -0400
+        with ESMTP id S235693AbjITMO7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D09C883
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FB1C433CC;
-        Wed, 20 Sep 2023 12:36:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8011C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC02C433C9;
+        Wed, 20 Sep 2023 12:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213411;
-        bh=2bs2NHmta7Mxx+Fc2/ELAiPdc4PJO6KXWo5vx6NoczY=;
+        s=korg; t=1695212093;
+        bh=OSp1V0yUYBllwtbYjIYcdAknBxQu9M0rJoly8d5MgUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jFbdL/i9UuPud+5g5QktXYeiLXNzz8quT2k/Z0g/4Z/6Umrh+HaL0QsU7kIpvlFBc
-         6KIVh/zh3rPPWw2EfzEAJdBpTMp8Rx1bQVI4ZOO2H/87wu6g1aUsZWvtQjw3LdyQRM
-         0DYvqiVFd9fsy6goSX/h2X7/jNuOeBtv/bIvGiak=
+        b=c5j1Wuv2ufJwIbdKi72wlBEElFl3wGEdq0oXhF0kgBm74YErXZDGDHArRtJ+iOJmB
+         4oSXHUehUWdv41c4Ss44IeQdPgfdQP1ZOj9cd4RkBW6UDjGyPJLfox4uZVFf4Dr7M8
+         QAILpMUs7F7dugAswqJvExL0pgiM9faj9epbL6nU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 5.4 210/367] PM / devfreq: Fix leak in devfreq_dev_release()
-Date:   Wed, 20 Sep 2023 13:29:47 +0200
-Message-ID: <20230920112904.045745879@linuxfoundation.org>
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 148/273] USB: gadget: f_mass_storage: Fix unused variable warning
+Date:   Wed, 20 Sep 2023 13:29:48 +0200
+Message-ID: <20230920112851.105050402@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 5693d077595de721f9ddbf9d37f40e5409707dfe upstream.
+[ Upstream commit 55c3e571d2a0aabef4f1354604443f1c415d2e85 ]
 
-srcu_init_notifier_head() allocates resources that need to be released
-with a srcu_cleanup_notifier_head() call.
+Fix a "variable set but not used" warning in f_mass_storage.c.  rc is
+used if	verbose debugging is enabled but not otherwise.
 
-Reported by kmemleak.
-
-Fixes: 0fe3a66410a3 ("PM / devfreq: Add new DEVFREQ_TRANSITION_NOTIFIER notifier")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: d5e2b67aae79 ("USB: g_mass_storage: template f_mass_storage.c file created")
+Link: https://lore.kernel.org/r/cfed16c7-aa46-494b-ba84-b0e0dc99be3a@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/devfreq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/function/f_mass_storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -595,6 +595,7 @@ static void devfreq_dev_release(struct d
- 		devfreq->profile->exit(devfreq->dev.parent);
+diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
+index 0b7b4d09785b6..4f221ca7aad15 100644
+--- a/drivers/usb/gadget/function/f_mass_storage.c
++++ b/drivers/usb/gadget/function/f_mass_storage.c
+@@ -950,7 +950,7 @@ static void invalidate_sub(struct fsg_lun *curlun)
+ {
+ 	struct file	*filp = curlun->filp;
+ 	struct inode	*inode = file_inode(filp);
+-	unsigned long	rc;
++	unsigned long __maybe_unused	rc;
  
- 	mutex_destroy(&devfreq->lock);
-+	srcu_cleanup_notifier_head(&devfreq->transition_notifier_list);
- 	kfree(devfreq);
- }
- 
+ 	rc = invalidate_mapping_pages(inode->i_mapping, 0, -1);
+ 	VLDBG(curlun, "invalidate_mapping_pages -> %ld\n", rc);
+-- 
+2.40.1
+
 
 
