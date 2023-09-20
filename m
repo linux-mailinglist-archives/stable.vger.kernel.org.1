@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F6367A7EBB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626117A7F06
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235682AbjITMUV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
+        id S235686AbjITMXI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:23:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235619AbjITMUN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:13 -0400
+        with ESMTP id S235681AbjITMXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D07F93
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F8AC433C8;
-        Wed, 20 Sep 2023 12:20:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9411CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E79C433C9;
+        Wed, 20 Sep 2023 12:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212407;
-        bh=d75NEs53D+MrAnB5JU+rQffFL7BUU9/n6Hg+6jPN+Y0=;
+        s=korg; t=1695212581;
+        bh=jPNUywYirS1I2lr2XEvXpKjPcSimCaQUgMa0rLBJL/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=geFZGm6XTBwtYOmHvoipCEyfK7x1/Gss+ype7CXbFVbkBd63LYDqwYt+XbmB/x+VC
-         BOEIu2OCszEZpoSPc04+L878Mvmxf3IcRA3m6ujakMGlUr7Wj+Va/6Krp0J6+OPjzX
-         QVo5FA/goeeZWNg3M5TDsoUSZeiiQigJbPcZry34=
+        b=NiTWxQfzgBfoRYOYPW4dmY1mWeuU4zvNZWHdGTofIiVmSf4mMZDLoVSR3cOef5PIS
+         WB9AEliIdn130CzkSpcUHdQywE+p3UMyMAHCIHioutbiMRI9xD39QDYnitu0j4+riM
+         Zo9UXIEQMPr9VHJCR9v6RCYNsoNXyKh15emkTsN4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 238/273] btrfs: output extra debug info if we failed to find an inline backref
+        patches@lists.linux.dev,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 28/83] ALSA: hda: intel-dsp-cfg: add LunarLake support
 Date:   Wed, 20 Sep 2023 13:31:18 +0200
-Message-ID: <20230920112853.706283568@linuxfoundation.org>
+Message-ID: <20230920112827.790355688@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
+[ Upstream commit d2852b8c045ebd31d753b06f2810df5be30ed56a ]
 
-[BUG]
-Syzbot reported several warning triggered inside
-lookup_inline_extent_backref().
+One more PCI ID for the road.
 
-[CAUSE]
-As usual, the reproducer doesn't reliably trigger locally here, but at
-least we know the WARN_ON() is triggered when an inline backref can not
-be found, and it can only be triggered when @insert is true. (I.e.
-inserting a new inline backref, which means the backref should already
-exist)
-
-[ENHANCEMENT]
-After the WARN_ON(), dump all the parameters and the extent tree
-leaf to help debug.
-
-Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20230802150105.24604-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/hda/intel-dsp-config.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index d71f800e8bf60..bb05b0a82c8ba 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1549,6 +1549,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
- 		err = -ENOENT;
- 		goto out;
- 	} else if (WARN_ON(ret)) {
-+		btrfs_print_leaf(path->nodes[0]);
-+		btrfs_err(fs_info,
-+"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
-+			  bytenr, num_bytes, parent, root_objectid, owner,
-+			  offset);
- 		err = -EIO;
- 		goto out;
- 	}
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index f96e70c85f84a..801c89a3a1b6f 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -368,6 +368,14 @@ static const struct config_entry config_table[] = {
+ 	},
+ #endif
+ 
++/* Lunar Lake */
++#if IS_ENABLED(CONFIG_SND_SOC_SOF_LUNARLAKE)
++	/* Lunarlake-P */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_LNL_P,
++	},
++#endif
+ };
+ 
+ static const struct config_entry *snd_intel_dsp_find_config
 -- 
 2.40.1
 
