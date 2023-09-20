@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC3ED7A8199
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC92A7A8136
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234837AbjITMq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
+        id S236138AbjITMnh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:43:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234865AbjITMq6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:58 -0400
+        with ESMTP id S236099AbjITMnf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB01F0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CF7C433C9;
-        Wed, 20 Sep 2023 12:46:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE4E93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3981C433C7;
+        Wed, 20 Sep 2023 12:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695214008;
-        bh=FahHsDQSP6+LADn7SLu9YfE/TioKtwIz62K1syrOa/8=;
+        s=korg; t=1695213809;
+        bh=JkUJcrBhJRYa/XIUSt2t4nmsnpRh87MZVP3DwWUgAKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T2LPLrAUlRevqd7MKdMljvjlkPj3Dami6wM7uLJhBHZjlN0y61YL7pSk4vCzIzEN8
-         PRm5NAcwsTLu9pGZiWjvucVx84atOyHr85xwGPAvIXa3bhXaFJq3k/YU+KRww88tdr
-         bAEg72bP+f4PsMVd9UXPMMe8Hi10sRD5JeLjsuhA=
+        b=EXPRtUJNUr5QWEFeG2a1vBInnh6pjTrgMghoWI9XgYo+bRVdjyYoZRsleENAhze7R
+         xDKTRRbUwS+cSPTU0sWdg2NcXLly63NbE8mmzB4h3aQTNqXzwlwtJ9x0i4N3YsJvov
+         TBmXc4fUyXUZqNXz5lBwuk4ZjCfO3IBKSKDzuruk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/110] selftests: tracing: Fix to unmount tracefs for recovering environment
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 359/367] tracing: Have option files inc the trace array ref count
 Date:   Wed, 20 Sep 2023 13:32:16 +0200
-Message-ID: <20230920112833.341062378@linuxfoundation.org>
+Message-ID: <20230920112907.781119358@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,69 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 7e021da80f48582171029714f8a487347f29dddb ]
+commit 7e2cfbd2d3c86afcd5c26b5c4b1dd251f63c5838 upstream.
 
-Fix to unmount the tracefs if the ftracetest mounted it for recovering
-system environment. If the tracefs is already mounted, this does nothing.
+The option files update the options for a given trace array. For an
+instance, if the file is opened and the instance is deleted, reading or
+writing to the file will cause a use after free.
 
-Suggested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/all/29fce076-746c-4650-8358-b4e0fa215cf7@sirena.org.uk/
-Fixes: cbd965bde74c ("ftrace/selftests: Return the skip code when tracing directory not configured in kernel")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Up the ref count of the trace_array when an option file is opened.
+
+Link: https://lkml.kernel.org/r/20230907024804.086679464@goodmis.org
+Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/ftracetest | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/trace/trace.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/ftracetest b/tools/testing/selftests/ftrace/ftracetest
-index 8ec1922e974eb..55314cd197ab9 100755
---- a/tools/testing/selftests/ftrace/ftracetest
-+++ b/tools/testing/selftests/ftrace/ftracetest
-@@ -30,6 +30,9 @@ err_ret=1
- # kselftest skip code is 4
- err_skip=4
- 
-+# umount required
-+UMOUNT_DIR=""
-+
- # cgroup RT scheduling prevents chrt commands from succeeding, which
- # induces failures in test wakeup tests.  Disable for the duration of
- # the tests.
-@@ -44,6 +47,9 @@ setup() {
- 
- cleanup() {
-   echo $sched_rt_runtime_orig > $sched_rt_runtime
-+  if [ -n "${UMOUNT_DIR}" ]; then
-+    umount ${UMOUNT_DIR} ||:
-+  fi
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7996,12 +7996,33 @@ trace_options_write(struct file *filp, c
+ 	return cnt;
  }
  
- errexit() { # message
-@@ -155,11 +161,13 @@ if [ -z "$TRACING_DIR" ]; then
- 	    mount -t tracefs nodev /sys/kernel/tracing ||
- 	      errexit "Failed to mount /sys/kernel/tracing"
- 	    TRACING_DIR="/sys/kernel/tracing"
-+	    UMOUNT_DIR=${TRACING_DIR}
- 	# If debugfs exists, then so does /sys/kernel/debug
- 	elif [ -d "/sys/kernel/debug" ]; then
- 	    mount -t debugfs nodev /sys/kernel/debug ||
- 	      errexit "Failed to mount /sys/kernel/debug"
- 	    TRACING_DIR="/sys/kernel/debug/tracing"
-+	    UMOUNT_DIR=${TRACING_DIR}
- 	else
- 	    err_ret=$err_skip
- 	    errexit "debugfs and tracefs are not configured in this kernel"
--- 
-2.40.1
-
++static int tracing_open_options(struct inode *inode, struct file *filp)
++{
++	struct trace_option_dentry *topt = inode->i_private;
++	int ret;
++
++	ret = tracing_check_open_get_tr(topt->tr);
++	if (ret)
++		return ret;
++
++	filp->private_data = inode->i_private;
++	return 0;
++}
++
++static int tracing_release_options(struct inode *inode, struct file *file)
++{
++	struct trace_option_dentry *topt = file->private_data;
++
++	trace_array_put(topt->tr);
++	return 0;
++}
+ 
+ static const struct file_operations trace_options_fops = {
+-	.open = tracing_open_generic,
++	.open = tracing_open_options,
+ 	.read = trace_options_read,
+ 	.write = trace_options_write,
+ 	.llseek	= generic_file_llseek,
++	.release = tracing_release_options,
+ };
+ 
+ /*
 
 
