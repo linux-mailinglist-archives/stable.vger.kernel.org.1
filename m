@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 041577A7B56
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C177A7B33
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234722AbjITLvS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37876 "EHLO
+        id S234552AbjITLuC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234745AbjITLvP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:15 -0400
+        with ESMTP id S234471AbjITLuB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D22ABE4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4576C433CA;
-        Wed, 20 Sep 2023 11:51:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2387CF
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44063C433C8;
+        Wed, 20 Sep 2023 11:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210668;
-        bh=Q1yYSFJYyeH5i0ev/h0GfUo7WUeFEFhNnucgseW89rg=;
+        s=korg; t=1695210594;
+        bh=ziEw72CBP9e4nt/AiasBsmS3wdwP1rEfGfbvtCKAuzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zEPz2yJ2/37tzYkGcRdS/42ztm6QVyF0JcGdS4MaG78WG33cNmjWAiJjnIFZrh6gR
-         gkg+f7X9AmD8sJfJma1AjNyNyEqCqtKgSzdFoxH2uXOb/Y5UPjJBNvWyE4y+5DDkgg
-         Z3DwBPlQIevd8qQlwheFymM56VsW/FHyt9hL6mFc=
+        b=qLuVnS1U9O0BskBS11TWv1fHR7lh30xKWCQZ9UeR+6v3v7Czlxv6E9knDLyBr9xPt
+         SU+K605b+1v/tZ3jHacmheHfC31c0UKN/eCxcdi7LJdW6ItzIz88JtuwQZMH2vjrNK
+         zU4hyRyeZXwxsJzitkpIXxomigMYuWi+rmap5DYg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
         Johannes Thumshirn <johannes.thumshirn@wdc.com>,
         Naohiro Aota <naohiro.aota@wdc.com>,
         David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 134/211] btrfs: introduce struct to consolidate extent buffer write context
-Date:   Wed, 20 Sep 2023 13:29:38 +0200
-Message-ID: <20230920112849.982067599@linuxfoundation.org>
+Subject: [PATCH 6.5 135/211] btrfs: zoned: introduce block group context to btrfs_eb_write_context
+Date:   Wed, 20 Sep 2023 13:29:39 +0200
+Message-ID: <20230920112850.017585634@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -59,18 +58,19 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 861093eff4f01319edfc1d1ee276a7f2bf720f1d ]
+[ Upstream commit 7db94301a980c9da4168ac7ce61e7bde297306ba ]
 
-Introduce btrfs_eb_write_context to consolidate writeback_control and the
-exntent buffer context.  This will help adding a block group context as
-well.
+For metadata write out on the zoned mode, we call
+btrfs_check_meta_write_pointer() to check if an extent buffer to be written
+is aligned to the write pointer.
 
-While at it, move the eb context setting before
-btrfs_check_meta_write_pointer(). We can set it here because we anyway need
-to skip pages in the same eb if that eb is rejected by
-btrfs_check_meta_write_pointer().
+We look up a block group containing the extent buffer for every extent
+buffer, which takes unnecessary effort as the writing extent buffers are
+mostly contiguous.
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
+Introduce "zoned_bg" to cache the block group working on.  Also, while
+at it, rename "cache" to "block_group".
+
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
@@ -79,87 +79,157 @@ Signed-off-by: David Sterba <dsterba@suse.com>
 Stable-dep-of: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 14 +++++++-------
- fs/btrfs/extent_io.h |  5 +++++
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ fs/btrfs/extent_io.c | 15 +++++++--------
+ fs/btrfs/extent_io.h |  2 ++
+ fs/btrfs/zoned.c     | 35 ++++++++++++++++++++---------------
+ fs/btrfs/zoned.h     |  6 ++----
+ 4 files changed, 31 insertions(+), 27 deletions(-)
 
 diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 90ad3006ef3a7..b3bf2e2704888 100644
+index b3bf2e2704888..c2be1561a52cb 100644
 --- a/fs/btrfs/extent_io.c
 +++ b/fs/btrfs/extent_io.c
-@@ -1877,9 +1877,9 @@ static int submit_eb_subpage(struct page *page, struct writeback_control *wbc)
-  * previous call.
-  * Return <0 for fatal error.
-  */
--static int submit_eb_page(struct page *page, struct writeback_control *wbc,
--			  struct extent_buffer **eb_context)
-+static int submit_eb_page(struct page *page, struct btrfs_eb_write_context *ctx)
+@@ -1881,7 +1881,6 @@ static int submit_eb_page(struct page *page, struct btrfs_eb_write_context *ctx)
  {
-+	struct writeback_control *wbc = ctx->wbc;
+ 	struct writeback_control *wbc = ctx->wbc;
  	struct address_space *mapping = page->mapping;
- 	struct btrfs_block_group *cache = NULL;
+-	struct btrfs_block_group *cache = NULL;
  	struct extent_buffer *eb;
-@@ -1908,7 +1908,7 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
- 		return 0;
- 	}
+ 	int ret;
  
--	if (eb == *eb_context) {
-+	if (eb == ctx->eb) {
- 		spin_unlock(&mapping->private_lock);
- 		return 0;
- 	}
-@@ -1917,6 +1917,8 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
- 	if (!ret)
- 		return 0;
+@@ -1919,7 +1918,7 @@ static int submit_eb_page(struct page *page, struct btrfs_eb_write_context *ctx)
  
-+	ctx->eb = eb;
-+
- 	if (!btrfs_check_meta_write_pointer(eb->fs_info, eb, &cache)) {
+ 	ctx->eb = eb;
+ 
+-	if (!btrfs_check_meta_write_pointer(eb->fs_info, eb, &cache)) {
++	if (!btrfs_check_meta_write_pointer(eb->fs_info, ctx)) {
  		/*
  		 * If for_sync, this hole will be filled with
-@@ -1930,8 +1932,6 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
- 		return ret;
+ 		 * trasnsaction commit.
+@@ -1933,18 +1932,15 @@ static int submit_eb_page(struct page *page, struct btrfs_eb_write_context *ctx)
  	}
  
--	*eb_context = eb;
--
  	if (!lock_extent_buffer_for_io(eb, wbc)) {
- 		btrfs_revert_meta_write_pointer(cache, eb);
- 		if (cache)
-@@ -1954,7 +1954,7 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
- int btree_write_cache_pages(struct address_space *mapping,
- 				   struct writeback_control *wbc)
- {
--	struct extent_buffer *eb_context = NULL;
-+	struct btrfs_eb_write_context ctx = { .wbc = wbc };
- 	struct btrfs_fs_info *fs_info = BTRFS_I(mapping->host)->root->fs_info;
- 	int ret = 0;
- 	int done = 0;
-@@ -1996,7 +1996,7 @@ int btree_write_cache_pages(struct address_space *mapping,
- 		for (i = 0; i < nr_folios; i++) {
- 			struct folio *folio = fbatch.folios[i];
- 
--			ret = submit_eb_page(&folio->page, wbc, &eb_context);
-+			ret = submit_eb_page(&folio->page, &ctx);
- 			if (ret == 0)
- 				continue;
- 			if (ret < 0) {
+-		btrfs_revert_meta_write_pointer(cache, eb);
+-		if (cache)
+-			btrfs_put_block_group(cache);
++		btrfs_revert_meta_write_pointer(ctx->zoned_bg, eb);
+ 		free_extent_buffer(eb);
+ 		return 0;
+ 	}
+-	if (cache) {
++	if (ctx->zoned_bg) {
+ 		/*
+ 		 * Implies write in zoned mode. Mark the last eb in a block group.
+ 		 */
+-		btrfs_schedule_zone_finish_bg(cache, eb);
+-		btrfs_put_block_group(cache);
++		btrfs_schedule_zone_finish_bg(ctx->zoned_bg, eb);
+ 	}
+ 	write_one_eb(eb, wbc);
+ 	free_extent_buffer(eb);
+@@ -2057,6 +2053,9 @@ int btree_write_cache_pages(struct address_space *mapping,
+ 		ret = 0;
+ 	if (!ret && BTRFS_FS_ERROR(fs_info))
+ 		ret = -EROFS;
++
++	if (ctx.zoned_bg)
++		btrfs_put_block_group(ctx.zoned_bg);
+ 	btrfs_zoned_meta_io_unlock(fs_info);
+ 	return ret;
+ }
 diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index c5fae3a7d911b..ecc1660007c11 100644
+index ecc1660007c11..f61b7896320a1 100644
 --- a/fs/btrfs/extent_io.h
 +++ b/fs/btrfs/extent_io.h
-@@ -94,6 +94,11 @@ struct extent_buffer {
- #endif
+@@ -97,6 +97,8 @@ struct extent_buffer {
+ struct btrfs_eb_write_context {
+ 	struct writeback_control *wbc;
+ 	struct extent_buffer *eb;
++	/* Block group @eb resides in. Only used for zoned mode. */
++	struct btrfs_block_group *zoned_bg;
  };
  
-+struct btrfs_eb_write_context {
-+	struct writeback_control *wbc;
-+	struct extent_buffer *eb;
-+};
-+
  /*
-  * Get the correct offset inside the page of extent buffer.
-  *
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index d9e6df2da272c..92f11176216b5 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1759,30 +1759,35 @@ void btrfs_finish_ordered_zoned(struct btrfs_ordered_extent *ordered)
+ }
+ 
+ bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
+-				    struct extent_buffer *eb,
+-				    struct btrfs_block_group **cache_ret)
++				    struct btrfs_eb_write_context *ctx)
+ {
+-	struct btrfs_block_group *cache;
+-	bool ret = true;
++	const struct extent_buffer *eb = ctx->eb;
++	struct btrfs_block_group *block_group = ctx->zoned_bg;
+ 
+ 	if (!btrfs_is_zoned(fs_info))
+ 		return true;
+ 
+-	cache = btrfs_lookup_block_group(fs_info, eb->start);
+-	if (!cache)
+-		return true;
++	if (block_group) {
++		if (block_group->start > eb->start ||
++		    block_group->start + block_group->length <= eb->start) {
++			btrfs_put_block_group(block_group);
++			block_group = NULL;
++			ctx->zoned_bg = NULL;
++		}
++	}
+ 
+-	if (cache->meta_write_pointer != eb->start) {
+-		btrfs_put_block_group(cache);
+-		cache = NULL;
+-		ret = false;
+-	} else {
+-		cache->meta_write_pointer = eb->start + eb->len;
++	if (!block_group) {
++		block_group = btrfs_lookup_block_group(fs_info, eb->start);
++		if (!block_group)
++			return true;
++		ctx->zoned_bg = block_group;
+ 	}
+ 
+-	*cache_ret = cache;
++	if (block_group->meta_write_pointer != eb->start)
++		return false;
++	block_group->meta_write_pointer = eb->start + eb->len;
+ 
+-	return ret;
++	return true;
+ }
+ 
+ void btrfs_revert_meta_write_pointer(struct btrfs_block_group *cache,
+diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
+index 27322b926038c..49d5bd87245c5 100644
+--- a/fs/btrfs/zoned.h
++++ b/fs/btrfs/zoned.h
+@@ -59,8 +59,7 @@ void btrfs_redirty_list_add(struct btrfs_transaction *trans,
+ bool btrfs_use_zone_append(struct btrfs_bio *bbio);
+ void btrfs_record_physical_zoned(struct btrfs_bio *bbio);
+ bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
+-				    struct extent_buffer *eb,
+-				    struct btrfs_block_group **cache_ret);
++				    struct btrfs_eb_write_context *ctx);
+ void btrfs_revert_meta_write_pointer(struct btrfs_block_group *cache,
+ 				     struct extent_buffer *eb);
+ int btrfs_zoned_issue_zeroout(struct btrfs_device *device, u64 physical, u64 length);
+@@ -190,8 +189,7 @@ static inline void btrfs_record_physical_zoned(struct btrfs_bio *bbio)
+ }
+ 
+ static inline bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
+-			       struct extent_buffer *eb,
+-			       struct btrfs_block_group **cache_ret)
++						  struct btrfs_eb_write_context *ctx)
+ {
+ 	return true;
+ }
 -- 
 2.40.1
 
