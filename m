@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB2AB7A7F03
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2369A7A80F2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235675AbjITMXB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
+        id S236198AbjITMlb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235663AbjITMW7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:59 -0400
+        with ESMTP id S236215AbjITMl2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1C183
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5155C433C7;
-        Wed, 20 Sep 2023 12:22:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7FFB125
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D65C433CA;
+        Wed, 20 Sep 2023 12:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212573;
-        bh=mAJGAd8BPJHA7uOruyL6Wevcaxb/1hiOQI588uGSaro=;
+        s=korg; t=1695213676;
+        bh=/LG8c/lEFeRoeax0ERyYVU7SH+EWnNMH1Ndm8CNAcWQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cja8xCjmBR5wCY7eB0thD+QPRbJRJ+FgT4NSSNgeeo+2L6lCjcOn7+HLb9pQIVnlH
-         bpmncgGEW4WRi/sXN5Qtc4TkEuZ8FRNIGGV57aBTW0spE4PlW5L3j+xmon9b68VIuM
-         H22l440750u307a2cxBONAVJvO0PIoKP+oHAoRjU=
+        b=LtYIEt+knKzqMheL544fAgoWOBq67QPoMzY+d2UsiMXq+NY7xWm1nkuReLeVOV9bD
+         adzEeXJeeDHbb3HC9OR0nt5G488KsSyjysC9FqJZBLxfhB7p2pvnH2l0Z00nEMCYtr
+         KbKyD6oevqhlqvivGhd/JuXe8LmReyUllUSd/Gmg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 25/83] drm/bridge: tc358762: Instruct DSI host to generate HSE packets
-Date:   Wed, 20 Sep 2023 13:31:15 +0200
-Message-ID: <20230920112827.670328245@linuxfoundation.org>
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 299/367] net: ethernet: mtk_eth_soc: fix possible NULL pointer dereference in mtk_hwlro_get_fdir_all()
+Date:   Wed, 20 Sep 2023 13:31:16 +0200
+Message-ID: <20230920112906.283815949@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 362fa8f6e6a05089872809f4465bab9d011d05b3 ]
+[ Upstream commit e4c79810755f66c9a933ca810da2724133b1165a ]
 
-This bridge seems to need the HSE packet, otherwise the image is
-shifted up and corrupted at the bottom. This makes the bridge
-work with Samsung DSIM on i.MX8MM and i.MX8MP.
+rule_locs is allocated in ethtool_get_rxnfc and the size is determined by
+rule_cnt from user space. So rule_cnt needs to be check before using
+rule_locs to avoid NULL pointer dereference.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230615201902.566182-3-marex@denx.de
+Fixes: 7aab747e5563 ("net: ethernet: mediatek: add ethtool functions to configure RX flows of HW LRO")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358762.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/tc358762.c b/drivers/gpu/drm/bridge/tc358762.c
-index 1bfdfc6affafe..21c57d3435687 100644
---- a/drivers/gpu/drm/bridge/tc358762.c
-+++ b/drivers/gpu/drm/bridge/tc358762.c
-@@ -224,7 +224,7 @@ static int tc358762_probe(struct mipi_dsi_device *dsi)
- 	dsi->lanes = 1;
- 	dsi->format = MIPI_DSI_FMT_RGB888;
- 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
--			  MIPI_DSI_MODE_LPM;
-+			  MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_VIDEO_HSE;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index f9139150a8a26..7b9f5eba78dcc 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -2008,6 +2008,9 @@ static int mtk_hwlro_get_fdir_all(struct net_device *dev,
+ 	int i;
  
- 	ret = tc358762_parse_dt(ctx);
- 	if (ret < 0)
+ 	for (i = 0; i < MTK_MAX_LRO_IP_CNT; i++) {
++		if (cnt == cmd->rule_cnt)
++			return -EMSGSIZE;
++
+ 		if (mac->hwlro_ip[i]) {
+ 			rule_locs[cnt] = i;
+ 			cnt++;
 -- 
 2.40.1
 
