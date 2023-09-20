@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD1147A7EE4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951657A80B2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235677AbjITMVp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42298 "EHLO
+        id S234712AbjITMjb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235772AbjITMVl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:41 -0400
+        with ESMTP id S236140AbjITMj2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEE0A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245EAC433CB;
-        Wed, 20 Sep 2023 12:21:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF7A1A5
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E382DC433D9;
+        Wed, 20 Sep 2023 12:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212495;
-        bh=LZziCEmylnLVXBuy5w6E1l+jZr4BDU56VucK7zrXXu8=;
+        s=korg; t=1695213545;
+        bh=vmCxuaI8LiZGT+IstG7mdYnv2/UmS7iiVsd1HcXpcKQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lwdcjiluPH8tW4QaHi9Hi2UYeio9jujQD25/StO16/skqNKFAF912zoCaZtg1O1u7
-         aQjcIiH+MkjYuFsS1jyKC5t5N0yhRiYjLl4SBLLMoLobCdn5rtyYE8tEfZ69F/p/KX
-         uL5nv18RRytRIiXpbJU7nb/BBhe6kipzfC+4ZV6k=
+        b=CETX64mAoxNUhq7/eDKUGvlj5+XmLhD0Q9LdnmLZQmzvgx2p5fGUhyvFCmZ7vjuhs
+         6h/g3d28VP4hKczwJvGTnnkQgYkOuBYTKfT+QnztvuNSvK9s4YLaZqO1hcl0idTDaW
+         Z2Wj2YdwyGKp3sCpeP5Yit8s6Trze1p9YcVPDh6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
-        Bob Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 04/83] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Subject: [PATCH 5.4 277/367] net: hns3: fix the port information display when sfp is absent
 Date:   Wed, 20 Sep 2023 13:30:54 +0200
-Message-ID: <20230920112826.822355196@linuxfoundation.org>
+Message-ID: <20230920112905.733378750@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Mainkar <abmainkar@nvidia.com>
+From: Yisen Zhuang <yisen.zhuang@huawei.com>
 
-[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
+[ Upstream commit 674d9591a32d01df75d6b5fffed4ef942a294376 ]
 
-ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
+When sfp is absent or unidentified, the port type should be
+displayed as PORT_OTHERS, rather than PORT_FIBRE.
 
-According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
-
-When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
-
-=============================================================
-UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
-CPU: 37 PID: 1678 Comm: cat Not tainted
-6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
-HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
- dump_backtrace+0xe0/0x130
- show_stack+0x20/0x60
- dump_stack_lvl+0x68/0x84
- dump_stack+0x18/0x34
- ubsan_epilogue+0x10/0x50
- __ubsan_handle_out_of_bounds+0x80/0x90
- acpi_ds_exec_end_op+0x1bc/0x6d8
- acpi_ps_parse_loop+0x57c/0x618
- acpi_ps_parse_aml+0x1e0/0x4b4
- acpi_ps_execute_method+0x24c/0x2b8
- acpi_ns_evaluate+0x3a8/0x4bc
- acpi_evaluate_object+0x15c/0x37c
- acpi_evaluate_integer+0x54/0x15c
- show_power+0x8c/0x12c [acpi_power_meter]
-
-Link: https://github.com/acpica/acpica/commit/90310989
-Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 88d10bd6f730 ("net: hns3: add support for multiple media type")
+Signed-off-by: Yisen Zhuang <yisen.zhuang@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psopcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index 28af49263ebfa..62957cba30f61 100644
---- a/drivers/acpi/acpica/psopcode.c
-+++ b/drivers/acpi/acpica/psopcode.c
-@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
- 
- /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
- 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
--			 AML_FLAGS_EXEC_0A_0T_1R),
-+			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
- 
- /* ACPI 5.0 opcodes */
- 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+index 34e5448d59f6f..4ea19f546df08 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+@@ -676,7 +676,9 @@ static int hns3_get_link_ksettings(struct net_device *netdev,
+ 		hns3_get_ksettings(h, cmd);
+ 		break;
+ 	case HNAE3_MEDIA_TYPE_FIBER:
+-		if (module_type == HNAE3_MODULE_TYPE_CR)
++		if (module_type == HNAE3_MODULE_TYPE_UNKNOWN)
++			cmd->base.port = PORT_OTHER;
++		else if (module_type == HNAE3_MODULE_TYPE_CR)
+ 			cmd->base.port = PORT_DA;
+ 		else
+ 			cmd->base.port = PORT_FIBRE;
 -- 
 2.40.1
 
