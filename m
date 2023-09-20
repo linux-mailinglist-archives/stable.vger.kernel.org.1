@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B787A7CD7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C317A7E0B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235149AbjITMEg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52650 "EHLO
+        id S234611AbjITMP0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235148AbjITMEf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:35 -0400
+        with ESMTP id S235552AbjITMOp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A900192
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA851C433C7;
-        Wed, 20 Sep 2023 12:04:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F01DD7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9563C433CA;
+        Wed, 20 Sep 2023 12:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211469;
-        bh=DoBDjDmKY82Jlo1By/QEI3K2l/7N5ry0x85zFfnoRls=;
+        s=korg; t=1695212077;
+        bh=QAKQQaZjhUCigVPvJuSRVbO6OaYzglDUhhH/jms7rB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BGFhqXSI9uq4CPIAW/cztCgNSWwzRWNlHI71LMtwej4cXZcv3qA1WyywcruP/PXhP
-         F7T6JILCM0D2VB4ZE89RK9eUkzL2XHFfu3k4opyAKtZEbIJcxVOCPR0cKRUgpr1xyk
-         CkrEEzYEdpN0XCKc7Zm06S9AG4EYsuSnlwDXCNgw=
+        b=MKBiGhA5mEcua3JcNTa1rfYXMGtgzWa+aMNO9ozVZo1Tq/cVN7d+zwi+bLaPxPlQS
+         d//Ll8hCWPEzIPUaXlIZi3TAnusf5eRs/ePwL/E4lnkFjhIKBU20hyMq5SiRFiiLHd
+         vc6Ez3AaPRlRc5SW8wyKunrn7YHal1MnqV4akH9c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Jiri Kosina <jikos@kernel.org>, x86@kernel.org,
+        Sohil Mehta <sohil.mehta@intel.com>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 079/186] scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()
+Subject: [PATCH 4.19 142/273] x86/APM: drop the duplicate APM_MINOR_DEV macro
 Date:   Wed, 20 Sep 2023 13:29:42 +0200
-Message-ID: <20230920112839.729688540@linuxfoundation.org>
+Message-ID: <20230920112850.918607206@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit ce51c817008450ef4188471db31639d42d37a5e1 ]
+[ Upstream commit 4ba2909638a29630a346d6c4907a3105409bee7d ]
 
-The functions iscsi_if_set_param() and iscsi_if_set_host_param() convert an
-nlattr payload to type char* and then call C string handling functions like
-sscanf and kstrdup:
+This source file already includes <linux/miscdevice.h>, which contains
+the same macro. It doesn't need to be defined here again.
 
-  char *data = (char*)ev + sizeof(*ev);
-  ...
-  sscanf(data, "%d", &value);
-
-However, since the nlattr is provided by the user-space program and the
-nlmsg skb is allocated with GFP_KERNEL instead of GFP_ZERO flag (see
-netlink_alloc_large_skb() in netlink_sendmsg()), dirty data on the heap can
-lead to an OOB access for those string handling functions.
-
-By investigating how the bug is introduced, we find it is really
-interesting as the old version parsing code starting from commit
-fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up") treated
-the nlattr as integer bytes instead of string and had length check in
-iscsi_copy_param():
-
-  if (ev->u.set_param.len != sizeof(uint32_t))
-    BUG();
-
-But, since the commit a54a52caad4b ("[SCSI] iscsi: fixup set/get param
-functions"), the code treated the nlattr as C string while forgetting to
-add any strlen checks(), opening the possibility of an OOB access.
-
-Fix the potential OOB by adding the strlen() check before accessing the
-buf. If the data passes this check, all low-level set_param handlers can
-safely treat this buf as legal C string.
-
-Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
-Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230723075820.3713119-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 874bcd00f520 ("apm-emulation: move APM_MINOR_DEV to include/linux/miscdevice.h")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: x86@kernel.org
+Cc: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://lore.kernel.org/r/20230728011120.759-1-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kernel/apm_32.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 26c6f1b288013..d90fdfbb69de6 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -2765,6 +2765,10 @@ iscsi_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
- 	if (!conn || !session)
- 		return -EINVAL;
+diff --git a/arch/x86/kernel/apm_32.c b/arch/x86/kernel/apm_32.c
+index f7151cd03cb08..3d7a8049f6376 100644
+--- a/arch/x86/kernel/apm_32.c
++++ b/arch/x86/kernel/apm_32.c
+@@ -246,12 +246,6 @@
+ extern int (*console_blank_hook)(int);
+ #endif
  
-+	/* data will be regarded as NULL-ended string, do length check */
-+	if (strlen(data) > ev->u.set_param.len)
-+		return -EINVAL;
-+
- 	switch (ev->u.set_param.param) {
- 	case ISCSI_PARAM_SESS_RECOVERY_TMO:
- 		sscanf(data, "%d", &value);
-@@ -2917,6 +2921,10 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 		return -ENODEV;
- 	}
- 
-+	/* see similar check in iscsi_if_set_param() */
-+	if (strlen(data) > ev->u.set_host_param.len)
-+		return -EINVAL;
-+
- 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
- 					data, ev->u.set_host_param.len);
- 	scsi_host_put(shost);
+-/*
+- * The apm_bios device is one of the misc char devices.
+- * This is its minor number.
+- */
+-#define	APM_MINOR_DEV	134
+-
+ /*
+  * Various options can be changed at boot time as follows:
+  * (We allow underscores for compatibility with the modules code)
 -- 
 2.40.1
 
