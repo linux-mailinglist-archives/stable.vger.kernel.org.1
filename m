@@ -2,58 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B0A7A704C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA5C7A704D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:23:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjITCWW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 22:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
+        id S229521AbjITCXG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 22:23:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjITCWW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:22:22 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78CA3AB
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:14 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c43b4b02c1so33256965ad.3
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:14 -0700 (PDT)
+        with ESMTP id S231260AbjITCXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:23:05 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 326E8AB
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:58 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1c3f97f2239so57403315ad.0
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695176534; x=1695781334; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695176577; x=1695781377; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lcDAU1kA+4AhF7BpLceNTAlgMbAdm54bD6RjDKYdpsY=;
-        b=jaBDYf2WCqm1O7EApnB1OLf4TTNCnQLKg0g9V8CYFJSISVmng9tF/0QKFcujc/5FhP
-         bnuGvjCcKflgNGRXG34WwCHMxrjkvIqOfAbgjD+vCc+eK+gQMKZksfqZt+eec7gxo7ve
-         jEaV0wPM6kDsn5TkYNXq97IhCNEGHv53SFRJG4WHQRH4pRfl0y6TPtKkSOrMzf2c/bXd
-         8J5sVGSlS0fKfz9JMs34fQ97Flp+cGim9seIf3CTkLuuflzQ7/rhFeSwTBcxQZzdA4xF
-         LpGBx9COfSU0sO6cpzmTvj/XL7T/YVnD7VZMwkTMMotdlq5by6LO6VNrA6SRvhCbLO5P
-         TtlQ==
+        bh=Whj9+me5OBt781yiMR5QCY5/rWsVABuE4Yd6OOrVj3g=;
+        b=gxnUgDbfZCLAFfCWVYUc+Die6dX9dsUUM6PMvjXLuB55Fn6efDwNwEAGTNsiiAM1Dj
+         iKya80tXAhd3FGLYbSTrEic6vHls3LYv+YfQIhdxTxfJrZX4Lv9NDQ/BJyEDpMZC0Jxp
+         bh9lkRcP7ZUvDAsVeoUoqp0sixu1qOaYdpM3J1y+VG0Ioua3ShQHyDrw8hCDxy0+bg+l
+         fLEll6HVkYI6y0bZgCJQWgw+R4Hh/jMDzIRATAYn9TDxhMIXJsy8q9/JvtU/tGm3mv5J
+         d7IqFlUQsvr0PNUvQiFxxQRz8dLMF7h58yEI/cIxjDfd4nNDTGVfB4xwmWsR/LAI4DGL
+         SarQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695176534; x=1695781334;
+        d=1e100.net; s=20230601; t=1695176577; x=1695781377;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lcDAU1kA+4AhF7BpLceNTAlgMbAdm54bD6RjDKYdpsY=;
-        b=xPln4DiwZkLZwcn72F1apF6J9qydIC2x1DHeiaRztxkTN80kVQaD55wUBa97K/C7Vi
-         X1Qyx82tcl6uKZ741nV3iA50x6Pyu7Vo92d34LJOuNcGus9x83N4sLj8CrNqM+f84sfc
-         M7KOtkqgh/WhpXFbHeDwQlXfzdDo3lt4jjG14680CV9Z2+U2foZ13vjx7He0fvckO/q/
-         4Li59/q4tkEsYiIh37a7HpTnRsoISfLmxwcNfCkGQ7G8hM5Yi64sh9W5mzT2vLgeeJUG
-         K76mL1WeZxeKJsKnIiL2+zfI2LZGds7t1cFwIym502qbxTwcrR4DrU1ol6pEzuz+H9/H
-         ff8Q==
-X-Gm-Message-State: AOJu0Yw2QQklwPzDNM/21MM8c6FPpzooWZpSCx5m00tU54MlUBNrsgRR
-        1fI4ppuoG9nIdNY3XFF0UdM=
-X-Google-Smtp-Source: AGHT+IG5yCfVK5nw4Qxg75GcF2ie0QHBytdKvqEazx5pHf5pESqzrJuVbmQhFEC0JIGs8aCjygwg0g==
-X-Received: by 2002:a17:902:d502:b0:1c3:8464:cad1 with SMTP id b2-20020a170902d50200b001c38464cad1mr1299388plg.26.1695176533646;
-        Tue, 19 Sep 2023 19:22:13 -0700 (PDT)
+        bh=Whj9+me5OBt781yiMR5QCY5/rWsVABuE4Yd6OOrVj3g=;
+        b=U7JxqQ/dYxkucYOwUD8oCgkEn/BWqgXihV+6hiTe20m03lglE8OQOCQAX8lLgzESYd
+         P+J2qIPbd+Yk7+do1+3XuO2zQdBEjTz2pjynCdngwpOq6IOepT4WTtx1X5tSh3Vygagd
+         +qjjnUeUuv62FoXwndDN8Pip3xNnNMMT602ZceEw7H6FlpMKteeF4pp7UDZCENohdxST
+         Fh7fU+x03IPi7Gidcgy4RdFk5hmUQAH6xtr4l60X2IHcDEkLdGe76x+4s0B9ZS5jDxDl
+         6rKUnGSRRazyXbEkKaFn+5mdRi5iO1q2e80n1DPoGmPzfxTqUTB/55VP8XDXQ1Utnp1H
+         8LMQ==
+X-Gm-Message-State: AOJu0Yw3D3p2vkL4Goq5YBkcMKAVGQ8PUqXDv0IU7BCutIDghaDg5EyQ
+        TTj+3kYtlHiZ7BMR3JXzb/W+c4yAFKz42NeV17o=
+X-Google-Smtp-Source: AGHT+IFMFR5qxDsyrYBknSnZc1N2AsJ9VsZjM/XQaw+/ZqP7RdT1UyNze68jtCjcIFNrciFPoagC5w==
+X-Received: by 2002:a17:902:c40a:b0:1bc:2d43:c747 with SMTP id k10-20020a170902c40a00b001bc2d43c747mr1272541plk.38.1695176577398;
+        Tue, 19 Sep 2023 19:22:57 -0700 (PDT)
 Received: from westworld (209-147-138-147.nat.asu.edu. [209.147.138.147])
-        by smtp.gmail.com with ESMTPSA id h14-20020a170902680e00b001b9be3b94d3sm10836816plk.140.2023.09.19.19.22.12
+        by smtp.gmail.com with ESMTPSA id ik26-20020a170902ab1a00b001b89b7e208fsm10824774plb.88.2023.09.19.19.22.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 19:22:13 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 19:22:11 -0700
+        Tue, 19 Sep 2023 19:22:57 -0700 (PDT)
+Date:   Tue, 19 Sep 2023 19:22:54 -0700
 From:   Kyle Zeng <zengyhkyle@gmail.com>
 To:     gregkh@linuxfoundation.org
 Cc:     stable@vger.kernel.org, jhs@mojatatu.com, jiri@nvidia.com,
         pabeni@redhat.com
-Subject: [PATCH v5.10.y] net/sched: Retire rsvp classifier
-Message-ID: <ZQpXU/1WMhxaXeg4@westworld>
+Subject: [PATCH v5.15.y] net/sched: Retire rsvp classifier
+Message-ID: <ZQpXfmVBR48IqPfZ@westworld>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -77,24 +77,24 @@ Acked-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
 ---
-Please apply this patch to v5.10.y. This patch adapts the original patch
-to v5.10.y considering codebase change.
+Please apply this patch to v5.15.y. This patch adapts the original patch
+to v5.15.y considering codebase change.
 This patch retires rsvp classifier which is what the upstream patch did. 
 
-This patch has been tested against the v5.10.y stable tree.
+This patch has been tested against the v5.15.y stable tree.
 
  net/sched/Kconfig     |  28 --
  net/sched/Makefile    |   2 -
  net/sched/cls_rsvp.c  |  24 --
- net/sched/cls_rsvp.h  | 777 ------------------------------------------
+ net/sched/cls_rsvp.h  | 776 ------------------------------------------
  net/sched/cls_rsvp6.c |  24 --
- 5 files changed, 855 deletions(-)
+ 5 files changed, 854 deletions(-)
  delete mode 100644 net/sched/cls_rsvp.c
  delete mode 100644 net/sched/cls_rsvp.h
  delete mode 100644 net/sched/cls_rsvp6.c
 
 diff --git a/net/sched/Kconfig b/net/sched/Kconfig
-index 697522371914..2046c16b29f0 100644
+index bcdd6e925343..24cf0bf7c80e 100644
 --- a/net/sched/Kconfig
 +++ b/net/sched/Kconfig
 @@ -548,34 +548,6 @@ config CLS_U32_MARK
@@ -133,10 +133,10 @@ index 697522371914..2046c16b29f0 100644
  	tristate "Flow classifier"
  	select NET_CLS
 diff --git a/net/sched/Makefile b/net/sched/Makefile
-index 4311fdb21119..df2bcd785f7d 100644
+index b7dbac5c519f..8a33a35fc50d 100644
 --- a/net/sched/Makefile
 +++ b/net/sched/Makefile
-@@ -68,8 +68,6 @@ obj-$(CONFIG_NET_SCH_TAPRIO)	+= sch_taprio.o
+@@ -69,8 +69,6 @@ obj-$(CONFIG_NET_SCH_TAPRIO)	+= sch_taprio.o
  obj-$(CONFIG_NET_CLS_U32)	+= cls_u32.o
  obj-$(CONFIG_NET_CLS_ROUTE4)	+= cls_route.o
  obj-$(CONFIG_NET_CLS_FW)	+= cls_fw.o
@@ -177,10 +177,10 @@ index de1c1d4da597..000000000000
 -MODULE_LICENSE("GPL");
 diff --git a/net/sched/cls_rsvp.h b/net/sched/cls_rsvp.h
 deleted file mode 100644
-index d36949d9382c..000000000000
+index 5cd9d6b143c4..000000000000
 --- a/net/sched/cls_rsvp.h
 +++ /dev/null
-@@ -1,777 +0,0 @@
+@@ -1,776 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0-or-later */
 -/*
 - * net/sched/cls_rsvp.h	Template file for RSVPv[46] classifiers.
@@ -190,7 +190,7 @@ index d36949d9382c..000000000000
 -
 -/*
 -   Comparing to general packet classification problem,
--   RSVP needs only sevaral relatively simple rules:
+-   RSVP needs only several relatively simple rules:
 -
 -   * (dst, protocol) are always specified,
 -     so that we are able to hash them.
@@ -421,7 +421,7 @@ index d36949d9382c..000000000000
 -		}
 -	}
 -
--	/* Something went wrong if we are trying to replace a non-existant
+-	/* Something went wrong if we are trying to replace a non-existent
 -	 * node. Mind as well halt instead of silently failing.
 -	 */
 -	BUG_ON(1);
@@ -653,9 +653,8 @@ index d36949d9382c..000000000000
 -
 -static int rsvp_change(struct net *net, struct sk_buff *in_skb,
 -		       struct tcf_proto *tp, unsigned long base,
--		       u32 handle,
--		       struct nlattr **tca,
--		       void **arg, bool ovr, bool rtnl_held,
+-		       u32 handle, struct nlattr **tca,
+-		       void **arg, u32 flags,
 -		       struct netlink_ext_ack *extack)
 -{
 -	struct rsvp_head *data = rtnl_dereference(tp->root);
@@ -682,7 +681,7 @@ index d36949d9382c..000000000000
 -	err = tcf_exts_init(&e, net, TCA_RSVP_ACT, TCA_RSVP_POLICE);
 -	if (err < 0)
 -		return err;
--	err = tcf_exts_validate(net, tp, tb, tca[TCA_RATE], &e, ovr, true,
+-	err = tcf_exts_validate(net, tp, tb, tca[TCA_RATE], &e, flags,
 -				extack);
 -	if (err < 0)
 -		goto errout2;
