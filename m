@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 168DB7A7C0B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0407A7B6E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234923AbjITL5d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60168 "EHLO
+        id S234648AbjITLwF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:52:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234955AbjITL51 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:27 -0400
+        with ESMTP id S234706AbjITLwE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13FC2100
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56300C433C7;
-        Wed, 20 Sep 2023 11:57:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95415DE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EB1C433C8;
+        Wed, 20 Sep 2023 11:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211041;
-        bh=I8Y5kH54x1w9A3qEqtQOB7I81gw8w2rZHGqWI3UrrRA=;
+        s=korg; t=1695210716;
+        bh=azFpPDNZYFFbhaWd/vs5kJPbY3W3AyQC9wFIt1XsDgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q9MovW2921dCqjeAKR72RfolVLPv0fC4ZnX0AqELZQXXBNsRXqp8Oo9ZaOLjH/5uD
-         amliYLdehxBInfQswK5VLEuzxTWZTOGCP5stbKPgqra5cFU+gY/2wsk/jNAbtE5BIa
-         tgg/5Xb4/RhI3X1FtPJTKa2AQ6RvZ1liHRrUnExI=
+        b=KCN155mp6Mlkiz0s4oAcb8HH/5cJ53pQuGgOTD0Fj/azv0T5lvQjn0KxvFI3nRH0U
+         8mWpvqjJxpOJvMRmXEElW2ObIgLwzcKw85EX15wSlaV21mGnRY8I0eB6HYWM+PRnst
+         ZQ+lpiASCVn54KFf5IKLEcstgMse1VDyXUSlMo4g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/139] printk: Consolidate console deferred printing
-Date:   Wed, 20 Sep 2023 13:30:21 +0200
-Message-ID: <20230920112838.872167689@linuxfoundation.org>
+        patches@lists.linux.dev, Luo Meng <luomeng12@huawei.com>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Li Lingfeng <lilingfeng3@huawei.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.5 178/211] dm: fix a race condition in retrieve_deps
+Date:   Wed, 20 Sep 2023 13:30:22 +0200
+Message-ID: <20230920112851.396519013@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,130 +51,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 696ffaf50e1f8dbc66223ff614473f945f5fb8d8 ]
+commit f6007dce0cd35d634d9be91ef3515a6385dcee16 upstream.
 
-Printing to consoles can be deferred for several reasons:
+There's a race condition in the multipath target when retrieve_deps
+races with multipath_message calling dm_get_device and dm_put_device.
+retrieve_deps walks the list of open devices without holding any lock
+but multipath may add or remove devices to the list while it is
+running. The end result may be memory corruption or use-after-free
+memory access.
 
-- explicitly with printk_deferred()
-- printk() in NMI context
-- recursive printk() calls
+See this description of a UAF with multipath_message():
+https://listman.redhat.com/archives/dm-devel/2022-October/052373.html
 
-The current implementation is not consistent. For printk_deferred(),
-irq work is scheduled twice. For NMI und recursive, panic CPU
-suppression and caller delays are not properly enforced.
+Fix this bug by introducing a new rw semaphore "devices_lock". We grab
+devices_lock for read in retrieve_deps and we grab it for write in
+dm_get_device and dm_put_device.
 
-Correct these inconsistencies by consolidating the deferred printing
-code so that vprintk_deferred() is the top-level function for
-deferred printing and vprintk_emit() will perform whichever irq_work
-queueing is appropriate.
-
-Also add kerneldoc for wake_up_klogd() and defer_console_output() to
-clarify their differences and appropriate usage.
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230717194607.145135-6-john.ogness@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Luo Meng <luomeng12@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/printk/printk.c      | 35 ++++++++++++++++++++++++++++-------
- kernel/printk/printk_safe.c |  9 ++-------
- 2 files changed, 30 insertions(+), 14 deletions(-)
+ drivers/md/dm-core.h  |    1 +
+ drivers/md/dm-ioctl.c |    7 ++++++-
+ drivers/md/dm-table.c |   32 ++++++++++++++++++++++++--------
+ 3 files changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 4b9429f3fd6d8..cc53fb77f77cc 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2269,7 +2269,11 @@ asmlinkage int vprintk_emit(int facility, int level,
- 		preempt_enable();
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -214,6 +214,7 @@ struct dm_table {
+ 
+ 	/* a list of devices used by this table */
+ 	struct list_head devices;
++	struct rw_semaphore devices_lock;
+ 
+ 	/* events get handed up using this callback */
+ 	void (*event_fn)(void *data);
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1630,6 +1630,8 @@ static void retrieve_deps(struct dm_tabl
+ 	struct dm_dev_internal *dd;
+ 	struct dm_target_deps *deps;
+ 
++	down_read(&table->devices_lock);
++
+ 	deps = get_result_buffer(param, param_size, &len);
+ 
+ 	/*
+@@ -1644,7 +1646,7 @@ static void retrieve_deps(struct dm_tabl
+ 	needed = struct_size(deps, dev, count);
+ 	if (len < needed) {
+ 		param->flags |= DM_BUFFER_FULL_FLAG;
+-		return;
++		goto out;
  	}
  
--	wake_up_klogd();
-+	if (in_sched)
-+		defer_console_output();
-+	else
-+		wake_up_klogd();
-+
- 	return printed_len;
- }
- EXPORT_SYMBOL(vprintk_emit);
-@@ -3490,11 +3494,33 @@ static void __wake_up_klogd(int val)
- 	preempt_enable();
- }
- 
-+/**
-+ * wake_up_klogd - Wake kernel logging daemon
-+ *
-+ * Use this function when new records have been added to the ringbuffer
-+ * and the console printing of those records has already occurred or is
-+ * known to be handled by some other context. This function will only
-+ * wake the logging daemon.
-+ *
-+ * Context: Any context.
-+ */
- void wake_up_klogd(void)
- {
- 	__wake_up_klogd(PRINTK_PENDING_WAKEUP);
- }
- 
-+/**
-+ * defer_console_output - Wake kernel logging daemon and trigger
-+ *	console printing in a deferred context
-+ *
-+ * Use this function when new records have been added to the ringbuffer,
-+ * this context is responsible for console printing those records, but
-+ * the current context is not allowed to perform the console printing.
-+ * Trigger an irq_work context to perform the console printing. This
-+ * function also wakes the logging daemon.
-+ *
-+ * Context: Any context.
-+ */
- void defer_console_output(void)
- {
  	/*
-@@ -3511,12 +3537,7 @@ void printk_trigger_flush(void)
+@@ -1656,6 +1658,9 @@ static void retrieve_deps(struct dm_tabl
+ 		deps->dev[count++] = huge_encode_dev(dd->dm_dev->bdev->bd_dev);
  
- int vprintk_deferred(const char *fmt, va_list args)
- {
--	int r;
--
--	r = vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);
--	defer_console_output();
--
--	return r;
-+	return vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);
+ 	param->data_size = param->data_start + needed;
++
++out:
++	up_read(&table->devices_lock);
  }
  
- int _printk_deferred(const char *fmt, ...)
-diff --git a/kernel/printk/printk_safe.c b/kernel/printk/printk_safe.c
-index ef0f9a2044da1..6d10927a07d83 100644
---- a/kernel/printk/printk_safe.c
-+++ b/kernel/printk/printk_safe.c
-@@ -38,13 +38,8 @@ asmlinkage int vprintk(const char *fmt, va_list args)
- 	 * Use the main logbuf even in NMI. But avoid calling console
- 	 * drivers that might have their own locks.
- 	 */
--	if (this_cpu_read(printk_context) || in_nmi()) {
--		int len;
--
--		len = vprintk_store(0, LOGLEVEL_DEFAULT, NULL, fmt, args);
--		defer_console_output();
--		return len;
--	}
-+	if (this_cpu_read(printk_context) || in_nmi())
-+		return vprintk_deferred(fmt, args);
+ static int table_deps(struct file *filp, struct dm_ioctl *param, size_t param_size)
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -135,6 +135,7 @@ int dm_table_create(struct dm_table **re
+ 		return -ENOMEM;
  
- 	/* No obstacles. */
- 	return vprintk_default(fmt, args);
--- 
-2.40.1
-
+ 	INIT_LIST_HEAD(&t->devices);
++	init_rwsem(&t->devices_lock);
+ 
+ 	if (!num_targets)
+ 		num_targets = KEYS_PER_NODE;
+@@ -359,16 +360,20 @@ int __ref dm_get_device(struct dm_target
+ 	if (dev == disk_devt(t->md->disk))
+ 		return -EINVAL;
+ 
++	down_write(&t->devices_lock);
++
+ 	dd = find_device(&t->devices, dev);
+ 	if (!dd) {
+ 		dd = kmalloc(sizeof(*dd), GFP_KERNEL);
+-		if (!dd)
+-			return -ENOMEM;
++		if (!dd) {
++			r = -ENOMEM;
++			goto unlock_ret_r;
++		}
+ 
+ 		r = dm_get_table_device(t->md, dev, mode, &dd->dm_dev);
+ 		if (r) {
+ 			kfree(dd);
+-			return r;
++			goto unlock_ret_r;
+ 		}
+ 
+ 		refcount_set(&dd->count, 1);
+@@ -378,12 +383,17 @@ int __ref dm_get_device(struct dm_target
+ 	} else if (dd->dm_dev->mode != (mode | dd->dm_dev->mode)) {
+ 		r = upgrade_mode(dd, mode, t->md);
+ 		if (r)
+-			return r;
++			goto unlock_ret_r;
+ 	}
+ 	refcount_inc(&dd->count);
+ out:
++	up_write(&t->devices_lock);
+ 	*result = dd->dm_dev;
+ 	return 0;
++
++unlock_ret_r:
++	up_write(&t->devices_lock);
++	return r;
+ }
+ EXPORT_SYMBOL(dm_get_device);
+ 
+@@ -419,9 +429,12 @@ static int dm_set_device_limits(struct d
+ void dm_put_device(struct dm_target *ti, struct dm_dev *d)
+ {
+ 	int found = 0;
+-	struct list_head *devices = &ti->table->devices;
++	struct dm_table *t = ti->table;
++	struct list_head *devices = &t->devices;
+ 	struct dm_dev_internal *dd;
+ 
++	down_write(&t->devices_lock);
++
+ 	list_for_each_entry(dd, devices, list) {
+ 		if (dd->dm_dev == d) {
+ 			found = 1;
+@@ -430,14 +443,17 @@ void dm_put_device(struct dm_target *ti,
+ 	}
+ 	if (!found) {
+ 		DMERR("%s: device %s not in table devices list",
+-		      dm_device_name(ti->table->md), d->name);
+-		return;
++		      dm_device_name(t->md), d->name);
++		goto unlock_ret;
+ 	}
+ 	if (refcount_dec_and_test(&dd->count)) {
+-		dm_put_table_device(ti->table->md, d);
++		dm_put_table_device(t->md, d);
+ 		list_del(&dd->list);
+ 		kfree(dd);
+ 	}
++
++unlock_ret:
++	up_write(&t->devices_lock);
+ }
+ EXPORT_SYMBOL(dm_put_device);
+ 
 
 
