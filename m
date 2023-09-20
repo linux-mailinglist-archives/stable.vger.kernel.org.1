@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C21EE7A7D16
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E8D7A80CB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234492AbjITMGd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39338 "EHLO
+        id S236118AbjITMkg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234555AbjITMGc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:32 -0400
+        with ESMTP id S236433AbjITMkP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F60DD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4278DC433C8;
-        Wed, 20 Sep 2023 12:06:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F048F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E762C433C9;
+        Wed, 20 Sep 2023 12:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211582;
-        bh=mL1M1iziaaFJs5ylDVsg5CDxs+Fs8Hh8f8JbxkIz104=;
+        s=korg; t=1695213608;
+        bh=2nRUaTV2oo2/5Pm70mVlJLqePYua6lk2eRD9fPP7n2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MYgA1lz0aB0iQKaD7JPFt61c6TZtKvaa5g0oqrAZLDWzefvJsNVatamM7ZquTi7h2
-         b4w0SH5sHH+XAaDvTfC9TKEoVeUVUjCsEVmu2kDCB0hk994cp0yKZRREMd7bdIZBch
-         U+mA3ozraeiAmXQ8KEh62AN904t/O1jPolUmsdsw=
+        b=euVtOM+luDhsjFGOEoP57QrShIdiEoWEToVYSkKRB3BBQiHO33UF3N330/uBW00FV
+         GOKegsYH6CHPk8jvPz8Rpzwl/CfxdMq5YfIttdwIcZsr/ngJiEloJonsLge/ZKGWsB
+         mGBFmyu8hftqN0Wl6+i+TXinJmvCf2e+q5eY5oR0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 147/186] kcm: Fix error handling for SOCK_DGRAM in kcm_sendmsg().
+Subject: [PATCH 5.4 273/367] s390/zcrypt: dont leak memory if dev_set_name() fails
 Date:   Wed, 20 Sep 2023 13:30:50 +0200
-Message-ID: <20230920112842.279541660@linuxfoundation.org>
+Message-ID: <20230920112905.631426826@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,72 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a22730b1b4bf437c6bbfdeff5feddf54be4aeada ]
+[ Upstream commit 6252f47b78031979ad919f971dc8468b893488bd ]
 
-syzkaller found a memory leak in kcm_sendmsg(), and commit c821a88bd720
-("kcm: Fix memory leak in error path of kcm_sendmsg()") suppressed it by
-updating kcm_tx_msg(head)->last_skb if partial data is copied so that the
-following sendmsg() will resume from the skb.
+When dev_set_name() fails, zcdn_create() doesn't free the newly
+allocated resources. Do it.
 
-However, we cannot know how many bytes were copied when we get the error.
-Thus, we could mess up the MSG_MORE queue.
-
-When kcm_sendmsg() fails for SOCK_DGRAM, we should purge the queue as we
-do so for UDP by udp_flush_pending_frames().
-
-Even without this change, when the error occurred, the following sendmsg()
-resumed from a wrong skb and the queue was messed up.  However, we have
-yet to get such a report, and only syzkaller stumbled on it.  So, this
-can be changed safely.
-
-Note this does not change SOCK_SEQPACKET behaviour.
-
-Fixes: c821a88bd720 ("kcm: Fix memory leak in error path of kcm_sendmsg()")
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230912022753.33327-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 00fab2350e6b ("s390/zcrypt: multiple zcrypt device nodes support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230831110000.24279-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/s390/crypto/zcrypt_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 96b5fbe919b67..e0fe70b556299 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1065,17 +1065,18 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- out_error:
- 	kcm_push(kcm);
- 
--	if (copied && sock->type == SOCK_SEQPACKET) {
-+	if (sock->type == SOCK_SEQPACKET) {
- 		/* Wrote some bytes before encountering an
- 		 * error, return partial success.
- 		 */
--		goto partial_message;
--	}
--
--	if (head != kcm->seq_skb)
-+		if (copied)
-+			goto partial_message;
-+		if (head != kcm->seq_skb)
-+			kfree_skb(head);
-+	} else {
- 		kfree_skb(head);
--	else if (copied)
--		kcm_tx_msg(head)->last_skb = skb;
-+		kcm->seq_skb = NULL;
-+	}
- 
- 	err = sk_stream_error(sk, msg->msg_flags, err);
- 
+diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
+index ec41a8a76398c..f376dfcd7dbeb 100644
+--- a/drivers/s390/crypto/zcrypt_api.c
++++ b/drivers/s390/crypto/zcrypt_api.c
+@@ -397,6 +397,7 @@ static int zcdn_create(const char *name)
+ 			 ZCRYPT_NAME "_%d", (int) MINOR(devt));
+ 	nodename[sizeof(nodename)-1] = '\0';
+ 	if (dev_set_name(&zcdndev->device, nodename)) {
++		kfree(zcdndev);
+ 		rc = -EINVAL;
+ 		goto unlockout;
+ 	}
 -- 
 2.40.1
 
