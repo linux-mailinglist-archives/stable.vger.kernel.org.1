@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F497A80A8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0AAF7A7E48
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235838AbjITMi5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
+        id S235550AbjITMQu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236054AbjITMiw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:52 -0400
+        with ESMTP id S235521AbjITMQr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665431B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96035C433C9;
-        Wed, 20 Sep 2023 12:38:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9EEF2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B13C433CC;
+        Wed, 20 Sep 2023 12:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213521;
-        bh=H4uRzfJfA0HM6GW6zhO98dNZcnLnP5JFPydoHxqK5a8=;
+        s=korg; t=1695212180;
+        bh=p1Sk8sOljXAkaLYWCR0AqUFcYd9AYpN7HowjRf0Ez3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hO9+QIhKNnbK2H6xHCxka7fbjE24hqfIrfECTJM+qhWRIR9a65K9xAMJ07KguRlzB
-         FXBx3jKv0tcWWZk4bmw+ipYmBNDoCF/+zGhXTSFznGm8MkZ9N6sEQCAZHkrdAcwl53
-         8lvELKHt58Fc4MvRkuLISo/DWrs2l+xlpxksG47I=
+        b=XiPJXNJpOLMJzoAuiImMVd4mU7Rt8w8FE0Sl5OjZrIz2nlm9BMKjJHVu7WjDJTvAT
+         BrXQ/XJRhKaGYEdpVw/kEpmZNYNF2tCCO3qLmj9yKOk/BBID6MWhwbft4uJ4g8RXk0
+         6Im+CuIVpl0g9V1VHw9Qt/TvhCVX+PDAuSfHfeo4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 242/367] scsi: qla2xxx: Turn off noisy message log
-Date:   Wed, 20 Sep 2023 13:30:19 +0200
-Message-ID: <20230920112904.824580962@linuxfoundation.org>
+        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 4.19 180/273] ntb: Clean up tx tail index on link down
+Date:   Wed, 20 Sep 2023 13:30:20 +0200
+Message-ID: <20230920112852.077577556@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,37 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit 8ebaa45163a3fedc885c1dc7d43ea987a2f00a06 upstream.
+commit cc79bd2738c2d40aba58b2be6ce47dc0e471df0e upstream.
 
-Some consider noisy log as test failure.  Turn off noisy message log.
+The tx tail index is not reset when the link goes down. This causes the
+tail index to go out of sync when the link goes down and comes back up.
+Refactor the ntb_qp_link_down_reset() and reset the tail index as well.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230714070104.40052-8-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2849b5d70641 ("NTB: Reset transport QP link stats on down")
+Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_nvme.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ntb/ntb_transport.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_nvme.c
-+++ b/drivers/scsi/qla2xxx/qla_nvme.c
-@@ -577,7 +577,7 @@ static int qla_nvme_post_cmd(struct nvme
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -746,7 +746,7 @@ static int ntb_set_mw(struct ntb_transpo
+ 	return 0;
+ }
  
- 	rval = qla2x00_start_nvme_mq(sp);
- 	if (rval != QLA_SUCCESS) {
--		ql_log(ql_log_warn, vha, 0x212d,
-+		ql_dbg(ql_dbg_io + ql_dbg_verbose, vha, 0x212d,
- 		    "qla2x00_start_nvme_mq failed = %d\n", rval);
- 		sp->priv = NULL;
- 		priv->sp = NULL;
+-static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
+ {
+ 	qp->link_is_up = false;
+ 	qp->active = false;
+@@ -769,6 +769,13 @@ static void ntb_qp_link_down_reset(struc
+ 	qp->tx_async = 0;
+ }
+ 
++static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
++{
++	ntb_qp_link_context_reset(qp);
++	if (qp->remote_rx_info)
++		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
++}
++
+ static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
+ {
+ 	struct ntb_transport_ctx *nt = qp->transport;
+@@ -993,7 +1000,7 @@ static int ntb_transport_init_queue(stru
+ 	qp->ndev = nt->ndev;
+ 	qp->client_ready = false;
+ 	qp->event_handler = NULL;
+-	ntb_qp_link_down_reset(qp);
++	ntb_qp_link_context_reset(qp);
+ 
+ 	if (mw_num < qp_count % mw_count)
+ 		num_qps_mw = qp_count / mw_count + 1;
 
 
