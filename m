@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 590437A7DA1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D1F27A7FBA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235370AbjITMKv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:10:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
+        id S235877AbjITMaM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235440AbjITMKq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:46 -0400
+        with ESMTP id S235963AbjITM3t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4FA137
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A555C433C7;
-        Wed, 20 Sep 2023 12:10:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78A58F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E92EC433C7;
+        Wed, 20 Sep 2023 12:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211836;
-        bh=Y68bkvIauV5/1kK1s/P54iO5h52mhyeRxV/V9UFabE0=;
+        s=korg; t=1695212983;
+        bh=xMUDFTfM132vnFJVuFVz9YCsr3Xbrm39bhny0J/XsaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dhgq+ZCM4Rrt3Ad7jBOn+buI9Uyd2hTGkqMwUF02j3bdpJpZu+VZ1SbCeumHjIPiE
-         UpOSZs1JpvCFWhO16hRFsHF4LBO1ETwE0GNyesOy7afDB2oVy8nBr3nih6aDABpOv5
-         C1lyIPj4bJzeDNC+Q8JAhAORR7rbeV9NxwgduROU=
+        b=bEPl7GDZz8lhz/rgCVlqIZlY0rOKEyz2MbTwtbBLjjBmmj7MKyJdHUGu/oWqRL2sL
+         7xcKRT2EXUG9gAB56eblj3G0H+N6DsznGSDXw4CnIWZSZVW7wRc/SyxytnJgR2bU6A
+         TqhoWahEEffEblRulinN2pP34+F4LmySuZQzW/k0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 053/273] spi: tegra20-sflash: fix to check return value of platform_get_irq() in tegra_sflash_probe()
-Date:   Wed, 20 Sep 2023 13:28:13 +0200
-Message-ID: <20230920112848.067928070@linuxfoundation.org>
+Subject: [PATCH 5.4 117/367] drm/panel: simple: Add missing connector type and pixel format for AUO T215HVN01
+Date:   Wed, 20 Sep 2023 13:28:14 +0200
+Message-ID: <20230920112901.657393573@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 29a449e765ff70a5bd533be94babb6d36985d096 ]
+[ Upstream commit 7a675a8fa598edb29a664a91adb80f0340649f6f ]
 
-The platform_get_irq might be failed and return a negative result. So
-there should have an error handling code.
+The connector type and pixel format are missing for this panel,
+add them to prevent various drivers from failing to determine
+either of those parameters.
 
-Fixed this by adding an error handling code.
-
-Fixes: 8528547bcc33 ("spi: tegra: add spi driver for sflash controller")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_71FC162D589E4788C2152AAC84CD8D5C6D06@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ee933a1d5c4 ("drm/panel: simple: Add support for AUO T215HVN01")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230709134914.449328-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 749288310c36c..2989795272a16 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -469,7 +469,11 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		goto exit_free_master;
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index a87b79c8d76f7..63d17607ef89c 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -919,7 +919,9 @@ static const struct panel_desc auo_t215hvn01 = {
+ 	.delay = {
+ 		.disable = 5,
+ 		.unprepare = 1000,
+-	}
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
--	tsd->irq = platform_get_irq(pdev, 0);
-+	ret = platform_get_irq(pdev, 0);
-+	if (ret < 0)
-+		goto exit_free_master;
-+	tsd->irq = ret;
-+
- 	ret = request_irq(tsd->irq, tegra_sflash_isr, 0,
- 			dev_name(&pdev->dev), tsd);
- 	if (ret < 0) {
+ static const struct drm_display_mode avic_tm070ddh03_mode = {
 -- 
 2.40.1
 
