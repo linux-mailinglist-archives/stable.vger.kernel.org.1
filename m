@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC4F7A8016
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E167A7DF5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236166AbjITMcw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43342 "EHLO
+        id S235518AbjITMN5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbjITMcq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:46 -0400
+        with ESMTP id S235535AbjITMN4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68CB383
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28F7C433BA;
-        Wed, 20 Sep 2023 12:32:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBFD0AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B99BC433C9;
+        Wed, 20 Sep 2023 12:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213160;
-        bh=XKkOJRgAf+fwLKMOwq5AYdWPjMp+qm5pqLfeJgYc4WI=;
+        s=korg; t=1695212025;
+        bh=DaHdpnAF2InIQedWOf8L+GqoVpf3HHE4TJVujjqip8o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fr/Ygqwtu/rsvgtcqi2ms/Daa7zwTW+C8YZ+bESnAB7WxY0oiC6qR3WLsXikXZcPj
-         8XFcc+X0FVl0aQpYHJcqBR91PK3/k+IGnV2Ni+nUuFra57JqYRHUi0qg/54wlXhkw3
-         AVBw5x7rysktYB7anqEqr/Cm5Dim7Z9nH8A4pfZA=
+        b=F0G8dUqC3b2BDpQfZ/0Xt9WlDs/bv5S6o2GNt2XEdKydQHWNlL+LZQeX4zcIPg2SD
+         8D4+x6nORqVatS1TBsmJ4E1urZdLQuXaLhv2JtXpJeIHIBL6jWRzq9jsVuINSU/wab
+         F/MNHsyO+AGELiFnZmZ7TNO0f3Pk4tinCVtXBEkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 156/367] media: cx24120: Add retval check for cx24120_message_send()
+Subject: [PATCH 4.19 093/273] ARM: dts: s5pv210: add dummy 5V regulator for backlight on SMDKv210
 Date:   Wed, 20 Sep 2023 13:28:53 +0200
-Message-ID: <20230920112902.691842553@linuxfoundation.org>
+Message-ID: <20230920112849.316167875@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 96002c0ac824e1773d3f706b1f92e2a9f2988047 ]
+[ Upstream commit b77904ba177a9c67b6dbc3637fdf1faa22df6e5c ]
 
-If cx24120_message_send() returns error, we should keep local struct
-unchanged.
+Backlight is supplied by DC5V regulator.  The DTS has no PMIC node, so
+just add a regulator-fixed to solve it and fix dtbs_check warning:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  s5pv210-smdkv210.dtb: backlight: 'power-supply' is a required property
 
-Fixes: 5afc9a25be8d ("[media] Add support for TechniSat Skystar S2")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lore.kernel.org/r/20230421095721.31857-4-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: 982655cb0e7f ("ARM: dts: samsung: s5pv210-smdkv210: correct ethernet reg addresses (split)")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/cx24120.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/s5pv210-smdkv210.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/media/dvb-frontends/cx24120.c b/drivers/media/dvb-frontends/cx24120.c
-index 2464b63fe0cf4..307efef263f27 100644
---- a/drivers/media/dvb-frontends/cx24120.c
-+++ b/drivers/media/dvb-frontends/cx24120.c
-@@ -972,7 +972,9 @@ static void cx24120_set_clock_ratios(struct dvb_frontend *fe)
- 	cmd.arg[8] = (clock_ratios_table[idx].rate >> 8) & 0xff;
- 	cmd.arg[9] = (clock_ratios_table[idx].rate >> 0) & 0xff;
+diff --git a/arch/arm/boot/dts/s5pv210-smdkv210.dts b/arch/arm/boot/dts/s5pv210-smdkv210.dts
+index 7459e41e8ef13..ec5e18c59d3cf 100644
+--- a/arch/arm/boot/dts/s5pv210-smdkv210.dts
++++ b/arch/arm/boot/dts/s5pv210-smdkv210.dts
+@@ -55,6 +55,14 @@ backlight {
+ 		default-brightness-level = <6>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pwm3_out>;
++		power-supply = <&dc5v_reg>;
++	};
++
++	dc5v_reg: regulator-0 {
++		compatible = "regulator-fixed";
++		regulator-name = "DC5V";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
+ 	};
+ };
  
--	cx24120_message_send(state, &cmd);
-+	ret = cx24120_message_send(state, &cmd);
-+	if (ret != 0)
-+		return;
- 
- 	/* Calculate ber window rates for stat work */
- 	cx24120_calculate_ber_window(state, clock_ratios_table[idx].rate);
 -- 
 2.40.1
 
