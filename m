@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D027A808D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AAB77A7CEF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236031AbjITMh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52770 "EHLO
+        id S235201AbjITMFb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236027AbjITMhw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:52 -0400
+        with ESMTP id S235198AbjITMF0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5624392
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A112BC433C9;
-        Wed, 20 Sep 2023 12:37:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1DD693
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A80C433C9;
+        Wed, 20 Sep 2023 12:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213466;
-        bh=5TJk3nsrvYx/dI934kKu+QBoEttnuiPGUvIKP/oHGTg=;
+        s=korg; t=1695211520;
+        bh=nQT3TPgg8EdMx8koM7A+mSb23LZfGXMg5M2KoWVu9Kw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=No6Wt4rOuXzFHOutmXQC73VR38wmWFCptKslq5/VNIkY3ZXGHIJirALcpEgdWc+qC
-         jZQCyG2u3l+NnrFP/jBa33p2QcLzNXf3mNk3blxGcqDytwgtmlz+tVuxa216r6iAIB
-         p1Tb7r9yL8owaSgWTT9CzXsS1YO+oZS5XGV542Zo=
+        b=0RK4BVeqWfG7/+TNy9DWzHjwVEhgZPFrsHVmHuAJ5F8avvm3zMApVV9mUNb/8gj/p
+         K9yLNwfjdB9AiidOjmOluTXJgzMvgu2W7q5VUqWOBEPSjjCfz4fhoy1/fznx24PWGT
+         s4o6Wx/jyJdawOljwZ4sCSuyKlKxg++MVUkcrNWc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 248/367] parisc: led: Reduce CPU overhead for disk & lan LED computation
-Date:   Wed, 20 Sep 2023 13:30:25 +0200
-Message-ID: <20230920112904.972862261@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Dave Airlie <airlied@redhat.com>,
+        dri-devel@lists.freedesktop.org,
+        Sui Jingfeng <suijingfeng@loongson.cn>,
+        Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 4.14 123/186] drm/ast: Fix DRAM init on AST2200
+Date:   Wed, 20 Sep 2023 13:30:26 +0200
+Message-ID: <20230920112841.479794424@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,42 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
+commit 4cfe75f0f14f044dae66ad0e6eea812d038465d9 upstream.
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+Fix the test for the AST2200 in the DRAM initialization. The value
+in ast->chip has to be compared against an enum constant instead of
+a numerical value.
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
+This bug got introduced when the driver was first imported into the
+kernel.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.5+
+Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Tested-by: Jocelyn Falempe <jfalempe@redhat.com> # AST2600
+Link: https://patchwork.freedesktop.org/patch/msgid/20230621130032.3568-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/led.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_post.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -56,8 +56,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+--- a/drivers/gpu/drm/ast/ast_post.c
++++ b/drivers/gpu/drm/ast/ast_post.c
+@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm
+ 				;
+ 			} while (ast_read32(ast, 0x10100) != 0xa8);
+ 		} else {/* AST2100/1100 */
+-			if (ast->chip == AST2100 || ast->chip == 2200)
++			if (ast->chip == AST2100 || ast->chip == AST2200)
+ 				dram_reg_info = ast2100_dram_table_data;
+ 			else
+ 				dram_reg_info = ast1100_dram_table_data;
 
 
