@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8CF77A7B8D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 788ED7A7C2C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234742AbjITLxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
+        id S234979AbjITL6v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234760AbjITLxV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:21 -0400
+        with ESMTP id S235026AbjITL6u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B164592
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AF2C433C9;
-        Wed, 20 Sep 2023 11:53:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D390C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DACC433C9;
+        Wed, 20 Sep 2023 11:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210795;
-        bh=c7oBUeo98XDc9gN/TGwOL+RxN41jcZ1dYaag1VUjvsE=;
+        s=korg; t=1695211122;
+        bh=jEkmRgrxL4eyscqYepN32fkq01BvRbyXhKlHFHkV6t4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F161x/aRhIlscDnuZ3Q06zYNyBgAWvqKsADqt6GIOkuOcJYCOemxii3BT+imkiQ5p
-         dhB2LkB+yXlLee1hOTrMLe+V9ae70Wui9/4W+OuyCeNb6yBs+0QiGufcuzJkeqYZTI
-         +eMPK0ZhyN8Ohlgw7UUtOeTuZHrruauckUyVO+Gs=
+        b=OpZkiv0vJQOurpvtCw2pK/8BSQN5kbBrDfoS0zbCGQSzU2WqqapO3GPro49bsuqho
+         4gpDmcXpqQ7YwiZMwL9En2Aehe0DtNZHfqBmr1O5vpPCxxsxRiLS8PdXwgoBR9koq7
+         u7pfgyHjRl0R1QL2CFW8uII615MsMON2uzMEXtss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Yifan Zhang <yifan1.zhang@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>
-Subject: [PATCH 6.5 207/211] drm/amd/display: fix the white screen issue when >= 64GB DRAM
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 117/139] dm: dont attempt to queue IO under RCU protection
 Date:   Wed, 20 Sep 2023 13:30:51 +0200
-Message-ID: <20230920112852.282283464@linuxfoundation.org>
+Message-ID: <20230920112839.921638286@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,56 +49,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ef064187a9709393a981a56cce1e31880fd97107 upstream.
+commit a9ce385344f916cd1c36a33905e564f5581beae9 upstream.
 
-Dropping bit 31:4 of page table base is wrong, it makes page table
-base points to wrong address if phys addr is beyond 64GB; dropping
-page_table_start/end bit 31:4 is unnecessary since dcn20_vmid_setup
-will do that. Also, while we are at it, cleanup the assignments using
-upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT.
+dm looks up the table for IO based on the request type, with an
+assumption that if the request is marked REQ_NOWAIT, it's fine to
+attempt to submit that IO while under RCU read lock protection. This
+is not OK, as REQ_NOWAIT just means that we should not be sleeping
+waiting on other IO, it does not mean that we can't potentially
+schedule.
+
+A simple test case demonstrates this quite nicely:
+
+int main(int argc, char *argv[])
+{
+        struct iovec iov;
+        int fd;
+
+        fd = open("/dev/dm-0", O_RDONLY | O_DIRECT);
+        posix_memalign(&iov.iov_base, 4096, 4096);
+        iov.iov_len = 4096;
+        preadv2(fd, &iov, 1, 0, RWF_NOWAIT);
+        return 0;
+}
+
+which will instantly spew:
+
+BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5580, name: dm-nowait
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+INFO: lockdep is turned off.
+CPU: 7 PID: 5580 Comm: dm-nowait Not tainted 6.6.0-rc1-g39956d2dcd81 #132
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x11d/0x1b0
+ __might_resched+0x3c3/0x5e0
+ ? preempt_count_sub+0x150/0x150
+ mempool_alloc+0x1e2/0x390
+ ? mempool_resize+0x7d0/0x7d0
+ ? lock_sync+0x190/0x190
+ ? lock_release+0x4b7/0x670
+ ? internal_get_user_pages_fast+0x868/0x2d40
+ bio_alloc_bioset+0x417/0x8c0
+ ? bvec_alloc+0x200/0x200
+ ? internal_get_user_pages_fast+0xb8c/0x2d40
+ bio_alloc_clone+0x53/0x100
+ dm_submit_bio+0x27f/0x1a20
+ ? lock_release+0x4b7/0x670
+ ? blk_try_enter_queue+0x1a0/0x4d0
+ ? dm_dax_direct_access+0x260/0x260
+ ? rcu_is_watching+0x12/0xb0
+ ? blk_try_enter_queue+0x1cc/0x4d0
+ __submit_bio+0x239/0x310
+ ? __bio_queue_enter+0x700/0x700
+ ? kvm_clock_get_cycles+0x40/0x60
+ ? ktime_get+0x285/0x470
+ submit_bio_noacct_nocheck+0x4d9/0xb80
+ ? should_fail_request+0x80/0x80
+ ? preempt_count_sub+0x150/0x150
+ ? lock_release+0x4b7/0x670
+ ? __bio_add_page+0x143/0x2d0
+ ? iov_iter_revert+0x27/0x360
+ submit_bio_noacct+0x53e/0x1b30
+ submit_bio_wait+0x10a/0x230
+ ? submit_bio_wait_endio+0x40/0x40
+ __blkdev_direct_IO_simple+0x4f8/0x780
+ ? blkdev_bio_end_io+0x4c0/0x4c0
+ ? stack_trace_save+0x90/0xc0
+ ? __bio_clone+0x3c0/0x3c0
+ ? lock_release+0x4b7/0x670
+ ? lock_sync+0x190/0x190
+ ? atime_needs_update+0x3bf/0x7e0
+ ? timestamp_truncate+0x21b/0x2d0
+ ? inode_owner_or_capable+0x240/0x240
+ blkdev_direct_IO.part.0+0x84a/0x1810
+ ? rcu_is_watching+0x12/0xb0
+ ? lock_release+0x4b7/0x670
+ ? blkdev_read_iter+0x40d/0x530
+ ? reacquire_held_locks+0x4e0/0x4e0
+ ? __blkdev_direct_IO_simple+0x780/0x780
+ ? rcu_is_watching+0x12/0xb0
+ ? __mark_inode_dirty+0x297/0xd50
+ ? preempt_count_add+0x72/0x140
+ blkdev_read_iter+0x2a4/0x530
+ do_iter_readv_writev+0x2f2/0x3c0
+ ? generic_copy_file_range+0x1d0/0x1d0
+ ? fsnotify_perm.part.0+0x25d/0x630
+ ? security_file_permission+0xd8/0x100
+ do_iter_read+0x31b/0x880
+ ? import_iovec+0x10b/0x140
+ vfs_readv+0x12d/0x1a0
+ ? vfs_iter_read+0xb0/0xb0
+ ? rcu_is_watching+0x12/0xb0
+ ? rcu_is_watching+0x12/0xb0
+ ? lock_release+0x4b7/0x670
+ do_preadv+0x1b3/0x260
+ ? do_readv+0x370/0x370
+ __x64_sys_preadv2+0xef/0x150
+ do_syscall_64+0x39/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f5af41ad806
+Code: 41 54 41 89 fc 55 44 89 c5 53 48 89 cb 48 83 ec 18 80 3d e4 dd 0d 00 00 74 7a 45 89 c1 49 89 ca 45 31 c0 b8 47 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 be 00 00 00 48 85 c0 79 4a 48 8b 0d da 55
+RSP: 002b:00007ffd3145c7f0 EFLAGS: 00000246 ORIG_RAX: 0000000000000147
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5af41ad806
+RDX: 0000000000000001 RSI: 00007ffd3145c850 RDI: 0000000000000003
+RBP: 0000000000000008 R08: 0000000000000000 R09: 0000000000000008
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+R13: 00007ffd3145c850 R14: 000055f5f0431dd8 R15: 0000000000000001
+ </TASK>
+
+where in fact it is dm itself that attempts to allocate a bio clone with
+GFP_NOIO under the rcu read lock, regardless of the request type.
+
+Fix this by getting rid of the special casing for REQ_NOWAIT, and just
+use the normal SRCU protected table lookup. Get rid of the bio based
+table locking helpers at the same time, as they are now unused.
 
 Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
-Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-Acked-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Co-developed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 563a225c9fd2 ("dm: introduce dm_{get,put}_live_table_bio called from dm_submit_bio")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/md/dm.c |   23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1272,11 +1272,15 @@ static void mmhub_read_system_context(st
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -707,24 +707,6 @@ static void dm_put_live_table_fast(struc
+ 	rcu_read_unlock();
+ }
  
- 	pt_base = amdgpu_gmc_pd_addr(adev->gart.bo);
+-static inline struct dm_table *dm_get_live_table_bio(struct mapped_device *md,
+-					int *srcu_idx, blk_opf_t bio_opf)
+-{
+-	if (bio_opf & REQ_NOWAIT)
+-		return dm_get_live_table_fast(md);
+-	else
+-		return dm_get_live_table(md, srcu_idx);
+-}
+-
+-static inline void dm_put_live_table_bio(struct mapped_device *md, int srcu_idx,
+-					 blk_opf_t bio_opf)
+-{
+-	if (bio_opf & REQ_NOWAIT)
+-		dm_put_live_table_fast(md);
+-	else
+-		dm_put_live_table(md, srcu_idx);
+-}
+-
+ static char *_dm_claim_ptr = "I belong to device-mapper";
  
--	page_table_start.high_part = (u32)(adev->gmc.gart_start >> 44) & 0xF;
--	page_table_start.low_part = (u32)(adev->gmc.gart_start >> 12);
--	page_table_end.high_part = (u32)(adev->gmc.gart_end >> 44) & 0xF;
--	page_table_end.low_part = (u32)(adev->gmc.gart_end >> 12);
--	page_table_base.high_part = upper_32_bits(pt_base) & 0xF;
-+	page_table_start.high_part = upper_32_bits(adev->gmc.gart_start >>
-+						   AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_start.low_part = lower_32_bits(adev->gmc.gart_start >>
-+						  AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_end.high_part = upper_32_bits(adev->gmc.gart_end >>
-+						 AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_end.low_part = lower_32_bits(adev->gmc.gart_end >>
-+						AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_base.high_part = upper_32_bits(pt_base);
- 	page_table_base.low_part = lower_32_bits(pt_base);
+ /*
+@@ -1805,9 +1787,8 @@ static void dm_submit_bio(struct bio *bi
+ 	struct mapped_device *md = bio->bi_bdev->bd_disk->private_data;
+ 	int srcu_idx;
+ 	struct dm_table *map;
+-	blk_opf_t bio_opf = bio->bi_opf;
  
- 	pa_config->system_aperture.start_addr = (uint64_t)logical_addr_low << 18;
+-	map = dm_get_live_table_bio(md, &srcu_idx, bio_opf);
++	map = dm_get_live_table(md, &srcu_idx);
+ 
+ 	/* If suspended, or map not yet available, queue this IO for later */
+ 	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
+@@ -1823,7 +1804,7 @@ static void dm_submit_bio(struct bio *bi
+ 
+ 	dm_split_and_process_bio(md, map, bio);
+ out:
+-	dm_put_live_table_bio(md, srcu_idx, bio_opf);
++	dm_put_live_table(md, srcu_idx);
+ }
+ 
+ static bool dm_poll_dm_io(struct dm_io *io, struct io_comp_batch *iob,
 
 
