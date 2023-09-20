@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 386817A7D18
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32AE27A80B0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234535AbjITMGh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52498 "EHLO
+        id S236088AbjITMj2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235173AbjITMGg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:36 -0400
+        with ESMTP id S234490AbjITMjX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CAE128
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10094C433C7;
-        Wed, 20 Sep 2023 12:06:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EF52196
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9CFC433C7;
+        Wed, 20 Sep 2023 12:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211585;
-        bh=g2fAzvVIAh9m1tSY26evVlhbFYLl2ySMboAYnuD0wlA=;
+        s=korg; t=1695213539;
+        bh=SzmrUt+s6oM563HSgftT//zmVLqQ124oW9rbUykfhqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FcPzh9G/TdAznS4qjzKYiIE6bfy9ArVv2s4/iw8/+NIT2F9g81K260NGBRUb7XHBY
-         RSJT2fWfE7IaPdX0/clXN0ctWXLlj3pGiDer0rMv5W4bW6fcG/ShUalIm0oEAm+BdR
-         awbh6Cf1OK+I1PaA4uNj3mNpi4y+O4HXrQo22a9Q=
+        b=Qo039h94YVXSD0jEtOz17Ya+qgOTIbWQjtb0JDFItNzrRfLFOs3oFDUZh//dMKVze
+         NENoJ6GPL36I4SQP7Ihn1uVSZPaV2J69NYm5popWzko44NxZj0hp38GjFBRCzVuuu6
+         S7r2nRUlFKH9lSligYvnkYPPwxoeZ0Nke5Qxupr0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 4.14 148/186] parisc: Drop loops_per_jiffy from per_cpu struct
-Date:   Wed, 20 Sep 2023 13:30:51 +0200
-Message-ID: <20230920112842.315123162@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 275/367] ip_tunnels: use DEV_STATS_INC()
+Date:   Wed, 20 Sep 2023 13:30:52 +0200
+Message-ID: <20230920112905.681820018@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +51,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 93346da8ff47cc00f953c7f38a2d6ba11977fc42 upstream.
+[ Upstream commit 9b271ebaf9a2c5c566a54bc6cd915962e8241130 ]
 
-There is no need to keep a loops_per_jiffy value per cpu. Drop it.
+syzbot/KCSAN reported data-races in iptunnel_xmit_stats() [1]
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This can run from multiple cpus without mutual exclusion.
+
+Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
+
+[1]
+BUG: KCSAN: data-race in iptunnel_xmit / iptunnel_xmit
+
+read-write to 0xffff8881353df170 of 8 bytes by task 30263 on cpu 1:
+iptunnel_xmit_stats include/net/ip_tunnels.h:493 [inline]
+iptunnel_xmit+0x432/0x4a0 net/ipv4/ip_tunnel_core.c:87
+ip_tunnel_xmit+0x1477/0x1750 net/ipv4/ip_tunnel.c:831
+__gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ipgre_xmit+0x516/0x570 net/ipv4/ip_gre.c:662
+__netdev_start_xmit include/linux/netdevice.h:4889 [inline]
+netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+xmit_one net/core/dev.c:3544 [inline]
+dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3560
+__dev_queue_xmit+0xeee/0x1de0 net/core/dev.c:4340
+dev_queue_xmit include/linux/netdevice.h:3082 [inline]
+__bpf_tx_skb net/core/filter.c:2129 [inline]
+__bpf_redirect_no_mac net/core/filter.c:2159 [inline]
+__bpf_redirect+0x723/0x9c0 net/core/filter.c:2182
+____bpf_clone_redirect net/core/filter.c:2453 [inline]
+bpf_clone_redirect+0x16c/0x1d0 net/core/filter.c:2425
+___bpf_prog_run+0xd7d/0x41e0 kernel/bpf/core.c:1954
+__bpf_prog_run512+0x74/0xa0 kernel/bpf/core.c:2195
+bpf_dispatcher_nop_func include/linux/bpf.h:1181 [inline]
+__bpf_prog_run include/linux/filter.h:609 [inline]
+bpf_prog_run include/linux/filter.h:616 [inline]
+bpf_test_run+0x15d/0x3d0 net/bpf/test_run.c:423
+bpf_prog_test_run_skb+0x77b/0xa00 net/bpf/test_run.c:1045
+bpf_prog_test_run+0x265/0x3d0 kernel/bpf/syscall.c:3996
+__sys_bpf+0x3af/0x780 kernel/bpf/syscall.c:5353
+__do_sys_bpf kernel/bpf/syscall.c:5439 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:5437 [inline]
+__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5437
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read-write to 0xffff8881353df170 of 8 bytes by task 30249 on cpu 0:
+iptunnel_xmit_stats include/net/ip_tunnels.h:493 [inline]
+iptunnel_xmit+0x432/0x4a0 net/ipv4/ip_tunnel_core.c:87
+ip_tunnel_xmit+0x1477/0x1750 net/ipv4/ip_tunnel.c:831
+__gre_xmit net/ipv4/ip_gre.c:469 [inline]
+ipgre_xmit+0x516/0x570 net/ipv4/ip_gre.c:662
+__netdev_start_xmit include/linux/netdevice.h:4889 [inline]
+netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+xmit_one net/core/dev.c:3544 [inline]
+dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3560
+__dev_queue_xmit+0xeee/0x1de0 net/core/dev.c:4340
+dev_queue_xmit include/linux/netdevice.h:3082 [inline]
+__bpf_tx_skb net/core/filter.c:2129 [inline]
+__bpf_redirect_no_mac net/core/filter.c:2159 [inline]
+__bpf_redirect+0x723/0x9c0 net/core/filter.c:2182
+____bpf_clone_redirect net/core/filter.c:2453 [inline]
+bpf_clone_redirect+0x16c/0x1d0 net/core/filter.c:2425
+___bpf_prog_run+0xd7d/0x41e0 kernel/bpf/core.c:1954
+__bpf_prog_run512+0x74/0xa0 kernel/bpf/core.c:2195
+bpf_dispatcher_nop_func include/linux/bpf.h:1181 [inline]
+__bpf_prog_run include/linux/filter.h:609 [inline]
+bpf_prog_run include/linux/filter.h:616 [inline]
+bpf_test_run+0x15d/0x3d0 net/bpf/test_run.c:423
+bpf_prog_test_run_skb+0x77b/0xa00 net/bpf/test_run.c:1045
+bpf_prog_test_run+0x265/0x3d0 kernel/bpf/syscall.c:3996
+__sys_bpf+0x3af/0x780 kernel/bpf/syscall.c:5353
+__do_sys_bpf kernel/bpf/syscall.c:5439 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:5437 [inline]
+__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5437
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x0000000000018830 -> 0x0000000000018831
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 30249 Comm: syz-executor.4 Not tainted 6.5.0-syzkaller-11704-g3f86ed6ec0b3 #0
+
+Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/processor.h |    1 -
- arch/parisc/kernel/processor.c      |    5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ include/net/ip_tunnels.h | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -108,7 +108,6 @@ struct cpuinfo_parisc {
- 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
- 	unsigned int state;
- 	struct parisc_device *dev;
--	unsigned long loops_per_jiffy;
- };
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 8d063e23aa408..36376f8b84dac 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -449,15 +449,14 @@ static inline void iptunnel_xmit_stats(struct net_device *dev, int pkt_len)
+ 		tstats->tx_packets++;
+ 		u64_stats_update_end(&tstats->syncp);
+ 		put_cpu_ptr(tstats);
++		return;
++	}
++
++	if (pkt_len < 0) {
++		DEV_STATS_INC(dev, tx_errors);
++		DEV_STATS_INC(dev, tx_aborted_errors);
+ 	} else {
+-		struct net_device_stats *err_stats = &dev->stats;
+-
+-		if (pkt_len < 0) {
+-			err_stats->tx_errors++;
+-			err_stats->tx_aborted_errors++;
+-		} else {
+-			err_stats->tx_dropped++;
+-		}
++		DEV_STATS_INC(dev, tx_dropped);
+ 	}
+ }
  
- extern struct system_cpuinfo_parisc boot_cpu_data;
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -177,7 +177,6 @@ static int __init processor_probe(struct
- 	if (cpuid)
- 		memset(p, 0, sizeof(struct cpuinfo_parisc));
- 
--	p->loops_per_jiffy = loops_per_jiffy;
- 	p->dev = dev;		/* Save IODC data in case we need it */
- 	p->hpa = dev->hpa.start;	/* save CPU hpa */
- 	p->cpuid = cpuid;	/* save CPU id */
-@@ -429,8 +428,8 @@ show_cpuinfo (struct seq_file *m, void *
- 		show_cache_info(m);
- 
- 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
--			     cpuinfo->loops_per_jiffy / (500000 / HZ),
--			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
-+			     loops_per_jiffy / (500000 / HZ),
-+			     loops_per_jiffy / (5000 / HZ) % 100);
- 
- 		seq_printf(m, "software id\t: %ld\n\n",
- 				boot_cpu_data.pdc.model.sw_id);
+-- 
+2.40.1
+
 
 
