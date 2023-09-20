@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3785A7A7ECC
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0EC47A8176
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235662AbjITMUv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48596 "EHLO
+        id S236285AbjITMpm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:45:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235688AbjITMUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:50 -0400
+        with ESMTP id S236317AbjITMpm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D6AB4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544C1C433C7;
-        Wed, 20 Sep 2023 12:20:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C32CD7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850D5C433C8;
+        Wed, 20 Sep 2023 12:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212440;
-        bh=e76mENKpOIq4ob44XBuOoOzQuKr91yRmvTIC1m5YWsA=;
+        s=korg; t=1695213934;
+        bh=UfDacOLO+/A+3egsYSXN4b8afcabvMpfZqjVTVsJ7xY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zYkzFfWJHqXoJcfrwBybCGxh39+MNS4IAD+wJitbXw0ywJjjOCVW7DJknIgptE0Pl
-         QfZtsCYFQ8RsSzwiuTUsMYew/8w/GnCJzA6eHP1R7R53eckovXjwdpOB7VaApP/VbD
-         TNphMl63hO8zriZEO0LE0/ajmveJZjtnQnavCMEA=
+        b=GSyWqu/7AR6VV9iLk8/IUeEbrfKJzrVfuMc6GkIOrovj5yV5WgexF6KpoUvALhgfx
+         dBFaQ8N45xILXUuyrCpHAyn83ky1JfpzoVeKXthu+novenqnFdUppgfWXX5SUJn2CY
+         MAKjJMyk6lFK+LAvLq12zEZx4oHmLkPCRQ+EcPc0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Weimer <fweimer@redhat.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 4.19 268/273] attr: block mode changes of symlinks
-Date:   Wed, 20 Sep 2023 13:31:48 +0200
-Message-ID: <20230920112854.506119440@linuxfoundation.org>
+        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 051/110] usb: cdns3: Put the cdns set active part outside the spin lock
+Date:   Wed, 20 Sep 2023 13:31:49 +0200
+Message-ID: <20230920112832.293368836@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,144 +50,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-commit 5d1f903f75a80daa4dfb3d84e114ec8ecbf29956 upstream.
+[ Upstream commit 2319b9c87fe243327285f2fefd7374ffd75a65fc ]
 
-Changing the mode of symlinks is meaningless as the vfs doesn't take the
-mode of a symlink into account during path lookup permission checking.
+The device may be scheduled during the resume process,
+so this cannot appear in atomic operations. Since
+pm_runtime_set_active will resume suppliers, put set
+active outside the spin lock, which is only used to
+protect the struct cdns data structure, otherwise the
+kernel will report the following warning:
 
-However, the vfs doesn't block mode changes on symlinks. This however,
-has lead to an untenable mess roughly classifiable into the following
-two categories:
+  BUG: sleeping function called from invalid context at drivers/base/power/runtime.c:1163
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 651, name: sh
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  CPU: 0 PID: 651 Comm: sh Tainted: G        WC         6.1.20 #1
+  Hardware name: Freescale i.MX8QM MEK (DT)
+  Call trace:
+    dump_backtrace.part.0+0xe0/0xf0
+    show_stack+0x18/0x30
+    dump_stack_lvl+0x64/0x80
+    dump_stack+0x1c/0x38
+    __might_resched+0x1fc/0x240
+    __might_sleep+0x68/0xc0
+    __pm_runtime_resume+0x9c/0xe0
+    rpm_get_suppliers+0x68/0x1b0
+    __pm_runtime_set_status+0x298/0x560
+    cdns_resume+0xb0/0x1c0
+    cdns3_controller_resume.isra.0+0x1e0/0x250
+    cdns3_plat_resume+0x28/0x40
 
-(1) Filesystems that don't implement a i_op->setattr() for symlinks.
-
-    Such filesystems may or may not know that without i_op->setattr()
-    defined, notify_change() falls back to simple_setattr() causing the
-    inode's mode in the inode cache to be changed.
-
-    That's a generic issue as this will affect all non-size changing
-    inode attributes including ownership changes.
-
-    Example: afs
-
-(2) Filesystems that fail with EOPNOTSUPP but change the mode of the
-    symlink nonetheless.
-
-    Some filesystems will happily update the mode of a symlink but still
-    return EOPNOTSUPP. This is the biggest source of confusion for
-    userspace.
-
-    The EOPNOTSUPP in this case comes from POSIX ACLs. Specifically it
-    comes from filesystems that call posix_acl_chmod(), e.g., btrfs via
-
-        if (!err && attr->ia_valid & ATTR_MODE)
-                err = posix_acl_chmod(idmap, dentry, inode->i_mode);
-
-    Filesystems including btrfs don't implement i_op->set_acl() so
-    posix_acl_chmod() will report EOPNOTSUPP.
-
-    When posix_acl_chmod() is called, most filesystems will have
-    finished updating the inode.
-
-    Perversely, this has the consequences that this behavior may depend
-    on two kconfig options and mount options:
-
-    * CONFIG_POSIX_ACL={y,n}
-    * CONFIG_${FSTYPE}_POSIX_ACL={y,n}
-    * Opt_acl, Opt_noacl
-
-    Example: btrfs, ext4, xfs
-
-The only way to change the mode on a symlink currently involves abusing
-an O_PATH file descriptor in the following manner:
-
-        fd = openat(-1, "/path/to/link", O_CLOEXEC | O_PATH | O_NOFOLLOW);
-
-        char path[PATH_MAX];
-        snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-        chmod(path, 0000);
-
-But for most major filesystems with POSIX ACL support such as btrfs,
-ext4, ceph, tmpfs, xfs and others this will fail with EOPNOTSUPP with
-the mode still updated due to the aforementioned posix_acl_chmod()
-nonsense.
-
-So, given that for all major filesystems this would fail with EOPNOTSUPP
-and that both glibc (cf. [1]) and musl (cf. [2]) outright block mode
-changes on symlinks we should just try and block mode changes on
-symlinks directly in the vfs and have a clean break with this nonsense.
-
-If this causes any regressions, we do the next best thing and fix up all
-filesystems that do return EOPNOTSUPP with the mode updated to not call
-posix_acl_chmod() on symlinks.
-
-But as usual, let's try the clean cut solution first. It's a simple
-patch that can be easily reverted. Not marking this for backport as I'll
-do that manually if we're reasonably sure that this works and there are
-no strong objections.
-
-We could block this in chmod_common() but it's more appropriate to do it
-notify_change() as it will also mean that we catch filesystems that
-change symlink permissions explicitly or accidently.
-
-Similar proposals were floated in the past as in [3] and [4] and again
-recently in [5]. There's also a couple of bugs about this inconsistency
-as in [6] and [7].
-
-Link: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=99527a3727e44cb8661ee1f743068f108ec93979;hb=HEAD [1]
-Link: https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c [2]
-Link: https://lore.kernel.org/all/20200911065733.GA31579@infradead.org [3]
-Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00518.html [4]
-Link: https://lore.kernel.org/lkml/87lefmbppo.fsf@oldenburg.str.redhat.com [5]
-Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html [6]
-Link: https://sourceware.org/bugzilla/show_bug.cgi?id=14578#c17 [7]
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org # please backport to all LTSes but not before v6.6-rc2 is tagged
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Florian Weimer <fweimer@redhat.com>
-Message-Id: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230616021952.1025854-1-xiaolei.wang@windriver.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/attr.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/cdns3-plat.c |  3 ++-
+ drivers/usb/cdns3/cdnsp-pci.c  |  3 ++-
+ drivers/usb/cdns3/core.c       | 15 +++++++++++----
+ drivers/usb/cdns3/core.h       |  7 +++++--
+ 4 files changed, 20 insertions(+), 8 deletions(-)
 
---- a/fs/attr.c
-+++ b/fs/attr.c
-@@ -256,9 +256,25 @@ int notify_change(struct dentry * dentry
- 	}
+diff --git a/drivers/usb/cdns3/cdns3-plat.c b/drivers/usb/cdns3/cdns3-plat.c
+index 4d0f027e5bd3a..9cb647203dcf2 100644
+--- a/drivers/usb/cdns3/cdns3-plat.c
++++ b/drivers/usb/cdns3/cdns3-plat.c
+@@ -256,9 +256,10 @@ static int cdns3_controller_resume(struct device *dev, pm_message_t msg)
+ 	cdns3_set_platform_suspend(cdns->dev, false, false);
  
- 	if ((ia_valid & ATTR_MODE)) {
--		umode_t amode = attr->ia_mode;
-+		/*
-+		 * Don't allow changing the mode of symlinks:
-+		 *
-+		 * (1) The vfs doesn't take the mode of symlinks into account
-+		 *     during permission checking.
-+		 * (2) This has never worked correctly. Most major filesystems
-+		 *     did return EOPNOTSUPP due to interactions with POSIX ACLs
-+		 *     but did still updated the mode of the symlink.
-+		 *     This inconsistency led system call wrapper providers such
-+		 *     as libc to block changing the mode of symlinks with
-+		 *     EOPNOTSUPP already.
-+		 * (3) To even do this in the first place one would have to use
-+		 *     specific file descriptors and quite some effort.
-+		 */
-+		if (S_ISLNK(inode->i_mode))
-+			return -EOPNOTSUPP;
+ 	spin_lock_irqsave(&cdns->lock, flags);
+-	cdns_resume(cdns, !PMSG_IS_AUTO(msg));
++	cdns_resume(cdns);
+ 	cdns->in_lpm = false;
+ 	spin_unlock_irqrestore(&cdns->lock, flags);
++	cdns_set_active(cdns, !PMSG_IS_AUTO(msg));
+ 	if (cdns->wakeup_pending) {
+ 		cdns->wakeup_pending = false;
+ 		enable_irq(cdns->wakeup_irq);
+diff --git a/drivers/usb/cdns3/cdnsp-pci.c b/drivers/usb/cdns3/cdnsp-pci.c
+index 29f433c5a6f3f..a85db23fa19f2 100644
+--- a/drivers/usb/cdns3/cdnsp-pci.c
++++ b/drivers/usb/cdns3/cdnsp-pci.c
+@@ -210,8 +210,9 @@ static int __maybe_unused cdnsp_pci_resume(struct device *dev)
+ 	int ret;
+ 
+ 	spin_lock_irqsave(&cdns->lock, flags);
+-	ret = cdns_resume(cdns, 1);
++	ret = cdns_resume(cdns);
+ 	spin_unlock_irqrestore(&cdns->lock, flags);
++	cdns_set_active(cdns, 1);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index dbcdf3b24b477..7b20d2d5c262e 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -522,9 +522,8 @@ int cdns_suspend(struct cdns *cdns)
+ }
+ EXPORT_SYMBOL_GPL(cdns_suspend);
+ 
+-int cdns_resume(struct cdns *cdns, u8 set_active)
++int cdns_resume(struct cdns *cdns)
+ {
+-	struct device *dev = cdns->dev;
+ 	enum usb_role real_role;
+ 	bool role_changed = false;
+ 	int ret = 0;
+@@ -556,15 +555,23 @@ int cdns_resume(struct cdns *cdns, u8 set_active)
+ 	if (cdns->roles[cdns->role]->resume)
+ 		cdns->roles[cdns->role]->resume(cdns, cdns_power_is_lost(cdns));
+ 
++	return 0;
++}
++EXPORT_SYMBOL_GPL(cdns_resume);
 +
- 		/* Flag setting protected by i_mutex */
--		if (is_sxid(amode))
-+		if (is_sxid(attr->ia_mode))
- 			inode->i_flags &= ~S_NOSEC;
++void cdns_set_active(struct cdns *cdns, u8 set_active)
++{
++	struct device *dev = cdns->dev;
++
+ 	if (set_active) {
+ 		pm_runtime_disable(dev);
+ 		pm_runtime_set_active(dev);
+ 		pm_runtime_enable(dev);
  	}
  
+-	return 0;
++	return;
+ }
+-EXPORT_SYMBOL_GPL(cdns_resume);
++EXPORT_SYMBOL_GPL(cdns_set_active);
+ #endif /* CONFIG_PM_SLEEP */
+ 
+ MODULE_AUTHOR("Peter Chen <peter.chen@nxp.com>");
+diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
+index ab0cb68acd239..1b6631cdf5dec 100644
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -125,10 +125,13 @@ int cdns_init(struct cdns *cdns);
+ int cdns_remove(struct cdns *cdns);
+ 
+ #ifdef CONFIG_PM_SLEEP
+-int cdns_resume(struct cdns *cdns, u8 set_active);
++int cdns_resume(struct cdns *cdns);
+ int cdns_suspend(struct cdns *cdns);
++void cdns_set_active(struct cdns *cdns, u8 set_active);
+ #else /* CONFIG_PM_SLEEP */
+-static inline int cdns_resume(struct cdns *cdns, u8 set_active)
++static inline int cdns_resume(struct cdns *cdns)
++{ return 0; }
++static inline int cdns_set_active(struct cdns *cdns, u8 set_active)
+ { return 0; }
+ static inline int cdns_suspend(struct cdns *cdns)
+ { return 0; }
+-- 
+2.40.1
+
 
 
