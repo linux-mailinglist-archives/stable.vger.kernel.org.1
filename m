@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E264F7A7FF0
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7E157A7DCE
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236028AbjITMba (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54738 "EHLO
+        id S235401AbjITMM2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236079AbjITMba (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:30 -0400
+        with ESMTP id S235399AbjITMM2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF298F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635D5C433C8;
-        Wed, 20 Sep 2023 12:31:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7C483
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E304DC433C7;
+        Wed, 20 Sep 2023 12:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213083;
-        bh=AlHvl54Y8eFzLmAwjpOwi8TS4rlZnAhXHPgYSkrhSFg=;
+        s=korg; t=1695211942;
+        bh=Qbf4f4vJMp7pxKdu/iMrih74I4MPCzQPS3Uk+dOl4W4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=co/KkFsJR4GI+9ITyw4Kn7XbqTJhWXyQItygHkxVhNsnT3C8Ob0RdcaGyEdeyPMTg
-         FDmXvhVHW3qaDuvrUqWteiFk92gHWYC9O0ZI8AzxbRnzyUR4qq1lbDae2XJxqu4zhk
-         qEArzZlYbzhiEpTToa3DT0a86V/AvRQH1A7wuTQQ=
+        b=1zAEfQkhwsrf/lD6WatrrLGSCbpHLDeMJ9S7sMi3vHNuMeTt29CVDI7p3RFOQ6PY1
+         A+yy0//35OBb2DI6xaKGEFILh/y6y8sVVDtSICfsG4D1Qn/yq9ut2zfO06HpY+3lG7
+         Ab6ovoUUJAWSJFUtU5NRmNamhX06TbIc5iH8/1rM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Wu Zongyong <wuzongyong@linux.alibaba.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/367] PCI: Mark NVIDIA T4 GPUs to avoid bus reset
+Subject: [PATCH 4.19 066/273] wifi: ath9k: protect WMI command response buffer replacement with a lock
 Date:   Wed, 20 Sep 2023 13:28:26 +0200
-Message-ID: <20230920112902.020652367@linuxfoundation.org>
+Message-ID: <20230920112848.506211089@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,40 +52,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wu Zongyong <wuzongyong@linux.alibaba.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit d5af729dc2071273f14cbb94abbc60608142fd83 ]
+[ Upstream commit 454994cfa9e4c18b6df9f78b60db8eadc20a6c25 ]
 
-NVIDIA T4 GPUs do not work with SBR. This problem is found when the T4 card
-is direct attached to a Root Port only. Avoid bus reset by marking T4 GPUs
-PCI_DEV_FLAGS_NO_BUS_RESET.
+If ath9k_wmi_cmd() has exited with a timeout, it is possible that during
+next ath9k_wmi_cmd() call the wmi_rsp callback for previous wmi command
+writes to new wmi->cmd_rsp_buf and makes a completion. This results in an
+invalid ath9k_wmi_cmd() return value.
 
-Fixes: 4c207e7121fa ("PCI: Mark some NVIDIA GPUs to avoid bus reset")
-Link: https://lore.kernel.org/r/2dcebea53a6eb9bd212ec6d8974af2e5e0333ef6.1681129861.git.wuzongyong@linux.alibaba.com
-Signed-off-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Move the replacement of WMI command response buffer and length under
+wmi_lock. Note that last_seq_id value is updated there, too.
+
+Thus, the buffer cannot be written to by a belated wmi_rsp callback
+because that path is properly rejected by the last_seq_id check.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230425192607.18015-2-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 73260bd217278..6d258f146aa90 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3566,7 +3566,7 @@ static void quirk_no_bus_reset(struct pci_dev *dev)
-  */
- static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index 44faa12a7205c..78ce349a48f7e 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -280,7 +280,8 @@ int ath9k_wmi_connect(struct htc_target *htc, struct wmi *wmi,
+ 
+ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+ 			       struct sk_buff *skb,
+-			       enum wmi_cmd_id cmd, u16 len)
++			       enum wmi_cmd_id cmd, u16 len,
++			       u8 *rsp_buf, u32 rsp_len)
  {
--	if ((dev->device & 0xffc0) == 0x2340)
-+	if ((dev->device & 0xffc0) == 0x2340 || dev->device == 0x1eb8)
- 		quirk_no_bus_reset(dev);
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
+ 	struct wmi_cmd_hdr *hdr;
+ 	unsigned long flags;
+@@ -290,6 +291,11 @@ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+ 	hdr->seq_no = cpu_to_be16(++wmi->tx_seq_id);
+ 
+ 	spin_lock_irqsave(&wmi->wmi_lock, flags);
++
++	/* record the rsp buffer and length */
++	wmi->cmd_rsp_buf = rsp_buf;
++	wmi->cmd_rsp_len = rsp_len;
++
+ 	wmi->last_seq_id = wmi->tx_seq_id;
+ 	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 
+@@ -330,11 +336,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 		goto out;
+ 	}
+ 
+-	/* record the rsp buffer and length */
+-	wmi->cmd_rsp_buf = rsp_buf;
+-	wmi->cmd_rsp_len = rsp_len;
+-
+-	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len);
++	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len, rsp_buf, rsp_len);
+ 	if (ret)
+ 		goto out;
+ 
 -- 
 2.40.1
 
