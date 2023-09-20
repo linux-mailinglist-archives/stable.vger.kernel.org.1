@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A379C7A7B48
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 630967A7BE4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234604AbjITLu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33120 "EHLO
+        id S234531AbjITL4a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234588AbjITLuz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:55 -0400
+        with ESMTP id S234882AbjITL43 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2291B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05372C433C7;
-        Wed, 20 Sep 2023 11:50:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1A0F0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4403C433C9;
+        Wed, 20 Sep 2023 11:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210649;
-        bh=l0fGG4uA0rl8DjlQOtn1CObGCVsm/eFkPeJlJuNRliQ=;
+        s=korg; t=1695210980;
+        bh=O2F1MyEzyRJWB32EQTjri3UtlLSVCd2XidEwhkco/2k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CB3eTjDXnybRhnMezTmO8/X9juWmazzUFej0q5EzDoyNsqHToRZ6om4qOyWc+x7/d
-         Z5oigWcNo7h3P2DngxBhYR58bLmAZRxnxd8iZw1uIsOk/RXMQvCXY82ZsOMr8IhXXp
-         0S6w8O9dVefbOAb0hqVOnfW7Nq9DVcN5qEGGU3QE=
+        b=XEnCAUTNfux8z9wpmK2hqUQaTkOFofaNStYwltmGgUDtYIUXTyWm6SoYKWmXdzVW+
+         fW8Flacb0mujIYx98lccg97141QHfNn5iePGseD7Pf+ndwHX501AbqP8dzEBFXmqGM
+         gUSMINoImH0LibdKSNA83pcwEIJ0qWzMUbr4vXcg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Shuai <songshuaishuai@tinylab.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev,
+        Nirmal Patel <nirmal.patel@linux.intel.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 153/211] riscv: kexec: Align the kexeced kernel entry
+Subject: [PATCH 6.1 063/139] PCI: vmd: Disable bridge window for domain reset
 Date:   Wed, 20 Sep 2023 13:29:57 +0200
-Message-ID: <20230920112850.616376483@linuxfoundation.org>
+Message-ID: <20230920112838.044067201@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +51,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Shuai <songshuaishuai@tinylab.org>
+From: Nirmal Patel <nirmal.patel@linux.intel.com>
 
-[ Upstream commit 1bfb2b618d52e59a4ef1896b46c4698ad2be66b7 ]
+[ Upstream commit f73eedc90bf73d48e8368e6b0b4ad76a7fffaef7 ]
 
-The current riscv boot protocol requires 2MB alignment for RV64
-and 4MB alignment for RV32.
+During domain reset process vmd_domain_reset() clears PCI
+configuration space of VMD root ports. But certain platform
+has observed following errors and failed to boot.
+  ...
+  DMAR: VT-d detected Invalidation Queue Error: Reason f
+  DMAR: VT-d detected Invalidation Time-out Error: SID ffff
+  DMAR: VT-d detected Invalidation Completion Error: SID ffff
+  DMAR: QI HEAD: UNKNOWN qw0 = 0x0, qw1 = 0x0
+  DMAR: QI PRIOR: UNKNOWN qw0 = 0x0, qw1 = 0x0
+  DMAR: Invalidation Time-out Error (ITE) cleared
 
-In KEXEC_FILE path, the elf_find_pbase() function should align
-the kexeced kernel entry according to the requirement, otherwise
-the kexeced kernel would silently BUG at the setup_vm().
+The root cause is that memset_io() clears prefetchable memory base/limit
+registers and prefetchable base/limit 32 bits registers sequentially.
+This seems to be enabling prefetchable memory if the device disabled
+prefetchable memory originally.
 
-Fixes: 8acea455fafa ("RISC-V: Support for kexec_file on panic")
-Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
-Link: https://lore.kernel.org/r/20230906095817.364390-1-songshuaishuai@tinylab.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Here is an example (before memset_io()):
+
+  PCI configuration space for 10000:00:00.0:
+  86 80 30 20 06 00 10 00 04 00 04 06 00 00 01 00
+  00 00 00 00 00 00 00 00 00 01 01 00 00 00 00 20
+  00 00 00 00 01 00 01 00 ff ff ff ff 75 05 00 00
+  ...
+
+So, prefetchable memory is ffffffff00000000-575000fffff, which is
+disabled. When memset_io() clears prefetchable base 32 bits register,
+the prefetchable memory becomes 0000000000000000-575000fffff, which is
+enabled and incorrect.
+
+Here is the quote from section 7.5.1.3.9 of PCI Express Base 6.0 spec:
+
+  The Prefetchable Memory Limit register must be programmed to a smaller
+  value than the Prefetchable Memory Base register if there is no
+  prefetchable memory on the secondary side of the bridge.
+
+This is believed to be the reason for the failure and in addition the
+sequence of operation in vmd_domain_reset() is not following the PCIe
+specs.
+
+Disable the bridge window by executing a sequence of operations
+borrowed from pci_disable_bridge_window() and pci_setup_bridge_io(),
+that comply with the PCI specifications.
+
+Link: https://lore.kernel.org/r/20230810215029.1177379-1-nirmal.patel@linux.intel.com
+Signed-off-by: Nirmal Patel <nirmal.patel@linux.intel.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/elf_kexec.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/pci/controller/vmd.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-index c08bb5c3b3857..b3b96ff46d193 100644
---- a/arch/riscv/kernel/elf_kexec.c
-+++ b/arch/riscv/kernel/elf_kexec.c
-@@ -98,7 +98,13 @@ static int elf_find_pbase(struct kimage *image, unsigned long kernel_len,
- 	kbuf.image = image;
- 	kbuf.buf_min = lowest_paddr;
- 	kbuf.buf_max = ULONG_MAX;
--	kbuf.buf_align = PAGE_SIZE;
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index d1eb17e3f1474..d4c9b888a79d7 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -526,8 +526,23 @@ static void vmd_domain_reset(struct vmd_dev *vmd)
+ 				     PCI_CLASS_BRIDGE_PCI))
+ 					continue;
+ 
+-				memset_io(base + PCI_IO_BASE, 0,
+-					  PCI_ROM_ADDRESS1 - PCI_IO_BASE);
++				/*
++				 * Temporarily disable the I/O range before updating
++				 * PCI_IO_BASE.
++				 */
++				writel(0x0000ffff, base + PCI_IO_BASE_UPPER16);
++				/* Update lower 16 bits of I/O base/limit */
++				writew(0x00f0, base + PCI_IO_BASE);
++				/* Update upper 16 bits of I/O base/limit */
++				writel(0, base + PCI_IO_BASE_UPPER16);
 +
-+	/*
-+	 * Current riscv boot protocol requires 2MB alignment for
-+	 * RV64 and 4MB alignment for RV32
-+	 *
-+	 */
-+	kbuf.buf_align = PMD_SIZE;
- 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 	kbuf.memsz = ALIGN(kernel_len, PAGE_SIZE);
- 	kbuf.top_down = false;
++				/* MMIO Base/Limit */
++				writel(0x0000fff0, base + PCI_MEMORY_BASE);
++
++				/* Prefetchable MMIO Base/Limit */
++				writel(0, base + PCI_PREF_LIMIT_UPPER32);
++				writel(0x0000fff0, base + PCI_PREF_MEMORY_BASE);
++				writel(0xffffffff, base + PCI_PREF_BASE_UPPER32);
+ 			}
+ 		}
+ 	}
 -- 
 2.40.1
 
