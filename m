@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F32D87A815E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5997A7EDA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236273AbjITMpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
+        id S235813AbjITMV1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236308AbjITMoh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:37 -0400
+        with ESMTP id S235823AbjITMVW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4107E92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD63C433C8;
-        Wed, 20 Sep 2023 12:44:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5CA2196
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807DAC433C7;
+        Wed, 20 Sep 2023 12:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213871;
-        bh=bZAwZAIYenPST52346DWRJGZup4OB7aiLwR6zMeqJF4=;
+        s=korg; t=1695212470;
+        bh=fqo+nnr+B6VTFziIEgluQh9devR26/3V8GtjcLnGSMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FXv4sx7k7kGohNmIx4ImTCzT+WfXrX6jS/axaJS+q0v/XBv8Y/eCEkgwJUqzKtydC
-         23ADQwFavIulIxx5wyHUBYU516je5sWQg7QuYHbndA3Ht9KRzzYJX56+lN2YYnG8Pg
-         ObE7ierExn7P+6I2ztliowdJXRR+M0Q78hmoTWNI=
+        b=pTIKP5KH3HJWYei/vfSUyJ4w/1vsYOpHoz0YeRoe3I6V1Rmi1JIT+rZCCtWisa04U
+         IKJ4C00sNvyG9b0HgmO15OasKOg+zEasonlAU8aOyQwFln1OLTI88g53K4JI5eTPl3
+         RK9njwlyoU+A7pmy551t5jVyu05A3TTlvj/k8mf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hu Chunyu <chuhu@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Wander Lairson Costa <wander@redhat.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes@sipsolutions.net>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/110] kernel/fork: beware of __put_task_struct() calling context
-Date:   Wed, 20 Sep 2023 13:31:03 +0200
-Message-ID: <20230920112830.586071507@linuxfoundation.org>
+Subject: [PATCH 5.10 14/83] wifi: ath9k: fix fortify warnings
+Date:   Wed, 20 Sep 2023 13:31:04 +0200
+Message-ID: <20230920112827.240504993@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,130 +53,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit d243b34459cea30cfe5f3a9b2feb44e7daff9938 ]
+[ Upstream commit 810e41cebb6c6e394f2068f839e1a3fc745a5dcc ]
 
-Under PREEMPT_RT, __put_task_struct() indirectly acquires sleeping
-locks. Therefore, it can't be called from an non-preemptible context.
+When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+I've noticed the following:
 
-One practical example is splat inside inactive_task_timer(), which is
-called in a interrupt context:
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘ath_tx_complete_aggr’ at drivers/net/wireless/ath/ath9k/xmit.c:556:4,
+    inlined from ‘ath_tx_process_buffer’ at drivers/net/wireless/ath/ath9k/xmit.c:773:3:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  CPU: 1 PID: 2848 Comm: life Kdump: loaded Tainted: G W ---------
-   Hardware name: HP ProLiant DL388p Gen8, BIOS P70 07/15/2012
-   Call Trace:
-   dump_stack_lvl+0x57/0x7d
-   mark_lock_irq.cold+0x33/0xba
-   mark_lock+0x1e7/0x400
-   mark_usage+0x11d/0x140
-   __lock_acquire+0x30d/0x930
-   lock_acquire.part.0+0x9c/0x210
-   rt_spin_lock+0x27/0xe0
-   refill_obj_stock+0x3d/0x3a0
-   kmem_cache_free+0x357/0x560
-   inactive_task_timer+0x1ad/0x340
-   __run_hrtimer+0x8a/0x1a0
-   __hrtimer_run_queues+0x91/0x130
-   hrtimer_interrupt+0x10f/0x220
-   __sysvec_apic_timer_interrupt+0x7b/0xd0
-   sysvec_apic_timer_interrupt+0x4f/0xd0
-   asm_sysvec_apic_timer_interrupt+0x12/0x20
-   RIP: 0033:0x7fff196bf6f5
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘ath_tx_count_frames’ at drivers/net/wireless/ath/ath9k/xmit.c:473:3,
+    inlined from ‘ath_tx_complete_aggr’ at drivers/net/wireless/ath/ath9k/xmit.c:572:2,
+    inlined from ‘ath_tx_process_buffer’ at drivers/net/wireless/ath/ath9k/xmit.c:773:3:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Instead of calling __put_task_struct() directly, we defer it using
-call_rcu(). A more natural approach would use a workqueue, but since
-in PREEMPT_RT, we can't allocate dynamic memory from atomic context,
-the code would become more complex because we would need to put the
-work_struct instance in the task_struct and initialize it when we
-allocate a new task_struct.
+In both cases, the compiler complains on:
 
-The issue is reproducible with stress-ng:
+memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
 
-  while true; do
-      stress-ng --sched deadline --sched-period 1000000000 \
-	      --sched-runtime 800000000 --sched-deadline \
-	      1000000000 --mmapfork 23 -t 20
-  done
+which is the legal way to copy both 'ba_low' and following 'ba_high'
+members of 'struct ath_tx_status' at once (that is, issue one 8-byte
+'memcpy()' for two 4-byte fields). Since the fortification logic seems
+interprets this trick as an attempt to overread 4-byte 'ba_low', silence
+relevant warnings by using the convenient 'struct_group()' quirk.
 
-Reported-by: Hu Chunyu <chuhu@redhat.com>
-Suggested-by: Oleg Nesterov <oleg@redhat.com>
-Suggested-by: Valentin Schneider <vschneid@redhat.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230614122323.37957-2-wander@redhat.com
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230620080855.396851-2-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/task.h | 28 +++++++++++++++++++++++++++-
- kernel/fork.c              |  8 ++++++++
- 2 files changed, 35 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/mac.h  | 6 ++++--
+ drivers/net/wireless/ath/ath9k/xmit.c | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index d23977e9035d4..0c2d008099151 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -108,10 +108,36 @@ static inline struct task_struct *get_task_struct(struct task_struct *t)
- }
+diff --git a/drivers/net/wireless/ath/ath9k/mac.h b/drivers/net/wireless/ath/ath9k/mac.h
+index fd6aa49adadfe..9b00e77a6fc3c 100644
+--- a/drivers/net/wireless/ath/ath9k/mac.h
++++ b/drivers/net/wireless/ath/ath9k/mac.h
+@@ -113,8 +113,10 @@ struct ath_tx_status {
+ 	u8 qid;
+ 	u16 desc_id;
+ 	u8 tid;
+-	u32 ba_low;
+-	u32 ba_high;
++	struct_group(ba,
++		u32 ba_low;
++		u32 ba_high;
++	);
+ 	u32 evm0;
+ 	u32 evm1;
+ 	u32 evm2;
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index 6555abf02f18b..84c68aefc171a 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -421,7 +421,7 @@ static void ath_tx_count_frames(struct ath_softc *sc, struct ath_buf *bf,
+ 	isaggr = bf_isaggr(bf);
+ 	if (isaggr) {
+ 		seq_st = ts->ts_seqnum;
+-		memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
++		memcpy(ba, &ts->ba, WME_BA_BMP_SIZE >> 3);
+ 	}
  
- extern void __put_task_struct(struct task_struct *t);
-+extern void __put_task_struct_rcu_cb(struct rcu_head *rhp);
- 
- static inline void put_task_struct(struct task_struct *t)
- {
--	if (refcount_dec_and_test(&t->usage))
-+	if (!refcount_dec_and_test(&t->usage))
-+		return;
-+
-+	/*
-+	 * under PREEMPT_RT, we can't call put_task_struct
-+	 * in atomic context because it will indirectly
-+	 * acquire sleeping locks.
-+	 *
-+	 * call_rcu() will schedule delayed_put_task_struct_rcu()
-+	 * to be called in process context.
-+	 *
-+	 * __put_task_struct() is called when
-+	 * refcount_dec_and_test(&t->usage) succeeds.
-+	 *
-+	 * This means that it can't "conflict" with
-+	 * put_task_struct_rcu_user() which abuses ->rcu the same
-+	 * way; rcu_users has a reference so task->usage can't be
-+	 * zero after rcu_users 1 -> 0 transition.
-+	 *
-+	 * delayed_free_task() also uses ->rcu, but it is only called
-+	 * when it fails to fork a process. Therefore, there is no
-+	 * way it can conflict with put_task_struct().
-+	 */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !preemptible())
-+		call_rcu(&t->rcu, __put_task_struct_rcu_cb);
-+	else
- 		__put_task_struct(t);
- }
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index ace0717c71e27..753e641f617bd 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -764,6 +764,14 @@ void __put_task_struct(struct task_struct *tsk)
- }
- EXPORT_SYMBOL_GPL(__put_task_struct);
- 
-+void __put_task_struct_rcu_cb(struct rcu_head *rhp)
-+{
-+	struct task_struct *task = container_of(rhp, struct task_struct, rcu);
-+
-+	__put_task_struct(task);
-+}
-+EXPORT_SYMBOL_GPL(__put_task_struct_rcu_cb);
-+
- void __init __weak arch_task_cache_init(void) { }
- 
- /*
+ 	while (bf) {
+@@ -504,7 +504,7 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
+ 	if (isaggr && txok) {
+ 		if (ts->ts_flags & ATH9K_TX_BA) {
+ 			seq_st = ts->ts_seqnum;
+-			memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
++			memcpy(ba, &ts->ba, WME_BA_BMP_SIZE >> 3);
+ 		} else {
+ 			/*
+ 			 * AR5416 can become deaf/mute when BA
 -- 
 2.40.1
 
