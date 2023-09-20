@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B88F7A7B42
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAAD77A7BDB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234690AbjITLum (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49986 "EHLO
+        id S234696AbjITL4I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234672AbjITLuk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:40 -0400
+        with ESMTP id S234672AbjITL4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B79F1
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E231EC433C9;
-        Wed, 20 Sep 2023 11:50:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1B0D7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D5DC433CC;
+        Wed, 20 Sep 2023 11:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210633;
-        bh=6Me187LBX6tVZLiyjI1qt1aT7Yv/voj0s9wazCnAepQ=;
+        s=korg; t=1695210961;
+        bh=1icQZj3mBT2IB6NwzAA1jV7NTX7pHyoKrw9nHWCVWAc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kNmRxJQoqXbEz7fp27aqDjDmU8VBEkZzjGR6F+pYqc/bccjQ9ArfEQD6dHc3M7RDp
-         5Qh86wtZ9dKJsXC6FNJDmBN7Twkf3MJJ4kxxsEHY5Z/X7tNuh8DxKxKr6WB4Qm+7Lg
-         ihugLierssE4V+joAD32IBe3zElgrSg00SWyfnK0=
+        b=zS5OoTnR0ds0Bsziig9anS5O4SXHiHxpfTviDEXgZ/UfgAl85SdgDFhCebd7pAMJt
+         j9wmmPabgZlnOaF1xYMA/b2JywQ87aw7htEJJkADs4fMKxHeNLqHg5C/yk2zd1/Ger
+         XzwqqvtZ3GKx8JwlnaeWEKM5oPJ9ACKVo1gUNh+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 147/211] md: fix warning for holder mismatch from export_rdev()
+        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/139] ext2: fix datatype of block number in ext2_xattr_set2()
 Date:   Wed, 20 Sep 2023 13:29:51 +0200
-Message-ID: <20230920112850.415621328@linuxfoundation.org>
+Message-ID: <20230920112837.804437343@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,157 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Georg Ottinger <g.ottinger@gmx.at>
 
-[ Upstream commit 99892147f028d711f9d40fefad4f33632593864c ]
+[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
 
-Commit a1d767191096 ("md: use mddev->external to select holder in
-export_rdev()") fix the problem that 'claim_rdev' is used for
-blkdev_get_by_dev() while 'rdev' is used for blkdev_put().
+I run a small server that uses external hard drives for backups. The
+backup software I use uses ext2 filesystems with 4KiB block size and
+the server is running SELinux and therefore relies on xattr. I recently
+upgraded the hard drives from 4TB to 12TB models. I noticed that after
+transferring some TBs I got a filesystem error "Freeing blocks not in
+datazone - block = 18446744071529317386, count = 1" and the backup
+process stopped. Trying to fix the fs with e2fsck resulted in a
+completely corrupted fs. The error probably came from ext2_free_blocks(),
+and because of the large number 18e19 this problem immediately looked
+like some kind of integer overflow. Whereas the 4TB fs was about 1e9
+blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
+I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
+is called and the resulting block number is stored in the variable block
+as an int datatype. If a block with a block number greater than
+INT32_MAX is returned, this variable overflows and the call to
+sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
+ext2_free_blocks() produces the error.
 
-However, if mddev->external is changed from 0 to 1, then 'rdev' is used
-for blkdev_get_by_dev() while 'claim_rdev' is used for blkdev_put(). And
-this problem can be reporduced reliably by following:
-
-New file: mdadm/tests/23rdev-lifetime
-
-devname=${dev0##*/}
-devt=`cat /sys/block/$devname/dev`
-pid=""
-runtime=2
-
-clean_up_test() {
-        pill -9 $pid
-        echo clear > /sys/block/md0/md/array_state
-}
-
-trap 'clean_up_test' EXIT
-
-add_by_sysfs() {
-        while true; do
-                echo $devt > /sys/block/md0/md/new_dev
-        done
-}
-
-remove_by_sysfs(){
-        while true; do
-                echo remove > /sys/block/md0/md/dev-${devname}/state
-        done
-}
-
-echo md0 > /sys/module/md_mod/parameters/new_array || die "create md0 failed"
-
-add_by_sysfs &
-pid="$pid $!"
-
-remove_by_sysfs &
-pid="$pid $!"
-
-sleep $runtime
-exit 0
-
-Test cmd:
-
-./test --save-logs --logdir=/tmp/ --keep-going --dev=loop --tests=23rdev-lifetime
-
-Test result:
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 960 at block/bdev.c:618 blkdev_put+0x27c/0x330
-Modules linked in: multipath md_mod loop
-CPU: 0 PID: 960 Comm: test Not tainted 6.5.0-rc2-00121-g01e55c376936-dirty #50
-RIP: 0010:blkdev_put+0x27c/0x330
-Call Trace:
- <TASK>
- export_rdev.isra.23+0x50/0xa0 [md_mod]
- mddev_unlock+0x19d/0x300 [md_mod]
- rdev_attr_store+0xec/0x190 [md_mod]
- sysfs_kf_write+0x52/0x70
- kernfs_fop_write_iter+0x19a/0x2a0
- vfs_write+0x3b5/0x770
- ksys_write+0x74/0x150
- __x64_sys_write+0x22/0x30
- do_syscall_64+0x40/0x90
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fix the problem by recording if 'rdev' is used as holder.
-
-Fixes: a1d767191096 ("md: use mddev->external to select holder in export_rdev()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230825025532.1523008-3-yukuai1@huaweicloud.com
+Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 15 ++++++++++++---
- drivers/md/md.h |  3 +++
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ fs/ext2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index fba2809cd384a..06a8ccdb5135d 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -2452,7 +2452,8 @@ static void export_rdev(struct md_rdev *rdev, struct mddev *mddev)
- 	if (test_bit(AutoDetected, &rdev->flags))
- 		md_autodetect_dev(rdev->bdev->bd_dev);
- #endif
--	blkdev_put(rdev->bdev, mddev->external ? &claim_rdev : rdev);
-+	blkdev_put(rdev->bdev,
-+		   test_bit(Holder, &rdev->flags) ? rdev : &claim_rdev);
- 	rdev->bdev = NULL;
- 	kobject_put(&rdev->kobj);
- }
-@@ -3632,6 +3633,7 @@ EXPORT_SYMBOL_GPL(md_rdev_init);
- static struct md_rdev *md_import_device(dev_t newdev, int super_format, int super_minor)
- {
- 	struct md_rdev *rdev;
-+	struct md_rdev *holder;
- 	sector_t size;
- 	int err;
+diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
+index 641abfa4b718a..2f89b1073307b 100644
+--- a/fs/ext2/xattr.c
++++ b/fs/ext2/xattr.c
+@@ -744,10 +744,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
+ 			/* We need to allocate a new block */
+ 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
+ 						EXT2_I(inode)->i_block_group);
+-			int block = ext2_new_block(inode, goal, &error);
++			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
+ 			if (error)
+ 				goto cleanup;
+-			ea_idebug(inode, "creating block %d", block);
++			ea_idebug(inode, "creating block %lu", block);
  
-@@ -3646,8 +3648,15 @@ static struct md_rdev *md_import_device(dev_t newdev, int super_format, int supe
- 	if (err)
- 		goto out_clear_rdev;
- 
-+	if (super_format == -2) {
-+		holder = &claim_rdev;
-+	} else {
-+		holder = rdev;
-+		set_bit(Holder, &rdev->flags);
-+	}
-+
- 	rdev->bdev = blkdev_get_by_dev(newdev, BLK_OPEN_READ | BLK_OPEN_WRITE,
--			super_format == -2 ? &claim_rdev : rdev, NULL);
-+				       holder, NULL);
- 	if (IS_ERR(rdev->bdev)) {
- 		pr_warn("md: could not open device unknown-block(%u,%u).\n",
- 			MAJOR(newdev), MINOR(newdev));
-@@ -3684,7 +3693,7 @@ static struct md_rdev *md_import_device(dev_t newdev, int super_format, int supe
- 	return rdev;
- 
- out_blkdev_put:
--	blkdev_put(rdev->bdev, super_format == -2 ? &claim_rdev : rdev);
-+	blkdev_put(rdev->bdev, holder);
- out_clear_rdev:
- 	md_rdev_clear(rdev);
- out_free_rdev:
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index 1aef86bf3fc31..b0a0f5a5c7836 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -211,6 +211,9 @@ enum flag_bits {
- 				 * check if there is collision between raid1
- 				 * serial bios.
- 				 */
-+	Holder,			/* rdev is used as holder while opening
-+				 * underlying disk exclusively.
-+				 */
- };
- 
- static inline int is_badblock(struct md_rdev *rdev, sector_t s, int sectors,
+ 			new_bh = sb_getblk(sb, block);
+ 			if (unlikely(!new_bh)) {
 -- 
 2.40.1
 
