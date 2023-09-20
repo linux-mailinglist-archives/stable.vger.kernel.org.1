@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5ACC7A7DAB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A9027A7FC5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234501AbjITMLP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:11:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
+        id S235929AbjITMaV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:30:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235078AbjITMLM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:12 -0400
+        with ESMTP id S235942AbjITMaU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47110128
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3F6C433CA;
-        Wed, 20 Sep 2023 12:11:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DFA9E
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2F8C433CD;
+        Wed, 20 Sep 2023 12:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211863;
-        bh=irmkspfCLEV6dsWlEkhpruqyRKEdtmQOlQBQQRkKCdM=;
+        s=korg; t=1695213014;
+        bh=psks8Vue4nCpzQjVHcJNeWFh1xn+rEpvU/u78pUISEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pY3NWh7kd/dYaZB7AK4s1RdxHKFM0OgCHu810u6+MpWlwlyb8THZBmk+cOPaGLAU/
-         J8bt1CX8kiJE9ttuUyi8FGej02WZ+ueaATOgiX8NynwJAOriO5QKOR+fMFWdE/fnIN
-         AzoMivcISdR2Bh2XpDICMXjlZh8RXd5n8gojnlYc=
+        b=WzUcw3oF5SplLfAvBIKy3/2NZML6m4wak6CCP/J4i1zxkPQzrw6BC9abiB2o/aX2i
+         TsL7EVLuc283BXGuXchaP7DBSkdEU71Q21DMAFV3DzPv1RDYafVCwON8UFDGmjotuv
+         F3/ePzyrthzJornHUww2u8ZuGmNW55OpiFRsqTt0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 4.19 038/273] powerpc/32s: Fix assembler warning about r0
+        patches@lists.linux.dev, Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 101/367] ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)
 Date:   Wed, 20 Sep 2023 13:27:58 +0200
-Message-ID: <20230920112847.604462223@linuxfoundation.org>
+Message-ID: <20230920112901.183034364@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b51ba4fe2e134b631f9c8f45423707aab71449b5 upstream.
+[ Upstream commit cf0cb2af6a18f28b84f9f1416bff50ca60d6e98a ]
 
-The assembler says:
-  arch/powerpc/kernel/head_32.S:1095: Warning: invalid register expression
+The davicom,dm9000 Ethernet Controller accepts two reg addresses.
 
-It's objecting to the use of r0 as the RA argument. That's because
-when RA = 0 the literal value 0 is used, rather than the content of
-r0, making the use of r0 in the source potentially confusing.
-
-Fix it to use a literal 0, the generated code is identical.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/2b69ac8e1cddff6f808fc7415907179eab4aae9e.1596693679.git.christophe.leroy@csgroup.eu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a43736deb47d ("ARM: dts: Add dts file for S3C6410-based Mini6410 board")
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20230713152926.82884-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_32.S |    2 +-
+ arch/arm/boot/dts/s3c6410-mini6410.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/head_32.S
-+++ b/arch/powerpc/kernel/head_32.S
-@@ -987,7 +987,7 @@ start_here:
- 	 */
- 	lis	r5, abatron_pteptrs@h
- 	ori	r5, r5, abatron_pteptrs@l
--	stw	r5, 0xf0(r0)	/* This much match your Abatron config */
-+	stw	r5, 0xf0(0)	/* This much match your Abatron config */
- 	lis	r6, swapper_pg_dir@h
- 	ori	r6, r6, swapper_pg_dir@l
- 	tophys(r5, r5)
+diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
+index 17097da36f5ed..0b07b3c319604 100644
+--- a/arch/arm/boot/dts/s3c6410-mini6410.dts
++++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
+@@ -51,7 +51,7 @@ srom-cs1-bus@18000000 {
+ 
+ 		ethernet@18000000 {
+ 			compatible = "davicom,dm9000";
+-			reg = <0x18000000 0x2 0x18000004 0x2>;
++			reg = <0x18000000 0x2>, <0x18000004 0x2>;
+ 			interrupt-parent = <&gpn>;
+ 			interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
+ 			davicom,no-eeprom;
+-- 
+2.40.1
+
 
 
