@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 548A17A7AF6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6ED57A7C6E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234610AbjITLry (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
+        id S235126AbjITMBT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234607AbjITLrw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:52 -0400
+        with ESMTP id S235025AbjITMBQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4366BDD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92285C433C7;
-        Wed, 20 Sep 2023 11:47:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4011211A
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D26EC433CC;
+        Wed, 20 Sep 2023 12:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210466;
-        bh=EmupjRnvAzt/f2/qz8f1oz5nbtk3dO6wsBxNSp3KP9c=;
+        s=korg; t=1695211260;
+        bh=SlpV3CHcwtw6AXTAgQtICJBhdNsP1gjYleEAerZEaCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hcy/tXVqdY63AZkGwlPl1Ai2EbdR1XF45yy2lnqO1fVLWpWbluFk4mxFaOvsMLzya
-         4Jrec+F/NOUNAT1GRTMp1WbdqeTcjGPO5jZY0d0yNlyZTUSRPVd/XnjOcHbpGmXd5W
-         XCiflvQvyR9DxvpzNkYN7wBhFEYKAeB4f5JnDe5Y=
+        b=VYrtwMu/jr97uKsmd0pK3q3yN29gQ1rVmrLOVpMD7LatsqG2pFVJXiPv91TQ91ymS
+         SSMB0kbCM34/NRZxnNtk3zo5mfEYcyamYeDOg7WFzL9W7hAG2+vWt8POoMmfbl0N/G
+         SUQXbyzEnP1667uH5t1wMxXZi0LSVLSLMTKhC8Ec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>, CK Hu <ck.hu@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 087/211] drm/mediatek: dp: Change logging to dev for mtk_dp_aux_transfer()
+Subject: [PATCH 4.14 028/186] cifs: add a warning when the in-flight count goes negative
 Date:   Wed, 20 Sep 2023 13:28:51 +0200
-Message-ID: <20230920112848.513112565@linuxfoundation.org>
+Message-ID: <20230920112837.935065327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit fd70e2019bfbcb0ed90c5e23839bf510ce6acf8f ]
+[ Upstream commit e4645cc2f1e2d6f268bb8dcfac40997c52432aed ]
 
-Change logging from drm_{err,info}() to dev_{err,info}() in functions
-mtk_dp_aux_transfer() and mtk_dp_aux_do_transfer(): this will be
-essential to avoid getting NULL pointer kernel panics if any kind
-of error happens during AUX transfers happening before the bridge
-is attached.
+We've seen the in-flight count go into negative with some
+internal stress testing in Microsoft.
 
-This may potentially start happening in a later commit implementing
-aux-bus support, as AUX transfers will be triggered from the panel
-driver (for EDID) before the mtk-dp bridge gets attached, and it's
-done in preparation for the same.
+Adding a WARN when this happens, in hope of understanding
+why this happens when it happens.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230725073234.55892-4-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/cifs/smb2ops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index c58b775877a31..076aa54910571 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -847,7 +847,7 @@ static int mtk_dp_aux_do_transfer(struct mtk_dp *mtk_dp, bool is_read, u8 cmd,
- 		u32 phy_status = mtk_dp_read(mtk_dp, MTK_DP_AUX_P0_3628) &
- 				 AUX_RX_PHY_STATE_AUX_TX_P0_MASK;
- 		if (phy_status != AUX_RX_PHY_STATE_AUX_TX_P0_RX_IDLE) {
--			drm_err(mtk_dp->drm_dev,
-+			dev_err(mtk_dp->dev,
- 				"AUX Rx Aux hang, need SW reset\n");
- 			return -EIO;
- 		}
-@@ -2062,7 +2062,7 @@ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
- 		is_read = true;
- 		break;
- 	default:
--		drm_err(mtk_aux->drm_dev, "invalid aux cmd = %d\n",
-+		dev_err(mtk_dp->dev, "invalid aux cmd = %d\n",
- 			msg->request);
- 		ret = -EINVAL;
- 		goto err;
-@@ -2078,7 +2078,7 @@ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
- 					     to_access, &msg->reply);
- 
- 		if (ret) {
--			drm_info(mtk_dp->drm_dev,
-+			dev_info(mtk_dp->dev,
- 				 "Failed to do AUX transfer: %d\n", ret);
- 			goto err;
- 		}
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index dec306a3b0f41..3287795c648e5 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -78,6 +78,7 @@ smb2_add_credits(struct TCP_Server_Info *server, const unsigned int add,
+ 		*val = 65000; /* Don't get near 64K credits, avoid srv bugs */
+ 		printk_once(KERN_WARNING "server overflowed SMB3 credits\n");
+ 	}
++	WARN_ON_ONCE(server->in_flight == 0);
+ 	server->in_flight--;
+ 	if (server->in_flight == 0 && (optype & CIFS_OP_MASK) != CIFS_NEG_OP)
+ 		rc = change_conf(server);
 -- 
 2.40.1
 
