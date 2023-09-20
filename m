@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A087A7CDE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42FC87A7E66
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235158AbjITMFZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44276 "EHLO
+        id S235558AbjITMRt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235199AbjITMEp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:45 -0400
+        with ESMTP id S235564AbjITMRs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C57A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5B6C433C7;
-        Wed, 20 Sep 2023 12:04:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15EF4187
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B955C43215;
+        Wed, 20 Sep 2023 12:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211479;
-        bh=d+qBoWaE7c27JzpdekqDr21fcrFd1CK+nwfzD8L/Kuk=;
+        s=korg; t=1695212247;
+        bh=+9l1Cwo+QarYoiAuvS9ScwicLsttcyzOIRxxk8K7onU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WG0n4QckQLutcpx9cQaWIpC3/N4oR0dpZZkj6KJ3NCUgNRrBxb0gHOIjd1NZfUlC5
-         6KDrer+hjxWAef97d8Knr3J0QJCClQ0KWDsYiwWbf2g0DBw+cZWXuS/qsT8Zxmkv/y
-         f1w1jvae/TvfMyZ68kFi7J28ecMDNXxAyk/ZyVdI=
+        b=TZAHCw5ubi9/kSCqX+QEPSI/CYnK6fF+IZO8FjeLeHByG0383WF0jTK23MQkCOBBK
+         PAJQEsvpQE8vxNtrP3YYKu+l5kv5BXOJjWWOxClffapr5QYMnZq6iMYmoff+ZL6yAE
+         lYMXg/tIOPKw8yw8o9TqFKvclGuSyWVS7N47J6CA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
-        Radoslaw Tyl <radoslawx.tyl@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 4.14 101/186] igb: set max size RX buffer when store bad packet is enabled
+        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 164/273] dmaengine: ste_dma40: Add missing IRQ check in d40_probe
 Date:   Wed, 20 Sep 2023 13:30:04 +0200
-Message-ID: <20230920112840.631814965@linuxfoundation.org>
+Message-ID: <20230920112851.590817719@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radoslaw Tyl <radoslawx.tyl@intel.com>
+From: ruanjinjie <ruanjinjie@huawei.com>
 
-commit bb5ed01cd2428cd25b1c88a3a9cba87055eb289f upstream.
+[ Upstream commit c05ce6907b3d6e148b70f0bb5eafd61dcef1ddc1 ]
 
-Increase the RX buffer size to 3K when the SBP bit is on. The size of
-the RX buffer determines the number of pages allocated which may not
-be sufficient for receive frames larger than the set MTU size.
+Check for the return value of platform_get_irq(): if no interrupt
+is specified, it wouldn't make sense to call request_irq().
 
-Cc: stable@vger.kernel.org
-Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
-Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
-Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d318a50b3d7 ("DMAENGINE: Support for ST-Ericssons DMA40 block v3")
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20230724144108.2582917-1-ruanjinjie@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/dma/ste_dma40.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -3856,6 +3856,10 @@ void igb_configure_rx_ring(struct igb_ad
- static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
- 				  struct igb_ring *rx_ring)
- {
-+#if (PAGE_SIZE < 8192)
-+	struct e1000_hw *hw = &adapter->hw;
-+#endif
-+
- 	/* set build_skb and buffer size flags */
- 	clear_ring_build_skb_enabled(rx_ring);
- 	clear_ring_uses_large_buffer(rx_ring);
-@@ -3866,10 +3870,9 @@ static void igb_set_rx_buffer_len(struct
- 	set_ring_build_skb_enabled(rx_ring);
+diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
+index e588dc5daaa80..e9d76113c9e95 100644
+--- a/drivers/dma/ste_dma40.c
++++ b/drivers/dma/ste_dma40.c
+@@ -3584,6 +3584,10 @@ static int __init d40_probe(struct platform_device *pdev)
+ 	spin_lock_init(&base->lcla_pool.lock);
  
- #if (PAGE_SIZE < 8192)
--	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
--		return;
--
--	set_ring_uses_large_buffer(rx_ring);
-+	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
-+	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
-+		set_ring_uses_large_buffer(rx_ring);
- #endif
- }
+ 	base->irq = platform_get_irq(pdev, 0);
++	if (base->irq < 0) {
++		ret = base->irq;
++		goto destroy_cache;
++	}
  
+ 	ret = request_irq(base->irq, d40_handle_interrupt, 0, D40_NAME, base);
+ 	if (ret) {
+-- 
+2.40.1
+
 
 
