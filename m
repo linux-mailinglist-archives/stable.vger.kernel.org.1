@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE11C7A7CB6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C817A7B55
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235076AbjITMDh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
+        id S234719AbjITLvS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235049AbjITMDh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:37 -0400
+        with ESMTP id S234735AbjITLvO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9705ACE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2E2C433CA;
-        Wed, 20 Sep 2023 12:03:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31763123
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A539C433C7;
+        Wed, 20 Sep 2023 11:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211404;
-        bh=qDAqrhYA9YnE9+z6M4KE9i6idbTkBTLKFfziP46sxBg=;
+        s=korg; t=1695210662;
+        bh=R3VJcJGvWo1CGSgS/HY74S8kfIsxB5Gef0pchBpgptk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W62sIUbc/FPZA81qnnDGx8fQVkhPWn0guetVt/CoG/Ht8adgGsRUftkNV+/U8UFoy
-         IY9g2xvpiePM3bStRSuBdcR819dayL/LbvAQZSgYl+6KCs0NvhVwBQsq89GW3VWmPq
-         8YLT9jjFdF9MGtfieXlHol3SU/pkJxDgIZB2OsaI=
+        b=HqtSNgn6HP5gXHHppo4IqCno5iBjIfnDHqgJivu7jSdJbib4az27O18aEw1A2Pxid
+         WrgOk0lVtPBv5cCgDOReLgm6JdFZfVrOEoLGJo1Qa5PSF/Yti3b/brF2e7H71SW8uO
+         pyN4TfyVjpT8Py92KWR590Co8Jt12G5mP6LJhWEo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 073/186] drivers: usb: smsusb: fix error handling code in smsusb_init_device
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 132/211] printk: Rename abandon_console_lock_in_panic() to other_cpu_in_panic()
 Date:   Wed, 20 Sep 2023 13:29:36 +0200
-Message-ID: <20230920112839.507302871@linuxfoundation.org>
+Message-ID: <20230920112849.909622784@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +50,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit b9c7141f384097fa4fa67d2f72e5731d628aef7c ]
+[ Upstream commit 132a90d1527fedba2d95085c951ccf00dbbebe41 ]
 
-The previous commit 4b208f8b561f ("[media] siano: register media controller
-earlier")moves siano_media_device_register before smscore_register_device,
-and adds corresponding error handling code if smscore_register_device
-fails. However, it misses the following error handling code of
-smsusb_init_device.
+Currently abandon_console_lock_in_panic() is only used to determine if
+the current CPU should immediately release the console lock because
+another CPU is in panic. However, later this function will be used by
+the CPU to immediately release other resources in this situation.
 
-Fix this by moving error handling code at the end of smsusb_init_device
-and adding a goto statement in the following error handling parts.
+Rename the function to other_cpu_in_panic(), which is a better
+description and does not assume it is related to the console lock.
 
-Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-8-john.ogness@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/siano/smsusb.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ kernel/printk/internal.h |  2 ++
+ kernel/printk/printk.c   | 15 ++++++++-------
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
-index 92a6192f9ab2b..1d67b4c1a020c 100644
---- a/drivers/media/usb/siano/smsusb.c
-+++ b/drivers/media/usb/siano/smsusb.c
-@@ -467,12 +467,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_register_device(&params, &dev->coredev, mdev);
- 	if (rc < 0) {
- 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
--		smsusb_term_device(intf);
--#ifdef CONFIG_MEDIA_CONTROLLER_DVB
--		media_device_unregister(mdev);
--#endif
--		kfree(mdev);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	smscore_set_board_id(dev->coredev, board_id);
-@@ -489,8 +484,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smsusb_start_streaming(dev);
- 	if (rc < 0) {
- 		pr_err("smsusb_start_streaming(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	dev->state = SMSUSB_ACTIVE;
-@@ -498,13 +492,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_start_device(dev->coredev);
- 	if (rc < 0) {
- 		pr_err("smscore_start_device(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	pr_debug("device 0x%p created\n", dev);
- 
- 	return rc;
+diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
+index 2a17704136f1d..7d4979d5c3ce6 100644
+--- a/kernel/printk/internal.h
++++ b/kernel/printk/internal.h
+@@ -103,3 +103,5 @@ struct printk_message {
+ 	u64			seq;
+ 	unsigned long		dropped;
+ };
 +
-+err_unregister_device:
-+	smsusb_term_device(intf);
-+#ifdef CONFIG_MEDIA_CONTROLLER_DVB
-+	media_device_unregister(mdev);
-+#endif
-+	kfree(mdev);
-+	return rc;
++bool other_cpu_in_panic(void);
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index d5e29fad84234..08a9419046b65 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2590,11 +2590,12 @@ static int console_cpu_notify(unsigned int cpu)
  }
  
- static int smsusb_probe(struct usb_interface *intf,
+ /*
+- * Return true when this CPU should unlock console_sem without pushing all
+- * messages to the console. This reduces the chance that the console is
+- * locked when the panic CPU tries to use it.
++ * Return true if a panic is in progress on a remote CPU.
++ *
++ * On true, the local CPU should immediately release any printing resources
++ * that may be needed by the panic CPU.
+  */
+-static bool abandon_console_lock_in_panic(void)
++bool other_cpu_in_panic(void)
+ {
+ 	if (!panic_in_progress())
+ 		return false;
+@@ -2621,7 +2622,7 @@ void console_lock(void)
+ 	might_sleep();
+ 
+ 	/* On panic, the console_lock must be left to the panic cpu. */
+-	while (abandon_console_lock_in_panic())
++	while (other_cpu_in_panic())
+ 		msleep(1000);
+ 
+ 	down_console_sem();
+@@ -2643,7 +2644,7 @@ EXPORT_SYMBOL(console_lock);
+ int console_trylock(void)
+ {
+ 	/* On panic, the console_lock must be left to the panic cpu. */
+-	if (abandon_console_lock_in_panic())
++	if (other_cpu_in_panic())
+ 		return 0;
+ 	if (down_trylock_console_sem())
+ 		return 0;
+@@ -2959,7 +2960,7 @@ static bool console_flush_all(bool do_cond_resched, u64 *next_seq, bool *handove
+ 			any_progress = true;
+ 
+ 			/* Allow panic_cpu to take over the consoles safely. */
+-			if (abandon_console_lock_in_panic())
++			if (other_cpu_in_panic())
+ 				goto abandon;
+ 
+ 			if (do_cond_resched)
 -- 
 2.40.1
 
