@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD75E7A80BE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 330017A7D4F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236066AbjITMka (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32772 "EHLO
+        id S234515AbjITMI1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236302AbjITMjw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:52 -0400
+        with ESMTP id S235249AbjITMIZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30547129
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6F2C433CA;
-        Wed, 20 Sep 2023 12:39:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AA6E4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC58C433C8;
+        Wed, 20 Sep 2023 12:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213581;
-        bh=uanJtc3BU2606/puhkMK1j/vROfufs/941MnsGAbLXo=;
+        s=korg; t=1695211698;
+        bh=GFIRs67SQH+si8xJU7boYx5k2wDnrruNM0CTSYx+1x8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bsnTihdaCeVSrPeIMojZTFt/0y3Z2TgfpyCrscRuOyO2Z9M6jKiurUI0Tuz2/ABj3
-         dCM1clyTzdbn5NDuBLAOTj5JOsuNXAXX2iEXXLPBeUbQ/iEI/QWAT71wpXTlH/xfEy
-         sQHKbJktmo5jh2yxA5YuAXGMSJzrTRYpmvZK49uI=
+        b=TaJtrC1X0LaVmQt64O4tz/kG34HNg/36bsG7nYS56BuD8WEQFvYzCNrIOlD4t6ftP
+         eDq0Qz0q01ezX5s53QAc2UQlo/9aRSogcIPsF7KZFwfP28H/ms463KfRHPsrO6GKQr
+         GEFqBUaN6PXcaClFq8DyUW81dv/e3w9NuFOa9hYs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com,
+        Liu Shixin <liushixin2@huawei.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 289/367] usb: typec: tcpm: Refactor tcpm_handle_vdm_request payload handling
+Subject: [PATCH 4.14 163/186] jfs: fix invalid free of JFS_IP(ipimap)->i_imap in diUnmount
 Date:   Wed, 20 Sep 2023 13:31:06 +0200
-Message-ID: <20230920112906.037249518@linuxfoundation.org>
+Message-ID: <20230920112842.797569931@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,188 +52,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Liu Shixin via Jfs-discussion <jfs-discussion@lists.sourceforge.net>
 
-[ Upstream commit 8afe9a3548f9d1805dcea6d97978f2179c8403a3 ]
+[ Upstream commit 6e2bda2c192d0244b5a78b787ef20aa10cb319b7 ]
 
-Refactor the tcpm_handle_vdm_request payload handling by doing the
-endianness conversion only once directly inside tcpm_handle_vdm_request
-itself instead of doing it multiple times inside various helper functions
-called by tcpm_handle_vdm_request.
+syzbot found an invalid-free in diUnmount:
 
-This is a preparation patch for some further refactoring to fix an AB BA
-lock inversion between the tcpm code and some altmode drivers.
+BUG: KASAN: double-free in slab_free mm/slub.c:3661 [inline]
+BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3674
+Free of addr ffff88806f410000 by task syz-executor131/3632
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20200724174702.61754-3-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f23643306430 ("usb: typec: bus: verify partner exists in typec_altmode_attention")
+ CPU: 0 PID: 3632 Comm: syz-executor131 Not tainted 6.1.0-rc7-syzkaller-00012-gca57f02295f1 #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+ Call Trace:
+  <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+  print_address_description+0x74/0x340 mm/kasan/report.c:284
+  print_report+0x107/0x1f0 mm/kasan/report.c:395
+  kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:460
+  ____kasan_slab_free+0xfb/0x120
+  kasan_slab_free include/linux/kasan.h:177 [inline]
+  slab_free_hook mm/slub.c:1724 [inline]
+  slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1750
+  slab_free mm/slub.c:3661 [inline]
+  __kmem_cache_free+0x71/0x110 mm/slub.c:3674
+  diUnmount+0xef/0x100 fs/jfs/jfs_imap.c:195
+  jfs_umount+0x108/0x370 fs/jfs/jfs_umount.c:63
+  jfs_put_super+0x86/0x190 fs/jfs/super.c:194
+  generic_shutdown_super+0x130/0x310 fs/super.c:492
+  kill_block_super+0x79/0xd0 fs/super.c:1428
+  deactivate_locked_super+0xa7/0xf0 fs/super.c:332
+  cleanup_mnt+0x494/0x520 fs/namespace.c:1186
+  task_work_run+0x243/0x300 kernel/task_work.c:179
+  exit_task_work include/linux/task_work.h:38 [inline]
+  do_exit+0x664/0x2070 kernel/exit.c:820
+  do_group_exit+0x1fd/0x2b0 kernel/exit.c:950
+  __do_sys_exit_group kernel/exit.c:961 [inline]
+  __se_sys_exit_group kernel/exit.c:959 [inline]
+  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:959
+  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+  do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
+
+JFS_IP(ipimap)->i_imap is not setting to NULL after free in diUnmount.
+If jfs_remount() free JFS_IP(ipimap)->i_imap but then failed at diMount().
+JFS_IP(ipimap)->i_imap will be freed once again.
+Fix this problem by setting JFS_IP(ipimap)->i_imap to NULL after free.
+
+Reported-by: syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 49 ++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 27 deletions(-)
+ fs/jfs/jfs_imap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index b259a4a28f81a..949325692e664 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -969,16 +969,15 @@ static void tcpm_queue_vdm(struct tcpm_port *port, const u32 header,
- 	port->vdm_state = VDM_STATE_READY;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index f36ef68905a74..12fc016244581 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -208,6 +208,7 @@ int diUnmount(struct inode *ipimap, int mounterror)
+ 	 * free in-memory control structure
+ 	 */
+ 	kfree(imap);
++	JFS_IP(ipimap)->i_imap = NULL;
+ 
+ 	return (0);
  }
- 
--static void svdm_consume_identity(struct tcpm_port *port, const __le32 *payload,
--				  int cnt)
-+static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
- {
--	u32 vdo = le32_to_cpu(payload[VDO_INDEX_IDH]);
--	u32 product = le32_to_cpu(payload[VDO_INDEX_PRODUCT]);
-+	u32 vdo = p[VDO_INDEX_IDH];
-+	u32 product = p[VDO_INDEX_PRODUCT];
- 
- 	memset(&port->mode_data, 0, sizeof(port->mode_data));
- 
- 	port->partner_ident.id_header = vdo;
--	port->partner_ident.cert_stat = le32_to_cpu(payload[VDO_INDEX_CSTAT]);
-+	port->partner_ident.cert_stat = p[VDO_INDEX_CSTAT];
- 	port->partner_ident.product = product;
- 
- 	typec_partner_set_identity(port->partner);
-@@ -988,17 +987,15 @@ static void svdm_consume_identity(struct tcpm_port *port, const __le32 *payload,
- 		 PD_PRODUCT_PID(product), product & 0xffff);
- }
- 
--static bool svdm_consume_svids(struct tcpm_port *port, const __le32 *payload,
--			       int cnt)
-+static bool svdm_consume_svids(struct tcpm_port *port, const u32 *p, int cnt)
- {
- 	struct pd_mode_data *pmdata = &port->mode_data;
- 	int i;
- 
- 	for (i = 1; i < cnt; i++) {
--		u32 p = le32_to_cpu(payload[i]);
- 		u16 svid;
- 
--		svid = (p >> 16) & 0xffff;
-+		svid = (p[i] >> 16) & 0xffff;
- 		if (!svid)
- 			return false;
- 
-@@ -1008,7 +1005,7 @@ static bool svdm_consume_svids(struct tcpm_port *port, const __le32 *payload,
- 		pmdata->svids[pmdata->nsvids++] = svid;
- 		tcpm_log(port, "SVID %d: 0x%x", pmdata->nsvids, svid);
- 
--		svid = p & 0xffff;
-+		svid = p[i] & 0xffff;
- 		if (!svid)
- 			return false;
- 
-@@ -1038,8 +1035,7 @@ static bool svdm_consume_svids(struct tcpm_port *port, const __le32 *payload,
- 	return false;
- }
- 
--static void svdm_consume_modes(struct tcpm_port *port, const __le32 *payload,
--			       int cnt)
-+static void svdm_consume_modes(struct tcpm_port *port, const u32 *p, int cnt)
- {
- 	struct pd_mode_data *pmdata = &port->mode_data;
- 	struct typec_altmode_desc *paltmode;
-@@ -1056,7 +1052,7 @@ static void svdm_consume_modes(struct tcpm_port *port, const __le32 *payload,
- 
- 		paltmode->svid = pmdata->svids[pmdata->svid_index];
- 		paltmode->mode = i;
--		paltmode->vdo = le32_to_cpu(payload[i]);
-+		paltmode->vdo = p[i];
- 
- 		tcpm_log(port, " Alternate mode %d: SVID 0x%04x, VDO %d: 0x%08x",
- 			 pmdata->altmodes, paltmode->svid,
-@@ -1084,21 +1080,17 @@ static void tcpm_register_partner_altmodes(struct tcpm_port *port)
- 
- #define supports_modal(port)	PD_IDH_MODAL_SUPP((port)->partner_ident.id_header)
- 
--static int tcpm_pd_svdm(struct tcpm_port *port, const __le32 *payload, int cnt,
-+static int tcpm_pd_svdm(struct tcpm_port *port, const u32 *p, int cnt,
- 			u32 *response)
- {
- 	struct typec_altmode *adev;
- 	struct typec_altmode *pdev;
- 	struct pd_mode_data *modep;
--	u32 p[PD_MAX_PAYLOAD];
- 	int rlen = 0;
- 	int cmd_type;
- 	int cmd;
- 	int i;
- 
--	for (i = 0; i < cnt; i++)
--		p[i] = le32_to_cpu(payload[i]);
--
- 	cmd_type = PD_VDO_CMDT(p[0]);
- 	cmd = PD_VDO_CMD(p[0]);
- 
-@@ -1159,13 +1151,13 @@ static int tcpm_pd_svdm(struct tcpm_port *port, const __le32 *payload, int cnt,
- 		switch (cmd) {
- 		case CMD_DISCOVER_IDENT:
- 			/* 6.4.4.3.1 */
--			svdm_consume_identity(port, payload, cnt);
-+			svdm_consume_identity(port, p, cnt);
- 			response[0] = VDO(USB_SID_PD, 1, CMD_DISCOVER_SVID);
- 			rlen = 1;
- 			break;
- 		case CMD_DISCOVER_SVID:
- 			/* 6.4.4.3.2 */
--			if (svdm_consume_svids(port, payload, cnt)) {
-+			if (svdm_consume_svids(port, p, cnt)) {
- 				response[0] = VDO(USB_SID_PD, 1,
- 						  CMD_DISCOVER_SVID);
- 				rlen = 1;
-@@ -1177,7 +1169,7 @@ static int tcpm_pd_svdm(struct tcpm_port *port, const __le32 *payload, int cnt,
- 			break;
- 		case CMD_DISCOVER_MODES:
- 			/* 6.4.4.3.3 */
--			svdm_consume_modes(port, payload, cnt);
-+			svdm_consume_modes(port, p, cnt);
- 			modep->svid_index++;
- 			if (modep->svid_index < modep->nsvids) {
- 				u16 svid = modep->svids[modep->svid_index];
-@@ -1240,15 +1232,18 @@ static int tcpm_pd_svdm(struct tcpm_port *port, const __le32 *payload, int cnt,
- static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 				    const __le32 *payload, int cnt)
- {
--	int rlen = 0;
-+	u32 p[PD_MAX_PAYLOAD];
- 	u32 response[8] = { };
--	u32 p0 = le32_to_cpu(payload[0]);
-+	int i, rlen = 0;
-+
-+	for (i = 0; i < cnt; i++)
-+		p[i] = le32_to_cpu(payload[i]);
- 
- 	if (port->vdm_state == VDM_STATE_BUSY) {
- 		/* If UFP responded busy retry after timeout */
--		if (PD_VDO_CMDT(p0) == CMDT_RSP_BUSY) {
-+		if (PD_VDO_CMDT(p[0]) == CMDT_RSP_BUSY) {
- 			port->vdm_state = VDM_STATE_WAIT_RSP_BUSY;
--			port->vdo_retry = (p0 & ~VDO_CMDT_MASK) |
-+			port->vdo_retry = (p[0] & ~VDO_CMDT_MASK) |
- 				CMDT_INIT;
- 			mod_delayed_work(port->wq, &port->vdm_state_machine,
- 					 msecs_to_jiffies(PD_T_VDM_BUSY));
-@@ -1257,8 +1252,8 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 		port->vdm_state = VDM_STATE_DONE;
- 	}
- 
--	if (PD_VDO_SVDM(p0))
--		rlen = tcpm_pd_svdm(port, payload, cnt, response);
-+	if (PD_VDO_SVDM(p[0]))
-+		rlen = tcpm_pd_svdm(port, p, cnt, response);
- 
- 	if (rlen > 0) {
- 		tcpm_queue_vdm(port, response[0], &response[1], rlen - 1);
 -- 
 2.40.1
 
