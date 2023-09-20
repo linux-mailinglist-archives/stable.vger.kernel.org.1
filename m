@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E51947A7E10
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A57327A8073
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235404AbjITMP2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45958 "EHLO
+        id S235924AbjITMhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:37:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235693AbjITMO7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:59 -0400
+        with ESMTP id S235334AbjITMhZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8011C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC02C433C9;
-        Wed, 20 Sep 2023 12:14:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75AE2AB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE6AC433C7;
+        Wed, 20 Sep 2023 12:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212093;
-        bh=OSp1V0yUYBllwtbYjIYcdAknBxQu9M0rJoly8d5MgUA=;
+        s=korg; t=1695213438;
+        bh=ExFNzAo6HC9MARwTs551DVH/PK7zw5/+Gh/+kf6KRD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c5j1Wuv2ufJwIbdKi72wlBEElFl3wGEdq0oXhF0kgBm74YErXZDGDHArRtJ+iOJmB
-         4oSXHUehUWdv41c4Ss44IeQdPgfdQP1ZOj9cd4RkBW6UDjGyPJLfox4uZVFf4Dr7M8
-         QAILpMUs7F7dugAswqJvExL0pgiM9faj9epbL6nU=
+        b=L/c91WRPrNVf8etM/VZA4EwvrpoZ7GEEbdts3dTkLlgD3Yx2+GV4lvBSKmVamWZvp
+         NbOO4zjXA+AdfvAR6MRZVch0VMxcoJJ1iydO9bVyRXsSuKmadQfBEcTPrqhfCYIhMR
+         QpyQkTZ54nVg5CymcPCffCg4pET8txpJKcSkmykI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 148/273] USB: gadget: f_mass_storage: Fix unused variable warning
+        patches@lists.linux.dev, Meng_Cai@novatek.com.cn,
+        Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 211/367] ALSA: pcm: Fix missing fixup call in compat hw_refine ioctl
 Date:   Wed, 20 Sep 2023 13:29:48 +0200
-Message-ID: <20230920112851.105050402@linuxfoundation.org>
+Message-ID: <20230920112904.070766525@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 55c3e571d2a0aabef4f1354604443f1c415d2e85 ]
+commit 358040e3807754944dbddf948a23c6d914297ed7 upstream.
 
-Fix a "variable set but not used" warning in f_mass_storage.c.  rc is
-used if	verbose debugging is enabled but not otherwise.
+The update of rate_num/den and msbits were factored out to
+fixup_unreferenced_params() function to be called explicitly after the
+hw_refine or hw_params procedure.  It's called from
+snd_pcm_hw_refine_user(), but it's forgotten in the PCM compat ioctl.
+This ended up with the incomplete rate_num/den and msbits parameters
+when 32bit compat ioctl is used.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: d5e2b67aae79 ("USB: g_mass_storage: template f_mass_storage.c file created")
-Link: https://lore.kernel.org/r/cfed16c7-aa46-494b-ba84-b0e0dc99be3a@rowland.harvard.edu
+This patch adds the missing call in snd_pcm_ioctl_hw_params_compat().
+
+Reported-by: Meng_Cai@novatek.com.cn
+Fixes: f9a076bff053 ("ALSA: pcm: calculate non-mask/non-interval parameters always when possible")
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230829134344.31588-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_mass_storage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/pcm_compat.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
-index 0b7b4d09785b6..4f221ca7aad15 100644
---- a/drivers/usb/gadget/function/f_mass_storage.c
-+++ b/drivers/usb/gadget/function/f_mass_storage.c
-@@ -950,7 +950,7 @@ static void invalidate_sub(struct fsg_lun *curlun)
- {
- 	struct file	*filp = curlun->filp;
- 	struct inode	*inode = file_inode(filp);
--	unsigned long	rc;
-+	unsigned long __maybe_unused	rc;
+--- a/sound/core/pcm_compat.c
++++ b/sound/core/pcm_compat.c
+@@ -315,10 +315,14 @@ static int snd_pcm_ioctl_hw_params_compa
+ 		goto error;
+ 	}
  
- 	rc = invalidate_mapping_pages(inode->i_mapping, 0, -1);
- 	VLDBG(curlun, "invalidate_mapping_pages -> %ld\n", rc);
--- 
-2.40.1
-
+-	if (refine)
++	if (refine) {
+ 		err = snd_pcm_hw_refine(substream, data);
+-	else
++		if (err < 0)
++			goto error;
++		err = fixup_unreferenced_params(substream, data);
++	} else {
+ 		err = snd_pcm_hw_params(substream, data);
++	}
+ 	if (err < 0)
+ 		goto error;
+ 	if (copy_to_user(data32, data, sizeof(*data32)) ||
 
 
