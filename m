@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53E1B7A7EE0
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEEB07A80B1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235757AbjITMVh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33740 "EHLO
+        id S235961AbjITMj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235747AbjITMVd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:33 -0400
+        with ESMTP id S236099AbjITMjZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC4AEE4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F2BC433C8;
-        Wed, 20 Sep 2023 12:21:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D76318A
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD3C433CA;
+        Wed, 20 Sep 2023 12:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212487;
-        bh=Wx515nzW7lE6TtMYlcQfyFFEclqVtf2AXm3Z7oUq4YE=;
+        s=korg; t=1695213542;
+        bh=Jq1xqmxdyJ6ZH4Zba26sqZgJuRrRPJgYrdx9bzv6bIQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gBsZ3U2DvCKuOLQ5YbQTRaAc/kn10PMyYKBIY+tFJljkJSBJD3sSY6ZRPjN8qY4i2
-         Cy4oQ4pIM0/dw2x9pxB49OXMdixNFkMyKIlKIktcA9RFhnSkKPMOdfWuXMrPdoKJha
-         69PlRHCHjbMtxwDQmc4qsf/GXbS4di27bHqq8kpQ=
+        b=YwWI2Cm7jat5uY73IV4kQVT3FOMO+WoqTJFS2des/B7GuYuex92/kzdxXmQDOuxMZ
+         9+hfhbMWDA8UY3fyEHlzGsBOgAFaOI/SvpOj0UPFoDK/NmOaEjUHZ4sjtN7fKIu/v9
+         dEfoNtNKtaveSdvhMUSNuuzB27ao5Z6jBzZ6NLOw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
+        Wander Lairson Costa <wander@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 02/83] btrfs: output extra debug info if we failed to find an inline backref
-Date:   Wed, 20 Sep 2023 13:30:52 +0200
-Message-ID: <20230920112826.739478941@linuxfoundation.org>
+Subject: [PATCH 5.4 276/367] netfilter: nfnetlink_osf: avoid OOB read
+Date:   Wed, 20 Sep 2023 13:30:53 +0200
+Message-ID: <20230920112905.707349264@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
+[ Upstream commit f4f8a7803119005e87b716874bec07c751efafec ]
 
-[BUG]
-Syzbot reported several warning triggered inside
-lookup_inline_extent_backref().
+The opt_num field is controlled by user mode and is not currently
+validated inside the kernel. An attacker can take advantage of this to
+trigger an OOB read and potentially leak information.
 
-[CAUSE]
-As usual, the reproducer doesn't reliably trigger locally here, but at
-least we know the WARN_ON() is triggered when an inline backref can not
-be found, and it can only be triggered when @insert is true. (I.e.
-inserting a new inline backref, which means the backref should already
-exist)
+BUG: KASAN: slab-out-of-bounds in nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
+Read of size 2 at addr ffff88804bc64272 by task poc/6431
 
-[ENHANCEMENT]
-After the WARN_ON(), dump all the parameters and the extent tree
-leaf to help debug.
+CPU: 1 PID: 6431 Comm: poc Not tainted 6.0.0-rc4 #1
+Call Trace:
+ nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
+ nf_osf_find+0x186/0x2f0 net/netfilter/nfnetlink_osf.c:281
+ nft_osf_eval+0x37f/0x590 net/netfilter/nft_osf.c:47
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:214
+ nft_do_chain+0x2b0/0x1490 net/netfilter/nf_tables_core.c:264
+ nft_do_chain_ipv4+0x17c/0x1f0 net/netfilter/nft_chain_filter.c:23
+ [..]
 
-Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Also add validation to genre, subtype and version fields.
+
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Lucas Leong <wmliang@infosec.exchange>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nfnetlink_osf.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 9cdf50e2484e1..4d2f25ebe3048 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -857,6 +857,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
- 		err = -ENOENT;
- 		goto out;
- 	} else if (WARN_ON(ret)) {
-+		btrfs_print_leaf(path->nodes[0]);
-+		btrfs_err(fs_info,
-+"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
-+			  bytenr, num_bytes, parent, root_objectid, owner,
-+			  offset);
- 		err = -EIO;
- 		goto out;
- 	}
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 9dbaa5ce24e51..573a372e760f4 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -316,6 +316,14 @@ static int nfnl_osf_add_callback(struct net *net, struct sock *ctnl,
+ 
+ 	f = nla_data(osf_attrs[OSF_ATTR_FINGER]);
+ 
++	if (f->opt_num > ARRAY_SIZE(f->opt))
++		return -EINVAL;
++
++	if (!memchr(f->genre, 0, MAXGENRELEN) ||
++	    !memchr(f->subtype, 0, MAXGENRELEN) ||
++	    !memchr(f->version, 0, MAXGENRELEN))
++		return -EINVAL;
++
+ 	kf = kmalloc(sizeof(struct nf_osf_finger), GFP_KERNEL);
+ 	if (!kf)
+ 		return -ENOMEM;
 -- 
 2.40.1
 
