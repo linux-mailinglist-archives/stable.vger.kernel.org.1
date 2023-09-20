@@ -2,44 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4047A7AA2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E9D7A7AB0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234501AbjITLoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50046 "EHLO
+        id S234526AbjITLpL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:45:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234463AbjITLoP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:44:15 -0400
+        with ESMTP id S234576AbjITLpH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:45:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB853C2;
-        Wed, 20 Sep 2023 04:44:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B5AC433C8;
-        Wed, 20 Sep 2023 11:44:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49F42CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:45:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914A7C433C9;
+        Wed, 20 Sep 2023 11:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210249;
-        bh=DyKwxzaJYpoA4xccVeB9/sY8k2MBqmWTPVNgHC29ZJI=;
+        s=korg; t=1695210300;
+        bh=dX7j2oHcV/y7YhfZUWPWzLsdd2ZojACT+YkcETy197A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O7TiMV+pDIK3FoaObHDGu1K4CQ6eJwE4N9erCjK5mtgXnvNlBjylqB7riLvnSKTrf
-         G8GQVyd/K3L7d81la5ACGOV3ooYzYNP+nmo80nf/BI9L9kfGpf0C2NGRgW+7uGH+8n
-         QQ+/141Y0130ehiahkBefwIkFnVz/n2FpslRmrAU=
+        b=XYwmBMDcUYQE+QyFu9nwyc9/2Ll1tDnQ4Sq4AK0wL2vxdrSeITZnjU83zSUirWl2Z
+         vvZUQGCEYx+pQEw9kghlpND6pps4qOmJlTsJaV4JYpiVaYbFKTeadWeQBtCSLEGP2d
+         1iPVmO4tDGnuDhiD6wpdlrv/ehqJE3+HGvvWyx9A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com,
-        Takeshi Misawa <jeliantsurux@gmail.com>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Ian Kent <raven@themaw.net>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrei Vagin <avagin@gmail.com>, autofs@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 002/211] autofs: fix memory leak of waitqueues in autofs_catatonic_mode
-Date:   Wed, 20 Sep 2023 13:27:26 +0200
-Message-ID: <20230920112845.931609612@linuxfoundation.org>
+Subject: [PATCH 6.5 003/211] btrfs: handle errors properly in update_inline_extent_backref()
+Date:   Wed, 20 Sep 2023 13:27:27 +0200
+Message-ID: <20230920112845.962263745@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -62,104 +54,198 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit ccbe77f7e45dfb4420f7f531b650c00c6e9c7507 ]
+[ Upstream commit 257614301a5db9f7b0548584ca207ad7785c8b89 ]
 
-Syzkaller reports a memory leak:
+[PROBLEM]
+Inside function update_inline_extent_backref(), we have several
+BUG_ON()s along with some ASSERT()s which can be triggered by corrupted
+filesystem.
 
-BUG: memory leak
-unreferenced object 0xffff88810b279e00 (size 96):
-  comm "syz-executor399", pid 3631, jiffies 4294964921 (age 23.870s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 08 9e 27 0b 81 88 ff ff  ..........'.....
-    08 9e 27 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ..'.............
-  backtrace:
-    [<ffffffff814cfc90>] kmalloc_trace+0x20/0x90 mm/slab_common.c:1046
-    [<ffffffff81bb75ca>] kmalloc include/linux/slab.h:576 [inline]
-    [<ffffffff81bb75ca>] autofs_wait+0x3fa/0x9a0 fs/autofs/waitq.c:378
-    [<ffffffff81bb88a7>] autofs_do_expire_multi+0xa7/0x3e0 fs/autofs/expire.c:593
-    [<ffffffff81bb8c33>] autofs_expire_multi+0x53/0x80 fs/autofs/expire.c:619
-    [<ffffffff81bb6972>] autofs_root_ioctl_unlocked+0x322/0x3b0 fs/autofs/root.c:897
-    [<ffffffff81bb6a95>] autofs_root_ioctl+0x25/0x30 fs/autofs/root.c:910
-    [<ffffffff81602a9c>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff81602a9c>] __do_sys_ioctl fs/ioctl.c:870 [inline]
-    [<ffffffff81602a9c>] __se_sys_ioctl fs/ioctl.c:856 [inline]
-    [<ffffffff81602a9c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
-    [<ffffffff84608225>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84608225>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84800087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[ANAYLYSE]
+Most of those BUG_ON()s and ASSERT()s are just a way of handling
+unexpected on-disk data.
 
-autofs_wait_queue structs should be freed if their wait_ctr becomes zero.
-Otherwise they will be lost.
+Although we have tree-checker to rule out obviously incorrect extent
+tree blocks, it's not enough for these ones.  Thus we need proper error
+handling for them.
 
-In this case an AUTOFS_IOC_EXPIRE_MULTI ioctl is done, then a new
-waitqueue struct is allocated in autofs_wait(), its initial wait_ctr
-equals 2. After that wait_event_killable() is interrupted (it returns
--ERESTARTSYS), so that 'wq->name.name == NULL' condition may be not
-satisfied. Actually, this condition can be satisfied when
-autofs_wait_release() or autofs_catatonic_mode() is called and, what is
-also important, wait_ctr is decremented in those places. Upon the exit of
-autofs_wait(), wait_ctr is decremented to 1. Then the unmounting process
-begins: kill_sb calls autofs_catatonic_mode(), which should have freed the
-waitqueues, but it only decrements its usage counter to zero which is not
-a correct behaviour.
+[FIX]
+Thankfully all the callers of update_inline_extent_backref() would
+eventually handle the errror by aborting the current transaction.
+So this patch would do the proper error handling by:
 
-edit:imk
-This description is of course not correct. The umount performed as a result
-of an expire is a umount of a mount that has been automounted, it's not the
-autofs mount itself. They happen independently, usually after everything
-mounted within the autofs file system has been expired away. If everything
-hasn't been expired away the automount daemon can still exit leaving mounts
-in place. But expires done in both cases will result in a notification that
-calls autofs_wait_release() with a result status. The problem case is the
-summary execution of of the automount daemon. In this case any waiting
-processes won't be woken up until either they are terminated or the mount
-is umounted.
-end edit: imk
+- Make update_inline_extent_backref() to return int
+  The return value would be either 0 or -EUCLEAN.
 
-So in catatonic mode we should free waitqueues which counter becomes zero.
+- Replace BUG_ON()s and ASSERT()s with proper error handling
+  This includes:
+  * Dump the bad extent tree leaf
+  * Output an error message for the cause
+    This would include the extent bytenr, num_bytes (if needed), the bad
+    values and expected good values.
+  * Return -EUCLEAN
 
-edit: imk
-Initially I was concerned that the calling of autofs_wait_release() and
-autofs_catatonic_mode() was not mutually exclusive but that can't be the
-case (obviously) because the queue entry (or entries) is removed from the
-list when either of these two functions are called. Consequently the wait
-entry will be freed by only one of these functions or by the woken process
-in autofs_wait() depending on the order of the calls.
-end edit: imk
+  Note here we remove all the WARN_ON()s, as eventually the transaction
+  would be aborted, thus a backtrace would be triggered anyway.
 
-Reported-by: syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com
-Suggested-by: Takeshi Misawa <jeliantsurux@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Ian Kent <raven@themaw.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: autofs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Message-Id: <169112719161.7590.6700123246297365841.stgit@donald.themaw.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+- Better comments on why we expect refs == 1 and refs_to_mode == -1 for
+  tree blocks
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/autofs/waitq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 73 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 61 insertions(+), 12 deletions(-)
 
-diff --git a/fs/autofs/waitq.c b/fs/autofs/waitq.c
-index 54c1f8b8b0757..efdc76732faed 100644
---- a/fs/autofs/waitq.c
-+++ b/fs/autofs/waitq.c
-@@ -32,8 +32,9 @@ void autofs_catatonic_mode(struct autofs_sb_info *sbi)
- 		wq->status = -ENOENT; /* Magic is gone - report failure */
- 		kfree(wq->name.name - wq->offset);
- 		wq->name.name = NULL;
--		wq->wait_ctr--;
- 		wake_up_interruptible(&wq->queue);
-+		if (!--wq->wait_ctr)
-+			kfree(wq);
- 		wq = nwq;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index e5566827da17e..c47fbb99e99d9 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -402,11 +402,11 @@ int btrfs_get_extent_inline_ref_type(const struct extent_buffer *eb,
+ 		}
  	}
- 	fput(sbi->pipe);	/* Close the pipe */
+ 
++	WARN_ON(1);
+ 	btrfs_print_leaf(eb);
+ 	btrfs_err(eb->fs_info,
+ 		  "eb %llu iref 0x%lx invalid extent inline ref type %d",
+ 		  eb->start, (unsigned long)iref, type);
+-	WARN_ON(1);
+ 
+ 	return BTRFS_REF_TYPE_INVALID;
+ }
+@@ -1079,13 +1079,13 @@ static int lookup_extent_backref(struct btrfs_trans_handle *trans,
+ /*
+  * helper to update/remove inline back ref
+  */
+-static noinline_for_stack
+-void update_inline_extent_backref(struct btrfs_path *path,
++static noinline_for_stack int update_inline_extent_backref(struct btrfs_path *path,
+ 				  struct btrfs_extent_inline_ref *iref,
+ 				  int refs_to_mod,
+ 				  struct btrfs_delayed_extent_op *extent_op)
+ {
+ 	struct extent_buffer *leaf = path->nodes[0];
++	struct btrfs_fs_info *fs_info = leaf->fs_info;
+ 	struct btrfs_extent_item *ei;
+ 	struct btrfs_extent_data_ref *dref = NULL;
+ 	struct btrfs_shared_data_ref *sref = NULL;
+@@ -1098,18 +1098,33 @@ void update_inline_extent_backref(struct btrfs_path *path,
+ 
+ 	ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_extent_item);
+ 	refs = btrfs_extent_refs(leaf, ei);
+-	WARN_ON(refs_to_mod < 0 && refs + refs_to_mod <= 0);
++	if (unlikely(refs_to_mod < 0 && refs + refs_to_mod <= 0)) {
++		struct btrfs_key key;
++		u32 extent_size;
++
++		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
++		if (key.type == BTRFS_METADATA_ITEM_KEY)
++			extent_size = fs_info->nodesize;
++		else
++			extent_size = key.offset;
++		btrfs_print_leaf(leaf);
++		btrfs_err(fs_info,
++	"invalid refs_to_mod for extent %llu num_bytes %u, has %d expect >= -%llu",
++			  key.objectid, extent_size, refs_to_mod, refs);
++		return -EUCLEAN;
++	}
+ 	refs += refs_to_mod;
+ 	btrfs_set_extent_refs(leaf, ei, refs);
+ 	if (extent_op)
+ 		__run_delayed_extent_op(extent_op, leaf, ei);
+ 
++	type = btrfs_get_extent_inline_ref_type(leaf, iref, BTRFS_REF_TYPE_ANY);
+ 	/*
+-	 * If type is invalid, we should have bailed out after
+-	 * lookup_inline_extent_backref().
++	 * Function btrfs_get_extent_inline_ref_type() has already printed
++	 * error messages.
+ 	 */
+-	type = btrfs_get_extent_inline_ref_type(leaf, iref, BTRFS_REF_TYPE_ANY);
+-	ASSERT(type != BTRFS_REF_TYPE_INVALID);
++	if (unlikely(type == BTRFS_REF_TYPE_INVALID))
++		return -EUCLEAN;
+ 
+ 	if (type == BTRFS_EXTENT_DATA_REF_KEY) {
+ 		dref = (struct btrfs_extent_data_ref *)(&iref->offset);
+@@ -1119,10 +1134,43 @@ void update_inline_extent_backref(struct btrfs_path *path,
+ 		refs = btrfs_shared_data_ref_count(leaf, sref);
+ 	} else {
+ 		refs = 1;
+-		BUG_ON(refs_to_mod != -1);
++		/*
++		 * For tree blocks we can only drop one ref for it, and tree
++		 * blocks should not have refs > 1.
++		 *
++		 * Furthermore if we're inserting a new inline backref, we
++		 * won't reach this path either. That would be
++		 * setup_inline_extent_backref().
++		 */
++		if (unlikely(refs_to_mod != -1)) {
++			struct btrfs_key key;
++
++			btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
++
++			btrfs_print_leaf(leaf);
++			btrfs_err(fs_info,
++			"invalid refs_to_mod for tree block %llu, has %d expect -1",
++				  key.objectid, refs_to_mod);
++			return -EUCLEAN;
++		}
+ 	}
+ 
+-	BUG_ON(refs_to_mod < 0 && refs < -refs_to_mod);
++	if (unlikely(refs_to_mod < 0 && refs < -refs_to_mod)) {
++		struct btrfs_key key;
++		u32 extent_size;
++
++		btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
++		if (key.type == BTRFS_METADATA_ITEM_KEY)
++			extent_size = fs_info->nodesize;
++		else
++			extent_size = key.offset;
++		btrfs_print_leaf(leaf);
++		btrfs_err(fs_info,
++"invalid refs_to_mod for backref entry, iref %lu extent %llu num_bytes %u, has %d expect >= -%llu",
++			  (unsigned long)iref, key.objectid, extent_size,
++			  refs_to_mod, refs);
++		return -EUCLEAN;
++	}
+ 	refs += refs_to_mod;
+ 
+ 	if (refs > 0) {
+@@ -1142,6 +1190,7 @@ void update_inline_extent_backref(struct btrfs_path *path,
+ 		btrfs_truncate_item(path, item_size, 1);
+ 	}
+ 	btrfs_mark_buffer_dirty(leaf);
++	return 0;
+ }
+ 
+ static noinline_for_stack
+@@ -1170,7 +1219,7 @@ int insert_inline_extent_backref(struct btrfs_trans_handle *trans,
+ 				   bytenr, num_bytes, root_objectid, path->slots[0]);
+ 			return -EUCLEAN;
+ 		}
+-		update_inline_extent_backref(path, iref, refs_to_add, extent_op);
++		ret = update_inline_extent_backref(path, iref, refs_to_add, extent_op);
+ 	} else if (ret == -ENOENT) {
+ 		setup_inline_extent_backref(trans->fs_info, path, iref, parent,
+ 					    root_objectid, owner, offset,
+@@ -1190,7 +1239,7 @@ static int remove_extent_backref(struct btrfs_trans_handle *trans,
+ 
+ 	BUG_ON(!is_data && refs_to_drop != 1);
+ 	if (iref)
+-		update_inline_extent_backref(path, iref, -refs_to_drop, NULL);
++		ret = update_inline_extent_backref(path, iref, -refs_to_drop, NULL);
+ 	else if (is_data)
+ 		ret = remove_extent_data_ref(trans, root, path, refs_to_drop);
+ 	else
 -- 
 2.40.1
 
