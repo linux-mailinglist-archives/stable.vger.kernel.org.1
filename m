@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 274EE7A7B21
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2843E7A7CA3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234669AbjITLta (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:49:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53770 "EHLO
+        id S235046AbjITMDB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234668AbjITLt2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:28 -0400
+        with ESMTP id S235122AbjITMCq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B605EA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35BDC433C7;
-        Wed, 20 Sep 2023 11:49:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D22C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF3DC43395;
+        Wed, 20 Sep 2023 12:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210562;
-        bh=sJSTFKM3E9dKLHJhw2enxls1fcxTmYHvr+3a778u7ak=;
+        s=korg; t=1695211358;
+        bh=wmuHDijgqag1AiZfH1xztBNkDeKQsht+n7mLhQ10Ct8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CaupXGVR2mGwcasUgCEG2WyBLnKQWgyeK4yOYhn1eTVMOn6tN6bclRmxzdb/O0KAK
-         u+ltlzhjDuF44v3sjplToC75I3ow01YqaO8e8sECFHr/QbxMc0TV7FHS1JugpyW+Ep
-         25PZ5ctJqqTQj2eFz1M6FvvjcgRX14cfawjYjLG8=
+        b=wnhVeoRUgfl4b5GThLjOFRg9q9dbP1a4opjCIld7Ri9Le0r3RFdNREPXD6oZHIiMC
+         3gAiFOzGGA3QAnFUKqvpkwmv76SDPimSzflteBH8qoOE/fNvm11uhWZMJSl9km+Hkx
+         pgP8t7uh+wAYKbLL+ATR5Zefdr6B/3sMvGJGVS/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev, Minjie Du <duminjie@vivo.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 122/211] usb: ehci: add workaround for chipidea PORTSC.PEC bug
+Subject: [PATCH 4.14 063/186] drivers: clk: keystone: Fix parameter judgment in _of_pll_clk_init()
 Date:   Wed, 20 Sep 2023 13:29:26 +0200
-Message-ID: <20230920112849.578530244@linuxfoundation.org>
+Message-ID: <20230920112839.164960397@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,121 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Minjie Du <duminjie@vivo.com>
 
-[ Upstream commit dda4b60ed70bd670eefda081f70c0cb20bbeb1fa ]
+[ Upstream commit a995c50db887ef97f3160775aef7d772635a6f6e ]
 
-Some NXP processor using chipidea IP has a bug when frame babble is
-detected.
+The function clk_register_pll() may return NULL or an ERR_PTR. Don't
+treat an ERR_PTR as valid.
 
-As per 4.15.1.1.1 Serial Bus Babble:
-  A babble condition also exists if IN transaction is in progress at
-High-speed SOF2 point. This is called frame babble. The host controller
-must disable the port to which the frame babble is detected.
-
-The USB controller has disabled the port (PE cleared) and has asserted
-USBERRINT when frame babble is detected, but PEC is not asserted.
-Therefore, the SW isn't aware that port has been disabled. Then the
-SW keeps sending packets to this port, but all of the transfers will
-fail.
-
-This workaround will firstly assert PCD by SW when USBERRINT is detected
-and then judge whether port change has really occurred or not by polling
-roothub status. Because the PEC doesn't get asserted in our case, this
-patch will also assert it by SW when specific conditions are satisfied.
-
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230809024432.535160-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Minjie Du <duminjie@vivo.com>
+Link: https://lore.kernel.org/r/20230712102246.10348-1-duminjie@vivo.com
+Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
+[sboyd@kernel.org: Reword commit text]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-hcd.c |  8 ++++++--
- drivers/usb/host/ehci-hub.c | 10 +++++++++-
- drivers/usb/host/ehci.h     | 10 ++++++++++
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/clk/keystone/pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a1930db0da1c3..802bfafb1012b 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -755,10 +755,14 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
- 
- 	/* normal [4.15.1.2] or error [4.15.1.1] completion */
- 	if (likely ((status & (STS_INT|STS_ERR)) != 0)) {
--		if (likely ((status & STS_ERR) == 0))
-+		if (likely ((status & STS_ERR) == 0)) {
- 			INCR(ehci->stats.normal);
--		else
-+		} else {
-+			/* Force to check port status */
-+			if (ehci->has_ci_pec_bug)
-+				status |= STS_PCD;
- 			INCR(ehci->stats.error);
-+		}
- 		bh = 1;
+diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
+index e7e840fb74eaf..526694c2a6c97 100644
+--- a/drivers/clk/keystone/pll.c
++++ b/drivers/clk/keystone/pll.c
+@@ -213,7 +213,7 @@ static void __init _of_pll_clk_init(struct device_node *node, bool pllctrl)
  	}
  
-diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
-index efe30e3be22f7..1aee392e84927 100644
---- a/drivers/usb/host/ehci-hub.c
-+++ b/drivers/usb/host/ehci-hub.c
-@@ -674,7 +674,8 @@ ehci_hub_status_data (struct usb_hcd *hcd, char *buf)
- 
- 		if ((temp & mask) != 0 || test_bit(i, &ehci->port_c_suspend)
- 				|| (ehci->reset_done[i] && time_after_eq(
--					jiffies, ehci->reset_done[i]))) {
-+					jiffies, ehci->reset_done[i]))
-+				|| ehci_has_ci_pec_bug(ehci, temp)) {
- 			if (i < 7)
- 			    buf [0] |= 1 << (i + 1);
- 			else
-@@ -875,6 +876,13 @@ int ehci_hub_control(
- 		if (temp & PORT_PEC)
- 			status |= USB_PORT_STAT_C_ENABLE << 16;
- 
-+		if (ehci_has_ci_pec_bug(ehci, temp)) {
-+			status |= USB_PORT_STAT_C_ENABLE << 16;
-+			ehci_info(ehci,
-+				"PE is cleared by HW port:%d PORTSC:%08x\n",
-+				wIndex + 1, temp);
-+		}
-+
- 		if ((temp & PORT_OCC) && (!ignore_oc && !ehci->spurious_oc)){
- 			status |= USB_PORT_STAT_C_OVERCURRENT << 16;
- 
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index c5c7f87825493..1441e34007961 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -207,6 +207,7 @@ struct ehci_hcd {			/* one per controller */
- 	unsigned		has_fsl_port_bug:1; /* FreeScale */
- 	unsigned		has_fsl_hs_errata:1;	/* Freescale HS quirk */
- 	unsigned		has_fsl_susp_errata:1;	/* NXP SUSP quirk */
-+	unsigned		has_ci_pec_bug:1;	/* ChipIdea PEC bug */
- 	unsigned		big_endian_mmio:1;
- 	unsigned		big_endian_desc:1;
- 	unsigned		big_endian_capbase:1;
-@@ -707,6 +708,15 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
-  */
- #define ehci_has_fsl_susp_errata(e)	((e)->has_fsl_susp_errata)
- 
-+/*
-+ * Some Freescale/NXP processors using ChipIdea IP have a bug in which
-+ * disabling the port (PE is cleared) does not cause PEC to be asserted
-+ * when frame babble is detected.
-+ */
-+#define ehci_has_ci_pec_bug(e, portsc) \
-+	((e)->has_ci_pec_bug && ((e)->command & CMD_PSE) \
-+	 && !(portsc & PORT_PEC) && !(portsc & PORT_PE))
-+
- /*
-  * While most USB host controllers implement their registers in
-  * little-endian format, a minority (celleb companion chip) implement
+ 	clk = clk_register_pll(NULL, node->name, parent_name, pll_data);
+-	if (clk) {
++	if (!IS_ERR_OR_NULL(clk)) {
+ 		of_clk_add_provider(node, of_clk_src_simple_get, clk);
+ 		return;
+ 	}
 -- 
 2.40.1
 
