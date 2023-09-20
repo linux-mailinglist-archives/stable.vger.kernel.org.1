@@ -2,103 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4737F7A799D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597E97A79C1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjITKrU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 06:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
+        id S234014AbjITKwQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 06:52:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234469AbjITKqv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:46:51 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6CAB1B2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 03:46:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E13FC433C8;
-        Wed, 20 Sep 2023 10:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695206790;
-        bh=jDGN/vXs3OVv3FyGTK4YUWaoy7bi51QQZ2QrdXBTO1U=;
-        h=Subject:To:Cc:From:Date:From;
-        b=Kgm0M17JykW8y8pvQd1EmnZrfz8Kp7ga7zKGI7M95ntmIld0BGFefLfAJQQ+HvZgc
-         tySg0nJdsu3ZDAprnedXwi2quM7amgBvQ7P0Fwv0dEfTE8VjP1/Va5YxHeTtIalee7
-         dN5CHchDZAeE+LqYW6PDe8rvX/xoFll0fwu+T70o=
-Subject: FAILED: patch "[PATCH] btrfs: check for BTRFS_FS_ERROR in pending ordered assert" failed to apply to 5.10-stable tree
-To:     josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 12:46:16 +0200
-Message-ID: <2023092016-bronze-dolphin-b917@gregkh>
+        with ESMTP id S234218AbjITKwP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:52:15 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6664B97;
+        Wed, 20 Sep 2023 03:52:09 -0700 (PDT)
+Received: from localhost.ispras.ru (unknown [10.10.165.14])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 8B4CD40F1DF9;
+        Wed, 20 Sep 2023 10:52:05 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8B4CD40F1DF9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1695207125;
+        bh=bH6qdMnm7rw9N28xMlf+P+4+Ai14NUr7R3xOVTfyoRw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZYAqjy04bTpqLkPvFGAYzOTJxHFfOEx1hyzAATWxCHqFXI7mZ/kmYSLl/BZr6Sans
+         915xbHPTdFIJDZBD9Vakc5EYjc0eafMG5Q/bhzfsFlV6mlWUXvp827lPY0dMPJbaA9
+         RsOYaxAZuZCHKB8FqMi+vrlIuK2XcTcPZzNVG8ZQ=
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     Mike Snitzer <snitzer@kernel.org>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alasdair Kergon <agk@redhat.com>, dm-devel@redhat.com,
+        Hannes Reinecke <hare@suse.de>, linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: [PATCH] dm-zoned: free dmz->ddev array in dmz_put_zoned_device
+Date:   Wed, 20 Sep 2023 13:51:16 +0300
+Message-ID: <20230920105119.21276-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+made the pointers to additional zoned devices to be stored in a
+dynamically allocated dmz->ddev array. However, this array is not freed.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Free it when cleaning up zoned device information inside
+dmz_put_zoned_device(). Assigning NULL to dmz->ddev elements doesn't make
+sense there as they are not supposed to be reused later and the whole dmz
+target structure is being cleaned anyway.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Found by Linux Verification Center (linuxtesting.org).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092016-bronze-dolphin-b917@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ drivers/md/dm-zoned-target.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Possible dependencies:
-
-4ca8e03cf2bf ("btrfs: check for BTRFS_FS_ERROR in pending ordered assert")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab Mon Sep 17 00:00:00 2001
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Thu, 24 Aug 2023 16:59:04 -0400
-Subject: [PATCH] btrfs: check for BTRFS_FS_ERROR in pending ordered assert
-
-If we do fast tree logging we increment a counter on the current
-transaction for every ordered extent we need to wait for.  This means we
-expect the transaction to still be there when we clear pending on the
-ordered extent.  However if we happen to abort the transaction and clean
-it up, there could be no running transaction, and thus we'll trip the
-"ASSERT(trans)" check.  This is obviously incorrect, and the code
-properly deals with the case that the transaction doesn't exist.  Fix
-this ASSERT() to only fire if there's no trans and we don't have
-BTRFS_FS_ERROR() set on the file system.
-
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
-index b46ab348e8e5..345c449d588c 100644
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -639,7 +639,7 @@ void btrfs_remove_ordered_extent(struct btrfs_inode *btrfs_inode,
- 			refcount_inc(&trans->use_count);
- 		spin_unlock(&fs_info->trans_lock);
+diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
+index ad8e670a2f9b..e25cd9db6275 100644
+--- a/drivers/md/dm-zoned-target.c
++++ b/drivers/md/dm-zoned-target.c
+@@ -753,12 +753,10 @@ static void dmz_put_zoned_device(struct dm_target *ti)
+ 	struct dmz_target *dmz = ti->private;
+ 	int i;
  
--		ASSERT(trans);
-+		ASSERT(trans || BTRFS_FS_ERROR(fs_info));
- 		if (trans) {
- 			if (atomic_dec_and_test(&trans->pending_ordered))
- 				wake_up(&trans->pending_wait);
+-	for (i = 0; i < dmz->nr_ddevs; i++) {
+-		if (dmz->ddev[i]) {
++	for (i = 0; i < dmz->nr_ddevs; i++)
++		if (dmz->ddev[i])
+ 			dm_put_device(ti, dmz->ddev[i]);
+-			dmz->ddev[i] = NULL;
+-		}
+-	}
++	kfree(dmz->ddev);
+ }
+ 
+ static int dmz_fixup_devices(struct dm_target *ti)
+-- 
+2.42.0
 
