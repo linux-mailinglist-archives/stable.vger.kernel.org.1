@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4914A7A7B9C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CAB37A7B7B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234790AbjITLxz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41828 "EHLO
+        id S234721AbjITLwg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234784AbjITLxx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:53 -0400
+        with ESMTP id S234713AbjITLwf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39A82D8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EFBC433C9;
-        Wed, 20 Sep 2023 11:53:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11CD92
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15739C433C8;
+        Wed, 20 Sep 2023 11:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210825;
-        bh=+BBWPeP6YisNXqdwZpuwZ171pjUHN6nmXK8Yha9qnwg=;
+        s=korg; t=1695210749;
+        bh=o1KffXENgiohHCvgPczxBY7I33546zUOIx18S4Q8Mz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uVnvVnKzS4SE2MOobIeZS+g4d5pSfxhewG++M1nrgWpFVy6B2aWcy4crR51dJ/kiV
-         8DskETKF1kN+2znoRTGNiSL+NjT47D9usX2CDVyqp2mHEW9XJTgItqwatEqpRgMFhu
-         TyJWXbR3o1xo1mwVUoR/pD3E0KirF+R3t62rKS84=
+        b=y8GedO2bKa+QRwxMQRatThj7OK60kYZHdnNxxhMMHFzCWpK3pYtELzhqNwOANIJBi
+         VB/Sl72CIEoTXDXEXqOqp9uG/zST3i375z8ddlzBlhTvEKJQbNGKdcSm3/5G7eaxZ0
+         Pk/OFtWhAfOp7EVgd1jD9o+U7iJ4pxepPQblQl64=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+bf66ad948981797d2f1d@syzkaller.appspotmail.com,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
         Josef Bacik <josef@toxicpanda.com>,
-        Filipe Manana <fdmanana@suse.com>,
         David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 182/211] btrfs: release path before inode lookup during the ino lookup ioctl
-Date:   Wed, 20 Sep 2023 13:30:26 +0200
-Message-ID: <20230920112851.518540969@linuxfoundation.org>
+Subject: [PATCH 6.5 183/211] btrfs: check for BTRFS_FS_ERROR in pending ordered assert
+Date:   Wed, 20 Sep 2023 13:30:27 +0200
+Message-ID: <20230920112851.548592017@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -56,169 +54,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit ee34a82e890a7babb5585daf1a6dd7d4d1cf142a upstream.
+commit 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab upstream.
 
-During the ino lookup ioctl we can end up calling btrfs_iget() to get an
-inode reference while we are holding on a root's btree. If btrfs_iget()
-needs to lookup the inode from the root's btree, because it's not
-currently loaded in memory, then it will need to lock another or the
-same path in the same root btree. This may result in a deadlock and
-trigger the following lockdep splat:
+If we do fast tree logging we increment a counter on the current
+transaction for every ordered extent we need to wait for.  This means we
+expect the transaction to still be there when we clear pending on the
+ordered extent.  However if we happen to abort the transaction and clean
+it up, there could be no running transaction, and thus we'll trip the
+"ASSERT(trans)" check.  This is obviously incorrect, and the code
+properly deals with the case that the transaction doesn't exist.  Fix
+this ASSERT() to only fire if there's no trans and we don't have
+BTRFS_FS_ERROR() set on the file system.
 
-  WARNING: possible circular locking dependency detected
-  6.5.0-rc7-syzkaller-00004-gf7757129e3de #0 Not tainted
-  ------------------------------------------------------
-  syz-executor277/5012 is trying to acquire lock:
-  ffff88802df41710 (btrfs-tree-01){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-
-  but task is already holding lock:
-  ffff88802df418e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (btrfs-tree-00){++++}-{3:3}:
-         down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
-         __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-         btrfs_search_slot+0x13a4/0x2f80 fs/btrfs/ctree.c:2302
-         btrfs_init_root_free_objectid+0x148/0x320 fs/btrfs/disk-io.c:4955
-         btrfs_init_fs_root fs/btrfs/disk-io.c:1128 [inline]
-         btrfs_get_root_ref+0x5ae/0xae0 fs/btrfs/disk-io.c:1338
-         btrfs_get_fs_root fs/btrfs/disk-io.c:1390 [inline]
-         open_ctree+0x29c8/0x3030 fs/btrfs/disk-io.c:3494
-         btrfs_fill_super+0x1c7/0x2f0 fs/btrfs/super.c:1154
-         btrfs_mount_root+0x7e0/0x910 fs/btrfs/super.c:1519
-         legacy_get_tree+0xef/0x190 fs/fs_context.c:611
-         vfs_get_tree+0x8c/0x270 fs/super.c:1519
-         fc_mount fs/namespace.c:1112 [inline]
-         vfs_kern_mount+0xbc/0x150 fs/namespace.c:1142
-         btrfs_mount+0x39f/0xb50 fs/btrfs/super.c:1579
-         legacy_get_tree+0xef/0x190 fs/fs_context.c:611
-         vfs_get_tree+0x8c/0x270 fs/super.c:1519
-         do_new_mount+0x28f/0xae0 fs/namespace.c:3335
-         do_mount fs/namespace.c:3675 [inline]
-         __do_sys_mount fs/namespace.c:3884 [inline]
-         __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3861
-         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-         entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  -> #0 (btrfs-tree-01){++++}-{3:3}:
-         check_prev_add kernel/locking/lockdep.c:3142 [inline]
-         check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-         validate_chain kernel/locking/lockdep.c:3876 [inline]
-         __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
-         lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
-         down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
-         __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-         btrfs_tree_read_lock fs/btrfs/locking.c:142 [inline]
-         btrfs_read_lock_root_node+0x292/0x3c0 fs/btrfs/locking.c:281
-         btrfs_search_slot_get_root fs/btrfs/ctree.c:1832 [inline]
-         btrfs_search_slot+0x4ff/0x2f80 fs/btrfs/ctree.c:2154
-         btrfs_lookup_inode+0xdc/0x480 fs/btrfs/inode-item.c:412
-         btrfs_read_locked_inode fs/btrfs/inode.c:3892 [inline]
-         btrfs_iget_path+0x2d9/0x1520 fs/btrfs/inode.c:5716
-         btrfs_search_path_in_tree_user fs/btrfs/ioctl.c:1961 [inline]
-         btrfs_ioctl_ino_lookup_user+0x77a/0xf50 fs/btrfs/ioctl.c:2105
-         btrfs_ioctl+0xb0b/0xd40 fs/btrfs/ioctl.c:4683
-         vfs_ioctl fs/ioctl.c:51 [inline]
-         __do_sys_ioctl fs/ioctl.c:870 [inline]
-         __se_sys_ioctl+0xf8/0x170 fs/ioctl.c:856
-         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-         entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  other info that might help us debug this:
-
-   Possible unsafe locking scenario:
-
-         CPU0                    CPU1
-         ----                    ----
-    rlock(btrfs-tree-00);
-                                 lock(btrfs-tree-01);
-                                 lock(btrfs-tree-00);
-    rlock(btrfs-tree-01);
-
-   *** DEADLOCK ***
-
-  1 lock held by syz-executor277/5012:
-   #0: ffff88802df418e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-
-  stack backtrace:
-  CPU: 1 PID: 5012 Comm: syz-executor277 Not tainted 6.5.0-rc7-syzkaller-00004-gf7757129e3de #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
-   check_noncircular+0x375/0x4a0 kernel/locking/lockdep.c:2195
-   check_prev_add kernel/locking/lockdep.c:3142 [inline]
-   check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-   validate_chain kernel/locking/lockdep.c:3876 [inline]
-   __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
-   lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
-   down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
-   __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
-   btrfs_tree_read_lock fs/btrfs/locking.c:142 [inline]
-   btrfs_read_lock_root_node+0x292/0x3c0 fs/btrfs/locking.c:281
-   btrfs_search_slot_get_root fs/btrfs/ctree.c:1832 [inline]
-   btrfs_search_slot+0x4ff/0x2f80 fs/btrfs/ctree.c:2154
-   btrfs_lookup_inode+0xdc/0x480 fs/btrfs/inode-item.c:412
-   btrfs_read_locked_inode fs/btrfs/inode.c:3892 [inline]
-   btrfs_iget_path+0x2d9/0x1520 fs/btrfs/inode.c:5716
-   btrfs_search_path_in_tree_user fs/btrfs/ioctl.c:1961 [inline]
-   btrfs_ioctl_ino_lookup_user+0x77a/0xf50 fs/btrfs/ioctl.c:2105
-   btrfs_ioctl+0xb0b/0xd40 fs/btrfs/ioctl.c:4683
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:870 [inline]
-   __se_sys_ioctl+0xf8/0x170 fs/ioctl.c:856
-   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-   do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  RIP: 0033:0x7f0bec94ea39
-
-Fix this simply by releasing the path before calling btrfs_iget() as at
-point we don't need the path anymore.
-
-Reported-by: syzbot+bf66ad948981797d2f1d@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/00000000000045fa140603c4a969@google.com/
-Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/btrfs/ordered-data.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -1958,6 +1958,13 @@ static int btrfs_search_path_in_tree_use
- 				goto out_put;
- 			}
+--- a/fs/btrfs/ordered-data.c
++++ b/fs/btrfs/ordered-data.c
+@@ -635,7 +635,7 @@ void btrfs_remove_ordered_extent(struct
+ 			refcount_inc(&trans->use_count);
+ 		spin_unlock(&fs_info->trans_lock);
  
-+			/*
-+			 * We don't need the path anymore, so release it and
-+			 * avoid deadlocks and lockdep warnings in case
-+			 * btrfs_iget() needs to lookup the inode from its root
-+			 * btree and lock the same leaf.
-+			 */
-+			btrfs_release_path(path);
- 			temp_inode = btrfs_iget(sb, key2.objectid, root);
- 			if (IS_ERR(temp_inode)) {
- 				ret = PTR_ERR(temp_inode);
-@@ -1978,7 +1985,6 @@ static int btrfs_search_path_in_tree_use
- 				goto out_put;
- 			}
- 
--			btrfs_release_path(path);
- 			key.objectid = key.offset;
- 			key.offset = (u64)-1;
- 			dirid = key.objectid;
+-		ASSERT(trans);
++		ASSERT(trans || BTRFS_FS_ERROR(fs_info));
+ 		if (trans) {
+ 			if (atomic_dec_and_test(&trans->pending_ordered))
+ 				wake_up(&trans->pending_wait);
 
 
