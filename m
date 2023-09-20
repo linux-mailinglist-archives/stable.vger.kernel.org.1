@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0DB7A7DC7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF4D7A7FEC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234603AbjITMMO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:12:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47598 "EHLO
+        id S236081AbjITMbU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:31:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235360AbjITMMO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:14 -0400
+        with ESMTP id S236059AbjITMbT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDCEA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486B1C433C7;
-        Wed, 20 Sep 2023 12:12:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 532D393
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71925C433C8;
+        Wed, 20 Sep 2023 12:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211928;
-        bh=8PzKCL58Z+yxLn3ajl9lu9YLV87/FYesg1IsW1KL5OQ=;
+        s=korg; t=1695213072;
+        bh=RsfYrrqWtIU+FIgNXzS8rY/mPpELizKK5k9RaIfScAU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZGWUnSDOCITBC9Fiw2mxirjlNuLV3EUCeDiRnzRLIdTSayj/1EvtNA2hR+BTQhSzZ
-         lIDTdNUIwXFfy9iU1pB0Jyb+IoZtGWUSY1pV9xhmiPWvN8mIky/jklQdbaWZUH6WVZ
-         Zl8NSg0l5pCrReu4MPGqGZa8+qCLc9rY4DLDc/ZM=
+        b=EnIw+XbRhffGOL3G8adtSu+cubx7Zr3NbXyDoEd7gaFogZCVGmWrCg83B70+6UhhR
+         FuKa9Ak6nEd44XtxduBA1Zr4RcXEeGO5rT/DA6uJxe2g4H1hwQ3xH8Oez2OUD5Tqg1
+         glPgtDgXLXo/0250jIFfbun20rsnzxCgSaQHUNVA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
+        patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 087/273] ARM: dts: s3c6410: align node SROM bus node name with dtschema in Mini6410
+Subject: [PATCH 5.4 150/367] media: v4l2-fwnode: fix v4l2_fwnode_parse_link handling
 Date:   Wed, 20 Sep 2023 13:28:47 +0200
-Message-ID: <20230920112849.133302904@linuxfoundation.org>
+Message-ID: <20230920112902.549708013@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 5911622eff5134c4bf1e16e4e1e2fd18c4f24889 ]
+[ Upstream commit 453b0c8304dcbc6eed2836de8fee90bf5bcc7006 ]
 
-The SROM controller is modeled with a bus so align the device node name
-with dtschema to fix warning:
+Currently the driver differentiate the port number property handling for
+ACPI and DT. This is wrong as because ACPI should use the "reg" val too
+[1].
 
-  srom-cs1@18000000: $nodename:0: 'srom-cs1@18000000'
-    does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
+[1] https://patchwork.kernel.org/patch/11421985/
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20200907183313.29234-5-krzk@kernel.org
-Stable-dep-of: cf0cb2af6a18 ("ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)")
+Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: d7b13edd4cb4 ("media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/s3c6410-mini6410.dts | 2 +-
+ drivers/media/v4l2-core/v4l2-fwnode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
-index 75067dbcf7e83..285555b9ed943 100644
---- a/arch/arm/boot/dts/s3c6410-mini6410.dts
-+++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
-@@ -42,7 +42,7 @@ xusbxti: oscillator-1 {
- 		#clock-cells = <0>;
- 	};
+diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+index 48c3b9f72722a..217d67cb31af2 100644
+--- a/drivers/media/v4l2-core/v4l2-fwnode.c
++++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+@@ -563,7 +563,7 @@ EXPORT_SYMBOL_GPL(v4l2_fwnode_endpoint_alloc_parse);
+ int v4l2_fwnode_parse_link(struct fwnode_handle *__fwnode,
+ 			   struct v4l2_fwnode_link *link)
+ {
+-	const char *port_prop = is_of_node(__fwnode) ? "reg" : "port";
++	const char *port_prop = "reg";
+ 	struct fwnode_handle *fwnode;
  
--	srom-cs1@18000000 {
-+	srom-cs1-bus@18000000 {
- 		compatible = "simple-bus";
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+ 	memset(link, 0, sizeof(*link));
 -- 
 2.40.1
 
