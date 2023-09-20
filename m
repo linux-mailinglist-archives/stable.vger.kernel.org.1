@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89DF27A8085
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8FA7A7E0D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235977AbjITMhr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52742 "EHLO
+        id S235394AbjITMP0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236002AbjITMho (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:44 -0400
+        with ESMTP id S235606AbjITMOv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBC9D7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A146EC433C9;
-        Wed, 20 Sep 2023 12:37:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C055F93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F54C433C7;
+        Wed, 20 Sep 2023 12:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213458;
-        bh=WYhnmS8muzZMIFweyF+9adIrNbsJigPmJBvxGxxQKCM=;
+        s=korg; t=1695212085;
+        bh=mvX1hexLr8N4taFBJDs5K4wxnIYOOkaAA5pdPTKRrNI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c0R3NL22vLURuhiFV7WJtYc6NEM5iwvZEKcoajFiShxz7sHkhHJkIdG2uLxV0Yokm
-         Uw1HJ6i3ZcmxwrLTgAjqw6UvuNIPUnEGQc6FWNRao9zY0EN+eh7VulXvZKPWgUmzd7
-         g4w6XhDsHGa9u+2zPPfpIA4MxboFQdgceGifORBE=
+        b=M8Lh4UmJayQ8RZ/fUxY2o+PkdgyYGuwFexhy/VhhlnpnHdu62+17aIDh10tUcSF+2
+         mxquX7H+GV5WTSjx25w5gTraopHlHhmN1zceexDuZIo8NiawxT1qvsAVj7LiMVPJnq
+         DJjyOVJ4yUn6EMz7w2F6MTdck5RokVdzN7y9E58Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mohamed Khalfella <mkhalfella@purestorage.com>,
-        Amit Goyal <agoyal@purestorage.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 208/367] skbuff: skb_segment, Call zero copy functions before using skbuff frags
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 145/273] dma-buf/sync_file: Fix docs syntax
 Date:   Wed, 20 Sep 2023 13:29:45 +0200
-Message-ID: <20230920112903.998036836@linuxfoundation.org>
+Message-ID: <20230920112851.013805275@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,160 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit 2ea35288c83b3d501a88bc17f2df8f176b5cc96f upstream.
+[ Upstream commit 05d56d8079d510a2994039470f65bea85f0075ee ]
 
-Commit bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions
-once per nskb") added the call to zero copy functions in skb_segment().
-The change introduced a bug in skb_segment() because skb_orphan_frags()
-may possibly change the number of fragments or allocate new fragments
-altogether leaving nrfrags and frag to point to the old values. This can
-cause a panic with stacktrace like the one below.
+Fixes the warning:
 
-[  193.894380] BUG: kernel NULL pointer dereference, address: 00000000000000bc
-[  193.895273] CPU: 13 PID: 18164 Comm: vh-net-17428 Kdump: loaded Tainted: G           O      5.15.123+ #26
-[  193.903919] RIP: 0010:skb_segment+0xb0e/0x12f0
-[  194.021892] Call Trace:
-[  194.027422]  <TASK>
-[  194.072861]  tcp_gso_segment+0x107/0x540
-[  194.082031]  inet_gso_segment+0x15c/0x3d0
-[  194.090783]  skb_mac_gso_segment+0x9f/0x110
-[  194.095016]  __skb_gso_segment+0xc1/0x190
-[  194.103131]  netem_enqueue+0x290/0xb10 [sch_netem]
-[  194.107071]  dev_qdisc_enqueue+0x16/0x70
-[  194.110884]  __dev_queue_xmit+0x63b/0xb30
-[  194.121670]  bond_start_xmit+0x159/0x380 [bonding]
-[  194.128506]  dev_hard_start_xmit+0xc3/0x1e0
-[  194.131787]  __dev_queue_xmit+0x8a0/0xb30
-[  194.138225]  macvlan_start_xmit+0x4f/0x100 [macvlan]
-[  194.141477]  dev_hard_start_xmit+0xc3/0x1e0
-[  194.144622]  sch_direct_xmit+0xe3/0x280
-[  194.147748]  __dev_queue_xmit+0x54a/0xb30
-[  194.154131]  tap_get_user+0x2a8/0x9c0 [tap]
-[  194.157358]  tap_sendmsg+0x52/0x8e0 [tap]
-[  194.167049]  handle_tx_zerocopy+0x14e/0x4c0 [vhost_net]
-[  194.173631]  handle_tx+0xcd/0xe0 [vhost_net]
-[  194.176959]  vhost_worker+0x76/0xb0 [vhost]
-[  194.183667]  kthread+0x118/0x140
-[  194.190358]  ret_from_fork+0x1f/0x30
-[  194.193670]  </TASK>
+  include/uapi/linux/sync_file.h:77: warning: Function parameter or member 'num_fences' not described in 'sync_file_info'
 
-In this case calling skb_orphan_frags() updated nr_frags leaving nrfrags
-local variable in skb_segment() stale. This resulted in the code hitting
-i >= nrfrags prematurely and trying to move to next frag_skb using
-list_skb pointer, which was NULL, and caused kernel panic. Move the call
-to zero copy functions before using frags and nr_frags.
-
-Fixes: bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions once per nskb")
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reported-by: Amit Goyal <agoyal@purestorage.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2d75c88fefb2 ("staging/android: refactor SYNC IOCTLs")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20230724145000.125880-1-robdclark@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c |   34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ include/uapi/linux/sync_file.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3686,21 +3686,20 @@ struct sk_buff *skb_segment(struct sk_bu
- 	struct sk_buff *segs = NULL;
- 	struct sk_buff *tail = NULL;
- 	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
--	skb_frag_t *frag = skb_shinfo(head_skb)->frags;
- 	unsigned int mss = skb_shinfo(head_skb)->gso_size;
- 	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
--	struct sk_buff *frag_skb = head_skb;
- 	unsigned int offset = doffset;
- 	unsigned int tnl_hlen = skb_tnl_header_len(head_skb);
- 	unsigned int partial_segs = 0;
- 	unsigned int headroom;
- 	unsigned int len = head_skb->len;
-+	struct sk_buff *frag_skb;
-+	skb_frag_t *frag;
- 	__be16 proto;
- 	bool csum, sg;
--	int nfrags = skb_shinfo(head_skb)->nr_frags;
- 	int err = -ENOMEM;
- 	int i = 0;
--	int pos;
-+	int nfrags, pos;
- 	int dummy;
- 
- 	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
-@@ -3778,6 +3777,13 @@ normal:
- 	headroom = skb_headroom(head_skb);
- 	pos = skb_headlen(head_skb);
- 
-+	if (skb_orphan_frags(head_skb, GFP_ATOMIC))
-+		return ERR_PTR(-ENOMEM);
-+
-+	nfrags = skb_shinfo(head_skb)->nr_frags;
-+	frag = skb_shinfo(head_skb)->frags;
-+	frag_skb = head_skb;
-+
- 	do {
- 		struct sk_buff *nskb;
- 		skb_frag_t *nskb_frag;
-@@ -3802,6 +3808,10 @@ normal:
- 		    (skb_headlen(list_skb) == len || sg)) {
- 			BUG_ON(skb_headlen(list_skb) > len);
- 
-+			nskb = skb_clone(list_skb, GFP_ATOMIC);
-+			if (unlikely(!nskb))
-+				goto err;
-+
- 			i = 0;
- 			nfrags = skb_shinfo(list_skb)->nr_frags;
- 			frag = skb_shinfo(list_skb)->frags;
-@@ -3820,12 +3830,8 @@ normal:
- 				frag++;
- 			}
- 
--			nskb = skb_clone(list_skb, GFP_ATOMIC);
- 			list_skb = list_skb->next;
- 
--			if (unlikely(!nskb))
--				goto err;
--
- 			if (unlikely(pskb_trim(nskb, len))) {
- 				kfree_skb(nskb);
- 				goto err;
-@@ -3890,12 +3896,16 @@ normal:
- 		skb_shinfo(nskb)->tx_flags |= skb_shinfo(head_skb)->tx_flags &
- 					      SKBTX_SHARED_FRAG;
- 
--		if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
--		    skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
-+		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
- 			goto err;
- 
- 		while (pos < offset + len) {
- 			if (i >= nfrags) {
-+				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
-+				    skb_zerocopy_clone(nskb, list_skb,
-+						       GFP_ATOMIC))
-+					goto err;
-+
- 				i = 0;
- 				nfrags = skb_shinfo(list_skb)->nr_frags;
- 				frag = skb_shinfo(list_skb)->frags;
-@@ -3909,10 +3919,6 @@ normal:
- 					i--;
- 					frag--;
- 				}
--				if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
--				    skb_zerocopy_clone(nskb, frag_skb,
--						       GFP_ATOMIC))
--					goto err;
- 
- 				list_skb = list_skb->next;
- 			}
+diff --git a/include/uapi/linux/sync_file.h b/include/uapi/linux/sync_file.h
+index ee2dcfb3d6602..d7f7c04a6e0c1 100644
+--- a/include/uapi/linux/sync_file.h
++++ b/include/uapi/linux/sync_file.h
+@@ -52,7 +52,7 @@ struct sync_fence_info {
+  * @name:	name of fence
+  * @status:	status of fence. 1: signaled 0:active <0:error
+  * @flags:	sync_file_info flags
+- * @num_fences	number of fences in the sync_file
++ * @num_fences:	number of fences in the sync_file
+  * @pad:	padding for 64-bit alignment, should always be zero
+  * @sync_fence_info: pointer to array of structs sync_fence_info with all
+  *		 fences in the sync_file
+-- 
+2.40.1
+
 
 
