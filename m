@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66FA37A7E05
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A107A8031
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235267AbjITMOf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57688 "EHLO
+        id S236181AbjITMdn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235426AbjITMOf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:35 -0400
+        with ESMTP id S236182AbjITMdm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B29C993
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EE3C433C8;
-        Wed, 20 Sep 2023 12:14:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21781AB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9C1C433CA;
+        Wed, 20 Sep 2023 12:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212069;
-        bh=swkpIMDzSku8yOJzRGNGfoLS174qVrmT25jCQv21YvA=;
+        s=korg; t=1695213216;
+        bh=9OL4dYu5Z5MVc5sdmdOf2kFkNtHPngz7tzGSCjJyf00=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sCB1IBQGKYB6OlMa7XWwQUB7H0Aoq8sc6w6S88zkHItEt7YzNunsdNzY+BeVvKdku
-         pJ573SaoimWwL2Idtg5wyMSQzp5ipwIKneEDSewy/n9sm6SL7baYi5nPvuYhRhwgsN
-         oFAtI17edYV2w4h/ZloLWqL5KilPVpwFmfgTRWGM=
+        b=XNTvdd0OnIn/oNdBVtGsRBt6tDzDmQP+w2AhNTndYqt2wWND9/5QQiKZQAyKKnFCU
+         2+CCe0ALVubkXZeEoamMIqT4ckfDIkhiXjUXj8Tb2G8N+h/+buB526oA9QoPfx7fod
+         XEsEZeSTAHpTLqDBtaaXMTpgmJtac1hbdUHJU9t8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Yuan Yao <yuanyaogoog@chromium.org>,
+        Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 140/273] scsi: be2iscsi: Add length check when parsing nlattrs
+Subject: [PATCH 5.4 203/367] virtio_ring: fix avail_wrap_counter in virtqueue_add_packed
 Date:   Wed, 20 Sep 2023 13:29:40 +0200
-Message-ID: <20230920112850.853613967@linuxfoundation.org>
+Message-ID: <20230920112903.879317771@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,48 +52,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Yuan Yao <yuanyaogoog@chromium.org>
 
-[ Upstream commit ee0268f230f66cb472df3424f380ea668da2749a ]
+[ Upstream commit 1acfe2c1225899eab5ab724c91b7e1eb2881b9ab ]
 
-beiscsi_iface_set_param() parses nlattr with nla_for_each_attr and assumes
-every attributes can be viewed as struct iscsi_iface_param_info.
+In current packed virtqueue implementation, the avail_wrap_counter won't
+flip, in the case when the driver supplies a descriptor chain with a
+length equals to the queue size; total_sg == vq->packed.vring.num.
 
-This is not true because there is no any nla_policy to validate the
-attributes passed from the upper function iscsi_set_iface_params().
+Let’s assume the following situation:
+vq->packed.vring.num=4
+vq->packed.next_avail_idx: 1
+vq->packed.avail_wrap_counter: 0
 
-Add the nla_len check before accessing the nlattr data and return EINVAL if
-the length check fails.
+Then the driver adds a descriptor chain containing 4 descriptors.
 
-Fixes: 0e43895ec1f4 ("[SCSI] be2iscsi: adding functionality to change network settings using iscsiadm")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230723075938.3713864-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+We expect the following result with avail_wrap_counter flipped:
+vq->packed.next_avail_idx: 1
+vq->packed.avail_wrap_counter: 1
+
+But, the current implementation gives the following result:
+vq->packed.next_avail_idx: 1
+vq->packed.avail_wrap_counter: 0
+
+To reproduce the bug, you can set a packed queue size as small as
+possible, so that the driver is more likely to provide a descriptor
+chain with a length equal to the packed queue size. For example, in
+qemu run following commands:
+sudo qemu-system-x86_64 \
+-enable-kvm \
+-nographic \
+-kernel "path/to/kernel_image" \
+-m 1G \
+-drive file="path/to/rootfs",if=none,id=disk \
+-device virtio-blk,drive=disk \
+-drive file="path/to/disk_image",if=none,id=rwdisk \
+-device virtio-blk,drive=rwdisk,packed=on,queue-size=4,\
+indirect_desc=off \
+-append "console=ttyS0 root=/dev/vda rw init=/bin/bash"
+
+Inside the VM, create a directory and mount the rwdisk device on it. The
+rwdisk will hang and mount operation will not complete.
+
+This commit fixes the wrap counter error by flipping the
+packed.avail_wrap_counter, when start of descriptor chain equals to the
+end of descriptor chain (head == i).
+
+Fixes: 1ce9e6055fa0 ("virtio_ring: introduce packed ring support")
+Signed-off-by: Yuan Yao <yuanyaogoog@chromium.org>
+Message-Id: <20230808051110.3492693-1-yuanyaogoog@chromium.org>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/be2iscsi/be_iscsi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/virtio/virtio_ring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
-index c8f0a2144b443..818a690771e05 100644
---- a/drivers/scsi/be2iscsi/be_iscsi.c
-+++ b/drivers/scsi/be2iscsi/be_iscsi.c
-@@ -445,6 +445,10 @@ int beiscsi_iface_set_param(struct Scsi_Host *shost,
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index b5c0509112769..e3c78c9f84584 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -1180,7 +1180,7 @@ static inline int virtqueue_add_packed(struct virtqueue *_vq,
+ 		}
  	}
  
- 	nla_for_each_attr(attrib, data, dt_len, rm_len) {
-+		/* ignore nla_type as it is never used */
-+		if (nla_len(attrib) < sizeof(*iface_param))
-+			return -EINVAL;
-+
- 		iface_param = nla_data(attrib);
+-	if (i < head)
++	if (i <= head)
+ 		vq->packed.avail_wrap_counter ^= 1;
  
- 		if (iface_param->param_type != ISCSI_NET_PARAM)
+ 	/* We're using some buffers from the free list. */
 -- 
 2.40.1
 
