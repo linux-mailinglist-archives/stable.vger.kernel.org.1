@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 275A77A7B87
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B597A7C16
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234751AbjITLxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45442 "EHLO
+        id S234997AbjITL5u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234747AbjITLxG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:06 -0400
+        with ESMTP id S234987AbjITL5t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A53D1AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB13EC433C7;
-        Wed, 20 Sep 2023 11:52:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94784C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37FCC433C9;
+        Wed, 20 Sep 2023 11:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210779;
-        bh=uKXXiU7mmVZBnHMPJZocCfAxv5WulQps9TEbhaV/2OQ=;
+        s=korg; t=1695211063;
+        bh=PVBvjKyV50B3tuc3sJt/MadM3/vKZ1NRG1FWiWR64x4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oh7M21ZAMiWka8UsOsSEKmnXDNXZWCtjNWQOJpHsou4gCpQidkb1IvciqLSRxF4Am
-         Gn3L7ZMyDN2ukkvlObbyGowfjzrlKWn4IPCQyDGeuKy3aZ+pXscU/TB8iCHRvGR2Hf
-         QdJX+2eF46LoWZ/UbtZN5HqJE9WZFvvDvR8bqdLo=
+        b=SKnMpIHS19zxV5k6TiOIa1gvuJURsB7oz86VjzkzM8X7+wkJFhPRFdmOeiMRX0/Mm
+         mc6Y5qDdOKXL5xkWFa0F1F3QUFjov1uM0enO8j6F2AsIfUj/yQyhbFt0+HPhb55izE
+         7rlLsmg/1CkREimlrKTV8JNJfa9YScV3/QBYwZp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 184/211] tracing/synthetic: Fix order of struct trace_dynamic_info
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/139] block: factor out a bvec_set_page helper
 Date:   Wed, 20 Sep 2023 13:30:28 +0200
-Message-ID: <20230920112851.579736524@linuxfoundation.org>
+Message-ID: <20230920112839.110444048@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,97 +51,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit fc52a64416b010c8324e2cb50070faae868521c1 upstream.
+[ Upstream commit d58cdfae6a22e5079656c487aad669597a0635c8 ]
 
-To make handling BIG and LITTLE endian better the offset/len of dynamic
-fields of the synthetic events was changed into a structure of:
+Add a helper to initialize a bvec based of a page pointer.  This will help
+removing various open code bvec initializations.
 
- struct trace_dynamic_info {
- #ifdef CONFIG_CPU_BIG_ENDIAN
-	u16	offset;
-	u16	len;
- #else
-	u16	len;
-	u16	offset;
- #endif
- };
-
-to replace the manual changes of:
-
- data_offset = offset & 0xffff;
- data_offest = len << 16;
-
-But if you look closely, the above is:
-
-  <len> << 16 | offset
-
-Which in little endian would be in memory:
-
- offset_lo offset_hi len_lo len_hi
-
-and in big endian:
-
- len_hi len_lo offset_hi offset_lo
-
-Which if broken into a structure would be:
-
- struct trace_dynamic_info {
- #ifdef CONFIG_CPU_BIG_ENDIAN
-	u16	len;
-	u16	offset;
- #else
-	u16	offset;
-	u16	len;
- #endif
- };
-
-Which is the opposite of what was defined.
-
-Fix this and just to be safe also add "__packed".
-
-Link: https://lore.kernel.org/all/20230908154417.5172e343@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20230908163929.2c25f3dc@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Tested-by: Sven Schnelle <svens@linux.ibm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: ddeea494a16f3 ("tracing/synthetic: Use union instead of casts")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20230203150634.3199647-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 1f0bbf28940c ("nvmet-tcp: pass iov_len instead of sg->length to bvec_set_page()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/bio-integrity.c |  7 +------
+ block/bio.c           | 12 ++----------
+ include/linux/bvec.h  | 15 +++++++++++++++
+ 3 files changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 12f875e9e69a..21ae37e49319 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -62,13 +62,13 @@ void trace_event_printf(struct trace_iterator *iter, const char *fmt, ...);
- /* Used to find the offset and length of dynamic fields in trace events */
- struct trace_dynamic_info {
- #ifdef CONFIG_CPU_BIG_ENDIAN
--	u16	offset;
- 	u16	len;
-+	u16	offset;
- #else
--	u16	len;
- 	u16	offset;
-+	u16	len;
- #endif
--};
-+} __packed;
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 91ffee6fc8cb4..4533eb4916610 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -124,23 +124,18 @@ int bio_integrity_add_page(struct bio *bio, struct page *page,
+ 			   unsigned int len, unsigned int offset)
+ {
+ 	struct bio_integrity_payload *bip = bio_integrity(bio);
+-	struct bio_vec *iv;
  
- /*
-  * The trace entry - the most basic unit of tracing. This is what
+ 	if (bip->bip_vcnt >= bip->bip_max_vcnt) {
+ 		printk(KERN_ERR "%s: bip_vec full\n", __func__);
+ 		return 0;
+ 	}
+ 
+-	iv = bip->bip_vec + bip->bip_vcnt;
+-
+ 	if (bip->bip_vcnt &&
+ 	    bvec_gap_to_prev(&bdev_get_queue(bio->bi_bdev)->limits,
+ 			     &bip->bip_vec[bip->bip_vcnt - 1], offset))
+ 		return 0;
+ 
+-	iv->bv_page = page;
+-	iv->bv_len = len;
+-	iv->bv_offset = offset;
++	bvec_set_page(&bip->bip_vec[bip->bip_vcnt], page, len, offset);
+ 	bip->bip_vcnt++;
+ 
+ 	return len;
+diff --git a/block/bio.c b/block/bio.c
+index d5cd825d6efc0..9ec72a78f1149 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -976,10 +976,7 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+ 	if (bio->bi_vcnt >= queue_max_segments(q))
+ 		return 0;
+ 
+-	bvec = &bio->bi_io_vec[bio->bi_vcnt];
+-	bvec->bv_page = page;
+-	bvec->bv_len = len;
+-	bvec->bv_offset = offset;
++	bvec_set_page(&bio->bi_io_vec[bio->bi_vcnt], page, len, offset);
+ 	bio->bi_vcnt++;
+ 	bio->bi_iter.bi_size += len;
+ 	return len;
+@@ -1055,15 +1052,10 @@ EXPORT_SYMBOL_GPL(bio_add_zone_append_page);
+ void __bio_add_page(struct bio *bio, struct page *page,
+ 		unsigned int len, unsigned int off)
+ {
+-	struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt];
+-
+ 	WARN_ON_ONCE(bio_flagged(bio, BIO_CLONED));
+ 	WARN_ON_ONCE(bio_full(bio, len));
+ 
+-	bv->bv_page = page;
+-	bv->bv_offset = off;
+-	bv->bv_len = len;
+-
++	bvec_set_page(&bio->bi_io_vec[bio->bi_vcnt], page, len, off);
+ 	bio->bi_iter.bi_size += len;
+ 	bio->bi_vcnt++;
+ }
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index 35c25dff651a5..9e3dac51eb26b 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -35,6 +35,21 @@ struct bio_vec {
+ 	unsigned int	bv_offset;
+ };
+ 
++/**
++ * bvec_set_page - initialize a bvec based off a struct page
++ * @bv:		bvec to initialize
++ * @page:	page the bvec should point to
++ * @len:	length of the bvec
++ * @offset:	offset into the page
++ */
++static inline void bvec_set_page(struct bio_vec *bv, struct page *page,
++		unsigned int len, unsigned int offset)
++{
++	bv->bv_page = page;
++	bv->bv_len = len;
++	bv->bv_offset = offset;
++}
++
+ struct bvec_iter {
+ 	sector_t		bi_sector;	/* device address in 512 byte
+ 						   sectors */
 -- 
-2.42.0
+2.40.1
 
 
 
