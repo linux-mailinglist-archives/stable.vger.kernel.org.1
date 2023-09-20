@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6C7C7A81C7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D146F7A81C8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235391AbjITMs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:48:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43262 "EHLO
+        id S235387AbjITMsb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235385AbjITMs1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:48:27 -0400
+        with ESMTP id S235385AbjITMsa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:48:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDC68F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:48:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01FEC433C7;
-        Wed, 20 Sep 2023 12:48:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61CF183
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:48:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF081C433CA;
+        Wed, 20 Sep 2023 12:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695214101;
-        bh=RmdFdLdU9tDQPZrrZWG3svroW5xD1LDOtMDJfNGNVEI=;
+        s=korg; t=1695214104;
+        bh=m7UiFBix/W4SKKHue1vs3b4RV81hz8kWYiLz6cqI/2k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CbSz/Ca6QjTuOChYRf5jaHk7cpeMrGS11bDBgGMHn04P9Av/YMgBPlfBhUrnJip8g
-         QlQbrn/8rGdTe9qh/31DPEHvKR3/q1BbR7LnWmwKyyK3WsnRrXRKcnnUMiA0YG27l7
-         JJwiPPAjJK5U3xw4PSnTXf3eGirkIZj9VG8TuMWs=
+        b=NoyZvgrndm/G3BQnTsxF/5l3D+MbiB+2RedV4nSvus6csyayc/LDdbd9IJWladUia
+         8Fdc+gXmUMQ9bD2b6uIx03+evVYeKjcK9e7HWloUgS3x3A2T+Vg+QkKg+60Yrvxpca
+         LGa5PbGWFufi+jz8pbBOD35dSxRNOQhQAP/4FR44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/110] netfilter: nf_tables: fix kdoc warnings after gc rework
-Date:   Wed, 20 Sep 2023 13:32:25 +0200
-Message-ID: <20230920112833.668726489@linuxfoundation.org>
+Subject: [PATCH 5.15 088/110] netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path
+Date:   Wed, 20 Sep 2023 13:32:26 +0200
+Message-ID: <20230920112833.708799150@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
 References: <20230920112830.377666128@linuxfoundation.org>
@@ -54,52 +54,117 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 08713cb006b6f07434f276c5ee214fb20c7fd965 ]
+[ Upstream commit 6a33d8b73dfac0a41f3877894b38082bd0c9a5bc ]
 
-Jakub Kicinski says:
-  We've got some new kdoc warnings here:
-  net/netfilter/nft_set_pipapo.c:1557: warning: Function parameter or member '_set' not described in 'pipapo_gc'
-  net/netfilter/nft_set_pipapo.c:1557: warning: Excess function parameter 'set' description in 'pipapo_gc'
-  include/net/netfilter/nf_tables.h:577: warning: Function parameter or member 'dead' not described in 'nft_set'
+Netlink event path is missing a synchronization point with GC
+transactions. Add GC sequence number update to netns release path and
+netlink event path, any GC transaction losing race will be discarded.
 
 Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/netdev/20230810104638.746e46f1@kernel.org/
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 1 +
- net/netfilter/nft_set_pipapo.c    | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 36 +++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index cd3b5b9db8890..86ffb222f4d74 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -499,6 +499,7 @@ struct nft_set_elem_expr {
-  *	@expr: stateful expression
-  * 	@ops: set ops
-  * 	@flags: set flags
-+ *	@dead: set will be freed, never cleared
-  *	@genmask: generation mask
-  * 	@klen: key length
-  * 	@dlen: data length
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 0a49c59a22dbd..03472c1d9d548 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1549,7 +1549,7 @@ static void nft_pipapo_gc_deactivate(struct net *net, struct nft_set *set,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 75b04c01f7b81..3e17d2403d899 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9202,6 +9202,22 @@ static void nft_set_commit_update(struct list_head *set_update_list)
+ 	}
+ }
  
- /**
-  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
-- * @set:	nftables API set representation
-+ * @_set:	nftables API set representation
-  * @m:		Matching data
-  */
- static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
++static unsigned int nft_gc_seq_begin(struct nftables_pernet *nft_net)
++{
++	unsigned int gc_seq;
++
++	/* Bump gc counter, it becomes odd, this is the busy mark. */
++	gc_seq = READ_ONCE(nft_net->gc_seq);
++	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++
++	return gc_seq;
++}
++
++static void nft_gc_seq_end(struct nftables_pernet *nft_net, unsigned int gc_seq)
++{
++	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++}
++
+ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
+@@ -9287,9 +9303,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 
+ 	WRITE_ONCE(nft_net->base_seq, base_seq);
+ 
+-	/* Bump gc counter, it becomes odd, this is the busy mark. */
+-	gc_seq = READ_ONCE(nft_net->gc_seq);
+-	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++	gc_seq = nft_gc_seq_begin(nft_net);
+ 
+ 	/* step 3. Start new generation, rules_gen_X now in use. */
+ 	net->nft.gencursor = nft_gencursor_next(net);
+@@ -9480,7 +9494,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 	nf_tables_gen_notify(net, skb, NFT_MSG_NEWGEN);
+ 	nf_tables_commit_audit_log(&adl, nft_net->base_seq);
+ 
+-	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++	nft_gc_seq_end(nft_net, gc_seq);
+ 	nf_tables_commit_release(net);
+ 
+ 	return 0;
+@@ -10463,6 +10477,7 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
+ 	struct net *net = n->net;
+ 	unsigned int deleted;
+ 	bool restart = false;
++	unsigned int gc_seq;
+ 
+ 	if (event != NETLINK_URELEASE || n->protocol != NETLINK_NETFILTER)
+ 		return NOTIFY_DONE;
+@@ -10470,6 +10485,9 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
+ 	nft_net = nft_pernet(net);
+ 	deleted = 0;
+ 	mutex_lock(&nft_net->commit_mutex);
++
++	gc_seq = nft_gc_seq_begin(nft_net);
++
+ 	if (!list_empty(&nf_tables_destroy_list))
+ 		nf_tables_trans_destroy_flush_work();
+ again:
+@@ -10492,6 +10510,8 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
+ 		if (restart)
+ 			goto again;
+ 	}
++	nft_gc_seq_end(nft_net, gc_seq);
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return NOTIFY_DONE;
+@@ -10529,12 +10549,20 @@ static void __net_exit nf_tables_pre_exit_net(struct net *net)
+ static void __net_exit nf_tables_exit_net(struct net *net)
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
++	unsigned int gc_seq;
+ 
+ 	mutex_lock(&nft_net->commit_mutex);
++
++	gc_seq = nft_gc_seq_begin(nft_net);
++
+ 	if (!list_empty(&nft_net->commit_list) ||
+ 	    !list_empty(&nft_net->module_list))
+ 		__nf_tables_abort(net, NFNL_ABORT_NONE);
++
+ 	__nft_release_tables(net);
++
++	nft_gc_seq_end(nft_net, gc_seq);
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 	WARN_ON_ONCE(!list_empty(&nft_net->tables));
+ 	WARN_ON_ONCE(!list_empty(&nft_net->module_list));
 -- 
 2.40.1
 
