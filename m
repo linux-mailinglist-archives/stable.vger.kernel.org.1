@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9A77A8109
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2B27A81A5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236216AbjITMmM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:42:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
+        id S234930AbjITMrT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:47:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236266AbjITMmL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:11 -0400
+        with ESMTP id S234848AbjITMrS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:47:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A01A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89798C433C8;
-        Wed, 20 Sep 2023 12:42:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE51992
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:47:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B405C433C9;
+        Wed, 20 Sep 2023 12:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213724;
-        bh=wxijHFU779rBhF+yNAVQQWjkNsN+uJlnbjkOAwEdSU0=;
+        s=korg; t=1695214032;
+        bh=DpKevSgEgR3fwceAgNsem892I3K/M0OL3aZ9IoEyvPk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c53AZGn2MQunSmC/0m1zJk4Ql/q/aLQVTGmdbeyMwoS0a4POZNlwyFlY9+ERYIw9C
-         DAz9HJNQGVGMqNrlRNN4ot6xnrID40Y/dCUYm4ApTlJ/xHCih9IJilkbxSk43ZDukY
-         dcyLyuRRUdwTXYYJeTbQC3MVZYn5udrSZFnb0Tt8=
+        b=dgZ8he5Zwx4ggyjGueXPX/CBa6FcUsc2K6nbbLB9GRI3Mq5+FktxTpR5T/5MQArni
+         oL6jnlkHZicvv14ioX4tKDFK1+HQR9zJlm0BauXQbVvZOhbxlEh5EOYe6TjtLMGLls
+         Z6hBS1LEa7hHmxfdYdElgfji+BxZu1rgUXNjz2Hc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Ritesh Harjani <riteshh@linux.ibm.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 342/367] scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
+Subject: [PATCH 5.15 061/110] jbd2: refactor wait logic for transaction updates into a common function
 Date:   Wed, 20 Sep 2023 13:31:59 +0200
-Message-ID: <20230920112907.359356898@linuxfoundation.org>
+Message-ID: <20230920112832.695623202@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,164 +50,169 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Shelekhin <k.shelekhin@yadro.com>
+From: Ritesh Harjani <riteshh@linux.ibm.com>
 
-[ Upstream commit 801f287c93ff95582b0a2d2163f12870a2f076d4 ]
+[ Upstream commit 4f98186848707f530669238d90e0562d92a78aab ]
 
-The function lio_target_nacl_info_show() uses sprintf() in a loop to print
-details for every iSCSI connection in a session without checking for the
-buffer length. With enough iSCSI connections it's possible to overflow the
-buffer provided by configfs and corrupt the memory.
+No functionality change as such in this patch. This only refactors the
+common piece of code which waits for t_updates to finish into a common
+function named as jbd2_journal_wait_updates(journal_t *)
 
-This patch replaces sprintf() with sysfs_emit_at() that checks for buffer
-boundries.
-
-Signed-off-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
-Link: https://lore.kernel.org/r/20230722152657.168859-2-k.shelekhin@yadro.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/8c564f70f4b2591171677a2a74fccb22a7b6c3a4.1642416995.git.riteshh@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 2dfba3bb40ad ("jbd2: correct the end of the journal recovery scan range")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_configfs.c | 54 ++++++++++----------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ fs/jbd2/commit.c      | 19 +++-------------
+ fs/jbd2/transaction.c | 53 ++++++++++++++++++++++++++-----------------
+ include/linux/jbd2.h  |  4 +++-
+ 3 files changed, 38 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_configfs.c b/drivers/target/iscsi/iscsi_target_configfs.c
-index 0fa1d57b26fa8..3cd671bbb9a41 100644
---- a/drivers/target/iscsi/iscsi_target_configfs.c
-+++ b/drivers/target/iscsi/iscsi_target_configfs.c
-@@ -508,102 +508,102 @@ static ssize_t lio_target_nacl_info_show(struct config_item *item, char *page)
- 	spin_lock_bh(&se_nacl->nacl_sess_lock);
- 	se_sess = se_nacl->nacl_sess;
- 	if (!se_sess) {
--		rb += sprintf(page+rb, "No active iSCSI Session for Initiator"
-+		rb += sysfs_emit_at(page, rb, "No active iSCSI Session for Initiator"
- 			" Endpoint: %s\n", se_nacl->initiatorname);
- 	} else {
- 		sess = se_sess->fabric_sess_ptr;
+diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+index 20294c1bbeab7..2705850ca6460 100644
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -484,22 +484,9 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+ 	stats.run.rs_running = jbd2_time_diff(commit_transaction->t_start,
+ 					      stats.run.rs_locked);
  
--		rb += sprintf(page+rb, "InitiatorName: %s\n",
-+		rb += sysfs_emit_at(page, rb, "InitiatorName: %s\n",
- 			sess->sess_ops->InitiatorName);
--		rb += sprintf(page+rb, "InitiatorAlias: %s\n",
-+		rb += sysfs_emit_at(page, rb, "InitiatorAlias: %s\n",
- 			sess->sess_ops->InitiatorAlias);
+-	spin_lock(&commit_transaction->t_handle_lock);
+-	while (atomic_read(&commit_transaction->t_updates)) {
+-		DEFINE_WAIT(wait);
++	// waits for any t_updates to finish
++	jbd2_journal_wait_updates(journal);
  
--		rb += sprintf(page+rb,
-+		rb += sysfs_emit_at(page, rb,
- 			      "LIO Session ID: %u   ISID: 0x%6ph  TSIH: %hu  ",
- 			      sess->sid, sess->isid, sess->tsih);
--		rb += sprintf(page+rb, "SessionType: %s\n",
-+		rb += sysfs_emit_at(page, rb, "SessionType: %s\n",
- 				(sess->sess_ops->SessionType) ?
- 				"Discovery" : "Normal");
--		rb += sprintf(page+rb, "Session State: ");
-+		rb += sysfs_emit_at(page, rb, "Session State: ");
- 		switch (sess->session_state) {
- 		case TARG_SESS_STATE_FREE:
--			rb += sprintf(page+rb, "TARG_SESS_FREE\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_FREE\n");
- 			break;
- 		case TARG_SESS_STATE_ACTIVE:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_ACTIVE\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_ACTIVE\n");
- 			break;
- 		case TARG_SESS_STATE_LOGGED_IN:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_LOGGED_IN\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_LOGGED_IN\n");
- 			break;
- 		case TARG_SESS_STATE_FAILED:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_FAILED\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_FAILED\n");
- 			break;
- 		case TARG_SESS_STATE_IN_CONTINUE:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_IN_CONTINUE\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_IN_CONTINUE\n");
- 			break;
- 		default:
--			rb += sprintf(page+rb, "ERROR: Unknown Session"
-+			rb += sysfs_emit_at(page, rb, "ERROR: Unknown Session"
- 					" State!\n");
- 			break;
- 		}
+-		prepare_to_wait(&journal->j_wait_updates, &wait,
+-					TASK_UNINTERRUPTIBLE);
+-		if (atomic_read(&commit_transaction->t_updates)) {
+-			spin_unlock(&commit_transaction->t_handle_lock);
+-			write_unlock(&journal->j_state_lock);
+-			schedule();
+-			write_lock(&journal->j_state_lock);
+-			spin_lock(&commit_transaction->t_handle_lock);
+-		}
+-		finish_wait(&journal->j_wait_updates, &wait);
+-	}
+-	spin_unlock(&commit_transaction->t_handle_lock);
+ 	commit_transaction->t_state = T_SWITCH;
  
--		rb += sprintf(page+rb, "---------------------[iSCSI Session"
-+		rb += sysfs_emit_at(page, rb, "---------------------[iSCSI Session"
- 				" Values]-----------------------\n");
--		rb += sprintf(page+rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
-+		rb += sysfs_emit_at(page, rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
- 				"  :  MaxCmdSN  :     ITT    :     TTT\n");
- 		max_cmd_sn = (u32) atomic_read(&sess->max_cmd_sn);
--		rb += sprintf(page+rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
-+		rb += sysfs_emit_at(page, rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
- 				"   0x%08x   0x%08x\n",
- 			sess->cmdsn_window,
- 			(max_cmd_sn - sess->exp_cmd_sn) + 1,
- 			sess->exp_cmd_sn, max_cmd_sn,
- 			sess->init_task_tag, sess->targ_xfer_tag);
--		rb += sprintf(page+rb, "----------------------[iSCSI"
-+		rb += sysfs_emit_at(page, rb, "----------------------[iSCSI"
- 				" Connections]-------------------------\n");
+ 	J_ASSERT (atomic_read(&commit_transaction->t_outstanding_credits) <=
+@@ -819,7 +806,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+ 	commit_transaction->t_state = T_COMMIT_DFLUSH;
+ 	write_unlock(&journal->j_state_lock);
  
- 		spin_lock(&sess->conn_lock);
- 		list_for_each_entry(conn, &sess->sess_conn_list, conn_list) {
--			rb += sprintf(page+rb, "CID: %hu  Connection"
-+			rb += sysfs_emit_at(page, rb, "CID: %hu  Connection"
- 					" State: ", conn->cid);
- 			switch (conn->conn_state) {
- 			case TARG_CONN_STATE_FREE:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_FREE\n");
- 				break;
- 			case TARG_CONN_STATE_XPT_UP:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_XPT_UP\n");
- 				break;
- 			case TARG_CONN_STATE_IN_LOGIN:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_IN_LOGIN\n");
- 				break;
- 			case TARG_CONN_STATE_LOGGED_IN:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_LOGGED_IN\n");
- 				break;
- 			case TARG_CONN_STATE_IN_LOGOUT:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_IN_LOGOUT\n");
- 				break;
- 			case TARG_CONN_STATE_LOGOUT_REQUESTED:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_LOGOUT_REQUESTED\n");
- 				break;
- 			case TARG_CONN_STATE_CLEANUP_WAIT:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_CLEANUP_WAIT\n");
- 				break;
- 			default:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"ERROR: Unknown Connection State!\n");
- 				break;
- 			}
+-	/* 
++	/*
+ 	 * If the journal is not located on the file system device,
+ 	 * then we must flush the file system device before we issue
+ 	 * the commit record
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 62e68c5b8ec3d..69aed72c8206d 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -449,7 +449,7 @@ static int start_this_handle(journal_t *journal, handle_t *handle,
+ 	}
  
--			rb += sprintf(page+rb, "   Address %pISc %s", &conn->login_sockaddr,
-+			rb += sysfs_emit_at(page, rb, "   Address %pISc %s", &conn->login_sockaddr,
- 				(conn->network_transport == ISCSI_TCP) ?
- 				"TCP" : "SCTP");
--			rb += sprintf(page+rb, "  StatSN: 0x%08x\n",
-+			rb += sysfs_emit_at(page, rb, "  StatSN: 0x%08x\n",
- 				conn->stat_sn);
- 		}
- 		spin_unlock(&sess->conn_lock);
+ 	/* OK, account for the buffers that this operation expects to
+-	 * use and add the handle to the running transaction. 
++	 * use and add the handle to the running transaction.
+ 	 */
+ 	update_t_max_wait(transaction, ts);
+ 	handle->h_transaction = transaction;
+@@ -836,6 +836,35 @@ int jbd2_journal_restart(handle_t *handle, int nblocks)
+ }
+ EXPORT_SYMBOL(jbd2_journal_restart);
+ 
++/*
++ * Waits for any outstanding t_updates to finish.
++ * This is called with write j_state_lock held.
++ */
++void jbd2_journal_wait_updates(journal_t *journal)
++{
++	transaction_t *commit_transaction = journal->j_running_transaction;
++
++	if (!commit_transaction)
++		return;
++
++	spin_lock(&commit_transaction->t_handle_lock);
++	while (atomic_read(&commit_transaction->t_updates)) {
++		DEFINE_WAIT(wait);
++
++		prepare_to_wait(&journal->j_wait_updates, &wait,
++					TASK_UNINTERRUPTIBLE);
++		if (atomic_read(&commit_transaction->t_updates)) {
++			spin_unlock(&commit_transaction->t_handle_lock);
++			write_unlock(&journal->j_state_lock);
++			schedule();
++			write_lock(&journal->j_state_lock);
++			spin_lock(&commit_transaction->t_handle_lock);
++		}
++		finish_wait(&journal->j_wait_updates, &wait);
++	}
++	spin_unlock(&commit_transaction->t_handle_lock);
++}
++
+ /**
+  * jbd2_journal_lock_updates () - establish a transaction barrier.
+  * @journal:  Journal to establish a barrier on.
+@@ -863,27 +892,9 @@ void jbd2_journal_lock_updates(journal_t *journal)
+ 		write_lock(&journal->j_state_lock);
+ 	}
+ 
+-	/* Wait until there are no running updates */
+-	while (1) {
+-		transaction_t *transaction = journal->j_running_transaction;
+-
+-		if (!transaction)
+-			break;
++	/* Wait until there are no running t_updates */
++	jbd2_journal_wait_updates(journal);
+ 
+-		spin_lock(&transaction->t_handle_lock);
+-		prepare_to_wait(&journal->j_wait_updates, &wait,
+-				TASK_UNINTERRUPTIBLE);
+-		if (!atomic_read(&transaction->t_updates)) {
+-			spin_unlock(&transaction->t_handle_lock);
+-			finish_wait(&journal->j_wait_updates, &wait);
+-			break;
+-		}
+-		spin_unlock(&transaction->t_handle_lock);
+-		write_unlock(&journal->j_state_lock);
+-		schedule();
+-		finish_wait(&journal->j_wait_updates, &wait);
+-		write_lock(&journal->j_state_lock);
+-	}
+ 	write_unlock(&journal->j_state_lock);
+ 
+ 	/*
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index ade8a6d7acff9..03d8ba98cbeb7 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -594,7 +594,7 @@ struct transaction_s
+ 	 */
+ 	unsigned long		t_log_start;
+ 
+-	/* 
++	/*
+ 	 * Number of buffers on the t_buffers list [j_list_lock, no locks
+ 	 * needed for jbd2 thread]
+ 	 */
+@@ -1538,6 +1538,8 @@ extern int	 jbd2_journal_flush(journal_t *journal, unsigned int flags);
+ extern void	 jbd2_journal_lock_updates (journal_t *);
+ extern void	 jbd2_journal_unlock_updates (journal_t *);
+ 
++void jbd2_journal_wait_updates(journal_t *);
++
+ extern journal_t * jbd2_journal_init_dev(struct block_device *bdev,
+ 				struct block_device *fs_dev,
+ 				unsigned long long start, int len, int bsize);
 -- 
 2.40.1
 
