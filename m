@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9740A7A7FEA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C6367A7DC6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236072AbjITMbP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60172 "EHLO
+        id S235389AbjITMMM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236079AbjITMbN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:13 -0400
+        with ESMTP id S234603AbjITMMM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF565B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EF2C433C8;
-        Wed, 20 Sep 2023 12:31:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B53693
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1A8C433C8;
+        Wed, 20 Sep 2023 12:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213067;
-        bh=9aCfCFG/vtVY70mkHjbJMQJOif1is92Nn9XKqokgSp0=;
+        s=korg; t=1695211926;
+        bh=Xt8nj20Umz5ioJW3uP0OSZzfFxnwk+EmfH9cnOkhgAc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sLcsgo2PSruvaVeIv5g3TrmIHEcHmoLrri/td+w15ZQQdcOwwVnIIAAzI0Upf3Bhk
-         jwJLDNg2FRJ+p5f0PRyFOO4dsm25oUc2F8iEkGhybXlDwUGG0uwBQG3f0RCETPWQIp
-         htvspLO8CHDtkkRvqYd+6ubcJzo47XV7oVAabkVE=
+        b=VyO7l9T8XOLNv6bH+I0JoVkpWI8/2yfI37n6HQFeoO0XenWjBLWhFUyMQyqEvO4eC
+         WP6Q3v9Cn3km61FCFx+rqWPgiHZASa43pVfum1WVaFSw2LviRRbN3dMUawnocf5DO0
+         KK8X0fMwdMV97YKGVbidi6AdEnn0fBKzYDOepGHA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Tom Haynes <loghyr@gmail.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 148/367] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
-Date:   Wed, 20 Sep 2023 13:28:45 +0200
-Message-ID: <20230920112902.502297267@linuxfoundation.org>
+Subject: [PATCH 4.19 086/273] ARM: dts: s3c6410: move fixed clocks under root node in Mini6410
+Date:   Wed, 20 Sep 2023 13:28:46 +0200
+Message-ID: <20230920112849.103563876@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,141 +49,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
+[ Upstream commit 8b81a8decea77bf2ca3c718732184d4aaf949096 ]
 
-The XDR specification in RFC 8881 looks like this:
+The fixed clocks are kept under dedicated 'clocks' node but this causes
+multiple dtschema warnings:
 
-struct device_addr4 {
-	layouttype4	da_layout_type;
-	opaque		da_addr_body<>;
-};
+  clocks: $nodename:0: 'clocks' does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
+  clocks: #size-cells:0:0: 0 is not one of [1, 2]
+  clocks: oscillator@0:reg:0: [0] is too short
+  clocks: oscillator@1:reg:0: [1] is too short
+  clocks: 'ranges' is a required property
+  oscillator@0: 'reg' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-struct GETDEVICEINFO4resok {
-	device_addr4	gdir_device_addr;
-	bitmap4		gdir_notification;
-};
-
-union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
-case NFS4_OK:
-	GETDEVICEINFO4resok gdir_resok4;
-case NFS4ERR_TOOSMALL:
-	count4		gdir_mincount;
-default:
-	void;
-};
-
-Looking at nfsd4_encode_getdeviceinfo() ....
-
-When the client provides a zero gd_maxcount, then the Linux NFS
-server implementation encodes the da_layout_type field and then
-skips the da_addr_body field completely, proceeding directly to
-encode gdir_notification field.
-
-There does not appear to be an option in the specification to skip
-encoding da_addr_body. Moreover, Section 18.40.3 says:
-
-> If the client wants to just update or turn off notifications, it
-> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
-> In that event, if the device ID is valid, the reply's da_addr_body
-> field of the gdir_device_addr field will be of zero length.
-
-Since the layout drivers are responsible for encoding the
-da_addr_body field, put this fix inside the ->encode_getdeviceinfo
-methods.
-
-Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Tom Haynes <loghyr@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20200907183313.29234-3-krzk@kernel.org
+Stable-dep-of: cf0cb2af6a18 ("ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
- fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
- fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
- 3 files changed, 29 insertions(+), 14 deletions(-)
+ arch/arm/boot/dts/s3c6410-mini6410.dts | 30 ++++++++++----------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
-index 442543304930b..2455dc8be18a8 100644
---- a/fs/nfsd/blocklayoutxdr.c
-+++ b/fs/nfsd/blocklayoutxdr.c
-@@ -82,6 +82,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
- 	int len = sizeof(__be32), ret, i;
- 	__be32 *p;
+diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
+index 1aeac33b0d341..75067dbcf7e83 100644
+--- a/arch/arm/boot/dts/s3c6410-mini6410.dts
++++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
+@@ -28,26 +28,18 @@ chosen {
+ 		bootargs = "console=ttySAC0,115200n8 earlyprintk rootwait root=/dev/mmcblk0p1";
+ 	};
  
-+	/*
-+	 * See paragraph 5 of RFC 8881 S18.40.3.
-+	 */
-+	if (!gdp->gd_maxcount) {
-+		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
-+			return nfserr_resource;
-+		return nfs_ok;
-+	}
-+
- 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
- 	if (!p)
- 		return nfserr_resource;
-diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
-index e81d2a5cf381e..bb205328e043d 100644
---- a/fs/nfsd/flexfilelayoutxdr.c
-+++ b/fs/nfsd/flexfilelayoutxdr.c
-@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
- 	int addr_len;
- 	__be32 *p;
+-	clocks {
+-		compatible = "simple-bus";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		fin_pll: oscillator@0 {
+-			compatible = "fixed-clock";
+-			reg = <0>;
+-			clock-frequency = <12000000>;
+-			clock-output-names = "fin_pll";
+-			#clock-cells = <0>;
+-		};
++	fin_pll: oscillator-0 {
++		compatible = "fixed-clock";
++		clock-frequency = <12000000>;
++		clock-output-names = "fin_pll";
++		#clock-cells = <0>;
++	};
  
-+	/*
-+	 * See paragraph 5 of RFC 8881 S18.40.3.
-+	 */
-+	if (!gdp->gd_maxcount) {
-+		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
-+			return nfserr_resource;
-+		return nfs_ok;
-+	}
-+
- 	/* len + padding for two strings */
- 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
- 	ver_len = 20;
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 3d7b0ad4157df..1d24fff2709c5 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -4126,20 +4126,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
+-		xusbxti: oscillator@1 {
+-			compatible = "fixed-clock";
+-			reg = <1>;
+-			clock-output-names = "xusbxti";
+-			clock-frequency = <48000000>;
+-			#clock-cells = <0>;
+-		};
++	xusbxti: oscillator-1 {
++		compatible = "fixed-clock";
++		clock-output-names = "xusbxti";
++		clock-frequency = <48000000>;
++		#clock-cells = <0>;
+ 	};
  
- 	*p++ = cpu_to_be32(gdev->gd_layout_type);
- 
--	/* If maxcount is 0 then just update notifications */
--	if (gdev->gd_maxcount != 0) {
--		ops = nfsd4_layout_ops[gdev->gd_layout_type];
--		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
--		if (nfserr) {
--			/*
--			 * We don't bother to burden the layout drivers with
--			 * enforcing gd_maxcount, just tell the client to
--			 * come back with a bigger buffer if it's not enough.
--			 */
--			if (xdr->buf->len + 4 > gdev->gd_maxcount)
--				goto toosmall;
--			return nfserr;
--		}
-+	ops = nfsd4_layout_ops[gdev->gd_layout_type];
-+	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
-+	if (nfserr) {
-+		/*
-+		 * We don't bother to burden the layout drivers with
-+		 * enforcing gd_maxcount, just tell the client to
-+		 * come back with a bigger buffer if it's not enough.
-+		 */
-+		if (xdr->buf->len + 4 > gdev->gd_maxcount)
-+			goto toosmall;
-+		return nfserr;
- 	}
- 
- 	if (gdev->gd_notify_types) {
+ 	srom-cs1@18000000 {
 -- 
 2.40.1
 
