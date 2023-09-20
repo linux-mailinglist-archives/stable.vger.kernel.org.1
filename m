@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D29B7A8030
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DAF57A7CD3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236185AbjITMdm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
+        id S235137AbjITME1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236192AbjITMdk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:40 -0400
+        with ESMTP id S235143AbjITME1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4128EC2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AD5C433CA;
-        Wed, 20 Sep 2023 12:33:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDBDB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF715C433C8;
+        Wed, 20 Sep 2023 12:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213213;
-        bh=jDE+uz+KEiq3r4kidCFaYL+gNv5jHDiCfJ5y2Z/vO8I=;
+        s=korg; t=1695211461;
+        bh=OkfCE3he1GLwi18ZPaqIZeaJKA+Q05hFMeVGqHTYfIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zNT99lDWEB2vW+kkw3Od+UWpCZtcS1hRLiDqF7JBD57F4nZpbcr5Y+0VL4iDVqbLZ
-         WMBNudjuvDHOwbwegjzE1C8YIE4rYmQNdkbK6+WE4IO2JxNGteQmWOkZTob1ptZh76
-         I86KWSYzudVWbfk2CXD7Wk2zX4n37httHuJ/rx/s=
+        b=wQi7mreoAYMfR7+0aeOecIgdK3HeJ1wvPYATYt79kCHGDz0rShsoWaOslBQ2m17uU
+         mIffRa6fM0qa6QbknhM+kaDbmF5YMsvUFJj/iVGQXqs+TzKJyz6IxLCLZ1ArJUmhui
+         hc9ehZDsLeENtVQCxoHO+xcvhUy8CR7fhopEIv0g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/367] cpufreq: Fix the race condition while updating the transition_task of policy
+Subject: [PATCH 4.14 076/186] media: cx24120: Add retval check for cx24120_message_send()
 Date:   Wed, 20 Sep 2023 13:29:39 +0200
-Message-ID: <20230920112903.854234776@linuxfoundation.org>
+Message-ID: <20230920112839.619675823@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 61bfbf7951ba561dcbdd5357702d3cbc2d447812 ]
+[ Upstream commit 96002c0ac824e1773d3f706b1f92e2a9f2988047 ]
 
-The field 'transition_task' of policy structure is used to track the
-task which is performing the frequency transition. Using this field to
-print a warning once detect a case where the same task is calling
-_begin() again before completing the preivous frequency transition via
-the _end().
+If cx24120_message_send() returns error, we should keep local struct
+unchanged.
 
-However, there is a potential race condition in _end() and _begin() APIs
-while updating the field 'transition_task' of policy, the scenario is
-depicted below:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-             Task A                            Task B
-
-        /* 1st freq transition */
-        Invoke _begin() {
-                ...
-                ...
-        }
-                                        /* 2nd freq transition */
-                                        Invoke _begin() {
-                                                ... //waiting for A to
-                                                ... //clear
-                                                ... //transition_ongoing
-                                                ... //in _end() for
-                                                ... //the 1st transition
-                                                        |
-        Change the frequency                            |
-                                                        |
-        Invoke _end() {                                 |
-                ...                                     |
-                ...                                     |
-                transition_ongoing = false;             V
-                                                transition_ongoing = true;
-                                                transition_task = current;
-                transition_task = NULL;
-                ... //A overwrites the task
-                ... //performing the transition
-                ... //result in error warning.
-        }
-
-To fix this race condition, the transition_lock of policy structure is
-now acquired before updating policy structure in _end() API. Which ensure
-that only one task can update the 'transition_task' field at a time.
-
-Link: https://lore.kernel.org/all/b3c61d8a-d52d-3136-fbf0-d1de9f1ba411@huawei.com/
-Fixes: ca654dc3a93d ("cpufreq: Catch double invocations of cpufreq_freq_transition_begin/end")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 5afc9a25be8d ("[media] Add support for TechniSat Skystar S2")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/dvb-frontends/cx24120.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 01f0a8bdd534b..11b9edc713baa 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -441,8 +441,10 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
+diff --git a/drivers/media/dvb-frontends/cx24120.c b/drivers/media/dvb-frontends/cx24120.c
+index 7f11dcc94d854..869fb1a9ddf38 100644
+--- a/drivers/media/dvb-frontends/cx24120.c
++++ b/drivers/media/dvb-frontends/cx24120.c
+@@ -980,7 +980,9 @@ static void cx24120_set_clock_ratios(struct dvb_frontend *fe)
+ 	cmd.arg[8] = (clock_ratios_table[idx].rate >> 8) & 0xff;
+ 	cmd.arg[9] = (clock_ratios_table[idx].rate >> 0) & 0xff;
  
- 	cpufreq_notify_post_transition(policy, freqs, transition_failed);
+-	cx24120_message_send(state, &cmd);
++	ret = cx24120_message_send(state, &cmd);
++	if (ret != 0)
++		return;
  
-+	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
- 	policy->transition_task = NULL;
-+	spin_unlock(&policy->transition_lock);
- 
- 	wake_up(&policy->transition_wait);
- }
+ 	/* Calculate ber window rates for stat work */
+ 	cx24120_calculate_ber_window(state, clock_ratios_table[idx].rate);
 -- 
 2.40.1
 
