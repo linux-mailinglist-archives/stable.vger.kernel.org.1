@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB8D7A784C
+	by mail.lfdr.de (Postfix) with ESMTP id 052D87A784B
 	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:58:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234338AbjITJ6j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60346 "EHLO
+        id S234322AbjITJ6k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234342AbjITJ6g (ORCPT
+        with ESMTP id S234323AbjITJ6g (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:58:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF64B110
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:58:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C8AC433CC;
-        Wed, 20 Sep 2023 09:58:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DA812C
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:58:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B428AC433C8;
+        Wed, 20 Sep 2023 09:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203903;
-        bh=Q7p9ybYWxOz4RM8X7CjWgE3uu4p6dZJZt/dMp9lDGSg=;
+        s=korg; t=1695203906;
+        bh=6u80P3s2bc3yJWGIdz7c8l7a6Bx7cw4hzdJRWF7sqVg=;
         h=Subject:To:Cc:From:Date:From;
-        b=C6+CczdMmt5coql1H8ibAJDREMMjewmfvZobvMB5SzqXpxn9RSf+Ve+o0PH1zSVUu
-         8Hl5bAvnoJ+Y9UETrIZVq2a7noIPcFgMINExDcdHSM6Gu/BQIM57RaWGXh+Ak4eVZX
-         zEqanOzpKETFQDRmM8uzKV11o+JffFFbYhpW5f6Q=
-Subject: FAILED: patch "[PATCH] scsi: pm8001: Setup IRQs on resume" failed to apply to 4.19-stable tree
+        b=bODcYvEOJMct+wPliTYOMHoMWE5G3IVlhjv7gXI03h7nL/sYzxRr46QLJloQA+YJl
+         pEVuLcEd7rZ6TbLLCoKor/1z16Pq60r16mpQz2Em+kvBkOtJzWjVDQ2cjBjabq8dVJ
+         eGnWmJkxlrPDqwmx9KaqiC3MrWyM1u7Kn1rTJykg=
+Subject: FAILED: patch "[PATCH] scsi: pm8001: Setup IRQs on resume" failed to apply to 4.14-stable tree
 To:     dlemoal@kernel.org, jinpu.wang@ionos.com,
         martin.petersen@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:58:12 +0200
-Message-ID: <2023092012-enrich-emergency-af23@gregkh>
+Date:   Wed, 20 Sep 2023 11:58:13 +0200
+Message-ID: <2023092013-habitable-caring-8e6f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x c91774818b041ed290df29fb1dc0725be9b12e83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092012-enrich-emergency-af23@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092013-habitable-caring-8e6f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
