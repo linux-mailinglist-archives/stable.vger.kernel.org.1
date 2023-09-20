@@ -2,47 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B9CA7A7D1C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 325F67A7E72
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234549AbjITMGq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43960 "EHLO
+        id S235563AbjITMSC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234555AbjITMGq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:46 -0400
+        with ESMTP id S235579AbjITMSB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6424818B;
-        Wed, 20 Sep 2023 05:06:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499EEC433C9;
-        Wed, 20 Sep 2023 12:06:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EBE185
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E6AC43395;
+        Wed, 20 Sep 2023 12:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211590;
-        bh=22WZIh8qPYXQhbhW6eHxOmZFqpcXexaNc+fMv2+ZMK4=;
+        s=korg; t=1695212263;
+        bh=v+DspCEOn3/xtlJIMq48jJAhh0klkx4wQB1BLdp+USA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iUuu15aC8w9haaJew70ibVIYVCMaUMbCBE1GRjngG1m4xrTxnsGaS/Gf9almE3wI3
-         m9V42lj4u5L4Wi3dujL3EiNzB8bd4wWvRQeV1J/bmNx3P0s9SBxF1v66G0zZPux0b0
-         k2rrsnVeOWPh68HuPRgsEUl8RUGS8wk4eax0CnSk=
+        b=QAxOpvD4iYK3E9ZRK7wTRwBzSijpz6aIylmf6pnrzAmauBj5ABihiPSm7KjJDlWwX
+         DjBW3EKO8Olv8ulDrbtavIn3OU8il0HUxy8IER+gbhXSI+o0ld/cjoFrvRCKNyfFDs
+         RlZv59Nhp4KNayh8tVcYhow4bMQvoB6N8ZfZqOIs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com,
-        Takeshi Misawa <jeliantsurux@gmail.com>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Ian Kent <raven@themaw.net>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrei Vagin <avagin@gmail.com>, autofs@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Liang Chen <liangchen.linux@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 149/186] autofs: fix memory leak of waitqueues in autofs_catatonic_mode
+Subject: [PATCH 4.19 212/273] veth: Fixing transmit return status for dropped packets
 Date:   Wed, 20 Sep 2023 13:30:52 +0200
-Message-ID: <20230920112842.349000704@linuxfoundation.org>
+Message-ID: <20230920112853.016576849@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,108 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Liang Chen <liangchen.linux@gmail.com>
 
-[ Upstream commit ccbe77f7e45dfb4420f7f531b650c00c6e9c7507 ]
+[ Upstream commit 151e887d8ff97e2e42110ffa1fb1e6a2128fb364 ]
 
-Syzkaller reports a memory leak:
+The veth_xmit function returns NETDEV_TX_OK even when packets are dropped.
+This behavior leads to incorrect calculations of statistics counts, as
+well as things like txq->trans_start updates.
 
-BUG: memory leak
-unreferenced object 0xffff88810b279e00 (size 96):
-  comm "syz-executor399", pid 3631, jiffies 4294964921 (age 23.870s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 08 9e 27 0b 81 88 ff ff  ..........'.....
-    08 9e 27 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ..'.............
-  backtrace:
-    [<ffffffff814cfc90>] kmalloc_trace+0x20/0x90 mm/slab_common.c:1046
-    [<ffffffff81bb75ca>] kmalloc include/linux/slab.h:576 [inline]
-    [<ffffffff81bb75ca>] autofs_wait+0x3fa/0x9a0 fs/autofs/waitq.c:378
-    [<ffffffff81bb88a7>] autofs_do_expire_multi+0xa7/0x3e0 fs/autofs/expire.c:593
-    [<ffffffff81bb8c33>] autofs_expire_multi+0x53/0x80 fs/autofs/expire.c:619
-    [<ffffffff81bb6972>] autofs_root_ioctl_unlocked+0x322/0x3b0 fs/autofs/root.c:897
-    [<ffffffff81bb6a95>] autofs_root_ioctl+0x25/0x30 fs/autofs/root.c:910
-    [<ffffffff81602a9c>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff81602a9c>] __do_sys_ioctl fs/ioctl.c:870 [inline]
-    [<ffffffff81602a9c>] __se_sys_ioctl fs/ioctl.c:856 [inline]
-    [<ffffffff81602a9c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
-    [<ffffffff84608225>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84608225>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84800087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-autofs_wait_queue structs should be freed if their wait_ctr becomes zero.
-Otherwise they will be lost.
-
-In this case an AUTOFS_IOC_EXPIRE_MULTI ioctl is done, then a new
-waitqueue struct is allocated in autofs_wait(), its initial wait_ctr
-equals 2. After that wait_event_killable() is interrupted (it returns
--ERESTARTSYS), so that 'wq->name.name == NULL' condition may be not
-satisfied. Actually, this condition can be satisfied when
-autofs_wait_release() or autofs_catatonic_mode() is called and, what is
-also important, wait_ctr is decremented in those places. Upon the exit of
-autofs_wait(), wait_ctr is decremented to 1. Then the unmounting process
-begins: kill_sb calls autofs_catatonic_mode(), which should have freed the
-waitqueues, but it only decrements its usage counter to zero which is not
-a correct behaviour.
-
-edit:imk
-This description is of course not correct. The umount performed as a result
-of an expire is a umount of a mount that has been automounted, it's not the
-autofs mount itself. They happen independently, usually after everything
-mounted within the autofs file system has been expired away. If everything
-hasn't been expired away the automount daemon can still exit leaving mounts
-in place. But expires done in both cases will result in a notification that
-calls autofs_wait_release() with a result status. The problem case is the
-summary execution of of the automount daemon. In this case any waiting
-processes won't be woken up until either they are terminated or the mount
-is umounted.
-end edit: imk
-
-So in catatonic mode we should free waitqueues which counter becomes zero.
-
-edit: imk
-Initially I was concerned that the calling of autofs_wait_release() and
-autofs_catatonic_mode() was not mutually exclusive but that can't be the
-case (obviously) because the queue entry (or entries) is removed from the
-list when either of these two functions are called. Consequently the wait
-entry will be freed by only one of these functions or by the woken process
-in autofs_wait() depending on the order of the calls.
-end edit: imk
-
-Reported-by: syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com
-Suggested-by: Takeshi Misawa <jeliantsurux@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Ian Kent <raven@themaw.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: autofs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Message-Id: <169112719161.7590.6700123246297365841.stgit@donald.themaw.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: e314dbdc1c0d ("[NET]: Virtual ethernet device driver.")
+Signed-off-by: Liang Chen <liangchen.linux@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/autofs4/waitq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/veth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/autofs4/waitq.c b/fs/autofs4/waitq.c
-index 961a12dc6dc81..5863532675e3c 100644
---- a/fs/autofs4/waitq.c
-+++ b/fs/autofs4/waitq.c
-@@ -42,8 +42,9 @@ void autofs4_catatonic_mode(struct autofs_sb_info *sbi)
- 		wq->status = -ENOENT; /* Magic is gone - report failure */
- 		kfree(wq->name.name);
- 		wq->name.name = NULL;
--		wq->wait_ctr--;
- 		wake_up_interruptible(&wq->queue);
-+		if (!--wq->wait_ctr)
-+			kfree(wq);
- 		wq = nwq;
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index ea999a6639330..8006a7716168f 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -181,6 +181,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct veth_priv *rcv_priv, *priv = netdev_priv(dev);
+ 	struct veth_rq *rq = NULL;
++	int ret = NETDEV_TX_OK;
+ 	struct net_device *rcv;
+ 	int length = skb->len;
+ 	bool rcv_xdp = false;
+@@ -210,6 +211,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	} else {
+ drop:
+ 		atomic64_inc(&priv->dropped);
++		ret = NET_XMIT_DROP;
  	}
- 	fput(sbi->pipe);	/* Close the pipe */
+ 
+ 	if (rcv_xdp)
+@@ -217,7 +219,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	rcu_read_unlock();
+ 
+-	return NETDEV_TX_OK;
++	return ret;
+ }
+ 
+ static u64 veth_stats_one(struct pcpu_vstats *result, struct net_device *dev)
 -- 
 2.40.1
 
