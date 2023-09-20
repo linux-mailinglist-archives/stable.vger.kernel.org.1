@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9990F7A7CBA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA5A27A7BD6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235067AbjITMDl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33604 "EHLO
+        id S234689AbjITL4A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235077AbjITMDl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:41 -0400
+        with ESMTP id S234870AbjITLz6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2046AE5;
-        Wed, 20 Sep 2023 05:03:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27282C433CB;
-        Wed, 20 Sep 2023 12:03:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F16EDE9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A761C433C8;
+        Wed, 20 Sep 2023 11:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211409;
-        bh=NkV4mVOHSp0SAvF2a6nh7Q6AQIhEX2K0IGCvg4lKixE=;
+        s=korg; t=1695210947;
+        bh=zlpL46Z/Xz9zfkdc4mfRkN81U475dMqPtkvSaOkEWhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OT3x26+XS9K1jY9bjop17NkMR+Hb9/xcKfAccBuVyNeC/xp40UxM0UsteDWsu8rZu
-         0ILvHMx9gTPMKc2Nd+0G/rfw6+BPzMVymk2zhGzRh5j6T05QvSCYXQ9aBcQ9rwoqDG
-         OlUXAtw5MxTp+uDjR9ltDZTg1VZXkI86n0WkADwI=
+        b=eqtUaHqlAF+V8/J/yBMBfMr5qCADyPTov+RhFW22mkuCg2ydyLd5SmSJCb6P4Y65S
+         S3gAdujOmVbPjIaRFLOvbKZn95mOzk46WEe5IzeYpV0/+MeWXS0/ZDruqMmDEV0AuM
+         +gZEK/6M5Cmj4tFZ75d5uZ91uApEaofSkzt8Nkmo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Rob Evers <revers@redhat.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Jozef Bacik <jobacik@redhat.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Oleksandr Natalenko <oleksandr@redhat.com>,
+        patches@lists.linux.dev,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Leo Chen <sancchen@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 083/186] scsi: qedf: Do not touch __user pointer in qedf_dbg_stop_io_on_error_cmd_read() directly
+Subject: [PATCH 6.1 052/139] drm/amd/display: Blocking invalid 420 modes on HDMI TMDS for DCN314
 Date:   Wed, 20 Sep 2023 13:29:46 +0200
-Message-ID: <20230920112839.880806180@linuxfoundation.org>
+Message-ID: <20230920112837.610093009@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@redhat.com>
+From: Leo Chen <sancchen@amd.com>
 
-[ Upstream commit 7d3d20dee4f648ec44e9717d5f647d594d184433 ]
+[ Upstream commit 4c6107a653ccf361cb1b6ba35d558a1a5e6e57ac ]
 
-The qedf_dbg_stop_io_on_error_cmd_read() function invokes sprintf()
-directly on a __user pointer, which may crash the kernel.
+[Why & How]
+HDMI TMDS does not have ODM support. Filtering 420 modes that
+exceed the 4096 FMT limitation on DCN314 will resolve
+intermittent corruptions issues.
 
-Avoid doing that by using a small on-stack buffer for scnprintf() and then
-calling simple_read_from_buffer() which does a proper copy_to_user() call.
-
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
-Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Rob Evers <revers@redhat.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Cc: Jozef Bacik <jobacik@redhat.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: GR-QLogic-Storage-Upstream@marvell.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-2-oleksandr@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Leo Chen <sancchen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ .../gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c  | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 2b1ef3075e93f..273dd258a0022 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -204,18 +204,17 @@ qedf_dbg_stop_io_on_error_cmd_read(struct file *filp, char __user *buffer,
- 				   size_t count, loff_t *ppos)
- {
- 	int cnt;
-+	char cbuf[7];
- 	struct qedf_dbg_ctx *qedf_dbg =
- 				(struct qedf_dbg_ctx *)filp->private_data;
- 	struct qedf_ctx *qedf = container_of(qedf_dbg,
- 	    struct qedf_ctx, dbg_ctx);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
+index 4998b211ccac7..5b47ccde64241 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
+@@ -4225,7 +4225,9 @@ void dml314_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_
+ 				}
+ 				if (v->OutputFormat[k] == dm_420 && v->HActive[k] > DCN314_MAX_FMT_420_BUFFER_WIDTH
+ 						&& v->ODMCombineEnablePerState[i][k] != dm_odm_combine_mode_4to1) {
+-					if (v->HActive[k] / 2 > DCN314_MAX_FMT_420_BUFFER_WIDTH) {
++					if (v->Output[k] == dm_hdmi) {
++						FMTBufferExceeded = true;
++					} else if (v->HActive[k] / 2 > DCN314_MAX_FMT_420_BUFFER_WIDTH) {
+ 						v->ODMCombineEnablePerState[i][k] = dm_odm_combine_mode_4to1;
+ 						v->PlaneRequiredDISPCLK = v->PlaneRequiredDISPCLKWithODMCombine4To1;
  
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
--	cnt = sprintf(buffer, "%s\n",
-+	cnt = scnprintf(cbuf, sizeof(cbuf), "%s\n",
- 	    qedf->stop_io_on_error ? "true" : "false");
- 
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
- }
- 
- static ssize_t
 -- 
 2.40.1
 
