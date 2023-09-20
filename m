@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F22BC7A7ED8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 195987A7E81
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234635AbjITMVY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33686 "EHLO
+        id S235583AbjITMSX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235765AbjITMVU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:20 -0400
+        with ESMTP id S235580AbjITMSV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C05E189
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5087C433D9;
-        Wed, 20 Sep 2023 12:21:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD6E92
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959FCC433C7;
+        Wed, 20 Sep 2023 12:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212468;
-        bh=vLp8/PXrhm+HA/bmGsb7n9MbaOKzmXw8BbZlOSpPdaY=;
+        s=korg; t=1695212295;
+        bh=UEp8yshibGkhwR0pMp7cbOHvuuDGqos8213cwuErxZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nqg0xljo/n74ODy/vf6ki3TsGawVbAJef9waT81/enCHXDJXcEqq690Up0UmztskT
-         Ww+jqtAkqcPz9maBV9WkZwySmxhr1rjyBbA8BFoc5LNsW8qGRiz219Kzbw/aTyHim3
-         +Bz0BVy/5Ba0Pz0TNFlOSz2t6kcYJFmFf59cATRQ=
+        b=Rq0i9/pfnLOTy/oFzsJMPQMb4tWgt8F4XziY8shPz474bFFM4nLRwQjP9zHcUulo6
+         G0cuR89+eAmvsuW/moxQZmy08QWhVNnFmmUEb/Mq/VHBMYZENaOqfwRT+mj3Q35yBy
+         4Xv7KekcG4Cvkh5svp5jMdzkFOWfeJFvUAOPJrsw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Azeem Shaikh <azeemshaikh38@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
+        Wander Lairson Costa <wander@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/83] crypto: lrw,xts - Replace strlcpy with strscpy
+Subject: [PATCH 4.19 223/273] netfilter: nfnetlink_osf: avoid OOB read
 Date:   Wed, 20 Sep 2023 13:31:03 +0200
-Message-ID: <20230920112827.201845018@linuxfoundation.org>
+Message-ID: <20230920112853.304823477@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Azeem Shaikh <azeemshaikh38@gmail.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit babb80b3ecc6f40c962e13c654ebcd27f25ee327 ]
+[ Upstream commit f4f8a7803119005e87b716874bec07c751efafec ]
 
-strlcpy() reads the entire source buffer first.
-This read may exceed the destination size limit.
-This is both inefficient and can lead to linear read
-overflows if a source string is not NUL-terminated [1].
-In an effort to remove strlcpy() completely [2], replace
-strlcpy() here with strscpy().
+The opt_num field is controlled by user mode and is not currently
+validated inside the kernel. An attacker can take advantage of this to
+trigger an OOB read and potentially leak information.
 
-Direct replacement is safe here since return value of -errno
-is used to check for truncation instead of sizeof(dest).
+BUG: KASAN: slab-out-of-bounds in nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
+Read of size 2 at addr ffff88804bc64272 by task poc/6431
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-[2] https://github.com/KSPP/linux/issues/89
+CPU: 1 PID: 6431 Comm: poc Not tainted 6.0.0-rc4 #1
+Call Trace:
+ nf_osf_match_one+0xbed/0xd10 net/netfilter/nfnetlink_osf.c:88
+ nf_osf_find+0x186/0x2f0 net/netfilter/nfnetlink_osf.c:281
+ nft_osf_eval+0x37f/0x590 net/netfilter/nft_osf.c:47
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:214
+ nft_do_chain+0x2b0/0x1490 net/netfilter/nf_tables_core.c:264
+ nft_do_chain_ipv4+0x17c/0x1f0 net/netfilter/nft_chain_filter.c:23
+ [..]
 
-Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Also add validation to genre, subtype and version fields.
+
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Lucas Leong <wmliang@infosec.exchange>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/lrw.c | 6 +++---
- crypto/xts.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ net/netfilter/nfnetlink_osf.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/crypto/lrw.c b/crypto/lrw.c
-index bcf09fbc750af..80d9076e42e0b 100644
---- a/crypto/lrw.c
-+++ b/crypto/lrw.c
-@@ -357,10 +357,10 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	 * cipher name.
- 	 */
- 	if (!strncmp(cipher_name, "ecb(", 4)) {
--		unsigned len;
-+		int len;
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 21e4554c76955..f3676238e64f2 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -318,6 +318,14 @@ static int nfnl_osf_add_callback(struct net *net, struct sock *ctnl,
  
--		len = strlcpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
--		if (len < 2 || len >= sizeof(ecb_name))
-+		len = strscpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
-+		if (len < 2)
- 			goto err_free_inst;
+ 	f = nla_data(osf_attrs[OSF_ATTR_FINGER]);
  
- 		if (ecb_name[len - 1] != ')')
-diff --git a/crypto/xts.c b/crypto/xts.c
-index c6a105dba38b9..74dc199d54867 100644
---- a/crypto/xts.c
-+++ b/crypto/xts.c
-@@ -395,10 +395,10 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	 * cipher name.
- 	 */
- 	if (!strncmp(cipher_name, "ecb(", 4)) {
--		unsigned len;
-+		int len;
- 
--		len = strlcpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
--		if (len < 2 || len >= sizeof(ctx->name))
-+		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
-+		if (len < 2)
- 			goto err_free_inst;
- 
- 		if (ctx->name[len - 1] != ')')
++	if (f->opt_num > ARRAY_SIZE(f->opt))
++		return -EINVAL;
++
++	if (!memchr(f->genre, 0, MAXGENRELEN) ||
++	    !memchr(f->subtype, 0, MAXGENRELEN) ||
++	    !memchr(f->version, 0, MAXGENRELEN))
++		return -EINVAL;
++
+ 	kf = kmalloc(sizeof(struct nf_osf_finger), GFP_KERNEL);
+ 	if (!kf)
+ 		return -ENOMEM;
 -- 
 2.40.1
 
