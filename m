@@ -2,143 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6CF7A8D9B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 22:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D9A27A8DC6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 22:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjITUNa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 16:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
+        id S229498AbjITU3G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 16:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjITUN3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 16:13:29 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E4FA9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 13:13:19 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-400a087b0bfso2104835e9.2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 13:13:19 -0700 (PDT)
+        with ESMTP id S229451AbjITU3G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 16:29:06 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C92DAA1
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 13:29:00 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-31dd10c2b8bso226380f8f.3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 13:29:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695240797; x=1695845597; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zd8Do9SJJUDst37nmnERp+r9LxKeGK/VDgtvpwIPuCY=;
-        b=XH00e/Bqpj344sIhJsu42IBEMyjpG9NZQA2sxZwefzELniYcifxD8hrDFlhzfzol21
-         rTQ6FEra+fMeit7Q3DbMSF4TEdFMOwFwfgZc5ATUZT4Z+GVy+Xq0P5cuY2apXzABV7y/
-         5/NpN1HAYybobV4lRNMIrO8EeN4KcstCCJWbjBQSyDcwgIzCiQTfT0n7aYyOmpXwVw7D
-         HGSrBMaYZEaTssmGHnA1nma6PFeR5GL1yjce06kQ1h7WM3TVpAb0RUcxV4tSrmIu7mcP
-         H1bwQv7L57AHouACbcuzsa3o6g8EPyobnxVBkZYo4mXj2dGFSJ5U7SbGeuCbcfmuL5/C
-         dGXg==
+        d=gmail.com; s=20230601; t=1695241739; x=1695846539; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YgsQjPYSA4x9EUAST26pLIMgzwk5/fmUNEDBBVE+P4A=;
+        b=Ue/arN93mwyg8iKLJhbSFF+q+mIhcBN5Rk4lKj708pkihWlD0xI3IJSfskhPu6+xP6
+         VlVzkb95PcBHv5G9CFMCS6cuh+Zn5o9ieWpQUkiRZ+IFh7u0NcVSBFf0txtp+IEZMUfL
+         +n2iwL3jKnZtmx5XxhBGqQr8Gv4+zdi8Jai42sKOMf2Se3/fyGGgm7F5NYtz2sUViRGb
+         p/NdH5VVGWL1gZhZTfBCyTUy/7eem2uQS13827nZwqCzS2MQEKvH3DWU0jloNc89dk6C
+         t6Zie03d6H9qinAeckzaPSLeudx3L77cMtSPoJ3qlW2KhRvXeLEFvT+qxDyWveacRR8+
+         VHug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695240797; x=1695845597;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
+        d=1e100.net; s=20230601; t=1695241739; x=1695846539;
+        h=to:subject:message-id:date:from:sender:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zd8Do9SJJUDst37nmnERp+r9LxKeGK/VDgtvpwIPuCY=;
-        b=prveeRl51Hl/QGDlemVaR9XIkRV4wHM/nBjOQULnyhVre+AHzYnDqFjk2cnVn8wh4/
-         8p+itZTzXtgRYNU7DxUwxtmUmXaAYcayjDCc17krqKJH9OaFSLTPcVjc7NyNCEJr9PLy
-         pXtIfKH3nlXpzDnACrhK4kbqgMUOa2fL/eeB0vzQ4x0gn1r44wmyc6q6YSA4GudZknKu
-         Lh7rjG/V23x/+FaBu9Y5K+o965JUsSNT9nx8lyfZBiDvBM25iiiAf6Nfe+0FLy8e0548
-         b7V5szYBvwjsgsZJYuUvH2m/Kr/7hnsRAPvTR9XTSNmwa0iMBHflX9HDE9jtl+IR0xda
-         9yPw==
-X-Gm-Message-State: AOJu0YyPhoG6nlOqDy/tkq5Lh1yee93HmRaRjjaLljXYtcMPIEBT9G+j
-        IVu4eLkwWJUayVufD86xM7Q=
-X-Google-Smtp-Source: AGHT+IGar0PuT+VjHqU64mWQ3i2PiNibAkrooc0IjrAJPYVu/s5ByDeuaxe9SVZq4z3GLtKPFhBI6g==
-X-Received: by 2002:adf:ee11:0:b0:314:350a:6912 with SMTP id y17-20020adfee11000000b00314350a6912mr3418365wrn.36.1695240797195;
-        Wed, 20 Sep 2023 13:13:17 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id k1-20020adfd221000000b003217c096c1esm1390198wrh.73.2023.09.20.13.13.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 13:13:15 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-        id B7506BE2DE0; Wed, 20 Sep 2023 22:13:14 +0200 (CEST)
-Date:   Wed, 20 Sep 2023 22:13:14 +0200
-From:   Salvatore Bonaccorso <carnil@debian.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Uday M Bhat <uday.m.bhat@intel.com>,
-        Jairaj Arava <jairaj.arava@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 27/83] ASoC: Intel: sof_sdw: Update BT offload
- config for soundwire config
-Message-ID: <ZQtSWm3ycmA1W7Ry@eldamar.lan>
-References: <20230920112826.634178162@linuxfoundation.org>
- <20230920112827.751203739@linuxfoundation.org>
+        bh=YgsQjPYSA4x9EUAST26pLIMgzwk5/fmUNEDBBVE+P4A=;
+        b=RnZVAsMIbZiWA5npAT0QX6mlpPRYAvzQZX4EShd06TMHIHWspDfIk5RJVIw4cLPfDQ
+         8/FOFNOmIeB/WG3HveGGjFOHSLzDbErIQiHcp5jNh+gAY5v9E6nAFkrvtMHDqkN/nQkJ
+         tt5gQyK0/ARxQYoJlEjPH1e8HW1Lay8nfdwn2Tw8j/gKodVZ0E6ZkupN29i807qdEGt7
+         +JpVtNpWlnyEkP8goQ/bGQHfTdoHDUMMRdVStkjVsN5P4i1qYIOMx48PEsiSIwVulvfL
+         WeBDKdJTSVOh9ahtYwT1+PbsOyQ22a1ymL3WfOQRgwGi87+yo+hGPluB5gGwEc0qb8e9
+         eXWw==
+X-Gm-Message-State: AOJu0Yz5wF24PW0R67byZscIoxSNDL5hNh1E5GIYoYw5lErRd8I2lIwk
+        llu/EVJ99slXiLRRWud5Ce9LKxTAT1CE2QfrQbs=
+X-Google-Smtp-Source: AGHT+IGDfv/YLLELO80/AwOpt2FqIG3pvnqbIIT+ZCfg9BFOvM4bzq1JUiJir9NJ7gpa6NUyZFEhhXHVmlbh71wxQAc=
+X-Received: by 2002:a5d:674b:0:b0:321:56af:5ef9 with SMTP id
+ l11-20020a5d674b000000b0032156af5ef9mr3573600wrw.70.1695241738899; Wed, 20
+ Sep 2023 13:28:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230920112827.751203739@linuxfoundation.org>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Sender: mr.qamarmuhama@gmail.com
+Received: by 2002:a5d:55d0:0:b0:314:417c:5250 with HTTP; Wed, 20 Sep 2023
+ 13:28:58 -0700 (PDT)
+From:   Dr Lisa Williams <lw4666555@gmail.com>
+Date:   Wed, 20 Sep 2023 13:28:58 -0700
+X-Google-Sender-Auth: RaD5QO1dRIIf5603nALuOx_XGfU
+Message-ID: <CAJEdJUj51ULvzHQjTvyqWX6U0qNLV4evzUfbGxfu-kP0FaSjGA@mail.gmail.com>
+Subject: Hi,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+Hi,
 
-On Wed, Sep 20, 2023 at 01:31:17PM +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Uday M Bhat <uday.m.bhat@intel.com>
-> 
-> [ Upstream commit a14aded9299187bb17ef90700eb2cf1120ef5885 ]
-> 
-> For soundwire config, SSP1 is used for BT offload. This is enabled
-> in sof_sdw_quirk_table
-> 
-> Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-> Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-> Signed-off-by: Jairaj Arava <jairaj.arava@intel.com>
-> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Link: https://lore.kernel.org/r/20230731214257.444605-5-pierre-louis.bossart@linux.intel.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  sound/soc/intel/boards/sof_sdw.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-> index f36a0fda1b6ae..1955d277fdf20 100644
-> --- a/sound/soc/intel/boards/sof_sdw.c
-> +++ b/sound/soc/intel/boards/sof_sdw.c
-> @@ -214,7 +214,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
->  			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
->  			DMI_MATCH(DMI_PRODUCT_NAME, "Rex"),
->  		},
-> -		.driver_data = (void *)(SOF_SDW_PCH_DMIC),
-> +		.driver_data = (void *)(SOF_SDW_PCH_DMIC |
-> +					SOF_BT_OFFLOAD_SSP(1) |
-> +					SOF_SSP_BT_OFFLOAD_PRESENT),
->  	},
->  	/* LunarLake devices */
->  	{
-> -- 
-> 2.40.1
+My name is Dr. Lisa Williams, from the United States, currently living
+in the United Kingdom.
 
-I see the following build issue while trying to check 5.10.196-rc1:
+I hope you consider my friend request. I will share some of my photos
+and more details about me when I get your reply.
 
-sound/soc/intel/boards/sof_sdw.c:218:6: error: implicit declaration of function ‘SOF_BT_OFFLOAD_SSP’ [-Werror=implicit-function-declaration]
-  218 |      SOF_BT_OFFLOAD_SSP(1) |
-      |      ^~~~~~~~~~~~~~~~~~
-sound/soc/intel/boards/sof_sdw.c:219:6: error: ‘SOF_SSP_BT_OFFLOAD_PRESENT’ undeclared here (not in a function)
-  219 |      SOF_SSP_BT_OFFLOAD_PRESENT),
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: some warnings being treated as errors
-make[7]: *** [scripts/Makefile.build:286: sound/soc/intel/boards/sof_sdw.o] Error 1
-
-Regards,
-Salvatore
+With love
+Lisa
