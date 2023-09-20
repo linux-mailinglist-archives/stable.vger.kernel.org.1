@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A56C7A7D4B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C637A817B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235236AbjITMIO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59278 "EHLO
+        id S236337AbjITMpz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235235AbjITMIN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:13 -0400
+        with ESMTP id S236310AbjITMpy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7CFA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ACDC433C8;
-        Wed, 20 Sep 2023 12:08:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B9499
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFD3C433CA;
+        Wed, 20 Sep 2023 12:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211687;
-        bh=JWUeEW/2wRF3OVfZp0jr1Cn3NgJUpHDhxnwpwaB3IVo=;
+        s=korg; t=1695213948;
+        bh=NbJq0nBJPHEktm4674kLJG2A8wO7lZodLR3bz4R3FRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vYC/1w/j7sl/Tlx8SJ7r3yKH4zXQXdjaNCwOTkYqDsUUrlVF2xKuGlWxyb4UVQsEE
-         D1c59L/Zdng6hBJqKDZ6yEWVNkZYCbxSVOpU/IuftP8mFhTbNZmqjVAts/E0NwETrq
-         ADRqh5+OwtJAKVpWBX63Y63bbe7CmTqzkrFpQd2g=
+        b=yH2kzYrPRfdVRDif9yWOEwaiAzyAbI8GLf+F5xVdMFqu2Zcw4HRnz8s3n7CIz9brF
+         zJpH4GufhrVzgblk+4L3ITsbjksarCsORWUxoXa9ebPVLa3LapNsei5/4vs0wUHZSd
+         VQ88EbZ5c0x3lO6N0ni491beOeeaYHAQ+XYR6dog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATCH 4.14 185/186] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
-Date:   Wed, 20 Sep 2023 13:31:28 +0200
-Message-ID: <20230920112843.555347765@linuxfoundation.org>
+        patches@lists.linux.dev, Rong Tao <rongtao@cestc.cn>,
+        Petr Mladek <pmladek@suse.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 031/110] samples/hw_breakpoint: Fix kernel BUG invalid opcode: 0000
+Date:   Wed, 20 Sep 2023 13:31:29 +0200
+Message-ID: <20230920112831.539643478@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +51,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: valis <sec@valis.email>
+From: Rong Tao <rongtao@cestc.cn>
 
-commit 76e42ae831991c828cffa8c37736ebfb831ad5ec upstream.
+[ Upstream commit 910e230d5f1bb72c54532e94fbb1705095c7bab6 ]
 
-When fw_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+Macro symbol_put() is defined as __symbol_put(__stringify(x))
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
+    ksym_name = "jiffies"
+    symbol_put(ksym_name)
 
-Fix this by no longer copying the tcf_result struct from the old filter.
+will be resolved as
 
-Fixes: e35a8ee5993b ("net: sched: fw use RCU")
-Reported-by: valis <sec@valis.email>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Fixed small conflict as 'fnew->ifindex' assignment is not protected by
-  CONFIG_NET_CLS_IND on upstream since a51486266c3 ]
-Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    __symbol_put("ksym_name")
+
+which is clearly wrong. So symbol_put must be replaced with __symbol_put.
+
+When we uninstall hw_breakpoint.ko (rmmod), a kernel bug occurs with the
+following error:
+
+[11381.854152] kernel BUG at kernel/module/main.c:779!
+[11381.854159] invalid opcode: 0000 [#2] PREEMPT SMP PTI
+[11381.854163] CPU: 8 PID: 59623 Comm: rmmod Tainted: G      D    OE      6.2.9-200.fc37.x86_64 #1
+[11381.854167] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./B360M-HDV, BIOS P3.20 10/23/2018
+[11381.854169] RIP: 0010:__symbol_put+0xa2/0xb0
+[11381.854175] Code: 00 e8 92 d2 f7 ff 65 8b 05 c3 2f e6 78 85 c0 74 1b 48 8b 44 24 30 65 48 2b 04 25 28 00 00 00 75 12 48 83 c4 38 c3 cc cc cc cc <0f> 0b 0f 1f 44 00 00 eb de e8 c0 df d8 00 90 90 90 90 90 90 90 90
+[11381.854178] RSP: 0018:ffffad8ec6ae7dd0 EFLAGS: 00010246
+[11381.854181] RAX: 0000000000000000 RBX: ffffffffc1fd1240 RCX: 000000000000000c
+[11381.854184] RDX: 000000000000006b RSI: ffffffffc02bf7c7 RDI: ffffffffc1fd001c
+[11381.854186] RBP: 000055a38b76e7c8 R08: ffffffff871ccfe0 R09: 0000000000000000
+[11381.854188] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[11381.854190] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[11381.854192] FS:  00007fbf7c62c740(0000) GS:ffff8c5badc00000(0000) knlGS:0000000000000000
+[11381.854195] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[11381.854197] CR2: 000055a38b7793f8 CR3: 0000000363e1e001 CR4: 00000000003726e0
+[11381.854200] DR0: ffffffffb3407980 DR1: 0000000000000000 DR2: 0000000000000000
+[11381.854202] DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+[11381.854204] Call Trace:
+[11381.854207]  <TASK>
+[11381.854212]  s_module_exit+0xc/0xff0 [symbol_getput]
+[11381.854219]  __do_sys_delete_module.constprop.0+0x198/0x2f0
+[11381.854225]  do_syscall_64+0x58/0x80
+[11381.854231]  ? exit_to_user_mode_prepare+0x180/0x1f0
+[11381.854237]  ? syscall_exit_to_user_mode+0x17/0x40
+[11381.854241]  ? do_syscall_64+0x67/0x80
+[11381.854245]  ? syscall_exit_to_user_mode+0x17/0x40
+[11381.854248]  ? do_syscall_64+0x67/0x80
+[11381.854252]  ? exc_page_fault+0x70/0x170
+[11381.854256]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Signed-off-by: Rong Tao <rongtao@cestc.cn>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_fw.c |    1 -
- 1 file changed, 1 deletion(-)
+ samples/hw_breakpoint/data_breakpoint.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -281,7 +281,6 @@ static int fw_change(struct net *net, st
- 			return -ENOBUFS;
+diff --git a/samples/hw_breakpoint/data_breakpoint.c b/samples/hw_breakpoint/data_breakpoint.c
+index 418c46fe5ffc3..9debd128b2ab8 100644
+--- a/samples/hw_breakpoint/data_breakpoint.c
++++ b/samples/hw_breakpoint/data_breakpoint.c
+@@ -70,7 +70,7 @@ static int __init hw_break_module_init(void)
+ static void __exit hw_break_module_exit(void)
+ {
+ 	unregister_wide_hw_breakpoint(sample_hbp);
+-	symbol_put(ksym_name);
++	__symbol_put(ksym_name);
+ 	printk(KERN_INFO "HW Breakpoint for %s write uninstalled\n", ksym_name);
+ }
  
- 		fnew->id = f->id;
--		fnew->res = f->res;
- #ifdef CONFIG_NET_CLS_IND
- 		fnew->ifindex = f->ifindex;
- #endif /* CONFIG_NET_CLS_IND */
+-- 
+2.40.1
+
 
 
