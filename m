@@ -2,47 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CDD7A7F8B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E617A7D5D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:09:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235755AbjITM1x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
+        id S235310AbjITMJD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235749AbjITM1x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:27:53 -0400
+        with ESMTP id S235270AbjITMIx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52082CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:27:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F146C433C7;
-        Wed, 20 Sep 2023 12:27:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F46DC6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D95C433CB;
+        Wed, 20 Sep 2023 12:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212867;
-        bh=Zi6BEGV7YyeqlKMKDRRYVaCAOTxPti04IHSU/6t5Umo=;
+        s=korg; t=1695211726;
+        bh=5XJM2lolIt7OyGZRa3Im+WKhg5jK1E7UJNjGVhJNH/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B0+7njSpqx+bSzLLcKfB0j768QiaFCBuA5dNR9YTzgY0+Pu4HuquoexeyuDZpjiyb
-         gHSz9KsEGq0zjngu5jkI+AfbKchjYgdVO0iYwA+jHw6r4YetGZenuv5cBYc2NIIWFg
-         aNb6V9iQ2t6Kf1ZsTIu+iyECI+bb95yUO+QG6bHw=
+        b=swscoYkTSVVLwyAfDkB1FyE/knj5j0FUIKuy7Y09M+/AzacVGJSq9Gmh77H1uqD03
+         m2dNeP3LsdFYL2atJR97yy5ceBjHDBMPqXBisdr5W8BdWKJpAncyS+h1w3Cc7ZxfOu
+         TsPGT1/yFXZ/9qduMbKAL1/BER77LwkGBc3KKEfY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Kurt Hackel <kurt.hackel@oracle.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 075/367] fs: ocfs2: namei: check return value of ocfs2_add_entry()
-Date:   Wed, 20 Sep 2023 13:27:32 +0200
-Message-ID: <20230920112900.473368466@linuxfoundation.org>
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 013/273] nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
+Date:   Wed, 20 Sep 2023 13:27:33 +0200
+Message-ID: <20230920112846.840666945@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,54 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 6b72e5f9e79360fce4f2be7fe81159fbdf4256a5 ]
+commit cdaac8e7e5a059f9b5e816cda257f08d0abffacd upstream.
 
-Process result of ocfs2_add_entry() in case we have an error
-value.
+A syzbot stress test using a corrupted disk image reported that
+mark_buffer_dirty() called from __nilfs_mark_inode_dirty() or
+nilfs_palloc_commit_alloc_entry() may output a kernel warning, and can
+panic if the kernel is booted with panic_on_warn.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This is because nilfs2 keeps buffer pointers in local structures for some
+metadata and reuses them, but such buffers may be forcibly discarded by
+nilfs_clear_dirty_page() in some critical situations.
 
-Link: https://lkml.kernel.org/r/20230803145417.177649-1-artem.chernyshev@red-soft.ru
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Kurt Hackel <kurt.hackel@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
+This issue is reported to appear after commit 28a65b49eb53 ("nilfs2: do
+not write dirty data after degenerating to read-only"), but the issue has
+potentially existed before.
+
+Fix this issue by checking the uptodate flag when attempting to reuse an
+internally held buffer, and reloading the metadata instead of reusing the
+buffer if the flag was lost.
+
+Link: https://lkml.kernel.org/r/20230818131804.7758-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000003da75f05fdeffd12@google.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 3.10+
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/namei.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nilfs2/alloc.c |    3 ++-
+ fs/nilfs2/inode.c |    7 +++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index fb284bf3aed15..cd6a214398266 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -1524,6 +1524,10 @@ static int ocfs2_rename(struct inode *old_dir,
- 		status = ocfs2_add_entry(handle, new_dentry, old_inode,
- 					 OCFS2_I(old_inode)->ip_blkno,
- 					 new_dir_bh, &target_insert);
-+		if (status < 0) {
-+			mlog_errno(status);
-+			goto bail;
-+		}
- 	}
+--- a/fs/nilfs2/alloc.c
++++ b/fs/nilfs2/alloc.c
+@@ -205,7 +205,8 @@ static int nilfs_palloc_get_block(struct
+ 	int ret;
  
- 	old_inode->i_ctime = current_time(old_inode);
--- 
-2.40.1
-
+ 	spin_lock(lock);
+-	if (prev->bh && blkoff == prev->blkoff) {
++	if (prev->bh && blkoff == prev->blkoff &&
++	    likely(buffer_uptodate(prev->bh))) {
+ 		get_bh(prev->bh);
+ 		*bhp = prev->bh;
+ 		spin_unlock(lock);
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -1036,7 +1036,7 @@ int nilfs_load_inode_block(struct inode
+ 	int err;
+ 
+ 	spin_lock(&nilfs->ns_inode_lock);
+-	if (ii->i_bh == NULL) {
++	if (ii->i_bh == NULL || unlikely(!buffer_uptodate(ii->i_bh))) {
+ 		spin_unlock(&nilfs->ns_inode_lock);
+ 		err = nilfs_ifile_get_inode_block(ii->i_root->ifile,
+ 						  inode->i_ino, pbh);
+@@ -1045,7 +1045,10 @@ int nilfs_load_inode_block(struct inode
+ 		spin_lock(&nilfs->ns_inode_lock);
+ 		if (ii->i_bh == NULL)
+ 			ii->i_bh = *pbh;
+-		else {
++		else if (unlikely(!buffer_uptodate(ii->i_bh))) {
++			__brelse(ii->i_bh);
++			ii->i_bh = *pbh;
++		} else {
+ 			brelse(*pbh);
+ 			*pbh = ii->i_bh;
+ 		}
 
 
