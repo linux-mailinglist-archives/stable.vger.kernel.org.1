@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C96A7A7830
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AA257A7831
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234294AbjITJ5W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:57:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
+        id S234243AbjITJ51 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:57:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234271AbjITJ5U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:20 -0400
+        with ESMTP id S234274AbjITJ5Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB6FD6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D219C433CA;
-        Wed, 20 Sep 2023 09:57:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2D9BC9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D568C433C9;
+        Wed, 20 Sep 2023 09:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203827;
-        bh=vbNkRrVPZGlxQFPTsZGPqltyDyUoTh8vu0j2KvQn9dE=;
+        s=korg; t=1695203837;
+        bh=/lRuwJ8g5nRiFqUInc7wICIEdLiF6B70ebvHXa6oZ2I=;
         h=Subject:To:Cc:From:Date:From;
-        b=VsKaRo9tLdWfuQ+xtqzwn3Bzc/DJWD2/JKo9nUBwaAtHfHw7yaiUT5AHqRRVae7Wf
-         5qO/gqFZEJLZJaqD/3cD30gj7SzDLA4rBaqzDhypfJRJXZqAFa95tjlqVamIPTQjEy
-         HMrtpJH8Z4oOZb6IQu/RONdgoCpEUFRPoMJu7coQ=
-Subject: FAILED: patch "[PATCH] ata: libata: disallow dev-initiated LPM transitions to" failed to apply to 4.14-stable tree
-To:     niklas.cassel@wdc.com, dlemoal@kernel.org
+        b=v/qhFXEkk8uE0Ms9YvqiTu6V1A3e2qI5vKkFMlcc21RSFoQTqsgmt0eHvGi/QPynn
+         71EcMUpcTACiwzNUpHckq11vDnZc0H2VtfRHGR5TL//b8ArI5lUrPpINjX/YNMSHgt
+         86qtTw8PxqQBIoL80FB+IxcRpHkolQZE8anUE7pA=
+Subject: FAILED: patch "[PATCH] ata: libahci: clear pending interrupt status" failed to apply to 5.15-stable tree
+To:     chensiying21@gmail.com, Chloe_Chen@asmedia.com.tw,
+        dlemoal@kernel.org, niklas.cassel@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:57:02 +0200
-Message-ID: <2023092002-mobster-onset-2af9@gregkh>
+Date:   Wed, 20 Sep 2023 11:57:14 +0200
+Message-ID: <2023092014-ritzy-preaching-56d2@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -42,30 +43,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 24e0e61db3cb86a66824531989f1df80e0939f26
+git cherry-pick -x 737dd811a3dbfd7edd4ad2ba5152e93d99074f83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092002-mobster-onset-2af9@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092014-ritzy-preaching-56d2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-24e0e61db3cb ("ata: libata: disallow dev-initiated LPM transitions to unsupported states")
-7fe183c773c4 ("ata: start separating SATA specific code from libata-core.c")
-a52fbcfc7b38 ("ata: move EXPORT_SYMBOL_GPL()s close to exported code")
-10a663a1b151 ("ata: ahci: Add shutdown to freeze hardware resources of ahci")
-95364f36701e ("ata: make qc_prep return ata_completion_errors")
-c82ee6d3beaa ("treewide: Replace GPLv2 boilerplate/reference with SPDX - rule 18")
-4e8065aa6c6f ("scsi: libata: Add missing newline at end of file")
-051935978432 ("Merge branch 'for-4.19' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/libata")
+737dd811a3db ("ata: libahci: clear pending interrupt status")
+93c7711494f4 ("ata: ahci: Drop pointless VPRINTK() calls and convert the remaining ones")
 
 thanks,
 
@@ -73,113 +68,94 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 24e0e61db3cb86a66824531989f1df80e0939f26 Mon Sep 17 00:00:00 2001
-From: Niklas Cassel <niklas.cassel@wdc.com>
-Date: Mon, 4 Sep 2023 22:42:56 +0200
-Subject: [PATCH] ata: libata: disallow dev-initiated LPM transitions to
- unsupported states
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 737dd811a3dbfd7edd4ad2ba5152e93d99074f83 Mon Sep 17 00:00:00 2001
+From: Szuying Chen <chensiying21@gmail.com>
+Date: Thu, 7 Sep 2023 16:17:10 +0800
+Subject: [PATCH] ata: libahci: clear pending interrupt status
 
-In AHCI 1.3.1, the register description for CAP.SSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Slumber state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Slumber requests."
+When a CRC error occurs, the HBA asserts an interrupt to indicate an
+interface fatal error (PxIS.IFS). The ISR clears PxIE and PxIS, then
+does error recovery. If the adapter receives another SDB FIS
+with an error (PxIS.TFES) from the device before the start of the EH
+recovery process, the interrupt signaling the new SDB cannot be
+serviced as PxIE was cleared already. This in turn results in the HBA
+inability to issue any command during the error recovery process after
+setting PxCMD.ST to 1 because PxIS.TFES is still set.
 
-In AHCI 1.3.1, the register description for CAP.PSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Partial state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Partial requests."
+According to AHCI 1.3.1 specifications section 6.2.2, fatal errors
+notified by setting PxIS.HBFS, PxIS.HBDS, PxIS.IFS or PxIS.TFES will
+cause the HBA to enter the ERR:Fatal state. In this state, the HBA
+shall not issue any new commands.
 
-Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
-a device is not allowed to initiate transitions to power states which are
-unsupported by the HBA.
+To avoid this situation, introduce the function
+ahci_port_clear_pending_irq() to clear pending interrupts before
+executing a COMRESET. This follows the AHCI 1.3.1 - section 6.2.2.2
+specification.
 
-DevSleep is always initiated by the HBA, however, for completeness, set the
-corresponding bit in PxSCTL.IPM such that agressive link power management
-cannot transition to DevSleep if DevSleep is not supported.
-
-sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
-However, only libahci has the ability to read the CAP/CAP2 register to see
-if these features are supported. Therefore, in order to not introduce any
-regressions on ata_piix or libata-pmp, create flags that indicate that the
-respective feature is NOT supported. This way, the behavior for ata_piix
-and libata-pmp should remain unchanged.
-
-This change is based on a patch originally submitted by Runa Guo-oc.
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
+Signed-off-by: Szuying Chen <Chloe_Chen@asmedia.com.tw>
+Fixes: e0bfd149973d ("[PATCH] ahci: stop engine during hard reset")
 Cc: stable@vger.kernel.org
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index abb5911c9d09..08745e7db820 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1883,6 +1883,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	else
- 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index e2bacedf28ef..f1263364fa97 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1256,6 +1256,26 @@ static ssize_t ahci_activity_show(struct ata_device *dev, char *buf)
+ 	return sprintf(buf, "%d\n", emp->blink_policy);
+ }
  
-+	if (!(hpriv->cap & HOST_CAP_PART))
-+		host->flags |= ATA_HOST_NO_PART;
++static void ahci_port_clear_pending_irq(struct ata_port *ap)
++{
++	struct ahci_host_priv *hpriv = ap->host->private_data;
++	void __iomem *port_mmio = ahci_port_base(ap);
++	u32 tmp;
 +
-+	if (!(hpriv->cap & HOST_CAP_SSC))
-+		host->flags |= ATA_HOST_NO_SSC;
++	/* clear SError */
++	tmp = readl(port_mmio + PORT_SCR_ERR);
++	dev_dbg(ap->host->dev, "PORT_SCR_ERR 0x%x\n", tmp);
++	writel(tmp, port_mmio + PORT_SCR_ERR);
 +
-+	if (!(hpriv->cap2 & HOST_CAP2_SDS))
-+		host->flags |= ATA_HOST_NO_DEVSLP;
++	/* clear port IRQ */
++	tmp = readl(port_mmio + PORT_IRQ_STAT);
++	dev_dbg(ap->host->dev, "PORT_IRQ_STAT 0x%x\n", tmp);
++	if (tmp)
++		writel(tmp, port_mmio + PORT_IRQ_STAT);
 +
- 	if (pi.flags & ATA_FLAG_EM)
- 		ahci_reset_em(host);
++	writel(1 << ap->port_no, hpriv->mmio + HOST_IRQ_STAT);
++}
++
+ static void ahci_port_init(struct device *dev, struct ata_port *ap,
+ 			   int port_no, void __iomem *mmio,
+ 			   void __iomem *port_mmio)
+@@ -1270,18 +1290,7 @@ static void ahci_port_init(struct device *dev, struct ata_port *ap,
+ 	if (rc)
+ 		dev_warn(dev, "%s (%d)\n", emsg, rc);
  
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 5d31c08be013..a701e1538482 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -396,10 +396,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
- 	case ATA_LPM_MED_POWER_WITH_DIPM:
- 	case ATA_LPM_MIN_POWER_WITH_PARTIAL:
- 	case ATA_LPM_MIN_POWER:
--		if (ata_link_nr_enabled(link) > 0)
--			/* no restrictions on LPM transitions */
-+		if (ata_link_nr_enabled(link) > 0) {
-+			/* assume no restrictions on LPM transitions */
- 			scontrol &= ~(0x7 << 8);
--		else {
-+
-+			/*
-+			 * If the controller does not support partial, slumber,
-+			 * or devsleep, then disallow these transitions.
-+			 */
-+			if (link->ap->host->flags & ATA_HOST_NO_PART)
-+				scontrol |= (0x1 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_SSC)
-+				scontrol |= (0x2 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
-+				scontrol |= (0x4 << 8);
-+		} else {
- 			/* empty port, power off */
- 			scontrol &= ~0xf;
- 			scontrol |= (0x1 << 2);
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 52d58b13e5ee..bf4913f4d7ac 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -222,6 +222,10 @@ enum {
- 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
- 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+-	/* clear SError */
+-	tmp = readl(port_mmio + PORT_SCR_ERR);
+-	dev_dbg(dev, "PORT_SCR_ERR 0x%x\n", tmp);
+-	writel(tmp, port_mmio + PORT_SCR_ERR);
+-
+-	/* clear port IRQ */
+-	tmp = readl(port_mmio + PORT_IRQ_STAT);
+-	dev_dbg(dev, "PORT_IRQ_STAT 0x%x\n", tmp);
+-	if (tmp)
+-		writel(tmp, port_mmio + PORT_IRQ_STAT);
+-
+-	writel(1 << port_no, mmio + HOST_IRQ_STAT);
++	ahci_port_clear_pending_irq(ap);
  
-+	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
-+	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
-+	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
-+
- 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+ 	/* mark esata ports */
+ 	tmp = readl(port_mmio + PORT_CMD);
+@@ -1603,6 +1612,8 @@ int ahci_do_hardreset(struct ata_link *link, unsigned int *class,
+ 	tf.status = ATA_BUSY;
+ 	ata_tf_to_fis(&tf, 0, 0, d2h_fis);
  
- 	/* various lengths of time */
++	ahci_port_clear_pending_irq(ap);
++
+ 	rc = sata_link_hardreset(link, timing, deadline, online,
+ 				 ahci_check_ready);
+ 
 
