@@ -2,150 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D96B37A8CBD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 21:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 266527A8CED
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 21:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbjITT2I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 15:28:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59236 "EHLO
+        id S230136AbjITTap (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 15:30:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjITT2H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 15:28:07 -0400
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B5E94;
-        Wed, 20 Sep 2023 12:28:02 -0700 (PDT)
+        with ESMTP id S230190AbjITTai (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 15:30:38 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09F4CE8;
+        Wed, 20 Sep 2023 12:30:00 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1c59c40b840so1189565ad.3;
+        Wed, 20 Sep 2023 12:30:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1695238082; x=1726774082;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3EuVlNZSA5R6HEGbmtLno+CIP17KRWTgo1O4bolnZTY=;
-  b=ip5VqVdLhZuYX53rRCE6DDQOpbdRgo1G+9hlihL/fjJ1FVYAIEIjL054
-   NNEaXfVS301Ys+elL43Ral0JQqZCCYevZ4/0TbzFhmo5nI7g0xnzPxukA
-   HUoY0reM9vbWeqxDt4O0aqsUbXewrVtOJvJAbqiaAbn9wIG4hHjhIfHGF
-   k=;
-X-IronPort-AV: E=Sophos;i="6.03,162,1694736000"; 
-   d="scan'208";a="364769464"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-5eae960a.us-west-2.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 19:28:01 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2c-m6i4x-5eae960a.us-west-2.amazon.com (Postfix) with ESMTPS id A2EDA40E6A;
-        Wed, 20 Sep 2023 19:28:00 +0000 (UTC)
-Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 20 Sep 2023 19:27:47 +0000
-Received: from u1e958862c3245e.ant.amazon.com (10.111.86.147) by
- EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 20 Sep 2023 19:27:47 +0000
-From:   Suraj Jitindar Singh <surajjs@amazon.com>
-To:     <stable@vger.kernel.org>
-CC:     <james.morse@arm.com>, <alexandru.elisei@arm.com>,
-        <suzuki.poulose@arm.com>, <oliver.upton@linux.dev>,
-        <catalin.marinas@arm.com>, <linux-arm-kernel@lists.infradead.org>,
-        <kvmarm@lists.linux.dev>, <kvmarm@lists.cs.columbia.edu>,
-        <linux-kernel@vger.kernel.org>, <sjitindarsingh@gmail.com>,
-        Will Deacon <will@kernel.org>,
-        Quentin Perret <qperret@google.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH stable 6.1.y 2/2] KVM: arm64: Prevent unconditional donation of unmapped regions from the host
-Date:   Wed, 20 Sep 2023 12:27:29 -0700
-Message-ID: <20230920192729.694309-2-surajjs@amazon.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230920192729.694309-1-surajjs@amazon.com>
-References: <20230920192729.694309-1-surajjs@amazon.com>
+        d=gmail.com; s=20230601; t=1695238195; x=1695842995; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sUlxpDvphMvioljxEZkNm9H9LA+4RY/SFbC6XXedRTw=;
+        b=ASD+BNWovAiBra66V2QKTPel/fYx4WENK7t9hrVQr5jTojdgj7oISZGSJTiwhSZT9V
+         IFFJ/OVEGFjvyEecRszc2VybpqYm6c4hkoz63Kvq0PRbsanv8qjILSJ+AfzJTLHttxZp
+         zEqGM/MQBF6r/QLOw8bPYXm5EjgeBzkjmcxpxKnR71FFsE/g0JjVVTV8xSzDVAXD2650
+         yuHQkakVp/ibI4wkDEAGh3g7EaMzGKv1IRD8paDkBw8ITZscwXGTphrtdqdUOLSNuzoH
+         +PJwGZs1BcurvahS9b7BvA007UXAR1psPvpBiUEr5qHjgZDRJTRTH3kiIsB/8vDW9/8r
+         5gZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695238195; x=1695842995;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sUlxpDvphMvioljxEZkNm9H9LA+4RY/SFbC6XXedRTw=;
+        b=f2Mja0IvkOJCCAXBY/Otg0nOGR+rbmlqk4DbaOHZ0tAxgU0n/4C56l5VQaQzdAUksd
+         x2OR1ak76LYM9PNYeD/pJsKy5vdi9pHQ+rzRf4sYLJ1+FOMndGJNuejFLkdleedH2URx
+         q1hiTtiUFq2/INLAn1fMfzQJDkX8sdfXyyH3ZUCl8TAZ6j75uhdXoptP9/IBLMHlTU2H
+         tQ9oGgNj1gIPUoBN3pFPi3ItMBIOWzGaHE3EGgUY4OIKdm52egKIEFoKOEzvwEv0dYEd
+         AJnbQlcWufnTvZfcd4RmmMxpXDiCu803+X43tCDwcSnAeKIUQx7cNonF5+HaMdi0XQWH
+         bHdg==
+X-Gm-Message-State: AOJu0YziPSsVCflhV/+3aLDV+nr7oNvwndkki+KPz4vID+xTw49QVM18
+        GWEaGbiU+KDLQCz2z8JrM6I=
+X-Google-Smtp-Source: AGHT+IFzCe9v4enWMqD8aJlN8WVdwg5w2F6MgrYVy9VIPVO0fjAfqUhk7kgjFnoWDx4oCn1gTQTlmA==
+X-Received: by 2002:a17:903:120b:b0:1c3:1167:26e4 with SMTP id l11-20020a170903120b00b001c3116726e4mr3725633plh.60.1695238194996;
+        Wed, 20 Sep 2023 12:29:54 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id iw13-20020a170903044d00b001c582de968dsm4964589plb.72.2023.09.20.12.29.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Sep 2023 12:29:54 -0700 (PDT)
+Message-ID: <d48fb8da-c170-0c79-9ffe-152bc07ce819@gmail.com>
+Date:   Wed, 20 Sep 2023 12:29:52 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.111.86.147]
-X-ClientProxiedBy: EX19D041UWB003.ant.amazon.com (10.13.139.176) To
- EX19D030UWB002.ant.amazon.com (10.13.139.182)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 6.1 000/139] 6.1.55-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230920112835.549467415@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Will Deacon <will@kernel.org>
+On 9/20/23 04:28, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.55 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.55-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-commit 09cce60bddd6461a93a5bf434265a47827d1bc6f upstream.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Since host stage-2 mappings are created lazily, we cannot rely solely on
-the pte in order to recover the target physical address when checking a
-host-initiated memory transition as this permits donation of unmapped
-regions corresponding to MMIO or "no-map" memory.
-
-Instead of inspecting the pte, move the addr_is_allowed_memory() check
-into the host callback function where it is passed the physical address
-directly from the walker.
-
-Cc: Quentin Perret <qperret@google.com>
-Fixes: e82edcc75c4e ("KVM: arm64: Implement do_share() helper for sharing memory")
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230518095844.1178-1-will@kernel.org
-[ bp: s/ctx->addr/addr in __check_page_state_visitor due to missing commit
-      "KVM: arm64: Combine visitor arguments into a context structure"
-      in stable.
-]
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
----
- arch/arm64/kvm/hyp/nvhe/mem_protect.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-index 0f6c053686c7..0faa330a41ed 100644
---- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-+++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-@@ -424,7 +424,7 @@ struct pkvm_mem_share {
- 
- struct check_walk_data {
- 	enum pkvm_page_state	desired;
--	enum pkvm_page_state	(*get_page_state)(kvm_pte_t pte);
-+	enum pkvm_page_state	(*get_page_state)(kvm_pte_t pte, u64 addr);
- };
- 
- static int __check_page_state_visitor(u64 addr, u64 end, u32 level,
-@@ -435,10 +435,7 @@ static int __check_page_state_visitor(u64 addr, u64 end, u32 level,
- 	struct check_walk_data *d = arg;
- 	kvm_pte_t pte = *ptep;
- 
--	if (kvm_pte_valid(pte) && !addr_is_allowed_memory(kvm_pte_to_phys(pte)))
--		return -EINVAL;
--
--	return d->get_page_state(pte) == d->desired ? 0 : -EPERM;
-+	return d->get_page_state(pte, addr) == d->desired ? 0 : -EPERM;
- }
- 
- static int check_page_state_range(struct kvm_pgtable *pgt, u64 addr, u64 size,
-@@ -453,8 +450,11 @@ static int check_page_state_range(struct kvm_pgtable *pgt, u64 addr, u64 size,
- 	return kvm_pgtable_walk(pgt, addr, size, &walker);
- }
- 
--static enum pkvm_page_state host_get_page_state(kvm_pte_t pte)
-+static enum pkvm_page_state host_get_page_state(kvm_pte_t pte, u64 addr)
- {
-+	if (!addr_is_allowed_memory(addr))
-+		return PKVM_NOPAGE;
-+
- 	if (!kvm_pte_valid(pte) && pte)
- 		return PKVM_NOPAGE;
- 
-@@ -521,7 +521,7 @@ static int host_initiate_unshare(u64 *completer_addr,
- 	return __host_set_page_state_range(addr, size, PKVM_PAGE_OWNED);
- }
- 
--static enum pkvm_page_state hyp_get_page_state(kvm_pte_t pte)
-+static enum pkvm_page_state hyp_get_page_state(kvm_pte_t pte, u64 addr)
- {
- 	if (!kvm_pte_valid(pte))
- 		return PKVM_NOPAGE;
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.34.1
+Florian
 
