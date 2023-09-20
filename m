@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D8277A8026
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF647A7E02
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236003AbjITMdb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
+        id S235157AbjITMO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236185AbjITMda (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:30 -0400
+        with ESMTP id S234792AbjITMO1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6C6F2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A223CC433C8;
-        Wed, 20 Sep 2023 12:33:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A802B83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BFBC433CB;
+        Wed, 20 Sep 2023 12:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213203;
-        bh=KgrAHmZcACVf93R5gKJHmxhO0TXU7NTAY+pzyouhFoo=;
+        s=korg; t=1695212061;
+        bh=XYa+YzqdvkCwD+7pk7+fSrPCNRw+S9QuA5+nGULXO68=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cGEsrtNmcrR4OJFf9U/s7U2cpbr4AQj0j+WQNgHKXE+Td4aWqiLtbiT/GT4giwzSF
-         nfOExyQK9qZrUaZ6IJ9LYTNHc1Mww6WSDOROqs5ceZcjhLAjo/3gTr3juaa4qulSdU
-         EpbOUUoXFWCG3bak+7gUrPg3D2HLRw21bFqQzX+Y=
+        b=pR9GLuhVeXh2pZn++XWX5mBjkNO8DDxfkWrynwQdMu3BZlV/AwOJeg2+revnDj1Bc
+         LSiL9LMOZaiIYMs5dRmYXNRJTAcIgmUpQNzZlpP0pmmKp1/nD6oOKFWbMSuXOkBYaU
+         qxmkzyUdULXSUXZN/OXmstseOWgNdPwPX2kh9yEU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        patches@lists.linux.dev, Irui Wang <irui.wang@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 199/367] mtd: rawnand: fsmc: handle clk prepare error in fsmc_nand_resume()
-Date:   Wed, 20 Sep 2023 13:29:36 +0200
-Message-ID: <20230920112903.777542201@linuxfoundation.org>
+Subject: [PATCH 4.19 137/273] media: mediatek: vcodec: Return NULL if no vdec_fb is found
+Date:   Wed, 20 Sep 2023 13:29:37 +0200
+Message-ID: <20230920112850.757454408@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Irui Wang <irui.wang@mediatek.com>
 
-[ Upstream commit a5a88125d00612586e941ae13e7fcf36ba8f18a7 ]
+[ Upstream commit dfa2d6e07432270330ae191f50a0e70636a4cd2b ]
 
-In fsmc_nand_resume(), the return value of clk_prepare_enable() should be
-checked since it might fail.
+"fb_use_list" is used to store used or referenced frame buffers for
+vp9 stateful decoder. "NULL" should be returned when getting target
+frame buffer failed from "fb_use_list", not a random unexpected one.
 
-Fixes: e25da1c07dfb ("mtd: fsmc_nand: Add clk_{un}prepare() support")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230817115839.10192-1-yiyang13@huawei.com
+Fixes: f77e89854b3e ("[media] vcodec: mediatek: Add Mediatek VP9 Video Decoder Driver")
+Signed-off-by: Irui Wang <irui.wang@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/fsmc_nand.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
-index cc8369a595de3..bccadf8f27fa4 100644
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -1181,9 +1181,14 @@ static int fsmc_nand_suspend(struct device *dev)
- static int fsmc_nand_resume(struct device *dev)
- {
- 	struct fsmc_nand_data *host = dev_get_drvdata(dev);
-+	int ret;
+diff --git a/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c b/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
+index bc8349bc2e80c..2c0d89a46410a 100644
+--- a/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
++++ b/drivers/media/platform/mtk-vcodec/vdec/vdec_vp9_if.c
+@@ -230,10 +230,11 @@ static struct vdec_fb *vp9_rm_from_fb_use_list(struct vdec_vp9_inst
+ 		if (fb->base_y.va == addr) {
+ 			list_move_tail(&node->list,
+ 				       &inst->available_fb_node_list);
+-			break;
++			return fb;
+ 		}
+ 	}
+-	return fb;
++
++	return NULL;
+ }
  
- 	if (host) {
--		clk_prepare_enable(host->clk);
-+		ret = clk_prepare_enable(host->clk);
-+		if (ret) {
-+			dev_err(dev, "failed to enable clk\n");
-+			return ret;
-+		}
- 		if (host->dev_timings)
- 			fsmc_nand_setup(host, host->dev_timings);
- 		nand_reset(&host->nand, 0);
+ static void vp9_add_to_fb_free_list(struct vdec_vp9_inst *inst,
 -- 
 2.40.1
 
