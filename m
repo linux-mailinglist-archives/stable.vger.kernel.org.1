@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FFF7A7D3F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A107A80BF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235153AbjITMHx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40854 "EHLO
+        id S236075AbjITMka (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235211AbjITMHw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:52 -0400
+        with ESMTP id S236257AbjITMjs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE1B92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA1AC433C8;
-        Wed, 20 Sep 2023 12:07:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB1C83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF92C433CD;
+        Wed, 20 Sep 2023 12:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211666;
-        bh=1/3bC75DnLT0Y3PZWPaB3nm0IeMAVRkJ2xIbMWYwfyc=;
+        s=korg; t=1695213572;
+        bh=4V8cky9ZelKUpPtbm6xqKJwiUmgfSeCAF08s8EMgBOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p+9wqjbFyrRtY9X7eL2JI+2cJBDeqMxCjsKpxKR0J3hKeeblQHHyM3pUrQ15+suwj
-         IK+H5bZifJJKieeF4tH2dwOAD/5HsnV8cJ50Dd4Hm2wkK4vb/IQr433afk6NcU6GKF
-         F9Xr37AX/Kc3/wKVs3wDVKT+G0LI4qhRkyQMwg+0=
+        b=OFH63XhQeC1Mi4n2pRBJqiLd7B2m0u/ensMcUgnIfi2Ksgr1CX1kXgv4kQu17qR9B
+         pLJJ2ny4vDBUkKlKGGA0b35Qs8etd9VFII4MppPFH5f/Md3twQNV+R5L3m4SNbam9R
+         IVYKbRjRjzHPDPnZklsjjm1kpvXuYD5CCV6JVfrk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 160/186] md: raid1: fix potential OOB in raid1_remove_disk()
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 286/367] mtd: rawnand: brcmnand: Fix potential false time out warning
 Date:   Wed, 20 Sep 2023 13:31:03 +0200
-Message-ID: <20230920112842.705478612@linuxfoundation.org>
+Message-ID: <20230920112905.967102883@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: William Zhang <william.zhang@broadcom.com>
 
-[ Upstream commit 8b0472b50bcf0f19a5119b00a53b63579c8e1e4d ]
+commit 9cc0a598b944816f2968baf2631757f22721b996 upstream.
 
-If rddev->raid_disk is greater than mddev->raid_disks, there will be
-an out-of-bounds in raid1_remove_disk(). We have already found
-similar reports as follows:
+If system is busy during the command status polling function, the driver
+may not get the chance to poll the status register till the end of time
+out and return the premature status.  Do a final check after time out
+happens to ensure reading the correct status.
 
-1) commit d17f744e883b ("md-raid10: fix KASAN warning")
-2) commit 1ebc2cec0b7d ("dm raid: fix KASAN warning in raid5_remove_disk")
-
-Fix this bug by checking whether the "number" variable is
-valid.
-
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/tencent_0D24426FAC6A21B69AC0C03CE4143A508F09@qq.com
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9d2ee0a60b8b ("mtd: nand: brcmnand: Check flash #WP pin status before nand erase/program")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-3-william.zhang@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 28f78199de3ba..3e54b6639e213 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1775,6 +1775,10 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
- 	struct r1conf *conf = mddev->private;
- 	int err = 0;
- 	int number = rdev->raid_disk;
-+
-+	if (unlikely(number >= conf->raid_disks))
-+		goto abort;
-+
- 	struct raid1_info *p = conf->mirrors + number;
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -891,6 +891,14 @@ static int bcmnand_ctrl_poll_status(stru
+ 		cpu_relax();
+ 	} while (time_after(limit, jiffies));
  
- 	if (rdev != p->rdev)
--- 
-2.40.1
-
++	/*
++	 * do a final check after time out in case the CPU was busy and the driver
++	 * did not get enough time to perform the polling to avoid false alarms
++	 */
++	val = brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS);
++	if ((val & mask) == expected_val)
++		return 0;
++
+ 	dev_warn(ctrl->dev, "timeout on status poll (expected %x got %x)\n",
+ 		 expected_val, val & mask);
+ 
 
 
