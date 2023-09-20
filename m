@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D96887A7C00
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 041577A7B56
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234931AbjITL5V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56170 "EHLO
+        id S234722AbjITLvS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234986AbjITL5I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:08 -0400
+        with ESMTP id S234745AbjITLvP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7E3EC
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B5BC433C8;
-        Wed, 20 Sep 2023 11:56:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D22ABE4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4576C433CA;
+        Wed, 20 Sep 2023 11:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211017;
-        bh=+Qz2JN4nH8kFCwdczr8QnDWbxtkyvbiUSiGjLEs58gY=;
+        s=korg; t=1695210668;
+        bh=Q1yYSFJYyeH5i0ev/h0GfUo7WUeFEFhNnucgseW89rg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s8DgeNVJDn9GQSk1k1X6mvNwTUOwTuJx/GTHmAVIYahG05lTW1ls9VmcU0NbWw+qx
-         cZ3OGmoKsEAumpZy5+LcWgmSX8AdWUNAHQbw2ox5Ufr15JAys8m/IkrZQwqGNnxNpA
-         dCfNSj9lLOk9cGpwkoHakPzrJ7moOB4qJhv11gVA=
+        b=zEPz2yJ2/37tzYkGcRdS/42ztm6QVyF0JcGdS4MaG78WG33cNmjWAiJjnIFZrh6gR
+         gkg+f7X9AmD8sJfJma1AjNyNyEqCqtKgSzdFoxH2uXOb/Y5UPjJBNvWyE4y+5DDkgg
+         Z3DwBPlQIevd8qQlwheFymM56VsW/FHyt9hL6mFc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/139] arm64: dts: qcom: sm8250-edo: correct ramoops pmsg-size
+Subject: [PATCH 6.5 134/211] btrfs: introduce struct to consolidate extent buffer write context
 Date:   Wed, 20 Sep 2023 13:29:38 +0200
-Message-ID: <20230920112837.279606129@linuxfoundation.org>
+Message-ID: <20230920112849.982067599@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +53,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 7dc3606f91427414d00a2fb09e6e0e32c14c2093 ]
+[ Upstream commit 861093eff4f01319edfc1d1ee276a7f2bf720f1d ]
 
-There is no 'msg-size' property in ramoops, so assume intention was for
-'pmsg-size':
+Introduce btrfs_eb_write_context to consolidate writeback_control and the
+exntent buffer context.  This will help adding a block group context as
+well.
 
-  sm8250-sony-xperia-edo-pdx206.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
+While at it, move the eb context setting before
+btrfs_check_meta_write_pointer(). We can set it here because we anyway need
+to skip pages in the same eb if that eb is rejected by
+btrfs_check_meta_write_pointer().
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230618114442.140185-7-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent_io.c | 14 +++++++-------
+ fs/btrfs/extent_io.h |  5 +++++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-index 3b710c6a326a5..3b306dfb91e0d 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-@@ -126,7 +126,7 @@ ramoops@ffc00000 {
- 			reg = <0x0 0xffc00000 0x0 0x100000>;
- 			record-size = <0x1000>;
- 			console-size = <0x40000>;
--			msg-size = <0x20000 0x20000>;
-+			pmsg-size = <0x20000>;
- 			ecc-size = <16>;
- 			no-map;
- 		};
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 90ad3006ef3a7..b3bf2e2704888 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1877,9 +1877,9 @@ static int submit_eb_subpage(struct page *page, struct writeback_control *wbc)
+  * previous call.
+  * Return <0 for fatal error.
+  */
+-static int submit_eb_page(struct page *page, struct writeback_control *wbc,
+-			  struct extent_buffer **eb_context)
++static int submit_eb_page(struct page *page, struct btrfs_eb_write_context *ctx)
+ {
++	struct writeback_control *wbc = ctx->wbc;
+ 	struct address_space *mapping = page->mapping;
+ 	struct btrfs_block_group *cache = NULL;
+ 	struct extent_buffer *eb;
+@@ -1908,7 +1908,7 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
+ 		return 0;
+ 	}
+ 
+-	if (eb == *eb_context) {
++	if (eb == ctx->eb) {
+ 		spin_unlock(&mapping->private_lock);
+ 		return 0;
+ 	}
+@@ -1917,6 +1917,8 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
+ 	if (!ret)
+ 		return 0;
+ 
++	ctx->eb = eb;
++
+ 	if (!btrfs_check_meta_write_pointer(eb->fs_info, eb, &cache)) {
+ 		/*
+ 		 * If for_sync, this hole will be filled with
+@@ -1930,8 +1932,6 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
+ 		return ret;
+ 	}
+ 
+-	*eb_context = eb;
+-
+ 	if (!lock_extent_buffer_for_io(eb, wbc)) {
+ 		btrfs_revert_meta_write_pointer(cache, eb);
+ 		if (cache)
+@@ -1954,7 +1954,7 @@ static int submit_eb_page(struct page *page, struct writeback_control *wbc,
+ int btree_write_cache_pages(struct address_space *mapping,
+ 				   struct writeback_control *wbc)
+ {
+-	struct extent_buffer *eb_context = NULL;
++	struct btrfs_eb_write_context ctx = { .wbc = wbc };
+ 	struct btrfs_fs_info *fs_info = BTRFS_I(mapping->host)->root->fs_info;
+ 	int ret = 0;
+ 	int done = 0;
+@@ -1996,7 +1996,7 @@ int btree_write_cache_pages(struct address_space *mapping,
+ 		for (i = 0; i < nr_folios; i++) {
+ 			struct folio *folio = fbatch.folios[i];
+ 
+-			ret = submit_eb_page(&folio->page, wbc, &eb_context);
++			ret = submit_eb_page(&folio->page, &ctx);
+ 			if (ret == 0)
+ 				continue;
+ 			if (ret < 0) {
+diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
+index c5fae3a7d911b..ecc1660007c11 100644
+--- a/fs/btrfs/extent_io.h
++++ b/fs/btrfs/extent_io.h
+@@ -94,6 +94,11 @@ struct extent_buffer {
+ #endif
+ };
+ 
++struct btrfs_eb_write_context {
++	struct writeback_control *wbc;
++	struct extent_buffer *eb;
++};
++
+ /*
+  * Get the correct offset inside the page of extent buffer.
+  *
 -- 
 2.40.1
 
