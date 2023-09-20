@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4382F7A7B66
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36B87A7C28
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234715AbjITLvv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50476 "EHLO
+        id S235031AbjITL6i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234736AbjITLvs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:48 -0400
+        with ESMTP id S235027AbjITL6h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD67FB
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CE7C433CA;
-        Wed, 20 Sep 2023 11:51:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06A192
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C13C433C8;
+        Wed, 20 Sep 2023 11:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210698;
-        bh=bDdCtmzOORHZKR8hG99NLcIrqTL+fXsUfuKzzv9qIcg=;
+        s=korg; t=1695211111;
+        bh=JpGpaag6r1WJVR/q8W0rOOzotYpF1Bi9heCTsMpmD5Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ew+K04IcRc9fjG6dgNr2ctrPitOgJEBVZO+u/dOllGqJlXGtSMdNKTI1yTnAADIjE
-         eUsxuy2eiIYOUox948BprYXdGX8jE0XPK5BZppaU0OGMHVMHujW6L20VFh492v7eow
-         cZuyCFs4gw/3ngR2ZMsyEtWbC3+bu8gQAwOS5+QI=
+        b=tJTDmAcAlrKrVvE/1m6S/cFT0DP/6gLbVH81uVkhBrLgd/jqLRQ1JOFNbKf/QXg13
+         TsnC/L1wOK/U6vXSFeDyru/S4XMn4pU0XQut25PpaC1Q80oe5uvPT+JUP2wSvtniNx
+         TV2oME7w+7NAPqeFijlreH2/T+swfrMZh15CjT4U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.5 172/211] x86/platform/uv: Use alternate source for socket to node data
-Date:   Wed, 20 Sep 2023 13:30:16 +0200
-Message-ID: <20230920112851.218828397@linuxfoundation.org>
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 083/139] media: pci: ipu3-cio2: Initialise timing struct to avoid a compiler warning
+Date:   Wed, 20 Sep 2023 13:30:17 +0200
+Message-ID: <20230920112838.735402817@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,73 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wahl <steve.wahl@hpe.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 5290e88ba2c742ca77c5f5b690e5af549cfd8591 upstream.
+[ Upstream commit 9d7531be3085a8f013cf173ccc4e72e3cf493538 ]
 
-The UV code attempts to build a set of tables to allow it to do
-bidirectional socket<=>node lookups.
+Initialise timing struct in cio2_hw_init() to zero in order to avoid a
+compiler warning. The warning was a false positive.
 
-But when nr_cpus is set to a smaller number than actually present, the
-cpu_to_node() mapping information for unused CPUs is not available to
-build_socket_tables(). This results in skipping some nodes or sockets
-when creating the tables and leaving some -1's for later code to trip.
-over, causing oopses.
-
-The problem is that the socket<=>node lookups are created by doing a
-loop over all CPUs, then looking up the CPU's APICID and socket. But
-if a CPU is not present, there is no way to start this lookup.
-
-Instead of looping over all CPUs, take CPUs out of the equation
-entirely. Loop over all APICIDs which are mapped to a valid NUMA node.
-Then just extract the socket-id from the APICID.
-
-This avoid tripping over disabled CPUs.
-
-Fixes: 8a50c5851927 ("x86/platform/uv: UV support for sub-NUMA clustering")
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230807141730.1117278-1-steve.wahl%40hpe.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/media/pci/intel/ipu3/ipu3-cio2-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1571,7 +1571,7 @@ static void __init build_socket_tables(v
- {
- 	struct uv_gam_range_entry *gre = uv_gre_table;
- 	int nums, numn, nump;
--	int cpu, i, lnid;
-+	int i, lnid, apicid;
- 	int minsock = _min_socket;
- 	int maxsock = _max_socket;
- 	int minpnode = _min_pnode;
-@@ -1622,15 +1622,14 @@ static void __init build_socket_tables(v
+diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
+index 3b76a9d0383a8..1bbe58b24d99d 100644
+--- a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
++++ b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
+@@ -354,7 +354,7 @@ static int cio2_hw_init(struct cio2_device *cio2, struct cio2_queue *q)
+ 	void __iomem *const base = cio2->base;
+ 	u8 lanes, csi2bus = q->csi2.port;
+ 	u8 sensor_vc = SENSOR_VIR_CH_DFLT;
+-	struct cio2_csi2_timing timing;
++	struct cio2_csi2_timing timing = { 0 };
+ 	int i, r;
  
- 	/* Set socket -> node values: */
- 	lnid = NUMA_NO_NODE;
--	for_each_possible_cpu(cpu) {
--		int nid = cpu_to_node(cpu);
--		int apicid, sockid;
-+	for (apicid = 0; apicid < ARRAY_SIZE(__apicid_to_node); apicid++) {
-+		int nid = __apicid_to_node[apicid];
-+		int sockid;
- 
--		if (lnid == nid)
-+		if ((nid == NUMA_NO_NODE) || (lnid == nid))
- 			continue;
- 		lnid = nid;
- 
--		apicid = per_cpu(x86_cpu_to_apicid, cpu);
- 		sockid = apicid >> uv_cpuid.socketid_shift;
- 
- 		if (_socket_to_node[sockid - minsock] == SOCK_EMPTY)
+ 	fmt = cio2_find_format(NULL, &q->subdev_fmt.code);
+-- 
+2.40.1
+
 
 
