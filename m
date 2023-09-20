@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C94287A7B6A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA037A7C0A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234743AbjITLv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46620 "EHLO
+        id S234938AbjITL5c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234735AbjITLv4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:56 -0400
+        with ESMTP id S235032AbjITL5Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50666CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBDDC433CC;
-        Wed, 20 Sep 2023 11:51:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A308E4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E24C433C9;
+        Wed, 20 Sep 2023 11:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210708;
-        bh=EO07YlRIVSBpvp80E7NjcnsUr0bJb1a0DOmRvz4QVvo=;
+        s=korg; t=1695211039;
+        bh=6CqAcjaDl/vEh1wlRMBzRNT/Mmv4MSM91u5A2jx5zK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=liPGuKV2cvr9z1+TdzaCtHCccMbCQ0Lqhbapdk8y/opPp1klGMye4g9FGG7Jpulsp
-         5pgAw89nxolmR3LBSAjfLoEwNdYLXkmeB5I1jUrS/CeY+xdI8FPrDFcQoG7Q6DnHRf
-         xd4TVxAZRg78+zb59OwRzh/pr6fQsu7vukUW07+I=
+        b=ywWIq/sVM5HrVJWnPGrn1GysKFzDQODTRkUZXBoMyoa9XKaPfsAhwlJ6wrIWqkJh+
+         y4iD/JUke7kdolIxamp3DbMs0Ox4bFKPNrho6iLXJUUFJ7+zqavXp9zzmuWV5aY7bv
+         ATIlpqYbg1RiYPucvUHW7CmJp2S3RSDMpRywNncg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Pilkington <simonp.git@gmail.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.5 175/211] drm/amd: Make fence wait in suballocator uninterruptible
-Date:   Wed, 20 Sep 2023 13:30:19 +0200
-Message-ID: <20230920112851.306966386@linuxfoundation.org>
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/139] printk: Keep non-panic-CPUs out of console lock
+Date:   Wed, 20 Sep 2023 13:30:20 +0200
+Message-ID: <20230920112838.836388090@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,41 +50,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Pilkington <simonp.git@gmail.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit e2884fe84a83c562346eb9d92783a3576ce67177 upstream.
+[ Upstream commit 51a1d258e50e03a0216bf42b6af9ff34ec402ac1 ]
 
-Commit c103a23f2f29
-("drm/amd: Convert amdgpu to use suballocation helper.")
-made the fence wait in amdgpu_sa_bo_new() interruptible but there is no
-code to handle an interrupt. This caused the kernel to randomly explode
-in high-VRAM-pressure situations so make it uninterruptible again.
+When in a panic situation, non-panic CPUs should avoid holding the
+console lock so as not to contend with the panic CPU. This is already
+implemented with abandon_console_lock_in_panic(), which is checked
+after each printed line. However, non-panic CPUs should also avoid
+trying to acquire the console lock during a panic.
 
-Signed-off-by: Simon Pilkington <simonp.git@gmail.com>
-Fixes: c103a23f2f29 ("drm/amd: Convert amdgpu to use suballocation helper.")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2761
-CC: stable@vger.kernel.org # 6.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Modify console_trylock() to fail and console_lock() to block() when
+called from a non-panic CPU during a panic.
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-4-john.ogness@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/printk/printk.c | 45 ++++++++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sa.c
-@@ -81,7 +81,7 @@ int amdgpu_sa_bo_new(struct amdgpu_sa_ma
- 		     unsigned int size)
- {
- 	struct drm_suballoc *sa = drm_suballoc_new(&sa_manager->base, size,
--						   GFP_KERNEL, true, 0);
-+						   GFP_KERNEL, false, 0);
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index e4f1e7478b521..4b9429f3fd6d8 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2552,6 +2552,25 @@ static int console_cpu_notify(unsigned int cpu)
+ 	return 0;
+ }
  
- 	if (IS_ERR(sa)) {
- 		*sa_bo = NULL;
++/*
++ * Return true when this CPU should unlock console_sem without pushing all
++ * messages to the console. This reduces the chance that the console is
++ * locked when the panic CPU tries to use it.
++ */
++static bool abandon_console_lock_in_panic(void)
++{
++	if (!panic_in_progress())
++		return false;
++
++	/*
++	 * We can use raw_smp_processor_id() here because it is impossible for
++	 * the task to be migrated to the panic_cpu, or away from it. If
++	 * panic_cpu has already been set, and we're not currently executing on
++	 * that CPU, then we never will be.
++	 */
++	return atomic_read(&panic_cpu) != raw_smp_processor_id();
++}
++
+ /**
+  * console_lock - lock the console system for exclusive use.
+  *
+@@ -2564,6 +2583,10 @@ void console_lock(void)
+ {
+ 	might_sleep();
+ 
++	/* On panic, the console_lock must be left to the panic cpu. */
++	while (abandon_console_lock_in_panic())
++		msleep(1000);
++
+ 	down_console_sem();
+ 	if (console_suspended)
+ 		return;
+@@ -2582,6 +2605,9 @@ EXPORT_SYMBOL(console_lock);
+  */
+ int console_trylock(void)
+ {
++	/* On panic, the console_lock must be left to the panic cpu. */
++	if (abandon_console_lock_in_panic())
++		return 0;
+ 	if (down_trylock_console_sem())
+ 		return 0;
+ 	if (console_suspended) {
+@@ -2600,25 +2626,6 @@ int is_console_locked(void)
+ }
+ EXPORT_SYMBOL(is_console_locked);
+ 
+-/*
+- * Return true when this CPU should unlock console_sem without pushing all
+- * messages to the console. This reduces the chance that the console is
+- * locked when the panic CPU tries to use it.
+- */
+-static bool abandon_console_lock_in_panic(void)
+-{
+-	if (!panic_in_progress())
+-		return false;
+-
+-	/*
+-	 * We can use raw_smp_processor_id() here because it is impossible for
+-	 * the task to be migrated to the panic_cpu, or away from it. If
+-	 * panic_cpu has already been set, and we're not currently executing on
+-	 * that CPU, then we never will be.
+-	 */
+-	return atomic_read(&panic_cpu) != raw_smp_processor_id();
+-}
+-
+ /*
+  * Check if the given console is currently capable and allowed to print
+  * records.
+-- 
+2.40.1
+
 
 
