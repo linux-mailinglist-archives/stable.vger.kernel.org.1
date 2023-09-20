@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A34DD7A7D27
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BACFE7A7E7A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235222AbjITMHI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57396 "EHLO
+        id S235384AbjITMSL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235250AbjITMHC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:02 -0400
+        with ESMTP id S235579AbjITMSI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DA581A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF5AC433C9;
-        Wed, 20 Sep 2023 12:06:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91DB4B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144ECC433C8;
+        Wed, 20 Sep 2023 12:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211609;
-        bh=6X5Ry55MA2gT1MpKiNn+u1BGzivkv0hAZifxaxR/uIE=;
+        s=korg; t=1695212282;
+        bh=pzZPDZRza7EXku2giKDQ7CK+OBGTRH4I8E8io1Zihj4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dt6GAiF+AY+XynXW7l6uuGMfa03HpeG+84z7gyBSkHe1+cxZY7i2EX5GRZgnxriVZ
-         nTHEcNz6kc1yKn/KNij4V4hhCUdycxteMGsk/iqI52YL2Ux5GWMXO5lcS9E3lbJAF/
-         aoV7FoA45s5EtSh2YWDkx4v1ni7licSZXAzO9O4s=
+        b=MeWDMjZXmh8zI3S39vq0aVoyrCZQcT6cw7nIoyABwSMUDE/dX1i5iDjG9MyQQnZoc
+         +WkVzZQkbKKL/Z3J9E5W5hYpEEb9gMJD4veezPMW721rcg/8eof+yLW3jEwegDHGDJ
+         6pSRehT7xxF54zhMbIpd5TyWn2HGZvNzKp3Bj4cQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark ODonovan <shiftee@posteo.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 156/186] crypto: lib/mpi - avoid null pointer deref in mpi_cmp_ui()
+Subject: [PATCH 4.19 219/273] kcm: Destroy mutex in kcm_exit_net()
 Date:   Wed, 20 Sep 2023 13:30:59 +0200
-Message-ID: <20230920112842.576012461@linuxfoundation.org>
+Message-ID: <20230920112853.199608202@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark O'Donovan <shiftee@posteo.net>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 9e47a758b70167c9301d2b44d2569f86c7796f2d ]
+[ Upstream commit 6ad40b36cd3b04209e2d6c89d252c873d8082a59 ]
 
-During NVMeTCP Authentication a controller can trigger a kernel
-oops by specifying the 8192 bit Diffie Hellman group and passing
-a correctly sized, but zeroed Diffie Hellamn value.
-mpi_cmp_ui() was detecting this if the second parameter was 0,
-but 1 is passed from dh_is_pubkey_valid(). This causes the null
-pointer u->d to be dereferenced towards the end of mpi_cmp_ui()
+kcm_exit_net() should call mutex_destroy() on knet->mutex. This is especially
+needed if CONFIG_DEBUG_MUTEXES is enabled.
 
-Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Link: https://lore.kernel.org/r/20230902170708.1727999-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/mpi/mpi-cmp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/kcm/kcmsock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/mpi/mpi-cmp.c b/lib/mpi/mpi-cmp.c
-index d25e9e96c310f..ceaebe181cd70 100644
---- a/lib/mpi/mpi-cmp.c
-+++ b/lib/mpi/mpi-cmp.c
-@@ -25,8 +25,12 @@ int mpi_cmp_ui(MPI u, unsigned long v)
- 	mpi_limb_t limb = v;
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index c0034546a9edf..55f1bf7a84490 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -1983,6 +1983,8 @@ static __net_exit void kcm_exit_net(struct net *net)
+ 	 * that all multiplexors and psocks have been destroyed.
+ 	 */
+ 	WARN_ON(!list_empty(&knet->mux_list));
++
++	mutex_destroy(&knet->mutex);
+ }
  
- 	mpi_normalize(u);
--	if (!u->nlimbs && !limb)
--		return 0;
-+	if (u->nlimbs == 0) {
-+		if (v == 0)
-+			return 0;
-+		else
-+			return -1;
-+	}
- 	if (u->sign)
- 		return -1;
- 	if (u->nlimbs > 1)
+ static struct pernet_operations kcm_net_ops = {
 -- 
 2.40.1
 
