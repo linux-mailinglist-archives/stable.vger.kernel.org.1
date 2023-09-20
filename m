@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FD867A7CF9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C36F97A7E29
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235169AbjITMFt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
+        id S235506AbjITMPx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235166AbjITMFs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:48 -0400
+        with ESMTP id S235472AbjITMPv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6898AD7;
-        Wed, 20 Sep 2023 05:05:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F06C433CA;
-        Wed, 20 Sep 2023 12:05:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15B46D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DFCC433C7;
+        Wed, 20 Sep 2023 12:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211542;
-        bh=fRh4nCHMuv5Igb9bLNs/psMrZT+6tF6KHgf4Cja3qaM=;
+        s=korg; t=1695212144;
+        bh=m6K0EzBgiSs/iTyzXO/L/xU59J0DaiiG9IzmcUEAu4o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CfZDZOgETCxERt/CTtgrm1cr84WwdRekBdGg/3ZOlSg2vKDRsVSmhSCLO68T7xnN3
-         4TUNt8kMs9Gy0mC3GKw86jqxDrYpZvsu5qeKtzRyy3QSuTCCYHMx5+DF8XJA2uAPnb
-         6FOrq7RCLlwcIjFpaZy2sArtACG9V3FBPC2nJ9rM=
+        b=iOfLpvk4dRXn356WLG0wf7A/D8qAsdVGyyzfjh1q1Jni7IB9MKXyYLSq5Cb/2ufXl
+         mKDvA1iBgLUO6iQAirJUrblMqKSUEXGsXlbZ8O8fJMURJZ5VWU++LIWRHbAuZvIs9M
+         DFuOHCc/sIfFhejjQKkwzrurra+7ozZQ9Ins1L2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 4.14 105/186] backlight/gpio_backlight: Compare against struct fb_info.device
+        patches@lists.linux.dev, Lucas Leong <wmliang@infosec.exchange>,
+        Wander Lairson Costa <wander@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 168/273] netfilter: xt_sctp: validate the flag_info count
 Date:   Wed, 20 Sep 2023 13:30:08 +0200
-Message-ID: <20230920112840.794288117@linuxfoundation.org>
+Message-ID: <20230920112851.713220716@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,54 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Wander Lairson Costa <wander@redhat.com>
 
-commit 7b91d017f77c1bda56f27c2f4bbb70de7c6eca08 upstream.
+commit e99476497687ef9e850748fe6d232264f30bc8f9 upstream.
 
-Struct gpio_backlight_platform_data refers to a platform device within
-the Linux device hierarchy. The test in gpio_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+sctp_mt_check doesn't validate the flag_count field. An attacker can
+take advantage of that to trigger a OOB read and leak memory
+information.
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
+Add the field validation in the checkentry function.
 
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: linux-sh@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-4-tzimmermann@suse.de
+Fixes: 2e4e6a17af35 ("[NETFILTER] x_tables: Abstraction layer for {ip,ip6,arp}_tables")
+Cc: stable@vger.kernel.org
+Reported-by: Lucas Leong <wmliang@infosec.exchange>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/gpio_backlight.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_sctp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/backlight/gpio_backlight.c
-+++ b/drivers/video/backlight/gpio_backlight.c
-@@ -48,7 +48,7 @@ static int gpio_backlight_check_fb(struc
+--- a/net/netfilter/xt_sctp.c
++++ b/net/netfilter/xt_sctp.c
+@@ -149,6 +149,8 @@ static int sctp_mt_check(const struct xt
  {
- 	struct gpio_backlight *gbl = bl_get_data(bl);
+ 	const struct xt_sctp_info *info = par->matchinfo;
  
--	return gbl->fbdev == NULL || gbl->fbdev == info->dev;
-+	return gbl->fbdev == NULL || gbl->fbdev == info->device;
- }
- 
- static const struct backlight_ops gpio_backlight_ops = {
++	if (info->flag_count > ARRAY_SIZE(info->flag_info))
++		return -EINVAL;
+ 	if (info->flags & ~XT_SCTP_VALID_FLAGS)
+ 		return -EINVAL;
+ 	if (info->invflags & ~XT_SCTP_VALID_FLAGS)
 
 
