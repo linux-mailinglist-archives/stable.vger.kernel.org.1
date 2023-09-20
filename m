@@ -2,38 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CED267A7EB6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0FB7A7F15
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235671AbjITMUU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47524 "EHLO
+        id S235702AbjITMXt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:23:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235832AbjITMUJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:09 -0400
+        with ESMTP id S235693AbjITMXs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C449CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2154C433C7;
-        Wed, 20 Sep 2023 12:20:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF1783
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E045C433C9;
+        Wed, 20 Sep 2023 12:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212402;
-        bh=/9/hDD6o6n0s7IFMLO5iWWa12FMRlRD2FXX17IBQLco=;
+        s=korg; t=1695212621;
+        bh=MfxwMwrT7giT0LWClcD+M5pG5SyM9MsBZozwD8yLJiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gcUBqeSCy1+FQIee1Wrkg/f8HSAKP5HNu/sECn7bM9nuFAi8/A+KS/uvc9/Q7RYcy
-         vHCxJCOihKBg0LJRDglwOmN9cG+HsB1CzxHlTer2Jxgq3U7wnWcwmYRRJCE5vMA9jd
-         OeCsTHvH0rUGMHsIK9v8Xx1wrD8Gq3U1oa8x2nuA=
+        b=WW55+genb+5abCEgj+TqLOqItAJ3yLUVsec8fuof5Jb9+16dJe8xi0zJjQpqXtLQs
+         TGKm5cyJwYixksCeCJv9xkrD3GJ8KPgJ2zkWM/r1S4/m6TRPgYqHfsgLUG5qJr2LCG
+         xNMLoHBzI52I/c7CDJG4qsVCqxzj4gQCcSIzKltI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
-        Li Yang <leoyang.li@nxp.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 262/273] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
+        patches@lists.linux.dev, John Garry <john.garry@huawei.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Jin Yao <yao.jin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, linuxarm@huawei.com,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 52/83] perf jevents: Make build dependency on test JSONs
 Date:   Wed, 20 Sep 2023 13:31:42 +0200
-Message-ID: <20230920112854.347747562@linuxfoundation.org>
+Message-ID: <20230920112828.714818442@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,39 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: John Garry <john.garry@huawei.com>
 
-[ Upstream commit ce9daa2efc0872a9a68ea51dc8000df05893ef2e ]
+[ Upstream commit 517db3b59537a59f6cc251b1926df93e93bb9c87 ]
 
-We should verify the bound of the array to assure that host
-may not manipulate the index to point past endpoint array.
+Currently all JSONs and the mapfile for an arch are dependencies for
+building pmu-events.c
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Acked-by: Li Yang <leoyang.li@nxp.com>
-Link: https://lore.kernel.org/r/20230628081511.186850-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The test JSONs are missing as a dependency, so add them.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linuxarm@huawei.com
+Link: http://lore.kernel.org/lkml/90094733-741c-50e5-ac7d-f5640b5f0bdd@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 7822a8913f4c ("perf build: Update build rule for generated files")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/pmu-events/Build | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
-index 2707be6282988..63109c6e55068 100644
---- a/drivers/usb/gadget/udc/fsl_qe_udc.c
-+++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-@@ -1950,6 +1950,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
- 	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
- 		/* Get endpoint status */
- 		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
-+		if (pipe >= USB_MAX_ENDPOINTS)
-+			goto stall;
- 		struct qe_ep *target_ep = &udc->eps[pipe];
- 		u16 usep;
+diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+index 215ba30b85343..a055dee6a46af 100644
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -6,10 +6,13 @@ pmu-events-y	+= pmu-events.o
+ JDIR		=  pmu-events/arch/$(SRCARCH)
+ JSON		=  $(shell [ -d $(JDIR) ] &&				\
+ 			find $(JDIR) -name '*.json' -o -name 'mapfile.csv')
++JDIR_TEST	=  pmu-events/arch/test
++JSON_TEST	=  $(shell [ -d $(JDIR_TEST) ] &&			\
++			find $(JDIR_TEST) -name '*.json')
  
+ #
+ # Locate/process JSON files in pmu-events/arch/
+ # directory and create tables in pmu-events.c.
+ #
+-$(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JEVENTS)
++$(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS)
+ 	$(Q)$(call echo-cmd,gen)$(JEVENTS) $(SRCARCH) pmu-events/arch $(OUTPUT)pmu-events/pmu-events.c $(V)
 -- 
 2.40.1
 
