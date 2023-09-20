@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C90757A8131
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4459C7A8192
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236164AbjITMnW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58734 "EHLO
+        id S234839AbjITMqp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236186AbjITMnV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:21 -0400
+        with ESMTP id S234897AbjITMqn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAE183
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAC3C433C7;
-        Wed, 20 Sep 2023 12:43:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 310E292
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6401C433C8;
+        Wed, 20 Sep 2023 12:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213795;
-        bh=x0SDCVU+RgaM4CufiBDuZz0KTutPK9nU5EeHNBG9DX0=;
+        s=korg; t=1695213992;
+        bh=rFT0fXBSdYGd3XzhGeNA81O5dEcTwYZTZ1zdLVIHhm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ij4qUL85xybhhLXIHwnFAFYeBQvaCYOey9oBizgUhgG/Ktbb+LNb0M958/3r68M1g
-         Ttf5o3iM8SWK7KIfHgCGinJ19BmpEKQM8dQuMdvaJaWfCBd5a1b8FgfaTh3RtzNQoX
-         XD0Hj8Ne8JCBTf/zLdc2sx+9oHgy4CmfvB7yshNc=
+        b=gjTDC5EKZFnxLVdVwR2I7NtFqbWuQnZt/mgtEAqk+9OhMUbEqBR/9d85wxPAEHaGs
+         HSM48yT5zB0KuGcwrcfeebbMPvZy5zXPiJV8+RvPV3eD9k1WOrbe2hue1PD8zt9ra9
+         cf5KYWN2EzWGt9Gt9sJqNiSjR/19M8XAs3Q0Vi04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 354/367] selftests: tracing: Fix to unmount tracefs for recovering environment
+Subject: [PATCH 5.15 073/110] btrfs: move btrfs_pinned_by_swapfile prototype into volumes.h
 Date:   Wed, 20 Sep 2023 13:32:11 +0200
-Message-ID: <20230920112907.651760045@linuxfoundation.org>
+Message-ID: <20230920112833.164803789@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,67 +53,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 7e021da80f48582171029714f8a487347f29dddb ]
+[ Upstream commit c2e79e865b87c2920a3cd39de69c35f2bc758a51 ]
 
-Fix to unmount the tracefs if the ftracetest mounted it for recovering
-system environment. If the tracefs is already mounted, this does nothing.
+This is defined in volumes.c, move the prototype into volumes.h.
 
-Suggested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/all/29fce076-746c-4650-8358-b4e0fa215cf7@sirena.org.uk/
-Fixes: cbd965bde74c ("ftrace/selftests: Return the skip code when tracing directory not configured in kernel")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ftrace/ftracetest | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/btrfs/ctree.h   | 2 --
+ fs/btrfs/volumes.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/ftracetest b/tools/testing/selftests/ftrace/ftracetest
-index 19e9236dec5e2..f2e1b2bfcf0b0 100755
---- a/tools/testing/selftests/ftrace/ftracetest
-+++ b/tools/testing/selftests/ftrace/ftracetest
-@@ -30,6 +30,9 @@ err_ret=1
- # kselftest skip code is 4
- err_skip=4
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 02d3ee6c7d9b0..1467bf439cb48 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -536,8 +536,6 @@ struct btrfs_swapfile_pin {
+ 	int bg_extent_count;
+ };
  
-+# umount required
-+UMOUNT_DIR=""
+-bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
+-
+ enum {
+ 	BTRFS_FS_BARRIER,
+ 	BTRFS_FS_CLOSING_START,
+diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
+index b49fa784e5ba3..1f6461b568659 100644
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -622,4 +622,6 @@ const char *btrfs_bg_type_to_raid_name(u64 flags);
+ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
+ int btrfs_repair_one_zone(struct btrfs_fs_info *fs_info, u64 logical);
+ 
++bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
 +
- # cgroup RT scheduling prevents chrt commands from succeeding, which
- # induces failures in test wakeup tests.  Disable for the duration of
- # the tests.
-@@ -44,6 +47,9 @@ setup() {
- 
- cleanup() {
-   echo $sched_rt_runtime_orig > $sched_rt_runtime
-+  if [ -n "${UMOUNT_DIR}" ]; then
-+    umount ${UMOUNT_DIR} ||:
-+  fi
- }
- 
- errexit() { # message
-@@ -155,11 +161,13 @@ if [ -z "$TRACING_DIR" ]; then
- 	    mount -t tracefs nodev /sys/kernel/tracing ||
- 	      errexit "Failed to mount /sys/kernel/tracing"
- 	    TRACING_DIR="/sys/kernel/tracing"
-+	    UMOUNT_DIR=${TRACING_DIR}
- 	# If debugfs exists, then so does /sys/kernel/debug
- 	elif [ -d "/sys/kernel/debug" ]; then
- 	    mount -t debugfs nodev /sys/kernel/debug ||
- 	      errexit "Failed to mount /sys/kernel/debug"
- 	    TRACING_DIR="/sys/kernel/debug/tracing"
-+	    UMOUNT_DIR=${TRACING_DIR}
- 	else
- 	    err_ret=$err_skip
- 	    errexit "debugfs and tracefs are not configured in this kernel"
+ #endif
 -- 
 2.40.1
 
