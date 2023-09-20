@@ -2,38 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F7BC7A8034
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8EF7A7E0A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236192AbjITMdw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
+        id S235367AbjITMPZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234604AbjITMdv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:51 -0400
+        with ESMTP id S235563AbjITMOq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39722CE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F76C433C7;
-        Wed, 20 Sep 2023 12:33:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 766E4DE;
+        Wed, 20 Sep 2023 05:14:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CDCC433C9;
+        Wed, 20 Sep 2023 12:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213224;
-        bh=pjpVI0jV1UpnyDR2JDr1wd8E/nMZrACk7Lc6+dDuKbQ=;
+        s=korg; t=1695212080;
+        bh=Na91J1gX32HW4cgdA0zRy9pa/yi05M5PCa4ol0uV7KU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t6QRNTtIW7tO9Blgw4v5V/+maBKEPWj7wVY/BkAerhAwEQ6UPKjyHVrhN+Xe4HUv6
-         sWdpdg+t3Sv831vf8na8rGC0yZb0UGOUgROjhhlttMABhdb4O8+RBiHCCieEndJcA3
-         6U2xuO34cDtd9I7oq9MP1i1mRiLcTKoiQsC5f8Q8=
+        b=L+nOFEH8FoeBf/sEXZOuaV5aO5txAgYcPTzERynmxN3ASzdmC5anUHt2lUtC5GwyP
+         AeKaw8MbLWUGf/73LExXjfb6ChZAW9DYIbEsNblfCWzWKVsczbOqB9Y7LJod6ULZEk
+         Wx2d1g0i5QMkUn8tLWgEE28FY1/App+6sOxs7rGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 206/367] netfilter: xt_u32: validate user space input
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 143/273] scsi: qedf: Do not touch __user pointer in qedf_dbg_stop_io_on_error_cmd_read() directly
 Date:   Wed, 20 Sep 2023 13:29:43 +0200
-Message-ID: <20230920112903.951474259@linuxfoundation.org>
+Message-ID: <20230920112850.951734803@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,65 +59,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
+[ Upstream commit 7d3d20dee4f648ec44e9717d5f647d594d184433 ]
 
-The xt_u32 module doesn't validate the fields in the xt_u32 structure.
-An attacker may take advantage of this to trigger an OOB read by setting
-the size fields with a value beyond the arrays boundaries.
+The qedf_dbg_stop_io_on_error_cmd_read() function invokes sprintf()
+directly on a __user pointer, which may crash the kernel.
 
-Add a checkentry function to validate the structure.
+Avoid doing that by using a small on-stack buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
 
-This was originally reported by the ZDI project (ZDI-CAN-18408).
-
-Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-2-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/net/netfilter/xt_u32.c
-+++ b/net/netfilter/xt_u32.c
-@@ -96,11 +96,32 @@ static bool u32_mt(const struct sk_buff
- 	return ret ^ data->invert;
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index c29c162a494ff..917b047f66f10 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -204,18 +204,17 @@ qedf_dbg_stop_io_on_error_cmd_read(struct file *filp, char __user *buffer,
+ 				   size_t count, loff_t *ppos)
+ {
+ 	int cnt;
++	char cbuf[7];
+ 	struct qedf_dbg_ctx *qedf_dbg =
+ 				(struct qedf_dbg_ctx *)filp->private_data;
+ 	struct qedf_ctx *qedf = container_of(qedf_dbg,
+ 	    struct qedf_ctx, dbg_ctx);
+ 
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
+-	cnt = sprintf(buffer, "%s\n",
++	cnt = scnprintf(cbuf, sizeof(cbuf), "%s\n",
+ 	    qedf->stop_io_on_error ? "true" : "false");
+ 
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
  }
  
-+static int u32_mt_checkentry(const struct xt_mtchk_param *par)
-+{
-+	const struct xt_u32 *data = par->matchinfo;
-+	const struct xt_u32_test *ct;
-+	unsigned int i;
-+
-+	if (data->ntests > ARRAY_SIZE(data->tests))
-+		return -EINVAL;
-+
-+	for (i = 0; i < data->ntests; ++i) {
-+		ct = &data->tests[i];
-+
-+		if (ct->nnums > ARRAY_SIZE(ct->location) ||
-+		    ct->nvalues > ARRAY_SIZE(ct->value))
-+			return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static struct xt_match xt_u32_mt_reg __read_mostly = {
- 	.name       = "u32",
- 	.revision   = 0,
- 	.family     = NFPROTO_UNSPEC,
- 	.match      = u32_mt,
-+	.checkentry = u32_mt_checkentry,
- 	.matchsize  = sizeof(struct xt_u32),
- 	.me         = THIS_MODULE,
- };
+ static ssize_t
+-- 
+2.40.1
+
 
 
