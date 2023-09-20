@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C58E7A7D9A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A6F7A7FB5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235358AbjITMKe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:10:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38810 "EHLO
+        id S235864AbjITM3j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:29:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235369AbjITMKb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:31 -0400
+        with ESMTP id S235869AbjITM3i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86BF9E0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62EBC433C8;
-        Wed, 20 Sep 2023 12:10:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32749B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79646C433C7;
+        Wed, 20 Sep 2023 12:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211823;
-        bh=FlU5Ak3Z08bYqN3WNm8SBIqYg7fRabx+DRecbJaq/7w=;
+        s=korg; t=1695212972;
+        bh=jqUf5PhogO+Vj80Rp6nomTq8AS8Xbhw3mu8IEu12oew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EdDbczrdzGJZOkoL7M3ZIiP0dikVkxWRgTs2XKMsZgPJtlSEP3ytKEiS3avjKB4B0
-         2J6qFWFRixsY6qALz5tiIQ5y4HDiMw9ViWw4sO457avewXAHsLMBAtWB7L429zP44F
-         6N4bSolp98NsNR7T9Gx+DVTOyMbOLRupaI9iah+4=
+        b=Qo4rdeLTiW8sZyDAQhAUxZbErDByVpmNOlxkCXbNOic3Up9oHdE9w+SYQbSoIpUux
+         Lz4zq+0afxkExX9E/jNttnZZHaOs5fjmSc2tb1hxRV+VnHa/tOLrHvw+Q6W13sPZ0/
+         v+ArbR5VpS3EH5Hmjwmt+0zCKsvHUqjHSrpOBLVc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Tan Zhongjun <tanzhongjun@yulong.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 049/273] cpufreq: powernow-k8: Use related_cpus instead of cpus in driver.exit()
-Date:   Wed, 20 Sep 2023 13:28:09 +0200
-Message-ID: <20230920112847.940902396@linuxfoundation.org>
+Subject: [PATCH 5.4 113/367] drm/tegra: Remove superfluous error messages around platform_get_irq()
+Date:   Wed, 20 Sep 2023 13:28:10 +0200
+Message-ID: <20230920112901.537502295@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Tan Zhongjun <tanzhongjun@yulong.com>
 
-[ Upstream commit 03997da042dac73c69e60d91942c727c76828b65 ]
+[ Upstream commit d12919bb5da571ec50588ef97683d37e36dc2de5 ]
 
-Since the 'cpus' field of policy structure will become empty in the
-cpufreq core API, it is better to use 'related_cpus' in the exit()
-callback of driver.
+The platform_get_irq() prints error message telling that interrupt is
+missing,hence there is no need to duplicated that message in the
+drivers.
 
-Fixes: c3274763bfc3 ("cpufreq: powernow-k8: Initialize per-cpu data-structures properly")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Tan Zhongjun <tanzhongjun@yulong.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Stable-dep-of: 2a1ca44b6543 ("drm/tegra: dpaux: Fix incorrect return value of platform_get_irq")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/powernow-k8.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tegra/dpaux.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
-index 818f92798fb9b..55743d78016b0 100644
---- a/drivers/cpufreq/powernow-k8.c
-+++ b/drivers/cpufreq/powernow-k8.c
-@@ -1104,7 +1104,8 @@ static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
+diff --git a/drivers/gpu/drm/tegra/dpaux.c b/drivers/gpu/drm/tegra/dpaux.c
+index a0f6f9b0d2585..304434bf10814 100644
+--- a/drivers/gpu/drm/tegra/dpaux.c
++++ b/drivers/gpu/drm/tegra/dpaux.c
+@@ -447,10 +447,8 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
+ 		return PTR_ERR(dpaux->regs);
  
- 	kfree(data->powernow_table);
- 	kfree(data);
--	for_each_cpu(cpu, pol->cpus)
-+	/* pol->cpus will be empty here, use related_cpus instead. */
-+	for_each_cpu(cpu, pol->related_cpus)
- 		per_cpu(powernow_data, cpu) = NULL;
+ 	dpaux->irq = platform_get_irq(pdev, 0);
+-	if (dpaux->irq < 0) {
+-		dev_err(&pdev->dev, "failed to get IRQ\n");
++	if (dpaux->irq < 0)
+ 		return -ENXIO;
+-	}
  
- 	return 0;
+ 	if (!pdev->dev.pm_domain) {
+ 		dpaux->rst = devm_reset_control_get(&pdev->dev, "dpaux");
 -- 
 2.40.1
 
