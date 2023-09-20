@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D5BE7A7B79
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0AF7A7BEF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234726AbjITLwa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38104 "EHLO
+        id S234851AbjITL5D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbjITLwa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:30 -0400
+        with ESMTP id S234866AbjITL5C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5567F92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E930C433C8;
-        Wed, 20 Sep 2023 11:52:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A99C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEFEC433CB;
+        Wed, 20 Sep 2023 11:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210744;
-        bh=VfQ96Z2Gl+Q2kZ1MiUCHenWai9OOy6ikjvJF64tlRcw=;
+        s=korg; t=1695211009;
+        bh=lX/cortdaopL+vHc8O1EmMNswXoOhWUdd3xrvzziBCA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XDu9uLuGPdRPxcXXvTZfG6/eeAjzYvDFRmtmsMGOzGWmG0q6y/aVjd8YbSfTTH+9l
-         duyUvKoD71A3yE+uQnY2yufhOpVHe8rGyANjffSphWoGI/Y8Ru1XekVeaFaJgjRQSn
-         Jq8StacSVUkC91JzhgqOYgNhuzEUY6byxA3prXWw=
+        b=MFWGdO6qVtJh3qgd1TsQQV68dqxb1VSYJKjnumRPrIeedFtEYsA0UD/4YyVq+Z8gR
+         8QkC/nwcpPINsqrwGQVQbsVQS1y0cTq6WQmdwYZaOGnzOZlGGxUqGXG4eBBU10H5Lv
+         eLgqRhxyWCH0ULZ//A7us2891mY9WKKnr+ZU1204=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.5 163/211] blk-mq: prealloc tags when increase tagset nr_hw_queues
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/139] media: tuners: qt1010: replace BUG_ON with a regular error
 Date:   Wed, 20 Sep 2023 13:30:07 +0200
-Message-ID: <20230920112850.941684982@linuxfoundation.org>
+Message-ID: <20230920112838.408610461@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +49,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 7222657e51b5626d10154b3e48ad441c33b5da96 upstream.
+[ Upstream commit ee630b29ea44d1851bb6c903f400956604834463 ]
 
-Just like blk_mq_alloc_tag_set(), it's better to prepare all tags before
-using to map to queue ctxs in blk_mq_map_swqueue(), which now have to
-consider empty set->tags[].
+BUG_ON is unnecessary here, and in addition it confuses smatch.
+Replacing this with an error return help resolve this smatch
+warning:
 
-The good point is that we can fallback easily if increasing nr_hw_queues
-fail, instead of just mapping to hctx[0] when fail in blk_mq_map_swqueue().
+drivers/media/tuners/qt1010.c:350 qt1010_init() error: buffer overflow 'i2c_data' 34 <= 34
 
-And the fallback path already has tags free & clean handling, so all
-is good.
-
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20230821095602.70742-3-chengming.zhou@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/tuners/qt1010.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4420,6 +4420,16 @@ static int blk_mq_realloc_tag_set_tags(s
- 		       sizeof(*set->tags));
- 	kfree(set->tags);
- 	set->tags = new_tags;
-+
-+	for (i = set->nr_hw_queues; i < new_nr_hw_queues; i++) {
-+		if (!__blk_mq_alloc_map_and_rqs(set, i)) {
-+			while (--i >= set->nr_hw_queues)
-+				__blk_mq_free_map_and_rqs(set, i);
-+			return -ENOMEM;
-+		}
-+		cond_resched();
-+	}
-+
- done:
- 	set->nr_hw_queues = new_nr_hw_queues;
- 	return 0;
+diff --git a/drivers/media/tuners/qt1010.c b/drivers/media/tuners/qt1010.c
+index 60931367b82ca..48fc79cd40273 100644
+--- a/drivers/media/tuners/qt1010.c
++++ b/drivers/media/tuners/qt1010.c
+@@ -345,11 +345,12 @@ static int qt1010_init(struct dvb_frontend *fe)
+ 			else
+ 				valptr = &tmpval;
+ 
+-			BUG_ON(i >= ARRAY_SIZE(i2c_data) - 1);
+-
+-			err = qt1010_init_meas1(priv, i2c_data[i+1].reg,
+-						i2c_data[i].reg,
+-						i2c_data[i].val, valptr);
++			if (i >= ARRAY_SIZE(i2c_data) - 1)
++				err = -EIO;
++			else
++				err = qt1010_init_meas1(priv, i2c_data[i + 1].reg,
++							i2c_data[i].reg,
++							i2c_data[i].val, valptr);
+ 			i++;
+ 			break;
+ 		}
+-- 
+2.40.1
+
 
 
