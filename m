@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127837A7AF4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 633787A7C6D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234606AbjITLrr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
+        id S234960AbjITMBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234603AbjITLrr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:47 -0400
+        with ESMTP id S234988AbjITMBP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AF2CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17465C433C7;
-        Wed, 20 Sep 2023 11:47:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C373E6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3264C433C7;
+        Wed, 20 Sep 2023 12:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210461;
-        bh=Nc4pV7bevJHuTVVa7SJ5WaCeZXB78TAxwR0r2kO09DY=;
+        s=korg; t=1695211258;
+        bh=bWYkKxnPkyiYIWqrSN13KJAXCbhrIi/sDNLmW/Wrglo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mBOPdKRsRuGc5uRsd1+2pVDRFE77BpWfavBR2/daIM4RSRsqcvpAFNGcmI2yr0+lw
-         xEfVIPeivttm+bo6uFnjsGN/zEzfvzb8GV+vcos92Thlk8i3BzXd1i836EFcGH3zxD
-         YyW5c2rqwSIRJsxwN7Lix5J34SbYpuo2Jro3lCaA=
+        b=Tt5dzUOd1eUMAv7WYx2f+YZijz9Itc3cHSJatamCD+EhmIZZhFo5BFRbkglaQNnhG
+         ubIlQgTCU5sBpb02bjxZtDVcB51ZcOPq3Yhp939sLjYUs/O2V8JjAMzbqpHc4pJZaN
+         2M2y2I8MmFmReGg7DeG8BnJW3b3tfmnUvjuJ9I8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Inki Dae <inki.dae@samsung.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 085/211] drm/exynos: fix a possible null-pointer dereference due to data race in exynos_drm_crtc_atomic_disable()
-Date:   Wed, 20 Sep 2023 13:28:49 +0200
-Message-ID: <20230920112848.449787403@linuxfoundation.org>
+Subject: [PATCH 4.14 027/186] sctp: handle invalid error codes without calling BUG()
+Date:   Wed, 20 Sep 2023 13:28:50 +0200
+Message-ID: <20230920112837.898210944@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2e63972a2de14482d0eae1a03a73e379f1c3f44c ]
+[ Upstream commit a0067dfcd9418fd3b0632bc59210d120d038a9c6 ]
 
-The variable crtc->state->event is often protected by the lock
-crtc->dev->event_lock when is accessed. However, it is accessed as a
-condition of an if statement in exynos_drm_crtc_atomic_disable() without
-holding the lock:
+The sctp_sf_eat_auth() function is supposed to return enum sctp_disposition
+values but if the call to sctp_ulpevent_make_authkey() fails, it returns
+-ENOMEM.
 
-  if (crtc->state->event && !crtc->state->active)
+This results in calling BUG() inside the sctp_side_effects() function.
+Calling BUG() is an over reaction and not helpful.  Call WARN_ON_ONCE()
+instead.
 
-However, if crtc->state->event is changed to NULL by another thread right
-after the conditions of the if statement is checked to be true, a
-null-pointer dereference can occur in drm_crtc_send_vblank_event():
+This code predates git.
 
-  e->pipe = pipe;
-
-To fix this possible null-pointer dereference caused by data race, the
-spin lock coverage is extended to protect the if statement as well as the
-function call to drm_crtc_send_vblank_event().
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Link: https://sites.google.com/view/basscheck/home
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Added relevant link.
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_crtc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/sctp/sm_sideeffect.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_crtc.c b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-index 4153f302de7c4..d19e796c20613 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-@@ -39,13 +39,12 @@ static void exynos_drm_crtc_atomic_disable(struct drm_crtc *crtc,
- 	if (exynos_crtc->ops->atomic_disable)
- 		exynos_crtc->ops->atomic_disable(exynos_crtc);
- 
-+	spin_lock_irq(&crtc->dev->event_lock);
- 	if (crtc->state->event && !crtc->state->active) {
--		spin_lock_irq(&crtc->dev->event_lock);
- 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
--		spin_unlock_irq(&crtc->dev->event_lock);
--
- 		crtc->state->event = NULL;
+diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+index 169819263c0bb..87822421b99db 100644
+--- a/net/sctp/sm_sideeffect.c
++++ b/net/sctp/sm_sideeffect.c
+@@ -1235,7 +1235,10 @@ static int sctp_side_effects(enum sctp_event event_type,
+ 	default:
+ 		pr_err("impossible disposition %d in state %d, event_type %d, event_id %d\n",
+ 		       status, state, event_type, subtype.chunk);
+-		BUG();
++		error = status;
++		if (error >= 0)
++			error = -EINVAL;
++		WARN_ON_ONCE(1);
+ 		break;
  	}
-+	spin_unlock_irq(&crtc->dev->event_lock);
- }
  
- static int exynos_crtc_atomic_check(struct drm_crtc *crtc,
 -- 
 2.40.1
 
