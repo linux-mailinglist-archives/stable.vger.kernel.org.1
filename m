@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F5A7A77FA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A698F7A77FB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231948AbjITJx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40578 "EHLO
+        id S234121AbjITJxc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjITJx2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:28 -0400
+        with ESMTP id S233979AbjITJxb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6344A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28235C433C7;
-        Wed, 20 Sep 2023 09:53:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A8F48F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8E5C433C8;
+        Wed, 20 Sep 2023 09:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203602;
-        bh=Bklt6thldb8NqXTaWJArHiRgaOZqyiP358NUw3f/66w=;
+        s=korg; t=1695203605;
+        bh=a6HRbaFVOvQUqnh63nFAq3G7ri8/zmpd/jf3untMNnE=;
         h=Subject:To:Cc:From:Date:From;
-        b=Q0g8RZsWqk7bKjxpVQ19cOFa4ZeW5O9TdWSv+CeodN/P7zrWeevf35Dwbun7IuyzP
-         SBjRsgRtPntN/pG0QcpLGH2PINsALmvO53H4RdsTujVNa4iiNINi+evnbUoEpoBzfd
-         kWq51flQ+gnT8wWBPlayKzF56kdixp7mtWsKA62Q=
-Subject: FAILED: patch "[PATCH] btrfs: check for BTRFS_FS_ERROR in pending ordered assert" failed to apply to 4.19-stable tree
+        b=QNUr35fE38ROIhTTpt3nhsWd1oHs+fYha9UWBpxMXQWBPIrYO+bRlbJDHHMQcyJWw
+         SVBvdvzC4B1apeTcyGNqpSvFt0Cvuc5X6oQoF3ezkXX8N8hhYLNEShbB/82xkuc/QI
+         IOHyC4BUh2+7D33xxAxFcK3JtCSNGS7xXGJX5gl4=
+Subject: FAILED: patch "[PATCH] btrfs: check for BTRFS_FS_ERROR in pending ordered assert" failed to apply to 4.14-stable tree
 To:     josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:53:12 +0200
-Message-ID: <2023092012-congress-stubborn-56b5@gregkh>
+Date:   Wed, 20 Sep 2023 11:53:13 +0200
+Message-ID: <2023092013-slightly-hubcap-822b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092012-congress-stubborn-56b5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092013-slightly-hubcap-822b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
