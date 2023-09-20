@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0977A7DB5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC8497A7FCD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235369AbjITMLj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:11:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34780 "EHLO
+        id S234584AbjITMaj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235410AbjITMLh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:37 -0400
+        with ESMTP id S235938AbjITMai (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5FAFB
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC135C433C8;
-        Wed, 20 Sep 2023 12:11:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4617D8F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F0AC433C7;
+        Wed, 20 Sep 2023 12:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211888;
-        bh=vukZFeq21dUfQA8lr0mMtuQdOi/JVGiNAcE9BPH/LL8=;
+        s=korg; t=1695213032;
+        bh=nLono4eiYxpkYC9sV4QWsVA+wfSfrFrX+uo4YvOSTlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YrmA+P7ygjt5oaTd8J0bKIHBit+bPJpJpMUiJmrTpfT7Lg1TdzUDDAZiJTy6yzYmr
-         1u9IOOCvTJxVlM6HhlBrZeEVeRD7T4zqWl8euLqMAiqsyH3eaVtuSCS/eC7CAV3hqo
-         SpgWdUboh+rkj0R9EAxyqaFk7L484M6/tPt82FSg=
+        b=Mml5yBOTKrPojNACfEWfmU8hGjWa+oPcwc7aSZTm1PZVkviuWzGwC4jTTqpX/mI50
+         /PniMONjWoeEpjNFz+KKkLdYebMs9e006LFQwaMMgi6Qhn0n8f1MV88V5KSi4Zy+2C
+         qzswF7sYVyjye7pxADSwB3Nl1X7516gKm068ED2Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengguang Xu <cgxu519@zoho.com.cn>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 073/273] quota: avoid increasing DQST_LOOKUPS when iterating over dirty/inuse list
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 136/367] drm/amdgpu: Replace numbers with PCI_EXP_LNKCTL2 definitions
 Date:   Wed, 20 Sep 2023 13:28:33 +0200
-Message-ID: <20230920112848.716766950@linuxfoundation.org>
+Message-ID: <20230920112902.213972184@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,46 +50,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengguang Xu <cgxu519@zoho.com.cn>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 05848db2083d4f232e84e385845dcd98d5c511b2 ]
+[ Upstream commit 35e768e296729ac96a8c33b7810b6cb1673ae961 ]
 
-It is meaningless to increase DQST_LOOKUPS number while iterating
-over dirty/inuse list, so just avoid it.
+Replace hard-coded magic numbers with the descriptive PCI_EXP_LNKCTL2
+definitions.  No functional change intended.
 
-Link: https://lore.kernel.org/r/20190926083408.4269-1-cgxu519@zoho.com.cn
-Signed-off-by: Chengguang Xu <cgxu519@zoho.com.cn>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
+Link: https://lore.kernel.org/r/20191112173503.176611-4-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ce7d88110b9e ("drm/amdgpu: Use RMW accessors for changing LNKCTL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/cik.c | 22 ++++++++++++++--------
+ drivers/gpu/drm/amd/amdgpu/si.c  | 22 ++++++++++++++--------
+ 2 files changed, 28 insertions(+), 16 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 01bec330d54b1..50aaa5b0706e8 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -594,7 +594,6 @@ int dquot_scan_active(struct super_block *sb,
- 		/* Now we have active dquot so we can just increase use count */
- 		atomic_inc(&dquot->dq_count);
- 		spin_unlock(&dq_list_lock);
--		dqstats_inc(DQST_LOOKUPS);
- 		dqput(old_dquot);
- 		old_dquot = dquot;
- 		/*
-@@ -649,7 +648,6 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			 * use count */
- 			dqgrab(dquot);
- 			spin_unlock(&dq_list_lock);
--			dqstats_inc(DQST_LOOKUPS);
- 			err = sb->dq_op->write_dquot(dquot);
- 			if (err) {
- 				/*
+diff --git a/drivers/gpu/drm/amd/amdgpu/cik.c b/drivers/gpu/drm/amd/amdgpu/cik.c
+index 13a5696d2a6a2..3067bb874032f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/cik.c
++++ b/drivers/gpu/drm/amd/amdgpu/cik.c
+@@ -1498,13 +1498,19 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
+ 
+ 				/* linkctl2 */
+ 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (bridge_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (gpu_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				tmp = RREG32_PCIE(ixPCIE_LC_CNTL4);
+@@ -1521,13 +1527,13 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
+ 	WREG32_PCIE(ixPCIE_LC_SPEED_CNTL, speed_cntl);
+ 
+ 	pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-	tmp16 &= ~0xf;
++	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
+ 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-		tmp16 |= 3; /* gen3 */
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
+ 	else if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2)
+-		tmp16 |= 2; /* gen2 */
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
+ 	else
+-		tmp16 |= 1; /* gen1 */
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
+ 	pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 	speed_cntl = RREG32_PCIE(ixPCIE_LC_SPEED_CNTL);
+diff --git a/drivers/gpu/drm/amd/amdgpu/si.c b/drivers/gpu/drm/amd/amdgpu/si.c
+index 1e350172dc7bb..a7dcb0d0f039c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/si.c
++++ b/drivers/gpu/drm/amd/amdgpu/si.c
+@@ -1737,13 +1737,19 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
+ 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
+ 
+ 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (bridge_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (gpu_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
+@@ -1758,13 +1764,13 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
+ 	WREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL, speed_cntl);
+ 
+ 	pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-	tmp16 &= ~0xf;
++	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
+ 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-		tmp16 |= 3;
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
+ 	else if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2)
+-		tmp16 |= 2;
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
+ 	else
+-		tmp16 |= 1;
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
+ 	pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 	speed_cntl = RREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL);
 -- 
 2.40.1
 
