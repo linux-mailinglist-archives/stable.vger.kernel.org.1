@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1767A7B40
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A0CC7A7BD9
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234641AbjITLuf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49818 "EHLO
+        id S234873AbjITL4D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234588AbjITLue (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:34 -0400
+        with ESMTP id S234892AbjITL4C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B914D3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597F4C433C9;
-        Wed, 20 Sep 2023 11:50:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E030E0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FD8C433C8;
+        Wed, 20 Sep 2023 11:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210627;
-        bh=ntZMgMDKKF27ptitnLmbxkYsLp7QScID9alz7zchtmg=;
+        s=korg; t=1695210955;
+        bh=Skk/m/69dFoGaNId0M2OnyF1AJgRC5DIKkR6y3Ahhgo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NNjA5aeJEIPOWtKKkz+CKoJFjmOU1i5TGIKAnL957bwX7/oeoRzZOdjM3gPOd+GjZ
-         DRedRJoS6cNxHaKMoR8KG3rT3jE7PQukv2bmBmIfF7jyfJQ2uIsE1jNYWCCJ01/2S+
-         VsmhVd68SXohKB8BrdGKjVXGBB1kiWfAzJPt+Yrg=
+        b=ajTg6+ILOp7dkLCZ2EWWqJbx39qxWTSF38rLuETcvs2ejW7l5l/3UFlDu3e9qPRFR
+         Wm2Qzw02sNp7fz5xS+EUv7JtaqbfEo+dm8jqUMWFY9BChX7tw+Jj1v20o/yLP3obiy
+         HbysCwfOKhp9v2OuhgmMjR+LeaZfnD9k7x40CFBQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 145/211] scsi: qla2xxx: Fix NULL vs IS_ERR() bug for debugfs_create_dir()
+Subject: [PATCH 6.1 055/139] bus: ti-sysc: Configure uart quirks for k3 SoC
 Date:   Wed, 20 Sep 2023 13:29:49 +0200
-Message-ID: <20230920112850.348692839@linuxfoundation.org>
+Message-ID: <20230920112837.731752699@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit d0b0822e32dbae80bbcb3cc86f34d28539d913df ]
+[ Upstream commit 03a711d3cb83692733f865312f49e665c49de6de ]
 
-Since both debugfs_create_dir() and debugfs_create_file() return ERR_PTR
-and never NULL, use IS_ERR() instead of checking for NULL.
+Enable the uart quirks similar to the earlier SoCs. Let's assume we are
+likely going to need a k3 specific quirk mask separate from the earlier
+SoCs, so let's not start changing the revision register mask at this point.
 
-Fixes: 1e98fb0f9208 ("scsi: qla2xxx: Setup debugfs entries for remote ports")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20230831140930.3166359-1-ruanjinjie@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Note that SYSC_QUIRK_LEGACY_IDLE will be needed until we can remove the
+need for pm_runtime_irq_safe() from 8250_omap driver.
+
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_dfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bus/ti-sysc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
-index f060e593685de..a7a364760b800 100644
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -116,7 +116,7 @@ qla2x00_dfs_create_rport(scsi_qla_host_t *vha, struct fc_port *fp)
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index ac36b01cf6d5d..ddde1427c90c7 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1548,6 +1548,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
+ 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47422e03, 0xffffffff,
+ 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
++	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47424e03, 0xffffffff,
++		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
  
- 	sprintf(wwn, "pn-%016llx", wwn_to_u64(fp->port_name));
- 	fp->dfs_rport_dir = debugfs_create_dir(wwn, vha->dfs_rport_root);
--	if (!fp->dfs_rport_dir)
-+	if (IS_ERR(fp->dfs_rport_dir))
- 		return;
- 	if (NVME_TARGET(vha->hw, fp))
- 		debugfs_create_file("dev_loss_tmo", 0600, fp->dfs_rport_dir,
-@@ -708,14 +708,14 @@ qla2x00_dfs_setup(scsi_qla_host_t *vha)
- 	if (IS_QLA27XX(ha) || IS_QLA83XX(ha) || IS_QLA28XX(ha)) {
- 		ha->tgt.dfs_naqp = debugfs_create_file("naqp",
- 		    0400, ha->dfs_dir, vha, &dfs_naqp_ops);
--		if (!ha->tgt.dfs_naqp) {
-+		if (IS_ERR(ha->tgt.dfs_naqp)) {
- 			ql_log(ql_log_warn, vha, 0xd011,
- 			       "Unable to create debugFS naqp node.\n");
- 			goto out;
- 		}
- 	}
- 	vha->dfs_rport_root = debugfs_create_dir("rports", ha->dfs_dir);
--	if (!vha->dfs_rport_root) {
-+	if (IS_ERR(vha->dfs_rport_root)) {
- 		ql_log(ql_log_warn, vha, 0xd012,
- 		       "Unable to create debugFS rports node.\n");
- 		goto out;
+ 	/* Quirks that need to be set based on the module address */
+ 	SYSC_QUIRK("mcpdm", 0x40132000, 0, 0x10, -ENODEV, 0x50000800, 0xffffffff,
 -- 
 2.40.1
 
