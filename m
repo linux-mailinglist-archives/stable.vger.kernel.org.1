@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAABF7A7B72
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DDC77A7BE8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234731AbjITLwO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42090 "EHLO
+        id S234847AbjITL4k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbjITLwN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:13 -0400
+        with ESMTP id S234583AbjITL4j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 070EC92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50387C433C9;
-        Wed, 20 Sep 2023 11:52:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D6F11A
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D58C433C7;
+        Wed, 20 Sep 2023 11:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210727;
-        bh=xQ9AZf6CUzJdyRdvYiqz1Np6h3B86zObEvjBIAsSnDk=;
+        s=korg; t=1695210990;
+        bh=n956jxZQz7gg8DiRTaxVaIud0dmjb0evTNIUDM8Spgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=clH8c8DLQ28+Lu9wkclSx73k2m5jH+C0D+iDpEOqh2q1saoqEmAEDqmBdFDhTz1cm
-         0SQAsWawX9lc9H4b2nkPvN4uurgKVtvBy1qmFEmWm393oA3tl6S/oDFV0ZuUpr1ndP
-         uvi74HxRwxGFYbU+QF1kYFKBKAEJj58qKhnKPFRs=
+        b=dunQG0kXCER/a+5CukMR3DhK4sSAmSUWOhjphYQG223yGxmUFm8kbx4tNjC6uN3HJ
+         40wqEUOpoYHwNTDTvIG3FpvSnlg9vQ+rLcCE3OhJHBD+RbrbyWsIVkCQCO11X4hhuD
+         X0CMrn4dL5+MUBDRdQAPNDxxttGOyQDYpQXAoDd8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 157/211] panic: Reenable preemption in WARN slowpath
+Subject: [PATCH 6.1 067/139] media: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()
 Date:   Wed, 20 Sep 2023 13:30:01 +0200
-Message-ID: <20230920112850.747491772@linuxfoundation.org>
+Message-ID: <20230920112838.206213516@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,61 +50,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit cccd32816506cbac3a4c65d9dff51b3125ef1a03 ]
+[ Upstream commit 5ae544d94abc8ff77b1b9bf8774def3fa5689b5b ]
 
-Commit:
+In dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach dw2102_i2c_transfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-  5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
+Similar commit:
+commit 950e252cb469
+("[media] dw2102: limit messages to buffer size")
 
-amended warn_slowpath_fmt() to disable preemption until the WARN splat
-has been emitted.
-
-However the commit neglected to reenable preemption in the !fmt codepath,
-i.e. when a WARN splat is emitted without additional format string.
-
-One consequence is that users may see more splats than intended.  E.g. a
-WARN splat emitted in a work item results in at least two extra splats:
-
-  BUG: workqueue leaked lock or atomic
-  (emitted by process_one_work())
-
-  BUG: scheduling while atomic
-  (emitted by worker_thread() -> schedule())
-
-Ironically the point of the commit was to *avoid* extra splats. ;)
-
-Fix it.
-
-Fixes: 5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/panic.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/usb/dvb-usb/dw2102.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 10effe40a3fa6..ea1c5fcb2d191 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -697,6 +697,7 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
- 	if (!fmt) {
- 		__warn(file, line, __builtin_return_address(0), taint,
- 		       NULL, NULL);
-+		warn_rcu_exit(rcu);
- 		return;
- 	}
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 8747960e61461..356fc728d59a8 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -128,6 +128,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
  
+ 	switch (num) {
+ 	case 2:
++		if (msg[0].len < 1) {
++			num = -EOPNOTSUPP;
++			break;
++		}
+ 		/* read stv0299 register */
+ 		value = msg[0].buf[0];/* register */
+ 		for (i = 0; i < msg[1].len; i++) {
+@@ -139,6 +143,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	case 1:
+ 		switch (msg[0].addr) {
+ 		case 0x68:
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			/* write to stv0299 register */
+ 			buf6[0] = 0x2a;
+ 			buf6[1] = msg[0].buf[0];
+@@ -148,6 +156,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			break;
+ 		case 0x60:
+ 			if (msg[0].flags == 0) {
++				if (msg[0].len < 4) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* write to tuner pll */
+ 				buf6[0] = 0x2c;
+ 				buf6[1] = 5;
+@@ -159,6 +171,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				dw210x_op_rw(d->udev, 0xb2, 0, 0,
+ 						buf6, 7, DW210X_WRITE_MSG);
+ 			} else {
++				if (msg[0].len < 1) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* read from tuner */
+ 				dw210x_op_rw(d->udev, 0xb5, 0, 0,
+ 						buf6, 1, DW210X_READ_MSG);
+@@ -166,12 +182,20 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			}
+ 			break;
+ 		case (DW2102_RC_QUERY):
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			dw210x_op_rw(d->udev, 0xb8, 0, 0,
+ 					buf6, 2, DW210X_READ_MSG);
+ 			msg[0].buf[0] = buf6[0];
+ 			msg[0].buf[1] = buf6[1];
+ 			break;
+ 		case (DW2102_VOLTAGE_CTRL):
++			if (msg[0].len < 1) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			buf6[0] = 0x30;
+ 			buf6[1] = msg[0].buf[0];
+ 			dw210x_op_rw(d->udev, 0xb2, 0, 0,
 -- 
 2.40.1
 
