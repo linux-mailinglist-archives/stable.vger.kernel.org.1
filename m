@@ -2,45 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D795F7A7AEA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C397A7C81
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234595AbjITLrY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
+        id S235038AbjITMB7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234600AbjITLrX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:23 -0400
+        with ESMTP id S235008AbjITMBz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B48BD6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F4C433C7;
-        Wed, 20 Sep 2023 11:47:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91908B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C444AC433C8;
+        Wed, 20 Sep 2023 12:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210436;
-        bh=+Aa1h6WAR+9+jtJIPkmVR9N+0VUvxDjExLnqMVzSC7U=;
+        s=korg; t=1695211307;
+        bh=vpzeg+4CgNTwgVtam9Zia6ZXB6qXcc4zXwesSlvUFT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d7nXLqBQgsr+5NrhfbfJF76DPTOGxBIIDejL3IPi6czVn183XK7YU6wO77nPzsiYd
-         94EEMInNuJaq4zIi2DJKgXgPU6UyaeUC2ApB6iHyv1R0KzEVzhhPHzcDL2gFhJqq9U
-         k4InkwFit3FlIpO8BZ7AogHWb/G+AYz/Y+1NlVkM=
+        b=QnFKwsG5QUhpWIbrHkSHR0vFjojm8uovzwMQRHVDwN0/ZXRBz93TR5T1X+w2PI6Yy
+         gCmoPbV45XmieX39R6XCjZz0dfXQCzFB12e4CrKsCdy2dmsvdSW6Jn3LCkZJX3Cxaa
+         b67kAkRpgHJPlybIa22Znw3Q8z8kXXQef554zfl8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Uday M Bhat <uday.m.bhat@intel.com>,
-        Jairaj Arava <jairaj.arava@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 077/211] ASoC: Intel: sof_sdw: Update BT offload config for soundwire config
+        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 018/186] s390/dasd: use correct number of retries for ERP requests
 Date:   Wed, 20 Sep 2023 13:28:41 +0200
-Message-ID: <20230920112848.188984432@linuxfoundation.org>
+Message-ID: <20230920112837.531095603@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,45 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday M Bhat <uday.m.bhat@intel.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-[ Upstream commit a14aded9299187bb17ef90700eb2cf1120ef5885 ]
+[ Upstream commit acea28a6b74f458defda7417d2217b051ba7d444 ]
 
-For soundwire config, SSP1 is used for BT offload. This is enabled
-in sof_sdw_quirk_table
+If a DASD request fails an error recovery procedure (ERP) request might
+be built as a copy of the original request to do error recovery.
 
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-Signed-off-by: Jairaj Arava <jairaj.arava@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230731214257.444605-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The ERP request gets a number of retries assigned.
+This number is always 256 no matter what other value might have been set
+for the original request. This is not what is expected when a user
+specifies a certain amount of retries for the device via sysfs.
+
+Correctly use the number of retries of the original request for ERP
+requests.
+
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230721193647.3889634-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/s390/block/dasd_3990_erp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 0201029899cad..c86f8f9a61003 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -467,7 +467,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Rex"),
- 		},
--		.driver_data = (void *)(SOF_SDW_PCH_DMIC),
-+		.driver_data = (void *)(SOF_SDW_PCH_DMIC |
-+					SOF_BT_OFFLOAD_SSP(1) |
-+					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
- 	/* LunarLake devices */
- 	{
+diff --git a/drivers/s390/block/dasd_3990_erp.c b/drivers/s390/block/dasd_3990_erp.c
+index ee14d8e45c971..6d26343b12f25 100644
+--- a/drivers/s390/block/dasd_3990_erp.c
++++ b/drivers/s390/block/dasd_3990_erp.c
+@@ -2423,7 +2423,7 @@ static struct dasd_ccw_req *dasd_3990_erp_add_erp(struct dasd_ccw_req *cqr)
+ 	erp->block    = cqr->block;
+ 	erp->magic    = cqr->magic;
+ 	erp->expires  = cqr->expires;
+-	erp->retries  = 256;
++	erp->retries  = device->default_retries;
+ 	erp->buildclk = get_tod_clock();
+ 	erp->status = DASD_CQR_FILLED;
+ 
 -- 
 2.40.1
 
