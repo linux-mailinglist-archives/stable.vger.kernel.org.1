@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 906A87A7BE7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1277A7A7B68
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234521AbjITL4h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:56:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42698 "EHLO
+        id S234640AbjITLvz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234847AbjITL4g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:36 -0400
+        with ESMTP id S234742AbjITLvu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6028AE4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBCDC433CB;
-        Wed, 20 Sep 2023 11:56:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8E81E6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192C6C433C8;
+        Wed, 20 Sep 2023 11:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210988;
-        bh=0ukN4mCysDcsHb2oM/xtsXrElrDEIOURJRqsJkQXSzk=;
+        s=korg; t=1695210703;
+        bh=RlMZ7aHnzXvW3fsafdSqtFQcL2WcpaBfYXbhrjRYXWo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QqtvgNMelbh1JXlnnEoHcC3QU3OTxmb6q6K4qXoV+2OpDhBnlQOp6g2lk1RZCniBv
-         DNSxedlgxt0pXhfpiVFcFhmkEwTMSvIpIePT9hzumeCjBH8dUihabg7xvwIOgOYy1E
-         J2wNPLcGcYhds8DFvHaKovdqWyIZYiss9pgv+C6g=
+        b=Sfs/xzVHdtiKv4o/rMA8VvuPuvtGKHHIUsBu3Yeis8NKx8RKLolqkGmsbJgh/g0Wn
+         g7cG+PBKGbMSn2vIcRHTxxv2Ho0jRxQsye4FfQjfYxJ3Xnlk2yaNd/KcKByVur8Irm
+         RiDUnA1n6yVlFj5K0KiAyVnJdfF4kvK8haqzV0I0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/139] media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer
+Subject: [PATCH 6.5 156/211] scsi: lpfc: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
 Date:   Wed, 20 Sep 2023 13:30:00 +0200
-Message-ID: <20230920112838.162420103@linuxfoundation.org>
+Message-ID: <20230920112850.712761331@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,76 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 7bf744f2de0a848fb1d717f5831b03db96feae89 ]
+[ Upstream commit 7dcc683db3639eadd11bf0d59a09088a43de5e22 ]
 
-In af9035_i2c_master_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach af9035_i2c_master_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+Since debugfs_create_file() returns ERR_PTR and never NULL, use IS_ERR() to
+check the return value.
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 2fcbc569b9f5 ("scsi: lpfc: Make debugfs ktime stats generic for NVME and SCSI")
+Fixes: 4c47efc140fa ("scsi: lpfc: Move SCSI and NVME Stats to hardware queue structures")
+Fixes: 6a828b0f6192 ("scsi: lpfc: Support non-uniform allocation of MSIX vectors to hardware queues")
+Fixes: 95bfc6d8ad86 ("scsi: lpfc: Make FW logging dynamically configurable")
+Fixes: 9f77870870d8 ("scsi: lpfc: Add debugfs support for cm framework buffers")
+Fixes: c490850a0947 ("scsi: lpfc: Adapt partitioned XRI lists to efficient sharing")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230906030809.2847970-1-ruanjinjie@huawei.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ moved variable declaration to fix build issues in older kernels - gregkh ]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb-v2/af9035.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/scsi/lpfc/lpfc_debugfs.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/media/usb/dvb-usb-v2/af9035.c
-+++ b/drivers/media/usb/dvb-usb-v2/af9035.c
-@@ -270,6 +270,7 @@ static int af9035_i2c_master_xfer(struct
- 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
- 	struct state *state = d_to_priv(d);
- 	int ret;
-+	u32 reg;
- 
- 	if (mutex_lock_interruptible(&d->i2c_mutex) < 0)
- 		return -EAGAIN;
-@@ -322,8 +323,10 @@ static int af9035_i2c_master_xfer(struct
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
-+			if (msg[0].len < 3 || msg[1].len < 1)
-+				return -EOPNOTSUPP;
- 			/* demod access via firmware interface */
--			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
-+			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
- 					msg[0].buf[2];
- 
- 			if (msg[0].addr == state->af9033_i2c_addr[1])
-@@ -381,17 +384,16 @@ static int af9035_i2c_master_xfer(struct
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
-+			if (msg[0].len < 3)
-+				return -EOPNOTSUPP;
- 			/* demod access via firmware interface */
--			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
-+			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
- 					msg[0].buf[2];
- 
- 			if (msg[0].addr == state->af9033_i2c_addr[1])
- 				reg |= 0x100000;
- 
--			ret = (msg[0].len >= 3) ? af9035_wr_regs(d, reg,
--							         &msg[0].buf[3],
--							         msg[0].len - 3)
--					        : -EOPNOTSUPP;
-+			ret = af9035_wr_regs(d, reg, &msg[0].buf[3], msg[0].len - 3);
- 		} else {
- 			/* I2C write */
- 			u8 buf[MAX_XFER_SIZE];
+diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
+index 7f9b221e7c34a..ea9b42225e629 100644
+--- a/drivers/scsi/lpfc/lpfc_debugfs.c
++++ b/drivers/scsi/lpfc/lpfc_debugfs.c
+@@ -6073,7 +6073,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 					    phba->hba_debugfs_root,
+ 					    phba,
+ 					    &lpfc_debugfs_op_multixripools);
+-		if (!phba->debug_multixri_pools) {
++		if (IS_ERR(phba->debug_multixri_pools)) {
+ 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 					 "0527 Cannot create debugfs multixripools\n");
+ 			goto debug_failed;
+@@ -6085,7 +6085,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			debugfs_create_file(name, S_IFREG | 0644,
+ 					    phba->hba_debugfs_root,
+ 					    phba, &lpfc_cgn_buffer_op);
+-		if (!phba->debug_cgn_buffer) {
++		if (IS_ERR(phba->debug_cgn_buffer)) {
+ 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 					 "6527 Cannot create debugfs "
+ 					 "cgn_buffer\n");
+@@ -6098,7 +6098,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			debugfs_create_file(name, S_IFREG | 0644,
+ 					    phba->hba_debugfs_root,
+ 					    phba, &lpfc_rx_monitor_op);
+-		if (!phba->debug_rx_monitor) {
++		if (IS_ERR(phba->debug_rx_monitor)) {
+ 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 					 "6528 Cannot create debugfs "
+ 					 "rx_monitor\n");
+@@ -6111,7 +6111,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			debugfs_create_file(name, 0644,
+ 					    phba->hba_debugfs_root,
+ 					    phba, &lpfc_debugfs_ras_log);
+-		if (!phba->debug_ras_log) {
++		if (IS_ERR(phba->debug_ras_log)) {
+ 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 					 "6148 Cannot create debugfs"
+ 					 " ras_log\n");
+@@ -6132,7 +6132,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			debugfs_create_file(name, S_IFREG | 0644,
+ 					    phba->hba_debugfs_root,
+ 					    phba, &lpfc_debugfs_op_lockstat);
+-		if (!phba->debug_lockstat) {
++		if (IS_ERR(phba->debug_lockstat)) {
+ 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 					 "4610 Can't create debugfs lockstat\n");
+ 			goto debug_failed;
+@@ -6358,7 +6358,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 		debugfs_create_file(name, 0644,
+ 				    vport->vport_debugfs_root,
+ 				    vport, &lpfc_debugfs_op_scsistat);
+-	if (!vport->debug_scsistat) {
++	if (IS_ERR(vport->debug_scsistat)) {
+ 		lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 				 "4611 Cannot create debugfs scsistat\n");
+ 		goto debug_failed;
+@@ -6369,7 +6369,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 		debugfs_create_file(name, 0644,
+ 				    vport->vport_debugfs_root,
+ 				    vport, &lpfc_debugfs_op_ioktime);
+-	if (!vport->debug_ioktime) {
++	if (IS_ERR(vport->debug_ioktime)) {
+ 		lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
+ 				 "0815 Cannot create debugfs ioktime\n");
+ 		goto debug_failed;
+-- 
+2.40.1
+
 
 
