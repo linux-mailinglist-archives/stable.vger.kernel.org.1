@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6F6C7A782F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C96A7A7830
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234285AbjITJ5V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S234294AbjITJ5W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234274AbjITJ5L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:11 -0400
+        with ESMTP id S234271AbjITJ5U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30BD38F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D79FC433C8;
-        Wed, 20 Sep 2023 09:57:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB6FD6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D219C433CA;
+        Wed, 20 Sep 2023 09:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203824;
-        bh=ohHW1jnrgzFlZjajtSAXX1kESs2Nc1oJqr/Vp/bYHvE=;
+        s=korg; t=1695203827;
+        bh=vbNkRrVPZGlxQFPTsZGPqltyDyUoTh8vu0j2KvQn9dE=;
         h=Subject:To:Cc:From:Date:From;
-        b=uqWWFIUmXdmDsFZh4E9U9GaTOlZ3kS6g5rzoOdozU6rX7xqqT9YN+pps7HXeerv8N
-         zoqacD2Un+D6ys+xxi8nG7/o5SHbMqhrSb/1eub4v5ECZLsfscspEygpILMYV67NHP
-         PDKaFnSwaGFa0KV0sJZsmVSc+jS1sP/EeMZgS0UY=
-Subject: FAILED: patch "[PATCH] ata: libata: disallow dev-initiated LPM transitions to" failed to apply to 4.19-stable tree
+        b=VsKaRo9tLdWfuQ+xtqzwn3Bzc/DJWD2/JKo9nUBwaAtHfHw7yaiUT5AHqRRVae7Wf
+         5qO/gqFZEJLZJaqD/3cD30gj7SzDLA4rBaqzDhypfJRJXZqAFa95tjlqVamIPTQjEy
+         HMrtpJH8Z4oOZb6IQu/RONdgoCpEUFRPoMJu7coQ=
+Subject: FAILED: patch "[PATCH] ata: libata: disallow dev-initiated LPM transitions to" failed to apply to 4.14-stable tree
 To:     niklas.cassel@wdc.com, dlemoal@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:57:00 +0200
-Message-ID: <2023092000-constrict-congested-cec9@gregkh>
+Date:   Wed, 20 Sep 2023 11:57:02 +0200
+Message-ID: <2023092002-mobster-onset-2af9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 24e0e61db3cb86a66824531989f1df80e0939f26
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092000-constrict-congested-cec9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092002-mobster-onset-2af9@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -64,6 +64,8 @@ a52fbcfc7b38 ("ata: move EXPORT_SYMBOL_GPL()s close to exported code")
 10a663a1b151 ("ata: ahci: Add shutdown to freeze hardware resources of ahci")
 95364f36701e ("ata: make qc_prep return ata_completion_errors")
 c82ee6d3beaa ("treewide: Replace GPLv2 boilerplate/reference with SPDX - rule 18")
+4e8065aa6c6f ("scsi: libata: Add missing newline at end of file")
+051935978432 ("Merge branch 'for-4.19' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/libata")
 
 thanks,
 
