@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9ED07A7C13
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 636AB7A7C20
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234940AbjITL5r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33272 "EHLO
+        id S235000AbjITL6R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234967AbjITL5q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:46 -0400
+        with ESMTP id S235018AbjITL6Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAD5AD7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20731C433D9;
-        Wed, 20 Sep 2023 11:57:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C4F4D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9769DC433C8;
+        Wed, 20 Sep 2023 11:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211060;
-        bh=FA/Ru3aAo8BlaWQm0jspi2p+fova6ZFpDnHcVn/00vI=;
+        s=korg; t=1695211089;
+        bh=G8dEks/Ds08kZ3s/k+/8uFqdVgonlCVrte17iBYme68=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EqlZEi2R8X07ydq9wH2knktuOnNhIAya7o+vb1GNXvDKLPzGG3xgFwjshCNiejIxl
-         fG5axFmaX2IAC3a1QmdnNyfF6mQhlXCzYXoe+W7GUoWzS8UK0KEHl3DPjkv9hg84n0
-         aeVSu3hOmLSW7tgEuSTV9CYmtDzgjJ0mpxjPeRho=
+        b=Iov8MMQlcubbY4Y/7f7dbcFDwtf3zRJOe8JxVIawOnA+z6zTf0GIKxIkwmifVGVsY
+         dgfYd+d9X1P7lUpEx4zRjePTgk5KYPn8GJnXN4lNVqNwD0bcyVj+5zQ9C0fFVam6/g
+         fTk0Aa2mN/jd2elp6/9apABaU5RyT0q++VrKv5N8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
-        Li Yang <leoyang.li@nxp.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/139] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
-Date:   Wed, 20 Sep 2023 13:30:10 +0200
-Message-ID: <20230920112838.509345595@linuxfoundation.org>
+        patches@lists.linux.dev, Chenyuan Mi <michenyuan@huawei.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 077/139] tools: iio: iio_generic_buffer: Fix some integer type and calculation
+Date:   Wed, 20 Sep 2023 13:30:11 +0200
+Message-ID: <20230920112838.540468511@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
 References: <20230920112835.549467415@linuxfoundation.org>
@@ -53,35 +54,71 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Chenyuan Mi <michenyuan@huawei.com>
 
-[ Upstream commit ce9daa2efc0872a9a68ea51dc8000df05893ef2e ]
+[ Upstream commit 49d736313d0975ddeb156f4f59801da833f78b30 ]
 
-We should verify the bound of the array to assure that host
-may not manipulate the index to point past endpoint array.
+In function size_from_channelarray(), the return value 'bytes' is defined
+as int type. However, the calcution of 'bytes' in this function is designed
+to use the unsigned int type. So it is necessary to change 'bytes' type to
+unsigned int to avoid integer overflow.
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Acked-by: Li Yang <leoyang.li@nxp.com>
-Link: https://lore.kernel.org/r/20230628081511.186850-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The size_from_channelarray() is called in main() function, its return value
+is directly multipled by 'buf_len' and then used as the malloc() parameter.
+The 'buf_len' is completely controllable by user, thus a multiplication
+overflow may occur here. This could allocate an unexpected small area.
+
+Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
+Link: https://lore.kernel.org/r/20230725092407.62545-1-michenyuan@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/iio/iio_generic_buffer.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
-index 3b1cc8fa30c83..f4e5cbd193b7b 100644
---- a/drivers/usb/gadget/udc/fsl_qe_udc.c
-+++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-@@ -1959,6 +1959,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
- 	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
- 		/* Get endpoint status */
- 		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
-+		if (pipe >= USB_MAX_ENDPOINTS)
-+			goto stall;
- 		struct qe_ep *target_ep = &udc->eps[pipe];
- 		u16 usep;
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index f8deae4e26a15..44bbf80f0cfdd 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -51,9 +51,9 @@ enum autochan {
+  * Has the side effect of filling the channels[i].location values used
+  * in processing the buffer output.
+  **/
+-static int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
++static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+ {
+-	int bytes = 0;
++	unsigned int bytes = 0;
+ 	int i = 0;
  
+ 	while (i < num_channels) {
+@@ -348,7 +348,7 @@ int main(int argc, char **argv)
+ 	ssize_t read_size;
+ 	int dev_num = -1, trig_num = -1;
+ 	char *buffer_access = NULL;
+-	int scan_size;
++	unsigned int scan_size;
+ 	int noevents = 0;
+ 	int notrigger = 0;
+ 	char *dummy;
+@@ -674,7 +674,16 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	scan_size = size_from_channelarray(channels, num_channels);
+-	data = malloc(scan_size * buf_len);
++
++	size_t total_buf_len = scan_size * buf_len;
++
++	if (scan_size > 0 && total_buf_len / scan_size != buf_len) {
++		ret = -EFAULT;
++		perror("Integer overflow happened when calculate scan_size * buf_len");
++		goto error;
++	}
++
++	data = malloc(total_buf_len);
+ 	if (!data) {
+ 		ret = -ENOMEM;
+ 		goto error;
 -- 
 2.40.1
 
