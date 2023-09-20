@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F282B7A7E6C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB9B7A806A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235564AbjITMRx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51570 "EHLO
+        id S235735AbjITMhI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235565AbjITMRw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:52 -0400
+        with ESMTP id S235915AbjITMhI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D6B110
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CC3C433AB;
-        Wed, 20 Sep 2023 12:17:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8119E
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033A7C433C7;
+        Wed, 20 Sep 2023 12:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212255;
-        bh=7hJ5yK9X51tnUCh3ItGKKsZ0kaguA29sI6Fxn2R70Lc=;
+        s=korg; t=1695213422;
+        bh=PIPzzZvT1S8P/by49wgV1B76lJCgZ8TcQQ4uUIpQNoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cAr66AwGFmwqY4jHbnY2Onz9BMZKjB4Vs9J/Yy1HaMBOo+ZeBkpN/Z0Bs50mOr3+v
-         +zjRCXDZCUU12z+Vh2TZgMjY6g8XJoNGAItXGeIpwpu1V7yI6j0W44iBxrUAZYuvnC
-         lNt88RUR/y04G3D7yIO7qdZk5dLVbZ5FA+lctDMk=
+        b=xq5gilwl3odDLry+ztPhRPsGmEzoCiDQGr/v96Fwcky5/wjAefxnqhPmoUX28YZ7d
+         HdK6vCyUEWozm3plFs1um9jJX02u3+yQrx22PrpZE5d3dQp93c/Z269sTYudZ4m4iD
+         P18HwIj2y+2GVg2e4MMPuhp8PzyAkECN8EoipEio=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 167/273] netfilter: xt_u32: validate user space input
-Date:   Wed, 20 Sep 2023 13:30:07 +0200
-Message-ID: <20230920112851.683360050@linuxfoundation.org>
+        patches@lists.linux.dev, Sven Schnelle <svens@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.4 231/367] s390/ipl: add missing secure/has_secure file to ipl type unknown
+Date:   Wed, 20 Sep 2023 13:30:08 +0200
+Message-ID: <20230920112904.559735861@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,65 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
+commit ea5717cb13468323a7c3dd394748301802991f39 upstream.
 
-The xt_u32 module doesn't validate the fields in the xt_u32 structure.
-An attacker may take advantage of this to trigger an OOB read by setting
-the size fields with a value beyond the arrays boundaries.
+OS installers are relying on /sys/firmware/ipl/has_secure to be
+present on machines supporting secure boot. This file is present
+for all IPL types, but not the unknown type, which prevents a secure
+installation when an LPAR is booted in HMC via FTP(s), because
+this is an unknown IPL type in linux. While at it, also add the secure
+file.
 
-Add a checkentry function to validate the structure.
-
-This was originally reported by the ZDI project (ZDI-CAN-18408).
-
-Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
+Fixes: c9896acc7851 ("s390/ipl: Provide has_secure sysfs attribute")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/s390/kernel/ipl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/netfilter/xt_u32.c
-+++ b/net/netfilter/xt_u32.c
-@@ -95,11 +95,32 @@ static bool u32_mt(const struct sk_buff
- 	return ret ^ data->invert;
- }
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -429,6 +429,8 @@ static struct attribute_group ipl_ccw_at
  
-+static int u32_mt_checkentry(const struct xt_mtchk_param *par)
-+{
-+	const struct xt_u32 *data = par->matchinfo;
-+	const struct xt_u32_test *ct;
-+	unsigned int i;
-+
-+	if (data->ntests > ARRAY_SIZE(data->tests))
-+		return -EINVAL;
-+
-+	for (i = 0; i < data->ntests; ++i) {
-+		ct = &data->tests[i];
-+
-+		if (ct->nnums > ARRAY_SIZE(ct->location) ||
-+		    ct->nvalues > ARRAY_SIZE(ct->value))
-+			return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static struct xt_match xt_u32_mt_reg __read_mostly = {
- 	.name       = "u32",
- 	.revision   = 0,
- 	.family     = NFPROTO_UNSPEC,
- 	.match      = u32_mt,
-+	.checkentry = u32_mt_checkentry,
- 	.matchsize  = sizeof(struct xt_u32),
- 	.me         = THIS_MODULE,
+ static struct attribute *ipl_unknown_attrs[] = {
+ 	&sys_ipl_type_attr.attr,
++	&sys_ipl_secure_attr.attr,
++	&sys_ipl_has_secure_attr.attr,
+ 	NULL,
  };
+ 
 
 
