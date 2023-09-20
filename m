@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3875D7A7D1F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD1147A7EE4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234555AbjITMGt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44034 "EHLO
+        id S235677AbjITMVp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235160AbjITMGt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:49 -0400
+        with ESMTP id S235772AbjITMVl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 832D6DD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5E6C433CA;
-        Wed, 20 Sep 2023 12:06:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEE0A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245EAC433CB;
+        Wed, 20 Sep 2023 12:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211596;
-        bh=qW8ptWzZzzKu6KU8wssYYiNKLXFxQranB3Ke9sU/z98=;
+        s=korg; t=1695212495;
+        bh=LZziCEmylnLVXBuy5w6E1l+jZr4BDU56VucK7zrXXu8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w6OTw5gxBxcFo/5GHofdRn6I9F/qesw8orJQGlvKQikVuT81Pka187pS2KwvfrdUf
-         1ZioeKJjyAgCpAq+hVHWPwraAm0xOo8Wi/CDMM2KCqTtIqdO7GplQ8levnEZJD16sj
-         DIdyaHkaifVzO+pKXwiYsCzwI3ze8O+nulpwq6x4=
+        b=lwdcjiluPH8tW4QaHi9Hi2UYeio9jujQD25/StO16/skqNKFAF912zoCaZtg1O1u7
+         aQjcIiH+MkjYuFsS1jyKC5t5N0yhRiYjLl4SBLLMoLobCdn5rtyYE8tEfZ69F/p/KX
+         uL5nv18RRytRIiXpbJU7nb/BBhe6kipzfC+4ZV6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bob Moore <robert.moore@intel.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 151/186] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Subject: [PATCH 5.10 04/83] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
 Date:   Wed, 20 Sep 2023 13:30:54 +0200
-Message-ID: <20230920112842.417464572@linuxfoundation.org>
+Message-ID: <20230920112826.822355196@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -95,10 +95,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index a402ad772a1e5..c561d35d441bb 100644
+index 28af49263ebfa..62957cba30f61 100644
 --- a/drivers/acpi/acpica/psopcode.c
 +++ b/drivers/acpi/acpica/psopcode.c
-@@ -637,7 +637,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
  
  /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
  			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
