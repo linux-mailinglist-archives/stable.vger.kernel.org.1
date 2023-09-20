@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A537A7AEC
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 092FB7A7AED
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234459AbjITLr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:47:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
+        id S234515AbjITLr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbjITLr0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:26 -0400
+        with ESMTP id S234596AbjITLr2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00AF2CE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A56AC433C8;
-        Wed, 20 Sep 2023 11:47:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5155CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E78C433C8;
+        Wed, 20 Sep 2023 11:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210439;
-        bh=FO6vrH2aezAjKPIQ6cuKVNgHIHWkU62mCRRv46mMU10=;
+        s=korg; t=1695210442;
+        bh=tv835qELQ2hvSyxjKfy7C3bCqi4hvz0PeA8FPF9X/BY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VacIXBdBmZl0xhuFGXlwAtx+hoaomuqMJC0wer2ldL2ZNW2A8a4SIvfD+vA1q/he/
-         mwKVU8Ar8jYuFpyMcXXyjEhILTAjslzrKJpz+p+vH39F1vtVizw4ifiiLIzlC96dSA
-         wvccWiGHQSAh9Q3sGrZPLq1NWhttmLVQqU1v4LgI=
+        b=nK86r6D7uPdO1djWUUgzzF3ajbHQTZWhk7SeNIkmAR2yH/ZdK5W16Ne0uwEv8Iwbv
+         Koee1i2AyN3TfhYCz4IRThfo5X0FZmUJko2OyDiF3P2IzkZyr/gAtYOScBW+zhXCrE
+         qjZbo9KTc+HyCEwObcM/QKAxCxQB+SVYPSyaOA/Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 078/211] ALSA: hda: intel-dsp-cfg: add LunarLake support
-Date:   Wed, 20 Sep 2023 13:28:42 +0200
-Message-ID: <20230920112848.222098311@linuxfoundation.org>
+        patches@lists.linux.dev, Alvin Lee <alvin.lee2@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Austin Zheng <austin.zheng@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 079/211] drm/amd/display: Use DTBCLK as refclk instead of DPREFCLK
+Date:   Wed, 20 Sep 2023 13:28:43 +0200
+Message-ID: <20230920112848.253849360@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -56,41 +57,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Austin Zheng <austin.zheng@amd.com>
 
-[ Upstream commit d2852b8c045ebd31d753b06f2810df5be30ed56a ]
+[ Upstream commit 4a30cc2bd281fa176a68b5305cd3695d636152ad ]
 
-One more PCI ID for the road.
+[Why]
+Flash of corruption observed when UCLK switching after transitioning
+from DTBCLK to DPREFCLK on subVP(DP) + subVP(HDMI) config
+Scenario where DPREFCLK is required instead of DTBCLK is not expected
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20230802150105.24604-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[How]
+Always set the DTBCLK source as DTBCLK0
+
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Austin Zheng <austin.zheng@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index 317bdf6dcbef4..2873420c9aca8 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -481,6 +481,14 @@ static const struct config_entry config_table[] = {
- 	},
- #endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c
+index 61ceff6bc0b19..921f58c0c729b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c
+@@ -281,7 +281,8 @@ static void dccg32_set_dpstreamclk(
+ 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
  
-+/* Lunar Lake */
-+#if IS_ENABLED(CONFIG_SND_SOC_SOF_LUNARLAKE)
-+	/* Lunarlake-P */
-+	{
-+		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
-+		.device = PCI_DEVICE_ID_INTEL_HDA_LNL_P,
-+	},
-+#endif
- };
+ 	/* set the dtbclk_p source */
+-	dccg32_set_dtbclk_p_src(dccg, src, otg_inst);
++	/* always program refclk as DTBCLK. No use-case expected to require DPREFCLK as refclk */
++	dccg32_set_dtbclk_p_src(dccg, DTBCLK0, otg_inst);
  
- static const struct config_entry *snd_intel_dsp_find_config
+ 	/* enabled to select one of the DTBCLKs for pipe */
+ 	switch (dp_hpo_inst) {
 -- 
 2.40.1
 
