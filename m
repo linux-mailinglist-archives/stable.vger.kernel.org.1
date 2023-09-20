@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90DB27A802C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D357A7DF1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236187AbjITMde (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48470 "EHLO
+        id S235364AbjITMNq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236191AbjITMdd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:33 -0400
+        with ESMTP id S234615AbjITMNp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32B738F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F4DC433C7;
-        Wed, 20 Sep 2023 12:33:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADA3E6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58715C433C7;
+        Wed, 20 Sep 2023 12:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213205;
-        bh=lMip81oHGE+qqaP/+DBQ8lHvp0tYb71ywvDjH1Hx8b4=;
+        s=korg; t=1695212017;
+        bh=+VEVHrE7Sls/9En7ozakCXSsWJ8Vm5lKCblRfF4k5Tg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bpZRQ4Ek2EnX4XdxVFL4tufadP/8/qHbhMzJm5/iuRgs62ClrU7q26YKGlDd4b4q4
-         ScMZs3E1QvqM7G1r+TLbtBCzgTMx8MrcpEAdNDnaMvo2+JL7dqgV3rjrB8aNO/u/92
-         hFwIE7tal0ad2KCto8pifbmRmO35AICLA73/fkXg=
+        b=BJcxuDiQYuruW6po4VIlmpj/gPn+A64ZhLcf2RNf1EY2KAvp0hlGPT9T1YasdI+II
+         LMZEiwwtM8BxXbrRG8jhHLDCKtvP5ZyzUlEBYtqu7GQ+gVq2aPOjsbpAWNGVUd0wMa
+         kGvE4ibPiuBI4WtMCbcs55/o6BMr9uNCq36RBaYA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 182/367] media: ov2680: Fix vflip / hflip set functions
+Subject: [PATCH 4.19 119/273] drm/radeon: Correct Transmit Margin masks
 Date:   Wed, 20 Sep 2023 13:29:19 +0200
-Message-ID: <20230920112903.345067170@linuxfoundation.org>
+Message-ID: <20230920112850.168870461@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,120 +50,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit d5d08ad330c9ccebc5e066fda815423a290f48b0 ]
+[ Upstream commit 40bd4be5a652ce56068a8273b68caa38cb0d8f4b ]
 
-ov2680_vflip_disable() / ov2680_hflip_disable() pass BIT(0) instead of
-0 as value to ov2680_mod_reg().
+Previously we masked PCIe Link Control 2 register values with "7 << 9",
+which was apparently intended to be the Transmit Margin field, but instead
+was the high order bit of Transmit Margin, the Enter Modified Compliance
+bit, and the Compliance SOS bit.
 
-While fixing this also:
+Correct the mask to "7 << 7", which is the Transmit Margin field.
 
-1. Stop having separate enable/disable functions for hflip / vflip
-2. Move the is_streaming check, which is unique to hflip / vflip
-   into the ov2680_set_?flip() functions.
-
-for a nice code cleanup.
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Link: https://lore.kernel.org/r/20191112173503.176611-3-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 7189576e8a82 ("drm/radeon: Use RMW accessors for changing LNKCTL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 50 +++++++++-----------------------------
- 1 file changed, 12 insertions(+), 38 deletions(-)
+ drivers/gpu/drm/radeon/cik.c | 8 ++++----
+ drivers/gpu/drm/radeon/si.c  | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index a4baf440b9505..5249a9eb7c81a 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -328,23 +328,15 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
- }
+diff --git a/drivers/gpu/drm/radeon/cik.c b/drivers/gpu/drm/radeon/cik.c
+index 827d551962d98..bd009d12b1571 100644
+--- a/drivers/gpu/drm/radeon/cik.c
++++ b/drivers/gpu/drm/radeon/cik.c
+@@ -9615,13 +9615,13 @@ static void cik_pcie_gen3_enable(struct radeon_device *rdev)
  
--static int ov2680_vflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
+ 				/* linkctl2 */
+ 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 9));
+-				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 9)));
++				tmp16 &= ~((1 << 4) | (7 << 7));
++				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
+ 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
  
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_vflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
+ 				pci_read_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 9));
+-				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 9)));
++				tmp16 &= ~((1 << 4) | (7 << 7));
++				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
+ 				pci_write_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
  
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
+ 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
+diff --git a/drivers/gpu/drm/radeon/si.c b/drivers/gpu/drm/radeon/si.c
+index 639f0698f961c..7ed5d7970108c 100644
+--- a/drivers/gpu/drm/radeon/si.c
++++ b/drivers/gpu/drm/radeon/si.c
+@@ -7198,13 +7198,13 @@ static void si_pcie_gen3_enable(struct radeon_device *rdev)
  
-@@ -352,23 +344,15 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
- 	return 0;
- }
+ 				/* linkctl2 */
+ 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 9));
+-				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 9)));
++				tmp16 &= ~((1 << 4) | (7 << 7));
++				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
+ 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
  
--static int ov2680_hflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
+ 				pci_read_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 9));
+-				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 9)));
++				tmp16 &= ~((1 << 4) | (7 << 7));
++				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
+ 				pci_write_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
  
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_hflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -721,19 +705,9 @@ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
- 	case V4L2_CID_EXPOSURE:
- 		return ov2680_exposure_set(sensor, ctrl->val);
- 	case V4L2_CID_VFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_vflip_enable(sensor);
--		else
--			return ov2680_vflip_disable(sensor);
-+		return ov2680_set_vflip(sensor, ctrl->val);
- 	case V4L2_CID_HFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_hflip_enable(sensor);
--		else
--			return ov2680_hflip_disable(sensor);
-+		return ov2680_set_hflip(sensor, ctrl->val);
- 	case V4L2_CID_TEST_PATTERN:
- 		return ov2680_test_pattern_set(sensor, ctrl->val);
- 	default:
+ 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
 -- 
 2.40.1
 
