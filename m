@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BBD27A8187
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D88F57A7F19
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236338AbjITMqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53488 "EHLO
+        id S235696AbjITMX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236309AbjITMqT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:19 -0400
+        with ESMTP id S234957AbjITMX6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E032BAB
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFCAC433CC;
-        Wed, 20 Sep 2023 12:46:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C83897
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67910C433CA;
+        Wed, 20 Sep 2023 12:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213970;
-        bh=0jA1YWTMLwPWCtdqafaPwtNKf75m629+1LW0jxXI0jU=;
+        s=korg; t=1695212632;
+        bh=MjCM6iJ7HMzJuuAQU7ZDD8JMtrj6NPzD4sFLsJbzd6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CUpqWc42OjEiAXAgMu6YxqvcTUMR2KCcVVR3qxXitVXbuo+AahNSp4wlu5i3N6xXH
-         3Zj1YANSwegJqDia/sAm6v2EiYtrU+UGcYZ7QnGK2PY6lcvKTe/AuGj8lEOmBWgwjo
-         VcyMNtth/IKyBx60LwK7Q2ZfGT2vb8x4hA5Jm7zg=
+        b=m0+/H2ymF0oI167HEXx3a6RmdKgoG2rdDPEyPcfenVKxhUDvOJVlc+jlPQI4u16BN
+         gqY4f5VtlE2YIUVf0YYK26za+xfrL2wqA9URMSvu8aj6b6SR7EGkQ5lCnqMVunp/Yv
+         486Cjw753cc3vMSa7r0tR7LmZm56owsVsOZ73Kbg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Theodore Tso <tytso@mit.edu>, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/110] jbd2: correct the end of the journal recovery scan range
+        patches@lists.linux.dev,
+        Kent Overstreet <kent.overstreet@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Suraj Jitindar Singh <surajjs@amazon.com>
+Subject: [PATCH 5.10 73/83] mm/filemap: fix infinite loop in generic_file_buffered_read()
 Date:   Wed, 20 Sep 2023 13:32:03 +0200
-Message-ID: <20230920112832.851780963@linuxfoundation.org>
+Message-ID: <20230920112829.541295877@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,85 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Kent Overstreet <kent.overstreet@gmail.com>
 
-[ Upstream commit 2dfba3bb40ad8536b9fa802364f2d40da31aa88e ]
+commit 3644e2d2dda78e21edd8f5415b6d7ab03f5f54f3 upstream.
 
-We got a filesystem inconsistency issue below while running generic/475
-I/O failure pressure test with fast_commit feature enabled.
+If iter->count is 0 and iocb->ki_pos is page aligned, this causes
+nr_pages to be 0.
 
- Symlink /p3/d3/d1c/d6c/dd6/dce/l101 (inode #132605) is invalid.
+Then in generic_file_buffered_read_get_pages() find_get_pages_contig()
+returns 0 - because we asked for 0 pages, so we call
+generic_file_buffered_read_no_cached_page() which attempts to add a page
+to the page cache, which fails with -EEXIST, and then we loop. Oops...
 
-If fast_commit feature is enabled, a special fast_commit journal area is
-appended to the end of the normal journal area. The journal->j_last
-point to the first unused block behind the normal journal area instead
-of the whole log area, and the journal->j_fc_last point to the first
-unused block behind the fast_commit journal area. While doing journal
-recovery, do_one_pass(PASS_SCAN) should first scan the normal journal
-area and turn around to the first block once it meet journal->j_last,
-but the wrap() macro misuse the journal->j_fc_last, so the recovering
-could not read the next magic block (commit block perhaps) and would end
-early mistakenly and missing tN and every transaction after it in the
-following example. Finally, it could lead to filesystem inconsistency.
-
- | normal journal area                             | fast commit area |
- +-------------------------------------------------+------------------+
- | tN(rere) | tN+1 |~| tN-x |...| tN-1 | tN(front) |       ....       |
- +-------------------------------------------------+------------------+
-                     /                             /                  /
-                start               journal->j_last journal->j_fc_last
-
-This patch fix it by use the correct ending journal->j_last.
-
-Fixes: 5b849b5f96b4 ("jbd2: fast commit recovery path")
-Cc: stable@kernel.org
-Reported-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/linux-ext4/20230613043120.GB1584772@mit.edu/
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230626073322.3956567-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
+Reported-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/recovery.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ mm/filemap.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
-index 18f525f7f4063..cce36a76fd021 100644
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -224,12 +224,8 @@ static int count_tags(journal_t *journal, struct buffer_head *bh)
- /* Make sure we wrap around the log correctly! */
- #define wrap(journal, var)						\
- do {									\
--	unsigned long _wrap_last =					\
--		jbd2_has_feature_fast_commit(journal) ?			\
--			(journal)->j_fc_last : (journal)->j_last;	\
--									\
--	if (var >= _wrap_last)						\
--		var -= (_wrap_last - (journal)->j_first);		\
-+	if (var >= (journal)->j_last)					\
-+		var -= ((journal)->j_last - (journal)->j_first);	\
- } while (0)
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2203,6 +2203,9 @@ ssize_t generic_file_buffered_read(struc
  
- static int fc_do_one_pass(journal_t *journal,
-@@ -512,9 +508,7 @@ static int do_one_pass(journal_t *journal,
- 				break;
+ 	if (unlikely(*ppos >= inode->i_sb->s_maxbytes))
+ 		return 0;
++	if (unlikely(!iov_iter_count(iter)))
++		return 0;
++
+ 	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
  
- 		jbd2_debug(2, "Scanning for sequence ID %u at %lu/%lu\n",
--			  next_commit_ID, next_log_block,
--			  jbd2_has_feature_fast_commit(journal) ?
--			  journal->j_fc_last : journal->j_last);
-+			  next_commit_ID, next_log_block, journal->j_last);
- 
- 		/* Skip over each chunk of the transaction looking
- 		 * either the next descriptor block or the final commit
--- 
-2.40.1
-
+ 	index = *ppos >> PAGE_SHIFT;
 
 
