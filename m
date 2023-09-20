@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6998F7A7853
+	by mail.lfdr.de (Postfix) with ESMTP id DA1B27A7854
 	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234376AbjITJ7t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:59:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35820 "EHLO
+        id S234244AbjITJ7u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:59:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234244AbjITJ7i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:59:38 -0400
+        with ESMTP id S234327AbjITJ7m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:59:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDB1A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67B2C433C8;
-        Wed, 20 Sep 2023 09:59:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD388F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9060AC433C9;
+        Wed, 20 Sep 2023 09:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203972;
-        bh=7V6UVSYI0BB7sZtLr1jfghPAxgoNb1GgwzmaYTV44pE=;
+        s=korg; t=1695203974;
+        bh=tysQMVrZ0k6Mm8F4w0EEnJ6GDpbirzlapy6VTwaNnxI=;
         h=Subject:To:Cc:From:Date:From;
-        b=kxJn/22mQGNbmWqPDsPnW/NDW/V9ZWxAVqtb8fyQav/xX8e+C+t1NC59poqVp4sit
-         ARdDV6YyDy8TkhkQ3OKWdhR7W/UsjoydxxItAi4LP/3Ji1tUHhrJDUhk2ewzvRlQcu
-         Lhf5+viHpUy7WadO9TodowBu/lt4UukvIpGY82Z4=
-Subject: FAILED: patch "[PATCH] ext4: move setting of trimmed bit into" failed to apply to 5.15-stable tree
+        b=glLQxzJ7qKADs4QXFuRRe6tr2QeLKt9nWPPLsKxQ/HLsy4QZvsvlRobmlQlcxJo6l
+         TJwSCHKmb2TV55QEY5zHqodaNnh7aX3xYJT16HZIGtDrKabp8eWgcDNG34NEY7JtK0
+         HDJ0ChN5fJFAMfv+lSoENBlwtvzS6hiUywHkJCDE=
+Subject: FAILED: patch "[PATCH] ext4: move setting of trimmed bit into" failed to apply to 5.10-stable tree
 To:     jack@suse.cz, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:59:25 +0200
-Message-ID: <2023092025-handlebar-decimal-2fff@gregkh>
+Date:   Wed, 20 Sep 2023 11:59:26 +0200
+Message-ID: <2023092026-charger-blah-7144@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 45e4ab320c9b5fa67b1fc3b6a9b381cfcc0c8488
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092025-handlebar-decimal-2fff@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092026-charger-blah-7144@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -64,6 +64,8 @@ d63c00ea435a ("ext4: mark group as trimmed only if it was fully scanned")
 2327fb2e2341 ("ext4: change s_last_trim_minblks type to unsigned long")
 173b6e383d2a ("ext4: avoid trim error on fs with small groups")
 afcc4e32f606 ("ext4: scope ret locally in ext4_try_to_trim_range()")
+6920b3913235 ("ext4: add new helper interface ext4_try_to_trim_range()")
+bd2eea8d0a6b ("ext4: remove the 'group' parameter of ext4_trim_extent")
 
 thanks,
 
