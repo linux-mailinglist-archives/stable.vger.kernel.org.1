@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A4567A8194
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 822BB7A8103
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234822AbjITMqt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55324 "EHLO
+        id S236263AbjITMmB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234837AbjITMqs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:48 -0400
+        with ESMTP id S236294AbjITMl4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F0F135
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60652C433CB;
-        Wed, 20 Sep 2023 12:46:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9098A9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB353C433C7;
+        Wed, 20 Sep 2023 12:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213994;
-        bh=IglbDi0JK9bmh7tOZZ+zyfcGI4a8XdxJOMw8GliLqmo=;
+        s=korg; t=1695213709;
+        bh=Tc6fa3FVM2h/N7v1qHpmoM5F2JTqaD8QV7qw5oeezQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sB1RrrBFMAutZYNmJP4zhTNfHQhqqE14gRwabvXElS/44DHFuCUabwaMDIYrdIYgB
-         kKtx0J24Bewo/tJLaFMFw93vGKobhj8bcH3K8j8ZzDmZ9iedhea7DBVcSwPN6Fci+t
-         6IB9FMEkttVDMxvfbyZVlqU1I4BLBj9m/tjSf8LU=
+        b=Sbn81WdANTNB63pmb5ebHNcdmumGW9iwRjw6X6/6CfANrGrMH6zARTpRFe/CXycxH
+         7QuqpYxwY9M+z9p2FkQTA+RxEwT7zDR5K6GXiiVlf7wcnzmNt7NerwHIQbkYg4da5f
+         xGRy9w6ta6RIJGuZry4C8f0SrbXlkTD+B9t6wWQE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/110] usb: ehci: add workaround for chipidea PORTSC.PEC bug
+Subject: [PATCH 5.4 337/367] media: anysee: fix null-ptr-deref in anysee_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:54 +0200
-Message-ID: <20230920112832.498403247@linuxfoundation.org>
+Message-ID: <20230920112907.241879752@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,121 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit dda4b60ed70bd670eefda081f70c0cb20bbeb1fa ]
+[ Upstream commit c30411266fd67ea3c02a05c157231654d5a3bdc9 ]
 
-Some NXP processor using chipidea IP has a bug when frame babble is
-detected.
+In anysee_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach anysee_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-As per 4.15.1.1.1 Serial Bus Babble:
-  A babble condition also exists if IN transaction is in progress at
-High-speed SOF2 point. This is called frame babble. The host controller
-must disable the port to which the frame babble is detected.
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-The USB controller has disabled the port (PE cleared) and has asserted
-USBERRINT when frame babble is detected, but PEC is not asserted.
-Therefore, the SW isn't aware that port has been disabled. Then the
-SW keeps sending packets to this port, but all of the transfers will
-fail.
-
-This workaround will firstly assert PCD by SW when USBERRINT is detected
-and then judge whether port change has really occurred or not by polling
-roothub status. Because the PEC doesn't get asserted in our case, this
-patch will also assert it by SW when specific conditions are satisfied.
-
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230809024432.535160-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: add spaces around +]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-hcd.c |  8 ++++++--
- drivers/usb/host/ehci-hub.c | 10 +++++++++-
- drivers/usb/host/ehci.h     | 10 ++++++++++
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb-v2/anysee.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 1440803216297..02044d45edded 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -755,10 +755,14 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
+diff --git a/drivers/media/usb/dvb-usb-v2/anysee.c b/drivers/media/usb/dvb-usb-v2/anysee.c
+index fb6d99dea31aa..08fdb9e5e3a22 100644
+--- a/drivers/media/usb/dvb-usb-v2/anysee.c
++++ b/drivers/media/usb/dvb-usb-v2/anysee.c
+@@ -202,7 +202,7 @@ static int anysee_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
  
- 	/* normal [4.15.1.2] or error [4.15.1.1] completion */
- 	if (likely ((status & (STS_INT|STS_ERR)) != 0)) {
--		if (likely ((status & STS_ERR) == 0))
-+		if (likely ((status & STS_ERR) == 0)) {
- 			INCR(ehci->stats.normal);
--		else
-+		} else {
-+			/* Force to check port status */
-+			if (ehci->has_ci_pec_bug)
-+				status |= STS_PCD;
- 			INCR(ehci->stats.error);
-+		}
- 		bh = 1;
- 	}
- 
-diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
-index c4f6a2559a987..0350c03dc97a1 100644
---- a/drivers/usb/host/ehci-hub.c
-+++ b/drivers/usb/host/ehci-hub.c
-@@ -674,7 +674,8 @@ ehci_hub_status_data (struct usb_hcd *hcd, char *buf)
- 
- 		if ((temp & mask) != 0 || test_bit(i, &ehci->port_c_suspend)
- 				|| (ehci->reset_done[i] && time_after_eq(
--					jiffies, ehci->reset_done[i]))) {
-+					jiffies, ehci->reset_done[i]))
-+				|| ehci_has_ci_pec_bug(ehci, temp)) {
- 			if (i < 7)
- 			    buf [0] |= 1 << (i + 1);
- 			else
-@@ -874,6 +875,13 @@ int ehci_hub_control(
- 		if (temp & PORT_PEC)
- 			status |= USB_PORT_STAT_C_ENABLE << 16;
- 
-+		if (ehci_has_ci_pec_bug(ehci, temp)) {
-+			status |= USB_PORT_STAT_C_ENABLE << 16;
-+			ehci_info(ehci,
-+				"PE is cleared by HW port:%d PORTSC:%08x\n",
-+				wIndex + 1, temp);
-+		}
-+
- 		if ((temp & PORT_OCC) && (!ignore_oc && !ehci->spurious_oc)){
- 			status |= USB_PORT_STAT_C_OVERCURRENT << 16;
- 
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index fdd073cc053b8..9888ca5f5f36f 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -207,6 +207,7 @@ struct ehci_hcd {			/* one per controller */
- 	unsigned		has_fsl_port_bug:1; /* FreeScale */
- 	unsigned		has_fsl_hs_errata:1;	/* Freescale HS quirk */
- 	unsigned		has_fsl_susp_errata:1;	/* NXP SUSP quirk */
-+	unsigned		has_ci_pec_bug:1;	/* ChipIdea PEC bug */
- 	unsigned		big_endian_mmio:1;
- 	unsigned		big_endian_desc:1;
- 	unsigned		big_endian_capbase:1;
-@@ -706,6 +707,15 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
-  */
- #define ehci_has_fsl_susp_errata(e)	((e)->has_fsl_susp_errata)
- 
-+/*
-+ * Some Freescale/NXP processors using ChipIdea IP have a bug in which
-+ * disabling the port (PE is cleared) does not cause PEC to be asserted
-+ * when frame babble is detected.
-+ */
-+#define ehci_has_ci_pec_bug(e, portsc) \
-+	((e)->has_ci_pec_bug && ((e)->command & CMD_PSE) \
-+	 && !(portsc & PORT_PEC) && !(portsc & PORT_PE))
-+
- /*
-  * While most USB host controllers implement their registers in
-  * little-endian format, a minority (celleb companion chip) implement
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+-			if (msg[i].len > 2 || msg[i+1].len > 60) {
++			if (msg[i].len != 2 || msg[i + 1].len > 60) {
+ 				ret = -EOPNOTSUPP;
+ 				break;
+ 			}
 -- 
 2.40.1
 
