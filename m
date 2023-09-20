@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306A57A7BC5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9DC07A7CA8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234575AbjITLzU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43862 "EHLO
+        id S235115AbjITMDG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234812AbjITLzP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:15 -0400
+        with ESMTP id S235161AbjITMDA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED747AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40776C433C8;
-        Wed, 20 Sep 2023 11:55:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B7F138
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD898C433CD;
+        Wed, 20 Sep 2023 12:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210909;
-        bh=cQkOXec/FWS0P6zNMrl6NjUfbUrGsRJmmtUdYS9NpXs=;
+        s=korg; t=1695211369;
+        bh=WZ/hFtBBVUbxu8ZrZ5EydAG1N6t4r33UH9YeZ16Y5tQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zade19y9xbnm5MDQLUHJxSewN2x9ynX8z1P2fdza8a4p/WrFkJ3yKgKkZ3Os8UwKJ
-         FVwBhnQiODjICsL5Ba+RXg5UWb+RNbg+lw7G2ojohjIcj3gXEbtOtxXqQPsWkCg8s0
-         a9BCDxA+ohq0s9Te6VzDO8xsicGE5vMgIiHU3f8c=
+        b=AA8QURYSMm1E9aUwBS3UXkGbJuVNmQ0mR/6T+qshas6IpAN1tPYcoecbu/BksOy4K
+         M1j2rrYT8O/rWoRJxvoEKoO4weHShmXsefI6UtcgZXDJL1Um+4M+/ShTqrKowYQQ+g
+         tKqMqot9TEhK49zONZzCQ+QFqSeWvoSfJloPl+Vw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+999fac712d84878a7379@syzkaller.appspotmail.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/139] wifi: mac80211: check for station first in client probe
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 067/186] wifi: ath10k: Use RMW accessors for changing LNKCTL
 Date:   Wed, 20 Sep 2023 13:29:30 +0200
-Message-ID: <20230920112836.974520255@linuxfoundation.org>
+Message-ID: <20230920112839.298648009@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,61 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 67dfa589aa8806c7959cbca2f4613b8d41c75a06 ]
+[ Upstream commit f139492a09f15254fa261245cdbd65555cdf39e3 ]
 
-When probing a client, first check if we have it, and then
-check for the channel context, otherwise you can trigger
-the warning there easily by probing when the AP isn't even
-started yet. Since a client existing means the AP is also
-operating, we can then keep the warning.
+Don't assume that only the driver would be accessing LNKCTL. ASPM policy
+changes can trigger write to LNKCTL outside of driver's control.
 
-Also simplify the moved code a bit.
+Use RMW capability accessors which does proper locking to avoid losing
+concurrent updates to the register value. On restore, clear the ASPMC field
+properly.
 
-Reported-by: syzbot+999fac712d84878a7379@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 76d870ed09ab ("ath10k: enable ASPM")
+Link: https://lore.kernel.org/r/20230717120503.15276-11-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 23a44edcb11f7..cf3453b532d67 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3991,19 +3991,20 @@ static int ieee80211_probe_client(struct wiphy *wiphy, struct net_device *dev,
- 	mutex_lock(&local->mtx);
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 07457eb9d4551..27200544162c7 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1661,8 +1661,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
+ 	ath10k_pci_irq_enable(ar);
+ 	ath10k_pci_rx_post(ar);
  
- 	rcu_read_lock();
-+	sta = sta_info_get_bss(sdata, peer);
-+	if (!sta) {
-+		ret = -ENOLINK;
-+		goto unlock;
-+	}
-+
-+	qos = sta->sta.wme;
-+
- 	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
- 	if (WARN_ON(!chanctx_conf)) {
- 		ret = -EINVAL;
- 		goto unlock;
- 	}
- 	band = chanctx_conf->def.chan->band;
--	sta = sta_info_get_bss(sdata, peer);
--	if (sta) {
--		qos = sta->sta.wme;
--	} else {
--		ret = -ENOLINK;
--		goto unlock;
--	}
+-	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+-				   ar_pci->link_ctl);
++	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPMC,
++					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
  
- 	if (qos) {
- 		fc = cpu_to_le16(IEEE80211_FTYPE_DATA |
+ 	return 0;
+ }
+@@ -2516,8 +2517,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar)
+ 
+ 	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+ 				  &ar_pci->link_ctl);
+-	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+-				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
++	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
++				   PCI_EXP_LNKCTL_ASPMC);
+ 
+ 	/*
+ 	 * Bring the target up cleanly.
 -- 
 2.40.1
 
