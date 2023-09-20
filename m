@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18907A7E2E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0AA7A7D02
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235535AbjITMQF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:16:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58148 "EHLO
+        id S235275AbjITMF7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235532AbjITMQB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:01 -0400
+        with ESMTP id S235217AbjITMF5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D4C4F2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9884EC433C9;
-        Wed, 20 Sep 2023 12:15:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AF893;
+        Wed, 20 Sep 2023 05:05:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29FAC433C9;
+        Wed, 20 Sep 2023 12:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212150;
-        bh=7PUO7qAMFBcPbWxPwk4VhKOYv+wnS4XU/onwdzWM9xI=;
+        s=korg; t=1695211547;
+        bh=wETNJDqLdDPF7JZxEorJZLoXpvPH7DZBNlTbTGosYJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wr54e7XUAbEOveKxPbV2j4D1xNtGEv9IL1t8m3Usg4485pfhdUPxmlzHTerteL0lr
-         HI3utqx9QhoLdEWFtMgxXzNB1KDWYReOS1UovEgQCsr5+yyJsCAwgEkVDH/JS5/M/0
-         dpT2l+FbzAD0HXA4IJcQ7QcE55KcMsOSRQrGMJZA=
+        b=s6XuEFgrP4mpGsONJ/+QTB2RbzYAKd6Ek2m7cwRVSgZI3ci2FH6n6HrIOJJi5guZI
+         tGR0znplnEBn+AacwRTFZvt2s2r3jNvNVYznFmbbY1tBhITCKfefYcJAZ2ocsgyVwl
+         Agu7sA21qSi7zGy81uRzkHipWJsC7uTR6ExuvYFM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
-        Radoslaw Tyl <radoslawx.tyl@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 4.19 170/273] igb: set max size RX buffer when store bad packet is enabled
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 4.14 107/186] backlight/lv5207lp: Compare against struct fb_info.device
 Date:   Wed, 20 Sep 2023 13:30:10 +0200
-Message-ID: <20230920112851.772525647@linuxfoundation.org>
+Message-ID: <20230920112840.881667401@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radoslaw Tyl <radoslawx.tyl@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit bb5ed01cd2428cd25b1c88a3a9cba87055eb289f upstream.
+commit 1ca8819320fd84e7d95b04e7668efc5f9fe9fa5c upstream.
 
-Increase the RX buffer size to 3K when the SBP bit is on. The size of
-the RX buffer determines the number of pages allocated which may not
-be sufficient for receive frames larger than the set MTU size.
+Struct lv5207lp_platform_data refers to a platform device within
+the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
+compares it against the fbdev device in struct fb_info.dev, which
+is different. Fix the test by comparing to struct fb_info.device.
 
-Cc: stable@vger.kernel.org
-Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
-Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
-Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes a bug in the backlight driver and prepares fbdev for making
+struct fb_info.dev optional.
+
+v2:
+	* move renames into separate patch (Javier, Sam, Michael)
+
+Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: linux-sh@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.12+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-6-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/video/backlight/lv5207lp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -4579,6 +4579,10 @@ void igb_configure_rx_ring(struct igb_ad
- static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
- 				  struct igb_ring *rx_ring)
+--- a/drivers/video/backlight/lv5207lp.c
++++ b/drivers/video/backlight/lv5207lp.c
+@@ -75,7 +75,7 @@ static int lv5207lp_backlight_check_fb(s
  {
-+#if (PAGE_SIZE < 8192)
-+	struct e1000_hw *hw = &adapter->hw;
-+#endif
-+
- 	/* set build_skb and buffer size flags */
- 	clear_ring_build_skb_enabled(rx_ring);
- 	clear_ring_uses_large_buffer(rx_ring);
-@@ -4589,10 +4593,9 @@ static void igb_set_rx_buffer_len(struct
- 	set_ring_build_skb_enabled(rx_ring);
+ 	struct lv5207lp *lv = bl_get_data(backlight);
  
- #if (PAGE_SIZE < 8192)
--	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
--		return;
--
--	set_ring_uses_large_buffer(rx_ring);
-+	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
-+	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
-+		set_ring_uses_large_buffer(rx_ring);
- #endif
+-	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->dev;
++	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->device;
  }
  
+ static const struct backlight_ops lv5207lp_backlight_ops = {
 
 
