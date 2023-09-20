@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1CC7A7DFE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958627A8025
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235412AbjITMOU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
+        id S236183AbjITMd2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:33:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235547AbjITMOS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:18 -0400
+        with ESMTP id S236184AbjITMd0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBE2D9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45136C433C8;
-        Wed, 20 Sep 2023 12:14:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D87ED9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A013C433C7;
+        Wed, 20 Sep 2023 12:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212050;
-        bh=fs/BMjMQXHEz1/LH3FhXSSbhdnaovZLUhlMH+6/+BsA=;
+        s=korg; t=1695213194;
+        bh=mxfweSgk6KKhniULZXZd2oK1nxQ1zM31euwYshQ9xR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ey/ooXWLssQ4uWc5dojofklhkg+W7Q3EEvbU/aWl+IUlk1uwW490pZL+KIkr0+fmC
-         HSDarSRut1ackkhB8rV57VzTdAB8ui0eDmbcab2QtW7iLcmc+uegR2SB9BaAUPInYm
-         Al8eDuh8KqJvuElC2p2VB59iLs6vv3WQ2brdZtXs=
+        b=fnhRGFdEzL1mpr/+6mazWxj+d/hyVehMUMI6CAN7Jj824V4Pg8Ylxd3+M62OejrYg
+         wSgqnvjRKn3Hqyzp0NUvM4qBHHFhQ3dm9aqcu+dDISkq3C08QNvn57UnQtKspruQ52
+         8npT2s2LvZofUPiN3qY183OPGJbvcheGzuaddf/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Zheng Yang <zhengyang@rock-chips.com>,
+        Jonas Karlman <jonas@kwiboo.se>, Vinod Koul <vkoul@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 133/273] drivers: usb: smsusb: fix error handling code in smsusb_init_device
+Subject: [PATCH 5.4 196/367] phy/rockchip: inno-hdmi: round fractal pixclock in rk3328 recalc_rate
 Date:   Wed, 20 Sep 2023 13:29:33 +0200
-Message-ID: <20230920112850.626587121@linuxfoundation.org>
+Message-ID: <20230920112903.703577831@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: Zheng Yang <zhengyang@rock-chips.com>
 
-[ Upstream commit b9c7141f384097fa4fa67d2f72e5731d628aef7c ]
+[ Upstream commit d5ef343c1d62bc4c4c2c393af654a41cb34b449f ]
 
-The previous commit 4b208f8b561f ("[media] siano: register media controller
-earlier")moves siano_media_device_register before smscore_register_device,
-and adds corresponding error handling code if smscore_register_device
-fails. However, it misses the following error handling code of
-smsusb_init_device.
+inno_hdmi_phy_rk3328_clk_recalc_rate() is returning a rate not found
+in the pre pll config table when the fractal divider is used.
+This can prevent proper power_on because a tmdsclock for the new rate
+is not found in the pre pll config table.
 
-Fix this by moving error handling code at the end of smsusb_init_device
-and adding a goto statement in the following error handling parts.
+Fix this by saving and returning a rounded pixel rate that exist
+in the pre pll config table.
 
-Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
+Signed-off-by: Zheng Yang <zhengyang@rock-chips.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20230615171005.2251032-3-jonas@kwiboo.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/siano/smsusb.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
-index cd706874899c3..62e4fecc57d9c 100644
---- a/drivers/media/usb/siano/smsusb.c
-+++ b/drivers/media/usb/siano/smsusb.c
-@@ -467,12 +467,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_register_device(&params, &dev->coredev, 0, mdev);
- 	if (rc < 0) {
- 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
--		smsusb_term_device(intf);
--#ifdef CONFIG_MEDIA_CONTROLLER_DVB
--		media_device_unregister(mdev);
--#endif
--		kfree(mdev);
--		return rc;
-+		goto err_unregister_device;
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+index b0ac1d3ee3905..093d2334e8cdc 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+@@ -745,10 +745,12 @@ unsigned long inno_hdmi_phy_rk3328_clk_recalc_rate(struct clk_hw *hw,
+ 		do_div(vco, (nd * (no_a == 1 ? no_b : no_a) * no_d * 2));
  	}
  
- 	smscore_set_board_id(dev->coredev, board_id);
-@@ -489,8 +484,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smsusb_start_streaming(dev);
- 	if (rc < 0) {
- 		pr_err("smsusb_start_streaming(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
+-	inno->pixclock = vco;
+-	dev_dbg(inno->dev, "%s rate %lu\n", __func__, inno->pixclock);
++	inno->pixclock = DIV_ROUND_CLOSEST((unsigned long)vco, 1000) * 1000;
  
- 	dev->state = SMSUSB_ACTIVE;
-@@ -498,13 +492,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
- 	rc = smscore_start_device(dev->coredev);
- 	if (rc < 0) {
- 		pr_err("smscore_start_device(...) failed\n");
--		smsusb_term_device(intf);
--		return rc;
-+		goto err_unregister_device;
- 	}
- 
- 	pr_debug("device 0x%p created\n", dev);
- 
- 	return rc;
+-	return vco;
++	dev_dbg(inno->dev, "%s rate %lu vco %llu\n",
++		__func__, inno->pixclock, vco);
 +
-+err_unregister_device:
-+	smsusb_term_device(intf);
-+#ifdef CONFIG_MEDIA_CONTROLLER_DVB
-+	media_device_unregister(mdev);
-+#endif
-+	kfree(mdev);
-+	return rc;
++	return inno->pixclock;
  }
  
- static int smsusb_probe(struct usb_interface *intf,
+ static long inno_hdmi_phy_rk3328_clk_round_rate(struct clk_hw *hw,
 -- 
 2.40.1
 
