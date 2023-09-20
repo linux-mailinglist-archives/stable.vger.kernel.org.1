@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C147A7B0F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C36C87A7BB4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234633AbjITLtB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:49:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52892 "EHLO
+        id S234801AbjITLzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234630AbjITLtB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:01 -0400
+        with ESMTP id S234847AbjITLyk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9394CA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08D7C433C8;
-        Wed, 20 Sep 2023 11:48:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D067B129
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF70C433C7;
+        Wed, 20 Sep 2023 11:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210535;
-        bh=nhjHHP/HbHFDPgK+i4Cbb/6SvYR/5/IYWtFdsp+MaMk=;
+        s=korg; t=1695210871;
+        bh=C9CCZ6d3ixL8rd4Uk8AQF5gU1kF1EI4sxNBll8e0OtU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AF/4ukFakY4c8UiJ3I0gqjENVpTEW1twvDn2qKfnheL6eWF8AranNCWwPkobzlYoA
-         C8BWK9X41IZD1aRAzdy04KuXsDKcpUO7h5Fzzb02nye47hbtwElFERKjwlIPYe8riz
-         0g+/XfkQvnIPOZCXBXnnrSlXDelUR5p5tCmAoiQ0=
+        b=qNT4Q4H0Y4I3v7/+Qv0EdkN9bTPn+BlxrIg3ggs4ISOIx97guVhNfqt7SiVLGV3cd
+         gzSsuyNj5pIg79GBvu37i51HK8b4T3+rwI68F6OsI6ORSCCYe8+mqSKzBZH76qpujZ
+         l9UnlpkcaONslLlBn7XhYtbr7xbiYX1yCD86SVPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, John Watts <contact@jookia.org>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 113/211] media: pci: cx23885: replace BUG with error return
+Subject: [PATCH 6.1 023/139] can: sun4i_can: Add support for the Allwinner D1
 Date:   Wed, 20 Sep 2023 13:29:17 +0200
-Message-ID: <20230920112849.297470751@linuxfoundation.org>
+Message-ID: <20230920112836.455504717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +50,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: John Watts <contact@jookia.org>
 
-[ Upstream commit 2e1796fd4904fdd6062a8e4589778ea899ea0c8d ]
+[ Upstream commit 8abb95250ae6af2d51993da8fcae18da2ce24cc4 ]
 
-It was completely unnecessary to use BUG in buffer_prepare().
-Just replace it with an error return. This also fixes a smatch warning:
+The controllers present in the D1 are extremely similar to the R40
+and require the same reset quirks, but An extra quirk is needed to support
+receiving packets.
 
-drivers/media/pci/cx23885/cx23885-video.c:422 buffer_prepare() error: uninitialized symbol 'ret'.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: John Watts <contact@jookia.org>
+Link: https://lore.kernel.org/all/20230721221552.1973203-6-contact@jookia.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx23885/cx23885-video.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/Kconfig     |  4 ++--
+ drivers/net/can/sun4i_can.c | 12 +++++++++++-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
-index 671fc0588e431..9af2c5596121c 100644
---- a/drivers/media/pci/cx23885/cx23885-video.c
-+++ b/drivers/media/pci/cx23885/cx23885-video.c
-@@ -413,7 +413,7 @@ static int buffer_prepare(struct vb2_buffer *vb)
- 				dev->height >> 1);
- 		break;
- 	default:
--		BUG();
-+		return -EINVAL; /* should not happen */
- 	}
- 	dprintk(2, "[%p/%d] buffer_init - %dx%d %dbpp 0x%08x - dma=0x%08lx\n",
- 		buf, buf->vb.vb2_buf.index,
+diff --git a/drivers/net/can/Kconfig b/drivers/net/can/Kconfig
+index 3048ad77edb35..8236aabebb394 100644
+--- a/drivers/net/can/Kconfig
++++ b/drivers/net/can/Kconfig
+@@ -174,10 +174,10 @@ config CAN_SLCAN
+ 
+ config CAN_SUN4I
+ 	tristate "Allwinner A10 CAN controller"
+-	depends on MACH_SUN4I || MACH_SUN7I || COMPILE_TEST
++	depends on MACH_SUN4I || MACH_SUN7I || RISCV || COMPILE_TEST
+ 	help
+ 	  Say Y here if you want to use CAN controller found on Allwinner
+-	  A10/A20 SoCs.
++	  A10/A20/D1 SoCs.
+ 
+ 	  To compile this driver as a module, choose M here: the module will
+ 	  be called sun4i_can.
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index dd0c6cd76c5f5..c3a6b028ea4d6 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -91,6 +91,8 @@
+ #define SUN4I_REG_BUF12_ADDR	0x0070	/* CAN Tx/Rx Buffer 12 */
+ #define SUN4I_REG_ACPC_ADDR	0x0040	/* CAN Acceptance Code 0 */
+ #define SUN4I_REG_ACPM_ADDR	0x0044	/* CAN Acceptance Mask 0 */
++#define SUN4I_REG_ACPC_ADDR_D1	0x0028	/* CAN Acceptance Code 0 on the D1 */
++#define SUN4I_REG_ACPM_ADDR_D1	0x002C	/* CAN Acceptance Mask 0 on the D1 */
+ #define SUN4I_REG_RBUF_RBACK_START_ADDR	0x0180	/* CAN transmit buffer start */
+ #define SUN4I_REG_RBUF_RBACK_END_ADDR	0x01b0	/* CAN transmit buffer end */
+ 
+@@ -779,6 +781,11 @@ static const struct sun4ican_quirks sun4ican_quirks_r40 = {
+ 	.acp_offset = 0,
+ };
+ 
++static const struct sun4ican_quirks sun4ican_quirks_d1 = {
++	.has_reset = true,
++	.acp_offset = (SUN4I_REG_ACPC_ADDR_D1 - SUN4I_REG_ACPC_ADDR),
++};
++
+ static const struct of_device_id sun4ican_of_match[] = {
+ 	{
+ 		.compatible = "allwinner,sun4i-a10-can",
+@@ -789,6 +796,9 @@ static const struct of_device_id sun4ican_of_match[] = {
+ 	}, {
+ 		.compatible = "allwinner,sun8i-r40-can",
+ 		.data = &sun4ican_quirks_r40
++	}, {
++		.compatible = "allwinner,sun20i-d1-can",
++		.data = &sun4ican_quirks_d1
+ 	}, {
+ 		/* sentinel */
+ 	},
+@@ -915,4 +925,4 @@ module_platform_driver(sun4i_can_driver);
+ MODULE_AUTHOR("Peter Chen <xingkongcp@gmail.com>");
+ MODULE_AUTHOR("Gerhard Bertelsmann <info@gerhard-bertelsmann.de>");
+ MODULE_LICENSE("Dual BSD/GPL");
+-MODULE_DESCRIPTION("CAN driver for Allwinner SoCs (A10/A20)");
++MODULE_DESCRIPTION("CAN driver for Allwinner SoCs (A10/A20/D1)");
 -- 
 2.40.1
 
