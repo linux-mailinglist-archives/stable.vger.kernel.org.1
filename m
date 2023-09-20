@@ -2,58 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D93647A704A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BB6C7A704B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231260AbjITCUz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 22:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44070 "EHLO
+        id S230010AbjITCVm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 22:21:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbjITCUy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:20:54 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D251AB
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:20:47 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-274928c74b0so3993943a91.3
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:20:47 -0700 (PDT)
+        with ESMTP id S229521AbjITCVl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:21:41 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19645C5
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:21:33 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1db2445b7afso1452479fac.1
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:21:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695176447; x=1695781247; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695176492; x=1695781292; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wno3i6nAnYvod9+e5/kvwEHcvwVBiKTvEzH2AaEcU6Y=;
-        b=KcV+SwgmmQzyKTi3D1/kmsKhoWAJs7HX+ZSHVNRj9ZJjXH6+pF9ufuqFedLerPQ5xC
-         ffLzNBKtl+fkt0FN4D1WO0W1nm1a1LC+Kzj6FsdRA2WB/kG80w+eGu8FN+SgOGpXL28T
-         4PCGSHHP+SoddcX+5BpvhRIMCdbjrYZlGoJfjdkGO0C0KqErlZ/oh3R7Fh6UrFY1vGZz
-         q+ctHbEb96DYWR/KW3gYIEp+vBIrMvCK52PjSThzWc6EkaBnSgAA4apHzTKFjgiYJT7N
-         LqMf+qiRj6Wao7ehS8ydida9xGGmC9ZYeaL8fR4J5/jM/NnNgpvqOrnkkjhWP7cExMsv
-         hPyQ==
+        bh=0wa0sFH1hXKbDpB3VK59wKNLGaUwRl3RkXqb73IkvjY=;
+        b=VoRDIXrUNwhPdiMgm1JADo5WQdm1o3b/ejjAQ3fZJuo8Rz728FFe33PsiI4dlYw8xF
+         ByFaLaazfPQ+LUtQL/KBD2Ju7eNjOZ+UT8HSuJPjnWuJQwVp9wqHwxw54KCZ4x76MzY5
+         w54t7Gq2SBkQP+klg+WxJlA5CLJAR2W0DVWaZJ+LIeOrx9ERDfAw99PDVu59rlPLTfJA
+         kGuts/WMrbcddVQCD+6iEhkShRvn3O36wrCOo2kzyY50QXoiZim1iJqhgoRPo06GGllc
+         A9AQb21zG5Z8cBIF5qU+bYtSn4ySe4yRcfoTavla4dNgA0UlHu97qM58SZSecQY2EPRZ
+         WN6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695176447; x=1695781247;
+        d=1e100.net; s=20230601; t=1695176492; x=1695781292;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wno3i6nAnYvod9+e5/kvwEHcvwVBiKTvEzH2AaEcU6Y=;
-        b=mooL0X9Yvmz0q5wS237cP1EmWSyjJ/fDVYQU9G5BZSqGrqjbTKxu08KFg/u0Lu4s4d
-         UZk2rhdy3rPAH2/2TVzXJN0HjXZ94VPGgmiHNIjahFKAlyO/oA8qpQlj9xvuwuHcVKIR
-         W5q9whfmChxckwClLBOtSILvy2uHv62YVZVq+Jegk3h5K7yRaMN7OiBnqNNeN5iP60ml
-         10jMMF06bAAazuRCyd22cmDaxpNZxBTCGI/IZQakJdapn4EAyeIUEZFAYPPJhTLHqdq/
-         ZXZt0WzrSybfQ32JqWw0GAz6meOzTCBYelAIbdTYTcSJzQij7iW3GNXAlldCf9kvsphA
-         q3OA==
-X-Gm-Message-State: AOJu0YxQ2LPGgTVxzsNcgFRmjaeo5hPWnUBdm5fUse2NECqkvd8Awsc8
-        E5tQXAKPZbxYQ8Zsq8gBbkc=
-X-Google-Smtp-Source: AGHT+IGGqqofZDhWTbDubNTU09jtfmDG05nA4SHzdOfpiAsYjG+ElPuJjtyxbj+7fAJnTLnkgfrk6Q==
-X-Received: by 2002:a17:90a:c901:b0:268:1068:4464 with SMTP id v1-20020a17090ac90100b0026810684464mr1333051pjt.30.1695176446688;
-        Tue, 19 Sep 2023 19:20:46 -0700 (PDT)
+        bh=0wa0sFH1hXKbDpB3VK59wKNLGaUwRl3RkXqb73IkvjY=;
+        b=t/6+p1ilb02wKvkXizxXxCykWPPUL8RqWsSwvqfVYk/pcVj67c/TTfi4uJy9W4f30P
+         wQ5QIvq0MwN4u9V2aIO9jpAWv38LxF2Fpfaw4U3pLbUHxRashT43BUrDTjkCRK2EwnqB
+         SJZ2OqM9YD2I+STunTfq6baFQSQ7pCiVJ/qpLLh2aCi+jnkavDRK1SeTm8BJOv8HqwZ8
+         wACe38h2Y5Fp5Td2wFyORVCKe9sjbt/JWsc7qwje6P8RO3+5ewbZhu1eriuf/+zkw/mM
+         M8prMNb2AA/HeDZsJwjBPfCe4Hx1719HD8DPtIJ+rAZjul8/M8DIMoYcPTnf2h97V6Zt
+         23lQ==
+X-Gm-Message-State: AOJu0YyMv0DsZhAxh3q3G5+AiliZRbFkvkjKD2A4p70nc0W0daJmYXCs
+        jwE4iS3f+e8aKjy0XZyNTsU=
+X-Google-Smtp-Source: AGHT+IHGnKA0fcafoYZvNVxPQ3wpcRRBfrvI4S+2zO23qrIa2Y7OvoeXKshZ0gTFl3N9EDZ8T10aSA==
+X-Received: by 2002:a05:6870:e394:b0:1d6:3b6d:f824 with SMTP id x20-20020a056870e39400b001d63b6df824mr1366783oad.36.1695176492149;
+        Tue, 19 Sep 2023 19:21:32 -0700 (PDT)
 Received: from westworld (209-147-138-147.nat.asu.edu. [209.147.138.147])
-        by smtp.gmail.com with ESMTPSA id lt23-20020a17090b355700b00276a4e67659sm242630pjb.43.2023.09.19.19.20.45
+        by smtp.gmail.com with ESMTPSA id x4-20020a656aa4000000b0056428865aadsm7687427pgu.82.2023.09.19.19.21.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 19:20:46 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 19:20:44 -0700
+        Tue, 19 Sep 2023 19:21:31 -0700 (PDT)
+Date:   Tue, 19 Sep 2023 19:21:29 -0700
 From:   Kyle Zeng <zengyhkyle@gmail.com>
 To:     gregkh@linuxfoundation.org
 Cc:     stable@vger.kernel.org, jhs@mojatatu.com, jiri@nvidia.com,
         pabeni@redhat.com
-Subject: [PATCH v4.19.y] net/sched: Retire rsvp classifier
-Message-ID: <ZQpW/AbLguwF8jiU@westworld>
+Subject: [PATCH v5.4.y] net/sched: Retire rsvp classifier
+Message-ID: <ZQpXKV1P+fSBO1UB@westworld>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -77,27 +77,27 @@ Acked-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
 ---
-Please apply this patch to v4.19.y. This patch adapts the original patch
-to v4.19.y considering codebase change.
+Please apply this patch to v5.4.y. This patch adapts the original patch
+to v5.4.y considering codebase change.
 This patch retires rsvp classifier which is what the upstream patch did. 
 
-This patch has been tested against the v4.19.y stable tree.
+This patch has been tested against the v5.4.y stable tree.
 
  net/sched/Kconfig     |  28 --
  net/sched/Makefile    |   2 -
- net/sched/cls_rsvp.c  |  28 --
- net/sched/cls_rsvp.h  | 775 ------------------------------------------
- net/sched/cls_rsvp6.c |  28 --
- 5 files changed, 861 deletions(-)
+ net/sched/cls_rsvp.c  |  24 --
+ net/sched/cls_rsvp.h  | 777 ------------------------------------------
+ net/sched/cls_rsvp6.c |  24 --
+ 5 files changed, 855 deletions(-)
  delete mode 100644 net/sched/cls_rsvp.c
  delete mode 100644 net/sched/cls_rsvp.h
  delete mode 100644 net/sched/cls_rsvp6.c
 
 diff --git a/net/sched/Kconfig b/net/sched/Kconfig
-index 4547022ed7f4..7698a8974a47 100644
+index 2e4604cdaf23..46f2847a071e 100644
 --- a/net/sched/Kconfig
 +++ b/net/sched/Kconfig
-@@ -503,34 +503,6 @@ config CLS_U32_MARK
+@@ -514,34 +514,6 @@ config CLS_U32_MARK
  	---help---
  	  Say Y here to be able to use netfilter marks as u32 key.
  
@@ -133,10 +133,10 @@ index 4547022ed7f4..7698a8974a47 100644
  	tristate "Flow classifier"
  	select NET_CLS
 diff --git a/net/sched/Makefile b/net/sched/Makefile
-index 5eed580cdb42..3139c32e1947 100644
+index 9e1f904d0c18..fb2b90648a20 100644
 --- a/net/sched/Makefile
 +++ b/net/sched/Makefile
-@@ -61,8 +61,6 @@ obj-$(CONFIG_NET_SCH_ETF)	+= sch_etf.o
+@@ -65,8 +65,6 @@ obj-$(CONFIG_NET_SCH_TAPRIO)	+= sch_taprio.o
  obj-$(CONFIG_NET_CLS_U32)	+= cls_u32.o
  obj-$(CONFIG_NET_CLS_ROUTE4)	+= cls_route.o
  obj-$(CONFIG_NET_CLS_FW)	+= cls_fw.o
@@ -147,17 +147,13 @@ index 5eed580cdb42..3139c32e1947 100644
  obj-$(CONFIG_NET_CLS_CGROUP)	+= cls_cgroup.o
 diff --git a/net/sched/cls_rsvp.c b/net/sched/cls_rsvp.c
 deleted file mode 100644
-index cbb5e0d600f3..000000000000
+index de1c1d4da597..000000000000
 --- a/net/sched/cls_rsvp.c
 +++ /dev/null
-@@ -1,28 +0,0 @@
+@@ -1,24 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
 - * net/sched/cls_rsvp.c	Special RSVP packet classifier for IPv4.
-- *
-- *		This program is free software; you can redistribute it and/or
-- *		modify it under the terms of the GNU General Public License
-- *		as published by the Free Software Foundation; either version
-- *		2 of the License, or (at your option) any later version.
 - *
 - * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
 - */
@@ -181,17 +177,13 @@ index cbb5e0d600f3..000000000000
 -MODULE_LICENSE("GPL");
 diff --git a/net/sched/cls_rsvp.h b/net/sched/cls_rsvp.h
 deleted file mode 100644
-index eb1dd2afc5a1..000000000000
+index d36949d9382c..000000000000
 --- a/net/sched/cls_rsvp.h
 +++ /dev/null
-@@ -1,775 +0,0 @@
+@@ -1,777 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
 -/*
 - * net/sched/cls_rsvp.h	Template file for RSVPv[46] classifiers.
-- *
-- *		This program is free software; you can redistribute it and/or
-- *		modify it under the terms of the GNU General Public License
-- *		as published by the Free Software Foundation; either version
-- *		2 of the License, or (at your option) any later version.
 - *
 - * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
 - */
@@ -499,7 +491,8 @@ index eb1dd2afc5a1..000000000000
 -		__rsvp_delete_filter(f);
 -}
 -
--static void rsvp_destroy(struct tcf_proto *tp, struct netlink_ext_ack *extack)
+-static void rsvp_destroy(struct tcf_proto *tp, bool rtnl_held,
+-			 struct netlink_ext_ack *extack)
 -{
 -	struct rsvp_head *data = rtnl_dereference(tp->root);
 -	int h1, h2;
@@ -528,7 +521,7 @@ index eb1dd2afc5a1..000000000000
 -}
 -
 -static int rsvp_delete(struct tcf_proto *tp, void *arg, bool *last,
--		       struct netlink_ext_ack *extack)
+-		       bool rtnl_held, struct netlink_ext_ack *extack)
 -{
 -	struct rsvp_head *head = rtnl_dereference(tp->root);
 -	struct rsvp_filter *nfp, *f = arg;
@@ -662,7 +655,8 @@ index eb1dd2afc5a1..000000000000
 -		       struct tcf_proto *tp, unsigned long base,
 -		       u32 handle,
 -		       struct nlattr **tca,
--		       void **arg, bool ovr, struct netlink_ext_ack *extack)
+-		       void **arg, bool ovr, bool rtnl_held,
+-		       struct netlink_ext_ack *extack)
 -{
 -	struct rsvp_head *data = rtnl_dereference(tp->root);
 -	struct rsvp_filter *f, *nfp;
@@ -680,14 +674,16 @@ index eb1dd2afc5a1..000000000000
 -	if (opt == NULL)
 -		return handle ? -EINVAL : 0;
 -
--	err = nla_parse_nested(tb, TCA_RSVP_MAX, opt, rsvp_policy, NULL);
+-	err = nla_parse_nested_deprecated(tb, TCA_RSVP_MAX, opt, rsvp_policy,
+-					  NULL);
 -	if (err < 0)
 -		return err;
 -
--	err = tcf_exts_init(&e, TCA_RSVP_ACT, TCA_RSVP_POLICE);
+-	err = tcf_exts_init(&e, net, TCA_RSVP_ACT, TCA_RSVP_POLICE);
 -	if (err < 0)
 -		return err;
--	err = tcf_exts_validate(net, tp, tb, tca[TCA_RATE], &e, ovr, extack);
+-	err = tcf_exts_validate(net, tp, tb, tca[TCA_RATE], &e, ovr, true,
+-				extack);
 -	if (err < 0)
 -		goto errout2;
 -
@@ -705,7 +701,8 @@ index eb1dd2afc5a1..000000000000
 -			goto errout2;
 -		}
 -
--		err = tcf_exts_init(&n->exts, TCA_RSVP_ACT, TCA_RSVP_POLICE);
+-		err = tcf_exts_init(&n->exts, net, TCA_RSVP_ACT,
+-				    TCA_RSVP_POLICE);
 -		if (err < 0) {
 -			kfree(n);
 -			goto errout2;
@@ -733,7 +730,7 @@ index eb1dd2afc5a1..000000000000
 -	if (f == NULL)
 -		goto errout2;
 -
--	err = tcf_exts_init(&f->exts, TCA_RSVP_ACT, TCA_RSVP_POLICE);
+-	err = tcf_exts_init(&f->exts, net, TCA_RSVP_ACT, TCA_RSVP_POLICE);
 -	if (err < 0)
 -		goto errout;
 -	h2 = 16;
@@ -839,7 +836,8 @@ index eb1dd2afc5a1..000000000000
 -	return err;
 -}
 -
--static void rsvp_walk(struct tcf_proto *tp, struct tcf_walker *arg)
+-static void rsvp_walk(struct tcf_proto *tp, struct tcf_walker *arg,
+-		      bool rtnl_held)
 -{
 -	struct rsvp_head *head = rtnl_dereference(tp->root);
 -	unsigned int h, h1;
@@ -873,7 +871,7 @@ index eb1dd2afc5a1..000000000000
 -}
 -
 -static int rsvp_dump(struct net *net, struct tcf_proto *tp, void *fh,
--		     struct sk_buff *skb, struct tcmsg *t)
+-		     struct sk_buff *skb, struct tcmsg *t, bool rtnl_held)
 -{
 -	struct rsvp_filter *f = fh;
 -	struct rsvp_session *s;
@@ -886,7 +884,7 @@ index eb1dd2afc5a1..000000000000
 -
 -	t->tcm_handle = f->handle;
 -
--	nest = nla_nest_start(skb, TCA_OPTIONS);
+-	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
 -	if (nest == NULL)
 -		goto nla_put_failure;
 -
@@ -962,17 +960,13 @@ index eb1dd2afc5a1..000000000000
 -module_exit(exit_rsvp)
 diff --git a/net/sched/cls_rsvp6.c b/net/sched/cls_rsvp6.c
 deleted file mode 100644
-index dd08aea2aee5..000000000000
+index 64078846000e..000000000000
 --- a/net/sched/cls_rsvp6.c
 +++ /dev/null
-@@ -1,28 +0,0 @@
+@@ -1,24 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
 - * net/sched/cls_rsvp6.c	Special RSVP packet classifier for IPv6.
-- *
-- *		This program is free software; you can redistribute it and/or
-- *		modify it under the terms of the GNU General Public License
-- *		as published by the Free Software Foundation; either version
-- *		2 of the License, or (at your option) any later version.
 - *
 - * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
 - */
