@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA0CB7A7E6E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EFE7A8058
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235567AbjITMR5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51500 "EHLO
+        id S235528AbjITMgj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235576AbjITMR4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:56 -0400
+        with ESMTP id S235842AbjITMgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC64A18A
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8206C4339A;
-        Wed, 20 Sep 2023 12:17:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 171E9AB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307BBC433CD;
+        Wed, 20 Sep 2023 12:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212258;
-        bh=54wNdgs0O0sngvfPcAWYfwCxThCI5tqOhJLdveA37nM=;
+        s=korg; t=1695213392;
+        bh=FNglxMDhYr7sQn10Q8KCUkaHePNLtieMEZZYKOZFTOM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S4HehnmxO38YF/d1pk9DtrFb1SUYlpJqzva5cKRfWuDaPQsso7f0BMhdMVvxYW0mb
-         bRo+KrEXpvLiHUOC6jff6JOUlXbF5rUa+JXiQh9QhMw9EBd+xpf+jtyoD/W02sPrg/
-         Mo5gvitmwIXkVwOqboivj+3XDH+jtZJRRx0Crjk8=
+        b=eVX3i6wQyo/MIiKBibx7mbuf4AEZnqo1PBqnC1nIfaAnm6p03TiMqLM5I5pQ6/4Ua
+         Apxij6DCXJzoGu2Z8+mdxDHyzPIB0EPjks5gKRMP3tJG/0GxRLr7PbmJZ9QMOBZD3A
+         +qwpf/SpCkRxIy9pBO/jsOqa7IIhDQHxwDBg2wd0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 158/273] amba: bus: fix refcount leak
+        patches@lists.linux.dev, Logan Gunthorpe <logang@deltatee.com>,
+        renlonglong <ren.longlong@h3c.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 5.4 221/367] ntb: Fix calculation ntb_transport_tx_free_entry()
 Date:   Wed, 20 Sep 2023 13:29:58 +0200
-Message-ID: <20230920112851.412157014@linuxfoundation.org>
+Message-ID: <20230920112904.314486390@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit e312cbdc11305568554a9e18a2ea5c2492c183f3 ]
+commit 5a7693e6bbf19b22fd6c1d2c4b7beb0a03969e2c upstream.
 
-commit 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-increases the refcount of of_node, but not releases it in
-amba_device_release, so there is refcount leak. By using of_node_put
-to avoid refcount leak.
+ntb_transport_tx_free_entry() never returns 0 with the current
+calculation. If head == tail, then it would return qp->tx_max_entry.
+Change compare to tail >= head and when they are equal, a 0 would be
+returned.
 
-Fixes: 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230821023928.3324283-1-peng.fan@oss.nxp.com
+Fixes: e74bfeedad08 ("NTB: Add flow control to the ntb_netdev")
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: renlonglong <ren.longlong@h3c.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/amba/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ntb/ntb_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index e1992f361c9a6..2aaec96f83849 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -349,6 +349,7 @@ static void amba_device_release(struct device *dev)
- {
- 	struct amba_device *d = to_amba_device(dev);
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -2431,7 +2431,7 @@ unsigned int ntb_transport_tx_free_entry
+ 	unsigned int head = qp->tx_index;
+ 	unsigned int tail = qp->remote_rx_info->entry;
  
-+	of_node_put(d->dev.of_node);
- 	if (d->res.parent)
- 		release_resource(&d->res);
- 	kfree(d);
--- 
-2.40.1
-
+-	return tail > head ? tail - head : qp->tx_max_entry + tail - head;
++	return tail >= head ? tail - head : qp->tx_max_entry + tail - head;
+ }
+ EXPORT_SYMBOL_GPL(ntb_transport_tx_free_entry);
+ 
 
 
