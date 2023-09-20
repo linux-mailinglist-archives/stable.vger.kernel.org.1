@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D637A804F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEE757A7E1D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233125AbjITMg0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:36:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51900 "EHLO
+        id S235458AbjITMPh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235312AbjITMgZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:25 -0400
+        with ESMTP id S235467AbjITMPc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75669F2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232EBC433C7;
-        Wed, 20 Sep 2023 12:36:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B0AE4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8A5C433C9;
+        Wed, 20 Sep 2023 12:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213376;
-        bh=GMKyCtuSdUnP/0EySZZPlABvZbWm9jwMSuXLsi9zmQs=;
+        s=korg; t=1695212125;
+        bh=GlUczk8fKihqcpL6WE4maZswpi6MnyWtt3N8aBv5yAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2pkL09koVT4j45hIwA/XBWwQ9kyMzE5brlu01fOYe5UH6vBg/gzZh7AisAlsxxc+8
-         5EGdo4kDRY5A6PparTTFRWbWch8XozM21uu3m+8YKAYG/H50Ero1834xTRoGYE1S8w
-         AekYQXev3tMJ028T/2XLznHsYbVOB8DN49k6yHp4=
+        b=L+vh9ULhIX/BOTqsf0zXZxclkSxaJ2CIvMPZEwBP/ed6VkhsDTE3DyVdo1v50WMu0
+         cxFpfD9bS+PxYt2hpsKJrKz8xqZwc3NCZtg22B5wLkwJnrf+njs1adsSdFEMKCNU77
+         UBWL5imudiiO2dEkjNwWi1EE0Rh70NK4t8AeIWck=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 189/367] RDMA/siw: Balance the reference of cep->kref in the error path
+        patches@lists.linux.dev, Aleksei Filippov <halip0503@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 126/273] jfs: validate max amount of blocks before allocation.
 Date:   Wed, 20 Sep 2023 13:29:26 +0200
-Message-ID: <20230920112903.528609986@linuxfoundation.org>
+Message-ID: <20230920112850.394891083@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Alexei Filippov <halip0503@gmail.com>
 
-[ Upstream commit b056327bee09e6b86683d3f709a438ccd6031d72 ]
+[ Upstream commit 0225e10972fa809728b8d4c1bd2772b3ec3fdb57 ]
 
-The siw_connect can go to err in below after cep is allocated successfully:
+The lack of checking bmp->db_max_freebud in extBalloc() can lead to
+shift out of bounds, so this patch prevents undefined behavior, because
+bmp->db_max_freebud == -1 only if there is no free space.
 
-1. If siw_cm_alloc_work returns failure. In this case socket is not
-assoicated with cep so siw_cep_put can't be called by siw_socket_disassoc.
-We need to call siw_cep_put twice since cep->kref is increased once after
-it was initialized.
-
-2. If siw_cm_queue_work can't find a work, which means siw_cep_get is not
-called in siw_cm_queue_work, so cep->kref is increased twice by siw_cep_get
-and when associate socket with cep after it was initialized. So we need to
-call siw_cep_put three times (one in siw_socket_disassoc).
-
-3. siw_send_mpareqrep returns error, this scenario is similar as 2.
-
-So we need to remove one siw_cep_put in the error path.
-
-Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Link: https://lore.kernel.org/r/20230821133255.31111-2-guoqing.jiang@linux.dev
-Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Aleksei Filippov <halip0503@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-and-tested-by: syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=01abadbd6ae6a08b1f1987aa61554c6b3ac19ff2
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_cm.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/jfs/jfs_extent.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
-index 69fcf21eaf528..3d96b649889ca 100644
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -1525,7 +1525,6 @@ int siw_connect(struct iw_cm_id *id, struct iw_cm_conn_param *params)
- 
- 		cep->cm_id = NULL;
- 		id->rem_ref(id);
--		siw_cep_put(cep);
- 
- 		qp->cep = NULL;
- 		siw_cep_put(cep);
+diff --git a/fs/jfs/jfs_extent.c b/fs/jfs/jfs_extent.c
+index 2ae7d59ab10a5..c971e8a6525de 100644
+--- a/fs/jfs/jfs_extent.c
++++ b/fs/jfs/jfs_extent.c
+@@ -521,6 +521,11 @@ extBalloc(struct inode *ip, s64 hint, s64 * nblocks, s64 * blkno)
+ 	 * blocks in the map. in that case, we'll start off with the
+ 	 * maximum free.
+ 	 */
++
++	/* give up if no space left */
++	if (bmp->db_maxfreebud == -1)
++		return -ENOSPC;
++
+ 	max = (s64) 1 << bmp->db_maxfreebud;
+ 	if (*nblocks >= max && *nblocks > nbperpage)
+ 		nb = nblks = (max > nbperpage) ? max : nbperpage;
 -- 
 2.40.1
 
