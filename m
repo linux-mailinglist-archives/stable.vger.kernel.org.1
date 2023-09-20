@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D88F57A7F19
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B627A8188
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235696AbjITMX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33656 "EHLO
+        id S236304AbjITMqX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234957AbjITMX6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:58 -0400
+        with ESMTP id S236372AbjITMqV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C83897
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67910C433CA;
-        Wed, 20 Sep 2023 12:23:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45F1CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB86FC433C7;
+        Wed, 20 Sep 2023 12:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212632;
-        bh=MjCM6iJ7HMzJuuAQU7ZDD8JMtrj6NPzD4sFLsJbzd6s=;
+        s=korg; t=1695213973;
+        bh=plCYKFBafO/rUyab1VlrS+rOdfD1oeYVCZzVyGMg6fQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m0+/H2ymF0oI167HEXx3a6RmdKgoG2rdDPEyPcfenVKxhUDvOJVlc+jlPQI4u16BN
-         gqY4f5VtlE2YIUVf0YYK26za+xfrL2wqA9URMSvu8aj6b6SR7EGkQ5lCnqMVunp/Yv
-         486Cjw753cc3vMSa7r0tR7LmZm56owsVsOZ73Kbg=
+        b=QBYqM9F4lWLLXlaFQBrD+vz7dj0rnKm98pDPHtiLEKpuga23AaiDMyoYqI2J2CDPf
+         pSrULdbU5na7O90MZtpi2L6sZmnKqZfNkB/tH6LioRAawQdMMW2cU/fpsCnDAtiIds
+         KnH1tHZDbL4ms8VFShzLB2MAjSBn8ERNkrrrpb3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kent Overstreet <kent.overstreet@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH 5.10 73/83] mm/filemap: fix infinite loop in generic_file_buffered_read()
-Date:   Wed, 20 Sep 2023 13:32:03 +0200
-Message-ID: <20230920112829.541295877@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 066/110] mtd: rawnand: brcmnand: Allow SoC to provide I/O operations
+Date:   Wed, 20 Sep 2023 13:32:04 +0200
+Message-ID: <20230920112832.891181340@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +50,169 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@gmail.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit 3644e2d2dda78e21edd8f5415b6d7ab03f5f54f3 upstream.
+[ Upstream commit 25f97138f8c225dbf365b428a94d7b30a6daefb3 ]
 
-If iter->count is 0 and iocb->ki_pos is page aligned, this causes
-nr_pages to be 0.
+Allow a brcmnand_soc instance to provide a custom set of I/O operations
+which we will require when using this driver on a BCMA bus which is not
+directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
+to use the SoC operations if provided.
 
-Then in generic_file_buffered_read_get_pages() find_get_pages_contig()
-returns 0 - because we asked for 0 pages, so we call
-generic_file_buffered_read_no_cached_page() which attempts to add a page
-to the page cache, which fails with -EEXIST, and then we loop. Oops...
+To minimize the penalty on other SoCs which do support standard MMIO
+accesses, we use a static key which is disabled by default and gets
+enabled if a soc implementation does provide I/O operations.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20220107184614.2670254-3-f.fainelli@gmail.com
+Stable-dep-of: 2ec2839a9062 ("mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 28 +++++++++++++++++++++--
+ drivers/mtd/nand/raw/brcmnand/brcmnand.h | 29 ++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+), 2 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2203,6 +2203,9 @@ ssize_t generic_file_buffered_read(struc
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index c1afadb50eecc..f20a3154a0adb 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -25,6 +25,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/slab.h>
++#include <linux/static_key.h>
+ #include <linux/list.h>
+ #include <linux/log2.h>
  
- 	if (unlikely(*ppos >= inode->i_sb->s_maxbytes))
- 		return 0;
-+	if (unlikely(!iov_iter_count(iter)))
-+		return 0;
+@@ -207,6 +208,8 @@ enum {
+ 
+ struct brcmnand_host;
+ 
++static DEFINE_STATIC_KEY_FALSE(brcmnand_soc_has_ops_key);
 +
- 	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
+ struct brcmnand_controller {
+ 	struct device		*dev;
+ 	struct nand_controller	controller;
+@@ -592,15 +595,25 @@ enum {
+ 	INTFC_CTLR_READY		= BIT(31),
+ };
  
- 	index = *ppos >> PAGE_SHIFT;
++static inline bool brcmnand_non_mmio_ops(struct brcmnand_controller *ctrl)
++{
++	return static_branch_unlikely(&brcmnand_soc_has_ops_key);
++}
++
+ static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
+ {
++	if (brcmnand_non_mmio_ops(ctrl))
++		return brcmnand_soc_read(ctrl->soc, offs);
+ 	return brcmnand_readl(ctrl->nand_base + offs);
+ }
+ 
+ static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,
+ 				 u32 val)
+ {
+-	brcmnand_writel(val, ctrl->nand_base + offs);
++	if (brcmnand_non_mmio_ops(ctrl))
++		brcmnand_soc_write(ctrl->soc, val, offs);
++	else
++		brcmnand_writel(val, ctrl->nand_base + offs);
+ }
+ 
+ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
+@@ -766,13 +779,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,
+ 
+ static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)
+ {
++	if (brcmnand_non_mmio_ops(ctrl))
++		return brcmnand_soc_read(ctrl->soc, BRCMNAND_NON_MMIO_FC_ADDR);
+ 	return __raw_readl(ctrl->nand_fc + word * 4);
+ }
+ 
+ static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,
+ 				     int word, u32 val)
+ {
+-	__raw_writel(val, ctrl->nand_fc + word * 4);
++	if (brcmnand_non_mmio_ops(ctrl))
++		brcmnand_soc_write(ctrl->soc, val, BRCMNAND_NON_MMIO_FC_ADDR);
++	else
++		__raw_writel(val, ctrl->nand_fc + word * 4);
+ }
+ 
+ static inline void edu_writel(struct brcmnand_controller *ctrl,
+@@ -3034,6 +3052,12 @@ int brcmnand_probe(struct platform_device *pdev, struct brcmnand_soc *soc)
+ 	dev_set_drvdata(dev, ctrl);
+ 	ctrl->dev = dev;
+ 
++	/* Enable the static key if the soc provides I/O operations indicating
++	 * that a non-memory mapped IO access path must be used
++	 */
++	if (brcmnand_soc_has_ops(ctrl->soc))
++		static_branch_enable(&brcmnand_soc_has_ops_key);
++
+ 	init_completion(&ctrl->done);
+ 	init_completion(&ctrl->dma_done);
+ 	init_completion(&ctrl->edu_done);
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+index eb498fbe505ec..f1f93d85f50d2 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+@@ -11,12 +11,25 @@
+ 
+ struct platform_device;
+ struct dev_pm_ops;
++struct brcmnand_io_ops;
++
++/* Special register offset constant to intercept a non-MMIO access
++ * to the flash cache register space. This is intentionally large
++ * not to overlap with an existing offset.
++ */
++#define BRCMNAND_NON_MMIO_FC_ADDR	0xffffffff
+ 
+ struct brcmnand_soc {
+ 	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
+ 	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
+ 	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
+ 				 bool is_param);
++	const struct brcmnand_io_ops *ops;
++};
++
++struct brcmnand_io_ops {
++	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
++	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
+ };
+ 
+ static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,
+@@ -58,6 +71,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
+ 		writel_relaxed(val, addr);
+ }
+ 
++static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)
++{
++	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
++}
++
++static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
++{
++	return soc->ops->read_reg(soc, offset);
++}
++
++static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
++				      u32 offset)
++{
++	soc->ops->write_reg(soc, val, offset);
++}
++
+ int brcmnand_probe(struct platform_device *pdev, struct brcmnand_soc *soc);
+ int brcmnand_remove(struct platform_device *pdev);
+ 
+-- 
+2.40.1
+
 
 
