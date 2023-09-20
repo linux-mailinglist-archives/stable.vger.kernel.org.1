@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8393F7A7F9C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0379D7A7D80
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234568AbjITM2j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54484 "EHLO
+        id S234602AbjITMKV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234472AbjITM2i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:28:38 -0400
+        with ESMTP id S235349AbjITMJh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E36F9E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98241C433C7;
-        Wed, 20 Sep 2023 12:28:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB5EF9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC35EC433C8;
+        Wed, 20 Sep 2023 12:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212912;
-        bh=rK4SSqn5jBQDUYVY/IEDxHr/eYMPPRW8Dlu1VyMccW0=;
+        s=korg; t=1695211769;
+        bh=87xekuyATnafgraw5SUEU6zktElNaZN9sC3iJ53KHEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MK4aRJ02Bg/1ovh1DdgTdv5e39bb1q8TQhgUy8w5BVZwRI8GikVNIHUFhN11CgeAr
-         Iwb6ph9dEseVKjC8Z9Nh263KDlhnkhqYVTrk5NUBMr8G1mRD7RMuQVHgkrkjtSXpep
-         z5oMLtUP3WeJK64fja4wVHBuFC/MsVW/yVjX7kWY=
+        b=fl/NTGWw/Ywvny7KrmHeFtJwwnVomb9kBmU2fyuCRJFjB1QFgaJvLMYeT3yT8AgSX
+         B7PBN9XdBdrOc4JLHlRXdvNjmJw3k1bNmWUPSt1s5LFfOGD7IMZOUgw3Nco10wrtu6
+         nmSKgA6chZmAp68MDLHLDP9raMC97T69WqJYRwpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/367] quota: add new helper dquot_active()
+        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 028/273] net: usb: qmi_wwan: add Quectel EM05GV2
 Date:   Wed, 20 Sep 2023 13:27:48 +0200
-Message-ID: <20230920112900.894397247@linuxfoundation.org>
+Message-ID: <20230920112847.295194275@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,121 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Martin Kohn <m.kohn@welotec.com>
 
-[ Upstream commit 33bcfafc48cb186bc4bbcea247feaa396594229e ]
+[ Upstream commit d4480c9bb9258db9ddf2e632f6ef81e96b41089c ]
 
-Add new helper function dquot_active() to make the code more concise.
+Add support for Quectel EM05GV2 (G=global) with vendor ID
+0x2c7c and product ID 0x030e
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230630110822.3881712-4-libaokun1@huawei.com>
-Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
+Enabling DTR on this modem was necessary to ensure stable operation.
+Patch for usb: serial: option: is also in progress.
+
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=030e Rev= 3.18
+S:  Manufacturer=Quectel
+S:  Product=Quectel EM05-G
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Martin Kohn <m.kohn@welotec.com>
+Link: https://lore.kernel.org/r/AM0PR04MB57648219DE893EE04FA6CC759701A@AM0PR04MB5764.eurprd04.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 7abf1ae05f939..5495c82e55ad4 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -336,6 +336,11 @@ static void wait_on_dquot(struct dquot *dquot)
- 	mutex_unlock(&dquot->dq_lock);
- }
- 
-+static inline int dquot_active(struct dquot *dquot)
-+{
-+	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
-+}
-+
- static inline int dquot_dirty(struct dquot *dquot)
- {
- 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
-@@ -351,14 +356,14 @@ int dquot_mark_dquot_dirty(struct dquot *dquot)
- {
- 	int ret = 1;
- 
--	if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-+	if (!dquot_active(dquot))
- 		return 0;
- 
- 	if (sb_dqopt(dquot->dq_sb)->flags & DQUOT_NOLIST_DIRTY)
- 		return test_and_set_bit(DQ_MOD_B, &dquot->dq_flags);
- 
- 	/* If quota is dirty already, we don't have to acquire dq_list_lock */
--	if (test_bit(DQ_MOD_B, &dquot->dq_flags))
-+	if (dquot_dirty(dquot))
- 		return 1;
- 
- 	spin_lock(&dq_list_lock);
-@@ -438,7 +443,7 @@ int dquot_acquire(struct dquot *dquot)
- 	smp_mb__before_atomic();
- 	set_bit(DQ_READ_B, &dquot->dq_flags);
- 	/* Instantiate dquot if needed */
--	if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags) && !dquot->dq_off) {
-+	if (!dquot_active(dquot) && !dquot->dq_off) {
- 		ret = dqopt->ops[dquot->dq_id.type]->commit_dqblk(dquot);
- 		/* Write the info if needed */
- 		if (info_dirty(&dqopt->info[dquot->dq_id.type])) {
-@@ -477,7 +482,7 @@ int dquot_commit(struct dquot *dquot)
- 		goto out_lock;
- 	/* Inactive dquot can be only if there was error during read/init
- 	 * => we have better not writing it */
--	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-+	if (dquot_active(dquot))
- 		ret = dqopt->ops[dquot->dq_id.type]->commit_dqblk(dquot);
- 	else
- 		ret = -EIO;
-@@ -588,7 +593,7 @@ int dquot_scan_active(struct super_block *sb,
- 
- 	spin_lock(&dq_list_lock);
- 	list_for_each_entry(dquot, &inuse_list, dq_inuse) {
--		if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-+		if (!dquot_active(dquot))
- 			continue;
- 		if (dquot->dq_sb != sb)
- 			continue;
-@@ -603,7 +608,7 @@ int dquot_scan_active(struct super_block *sb,
- 		 * outstanding call and recheck the DQ_ACTIVE_B after that.
- 		 */
- 		wait_on_dquot(dquot);
--		if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
-+		if (dquot_active(dquot)) {
- 			ret = fn(dquot, priv);
- 			if (ret < 0)
- 				goto out;
-@@ -654,7 +659,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			dquot = list_first_entry(&dirty, struct dquot,
- 						 dq_dirty);
- 
--			WARN_ON(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
-+			WARN_ON(!dquot_active(dquot));
- 
- 			/* Now we have active dquot from which someone is
-  			 * holding reference so we can safely just increase
-@@ -791,7 +796,7 @@ void dqput(struct dquot *dquot)
- 		dquot_write_dquot(dquot);
- 		goto we_slept;
- 	}
--	if (test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
-+	if (dquot_active(dquot)) {
- 		spin_unlock(&dq_list_lock);
- 		dquot->dq_sb->dq_op->release_dquot(dquot);
- 		goto we_slept;
-@@ -892,7 +897,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 	 * already finished or it will be canceled due to dq_count > 1 test */
- 	wait_on_dquot(dquot);
- 	/* Read the dquot / allocate space in quota file */
--	if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags)) {
-+	if (!dquot_active(dquot)) {
- 		int err;
- 
- 		err = sb->dq_op->acquire_dquot(dquot);
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index c5781888f2f7b..aefa57e726954 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1376,6 +1376,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
+ 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
++	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
+ 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
 -- 
 2.40.1
 
