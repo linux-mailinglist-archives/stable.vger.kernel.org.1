@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 951657A80B2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA8C47A7D23
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234712AbjITMjb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S235207AbjITMHA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236140AbjITMj2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:28 -0400
+        with ESMTP id S235173AbjITMG6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF7A1A5
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E382DC433D9;
-        Wed, 20 Sep 2023 12:39:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FB5D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B22EC433C7;
+        Wed, 20 Sep 2023 12:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213545;
-        bh=vmCxuaI8LiZGT+IstG7mdYnv2/UmS7iiVsd1HcXpcKQ=;
+        s=korg; t=1695211599;
+        bh=ytDKoO5BAAVHGVKunNq8kJMUPZ72YaTspG7dOfBIbFY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CETX64mAoxNUhq7/eDKUGvlj5+XmLhD0Q9LdnmLZQmzvgx2p5fGUhyvFCmZ7vjuhs
-         6h/g3d28VP4hKczwJvGTnnkQgYkOuBYTKfT+QnztvuNSvK9s4YLaZqO1hcl0idTDaW
-         Z2Wj2YdwyGKp3sCpeP5Yit8s6Trze1p9YcVPDh6M=
+        b=Jd9KYzVDxBl4GZYaqpQpKRBDCkrLGvY7/t+MjRsKV7KPdzUGlbukiWPWjwfHWVlb1
+         1Bgz/cIS9LY+v0XcrYDDgRIob1COfokcIDFaA0V+4Ru68Ta1Uatvvwf3yKctmXNCM/
+         mNa3wDVFQpUr6sHq0VBUSgBQKDcr+KrPfRrHY7XU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 277/367] net: hns3: fix the port information display when sfp is absent
-Date:   Wed, 20 Sep 2023 13:30:54 +0200
-Message-ID: <20230920112905.733378750@linuxfoundation.org>
+Subject: [PATCH 4.14 152/186] ACPI: video: Add backlight=native DMI quirk for Lenovo Ideapad Z470
+Date:   Wed, 20 Sep 2023 13:30:55 +0200
+Message-ID: <20230920112842.451365533@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yisen Zhuang <yisen.zhuang@huawei.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 674d9591a32d01df75d6b5fffed4ef942a294376 ]
+[ Upstream commit 96b709be183c56293933ef45b8b75f8af268c6de ]
 
-When sfp is absent or unidentified, the port type should be
-displayed as PORT_OTHERS, rather than PORT_FIBRE.
+The Lenovo Ideapad Z470 predates Windows 8, so it defaults to using
+acpi_video for backlight control. But this is not functional on this
+model.
 
-Fixes: 88d10bd6f730 ("net: hns3: add support for multiple media type")
-Signed-off-by: Yisen Zhuang <yisen.zhuang@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add a DMI quirk to use the native backlight interface which works.
+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1208724
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/video_detect.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 34e5448d59f6f..4ea19f546df08 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -676,7 +676,9 @@ static int hns3_get_link_ksettings(struct net_device *netdev,
- 		hns3_get_ksettings(h, cmd);
- 		break;
- 	case HNAE3_MEDIA_TYPE_FIBER:
--		if (module_type == HNAE3_MODULE_TYPE_CR)
-+		if (module_type == HNAE3_MODULE_TYPE_UNKNOWN)
-+			cmd->base.port = PORT_OTHER;
-+		else if (module_type == HNAE3_MODULE_TYPE_CR)
- 			cmd->base.port = PORT_DA;
- 		else
- 			cmd->base.port = PORT_FIBRE;
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index b4f16073ef432..866bc20c82397 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -294,6 +294,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_BOARD_NAME, "Lenovo IdeaPad S405"),
+ 		},
+ 	},
++	{
++	 /* https://bugzilla.suse.com/show_bug.cgi?id=1208724 */
++	 .callback = video_detect_force_native,
++	 /* Lenovo Ideapad Z470 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_VERSION, "IdeaPad Z470"),
++		},
++	},
+ 	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1187004 */
+ 	 .callback = video_detect_force_native,
 -- 
 2.40.1
 
