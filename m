@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1AD87A7B01
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D4C7A7B02
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234611AbjITLsY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58024 "EHLO
+        id S234619AbjITLs1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234622AbjITLsW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:22 -0400
+        with ESMTP id S234616AbjITLs0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294F9A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFC7C433C7;
-        Wed, 20 Sep 2023 11:48:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB698CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA08C433CB;
+        Wed, 20 Sep 2023 11:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210496;
-        bh=PG6nDG4Y/ud0dPYJpDpoZNJjceS++oTpu7wRcnKfLgM=;
+        s=korg; t=1695210499;
+        bh=1PBqACbLX/++upob/PKdItEg4uvjxxyxuf6UIhavY20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7H7B3ADql/5hkZjtrKekoze0J83P/Q1c2wkXsl+KhDlMr/uiSimnVlZauS+RrJAN
-         +UN/wciLnj/tE2BhNesvcTeyNujMeXJGO1owK6ePBDGOzLXAo/uStkOn4w1awB7QyJ
-         MPWMWEr4Z3f2c2TOjQLe8Pk2hJh1eHzZWh4GawHc=
+        b=V0jnuwiDFacXoD08FuYRh66m5/D7I/pwEHGkfQkiciCJ3hABmfqtoyC5jt43sMc82
+         ITsRPfAAIK4ZNJu8jOC8ZeVb3TPLe3ktCbMx5NotqC57z7Sn5OdEV6BNy5ZEAzNRbr
+         QjnrqMSmvxzvXCGN4yakgk+T0t2KlbDH2lGbeZGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Jagan Teki <jagan@amarulasolutions.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 066/211] drm: bridge: samsung-dsim: Drain command transfer FIFO before transfer
-Date:   Wed, 20 Sep 2023 13:28:30 +0200
-Message-ID: <20230920112847.819689875@linuxfoundation.org>
+Subject: [PATCH 6.5 067/211] arm64: dts: qcom: sm6125-pdx201: correct ramoops pmsg-size
+Date:   Wed, 20 Sep 2023 13:28:31 +0200
+Message-ID: <20230920112847.850358199@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -54,38 +56,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 14806c6415820b1c4bc317655c40784d050a2edb ]
+[ Upstream commit c42f5452de6ad2599c6e5e2a64c180a4ac835d27 ]
 
-Wait until the command transfer FIFO is empty before loading in the next
-command. The previous behavior where the code waited until command transfer
-FIFO was not full suffered from transfer corruption, where the last command
-in the FIFO could be overwritten in case the FIFO indicates not full, but
-also does not have enough space to store another transfer yet.
+There is no 'msg-size' property in ramoops, so assume intention was for
+'pmsg-size':
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Jagan Teki <jagan@amarulasolutions.com>
-Tested-by: Jagan Teki <jagan@amarulasolutions.com> # imx8mm-icore
-Link: https://patchwork.freedesktop.org/patch/msgid/20230615201511.565923-1-marex@denx.de
+  sm6125-sony-xperia-seine-pdx201.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230618114442.140185-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 2 +-
+ arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 73ec60757dbcb..9e253af69c7a1 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1009,7 +1009,7 @@ static int samsung_dsim_wait_for_hdr_fifo(struct samsung_dsim *dsi)
- 	do {
- 		u32 reg = samsung_dsim_read(dsi, DSIM_FIFOCTRL_REG);
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+index 9f8a9ef398a26..de85086c65adc 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+@@ -79,7 +79,7 @@ pstore_mem: ramoops@ffc00000 {
+ 			reg = <0x0 0xffc40000 0x0 0xc0000>;
+ 			record-size = <0x1000>;
+ 			console-size = <0x40000>;
+-			msg-size = <0x20000 0x20000>;
++			pmsg-size = <0x20000>;
+ 		};
  
--		if (!(reg & DSIM_SFR_HEADER_FULL))
-+		if (reg & DSIM_SFR_HEADER_EMPTY)
- 			return 0;
- 
- 		if (!cond_resched())
+ 		cmdline_mem: memory@ffd00000 {
 -- 
 2.40.1
 
