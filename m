@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D2577A7C27
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4382F7A7B66
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235022AbjITL6f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:58:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40720 "EHLO
+        id S234715AbjITLvv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235027AbjITL6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:34 -0400
+        with ESMTP id S234736AbjITLvs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 369E4DD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA64C433C8;
-        Wed, 20 Sep 2023 11:58:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD67FB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CE7C433CA;
+        Wed, 20 Sep 2023 11:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211108;
-        bh=g7IS8h1oxLy9RwsuwHvcodRu8XOpEXWRopafnMPoBqM=;
+        s=korg; t=1695210698;
+        bh=bDdCtmzOORHZKR8hG99NLcIrqTL+fXsUfuKzzv9qIcg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ppCpG4zkqNz52Qb48rIT+blEkhOHLunP/JvUOhyobLNRgm30boRR/WZFUYPhUQxim
-         8oh1VicV38v9GuyzwO2WPhlchL2AphO/BOBazV70bp6zFTAEQ8T/FprwgZmO2WqlD5
-         9qK7PXl3h7PVTpd0uWNF4cOd/j0hx5YkmeycQtoU=
+        b=ew+K04IcRc9fjG6dgNr2ctrPitOgJEBVZO+u/dOllGqJlXGtSMdNKTI1yTnAADIjE
+         eUsxuy2eiIYOUox948BprYXdGX8jE0XPK5BZppaU0OGMHVMHujW6L20VFh492v7eow
+         cZuyCFs4gw/3ngR2ZMsyEtWbC3+bu8gQAwOS5+QI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/139] usb: chipidea: add workaround for chipidea PEC bug
+        patches@lists.linux.dev, Steve Wahl <steve.wahl@hpe.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.5 172/211] x86/platform/uv: Use alternate source for socket to node data
 Date:   Wed, 20 Sep 2023 13:30:16 +0200
-Message-ID: <20230920112838.702939753@linuxfoundation.org>
+Message-ID: <20230920112851.218828397@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,110 +49,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Steve Wahl <steve.wahl@hpe.com>
 
-[ Upstream commit 12e6ac69cc7e7d3367599ae26a92a0f9a18bc728 ]
+commit 5290e88ba2c742ca77c5f5b690e5af549cfd8591 upstream.
 
-Some NXP processors using ChipIdea USB IP have a bug when frame babble is
-detected.
+The UV code attempts to build a set of tables to allow it to do
+bidirectional socket<=>node lookups.
 
-Issue description:
-In USB camera test, our controller is host in HS mode. In ISOC IN, when
-device sends data across the micro frame, it causes the babble in host
-controller. This will clear the PE bit. In spec, it also requires to set
-the PEC bit and then set the PCI bit. Without the PCI interrupt, the
-software does not know the PE is cleared.
+But when nr_cpus is set to a smaller number than actually present, the
+cpu_to_node() mapping information for unused CPUs is not available to
+build_socket_tables(). This results in skipping some nodes or sockets
+when creating the tables and leaving some -1's for later code to trip.
+over, causing oopses.
 
-This will add a flag CI_HDRC_HAS_PORTSC_PEC_MISSED to some impacted
-platform datas. And the ehci host driver will assert PEC by SW when
-specific conditions are satisfied.
+The problem is that the socket<=>node lookups are created by doing a
+loop over all CPUs, then looking up the CPU's APICID and socket. But
+if a CPU is not present, there is no way to start this lookup.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20230809024432.535160-2-xu.yang_2@nxp.com
+Instead of looping over all CPUs, take CPUs out of the equation
+entirely. Loop over all APICIDs which are mapped to a valid NUMA node.
+Then just extract the socket-id from the APICID.
+
+This avoid tripping over disabled CPUs.
+
+Fixes: 8a50c5851927 ("x86/platform/uv: UV support for sub-NUMA clustering")
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20230807141730.1117278-1-steve.wahl%40hpe.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci.h          | 1 +
- drivers/usb/chipidea/ci_hdrc_imx.c | 4 +++-
- drivers/usb/chipidea/core.c        | 2 ++
- drivers/usb/chipidea/host.c        | 1 +
- include/linux/usb/chipidea.h       | 1 +
- 5 files changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
-index 85a803c135ab3..2ff83911219f8 100644
---- a/drivers/usb/chipidea/ci.h
-+++ b/drivers/usb/chipidea/ci.h
-@@ -253,6 +253,7 @@ struct ci_hdrc {
- 	bool				id_event;
- 	bool				b_sess_valid_event;
- 	bool				imx28_write_fix;
-+	bool				has_portsc_pec_bug;
- 	bool				supports_runtime_pm;
- 	bool				in_lpm;
- 	bool				wakeup_int;
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index caa91117ba429..984087bbf3e2b 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -67,11 +67,13 @@ static const struct ci_hdrc_imx_platform_flag imx7d_usb_data = {
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1571,7 +1571,7 @@ static void __init build_socket_tables(v
+ {
+ 	struct uv_gam_range_entry *gre = uv_gre_table;
+ 	int nums, numn, nump;
+-	int cpu, i, lnid;
++	int i, lnid, apicid;
+ 	int minsock = _min_socket;
+ 	int maxsock = _max_socket;
+ 	int minpnode = _min_pnode;
+@@ -1622,15 +1622,14 @@ static void __init build_socket_tables(v
  
- static const struct ci_hdrc_imx_platform_flag imx7ulp_usb_data = {
- 	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM |
-+		CI_HDRC_HAS_PORTSC_PEC_MISSED |
- 		CI_HDRC_PMQOS,
- };
+ 	/* Set socket -> node values: */
+ 	lnid = NUMA_NO_NODE;
+-	for_each_possible_cpu(cpu) {
+-		int nid = cpu_to_node(cpu);
+-		int apicid, sockid;
++	for (apicid = 0; apicid < ARRAY_SIZE(__apicid_to_node); apicid++) {
++		int nid = __apicid_to_node[apicid];
++		int sockid;
  
- static const struct ci_hdrc_imx_platform_flag imx8ulp_usb_data = {
--	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM,
-+	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM |
-+		CI_HDRC_HAS_PORTSC_PEC_MISSED,
- };
+-		if (lnid == nid)
++		if ((nid == NUMA_NO_NODE) || (lnid == nid))
+ 			continue;
+ 		lnid = nid;
  
- static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
-diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index 71f172ecfaabc..b9227f41cf1c0 100644
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -1038,6 +1038,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
- 		CI_HDRC_IMX28_WRITE_FIX);
- 	ci->supports_runtime_pm = !!(ci->platdata->flags &
- 		CI_HDRC_SUPPORTS_RUNTIME_PM);
-+	ci->has_portsc_pec_bug = !!(ci->platdata->flags &
-+		CI_HDRC_HAS_PORTSC_PEC_MISSED);
- 	platform_set_drvdata(pdev, ci);
+-		apicid = per_cpu(x86_cpu_to_apicid, cpu);
+ 		sockid = apicid >> uv_cpuid.socketid_shift;
  
- 	ret = hw_device_init(ci, base);
-diff --git a/drivers/usb/chipidea/host.c b/drivers/usb/chipidea/host.c
-index bc3634a54c6b7..3b08c5e811707 100644
---- a/drivers/usb/chipidea/host.c
-+++ b/drivers/usb/chipidea/host.c
-@@ -151,6 +151,7 @@ static int host_start(struct ci_hdrc *ci)
- 	ehci->has_hostpc = ci->hw_bank.lpm;
- 	ehci->has_tdi_phy_lpm = ci->hw_bank.lpm;
- 	ehci->imx28_write_fix = ci->imx28_write_fix;
-+	ehci->has_ci_pec_bug = ci->has_portsc_pec_bug;
- 
- 	priv = (struct ehci_ci_priv *)ehci->priv;
- 	priv->reg_vbus = NULL;
-diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
-index ee38835ed77cc..0b4f2d5faa080 100644
---- a/include/linux/usb/chipidea.h
-+++ b/include/linux/usb/chipidea.h
-@@ -63,6 +63,7 @@ struct ci_hdrc_platform_data {
- #define CI_HDRC_IMX_IS_HSIC		BIT(14)
- #define CI_HDRC_PMQOS			BIT(15)
- #define CI_HDRC_PHY_VBUS_CONTROL	BIT(16)
-+#define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
- 	enum usb_dr_mode	dr_mode;
- #define CI_HDRC_CONTROLLER_RESET_EVENT		0
- #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
--- 
-2.40.1
-
+ 		if (_socket_to_node[sockid - minsock] == SOCK_EMPTY)
 
 
