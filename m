@@ -2,50 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC86F7A8028
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A09A7A8063
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236173AbjITMdb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55426 "EHLO
+        id S234688AbjITMg6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:36:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236190AbjITMda (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:30 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39696EC;
-        Wed, 20 Sep 2023 05:33:22 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qiwON-0003gR-8R; Wed, 20 Sep 2023 14:33:19 +0200
-Message-ID: <91336c97-0831-3ce3-5ff0-54344f18e065@leemhuis.info>
-Date:   Wed, 20 Sep 2023 14:33:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
-Content-Language: en-US, de-DE
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     Huacai Chen <chenhuacai@kernel.org>, linux-pci@vger.kernel.org,
-        bhelgaas@google.com, linux-kernel@vger.kernel.org, kw@linux.com,
-        lpieralisi@kernel.org, stable@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
- <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
- <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
- <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
- <20230907011828.GA2865@thinkpad>
- <6e1bdebf-f335-23a5-c79f-d603c5d0150c@flygoat.com>
- <20230907050805.GA3218@thinkpad>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <20230907050805.GA3218@thinkpad>
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S235898AbjITMg4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:56 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE9A9CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695213410; x=1726749410;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+LZ5bNBk3XBl0lhpiVgELZqu+xpxpvj4pBLjSxtgLXs=;
+  b=Yey15pSD8X6/LrVfkmLg6a/dNlHK8LMye9dTD0MddQie0gdkGf5IMce1
+   CoM98+5IqrrSVGgH2aRSVele+AU02yL9GtvKLYvZU4qKPnE6Hw0NAY14F
+   c8JvSBEh0nlIcYTY8UaZo793y5fxCh6BOTNx/qgAb8oU0TpWoVaZ4nSJp
+   YWoOTUKN7gqEHppxSiEyigwj6a8ZoxeSFkWtO7rBH2k/KaZ/xDTw4ZDLt
+   ZxsclPty1JXPCUuihhsnauFF9CCp3ddU3BH6ROL4HcvKhB+efmVLB+59z
+   8DXmDzVlgVqPDG3E2Uu7RnJ1d30MrYmCmJLylWYSeiTtkgnatlSMgm9Dk
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="377513342"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="377513342"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 05:36:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="775986724"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="775986724"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Sep 2023 05:36:49 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 20 Sep 2023 05:36:49 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 20 Sep 2023 05:36:48 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Wed, 20 Sep 2023 05:36:48 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Wed, 20 Sep 2023 05:36:48 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FYFJwYO8mzNKZ8+3fLJPZkwDIuok4Lgtv9hZR5gWBzewso94xknwLy1f680LNLyhT++yTRcAHKbK98FO0CFrkp6tiu7qNiJ9Aihgcj6GDLzWaV2Kdw3ZprrcakDHmbmY3sqm0BxzW4iE2XikIbfTSXv+X0CBCz3OdcDnVWWlDIURovALtZ+N2Em85avsVGn7dRyj4DIgYBB+v0bXdLojbxrlAcYeOG3dhDI8OY7PuLcfGqglOpF1MTFomQlKtM0HnzX3uJHqUaOqKzl/vZQkCI88THL4poCxl7fGM8MXy+86w8v+LBpIIMNoPPjhry0W66wzwjm2eNZawTBN25D+dA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ukWo0dJPbetW9XLrcA+WWyC3uaQUtcakmhvYGTjhLD4=;
+ b=czV+F/lBxyASfdF954Q0VZuQwgrpzZNsclvxByLN99rDqouOk18EMV1eeVdl7mi9rICx/mwjgYnSjckYSy3C7IHGtYIA9WYJ1Exid4bTZaFVDbBa5ULfCtsG1vkHrbtOnL5B3NBhrw5eSnRKar4aVjPG6l79RzChIHEOqdBctzHoiX7H4cvP0pn8ghJGkdw7q8rubDG451dkNV+o4HBsWGuikdkVpvFzBYY7XP9Mmw7JwWOSCTKbNN7XiGQUxWJBWLiBH9HGrnm0WkKQfacRmWrUU6fZVrf/OFM4ojZAiv15xu06bqTBEwiYUO0OwuaQfd81FSltT28r5fI/YtV24g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5169.namprd11.prod.outlook.com (2603:10b6:303:95::19)
+ by BN9PR11MB5275.namprd11.prod.outlook.com (2603:10b6:408:134::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Wed, 20 Sep
+ 2023 12:36:45 +0000
+Received: from CO1PR11MB5169.namprd11.prod.outlook.com
+ ([fe80::5fb6:7200:97a4:b7e9]) by CO1PR11MB5169.namprd11.prod.outlook.com
+ ([fe80::5fb6:7200:97a4:b7e9%7]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
+ 12:36:45 +0000
+Message-ID: <c9f1ffe9-1e96-ec36-3e0c-c972f726b65c@intel.com>
+Date:   Wed, 20 Sep 2023 15:36:52 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: [PATCH] drm/i915: Remove unnecessary memory quiescing for aux
+ inval
+Content-Language: en-US
+To:     Nirmoy Das <nirmoy.das@intel.com>,
+        <intel-gfx@lists.freedesktop.org>
+CC:     <dri-devel@lists.freedesktop.org>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        <stable@vger.kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
+        "Tvrtko Ursulin" <tvrtko.ursulin@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Tejas Upadhyay <tejas.upadhyay@intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>,
+        Mark Janes <mark.janes@intel.com>,
+        "Rodrigo Vivi" <rodrigo.vivi@intel.com>
+References: <20230920111131.2696-1-nirmoy.das@intel.com>
+From:   =?UTF-8?Q?Tapani_P=c3=a4lli?= <tapani.palli@intel.com>
+In-Reply-To: <20230920111131.2696-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695213202;524c3247;
-X-HE-SMSGID: 1qiwON-0003gR-8R
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-ClientProxiedBy: DB9PR02CA0025.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d9::30) To CO1PR11MB5169.namprd11.prod.outlook.com
+ (2603:10b6:303:95::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5169:EE_|BN9PR11MB5275:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad8910ba-b047-41ed-7bd8-08dbb9d64035
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: B8gTvDEBnXAtF1NATU6uyuqSMhZCrsGwjJKr7cwxQUqZ1C2geQ6d6VVYTfmZLcqEwYDNfeMBdXlno4QTK8JcgKQ41brNlfwKWNqZ104z+Lfl4RFeu7rYDO1maTm/idYf/R7AMt7jBmiK8suRVz6R387TTuVTbk0+INht6rVphIBTqFIEF7CQHb3bmJmJaLb63PXrusjGWbiXorPn63wZmxIY1p4HrSn6bZGimJzhAKwuvbkhSIby6VQ0y+WU1VQIraR2MIWK7Yj+f5qM9gxrQtLYGwfHMihdREP4IjHIIQyTRtBK6AIsZ89SV9oVmCNEwKHlI5sMH2MHQCX1hwZHu3GmTTThT+iIL3Z4v7I7+gWbtKfTkVSKgJ2x9z1c0M5egCz3QS6/E4cfTODeAsgIQrg602FGmFT4TNTHSbiznfnIcMisASIoG83SJdnU3V0LCTfhVnSAkcBhvbORlwUWVF2P1RA9mISvmTC2C4soN2muiBU166KKbJ6F1WjMZDeuwWRE9Co5FA+Am0SvdjdJrEqPhDUV/6vBeEx60+ECH1egLDocxnqXAXoe5h3pBgPfSQWI7kfyebiA3Km1edzfmj5/diK80Y5PzKLkSKFnYCtCNGL7vyCp8ju7u7ox+M99BQg90fYTBKgGeM+TJU1zMO3hH2tEhJcY+YAKGUothD8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5169.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(346002)(396003)(366004)(136003)(1800799009)(186009)(451199024)(66574015)(83380400001)(5660300002)(54906003)(66946007)(36756003)(6512007)(6666004)(82960400001)(6506007)(6486002)(4326008)(41300700001)(8676002)(2906002)(66476007)(66556008)(31696002)(316002)(8936002)(38100700002)(478600001)(86362001)(2616005)(26005)(31686004)(21314003)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TXFkaERsaWJGOWZOZFlWeEFMeHlqTEZjbVdqUThXakhndjhIaUxkSDBHYnVz?=
+ =?utf-8?B?V0V6WkxEWk5NZ1VMNnVrQWxqZ1NacDdCYzFNUVd3R0d3MzJKK0VVYlJJSzJs?=
+ =?utf-8?B?RnhTdXdmdGNyVWRqRkRtaHZGczJCVlRiQnNEc3VPQW5EcXFVZlE2TE8yaUJv?=
+ =?utf-8?B?MThiNkNGb3hFcWg4YnpMWGZXN1FUV0RkRWU1NE93YkdSS0FOblJEQThTc0RG?=
+ =?utf-8?B?MmY2aitBcUdwYy90MTlaTWZJOVVjYkYxZ1liSzdReXAwK3lOaFNSVDVBRXpY?=
+ =?utf-8?B?OTI0TlovcHZSQ0JkdzJsVkFZd1Jsc3JuM1FVZk9uNkM2SSsvckNDQVh4ZU50?=
+ =?utf-8?B?c2ZnWFdNTU55U2xxaFN0NkVrbTdPNFdPWVBmNmt2ZzBsNG9CbDZxNzl1VHls?=
+ =?utf-8?B?cndsTWduZ3R5UUFRcGxCNXErMndGSzlmdkxDTnFvWVlpTStFeUlySnpIY2lp?=
+ =?utf-8?B?VnJPMUJTejN3Zk9WUEFURXA4WXc5aWFrUUZBZEw3VHdjVVI0QTFmRVhFWkJM?=
+ =?utf-8?B?d3NoSkN5bXRTSkIyeEQ2U0dQbUo2dGs2SGRRZXVzRXd2dzZxUnZkbW9CeXhT?=
+ =?utf-8?B?ZkdPTk1TTHFCWUF5bkljRjIrRFMrQXJ1Tk55bHJPQVVWcjI4b1IvZU15SEpj?=
+ =?utf-8?B?N1NHOGlZVEhlTlFOL1o0R2RBZ2RQTHZYc1Z0ZTdsa3gyTEF5ZEk3aU5HSEJQ?=
+ =?utf-8?B?bWdxWTRvd2h5K2ZCVWt1S29YWDkrWFY4Zkgxa0pjQzNPWnBhN0ovWnp6WU10?=
+ =?utf-8?B?REZSOFZLNFl2ZGtKZTFNZ3gwb01UdktlMHZaN2hvcGpyVUdiK095VFNNQlNO?=
+ =?utf-8?B?bjRyNGVPTGhjUjc0Y1dZNkdsdER6M1grZmV6VGphUWloRytoSVVoODJ2M0ZD?=
+ =?utf-8?B?clovZFJ4dE5oRTU2TTkvSkhlV0ovTktLbFBoZFhLTCsxeGxDR09FeUhMNDd6?=
+ =?utf-8?B?UjFpV1dHREVlckgvWkhIZm5INjhXNzBLeGNaZjFZa29LeFRtZk9Rcjc3UjFu?=
+ =?utf-8?B?WWhtYlRmWFlsaithU0M4K1UyUzlWSnJQSHRkV0lMcGhzREI3V0NlQUZxaVI5?=
+ =?utf-8?B?cFFjanJadzBiWm9SbmVIbVFJUnVucVZYTm1wWFFZZkRWVEJGbzNKVEJBQjV3?=
+ =?utf-8?B?NVVJdk0zNlNTWEwrYnc0QzBCVnhEenU4RzhwdEttOVlvOHM5L1dGc2dBekJV?=
+ =?utf-8?B?SlhlempYYTMrcTJ0emg5QmVaakliVkVSNElFQ043WkM5UDFwMWxHRHYrZy9I?=
+ =?utf-8?B?ejRTVzlyN3FWdGp0V09DTTJvMTJqaUg3ZEpYTjhIVVE2WTZvdzJyaDF0VWdp?=
+ =?utf-8?B?SWNmc3dydjRDNDJNbEJPbmpFK3lQZTdFNGZ1SUYyYjFVUXFiWDM5cE5yR0g1?=
+ =?utf-8?B?OWx2a1BFY1JtbDQ2QlpVMUlqV2tNaGpyVkFVeVV5Z2VDSWFHWUU4K3JKTzNY?=
+ =?utf-8?B?YTZDd3hIc2lIMVVxbmpIL0ZCSDU2MnArdG01L1Y1U2lXWkc5T0RvRXNmOGIz?=
+ =?utf-8?B?MFpGVHNIZUpHTEg3ek5ZQ0NKdkFuVTQ4L1FJbC9mWFJJOWVURjNCRUlNcExn?=
+ =?utf-8?B?SlMvUC9pZFNwUUZzM3pOVnROSnZiVUhLb1hkdVFZWFdSWk15OEo3SkY0RXhw?=
+ =?utf-8?B?RFlxTDlvTTRsVGtVTXZwV0g5eWdRRkw5QVVLQ055Z1hwUlRLNTFZUEx3ZmI5?=
+ =?utf-8?B?SW95N2xoY3hPdnV5Z3pUQXljMTFoV1dkdCt5L0djVTF5Y2lIMVFaZmxXZC9C?=
+ =?utf-8?B?KzV2OWRxbjQ5cGVQOWZETjZ6UEYxUnlvNEhzQmpyMU10NmpCazg2TmdzVXNH?=
+ =?utf-8?B?NFRFVnlHWCtUYyt6THgrUXA3TGk5eTVoWlJ1RTRoYTlXQ0s3dC9ZK3FZSDNa?=
+ =?utf-8?B?RFVRYWFXUUxZcTJCQ3dBbjc0ajZMYnAza1M0R2xadXhCT1JtT2swd0VZdll5?=
+ =?utf-8?B?NFlVZGR2OGtIcGFkbi9mdTdua3lYM3pyT080eExjRTZ1Q2xnQis5SDRRK2dz?=
+ =?utf-8?B?MlVrOTV1OGNOZ09TSHJnMjRVM0IwczhDZ1ZxMWlOTCtyM3h5NGNZSmxUSXRO?=
+ =?utf-8?B?bXFDeHhlNERKbFhHZ2l6R3Y4Umk5T3RtZ0ZSRFpWYnQyOWpENk9PMWx4VkJZ?=
+ =?utf-8?B?ZitpMlJTTyt5eXZLbUNSeTl0VzcvTEc4MTZVN0JMbkxrV3lzNkhWZnpudVJG?=
+ =?utf-8?B?b1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad8910ba-b047-41ed-7bd8-08dbb9d64035
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5169.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 12:36:45.7072
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wioe3BxJ60wH0i0wmLXNiFJAdcFFAxWFIuYrh74+jy6oIIXc0SfhwEHZPt9TdsJKDw7mMiqHL/VmxeMFGhhv1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5275
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,63 +171,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[CCing the regression list, as it should be in the loop for regressions:
-https://docs.kernel.org/admin-guide/reporting-regressions.html]
+I tested this first against tests that were failing for Mesa and it 
+fixes all of the regressed cases (TGL LP). Also did a full run of all 
+KHR-GLES31* and KHR-GLES32* test groups in the Khronos CTS suite, no 
+regressions observed.
 
-On 07.09.23 07:08, Manivannan Sadhasivam wrote:
-> On Thu, Sep 07, 2023 at 11:13:00AM +0800, Jiaxun Yang wrote:
->> 在 2023/9/7 9:18, Manivannan Sadhasivam 写道:
->> [...]
->>> Why do you need to walk through every single device instead of just bridges?
->>> I'm not the maintainer, but my suggestion is to go for Huacai Chen's solution.
->>
->> Thanks for your reply, unfortunately Huacai's solution is impractical in
->> this case.
->>
->> The problem we have, is firmware (or BIOS) setting improper MRRS for devices
->> attached under those bridges. So we have to fix up MRRS for every single
->> device.
->> We can't iterate child device in bridge quirk because there is no guarantee
->> that
->> bridge will be probed before  it's child device, partly due to hotplug.
-> 
-> Okay, this clarifies and also warrants improvement in commit message.
-> 
-> You could also use pci_walk_bus() after pci_host_probe() to iterate over the
-> child devices under root bridge and set MRRS. IMO that would look neat.
+Tested-by: Tapani Pälli <tapani.palli@intel.com>
 
-Hi, Thorsten here, the Linux kernel's regression tracker. What's the
-status here? The regression that was supposed to be fixed by the patched
-that started this thread was reported 9 weeks ago[1] and the culprit
-made it to many stable kernels as well. Would be really good to finally
-fix this, as a regression like this should ideally be fixed within 2 to
-3 weeks (in both mainline and stable). With a revert if necessary -- is
-this maybe still a option, or would that cause more trouble then it
-solved (I guess that's the case).
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=217680
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
->> This quirk has been in tree for a while, until Huacai refactored it and
->> broke some
->> systems in 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases").
->>
->> Also to note that ks_pcie_quirk in drivers/pci/controller/dwc/pci-keystone.c
->> uses similar approach.
->>> This avoids iterating over bridges/devices two times.
->>>
->>> Also, please rename firmware to BIOS, as firmware commonly represents the
->>> software running on PCIe endpoint devices.
->> Ack, will fix in next reversion.
->>
->> Thanks
->> - Jiaxun
->>>
->>> - Mani
->> [...]
-> 
+On 20.9.2023 14.11, Nirmoy Das wrote:
+> i915 already does memory quiesce before signaling
+> breadcrumb so remove extra memory quiescing for aux
+> invalidation which can cause unnecessary side effects.
+>
+> Fixes: 78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before invalidation")
+> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v5.8+
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
+> Cc: Tapani Pälli <tapani.palli@intel.com>
+> Cc: Mark Janes <mark.janes@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 50 ++++++++++++------------
+>   1 file changed, 26 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> index 0143445dba83..5001670046a0 100644
+> --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+> @@ -248,11 +248,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+>   {
+>   	struct intel_engine_cs *engine = rq->engine;
+>   
+> -	/*
+> -	 * On Aux CCS platforms the invalidation of the Aux
+> -	 * table requires quiescing memory traffic beforehand
+> -	 */
+> -	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
+> +	if (mode & EMIT_FLUSH) {
+>   		u32 bit_group_0 = 0;
+>   		u32 bit_group_1 = 0;
+>   		int err;
+> @@ -264,13 +260,6 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+>   
+>   		bit_group_0 |= PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
+>   
+> -		/*
+> -		 * When required, in MTL and beyond platforms we
+> -		 * need to set the CCS_FLUSH bit in the pipe control
+> -		 */
+> -		if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
+> -			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
+> -
+>   		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
+>   		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
+>   		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
+> @@ -800,14 +789,15 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs)
+>   {
+>   	struct drm_i915_private *i915 = rq->i915;
+>   	struct intel_gt *gt = rq->engine->gt;
+> -	u32 flags = (PIPE_CONTROL_CS_STALL |
+> -		     PIPE_CONTROL_TLB_INVALIDATE |
+> -		     PIPE_CONTROL_TILE_CACHE_FLUSH |
+> -		     PIPE_CONTROL_FLUSH_L3 |
+> -		     PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH |
+> -		     PIPE_CONTROL_DEPTH_CACHE_FLUSH |
+> -		     PIPE_CONTROL_DC_FLUSH_ENABLE |
+> -		     PIPE_CONTROL_FLUSH_ENABLE);
+> +	u32 bit_group_0 = PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
+> +	u32 bit_group_1 = (PIPE_CONTROL_CS_STALL |
+> +			   PIPE_CONTROL_TLB_INVALIDATE |
+> +			   PIPE_CONTROL_TILE_CACHE_FLUSH |
+> +			   PIPE_CONTROL_FLUSH_L3 |
+> +			   PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH |
+> +			   PIPE_CONTROL_DEPTH_CACHE_FLUSH |
+> +			   PIPE_CONTROL_DC_FLUSH_ENABLE |
+> +			   PIPE_CONTROL_FLUSH_ENABLE);
+>   
+>   	/* Wa_14016712196 */
+>   	if (IS_GFX_GT_IP_RANGE(gt, IP_VER(12, 70), IP_VER(12, 71)) || IS_DG2(i915))
+> @@ -817,14 +807,26 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs)
+>   
+>   	if (GRAPHICS_VER(i915) == 12 && GRAPHICS_VER_FULL(i915) < IP_VER(12, 50))
+>   		/* Wa_1409600907 */
+> -		flags |= PIPE_CONTROL_DEPTH_STALL;
+> +		bit_group_1 |= PIPE_CONTROL_DEPTH_STALL;
+>   
+>   	if (!HAS_3D_PIPELINE(rq->i915))
+> -		flags &= ~PIPE_CONTROL_3D_ARCH_FLAGS;
+> +		bit_group_1 &= ~PIPE_CONTROL_3D_ARCH_FLAGS;
+>   	else if (rq->engine->class == COMPUTE_CLASS)
+> -		flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
+> +		bit_group_1 &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
+> +
+> +	/*
+> +	 * On Aux CCS platforms the invalidation of the Aux
+> +	 * table requires quiescing memory traffic beforehand.
+> +	 * gen12_emit_fini_breadcrumb_rcs() does this for us as
+> +	 * all memory traffic has to be completed before we signal
+> +	 * the breadcrumb. In MTL and beyond platforms, we need to also
+> +	 * add CCS_FLUSH bit in the pipe control for that purpose.
+> +	 */
+> +
+> +	if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
+> +		bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
+>   
+> -	cs = gen12_emit_pipe_control(cs, PIPE_CONTROL0_HDC_PIPELINE_FLUSH, flags, 0);
+> +	cs = gen12_emit_pipe_control(cs, bit_group_0, bit_group_1, 0);
+>   
+>   	/*XXX: Look at gen8_emit_fini_breadcrumb_rcs */
+>   	cs = gen12_emit_ggtt_write_rcs(cs,
