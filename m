@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 052D87A784B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 046057A784E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbjITJ6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60294 "EHLO
+        id S234229AbjITJ7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234323AbjITJ6g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:58:36 -0400
+        with ESMTP id S234314AbjITJ7G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:59:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DA812C
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:58:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B428AC433C8;
-        Wed, 20 Sep 2023 09:58:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E615AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:58:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590E3C433C8;
+        Wed, 20 Sep 2023 09:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203906;
-        bh=6u80P3s2bc3yJWGIdz7c8l7a6Bx7cw4hzdJRWF7sqVg=;
+        s=korg; t=1695203938;
+        bh=I6v0ZY5QUVk6YELfkhUEfxfYemiGKHdqNIHLlyzAI3Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=bODcYvEOJMct+wPliTYOMHoMWE5G3IVlhjv7gXI03h7nL/sYzxRr46QLJloQA+YJl
-         pEVuLcEd7rZ6TbLLCoKor/1z16Pq60r16mpQz2Em+kvBkOtJzWjVDQ2cjBjabq8dVJ
-         eGnWmJkxlrPDqwmx9KaqiC3MrWyM1u7Kn1rTJykg=
-Subject: FAILED: patch "[PATCH] scsi: pm8001: Setup IRQs on resume" failed to apply to 4.14-stable tree
-To:     dlemoal@kernel.org, jinpu.wang@ionos.com,
-        martin.petersen@oracle.com
+        b=vApFs7xEpb1dEAKfa/KFrCVb+O9Ga36G5ciSuFvdt/fwdvXr0V+tyPXWXqEat8K8e
+         sm+Mm8xahgv4QLdG8z34mpHGNllTXEmC8LX04A2dwPcTbf7JGbfSpNqEZYMomrCgac
+         6palelZYTMp6dXjNhWrkP1b9uOz8/HrQ6HcFhQjA=
+Subject: FAILED: patch "[PATCH] ext4: fix rec_len verify error" failed to apply to 4.19-stable tree
+To:     zhangshida@kylinos.cn, adilger@dilger.ca, djwong@kernel.org,
+        tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:58:13 +0200
-Message-ID: <2023092013-habitable-caring-8e6f@gregkh>
+Date:   Wed, 20 Sep 2023 11:58:55 +0200
+Message-ID: <2023092055-disband-unveiling-f6cc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,42 +43,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x c91774818b041ed290df29fb1dc0725be9b12e83
+git cherry-pick -x 7fda67e8c3ab6069f75888f67958a6d30454a9f6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092013-habitable-caring-8e6f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092055-disband-unveiling-f6cc@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-c91774818b04 ("scsi: pm8001: Setup IRQs on resume")
-653926205741 ("scsi: pm80xx: Do not call scsi_remove_host() in pm8001_alloc()")
-1b5d2793283d ("scsi: pm8001: Neaten debug logging macros and uses")
-1f889b58716a ("scsi: pm80xx: Fix pm8001_mpi_get_nvmd_resp() race condition")
-4a2efd4b89fc ("scsi: pm80xx: Make running_req atomic")
-7640e1eb8c5d ("scsi: pm80xx: Make mpi_build_cmd locking consistent")
-5a141315ed7c ("scsi: pm80xx: Increase the number of outstanding I/O supported to 1024")
-27bc43bd7c42 ("scsi: pm80xx: Remove DMA memory allocation for ccb and device structures")
-05c6c029a44d ("scsi: pm80xx: Increase number of supported queues")
-dba2cc03b9db ("scsi: pm80xx: sysfs attribute for non fatal dump")
-b40f28820fba ("scsi: pm80xx: Cleanup initialization loading fail path")
-9d9c7c20fb35 ("scsi: pm80xx: Free the tag when mpi_set_phy_profile_resp is received")
-d384be6ede5c ("scsi: pm80xx: Deal with kexec reboots")
-58bf14c17e65 ("scsi: pm80xx: Increase request sg length")
-20bc1ad2e4da ("scsi: pm80xx: fix spelling mistake "to" -> "too"")
-044f59de3a3d ("scsi: pm80xx: Modified the logic to collect fatal dump")
-7295493682aa ("scsi: pm80xx: Tie the interrupt name to the module instance")
-3e253d9657b0 ("scsi: pm80xx: Do not request 12G sas speeds")
-51c1c5f6ed64 ("scsi: pm80xx: Cleanup command when a reset times out")
-91a43fa61f10 ("scsi: pm80xx: Fix command issue sizing")
+7fda67e8c3ab ("ext4: fix rec_len verify error")
+46c116b920eb ("ext4: verify dir block before splitting it")
+f036adb39976 ("ext4: rename "dirent_csum" functions to use "dirblock"")
+b886ee3e778e ("ext4: Support case-insensitive file name lookups")
 
 thanks,
 
@@ -86,115 +70,120 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c91774818b041ed290df29fb1dc0725be9b12e83 Mon Sep 17 00:00:00 2001
-From: Damien Le Moal <dlemoal@kernel.org>
-Date: Tue, 12 Sep 2023 08:27:36 +0900
-Subject: [PATCH] scsi: pm8001: Setup IRQs on resume
+From 7fda67e8c3ab6069f75888f67958a6d30454a9f6 Mon Sep 17 00:00:00 2001
+From: Shida Zhang <zhangshida@kylinos.cn>
+Date: Thu, 3 Aug 2023 14:09:38 +0800
+Subject: [PATCH] ext4: fix rec_len verify error
 
-The function pm8001_pci_resume() only calls pm8001_request_irq() without
-calling pm8001_setup_irq(). This causes the IRQ allocation to fail, which
-leads all drives being removed from the system.
+With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+a problem occurred when more than 13 million files were directly created
+under a directory:
 
-Fix this issue by integrating the code for pm8001_setup_irq() directly
-inside pm8001_request_irq() so that MSI-X setup is performed both during
-normal initialization and resume operations.
+EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
 
-Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230911232745.325149-2-dlemoal@kernel.org
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+When enough files are created, the fake_dirent->reclen will be 0xffff.
+it doesn't equal to the blocksize 65536, i.e. 0x10000.
 
-diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
-index 5e5ce1e74c3b..443a3176c6c0 100644
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -273,7 +273,6 @@ static irqreturn_t pm8001_interrupt_handler_intx(int irq, void *dev_id)
- 	return ret;
- }
- 
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha);
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha);
- 
- /**
-@@ -294,13 +293,6 @@ static int pm8001_alloc(struct pm8001_hba_info *pm8001_ha,
- 	pm8001_dbg(pm8001_ha, INIT, "pm8001_alloc: PHY:%x\n",
- 		   pm8001_ha->chip->n_phy);
- 
--	/* Setup Interrupt */
--	rc = pm8001_setup_irq(pm8001_ha);
--	if (rc) {
--		pm8001_dbg(pm8001_ha, FAIL,
--			   "pm8001_setup_irq failed [ret: %d]\n", rc);
--		goto err_out;
--	}
- 	/* Request Interrupt */
- 	rc = pm8001_request_irq(pm8001_ha);
- 	if (rc)
-@@ -1031,47 +1023,38 @@ static u32 pm8001_request_msix(struct pm8001_hba_info *pm8001_ha)
- }
- #endif
- 
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha)
--{
--	struct pci_dev *pdev;
--
--	pdev = pm8001_ha->pdev;
--
--#ifdef PM8001_USE_MSIX
--	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX))
--		return pm8001_setup_msix(pm8001_ha);
--	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--#endif
--	return 0;
--}
--
- /**
-  * pm8001_request_irq - register interrupt
-  * @pm8001_ha: our ha struct.
-  */
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha)
+But it is not the same condition when blocksize equals to 4k.
+when enough files are created, the fake_dirent->reclen will be 0x1000.
+it equals to the blocksize 4k, i.e. 0x1000.
+
+The problem seems to be related to the limitation of the 16-bit field
+when the blocksize is set to 64k.
+To address this, helpers like ext4_rec_len_{from,to}_disk has already
+been introduced to complete the conversion between the encoded and the
+plain form of rec_len.
+
+So fix this one by using the helper, and all the other in this file too.
+
+Cc: stable@kernel.org
+Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+Suggested-by: Andreas Dilger <adilger@dilger.ca>
+Suggested-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index c0f0b4e2413b..c1ceccab05f5 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -343,17 +343,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ 						   struct buffer_head *bh)
  {
--	struct pci_dev *pdev;
-+	struct pci_dev *pdev = pm8001_ha->pdev;
-+#ifdef PM8001_USE_MSIX
- 	int rc;
+ 	struct ext4_dir_entry_tail *t;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
  
--	pdev = pm8001_ha->pdev;
-+	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX)) {
-+		rc = pm8001_setup_msix(pm8001_ha);
-+		if (rc) {
-+			pm8001_dbg(pm8001_ha, FAIL,
-+				   "pm8001_setup_irq failed [ret: %d]\n", rc);
-+			return rc;
-+		}
+ #ifdef PARANOID
+ 	struct ext4_dir_entry *d, *top;
  
--#ifdef PM8001_USE_MSIX
--	if (pdev->msix_cap && pci_msi_enabled())
--		return pm8001_request_msix(pm8001_ha);
--	else {
--		pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--		goto intx;
-+		if (pdev->msix_cap && pci_msi_enabled())
-+			return pm8001_request_msix(pm8001_ha);
- 	}
-+
-+	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+ 	d = (struct ext4_dir_entry *)bh->b_data;
+ 	top = (struct ext4_dir_entry *)(bh->b_data +
+-		(EXT4_BLOCK_SIZE(inode->i_sb) -
+-		 sizeof(struct ext4_dir_entry_tail)));
+-	while (d < top && d->rec_len)
++		(blocksize - sizeof(struct ext4_dir_entry_tail)));
++	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
+ 		d = (struct ext4_dir_entry *)(((void *)d) +
+-		    le16_to_cpu(d->rec_len));
++		    ext4_rec_len_from_disk(d->rec_len, blocksize));
+ 
+ 	if (d != top)
+ 		return NULL;
+@@ -364,7 +364,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
  #endif
  
--intx:
- 	/* initialize the INT-X interrupt */
- 	pm8001_ha->irq_vector[0].irq_id = 0;
- 	pm8001_ha->irq_vector[0].drv_inst = pm8001_ha;
--	rc = request_irq(pdev->irq, pm8001_interrupt_handler_intx, IRQF_SHARED,
--		pm8001_ha->name, SHOST_TO_SAS_HA(pm8001_ha->shost));
--	return rc;
-+
-+	return request_irq(pdev->irq, pm8001_interrupt_handler_intx,
-+			   IRQF_SHARED, pm8001_ha->name,
-+			   SHOST_TO_SAS_HA(pm8001_ha->shost));
- }
+ 	if (t->det_reserved_zero1 ||
+-	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
++	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
++	     sizeof(struct ext4_dir_entry_tail)) ||
+ 	    t->det_reserved_zero2 ||
+ 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
+ 		return NULL;
+@@ -445,13 +446,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
+ 	struct ext4_dir_entry *dp;
+ 	struct dx_root_info *root;
+ 	int count_offset;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
++	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
  
- /**
+-	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
++	if (rlen == blocksize)
+ 		count_offset = 8;
+-	else if (le16_to_cpu(dirent->rec_len) == 12) {
++	else if (rlen == 12) {
+ 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
+-		if (le16_to_cpu(dp->rec_len) !=
+-		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
++		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
+ 			return NULL;
+ 		root = (struct dx_root_info *)(((void *)dp + 12));
+ 		if (root->reserved_zero ||
+@@ -1315,6 +1317,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 	unsigned int buflen = bh->b_size;
+ 	char *base = bh->b_data;
+ 	struct dx_hash_info h = *hinfo;
++	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
+ 
+ 	if (ext4_has_metadata_csum(dir->i_sb))
+ 		buflen -= sizeof(struct ext4_dir_entry_tail);
+@@ -1335,11 +1338,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+-			map_tail->size = le16_to_cpu(de->rec_len);
++			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
++								blocksize);
+ 			count++;
+ 			cond_resched();
+ 		}
+-		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
++		de = ext4_next_entry(de, blocksize);
+ 	}
+ 	return count;
+ }
 
