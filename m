@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 718417A808E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 601ED7A7E4E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235950AbjITMh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42354 "EHLO
+        id S235513AbjITMRK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236008AbjITMhy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:54 -0400
+        with ESMTP id S235524AbjITMRJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CE3B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C92C433CA;
-        Wed, 20 Sep 2023 12:37:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92211D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A88C433CB;
+        Wed, 20 Sep 2023 12:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213468;
-        bh=EyXQdD/HRm5LGokvsTKVzww4Cfu32MeETAsZZYONW3s=;
+        s=korg; t=1695212196;
+        bh=brAcAfTMuL0ut+H/Kj88gixZitEsBl0YEvcAUrJ0Tok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uZZ2nj8lNnlVxSPWhy1lQsbkczitwoM/TwJGBA3Q9rLkFMboBojKk7FK59PKF0v5d
-         ZldloGJnrYSPs1OiJcg4qeyP11iAcektJmh03DzDSZoUic+11/0MGzOUzgWAJi59Ks
-         +t/KqwOHxiq1zu7GPVmHishdT1Z+bX3uQIotp430=
+        b=zlndC65p0zRTR6PytTsW7EiNt8jtRpUdkEAg9EgL4COxvYOUiLXrDSe5R8bqaLE9L
+         Vdb3KFRCarsW7TtG5upYu9XkVIMz1LMRHJ1ok9pO9CaxX08J6+HcmRtPiRTH3ei7D3
+         /KMcctTwHp/JjyfYxpvI/HUfa6lwYTo4E5VfTBJU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 249/367] clk: qcom: gcc-mdm9615: use proper parent for pll0_vote clock
+        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 186/273] dccp: Fix out of bounds access in DCCP error handler
 Date:   Wed, 20 Sep 2023 13:30:26 +0200
-Message-ID: <20230920112905.004505382@linuxfoundation.org>
+Message-ID: <20230920112852.259471128@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +50,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jann Horn <jannh@google.com>
 
-commit 1583694bb4eaf186f17131dbc1b83d6057d2749b upstream.
+commit 977ad86c2a1bcaf58f01ab98df5cc145083c489c upstream.
 
-The pll0_vote clock definitely should have pll0 as a parent (instead of
-pll8).
+There was a previous attempt to fix an out-of-bounds access in the DCCP
+error handlers, but that fix assumed that the error handlers only want
+to access the first 8 bytes of the DCCP header. Actually, they also look
+at the DCCP sequence number, which is stored beyond 8 bytes, so an
+explicit pskb_may_pull() is required.
 
-Fixes: 7792a8d6713c ("clk: mdm9615: Add support for MDM9615 Clock Controllers")
-Cc: stable@kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230512211727.3445575-7-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 6706a97fec96 ("dccp: fix out of bound access in dccp_v4_err()")
+Fixes: 1aa9d1a0e7ee ("ipv6: dccp: fix out of bound access in dccp_v6_err()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-mdm9615.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dccp/ipv4.c |   13 +++++++++----
+ net/dccp/ipv6.c |   15 ++++++++++-----
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
---- a/drivers/clk/qcom/gcc-mdm9615.c
-+++ b/drivers/clk/qcom/gcc-mdm9615.c
-@@ -58,7 +58,7 @@ static struct clk_regmap pll0_vote = {
- 	.enable_mask = BIT(0),
- 	.hw.init = &(struct clk_init_data){
- 		.name = "pll0_vote",
--		.parent_names = (const char *[]){ "pll8" },
-+		.parent_names = (const char *[]){ "pll0" },
- 		.num_parents = 1,
- 		.ops = &clk_pll_vote_ops,
- 	},
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -247,12 +247,17 @@ static void dccp_v4_err(struct sk_buff *
+ 	int err;
+ 	struct net *net = dev_net(skb->dev);
+ 
+-	/* Only need dccph_dport & dccph_sport which are the first
+-	 * 4 bytes in dccp header.
++	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
++	 * which is in byte 7 of the dccp header.
+ 	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
++	 *
++	 * Later on, we want to access the sequence number fields, which are
++	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+ 	 */
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
++	dh = (struct dccp_hdr *)(skb->data + offset);
++	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++		return;
++	iph = (struct iphdr *)skb->data;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
+ 
+ 	sk = __inet_lookup_established(net, &dccp_hashinfo,
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -71,7 +71,7 @@ static inline __u64 dccp_v6_init_sequenc
+ static void dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 			u8 type, u8 code, int offset, __be32 info)
+ {
+-	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
++	const struct ipv6hdr *hdr;
+ 	const struct dccp_hdr *dh;
+ 	struct dccp_sock *dp;
+ 	struct ipv6_pinfo *np;
+@@ -80,12 +80,17 @@ static void dccp_v6_err(struct sk_buff *
+ 	__u64 seq;
+ 	struct net *net = dev_net(skb->dev);
+ 
+-	/* Only need dccph_dport & dccph_sport which are the first
+-	 * 4 bytes in dccp header.
++	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
++	 * which is in byte 7 of the dccp header.
+ 	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
++	 *
++	 * Later on, we want to access the sequence number fields, which are
++	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+ 	 */
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
+-	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
++	dh = (struct dccp_hdr *)(skb->data + offset);
++	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++		return;
++	hdr = (const struct ipv6hdr *)skb->data;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
+ 
+ 	sk = __inet6_lookup_established(net, &dccp_hashinfo,
 
 
