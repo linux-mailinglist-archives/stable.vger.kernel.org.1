@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5723F7A7B6D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 168DB7A7C0B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234627AbjITLwC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50472 "EHLO
+        id S234923AbjITL5d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234648AbjITLwB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:01 -0400
+        with ESMTP id S234955AbjITL51 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC662B9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC646C433CC;
-        Wed, 20 Sep 2023 11:51:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13FC2100
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56300C433C7;
+        Wed, 20 Sep 2023 11:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210714;
-        bh=SnyW6lkZH8kXSah7rl4gosBOZUrw43Y9iezQFUVxXAw=;
+        s=korg; t=1695211041;
+        bh=I8Y5kH54x1w9A3qEqtQOB7I81gw8w2rZHGqWI3UrrRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=noJ8UyBzPdQgY1fZcQDnVyn62TOk82/VkHK80PulViYEo0FwryKCbYDT6IdUG4V96
-         z3i4oNmU/3vy1ixucVjSY3q+pFyHE+hsy83k8IL0Fo8cXoxtdkJ/nP/bznXndtgXgP
-         FsbdhGUWsE5k8sFGrf8UwIlZCYsIEExtv5GzMXcQ=
+        b=q9MovW2921dCqjeAKR72RfolVLPv0fC4ZnX0AqELZQXXBNsRXqp8Oo9ZaOLjH/5uD
+         amliYLdehxBInfQswK5VLEuzxTWZTOGCP5stbKPgqra5cFU+gY/2wsk/jNAbtE5BIa
+         tgg/5Xb4/RhI3X1FtPJTKa2AQ6RvZ1liHRrUnExI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.5 177/211] dm: dont attempt to queue IO under RCU protection
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 087/139] printk: Consolidate console deferred printing
 Date:   Wed, 20 Sep 2023 13:30:21 +0200
-Message-ID: <20230920112851.367191760@linuxfoundation.org>
+Message-ID: <20230920112838.872167689@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,184 +50,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit a9ce385344f916cd1c36a33905e564f5581beae9 upstream.
+[ Upstream commit 696ffaf50e1f8dbc66223ff614473f945f5fb8d8 ]
 
-dm looks up the table for IO based on the request type, with an
-assumption that if the request is marked REQ_NOWAIT, it's fine to
-attempt to submit that IO while under RCU read lock protection. This
-is not OK, as REQ_NOWAIT just means that we should not be sleeping
-waiting on other IO, it does not mean that we can't potentially
-schedule.
+Printing to consoles can be deferred for several reasons:
 
-A simple test case demonstrates this quite nicely:
+- explicitly with printk_deferred()
+- printk() in NMI context
+- recursive printk() calls
 
-int main(int argc, char *argv[])
-{
-        struct iovec iov;
-        int fd;
+The current implementation is not consistent. For printk_deferred(),
+irq work is scheduled twice. For NMI und recursive, panic CPU
+suppression and caller delays are not properly enforced.
 
-        fd = open("/dev/dm-0", O_RDONLY | O_DIRECT);
-        posix_memalign(&iov.iov_base, 4096, 4096);
-        iov.iov_len = 4096;
-        preadv2(fd, &iov, 1, 0, RWF_NOWAIT);
-        return 0;
-}
+Correct these inconsistencies by consolidating the deferred printing
+code so that vprintk_deferred() is the top-level function for
+deferred printing and vprintk_emit() will perform whichever irq_work
+queueing is appropriate.
 
-which will instantly spew:
+Also add kerneldoc for wake_up_klogd() and defer_console_output() to
+clarify their differences and appropriate usage.
 
-BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5580, name: dm-nowait
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-INFO: lockdep is turned off.
-CPU: 7 PID: 5580 Comm: dm-nowait Not tainted 6.6.0-rc1-g39956d2dcd81 #132
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x11d/0x1b0
- __might_resched+0x3c3/0x5e0
- ? preempt_count_sub+0x150/0x150
- mempool_alloc+0x1e2/0x390
- ? mempool_resize+0x7d0/0x7d0
- ? lock_sync+0x190/0x190
- ? lock_release+0x4b7/0x670
- ? internal_get_user_pages_fast+0x868/0x2d40
- bio_alloc_bioset+0x417/0x8c0
- ? bvec_alloc+0x200/0x200
- ? internal_get_user_pages_fast+0xb8c/0x2d40
- bio_alloc_clone+0x53/0x100
- dm_submit_bio+0x27f/0x1a20
- ? lock_release+0x4b7/0x670
- ? blk_try_enter_queue+0x1a0/0x4d0
- ? dm_dax_direct_access+0x260/0x260
- ? rcu_is_watching+0x12/0xb0
- ? blk_try_enter_queue+0x1cc/0x4d0
- __submit_bio+0x239/0x310
- ? __bio_queue_enter+0x700/0x700
- ? kvm_clock_get_cycles+0x40/0x60
- ? ktime_get+0x285/0x470
- submit_bio_noacct_nocheck+0x4d9/0xb80
- ? should_fail_request+0x80/0x80
- ? preempt_count_sub+0x150/0x150
- ? lock_release+0x4b7/0x670
- ? __bio_add_page+0x143/0x2d0
- ? iov_iter_revert+0x27/0x360
- submit_bio_noacct+0x53e/0x1b30
- submit_bio_wait+0x10a/0x230
- ? submit_bio_wait_endio+0x40/0x40
- __blkdev_direct_IO_simple+0x4f8/0x780
- ? blkdev_bio_end_io+0x4c0/0x4c0
- ? stack_trace_save+0x90/0xc0
- ? __bio_clone+0x3c0/0x3c0
- ? lock_release+0x4b7/0x670
- ? lock_sync+0x190/0x190
- ? atime_needs_update+0x3bf/0x7e0
- ? timestamp_truncate+0x21b/0x2d0
- ? inode_owner_or_capable+0x240/0x240
- blkdev_direct_IO.part.0+0x84a/0x1810
- ? rcu_is_watching+0x12/0xb0
- ? lock_release+0x4b7/0x670
- ? blkdev_read_iter+0x40d/0x530
- ? reacquire_held_locks+0x4e0/0x4e0
- ? __blkdev_direct_IO_simple+0x780/0x780
- ? rcu_is_watching+0x12/0xb0
- ? __mark_inode_dirty+0x297/0xd50
- ? preempt_count_add+0x72/0x140
- blkdev_read_iter+0x2a4/0x530
- do_iter_readv_writev+0x2f2/0x3c0
- ? generic_copy_file_range+0x1d0/0x1d0
- ? fsnotify_perm.part.0+0x25d/0x630
- ? security_file_permission+0xd8/0x100
- do_iter_read+0x31b/0x880
- ? import_iovec+0x10b/0x140
- vfs_readv+0x12d/0x1a0
- ? vfs_iter_read+0xb0/0xb0
- ? rcu_is_watching+0x12/0xb0
- ? rcu_is_watching+0x12/0xb0
- ? lock_release+0x4b7/0x670
- do_preadv+0x1b3/0x260
- ? do_readv+0x370/0x370
- __x64_sys_preadv2+0xef/0x150
- do_syscall_64+0x39/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f5af41ad806
-Code: 41 54 41 89 fc 55 44 89 c5 53 48 89 cb 48 83 ec 18 80 3d e4 dd 0d 00 00 74 7a 45 89 c1 49 89 ca 45 31 c0 b8 47 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 be 00 00 00 48 85 c0 79 4a 48 8b 0d da 55
-RSP: 002b:00007ffd3145c7f0 EFLAGS: 00000246 ORIG_RAX: 0000000000000147
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5af41ad806
-RDX: 0000000000000001 RSI: 00007ffd3145c850 RDI: 0000000000000003
-RBP: 0000000000000008 R08: 0000000000000000 R09: 0000000000000008
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
-R13: 00007ffd3145c850 R14: 000055f5f0431dd8 R15: 0000000000000001
- </TASK>
-
-where in fact it is dm itself that attempts to allocate a bio clone with
-GFP_NOIO under the rcu read lock, regardless of the request type.
-
-Fix this by getting rid of the special casing for REQ_NOWAIT, and just
-use the normal SRCU protected table lookup. Get rid of the bio based
-table locking helpers at the same time, as they are now unused.
-
-Cc: stable@vger.kernel.org
-Fixes: 563a225c9fd2 ("dm: introduce dm_{get,put}_live_table_bio called from dm_submit_bio")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-6-john.ogness@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c |   23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ kernel/printk/printk.c      | 35 ++++++++++++++++++++++++++++-------
+ kernel/printk/printk_safe.c |  9 ++-------
+ 2 files changed, 30 insertions(+), 14 deletions(-)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -715,24 +715,6 @@ static void dm_put_live_table_fast(struc
- 	rcu_read_unlock();
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 4b9429f3fd6d8..cc53fb77f77cc 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2269,7 +2269,11 @@ asmlinkage int vprintk_emit(int facility, int level,
+ 		preempt_enable();
+ 	}
+ 
+-	wake_up_klogd();
++	if (in_sched)
++		defer_console_output();
++	else
++		wake_up_klogd();
++
+ 	return printed_len;
+ }
+ EXPORT_SYMBOL(vprintk_emit);
+@@ -3490,11 +3494,33 @@ static void __wake_up_klogd(int val)
+ 	preempt_enable();
  }
  
--static inline struct dm_table *dm_get_live_table_bio(struct mapped_device *md,
--					int *srcu_idx, blk_opf_t bio_opf)
--{
--	if (bio_opf & REQ_NOWAIT)
--		return dm_get_live_table_fast(md);
--	else
--		return dm_get_live_table(md, srcu_idx);
--}
--
--static inline void dm_put_live_table_bio(struct mapped_device *md, int srcu_idx,
--					 blk_opf_t bio_opf)
--{
--	if (bio_opf & REQ_NOWAIT)
--		dm_put_live_table_fast(md);
--	else
--		dm_put_live_table(md, srcu_idx);
--}
--
- static char *_dm_claim_ptr = "I belong to device-mapper";
- 
- /*
-@@ -1833,9 +1815,8 @@ static void dm_submit_bio(struct bio *bi
- 	struct mapped_device *md = bio->bi_bdev->bd_disk->private_data;
- 	int srcu_idx;
- 	struct dm_table *map;
--	blk_opf_t bio_opf = bio->bi_opf;
- 
--	map = dm_get_live_table_bio(md, &srcu_idx, bio_opf);
-+	map = dm_get_live_table(md, &srcu_idx);
- 
- 	/* If suspended, or map not yet available, queue this IO for later */
- 	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
-@@ -1851,7 +1832,7 @@ static void dm_submit_bio(struct bio *bi
- 
- 	dm_split_and_process_bio(md, map, bio);
- out:
--	dm_put_live_table_bio(md, srcu_idx, bio_opf);
-+	dm_put_live_table(md, srcu_idx);
++/**
++ * wake_up_klogd - Wake kernel logging daemon
++ *
++ * Use this function when new records have been added to the ringbuffer
++ * and the console printing of those records has already occurred or is
++ * known to be handled by some other context. This function will only
++ * wake the logging daemon.
++ *
++ * Context: Any context.
++ */
+ void wake_up_klogd(void)
+ {
+ 	__wake_up_klogd(PRINTK_PENDING_WAKEUP);
  }
  
- static bool dm_poll_dm_io(struct dm_io *io, struct io_comp_batch *iob,
++/**
++ * defer_console_output - Wake kernel logging daemon and trigger
++ *	console printing in a deferred context
++ *
++ * Use this function when new records have been added to the ringbuffer,
++ * this context is responsible for console printing those records, but
++ * the current context is not allowed to perform the console printing.
++ * Trigger an irq_work context to perform the console printing. This
++ * function also wakes the logging daemon.
++ *
++ * Context: Any context.
++ */
+ void defer_console_output(void)
+ {
+ 	/*
+@@ -3511,12 +3537,7 @@ void printk_trigger_flush(void)
+ 
+ int vprintk_deferred(const char *fmt, va_list args)
+ {
+-	int r;
+-
+-	r = vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);
+-	defer_console_output();
+-
+-	return r;
++	return vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);
+ }
+ 
+ int _printk_deferred(const char *fmt, ...)
+diff --git a/kernel/printk/printk_safe.c b/kernel/printk/printk_safe.c
+index ef0f9a2044da1..6d10927a07d83 100644
+--- a/kernel/printk/printk_safe.c
++++ b/kernel/printk/printk_safe.c
+@@ -38,13 +38,8 @@ asmlinkage int vprintk(const char *fmt, va_list args)
+ 	 * Use the main logbuf even in NMI. But avoid calling console
+ 	 * drivers that might have their own locks.
+ 	 */
+-	if (this_cpu_read(printk_context) || in_nmi()) {
+-		int len;
+-
+-		len = vprintk_store(0, LOGLEVEL_DEFAULT, NULL, fmt, args);
+-		defer_console_output();
+-		return len;
+-	}
++	if (this_cpu_read(printk_context) || in_nmi())
++		return vprintk_deferred(fmt, args);
+ 
+ 	/* No obstacles. */
+ 	return vprintk_default(fmt, args);
+-- 
+2.40.1
+
 
 
