@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0A17A7DF9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 998B27A801B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235514AbjITMOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35682 "EHLO
+        id S236170AbjITMc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234556AbjITMOI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:08 -0400
+        with ESMTP id S236171AbjITMc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4316412D
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E9DC433CA;
-        Wed, 20 Sep 2023 12:13:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2FD392
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0DEC433C7;
+        Wed, 20 Sep 2023 12:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212036;
-        bh=anxcBiLWjIZmSTq11QkjBl0wM39cUk70UkvpJ5m75kU=;
+        s=korg; t=1695213170;
+        bh=HxApunOINuhpow4tbXPPK0hWVBAf13PwYBKHLhels3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GO9WPFkMZ1OE6FznVokikt7Z8PdyKRmtxjfBsJpf5IebAY8x7z5nXYegPujzzCr3L
-         qzjyyzog73TVE30ik33JffHndyC/63/hxoeySe+Z71+4vZUox2Yr5MUggOdD+6gtr6
-         SN36DIJSPpFRgFhzyLh745GUF5UH+/hXnOqy31HI=
+        b=GdhjnIE01o+tZ6PxOqxs/61Rha6LlqhRq+1tmUZaXZS1ZJddM4YO2NZG8mPkKOqPI
+         81yEqx6dj3vG33XcLVaQDsBeIDWfLOe6+WKGMdq8WrO9atm036TmV995UH7Uu1oO7C
+         n/eWVSTY60FEgXASJuslNqMaMdi1OaDKvBJRbN+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tan Zhongjun <tanzhongjun@yulong.com>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/273] drm/tegra: Remove superfluous error messages around platform_get_irq()
+Subject: [PATCH 5.4 160/367] scsi: be2iscsi: Add length check when parsing nlattrs
 Date:   Wed, 20 Sep 2023 13:28:57 +0200
-Message-ID: <20230920112849.439892305@linuxfoundation.org>
+Message-ID: <20230920112902.792880006@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tan Zhongjun <tanzhongjun@yulong.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit d12919bb5da571ec50588ef97683d37e36dc2de5 ]
+[ Upstream commit ee0268f230f66cb472df3424f380ea668da2749a ]
 
-The platform_get_irq() prints error message telling that interrupt is
-missing,hence there is no need to duplicated that message in the
-drivers.
+beiscsi_iface_set_param() parses nlattr with nla_for_each_attr and assumes
+every attributes can be viewed as struct iscsi_iface_param_info.
 
-Signed-off-by: Tan Zhongjun <tanzhongjun@yulong.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Stable-dep-of: 2a1ca44b6543 ("drm/tegra: dpaux: Fix incorrect return value of platform_get_irq")
+This is not true because there is no any nla_policy to validate the
+attributes passed from the upper function iscsi_set_iface_params().
+
+Add the nla_len check before accessing the nlattr data and return EINVAL if
+the length check fails.
+
+Fixes: 0e43895ec1f4 ("[SCSI] be2iscsi: adding functionality to change network settings using iscsiadm")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230723075938.3713864-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dpaux.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/scsi/be2iscsi/be_iscsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/tegra/dpaux.c b/drivers/gpu/drm/tegra/dpaux.c
-index d84e81ff36ad0..bed9efe36a1eb 100644
---- a/drivers/gpu/drm/tegra/dpaux.c
-+++ b/drivers/gpu/drm/tegra/dpaux.c
-@@ -449,10 +449,8 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
- 		return PTR_ERR(dpaux->regs);
+diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
+index 2058d50d62e12..737d7087723af 100644
+--- a/drivers/scsi/be2iscsi/be_iscsi.c
++++ b/drivers/scsi/be2iscsi/be_iscsi.c
+@@ -441,6 +441,10 @@ int beiscsi_iface_set_param(struct Scsi_Host *shost,
+ 	}
  
- 	dpaux->irq = platform_get_irq(pdev, 0);
--	if (dpaux->irq < 0) {
--		dev_err(&pdev->dev, "failed to get IRQ\n");
-+	if (dpaux->irq < 0)
- 		return -ENXIO;
--	}
+ 	nla_for_each_attr(attrib, data, dt_len, rm_len) {
++		/* ignore nla_type as it is never used */
++		if (nla_len(attrib) < sizeof(*iface_param))
++			return -EINVAL;
++
+ 		iface_param = nla_data(attrib);
  
- 	if (!pdev->dev.pm_domain) {
- 		dpaux->rst = devm_reset_control_get(&pdev->dev, "dpaux");
+ 		if (iface_param->param_type != ISCSI_NET_PARAM)
 -- 
 2.40.1
 
