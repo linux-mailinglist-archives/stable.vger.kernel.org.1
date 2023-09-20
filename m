@@ -2,67 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF397A8113
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 452717A7F1C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236274AbjITMmc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:42:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45728 "EHLO
+        id S235705AbjITMYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236266AbjITMmb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:31 -0400
+        with ESMTP id S234500AbjITMYH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460AA99
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FD7C433C8;
-        Wed, 20 Sep 2023 12:42:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5123983
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F162C433C8;
+        Wed, 20 Sep 2023 12:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213743;
-        bh=WPPaOfNqXh7Q3GsItqtR1mQnI8KH9jlqWsyOLRB9iPM=;
+        s=korg; t=1695212641;
+        bh=Ajsh4h6e/lRTSFnVGG0dDT29y6gGcsOhT8Skcs1AUhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1ociwSSaW+RWi9XT1OlUdim3S4Tz3Kg84OY6RjzR2PdqRAdFHrfZbX5U0cvkJXrIF
-         +Ld3p7StU6FKEnCFF1oMKX1uoUb7og5tq9YxCJmf4rpT8rU8whAMFt1YxoWhzN8t9p
-         +dKP/ZggurBFYkYafmfxh4eNdBUIBsVp54ATQ8Q0=
+        b=dnkx0xFnRgzgxSQpj7Nclg3pblm19CAeMJeluqnIioyD/3uzfI7FTTZSpSGofxBfz
+         e4qHNd2xYUigQ2UEFVrzDT9BXfQDLL4IJDSylpzd5P4o8N06o8dCPhrkw6M6yw0vsY
+         OtHUWx8+WxGhf2gPHweUnx6CqDS4cq9SfROGU/qU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ananth Narayan <ananth.narayan@amd.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Andrew Kilroy <andrew.kilroy@arm.com>,
-        Caleb Biggers <caleb.biggers@intel.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ian Rogers <rogers.email@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        James Clark <james.clark@arm.com>,
-        Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Kshipra Bopardikar <kshipra.bopardikar@intel.com>,
-        Like Xu <likexu@tencent.com>,
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Nick Forrington <nick.forrington@arm.com>,
-        Paul Clarke <pc@us.ibm.com>,
-        Perry Taylor <perry.taylor@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Qi Liu <liuqi115@huawei.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Santosh Shukla <santosh.shukla@amd.com>,
-        Stephane Eranian <eranian@google.com>,
-        Will Deacon <will@kernel.org>,
-        Xing Zhengjun <zhengjun.xing@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 349/367] perf jevents: Switch build to use jevents.py
+        Andrew Morton <akpm@linux-foundation.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 76/83] tracing: Have option files inc the trace array ref count
 Date:   Wed, 20 Sep 2023 13:32:06 +0200
-Message-ID: <20230920112907.528742937@linuxfoundation.org>
+Message-ID: <20230920112829.655994767@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,299 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <rogers.email@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 00facc760903be6675870c2749e2cd72140e396e ]
+commit 7e2cfbd2d3c86afcd5c26b5c4b1dd251f63c5838 upstream.
 
-Generate pmu-events.c using jevents.py rather than the binary built from
-jevents.c.
+The option files update the options for a given trace array. For an
+instance, if the file is opened and the instance is deleted, reading or
+writing to the file will cause a use after free.
 
-Add a new config variable NO_JEVENTS that is set when there is no
-architecture json or an appropriate python interpreter isn't present.
+Up the ref count of the trace_array when an option file is opened.
 
-When NO_JEVENTS is defined the file pmu-events/empty-pmu-events.c is
-copied and used as the pmu-events.c file.
+Link: https://lkml.kernel.org/r/20230907024804.086679464@goodmis.org
+Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: John Garry <john.garry@huawei.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ananth Narayan <ananth.narayan@amd.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Andrew Kilroy <andrew.kilroy@arm.com>
-Cc: Caleb Biggers <caleb.biggers@intel.com>
-Cc: Felix Fietkau <nbd@nbd.name>
-Cc: Ian Rogers <rogers.email@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Kshipra Bopardikar <kshipra.bopardikar@intel.com>
-Cc: Like Xu <likexu@tencent.com>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nick Forrington <nick.forrington@arm.com>
-Cc: Paul Clarke <pc@us.ibm.com>
-Cc: Perry Taylor <perry.taylor@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Liu <liuqi115@huawei.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Santosh Shukla <santosh.shukla@amd.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Xing Zhengjun <zhengjun.xing@linux.intel.com>
-Link: https://lore.kernel.org/r/20220629182505.406269-4-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 7822a8913f4c ("perf build: Update build rule for generated files")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/Makefile.config               |  19 +++
- tools/perf/Makefile.perf                 |   1 +
- tools/perf/pmu-events/Build              |  13 +-
- tools/perf/pmu-events/empty-pmu-events.c | 158 +++++++++++++++++++++++
- 4 files changed, 189 insertions(+), 2 deletions(-)
- create mode 100644 tools/perf/pmu-events/empty-pmu-events.c
+ kernel/trace/trace.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index e95281586f65e..b76800bbc632a 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -752,6 +752,25 @@ else
-   endif
- endif
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8367,12 +8367,33 @@ trace_options_write(struct file *filp, c
+ 	return cnt;
+ }
  
-+ifneq ($(NO_JEVENTS),1)
-+  ifeq ($(wildcard pmu-events/arch/$(SRCARCH)/mapfile.csv),)
-+    NO_JEVENTS := 1
-+  endif
-+endif
-+ifneq ($(NO_JEVENTS),1)
-+  NO_JEVENTS := 0
-+  ifndef PYTHON
-+    $(warning No python interpreter disabling jevent generation)
-+    NO_JEVENTS := 1
-+  else
-+    # jevents.py uses f-strings present in Python 3.6 released in Dec. 2016.
-+    JEVENTS_PYTHON_GOOD := $(shell $(PYTHON) -c 'import sys;print("1" if(sys.version_info.major >= 3 and sys.version_info.minor >= 6) else "0")' 2> /dev/null)
-+    ifneq ($(JEVENTS_PYTHON_GOOD), 1)
-+      $(warning Python interpreter too old (older than 3.6) disabling jevent generation)
-+      NO_JEVENTS := 1
-+    endif
-+  endif
-+endif
- 
- ifndef NO_LIBBFD
-   ifeq ($(feature-libbfd), 1)
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 961f5e4fd6566..b0314f31e5a37 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -584,6 +584,7 @@ JEVENTS       := $(OUTPUT)pmu-events/jevents
- JEVENTS_IN    := $(OUTPUT)pmu-events/jevents-in.o
- 
- PMU_EVENTS_IN := $(OUTPUT)pmu-events/pmu-events-in.o
-+export NO_JEVENTS
- 
- export JEVENTS
- 
-diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
-index a055dee6a46af..5ec5ce8c31bab 100644
---- a/tools/perf/pmu-events/Build
-+++ b/tools/perf/pmu-events/Build
-@@ -9,10 +9,19 @@ JSON		=  $(shell [ -d $(JDIR) ] &&				\
- JDIR_TEST	=  pmu-events/arch/test
- JSON_TEST	=  $(shell [ -d $(JDIR_TEST) ] &&			\
- 			find $(JDIR_TEST) -name '*.json')
-+JEVENTS_PY	=  pmu-events/jevents.py
- 
- #
- # Locate/process JSON files in pmu-events/arch/
- # directory and create tables in pmu-events.c.
- #
--$(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS)
--	$(Q)$(call echo-cmd,gen)$(JEVENTS) $(SRCARCH) pmu-events/arch $(OUTPUT)pmu-events/pmu-events.c $(V)
++static int tracing_open_options(struct inode *inode, struct file *filp)
++{
++	struct trace_option_dentry *topt = inode->i_private;
++	int ret;
 +
-+ifeq ($(NO_JEVENTS),1)
-+$(OUTPUT)pmu-events/pmu-events.c: pmu-events/empty-pmu-events.c
-+	$(call rule_mkdir)
-+	$(Q)$(call echo-cmd,gen)cp $< $@
-+else
-+$(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS_PY)
-+	$(call rule_mkdir)
-+	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(SRCARCH) pmu-events/arch $@
-+endif
-diff --git a/tools/perf/pmu-events/empty-pmu-events.c b/tools/perf/pmu-events/empty-pmu-events.c
-new file mode 100644
-index 0000000000000..77e655c6f1162
---- /dev/null
-+++ b/tools/perf/pmu-events/empty-pmu-events.c
-@@ -0,0 +1,158 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * An empty pmu-events.c file used when there is no architecture json files in
-+ * arch or when the jevents.py script cannot be run.
-+ *
-+ * The test cpu/soc is provided for testing.
-+ */
-+#include "pmu-events/pmu-events.h"
++	ret = tracing_check_open_get_tr(topt->tr);
++	if (ret)
++		return ret;
 +
-+static const struct pmu_event pme_test_soc_cpu[] = {
-+	{
-+		.name = "l3_cache_rd",
-+		.event = "event=0x40",
-+		.desc = "L3 cache access, read",
-+		.topic = "cache",
-+		.long_desc = "Attributable Level 3 cache access, read",
-+	},
-+	{
-+		.name = "segment_reg_loads.any",
-+		.event = "event=0x6,period=200000,umask=0x80",
-+		.desc = "Number of segment register loads",
-+		.topic = "other",
-+	},
-+	{
-+		.name = "dispatch_blocked.any",
-+		.event = "event=0x9,period=200000,umask=0x20",
-+		.desc = "Memory cluster signals to block micro-op dispatch for any reason",
-+		.topic = "other",
-+	},
-+	{
-+		.name = "eist_trans",
-+		.event = "event=0x3a,period=200000,umask=0x0",
-+		.desc = "Number of Enhanced Intel SpeedStep(R) Technology (EIST) transitions",
-+		.topic = "other",
-+	},
-+	{
-+		.name = "uncore_hisi_ddrc.flux_wcmd",
-+		.event = "event=0x2",
-+		.desc = "DDRC write commands. Unit: hisi_sccl,ddrc ",
-+		.topic = "uncore",
-+		.long_desc = "DDRC write commands",
-+		.pmu = "hisi_sccl,ddrc",
-+	},
-+	{
-+		.name = "unc_cbo_xsnp_response.miss_eviction",
-+		.event = "event=0x22,umask=0x81",
-+		.desc = "A cross-core snoop resulted from L3 Eviction which misses in some processor core. Unit: uncore_cbox ",
-+		.topic = "uncore",
-+		.long_desc = "A cross-core snoop resulted from L3 Eviction which misses in some processor core",
-+		.pmu = "uncore_cbox",
-+	},
-+	{
-+		.name = "event-hyphen",
-+		.event = "event=0xe0,umask=0x00",
-+		.desc = "UNC_CBO_HYPHEN. Unit: uncore_cbox ",
-+		.topic = "uncore",
-+		.long_desc = "UNC_CBO_HYPHEN",
-+		.pmu = "uncore_cbox",
-+	},
-+	{
-+		.name = "event-two-hyph",
-+		.event = "event=0xc0,umask=0x00",
-+		.desc = "UNC_CBO_TWO_HYPH. Unit: uncore_cbox ",
-+		.topic = "uncore",
-+		.long_desc = "UNC_CBO_TWO_HYPH",
-+		.pmu = "uncore_cbox",
-+	},
-+	{
-+		.name = "uncore_hisi_l3c.rd_hit_cpipe",
-+		.event = "event=0x7",
-+		.desc = "Total read hits. Unit: hisi_sccl,l3c ",
-+		.topic = "uncore",
-+		.long_desc = "Total read hits",
-+		.pmu = "hisi_sccl,l3c",
-+	},
-+	{
-+		.name = "uncore_imc_free_running.cache_miss",
-+		.event = "event=0x12",
-+		.desc = "Total cache misses. Unit: uncore_imc_free_running ",
-+		.topic = "uncore",
-+		.long_desc = "Total cache misses",
-+		.pmu = "uncore_imc_free_running",
-+	},
-+	{
-+		.name = "uncore_imc.cache_hits",
-+		.event = "event=0x34",
-+		.desc = "Total cache hits. Unit: uncore_imc ",
-+		.topic = "uncore",
-+		.long_desc = "Total cache hits",
-+		.pmu = "uncore_imc",
-+	},
-+	{
-+		.name = "bp_l1_btb_correct",
-+		.event = "event=0x8a",
-+		.desc = "L1 BTB Correction",
-+		.topic = "branch",
-+	},
-+	{
-+		.name = "bp_l2_btb_correct",
-+		.event = "event=0x8b",
-+		.desc = "L2 BTB Correction",
-+		.topic = "branch",
-+	},
-+	{
-+		.name = 0,
-+		.event = 0,
-+		.desc = 0,
-+	},
-+};
++	filp->private_data = inode->i_private;
++	return 0;
++}
 +
-+const struct pmu_events_map pmu_events_map[] = {
-+	{
-+		.cpuid = "testcpu",
-+		.version = "v1",
-+		.type = "core",
-+		.table = pme_test_soc_cpu,
-+	},
-+	{
-+		.cpuid = 0,
-+		.version = 0,
-+		.type = 0,
-+		.table = 0,
-+	},
-+};
++static int tracing_release_options(struct inode *inode, struct file *file)
++{
++	struct trace_option_dentry *topt = file->private_data;
 +
-+static const struct pmu_event pme_test_soc_sys[] = {
-+	{
-+		.name = "sys_ddr_pmu.write_cycles",
-+		.event = "event=0x2b",
-+		.desc = "ddr write-cycles event. Unit: uncore_sys_ddr_pmu ",
-+		.compat = "v8",
-+		.topic = "uncore",
-+		.pmu = "uncore_sys_ddr_pmu",
-+	},
-+	{
-+		.name = "sys_ccn_pmu.read_cycles",
-+		.event = "config=0x2c",
-+		.desc = "ccn read-cycles event. Unit: uncore_sys_ccn_pmu ",
-+		.compat = "0x01",
-+		.topic = "uncore",
-+		.pmu = "uncore_sys_ccn_pmu",
-+	},
-+	{
-+		.name = 0,
-+		.event = 0,
-+		.desc = 0,
-+	},
-+};
-+
-+const struct pmu_sys_events pmu_sys_event_tables[] = {
-+	{
-+		.table = pme_test_soc_sys,
-+		.name = "pme_test_soc_sys",
-+	},
-+	{
-+		.table = 0
-+	},
-+};
--- 
-2.40.1
-
++	trace_array_put(topt->tr);
++	return 0;
++}
+ 
+ static const struct file_operations trace_options_fops = {
+-	.open = tracing_open_generic,
++	.open = tracing_open_options,
+ 	.read = trace_options_read,
+ 	.write = trace_options_write,
+ 	.llseek	= generic_file_llseek,
++	.release = tracing_release_options,
+ };
+ 
+ /*
 
 
