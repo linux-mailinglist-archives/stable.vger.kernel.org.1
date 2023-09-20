@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B71477A77FE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0DB7A7800
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234197AbjITJxm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:53:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57756 "EHLO
+        id S234129AbjITJxp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjITJxl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:41 -0400
+        with ESMTP id S234114AbjITJxo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDF08F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EB8C433CB;
-        Wed, 20 Sep 2023 09:53:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F0CA8F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA41C433C8;
+        Wed, 20 Sep 2023 09:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203615;
-        bh=C644hhr4KLULhVB2UHqWWsiSZy5dt1EtcNwxLiTTwvE=;
+        s=korg; t=1695203618;
+        bh=QsrqGCNyS1wj22NRN9E8jEymZVd+IX069LQckqlgu5k=;
         h=Subject:To:Cc:From:Date:From;
-        b=AC0KIazn5Bpa9kbjP8OcdCCgEWz3ZQcfyhjSdf6RLpai+NUiOWFhgYUqWMmTTlqqJ
-         UxuUb70un7E8ClVLjw+i+EslnrnA4Q9XAUSYoQGUMx8XPkGucolaHD1ldkpcRDNwLR
-         yiaTZllJrig4JEvwfvDhAN8sdza3NgLIpmaoVX8E=
-Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 5.15-stable tree
+        b=fbQNP2wcJavnOHCj28HaR4YHp+Tua7YXCPcSsbwA0x9XNA9Sq28isC1130jsFxijV
+         GS+FZNPK9YSW+1lQjj3Cuzf8IoMMvUpAXvHxcdKNS/EFIYeMOY5no+SGce+zry0ne3
+         8Mb8LwOtEOHOp0XVVvaHVPK6euVrpjg54nCapQbc=
+Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 5.10-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:53:26 +0200
-Message-ID: <2023092026-anemia-unwanted-1c2a@gregkh>
+Date:   Wed, 20 Sep 2023 11:53:27 +0200
+Message-ID: <2023092027-census-monorail-5614@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2c58c3931ede7cd08cbecf1f1a4acaf0a04a41a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092026-anemia-unwanted-1c2a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092027-census-monorail-5614@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,16 @@ b7ef5f3a6f37 ("btrfs: loop only once over data sizes array when inserting an ite
 086dcbfa50d3 ("btrfs: insert items in batches when logging a directory when possible")
 eb10d85ee77f ("btrfs: factor out the copying loop of dir items from log_dir_items()")
 289cffcb0399 ("btrfs: remove no longer needed checks for NULL log context")
+5a656c3628b2 ("btrfs: stop doing GFP_KERNEL memory allocations in the ref verify tool")
+506650dcb3a7 ("btrfs: improve the batch insertion of delayed items")
+bfaa324e9a80 ("btrfs: remove total_data_size variable in btrfs_batch_insert_items()")
+bb385bedded3 ("btrfs: fix error handling in __btrfs_update_delayed_inode")
+64d6b281ba4d ("btrfs: remove unnecessary check_parent_dirs_for_sync()")
+3e6a86a193b0 ("btrfs: skip logging directories already logged when logging all parents")
+ab12313a9f56 ("btrfs: avoid logging new ancestor inodes when logging new inode")
+47d3db41e190 ("btrfs: fix race that makes inode logging fallback to transaction commit")
+4d6221d7d831 ("btrfs: fix race that causes unnecessary logging of ancestor inodes")
+5893dfb98f25 ("btrfs: refactor btrfs_drop_extents() to make it easier to extend")
 
 thanks,
 
