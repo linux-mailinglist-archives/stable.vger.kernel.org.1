@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC9267A7B64
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92C867A7C26
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234724AbjITLvt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50446 "EHLO
+        id S234946AbjITL6e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234726AbjITLvj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:39 -0400
+        with ESMTP id S235022AbjITL6e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2CACE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4783EC433CB;
-        Wed, 20 Sep 2023 11:51:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E57D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE3CC433C7;
+        Wed, 20 Sep 2023 11:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210692;
-        bh=lC0320bE+MUSpYUq1M4XR00wOSdL0QPTABCw/MWwoNc=;
+        s=korg; t=1695211106;
+        bh=QZQ+x5jZ0bbM1wyTvrADBBXnw9m++0IgpK71GMhMzvA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l8vPaivs7I5pVP9nZGEtgsStaRmkg/2jIIHMnLT2tujNvjfJt1LamLEasLGnWjAuk
-         pZ3D8JSKOPxQciBH+eRHb+7A97b7R+q9QrJ7DcY/MLgqZz44mDrc6sVD3OvOhgJ8pn
-         pLWa0ar9HJewlsnVkBy6x82/em2dYSGDQMWcLSs0=
+        b=eAaz2nfpjwh5q0Q/oXXiDRkUBnnV1wghKcNhFznPpQiMSI3nownie0EjpZyAcN+03
+         uvsltsP31WSUY5lBu8N5YNd+DWFKoX4273+Ol6LoRgYEvDW80xzAix/wDiIwXc9Esp
+         B38lp7y0I1ACKdpS3V3xyhnA11RS9zf0dBI8+RrU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a4c6e5ef999b68b26ed1@syzkaller.appspotmail.com,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.5 170/211] io_uring/net: fix iter retargeting for selected buf
-Date:   Wed, 20 Sep 2023 13:30:14 +0200
-Message-ID: <20230920112851.160600434@linuxfoundation.org>
+        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
+        Peter Chen <peter.chen@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/139] usb: ehci: add workaround for chipidea PORTSC.PEC bug
+Date:   Wed, 20 Sep 2023 13:30:15 +0200
+Message-ID: <20230920112838.670112506@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +50,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit c21a8027ad8a68c340d0d58bf1cc61dcb0bc4d2f upstream.
+[ Upstream commit dda4b60ed70bd670eefda081f70c0cb20bbeb1fa ]
 
-When using selected buffer feature, io_uring delays data iter setup
-until later. If io_setup_async_msg() is called before that it might see
-not correctly setup iterator. Pre-init nr_segs and judge from its state
-whether we repointing.
+Some NXP processor using chipidea IP has a bug when frame babble is
+detected.
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+a4c6e5ef999b68b26ed1@syzkaller.appspotmail.com
-Fixes: 0455d4ccec548 ("io_uring: add POLL_FIRST support for send/sendmsg and recv/recvmsg")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/0000000000002770be06053c7757@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+As per 4.15.1.1.1 Serial Bus Babble:
+  A babble condition also exists if IN transaction is in progress at
+High-speed SOF2 point. This is called frame babble. The host controller
+must disable the port to which the frame babble is detected.
+
+The USB controller has disabled the port (PE cleared) and has asserted
+USBERRINT when frame babble is detected, but PEC is not asserted.
+Therefore, the SW isn't aware that port has been disabled. Then the
+SW keeps sending packets to this port, but all of the transfers will
+fail.
+
+This workaround will firstly assert PCD by SW when USBERRINT is detected
+and then judge whether port change has really occurred or not by polling
+roothub status. Because the PEC doesn't get asserted in our case, this
+patch will also assert it by SW when specific conditions are satisfied.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230809024432.535160-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/host/ehci-hcd.c |  8 ++++++--
+ drivers/usb/host/ehci-hub.c | 10 +++++++++-
+ drivers/usb/host/ehci.h     | 10 ++++++++++
+ 3 files changed, 25 insertions(+), 3 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -183,6 +183,10 @@ static int io_setup_async_msg(struct io_
- 	memcpy(async_msg, kmsg, sizeof(*kmsg));
- 	if (async_msg->msg.msg_name)
- 		async_msg->msg.msg_name = &async_msg->addr;
-+
-+	if ((req->flags & REQ_F_BUFFER_SELECT) && !async_msg->msg.msg_iter.nr_segs)
-+		return -EAGAIN;
-+
- 	/* if were using fast_iov, set it to the new one */
- 	if (iter_is_iovec(&kmsg->msg.msg_iter) && !kmsg->free_iov) {
- 		size_t fast_idx = iter_iov(&kmsg->msg.msg_iter) - kmsg->fast_iov;
-@@ -542,6 +546,7 @@ static int io_recvmsg_copy_hdr(struct io
- 			       struct io_async_msghdr *iomsg)
- {
- 	iomsg->msg.msg_name = &iomsg->addr;
-+	iomsg->msg.msg_iter.nr_segs = 0;
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index a1930db0da1c3..802bfafb1012b 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -755,10 +755,14 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
  
- #ifdef CONFIG_COMPAT
- 	if (req->ctx->compat)
+ 	/* normal [4.15.1.2] or error [4.15.1.1] completion */
+ 	if (likely ((status & (STS_INT|STS_ERR)) != 0)) {
+-		if (likely ((status & STS_ERR) == 0))
++		if (likely ((status & STS_ERR) == 0)) {
+ 			INCR(ehci->stats.normal);
+-		else
++		} else {
++			/* Force to check port status */
++			if (ehci->has_ci_pec_bug)
++				status |= STS_PCD;
+ 			INCR(ehci->stats.error);
++		}
+ 		bh = 1;
+ 	}
+ 
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index efe30e3be22f7..1aee392e84927 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -674,7 +674,8 @@ ehci_hub_status_data (struct usb_hcd *hcd, char *buf)
+ 
+ 		if ((temp & mask) != 0 || test_bit(i, &ehci->port_c_suspend)
+ 				|| (ehci->reset_done[i] && time_after_eq(
+-					jiffies, ehci->reset_done[i]))) {
++					jiffies, ehci->reset_done[i]))
++				|| ehci_has_ci_pec_bug(ehci, temp)) {
+ 			if (i < 7)
+ 			    buf [0] |= 1 << (i + 1);
+ 			else
+@@ -875,6 +876,13 @@ int ehci_hub_control(
+ 		if (temp & PORT_PEC)
+ 			status |= USB_PORT_STAT_C_ENABLE << 16;
+ 
++		if (ehci_has_ci_pec_bug(ehci, temp)) {
++			status |= USB_PORT_STAT_C_ENABLE << 16;
++			ehci_info(ehci,
++				"PE is cleared by HW port:%d PORTSC:%08x\n",
++				wIndex + 1, temp);
++		}
++
+ 		if ((temp & PORT_OCC) && (!ignore_oc && !ehci->spurious_oc)){
+ 			status |= USB_PORT_STAT_C_OVERCURRENT << 16;
+ 
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index ad3f13a3eaf1b..5c0e25742e179 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -207,6 +207,7 @@ struct ehci_hcd {			/* one per controller */
+ 	unsigned		has_fsl_port_bug:1; /* FreeScale */
+ 	unsigned		has_fsl_hs_errata:1;	/* Freescale HS quirk */
+ 	unsigned		has_fsl_susp_errata:1;	/* NXP SUSP quirk */
++	unsigned		has_ci_pec_bug:1;	/* ChipIdea PEC bug */
+ 	unsigned		big_endian_mmio:1;
+ 	unsigned		big_endian_desc:1;
+ 	unsigned		big_endian_capbase:1;
+@@ -707,6 +708,15 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
+  */
+ #define ehci_has_fsl_susp_errata(e)	((e)->has_fsl_susp_errata)
+ 
++/*
++ * Some Freescale/NXP processors using ChipIdea IP have a bug in which
++ * disabling the port (PE is cleared) does not cause PEC to be asserted
++ * when frame babble is detected.
++ */
++#define ehci_has_ci_pec_bug(e, portsc) \
++	((e)->has_ci_pec_bug && ((e)->command & CMD_PSE) \
++	 && !(portsc & PORT_PEC) && !(portsc & PORT_PE))
++
+ /*
+  * While most USB host controllers implement their registers in
+  * little-endian format, a minority (celleb companion chip) implement
+-- 
+2.40.1
+
 
 
