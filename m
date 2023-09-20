@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 046057A784E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA7F77A784F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234229AbjITJ7H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:59:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
+        id S234310AbjITJ7P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234314AbjITJ7G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:59:06 -0400
+        with ESMTP id S234114AbjITJ7O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:59:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E615AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:58:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590E3C433C8;
-        Wed, 20 Sep 2023 09:58:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 942C4A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DECC433C8;
+        Wed, 20 Sep 2023 09:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203938;
-        bh=I6v0ZY5QUVk6YELfkhUEfxfYemiGKHdqNIHLlyzAI3Y=;
+        s=korg; t=1695203948;
+        bh=jq28lWfq/YCaQhco4omHokhAFi4Z2gno3BRW+2qKbQk=;
         h=Subject:To:Cc:From:Date:From;
-        b=vApFs7xEpb1dEAKfa/KFrCVb+O9Ga36G5ciSuFvdt/fwdvXr0V+tyPXWXqEat8K8e
-         sm+Mm8xahgv4QLdG8z34mpHGNllTXEmC8LX04A2dwPcTbf7JGbfSpNqEZYMomrCgac
-         6palelZYTMp6dXjNhWrkP1b9uOz8/HrQ6HcFhQjA=
-Subject: FAILED: patch "[PATCH] ext4: fix rec_len verify error" failed to apply to 4.19-stable tree
+        b=RMjqR9HR7Gjp6o0MXwxnQ7fDrxgYjiFNtGW69GcfOYGc24xIq737bJBy6xKqbbZM0
+         oPy9/OKA1nnmqSGmIjdfdLlDXVptL+oiuBGYRD1Ahrpa522Ivc6vd+UDlCpUzfqH5p
+         kQDKIK3QQmQ12OPIcdrdZ/gi3NBEZGOiMgYpHTHs=
+Subject: FAILED: patch "[PATCH] ext4: fix rec_len verify error" failed to apply to 4.14-stable tree
 To:     zhangshida@kylinos.cn, adilger@dilger.ca, djwong@kernel.org,
         tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:58:55 +0200
-Message-ID: <2023092055-disband-unveiling-f6cc@gregkh>
+Date:   Wed, 20 Sep 2023 11:58:57 +0200
+Message-ID: <2023092057-company-unworried-210b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7fda67e8c3ab6069f75888f67958a6d30454a9f6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092055-disband-unveiling-f6cc@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092057-company-unworried-210b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -63,6 +63,9 @@ Possible dependencies:
 46c116b920eb ("ext4: verify dir block before splitting it")
 f036adb39976 ("ext4: rename "dirent_csum" functions to use "dirblock"")
 b886ee3e778e ("ext4: Support case-insensitive file name lookups")
+ee73f9a52a34 ("ext4: convert to new i_version API")
+ae5e165d855d ("fs: new API for handling inode->i_version")
+5cea7647e646 ("Merge branch 'for-4.15' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux")
 
 thanks,
 
