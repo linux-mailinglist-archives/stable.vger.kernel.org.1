@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 124BC7A80FA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EBD97A7D34
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236323AbjITMls (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:41:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54320 "EHLO
+        id S234592AbjITMHe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:07:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236277AbjITMlm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:42 -0400
+        with ESMTP id S235313AbjITMHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B7D2DD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0B7C433C7;
-        Wed, 20 Sep 2023 12:41:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EDEB6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C6EC433C7;
+        Wed, 20 Sep 2023 12:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213690;
-        bh=2D3HpySPV3f5ePvFTYzszdjbec5iWkk4vogILZ5qNNc=;
+        s=korg; t=1695211639;
+        bh=Wjz9aPbIIiSZlblQWVow/IfseY8NTe139YKSUEQfTHI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vadD/b5uho1LKWoeg9JQygukutOAqDgFHl4e2d3J+V4c0JjRZX8sTPju7xA3e4an7
-         uJ9Sso19QefVjAqLDxWic+Jv8k7YEDrxPVeJW0OVGqQhfvgbd6SkPwk1stqRgKI5ab
-         hZgACOwWp7zs+GPQerJW+ZXM13ElpEG5mlby3vV8=
+        b=Nkc1dS3/GC33eT/K+f5KeHolNeENnVOMozua5DmRMn9FKoOcBdVy0MtwNriAt63fg
+         jK/iklH6TXjCtJlgpvgLQPM9CZcCcJT2hOsP5ZsvARgaXPRSud30wuOqnfS89R2qJr
+         fQG82UEcYSm9tlG0Zcjl7v0pC6ZUZEHZoPBcM+KQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hulk Robot <hulkci@huawei.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Anson Huang <Anson.Huang@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 294/367] clk: imx: clk-pll14xx: Make two variables static
+Subject: [PATCH 4.14 168/186] media: anysee: fix null-ptr-deref in anysee_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:11 +0200
-Message-ID: <20230920112906.160888443@linuxfoundation.org>
+Message-ID: <20230920112842.957885690@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 8f2d3c1759d19232edf1e9ef43d40a44e31493d6 ]
+[ Upstream commit c30411266fd67ea3c02a05c157231654d5a3bdc9 ]
 
-Fix sparse warnings:
+In anysee_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach anysee_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-drivers/clk/imx/clk-pll14xx.c:44:37:
- warning: symbol 'imx_pll1416x_tbl' was not declared. Should it be static?
-drivers/clk/imx/clk-pll14xx.c:57:37:
- warning: symbol 'imx_pll1443x_tbl' was not declared. Should it be static?
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Anson Huang <Anson.Huang@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: 72d00e560d10 ("clk: imx: pll14xx: dynamically configure PLL for 393216000/361267200Hz")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: add spaces around +]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-pll14xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/dvb-usb-v2/anysee.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index c43e9653b4156..129a28c3366eb 100644
---- a/drivers/clk/imx/clk-pll14xx.c
-+++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -41,7 +41,7 @@ struct clk_pll14xx {
+diff --git a/drivers/media/usb/dvb-usb-v2/anysee.c b/drivers/media/usb/dvb-usb-v2/anysee.c
+index 20ee7eea2a91e..83af86505363b 100644
+--- a/drivers/media/usb/dvb-usb-v2/anysee.c
++++ b/drivers/media/usb/dvb-usb-v2/anysee.c
+@@ -211,7 +211,7 @@ static int anysee_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
  
- #define to_clk_pll14xx(_hw) container_of(_hw, struct clk_pll14xx, hw)
- 
--const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
-+static const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
- 	PLL_1416X_RATE(1800000000U, 225, 3, 0),
- 	PLL_1416X_RATE(1600000000U, 200, 3, 0),
- 	PLL_1416X_RATE(1200000000U, 300, 3, 1),
-@@ -52,7 +52,7 @@ const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
- 	PLL_1416X_RATE(600000000U,  300, 3, 2),
- };
- 
--const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
-+static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
- 	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
- 	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
- 	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+-			if (msg[i].len > 2 || msg[i+1].len > 60) {
++			if (msg[i].len != 2 || msg[i + 1].len > 60) {
+ 				ret = -EOPNOTSUPP;
+ 				break;
+ 			}
 -- 
 2.40.1
 
