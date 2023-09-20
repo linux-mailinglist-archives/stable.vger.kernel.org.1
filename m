@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 321947A7E03
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B62297A7CD2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234792AbjITMOc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:14:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39704 "EHLO
+        id S235136AbjITMEZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:04:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbjITMOa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:30 -0400
+        with ESMTP id S235137AbjITMEY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6B483
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDF8C433C8;
-        Wed, 20 Sep 2023 12:14:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA641B0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EAEC433C8;
+        Wed, 20 Sep 2023 12:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212064;
-        bh=iYGpbgtESG+ymntXl233QDQqSzari2hdPlq+ZFFE8r0=;
+        s=korg; t=1695211458;
+        bh=tRT5xyIxvoPEkBmiXy7cg+/DuHIcshIzGSxmv05+SKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QFlI+AvA6dLmA3zSBjSzayR43vfAL3FC5sNnPBeC8E9Fq4OOnanqUA/B2//j4gtt/
-         dHXCTOUwiTbQAbVuizLC6FPRVR3PLN8Zc/HucWSM0DwWmACA275jPXVP5UKt7j7DpC
-         NVgpANS1P6+CZxRiOc7oj0szSSW4BLCxLpiWzMCU=
+        b=V/SonQlh9Tb4VTV784gJtbSevhy6HAgzRvsC6eYuNZHM9izzp3Q8Ju8OuUsGmCpDw
+         6+HlFiXaaLVYtBUatvySevOZNTrNr0f//TqE++nqO4x1LOhIo8gc8xsc2lBnV06Iyw
+         IyAIsXh0/698Ca3JpA7lzuO0oxXGevSpJzgZhpII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 138/273] usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()
+Subject: [PATCH 4.14 075/186] media: dvb-usb: m920x: Fix a potential memory leak in m920x_i2c_xfer()
 Date:   Wed, 20 Sep 2023 13:29:38 +0200
-Message-ID: <20230920112850.789571621@linuxfoundation.org>
+Message-ID: <20230920112839.578654219@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 5eda42aebb7668b4dcff025cd3ccb0d3d7c53da6 ]
+[ Upstream commit ea9ef6c2e001c5dc94bee35ebd1c8a98621cf7b8 ]
 
-The function mxs_phy_is_otg_host() will return true if OTG_ID_VALUE is
-0 at USBPHY_CTRL register. However, OTG_ID_VALUE will not reflect the real
-state if the ID pin is float, such as Host-only or Type-C cases. The value
-of OTG_ID_VALUE is always 1 which means device mode.
-This patch will fix the issue by judging the current mode based on
-last_event. The controller will update last_event in time.
+'read' is freed when it is known to be NULL, but not when a read error
+occurs.
 
-Fixes: 7b09e67639d6 ("usb: phy: mxs: refine mxs_phy_disconnect_line")
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230627110353.1879477-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Revert the logic to avoid a small leak, should a m920x_read() call fail.
+
+Fixes: a2ab06d7c4d6 ("media: m920x: don't use stack on USB reads")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/media/usb/dvb-usb/m920x.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-index e5aa24c1e4fd7..8af2ee3713b6d 100644
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -312,14 +312,8 @@ static void __mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool disconnect)
+diff --git a/drivers/media/usb/dvb-usb/m920x.c b/drivers/media/usb/dvb-usb/m920x.c
+index 8a43e2415686a..2a421bd9912bc 100644
+--- a/drivers/media/usb/dvb-usb/m920x.c
++++ b/drivers/media/usb/dvb-usb/m920x.c
+@@ -283,7 +283,6 @@ static int m920x_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int nu
+ 			char *read = kmalloc(1, GFP_KERNEL);
+ 			if (!read) {
+ 				ret = -ENOMEM;
+-				kfree(read);
+ 				goto unlock;
+ 			}
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	void __iomem *base = mxs_phy->phy.io_priv;
--	u32 phyctrl = readl(base + HW_USBPHY_CTRL);
--
--	if (IS_ENABLED(CONFIG_USB_OTG) &&
--			!(phyctrl & BM_USBPHY_CTRL_OTG_ID_VALUE))
--		return true;
--
--	return false;
-+	return IS_ENABLED(CONFIG_USB_OTG) &&
-+		mxs_phy->phy.last_event == USB_EVENT_ID;
- }
+@@ -294,8 +293,10 @@ static int m920x_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int nu
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ 				if ((ret = m920x_read(d->udev, M9206_I2C, 0x0,
+ 						      0x20 | stop,
+-						      read, 1)) != 0)
++						      read, 1)) != 0) {
++					kfree(read);
+ 					goto unlock;
++				}
+ 				msg[i].buf[j] = read[0];
+ 			}
+ 
 -- 
 2.40.1
 
