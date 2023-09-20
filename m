@@ -2,39 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70EFF7A805F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7787A7E69
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235747AbjITMgx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:36:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
+        id S235542AbjITMRu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234688AbjITMgw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:52 -0400
+        with ESMTP id S235560AbjITMRt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885A2C9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA35C433C8;
-        Wed, 20 Sep 2023 12:36:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D1419D;
+        Wed, 20 Sep 2023 05:17:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545BAC433B7;
+        Wed, 20 Sep 2023 12:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213406;
-        bh=76XXRCf8BqoUi2sFXzlxoPMlyscTbRhr9V2NFLmgrxk=;
+        s=korg; t=1695212244;
+        bh=uQfT1CrEBKgPRGDrz2daN9OzvE6cgnuzScJXZmkZwQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=neQXbcSU1TerIzkbPlz96GP1gJAh65ETMAbBjFxvVOp/YHABy7xlm4wyzMmSIUv+M
-         V71EjqEZt6Ko9s9f+1oNZxauKj1ho3Go+lRZvfI8uX1+AtZtkSRxnsKwc/upxxl+Sz
-         hsAoTDY5vyU326z42TDEXbAdcUitQXjbHdrKwMOs=
+        b=FZFFK0XszUwRdEDI8JsbdUCeBUwIS3srfStQeU8L7GgMeK+1KM/aspStcwtWfhv4/
+         pekamhVin8ZYu7Df7GcDHcgF1OVgpJw0W3rlS4op7khCYYt5a9OhWkFJlm/EMxk04h
+         PXQ5nzwezYzPt+lKXhGijEVCok73Gjo5CWq8WJwA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 226/367] dccp: Fix out of bounds access in DCCP error handler
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Tejun Heo <tj@kernel.org>,
+        Takashi Iwai <tiwai@suse.de>, Jaroslav Kysela <perex@perex.cz>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        linux-kbuild@vger.kernel.org, alsa-devel@alsa-project.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 163/273] um: Fix hostaudio build errors
 Date:   Wed, 20 Sep 2023 13:30:03 +0200
-Message-ID: <20230920112904.432957712@linuxfoundation.org>
+Message-ID: <20230920112851.561465885@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,88 +60,151 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 977ad86c2a1bcaf58f01ab98df5cc145083c489c upstream.
+[ Upstream commit db4bfcba7bb8d10f00bba2a3da6b9a9c2a1d7b71 ]
 
-There was a previous attempt to fix an out-of-bounds access in the DCCP
-error handlers, but that fix assumed that the error handlers only want
-to access the first 8 bytes of the DCCP header. Actually, they also look
-at the DCCP sequence number, which is stored beyond 8 bytes, so an
-explicit pskb_may_pull() is required.
+Use "select" to ensure that the required kconfig symbols are set
+as expected.
+Drop HOSTAUDIO since it is now equivalent to UML_SOUND.
 
-Fixes: 6706a97fec96 ("dccp: fix out of bound access in dccp_v4_err()")
-Fixes: 1aa9d1a0e7ee ("ipv6: dccp: fix out of bound access in dccp_v6_err()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Set CONFIG_SOUND=m in ARCH=um defconfig files to maintain the
+status quo of the default configs.
+
+Allow SOUND with UML regardless of HAS_IOMEM. Otherwise there is a
+kconfig warning for unmet dependencies. (This was not an issue when
+SOUND was defined in arch/um/drivers/Kconfig. I have done 50 randconfig
+builds and didn't find any issues.)
+
+This fixes build errors when CONFIG_SOUND is not set:
+
+ld: arch/um/drivers/hostaudio_kern.o: in function `hostaudio_cleanup_module':
+hostaudio_kern.c:(.exit.text+0xa): undefined reference to `unregister_sound_mixer'
+ld: hostaudio_kern.c:(.exit.text+0x15): undefined reference to `unregister_sound_dsp'
+ld: arch/um/drivers/hostaudio_kern.o: in function `hostaudio_init_module':
+hostaudio_kern.c:(.init.text+0x19): undefined reference to `register_sound_dsp'
+ld: hostaudio_kern.c:(.init.text+0x31): undefined reference to `register_sound_mixer'
+ld: hostaudio_kern.c:(.init.text+0x49): undefined reference to `unregister_sound_dsp'
+
+and this kconfig warning:
+WARNING: unmet direct dependencies detected for SOUND
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: d886e87cb82b ("sound: make OSS sound core optional")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202307141416.vxuRVpFv-lkp@intel.com
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: linux-kbuild@vger.kernel.org
+Cc: alsa-devel@alsa-project.org
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c |   13 +++++++++----
- net/dccp/ipv6.c |   15 ++++++++++-----
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ arch/um/configs/i386_defconfig   |  1 +
+ arch/um/configs/x86_64_defconfig |  1 +
+ arch/um/drivers/Kconfig          | 16 +++-------------
+ arch/um/drivers/Makefile         |  2 +-
+ sound/Kconfig                    |  2 +-
+ 5 files changed, 7 insertions(+), 15 deletions(-)
 
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -243,12 +243,17 @@ static int dccp_v4_err(struct sk_buff *s
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+diff --git a/arch/um/configs/i386_defconfig b/arch/um/configs/i386_defconfig
+index 8f114e3b0a7a3..8d06b799a0e4e 100644
+--- a/arch/um/configs/i386_defconfig
++++ b/arch/um/configs/i386_defconfig
+@@ -35,6 +35,7 @@ CONFIG_TTY_CHAN=y
+ CONFIG_XTERM_CHAN=y
+ CONFIG_CON_CHAN="pts"
+ CONFIG_SSL_CHAN="pts"
++CONFIG_SOUND=m
+ CONFIG_UML_SOUND=m
+ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_DEVTMPFS=y
+diff --git a/arch/um/configs/x86_64_defconfig b/arch/um/configs/x86_64_defconfig
+index 5d0875fc0db25..446bdda4cbfb6 100644
+--- a/arch/um/configs/x86_64_defconfig
++++ b/arch/um/configs/x86_64_defconfig
+@@ -33,6 +33,7 @@ CONFIG_TTY_CHAN=y
+ CONFIG_XTERM_CHAN=y
+ CONFIG_CON_CHAN="pts"
+ CONFIG_SSL_CHAN="pts"
++CONFIG_SOUND=m
+ CONFIG_UML_SOUND=m
+ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_DEVTMPFS=y
+diff --git a/arch/um/drivers/Kconfig b/arch/um/drivers/Kconfig
+index 2638e46f50ccd..494f7c27056e3 100644
+--- a/arch/um/drivers/Kconfig
++++ b/arch/um/drivers/Kconfig
+@@ -104,24 +104,14 @@ config SSL_CHAN
  
--	/* Only need dccph_dport & dccph_sport which are the first
--	 * 4 bytes in dccp header.
-+	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
-+	 * which is in byte 7 of the dccp header.
- 	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
-+	 *
-+	 * Later on, we want to access the sequence number fields, which are
-+	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
- 	 */
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
-+	dh = (struct dccp_hdr *)(skb->data + offset);
-+	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
-+		return -EINVAL;
-+	iph = (struct iphdr *)skb->data;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
+ config UML_SOUND
+ 	tristate "Sound support"
++	depends on SOUND
++	select SOUND_OSS_CORE
+ 	help
+ 	  This option enables UML sound support.  If enabled, it will pull in
+-	  soundcore and the UML hostaudio relay, which acts as a intermediary
++	  the UML hostaudio relay, which acts as a intermediary
+ 	  between the host's dsp and mixer devices and the UML sound system.
+ 	  It is safe to say 'Y' here.
  
- 	sk = __inet_lookup_established(net, &dccp_hashinfo,
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -67,7 +67,7 @@ static inline __u64 dccp_v6_init_sequenc
- static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 			u8 type, u8 code, int offset, __be32 info)
- {
--	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
-+	const struct ipv6hdr *hdr;
- 	const struct dccp_hdr *dh;
- 	struct dccp_sock *dp;
- 	struct ipv6_pinfo *np;
-@@ -76,12 +76,17 @@ static int dccp_v6_err(struct sk_buff *s
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
+-config SOUND
+-	tristate
+-	default UML_SOUND
+-
+-config SOUND_OSS_CORE
+-	bool
+-	default UML_SOUND
+-
+-config HOSTAUDIO
+-	tristate
+-	default UML_SOUND
+-
+ endmenu
  
--	/* Only need dccph_dport & dccph_sport which are the first
--	 * 4 bytes in dccp header.
-+	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
-+	 * which is in byte 7 of the dccp header.
- 	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
-+	 *
-+	 * Later on, we want to access the sequence number fields, which are
-+	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
- 	 */
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
-+	dh = (struct dccp_hdr *)(skb->data + offset);
-+	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
-+		return -EINVAL;
-+	hdr = (const struct ipv6hdr *)skb->data;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 
- 	sk = __inet6_lookup_established(net, &dccp_hashinfo,
+ menu "UML Network Devices"
+diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
+index 693319839f69e..d945abf90c319 100644
+--- a/arch/um/drivers/Makefile
++++ b/arch/um/drivers/Makefile
+@@ -52,7 +52,7 @@ obj-$(CONFIG_UML_NET) += net.o
+ obj-$(CONFIG_MCONSOLE) += mconsole.o
+ obj-$(CONFIG_MMAPPER) += mmapper_kern.o 
+ obj-$(CONFIG_BLK_DEV_UBD) += ubd.o 
+-obj-$(CONFIG_HOSTAUDIO) += hostaudio.o
++obj-$(CONFIG_UML_SOUND) += hostaudio.o
+ obj-$(CONFIG_NULL_CHAN) += null.o 
+ obj-$(CONFIG_PORT_CHAN) += port.o
+ obj-$(CONFIG_PTY_CHAN) += pty.o
+diff --git a/sound/Kconfig b/sound/Kconfig
+index 1140e9988fc50..76febc37862de 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,6 +1,6 @@
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM
++	depends on HAS_IOMEM || UML
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
+-- 
+2.40.1
+
 
 
