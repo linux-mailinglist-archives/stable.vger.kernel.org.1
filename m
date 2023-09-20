@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB377A7CEA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4107C7A7E42
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235209AbjITMF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
+        id S234510AbjITMQn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:16:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235312AbjITMFE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:04 -0400
+        with ESMTP id S234617AbjITMQm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC62CA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D71C433C8;
-        Wed, 20 Sep 2023 12:04:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C657189
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06888C43391;
+        Wed, 20 Sep 2023 12:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211498;
-        bh=2pxGzdBBLkCa3y1DjclC4koUujBMNqtFnRXSGnqZvVA=;
+        s=korg; t=1695212177;
+        bh=UYGpmW7MglKjJKy02JcARy33fXXhfBKkoRbEuNzyyrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AAlOJ1H3NxbJL0e8e9CHJGngyUdVwfiyPUPCOmIacDadOEz4jq2W12TO6n11JbtxK
-         VjN7ExfQxUfPuCrpNWoohJoeWb43IrtkfuilsPTnfsprA81v1Gh3j3g28qMgah4A+w
-         5IBMpYnHfH2p5URn/qWaLlkIxX08qL2wKOKDGad0=
+        b=aLbgzn1sMQhakgBi+de7J/Un+9cidJvgoGOrurUo3j/XikIpRz3yGJVNoTi1146pw
+         +ubvHvhWtvX+1vVMPr7ynVOzMHZW7T3x6EtrenNfivvShm7a1skm8wH1KYEaZUqYVp
+         JUci+ZvpkyFond1M46cPc9VPYdZazQJHSDvog4A8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.14 116/186] X.509: if signature is unsupported skip validation
+        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 4.19 179/273] ntb: Drop packets when qp link is down
 Date:   Wed, 20 Sep 2023 13:30:19 +0200
-Message-ID: <20230920112841.224971703@linuxfoundation.org>
+Message-ID: <20230920112852.047979042@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thore Sommer <public@thson.de>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
+commit f195a1a6fe416882984f8bd6c61afc1383171860 upstream.
 
-When the hash algorithm for the signature is not available the digest size
-is 0 and the signature in the certificate is marked as unsupported.
+Currently when the transport receive packets after netdev has closed the
+transport returns error and triggers tx errors to be incremented and
+carrier to be stopped. There is no reason to return error if the device is
+already closed. Drop the packet and return 0.
 
-When validating a self-signed certificate, this needs to be checked,
-because otherwise trying to validate the signature will fail with an
-warning:
-
-Loading compiled-in X.509 certificates
-WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
-pkcs1pad_verify+0x46/0x12c
-...
-Problem loading in-kernel X.509 certificate (-22)
-
-Signed-off-by: Thore Sommer <public@thson.de>
-Cc: stable@vger.kernel.org # v4.7+
-Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
+Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/asymmetric_keys/x509_public_key.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/ntb/ntb_transport.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -138,6 +138,11 @@ int x509_check_for_self_signed(struct x5
- 	if (strcmp(cert->pub->pkey_algo, cert->sig->pkey_algo) != 0)
- 		goto out;
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -2046,9 +2046,13 @@ int ntb_transport_tx_enqueue(struct ntb_
+ 	struct ntb_queue_entry *entry;
+ 	int rc;
  
-+	if (cert->unsupported_sig) {
-+		ret = 0;
-+		goto out;
-+	}
+-	if (!qp || !qp->link_is_up || !len)
++	if (!qp || !len)
+ 		return -EINVAL;
+ 
++	/* If the qp link is down already, just ignore. */
++	if (!qp->link_is_up)
++		return 0;
 +
- 	ret = public_key_verify_signature(cert->pub, cert->sig);
- 	if (ret < 0) {
- 		if (ret == -ENOPKG) {
+ 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
+ 	if (!entry) {
+ 		qp->tx_err_no_buf++;
 
 
