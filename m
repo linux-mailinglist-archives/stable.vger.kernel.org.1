@@ -2,116 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9307A7870
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23CEF7A7889
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:04:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234122AbjITKBO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 06:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37572 "EHLO
+        id S234114AbjITKE7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 06:04:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234258AbjITKBN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:01:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F313AA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 03:01:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B63C433C7;
-        Wed, 20 Sep 2023 10:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695204067;
-        bh=IOAmHWzAtOc2nBoj1FiP/x7cY257J7vGT0wjmAVXsQM=;
-        h=Subject:To:Cc:From:Date:From;
-        b=zSJRCwMh+JDDcUE7ZTs4L9j7+fwqqOItLXAZKV4wNEBmK47QNYXmL9D4EcGoQZxnR
-         myWXOkyRBo0YaE6hRABB70SpB+8M3cCiWQVZHRUVhtxBfgjrlxpazHqbU4rVMTC84B
-         n3ZVWKL16KcW2aObadI1+m6hy/1APP1lWWCkKPDY=
-Subject: FAILED: patch "[PATCH] drm/amd/display: fix the white screen issue when >= 64GB DRAM" failed to apply to 5.10-stable tree
-To:     yifan1.zhang@amd.com, alexander.deucher@amd.com,
-        hamza.mahfooz@amd.com, harry.wentland@amd.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 12:01:04 +0200
-Message-ID: <2023092004-excavate-unending-0257@gregkh>
+        with ESMTP id S234242AbjITKE7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:04:59 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D8A4BAB;
+        Wed, 20 Sep 2023 03:04:52 -0700 (PDT)
+Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 112CB212C4B2;
+        Wed, 20 Sep 2023 03:04:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 112CB212C4B2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1695204292;
+        bh=3bC6p4sdHzytTO0QKfyFybQqp0lACEhiSf/B5PUqc00=;
+        h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+        b=h/YyjqOEiWd8pu5Aeb671sFZKoQY0fwShQJicaEbCnEbeLBtsh7LHpAw5WRPPLqc2
+         BSkSqH5iAh9vTpQhEDIKk607F+IZLp27UXDd9uW9rs+uHhndP4n4ewpTFGgF5w1ycY
+         KQ5DrwpI4tOdPwgzvZQ1f6U3SuOuZipLoAyhOBG4=
+Message-ID: <101987a1-b1ab-429d-af03-b6bdf6216474@linux.microsoft.com>
+Date:   Wed, 20 Sep 2023 12:04:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
+ kmem.limit_in_bytes
+To:     Michal Hocko <mhocko@suse.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Shakeel Butt <shakeelb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+        mathieu.tortuyaux@gmail.com
+References: <20230917191040.964416434@linuxfoundation.org>
+ <20230917191042.204185566@linuxfoundation.org>
+ <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
+Content-Language: en-US
+In-Reply-To: <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 9/20/2023 10:43 AM, Michal Hocko wrote:
+> On Wed 20-09-23 01:11:01, Jeremi Piotrowski wrote:
+>> On Sun, Sep 17, 2023 at 09:12:40PM +0200, Greg Kroah-Hartman wrote:
+>>> 6.1-stable review patch.  If anyone has any objections, please let me know.
+>>>
+>>> ------------------
+>>
+>> Hi Greg/Michal,
+>>
+>> This commit breaks userspace which makes it a bad commit for mainline and an
+>> even worse commit for stable.
+>>
+>> We ingested 6.1.54 into our nightly testing and found that runc fails to gather
+>> cgroup statistics (when reading kmem.limit_in_bytes). The same code is vendored
+>> into kubelet and kubelet fails to start if this operation fails. 6.1.53 is
+>> fine.
+> 
+> Could you expand some more on why is the file read? It doesn't support
+> writing to it for some time so how does reading it helps in any sense?
+> 
+> Anyway, I do agree that the stable backport should be reverted.
+> 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This file is read together with all the other memcg files. Each prefix:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+memory
+memory.memsw
+memory.kmem
+memory.kmem.tcp
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x ef064187a9709393a981a56cce1e31880fd97107
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092004-excavate-unending-0257@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+is combined with these suffixes
 
-Possible dependencies:
+.usage_in_bytes
+.max_usage_in_bytes
+.failcnt
+.limit_in_bytes
 
-ef064187a970 ("drm/amd/display: fix the white screen issue when >= 64GB DRAM")
-c0fb85ae02b6 ("drm/amd/display: setup system context in dm_init")
+and read, the values are then forwarded on to other components for scheduling decisions.
+You want to know the limit when checking the usage (is the usage close to the limit or not).
 
-thanks,
+Userspace tolerates MEMCG/MEMCG_KMEM being disabled, but having a single file out of the
+set missing is an anomaly. So maybe we could keep the dummy file just for the
+sake of consistency? Cgroupv1 is legacy after all.
 
-greg k-h
+>>> Address this by wiping out the file completely and effectively get back to
+>>> pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
+>>
+>> On reads, the runc code checks for MEMCG_KMEM=n by checking
+>> kmem.usage_in_bytes. If it is present then runc expects the other cgroup files
+>> to be there (including kmem.limit_in_bytes). So this change is not effectively
+>> the same.
+>>
+>> Here's a link to the PR that would be needed to handle this change in userspace
+>> (not merged yet and would need to be propagated through the ecosystem):
+>>
+>> https://github.com/opencontainers/runc/pull/4018.
+> 
+> Thanks. Does that mean the revert is still necessary for the Linus tree
+> or do you expect that the fix can be merged and propagated in a
+> reasonable time?
+> 
 
------------------- original commit in Linus's tree ------------------
+We can probably get runc and currently supported kubernetes versions patched in time
+before 6.6 (or the next LTS kernel) hits LTS distros.
 
-From ef064187a9709393a981a56cce1e31880fd97107 Mon Sep 17 00:00:00 2001
-From: Yifan Zhang <yifan1.zhang@amd.com>
-Date: Fri, 8 Sep 2023 16:46:39 +0800
-Subject: [PATCH] drm/amd/display: fix the white screen issue when >= 64GB DRAM
-
-Dropping bit 31:4 of page table base is wrong, it makes page table
-base points to wrong address if phys addr is beyond 64GB; dropping
-page_table_start/end bit 31:4 is unnecessary since dcn20_vmid_setup
-will do that. Also, while we are at it, cleanup the assignments using
-upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT.
-
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
-Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-Acked-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Co-developed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 88ba8b66de1f..6a0ea15936ae 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1274,11 +1274,15 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
- 
- 	pt_base = amdgpu_gmc_pd_addr(adev->gart.bo);
- 
--	page_table_start.high_part = (u32)(adev->gmc.gart_start >> 44) & 0xF;
--	page_table_start.low_part = (u32)(adev->gmc.gart_start >> 12);
--	page_table_end.high_part = (u32)(adev->gmc.gart_end >> 44) & 0xF;
--	page_table_end.low_part = (u32)(adev->gmc.gart_end >> 12);
--	page_table_base.high_part = upper_32_bits(pt_base) & 0xF;
-+	page_table_start.high_part = upper_32_bits(adev->gmc.gart_start >>
-+						   AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_start.low_part = lower_32_bits(adev->gmc.gart_start >>
-+						  AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_end.high_part = upper_32_bits(adev->gmc.gart_end >>
-+						 AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_end.low_part = lower_32_bits(adev->gmc.gart_end >>
-+						AMDGPU_GPU_PAGE_SHIFT);
-+	page_table_base.high_part = upper_32_bits(pt_base);
- 	page_table_base.low_part = lower_32_bits(pt_base);
- 
- 	pa_config->system_aperture.start_addr = (uint64_t)logical_addr_low << 18;
-
+But there's still a bunch of users running cgroupv1 with unsupported kubernetes
+versions that are still taking kernel updates as they come, so this might get reported
+again next year if it stays in mainline.
