@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A517A7FF5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252267A7DE3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234690AbjITMbo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:31:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58884 "EHLO
+        id S235459AbjITMNK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236105AbjITMbn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:43 -0400
+        with ESMTP id S235410AbjITMNI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB66C9E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CEBC433C7;
-        Wed, 20 Sep 2023 12:31:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3CDCAD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44305C433C8;
+        Wed, 20 Sep 2023 12:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213097;
-        bh=7IEZCg2MkSoTzyOT7VPhPHTbsXYohaioKg8rdfAgFww=;
+        s=korg; t=1695211982;
+        bh=vQb+gqusYJ/tP4H4P/FEYzWTeIXkuvMgvtLUbyI/Y3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RhOC1V1vD1Zi1L9r/wJyewoH4dBvy+3R9DJnQWerQjlssI877Phd/epaf9KbVPGQ4
-         y6+KO86HyR//j4U4fV4JVRw23T6FkYzKto6+rPWCTGqzBh+YCqjDaUIvSKmj4rbfGq
-         6WVIRlGyncOUhQp6DmALSdZo6A9w+7hVkCwZ/hbk=
+        b=m4xJOeu/ULan1OyAzX5V5kSz4jIrMmyOwgBWslWU1YmMPBY7dNCBfWXlof0z9X/Y0
+         kETKUbfG5YnV65zLeQsyQEmQGdXYjwRL1H+HVEKKTUsFsjt/tyg64j4YpEuqE4zNgF
+         kHcHH5E3Nh/ZD3kzvM/D1u0P0zztMyvncxvGRXIM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 152/367] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
-Date:   Wed, 20 Sep 2023 13:28:49 +0200
-Message-ID: <20230920112902.596439597@linuxfoundation.org>
+Subject: [PATCH 4.19 090/273] ARM: dts: s5pv210: add RTC 32 KHz clock in SMDKV210
+Date:   Wed, 20 Sep 2023 13:28:50 +0200
+Message-ID: <20230920112849.227696395@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,71 +49,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
+[ Upstream commit 7260b363457a22b8723d5cbc43fee67397896d07 ]
 
-If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
-so fwnode_handle_put() is a no-op.
+The S3C RTC requires 32768 Hz clock as input which is provided by PMIC.
+However the PMIC is not described in DTS at all so at least add
+a workaround to model its clock with a fixed-clock.
 
-Release the reference taken from a previous fwnode_graph_get_port_parent()
-call instead.
+This fixes dtbs_check warnings:
 
-Also handle fwnode_graph_get_port_parent() failures.
+  rtc@e2800000: clocks: [[2, 145]] is too short
+  rtc@e2800000: clock-names: ['rtc'] is too short
 
-In order to fix these issues, add an error handling path to the function
-and the needed gotos.
-
-Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20200907161141.31034-15-krzk@kernel.org
+Stable-dep-of: 982655cb0e7f ("ARM: dts: samsung: s5pv210-smdkv210: correct ethernet reg addresses (split)")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/s5pv210-smdkv210.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
-index 56aad92b80fc9..00d66495b47d7 100644
---- a/drivers/media/v4l2-core/v4l2-fwnode.c
-+++ b/drivers/media/v4l2-core/v4l2-fwnode.c
-@@ -570,18 +570,28 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
- 	fwnode_graph_parse_endpoint(fwnode, &fwep);
- 	link->local_port = fwep.port;
- 	link->local_node = fwnode_graph_get_port_parent(fwnode);
-+	if (!link->local_node)
-+		return -ENOLINK;
+diff --git a/arch/arm/boot/dts/s5pv210-smdkv210.dts b/arch/arm/boot/dts/s5pv210-smdkv210.dts
+index 84b38f1851991..1f20622da7194 100644
+--- a/arch/arm/boot/dts/s5pv210-smdkv210.dts
++++ b/arch/arm/boot/dts/s5pv210-smdkv210.dts
+@@ -31,6 +31,13 @@ memory@20000000 {
+ 		reg = <0x20000000 0x40000000>;
+ 	};
  
- 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
--	if (!fwnode) {
--		fwnode_handle_put(fwnode);
--		return -ENOLINK;
--	}
-+	if (!fwnode)
-+		goto err_put_local_node;
- 
- 	fwnode_graph_parse_endpoint(fwnode, &fwep);
- 	link->remote_port = fwep.port;
- 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
-+	if (!link->remote_node)
-+		goto err_put_remote_endpoint;
- 
- 	return 0;
++	pmic_ap_clk: clock-0 {
++		/* Workaround for missing PMIC and its clock */
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++	};
 +
-+err_put_remote_endpoint:
-+	fwnode_handle_put(fwnode);
-+
-+err_put_local_node:
-+	fwnode_handle_put(link->local_node);
-+
-+	return -ENOLINK;
- }
- EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
+ 	ethernet@18000000 {
+ 		compatible = "davicom,dm9000";
+ 		reg = <0xA8000000 0x2 0xA8000002 0x2>;
+@@ -147,6 +154,8 @@ &uart3 {
  
+ &rtc {
+ 	status = "okay";
++	clocks = <&clocks CLK_RTC>, <&pmic_ap_clk>;
++	clock-names = "rtc", "rtc_src";
+ };
+ 
+ &sdhci0 {
 -- 
 2.40.1
 
