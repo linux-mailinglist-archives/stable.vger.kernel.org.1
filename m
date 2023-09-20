@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B86177A7C12
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 275A77A7B87
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234570AbjITL5o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46680 "EHLO
+        id S234751AbjITLxH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:53:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234967AbjITL5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:43 -0400
+        with ESMTP id S234747AbjITLxG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A3DB4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6302FC433C9;
-        Wed, 20 Sep 2023 11:57:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A53D1AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB13EC433C7;
+        Wed, 20 Sep 2023 11:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211057;
-        bh=mZMihZ6UIDZE9mNoIC6fS9yLGbbZMYXYF/wFnlIqKWQ=;
+        s=korg; t=1695210779;
+        bh=uKXXiU7mmVZBnHMPJZocCfAxv5WulQps9TEbhaV/2OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eVatUTxlRmdFfXI10/OSV3twoAjwqf88bqTLPpcBi4qYQt3Yu0uFHYo1OK4cOieuy
-         4wMgF/O9bIoaUlZWm8Q+g3UGoX/iWV2TuwMD8bbmQzRpzNJ19ikTvVfU+PDspxTBMc
-         5y0Sb9g1xheabccMBYbDVej+pJJ4CcpB2ROF0wLQ=
+        b=oh7M21ZAMiWka8UsOsSEKmnXDNXZWCtjNWQOJpHsou4gCpQidkb1IvciqLSRxF4Am
+         Gn3L7ZMyDN2ukkvlObbyGowfjzrlKWn4IPCQyDGeuKy3aZ+pXscU/TB8iCHRvGR2Hf
+         QdJX+2eF46LoWZ/UbtZN5HqJE9WZFvvDvR8bqdLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/139] btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super
-Date:   Wed, 20 Sep 2023 13:30:27 +0200
-Message-ID: <20230920112839.073200237@linuxfoundation.org>
+        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.5 184/211] tracing/synthetic: Fix order of struct trace_dynamic_info
+Date:   Wed, 20 Sep 2023 13:30:28 +0200
+Message-ID: <20230920112851.579736524@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +51,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Jain <anand.jain@oracle.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 6bfe3959b0e7a526f5c64747801a8613f002f05a ]
+commit fc52a64416b010c8324e2cb50070faae868521c1 upstream.
 
-The function btrfs_validate_super() should verify the metadata_uuid in
-the provided superblock argument. Because, all its callers expect it to
-do that.
+To make handling BIG and LITTLE endian better the offset/len of dynamic
+fields of the synthetic events was changed into a structure of:
 
-Such as in the following stacks:
+ struct trace_dynamic_info {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+	u16	offset;
+	u16	len;
+ #else
+	u16	len;
+	u16	offset;
+ #endif
+ };
 
-  write_all_supers()
-   sb = fs_info->super_for_commit;
-   btrfs_validate_write_super(.., sb)
-     btrfs_validate_super(.., sb, ..)
+to replace the manual changes of:
 
-  scrub_one_super()
-	btrfs_validate_super(.., sb, ..)
+ data_offset = offset & 0xffff;
+ data_offest = len << 16;
 
-And
-   check_dev_super()
-	btrfs_validate_super(.., sb, ..)
+But if you look closely, the above is:
 
-However, it currently verifies the fs_info::super_copy::metadata_uuid
-instead.  Fix this using the correct metadata_uuid in the superblock
-argument.
+  <len> << 16 | offset
 
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Which in little endian would be in memory:
+
+ offset_lo offset_hi len_lo len_hi
+
+and in big endian:
+
+ len_hi len_lo offset_hi offset_lo
+
+Which if broken into a structure would be:
+
+ struct trace_dynamic_info {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+	u16	len;
+	u16	offset;
+ #else
+	u16	offset;
+	u16	len;
+ #endif
+ };
+
+Which is the opposite of what was defined.
+
+Fix this and just to be safe also add "__packed".
+
+Link: https://lore.kernel.org/all/20230908154417.5172e343@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20230908163929.2c25f3dc@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Tested-by: Sven Schnelle <svens@linux.ibm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: ddeea494a16f3 ("tracing/synthetic: Use union instead of casts")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ include/linux/trace_events.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 64daae693afd1..c44f1fcc19097 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2728,13 +2728,11 @@ int btrfs_validate_super(struct btrfs_fs_info *fs_info,
- 		ret = -EINVAL;
- 	}
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 12f875e9e69a..21ae37e49319 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -62,13 +62,13 @@ void trace_event_printf(struct trace_iterator *iter, const char *fmt, ...);
+ /* Used to find the offset and length of dynamic fields in trace events */
+ struct trace_dynamic_info {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+-	u16	offset;
+ 	u16	len;
++	u16	offset;
+ #else
+-	u16	len;
+ 	u16	offset;
++	u16	len;
+ #endif
+-};
++} __packed;
  
--	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
--	    memcmp(fs_info->fs_devices->metadata_uuid,
--		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
-+	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
-+		   BTRFS_FSID_SIZE) != 0) {
- 		btrfs_err(fs_info,
- "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
--			fs_info->super_copy->metadata_uuid,
--			fs_info->fs_devices->metadata_uuid);
-+			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
- 		ret = -EINVAL;
- 	}
- 
+ /*
+  * The trace entry - the most basic unit of tracing. This is what
 -- 
-2.40.1
+2.42.0
 
 
 
