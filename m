@@ -2,79 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8198E7A8D0D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 21:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 778AD7A8D6B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 22:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229441AbjITTqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 15:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
+        id S229691AbjITUAP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 16:00:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjITTqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 15:46:45 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47AC3D3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 12:46:35 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1c4084803f1so39925ad.0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 12:46:35 -0700 (PDT)
+        with ESMTP id S230239AbjITUAN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 16:00:13 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175A9102;
+        Wed, 20 Sep 2023 13:00:02 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-690d2441b95so88102b3a.1;
+        Wed, 20 Sep 2023 13:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695239195; x=1695843995; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r1gDFWdH+zhoVhcN/66huTv4AT/CGtvploIElj8nrZg=;
-        b=tHS8fUa4/jyh/wk980y9NObpf4pHiQK/D0p+YN081RFDJfn9jfWpt4qJrAY4qrjM5m
-         lbjokXImvS0JKTwr4AB+xqlrs6ZPrsVrEyFw8lC8g8sox3twN9D2s9hDc1egJyRyS3ZI
-         vz65rwJB7Jkuq10+RaiPjdcPPMMGGT1Jp21GYPoatc1shiq2SYFbwJV9LSkZibRasm95
-         8Xbkeph6UTZw53rV6I49V8HUj9PSi5uAsUhbvbQIHcMzy5o8O9NSarxG2RJmozqut7TX
-         CjEv19jzLUAU7I8VkL4pTgDfurKEQatCwlTfmFdp1rOCwaMRRVHE/mKaw7Z4q7/RyHMr
-         enWg==
+        d=gmail.com; s=20230601; t=1695240001; x=1695844801; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GMAeJbPcmItdDgf4xgk+JNHaknHRQgjDFugqEkpXkAc=;
+        b=ariurErKtC/AlRnt23VaPz4oEGVnqnHGE3dcZQ8Su7+sJcdLn80w2ShkeaCo21ojWF
+         NqZjf6EpilO7Q8hGsThzzvr1mGMG1wlCILOW1APWjR6yo6hB3BuA7kB09u1SBBh3Y8Pl
+         DGs/ZxLyF28aH8IEDFviCc4K1sWFFIkCt/Gy2f8JHxvaHxgTN7IKjsZ63wE3N7CCfvpC
+         Q6IaK15UFsFmttEdR5qyWkHeWk3XGFBz7qsK0o01BcwevegnkwW8RfNVzvNUu7F3n2IG
+         KYybej7PDjcgRtk7fUeQOZfFdUPLDVO5QR7yCeOMMUfdcItA3dpulXKaOQ/OIXHBd3yd
+         D88g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695239195; x=1695843995;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r1gDFWdH+zhoVhcN/66huTv4AT/CGtvploIElj8nrZg=;
-        b=W0MKu2wXTz1v6tcMyFn41xfjGELqPfKBm0HfZV76HhHdHzr3Xbd3AFwNfH9Z4KzNDA
-         Q/HSQrDYSpoGHp7yXIj0GNdCTlVefxMQDQZHq4fBWc65w72PiGKuW4WQWVHCq2MKGGJP
-         9OP+fdGK/fxGQ6EWuBtRab+Mm0oqwJup8bfR5Vx5FDM2VPMNkE4eEJtUwHQFxPVvCOck
-         moGyrUrilRRx4BB56prhnXNuOrVJS0MbXjoTOCGPHt2dgRma/bqPbCKtwp+TMYspVT9B
-         BbseLIFD3zz9vrsSHkhfQVKB/kieP9OqA0GCYLcRBrwAVYG7PJkzSqExNWcT2+2w3foy
-         oyDg==
-X-Gm-Message-State: AOJu0YzCRFdCOzCTOLzrOsAqpyQeOSGuVuGWv/ZGjdQIKSZL8t0kV1l4
-        Lvq8BaDX269PC8wQr7KJmnP7rqNY18flHnJIPIM1Bw==
-X-Google-Smtp-Source: AGHT+IH4cJjqSUopETrHJarjPAVi2y0a8t1+QAfpfCzTd4d9SfisXhgNE8Kx5Nor7zgLorMhAVrPgqi+P8d4gPxTggg=
-X-Received: by 2002:a17:902:f691:b0:1c1:f658:7d05 with SMTP id
- l17-20020a170902f69100b001c1f6587d05mr39680plg.18.1695239194530; Wed, 20 Sep
- 2023 12:46:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695240001; x=1695844801;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GMAeJbPcmItdDgf4xgk+JNHaknHRQgjDFugqEkpXkAc=;
+        b=HI8YyrokrAJtOMhZY243ADp9YJ1X7+mtFnStwls53voKMksDqR/im8eTLwc4oJjYLV
+         92ahCqZYQI6U69gQY8syybgVfWiaiQeaPSKZ+CjbOtRYNOe3itsFgVsmho0m6hJ/Ymds
+         zUdu3grQi2VKpKC8e+AZhgssltHsh09qXMYmxttIgxn+EsvaZMDH+RYp19idwwLuOQuS
+         Ags3uUWLeZX/ZZ4chQsJqEXGczQYAMHpzW2n2kUx2nExbepo8elepZKEMbZBr5cnBBq2
+         Yyjyid0ySmDb975HrQLmLgv+ffIJXqOgIymLUZiAE4OGdXs3AtbHGeYtBuDIqV+c88vI
+         8ypg==
+X-Gm-Message-State: AOJu0YwUbZmphUsgzEu0fody8XtOJ3JnFBz3AKtTFK9DIBCcXpxob+m7
+        i/Oc4de0PJBoZNr2SXM8L34=
+X-Google-Smtp-Source: AGHT+IGQvVEeSuvsRNTzKfh0H6AJmFAA5vkIfdi+bWjfJVdsi4gXOQ/xAkDweZEoNes91BOOHx3/hg==
+X-Received: by 2002:a05:6a20:6a23:b0:159:c07d:66f0 with SMTP id p35-20020a056a206a2300b00159c07d66f0mr5162159pzk.6.1695240001285;
+        Wed, 20 Sep 2023 13:00:01 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id x18-20020aa79192000000b0063b898b3502sm10638330pfa.153.2023.09.20.12.59.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Sep 2023 13:00:00 -0700 (PDT)
+Message-ID: <4ef9c827-f061-7b39-ea4d-6d57c16df9f9@gmail.com>
+Date:   Wed, 20 Sep 2023 12:59:58 -0700
 MIME-Version: 1.0
-References: <20230917191040.964416434@linuxfoundation.org> <20230917191042.204185566@linuxfoundation.org>
- <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz> <101987a1-b1ab-429d-af03-b6bdf6216474@linux.microsoft.com>
- <ZQrSXh+riB7NnZuE@dhcp22.suse.cz> <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
- <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz> <CALvZod7E_Jm9y+40OKtLs5EFA0ptKGjoe2BU58SY29pUiPc93g@mail.gmail.com>
- <ZQskGGAwlsr1YxAp@dhcp22.suse.cz>
-In-Reply-To: <ZQskGGAwlsr1YxAp@dhcp22.suse.cz>
-From:   Shakeel Butt <shakeelb@google.com>
-Date:   Wed, 20 Sep 2023 12:46:23 -0700
-Message-ID: <CALvZod6b3=+=xXEUeWOQW3t_URJpeeVX46WjBHv5BS+436KoFA@mail.gmail.com>
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop kmem.limit_in_bytes
-To:     Michal Hocko <mhocko@suse.com>
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 6.5 000/211] 6.5.5-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230920112845.859868994@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,19 +79,29 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 20, 2023 at 9:55=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
-e:
->
-> On Wed 20-09-23 08:32:42, Shakeel Butt wrote:
-> > Also I don't think reverting 58056f77502f would give any benefit.
->
-> Not reverting 58056f77502f would re-introduce the regression in some
-> non-patched versions of Docker runtimes which cannot handle ENOTSUPP.
-> So I think we need to revert both or none of them. I would prefer the
-> later (option 1) as the fix is trivial but I do understand headache
-> of chasing all those outdated deployments or vendor code forks.
+On 9/20/23 04:27, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.5 release.
+> There are 211 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-I think that would be too much conservative an approach but I don't
-have a strong opinion against it. Also just to be clear we are not
-talking about full revert of 58056f77502f but just the returning of
-EOPNOTSUPP, right?
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
