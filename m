@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 490BF7A804D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D4A7A7E13
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234786AbjITMgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51954 "EHLO
+        id S235278AbjITMPa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235911AbjITMgW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:22 -0400
+        with ESMTP id S235751AbjITMPI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7D39E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A834AC433C9;
-        Wed, 20 Sep 2023 12:36:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3AFDC
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9E8C433C7;
+        Wed, 20 Sep 2023 12:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213371;
-        bh=UOfegofk5YrzstbCXJOX/R0yoLbHzMt/3tGFVl0y234=;
+        s=korg; t=1695212101;
+        bh=XJzImQTkZHKUlj4OFAoP7qNPxFvk9kPzwPbJLIZVH4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zu6Mn3Mct15pngbj+MF2hCVMdNr/t9gtEOk+qkmDf4eUH2bZxFg1PipsD5EOYcr1Z
-         Zr97tEOy7vDowHewd3ogVuBfXXQzXY5HTKrG8ewPmY01M2gP9vv6hf1isN7Rzhucsy
-         X64VliXwrA6XtQ+kAFjxniq9+L0boItBRQBXMZ0A=
+        b=W7PyRWtNIidVU334bK+pCEkYpc+24mOZggAiYsxMqifJpIRhGLBxQggi7O6nEcOlN
+         uzINk6GQfAavX/R7Gk157go1uT4veQx2LrLeI4MZIrriClMC/C6RsOv8yBgKIE4a9s
+         dKouRgV2NcWTuhXFzNoXPWXIPcTnpuwOntI6wnyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 187/367] amba: bus: fix refcount leak
+Subject: [PATCH 4.19 124/273] nfs/blocklayout: Use the passed in gfp flags
 Date:   Wed, 20 Sep 2023 13:29:24 +0200
-Message-ID: <20230920112903.479403210@linuxfoundation.org>
+Message-ID: <20230920112850.329761988@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e312cbdc11305568554a9e18a2ea5c2492c183f3 ]
+[ Upstream commit 08b45fcb2d4675f6182fe0edc0d8b1fe604051fa ]
 
-commit 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-increases the refcount of of_node, but not releases it in
-amba_device_release, so there is refcount leak. By using of_node_put
-to avoid refcount leak.
+This allocation should use the passed in GFP_ flags instead of
+GFP_KERNEL.  One places where this matters is in filelayout_pg_init_write()
+which uses GFP_NOFS as the allocation flags.
 
-Fixes: 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230821023928.3324283-1-peng.fan@oss.nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c83746a0cf2 ("pnfs/blocklayout: in-kernel GETDEVICEINFO XDR parsing")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/amba/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/blocklayout/dev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index 702284bcd467c..252b0b43d50ee 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -364,6 +364,7 @@ static void amba_device_release(struct device *dev)
- {
- 	struct amba_device *d = to_amba_device(dev);
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index dec5880ac6de2..6e3a14fdff9c8 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -422,7 +422,7 @@ bl_parse_concat(struct nfs_server *server, struct pnfs_block_dev *d,
+ 	int ret, i;
  
-+	of_node_put(d->dev.of_node);
- 	if (d->res.parent)
- 		release_resource(&d->res);
- 	kfree(d);
+ 	d->children = kcalloc(v->concat.volumes_count,
+-			sizeof(struct pnfs_block_dev), GFP_KERNEL);
++			sizeof(struct pnfs_block_dev), gfp_mask);
+ 	if (!d->children)
+ 		return -ENOMEM;
+ 
+@@ -451,7 +451,7 @@ bl_parse_stripe(struct nfs_server *server, struct pnfs_block_dev *d,
+ 	int ret, i;
+ 
+ 	d->children = kcalloc(v->stripe.volumes_count,
+-			sizeof(struct pnfs_block_dev), GFP_KERNEL);
++			sizeof(struct pnfs_block_dev), gfp_mask);
+ 	if (!d->children)
+ 		return -ENOMEM;
+ 
 -- 
 2.40.1
 
