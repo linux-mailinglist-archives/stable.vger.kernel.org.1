@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A38477A8094
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F5A7A7E63
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236042AbjITMiF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:38:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42462 "EHLO
+        id S235524AbjITMRq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236075AbjITMiC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:02 -0400
+        with ESMTP id S235558AbjITMRp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31777ED
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D46C433C8;
-        Wed, 20 Sep 2023 12:37:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36A212D
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC771C433CA;
+        Wed, 20 Sep 2023 12:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213476;
-        bh=Z/jdZZsworErR6ZoEqqUM9Xrquvk8eQOUz61ldsDV3Q=;
+        s=korg; t=1695212207;
+        bh=R0fsE5n/eUPvE4j8Wohajgb5K5qZfja0pIHDh3L1HlI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZkZcKfQ6fJ7HMqgNxETrffpVgZvBu8lUUdhBgvuZC/nSiexu+AbTQJpeZGPaDN7Lr
-         C7dgtnQx0fOFfPgdsqgaYj3/G4hqhq416nYqlmZFXPLnduzCpQtgxxQ4gpiUN6W+vf
-         1FCJU/oIBH8TAmB6h78zXsv7Uutb1sXf/KxkHfuE=
+        b=qOzte4dMwSBcUDUQXCuZyzCyB1IuGF+wl6P9yrPePPEW4AKB+6tEzmIAtVbrgmCiw
+         Yf9QArsAvU4kyS0iyjYlf68GOKSHh4BXyy9sFtvUJLGLGhswUF7Tzx1dtOpKm/HcT0
+         hSARomWIKAljFJuhR4euFYyD90bZn8dbXz/QFXnY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 5.4 252/367] kconfig: fix possible buffer overflow
+        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 4.19 189/273] X.509: if signature is unsupported skip validation
 Date:   Wed, 20 Sep 2023 13:30:29 +0200
-Message-ID: <20230920112905.077676876@linuxfoundation.org>
+Message-ID: <20230920112852.352037706@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Thore Sommer <public@thson.de>
 
-[ Upstream commit a3b7039bb2b22fcd2ad20d59c00ed4e606ce3754 ]
+commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
 
-Buffer 'new_argv' is accessed without bound check after accessing with
-bound check via 'new_argc' index.
+When the hash algorithm for the signature is not available the digest size
+is 0 and the signature in the certificate is marked as unsupported.
 
-Fixes: e298f3b49def ("kconfig: add built-in function support")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When validating a self-signed certificate, this needs to be checked,
+because otherwise trying to validate the signature will fail with an
+warning:
+
+Loading compiled-in X.509 certificates
+WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
+pkcs1pad_verify+0x46/0x12c
+...
+Problem loading in-kernel X.509 certificate (-22)
+
+Signed-off-by: Thore Sommer <public@thson.de>
+Cc: stable@vger.kernel.org # v4.7+
+Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/preprocess.c | 3 +++
- 1 file changed, 3 insertions(+)
+ crypto/asymmetric_keys/x509_public_key.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/scripts/kconfig/preprocess.c b/scripts/kconfig/preprocess.c
-index 748da578b418c..d1f5bcff4b62d 100644
---- a/scripts/kconfig/preprocess.c
-+++ b/scripts/kconfig/preprocess.c
-@@ -396,6 +396,9 @@ static char *eval_clause(const char *str, size_t len, int argc, char *argv[])
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -134,6 +134,11 @@ int x509_check_for_self_signed(struct x5
+ 	if (strcmp(cert->pub->pkey_algo, cert->sig->pkey_algo) != 0)
+ 		goto out;
  
- 		p++;
- 	}
++	if (cert->unsupported_sig) {
++		ret = 0;
++		goto out;
++	}
 +
-+	if (new_argc >= FUNCTION_MAX_ARGS)
-+		pperror("too many function arguments");
- 	new_argv[new_argc++] = prev;
- 
- 	/*
--- 
-2.40.1
-
+ 	ret = public_key_verify_signature(cert->pub, cert->sig);
+ 	if (ret < 0) {
+ 		if (ret == -ENOPKG) {
 
 
