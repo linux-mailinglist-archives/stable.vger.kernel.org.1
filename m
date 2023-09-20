@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CE217A7B2E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F607A7BAA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234682AbjITLtx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53440 "EHLO
+        id S234694AbjITLyT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234688AbjITLtw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:52 -0400
+        with ESMTP id S234759AbjITLyS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0437A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF30C433C9;
-        Wed, 20 Sep 2023 11:49:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF44EB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356F5C433C9;
+        Wed, 20 Sep 2023 11:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210586;
-        bh=UCfiDVFnq+EOE6oavxehpPNGRQFcmBrB1JCz2JF/pK0=;
+        s=korg; t=1695210852;
+        bh=H7vzb99gD6KEaGbKm0h6PeAB3mSIvlDniMPHBt09oWQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RU3Jsn76K9ctyGVc3fLh+R09J67HjIfZVXXj0DPcuy12D2M1JSTcSBJlH4VVHQmYA
-         W2w39DL3E4zKisd602vTDnrDkj6N4jdUeEp9uMCJYpjkEhob1Hq9vL+2h7pmKvzmP0
-         f+6biTCwCvqzIb2j026dUEH0GD1xdtlxxshhbVJw=
+        b=I31vqZSTWszxf8dHM6yYxyBXCg45NGG+ybyNBwY66U4hPzXWBf3fmpeGnn2/b13ck
+         7hn99ny+j2WMhIk7OC5bd0UeSIsB/GkXVo1KWDRbeh4THjjDwA1tJdzQhY0xfe+wiC
+         J5AEKOv6JV3V+nJX8edWUIvqDUbVBh9Aw0X3FSus=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Johannes Berg <johannes@sipsolutions.net>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 106/211] media: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()
-Date:   Wed, 20 Sep 2023 13:29:10 +0200
-Message-ID: <20230920112849.082455150@linuxfoundation.org>
+Subject: [PATCH 6.1 017/139] wifi: ath9k: fix fortify warnings
+Date:   Wed, 20 Sep 2023 13:29:11 +0200
+Message-ID: <20230920112836.248285684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,100 +53,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 5ae544d94abc8ff77b1b9bf8774def3fa5689b5b ]
+[ Upstream commit 810e41cebb6c6e394f2068f839e1a3fc745a5dcc ]
 
-In dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach dw2102_i2c_transfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+I've noticed the following:
 
-Similar commit:
-commit 950e252cb469
-("[media] dw2102: limit messages to buffer size")
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘ath_tx_complete_aggr’ at drivers/net/wireless/ath/ath9k/xmit.c:556:4,
+    inlined from ‘ath_tx_process_buffer’ at drivers/net/wireless/ath/ath9k/xmit.c:773:3:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘ath_tx_count_frames’ at drivers/net/wireless/ath/ath9k/xmit.c:473:3,
+    inlined from ‘ath_tx_complete_aggr’ at drivers/net/wireless/ath/ath9k/xmit.c:572:2,
+    inlined from ‘ath_tx_process_buffer’ at drivers/net/wireless/ath/ath9k/xmit.c:773:3:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In both cases, the compiler complains on:
+
+memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
+
+which is the legal way to copy both 'ba_low' and following 'ba_high'
+members of 'struct ath_tx_status' at once (that is, issue one 8-byte
+'memcpy()' for two 4-byte fields). Since the fortification logic seems
+interprets this trick as an attempt to overread 4-byte 'ba_low', silence
+relevant warnings by using the convenient 'struct_group()' quirk.
+
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230620080855.396851-2-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/wireless/ath/ath9k/mac.h  | 6 ++++--
+ drivers/net/wireless/ath/ath9k/xmit.c | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index 970b84c3f0b5a..b3bb1805829ad 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -128,6 +128,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+diff --git a/drivers/net/wireless/ath/ath9k/mac.h b/drivers/net/wireless/ath/ath9k/mac.h
+index af44b33814ddc..f03d792732da7 100644
+--- a/drivers/net/wireless/ath/ath9k/mac.h
++++ b/drivers/net/wireless/ath/ath9k/mac.h
+@@ -115,8 +115,10 @@ struct ath_tx_status {
+ 	u8 qid;
+ 	u16 desc_id;
+ 	u8 tid;
+-	u32 ba_low;
+-	u32 ba_high;
++	struct_group(ba,
++		u32 ba_low;
++		u32 ba_high;
++	);
+ 	u32 evm0;
+ 	u32 evm1;
+ 	u32 evm2;
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index ba271a10d4ab1..eeabdd67fbccd 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -462,7 +462,7 @@ static void ath_tx_count_frames(struct ath_softc *sc, struct ath_buf *bf,
+ 	isaggr = bf_isaggr(bf);
+ 	if (isaggr) {
+ 		seq_st = ts->ts_seqnum;
+-		memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
++		memcpy(ba, &ts->ba, WME_BA_BMP_SIZE >> 3);
+ 	}
  
- 	switch (num) {
- 	case 2:
-+		if (msg[0].len < 1) {
-+			num = -EOPNOTSUPP;
-+			break;
-+		}
- 		/* read stv0299 register */
- 		value = msg[0].buf[0];/* register */
- 		for (i = 0; i < msg[1].len; i++) {
-@@ -139,6 +143,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 	case 1:
- 		switch (msg[0].addr) {
- 		case 0x68:
-+			if (msg[0].len < 2) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			/* write to stv0299 register */
- 			buf6[0] = 0x2a;
- 			buf6[1] = msg[0].buf[0];
-@@ -148,6 +156,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			break;
- 		case 0x60:
- 			if (msg[0].flags == 0) {
-+				if (msg[0].len < 4) {
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
- 			/* write to tuner pll */
- 				buf6[0] = 0x2c;
- 				buf6[1] = 5;
-@@ -159,6 +171,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				dw210x_op_rw(d->udev, 0xb2, 0, 0,
- 						buf6, 7, DW210X_WRITE_MSG);
- 			} else {
-+				if (msg[0].len < 1) {
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
- 			/* read from tuner */
- 				dw210x_op_rw(d->udev, 0xb5, 0, 0,
- 						buf6, 1, DW210X_READ_MSG);
-@@ -166,12 +182,20 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			}
- 			break;
- 		case (DW2102_RC_QUERY):
-+			if (msg[0].len < 2) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			dw210x_op_rw(d->udev, 0xb8, 0, 0,
- 					buf6, 2, DW210X_READ_MSG);
- 			msg[0].buf[0] = buf6[0];
- 			msg[0].buf[1] = buf6[1];
- 			break;
- 		case (DW2102_VOLTAGE_CTRL):
-+			if (msg[0].len < 1) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			buf6[0] = 0x30;
- 			buf6[1] = msg[0].buf[0];
- 			dw210x_op_rw(d->udev, 0xb2, 0, 0,
+ 	while (bf) {
+@@ -545,7 +545,7 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
+ 	if (isaggr && txok) {
+ 		if (ts->ts_flags & ATH9K_TX_BA) {
+ 			seq_st = ts->ts_seqnum;
+-			memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
++			memcpy(ba, &ts->ba, WME_BA_BMP_SIZE >> 3);
+ 		} else {
+ 			/*
+ 			 * AR5416 can become deaf/mute when BA
 -- 
 2.40.1
 
