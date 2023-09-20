@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 643DB7A7EE1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E997A7D53
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235770AbjITMVi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33676 "EHLO
+        id S234330AbjITMIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235772AbjITMVh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:37 -0400
+        with ESMTP id S235252AbjITMIg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71917F7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5FBC433C7;
-        Wed, 20 Sep 2023 12:21:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265BEB4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DB8C433C7;
+        Wed, 20 Sep 2023 12:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212490;
-        bh=rXDpqzmyFJ5UXqqutqrBWeizwSxCaiS2CuSglwg28Ko=;
+        s=korg; t=1695211709;
+        bh=AyS3mPDnuyvluUcLwhiPxkWB9mIUZCEfoegab0xsnJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QiKkPEZQrGKI+caQ/YjaZlVFbg0oy7Jj5+MTRa2cUccw/vdv+nujYvacYK14xmLzh
-         +/5KW4TDT5kquTjMhphAMLFuoB9rTKFpl+VElrrApZ4/YC3HAepTgc8q/SBnwQkIrM
-         r0RwPpT+I6mBMeTFDJJC/QQYquq9f1v8KBPPyGUw=
+        b=wq/FyHZK3cw0sWPxmdkyNcgIsgVseAf+K+S1O+P5E4qXlwVWL1ShcOM6wl1c2dAqb
+         KMeocCbUgzbcPLc3mXOsdDYZd5qwKhYWxNZIFRnYS1MxRpn5N0TSEs2mepa4uUwXEz
+         W2x5vCTDm5desY1Hi/YR1jqJ0bPLWDT7rg2iLTNI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jim Reinhart <jimr@tekvox.com>,
-        James Autry <jautry@tekvox.com>,
-        Matthew Maron <matthewm@tekvox.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 20/83] mmc: sdhci-esdhc-imx: improve ESDHC_FLAG_ERR010450
+Subject: [PATCH 4.14 167/186] media: af9005: Fix null-ptr-deref in af9005_i2c_xfer
 Date:   Wed, 20 Sep 2023 13:31:10 +0200
-Message-ID: <20230920112827.474092580@linuxfoundation.org>
+Message-ID: <20230920112842.924312775@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,56 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giulio Benetti <giulio.benetti@benettiengineering.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 5ae4b0d8875caa44946e579420c7fd5740d58653 ]
+[ Upstream commit f4ee84f27625ce1fdf41e8483fa0561a1b837d10 ]
 
-Errata ERR010450 only shows up if voltage is 1.8V, but if the device is
-supplied by 3v3 the errata can be ignored. So let's check for if quirk
-SDHCI_QUIRK2_NO_1_8_V is defined or not before limiting the frequency.
+In af9005_i2c_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach af9005_i2c_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Cc: Jim Reinhart <jimr@tekvox.com>
-Cc: James Autry <jautry@tekvox.com>
-Cc: Matthew Maron <matthewm@tekvox.com>
-Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Acked-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230811214853.8623-1-giulio.benetti@benettiengineering.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb/af9005.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 70f388f83485c..b030f657e2534 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -166,8 +166,8 @@
- #define ESDHC_FLAG_HS400		BIT(9)
- /*
-  * The IP has errata ERR010450
-- * uSDHC: Due to the I/O timing limit, for SDR mode, SD card clock can't
-- * exceed 150MHz, for DDR mode, SD card clock can't exceed 45MHz.
-+ * uSDHC: At 1.8V due to the I/O timing limit, for SDR mode, SD card
-+ * clock can't exceed 150MHz, for DDR mode, SD card clock can't exceed 45MHz.
-  */
- #define ESDHC_FLAG_ERR010450		BIT(10)
- /* The IP supports HS400ES mode */
-@@ -873,7 +873,8 @@ static inline void esdhc_pltfm_set_clock(struct sdhci_host *host,
- 		| ESDHC_CLOCK_MASK);
- 	sdhci_writel(host, temp, ESDHC_SYSTEM_CONTROL);
+diff --git a/drivers/media/usb/dvb-usb/af9005.c b/drivers/media/usb/dvb-usb/af9005.c
+index 66990a193bc50..83971daa72506 100644
+--- a/drivers/media/usb/dvb-usb/af9005.c
++++ b/drivers/media/usb/dvb-usb/af9005.c
+@@ -431,6 +431,10 @@ static int af9005_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 		if (ret == 0)
+ 			ret = 2;
+ 	} else {
++		if (msg[0].len < 2) {
++			ret = -EOPNOTSUPP;
++			goto unlock;
++		}
+ 		/* write one or more registers */
+ 		reg = msg[0].buf[0];
+ 		addr = msg[0].addr;
+@@ -440,6 +444,7 @@ static int af9005_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			ret = 1;
+ 	}
  
--	if (imx_data->socdata->flags & ESDHC_FLAG_ERR010450) {
-+	if ((imx_data->socdata->flags & ESDHC_FLAG_ERR010450) &&
-+	    (!(host->quirks2 & SDHCI_QUIRK2_NO_1_8_V))) {
- 		unsigned int max_clock;
- 
- 		max_clock = imx_data->is_ddr ? 45000000 : 150000000;
++unlock:
+ 	mutex_unlock(&d->i2c_mutex);
+ 	return ret;
+ }
 -- 
 2.40.1
 
