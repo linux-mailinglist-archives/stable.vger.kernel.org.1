@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 981BB7A7BED
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76F557A7B78
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234583AbjITL46 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58156 "EHLO
+        id S234710AbjITLw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234890AbjITL45 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:57 -0400
+        with ESMTP id S234721AbjITLw1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5849CF7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33C1C433C9;
-        Wed, 20 Sep 2023 11:56:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A48F892
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB18C433CA;
+        Wed, 20 Sep 2023 11:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211004;
-        bh=JedBv2KfopEh38qIlbNa0Iubgt/wepbBBnhYNuF5daw=;
+        s=korg; t=1695210741;
+        bh=HcgK302R7qFgXJrp85351DK559MMqOiSRHNkmwozZBI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v7uKJFLqC+B5wH/YAyakOSJy8WCFdAUBh2593cFnBTB1l1T26IlGoKbpq8JVyuL3k
-         Qprc/qws8NLuvPgJTyj1gQktw/bj7kAFSefs8nBfaZbl8t/Li1hVLjDVEDBJUEJ/Ds
-         JQnq6/pJ0D0QmBQhrxu4SSlNqx7YsC0fT6CuL/R0=
+        b=Gwm4a0MVP0IC4Uhu3xVdDFFVfYmxdpu9vfPjyzIO2rfY/1oysMtP9Tpc3HqN/cpjU
+         TkctE3c5QSw7g4u7nuu8wE5zE9Kh3XxOtlLBtiUtu8kjC5uaLtI/Uva/RcJjSNl35i
+         KQtSxFbBGj7ou48T93skF7y9umZaam3F9brZDxqc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Petr Mladek <pmladek@suse.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/139] media: dvb-usb-v2: gl861: Fix null-ptr-deref in gl861_i2c_master_xfer
-Date:   Wed, 20 Sep 2023 13:30:05 +0200
-Message-ID: <20230920112838.340959278@linuxfoundation.org>
+Subject: [PATCH 6.5 162/211] samples/hw_breakpoint: fix building without module unloading
+Date:   Wed, 20 Sep 2023 13:30:06 +0200
+Message-ID: <20230920112850.910654029@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b97719a66970601cd3151a3e2020f4454a1c4ff6 ]
+[ Upstream commit b9080468caeddc58a91edd1c3a7d212ea82b0d1d ]
 
-In gl861_i2c_master_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach gl861_i2c_master_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+__symbol_put() is really meant as an internal helper and is not available
+when module unloading is disabled, unlike the previously used symbol_put():
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+samples/hw_breakpoint/data_breakpoint.c: In function 'hw_break_module_exit':
+samples/hw_breakpoint/data_breakpoint.c:73:9: error: implicit declaration of function '__symbol_put'; did you mean '__symbol_get'? [-Werror=implicit-function-declaration]
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The hw_break_module_exit() function is not actually used when module
+unloading is disabled, but it still causes the build failure for an
+undefined identifier. Enclose this one call in an appropriate #ifdef to
+clarify what the requirement is. Leaving out the entire exit function
+would also work but feels less clar in this case.
+
+Fixes: 910e230d5f1bb ("samples/hw_breakpoint: Fix kernel BUG 'invalid opcode: 0000'")
+Fixes: d8a84d33a4954 ("samples/hw_breakpoint: drop use of kallsyms_lookup_name()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/gl861.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ samples/hw_breakpoint/data_breakpoint.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/gl861.c b/drivers/media/usb/dvb-usb-v2/gl861.c
-index 0c434259c36f1..c71e7b93476de 100644
---- a/drivers/media/usb/dvb-usb-v2/gl861.c
-+++ b/drivers/media/usb/dvb-usb-v2/gl861.c
-@@ -120,7 +120,7 @@ static int gl861_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 	} else if (num == 2 && !(msg[0].flags & I2C_M_RD) &&
- 		   (msg[1].flags & I2C_M_RD)) {
- 		/* I2C write + read */
--		if (msg[0].len > 1 || msg[1].len > sizeof(ctx->buf)) {
-+		if (msg[0].len != 1 || msg[1].len > sizeof(ctx->buf)) {
- 			ret = -EOPNOTSUPP;
- 			goto err;
- 		}
+diff --git a/samples/hw_breakpoint/data_breakpoint.c b/samples/hw_breakpoint/data_breakpoint.c
+index 9debd128b2ab8..b99322f188e59 100644
+--- a/samples/hw_breakpoint/data_breakpoint.c
++++ b/samples/hw_breakpoint/data_breakpoint.c
+@@ -70,7 +70,9 @@ static int __init hw_break_module_init(void)
+ static void __exit hw_break_module_exit(void)
+ {
+ 	unregister_wide_hw_breakpoint(sample_hbp);
++#ifdef CONFIG_MODULE_UNLOAD
+ 	__symbol_put(ksym_name);
++#endif
+ 	printk(KERN_INFO "HW Breakpoint for %s write uninstalled\n", ksym_name);
+ }
+ 
 -- 
 2.40.1
 
