@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93AD7A7B7F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E8C7A7C22
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234734AbjITLwr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55790 "EHLO
+        id S234656AbjITL6W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234737AbjITLwq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:46 -0400
+        with ESMTP id S235022AbjITL6V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FACB0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5589C433C7;
-        Wed, 20 Sep 2023 11:52:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF0D5A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09175C433C8;
+        Wed, 20 Sep 2023 11:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210760;
-        bh=DdZqobT5opswTn7QPHeUGqOI5jy6JYVqs1f1nyYm4DQ=;
+        s=korg; t=1695211095;
+        bh=MQUXiiPNgcEg3uvYIuuSMKX9plBvKb/y9cvqNc31IFw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otrV4C7SPFerQeDkn7xTRbA88h90ZpOpY0VablHa+vn+VtCZJQ+G1NS8PzEf5yXmz
-         Xr/R7U2arEhE/Ah6ErOZNZS+pucISmc05gYCKRqHSIR97yOGxSWxJYLLVuDEKmbB/T
-         WYPH2IbE+1xzfS0hOK9pae+Nj3YD77Fqg44W3Hck=
+        b=p7aiV6+ptYNON+OrILdEAmXh8Z/qIzU0a2Td0VI0jWaBaM3E2OH4flL8DZUfa9tEG
+         SCg1HUyYVdJ7hNOsFSZntRGmgWmEoFy0pk5e6Pd5q531pnIT8KHChBwGqAzlpmpfun
+         9BDpiL0Ohd4zdjfTndpgsT2DTCyJknvEvwQCjeAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.5 195/211] ata: libata: disallow dev-initiated LPM transitions to unsupported states
+        patches@lists.linux.dev, Aaron Lu <aaron.lu@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/139] x86/boot/compressed: Reserve more memory for page tables
 Date:   Wed, 20 Sep 2023 13:30:39 +0200
-Message-ID: <20230920112851.912576585@linuxfoundation.org>
+Message-ID: <20230920112839.481421024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,113 +50,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 24e0e61db3cb86a66824531989f1df80e0939f26 upstream.
+[ Upstream commit f530ee95b72e77b09c141c4b1a4b94d1199ffbd9 ]
 
-In AHCI 1.3.1, the register description for CAP.SSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Slumber state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Slumber requests."
+The decompressor has a hard limit on the number of page tables it can
+allocate. This limit is defined at compile-time and will cause boot
+failure if it is reached.
 
-In AHCI 1.3.1, the register description for CAP.PSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Partial state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Partial requests."
+The kernel is very strict and calculates the limit precisely for the
+worst-case scenario based on the current configuration. However, it is
+easy to forget to adjust the limit when a new use-case arises. The
+worst-case scenario is rarely encountered during sanity checks.
 
-Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
-a device is not allowed to initiate transitions to power states which are
-unsupported by the HBA.
+In the case of enabling 5-level paging, a use-case was overlooked. The
+limit needs to be increased by one to accommodate the additional level.
+This oversight went unnoticed until Aaron attempted to run the kernel
+via kexec with 5-level paging and unaccepted memory enabled.
 
-DevSleep is always initiated by the HBA, however, for completeness, set the
-corresponding bit in PxSCTL.IPM such that agressive link power management
-cannot transition to DevSleep if DevSleep is not supported.
+Update wost-case calculations to include 5-level paging.
 
-sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
-However, only libahci has the ability to read the CAP/CAP2 register to see
-if these features are supported. Therefore, in order to not introduce any
-regressions on ata_piix or libata-pmp, create flags that indicate that the
-respective feature is NOT supported. This way, the behavior for ata_piix
-and libata-pmp should remain unchanged.
+To address this issue, let's allocate some extra space for page tables.
+128K should be sufficient for any use-case. The logic can be simplified
+by using a single value for all kernel configurations.
 
-This change is based on a patch originally submitted by Runa Guo-oc.
+[ Also add a warning, should this memory run low - by Dave Hansen. ]
 
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 34bbb0009f3b ("x86/boot/compressed: Enable 5-level paging during decompression stage")
+Reported-by: Aaron Lu <aaron.lu@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230915070221.10266-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c        |    9 +++++++++
- drivers/ata/libata-sata.c |   19 ++++++++++++++++---
- include/linux/libata.h    |    4 ++++
- 3 files changed, 29 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/ident_map_64.c |  8 +++++
+ arch/x86/include/asm/boot.h             | 45 +++++++++++++++++--------
+ 2 files changed, 39 insertions(+), 14 deletions(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1883,6 +1883,15 @@ static int ahci_init_one(struct pci_dev
- 	else
- 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 321a5011042d4..b4155273df891 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -67,6 +67,14 @@ static void *alloc_pgt_page(void *context)
+ 		return NULL;
+ 	}
  
-+	if (!(hpriv->cap & HOST_CAP_PART))
-+		host->flags |= ATA_HOST_NO_PART;
++	/* Consumed more tables than expected? */
++	if (pages->pgt_buf_offset == BOOT_PGT_SIZE_WARN) {
++		debug_putstr("pgt_buf running low in " __FILE__ "\n");
++		debug_putstr("Need to raise BOOT_PGT_SIZE?\n");
++		debug_putaddr(pages->pgt_buf_offset);
++		debug_putaddr(pages->pgt_buf_size);
++	}
 +
-+	if (!(hpriv->cap & HOST_CAP_SSC))
-+		host->flags |= ATA_HOST_NO_SSC;
-+
-+	if (!(hpriv->cap2 & HOST_CAP2_SDS))
-+		host->flags |= ATA_HOST_NO_DEVSLP;
-+
- 	if (pi.flags & ATA_FLAG_EM)
- 		ahci_reset_em(host);
+ 	entry = pages->pgt_buf + pages->pgt_buf_offset;
+ 	pages->pgt_buf_offset += PAGE_SIZE;
  
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -396,10 +396,23 @@ int sata_link_scr_lpm(struct ata_link *l
- 	case ATA_LPM_MED_POWER_WITH_DIPM:
- 	case ATA_LPM_MIN_POWER_WITH_PARTIAL:
- 	case ATA_LPM_MIN_POWER:
--		if (ata_link_nr_enabled(link) > 0)
--			/* no restrictions on LPM transitions */
-+		if (ata_link_nr_enabled(link) > 0) {
-+			/* assume no restrictions on LPM transitions */
- 			scontrol &= ~(0x7 << 8);
--		else {
-+
-+			/*
-+			 * If the controller does not support partial, slumber,
-+			 * or devsleep, then disallow these transitions.
-+			 */
-+			if (link->ap->host->flags & ATA_HOST_NO_PART)
-+				scontrol |= (0x1 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_SSC)
-+				scontrol |= (0x2 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
-+				scontrol |= (0x4 << 8);
-+		} else {
- 			/* empty port, power off */
- 			scontrol &= ~0xf;
- 			scontrol |= (0x1 << 2);
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -222,6 +222,10 @@ enum {
- 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
- 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
+index 9191280d9ea31..215d37f7dde8a 100644
+--- a/arch/x86/include/asm/boot.h
++++ b/arch/x86/include/asm/boot.h
+@@ -40,23 +40,40 @@
+ #ifdef CONFIG_X86_64
+ # define BOOT_STACK_SIZE	0x4000
  
-+	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
-+	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
-+	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
++/*
++ * Used by decompressor's startup_32() to allocate page tables for identity
++ * mapping of the 4G of RAM in 4-level paging mode:
++ * - 1 level4 table;
++ * - 1 level3 table;
++ * - 4 level2 table that maps everything with 2M pages;
++ *
++ * The additional level5 table needed for 5-level paging is allocated from
++ * trampoline_32bit memory.
++ */
+ # define BOOT_INIT_PGT_SIZE	(6*4096)
+-# ifdef CONFIG_RANDOMIZE_BASE
 +
- 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+ /*
+- * Assuming all cross the 512GB boundary:
+- * 1 page for level4
+- * (2+2)*4 pages for kernel, param, cmd_line, and randomized kernel
+- * 2 pages for first 2M (video RAM: CONFIG_X86_VERBOSE_BOOTUP).
+- * Total is 19 pages.
++ * Total number of page tables kernel_add_identity_map() can allocate,
++ * including page tables consumed by startup_32().
++ *
++ * Worst-case scenario:
++ *  - 5-level paging needs 1 level5 table;
++ *  - KASLR needs to map kernel, boot_params, cmdline and randomized kernel,
++ *    assuming all of them cross 256T boundary:
++ *    + 4*2 level4 table;
++ *    + 4*2 level3 table;
++ *    + 4*2 level2 table;
++ *  - X86_VERBOSE_BOOTUP needs to map the first 2M (video RAM):
++ *    + 1 level4 table;
++ *    + 1 level3 table;
++ *    + 1 level2 table;
++ * Total: 28 tables
++ *
++ * Add 4 spare table in case decompressor touches anything beyond what is
++ * accounted above. Warn if it happens.
+  */
+-#  ifdef CONFIG_X86_VERBOSE_BOOTUP
+-#   define BOOT_PGT_SIZE	(19*4096)
+-#  else /* !CONFIG_X86_VERBOSE_BOOTUP */
+-#   define BOOT_PGT_SIZE	(17*4096)
+-#  endif
+-# else /* !CONFIG_RANDOMIZE_BASE */
+-#  define BOOT_PGT_SIZE		BOOT_INIT_PGT_SIZE
+-# endif
++# define BOOT_PGT_SIZE_WARN	(28*4096)
++# define BOOT_PGT_SIZE		(32*4096)
  
- 	/* various lengths of time */
+ #else /* !CONFIG_X86_64 */
+ # define BOOT_STACK_SIZE	0x1000
+-- 
+2.40.1
+
 
 
