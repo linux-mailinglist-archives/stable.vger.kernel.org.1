@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 451817A7E9A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D88B07A7D0E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235516AbjITMTM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56636 "EHLO
+        id S234119AbjITMGN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235606AbjITMTL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:11 -0400
+        with ESMTP id S234505AbjITMGM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11A4CE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C754DC433C7;
-        Wed, 20 Sep 2023 12:19:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325BCC2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA9FC433CB;
+        Wed, 20 Sep 2023 12:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212345;
-        bh=gh8lIb8VLZukvGlPIezxxObjeu/jrqy0O9Gqj1EVbpM=;
+        s=korg; t=1695211563;
+        bh=K5AlHeKwRINGPj40oAxb/6Vl3b32tQeZgz6AjBkDnfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vTD/eRXz/42Ko66iUxATN/pDKx4FYIf81PdSsxYfqrO3DdfzxRXnx3+3ecbLTVWYr
-         eIm/VunzaKEYOkReqJpZvnsDUk76OFHY2elXzYcj5GfOISodHDJ0bkxhG0CAQuoak8
-         LYIjnAOyjWSRUNRi9UdePlUpH+GzuqND7GtaCwgI=
+        b=jMktnLR5Gpy7L+F2vQOOlCJIkhraNbRIWjOU2DT1tX0Z3HmXdnvtZhMnH5l2jb6Ri
+         pRICJ/zcq05+naCCIaDb256e+VaiwlnjvhRQCWtAJu+ywadjGTCh5MR1UZkf3lS9cP
+         IlihO1bSL22PzwL9tr6w3VIk/Iz4xLMIKWaKfuFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.19 202/273] parisc: led: Reduce CPU overhead for disk & lan LED computation
-Date:   Wed, 20 Sep 2023 13:30:42 +0200
-Message-ID: <20230920112852.735467937@linuxfoundation.org>
+        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 140/186] igbvf: Change IGBVF_MIN to allow set rx/tx value between 64 and 80
+Date:   Wed, 20 Sep 2023 13:30:43 +0200
+Message-ID: <20230920112842.047980691@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,42 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Olga Zaborska <olga.zaborska@intel.com>
 
-commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
+[ Upstream commit 8360717524a24a421c36ef8eb512406dbd42160a ]
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
+value between 64 and 80. All igbvf devices can use as low as 64 descriptors.
+This change will unify igbvf with other drivers.
+Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d4e0fe01a38a ("igbvf: add new driver to support 82576 virtual functions")
+Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parisc/led.c |    4 ++--
+ drivers/net/ethernet/intel/igbvf/igbvf.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -60,8 +60,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+diff --git a/drivers/net/ethernet/intel/igbvf/igbvf.h b/drivers/net/ethernet/intel/igbvf/igbvf.h
+index bf69f01f84677..f69a7787a590d 100644
+--- a/drivers/net/ethernet/intel/igbvf/igbvf.h
++++ b/drivers/net/ethernet/intel/igbvf/igbvf.h
+@@ -62,11 +62,11 @@ enum latency_range {
+ /* Tx/Rx descriptor defines */
+ #define IGBVF_DEFAULT_TXD	256
+ #define IGBVF_MAX_TXD		4096
+-#define IGBVF_MIN_TXD		80
++#define IGBVF_MIN_TXD		64
+ 
+ #define IGBVF_DEFAULT_RXD	256
+ #define IGBVF_MAX_RXD		4096
+-#define IGBVF_MIN_RXD		80
++#define IGBVF_MIN_RXD		64
+ 
+ #define IGBVF_MIN_ITR_USECS	10 /* 100000 irq/sec */
+ #define IGBVF_MAX_ITR_USECS	10000 /* 100    irq/sec */
+-- 
+2.40.1
+
 
 
