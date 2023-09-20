@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 780F47A8112
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6996E7A8189
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236269AbjITMm2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:42:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45650 "EHLO
+        id S236361AbjITMqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236256AbjITMm1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:27 -0400
+        with ESMTP id S236373AbjITMqW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85F8F83
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61E9C433C8;
-        Wed, 20 Sep 2023 12:42:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D07F83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E20C433C9;
+        Wed, 20 Sep 2023 12:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213741;
-        bh=mN5U/S68LqEbNqhntzXsskLrL8JwHMrqNuSS/ooplG0=;
+        s=korg; t=1695213975;
+        bh=jHGQQH0tHulEX3LLR272VW78JJU5/MyJ3Ow5k9UvsYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QWseLs8Ur+9kVXzFwau1OmVjHCOqM5Ho9R6I8PnQ1UL/qnq0TssJ052BRlG4OCeLq
-         /Ios9L7q9QvOljBGAaPkEJUyGVt+L8R97m3C9ZGCMeGs7+eCq63rYWjCmar7CkEY0X
-         ZCCMo45lspM4eWjGWov35EP5qhqWmYHvYL4YIJ/U=
+        b=zqiSwR4CtGG2hJOUORLwbpsD5dmZECoQLZ1C15WFzvGVm1ESMN3fjgRxXr6zmLQaj
+         FINPyDAdrqugwQKRgHP3z2Upbgqzxm1tkGYBkS8aCKypA+yA8qjR16ZKyZ2lXBliAg
+         Zs3xzyL1vqZW8CFUe3CGOjyJ3s2TwppYlNsqfqcs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        tony garnock-jones <tonyg@leastfixedpoint.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 348/367] perf tools: Add an option to build without libbfd
+Subject: [PATCH 5.15 067/110] mtd: rawnand: brcmnand: Fix ECC level field setting for v7.2 controller
 Date:   Wed, 20 Sep 2023 13:32:05 +0200
-Message-ID: <20230920112907.504819317@linuxfoundation.org>
+Message-ID: <20230920112832.930455262@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,99 +52,162 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: William Zhang <william.zhang@broadcom.com>
 
-[ Upstream commit 0d1c50ac488ebdaeeaea8ed5069f8d435fd485ed ]
+[ Upstream commit 2ec2839a9062db8a592525a3fdabd42dcd9a3a9b ]
 
-Some distributions, like debian, don't link perf with libbfd. Add a
-build flag to make this configuration buildable and testable.
+v7.2 controller has different ECC level field size and shift in the acc
+control register than its predecessor and successor controller. It needs
+to be set specifically.
 
-This was inspired by:
-
-  https://lore.kernel.org/linux-perf-users/20210910102307.2055484-1-tonyg@leastfixedpoint.com/T/#u
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: tony garnock-jones <tonyg@leastfixedpoint.com>
-Link: http://lore.kernel.org/lkml/20210910225756.729087-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 7822a8913f4c ("perf build: Update build rule for generated files")
+Fixes: decba6d47869 ("mtd: brcmnand: Add v7.2 controller support")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-2-william.zhang@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.config | 47 ++++++++++++++++++++------------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 74 +++++++++++++-----------
+ 1 file changed, 41 insertions(+), 33 deletions(-)
 
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index cc11050420496..e95281586f65e 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -752,33 +752,36 @@ else
-   endif
- endif
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index f20a3154a0adb..c1e7ab13e7773 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -271,6 +271,7 @@ struct brcmnand_controller {
+ 	const unsigned int	*page_sizes;
+ 	unsigned int		page_size_shift;
+ 	unsigned int		max_oob;
++	u32			ecc_level_shift;
+ 	u32			features;
  
--ifeq ($(feature-libbfd), 1)
--  EXTLIBS += -lbfd -lopcodes
--else
--  # we are on a system that requires -liberty and (maybe) -lz
--  # to link against -lbfd; test each case individually here
+ 	/* for low-power standby/resume only */
+@@ -595,6 +596,34 @@ enum {
+ 	INTFC_CTLR_READY		= BIT(31),
+ };
+ 
++/***********************************************************************
++ * NAND ACC CONTROL bitfield
++ *
++ * Some bits have remained constant throughout hardware revision, while
++ * others have shifted around.
++ ***********************************************************************/
++
++/* Constant for all versions (where supported) */
++enum {
++	/* See BRCMNAND_HAS_CACHE_MODE */
++	ACC_CONTROL_CACHE_MODE				= BIT(22),
++
++	/* See BRCMNAND_HAS_PREFETCH */
++	ACC_CONTROL_PREFETCH				= BIT(23),
++
++	ACC_CONTROL_PAGE_HIT				= BIT(24),
++	ACC_CONTROL_WR_PREEMPT				= BIT(25),
++	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
++	ACC_CONTROL_RD_ERASED				= BIT(27),
++	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
++	ACC_CONTROL_WR_ECC				= BIT(30),
++	ACC_CONTROL_RD_ECC				= BIT(31),
++};
++
++#define	ACC_CONTROL_ECC_SHIFT			16
++/* Only for v7.2 */
++#define	ACC_CONTROL_ECC_EXT_SHIFT		13
++
+ static inline bool brcmnand_non_mmio_ops(struct brcmnand_controller *ctrl)
+ {
+ 	return static_branch_unlikely(&brcmnand_soc_has_ops_key);
+@@ -732,6 +761,12 @@ static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
+ 	else if (of_property_read_bool(ctrl->dev->of_node, "brcm,nand-has-wp"))
+ 		ctrl->features |= BRCMNAND_HAS_WP;
+ 
++	/* v7.2 has different ecc level shift in the acc register */
++	if (ctrl->nand_version == 0x0702)
++		ctrl->ecc_level_shift = ACC_CONTROL_ECC_EXT_SHIFT;
++	else
++		ctrl->ecc_level_shift = ACC_CONTROL_ECC_SHIFT;
++
+ 	return 0;
+ }
+ 
+@@ -920,30 +955,6 @@ static inline int brcmnand_cmd_shift(struct brcmnand_controller *ctrl)
+ 	return 0;
+ }
+ 
+-/***********************************************************************
+- * NAND ACC CONTROL bitfield
+- *
+- * Some bits have remained constant throughout hardware revision, while
+- * others have shifted around.
+- ***********************************************************************/
 -
--  # call all detections now so we get correct
--  # status in VF output
--  $(call feature_check,libbfd-liberty)
--  $(call feature_check,libbfd-liberty-z)
+-/* Constant for all versions (where supported) */
+-enum {
+-	/* See BRCMNAND_HAS_CACHE_MODE */
+-	ACC_CONTROL_CACHE_MODE				= BIT(22),
+-
+-	/* See BRCMNAND_HAS_PREFETCH */
+-	ACC_CONTROL_PREFETCH				= BIT(23),
+-
+-	ACC_CONTROL_PAGE_HIT				= BIT(24),
+-	ACC_CONTROL_WR_PREEMPT				= BIT(25),
+-	ACC_CONTROL_PARTIAL_PAGE			= BIT(26),
+-	ACC_CONTROL_RD_ERASED				= BIT(27),
+-	ACC_CONTROL_FAST_PGM_RDIN			= BIT(28),
+-	ACC_CONTROL_WR_ECC				= BIT(30),
+-	ACC_CONTROL_RD_ECC				= BIT(31),
+-};
+-
+ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
+ {
+ 	if (ctrl->nand_version == 0x0702)
+@@ -956,18 +967,15 @@ static inline u32 brcmnand_spare_area_mask(struct brcmnand_controller *ctrl)
+ 		return GENMASK(4, 0);
+ }
  
--  ifeq ($(feature-libbfd-liberty), 1)
--    EXTLIBS += -lbfd -lopcodes -liberty
--    FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -ldl
-+ifndef NO_LIBBFD
-+  ifeq ($(feature-libbfd), 1)
-+    EXTLIBS += -lbfd -lopcodes
-   else
--    ifeq ($(feature-libbfd-liberty-z), 1)
--      EXTLIBS += -lbfd -lopcodes -liberty -lz
--      FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -lz -ldl
-+    # we are on a system that requires -liberty and (maybe) -lz
-+    # to link against -lbfd; test each case individually here
-+
-+    # call all detections now so we get correct
-+    # status in VF output
-+    $(call feature_check,libbfd-liberty)
-+    $(call feature_check,libbfd-liberty-z)
-+
-+    ifeq ($(feature-libbfd-liberty), 1)
-+      EXTLIBS += -lbfd -lopcodes -liberty
-+      FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -ldl
-+    else
-+      ifeq ($(feature-libbfd-liberty-z), 1)
-+        EXTLIBS += -lbfd -lopcodes -liberty -lz
-+        FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -lz -ldl
-+      endif
-     endif
-+    $(call feature_check,disassembler-four-args)
-   endif
--  $(call feature_check,disassembler-four-args)
--endif
+-#define NAND_ACC_CONTROL_ECC_SHIFT	16
+-#define NAND_ACC_CONTROL_ECC_EXT_SHIFT	13
+-
+ static inline u32 brcmnand_ecc_level_mask(struct brcmnand_controller *ctrl)
+ {
+ 	u32 mask = (ctrl->nand_version >= 0x0600) ? 0x1f : 0x0f;
  
--ifeq ($(feature-libbfd-buildid), 1)
--  CFLAGS += -DHAVE_LIBBFD_BUILDID_SUPPORT
--else
--  msg := $(warning Old version of libbfd/binutils things like PE executable profiling will not be available);
-+  ifeq ($(feature-libbfd-buildid), 1)
-+    CFLAGS += -DHAVE_LIBBFD_BUILDID_SUPPORT
-+  else
-+    msg := $(warning Old version of libbfd/binutils things like PE executable profiling will not be available);
-+  endif
- endif
+-	mask <<= NAND_ACC_CONTROL_ECC_SHIFT;
++	mask <<= ACC_CONTROL_ECC_SHIFT;
  
- ifdef NO_DEMANGLE
+ 	/* v7.2 includes additional ECC levels */
+-	if (ctrl->nand_version >= 0x0702)
+-		mask |= 0x7 << NAND_ACC_CONTROL_ECC_EXT_SHIFT;
++	if (ctrl->nand_version == 0x0702)
++		mask |= 0x7 << ACC_CONTROL_ECC_EXT_SHIFT;
+ 
+ 	return mask;
+ }
+@@ -981,8 +989,8 @@ static void brcmnand_set_ecc_enabled(struct brcmnand_host *host, int en)
+ 
+ 	if (en) {
+ 		acc_control |= ecc_flags; /* enable RD/WR ECC */
+-		acc_control |= host->hwcfg.ecc_level
+-			       << NAND_ACC_CONTROL_ECC_SHIFT;
++		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
++		acc_control |= host->hwcfg.ecc_level << ctrl->ecc_level_shift;
+ 	} else {
+ 		acc_control &= ~ecc_flags; /* disable RD/WR ECC */
+ 		acc_control &= ~brcmnand_ecc_level_mask(ctrl);
+@@ -2582,7 +2590,7 @@ static int brcmnand_set_cfg(struct brcmnand_host *host,
+ 	tmp &= ~brcmnand_ecc_level_mask(ctrl);
+ 	tmp &= ~brcmnand_spare_area_mask(ctrl);
+ 	if (ctrl->nand_version >= 0x0302) {
+-		tmp |= cfg->ecc_level << NAND_ACC_CONTROL_ECC_SHIFT;
++		tmp |= cfg->ecc_level << ctrl->ecc_level_shift;
+ 		tmp |= cfg->spare_area_size;
+ 	}
+ 	nand_writereg(ctrl, acc_control_offs, tmp);
 -- 
 2.40.1
 
