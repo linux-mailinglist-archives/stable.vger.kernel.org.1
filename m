@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 404017A77F1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF487A77F6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233999AbjITJv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:51:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44010 "EHLO
+        id S234207AbjITJxE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233753AbjITJv7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:51:59 -0400
+        with ESMTP id S234133AbjITJxC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EBB8B9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:51:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA320C433C7;
-        Wed, 20 Sep 2023 09:51:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9305E8F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:52:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF600C433C7;
+        Wed, 20 Sep 2023 09:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203509;
-        bh=ZG7zapP4zYPJydVik+s+/WIoPVNOGvffIF8iEmGMyL0=;
+        s=korg; t=1695203576;
+        bh=QP3nOZwdpdrC+HmUjeGZZ13vMOeFrA3wUlW+JMQTLTo=;
         h=Subject:To:Cc:From:Date:From;
-        b=Tji3eJLYBEHGdZ+jIYXq4CgDnsnMd7TzqlUflsABa3r9ccKYuVFx9lOiy0DVwsSex
-         zheo32FXdbszZf820dNCJDkW30B5uc/tsSIoekMv+/U02fekTIH5TQU9M2Uvx3xx2y
-         KrAab6Xkc7qzfAWHVSRSwuDuxiUKrUrW2Tm7RB14=
-Subject: FAILED: patch "[PATCH] dm: fix a race condition in retrieve_deps" failed to apply to 5.15-stable tree
-To:     mpatocka@redhat.com, lilingfeng3@huawei.com, luomeng12@huawei.com,
-        snitzer@kernel.org
+        b=bVDjknBth4EZZDCMRTgiFK1rkhNAZ0Yx3CeI6bg6Vbt94NotSYJG1no/1IZke1y+f
+         a5Xwg2mUwiLh2gtI5IkojoYf1Gt8S/wZJPRZa+RdakPXXVttSnoNWWTqeEqGZ3xvDb
+         WibqZlR7tAovzQp5DDuDHiEZjbt0rHH3m4EyePgo=
+Subject: FAILED: patch "[PATCH] btrfs: release path before inode lookup during the ino lookup" failed to apply to 5.4-stable tree
+To:     fdmanana@suse.com, dsterba@suse.com, josef@toxicpanda.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:51:39 +0200
-Message-ID: <2023092039-pulmonary-map-20ae@gregkh>
+Date:   Wed, 20 Sep 2023 11:52:54 +0200
+Message-ID: <2023092054-antibody-prenatal-dc3c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,42 +42,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x f6007dce0cd35d634d9be91ef3515a6385dcee16
+git cherry-pick -x ee34a82e890a7babb5585daf1a6dd7d4d1cf142a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092039-pulmonary-map-20ae@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092054-antibody-prenatal-dc3c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-f6007dce0cd3 ("dm: fix a race condition in retrieve_deps")
-43e6c111824c ("dm: change from DMWARN to DMERR or DMCRIT for fatal errors")
-564b5c5476cd ("dm table: audit all dm_table_get_target() callers")
-2aec377a2925 ("dm table: remove dm_table_get_num_targets() wrapper")
-e810cb78bc4b ("dm: refactor dm_md_mempool allocation")
-9571f829f30a ("dm table: fix dm_table_supports_poll to return false if no data devices")
-0f14d60a023c ("dm: improve dm_io reference counting")
-3b03f7c1242c ("dm: simplify dm_start_io_acct")
-4857abf66434 ("dm: simplify dm_io access in dm_split_and_process_bio")
-84b98f4ce4d1 ("dm: factor out dm_io_set_error and __dm_io_dec_pending")
-cfc97abcbe0b ("dm: conditionally enable BIOSET_PERCPU_CACHE for dm_io bioset")
-7dd06a2548b2 ("dm: allow dm_accept_partial_bio() for dm_io without duplicate bios")
-5291984004ed ("dm: fix bio polling to handle possibile BLK_STS_AGAIN")
-4d7bca13dd9a ("dm: consolidate spinlocks in dm_io struct")
-bd4a6dd241ae ("dm: reduce size of dm_io and dm_target_io structs")
-655f3aad7aa4 ("dm: switch dm_target_io booleans over to proper flags")
-82f6cdcc3676 ("dm: switch dm_io booleans over to proper flags")
-e27363472f9b ("dm: factor out dm_io_complete")
-b7f8dff09827 ("dm: simplify dm_sumbit_bio_remap interface")
-a92512819b1f ("dm thin: use dm_submit_bio_remap")
+ee34a82e890a ("btrfs: release path before inode lookup during the ino lookup ioctl")
+0202e83fdab0 ("btrfs: simplify iget helpers")
+c75e839414d3 ("btrfs: kill the subvol_srcu")
+5c8fd99fec9d ("btrfs: make inodes hold a ref on their roots")
+7ac8b88ee668 ("btrfs: backref, only collect file extent items matching backref offset")
+0024652895e3 ("btrfs: rename btrfs_put_fs_root and btrfs_grab_fs_root")
+bd647ce385ec ("btrfs: add a leak check for roots")
+8260edba67a2 ("btrfs: make the init of static elements in fs_info separate")
+ae18c37ad5a1 ("btrfs: move fs_info init work into it's own helper function")
+141386e1a5d6 ("btrfs: free more things in btrfs_free_fs_info")
+bc44d7c4b2b1 ("btrfs: push btrfs_grab_fs_root into btrfs_get_fs_root")
+81f096edf047 ("btrfs: use btrfs_put_fs_root to free roots always")
+0d4b0463011d ("btrfs: export and rename free_fs_info")
+fbb0ce40d606 ("btrfs: hold a ref on the root in btrfs_check_uuid_tree_entry")
+ca2037fba6af ("btrfs: hold a ref on the root in btrfs_recover_log_trees")
+5119cfc36f6d ("btrfs: hold a ref on the root in create_pending_snapshot")
+5168489a079a ("btrfs: hold a ref on the root in get_subvol_name_from_objectid")
+6f9a3da5da9e ("btrfs: hold a ref on the root in btrfs_ioctl_send")
+fd79d43b347e ("btrfs: hold a ref on the root in scrub_print_warning_inode")
+0b2dee5cff74 ("btrfs: hold a ref for the root in btrfs_find_orphan_roots")
 
 thanks,
 
@@ -86,163 +85,168 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f6007dce0cd35d634d9be91ef3515a6385dcee16 Mon Sep 17 00:00:00 2001
-From: Mikulas Patocka <mpatocka@redhat.com>
-Date: Wed, 9 Aug 2023 12:44:20 +0200
-Subject: [PATCH] dm: fix a race condition in retrieve_deps
+From ee34a82e890a7babb5585daf1a6dd7d4d1cf142a Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Sat, 26 Aug 2023 11:28:20 +0100
+Subject: [PATCH] btrfs: release path before inode lookup during the ino lookup
+ ioctl
 
-There's a race condition in the multipath target when retrieve_deps
-races with multipath_message calling dm_get_device and dm_put_device.
-retrieve_deps walks the list of open devices without holding any lock
-but multipath may add or remove devices to the list while it is
-running. The end result may be memory corruption or use-after-free
-memory access.
+During the ino lookup ioctl we can end up calling btrfs_iget() to get an
+inode reference while we are holding on a root's btree. If btrfs_iget()
+needs to lookup the inode from the root's btree, because it's not
+currently loaded in memory, then it will need to lock another or the
+same path in the same root btree. This may result in a deadlock and
+trigger the following lockdep splat:
 
-See this description of a UAF with multipath_message():
-https://listman.redhat.com/archives/dm-devel/2022-October/052373.html
+  WARNING: possible circular locking dependency detected
+  6.5.0-rc7-syzkaller-00004-gf7757129e3de #0 Not tainted
+  ------------------------------------------------------
+  syz-executor277/5012 is trying to acquire lock:
+  ffff88802df41710 (btrfs-tree-01){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
 
-Fix this bug by introducing a new rw semaphore "devices_lock". We grab
-devices_lock for read in retrieve_deps and we grab it for write in
-dm_get_device and dm_put_device.
+  but task is already holding lock:
+  ffff88802df418e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
 
-Reported-by: Luo Meng <luomeng12@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+  which lock already depends on the new lock.
 
-diff --git a/drivers/md/dm-core.h b/drivers/md/dm-core.h
-index 0d93661f88d3..095b9b49aa82 100644
---- a/drivers/md/dm-core.h
-+++ b/drivers/md/dm-core.h
-@@ -214,6 +214,7 @@ struct dm_table {
+  the existing dependency chain (in reverse order) is:
+
+  -> #1 (btrfs-tree-00){++++}-{3:3}:
+         down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
+         __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
+         btrfs_search_slot+0x13a4/0x2f80 fs/btrfs/ctree.c:2302
+         btrfs_init_root_free_objectid+0x148/0x320 fs/btrfs/disk-io.c:4955
+         btrfs_init_fs_root fs/btrfs/disk-io.c:1128 [inline]
+         btrfs_get_root_ref+0x5ae/0xae0 fs/btrfs/disk-io.c:1338
+         btrfs_get_fs_root fs/btrfs/disk-io.c:1390 [inline]
+         open_ctree+0x29c8/0x3030 fs/btrfs/disk-io.c:3494
+         btrfs_fill_super+0x1c7/0x2f0 fs/btrfs/super.c:1154
+         btrfs_mount_root+0x7e0/0x910 fs/btrfs/super.c:1519
+         legacy_get_tree+0xef/0x190 fs/fs_context.c:611
+         vfs_get_tree+0x8c/0x270 fs/super.c:1519
+         fc_mount fs/namespace.c:1112 [inline]
+         vfs_kern_mount+0xbc/0x150 fs/namespace.c:1142
+         btrfs_mount+0x39f/0xb50 fs/btrfs/super.c:1579
+         legacy_get_tree+0xef/0x190 fs/fs_context.c:611
+         vfs_get_tree+0x8c/0x270 fs/super.c:1519
+         do_new_mount+0x28f/0xae0 fs/namespace.c:3335
+         do_mount fs/namespace.c:3675 [inline]
+         __do_sys_mount fs/namespace.c:3884 [inline]
+         __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3861
+         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+         entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+  -> #0 (btrfs-tree-01){++++}-{3:3}:
+         check_prev_add kernel/locking/lockdep.c:3142 [inline]
+         check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+         validate_chain kernel/locking/lockdep.c:3876 [inline]
+         __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
+         lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
+         down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
+         __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
+         btrfs_tree_read_lock fs/btrfs/locking.c:142 [inline]
+         btrfs_read_lock_root_node+0x292/0x3c0 fs/btrfs/locking.c:281
+         btrfs_search_slot_get_root fs/btrfs/ctree.c:1832 [inline]
+         btrfs_search_slot+0x4ff/0x2f80 fs/btrfs/ctree.c:2154
+         btrfs_lookup_inode+0xdc/0x480 fs/btrfs/inode-item.c:412
+         btrfs_read_locked_inode fs/btrfs/inode.c:3892 [inline]
+         btrfs_iget_path+0x2d9/0x1520 fs/btrfs/inode.c:5716
+         btrfs_search_path_in_tree_user fs/btrfs/ioctl.c:1961 [inline]
+         btrfs_ioctl_ino_lookup_user+0x77a/0xf50 fs/btrfs/ioctl.c:2105
+         btrfs_ioctl+0xb0b/0xd40 fs/btrfs/ioctl.c:4683
+         vfs_ioctl fs/ioctl.c:51 [inline]
+         __do_sys_ioctl fs/ioctl.c:870 [inline]
+         __se_sys_ioctl+0xf8/0x170 fs/ioctl.c:856
+         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+         entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+  other info that might help us debug this:
+
+   Possible unsafe locking scenario:
+
+         CPU0                    CPU1
+         ----                    ----
+    rlock(btrfs-tree-00);
+                                 lock(btrfs-tree-01);
+                                 lock(btrfs-tree-00);
+    rlock(btrfs-tree-01);
+
+   *** DEADLOCK ***
+
+  1 lock held by syz-executor277/5012:
+   #0: ffff88802df418e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
+
+  stack backtrace:
+  CPU: 1 PID: 5012 Comm: syz-executor277 Not tainted 6.5.0-rc7-syzkaller-00004-gf7757129e3de #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+  Call Trace:
+   <TASK>
+   __dump_stack lib/dump_stack.c:88 [inline]
+   dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+   check_noncircular+0x375/0x4a0 kernel/locking/lockdep.c:2195
+   check_prev_add kernel/locking/lockdep.c:3142 [inline]
+   check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+   validate_chain kernel/locking/lockdep.c:3876 [inline]
+   __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
+   lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
+   down_read_nested+0x49/0x2f0 kernel/locking/rwsem.c:1645
+   __btrfs_tree_read_lock+0x2f/0x220 fs/btrfs/locking.c:136
+   btrfs_tree_read_lock fs/btrfs/locking.c:142 [inline]
+   btrfs_read_lock_root_node+0x292/0x3c0 fs/btrfs/locking.c:281
+   btrfs_search_slot_get_root fs/btrfs/ctree.c:1832 [inline]
+   btrfs_search_slot+0x4ff/0x2f80 fs/btrfs/ctree.c:2154
+   btrfs_lookup_inode+0xdc/0x480 fs/btrfs/inode-item.c:412
+   btrfs_read_locked_inode fs/btrfs/inode.c:3892 [inline]
+   btrfs_iget_path+0x2d9/0x1520 fs/btrfs/inode.c:5716
+   btrfs_search_path_in_tree_user fs/btrfs/ioctl.c:1961 [inline]
+   btrfs_ioctl_ino_lookup_user+0x77a/0xf50 fs/btrfs/ioctl.c:2105
+   btrfs_ioctl+0xb0b/0xd40 fs/btrfs/ioctl.c:4683
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:870 [inline]
+   __se_sys_ioctl+0xf8/0x170 fs/ioctl.c:856
+   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+   do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  RIP: 0033:0x7f0bec94ea39
+
+Fix this simply by releasing the path before calling btrfs_iget() as at
+point we don't need the path anymore.
+
+Reported-by: syzbot+bf66ad948981797d2f1d@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/00000000000045fa140603c4a969@google.com/
+Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
+CC: stable@vger.kernel.org # 4.19+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index a895d105464b..d27b0d86b8e2 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -1958,6 +1958,13 @@ static int btrfs_search_path_in_tree_user(struct mnt_idmap *idmap,
+ 				goto out_put;
+ 			}
  
- 	/* a list of devices used by this table */
- 	struct list_head devices;
-+	struct rw_semaphore devices_lock;
++			/*
++			 * We don't need the path anymore, so release it and
++			 * avoid deadlocks and lockdep warnings in case
++			 * btrfs_iget() needs to lookup the inode from its root
++			 * btree and lock the same leaf.
++			 */
++			btrfs_release_path(path);
+ 			temp_inode = btrfs_iget(sb, key2.objectid, root);
+ 			if (IS_ERR(temp_inode)) {
+ 				ret = PTR_ERR(temp_inode);
+@@ -1978,7 +1985,6 @@ static int btrfs_search_path_in_tree_user(struct mnt_idmap *idmap,
+ 				goto out_put;
+ 			}
  
- 	/* events get handed up using this callback */
- 	void (*event_fn)(void *data);
-diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-index f5ed729a8e0c..21ebb6c39394 100644
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1630,6 +1630,8 @@ static void retrieve_deps(struct dm_table *table,
- 	struct dm_dev_internal *dd;
- 	struct dm_target_deps *deps;
- 
-+	down_read(&table->devices_lock);
-+
- 	deps = get_result_buffer(param, param_size, &len);
- 
- 	/*
-@@ -1644,7 +1646,7 @@ static void retrieve_deps(struct dm_table *table,
- 	needed = struct_size(deps, dev, count);
- 	if (len < needed) {
- 		param->flags |= DM_BUFFER_FULL_FLAG;
--		return;
-+		goto out;
- 	}
- 
- 	/*
-@@ -1656,6 +1658,9 @@ static void retrieve_deps(struct dm_table *table,
- 		deps->dev[count++] = huge_encode_dev(dd->dm_dev->bdev->bd_dev);
- 
- 	param->data_size = param->data_start + needed;
-+
-+out:
-+	up_read(&table->devices_lock);
- }
- 
- static int table_deps(struct file *filp, struct dm_ioctl *param, size_t param_size)
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 7d208b2b1a19..37b48f63ae6a 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -135,6 +135,7 @@ int dm_table_create(struct dm_table **result, blk_mode_t mode,
- 		return -ENOMEM;
- 
- 	INIT_LIST_HEAD(&t->devices);
-+	init_rwsem(&t->devices_lock);
- 
- 	if (!num_targets)
- 		num_targets = KEYS_PER_NODE;
-@@ -359,16 +360,20 @@ int __ref dm_get_device(struct dm_target *ti, const char *path, blk_mode_t mode,
- 	if (dev == disk_devt(t->md->disk))
- 		return -EINVAL;
- 
-+	down_write(&t->devices_lock);
-+
- 	dd = find_device(&t->devices, dev);
- 	if (!dd) {
- 		dd = kmalloc(sizeof(*dd), GFP_KERNEL);
--		if (!dd)
--			return -ENOMEM;
-+		if (!dd) {
-+			r = -ENOMEM;
-+			goto unlock_ret_r;
-+		}
- 
- 		r = dm_get_table_device(t->md, dev, mode, &dd->dm_dev);
- 		if (r) {
- 			kfree(dd);
--			return r;
-+			goto unlock_ret_r;
- 		}
- 
- 		refcount_set(&dd->count, 1);
-@@ -378,12 +383,17 @@ int __ref dm_get_device(struct dm_target *ti, const char *path, blk_mode_t mode,
- 	} else if (dd->dm_dev->mode != (mode | dd->dm_dev->mode)) {
- 		r = upgrade_mode(dd, mode, t->md);
- 		if (r)
--			return r;
-+			goto unlock_ret_r;
- 	}
- 	refcount_inc(&dd->count);
- out:
-+	up_write(&t->devices_lock);
- 	*result = dd->dm_dev;
- 	return 0;
-+
-+unlock_ret_r:
-+	up_write(&t->devices_lock);
-+	return r;
- }
- EXPORT_SYMBOL(dm_get_device);
- 
-@@ -419,9 +429,12 @@ static int dm_set_device_limits(struct dm_target *ti, struct dm_dev *dev,
- void dm_put_device(struct dm_target *ti, struct dm_dev *d)
- {
- 	int found = 0;
--	struct list_head *devices = &ti->table->devices;
-+	struct dm_table *t = ti->table;
-+	struct list_head *devices = &t->devices;
- 	struct dm_dev_internal *dd;
- 
-+	down_write(&t->devices_lock);
-+
- 	list_for_each_entry(dd, devices, list) {
- 		if (dd->dm_dev == d) {
- 			found = 1;
-@@ -430,14 +443,17 @@ void dm_put_device(struct dm_target *ti, struct dm_dev *d)
- 	}
- 	if (!found) {
- 		DMERR("%s: device %s not in table devices list",
--		      dm_device_name(ti->table->md), d->name);
--		return;
-+		      dm_device_name(t->md), d->name);
-+		goto unlock_ret;
- 	}
- 	if (refcount_dec_and_test(&dd->count)) {
--		dm_put_table_device(ti->table->md, d);
-+		dm_put_table_device(t->md, d);
- 		list_del(&dd->list);
- 		kfree(dd);
- 	}
-+
-+unlock_ret:
-+	up_write(&t->devices_lock);
- }
- EXPORT_SYMBOL(dm_put_device);
- 
+-			btrfs_release_path(path);
+ 			key.objectid = key.offset;
+ 			key.offset = (u64)-1;
+ 			dirid = key.objectid;
 
