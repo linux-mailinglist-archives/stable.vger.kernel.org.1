@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 842BB7A7FC9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD0127A7DBD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235947AbjITMae (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60144 "EHLO
+        id S235378AbjITMLx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:11:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235962AbjITMaa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:30 -0400
+        with ESMTP id S235389AbjITMLu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0457D8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B93C433CC;
-        Wed, 20 Sep 2023 12:30:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B69EC6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B183BC433C9;
+        Wed, 20 Sep 2023 12:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213022;
-        bh=3MV7uvfcIGj3HFkOsOUzI568/nprzdlotEEZt+yT/3I=;
+        s=korg; t=1695211904;
+        bh=k5CQEzYUEmw9OfHAkW6Uu+wxz1Mu/XCh2DPZrQiytog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j1eDgksN3vydqbW+llKOkMUPof0tSRVfRdoAsw219/SOmSvisYbbTfY72r1HKqBYu
-         zeqvZWGUcMHHGc6PlXI2+wUpvvdZhdw9kiSBBk5u0THKFeYwvEkoD/yTEAWuCTHTyS
-         aLXlCJx+VWXgMz7ZM7sztb8plNmNiyctwnDOSdWM=
+        b=NGYhe0NfJaGHBwGi2TrLgJoIMVDifgTvT5TVdQT5Bo5kIypIANJR0zRozo2s0JZmv
+         N3JhpnVYizcJyrLQ4P+GR0PsI1gpTJWRCFpFTsaRiTG59ubvVAGRAfj/mc8HQg4N6/
+         y2B41E//BMi3stDyElNKanfhAIUCiRYu1oFuG63U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Su Hui <suhui@nfschina.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Yan Zhai <yan@cloudflare.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 124/367] ALSA: ac97: Fix possible error value of *rac97
+Subject: [PATCH 4.19 061/273] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
 Date:   Wed, 20 Sep 2023 13:28:21 +0200
-Message-ID: <20230920112901.870001585@linuxfoundation.org>
+Message-ID: <20230920112848.336681879@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +51,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit 67de40c9df94037769967ba28c7d951afb45b7fb ]
+[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
 
-Before committing 79597c8bf64c, *rac97 always be NULL if there is
-an error. When error happens, make sure *rac97 is NULL is safer.
+LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
+such that any positive return value from a xmit hook could cause
+unexpected continue behavior, despite that related skb may have been
+freed. This could be error-prone for future xmit hook ops. One of the
+possible errors is to return statuses of dst_output directly.
 
-For examble, in snd_vortex_mixer():
-	err = snd_ac97_mixer(pbus, &ac97, &vortex->codec);
-	vortex->isquad = ((vortex->codec == NULL) ?
-		0 : (vortex->codec->ext_id&0x80));
-If error happened but vortex->codec isn't NULL, this may cause some
-problems.
+To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
+distinguish from dst_output statuses and check the continue
+condition explicitly.
 
-Move the judgement order to be clearer and better.
-
-Fixes: 79597c8bf64c ("ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20230823025212.1000961-1-suhui@nfschina.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/ac97/ac97_codec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/net/lwtunnel.h | 5 ++++-
+ net/ipv4/ip_output.c   | 2 +-
+ net/ipv6/ip6_output.c  | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
-index b920c739d6863..418a7a666cf4e 100644
---- a/sound/pci/ac97/ac97_codec.c
-+++ b/sound/pci/ac97/ac97_codec.c
-@@ -2006,10 +2006,9 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
- 		.dev_disconnect =	snd_ac97_dev_disconnect,
- 	};
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index 33fd9ba7e0e5a..ec75c0a1c529f 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -16,9 +16,12 @@
+ #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
+ #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
  
--	if (!rac97)
--		return -EINVAL;
--	if (snd_BUG_ON(!bus || !template))
-+	if (snd_BUG_ON(!bus || !template || !rac97))
- 		return -EINVAL;
-+	*rac97 = NULL;
- 	if (snd_BUG_ON(template->num >= 4))
- 		return -EINVAL;
- 	if (bus->codec[template->num])
++/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
++ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
++ */
+ enum {
+ 	LWTUNNEL_XMIT_DONE,
+-	LWTUNNEL_XMIT_CONTINUE,
++	LWTUNNEL_XMIT_CONTINUE = 0x100,
+ };
+ 
+ 
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 92fa11e75a4d0..6936f703758bb 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -221,7 +221,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 4f31a781ab370..ff4d349e13f78 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -106,7 +106,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
 -- 
 2.40.1
 
