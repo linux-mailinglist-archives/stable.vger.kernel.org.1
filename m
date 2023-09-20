@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 416AC7A806E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 280997A7E2F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235921AbjITMhS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41376 "EHLO
+        id S235533AbjITMQH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235919AbjITMhQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:16 -0400
+        with ESMTP id S235541AbjITMQC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE094B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291EAC433C7;
-        Wed, 20 Sep 2023 12:37:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D8611A
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB43C433C8;
+        Wed, 20 Sep 2023 12:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213430;
-        bh=7acR7u17667nbPryaR83Fcx8PxFHkM6l5Z7motR44yM=;
+        s=korg; t=1695212152;
+        bh=n9BLN8R29on/u4HAjawzxW1YN587MtMx0+uBclmoJrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R/wqPAJZjzx00RLnybaNQ65SNTdpxE7/YNc6vEcLNnfbye7ayysYrNXyZ30CUKC0H
-         8sXTtdH/FBbfLe9KoT3dg9WUXSI528YDREO7Mjf+W/g8YJE4arQPMKIEOzUol4/iB8
-         B3aDb0l1yACscpcZJbTJ3W0IZwIrULpEdTwVlTes=
+        b=l4GMMuaMzwbbxP2bgdTJ4gR0hRkKAM0s8ja6fnbHRfgyFDo8KxB3Ea//D+AzOHfRy
+         /8ifCP5y2UgSYKwmp7jfxumkkFlKYHhoMHJ/FL8S95SeYnhFCoxANCMJRGyc9N9hPW
+         hzJLLweGl571zHJ4VGPAcXSw7Oe10MmHjJNqIJrs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Mack <daniel@zonque.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 234/367] sc16is7xx: Set iobase to device index
+        patches@lists.linux.dev,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>
+Subject: [PATCH 4.19 171/273] PM / devfreq: Fix leak in devfreq_dev_release()
 Date:   Wed, 20 Sep 2023 13:30:11 +0200
-Message-ID: <20230920112904.633106287@linuxfoundation.org>
+Message-ID: <20230920112851.802449130@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Mack <daniel@zonque.org>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 5da6b1c079e6804a81e63ab8337224cbd2148c91 ]
+commit 5693d077595de721f9ddbf9d37f40e5409707dfe upstream.
 
-Some derivates of sc16is7xx devices expose more than one tty device to
-userspace. If multiple such devices exist in a system, userspace
-currently has no clean way to infer which tty maps to which physical
-line.
+srcu_init_notifier_head() allocates resources that need to be released
+with a srcu_cleanup_notifier_head() call.
 
-Set the .iobase value to the relative index within the device to allow
-infering the order through sysfs.
+Reported by kmemleak.
 
-Signed-off-by: Daniel Mack <daniel@zonque.org>
-Link: https://lore.kernel.org/r/20200901120329.4176302-1-daniel@zonque.org
+Fixes: 0fe3a66410a3 ("PM / devfreq: Add new DEVFREQ_TRANSITION_NOTIFIER notifier")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2861ed4d6e6d ("serial: sc16is7xx: fix broken port 0 uart init")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 1 +
+ drivers/devfreq/devfreq.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index d8b015335009b..9b68725d4e9ba 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1270,6 +1270,7 @@ static int sc16is7xx_probe(struct device *dev,
- 		s->p[i].port.type	= PORT_SC16IS7XX;
- 		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
- 		s->p[i].port.flags	= UPF_FIXED_TYPE | UPF_LOW_LATENCY;
-+		s->p[i].port.iobase	= i;
- 		s->p[i].port.iotype	= UPIO_PORT;
- 		s->p[i].port.uartclk	= freq;
- 		s->p[i].port.rs485_config = sc16is7xx_config_rs485;
--- 
-2.40.1
-
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -582,6 +582,7 @@ static void devfreq_dev_release(struct d
+ 		devfreq->profile->exit(devfreq->dev.parent);
+ 
+ 	mutex_destroy(&devfreq->lock);
++	srcu_cleanup_notifier_head(&devfreq->transition_notifier_list);
+ 	kfree(devfreq);
+ }
+ 
 
 
