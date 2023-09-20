@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6367A7DC6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA62C7A7FEB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235389AbjITMMM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
+        id S236073AbjITMbS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234603AbjITMMM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:12 -0400
+        with ESMTP id S236132AbjITMbR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B53693
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1A8C433C8;
-        Wed, 20 Sep 2023 12:12:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94996B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31C9C433C7;
+        Wed, 20 Sep 2023 12:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211926;
-        bh=Xt8nj20Umz5ioJW3uP0OSZzfFxnwk+EmfH9cnOkhgAc=;
+        s=korg; t=1695213070;
+        bh=cv2ULD1+PvlMdPcsBB7e/J1jzEdQw3+/BY2+GKNETqc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VyO7l9T8XOLNv6bH+I0JoVkpWI8/2yfI37n6HQFeoO0XenWjBLWhFUyMQyqEvO4eC
-         WP6Q3v9Cn3km61FCFx+rqWPgiHZASa43pVfum1WVaFSw2LviRRbN3dMUawnocf5DO0
-         KK8X0fMwdMV97YKGVbidi6AdEnn0fBKzYDOepGHA=
+        b=pkqFuW9+y6GgH+hngD//9KL1DSb8jwMFJ7plzSsPmRAVIZUfG8GeIJBj/aWIxqkXg
+         a07l3B2aNfsBAlTEUkEBkLa/YmFDEXJ3fGIoVpzkaQMYG6mBY9SAOEAML65VpC2R3H
+         yLEQy1AsgB1koK7SyHagAK73yBCxOqXy0XLKGFSI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
+        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 086/273] ARM: dts: s3c6410: move fixed clocks under root node in Mini6410
+Subject: [PATCH 5.4 149/367] NFS: Guard against READDIR loop when entry names exceed MAXNAMELEN
 Date:   Wed, 20 Sep 2023 13:28:46 +0200
-Message-ID: <20230920112849.103563876@linuxfoundation.org>
+Message-ID: <20230920112902.525682165@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,74 +50,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 8b81a8decea77bf2ca3c718732184d4aaf949096 ]
+[ Upstream commit f67b55b6588bcf9316a1e6e8d529100a5aa3ebe6 ]
 
-The fixed clocks are kept under dedicated 'clocks' node but this causes
-multiple dtschema warnings:
+Commit 64cfca85bacd asserts the only valid return values for
+nfs2/3_decode_dirent should not include -ENAMETOOLONG, but for a server
+that sends a filename3 which exceeds MAXNAMELEN in a READDIR response the
+client's behavior will be to endlessly retry the operation.
 
-  clocks: $nodename:0: 'clocks' does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
-  clocks: #size-cells:0:0: 0 is not one of [1, 2]
-  clocks: oscillator@0:reg:0: [0] is too short
-  clocks: oscillator@1:reg:0: [1] is too short
-  clocks: 'ranges' is a required property
-  oscillator@0: 'reg' does not match any of the regexes: 'pinctrl-[0-9]+'
+We could map -ENAMETOOLONG into -EBADCOOKIE, but that would produce
+truncated listings without any error.  The client should return an error
+for this case to clearly assert that the server implementation must be
+corrected.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20200907183313.29234-3-krzk@kernel.org
-Stable-dep-of: cf0cb2af6a18 ("ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)")
+Fixes: 64cfca85bacd ("NFS: Return valid errors from nfs2/3_decode_dirent()")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/s3c6410-mini6410.dts | 30 ++++++++++----------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ fs/nfs/nfs2xdr.c | 2 +-
+ fs/nfs/nfs3xdr.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
-index 1aeac33b0d341..75067dbcf7e83 100644
---- a/arch/arm/boot/dts/s3c6410-mini6410.dts
-+++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
-@@ -28,26 +28,18 @@ chosen {
- 		bootargs = "console=ttySAC0,115200n8 earlyprintk rootwait root=/dev/mmcblk0p1";
- 	};
+diff --git a/fs/nfs/nfs2xdr.c b/fs/nfs/nfs2xdr.c
+index af557dc2cfe1d..6b783e2d28554 100644
+--- a/fs/nfs/nfs2xdr.c
++++ b/fs/nfs/nfs2xdr.c
+@@ -953,7 +953,7 @@ int nfs2_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
  
--	clocks {
--		compatible = "simple-bus";
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		fin_pll: oscillator@0 {
--			compatible = "fixed-clock";
--			reg = <0>;
--			clock-frequency = <12000000>;
--			clock-output-names = "fin_pll";
--			#clock-cells = <0>;
--		};
-+	fin_pll: oscillator-0 {
-+		compatible = "fixed-clock";
-+		clock-frequency = <12000000>;
-+		clock-output-names = "fin_pll";
-+		#clock-cells = <0>;
-+	};
+ 	error = decode_filename_inline(xdr, &entry->name, &entry->len);
+ 	if (unlikely(error))
+-		return -EAGAIN;
++		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
  
--		xusbxti: oscillator@1 {
--			compatible = "fixed-clock";
--			reg = <1>;
--			clock-output-names = "xusbxti";
--			clock-frequency = <48000000>;
--			#clock-cells = <0>;
--		};
-+	xusbxti: oscillator-1 {
-+		compatible = "fixed-clock";
-+		clock-output-names = "xusbxti";
-+		clock-frequency = <48000000>;
-+		#clock-cells = <0>;
- 	};
+ 	/*
+ 	 * The type (size and byte order) of nfscookie isn't defined in
+diff --git a/fs/nfs/nfs3xdr.c b/fs/nfs/nfs3xdr.c
+index 84369d51353a5..6d8768ce370d2 100644
+--- a/fs/nfs/nfs3xdr.c
++++ b/fs/nfs/nfs3xdr.c
+@@ -1991,7 +1991,7 @@ int nfs3_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
  
- 	srom-cs1@18000000 {
+ 	error = decode_inline_filename3(xdr, &entry->name, &entry->len);
+ 	if (unlikely(error))
+-		return -EAGAIN;
++		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
+ 
+ 	error = decode_cookie3(xdr, &new_cookie);
+ 	if (unlikely(error))
 -- 
 2.40.1
 
