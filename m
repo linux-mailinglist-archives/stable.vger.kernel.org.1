@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8E37A7CED
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C847A80AC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235227AbjITMF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
+        id S236078AbjITMjO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235371AbjITMFM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:12 -0400
+        with ESMTP id S236104AbjITMjL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32459A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD61C433C8;
-        Wed, 20 Sep 2023 12:05:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768EA122
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB3FC433C9;
+        Wed, 20 Sep 2023 12:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211506;
-        bh=NjjKgjUA0h9crwP5IctxN+MFe7UZlDQzsOQS2DkmWoU=;
+        s=korg; t=1695213531;
+        bh=dp/vaowTz/5FKxgNO+TH8+AW4jB85XHe3+u9OsaHxwg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XulMW2t7M4bUTr4a801U6aiBB6xdICaq9q7tXL488vhrEHRIw34oThvBVndSn2jRg
-         uCgdjcJ3TGgAtNAbCUEKF18xD1I/zK7T+2Xa1cUmeRpla33cdt0sMrF8GXdkb7OBNl
-         2UJMxeoNodFOIKxnNlL9oSiJBU/25lk/o1swAE+g=
+        b=PRhckDNnUPOBF9sI4kWibj6Xzxf5yoJODuHBvsuRoccpSD0bTnxvX5RoMs4TKLk6m
+         /9AoQ42hvA47S3bYs4F+T0oJd6HP8NsYUV3i9UpQ6R1Maxvkylj+FRf/Ho+j8tdc13
+         qmKv+nBtnGsA8BJ6rBrrFfsaUbNuI0aEsweJnkM0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.14 119/186] crypto: stm32 - fix loop iterating through scatterlist for DMA
-Date:   Wed, 20 Sep 2023 13:30:22 +0200
-Message-ID: <20230920112841.336533499@linuxfoundation.org>
+        patches@lists.linux.dev, Andrew Donnellan <ajd@linux.ibm.com>,
+        Alexander Potapenko <glider@google.com>,
+        Xiaoke Wang <xkernel.wang@foxmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 246/367] lib/test_meminit: allocate pages up to order MAX_ORDER
+Date:   Wed, 20 Sep 2023 13:30:23 +0200
+Message-ID: <20230920112904.921107485@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
 
-commit d9c83f71eeceed2cb54bb78be84f2d4055fd9a1f upstream.
+commit efb78fa86e95832b78ca0ba60f3706788a818938 upstream.
 
-We were reading the length of the scatterlist sg after copying value of
-tsg inside.
-So we are using the size of the previous scatterlist and for the first
-one we are using an unitialised value.
-Fix this by copying tsg in sg[0] before reading the size.
+test_pages() tests the page allocator by calling alloc_pages() with
+different orders up to order 10.
 
-Fixes : 8a1012d3f2ab ("crypto: stm32 - Support for STM32 HASH module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+However, different architectures and platforms support different maximum
+contiguous allocation sizes.  The default maximum allocation order
+(MAX_ORDER) is 10, but architectures can use CONFIG_ARCH_FORCE_MAX_ORDER
+to override this.  On platforms where this is less than 10, test_meminit()
+will blow up with a WARN().  This is expected, so let's not do that.
+
+Replace the hardcoded "10" with the MAX_ORDER macro so that we test
+allocations up to the expected platform limit.
+
+Link: https://lkml.kernel.org/r/20230714015238.47931-1-ajd@linux.ibm.com
+Fixes: 5015a300a522 ("lib: introduce test_meminit module")
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Xiaoke Wang <xkernel.wang@foxmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/stm32/stm32-hash.c |    2 +-
+ lib/test_meminit.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -574,9 +574,9 @@ static int stm32_hash_dma_send(struct st
- 	}
+--- a/lib/test_meminit.c
++++ b/lib/test_meminit.c
+@@ -86,7 +86,7 @@ static int __init test_pages(int *total_
+ 	int failures = 0, num_tests = 0;
+ 	int i;
  
- 	for_each_sg(rctx->sg, tsg, rctx->nents, i) {
-+		sg[0] = *tsg;
- 		len = sg->length;
+-	for (i = 0; i < 10; i++)
++	for (i = 0; i <= MAX_ORDER; i++)
+ 		num_tests += do_alloc_pages_order(i, &failures);
  
--		sg[0] = *tsg;
- 		if (sg_is_last(sg)) {
- 			if (hdev->dma_mode == 1) {
- 				len = (ALIGN(sg->length, 16) - 16);
+ 	REPORT_FAILURES_IN_FN();
 
 
