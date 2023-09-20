@@ -2,34 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4CC77A7D98
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A257A7D99
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235331AbjITMKc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:10:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38794 "EHLO
+        id S235326AbjITMKd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235326AbjITMKb (ORCPT
+        with ESMTP id S235357AbjITMKb (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC18C2;
-        Wed, 20 Sep 2023 05:10:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97869C433C8;
-        Wed, 20 Sep 2023 12:10:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE515CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329A2C433C9;
+        Wed, 20 Sep 2023 12:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211817;
-        bh=rjyEXmzBHzrlOdyaV9VlkgNNFUlZRT2zJepPQSHUt1w=;
+        s=korg; t=1695211820;
+        bh=7/licW5RnixAnrLZHyC7HwjFpy0ZashubagyjXUkkHI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bM5gIWpA1zi8onoXZzIPOoUMrJgWn8ckUiT1alpYsoZ5f1w5qhc1UcTJE/SmQJEXa
-         eF8dS0FyJW0aOUqgvZJkqJslC03Mv3BGjycdmK+eQZ10p/sogl9ZI4TSTHcEHq6Me4
-         LaCI3KFrCmIX6ET96cY9qJZbt7XxUZez51EEcGSE=
+        b=tVrxQvS2QVz/mtDF7eYrBvqCaKgtqZ52uT3EYBrci25HtfpORvNgJ2r4OkmF1+RVK
+         xux+CJ2QhxfPda3TTssF+0kwvs08+QASmu4PCRUcDkZGnkMemJGSoccTzi86vXvvVR
+         dbt3x73k09XNZxPbO/L3CPS/Ua9j8pvF6vkhWZoI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 047/273] netfilter: nf_tables: missing NFT_TRANS_PREPARE_ERROR in flowtable deactivatation
-Date:   Wed, 20 Sep 2023 13:28:07 +0200
-Message-ID: <20230920112847.872366034@linuxfoundation.org>
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 048/273] fs: Fix error checking for d_hash_and_lookup()
+Date:   Wed, 20 Sep 2023 13:28:08 +0200
+Message-ID: <20230920112847.903409961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
 References: <20230920112846.440597133@linuxfoundation.org>
@@ -52,29 +54,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Wang Ming <machel@vivo.com>
 
-commit 26b5a5712eb85e253724e56a54c17f8519bd8e4e upstream.
+[ Upstream commit 0d5a4f8f775ff990142cdc810a84eae078589d27 ]
 
-Missing NFT_TRANS_PREPARE_ERROR in 1df28fde1270 ("netfilter: nf_tables: add
-NFT_TRANS_PREPARE_ERROR to deal with bound set/chain") in 4.19.
+The d_hash_and_lookup() function returns error pointers or NULL.
+Most incorrect error checks were fixed, but the one in int path_pts()
+was forgotten.
 
-Fixes: 1df28fde1270 ("netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain") in 4.19
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eedf265aa003 ("devpts: Make each mount of devpts an independent filesystem.")
+Signed-off-by: Wang Ming <machel@vivo.com>
+Message-Id: <20230713120555.7025-1-machel@vivo.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5555,6 +5555,7 @@ void nf_tables_deactivate_flowtable(cons
- 				    enum nft_trans_phase phase)
- {
- 	switch (phase) {
-+	case NFT_TRANS_PREPARE_ERROR:
- 	case NFT_TRANS_PREPARE:
- 	case NFT_TRANS_ABORT:
- 	case NFT_TRANS_RELEASE:
+diff --git a/fs/namei.c b/fs/namei.c
+index 0dbe38afef29b..60b57e0bc1742 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -2613,7 +2613,7 @@ int path_pts(struct path *path)
+ 	this.name = "pts";
+ 	this.len = 3;
+ 	child = d_hash_and_lookup(parent, &this);
+-	if (!child)
++	if (IS_ERR_OR_NULL(child))
+ 		return -ENOENT;
+ 
+ 	path->dentry = child;
+-- 
+2.40.1
+
 
 
