@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 036757A80F3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A6C27A7D3B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236144AbjITMlc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:41:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
+        id S235173AbjITMHn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:07:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236210AbjITMla (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:30 -0400
+        with ESMTP id S235195AbjITMHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F93C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB6DC433C7;
-        Wed, 20 Sep 2023 12:41:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E430383
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D9CC433CA;
+        Wed, 20 Sep 2023 12:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213679;
-        bh=kNyV2a65l9iBCel5nabBD1/Cid9bt7lQYzrqqP/hcaI=;
+        s=korg; t=1695211655;
+        bh=Kes92DleTinyC0IRV1uQMIcp4v/GIIP3OUNqeW7Aofs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qhwNlyho8o+Ji98e7UeVqu5d8d31CuLGRLgDeGs3wUw7YrgfgGwvFkIUx03Ru64Sv
-         FJBYNtI94cPzKDUSWlIhelLeSAZFkNKOHh6sCokpWMev+24MzVvFP32Oj6MI0hmePW
-         uShqpQC4oKVdyxDMipoVh7TctKStyN9pVRtk/ovg=
+        b=eRua/GicYCfiPG/xylYpNPTWr1GGrPxk+toLIiHJt3X0BmBk8wHcgEQcEsy6Z728d
+         9XoYd6hxvmfc7Y/VgxKcALYib2NROUVB/YOVyLOEGo0yRpHY7U+XL3Qlb34zEokso/
+         e6QqNOCZgznfClHVXdf1JjT/Q9z2H+phtfwjVybM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Konstantin Shelekhin <k.shelekhin@yadro.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 300/367] r8152: check budget for r8152_poll()
+Subject: [PATCH 4.14 174/186] scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
 Date:   Wed, 20 Sep 2023 13:31:17 +0200
-Message-ID: <20230920112906.310186129@linuxfoundation.org>
+Message-ID: <20230920112843.170948959@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,164 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Konstantin Shelekhin <k.shelekhin@yadro.com>
 
-[ Upstream commit a7b8d60b37237680009dd0b025fe8c067aba0ee3 ]
+[ Upstream commit 801f287c93ff95582b0a2d2163f12870a2f076d4 ]
 
-According to the document of napi, there is no rx process when the
-budget is 0. Therefore, r8152_poll() has to return 0 directly when the
-budget is equal to 0.
+The function lio_target_nacl_info_show() uses sprintf() in a loop to print
+details for every iSCSI connection in a session without checking for the
+buffer length. With enough iSCSI connections it's possible to overflow the
+buffer provided by configfs and corrupt the memory.
 
-Fixes: d2187f8e4454 ("r8152: divide the tx and rx bottom functions")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This patch replaces sprintf() with sysfs_emit_at() that checks for buffer
+boundries.
+
+Signed-off-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
+Link: https://lore.kernel.org/r/20230722152657.168859-2-k.shelekhin@yadro.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/target/iscsi/iscsi_target_configfs.c | 54 ++++++++++----------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index b0412d14e8f6c..a19f0431e6f99 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -2253,6 +2253,9 @@ static int r8152_poll(struct napi_struct *napi, int budget)
- 	struct r8152 *tp = container_of(napi, struct r8152, napi);
- 	int work_done;
+diff --git a/drivers/target/iscsi/iscsi_target_configfs.c b/drivers/target/iscsi/iscsi_target_configfs.c
+index 4191e4a8a9ed6..b3d445ef84237 100644
+--- a/drivers/target/iscsi/iscsi_target_configfs.c
++++ b/drivers/target/iscsi/iscsi_target_configfs.c
+@@ -516,102 +516,102 @@ static ssize_t lio_target_nacl_info_show(struct config_item *item, char *page)
+ 	spin_lock_bh(&se_nacl->nacl_sess_lock);
+ 	se_sess = se_nacl->nacl_sess;
+ 	if (!se_sess) {
+-		rb += sprintf(page+rb, "No active iSCSI Session for Initiator"
++		rb += sysfs_emit_at(page, rb, "No active iSCSI Session for Initiator"
+ 			" Endpoint: %s\n", se_nacl->initiatorname);
+ 	} else {
+ 		sess = se_sess->fabric_sess_ptr;
  
-+	if (!budget)
-+		return 0;
-+
- 	work_done = rx_bottom(tp, budget);
+-		rb += sprintf(page+rb, "InitiatorName: %s\n",
++		rb += sysfs_emit_at(page, rb, "InitiatorName: %s\n",
+ 			sess->sess_ops->InitiatorName);
+-		rb += sprintf(page+rb, "InitiatorAlias: %s\n",
++		rb += sysfs_emit_at(page, rb, "InitiatorAlias: %s\n",
+ 			sess->sess_ops->InitiatorAlias);
  
- 	if (work_done < budget) {
+-		rb += sprintf(page+rb,
++		rb += sysfs_emit_at(page, rb,
+ 			      "LIO Session ID: %u   ISID: 0x%6ph  TSIH: %hu  ",
+ 			      sess->sid, sess->isid, sess->tsih);
+-		rb += sprintf(page+rb, "SessionType: %s\n",
++		rb += sysfs_emit_at(page, rb, "SessionType: %s\n",
+ 				(sess->sess_ops->SessionType) ?
+ 				"Discovery" : "Normal");
+-		rb += sprintf(page+rb, "Session State: ");
++		rb += sysfs_emit_at(page, rb, "Session State: ");
+ 		switch (sess->session_state) {
+ 		case TARG_SESS_STATE_FREE:
+-			rb += sprintf(page+rb, "TARG_SESS_FREE\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_FREE\n");
+ 			break;
+ 		case TARG_SESS_STATE_ACTIVE:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_ACTIVE\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_ACTIVE\n");
+ 			break;
+ 		case TARG_SESS_STATE_LOGGED_IN:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_LOGGED_IN\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_LOGGED_IN\n");
+ 			break;
+ 		case TARG_SESS_STATE_FAILED:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_FAILED\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_FAILED\n");
+ 			break;
+ 		case TARG_SESS_STATE_IN_CONTINUE:
+-			rb += sprintf(page+rb, "TARG_SESS_STATE_IN_CONTINUE\n");
++			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_IN_CONTINUE\n");
+ 			break;
+ 		default:
+-			rb += sprintf(page+rb, "ERROR: Unknown Session"
++			rb += sysfs_emit_at(page, rb, "ERROR: Unknown Session"
+ 					" State!\n");
+ 			break;
+ 		}
+ 
+-		rb += sprintf(page+rb, "---------------------[iSCSI Session"
++		rb += sysfs_emit_at(page, rb, "---------------------[iSCSI Session"
+ 				" Values]-----------------------\n");
+-		rb += sprintf(page+rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
++		rb += sysfs_emit_at(page, rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
+ 				"  :  MaxCmdSN  :     ITT    :     TTT\n");
+ 		max_cmd_sn = (u32) atomic_read(&sess->max_cmd_sn);
+-		rb += sprintf(page+rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
++		rb += sysfs_emit_at(page, rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
+ 				"   0x%08x   0x%08x\n",
+ 			sess->cmdsn_window,
+ 			(max_cmd_sn - sess->exp_cmd_sn) + 1,
+ 			sess->exp_cmd_sn, max_cmd_sn,
+ 			sess->init_task_tag, sess->targ_xfer_tag);
+-		rb += sprintf(page+rb, "----------------------[iSCSI"
++		rb += sysfs_emit_at(page, rb, "----------------------[iSCSI"
+ 				" Connections]-------------------------\n");
+ 
+ 		spin_lock(&sess->conn_lock);
+ 		list_for_each_entry(conn, &sess->sess_conn_list, conn_list) {
+-			rb += sprintf(page+rb, "CID: %hu  Connection"
++			rb += sysfs_emit_at(page, rb, "CID: %hu  Connection"
+ 					" State: ", conn->cid);
+ 			switch (conn->conn_state) {
+ 			case TARG_CONN_STATE_FREE:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_FREE\n");
+ 				break;
+ 			case TARG_CONN_STATE_XPT_UP:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_XPT_UP\n");
+ 				break;
+ 			case TARG_CONN_STATE_IN_LOGIN:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_IN_LOGIN\n");
+ 				break;
+ 			case TARG_CONN_STATE_LOGGED_IN:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_LOGGED_IN\n");
+ 				break;
+ 			case TARG_CONN_STATE_IN_LOGOUT:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_IN_LOGOUT\n");
+ 				break;
+ 			case TARG_CONN_STATE_LOGOUT_REQUESTED:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_LOGOUT_REQUESTED\n");
+ 				break;
+ 			case TARG_CONN_STATE_CLEANUP_WAIT:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"TARG_CONN_STATE_CLEANUP_WAIT\n");
+ 				break;
+ 			default:
+-				rb += sprintf(page+rb,
++				rb += sysfs_emit_at(page, rb,
+ 					"ERROR: Unknown Connection State!\n");
+ 				break;
+ 			}
+ 
+-			rb += sprintf(page+rb, "   Address %pISc %s", &conn->login_sockaddr,
++			rb += sysfs_emit_at(page, rb, "   Address %pISc %s", &conn->login_sockaddr,
+ 				(conn->network_transport == ISCSI_TCP) ?
+ 				"TCP" : "SCTP");
+-			rb += sprintf(page+rb, "  StatSN: 0x%08x\n",
++			rb += sysfs_emit_at(page, rb, "  StatSN: 0x%08x\n",
+ 				conn->stat_sn);
+ 		}
+ 		spin_unlock(&sess->conn_lock);
 -- 
 2.40.1
 
