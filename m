@@ -2,307 +2,204 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C15287A8301
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 15:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18FD47A8343
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 15:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234427AbjITNPD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 09:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33846 "EHLO
+        id S234755AbjITNZg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 09:25:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234895AbjITNOu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 09:14:50 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B8C491
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 06:14:44 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bdf4752c3cso50643205ad.2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 06:14:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1695215683; x=1695820483; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bxT9/wdLZnqfQQy+fJPt0T12/mHOt466jx3RDgKA048=;
-        b=N+z5fWmUAZ/NS0bYkdKDO7KwVRD7aDRLEjmyAEwg4jkrKKQSnpDbuu55CKH5JirmO6
-         U1OXVugmt8ENR/WK+KRgXEANEaO283e3g9AJ7qHc9LGt8iETQAfGnpR1lNExPg1Fgo6u
-         GJhGO/cdNLjU4ldG67ihzfikGrJUQC3BZ3LKcGVSXNeroU/y0SkcWaGXsnLQ0ruaGfOt
-         7pJKBoyeNfvIVYnEihZAqQB+gkCWB2AMhn2cKFvf21eaF4tUSAZPe6Shq7HolYcgX7J+
-         CdPcAUpAVQBQk6UJCT/pWTHlBj55F5tmTFjm/+O21yPyEQaK2d4HISveQImVb9OHQ2NF
-         7U2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695215683; x=1695820483;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bxT9/wdLZnqfQQy+fJPt0T12/mHOt466jx3RDgKA048=;
-        b=JN7RpC3SAPRghWtPcJNhShh+Wc/RHR2MfS6dQvDlVcsFQXMnrFg4XfG+CuzdemvwJd
-         8Ope4b7Uf0KS06JPJZp5rZj7KeEvw91shm20+zrCAJW6MSk2/emztl4Bzk0ocSPNzCZl
-         5NxCDE7Vr3QkW23idRGjbX285PcKPYrQ8emcHvEOmr0x1YcSLRGhh690HCynU1G7I1xv
-         QLXoFtBYEorJEiJtbTdwyBK4Na68sDGclVjA391zT5qvlbgsoNg4OYJagV96RO8xUMuu
-         Qq/w7SQTEDm/yM2bmrm1cxMI8B4eNe47jOUCteHZ2JDGQNFFErQToHRVnJuPTZCITPKw
-         12Sw==
-X-Gm-Message-State: AOJu0YxSUaogNWXRV4OUclSpTcnXGXffhJ6BNn8XlCXSGeKuTpCUmu8I
-        PRs6Ql2E47nCzo/8JwXIZXNQa85rzzuyCwPOzKNZ/Q==
-X-Google-Smtp-Source: AGHT+IG1xQF9rn2WVGF+jN+HuztcVuvSAO1VtREiCSknzQrMWpJ7FfJ+dYMTEnhCXgohIpgx1c4NUQ==
-X-Received: by 2002:a17:902:8c85:b0:1c3:52ed:18f9 with SMTP id t5-20020a1709028c8500b001c352ed18f9mr2010266plo.62.1695215682911;
-        Wed, 20 Sep 2023 06:14:42 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id o14-20020a170902d4ce00b001bde440e693sm11816756plg.44.2023.09.20.06.14.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 06:14:42 -0700 (PDT)
-Message-ID: <650af042.170a0220.bfbfe.81b2@mx.google.com>
-Date:   Wed, 20 Sep 2023 06:14:42 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S234573AbjITNZf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 09:25:35 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D00E7AC;
+        Wed, 20 Sep 2023 06:25:27 -0700 (PDT)
+Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+        by linux.microsoft.com (Postfix) with ESMTPSA id E405B212C4B7;
+        Wed, 20 Sep 2023 06:25:24 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E405B212C4B7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1695216327;
+        bh=+TFCyhLrjU2GRB3G3Q8iRvFT2orGxXvTmChxV5qs6Zw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=gM3OCePsIjHUaMbiv7MbJMJw/8oYmz0qHYOZrdvg7+1n7bjVyOAuBE4CLMpR3zsrV
+         /ZQ5ML7SX/MwuePkPxDBfAWeDjwKsepvl5FoTJBXTEjXWqQdtQshVGinujOfiRjXgs
+         zV8utcR0SgzC40NFBHREnWvI1P+91ogOH7My327o=
+Message-ID: <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
+Date:   Wed, 20 Sep 2023 15:25:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.4.256-368-g831ef442fc4c
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
- 27 warnings (v5.4.256-368-g831ef442fc4c)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
+ kmem.limit_in_bytes
+Content-Language: en-US
+To:     Michal Hocko <mhocko@suse.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Shakeel Butt <shakeelb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+        mathieu.tortuyaux@gmail.com
+References: <20230917191040.964416434@linuxfoundation.org>
+ <20230917191042.204185566@linuxfoundation.org>
+ <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
+ <101987a1-b1ab-429d-af03-b6bdf6216474@linux.microsoft.com>
+ <ZQrSXh+riB7NnZuE@dhcp22.suse.cz>
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <ZQrSXh+riB7NnZuE@dhcp22.suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 27 warnings (v=
-5.4.256-368-g831ef442fc4c)
+On 9/20/2023 1:07 PM, Michal Hocko wrote:
+> On Wed 20-09-23 12:04:48, Jeremi Piotrowski wrote:
+>> On 9/20/2023 10:43 AM, Michal Hocko wrote:
+>>> On Wed 20-09-23 01:11:01, Jeremi Piotrowski wrote:
+>>>> On Sun, Sep 17, 2023 at 09:12:40PM +0200, Greg Kroah-Hartman wrote:
+>>>>> 6.1-stable review patch.  If anyone has any objections, please let me know.
+>>>>>
+>>>>> ------------------
+>>>>
+>>>> Hi Greg/Michal,
+>>>>
+>>>> This commit breaks userspace which makes it a bad commit for mainline and an
+>>>> even worse commit for stable.
+>>>>
+>>>> We ingested 6.1.54 into our nightly testing and found that runc fails to gather
+>>>> cgroup statistics (when reading kmem.limit_in_bytes). The same code is vendored
+>>>> into kubelet and kubelet fails to start if this operation fails. 6.1.53 is
+>>>> fine.
+>>>
+>>> Could you expand some more on why is the file read? It doesn't support
+>>> writing to it for some time so how does reading it helps in any sense?
+>>>
+>>> Anyway, I do agree that the stable backport should be reverted.
+>>>
+>>
+>> This file is read together with all the other memcg files. Each prefix:
+>>
+>> memory
+>> memory.memsw
+>> memory.kmem
+>> memory.kmem.tcp
+>>
+>> is combined with these suffixes
+>>
+>> .usage_in_bytes
+>> .max_usage_in_bytes
+>> .failcnt
+>> .limit_in_bytes
+>>
+>> and read, the values are then forwarded on to other components for scheduling decisions.
+>> You want to know the limit when checking the usage (is the usage close to the limit or not).
+> 
+> You know there is no kmem limit as there is no way to set it for some
+> time (since 5.16 - i.e. 2 years ago). I can see that users following old
+> kernels could have missed that though.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.256-368-g831ef442fc4c/
+I know what you mean, but I think this generally went unnoticed because the limit file is read
+unconditionally, but only written when a kmem limit is explicitly requested for a specific
+container, which is rarely (if ever) done.
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.256-368-g831ef442fc4c
-Git Commit: 831ef442fc4c4000caab32d35d6a4c5fe9d41706
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Regarding following old kernels: a majority of kubernetes users are still on 5.15 and only slowly
+started shifting to >=6.1 very recently (this summer). This is mostly driven by distro vendor
+policies which tend to follow the pattern of "follow LTS kernels but don't switch to the next
+LTS immediately".
 
-Warnings Detected:
+I know this is far from ideal for reporting these kinds of issues, would love to report
+them as soon as a kernel release happens.
 
-arc:
+> 
+>> Userspace tolerates MEMCG/MEMCG_KMEM being disabled, but having a single file out of the
+>> set missing is an anomaly. So maybe we could keep the dummy file just for the
+>> sake of consistency? Cgroupv1 is legacy after all.
+> 
+> What we had was a dummy file. It didn't allow to write any value so it
+> would have always reported unlimited. The reason I've decided to remove
+> the file was that there were other users not being able to handle the
+> write failure while they are just fine not having the file. So we are
+> effectively between a rock and hard place here. Either way something is
+> broken. The other SW got fixed as well but similar to your case it takes
+> some time to absorb the change through all 3rd party users.
+> 
+>>>>> Address this by wiping out the file completely and effectively get back to
+>>>>> pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
+>>>>
+>>>> On reads, the runc code checks for MEMCG_KMEM=n by checking
+>>>> kmem.usage_in_bytes.
+> 
+> Just one side note. Config options get renamed and their semantic
+> changes over time so I would just recomment to never make any
+> dependencies on any specific one. 
+> 
 
-arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
+Right, what i meant is the logic is this, with checking the "usage"
+file to determine whether the controller is available:
 
-arm:
+    value, err := fscommon.GetCgroupParamUint(path, usage)
+    if err != nil {
+        if name != "" && os.IsNotExist(err) {
+            // Ignore ENOENT as swap and kmem controllers
+            // are optional in the kernel.
+            return cgroups.MemoryData{}, nil
+        }
+        return cgroups.MemoryData{}, err
+    }
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+and if it is, then it proceeds to read "limit_in_bytes" and the others.
 
-mips:
+>>>> If it is present then runc expects the other cgroup files
+>>>> to be there (including kmem.limit_in_bytes). So this change is not effectively
+>>>> the same.
+>>>>
+>>>> Here's a link to the PR that would be needed to handle this change in userspace
+>>>> (not merged yet and would need to be propagated through the ecosystem):
+>>>>
+>>>> https://github.com/opencontainers/runc/pull/4018.
+>>>
+>>> Thanks. Does that mean the revert is still necessary for the Linus tree
+>>> or do you expect that the fix can be merged and propagated in a
+>>> reasonable time?
+>>>
+>>
+>> We can probably get runc and currently supported kubernetes versions patched in time
+>> before 6.6 (or the next LTS kernel) hits LTS distros.
+>>
+>> But there's still a bunch of users running cgroupv1 with unsupported kubernetes
+>> versions that are still taking kernel updates as they come, so this might get reported
+>> again next year if it stays in mainline.
+> 
+> I can see how 3rd party users are hard to get aligned but having a fix
+> available should allow them to apply it or is there any actual roadblock
+> for them to adapt as soon as they hit the issue?
+> 
 
-riscv:
+The issue with this is that these users are running a frozen set of kubernetes (+runc)
+binaries, but still pull kernel updates from the base distro. These kubernetes versions
+are out of maintenance so the code will not get fixed and no one will release fixed
+binaries.
 
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
+> I mean, normally I would be just fine reverting this API change because
+> it is disruptive but the only way to have the file available and not
+> break somebody is to revert 58056f77502f ("memcg, kmem: further
+> deprecate kmem.limit_in_bytes") as well. Or to ignore any value written
+> there but that sounds rather dubious. Although one could argue this
+> would mimic nokmem kernel option.
+> 
 
+I just want to make sure we don't introduce yet another new behavior in this legacy
+system. I have not seen breakage due to 58056f77502f. Mimicing nokmem sounds good but
+does this mean "don't enforce limits" (that should be fine) or "ignore writes to the limit"
+(=don't event store the written limit). The latter might have unintended consequences.
 
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-    1    drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning =
-=E2=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=
-=80=99 makes pointer from integer without a cast [-Wint-conversion]
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning =E2=
-=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=80=
-=99 makes pointer from integer without a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-4 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
