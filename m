@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED5F7A7DA0
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8D07A7FB8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235396AbjITMKs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:10:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45044 "EHLO
+        id S234567AbjITMaK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:30:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235410AbjITMKp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:45 -0400
+        with ESMTP id S235905AbjITM3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F785DD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74976C433CC;
-        Wed, 20 Sep 2023 12:10:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F21883
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF247C433C8;
+        Wed, 20 Sep 2023 12:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211833;
-        bh=y6j3zxZHMPT/S7GzPslqxdl2By6by5IpaNZzcQ8do0k=;
+        s=korg; t=1695212978;
+        bh=RJnlzB3tQUOe2PLwjjyQw7MlV5cVV/yvPDIpiMsYif8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s8gj/5Tm7yrKLIhwYd3VKrfuKUDr6WZ9iI5WSPa/+6D0v/OJQ8PGC78zdMVDE8eIK
-         OzC0KuTxFyP2YQiXJ+GRsiWt+/E7HZ1zhW4kglm3y9Nht/n73Y/YN2A8U2zpkR5Cla
-         gmFHVjgEVPIhMmyj2JG5pAWmlqwVNDjh3jT+N9o0=
+        b=ksqA1YGqzPJyZvBGf/ZDKGJMGPLemCb3uzAJNCHcDtr88lawGPAN36XWheM16qcum
+         6nFUszjtLZqSoBTByBwHZIM6RLigh367xhno5xzZR4HJ4vogUV3pK7ensZfgAUMCu4
+         T0klSMG27WNilk50tWENF7luVPMqY/SRFUCrcU2Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/273] regmap: rbtree: Use alloc_flags for memory allocations
+        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 115/367] of: unittest: fix null pointer dereferencing in of_unittest_find_node_by_name()
 Date:   Wed, 20 Sep 2023 13:28:12 +0200
-Message-ID: <20230920112848.036621656@linuxfoundation.org>
+Message-ID: <20230920112901.596311143@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -43,108 +41,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ruan Jinjie <ruanjinjie@huawei.com>
 
-[ Upstream commit 0c8b0bf42c8cef56f7cd9cd876fbb7ece9217064 ]
+[ Upstream commit d6ce4f0ea19c32f10867ed93d8386924326ab474 ]
 
-The kunit tests discovered a sleeping in atomic bug.  The allocations
-in the regcache-rbtree code should use the map->alloc_flags instead of
-GFP_KERNEL.
+when kmalloc() fail to allocate memory in kasprintf(), name
+or full_name will be NULL, strcmp() will cause
+null pointer dereference.
 
-[    5.005510] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
-[    5.005960] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 117, name: kunit_try_catch
-[    5.006219] preempt_count: 1, expected: 0
-[    5.006414] 1 lock held by kunit_try_catch/117:
-[    5.006590]  #0: 833b9010 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
-[    5.007493] irq event stamp: 162
-[    5.007627] hardirqs last  enabled at (161): [<80786738>] crng_make_state+0x1a0/0x294
-[    5.007871] hardirqs last disabled at (162): [<80c531ec>] _raw_spin_lock_irqsave+0x7c/0x80
-[    5.008119] softirqs last  enabled at (0): [<801110ac>] copy_process+0x810/0x2138
-[    5.008356] softirqs last disabled at (0): [<00000000>] 0x0
-[    5.008688] CPU: 0 PID: 117 Comm: kunit_try_catch Tainted: G                 N 6.4.4-rc3-g0e8d2fdfb188 #1
-[    5.009011] Hardware name: Generic DT based system
-[    5.009277]  unwind_backtrace from show_stack+0x18/0x1c
-[    5.009497]  show_stack from dump_stack_lvl+0x38/0x5c
-[    5.009676]  dump_stack_lvl from __might_resched+0x188/0x2d0
-[    5.009860]  __might_resched from __kmem_cache_alloc_node+0x1dc/0x25c
-[    5.010061]  __kmem_cache_alloc_node from kmalloc_trace+0x30/0xc8
-[    5.010254]  kmalloc_trace from regcache_rbtree_write+0x26c/0x468
-[    5.010446]  regcache_rbtree_write from _regmap_write+0x88/0x140
-[    5.010634]  _regmap_write from regmap_write+0x44/0x68
-[    5.010803]  regmap_write from basic_read_write+0x8c/0x270
-[    5.010980]  basic_read_write from kunit_try_run_case+0x48/0xa0
-
-Fixes: 28644c809f44 ("regmap: Add the rbtree cache support")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/ee59d128-413c-48ad-a3aa-d9d350c80042@roeck-us.net/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/58f12a07-5f4b-4a8f-ab84-0a42d1908cb9@moroto.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0d638a07d3a1 ("of: Convert to using %pOF instead of full_name")
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230727080246.519539-1-ruanjinjie@huawei.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regcache-rbtree.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/of/unittest.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
-index e9b7ce8c272c6..7353c55270874 100644
---- a/drivers/base/regmap/regcache-rbtree.c
-+++ b/drivers/base/regmap/regcache-rbtree.c
-@@ -291,7 +291,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 5707c309a7545..ef3c2112046fc 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -52,7 +52,7 @@ static void __init of_unittest_find_node_by_name(void)
  
- 	blk = krealloc(rbnode->block,
- 		       blklen * map->cache_word_size,
--		       GFP_KERNEL);
-+		       map->alloc_flags);
- 	if (!blk)
- 		return -ENOMEM;
+ 	np = of_find_node_by_path("/testcase-data");
+ 	name = kasprintf(GFP_KERNEL, "%pOF", np);
+-	unittest(np && !strcmp("/testcase-data", name),
++	unittest(np && name && !strcmp("/testcase-data", name),
+ 		"find /testcase-data failed\n");
+ 	of_node_put(np);
+ 	kfree(name);
+@@ -63,14 +63,14 @@ static void __init of_unittest_find_node_by_name(void)
  
-@@ -300,7 +300,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
- 	if (BITS_TO_LONGS(blklen) > BITS_TO_LONGS(rbnode->blklen)) {
- 		present = krealloc(rbnode->cache_present,
- 				   BITS_TO_LONGS(blklen) * sizeof(*present),
--				   GFP_KERNEL);
-+				   map->alloc_flags);
- 		if (!present)
- 			return -ENOMEM;
+ 	np = of_find_node_by_path("/testcase-data/phandle-tests/consumer-a");
+ 	name = kasprintf(GFP_KERNEL, "%pOF", np);
+-	unittest(np && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
++	unittest(np && name && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
+ 		"find /testcase-data/phandle-tests/consumer-a failed\n");
+ 	of_node_put(np);
+ 	kfree(name);
  
-@@ -334,7 +334,7 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
- 	const struct regmap_range *range;
- 	int i;
+ 	np = of_find_node_by_path("testcase-alias");
+ 	name = kasprintf(GFP_KERNEL, "%pOF", np);
+-	unittest(np && !strcmp("/testcase-data", name),
++	unittest(np && name && !strcmp("/testcase-data", name),
+ 		"find testcase-alias failed\n");
+ 	of_node_put(np);
+ 	kfree(name);
+@@ -81,7 +81,7 @@ static void __init of_unittest_find_node_by_name(void)
  
--	rbnode = kzalloc(sizeof(*rbnode), GFP_KERNEL);
-+	rbnode = kzalloc(sizeof(*rbnode), map->alloc_flags);
- 	if (!rbnode)
- 		return NULL;
+ 	np = of_find_node_by_path("testcase-alias/phandle-tests/consumer-a");
+ 	name = kasprintf(GFP_KERNEL, "%pOF", np);
+-	unittest(np && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
++	unittest(np && name && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
+ 		"find testcase-alias/phandle-tests/consumer-a failed\n");
+ 	of_node_put(np);
+ 	kfree(name);
+@@ -1151,6 +1151,8 @@ static void attach_node_and_children(struct device_node *np)
+ 	const char *full_name;
  
-@@ -360,13 +360,13 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
- 	}
+ 	full_name = kasprintf(GFP_KERNEL, "%pOF", np);
++	if (!full_name)
++		return;
  
- 	rbnode->block = kmalloc_array(rbnode->blklen, map->cache_word_size,
--				      GFP_KERNEL);
-+				      map->alloc_flags);
- 	if (!rbnode->block)
- 		goto err_free;
- 
- 	rbnode->cache_present = kcalloc(BITS_TO_LONGS(rbnode->blklen),
- 					sizeof(*rbnode->cache_present),
--					GFP_KERNEL);
-+					map->alloc_flags);
- 	if (!rbnode->cache_present)
- 		goto err_free_block;
- 
+ 	if (!strcmp(full_name, "/__local_fixups__") ||
+ 	    !strcmp(full_name, "/__fixups__")) {
 -- 
 2.40.1
 
