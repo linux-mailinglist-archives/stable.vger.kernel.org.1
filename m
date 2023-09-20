@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A31B7A7CE8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 857397A80AA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235214AbjITMF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39224 "EHLO
+        id S236091AbjITMjH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235361AbjITMFK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:10 -0400
+        with ESMTP id S236100AbjITMjC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8243AB0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABCBC433C8;
-        Wed, 20 Sep 2023 12:05:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658DCCC7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5D5C433CA;
+        Wed, 20 Sep 2023 12:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211504;
-        bh=DTX2mcpO2hAFn6JSJ8gq+oLDoTto26drWX2TUmAgHI4=;
+        s=korg; t=1695213526;
+        bh=Xp4ASzR2jQieP4rnh4zRV+EcK8gdj6yKmAHdpFUvRrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NvpfrUkASl5ko74GaxmYP5NFlAV8AFovlD34WojztLOtp6Xo/jDCGI2jws8ntIoBt
-         inAraWZqv6HL1S5TDIGeQAZy1rpJnDT+3ydxX6zPpeQTRf8Up9uuHCzA9KFFKEhyKl
-         URcUVstlH1rvWacse6NKVU6JT9sj6Uv45X5GWG3Y=
+        b=Zx3Pf9h37hP/4e1VoENhtzg7Zrsgbv/qgO6cttpsiiATs7U/EkkXIKTdvNLpuNlkP
+         6vDd7r2EoXr5dePyMleGrgxjB1zp7jQ2KVfWoOLVm42T8t5kZGf5icPmSOJcxcTkao
+         d1jalbroQBL/uHvsWnRw6VEM5vnHiFu/hQrXbAEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
-        Enlin Mu <enlin.mu@unisoc.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 4.14 118/186] pstore/ram: Check start of empty przs during init
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 5.4 244/367] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
 Date:   Wed, 20 Sep 2023 13:30:21 +0200
-Message-ID: <20230920112841.302373958@linuxfoundation.org>
+Message-ID: <20230920112904.872849279@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enlin Mu <enlin.mu@unisoc.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit fe8c3623ab06603eb760444a032d426542212021 upstream.
+commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
 
-After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
-valid"), initialization would assume a prz was valid after seeing that
-the buffer_size is zero (regardless of the buffer start position). This
-unchecked start value means it could be outside the bounds of the buffer,
-leading to future access panics when written to:
+Do not assing the Linux device to struct fb_info.dev. The call to
+register_framebuffer() initializes the field to the fbdev device.
+Drivers should not override its value.
 
- sysdump_panic_event+0x3b4/0x5b8
- atomic_notifier_call_chain+0x54/0x90
- panic+0x1c8/0x42c
- die+0x29c/0x2a8
- die_kernel_fault+0x68/0x78
- __do_kernel_fault+0x1c4/0x1e0
- do_bad_area+0x40/0x100
- do_translation_fault+0x68/0x80
- do_mem_abort+0x68/0xf8
- el1_da+0x1c/0xc0
- __raw_writeb+0x38/0x174
- __memcpy_toio+0x40/0xac
- persistent_ram_update+0x44/0x12c
- persistent_ram_write+0x1a8/0x1b8
- ramoops_pstore_write+0x198/0x1e8
- pstore_console_write+0x94/0xe0
- ...
+Fixes a bug where the driver incorrectly decreases the hardware
+device's reference counter and leaks the fbdev device.
 
-To avoid this, also check if the prz start is 0 during the initialization
-phase. If not, the next prz sanity check case will discover it (start >
-size) and zap the buffer back to a sane state.
+v2:
+	* add Fixes tag (Dan)
 
-Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
-Cc: Yunlong Xing <yunlong.xing@unisoc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
-Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
-[kees: update commit log with backtrace and clarifications]
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 88017bda96a5 ("ep93xx video driver")
+Cc: <stable@vger.kernel.org> # v2.6.32+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/pstore/ram_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/ep93xx-fb.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -492,7 +492,7 @@ static int persistent_ram_post_init(stru
- 	sig ^= PERSISTENT_RAM_SIG;
+--- a/drivers/video/fbdev/ep93xx-fb.c
++++ b/drivers/video/fbdev/ep93xx-fb.c
+@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
+ 	if (!info)
+ 		return -ENOMEM;
  
- 	if (prz->buffer->sig == sig) {
--		if (buffer_size(prz) == 0) {
-+		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
- 			pr_debug("found existing empty buffer\n");
- 			return 0;
- 		}
+-	info->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, info);
+ 	fbi = info->par;
+ 	fbi->mach_info = mach_info;
 
 
