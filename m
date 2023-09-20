@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6367A7B5B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B98077A7C07
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234685AbjITLv0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58634 "EHLO
+        id S234933AbjITL53 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234714AbjITLvW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:22 -0400
+        with ESMTP id S235099AbjITL5W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C5ED8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC6AC433CA;
-        Wed, 20 Sep 2023 11:51:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E65718F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC63C433C9;
+        Wed, 20 Sep 2023 11:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210676;
-        bh=MIPkkOCqqxAHf33xiWhmZb5dAjxfMRYuI9INjv+i7uY=;
+        s=korg; t=1695211030;
+        bh=SRL3JpW3qqCZzJfXLCUv2wcFejI8RjU7NmvOGhFp98s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t0W+lTYncGyI6kOCPzX7Cw3QYfVXtK5pyFgkuGD47Ithz5QaQcZV87sW4FUFMRZRW
-         n82RUSchtgD+1Gcc379ee32elDG2IZBWtJzRgYjfwdyCdm8SF+g9c1aDFtLFmnlqAh
-         RautKUcfMqdGE6wMa4IXqGGaBaYTMCjoT6aOMQA4=
+        b=DuV2xNlOPsFCe1/PKGv8Zyw+BsJksOP8I8F4l+tItrhixFH36k7BcTTt3JLs3zDeh
+         y3hPi/uVe65YeGxYauoENNV6mY3U+AYtg2EBnQMCePc7CoqQnJ1LhKhQPjCPHepstQ
+         qNkziqgMFHMEATKIAGJWBaOiLnkuFDiGJxER8QiM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Zhang <yi.zhang@redhat.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
+        Peter Chen <peter.chen@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 164/211] blk-mq: fix tags UAF when shrinking q->nr_hw_queues
-Date:   Wed, 20 Sep 2023 13:30:08 +0200
-Message-ID: <20230920112850.972495331@linuxfoundation.org>
+Subject: [PATCH 6.1 075/139] usb: cdns3: Put the cdns set active part outside the spin lock
+Date:   Wed, 20 Sep 2023 13:30:09 +0200
+Message-ID: <20230920112838.476829956@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,77 +50,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 6be6d112419713334ddd9c01f219ca16adaa4c76 ]
+[ Upstream commit 2319b9c87fe243327285f2fefd7374ffd75a65fc ]
 
-When nr_hw_queues shrink, we free the excess tags before realloc'ing
-hw_ctxs for each queue. During that resize, we may need to access those
-tags, like blk_mq_tag_idle(hctx) will access queue shared tags.
+The device may be scheduled during the resume process,
+so this cannot appear in atomic operations. Since
+pm_runtime_set_active will resume suppliers, put set
+active outside the spin lock, which is only used to
+protect the struct cdns data structure, otherwise the
+kernel will report the following warning:
 
-This can cause a slab use-after-free, as reported by KASAN. Fix it by
-moving the releasing of excess tags to the end.
+  BUG: sleeping function called from invalid context at drivers/base/power/runtime.c:1163
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 651, name: sh
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  CPU: 0 PID: 651 Comm: sh Tainted: G        WC         6.1.20 #1
+  Hardware name: Freescale i.MX8QM MEK (DT)
+  Call trace:
+    dump_backtrace.part.0+0xe0/0xf0
+    show_stack+0x18/0x30
+    dump_stack_lvl+0x64/0x80
+    dump_stack+0x1c/0x38
+    __might_resched+0x1fc/0x240
+    __might_sleep+0x68/0xc0
+    __pm_runtime_resume+0x9c/0xe0
+    rpm_get_suppliers+0x68/0x1b0
+    __pm_runtime_set_status+0x298/0x560
+    cdns_resume+0xb0/0x1c0
+    cdns3_controller_resume.isra.0+0x1e0/0x250
+    cdns3_plat_resume+0x28/0x40
 
-Fixes: e1dd7bc93029 ("blk-mq: fix tags leak when shrink nr_hw_queues")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/CAHj4cs_CK63uoDpGBGZ6DN4OCTpzkR3UaVgK=LX8Owr8ej2ieQ@mail.gmail.com/
-Cc: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20230908005702.2183908-1-chengming.zhou@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230616021952.1025854-1-xiaolei.wang@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/cdns3/cdns3-plat.c |  3 ++-
+ drivers/usb/cdns3/cdnsp-pci.c  |  3 ++-
+ drivers/usb/cdns3/core.c       | 15 +++++++++++----
+ drivers/usb/cdns3/core.h       |  7 +++++--
+ 4 files changed, 20 insertions(+), 8 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4404,11 +4404,8 @@ static int blk_mq_realloc_tag_set_tags(s
- 	struct blk_mq_tags **new_tags;
- 	int i;
+diff --git a/drivers/usb/cdns3/cdns3-plat.c b/drivers/usb/cdns3/cdns3-plat.c
+index 2bc5d094548b6..726b2e4f67e4d 100644
+--- a/drivers/usb/cdns3/cdns3-plat.c
++++ b/drivers/usb/cdns3/cdns3-plat.c
+@@ -256,9 +256,10 @@ static int cdns3_controller_resume(struct device *dev, pm_message_t msg)
+ 	cdns3_set_platform_suspend(cdns->dev, false, false);
  
--	if (set->nr_hw_queues >= new_nr_hw_queues) {
--		for (i = new_nr_hw_queues; i < set->nr_hw_queues; i++)
--			__blk_mq_free_map_and_rqs(set, i);
-+	if (set->nr_hw_queues >= new_nr_hw_queues)
- 		goto done;
--	}
+ 	spin_lock_irqsave(&cdns->lock, flags);
+-	cdns_resume(cdns, !PMSG_IS_AUTO(msg));
++	cdns_resume(cdns);
+ 	cdns->in_lpm = false;
+ 	spin_unlock_irqrestore(&cdns->lock, flags);
++	cdns_set_active(cdns, !PMSG_IS_AUTO(msg));
+ 	if (cdns->wakeup_pending) {
+ 		cdns->wakeup_pending = false;
+ 		enable_irq(cdns->wakeup_irq);
+diff --git a/drivers/usb/cdns3/cdnsp-pci.c b/drivers/usb/cdns3/cdnsp-pci.c
+index 29f433c5a6f3f..a85db23fa19f2 100644
+--- a/drivers/usb/cdns3/cdnsp-pci.c
++++ b/drivers/usb/cdns3/cdnsp-pci.c
+@@ -210,8 +210,9 @@ static int __maybe_unused cdnsp_pci_resume(struct device *dev)
+ 	int ret;
  
- 	new_tags = kcalloc_node(new_nr_hw_queues, sizeof(struct blk_mq_tags *),
- 				GFP_KERNEL, set->numa_node);
-@@ -4718,7 +4715,8 @@ static void __blk_mq_update_nr_hw_queues
+ 	spin_lock_irqsave(&cdns->lock, flags);
+-	ret = cdns_resume(cdns, 1);
++	ret = cdns_resume(cdns);
+ 	spin_unlock_irqrestore(&cdns->lock, flags);
++	cdns_set_active(cdns, 1);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index dbcdf3b24b477..7b20d2d5c262e 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -522,9 +522,8 @@ int cdns_suspend(struct cdns *cdns)
+ }
+ EXPORT_SYMBOL_GPL(cdns_suspend);
+ 
+-int cdns_resume(struct cdns *cdns, u8 set_active)
++int cdns_resume(struct cdns *cdns)
  {
- 	struct request_queue *q;
- 	LIST_HEAD(head);
--	int prev_nr_hw_queues;
-+	int prev_nr_hw_queues = set->nr_hw_queues;
-+	int i;
+-	struct device *dev = cdns->dev;
+ 	enum usb_role real_role;
+ 	bool role_changed = false;
+ 	int ret = 0;
+@@ -556,15 +555,23 @@ int cdns_resume(struct cdns *cdns, u8 set_active)
+ 	if (cdns->roles[cdns->role]->resume)
+ 		cdns->roles[cdns->role]->resume(cdns, cdns_power_is_lost(cdns));
  
- 	lockdep_assert_held(&set->tag_list_lock);
- 
-@@ -4745,7 +4743,6 @@ static void __blk_mq_update_nr_hw_queues
- 		blk_mq_sysfs_unregister_hctxs(q);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(cdns_resume);
++
++void cdns_set_active(struct cdns *cdns, u8 set_active)
++{
++	struct device *dev = cdns->dev;
++
+ 	if (set_active) {
+ 		pm_runtime_disable(dev);
+ 		pm_runtime_set_active(dev);
+ 		pm_runtime_enable(dev);
  	}
  
--	prev_nr_hw_queues = set->nr_hw_queues;
- 	if (blk_mq_realloc_tag_set_tags(set, nr_hw_queues) < 0)
- 		goto reregister;
- 
-@@ -4781,6 +4778,10 @@ switch_back:
- 
- 	list_for_each_entry(q, &set->tag_list, tag_set_list)
- 		blk_mq_unfreeze_queue(q);
-+
-+	/* Free the excess tags when nr_hw_queues shrink. */
-+	for (i = set->nr_hw_queues; i < prev_nr_hw_queues; i++)
-+		__blk_mq_free_map_and_rqs(set, i);
+-	return 0;
++	return;
  }
+-EXPORT_SYMBOL_GPL(cdns_resume);
++EXPORT_SYMBOL_GPL(cdns_set_active);
+ #endif /* CONFIG_PM_SLEEP */
  
- void blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set, int nr_hw_queues)
+ MODULE_AUTHOR("Peter Chen <peter.chen@nxp.com>");
+diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
+index 2d332a788871e..4a4dbc2c15615 100644
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -125,10 +125,13 @@ int cdns_init(struct cdns *cdns);
+ int cdns_remove(struct cdns *cdns);
+ 
+ #ifdef CONFIG_PM_SLEEP
+-int cdns_resume(struct cdns *cdns, u8 set_active);
++int cdns_resume(struct cdns *cdns);
+ int cdns_suspend(struct cdns *cdns);
++void cdns_set_active(struct cdns *cdns, u8 set_active);
+ #else /* CONFIG_PM_SLEEP */
+-static inline int cdns_resume(struct cdns *cdns, u8 set_active)
++static inline int cdns_resume(struct cdns *cdns)
++{ return 0; }
++static inline int cdns_set_active(struct cdns *cdns, u8 set_active)
+ { return 0; }
+ static inline int cdns_suspend(struct cdns *cdns)
+ { return 0; }
+-- 
+2.40.1
+
 
 
