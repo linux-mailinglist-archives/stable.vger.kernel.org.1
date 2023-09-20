@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D67C97A7B4F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95AF37A7BE9
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234578AbjITLvE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58434 "EHLO
+        id S234563AbjITL4r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234697AbjITLvE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:04 -0400
+        with ESMTP id S234898AbjITL4o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04B3CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A101C433C7;
-        Wed, 20 Sep 2023 11:50:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE66CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A23C433CA;
+        Wed, 20 Sep 2023 11:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210657;
-        bh=gOxpGLnG32PWxUlCxpi2LUFMKCB/Hwr/eFA2xLhC5Oo=;
+        s=korg; t=1695210993;
+        bh=LRHoVk6omr8VQ1gmpf6THNRg9z1ipGoChiZS10DDBWI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xScsexcayIx+y9mI5xmKoenTB3QxHQ3PxEJCKnwtJlVmU1sH3Tk2FFn7igQYC1gQ9
-         948+bwHNatFJKbBiB0pXw48Gk6ugnTZMkplHzh1r+bohaLdH8IjM0CdQIGKTIGSC7p
-         fwfpFkZSj0J5gOBruXuCCy7NP25OYOiJu9QMZFeg=
+        b=Y/GMFQTivUtzp5UGzGAxHZC0aT7Ra9yxoColwRl7swuNplPr2UjCNqUh3BPmEAhmz
+         HATf33CLYzuBpqHZI5cGQ4HWc8xc5LxsLdN46HAsz8mGrtlSF4WTaSppzE062Vfis0
+         8YKl7ZONWdaPbKhAcvNvNCOTiPojeNBBQIAvevU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 130/211] printk: Do not take console lock for console_flush_on_panic()
-Date:   Wed, 20 Sep 2023 13:29:34 +0200
-Message-ID: <20230920112849.844643021@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/139] arm64: dts: qcom: sm6125-pdx201: correct ramoops pmsg-size
+Date:   Wed, 20 Sep 2023 13:29:35 +0200
+Message-ID: <20230920112837.168933032@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,98 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit eacb04ff3c5b8662a65f380ae450250698448cff ]
+[ Upstream commit c42f5452de6ad2599c6e5e2a64c180a4ac835d27 ]
 
-Currently console_flush_on_panic() will attempt to acquire the
-console lock when flushing the buffer on panic. If it fails to
-acquire the lock, it continues anyway because this is the last
-chance to get any pending records printed.
+There is no 'msg-size' property in ramoops, so assume intention was for
+'pmsg-size':
 
-The reason why the console lock was attempted at all was to
-prevent any other CPUs from acquiring the console lock for
-printing while the panic CPU was printing. But as of the
-previous commit, non-panic CPUs will no longer attempt to
-acquire the console lock in a panic situation. Therefore it is
-no longer strictly necessary for a panic CPU to acquire the
-console lock.
+  sm6125-sony-xperia-seine-pdx201.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
 
-Avoiding taking the console lock when flushing in panic has
-the additional benefit of avoiding possible deadlocks due to
-semaphore usage in NMI context (semaphores are not NMI-safe)
-and avoiding possible deadlocks if another CPU accesses the
-semaphore and is stopped while holding one of the semaphore's
-internal spinlocks.
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230717194607.145135-5-john.ogness@linutronix.de
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230618114442.140185-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 591c11888200d..88770561c4350 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3120,14 +3120,24 @@ void console_unblank(void)
-  */
- void console_flush_on_panic(enum con_flush_mode mode)
- {
-+	bool handover;
-+	u64 next_seq;
-+
- 	/*
--	 * If someone else is holding the console lock, trylock will fail
--	 * and may_schedule may be set.  Ignore and proceed to unlock so
--	 * that messages are flushed out.  As this can be called from any
--	 * context and we don't want to get preempted while flushing,
--	 * ensure may_schedule is cleared.
-+	 * Ignore the console lock and flush out the messages. Attempting a
-+	 * trylock would not be useful because:
-+	 *
-+	 *   - if it is contended, it must be ignored anyway
-+	 *   - console_lock() and console_trylock() block and fail
-+	 *     respectively in panic for non-panic CPUs
-+	 *   - semaphores are not NMI-safe
-+	 */
-+
-+	/*
-+	 * If another context is holding the console lock,
-+	 * @console_may_schedule might be set. Clear it so that
-+	 * this context does not call cond_resched() while flushing.
- 	 */
--	console_trylock();
- 	console_may_schedule = 0;
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+index e1ab5b5189949..4a77b650c0d8d 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+@@ -73,7 +73,7 @@ pstore_mem: ramoops@ffc00000 {
+ 			reg = <0x0 0xffc40000 0x0 0xc0000>;
+ 			record-size = <0x1000>;
+ 			console-size = <0x40000>;
+-			msg-size = <0x20000 0x20000>;
++			pmsg-size = <0x20000>;
+ 		};
  
- 	if (mode == CONSOLE_REPLAY_ALL) {
-@@ -3140,15 +3150,15 @@ void console_flush_on_panic(enum con_flush_mode mode)
- 		cookie = console_srcu_read_lock();
- 		for_each_console_srcu(c) {
- 			/*
--			 * If the above console_trylock() failed, this is an
--			 * unsynchronized assignment. But in that case, the
-+			 * This is an unsynchronized assignment, but the
- 			 * kernel is in "hope and pray" mode anyway.
- 			 */
- 			c->seq = seq;
- 		}
- 		console_srcu_read_unlock(cookie);
- 	}
--	console_unlock();
-+
-+	console_flush_all(false, &next_seq, &handover);
- }
- 
- /*
+ 		cmdline_mem: memory@ffd00000 {
 -- 
 2.40.1
 
