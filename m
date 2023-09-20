@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01A637A7F0F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4567A8194
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235688AbjITMXc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43144 "EHLO
+        id S234822AbjITMqt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235693AbjITMXc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:32 -0400
+        with ESMTP id S234837AbjITMqs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E9593
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433D8C433C7;
-        Wed, 20 Sep 2023 12:23:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F0F135
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60652C433CB;
+        Wed, 20 Sep 2023 12:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212605;
-        bh=0z1n0mMOsZN5kyMY5KqQL+zrv1BQL3cty13cUXweBA4=;
+        s=korg; t=1695213994;
+        bh=IglbDi0JK9bmh7tOZZ+zyfcGI4a8XdxJOMw8GliLqmo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RsN63IUPNqPL3is66q3huvcUNVST02kZZYs3Efg9k4V95LAjulbYgm36/foI6gUi8
-         lYE9Dkf55JveKMYyskQs7DH1m2Z9nkYrVJvT7ns9h1f93MsuU9C8mpdBvFcZzbboAB
-         7a7XXYDTbci8Zf4dSFna/rQI4cS9YMbFN2Wtf6T4=
+        b=sB1RrrBFMAutZYNmJP4zhTNfHQhqqE14gRwabvXElS/44DHFuCUabwaMDIYrdIYgB
+         kKtx0J24Bewo/tJLaFMFw93vGKobhj8bcH3K8j8ZzDmZ9iedhea7DBVcSwPN6Fci+t
+         6IB9FMEkttVDMxvfbyZVlqU1I4BLBj9m/tjSf8LU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Petr Mladek <pmladek@suse.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
+        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
+        Peter Chen <peter.chen@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 64/83] samples/hw_breakpoint: fix building without module unloading
+Subject: [PATCH 5.15 056/110] usb: ehci: add workaround for chipidea PORTSC.PEC bug
 Date:   Wed, 20 Sep 2023 13:31:54 +0200
-Message-ID: <20230920112829.192836671@linuxfoundation.org>
+Message-ID: <20230920112832.498403247@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +50,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit b9080468caeddc58a91edd1c3a7d212ea82b0d1d ]
+[ Upstream commit dda4b60ed70bd670eefda081f70c0cb20bbeb1fa ]
 
-__symbol_put() is really meant as an internal helper and is not available
-when module unloading is disabled, unlike the previously used symbol_put():
+Some NXP processor using chipidea IP has a bug when frame babble is
+detected.
 
-samples/hw_breakpoint/data_breakpoint.c: In function 'hw_break_module_exit':
-samples/hw_breakpoint/data_breakpoint.c:73:9: error: implicit declaration of function '__symbol_put'; did you mean '__symbol_get'? [-Werror=implicit-function-declaration]
+As per 4.15.1.1.1 Serial Bus Babble:
+  A babble condition also exists if IN transaction is in progress at
+High-speed SOF2 point. This is called frame babble. The host controller
+must disable the port to which the frame babble is detected.
 
-The hw_break_module_exit() function is not actually used when module
-unloading is disabled, but it still causes the build failure for an
-undefined identifier. Enclose this one call in an appropriate #ifdef to
-clarify what the requirement is. Leaving out the entire exit function
-would also work but feels less clar in this case.
+The USB controller has disabled the port (PE cleared) and has asserted
+USBERRINT when frame babble is detected, but PEC is not asserted.
+Therefore, the SW isn't aware that port has been disabled. Then the
+SW keeps sending packets to this port, but all of the transfers will
+fail.
 
-Fixes: 910e230d5f1bb ("samples/hw_breakpoint: Fix kernel BUG 'invalid opcode: 0000'")
-Fixes: d8a84d33a4954 ("samples/hw_breakpoint: drop use of kallsyms_lookup_name()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+This workaround will firstly assert PCD by SW when USBERRINT is detected
+and then judge whether port change has really occurred or not by polling
+roothub status. Because the PEC doesn't get asserted in our case, this
+patch will also assert it by SW when specific conditions are satisfied.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230809024432.535160-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/hw_breakpoint/data_breakpoint.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/ehci-hcd.c |  8 ++++++--
+ drivers/usb/host/ehci-hub.c | 10 +++++++++-
+ drivers/usb/host/ehci.h     | 10 ++++++++++
+ 3 files changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/samples/hw_breakpoint/data_breakpoint.c b/samples/hw_breakpoint/data_breakpoint.c
-index 9debd128b2ab8..b99322f188e59 100644
---- a/samples/hw_breakpoint/data_breakpoint.c
-+++ b/samples/hw_breakpoint/data_breakpoint.c
-@@ -70,7 +70,9 @@ static int __init hw_break_module_init(void)
- static void __exit hw_break_module_exit(void)
- {
- 	unregister_wide_hw_breakpoint(sample_hbp);
-+#ifdef CONFIG_MODULE_UNLOAD
- 	__symbol_put(ksym_name);
-+#endif
- 	printk(KERN_INFO "HW Breakpoint for %s write uninstalled\n", ksym_name);
- }
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 1440803216297..02044d45edded 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -755,10 +755,14 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
  
+ 	/* normal [4.15.1.2] or error [4.15.1.1] completion */
+ 	if (likely ((status & (STS_INT|STS_ERR)) != 0)) {
+-		if (likely ((status & STS_ERR) == 0))
++		if (likely ((status & STS_ERR) == 0)) {
+ 			INCR(ehci->stats.normal);
+-		else
++		} else {
++			/* Force to check port status */
++			if (ehci->has_ci_pec_bug)
++				status |= STS_PCD;
+ 			INCR(ehci->stats.error);
++		}
+ 		bh = 1;
+ 	}
+ 
+diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
+index c4f6a2559a987..0350c03dc97a1 100644
+--- a/drivers/usb/host/ehci-hub.c
++++ b/drivers/usb/host/ehci-hub.c
+@@ -674,7 +674,8 @@ ehci_hub_status_data (struct usb_hcd *hcd, char *buf)
+ 
+ 		if ((temp & mask) != 0 || test_bit(i, &ehci->port_c_suspend)
+ 				|| (ehci->reset_done[i] && time_after_eq(
+-					jiffies, ehci->reset_done[i]))) {
++					jiffies, ehci->reset_done[i]))
++				|| ehci_has_ci_pec_bug(ehci, temp)) {
+ 			if (i < 7)
+ 			    buf [0] |= 1 << (i + 1);
+ 			else
+@@ -874,6 +875,13 @@ int ehci_hub_control(
+ 		if (temp & PORT_PEC)
+ 			status |= USB_PORT_STAT_C_ENABLE << 16;
+ 
++		if (ehci_has_ci_pec_bug(ehci, temp)) {
++			status |= USB_PORT_STAT_C_ENABLE << 16;
++			ehci_info(ehci,
++				"PE is cleared by HW port:%d PORTSC:%08x\n",
++				wIndex + 1, temp);
++		}
++
+ 		if ((temp & PORT_OCC) && (!ignore_oc && !ehci->spurious_oc)){
+ 			status |= USB_PORT_STAT_C_OVERCURRENT << 16;
+ 
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index fdd073cc053b8..9888ca5f5f36f 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -207,6 +207,7 @@ struct ehci_hcd {			/* one per controller */
+ 	unsigned		has_fsl_port_bug:1; /* FreeScale */
+ 	unsigned		has_fsl_hs_errata:1;	/* Freescale HS quirk */
+ 	unsigned		has_fsl_susp_errata:1;	/* NXP SUSP quirk */
++	unsigned		has_ci_pec_bug:1;	/* ChipIdea PEC bug */
+ 	unsigned		big_endian_mmio:1;
+ 	unsigned		big_endian_desc:1;
+ 	unsigned		big_endian_capbase:1;
+@@ -706,6 +707,15 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
+  */
+ #define ehci_has_fsl_susp_errata(e)	((e)->has_fsl_susp_errata)
+ 
++/*
++ * Some Freescale/NXP processors using ChipIdea IP have a bug in which
++ * disabling the port (PE is cleared) does not cause PEC to be asserted
++ * when frame babble is detected.
++ */
++#define ehci_has_ci_pec_bug(e, portsc) \
++	((e)->has_ci_pec_bug && ((e)->command & CMD_PSE) \
++	 && !(portsc & PORT_PEC) && !(portsc & PORT_PE))
++
+ /*
+  * While most USB host controllers implement their registers in
+  * little-endian format, a minority (celleb companion chip) implement
 -- 
 2.40.1
 
