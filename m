@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2843E7A7CA3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 360CF7A7BC1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235046AbjITMDB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45224 "EHLO
+        id S234829AbjITLzT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:55:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235122AbjITMCq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:46 -0400
+        with ESMTP id S235066AbjITLzE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D22C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF3DC43395;
-        Wed, 20 Sep 2023 12:02:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD485A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BB8C433C7;
+        Wed, 20 Sep 2023 11:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211358;
-        bh=wmuHDijgqag1AiZfH1xztBNkDeKQsht+n7mLhQ10Ct8=;
+        s=korg; t=1695210898;
+        bh=0PpqqulzHW5Yys8yc5QpNGv8G8bYQriP4J56RH7vdDI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wnhVeoRUgfl4b5GThLjOFRg9q9dbP1a4opjCIld7Ri9Le0r3RFdNREPXD6oZHIiMC
-         3gAiFOzGGA3QAnFUKqvpkwmv76SDPimSzflteBH8qoOE/fNvm11uhWZMJSl9km+Hkx
-         pgP8t7uh+wAYKbLL+ATR5Zefdr6B/3sMvGJGVS/8=
+        b=qopWt1iOQ44Dhy28Oa6nEeMM7CpsXY2yh7GspxMOQvMjM9TEEY0/+JaKsH3a82gDo
+         U9GENMUlsgfC4o4MEeI+u+Q8tTWEisp0MiPoqpwRiXr5fUubpFZpreobBbJrSXB1yp
+         1STVcJLAQ55vV04SR/MULJCjkffZCDMt3yLLhzhM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Minjie Du <duminjie@vivo.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 063/186] drivers: clk: keystone: Fix parameter judgment in _of_pll_clk_init()
+Subject: [PATCH 6.1 032/139] wifi: mac80211: check S1G action frame size
 Date:   Wed, 20 Sep 2023 13:29:26 +0200
-Message-ID: <20230920112839.164960397@linuxfoundation.org>
+Message-ID: <20230920112836.806329890@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjie Du <duminjie@vivo.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a995c50db887ef97f3160775aef7d772635a6f6e ]
+[ Upstream commit 19e4a47ee74718a22e963e8a647c8c3bfe8bb05c ]
 
-The function clk_register_pll() may return NULL or an ERR_PTR. Don't
-treat an ERR_PTR as valid.
+Before checking the action code, check that it even
+exists in the frame.
 
-Signed-off-by: Minjie Du <duminjie@vivo.com>
-Link: https://lore.kernel.org/r/20230712102246.10348-1-duminjie@vivo.com
-Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
-[sboyd@kernel.org: Reword commit text]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reported-by: syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/keystone/pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/rx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
-index e7e840fb74eaf..526694c2a6c97 100644
---- a/drivers/clk/keystone/pll.c
-+++ b/drivers/clk/keystone/pll.c
-@@ -213,7 +213,7 @@ static void __init _of_pll_clk_init(struct device_node *node, bool pllctrl)
- 	}
- 
- 	clk = clk_register_pll(NULL, node->name, parent_name, pll_data);
--	if (clk) {
-+	if (!IS_ERR_OR_NULL(clk)) {
- 		of_clk_add_provider(node, of_clk_src_simple_get, clk);
- 		return;
- 	}
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 55dc0610e8633..c4c80037df91d 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3625,6 +3625,10 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 			break;
+ 		goto queue;
+ 	case WLAN_CATEGORY_S1G:
++		if (len < offsetofend(typeof(*mgmt),
++				      u.action.u.s1g.action_code))
++			break;
++
+ 		switch (mgmt->u.action.u.s1g.action_code) {
+ 		case WLAN_S1G_TWT_SETUP:
+ 		case WLAN_S1G_TWT_TEARDOWN:
 -- 
 2.40.1
 
