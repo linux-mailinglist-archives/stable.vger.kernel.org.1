@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809797A785F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9307A7870
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:01:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234314AbjITKAK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 06:00:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36232 "EHLO
+        id S234122AbjITKBO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 06:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234336AbjITKAJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:00:09 -0400
+        with ESMTP id S234258AbjITKBN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:01:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B587DA9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 03:00:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00321C433C7;
-        Wed, 20 Sep 2023 10:00:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F313AA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 03:01:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B63C433C7;
+        Wed, 20 Sep 2023 10:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695204002;
-        bh=r8WDYGT09UTRemj2YpTUbqgaTJqx/BqsXMtK6+aH+Yk=;
+        s=korg; t=1695204067;
+        bh=IOAmHWzAtOc2nBoj1FiP/x7cY257J7vGT0wjmAVXsQM=;
         h=Subject:To:Cc:From:Date:From;
-        b=PMvylP9aGkct1wtl2hDl2wBsp/2AUzq2j1M7RToB+FoYFWjeZHHVL7//r5pssWL41
-         2FHQU1PnfjzIfvvnx3EkY60PPuqaVxa0b0Z/gmyhStmtUzrl4McVdqQma9ATammH2C
-         ijTckkFcmOpoXv7/sqI6PNDRqFuGN6vKT8zs3okE=
-Subject: FAILED: patch "[PATCH] ext4: do not let fstrim block system suspend" failed to apply to 4.14-stable tree
-To:     jack@suse.cz, david@fromorbit.com, lenb@kernel.org, tytso@mit.edu
+        b=zSJRCwMh+JDDcUE7ZTs4L9j7+fwqqOItLXAZKV4wNEBmK47QNYXmL9D4EcGoQZxnR
+         myWXOkyRBo0YaE6hRABB70SpB+8M3cCiWQVZHRUVhtxBfgjrlxpazHqbU4rVMTC84B
+         n3ZVWKL16KcW2aObadI1+m6hy/1APP1lWWCkKPDY=
+Subject: FAILED: patch "[PATCH] drm/amd/display: fix the white screen issue when >= 64GB DRAM" failed to apply to 5.10-stable tree
+To:     yifan1.zhang@amd.com, alexander.deucher@amd.com,
+        hamza.mahfooz@amd.com, harry.wentland@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:59:38 +0200
-Message-ID: <2023092038-rebound-flashy-4766@gregkh>
+Date:   Wed, 20 Sep 2023 12:01:04 +0200
+Message-ID: <2023092004-excavate-unending-0257@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,31 +43,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5229a658f6453362fbb9da6bf96872ef25a7097e
+git cherry-pick -x ef064187a9709393a981a56cce1e31880fd97107
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092038-rebound-flashy-4766@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092004-excavate-unending-0257@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-5229a658f645 ("ext4: do not let fstrim block system suspend")
-45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
-de8bf0e5ee74 ("ext4: replace the traditional ternary conditional operator with with max()/min()")
-d63c00ea435a ("ext4: mark group as trimmed only if it was fully scanned")
-2327fb2e2341 ("ext4: change s_last_trim_minblks type to unsigned long")
-173b6e383d2a ("ext4: avoid trim error on fs with small groups")
-afcc4e32f606 ("ext4: scope ret locally in ext4_try_to_trim_range()")
-6920b3913235 ("ext4: add new helper interface ext4_try_to_trim_range()")
-bd2eea8d0a6b ("ext4: remove the 'group' parameter of ext4_trim_extent")
+ef064187a970 ("drm/amd/display: fix the white screen issue when >= 64GB DRAM")
+c0fb85ae02b6 ("drm/amd/display: setup system context in dm_init")
 
 thanks,
 
@@ -74,69 +68,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5229a658f6453362fbb9da6bf96872ef25a7097e Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Wed, 13 Sep 2023 17:04:55 +0200
-Subject: [PATCH] ext4: do not let fstrim block system suspend
+From ef064187a9709393a981a56cce1e31880fd97107 Mon Sep 17 00:00:00 2001
+From: Yifan Zhang <yifan1.zhang@amd.com>
+Date: Fri, 8 Sep 2023 16:46:39 +0800
+Subject: [PATCH] drm/amd/display: fix the white screen issue when >= 64GB DRAM
 
-Len Brown has reported that system suspend sometimes fail due to
-inability to freeze a task working in ext4_trim_fs() for one minute.
-Trimming a large filesystem on a disk that slowly processes discard
-requests can indeed take a long time. Since discard is just an advisory
-call, it is perfectly fine to interrupt it at any time and the return
-number of discarded blocks until that moment. Do that when we detect the
-task is being frozen.
+Dropping bit 31:4 of page table base is wrong, it makes page table
+base points to wrong address if phys addr is beyond 64GB; dropping
+page_table_start/end bit 31:4 is unnecessary since dcn20_vmid_setup
+will do that. Also, while we are at it, cleanup the assignments using
+upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT.
 
-Cc: stable@kernel.org
-Reported-by: Len Brown <lenb@kernel.org>
-Suggested-by: Dave Chinner <david@fromorbit.com>
-References: https://bugzilla.kernel.org/show_bug.cgi?id=216322
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230913150504.9054-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
+Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Co-developed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 09091adfde64..1e599305d85f 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -16,6 +16,7 @@
- #include <linux/slab.h>
- #include <linux/nospec.h>
- #include <linux/backing-dev.h>
-+#include <linux/freezer.h>
- #include <trace/events/ext4.h>
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 88ba8b66de1f..6a0ea15936ae 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1274,11 +1274,15 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
  
- /*
-@@ -6916,6 +6917,11 @@ static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
- 					EXT4_CLUSTER_BITS(sb);
- }
+ 	pt_base = amdgpu_gmc_pd_addr(adev->gart.bo);
  
-+static bool ext4_trim_interrupted(void)
-+{
-+	return fatal_signal_pending(current) || freezing(current);
-+}
-+
- static int ext4_try_to_trim_range(struct super_block *sb,
- 		struct ext4_buddy *e4b, ext4_grpblk_t start,
- 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
-@@ -6949,8 +6955,8 @@ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
- 		free_count += next - start;
- 		start = next + 1;
+-	page_table_start.high_part = (u32)(adev->gmc.gart_start >> 44) & 0xF;
+-	page_table_start.low_part = (u32)(adev->gmc.gart_start >> 12);
+-	page_table_end.high_part = (u32)(adev->gmc.gart_end >> 44) & 0xF;
+-	page_table_end.low_part = (u32)(adev->gmc.gart_end >> 12);
+-	page_table_base.high_part = upper_32_bits(pt_base) & 0xF;
++	page_table_start.high_part = upper_32_bits(adev->gmc.gart_start >>
++						   AMDGPU_GPU_PAGE_SHIFT);
++	page_table_start.low_part = lower_32_bits(adev->gmc.gart_start >>
++						  AMDGPU_GPU_PAGE_SHIFT);
++	page_table_end.high_part = upper_32_bits(adev->gmc.gart_end >>
++						 AMDGPU_GPU_PAGE_SHIFT);
++	page_table_end.low_part = lower_32_bits(adev->gmc.gart_end >>
++						AMDGPU_GPU_PAGE_SHIFT);
++	page_table_base.high_part = upper_32_bits(pt_base);
+ 	page_table_base.low_part = lower_32_bits(pt_base);
  
--		if (fatal_signal_pending(current))
--			return -ERESTARTSYS;
-+		if (ext4_trim_interrupted())
-+			return count;
- 
- 		if (need_resched()) {
- 			ext4_unlock_group(sb, e4b->bd_group);
-@@ -7072,6 +7078,8 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 	end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
- 
- 	for (group = first_group; group <= last_group; group++) {
-+		if (ext4_trim_interrupted())
-+			break;
- 		grp = ext4_get_group_info(sb, group);
- 		if (!grp)
- 			continue;
+ 	pa_config->system_aperture.start_addr = (uint64_t)logical_addr_low << 18;
 
