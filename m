@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 464A67A7808
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6EFD7A7809
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234210AbjITJy2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:54:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50592 "EHLO
+        id S234216AbjITJyi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234216AbjITJy2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:54:28 -0400
+        with ESMTP id S234114AbjITJyi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:54:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C940A9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:54:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB2CC433C8;
-        Wed, 20 Sep 2023 09:54:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F387A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:54:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB46C433CA;
+        Wed, 20 Sep 2023 09:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203662;
-        bh=UijQaiH2RmXRUbpOnCfE9gpygHJG2x36unTTA2kizuE=;
+        s=korg; t=1695203671;
+        bh=vm5X99nzEcOT3YSA0GNbP6svbuAjR7udzo0+gwUxjRg=;
         h=Subject:To:Cc:From:Date:From;
-        b=zGaSERRzzJwXqe1TReJ9X5h7jybH+nVggbrADjwKvMaKQ4kqdocMF40l4BwnOWiR4
-         45Ie1t7WO3CBIqmVtZMPbIHI6RpnDgBFE2k3MCKECpm/PdnzEE928nQuQMUKQ8jvWf
-         oZbHncOMwbJUrZi0XcSLxIjftaX/kifmDRqCZWkI=
-Subject: FAILED: patch "[PATCH] tracing: Have tracing_max_latency inc the trace array ref" failed to apply to 5.10-stable tree
+        b=xXj+wUrnXPbwllMyv6m0oKWp+SLd8PtvKEjqn4gZ4ggr1HFBf5CTwMbxIxFo4xues
+         iqoyh2C962GDYfRJXbT2ohn3LvkxpyhhQfaHkF1pCDemhO2/Pr1SAdn5vdjkCLja+K
+         YiWm5joF6TX90WBfnxmGpwXTLQydEaB2OA/nS0No=
+Subject: FAILED: patch "[PATCH] tracing: Have tracing_max_latency inc the trace array ref" failed to apply to 5.4-stable tree
 To:     rostedt@goodmis.org, akpm@linux-foundation.org, lkft@linaro.org,
         mark.rutland@arm.com, mhiramat@kernel.org,
         naresh.kamboju@linaro.org, zhengyejian1@huawei.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:54:19 +0200
-Message-ID: <2023092019-glamour-railroad-a36d@gregkh>
+Date:   Wed, 20 Sep 2023 11:54:20 +0200
+Message-ID: <2023092020-recreate-account-e563@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7d660c9b2bc95107f90a9f4c4759be85309a6550
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092019-glamour-railroad-a36d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092020-recreate-account-e563@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
