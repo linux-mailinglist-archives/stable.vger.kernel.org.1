@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92C867A7C26
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 586467A7B65
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234946AbjITL6e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:58:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
+        id S234653AbjITLvu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235022AbjITL6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:34 -0400
+        with ESMTP id S234734AbjITLvs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E57D9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE3CC433C7;
-        Wed, 20 Sep 2023 11:58:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A01A9ED
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9341C433C7;
+        Wed, 20 Sep 2023 11:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211106;
-        bh=QZQ+x5jZ0bbM1wyTvrADBBXnw9m++0IgpK71GMhMzvA=;
+        s=korg; t=1695210695;
+        bh=2hGnUni0DG3ldjPPKCvzzvkpdue2WZAL8ajwVCri/DI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eAaz2nfpjwh5q0Q/oXXiDRkUBnnV1wghKcNhFznPpQiMSI3nownie0EjpZyAcN+03
-         uvsltsP31WSUY5lBu8N5YNd+DWFKoX4273+Ol6LoRgYEvDW80xzAix/wDiIwXc9Esp
-         B38lp7y0I1ACKdpS3V3xyhnA11RS9zf0dBI8+RrU=
+        b=NB7pxtrFmE0aWrEwYyKssHLkUWvbCrqqfirv88fPRcxdK02FhxHKXBT0fJ4EH702U
+         Gq+2ATcHUWPhOhMnHq35vOW5n0EqDkdGRBhXAQ3ZMUG8FOnmrwg+lA3ciI5teIeze5
+         nEGnfPOe9F3ZOy0TQqFGz+mSMb3oJwuo2rjbmAa4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/139] usb: ehci: add workaround for chipidea PORTSC.PEC bug
+        patches@lists.linux.dev,
+        =?UTF-8?q?Cl=C3=A1udio=20Sampaio?= <patola@gmail.com>,
+        Felix Yan <felixonmars@archlinux.org>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.5 171/211] nvme: avoid bogus CRTO values
 Date:   Wed, 20 Sep 2023 13:30:15 +0200
-Message-ID: <20230920112838.670112506@linuxfoundation.org>
+Message-ID: <20230920112851.189702568@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,123 +52,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit dda4b60ed70bd670eefda081f70c0cb20bbeb1fa ]
+commit 6cc834ba62998c65c42d0c63499bdd35067151ec upstream.
 
-Some NXP processor using chipidea IP has a bug when frame babble is
-detected.
+Some devices are reporting controller ready mode support, but return 0
+for CRTO. These devices require a much higher time to ready than that,
+so they are failing to initialize after the driver starter preferring
+that value over CAP.TO.
 
-As per 4.15.1.1.1 Serial Bus Babble:
-  A babble condition also exists if IN transaction is in progress at
-High-speed SOF2 point. This is called frame babble. The host controller
-must disable the port to which the frame babble is detected.
+The spec requires that CAP.TO match the appropritate CRTO value, or be
+set to 0xff if CRTO is larger than that. This means that CAP.TO can be
+used to validate if CRTO is reliable, and provides an appropriate
+fallback for setting the timeout value if not. Use whichever is larger.
 
-The USB controller has disabled the port (PE cleared) and has asserted
-USBERRINT when frame babble is detected, but PEC is not asserted.
-Therefore, the SW isn't aware that port has been disabled. Then the
-SW keeps sending packets to this port, but all of the transfers will
-fail.
-
-This workaround will firstly assert PCD by SW when USBERRINT is detected
-and then judge whether port change has really occurred or not by polling
-roothub status. Because the PEC doesn't get asserted in our case, this
-patch will also assert it by SW when specific conditions are satisfied.
-
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230809024432.535160-1-xu.yang_2@nxp.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217863
+Reported-by: Cláudio Sampaio <patola@gmail.com>
+Reported-by: Felix Yan <felixonmars@archlinux.org>
+Tested-by: Felix Yan <felixonmars@archlinux.org>
+Based-on-a-patch-by: Felix Yan <felixonmars@archlinux.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-hcd.c |  8 ++++++--
- drivers/usb/host/ehci-hub.c | 10 +++++++++-
- drivers/usb/host/ehci.h     | 10 ++++++++++
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/nvme/host/core.c |   54 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 35 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a1930db0da1c3..802bfafb1012b 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -755,10 +755,14 @@ static irqreturn_t ehci_irq (struct usb_hcd *hcd)
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2245,25 +2245,8 @@ int nvme_enable_ctrl(struct nvme_ctrl *c
+ 	else
+ 		ctrl->ctrl_config = NVME_CC_CSS_NVM;
  
- 	/* normal [4.15.1.2] or error [4.15.1.1] completion */
- 	if (likely ((status & (STS_INT|STS_ERR)) != 0)) {
--		if (likely ((status & STS_ERR) == 0))
-+		if (likely ((status & STS_ERR) == 0)) {
- 			INCR(ehci->stats.normal);
--		else
-+		} else {
-+			/* Force to check port status */
-+			if (ehci->has_ci_pec_bug)
-+				status |= STS_PCD;
- 			INCR(ehci->stats.error);
-+		}
- 		bh = 1;
- 	}
+-	if (ctrl->cap & NVME_CAP_CRMS_CRWMS) {
+-		u32 crto;
+-
+-		ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CRTO, &crto);
+-		if (ret) {
+-			dev_err(ctrl->device, "Reading CRTO failed (%d)\n",
+-				ret);
+-			return ret;
+-		}
+-
+-		if (ctrl->cap & NVME_CAP_CRMS_CRIMS) {
+-			ctrl->ctrl_config |= NVME_CC_CRIME;
+-			timeout = NVME_CRTO_CRIMT(crto);
+-		} else {
+-			timeout = NVME_CRTO_CRWMT(crto);
+-		}
+-	} else {
+-		timeout = NVME_CAP_TIMEOUT(ctrl->cap);
+-	}
++	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
++		ctrl->ctrl_config |= NVME_CC_CRIME;
  
-diff --git a/drivers/usb/host/ehci-hub.c b/drivers/usb/host/ehci-hub.c
-index efe30e3be22f7..1aee392e84927 100644
---- a/drivers/usb/host/ehci-hub.c
-+++ b/drivers/usb/host/ehci-hub.c
-@@ -674,7 +674,8 @@ ehci_hub_status_data (struct usb_hcd *hcd, char *buf)
+ 	ctrl->ctrl_config |= (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
+ 	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
+@@ -2277,6 +2260,39 @@ int nvme_enable_ctrl(struct nvme_ctrl *c
+ 	if (ret)
+ 		return ret;
  
- 		if ((temp & mask) != 0 || test_bit(i, &ehci->port_c_suspend)
- 				|| (ehci->reset_done[i] && time_after_eq(
--					jiffies, ehci->reset_done[i]))) {
-+					jiffies, ehci->reset_done[i]))
-+				|| ehci_has_ci_pec_bug(ehci, temp)) {
- 			if (i < 7)
- 			    buf [0] |= 1 << (i + 1);
- 			else
-@@ -875,6 +876,13 @@ int ehci_hub_control(
- 		if (temp & PORT_PEC)
- 			status |= USB_PORT_STAT_C_ENABLE << 16;
- 
-+		if (ehci_has_ci_pec_bug(ehci, temp)) {
-+			status |= USB_PORT_STAT_C_ENABLE << 16;
-+			ehci_info(ehci,
-+				"PE is cleared by HW port:%d PORTSC:%08x\n",
-+				wIndex + 1, temp);
++	/* CAP value may change after initial CC write */
++	ret = ctrl->ops->reg_read64(ctrl, NVME_REG_CAP, &ctrl->cap);
++	if (ret)
++		return ret;
++
++	timeout = NVME_CAP_TIMEOUT(ctrl->cap);
++	if (ctrl->cap & NVME_CAP_CRMS_CRWMS) {
++		u32 crto, ready_timeout;
++
++		ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CRTO, &crto);
++		if (ret) {
++			dev_err(ctrl->device, "Reading CRTO failed (%d)\n",
++				ret);
++			return ret;
 +		}
 +
- 		if ((temp & PORT_OCC) && (!ignore_oc && !ehci->spurious_oc)){
- 			status |= USB_PORT_STAT_C_OVERCURRENT << 16;
- 
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index ad3f13a3eaf1b..5c0e25742e179 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -207,6 +207,7 @@ struct ehci_hcd {			/* one per controller */
- 	unsigned		has_fsl_port_bug:1; /* FreeScale */
- 	unsigned		has_fsl_hs_errata:1;	/* Freescale HS quirk */
- 	unsigned		has_fsl_susp_errata:1;	/* NXP SUSP quirk */
-+	unsigned		has_ci_pec_bug:1;	/* ChipIdea PEC bug */
- 	unsigned		big_endian_mmio:1;
- 	unsigned		big_endian_desc:1;
- 	unsigned		big_endian_capbase:1;
-@@ -707,6 +708,15 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
-  */
- #define ehci_has_fsl_susp_errata(e)	((e)->has_fsl_susp_errata)
- 
-+/*
-+ * Some Freescale/NXP processors using ChipIdea IP have a bug in which
-+ * disabling the port (PE is cleared) does not cause PEC to be asserted
-+ * when frame babble is detected.
-+ */
-+#define ehci_has_ci_pec_bug(e, portsc) \
-+	((e)->has_ci_pec_bug && ((e)->command & CMD_PSE) \
-+	 && !(portsc & PORT_PEC) && !(portsc & PORT_PE))
++		/*
++		 * CRTO should always be greater or equal to CAP.TO, but some
++		 * devices are known to get this wrong. Use the larger of the
++		 * two values.
++		 */
++		if (ctrl->ctrl_config & NVME_CC_CRIME)
++			ready_timeout = NVME_CRTO_CRIMT(crto);
++		else
++			ready_timeout = NVME_CRTO_CRWMT(crto);
 +
- /*
-  * While most USB host controllers implement their registers in
-  * little-endian format, a minority (celleb companion chip) implement
--- 
-2.40.1
-
++		if (ready_timeout < timeout)
++			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
++				      crto, ctrl->cap);
++		else
++			timeout = ready_timeout;
++	}
++
+ 	ctrl->ctrl_config |= NVME_CC_ENABLE;
+ 	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_CC, ctrl->ctrl_config);
+ 	if (ret)
 
 
