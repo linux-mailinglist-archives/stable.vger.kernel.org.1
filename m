@@ -2,39 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6DB7A814C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08FCE7A7EBA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236196AbjITMoP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43282 "EHLO
+        id S235673AbjITMUU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236254AbjITMoM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:12 -0400
+        with ESMTP id S235843AbjITMUL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B7CE8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2808BC433C7;
-        Wed, 20 Sep 2023 12:44:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5454C93;
+        Wed, 20 Sep 2023 05:20:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C596C433C8;
+        Wed, 20 Sep 2023 12:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213844;
-        bh=+sEDUwwooZozQ66/zmatUNKEBR5/1gKX8nwQZN4r+YA=;
+        s=korg; t=1695212405;
+        bh=0POdhAC/mGygJsOOLT0+wrwJKmbpRMW52iymlcOP9jk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EnWqXcjh6pkF7S2MK5GdEjRq2VkjUn4UtzNYMl5eioxSErFjQjON5co4lzfUdYmRY
-         YZHxvGqntZ17pcod+isHPMKQJ5pMTxFY0/4jc+rkkMmy7y/WCTmfkBjejuz7bskiSW
-         SBP2wc8yVukOYl1VKPo18+P0aU6RRhIlB1B+Hmjw=
+        b=K+D+6628whfL25DPSAWsxtwS0R01hX09mIlWJRe4va2yKEttyMn58Z4ZYTNTcOWnO
+         Ynrqa/qAbVGg8W1J4rzairKnjsDv4S7Db76mSAc/l+pO4HjJ/qYFX8eLP1QERaGBa/
+         lS4Z42qLpWvC5YHVCqGVzacLyLkvwkfhvx/yBZvM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark ODonovan <shiftee@posteo.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev,
+        syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com,
+        Takeshi Misawa <jeliantsurux@gmail.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Ian Kent <raven@themaw.net>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrei Vagin <avagin@gmail.com>, autofs@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/110] crypto: lib/mpi - avoid null pointer deref in mpi_cmp_ui()
+Subject: [PATCH 4.19 237/273] autofs: fix memory leak of waitqueues in autofs_catatonic_mode
 Date:   Wed, 20 Sep 2023 13:31:17 +0200
-Message-ID: <20230920112831.112090632@linuxfoundation.org>
+Message-ID: <20230920112853.679254815@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +58,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark O'Donovan <shiftee@posteo.net>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 9e47a758b70167c9301d2b44d2569f86c7796f2d ]
+[ Upstream commit ccbe77f7e45dfb4420f7f531b650c00c6e9c7507 ]
 
-During NVMeTCP Authentication a controller can trigger a kernel
-oops by specifying the 8192 bit Diffie Hellman group and passing
-a correctly sized, but zeroed Diffie Hellamn value.
-mpi_cmp_ui() was detecting this if the second parameter was 0,
-but 1 is passed from dh_is_pubkey_valid(). This causes the null
-pointer u->d to be dereferenced towards the end of mpi_cmp_ui()
+Syzkaller reports a memory leak:
 
-Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+BUG: memory leak
+unreferenced object 0xffff88810b279e00 (size 96):
+  comm "syz-executor399", pid 3631, jiffies 4294964921 (age 23.870s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 08 9e 27 0b 81 88 ff ff  ..........'.....
+    08 9e 27 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ..'.............
+  backtrace:
+    [<ffffffff814cfc90>] kmalloc_trace+0x20/0x90 mm/slab_common.c:1046
+    [<ffffffff81bb75ca>] kmalloc include/linux/slab.h:576 [inline]
+    [<ffffffff81bb75ca>] autofs_wait+0x3fa/0x9a0 fs/autofs/waitq.c:378
+    [<ffffffff81bb88a7>] autofs_do_expire_multi+0xa7/0x3e0 fs/autofs/expire.c:593
+    [<ffffffff81bb8c33>] autofs_expire_multi+0x53/0x80 fs/autofs/expire.c:619
+    [<ffffffff81bb6972>] autofs_root_ioctl_unlocked+0x322/0x3b0 fs/autofs/root.c:897
+    [<ffffffff81bb6a95>] autofs_root_ioctl+0x25/0x30 fs/autofs/root.c:910
+    [<ffffffff81602a9c>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff81602a9c>] __do_sys_ioctl fs/ioctl.c:870 [inline]
+    [<ffffffff81602a9c>] __se_sys_ioctl fs/ioctl.c:856 [inline]
+    [<ffffffff81602a9c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
+    [<ffffffff84608225>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84608225>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84800087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+autofs_wait_queue structs should be freed if their wait_ctr becomes zero.
+Otherwise they will be lost.
+
+In this case an AUTOFS_IOC_EXPIRE_MULTI ioctl is done, then a new
+waitqueue struct is allocated in autofs_wait(), its initial wait_ctr
+equals 2. After that wait_event_killable() is interrupted (it returns
+-ERESTARTSYS), so that 'wq->name.name == NULL' condition may be not
+satisfied. Actually, this condition can be satisfied when
+autofs_wait_release() or autofs_catatonic_mode() is called and, what is
+also important, wait_ctr is decremented in those places. Upon the exit of
+autofs_wait(), wait_ctr is decremented to 1. Then the unmounting process
+begins: kill_sb calls autofs_catatonic_mode(), which should have freed the
+waitqueues, but it only decrements its usage counter to zero which is not
+a correct behaviour.
+
+edit:imk
+This description is of course not correct. The umount performed as a result
+of an expire is a umount of a mount that has been automounted, it's not the
+autofs mount itself. They happen independently, usually after everything
+mounted within the autofs file system has been expired away. If everything
+hasn't been expired away the automount daemon can still exit leaving mounts
+in place. But expires done in both cases will result in a notification that
+calls autofs_wait_release() with a result status. The problem case is the
+summary execution of of the automount daemon. In this case any waiting
+processes won't be woken up until either they are terminated or the mount
+is umounted.
+end edit: imk
+
+So in catatonic mode we should free waitqueues which counter becomes zero.
+
+edit: imk
+Initially I was concerned that the calling of autofs_wait_release() and
+autofs_catatonic_mode() was not mutually exclusive but that can't be the
+case (obviously) because the queue entry (or entries) is removed from the
+list when either of these two functions are called. Consequently the wait
+entry will be freed by only one of these functions or by the woken process
+in autofs_wait() depending on the order of the calls.
+end edit: imk
+
+Reported-by: syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com
+Suggested-by: Takeshi Misawa <jeliantsurux@gmail.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Ian Kent <raven@themaw.net>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: autofs@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Message-Id: <169112719161.7590.6700123246297365841.stgit@donald.themaw.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/mpi/mpi-cmp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/autofs/waitq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/mpi/mpi-cmp.c b/lib/mpi/mpi-cmp.c
-index c4cfa3ff05818..0835b6213235e 100644
---- a/lib/mpi/mpi-cmp.c
-+++ b/lib/mpi/mpi-cmp.c
-@@ -25,8 +25,12 @@ int mpi_cmp_ui(MPI u, unsigned long v)
- 	mpi_limb_t limb = v;
- 
- 	mpi_normalize(u);
--	if (!u->nlimbs && !limb)
--		return 0;
-+	if (u->nlimbs == 0) {
-+		if (v == 0)
-+			return 0;
-+		else
-+			return -1;
-+	}
- 	if (u->sign)
- 		return -1;
- 	if (u->nlimbs > 1)
+diff --git a/fs/autofs/waitq.c b/fs/autofs/waitq.c
+index f6385c6ef0a56..44ba0cd4ebc4f 100644
+--- a/fs/autofs/waitq.c
++++ b/fs/autofs/waitq.c
+@@ -35,8 +35,9 @@ void autofs_catatonic_mode(struct autofs_sb_info *sbi)
+ 		wq->status = -ENOENT; /* Magic is gone - report failure */
+ 		kfree(wq->name.name);
+ 		wq->name.name = NULL;
+-		wq->wait_ctr--;
+ 		wake_up_interruptible(&wq->queue);
++		if (!--wq->wait_ctr)
++			kfree(wq);
+ 		wq = nwq;
+ 	}
+ 	fput(sbi->pipe);	/* Close the pipe */
 -- 
 2.40.1
 
